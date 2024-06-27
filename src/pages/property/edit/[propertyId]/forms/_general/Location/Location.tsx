@@ -16,6 +16,7 @@ import {
     NeighbourSelect,
     RegionSelect,
 } from "src/components/Location";
+import LocationDisplay from "./LocationDisplay";
 
 const LocationSection = () => {
     const { watch, setValue } = useFormContext();
@@ -234,6 +235,10 @@ const LocationSection = () => {
                             label={t("Country")}
                             name="location.country"
                         />
+                    </Grid>
+
+                    <Grid item xs={12} justifyContent="center" display="flex">
+                        <LocationDisplay />
                     </Grid>
                 </Grid>
 

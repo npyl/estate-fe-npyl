@@ -9,6 +9,34 @@ import { MatchResult } from "./types";
 import useTheme from "@mui/system/useTheme";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { t } from "i18next";
+
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+type Color = string;
+
+const STATUS_COLORS: Record<PropertyStatus, Color> = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+
+const getStatusColor = (status: string): string => {
+    const statusUpper = status.toUpperCase() as PropertyStatus;
+    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+};
+
 import { useTranslation } from "react-i18next";
 
 interface SearchItemProps {
@@ -35,11 +63,14 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         cityEN,
         cityGR,
         // ...
+        state: _state,
         ...rest
     } = option;
 
     const region = i18n.language === "en" ? regionEN : regionGR;
     const city = i18n.language === "en" ? cityEN : cityGR;
+
+    const stateColor = _state?.value ? getStatusColor(_state.value) : "#537f91";
 
     const code = useMemo(
         () => ({
@@ -150,7 +181,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     >
                         <NormalBadge
                             name={t(option?.state?.value)}
-                            color="indigo"
+                            color={stateColor}
                         />
                     </Grid>
                 </Grid>
@@ -221,7 +252,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     container
                     spacing={1}
                     marginLeft={2}
-                    mt={1}
+                    mt={0}
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={6}>
@@ -264,7 +295,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     container
                     spacing={1}
                     marginLeft={2}
-                    mt={1}
+                    mt={0}
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={6}>
@@ -350,7 +381,8 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     <Grid item xs={10} sm={4}>
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
-                            color="yellow"
+                            color={"#ffcc00"}
+                            sx={{ color: "#854D0E" }}
                         />
                     </Grid>
                 </Grid>

@@ -1,6 +1,7 @@
 import { Box, BoxProps, Theme, Typography, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { formatNumberWithCommas } from "@/utils/formatNumber";
+import { darken, lighten } from "polished";
 
 const getCss = (theme: Theme) => ({
     boxShadow:
@@ -53,9 +54,36 @@ export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
             : theme.palette.neutral?.[400],
 }));
 
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+type Color = string;
+
+const STATUS_COLORS: Record<PropertyStatus, Color> = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+
+export const getStatusColor = (status: string): string => {
+    const statusUpper = status.toUpperCase() as PropertyStatus;
+    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+};
+
 interface NormalBadgeProps extends BoxProps {
     name: string;
-    color: "yellow" | "indigo";
+    color: string; //ADD here the Colors needed
 }
 
 export const NormalBadge = styled(
@@ -71,38 +99,42 @@ export const NormalBadge = styled(
     paddingBottom: theme.spacing(0.4),
 
     textAlign: "center",
-
     borderRadius: "25px",
+    color: alpha(color, 1),
 
-    ...(theme.palette.mode === "light"
-        ? {
-              color:
-                  color === "yellow"
-                      ? "#854d0e"
-                      : color === "indigo"
-                      ? "#3730a3"
-                      : "",
+    backgroundColor: alpha(color, 0.25),
 
-              backgroundColor:
-                  color === "yellow"
-                      ? alpha("#ffcc00", 0.2)
-                      : color === "indigo"
-                      ? alpha("#3730a3", 0.25)
-                      : "",
-          }
-        : {
-              color:
-                  color === "yellow"
-                      ? "#c49102"
-                      : color === "indigo"
-                      ? "#4c5fd7"
-                      : "",
+    // color: lighten(0.3, color), // make text brighter
+    // backgroundColor: color,
+    // ...(theme.palette.mode === "light"
+    //     ? {
+    //           color:
+    //               color === "yellow"
+    //                   ? "#854d0e"
+    //                   : color === "indigo"
+    //                   ? "#3730a3"
+    //                   : "",
 
-              backgroundColor:
-                  color === "yellow"
-                      ? alpha("#c49102", 0.3) // Slightly brighter amber for dark mode, without alpha adjustment
-                      : color === "indigo"
-                      ? alpha("#4c5fd7", 0.3) // Lighter indigo suitable for dark backgrounds, without alpha adjustment
-                      : "",
-          }),
+    //           backgroundColor:
+    //               color === "yellow"
+    //                   ? alpha("#ffcc00", 0.2)
+    //                   : color === "indigo"
+    //                   ? alpha("#3730a3", 0.25)
+    //                   : "",
+    //       }
+    //     : {
+    //           color:
+    //               color === "yellow"
+    //                   ? "#c49102"
+    //                   : color === "indigo"
+    //                   ? "#4c5fd7"
+    //                   : "",
+
+    //           backgroundColor:
+    //               color === "yellow"
+    //                   ? alpha("#c49102", 0.3) // Slightly brighter amber for dark mode, without alpha adjustment
+    //                   : color === "indigo"
+    //                   ? alpha("#4c5fd7", 0.3) // Lighter indigo suitable for dark backgrounds, without alpha adjustment
+    //                   : "",
+    //       }),
 }));

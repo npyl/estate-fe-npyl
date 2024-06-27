@@ -19,44 +19,46 @@ const MoreChip = ({ labels, ...props }: MoreChipProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const open = Boolean(anchorEl);
-    const id = open ? "simple-popper" : undefined;
 
-    const handleOpen = useCallback((e: MouseEvent<HTMLElement>) => {
+    const handleOpen = useCallback((e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget);
+        props.onClick?.(e);
     }, []);
-    const handleClose = useCallback(() => setAnchorEl(null), []);
+    const handleClose = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setAnchorEl(null);
+    }, []);
 
     return (
         <>
             <StyledChip {...props} onClick={handleOpen} />
 
-            <Popper id={id} open={open} anchorEl={anchorEl}>
-                <StyledPaper
-                    elevation={20}
-                    sx={{
-                        mt: 1,
-                    }}
-                >
-                    <SpaceBetween alignItems="center">
-                        <Typography variant="h6">{t("All labels")}</Typography>
-                        <IconButton size="small" onClick={handleClose}>
-                            <Close />
-                        </IconButton>
-                    </SpaceBetween>
-                    <Grid container mt={1} spacing={1}>
-                        {labels.map(({ id, name, color }) => (
-                            <Grid item xs={6} key={id}>
-                                <Label
-                                    color={color}
-                                    name={name}
-                                    width="min-content"
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </StyledPaper>
-            </Popper>
+            {open ? (
+                <Popper open={open} anchorEl={anchorEl}>
+                    <StyledPaper elevation={20}>
+                        <SpaceBetween alignItems="center">
+                            <Typography variant="h6">
+                                {t("All labels")}
+                            </Typography>
+                            <IconButton size="small" onClick={handleClose}>
+                                <Close />
+                            </IconButton>
+                        </SpaceBetween>
+                        <Grid container mt={1} spacing={1}>
+                            {labels.map(({ id, name, color }) => (
+                                <Grid item xs={6} key={id}>
+                                    <Label
+                                        color={color}
+                                        name={name}
+                                        width="min-content"
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </StyledPaper>
+                </Popper>
+            ) : null}
         </>
     );
 };

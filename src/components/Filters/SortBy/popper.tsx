@@ -4,6 +4,14 @@ import { TSortByOptions } from "./types";
 import Iconify from "@/components/iconify";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { styled } from "@mui/material/styles";
+import getBorderColor from "@/theme/borderColor";
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(1),
+    border: "1px solid",
+    borderColor: getBorderColor(theme),
+}));
 
 interface SelectPopperProps {
     anchorEl?: HTMLElement;
@@ -19,17 +27,13 @@ const SelectPopper = ({
     onSortingChange,
 }: SelectPopperProps) => (
     <Popper
-        open={true}
+        open
         anchorEl={anchorEl}
         sx={{
-            zIndex: 1,
+            zIndex: 1000,
         }}
     >
-        <Paper
-            sx={{
-                p: 1,
-            }}
-        >
+        <StyledPaper>
             {options.map(({ label, value, icon }) => (
                 <ListItem
                     key={value}
@@ -42,7 +46,7 @@ const SelectPopper = ({
                     <ListItemText>{label}</ListItemText>
                 </ListItem>
             ))}
-        </Paper>
+        </StyledPaper>
     </Popper>
 );
 

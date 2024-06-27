@@ -125,6 +125,10 @@ const Customers: NextPage = () => {
                 sx={{
                     marginRight: bulkEditOpen ? 40 : 0,
                     mb: 1,
+                    position: "sticky",
+                    top: 64,
+                    zIndex: 10,
+                    border: "1px solid rgba(255, 255, 255, 0.18)",
                 }}
                 sorting={sorting}
                 onSortingChange={setSorting}

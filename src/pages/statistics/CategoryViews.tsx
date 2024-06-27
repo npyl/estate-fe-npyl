@@ -255,6 +255,13 @@ export default function ViewsOfPropertiesChart() {
                         dataKey="date"
                         tickFormatter={formatDateTick}
                         tickMargin={7}
+                        interval={
+                            timeframe === "WEEK"
+                                ? 0
+                                : timeframe === "MONTH"
+                                ? 2
+                                : 8
+                        }
                     />
                     <YAxis width={20} tickFormatter={formatYAxis} />
                     <Tooltip content={renderTooltipContent} />

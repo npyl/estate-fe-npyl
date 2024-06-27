@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -6,6 +6,14 @@ import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
+import { ILocation, ILocationPOST } from "@/types/location";
+import {
+    useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
+    useGetRegionsQuery,
+} from "@/services/location";
+import isNumberString from "@/components/Location/util";
+import useHumanReadable from "@/components/Location/hook";
 
 const defaultImage = "/static/noImage.png";
 
@@ -26,6 +34,35 @@ function renderImage(
             alt=""
             ratio="16/9"
         />
+    );
+}
+
+function renderLocation(
+    params: GridCellParams<IPropertyResultResponse | IProperties>
+) {
+    const { data: regions } = useGetRegionsQuery();
+    const { data: municips } = useGetMunicipalitiesQuery(
+        +params?.row?.location?.region!,
+        {
+            skip: !isNumberString(params?.row?.location?.region),
+        }
+    );
+    const { data: neighbs } = useGetNeighbourhoodsQuery(
+        +params?.row?.location?.city!,
+        {
+            skip: !isNumberString(params?.row?.location?.city),
+        }
+    );
+
+    const region = useHumanReadable(params?.row?.location?.region, regions);
+
+    const city = useHumanReadable(params?.row?.location?.city, municips);
+    const propertyLocation = `${region},  ${params.row?.location?.street}  ${params.row?.location?.number}, ${city}`;
+
+    return (
+        <Typography sx={{ fontSize: "small", textWrap: "wrap" }}>
+            {propertyLocation}
+        </Typography>
     );
 }
 
@@ -175,47 +212,56 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
     },
     {
-        field: "createdAt",
+        field: "location",
         headerAlign: "center",
         align: "center",
-        headerName: t("Creation Date") as string,
-
+        headerName: t("Location") as string,
+        renderCell: renderLocation,
         flex: 1,
-
-        renderCell: (params) => {
-            const { i18n } = useTranslation();
-            const date = new Date(params.value);
-
-            return i18n.language === "el"
-                ? date.toLocaleDateString("el-GR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                  })
-                : date.toDateString();
-        },
     },
-    {
-        field: "updatedAt",
-        headerAlign: "center",
-        align: "center",
-        headerName: t("Updated At") as string,
 
-        flex: 1,
+    // {
+    //     field: "createdAt",
+    //     headerAlign: "center",
+    //     align: "center",
+    //     headerName: t("Creation Date") as string,
 
-        renderCell: (params) => {
-            const { i18n } = useTranslation();
-            const date = new Date(params.value);
+    //     flex: 1,
 
-            return i18n.language === "el"
-                ? date.toLocaleDateString("el-GR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                  })
-                : date.toDateString();
-        },
-    },
+    //     renderCell: (params) => {
+    //         const { i18n } = useTranslation();
+    //         const date = new Date(params.value);
+
+    //         return i18n.language === "el"
+    //             ? date.toLocaleDateString("el-GR", {
+    //                   year: "numeric",
+    //                   month: "long",
+    //                   day: "numeric",
+    //               })
+    //             : date.toDateString();
+    //     },
+    // },
+    // {
+    //     field: "updatedAt",
+    //     headerAlign: "center",
+    //     align: "center",
+    //     headerName: t("Updated At") as string,
+
+    //     flex: 1,
+
+    //     renderCell: (params) => {
+    //         const { i18n } = useTranslation();
+    //         const date = new Date(params.value);
+
+    //         return i18n.language === "el"
+    //             ? date.toLocaleDateString("el-GR", {
+    //                   year: "numeric",
+    //                   month: "long",
+    //                   day: "numeric",
+    //               })
+    //             : date.toDateString();
+    //     },
+    // },
 ];
 
 //
