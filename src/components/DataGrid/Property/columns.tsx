@@ -6,14 +6,6 @@ import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-import { ILocation, ILocationPOST } from "@/types/location";
-import {
-    useGetMunicipalitiesQuery,
-    useGetNeighbourhoodsQuery,
-    useGetRegionsQuery,
-} from "@/services/location";
-import isNumberString from "@/components/Location/util";
-import useHumanReadable from "@/components/Location/hook";
 
 const defaultImage = "/static/noImage.png";
 
@@ -37,31 +29,20 @@ function renderImage(
     );
 }
 
-function renderLocation(
-    params: GridCellParams<IPropertyResultResponse | IProperties>
-) {
-    const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(
-        +params?.row?.location?.region!,
-        {
-            skip: !isNumberString(params?.row?.location?.region),
-        }
-    );
-    const { data: neighbs } = useGetNeighbourhoodsQuery(
-        +params?.row?.location?.city!,
-        {
-            skip: !isNumberString(params?.row?.location?.city),
-        }
-    );
+function renderLocation(params: GridCellParams<IPropertyResultResponse>) {
+    const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
+        params.row || {};
 
-    const region = useHumanReadable(params?.row?.location?.region, regions);
+    const { t, i18n } = useTranslation();
 
-    const city = useHumanReadable(params?.row?.location?.city, municips);
-    const propertyLocation = `${region},  ${params.row?.location?.street}  ${params.row?.location?.number}, ${city}`;
+    const address =
+        i18n.language === "en"
+            ? `${regionEN} ${cityEN} ${complexEN}`
+            : `${regionGR} ${cityGR} ${complexGR}`;
 
     return (
         <Typography sx={{ fontSize: "small", textWrap: "wrap" }}>
-            {propertyLocation}
+            {address}
         </Typography>
     );
 }
