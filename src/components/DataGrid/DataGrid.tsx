@@ -1,5 +1,5 @@
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import MuiLink from "@mui/material/Link";
 import {
     GridDeleteIcon,
