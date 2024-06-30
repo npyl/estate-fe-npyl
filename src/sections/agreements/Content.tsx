@@ -1,37 +1,10 @@
-import { IAgreement, IAgreementsFilters } from "@/types/agreements";
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
 import Stack from "@mui/material/Stack";
 import AgreementCard from "./Card/AgreementCard";
 import AgreementCardSkeleton from "./Card/AgreementCardSkeleton";
 import { Suspense, lazy, useEffect, useState } from "react";
+import { useFilterAgreementsMutation } from "@/services/agreements";
 const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
-
-const useFilterAgreementsMutation = (): [
-    filterAgreements: (filter?: IAgreementsFilters) => void,
-    {
-        data: IAgreement[];
-        isLoading: boolean;
-    }
-] => [
-    () => {},
-    {
-        data: [
-            {
-                variant: "basic",
-                id: 1,
-                draft: false,
-                title: "Property x100 Basic",
-            } as any,
-            {
-                variant: "purchase",
-                id: 2,
-                draft: true,
-                title: "Property x101 Purchase",
-            } as any,
-        ],
-        isLoading: false,
-    },
-];
 
 interface Props {
     // Are we on a property/[propertyId] page or the agreements page?

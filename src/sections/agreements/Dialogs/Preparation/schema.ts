@@ -3,6 +3,9 @@ import * as yup from "yup";
 import dayjs from "dayjs";
 
 const Schema = yup.object<IAgreementReq>().shape({
+    id: yup.number().optional(),
+    propertyId: yup.number().optional(),
+
     variant: yup
         .string()
         .oneOf<IAgreementType>(["basic", "basic_exclusive", "purchase"])
@@ -73,6 +76,8 @@ const Schema = yup.object<IAgreementReq>().shape({
 
 export const getValues = (agreement?: IAgreement) => {
     const {
+        id,
+        propertyId,
         variant,
         draft,
         keys,
@@ -90,6 +95,9 @@ export const getValues = (agreement?: IAgreement) => {
     } = agreement || {};
 
     return {
+        id,
+        propertyId,
+        // ...
         variant: variant || "basic",
         draft: draft || false,
         keys: keys || false,

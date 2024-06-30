@@ -2,7 +2,7 @@
 
 import Dialog, { DialogProps } from "@/components/Dialog";
 import { RHFCheckbox } from "@/components/hook-form";
-import { IAgreement, IAgreementReq } from "@/types/agreements";
+import { IAgreementReq } from "@/types/agreements";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
@@ -15,18 +15,22 @@ import { Suspense, lazy, useMemo, useState } from "react";
 import Schema, { getValues } from "./schema";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { TLanguageType } from "@/types/translation";
+import { useGetAgreementByIdQuery } from "@/services/agreements";
 const PDFEditorDialog = lazy(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
 
-const editedAgreement: IAgreement = {
-    owner: {
-        fullname: "hello",
-    },
-    property: {
-        livingSpace: 10,
-    },
-} as any;
+const useInitialValues = (id?: number) => {
+    const { data: editedAgreement } = useGetAgreementByIdQuery(id!, {
+        skip: !id || id === -1,
+    });
+
+    const values = useMemo(() => getValues(editedAgreement), [editedAgreement]);
+
+    return values;
+};
+
+// -------------------------------------------------------------------
 
 interface Props extends DialogProps {
     editedAgreementId?: number;
@@ -40,12 +44,8 @@ const PreparationDialog: React.FC<Props> = ({
 
     const [isPDFOpen, openPDF, closePDF] = useDialog();
 
-    // const { data: editedAgreement } = useGetAgreementByIdQuery(
-    //     editedAgreementId,
-    //     { skip: !(editedAgreement >= 0) }
-    // );
-
-    const values = useMemo(() => getValues(editedAgreement), [editedAgreement]);
+    const values = useInitialValues(editedAgreementId);
+    const shouldAutofill = !editedAgreementId || editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
     const methods = useForm<IAgreementReq>({
         resolver: yupResolver(Schema),
@@ -82,7 +82,9 @@ const PreparationDialog: React.FC<Props> = ({
                                     {t("Edit PDF")}
                                 </Button>
                             </Stack>
-                            <PropertyDetails />
+
+                            <PropertyDetails shouldAutofill={shouldAutofill} />
+
                             <RHFCheckbox
                                 labelPlacement="start"
                                 name="keys"

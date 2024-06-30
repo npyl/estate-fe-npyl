@@ -2,6 +2,7 @@ export type IAgreementType = "basic" | "basic_exclusive" | "purchase";
 
 export interface IAgreement {
     id: number;
+    propertyId: number;
     // ...
     variant: IAgreementType;
     draft: boolean;
@@ -66,8 +67,9 @@ export interface IAgreement {
     };
 }
 
-export interface IAgreementReq extends Omit<IAgreement, "id"> {
+export interface IAgreementReq extends Omit<IAgreement, "id" | "propertyId"> {
     id?: number;
+    propertyId?: number;
 }
 
 export interface IAgreementPDFReq {
