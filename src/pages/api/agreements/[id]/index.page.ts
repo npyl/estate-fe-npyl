@@ -9,6 +9,7 @@ const fake = {
     id: 2,
     draft: true,
     title: "Property x101 Purchase",
+    lang: "en",
 } as any;
 
 export default async function GET(req: NextRequest) {

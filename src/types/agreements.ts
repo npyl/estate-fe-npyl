@@ -1,3 +1,5 @@
+import { TLanguageType } from "./translation";
+
 export type IAgreementType = "basic" | "basic_exclusive" | "purchase";
 
 export interface IAgreement {
@@ -5,6 +7,7 @@ export interface IAgreement {
     propertyId: number;
     // ...
     variant: IAgreementType;
+    lang: TLanguageType;
     draft: boolean;
     keys: boolean;
     title: string;

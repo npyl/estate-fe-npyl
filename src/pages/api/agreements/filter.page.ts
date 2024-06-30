@@ -6,12 +6,14 @@ const data = [
         id: 1,
         draft: false,
         title: "Property x100 Basic",
+        lang: "el",
     } as any,
     {
         variant: "purchase",
         id: 2,
         draft: true,
         title: "Property x101 Purchase",
+        lang: "en",
     } as any,
 ];
 

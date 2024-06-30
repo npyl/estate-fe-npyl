@@ -1,6 +1,7 @@
 import { IAgreement, IAgreementReq, IAgreementType } from "@/types/agreements";
 import * as yup from "yup";
 import dayjs from "dayjs";
+import { TLanguageType } from "@/types/translation";
 
 const Schema = yup.object<IAgreementReq>().shape({
     id: yup.number().optional(),
@@ -10,6 +11,7 @@ const Schema = yup.object<IAgreementReq>().shape({
         .string()
         .oneOf<IAgreementType>(["basic", "basic_exclusive", "purchase"])
         .required(),
+    lang: yup.string().oneOf<TLanguageType>(["en", "el"]).required(),
     draft: yup.boolean().required(),
     keys: yup.boolean().required(),
     title: yup.string().required(),
@@ -79,6 +81,7 @@ export const getValues = (agreement?: IAgreement) => {
         id,
         propertyId,
         variant,
+        lang,
         draft,
         keys,
         title,
@@ -99,6 +102,7 @@ export const getValues = (agreement?: IAgreement) => {
         propertyId,
         // ...
         variant: variant || "basic",
+        lang: lang || "el",
         draft: draft || false,
         keys: keys || false,
         title: title || "",
