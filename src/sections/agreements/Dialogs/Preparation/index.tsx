@@ -19,7 +19,14 @@ const PDFEditorDialog = lazy(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
 
-const editedAgreement: IAgreement = {} as any;
+const editedAgreement: IAgreement = {
+    owner: {
+        fullname: "hello",
+    },
+    property: {
+        livingSpace: 10,
+    },
+} as any;
 
 interface Props extends DialogProps {
     editedAgreementId?: number;
@@ -64,12 +71,16 @@ const PreparationDialog: React.FC<Props> = ({
                         <Stack spacing={1}>
                             <Stack direction="row" spacing={1}>
                                 <ButtonGroup />
+
                                 <LanguageButton
                                     updatesGlobalLanguage={false}
                                     language={lang}
                                     onLanguageChange={setLang}
                                 />
-                                <Button onClick={openPDF}>Edit PDF</Button>
+
+                                <Button onClick={openPDF}>
+                                    {t("Edit PDF")}
+                                </Button>
                             </Stack>
                             <PropertyDetails />
                             <RHFCheckbox
@@ -86,18 +97,20 @@ const PreparationDialog: React.FC<Props> = ({
                         </>
                     }
                 />
-            </FormProvider>
 
-            {isPDFOpen ? (
-                <Suspense>
-                    <PDFEditorDialog
-                        open
-                        variant={pdfVariant}
-                        lang={lang}
-                        onClose={closePDF}
-                    />
-                </Suspense>
-            ) : null}
+                {isPDFOpen ? (
+                    <Suspense>
+                        <PDFEditorDialog
+                            open
+                            // ...
+                            variant={pdfVariant}
+                            lang={lang}
+                            // ...
+                            onClose={closePDF}
+                        />
+                    </Suspense>
+                ) : null}
+            </FormProvider>
         </>
     );
 };

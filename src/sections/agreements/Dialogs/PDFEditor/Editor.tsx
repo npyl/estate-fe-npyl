@@ -2,8 +2,10 @@ import { useForm } from "./hook";
 import { useEffect, useRef, useState } from "react";
 import { Template } from "@pdfme/common";
 import { BasicSchema } from "./constants";
-import { IAgreementType } from "@/types/agreements";
+import { IAgreementReq, IAgreementType } from "@/types/agreements";
 import { TLanguageType } from "@/types/translation";
+import { useFormContext } from "react-hook-form";
+import { flattenObject } from "./util";
 
 export const getSampleTemplate = (basePdf: any): Template => ({
     schemas: BasicSchema,
@@ -17,6 +19,9 @@ interface Props {
 
 const PDFEditor: React.FC<Props> = ({ variant, lang }) => {
     const [template, setTemplate] = useState<Template | null>(null);
+
+    const { watch } = useFormContext();
+    const all = watch() as IAgreementReq;
 
     useEffect(() => {
         const loadPdf = async () => {
@@ -46,7 +51,7 @@ const PDFEditor: React.FC<Props> = ({ variant, lang }) => {
 
     const formRef = useRef<HTMLDivElement>(null);
 
-    useForm({ formRef, template });
+    useForm(formRef, template, [flattenObject(all)]);
 
     return <div ref={formRef} />;
 };
