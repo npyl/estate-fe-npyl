@@ -70,9 +70,8 @@ export interface IAgreement {
     };
 }
 
-export interface IAgreementReq extends Omit<IAgreement, "id" | "propertyId"> {
+export interface IAgreementReq extends Omit<IAgreement, "id"> {
     id?: number;
-    propertyId?: number;
 }
 
 export interface IAgreementPDFReq {

@@ -4,19 +4,15 @@ import { Box, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
 import PDFEditor from "./Editor";
-import { IAgreementType } from "@/types/agreements";
-import { TLanguageType } from "@/types/translation";
 
 interface Props extends Omit<DialogProps, "onClose"> {
     onClose: VoidFunction;
-    variant: IAgreementType;
-    lang: TLanguageType;
 }
 
-const PDFEditorDialog: React.FC<Props> = ({ variant, lang, ...props }) => (
+const PDFEditorDialog: React.FC<Props> = (props) => (
     <Box position="relative">
         <Dialog {...props} fullScreen>
-            <PDFEditor variant={variant} lang={lang} />
+            <PDFEditor />
         </Dialog>
 
         {/* Close */}

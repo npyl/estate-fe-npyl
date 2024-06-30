@@ -2,9 +2,9 @@ import { useCallback, useEffect } from "react";
 import Search from "./Search";
 import { useLazyGetPropertyByIdQuery } from "@/services/properties";
 import { RHFDatePicker, RHFTextField } from "@/components/hook-form";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Grid } from "@mui/material";
+import { FormHelperText, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { StyledStack } from "./styled";
 
@@ -13,7 +13,7 @@ import { StyledStack } from "./styled";
 const RHFPropertySearch = () => {
     const { i18n } = useTranslation();
 
-    const { setValue } = useFormContext();
+    const { control, setValue } = useFormContext();
 
     const [getProperty] = useLazyGetPropertyByIdQuery();
 
@@ -28,14 +28,28 @@ const RHFPropertySearch = () => {
         [i18n.language]
     );
 
-    return <Search onSelectProperty={handlePropertySelect} />;
+    return (
+        <Controller
+            name="propertyId"
+            control={control}
+            render={({ fieldState: { error } }) => (
+                <>
+                    <Search onSelectProperty={handlePropertySelect} />
+
+                    {!!error ? (
+                        <FormHelperText error sx={{ px: 2 }}>
+                            {error.message}
+                        </FormHelperText>
+                    ) : null}
+                </>
+            )}
+        />
+    );
 };
 
 // ------------------------------------------------------------------------
 
 const PropertyFiller = () => {
-    console.log("FILLER");
-
     const { i18n } = useTranslation();
     const { setValue } = useFormContext();
 

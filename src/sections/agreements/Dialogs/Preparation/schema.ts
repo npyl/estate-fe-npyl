@@ -4,8 +4,11 @@ import dayjs from "dayjs";
 import { TLanguageType } from "@/types/translation";
 
 const Schema = yup.object<IAgreementReq>().shape({
-    id: yup.number().optional(),
-    propertyId: yup.number().optional(),
+    id: yup.number().moreThan(0).optional(),
+    propertyId: yup
+        .number()
+        .moreThan(0)
+        .required("Please make sure to select a property!"),
 
     variant: yup
         .string()
@@ -99,7 +102,7 @@ export const getValues = (agreement?: IAgreement) => {
 
     return {
         id,
-        propertyId,
+        propertyId: propertyId || -1,
         // ...
         variant: variant || "basic",
         lang: lang || "el",

@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
 import ButtonGroup from "./ButtonGroup";
 import useDialog from "@/hooks/useDialog";
-import { Suspense, lazy, useCallback, useMemo, useState } from "react";
+import { Suspense, lazy, useCallback, useMemo } from "react";
 import Schema, { getValues } from "./schema";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { TLanguageType } from "@/types/translation";
@@ -53,7 +53,6 @@ const PreparationDialog: React.FC<Props> = ({
     });
 
     const lang = (methods.watch("lang") as TLanguageType) || "el";
-    const pdfVariant = methods.watch("variant");
 
     const setLang = useCallback(
         (l: TLanguageType) => methods.setValue("lang", l),
@@ -107,14 +106,7 @@ const PreparationDialog: React.FC<Props> = ({
 
                 {isPDFOpen ? (
                     <Suspense>
-                        <PDFEditorDialog
-                            open
-                            // ...
-                            variant={pdfVariant}
-                            lang={lang}
-                            // ...
-                            onClose={closePDF}
-                        />
+                        <PDFEditorDialog open onClose={closePDF} />
                     </Suspense>
                 ) : null}
             </FormProvider>
