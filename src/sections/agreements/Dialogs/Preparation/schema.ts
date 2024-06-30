@@ -1,11 +1,12 @@
-import { IAgreement, IAgreementReq } from "@/types/agreements";
+import { IAgreement, IAgreementReq, IAgreementType } from "@/types/agreements";
 import * as yup from "yup";
-import { lazy } from "react";
 import dayjs from "dayjs";
-const PDFEditorDialog = lazy(() => import("../PDFEditor"));
 
 const Schema = yup.object<IAgreementReq>().shape({
-    variant: yup.string().oneOf(["basic", "purchase"]).required(),
+    variant: yup
+        .string()
+        .oneOf<IAgreementType>(["basic", "basic_exclusive", "purchase"])
+        .required(),
     draft: yup.boolean().required(),
     keys: yup.boolean().required(),
     title: yup.string().required(),
@@ -41,7 +42,7 @@ const Schema = yup.object<IAgreementReq>().shape({
         actingOnMyBehalfFiller: yup.string().required(),
     }),
     property: yup.object({
-        area: yup.number().required(),
+        region: yup.string().required(),
         address: yup.string().required(),
         addressNo: yup.string().required(),
         type: yup.string().required(),
@@ -51,12 +52,18 @@ const Schema = yup.object<IAgreementReq>().shape({
         price: yup.number().required(),
     }),
     commissionAndDuration: yup.object({
+        payment: yup.number().required(),
         flatRate: yup.number().required(),
         percentage: yup.number().required(),
         months: yup.number().required(),
         defects: yup.string().required(),
     }),
-    gdpr: yup.boolean().required(),
+    gdpr: yup
+        .object({
+            email: yup.string().email().optional(),
+            address: yup.string().optional(),
+        })
+        .optional(),
     additional: yup.object({
         date: yup.string().required(),
         commisionerSignature: yup.string().required(),
@@ -119,7 +126,7 @@ export const getValues = (agreement?: IAgreement) => {
             actingOnMyBehalfFiller: owner?.actingOnMyBehalfFiller || "",
         },
         property: {
-            area: property?.area || 0,
+            region: property?.region || "",
             address: property?.address || "",
             addressNo: property?.addressNo || "",
             type: property?.type || "",
@@ -129,12 +136,13 @@ export const getValues = (agreement?: IAgreement) => {
             price: property?.price || 0,
         },
         commissionAndDuration: {
+            payment: commissionAndDuration?.payment || 0,
             flatRate: commissionAndDuration?.flatRate || 0,
             percentage: commissionAndDuration?.percentage || 0,
             months: commissionAndDuration?.months || 0,
             defects: commissionAndDuration?.defects || "",
         },
-        gdpr: gdpr || false,
+        gdpr,
         additional: {
             date: additional?.date || "",
             commisionerSignature: additional?.commisionerSignature || "",

@@ -1,36 +1,35 @@
 import { useForm } from "./hook";
 import { useEffect, useRef, useState } from "react";
 import { Template } from "@pdfme/common";
+import { BasicSchema } from "./constants";
+import { IAgreementType } from "@/types/agreements";
+import { TLanguageType } from "@/types/translation";
 
 export const getSampleTemplate = (basePdf: any): Template => ({
-    schemas: [
-        {
-            name: {
-                type: "text",
-                position: {
-                    x: 25.06,
-                    y: 26.35,
-                },
-                width: 77.77,
-                height: 18.7,
-                fontSize: 36,
-                fontColor: "#14b351",
-            },
-        },
-    ],
+    schemas: BasicSchema,
     basePdf,
 });
 
-const PDFEditor = () => {
+interface Props {
+    variant: IAgreementType;
+    lang: TLanguageType;
+}
+
+const PDFEditor: React.FC<Props> = ({ variant, lang }) => {
     const [template, setTemplate] = useState<Template | null>(null);
 
     useEffect(() => {
         const loadPdf = async () => {
             try {
                 const res = await fetch("/api/pdf", {
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/pdf",
                     },
+                    body: JSON.stringify({
+                        variant,
+                        lang,
+                    }),
                 });
 
                 const basePdf = await res.text();

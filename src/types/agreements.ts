@@ -1,7 +1,9 @@
+export type IAgreementType = "basic" | "basic_exclusive" | "purchase";
+
 export interface IAgreement {
     id: number;
     // ...
-    variant: "basic" | "purchase";
+    variant: IAgreementType;
     draft: boolean;
     keys: boolean;
     title: string;
@@ -37,7 +39,7 @@ export interface IAgreement {
         actingOnMyBehalfFiller: string;
     };
     property: {
-        area: number;
+        region: string;
         address: string;
         addressNo: string;
         type: string;
@@ -47,12 +49,16 @@ export interface IAgreement {
         price: number;
     };
     commissionAndDuration: {
+        payment: number;
         flatRate: number;
         percentage: number;
         months: number;
         defects: string;
     };
-    gdpr: boolean;
+    gdpr?: {
+        email?: string;
+        address?: string;
+    };
     additional: {
         date: string;
         commisionerSignature: string;
@@ -64,8 +70,13 @@ export interface IAgreementReq extends Omit<IAgreement, "id"> {
     id?: number;
 }
 
+export interface IAgreementPDFReq {
+    variant: IAgreementType;
+    lang: "en" | "el";
+}
+
 export interface IAgreementsFilters {
-    type: "basic" | "purchase" | null;
+    type: IAgreementType | null;
     active: boolean;
     draft: boolean;
     keys: boolean;

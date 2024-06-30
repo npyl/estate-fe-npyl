@@ -11,8 +11,10 @@ import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
 import ButtonGroup from "./ButtonGroup";
 import useDialog from "@/hooks/useDialog";
-import { Suspense, lazy, useMemo } from "react";
+import { Suspense, lazy, useMemo, useState } from "react";
 import Schema, { getValues } from "./schema";
+import { LanguageButton } from "@/components/Language/LanguageButton";
+import { TLanguageType } from "@/types/translation";
 const PDFEditorDialog = lazy(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
@@ -43,6 +45,7 @@ const PreparationDialog: React.FC<Props> = ({
         values,
     });
 
+    const [lang, setLang] = useState<TLanguageType>("el");
     const pdfVariant = methods.watch("variant");
 
     const handleSubmit = () => {};
@@ -61,6 +64,11 @@ const PreparationDialog: React.FC<Props> = ({
                         <Stack spacing={1}>
                             <Stack direction="row" spacing={1}>
                                 <ButtonGroup />
+                                <LanguageButton
+                                    updatesGlobalLanguage={false}
+                                    language={lang}
+                                    onLanguageChange={setLang}
+                                />
                                 <Button onClick={openPDF}>Edit PDF</Button>
                             </Stack>
                             <PropertyDetails />
@@ -85,6 +93,7 @@ const PreparationDialog: React.FC<Props> = ({
                     <PDFEditorDialog
                         open
                         variant={pdfVariant}
+                        lang={lang}
                         onClose={closePDF}
                     />
                 </Suspense>

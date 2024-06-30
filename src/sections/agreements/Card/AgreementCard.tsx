@@ -1,16 +1,15 @@
-import { IAgreement } from "@/types/agreements";
+import { IAgreement, IAgreementType } from "@/types/agreements";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { getBorderColor2 } from "@/theme/borderColor";
 import Image from "next/image";
-import React, { Suspense, lazy } from "react";
+import React from "react";
 import { Label } from "@/components/Label";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import useDialog from "@/hooks/useDialog";
 
 // ------------------------------------------------------------
 
@@ -40,7 +39,7 @@ const Card = styled(Paper)(({ theme }) => ({
 }));
 
 interface CardImageProps {
-    variant: "basic" | "purchase";
+    variant: IAgreementType;
 }
 const CardImage: React.FC<CardImageProps> = ({ variant }) => (
     <Image
@@ -52,7 +51,7 @@ const CardImage: React.FC<CardImageProps> = ({ variant }) => (
 );
 
 interface CardLabelProps {
-    variant: "basic" | "purchase";
+    variant: IAgreementType;
 }
 
 const CardLabel: React.FC<CardLabelProps> = ({ variant }) => (

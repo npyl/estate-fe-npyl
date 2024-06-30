@@ -1,22 +1,22 @@
-import { NextResponse } from "next/server";
-import type { NextApiRequest, NextApiResponse } from "next/types";
-
-const rawUrl = "https://raw.githubusercontent.com/npyl/temp/main/buyer.pdf";
-
-type ResponseData = {
-    message: string;
-};
+import { IAgreementPDFReq, IAgreementType } from "@/types/agreements";
+import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-    runtime: "experimental-edge",
+    runtime: "edge",
 };
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<ResponseData>
-) {
+const rawUrl = "https://raw.githubusercontent.com/npyl/temp/main";
+
+const getPDFUrl = (type: IAgreementType, lang: "en" | "el") =>
+    `${rawUrl}/${type}_${lang}.pdf`;
+
+export default async function POST(req: NextRequest) {
     try {
-        const result = await fetch(rawUrl, {
+        const { variant, lang } = (await req.json()) as IAgreementPDFReq;
+
+        if (!variant) throw new Error("Bad variant!");
+
+        const result = await fetch(getPDFUrl(variant, lang), {
             method: "GET",
             headers: {
                 "Content-Type": "application/pdf",
