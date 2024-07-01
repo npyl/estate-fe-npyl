@@ -7,7 +7,8 @@ type Input = { [key: string]: any };
 export const useForm = (
     formRef: React.MutableRefObject<HTMLDivElement | null>,
     template: Template | null,
-    inputs?: Input[]
+    inputs: Input[] | undefined,
+    onChangeInput: (key: string, value: any) => void
 ) => {
     const form = useRef<Form | null>(null);
 
@@ -24,6 +25,10 @@ export const useForm = (
                     // plugins: { text, image, ...barcodes },
                     // options: { font },
                 });
+
+                form.current.onChangeInput(({ key, value }) =>
+                    onChangeInput(key, value)
+                );
             });
         } else if (form.current) {
             form.current?.updateTemplate(template);

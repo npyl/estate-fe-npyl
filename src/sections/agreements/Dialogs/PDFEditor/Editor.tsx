@@ -12,7 +12,7 @@ export const getSampleTemplate = (basePdf: any): Template => ({
 });
 
 const PDFEditor = () => {
-    const { watch } = useFormContext();
+    const { watch, setValue } = useFormContext();
 
     const [template, setTemplate] = useState<Template | null>(null);
 
@@ -47,7 +47,7 @@ const PDFEditor = () => {
 
     const formRef = useRef<HTMLDivElement>(null);
 
-    useForm(formRef, template, [flattenObject(all)]);
+    useForm(formRef, template, [flattenObject(all)], setValue);
 
     return <div ref={formRef} />;
 };
