@@ -1,20 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import fakeData from "../constants";
 
 export const config = {
     runtime: "edge",
 };
 
-const fake = {
-    variant: "purchase",
-    id: 2,
-    draft: true,
-    title: "Property x101 Purchase",
-    lang: "en",
-} as any;
-
 export default async function GET(req: NextRequest) {
     try {
-        return new NextResponse(JSON.stringify(fake), {
+        return new NextResponse(JSON.stringify(fakeData[0]), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });

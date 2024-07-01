@@ -1,21 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const data = [
-    {
-        variant: "basic",
-        id: 1,
-        draft: false,
-        title: "Property x100 Basic",
-        lang: "el",
-    } as any,
-    {
-        variant: "purchase",
-        id: 2,
-        draft: true,
-        title: "Property x101 Purchase",
-        lang: "en",
-    } as any,
-];
+import fakeData from "./constants";
 
 export const config = {
     runtime: "edge",
@@ -23,7 +7,7 @@ export const config = {
 
 export default async function POST(req: NextRequest) {
     try {
-        return new NextResponse(JSON.stringify(data), {
+        return new NextResponse(JSON.stringify(fakeData), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });
