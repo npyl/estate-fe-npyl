@@ -21,7 +21,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.email": {
             type: "text",
@@ -42,7 +41,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.maidenName": {
             type: "text",
@@ -63,7 +61,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.idCardNo": {
             type: "text",
@@ -84,7 +81,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.vat": {
             type: "text",
@@ -105,7 +101,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.city": {
             type: "text",
@@ -126,7 +121,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.street": {
             type: "text",
@@ -147,7 +141,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.number": {
             type: "text",
@@ -168,7 +161,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "owner.actingOnMyBehalfFiller": {
             type: "text",
@@ -189,7 +181,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.region": {
             type: "text",
@@ -210,7 +201,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.address": {
             type: "text",
@@ -231,7 +221,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.addressNo": {
             type: "text",
@@ -252,7 +241,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.type": {
             type: "text",
@@ -273,7 +261,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.floor": {
             type: "text",
@@ -294,7 +281,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.livingSpace": {
             type: "text",
@@ -315,7 +301,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.description": {
             type: "text",
@@ -336,7 +321,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "property.price": {
             type: "text",
@@ -357,7 +341,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "commissionAndDuration.payment": {
             type: "text",
@@ -378,7 +361,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "commissionAndDuration.flatRate": {
             type: "text",
@@ -399,7 +381,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "commissionAndDuration.defects": {
             type: "text",
@@ -420,7 +401,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "gdpr.email": {
             type: "text",
@@ -441,7 +421,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
         "gdpr.address": {
             type: "text",
@@ -462,7 +441,6 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
-            fontName: "Roboto",
         },
     },
 ];
