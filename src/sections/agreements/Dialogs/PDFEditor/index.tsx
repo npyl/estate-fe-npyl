@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import Dialog, { DialogProps } from "@mui/material/Dialog";
-import { Box, Fab, Typography } from "@mui/material";
+import { Box, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
 import PDFEditor from "./Editor";
@@ -16,7 +16,6 @@ const ErrorTooltips = () => {
         () => {
             const { errors } = formState;
 
-            const entries = Object.entries(errors || {});
             const inputs = document.querySelectorAll(".selectable");
 
             const res = Array.from(inputs).map((el) => {
@@ -25,20 +24,21 @@ const ErrorTooltips = () => {
                     ?.split(".") || ["", ""];
 
                 const rect = el.getBoundingClientRect();
-                const error =
-                    (entries[parent as any] as any)?.([child as any] as any)
-                        .message || "";
+
+                // @ts-ignore
+                const error = errors?.[parent]?.[child]?.message || "";
 
                 if (child in (errors?.[parent] || {}))
                     return (
                         <ErrorTooltip
+                            key={`${parent}.${child}`}
                             sx={{
                                 position: "fixed",
                                 left: `${rect.left + rect.width - 25}px`,
                                 top: `${rect.top + 10}px`,
                                 zIndex: 1500,
                             }}
-                            error={error}
+                            error={error || ""}
                         />
                     );
 
