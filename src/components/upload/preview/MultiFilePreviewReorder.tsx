@@ -29,11 +29,13 @@ const Item = ({ image, index, onClick }: ItemProps) => {
             }}
         >
             <LabeledImage
+                ratio="4/3"
                 borderRadius={0.3}
                 src={url}
                 hidden={hidden}
                 label={thumbnail ? "main" : ""}
                 onClick={onClick}
+                sx={{ objectfit: "cover" }}
             />
         </motion.div>
     ) : (
@@ -161,7 +163,7 @@ export default function MultiFilePreviewReorder({
 
     return (
         <TwoDimentionsDnd
-            gap={0.2}
+            gap={0.5}
             columns={columns}
             items={items}
             onDragEnd={handleDragEnd}
