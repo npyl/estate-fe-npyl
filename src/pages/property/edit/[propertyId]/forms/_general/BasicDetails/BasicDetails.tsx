@@ -167,6 +167,9 @@ const BasicSection: React.FC<any> = () => {
                                     "&:hover": {
                                         cursor: "pointer",
                                     },
+                                    fontSize: "large",
+                                    border: "1px solid blue",
+                                    borderRadius: "50%",
                                 }}
                                 onClick={handleOpen}
                             />
