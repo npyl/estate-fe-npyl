@@ -70,6 +70,16 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
     const region = i18n.language === "en" ? regionEN : regionGR;
     const city = i18n.language === "en" ? cityEN : cityGR;
 
+    const addressParts = [
+        region,
+        option?.location?.street
+            ? `${option?.location?.street} ${option?.location?.number || ""}`
+            : "",
+        city,
+    ];
+
+    const address = addressParts.filter((part) => part).join(", ");
+
     const stateColor = _state?.value ? getStatusColor(_state.value) : "#537f91";
 
     const code = useMemo(
@@ -233,8 +243,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             mt={-2.5}
                             color="text.secondary"
                         >
-                            {option?.location?.street}{" "}
-                            {option?.location?.number}, {city}
+                            {address}{" "}
                         </Typography>
                     ) : (
                         <Typography
@@ -243,8 +252,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             mr={1.5}
                             color="text.secondary"
                         >
-                            {region}, {option?.location?.street}{" "}
-                            {option?.location?.number}, {city}
+                            {address}{" "}
                         </Typography>
                     )}
                 </Stack>
