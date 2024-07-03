@@ -1,17 +1,14 @@
 import { Divider, Grid, Paper, PopperProps, Typography } from "@mui/material";
-// import SearchNotFound from "src/components/search-not-found/SearchNotFound";
 import { StyledPopper } from "../styles";
-import { ChangeEvent, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
-import { LocationSearchItem } from "./LocationSearchItem";
 import { ScrollBox } from "src/components/ScrollBox";
 import { useTranslation } from "react-i18next";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { useSearchCustomerQuery } from "@/services/customers";
-import { useSearchLocationsQuery } from "@/services/location";
 import { SearchCategory } from "./types";
 
 const PAGE_SIZE = 5;
@@ -66,7 +63,7 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
                 {...pagination}
                 isLoading={isLoading}
                 pageSize={PAGE_SIZE}
-                totalItems={data?.totalElements ?? 5}
+                totalItems={data?.totalElements ?? 0}
                 onChange={handlePageChange}
             >
                 {properties.map((option) => (
@@ -97,10 +94,9 @@ export const SearchList = ({
     const { t } = useTranslation();
 
     const ref = useRef<HTMLDivElement>(null);
-    const paginationRef = useRef<HTMLDivElement>(null);
 
     useClickOutside(ref, () => {
-        onClickOutside && onClickOutside(), [paginationRef];
+        onClickOutside && onClickOutside();
     });
 
     const { data: customersResults } = useSearchCustomerQuery(searchText, {
@@ -128,31 +124,65 @@ export const SearchList = ({
                 >
                     <ScrollBox scrollbarWidth="15px">
                         <Grid container>
-                            <PropertiesSubList searchString={searchText} />
+                            {searchCategory === "properties" && (
+                                <PropertiesSubList searchString={searchText} />
+                            )}
 
-                            {customers?.length > 0 ? (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sx={{
-                                        marginY: "10px",
-                                    }}
-                                >
-                                    <Typography
-                                        variant="h6"
-                                        textAlign={"center"}
+                            {searchCategory === "all" && (
+                                <>
+                                    <PropertiesSubList
+                                        searchString={searchText}
+                                    />
+                                    {customers.length > 0 && (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sx={{
+                                                marginY: "10px",
+                                            }}
+                                        >
+                                            <Typography
+                                                variant="h6"
+                                                textAlign={"center"}
+                                            >
+                                                {t("Customers")}
+                                            </Typography>
+                                            {customers.map((option, index) => (
+                                                <CustomerSearchItem
+                                                    key={index}
+                                                    option={option}
+                                                    searchText={searchText}
+                                                />
+                                            ))}
+                                        </Grid>
+                                    )}
+                                </>
+                            )}
+
+                            {searchCategory === "customers" &&
+                                customers.length > 0 && (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sx={{
+                                            marginY: "10px",
+                                        }}
                                     >
-                                        {t("Customers")}
-                                    </Typography>
-                                    {customers.map((option, index: number) => (
-                                        <CustomerSearchItem
-                                            key={index}
-                                            option={option}
-                                            searchText={searchText}
-                                        />
-                                    ))}
-                                </Grid>
-                            ) : null}
+                                        <Typography
+                                            variant="h6"
+                                            textAlign={"center"}
+                                        >
+                                            {t("Customers")}
+                                        </Typography>
+                                        {customers.map((option, index) => (
+                                            <CustomerSearchItem
+                                                key={index}
+                                                option={option}
+                                                searchText={searchText}
+                                            />
+                                        ))}
+                                    </Grid>
+                                )}
                         </Grid>
                     </ScrollBox>
                 </Paper>
