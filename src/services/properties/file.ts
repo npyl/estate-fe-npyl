@@ -97,6 +97,11 @@ interface UploadResponse {
 
 export const filesApiSlice = properties.injectEndpoints({
     endpoints: (builder) => ({
+        getPropertyImages: builder.query<IPropertyImage[], number>({
+            query: (propertyId) => `${propertyId}/images`,
+            providesTags: ["PropertyByIdImages"],
+        }),
+
         // images & files
         addPropertyImage: builder.mutation<
             IFileResponse,
@@ -601,6 +606,8 @@ export const filesApiSlice = properties.injectEndpoints({
 });
 
 export const {
+    useGetPropertyImagesQuery,
+
     useAddPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,

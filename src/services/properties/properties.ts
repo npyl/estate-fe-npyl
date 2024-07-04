@@ -7,19 +7,13 @@ import {
     IPropertyResultResponse,
 } from "src/types/properties";
 import IPage from "src/types/page";
-import {
-    IFileResponse,
-    IPropertyBlueprint,
-    IPropertyImage,
-    IPropertyDocument,
-} from "src/types/file";
+import { IPropertyBlueprint, IPropertyDocument } from "src/types/file";
 
 import { ILabel } from "src/types/label";
 import { ICustomer } from "src/types/customer";
 
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
-import { IGoogleEarthPOST } from "src/types/googleEarth";
 import { IListings } from "@/types/listings";
 
 interface JustData<T> {
@@ -44,10 +38,6 @@ interface ICreatePropertyParams {
 interface IEditPropertyProps {
     id: number;
     body: IPropertiesPOST;
-}
-interface IPropertyAddFileParams<T> {
-    id: number;
-    body: T;
 }
 
 interface IPropertyFilterParams {
@@ -145,10 +135,6 @@ export const properties = createApi({
         }),
 
         // Attributes
-        getPropertyImages: builder.query<IPropertyImage[], number>({
-            query: (propertyId) => `${propertyId}/images`,
-            providesTags: ["PropertyByIdImages"],
-        }),
         getPropertyLabels: builder.query<ILabel[], number>({
             query: (propertyId) => `${propertyId}/labels`,
             providesTags: ["PropertyByIdLabels"],

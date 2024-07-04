@@ -20,12 +20,12 @@ const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
     <form ref={ref} {...props} method="POST" />
 ));
 
-type Props = {
+export type DialogProps = {
     title?: ReactNode;
     content?: ReactNode;
     actions?: ReactNode;
     submit?: boolean; // support <form> mode
-    onClose: () => void;
+    onClose?: () => void;
 } & Omit<MuiDialogProps, "title" | "content">;
 
 const Dialog = ({
@@ -36,7 +36,7 @@ const Dialog = ({
     content,
     onClose,
     ...props
-}: Props) =>
+}: DialogProps) =>
     !open ? null : (
         <MuiDialog
             open={open}
@@ -49,9 +49,11 @@ const Dialog = ({
             {...props}
         >
             <DialogTitle>
-                <IconButton onClick={onClose}>
-                    <Iconify icon="line-md:close" />
-                </IconButton>
+                {onClose ? (
+                    <IconButton onClick={onClose}>
+                        <Iconify icon="line-md:close" />
+                    </IconButton>
+                ) : null}
                 <Stack alignItems="center" mt={1}>
                     {title}
                 </Stack>
