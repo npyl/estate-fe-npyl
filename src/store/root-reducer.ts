@@ -17,6 +17,7 @@ import { user } from "../services/user";
 import { translation } from "@/services/translate";
 import { publicDashboard } from "../services/publicDashboard";
 import { company } from "../services/company";
+import { solar, airQuality } from "@/services/googleapi";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as customerMiscReducer } from "../slices/customer/misc";
@@ -44,6 +45,8 @@ export const rootReducer = combineReducers({
     // Listings
     [publicListing.reducerPath]: publicListing.reducer,
     [spitogatosListing.reducerPath]: spitogatosListing.reducer,
+    [solar.reducerPath]: solar.reducer,
+    [airQuality.reducerPath]: airQuality.reducer,
 
     // property
     filters: filtersReducer,
