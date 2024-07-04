@@ -10,8 +10,9 @@ import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { LabeledImage } from "src/components/image";
 import PreviewImage from "src/components/image/PreviewImage";
 import { IPropertyImage } from "src/types/file";
-import { UploadPropertyImageProps } from "../types";
+import { UploadPropertyImageProps } from "@/components/upload/types";
 import { motion } from "framer-motion";
+import usePropertyImages from "../hook";
 
 interface ItemProps {
     image: IPropertyImage;
@@ -89,7 +90,6 @@ interface MultiFilePreviewReorder extends UploadPropertyImageProps {
 }
 
 export default function MultiFilePreviewReorder({
-    files,
     columns = 3,
     selectMultiple = false,
     compare = false,
@@ -98,11 +98,11 @@ export default function MultiFilePreviewReorder({
     onImageClick,
     onReorder,
 }: MultiFilePreviewReorder) {
-    if (!files || !files?.length) return null;
+    const { images } = usePropertyImages();
 
     const items = useMemo(
         () =>
-            files.map((f, index) => ({
+            images.map((f, index) => ({
                 id: index,
                 value: (
                     <SelectableItem
@@ -119,7 +119,7 @@ export default function MultiFilePreviewReorder({
                     />
                 ),
             })),
-        [files, selectMultiple, compare, compareImages, selectedImages]
+        [images, selectMultiple, compare, compareImages, selectedImages]
     );
 
     const handleDragEnd = useCallback(
@@ -146,7 +146,7 @@ export default function MultiFilePreviewReorder({
                 if (oneDimentionArrayDstIndex === items.length)
                     oneDimentionArrayDstIndex -= 1;
 
-                const updatedItems = [...files];
+                const updatedItems = [...images];
                 const [removed] = updatedItems.splice(
                     oneDimentionArraySrcIndex,
                     1
@@ -156,7 +156,7 @@ export default function MultiFilePreviewReorder({
                 onReorder && onReorder(updatedItems.map((i) => i.key));
             }
         },
-        [files, columns]
+        [images, columns]
     );
 
     return (

@@ -378,8 +378,9 @@ export const filesApiSlice = properties.injectEndpoints({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["PropertyByIdImages"],
         }),
+
         reorderPropertyImagesWithSetImageVisibility: builder.mutation<
             IFileResponse,
             ReorderImagesWithSetImageVisibilityProps
@@ -466,7 +467,7 @@ export const filesApiSlice = properties.injectEndpoints({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["PropertyByIdImages"],
         }),
 
         addPropertyBlueprint: builder.mutation<

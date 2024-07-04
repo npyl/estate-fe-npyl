@@ -7,11 +7,11 @@ import {
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { TwoDimentionsDndNoContext } from "src/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
 import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
-import { SelectableItem } from "src/components/upload/preview/MultiFilePreviewReorder";
+import { SelectableItem } from "./MultiFilePreviewReorder";
 import { IPropertyImage } from "src/types/file";
+import usePropertyImages from "../hook";
 
 interface SeeMorePreviewProps {
-    files: IPropertyImage[];
     selectMultiple: boolean;
     selectedImages: string[];
     compare: boolean;
@@ -28,7 +28,6 @@ interface SeeMorePreviewProps {
 const COLUMNS = 5;
 
 export const Over25ImagesPreview = ({
-    files,
     selectMultiple,
     selectedImages,
     compare,
@@ -37,6 +36,8 @@ export const Over25ImagesPreview = ({
     onReorder,
     onReorderWithVisibility,
 }: SeeMorePreviewProps) => {
+    const { images: files } = usePropertyImages();
+
     const createItem = useCallback(
         (image: IPropertyImage, index: number) => ({
             id: image.id,

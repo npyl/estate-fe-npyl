@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import Gallery from "./Gallery";
 import usePropertyImages from "./hook";
 import { PREVIEW_IMAGES_COUNT } from "./constants";
+import SeeMore from "./SeeMore";
 
 // ---------------------------------------------------------------
 
@@ -68,6 +69,10 @@ const ImagesSection = () => {
                 openImageKey={galleryImage}
                 onClose={closeGallery}
             />
+
+            {isSeeMoreOpen ? (
+                <SeeMore open={isSeeMoreOpen} onClose={closeSeeMore} />
+            ) : null}
         </>
     );
 };
