@@ -10,6 +10,8 @@ import Gallery from "./Gallery";
 import usePropertyImages from "./hook";
 import { PREVIEW_IMAGES_COUNT } from "./constants";
 
+// ---------------------------------------------------------------
+
 interface PlaceholderProps {
     imagesLength: number;
 }
@@ -27,6 +29,8 @@ const Placeholder = ({ imagesLength }: PlaceholderProps) =>
             } ...`}
         </Typography>
     ) : null;
+
+// ---------------------------------------------------------------
 
 const ImagesSection = () => {
     const { t } = useTranslation();
@@ -59,13 +63,11 @@ const ImagesSection = () => {
                 />
             </Panel>
 
-            {!!galleryImage ? (
-                <Gallery
-                    open={!!galleryImage}
-                    currentImageKey={galleryImage}
-                    onClose={closeGallery}
-                />
-            ) : null}
+            <Gallery
+                open={!!galleryImage}
+                openImageKey={galleryImage}
+                onClose={closeGallery}
+            />
         </>
     );
 };

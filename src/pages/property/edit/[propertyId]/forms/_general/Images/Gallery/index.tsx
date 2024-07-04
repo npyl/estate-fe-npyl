@@ -1,7 +1,7 @@
-import { Grid, Button, Stack, MenuItem, Skeleton } from "@mui/material";
+import { Grid, Button, Stack, Skeleton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "@/components/SoftButton";
-import { useCallback, useMemo } from "react";
+import { SyntheticEvent, useCallback, useMemo, useState } from "react";
 import {
     useDeletePropertyImageMutation,
     useEditPropertyImageMutation,
@@ -15,7 +15,15 @@ import usePropertyImages from "../hook";
 import { StyledDialog, DescriptionField } from "./styled";
 import { FormProvider, useForm } from "react-hook-form";
 import { DialogProps } from "@/components/Dialog";
-import { RHFTextField } from "@/components/hook-form";
+import { RHFRadioGroup, RHFTextField } from "@/components/hook-form";
+import { LoadingButton } from "@mui/lab";
+import { useTranslation } from "react-i18next";
+import { TranslationType } from "@/types/translation";
+
+const getVISIBILITY_OPTIONS = (t: TranslationType) => [
+    { label: t("Public"), value: false },
+    { label: t("Private"), value: true },
+];
 
 interface FormValues {
     title: string;
@@ -25,21 +33,27 @@ interface FormValues {
 }
 
 interface GalleryProps extends Omit<DialogProps, "onChange" | "onClose"> {
-    currentImageKey: string;
+    openImageKey: string;
     onClose: VoidFunction;
 }
 
 const Gallery: React.FC<GalleryProps> = ({
-    currentImageKey,
+    openImageKey,
     onClose,
     ...props
 }) => {
+    const { t } = useTranslation();
+    const VISIBILITY_OPTIONS = useMemo(() => getVISIBILITY_OPTIONS(t), [t]);
+
     const { images, propertyId, isLoading } = usePropertyImages();
 
     const [deleteImage, { isLoading: isDeleting }] =
         useDeletePropertyImageMutation();
     const [editImage, { isLoading: isUpdating }] =
         useEditPropertyImageMutation();
+
+    // NOTE: Gallery is supposed to be used with the Wrapper => no effect needed here
+    const [currentImageKey, setCurrentImageKey] = useState(openImageKey);
 
     const currentImage = useMemo(
         () => images.find(({ key }) => key === currentImageKey),
@@ -65,11 +79,19 @@ const Gallery: React.FC<GalleryProps> = ({
         [currentImageKey, images]
     );
 
-    const handleUpdate = useCallback(() => {}, []);
+    const handleUpdate = () => {
+        const { language, ...values } = methods.getValues();
 
-    const handleImageChange = (i: ICarouselImage) => {
-        // onChange(i.key!);
+        editImage({
+            id: propertyId,
+            body: {
+                key: currentImageKey,
+                ...values,
+            },
+        });
     };
+
+    const handleImageChange = (i: ICarouselImage) => setCurrentImageKey(i.key!);
 
     const handleDelete = () => {};
 
@@ -79,12 +101,12 @@ const Gallery: React.FC<GalleryProps> = ({
                 {...props}
                 // ...
                 submit
-                onSubmit={methods.handleSubmit(handleUpdate)}
                 // ...
                 closeAfterTransition={true}
                 title={
                     <>
-                        Gallery Manager
+                        {t("Gallery")}
+
                         <LanguageButton
                             updatesGlobalLanguage={false}
                             sx={{
@@ -135,20 +157,10 @@ const Gallery: React.FC<GalleryProps> = ({
                                         rows={5}
                                     />
 
-                                    {/* TODO: ... */}
-                                    <RHFTextField
-                                        fullWidth
-                                        select
-                                        label="Visibility"
+                                    <RHFRadioGroup
                                         name="hidden"
-                                    >
-                                        <MenuItem value="public">
-                                            Public
-                                        </MenuItem>
-                                        <MenuItem value="private">
-                                            Private
-                                        </MenuItem>
-                                    </RHFTextField>
+                                        options={VISIBILITY_OPTIONS}
+                                    />
                                 </>
                             )}
 
@@ -163,19 +175,19 @@ const Gallery: React.FC<GalleryProps> = ({
                                         variant="outlined"
                                         color="secondary"
                                         onClick={handleClear}
-                                        disabled={isLoading}
                                     >
-                                        Clear
+                                        {t("Clear")}
                                     </Button>
 
-                                    <Button
+                                    <LoadingButton
                                         variant="contained"
                                         color="secondary"
-                                        type="submit"
-                                        disabled={isLoading}
+                                        loading={isUpdating}
+                                        disabled={isUpdating}
+                                        onClick={handleUpdate}
                                     >
-                                        Update
-                                    </Button>
+                                        {t("Update")}
+                                    </LoadingButton>
                                 </Stack>
                             ) : null}
                         </Grid>
@@ -196,7 +208,7 @@ const Gallery: React.FC<GalleryProps> = ({
                             color="secondary"
                             onClick={onClose}
                         >
-                            Close
+                            {t("Close")}
                         </Button>
                     </>
                 }
@@ -205,4 +217,7 @@ const Gallery: React.FC<GalleryProps> = ({
     );
 };
 
-export default Gallery;
+const RemountWrapper: React.FC<GalleryProps> = (props) =>
+    !props.open ? null : <Gallery {...props} />;
+
+export default RemountWrapper;

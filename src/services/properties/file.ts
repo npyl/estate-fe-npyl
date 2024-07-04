@@ -138,6 +138,7 @@ export const filesApiSlice = properties.injectEndpoints({
             // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
+
         editPropertyImage: builder.mutation<
             IFileResponse,
             IPropertyAddFileParams<IPropertyImagePOST>
@@ -148,8 +149,9 @@ export const filesApiSlice = properties.injectEndpoints({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["PropertyByIdImages"],
         }),
+
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {
                 query: ({ propertyId, imageKey }) => ({
@@ -614,7 +616,6 @@ export const {
     useBulkEditPropertyImagesMutation,
     useBulkDeletePropertyImagesMutation,
     useDeletePropertyImageMutation,
-    useLazyGetPropertyImagesQuery,
     useLazyGetPropertyBlueprintsQuery,
     useReorderPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,

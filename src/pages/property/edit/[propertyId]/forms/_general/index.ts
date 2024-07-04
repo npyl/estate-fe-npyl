@@ -6,7 +6,7 @@ export { default as DescriptionEditor } from "./DescriptionEditor";
 export { default as Distances } from "./Location/Distances/Distances";
 export { default as Documents } from "./Documents";
 export { default as Features } from "./Features";
-export { default as Images } from "./Images2";
+export { default as Images } from "./Images";
 export { default as Notes } from "./Notes";
 export { default as Parking } from "./Parking";
 export { default as ROI } from "./ROI";
