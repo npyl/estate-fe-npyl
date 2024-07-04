@@ -160,6 +160,7 @@ export const filesApiSlice = properties.injectEndpoints({
                 }),
             }
         ),
+
         bulkEditPropertyImages: builder.mutation<
             void,
             BulkEditPropertyImagesParams
@@ -171,6 +172,7 @@ export const filesApiSlice = properties.injectEndpoints({
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
+
         bulkDeletePropertyImages: builder.mutation<
             number,
             BulkDeletePropertyImagesParams
@@ -240,6 +242,7 @@ export const filesApiSlice = properties.injectEndpoints({
             },
             invalidatesTags: ["Properties", "PropertyById"],
         }),
+
         deletePropertyImage: builder.mutation<number, IDeleteImageProps>({
             //
             //  Deletes a propertyImage by imageKey (updates thumbnail if necessary)
@@ -305,8 +308,9 @@ export const filesApiSlice = properties.injectEndpoints({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["PropertyByIdImages"],
         }),
+
         reorderPropertyImages: builder.mutation<
             number,
             IPropertyAddFileParams<string[]>

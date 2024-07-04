@@ -64,7 +64,7 @@ const ImagesSection = () => {
             </Panel>
 
             <Gallery
-                open={!!galleryImage}
+                open={!!galleryImage && images.length > 0}
                 openImageKey={galleryImage}
                 onClose={closeGallery}
             />

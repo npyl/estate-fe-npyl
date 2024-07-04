@@ -1,7 +1,7 @@
 import { Grid, Button, Stack, Skeleton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "@/components/SoftButton";
-import { SyntheticEvent, useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
     useDeletePropertyImageMutation,
     useEditPropertyImageMutation,
@@ -93,7 +93,31 @@ const Gallery: React.FC<GalleryProps> = ({
 
     const handleImageChange = (i: ICarouselImage) => setCurrentImageKey(i.key!);
 
-    const handleDelete = () => {};
+    const handleDelete = () => {
+        if (!currentImageKey) return;
+
+        const newThumbnailKey =
+            images[0]?.key === currentImageKey ? images[1]?.key : "";
+
+        // Prepare Next Image to avoid jumping
+        const index = images.findIndex((f) => f.key === currentImageKey);
+        if (index < 0) return;
+
+        // Normalize if we are hitting last index
+        const nextIndex =
+            index === images.length - 1 ? images.length - 2 : index + 1;
+        const nextImageKey = images.at(nextIndex)?.key || "";
+
+        if (!nextImageKey) return;
+
+        deleteImage({
+            propertyId: +propertyId!,
+            imageKey: currentImageKey,
+            newThumbnailKey,
+        })
+            .then(() => setCurrentImageKey(nextImageKey))
+            .catch((reason) => console.error("deleteImage: ", reason));
+    };
 
     return (
         <FormProvider {...methods}>
