@@ -164,6 +164,15 @@ export const SeeMore = ({
     const handleMakePublic = () => handleBulkChangeVisibility(false);
     const handleMakePrivate = () => handleBulkChangeVisibility(true);
 
+    const handleSelectAll = () => {
+        if (selectedImages.length === files.length) {
+            setSelectedImages([]); // Deselect all if all are selected
+        } else {
+            setSelectedImages(files.map((file) => file.key)); // Select all
+            setSelectMultiple(true); // Ensure selectMultiple is active
+        }
+    };
+
     return (
         <>
             <Dialog
@@ -203,20 +212,43 @@ export const SeeMore = ({
                         </Box>
 
                         <Box display="flex" alignItems="center" gap={1}>
+                            {!selectMultiple && (
+                                <SoftButton
+                                    onClick={handleSelectAll}
+                                    variant="outlined"
+                                    color={
+                                        selectedImages.length === files.length
+                                            ? "error"
+                                            : "primary"
+                                    }
+                                >
+                                    {selectedImages.length === files.length
+                                        ? "Deselect All"
+                                        : "Select All"}
+                                </SoftButton>
+                            )}
+                            <SoftButton
+                                onClick={toggleSelectMultiple}
+                                variant="outlined"
+                                color={selectMultiple ? "error" : "primary"}
+                            >
+                                {selectMultiple
+                                    ? "Cancel Select"
+                                    : "Select Multiple"}
+                            </SoftButton>
                             {selectMultiple && selectedImages.length > 0 && (
                                 <>
-                                    <Typography mr={1}>Make</Typography>
                                     <SoftButton
                                         startIcon={<LockOpen />}
                                         onClick={handleMakePublic}
                                     >
-                                        Public
+                                        Make Public
                                     </SoftButton>
                                     <SoftButton
                                         startIcon={<Lock />}
                                         onClick={handleMakePrivate}
                                     >
-                                        Private
+                                        Make Private
                                     </SoftButton>
                                     <SoftButton
                                         color="error"
@@ -231,15 +263,11 @@ export const SeeMore = ({
                                 <>
                                     <Divider orientation="vertical" />
                                     <SoftButton
-                                        onClick={toggleSelectMultiple}
+                                        onClick={toggleCompare}
                                         variant="outlined"
-                                        color={
-                                            selectMultiple ? "error" : "primary"
-                                        }
+                                        color={compare ? "error" : "primary"}
                                     >
-                                        {selectMultiple
-                                            ? "Cancel Select"
-                                            : "Select Multiple"}
+                                        {compare ? "Close" : "Compare Mode"}
                                     </SoftButton>
                                 </>
                             )}
@@ -250,18 +278,6 @@ export const SeeMore = ({
                                         onClick={handleCompareBtnClick}
                                     >
                                         Compare
-                                    </SoftButton>
-                                </>
-                            )}
-                            {selectMultiple === false && (
-                                <>
-                                    <Divider orientation="vertical" />
-                                    <SoftButton
-                                        onClick={toggleCompare}
-                                        variant="outlined"
-                                        color={compare ? "error" : "primary"}
-                                    >
-                                        {compare ? "Close" : "Compare Mode"}
                                     </SoftButton>
                                 </>
                             )}
