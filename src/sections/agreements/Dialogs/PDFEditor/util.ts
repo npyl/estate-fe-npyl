@@ -18,7 +18,7 @@ export function flattenObject(obj: NestedObject, parentKey = ""): NestedObject {
                 const nestedFlattened = flattenObject(value, nestedKey);
                 Object.assign(flattened, nestedFlattened);
             } else {
-                flattened[nestedKey] = value;
+                flattened[nestedKey] = `${value}`;
             }
         }
     }

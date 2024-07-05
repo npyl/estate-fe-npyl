@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import type { Template } from "@pdfme/common";
 import type { Form } from "@pdfme/ui";
 import { BasicSchema } from "./constants";
 import { useFormContext } from "react-hook-form";
 import { IAgreementReq } from "@/types/agreements";
 import { flattenObject } from "./util";
+import { Template } from "@pdfme/common";
 
 export const getSampleTemplate = (basePdf: any): Template => ({
     schemas: BasicSchema,

@@ -5,7 +5,7 @@ const BasicSchema = [
         "owner.fullname": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 38.1,
                 y: 60.85,
@@ -25,7 +25,7 @@ const BasicSchema = [
         "owner.email": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 141.41,
                 y: 60.24,
@@ -45,7 +45,7 @@ const BasicSchema = [
         "owner.maidenName": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 30.37,
                 y: 68.47,
@@ -65,7 +65,7 @@ const BasicSchema = [
         "owner.idCardNo": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 105.46,
                 y: 68.15,
@@ -85,7 +85,7 @@ const BasicSchema = [
         "owner.vat": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 16.5,
                 y: 76.56,
@@ -105,7 +105,7 @@ const BasicSchema = [
         "owner.city": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 69.09,
                 y: 76.24,
@@ -125,7 +125,7 @@ const BasicSchema = [
         "owner.street": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 108.19,
                 y: 76.19,
@@ -145,7 +145,7 @@ const BasicSchema = [
         "owner.number": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 189.9,
                 y: 76.39,
@@ -165,7 +165,7 @@ const BasicSchema = [
         "owner.actingOnMyBehalfFiller": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 65.75,
                 y: 83.75,
@@ -185,7 +185,7 @@ const BasicSchema = [
         "property.region": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 18.83,
                 y: 111.16,
@@ -205,7 +205,7 @@ const BasicSchema = [
         "property.address": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 67.46,
                 y: 111.11,
@@ -225,7 +225,7 @@ const BasicSchema = [
         "property.addressNo": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 190.69,
                 y: 110.73,
@@ -245,7 +245,7 @@ const BasicSchema = [
         "property.type": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 15.27,
                 y: 120.2,
@@ -265,7 +265,7 @@ const BasicSchema = [
         "property.floor": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 63.64,
                 y: 120.14,
@@ -285,7 +285,7 @@ const BasicSchema = [
         "property.livingSpace": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 93.75,
                 y: 120.09,
@@ -305,7 +305,7 @@ const BasicSchema = [
         "property.description": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 7.18,
                 y: 127.71,
@@ -325,7 +325,7 @@ const BasicSchema = [
         "property.price": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 36.65,
                 y: 138.14,
@@ -345,7 +345,7 @@ const BasicSchema = [
         "commissionAndDuration.payment": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 60.41,
                 y: 161.37,
@@ -365,7 +365,7 @@ const BasicSchema = [
         "commissionAndDuration.flatRate": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 171.27,
                 y: 158.71,
@@ -385,7 +385,7 @@ const BasicSchema = [
         "commissionAndDuration.defects": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 6.65,
                 y: 180.63,
@@ -405,7 +405,7 @@ const BasicSchema = [
         "gdpr.email": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 84.96,
                 y: 225.61,
@@ -425,7 +425,7 @@ const BasicSchema = [
         "gdpr.address": {
             type: "text",
             icon,
-            content: "\n",
+            defaultValue: "\n",
             position: {
                 x: 23.21,
                 y: 228.73,
