@@ -1,50 +1,82 @@
-import { useMemo } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
+import { createRoot, Root } from "react-dom/client";
 import ErrorTooltip from "./Tooltip";
+
+//
+//  INFO:
+//  pdfme's textfields are type 'text' "schemas"
+//  Every type 'text' schema is rendered as a <div> with className '.selectable' and with an attribute called 'title'
+//
+
+type InputName = string;
+
+const removeTooltip = (root: Root) => setTimeout(() => root.unmount(), 0);
 
 const ErrorTooltips = () => {
     const { formState } = useFormContext();
 
-    const TOOLTIPS = useMemo(
-        () => {
-            const { errors } = formState;
+    const rootRefs = useRef<Record<InputName, Root>>({});
 
-            const inputs = document.querySelectorAll(".selectable");
+    useLayoutEffect(() => {
+        const { errors } = formState;
 
-            const res = Array.from(inputs).map((el) => {
-                const [parent, child] = el
-                    .getAttribute("title") // format: ${parent}.${child}
-                    ?.split(".") || ["", ""];
+        const inputs = document.querySelectorAll(".selectable");
 
-                const rect = el.getBoundingClientRect();
+        inputs.forEach((el) => {
+            const title = el.getAttribute("title") || "";
+            if (!title) return;
+
+            // Get a react root for el
+            let currentRoot = rootRefs.current[title];
+
+            const [parent, child] = title.split(".");
+
+            if (child in (errors?.[parent] || {})) {
+                // if we don't already have it:
+                if (!currentRoot) {
+                    // create a container
+                    const container = document.createElement("div");
+                    container.className = "error-tooltip-container";
+
+                    // keep a record of it
+                    currentRoot = createRoot(container);
+                    rootRefs.current[title] = currentRoot;
+
+                    // append to DOM
+                    el.appendChild(container);
+                }
 
                 // @ts-ignore
                 const error = errors?.[parent]?.[child]?.message || "";
 
-                if (child in (errors?.[parent] || {}))
-                    return (
-                        <ErrorTooltip
-                            key={`${parent}.${child}`}
-                            sx={{
-                                position: "fixed",
-                                left: `${rect.left + rect.width - 25}px`,
-                                top: `${rect.top + 10}px`,
-                                zIndex: 1500,
-                            }}
-                            error={error || ""}
-                        />
-                    );
+                // render or re-render (in case of update)
+                currentRoot.render(<ErrorTooltip error={error} />);
+            } else {
+                // There are fields that start off without errors (a.k.a. pass yup validation)
+                // Prevent from unmounting/cleaning a non-existent node
+                if (!currentRoot) return;
 
-                return null;
-            });
+                // Unmount tooltip
+                removeTooltip(currentRoot);
 
-            return res;
-        },
-        // INFO: use formState (instead of formState.errors) as dependency as recommended in rhf docs (https://react-hook-form.com/docs/useform/formstate)
-        [formState]
-    );
+                // Remove record from refs
+                delete rootRefs.current[title];
 
-    return <>{TOOLTIPS}</>;
+                const container = el.querySelector(".error-tooltip-container");
+                if (container) el.removeChild(container);
+            }
+        });
+    }, [formState]);
+
+    useLayoutEffect(() => {
+        // Unmount all remaining tooltips
+        return () => {
+            Object.values(rootRefs.current).forEach(removeTooltip);
+        };
+    }, []);
+
+    return null;
 };
 
 export default ErrorTooltips;
