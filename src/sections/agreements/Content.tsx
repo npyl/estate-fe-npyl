@@ -1,10 +1,13 @@
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
-import Stack from "@mui/material/Stack";
 import AgreementCard from "./Card/AgreementCard";
 import AgreementCardSkeleton from "./Card/AgreementCardSkeleton";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useFilterAgreementsMutation } from "@/services/agreements";
+import Pagination, { usePagination } from "@/components/Pagination";
+import { Grid } from "@mui/material";
 const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
+
+const PAGE_SIZE = 5;
 
 interface Props {
     // Are we on a property/[propertyId] page or the agreements page?
@@ -25,9 +28,22 @@ const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
 
     const [deletableAgreement, setDeletableAgreement] = useState(-1);
 
+    const pagination = usePagination();
+
     return (
         <>
-            <Stack spacing={1}>
+            <Pagination
+                {...pagination}
+                isLoading={isLoading}
+                pageSize={PAGE_SIZE}
+                totalItems={data?.totalElements || PAGE_SIZE}
+                // ...
+                Container={Grid}
+                ContainerProps={{
+                    container: true,
+                    spacing: 1,
+                }}
+            >
                 {isLoading ? (
                     <>
                         <AgreementCardSkeleton />
@@ -36,15 +52,16 @@ const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
                     </>
                 ) : null}
 
-                {data?.map((a) => (
-                    <AgreementCard
-                        key={a.id}
-                        a={a}
-                        onEdit={onEditAgreement}
-                        onDelete={setDeletableAgreement}
-                    />
+                {data?.content?.map((a) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={a.id}>
+                        <AgreementCard
+                            a={a}
+                            onEdit={onEditAgreement}
+                            onDelete={setDeletableAgreement}
+                        />
+                    </Grid>
                 ))}
-            </Stack>
+            </Pagination>
 
             {deletableAgreement !== -1 ? (
                 <Suspense>

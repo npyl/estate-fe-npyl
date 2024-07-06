@@ -82,7 +82,7 @@ const Schema = yup.object<IAgreementReq>().shape({
 export const getValues = (agreement?: IAgreement) => {
     const {
         id,
-        propertyId,
+        assignedProperty,
         variant,
         lang,
         draft,
@@ -99,6 +99,8 @@ export const getValues = (agreement?: IAgreement) => {
         owner,
         property,
     } = agreement || {};
+
+    const { id: propertyId } = assignedProperty || {};
 
     return {
         id,

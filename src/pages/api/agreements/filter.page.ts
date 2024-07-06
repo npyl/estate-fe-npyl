@@ -5,9 +5,14 @@ export const config = {
     runtime: "edge",
 };
 
+const makePage = <T extends any[]>(data: T) => ({
+    content: data,
+    totalElements: data.length,
+});
+
 export default async function POST(req: NextRequest) {
     try {
-        return new NextResponse(JSON.stringify(fakeData), {
+        return new NextResponse(JSON.stringify(makePage(fakeData)), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });

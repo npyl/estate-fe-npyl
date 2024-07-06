@@ -4,7 +4,10 @@ export type IAgreementType = "basic" | "basic_exclusive" | "purchase";
 
 export interface IAgreement {
     id: number;
-    propertyId: number;
+    assignedProperty: {
+        id: number;
+        code: string;
+    };
     // ...
     variant: IAgreementType;
     lang: TLanguageType;
@@ -14,7 +17,7 @@ export interface IAgreement {
     startingDate: string;
     expirationDate: string;
     availableAfter: string;
-    // ...
+    // ... Form Data ...
     manager: {
         fullname: string;
         title: string;
@@ -70,8 +73,10 @@ export interface IAgreement {
     };
 }
 
-export interface IAgreementReq extends Omit<IAgreement, "id"> {
+export interface IAgreementReq
+    extends Omit<IAgreement, "id" | "assignedProperty"> {
     id?: number;
+    propertyId: number;
 }
 
 export interface IAgreementPDFReq {

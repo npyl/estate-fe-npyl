@@ -3,7 +3,7 @@ import { IAgreement } from "@/types/agreements";
 const data: IAgreement[] = [
     {
         id: 1,
-        propertyId: 101,
+        assignedProperty: { id: 101, code: "x100" },
         variant: "basic",
         lang: "en",
         draft: true,
@@ -63,7 +63,7 @@ const data: IAgreement[] = [
     },
     {
         id: 2,
-        propertyId: 202,
+        assignedProperty: { id: 202, code: "x222" },
         variant: "purchase",
         lang: "el",
         draft: false,

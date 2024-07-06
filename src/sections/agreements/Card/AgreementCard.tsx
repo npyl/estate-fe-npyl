@@ -7,9 +7,11 @@ import React from "react";
 import { Label } from "@/components/Label";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import NextLink from "next/link";
+import HomeIcon from "@mui/icons-material/Home";
 
 // ------------------------------------------------------------
 
@@ -19,7 +21,8 @@ const Card = styled(Paper)(({ theme }) => ({
     borderColor: getBorderColor2(theme),
     borderRadius: "15px",
     padding: theme.spacing(1),
-    boxShadow: "none",
+    boxShadow: theme.shadows[10],
+    height: "250px",
     // ...
     display: "flex",
     flexDirection: "row",
@@ -43,17 +46,20 @@ interface CardImageProps {
 }
 const CardImage: React.FC<CardImageProps> = ({ variant }) => (
     <Image
-        src={`/static/files/ic_file.svg`}
+        src="/static/files/ic_file.svg"
         alt={variant}
-        width={50}
-        height={50}
+        width={0}
+        height={0}
+        style={{
+            height: "100%",
+            width: "30%",
+        }}
     />
 );
 
 interface CardLabelProps {
     variant: IAgreementType;
 }
-
 const CardLabel: React.FC<CardLabelProps> = ({ variant }) => (
     <Label
         opaque
@@ -66,6 +72,26 @@ const DraftLabel = () => (
     <Label opaque color="warning" justifyContent="center" name="Draft" />
 );
 
+interface PropertyDetailsProps {
+    propertyId: number;
+    code: string;
+}
+const PropertyDetails: React.FC<PropertyDetailsProps> = ({
+    propertyId,
+    code,
+}) => (
+    <Stack direction="row" spacing={1} alignItems="center">
+        <HomeIcon color="action" />
+        <IconButton
+            component={NextLink}
+            size="small"
+            href={`/property/${propertyId}`}
+        >
+            {code}
+        </IconButton>
+    </Stack>
+);
+
 // ------------------------------------------------------------
 
 interface Props {
@@ -76,22 +102,45 @@ interface Props {
 
 const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
     <Card>
-        <Stack direction="row" spacing={1} alignItems="center">
-            <CardImage variant={a.variant} />
-            <Typography variant="body2">{a.title}</Typography>
-            <Stack direction="row" spacing={1}>
+        <CardImage variant={a.variant} />
+
+        <Stack spacing={1} height={1}>
+            <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="flex-end"
+            >
                 <CardLabel variant={a.variant} />
                 {a.draft ? <DraftLabel /> : null}
             </Stack>
-        </Stack>
 
-        <Stack spacing={1} direction="row" className="AgreementCardButtons">
-            <IconButton onClick={() => onEdit(a.id)}>
-                <EditIcon />
-            </IconButton>
-            <IconButton onClick={() => onDelete(a.id)}>
-                <DeleteIcon />
-            </IconButton>
+            <Stack spacing={1} px={1}>
+                <Typography variant="h6" py={0.5}>
+                    {a.title}
+                </Typography>
+
+                <PropertyDetails
+                    propertyId={a.assignedProperty.id}
+                    code={a.assignedProperty.code}
+                />
+            </Stack>
+
+            <Box flexGrow={1} />
+
+            <Stack
+                spacing={1}
+                direction="row"
+                justifyContent="flex-end"
+                className="AgreementCardButtons"
+            >
+                <IconButton onClick={() => onEdit(a.id)}>
+                    <EditIcon />
+                </IconButton>
+                <IconButton color="error" onClick={() => onDelete(a.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            </Stack>
         </Stack>
     </Card>
 );

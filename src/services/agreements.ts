@@ -1,4 +1,5 @@
 import { IAgreement, IAgreementsFilters } from "@/types/agreements";
+import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // ${process.env.NEXT_PUBLIC_API_URL}
@@ -20,7 +21,10 @@ export const agreements = createApi({
     tagTypes: ["Agreements", "AgreementById"],
 
     endpoints: (builder) => ({
-        filterAgreements: builder.mutation<IAgreement[], IAgreementsFilters>({
+        filterAgreements: builder.mutation<
+            IPage<IAgreement>,
+            IAgreementsFilters
+        >({
             query: (body) => ({
                 url: "/filter",
                 method: "POST",
