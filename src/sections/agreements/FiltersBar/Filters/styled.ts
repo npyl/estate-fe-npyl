@@ -1,12 +1,30 @@
 import { styled } from "@mui/material/styles";
-import { FilterButton } from "@/components/Filters";
+import { FilterBox as DefaultFilterBox } from "@/components/Filters/styled";
+import { ToggleButtonGroup } from "@mui/material";
 
-const FilterToggleButton = styled(FilterButton)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "row",
+export const FilterBox = styled(DefaultFilterBox)(({ theme }) => ({
+    alignItems: "center",
     justifyContent: "space-between",
-    padding: theme.spacing(1.5),
-    gap: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    gap: theme.spacing(1),
 }));
 
-export default FilterToggleButton;
+export const FilterButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+    "& .MuiToggleButton-root": {
+        borderTop: 0,
+        borderBottom: 0,
+    },
+
+    "&>*:first-of-type": {
+        borderLeft: 0,
+        borderTopLeftRadius: "7px",
+        borderBottomLeftRadius: "7px",
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+    "&>*:last-of-type": {
+        borderRight: 0,
+        borderTopRightRadius: "7px",
+        borderBottomRightRadius: "7px",
+    },
+}));

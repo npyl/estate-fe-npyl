@@ -1,19 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { IOSSwitch } from "@/components/iOSSwitch";
-import FilterToggleButton from "./styled";
-import { useAgreementsFiltersContext } from "../FiltersContext";
+import FilterToggle from "./FilterToggle";
 
-export default function FilterKeys() {
+const key = "keys";
+
+export default function FilterActive() {
     const { t } = useTranslation();
-    const { filters, setFilter } = useAgreementsFiltersContext();
-
-    return (
-        <FilterToggleButton sx={{ minWidth: "130px" }}>
-            {t("Keys")}
-            <IOSSwitch
-                checked={!!filters.keys}
-                onChange={(_, b) => setFilter("keys", b)}
-            />
-        </FilterToggleButton>
-    );
+    return <FilterToggle label={t("Keys")} filterKey={key} />;
 }

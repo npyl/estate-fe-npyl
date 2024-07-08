@@ -7,16 +7,18 @@ import {
     DialogContent,
     DialogContentProps,
     InputLabel,
+    Theme,
+    Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-interface FilterButtonProps extends ButtonProps {
+const getFilterButtonSx = ({
+    theme,
+    open,
+}: {
+    theme: Theme;
     open?: boolean;
-}
-
-export const FilterButton = styled(Button, {
-    shouldForwardProp: (prop) => prop !== "open",
-})<FilterButtonProps>(({ theme, open }) => ({
+}) => ({
     backgroundColor: theme.palette.background.paper,
     fontWeight: 400,
     color:
@@ -39,6 +41,20 @@ export const FilterButton = styled(Button, {
                 : theme.palette.divider[200],
         backgroundColor: "transparent",
     },
+});
+
+interface FilterButtonProps extends ButtonProps {
+    open?: boolean;
+}
+
+export const FilterButton = styled(Button, {
+    shouldForwardProp: (prop) => prop !== "open",
+})<FilterButtonProps>(getFilterButtonSx);
+
+export const FilterBox = styled(Stack)<FilterButtonProps>((props) => ({
+    ...getFilterButtonSx(props),
+    flexDirection: "row",
+    borderRadius: "7px",
 }));
 
 export const StyledBox = styled(Box)(({ theme }) => ({

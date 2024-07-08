@@ -4,6 +4,8 @@ import Stack, { StackProps } from "@mui/material/Stack";
 import { useAgreementsFiltersContext } from "./FiltersContext";
 import React from "react";
 
+const getValue = (v: any) => (typeof v === "boolean" ? (v ? "yes" : "no") : v);
+
 const ChosenFilters: React.FC<StackProps> = (props) => {
     const { changedFields, clearFilter } = useAgreementsFiltersContext();
 
@@ -15,11 +17,7 @@ const ChosenFilters: React.FC<StackProps> = (props) => {
                 <Chip
                     key={key}
                     label={
-                        <Typography>
-                            {typeof value === "boolean"
-                                ? key
-                                : `${key}: ${value}`}
-                        </Typography>
+                        <Typography>{`${key}: ${getValue(value)}`}</Typography>
                     }
                     onDelete={() => clearFilter(key)}
                 />

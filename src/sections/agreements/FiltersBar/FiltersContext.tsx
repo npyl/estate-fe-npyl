@@ -30,10 +30,10 @@ export const useAgreementsFiltersContext = () => {
 
 const INITIAL_FILTER_STATE: IAgreementsFilters = {
     type: null,
-    active: false,
-    draft: false,
-    keys: false,
-    signed: false,
+    active: null,
+    draft: null,
+    keys: null,
+    signed: null,
     expirationDate: "",
 };
 

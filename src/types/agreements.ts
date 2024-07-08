@@ -86,10 +86,10 @@ export interface IAgreementPDFReq {
 
 export interface IAgreementsFilters {
     type: IAgreementType | null;
-    active: boolean;
-    draft: boolean;
-    keys: boolean;
-    signed: boolean;
+    active: boolean | null;
+    draft: boolean | null;
+    keys: boolean | null;
+    signed: boolean | null;
     expirationDate: string;
 
     [key: string]: any;
