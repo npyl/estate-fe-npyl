@@ -38,7 +38,13 @@ const AgreementsFiltersBar: React.FC<Props> = ({ onClickNew }) => {
                     <FilterDraft />
                 </Stack>
 
-                <FilterButton endIcon={<AddIcon />} onClick={onClickNew}>
+                <FilterButton
+                    sx={{
+                        mt: 1,
+                    }}
+                    endIcon={<AddIcon />}
+                    onClick={onClickNew}
+                >
                     {t("New")}
                 </FilterButton>
             </SpaceBetween>
