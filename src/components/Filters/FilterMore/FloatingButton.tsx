@@ -16,16 +16,13 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     const { t } = useTranslation();
     return (
         <Box
+            position="fixed"
+            bottom={30}
+            zIndex={2}
+            left="50%"
             sx={{
-                borderRadius: "24px",
-                position: "fixed",
-                bottom: "2%",
+                transform: "translateX(-50%)",
                 zIndex: 2,
-                left: 0,
-                right: 0,
-                margin: "auto",
-                width: "90px",
-                marginBottom: 2,
             }}
         >
             <Badge variant="dot" badgeContent={badgeContent} color="error">

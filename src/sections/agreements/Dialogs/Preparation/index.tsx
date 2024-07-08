@@ -11,12 +11,13 @@ import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
 import ButtonGroup from "./ButtonGroup";
 import useDialog from "@/hooks/useDialog";
-import { Suspense, lazy, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Schema, { getValues } from "./schema";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { TLanguageType } from "@/types/translation";
 import { useGetAgreementByIdQuery } from "@/services/agreements";
-const PDFEditorDialog = lazy(() => import("../PDFEditor"));
+import dynamic from "next/dynamic";
+const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
 
@@ -104,11 +105,7 @@ const PreparationDialog: React.FC<Props> = ({
                     }
                 />
 
-                {isPDFOpen ? (
-                    <Suspense>
-                        <PDFEditorDialog open onClose={closePDF} />
-                    </Suspense>
-                ) : null}
+                {isPDFOpen ? <PDFEditorDialog open onClose={closePDF} /> : null}
             </FormProvider>
         </>
     );

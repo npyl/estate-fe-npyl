@@ -2,8 +2,9 @@ import FiltersBar from "./FiltersBar";
 import { AgreementsFiltersProvider } from "./FiltersBar/FiltersContext";
 import Stack from "@mui/material/Stack";
 import CardsContent from "./Content";
-import { Suspense, lazy, useState } from "react";
-const PreparationDialog = lazy(() => import("./Dialogs/Preparation"));
+import { useState } from "react";
+import dynamic from "next/dynamic";
+const PreparationDialog = dynamic(() => import("./Dialogs/Preparation"));
 
 interface Props {
     // Are we on a property/[propertyId] page or the agreements page?
@@ -32,13 +33,11 @@ const AgreementsSection: React.FC<Props> = ({ propertyId }) => {
             </AgreementsFiltersProvider>
 
             {dialogMode !== -1 ? (
-                <Suspense>
-                    <PreparationDialog
-                        open
-                        editedAgreementId={dialogMode}
-                        onClose={closeDialog}
-                    />
-                </Suspense>
+                <PreparationDialog
+                    open
+                    editedAgreementId={dialogMode}
+                    onClose={closeDialog}
+                />
             ) : null}
         </>
     );
