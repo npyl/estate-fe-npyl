@@ -1,4 +1,5 @@
 import {
+    AddOutlined,
     CircleNotifications,
     ConfirmationNumber,
     LabelImportant,
@@ -29,6 +30,8 @@ import { useRouter } from "next/router";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import useResponsive from "@/hooks/useResponsive";
+import CircleUnReadNotifications from "@/pages/notification/components/CircleUnReadNotifications";
+import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -49,7 +52,10 @@ interface Section {
     items: Item[];
 }
 
-const getSections = (t: TFunction): Section[] => [
+const getSections = (
+    t: TFunction,
+    nonViewedNotificationsCount: number
+): Section[] => [
     {
         title: t("main"),
         items: [
@@ -86,7 +92,14 @@ const getSections = (t: TFunction): Section[] => [
             {
                 title: t("Notifications"),
                 path: "/notification",
-                icon: <CircleNotifications fontSize="small" />,
+                icon: (
+                    <Box display="flex" justifyContent="space-between">
+                        <CircleNotifications fontSize="small" />
+                        <CircleUnReadNotifications>
+                            {nonViewedNotificationsCount}
+                        </CircleUnReadNotifications>
+                    </Box>
+                ),
             },
 
             {
@@ -122,10 +135,14 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"), {
         noSsr: true,
     });
+
     const isAdmin = useProfileQuery().data?.isAdmin ?? false;
 
+    const { data: nonViewedNotificationsCount } =
+        useGetNonViewedNotificationsCountQuery();
+
     const sections = useMemo(() => {
-        const sectionsData = getSections(t);
+        const sectionsData = getSections(t, nonViewedNotificationsCount ?? 0);
 
         // Check if the user is not an admin (isAdmin is false)
         if (!isAdmin) {
@@ -138,7 +155,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
         // If the user is an admin, return all sections without filtering
         return sectionsData;
-    }, [t, isAdmin]);
+    }, [t, isAdmin, nonViewedNotificationsCount]);
 
     const organizationsRef = useRef<HTMLButtonElement | null>(null);
     const [openOrganizationsPopover, setOpenOrganizationsPopover] =
@@ -171,7 +188,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             <Scrollbar
                 sx={{
                     height: "100%",
-                    "& .simplebar-content": {
+                    "&.simplebar-content": {
                         height: "100%",
                     },
                 }}

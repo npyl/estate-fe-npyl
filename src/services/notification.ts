@@ -32,12 +32,21 @@ export const notification = createApi({
 
             providesTags: ["Notifications"],
         }),
+        getNonViewedNotificationsCount: builder.query<number, void>({
+            query: () => ({
+                url: "non-viewed/count",
+            }),
+
+            providesTags: ["Notifications"],
+        }),
+
         getNotificationById: builder.query<ContactNotificationExtended, number>(
             {
                 query: (id) => `${id}`,
                 providesTags: ["NotificationById"],
             }
         ),
+
         deleteNotification: builder.mutation<
             ContactNotificationExtended,
             number
@@ -54,5 +63,6 @@ export const notification = createApi({
 export const {
     useGetNotificationsQuery,
     useGetNotificationByIdQuery,
+    useGetNonViewedNotificationsCountQuery,
     useDeleteNotificationMutation,
 } = notification;
