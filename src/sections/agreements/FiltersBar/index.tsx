@@ -24,7 +24,12 @@ const AgreementsFiltersBar: React.FC<Props> = ({ onClickNew }) => {
     return (
         <FiltersBar>
             <SpaceBetween>
-                <Stack direction="row" spacing={0.3} overflow="auto hidden">
+                <Stack
+                    direction="row"
+                    spacing={0.3}
+                    pt={1}
+                    overflow="auto hidden"
+                >
                     <FilterType />
                     <FilterExpirationDate />
                     <FilterActive />
