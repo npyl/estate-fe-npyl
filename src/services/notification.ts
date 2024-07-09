@@ -1,3 +1,4 @@
+import { NotViewedContactNotifications } from "@/types/notification/notification";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ContactNotification,
@@ -32,7 +33,10 @@ export const notification = createApi({
 
             providesTags: ["Notifications"],
         }),
-        getNonViewedNotificationsCount: builder.query<number, void>({
+        getNonViewedNotificationsCount: builder.query<
+            NotViewedContactNotifications,
+            void
+        >({
             query: () => ({
                 url: "non-viewed/count",
             }),

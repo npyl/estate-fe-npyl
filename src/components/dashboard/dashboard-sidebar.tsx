@@ -95,6 +95,7 @@ const getSections = (
                 icon: (
                     <Box display="flex" justifyContent="space-between">
                         <CircleNotifications fontSize="small" />
+
                         <CircleUnReadNotifications>
                             {nonViewedNotificationsCount}
                         </CircleUnReadNotifications>
@@ -141,8 +142,13 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();
 
+    console.log(nonViewedNotificationsCount);
+
     const sections = useMemo(() => {
-        const sectionsData = getSections(t, nonViewedNotificationsCount ?? 0);
+        const sectionsData = getSections(
+            t,
+            nonViewedNotificationsCount?.total ?? 0
+        );
 
         // Check if the user is not an admin (isAdmin is false)
         if (!isAdmin) {
