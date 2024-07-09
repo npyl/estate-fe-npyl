@@ -23,9 +23,16 @@ interface TableProps {
     rows: ContactNotification[];
     onRemove: (index?: number) => void;
     loading: boolean;
+    onViewNotification: (notification: ContactNotification) => void;
 }
 
-const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
+const Table = ({
+    variant,
+    rows,
+    onRemove,
+    loading,
+    onViewNotification,
+}: TableProps) => {
     const { t } = useTranslation();
 
     const COLUMNS: string[] = useMemo(
@@ -91,12 +98,20 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
                 </TableHead>
                 <TableBody>
                     {rows.map((row, i) => (
-                        <RowComponent
+                        <TableRow
                             key={i}
-                            row={row}
-                            onRemove={() => onRemove(row.id)}
-                            loading={loading}
-                        />
+                            onClick={() => {
+                                console.log(`Viewed: ${row.viewed}`);
+                                onViewNotification(row);
+                            }}
+                        >
+                            <RowComponent
+                                key={i}
+                                row={row}
+                                onRemove={() => onRemove(row.id)}
+                                loading={loading}
+                            />
+                        </TableRow>
                     ))}
                 </TableBody>
             </MuiTable>

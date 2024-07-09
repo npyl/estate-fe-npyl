@@ -51,6 +51,18 @@ export const notification = createApi({
             }
         ),
 
+        toggleNotificationViewedStatus: builder.mutation<
+            void,
+            { id: number; viewed: boolean }
+        >({
+            query: ({ id, viewed }) => ({
+                url: `${id}/toggle-viewed`,
+                method: "PATCH",
+                body: { viewed },
+            }),
+            invalidatesTags: ["Notifications"],
+        }),
+
         deleteNotification: builder.mutation<
             ContactNotificationExtended,
             number
@@ -68,5 +80,6 @@ export const {
     useGetNotificationsQuery,
     useGetNotificationByIdQuery,
     useGetNonViewedNotificationsCountQuery,
+    useToggleNotificationViewedStatusMutation,
     useDeleteNotificationMutation,
 } = notification;

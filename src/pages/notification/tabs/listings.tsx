@@ -3,6 +3,7 @@ import {
     useGetNotificationsQuery,
 } from "src/services/notification";
 import Table from "../table";
+import { ContactNotification } from "@/types/notification";
 
 const Listings = () => {
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
@@ -17,15 +18,30 @@ const Listings = () => {
     const handleRemove = (index = -1) => {
         deleteNotification(index);
     };
-    console.log(listings);
+
+    const handleViewNotification = async (
+        notification: ContactNotification
+    ) => {
+        if (!notification.viewed) {
+            await toggleNotificationViewedStatus({
+                id: notification.id || 0,
+                viewed: true,
+            });
+        }
+    };
+
     return (
         <Table
             variant="listing"
             rows={listings || []}
             onRemove={handleRemove}
             loading={isLoading}
+            onViewNotification={handleViewNotification}
         />
     );
 };
 
 export default Listings;
+function toggleNotificationViewedStatus(arg0: { id: number; viewed: boolean }) {
+    throw new Error("Function not implemented.");
+}
