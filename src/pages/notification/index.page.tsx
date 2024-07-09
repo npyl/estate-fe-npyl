@@ -6,16 +6,11 @@ import TabPanel from "src/components/Tabs";
 import { AdminGuard } from "src/components/authentication/admin-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { Listings, Tours, WorkApplications, Reviews } from "./tabs";
-import {
-    useGetNonViewedNotificationsCountQuery,
-    useToggleNotificationViewedStatusMutation,
-} from "@/services/notification";
+import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import UnReadBadge from "./components/UnReadBadge";
 
 const NotificationPage: NextPage = () => {
     const { t } = useTranslation();
-    // const [toggleNotificationViewedStatus] =
-    //     useToggleNotificationViewedStatusMutation();
 
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();
@@ -24,15 +19,6 @@ const NotificationPage: NextPage = () => {
     const getUnreadCount = (type: string) => {
         return nonViewedNotificationsCount?.types[type] || 0;
     };
-
-    // const handleNotificationOpen = async (notification: any) => {
-    //     if (!notification.viewed) {
-    //         await toggleNotificationViewedStatus({
-    //             id: notification.id,
-    //             viewed: true,
-    //         });
-    //     }
-    // };
 
     return (
         <>

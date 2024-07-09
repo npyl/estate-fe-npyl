@@ -42,7 +42,7 @@ function TourRow({ row, onRemove, loading }: TourRowProps) {
                     style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
                     colSpan={7}
                 >
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open} timeout="auto">
                         <Box sx={{ margin: 1 }}>
                             <Table
                                 size="small"

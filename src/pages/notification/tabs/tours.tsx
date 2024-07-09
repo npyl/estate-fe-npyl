@@ -5,6 +5,7 @@ import {
 } from "src/services/notification";
 import Table from "../table";
 import { ContactNotification } from "@/types/notification";
+import { Box } from "@mui/material";
 
 const Tours = () => {
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
@@ -39,13 +40,16 @@ const Tours = () => {
     };
 
     return (
-        <Table
-            variant="contact"
-            rows={tours || []}
-            onRemove={handleRemove}
-            loading={isLoading}
-            onViewNotification={handleViewNotification}
-        />
+        <Box sx={{ width: "100%", overflowX: "auto" }}>
+            {" "}
+            <Table
+                variant="contact"
+                rows={tours || []}
+                onRemove={handleRemove}
+                loading={isLoading}
+                onViewNotification={handleViewNotification}
+            />
+        </Box>
     );
 };
 

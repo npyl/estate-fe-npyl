@@ -1,12 +1,15 @@
 import {
     useDeleteNotificationMutation,
     useGetNotificationsQuery,
+    useToggleNotificationViewedStatusMutation,
 } from "src/services/notification";
 import Table from "../table";
 import { ContactNotification } from "@/types/notification";
 
 const Listings = () => {
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
+    const [toggleNotificationViewedStatus] =
+        useToggleNotificationViewedStatusMutation();
     const { data: listings } = useGetNotificationsQuery(undefined, {
         selectFromResult: ({ data }) => ({
             data:
@@ -42,6 +45,3 @@ const Listings = () => {
 };
 
 export default Listings;
-function toggleNotificationViewedStatus(arg0: { id: number; viewed: boolean }) {
-    throw new Error("Function not implemented.");
-}

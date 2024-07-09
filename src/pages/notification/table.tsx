@@ -61,14 +61,17 @@ const Table = ({
             component={Paper}
             sx={{
                 mt: 1,
+                width: "100%",
+                overflowX: "auto",
             }}
         >
             <MuiTable
                 aria-label="collapsible table"
                 sx={{
+                    width: "100%",
                     "& th, & td": {
                         fontSize: isMobile ? "0.8rem" : "1rem",
-                        padding: isMobile ? "6px 24px" : "16px 48px", // Increase padding for larger column spaces
+                        padding: isMobile ? "6px 12px" : "12px 44px",
                     },
                 }}
             >
@@ -92,8 +95,6 @@ const Table = ({
                         {variant === "contact" || variant === "tour" ? (
                             <TableCell align="right"> {t("Type")}</TableCell>
                         ) : null}
-                        <TableCell />
-                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -101,7 +102,6 @@ const Table = ({
                         <TableRow
                             key={i}
                             onClick={() => {
-                                console.log(`Viewed: ${row.viewed}`);
                                 onViewNotification(row);
                             }}
                         >
