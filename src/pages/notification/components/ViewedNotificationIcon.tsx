@@ -15,7 +15,7 @@ const ViewedNotificationIcon = () => (
                 cy="16"
                 r="16"
                 gradientUnits="userSpaceOnUse"
-                id="color-1_JvrEHvnKnYQs_gr1"
+                id="color-1_viewed"
             >
                 <stop offset="0" stopColor="#c5cce3"></stop>
                 <stop offset="0.302" stopColor="#d7d9f4"></stop>
@@ -28,7 +28,7 @@ const ViewedNotificationIcon = () => (
             </radialGradient>
         </defs>
         <g
-            fill="url(#color-1_JvrEHvnKnYQs_gr1)"
+            fill="url(#color-1_viewed)"
             fillRule="nonzero"
             stroke="none"
             strokeWidth="1"

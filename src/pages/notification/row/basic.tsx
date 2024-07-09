@@ -28,7 +28,7 @@ const BasicRow = ({
     onRemove,
     loading,
 }: BasicRowProps) => {
-    console.log("Row viewed:", row.id, row.viewed); // Log the row.viewed value
+    console.log("Row :", row.id); // Log the row.viewed value
 
     return (
         <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -45,6 +45,7 @@ const BasicRow = ({
                             <KeyboardArrowDownIcon />
                         )}
                     </IconButton>
+
                     {row.viewed ? (
                         <ViewedNotificationIcon key={`viewed-${row.id}`} />
                     ) : (
@@ -52,6 +53,7 @@ const BasicRow = ({
                     )}
                 </Box>
             </TableCell>
+
             <TableCell
                 sx={{
                     textOverflow: "ellipsis",
