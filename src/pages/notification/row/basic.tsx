@@ -2,7 +2,7 @@ import {
     KeyboardArrowDown as KeyboardArrowDownIcon,
     KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@mui/icons-material";
-import { Box, IconButton, TableCell, TableRow } from "@mui/material";
+import { Box, IconButton, Stack, TableCell, TableRow } from "@mui/material";
 import Iconify from "src/components/iconify";
 import { ContactNotification } from "src/types/notification";
 import ViewedNotificationIcon from "../components/ViewedNotificationIcon";
@@ -37,24 +37,25 @@ BasicRowProps) => {
         // onViewToggle(row);
     };
     return (
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }} onClick={onClick}>
+        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
             <TableCell>
-                <Box display="flex" alignItems="center" gap={1}>
-                    <IconButton
-                        onClick={onToggle}
-                        size="small"
-                        // onClick={(e) => {
-                        //     e.stopPropagation();
-                        //     onToggle();
-                        // }}
-                    >
-                        {open ? (
-                            <KeyboardArrowUpIcon />
-                        ) : (
-                            <KeyboardArrowDownIcon />
-                        )}
-                    </IconButton>
-
+                <Stack flexDirection="row" alignItems="center" gap={1}>
+                    <Box display="flex" onClick={onClick}>
+                        <IconButton
+                            onClick={onToggle}
+                            size="small"
+                            // onClick={(e) => {
+                            //     e.stopPropagation();
+                            //     onToggle();
+                            // }}
+                        >
+                            {open ? (
+                                <KeyboardArrowUpIcon />
+                            ) : (
+                                <KeyboardArrowDownIcon />
+                            )}
+                        </IconButton>
+                    </Box>
                     {row.viewed ? (
                         <ViewedNotificationIcon
                             key={`viewed-${row.id}`}
@@ -66,7 +67,7 @@ BasicRowProps) => {
                             onClick={handleViewToggle}
                         />
                     )}
-                </Box>
+                </Stack>
             </TableCell>
 
             <TableCell
