@@ -16,6 +16,10 @@ import { UploadIllustration } from "@/assets/illustrations";
 import RejectionFiles from "@/components/upload/errors/RejectionFiles";
 import ImagePreview from "./ImagePreview";
 import usePropertyUpload from "@/hooks/property/uploadFile";
+import {
+    UploadFileProvider,
+    useUploadFileContext,
+} from "@/contexts/uploadFile";
 
 export interface UploadProps extends DropzoneOptions {
     error?: boolean;
@@ -54,7 +58,7 @@ const StyledDropZone = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function UploadImages({
+function UploadImages({
     disabled,
     multiple = true,
     error,
@@ -72,7 +76,9 @@ export default function UploadImages({
     sx,
     ...other
 }: UploadProps) {
-    const [uploadFiles] = usePropertyUpload("image");
+    const { setUploadProgress } = useUploadFileContext();
+
+    const [uploadFiles] = usePropertyUpload("image", setUploadProgress);
 
     const {
         getRootProps,
@@ -195,3 +201,11 @@ function Placeholder({ sx, ...other }: StackProps) {
         </Stack>
     );
 }
+
+const UploadImagesWrapper: React.FC<UploadProps> = (props) => (
+    <UploadFileProvider>
+        <UploadImages {...props} />
+    </UploadFileProvider>
+);
+
+export default UploadImagesWrapper;

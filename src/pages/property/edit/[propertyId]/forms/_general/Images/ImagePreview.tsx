@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
 import { motion } from "framer-motion";
-import { useCallback } from "react";
 import { LabeledImage } from "@/components/image";
 import UploadImage from "@/components/image/UploadImage";
 import { useUploadFileContext } from "@/contexts/uploadFile";
@@ -21,22 +20,15 @@ export default function ImagePreview({
 }: ImagePreviewProps) {
     const { uploadProgress } = useUploadFileContext();
 
-    const getProgress = useCallback(
-        (filename: string) =>
-            uploadProgress.filename === filename ? uploadProgress.progress : -1,
-        [uploadProgress]
-    );
-
     return (
         <Grid container spacing={0.5}>
-            {images?.map((image, index) => (
-                <Grid item xs={4} key={index}>
+            {images?.map((image) => (
+                <Grid item xs={4} key={image.key}>
                     {image.url ? (
                         <motion.div
                             whileHover={{ scale: 0.95, cursor: "pointer" }}
                         >
                             <LabeledImage
-                                borderRadius={0.3}
                                 src={image.url}
                                 label={image.thumbnail ? "main" : ""}
                                 hidden={image.hidden}
@@ -48,17 +40,17 @@ export default function ImagePreview({
                     ) : (
                         <UploadImage
                             animate
-                            progress={getProgress(image.filename)}
+                            progress={uploadProgress[image.key]}
                             borderRadius={0.3}
                         />
                     )}
                 </Grid>
             ))}
-            {placeholder && (
+            {placeholder ? (
                 <Grid item xs={4}>
                     {placeholder}
                 </Grid>
-            )}
+            ) : null}
         </Grid>
     );
 }

@@ -41,7 +41,7 @@ const getTag = (variant: TFileVariant) =>
 
 const usePropertyUpload = (
     variant: TFileVariant,
-    onProgressUpdate?: (p: number) => void
+    onProgressUpdate?: (key: string, p: number) => void
 ) => {
     const router = useRouter();
     const { propertyId } = router.query;
@@ -89,7 +89,7 @@ const usePropertyUpload = (
         ): Promise<UploadResponse> => {
             if (!file) throw new Error("null image!");
 
-            const { type: contentType } = file;
+            const { type: contentType, name: filename } = file;
             const { key, url, cdnUrl } = fileResponse;
 
             if (!contentType) throw new Error("contentType cannot be null");
@@ -100,7 +100,8 @@ const usePropertyUpload = (
                 variant: "image",
                 url,
                 file,
-                onProgressUpdate,
+                onProgressUpdate: (progress) =>
+                    onProgressUpdate?.(key, progress),
             });
 
             if (!response)
