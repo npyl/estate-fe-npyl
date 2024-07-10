@@ -9,7 +9,6 @@ import {
 } from "./types";
 import { MutationLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { filesApiSlice } from ".";
-import uuidv4 from "@/utils/uuidv4";
 
 type OptimisticAddCb<T> = (
     arg: IPropertyAddFileParams<T>,
@@ -80,23 +79,33 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
 
     const content = {
         ...body,
-        id: -1,
-        key: uuidv4(),
         url: null,
+        key: null,
+        id: -1,
         // Document
         // TODO: fix this any...
         ...((variant === "document" ? { labels: [] } : {}) as any),
     };
 
+    let newLength = 0;
+
     const patchResult = dispatch(
         filesApiSlice.util.updateQueryData(query, id, (draft) => {
-            draft.push(content);
+            newLength = draft.push(content);
             return draft;
         })
     );
 
     try {
-        await queryFulfilled;
+        const actualRes = await queryFulfilled;
+
+        // Now that we have data, updateQueryData with proper key so that we can use it for our uploadFileContext
+        dispatch(
+            filesApiSlice.util.updateQueryData(query, id, (draft) => {
+                draft[newLength - 1].key = actualRes.data.key;
+                return draft;
+            })
+        );
     } catch {
         patchResult.undo();
     }

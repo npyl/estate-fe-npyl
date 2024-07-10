@@ -96,9 +96,6 @@ const Gallery: React.FC<GalleryProps> = ({
     const handleDelete = () => {
         if (!currentImageKey) return;
 
-        const newThumbnailKey =
-            images[0]?.key === currentImageKey ? images[1]?.key : "";
-
         // Prepare Next Image to avoid jumping
         const index = images.findIndex((f) => f.key === currentImageKey);
         if (index < 0) return;
@@ -113,7 +110,6 @@ const Gallery: React.FC<GalleryProps> = ({
         deleteImage({
             propertyId: +propertyId!,
             imageKey: currentImageKey,
-            newThumbnailKey,
         })
             .then(() => setCurrentImageKey(nextImageKey))
             .catch((reason) => console.error("deleteImage: ", reason));

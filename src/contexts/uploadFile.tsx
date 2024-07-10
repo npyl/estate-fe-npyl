@@ -1,7 +1,11 @@
 import { createContext, useContext, useState } from "react";
 
+type UploadProgress = {
+    [key: string]: number;
+};
+
 export type IUploadFileContextState = {
-    uploadProgress: Record<string, number>;
+    uploadProgress: UploadProgress;
     setUploadProgress: (key: string, p: number) => void;
 };
 
@@ -19,28 +23,21 @@ export const useUploadFileContext = () => {
     return context;
 };
 
-const useUploadFileState = () => {
-    const [uploadProgress, setUploadProgress] = useState<
-        Record<string, number>
-    >({});
-
-    const updateProgress = (key: string, p: number) =>
-        setUploadProgress((old) => {
-            console.log("key: ", key, "p: ", p);
-            old[key] = p;
-            return old;
-        });
-
-    return {
-        uploadProgress,
-        setUploadProgress: updateProgress,
-    };
-};
-
 export const UploadFileProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
-    const value = useUploadFileState();
+    const [uploadProgress, setUploadProgress] = useState<UploadProgress>({});
 
-    return <UploadFileContext.Provider value={value} {...props} />;
+    const updateProgress = (key: string, p: number) =>
+        setUploadProgress((old) => ({ ...old, [key]: p }));
+
+    return (
+        <UploadFileContext.Provider
+            value={{
+                uploadProgress,
+                setUploadProgress: updateProgress,
+            }}
+            {...props}
+        />
+    );
 };

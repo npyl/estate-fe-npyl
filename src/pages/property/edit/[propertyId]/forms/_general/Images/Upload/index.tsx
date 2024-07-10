@@ -2,7 +2,6 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 // @mui
 import {
     Box,
-    Button,
     Stack,
     StackProps,
     SxProps,
@@ -26,17 +25,11 @@ export interface UploadProps extends DropzoneOptions {
     multiple?: boolean;
     sx?: SxProps<Theme>;
     files?: IPropertyImage[];
-    thumbnail?: boolean;
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
     disableMultiple?: boolean;
 
-    //
-    onImageClick: (file: IPropertyImage) => void;
-    onUpload?: VoidFunction;
-    onDelete?: VoidFunction;
-    onRemove?: (file: IPropertyImage) => void;
-    onRemoveAll?: VoidFunction;
+    onImageClick: (key: string) => void;
 }
 
 // ----------------------------------------------------------------------
@@ -67,12 +60,7 @@ function UploadImages({
     //
     //
     files,
-    thumbnail,
     onImageClick,
-    onDelete,
-    onUpload,
-    onRemove,
-    onRemoveAll,
     sx,
     ...other
 }: UploadProps) {
@@ -127,42 +115,12 @@ function UploadImages({
             <RejectionFiles fileRejections={fileRejections} />
 
             {hasFiles && (
-                <>
-                    <Box mt={1}>
-                        <ImagePreview
-                            images={files}
-                            onImageClick={onImageClick}
-                            placeholder={placeholder}
-                        />
-                    </Box>
-
-                    <Stack
-                        direction="row"
-                        justifyContent="flex-end"
-                        spacing={1.5}
-                    >
-                        {onRemoveAll && (
-                            <Button
-                                color="inherit"
-                                variant="outlined"
-                                size="small"
-                                onClick={onRemoveAll}
-                            >
-                                Remove all
-                            </Button>
-                        )}
-
-                        {onUpload && (
-                            <Button
-                                size="small"
-                                variant="contained"
-                                onClick={onUpload}
-                            >
-                                Upload files
-                            </Button>
-                        )}
-                    </Stack>
-                </>
+                <ImagePreview
+                    mt={1}
+                    images={files}
+                    onImageClick={onImageClick}
+                    placeholder={placeholder}
+                />
             )}
 
             {helperText && helperText}

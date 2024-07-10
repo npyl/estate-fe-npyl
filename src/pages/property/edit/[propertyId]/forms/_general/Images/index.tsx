@@ -1,8 +1,7 @@
 import Panel from "@/components/Panel";
 import { SoftButton } from "@/components/SoftButton";
-import UploadImages from "./UploadImages";
+import UploadImages from "./Upload";
 import useDialog from "@/hooks/useDialog";
-import { IPropertyImage } from "@/types/file";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,7 +40,6 @@ const ImagesSection = () => {
     const [isSeeMoreOpen, openSeeMore, closeSeeMore] = useDialog();
 
     const [galleryImage, setGalleryImage] = useState("");
-    const openGallery = (f: IPropertyImage) => setGalleryImage(f.key);
     const closeGallery = () => setGalleryImage("");
 
     return (
@@ -56,7 +54,7 @@ const ImagesSection = () => {
             >
                 <UploadImages
                     files={previewImages}
-                    onImageClick={openGallery}
+                    onImageClick={setGalleryImage}
                     placeholder={
                         <Placeholder imagesLength={images.length || 0} />
                     }
