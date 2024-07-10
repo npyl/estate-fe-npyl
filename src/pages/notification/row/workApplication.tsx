@@ -18,6 +18,7 @@ import BasicRow from "./basic";
 interface ListingRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    onClick: () => void;
     loading: boolean;
 }
 
@@ -149,7 +150,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 };
 
-function WorkApplication({ row, onRemove, loading }: ListingRowProps) {
+function WorkApplication({ row, onRemove, loading, onClick }: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
 
     return (
@@ -161,6 +162,7 @@ function WorkApplication({ row, onRemove, loading }: ListingRowProps) {
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 loading={loading}
+                onClick={onClick}
             />
             {open ? <Collapsible id={row?.id} open={open} /> : null}
         </Fragment>

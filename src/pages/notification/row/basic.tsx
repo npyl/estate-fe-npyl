@@ -17,6 +17,7 @@ interface BasicRowProps {
     variant?: "showType" | "dontShowType";
     onToggle: () => void;
     onRemove: () => void;
+    onClick: () => void;
     loading: boolean;
 }
 
@@ -26,19 +27,16 @@ const BasicRow = ({
     open,
     onToggle,
     onRemove,
+    onClick,
     loading,
 }: BasicRowProps) => {
     console.log("Row :", row.id); // Log the row.viewed value
 
     return (
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+        <TableRow sx={{ "& > *": { borderBottom: "unset" } }} onClick={onClick}>
             <TableCell>
                 <Box display="flex" alignItems="center" gap={1}>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={onToggle}
-                    >
+                    <IconButton size="small" onClick={onToggle}>
                         {open ? (
                             <KeyboardArrowUpIcon />
                         ) : (
@@ -68,12 +66,14 @@ const BasicRow = ({
             </TableCell>
             <TableCell
                 sx={{ textOverflow: "ellipsis", overflow: "auto" }}
-                align="right"
+                align="center"
             >
                 {row.customerEmail}
             </TableCell>
-            <TableCell align="right">{row.customerMobile}</TableCell>
-            <TableCell align="right">{getDate(row.notificationDate)}</TableCell>
+            <TableCell align="center">{row.customerMobile}</TableCell>
+            <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                {getDate(row.notificationDate)}
+            </TableCell>
             {variant === "showType" ? (
                 <TableCell align="right">{row.tourType}</TableCell>
             ) : null}

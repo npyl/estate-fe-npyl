@@ -75,7 +75,7 @@ const Table = ({
                     },
                 }}
             >
-                <TableHead>
+                <TableHead sx={{ width: "100%" }}>
                     <TableRow>
                         <TableCell />
                         {COLUMNS.map((c, i) => (
@@ -92,26 +92,35 @@ const Table = ({
                                 {t(c)}
                             </TableCell>
                         ))}
+
                         {variant === "contact" || variant === "tour" ? (
-                            <TableCell align="right"> {t("Type")}</TableCell>
+                            <TableCell align="center"> {t("Type")}</TableCell>
                         ) : null}
+
+                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
+                        {variant === "contact" ||
+                        variant === "tour" ||
+                        variant === "listing" ||
+                        variant === "review" ||
+                        variant === "workForUs" ? (
+                            <TableCell align="center"> {""}</TableCell>
+                        ) : null}
+
+                        {variant === "review" ? (
+                            <TableCell align="center"> {""}</TableCell>
+                        ) : null}
+                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map((row, i) => (
-                        <TableRow
+                        <RowComponent
                             key={i}
-                            onClick={() => {
-                                onViewNotification(row);
-                            }}
-                        >
-                            <RowComponent
-                                key={i}
-                                row={row}
-                                onRemove={() => onRemove(row.id)}
-                                loading={loading}
-                            />
-                        </TableRow>
+                            row={row}
+                            onRemove={() => onRemove(row.id)}
+                            onClick={() => onViewNotification(row)}
+                            loading={loading}
+                        />
                     ))}
                 </TableBody>
             </MuiTable>

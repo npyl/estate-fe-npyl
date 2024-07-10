@@ -20,10 +20,11 @@ const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
 interface TourRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    onClick: () => void;
     loading: boolean;
 }
 
-function TourRow({ row, onRemove, loading }: TourRowProps) {
+function TourRow({ row, onRemove, loading, onClick }: TourRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
 
@@ -36,6 +37,7 @@ function TourRow({ row, onRemove, loading }: TourRowProps) {
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 loading={loading}
+                onClick={onClick}
             />
             <TableRow>
                 <TableCell
