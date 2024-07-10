@@ -102,7 +102,10 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
         // Now that we have data, updateQueryData with proper key so that we can use it for our uploadFileContext
         dispatch(
             filesApiSlice.util.updateQueryData(query, id, (draft) => {
-                draft[newLength - 1].key = actualRes.data.key;
+                draft[newLength - 1] = {
+                    ...draft[newLength - 1],
+                    ...actualRes.data,
+                };
                 return draft;
             })
         );

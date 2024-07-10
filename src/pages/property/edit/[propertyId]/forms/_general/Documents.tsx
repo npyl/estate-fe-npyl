@@ -12,7 +12,8 @@ const DocumentsSection: React.FC = () => {
 
     const { documents, propertyId } = usePropertyDocuments();
 
-    const { uploadFiles, invalidateTags } = usePropertyUpload("document");
+    const { uploadFiles, invalidateTags, isLoading } =
+        usePropertyUpload("document");
     const [deleteDocument] = useDeletePropertyDocumentMutation();
 
     const [pdfUrl, setPdfUrl] = useState("");
@@ -41,6 +42,7 @@ const DocumentsSection: React.FC = () => {
             <CardContent>
                 <Upload
                     multiple
+                    disabled={isLoading}
                     variant="document"
                     thumbnail={false}
                     files={documents}

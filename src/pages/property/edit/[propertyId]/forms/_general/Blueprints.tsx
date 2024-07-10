@@ -12,7 +12,8 @@ const BlueprintsSection: React.FC = () => {
 
     const { blueprints, propertyId } = usePropertyBlueprints();
 
-    const { uploadFiles, invalidateTags } = usePropertyUpload("blueprint");
+    const { uploadFiles, invalidateTags, isLoading } =
+        usePropertyUpload("blueprint");
     const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
 
     const [blueprintUrl, setBlueprintUrl] = useState("");
@@ -42,6 +43,7 @@ const BlueprintsSection: React.FC = () => {
             <CardContent>
                 <Upload
                     multiple
+                    disabled={isLoading}
                     thumbnail={false}
                     files={blueprints}
                     onDrop={uploadFiles}
