@@ -1,6 +1,6 @@
 import Panel from "@/components/Panel";
 import { SoftButton } from "@/components/SoftButton";
-import UploadImages from "@/components/upload/UploadImages";
+import UploadImages from "./UploadImages";
 import useDialog from "@/hooks/useDialog";
 import { IPropertyImage } from "@/types/file";
 import Typography from "@mui/material/Typography";
@@ -57,7 +57,6 @@ const ImagesSection = () => {
                 <UploadImages
                     files={previewImages}
                     onImageClick={openGallery}
-                    // onDrop={handleDropMultiFile}
                     placeholder={
                         <Placeholder imagesLength={images.length || 0} />
                     }

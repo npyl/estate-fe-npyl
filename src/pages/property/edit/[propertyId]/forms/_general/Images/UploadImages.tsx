@@ -11,10 +11,11 @@ import {
 } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 // assets
-import { IPropertyImage } from "src/types/file";
-import { UploadIllustration } from "../../assets/illustrations";
-import RejectionFiles from "./errors/RejectionFiles";
-import ImagePreview from "./preview/ImagePreview";
+import { IPropertyImage } from "@/types/file";
+import { UploadIllustration } from "@/assets/illustrations";
+import RejectionFiles from "@/components/upload/errors/RejectionFiles";
+import ImagePreview from "./ImagePreview";
+import usePropertyUpload from "@/hooks/property/uploadFile";
 
 export interface UploadProps extends DropzoneOptions {
     error?: boolean;
@@ -71,6 +72,8 @@ export default function UploadImages({
     sx,
     ...other
 }: UploadProps) {
+    const [uploadFiles] = usePropertyUpload("image");
+
     const {
         getRootProps,
         getInputProps,
@@ -84,6 +87,7 @@ export default function UploadImages({
             "image/jpeg": ["jpeg", "jpg"],
             "image/png": ["png"],
         },
+        onDrop: uploadFiles,
         ...other,
     });
 

@@ -1,5 +1,11 @@
 export interface IPropertyAddFileParams<T> {
     id: number;
+    variant: "image" | "blueprint" | "document";
+    body: T;
+}
+
+export interface IPropertyFileManipulation<T> {
+    id: number;
     body: T;
 }
 

@@ -1,11 +1,8 @@
 import {
-    IPropertyBlueprint,
     IPropertyBlueprintPOST,
-    IPropertyDocument,
     IPropertyDocumentPOST,
+    IPropertyFileReq,
     IPropertyFileRes,
-    IPropertyImage,
-    IPropertyImagePOST,
 } from "@/types/file";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import {
@@ -16,6 +13,8 @@ import {
 } from "./types";
 import { MutationLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { properties } from "../properties";
+import { filesApiSlice } from ".";
+import uuidv4 from "@/utils/uuidv4";
 
 type OptimisticAddCb<T> = (
     arg: IPropertyAddFileParams<T>,
@@ -27,7 +26,7 @@ type OptimisticAddCb<T> = (
     >
 ) => void;
 
-type OptimisticAddImageCb = OptimisticAddCb<IPropertyImagePOST>;
+type OptimisticAddFileCb = OptimisticAddCb<IPropertyFileReq>;
 type OptimisticAddBlueprintCb = OptimisticAddCb<IPropertyBlueprintPOST>;
 type OptimisticAddDocumentCb = OptimisticAddCb<IPropertyDocumentPOST>;
 
@@ -71,55 +70,37 @@ type optimisticBulkDeleteImagesCb = (
     >
 ) => void;
 
-export const optimisticAddImage: OptimisticAddImageCb = async (
-    { body, id },
+export const optimisticAddFile: OptimisticAddFileCb = async (
+    { body, id, variant },
     { dispatch, queryFulfilled }
 ) => {
+    const query =
+        variant === "image"
+            ? "getPropertyImages"
+            : variant === "blueprint"
+            ? "getPropertyBlueprints"
+            : variant === "document"
+            ? "getPropertyDocuments"
+            : null;
+
+    if (!query) return;
+
+    const content = {
+        ...body,
+        id: -1,
+        key: uuidv4(),
+        url: null,
+        // Document
+        // TODO: fix this any...
+        ...((variant === "document" ? { labels: [] } : {}) as any),
+    };
+
     const patchResult = dispatch(
-        properties.util.updateQueryData("getPropertyById", id, (draft) => {
-            draft.images.push({
-                ...body,
-                url: null,
-            } as IPropertyImage);
+        filesApiSlice.util.updateQueryData(query, id, (draft) => {
+            draft.push(content);
         })
     );
-    try {
-        await queryFulfilled;
-    } catch {
-        patchResult.undo();
-    }
-};
-export const optimisticAddBlueprint: OptimisticAddBlueprintCb = async (
-    { body, id },
-    { dispatch, queryFulfilled }
-) => {
-    const patchResult = dispatch(
-        properties.util.updateQueryData("getPropertyById", id, (draft) => {
-            draft.blueprints.push({
-                ...body,
-                url: null,
-            } as IPropertyBlueprint);
-        })
-    );
-    try {
-        await queryFulfilled;
-    } catch {
-        patchResult.undo();
-    }
-};
-export const optimisticAddDocument: OptimisticAddDocumentCb = async (
-    { body, id },
-    { dispatch, queryFulfilled }
-) => {
-    const patchResult = dispatch(
-        properties.util.updateQueryData("getPropertyById", id, (draft) => {
-            draft.documents.push({
-                ...body,
-                url: null,
-                labels: [],
-            } as IPropertyDocument);
-        })
-    );
+
     try {
         await queryFulfilled;
     } catch {

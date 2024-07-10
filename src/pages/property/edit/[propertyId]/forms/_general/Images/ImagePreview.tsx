@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { useCallback } from "react";
-import { LabeledImage, UploadProgress } from "src/components/image";
-import UploadImage from "src/components/image/UploadImage";
-import { useUploadFileContext } from "src/contexts/uploadFile";
-import { IPropertyImage } from "src/types/file";
+import { LabeledImage } from "@/components/image";
+import UploadImage from "@/components/image/UploadImage";
+import { useUploadFileContext } from "@/contexts/uploadFile";
+import { IPropertyImage } from "@/types/file";
 
 // ----------------------------------------------------------------------
 

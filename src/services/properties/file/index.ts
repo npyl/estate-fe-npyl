@@ -1,18 +1,15 @@
 import {
-    IPropertyImagePOST,
-    IPropertyBlueprintPOST,
+    IPropertyImageReq,
     IPropertyImage,
-    IPropertyDocumentPOST,
     IPropertyFileRes,
+    IPropertyFileReq,
 } from "src/types/file";
 
 import axios, { AxiosProgressEvent } from "axios";
 
 import { properties } from "../properties";
 import {
-    optimisticAddBlueprint,
-    optimisticAddDocument,
-    optimisticAddImage,
+    optimisticAddFile,
     optimisticBulkDeleteImages,
     optimisticDeleteImage,
     optimisticReorder,
@@ -23,6 +20,7 @@ import {
     IDeleteFileProps,
     IDeleteImageProps,
     IPropertyAddFileParams,
+    IPropertyFileManipulation,
     ReorderImagesWithSetImageVisibility,
 } from "./types";
 import {
@@ -102,39 +100,17 @@ export const filesApiSlice = properties.injectEndpoints({
         // invalidatesTags: ["Properties", "PropertyById"],
         //
 
-        addPropertyImage: builder.mutation<
+        addPropertyFile: builder.mutation<
             IPropertyFileRes,
-            IPropertyAddFileParams<IPropertyImagePOST>
+            IPropertyAddFileParams<IPropertyFileReq>
         >({
             // INFO: asks for an amazon url from backend; to be used before uploadPropertyImage
-            query: ({ id, body }) => ({
-                url: `/${id}/image`,
+            query: ({ id, body, variant }) => ({
+                url: `/${id}/${variant}`,
                 method: "POST",
                 body,
             }),
-            onQueryStarted: optimisticAddImage,
-        }),
-        addPropertyBlueprint: builder.mutation<
-            IPropertyFileRes,
-            IPropertyAddFileParams<IPropertyBlueprintPOST>
-        >({
-            query: ({ id, body }) => ({
-                url: `/${id}/blueprint`,
-                method: "POST",
-                body,
-            }),
-            onQueryStarted: optimisticAddBlueprint,
-        }),
-        addPropertyDocument: builder.mutation<
-            IPropertyFileRes,
-            IPropertyAddFileParams<IPropertyDocumentPOST>
-        >({
-            query: ({ id, body }) => ({
-                url: `/${id}/document`,
-                method: "POST",
-                body,
-            }),
-            onQueryStarted: optimisticAddDocument,
+            onQueryStarted: optimisticAddFile,
         }),
 
         //
@@ -143,7 +119,7 @@ export const filesApiSlice = properties.injectEndpoints({
 
         editPropertyImage: builder.mutation<
             IPropertyFileRes,
-            IPropertyAddFileParams<IPropertyImagePOST>
+            IPropertyFileManipulation<IPropertyImageReq>
         >({
             // INFO: same with add but causes revalidate
             query: ({ id, body }) => ({
@@ -177,7 +153,7 @@ export const filesApiSlice = properties.injectEndpoints({
 
         reorderPropertyImages: builder.mutation<
             number,
-            IPropertyAddFileParams<string[]>
+            IPropertyFileManipulation<string[]>
         >({
             queryFn: reorderQueryFn,
             onQueryStarted: optimisticReorder,
@@ -290,7 +266,8 @@ export const filesApiSlice = properties.injectEndpoints({
 export const {
     useGetPropertyImagesQuery,
 
-    useAddPropertyImageMutation,
+    useAddPropertyFileMutation,
+
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
     useBulkEditPropertyImagesMutation,
@@ -300,10 +277,7 @@ export const {
     useReorderPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 
-    useAddPropertyBlueprintMutation,
     useDeletePropertyBlueprintMutation,
-
-    useAddPropertyDocumentMutation,
     useDeletePropertyDocumentMutation,
 
     useUploadPropertyFileMutation,

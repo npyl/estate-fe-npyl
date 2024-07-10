@@ -18,17 +18,6 @@ export interface IPropertyFileRes {
 
 // ----------------------------------------------------------------------------------------
 
-export interface IPropertyImagePOST {
-    id?: number;
-    filename?: string;
-    size?: number;
-    contentType?: string;
-    hidden?: boolean;
-    description?: string;
-    title?: string;
-    key?: string;
-}
-
 interface IPropertyFile {
     id: number;
     url: string | null;
@@ -49,6 +38,8 @@ export interface IPropertyDocument extends IPropertyFile {
 }
 
 export interface IPropertyBlueprint extends IPropertyFile {}
+
+export interface IPropertyImageReq extends Partial<IPropertyImage> {}
 
 export interface IPropertyDocumentPOST {
     id?: number;
