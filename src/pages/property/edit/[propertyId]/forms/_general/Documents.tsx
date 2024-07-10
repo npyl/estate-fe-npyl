@@ -1,27 +1,16 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
-import { useRouter } from "next/router";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { IPropertyFile, Upload } from "src/components/upload";
-import {
-    properties,
-    useDeletePropertyDocumentMutation,
-    useGetPropertyByIdQuery,
-    useUploadPropertyFileMutation,
-} from "src/services/properties";
-import { IPropertyFileRes, IPropertyDocumentPOST } from "src/types/file";
+import { useDeletePropertyDocumentMutation } from "src/services/properties";
 import { PDFViewer } from "../components/PDFViewer";
 import usePropertyUpload from "@/hooks/property/uploadFile";
+import { usePropertyDocuments } from "@/hooks/property";
 
 const DocumentsSection: React.FC = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const router = useRouter();
-    const { propertyId } = router.query;
 
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-    const documents = useMemo(() => property?.documents || [], [property]);
+    const { documents, propertyId } = usePropertyDocuments();
 
     const [uploadFiles, invalidateTags] = usePropertyUpload("document");
     const [deleteDocument] = useDeletePropertyDocumentMutation();
@@ -32,7 +21,7 @@ const DocumentsSection: React.FC = () => {
 
     const handleRemoveFile = (inputFile: IPropertyFile) =>
         deleteDocument({
-            propertyId: +propertyId!,
+            propertyId,
             imageKey: inputFile.key,
         });
 
@@ -40,7 +29,7 @@ const DocumentsSection: React.FC = () => {
         Promise.all(
             documents.map(({ key }) =>
                 deleteDocument({
-                    propertyId: +propertyId!,
+                    propertyId,
                     imageKey: key,
                 })
             )

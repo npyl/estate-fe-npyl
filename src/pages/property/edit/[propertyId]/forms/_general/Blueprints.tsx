@@ -1,24 +1,16 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { IPropertyFile, Upload } from "src/components/upload";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IPropertyBlueprint } from "src/types/file";
-import {
-    useDeletePropertyBlueprintMutation,
-    useGetPropertyByIdQuery,
-} from "src/services/properties";
-import { useRouter } from "next/router";
+import { useDeletePropertyBlueprintMutation } from "src/services/properties";
 import { BlueprintViewer } from "../components/BlueprintViewer";
 import usePropertyUpload from "@/hooks/property/uploadFile";
+import { usePropertyBlueprints } from "@/hooks/property";
 
 const BlueprintsSection: React.FC = () => {
-    const router = useRouter();
     const { t } = useTranslation();
 
-    const { propertyId } = router.query;
-
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-    const blueprints = useMemo(() => property?.blueprints || [], [property]);
+    const { blueprints, propertyId } = usePropertyBlueprints();
 
     const [uploadFiles, invalidateTags] = usePropertyUpload("blueprint");
     const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
@@ -30,7 +22,7 @@ const BlueprintsSection: React.FC = () => {
 
     const handleRemoveFile = (inputFile: IPropertyFile) =>
         deleteBlueprint({
-            propertyId: +propertyId!,
+            propertyId,
             imageKey: inputFile.key,
         });
 
@@ -51,7 +43,7 @@ const BlueprintsSection: React.FC = () => {
                 <Upload
                     multiple
                     thumbnail={false}
-                    files={blueprints as IPropertyBlueprint[]}
+                    files={blueprints}
                     onDrop={uploadFiles}
                     onFileClick={handleFileClick}
                     onRemove={handleRemoveFile}

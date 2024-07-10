@@ -20,9 +20,6 @@ export interface IDeleteFileProps {
     propertyId: number;
     imageKey: string;
 }
-export interface IDeleteImageProps extends IDeleteFileProps {
-    newThumbnailKey: string;
-}
 
 export interface BulkDeletePropertyImagesParams {
     propertyId: number;

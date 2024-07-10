@@ -3,6 +3,8 @@ import {
     IPropertyImage,
     IPropertyFileRes,
     IPropertyFileReq,
+    IPropertyBlueprint,
+    IPropertyDocument,
 } from "src/types/file";
 
 import axios, { AxiosProgressEvent } from "axios";
@@ -18,13 +20,11 @@ import {
 import {
     BulkDeletePropertyImagesParams,
     IDeleteFileProps,
-    IDeleteImageProps,
     IPropertyAddFileParams,
     IPropertyFileManipulation,
     ReorderImagesWithSetImageVisibility,
 } from "./types";
 import {
-    bulkDeleteImagesQueryFn,
     deleteImageQueryFn,
     reorderImagesWithVisibilityQueryFn,
     reorderQueryFn,
@@ -63,10 +63,6 @@ const removeMetadata = async (file: File): Promise<Blob> => {
     });
 };
 
-interface IPropertySetThumbnailProps {
-    propertyId: number;
-    imageKey: string;
-}
 interface BulkEditPropertyImagesParams {
     propertyId: number;
     body: {
@@ -91,6 +87,14 @@ export const filesApiSlice = properties.injectEndpoints({
         getPropertyImages: builder.query<IPropertyImage[], number>({
             query: (propertyId) => `${propertyId}/images`,
             providesTags: ["PropertyByIdImages"],
+        }),
+        getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
+            query: (propertyId) => `${propertyId}/blueprints`,
+            providesTags: ["PropertyByIdBlueprints"],
+        }),
+        getPropertyDocuments: builder.query<IPropertyDocument[], number>({
+            query: (propertyId) => `${propertyId}/documents`,
+            providesTags: ["PropertyByIdDocuments"],
         }),
 
         // ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -130,15 +134,6 @@ export const filesApiSlice = properties.injectEndpoints({
             invalidatesTags: ["PropertyByIdImages"],
         }),
 
-        setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
-            {
-                query: ({ propertyId, imageKey }) => ({
-                    url: `/${propertyId}/thumbnail/${imageKey}`,
-                    method: "POST",
-                }),
-            }
-        ),
-
         bulkEditPropertyImages: builder.mutation<
             void,
             BulkEditPropertyImagesParams
@@ -173,18 +168,22 @@ export const filesApiSlice = properties.injectEndpoints({
         //  DELETE
         // ---------------------------------------------------------------
 
-        //  Deletes a propertyImage by imageKey (updates thumbnail if necessary)
-        deletePropertyImage: builder.mutation<number, IDeleteImageProps>({
+        //  Deletes a propertyImage by imageKey
+        deletePropertyImage: builder.mutation<number, IDeleteFileProps>({
             queryFn: deleteImageQueryFn,
             onQueryStarted: optimisticDeleteImage,
             invalidatesTags: ["PropertyByIdImages"],
         }),
-        //  Deletes propertyImages by imageKeys (updates thumbnail if necessary)
+        //  Deletes propertyImages by imageKeys
         bulkDeletePropertyImages: builder.mutation<
             number,
             BulkDeletePropertyImagesParams
         >({
-            queryFn: bulkDeleteImagesQueryFn,
+            query: ({ propertyId, imageKeys }) => ({
+                url: `/${propertyId}/images/delete/bulk`,
+                method: "DELETE",
+                body: imageKeys,
+            }),
             onQueryStarted: optimisticBulkDeleteImages,
             invalidatesTags: ["PropertyByIdImages"],
         }),
@@ -193,14 +192,14 @@ export const filesApiSlice = properties.injectEndpoints({
                 url: `/${propertyId}/blueprint/${imageKey}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["PropertyByIdBlueprints"],
         }),
         deletePropertyDocument: builder.mutation<void, IDeleteFileProps>({
             query: ({ propertyId, imageKey: documentKey }) => ({
                 url: `/${propertyId}/document/${documentKey}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["PropertyByIdDocuments"],
         }),
 
         // ---------------------------------------------------------------
@@ -265,11 +264,12 @@ export const filesApiSlice = properties.injectEndpoints({
 
 export const {
     useGetPropertyImagesQuery,
+    useGetPropertyBlueprintsQuery,
+    useGetPropertyDocumentsQuery,
 
     useAddPropertyFileMutation,
 
     useEditPropertyImageMutation,
-    useSetPropertyThumbailMutation,
     useBulkEditPropertyImagesMutation,
     useBulkDeletePropertyImagesMutation,
     useDeletePropertyImageMutation,

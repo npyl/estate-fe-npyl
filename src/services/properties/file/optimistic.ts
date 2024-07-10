@@ -1,18 +1,13 @@
-import {
-    IPropertyBlueprintPOST,
-    IPropertyDocumentPOST,
-    IPropertyFileReq,
-    IPropertyFileRes,
-} from "@/types/file";
+import { IPropertyFileReq, IPropertyFileRes } from "@/types/file";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import {
     BulkDeletePropertyImagesParams,
-    IDeleteImageProps,
+    IDeleteFileProps,
     IPropertyAddFileParams,
+    IPropertyFileManipulation,
     ReorderImagesWithSetImageVisibility,
 } from "./types";
 import { MutationLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
-import { properties } from "../properties";
 import { filesApiSlice } from ".";
 import uuidv4 from "@/utils/uuidv4";
 
@@ -27,13 +22,11 @@ type OptimisticAddCb<T> = (
 ) => void;
 
 type OptimisticAddFileCb = OptimisticAddCb<IPropertyFileReq>;
-type OptimisticAddBlueprintCb = OptimisticAddCb<IPropertyBlueprintPOST>;
-type OptimisticAddDocumentCb = OptimisticAddCb<IPropertyDocumentPOST>;
 
 type OptimisticReorderCb = (
-    arg: IPropertyAddFileParams<string[]>,
+    arg: IPropertyFileManipulation<string[]>,
     api: MutationLifecycleApi<
-        IPropertyAddFileParams<string[]>,
+        IPropertyFileManipulation<string[]>,
         BaseQueryFn,
         number,
         "properties"
@@ -51,9 +44,9 @@ type OptimisticReorderWithVisibilityCb = (
 ) => void;
 
 type OptimisticDeleteImageCb = (
-    arg: IDeleteImageProps,
+    arg: IDeleteFileProps,
     api: MutationLifecycleApi<
-        IDeleteImageProps,
+        IDeleteFileProps,
         BaseQueryFn,
         number,
         "properties"
@@ -98,6 +91,7 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
     const patchResult = dispatch(
         filesApiSlice.util.updateQueryData(query, id, (draft) => {
             draft.push(content);
+            return draft;
         })
     );
 
@@ -115,20 +109,13 @@ export const optimisticReorder: OptimisticReorderCb = async (
     { dispatch, queryFulfilled }
 ) => {
     const patchResult = dispatch(
-        properties.util.updateQueryData("getPropertyById", id, (draft) => {
-            // disable old thumbnail
-            draft.images[0].thumbnail = false;
-
+        filesApiSlice.util.updateQueryData("getPropertyImages", id, (draft) => {
             // reorder based on imageKeys
             let reordered = imageKeys.map(
-                (k) => draft.images.find((i) => i.key === k)!
+                (k) => draft.find((i) => i.key === k)!
             );
-            if (!reordered) return;
 
-            // set thumbnail
-            reordered[0].thumbnail = true;
-
-            draft.images = reordered;
+            return reordered;
         })
     );
     try {
@@ -144,27 +131,24 @@ export const optimisticReorderWithVisibility: OptimisticReorderWithVisibilityCb 
         { dispatch, queryFulfilled }
     ) => {
         const patchResult = dispatch(
-            properties.util.updateQueryData(
-                "getPropertyById",
+            filesApiSlice.util.updateQueryData(
+                "getPropertyImages",
                 propertyId,
                 (draft) => {
-                    // disable old thumbnail
-                    draft.images[0].thumbnail = false;
-
                     // reorder based on imageKeys
                     const reordered = imageKeys.map(
-                        (k) => draft.images.find((i) => i.key === k)!
+                        (k) => draft.find((i) => i.key === k)!
                     );
-                    if (!reordered) return;
+                    if (!reordered) return [];
 
                     // set visibility
                     const toSetVisibilityIndex = reordered.findIndex(
                         (i) => i.key === imageKey
                     );
-                    if (toSetVisibilityIndex < 0) return;
+                    if (toSetVisibilityIndex < 0) return [];
                     reordered[toSetVisibilityIndex].hidden = hidden;
 
-                    draft.images = reordered;
+                    return reordered;
                 }
             )
         );
@@ -178,24 +162,14 @@ export const optimisticReorderWithVisibility: OptimisticReorderWithVisibilityCb 
 // --------------------------------------------------------------------------------
 
 export const optimisticDeleteImage: OptimisticDeleteImageCb = async (
-    { imageKey, propertyId, newThumbnailKey },
+    { imageKey, propertyId },
     { dispatch, queryFulfilled }
 ) => {
     const patchResult = dispatch(
-        properties.util.updateQueryData(
-            "getPropertyById",
+        filesApiSlice.util.updateQueryData(
+            "getPropertyImages",
             propertyId,
-            (draft) => {
-                if (newThumbnailKey) {
-                    draft.images.shift(); // remove first element
-                    draft.images[0].thumbnail = true; // next element becomes thumbnail
-                }
-                // remove image
-                else
-                    draft.images = draft.images.filter(
-                        (i) => i.key !== imageKey
-                    );
-            }
+            (draft) => draft.filter((i) => i.key !== imageKey)
         )
     );
     try {
@@ -210,17 +184,10 @@ export const optimisticBulkDeleteImages: optimisticBulkDeleteImagesCb = async (
     { dispatch, queryFulfilled }
 ) => {
     const patchResult = dispatch(
-        properties.util.updateQueryData(
-            "getPropertyById",
+        filesApiSlice.util.updateQueryData(
+            "getPropertyImages",
             propertyId,
-            (draft) => {
-                draft.images = draft.images.filter(
-                    (i) => !imageKeys.some((k) => k === i.key)
-                );
-
-                // update thumbnail
-                if (draft.images?.length > 0) draft.images[0].thumbnail = true;
-            }
+            (draft) => draft.filter((i) => !imageKeys.some((k) => k === i.key))
         )
     );
     try {

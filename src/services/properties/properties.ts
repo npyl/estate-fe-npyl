@@ -139,14 +139,6 @@ export const properties = createApi({
             query: (propertyId) => `${propertyId}/labels`,
             providesTags: ["PropertyByIdLabels"],
         }),
-        getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
-            query: (propertyId) => `${propertyId}/blueprints`,
-            providesTags: ["PropertyByIdBlueprints"],
-        }),
-        getPropertyDocuments: builder.query<IPropertyDocument[], number>({
-            query: (propertyId) => `${propertyId}/documents`,
-            providesTags: ["PropertyByIdDocuments"],
-        }),
 
         // mutations
         editProperty: builder.mutation<number, IEditPropertyProps>({
@@ -321,5 +313,4 @@ export const {
 
     // attributes
     useGetPropertyLabelsQuery,
-    useGetPropertyDocumentsQuery,
 } = properties;

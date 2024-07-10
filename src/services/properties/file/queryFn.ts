@@ -6,8 +6,7 @@ import {
     FetchBaseQueryMeta,
 } from "@reduxjs/toolkit/query";
 import {
-    BulkDeletePropertyImagesParams,
-    IDeleteImageProps,
+    IDeleteFileProps,
     IPropertyAddFileParams,
     ReorderImagesWithSetImageVisibility,
 } from "./types";
@@ -27,8 +26,7 @@ type QueryFn<T> = (
 
 type ReorderCb = QueryFn<IPropertyAddFileParams<string[]>>;
 type ReorderWithVisibilityCb = QueryFn<ReorderImagesWithSetImageVisibility>;
-type DeleteImageCb = QueryFn<IDeleteImageProps>;
-type BulkDeleteImagesCb = QueryFn<BulkDeletePropertyImagesParams>;
+type DeleteImageCb = QueryFn<IDeleteFileProps>;
 
 export const reorderQueryFn: ReorderCb = async (
     { id: propertyId, body: imageKeys },
@@ -45,16 +43,6 @@ export const reorderQueryFn: ReorderCb = async (
 
         if ("error" in reorderResponse) {
             throw reorderResponse.error;
-        }
-
-        // Then, set thumbnail
-        const thumbnailResponse = await baseQuery({
-            url: `${propertyId}/thumbnail/${imageKeys[0]}`,
-            method: "POST",
-        });
-
-        if ("error" in thumbnailResponse) {
-            throw thumbnailResponse.error;
         }
 
         return { data: 0 }; // 0 for success
@@ -85,16 +73,6 @@ export const reorderImagesWithVisibilityQueryFn: ReorderWithVisibilityCb =
                 throw visibilityResponse.error;
             }
 
-            // Then, set thumbnail
-            const thumbnailResponse = await baseQuery({
-                url: `${propertyId}/thumbnail/${imageKeys[0]}`,
-                method: "POST",
-            });
-
-            if ("error" in thumbnailResponse) {
-                throw thumbnailResponse.error;
-            }
-
             // Then, reorder the images.
             const reorderResponse = await baseQuery({
                 url: `/${propertyId}/reorderImages`,
@@ -113,7 +91,7 @@ export const reorderImagesWithVisibilityQueryFn: ReorderWithVisibilityCb =
     };
 
 export const deleteImageQueryFn: DeleteImageCb = async (
-    { propertyId, imageKey, newThumbnailKey },
+    { propertyId, imageKey },
     api,
     extraOptions,
     baseQuery
@@ -126,55 +104,6 @@ export const deleteImageQueryFn: DeleteImageCb = async (
 
         if ("error" in deleteResponse) {
             throw deleteResponse.error;
-        }
-
-        // We didn't remove thumbnail => no need to do anything else
-        if (!newThumbnailKey) return { data: 0 };
-
-        // Then, set thumbnail
-        const thumbnailResponse = await baseQuery({
-            url: `${propertyId}/thumbnail/${newThumbnailKey}`,
-            method: "POST",
-        });
-
-        if ("error" in thumbnailResponse) {
-            throw thumbnailResponse.error;
-        }
-
-        return { data: 0 };
-    } catch (error) {
-        return { error: error as FetchBaseQueryError };
-    }
-};
-
-export const bulkDeleteImagesQueryFn: BulkDeleteImagesCb = async (
-    { propertyId, imageKeys, newThumbnailKey },
-    api,
-    extraOptions,
-    baseQuery
-) => {
-    try {
-        const deleteResponse = await baseQuery({
-            url: `/${propertyId}/images/delete/bulk`,
-            method: "DELETE",
-            body: imageKeys,
-        });
-
-        if ("error" in deleteResponse) {
-            throw deleteResponse.error;
-        }
-
-        // We didn't remove thumbnail => no need to do anything else
-        if (!newThumbnailKey) return { data: 0 };
-
-        // Then, set thumbnail
-        const thumbnailResponse = await baseQuery({
-            url: `${propertyId}/thumbnail/${newThumbnailKey}`,
-            method: "POST",
-        });
-
-        if ("error" in thumbnailResponse) {
-            throw thumbnailResponse.error;
         }
 
         return { data: 0 };
