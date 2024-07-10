@@ -95,10 +95,11 @@ const getSections = (
                 icon: (
                     <Box display="flex" justifyContent="space-between">
                         <CircleNotifications fontSize="small" />
-
-                        <CircleUnReadNotifications>
-                            {nonViewedNotificationsCount}
-                        </CircleUnReadNotifications>
+                        {nonViewedNotificationsCount ? (
+                            <CircleUnReadNotifications>
+                                {nonViewedNotificationsCount}
+                            </CircleUnReadNotifications>
+                        ) : null}
                     </Box>
                 ),
             },
