@@ -105,6 +105,8 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
                 draft[newLength - 1] = {
                     ...draft[newLength - 1],
                     ...actualRes.data,
+                    // make sure we keep loading the images though
+                    url: null,
                 };
                 return draft;
             })
