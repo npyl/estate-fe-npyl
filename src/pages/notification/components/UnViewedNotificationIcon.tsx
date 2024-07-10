@@ -1,6 +1,12 @@
 import React from "react";
 
-const UnViewedNotificationIcon = () => (
+interface ViewedNotificationIconProps {
+    onClick?: (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => void;
+}
+
+const UnViewedNotificationIcon: React.FC<ViewedNotificationIconProps> = ({
+    onClick,
+}) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         x="0px"

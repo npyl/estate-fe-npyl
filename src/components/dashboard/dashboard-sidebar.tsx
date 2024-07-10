@@ -143,8 +143,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();
 
-    console.log(nonViewedNotificationsCount);
-
     const sections = useMemo(() => {
         const sectionsData = getSections(
             t,

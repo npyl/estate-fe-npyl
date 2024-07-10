@@ -1,3 +1,4 @@
+import { KeyValue } from "../KeyValue";
 import { ListingNotification } from "./listing";
 import IWorkForUs from "./workForUs";
 
@@ -14,11 +15,11 @@ export interface ContactNotificationPOST {
 }
 
 export type NotificationType =
-    | "listing"
-    | "contact"
-    | "tour"
-    | "workForUs"
-    | "review";
+    | "LISTING"
+    | "CONTACT"
+    | "TOUR"
+    | "WORK_FOR_US"
+    | "REVIEW";
 
 export interface ContactNotification {
     id?: number;
@@ -35,6 +36,30 @@ export interface ContactNotification {
     viewed: boolean;
 
     notificationType: NotificationType;
+}
+
+export interface INotificationResponse {
+    customerEmail: string;
+    customerMobile: string;
+    customerName: string;
+    id?: number;
+    listingDetails: ListingNotification;
+    message: string;
+    notificationDate: string;
+    notificationType: NotificationType;
+    propertyCode: string;
+    reviewDetails: ReviewDetails;
+    tourDate: string;
+    tourTime: string;
+    tourType: string;
+    type: KeyValue;
+    viewed: boolean;
+    workForUsDetails: IWorkForUs;
+}
+
+export interface INotificationFilter {
+    types: NotificationType[];
+    viewed?: boolean;
 }
 
 interface ReviewDetails {

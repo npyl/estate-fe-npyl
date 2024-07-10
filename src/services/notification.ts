@@ -1,9 +1,22 @@
-import { NotViewedContactNotifications } from "@/types/notification/notification";
+import {
+    INotificationFilter,
+    INotificationResponse,
+    NotViewedContactNotifications,
+} from "@/types/notification/notification";
+import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ContactNotification,
     ContactNotificationExtended,
 } from "src/types/notification";
+
+interface INotificationFilterParams {
+    filter: INotificationFilter;
+    page: number;
+    pageSize: number;
+    sortBy: string;
+    direction: string; // asc - desc
+}
 
 export const notification = createApi({
     reducerPath: "contactNotification",
@@ -51,6 +64,23 @@ export const notification = createApi({
             }
         ),
 
+        filterNotifications: builder.mutation<
+            IPage<INotificationResponse>,
+            INotificationFilterParams
+        >({
+            query: ({ filter, page, pageSize, sortBy, direction }) => ({
+                url: "/filter",
+                method: "POST",
+                body: filter,
+                params: {
+                    page,
+                    pageSize,
+                    sortBy,
+                    direction,
+                },
+            }),
+        }),
+
         toggleNotificationViewedStatus: builder.mutation<
             void,
             { id: number; viewed: boolean }
@@ -80,6 +110,7 @@ export const {
     useGetNotificationsQuery,
     useGetNotificationByIdQuery,
     useGetNonViewedNotificationsCountQuery,
+    useFilterNotificationsMutation,
     useToggleNotificationViewedStatusMutation,
     useDeleteNotificationMutation,
 } = notification;

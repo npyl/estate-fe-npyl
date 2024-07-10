@@ -19,6 +19,7 @@ interface BasicRowProps {
     onRemove: () => void;
     onClick: () => void;
     loading: boolean;
+    // onViewToggle: (notification: ContactNotification) => void;
 }
 
 const BasicRow = ({
@@ -29,14 +30,24 @@ const BasicRow = ({
     onRemove,
     onClick,
     loading,
-}: BasicRowProps) => {
-    console.log("Row :", row.id); // Log the row.viewed value
-
+}: // onViewToggle,
+BasicRowProps) => {
+    const handleViewToggle = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        // onViewToggle(row);
+    };
     return (
         <TableRow sx={{ "& > *": { borderBottom: "unset" } }} onClick={onClick}>
             <TableCell>
                 <Box display="flex" alignItems="center" gap={1}>
-                    <IconButton size="small" onClick={onToggle}>
+                    <IconButton
+                        onClick={onToggle}
+                        size="small"
+                        // onClick={(e) => {
+                        //     e.stopPropagation();
+                        //     onToggle();
+                        // }}
+                    >
                         {open ? (
                             <KeyboardArrowUpIcon />
                         ) : (
@@ -45,9 +56,15 @@ const BasicRow = ({
                     </IconButton>
 
                     {row.viewed ? (
-                        <ViewedNotificationIcon key={`viewed-${row.id}`} />
+                        <ViewedNotificationIcon
+                            key={`viewed-${row.id}`}
+                            onClick={handleViewToggle}
+                        />
                     ) : (
-                        <UnViewedNotificationIcon key={`unviewed-${row.id}`} />
+                        <UnViewedNotificationIcon
+                            key={`unviewed-${row.id}`}
+                            onClick={handleViewToggle}
+                        />
                     )}
                 </Box>
             </TableCell>

@@ -5,25 +5,37 @@ import {
     TableCell,
     TableContainer,
     TableHead,
+    TablePagination,
     TableRow,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ContactNotification, NotificationType } from "src/types/notification";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 // rows
 import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
 import ReviewRow from "./row/review";
+import { selectAll } from "src/slices/filters";
+import { useSelector } from "react-redux";
 
 import { useMediaQuery } from "@mui/material";
+import { useFilterNotificationsMutation } from "@/services/notification";
+import { INotificationFilter } from "@/types/notification/notification";
 
 interface TableProps {
     variant: NotificationType;
     rows: ContactNotification[];
-    onRemove: (index?: number) => void;
+    sortBy: string;
+    direction: string;
+    onRemove: (index: number) => void;
     loading: boolean;
     onViewNotification: (notification: ContactNotification) => void;
+    page: number;
+    pageSize: number;
+    onPageChange: (event: unknown, newPage: number) => void;
+    onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    totalRows: number;
 }
 
 const Table = ({
@@ -32,8 +44,36 @@ const Table = ({
     onRemove,
     loading,
     onViewNotification,
+    sortBy,
+    direction,
+    page,
+    pageSize,
+    onPageChange,
+    onRowsPerPageChange,
+    totalRows,
 }: TableProps) => {
     const { t } = useTranslation();
+
+    // const [filter, setFilter] = useState<INotificationFilter>({
+    //     types: [variant],
+    //     viewed: false,
+    // });
+
+    // const [filterNotifications] = useFilterNotificationsMutation();
+
+    // const revalidate = () => {
+    //     filterNotifications({
+    //         filter,
+    //         page,
+    //         pageSize,
+    //         sortBy,
+    //         direction,
+    //     });
+    // };
+
+    // useEffect(() => {
+    //     revalidate();
+    // }, [filter, page, pageSize, sortBy, direction]);
 
     const COLUMNS: string[] = useMemo(
         () => [
@@ -46,11 +86,11 @@ const Table = ({
     );
 
     const RowComponent =
-        variant === "listing"
+        variant === "LISTING"
             ? ListingRow
-            : variant === "workForUs"
+            : variant === "WORK_FOR_US"
             ? WorkApplicationRow
-            : variant === "review"
+            : variant === "REVIEW"
             ? ReviewRow
             : TourRow;
 
@@ -93,20 +133,20 @@ const Table = ({
                             </TableCell>
                         ))}
 
-                        {variant === "contact" || variant === "tour" ? (
+                        {variant === "CONTACT" || variant === "TOUR" ? (
                             <TableCell align="center"> {t("Type")}</TableCell>
                         ) : null}
 
                         {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
-                        {variant === "contact" ||
-                        variant === "tour" ||
-                        variant === "listing" ||
-                        variant === "review" ||
-                        variant === "workForUs" ? (
+                        {variant === "CONTACT" ||
+                        variant === "TOUR" ||
+                        variant === "LISTING" ||
+                        variant === "REVIEW" ||
+                        variant === "WORK_FOR_US" ? (
                             <TableCell align="center"> {""}</TableCell>
                         ) : null}
 
-                        {variant === "review" ? (
+                        {variant === "REVIEW" ? (
                             <TableCell align="center"> {""}</TableCell>
                         ) : null}
                         {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
@@ -117,13 +157,22 @@ const Table = ({
                         <RowComponent
                             key={i}
                             row={row}
-                            onRemove={() => onRemove(row.id)}
+                            onRemove={() => onRemove(row.id || 0)}
                             onClick={() => onViewNotification(row)}
                             loading={loading}
                         />
                     ))}
                 </TableBody>
             </MuiTable>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={totalRows}
+                rowsPerPage={pageSize}
+                page={page}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+            />
         </TableContainer>
     );
 };
