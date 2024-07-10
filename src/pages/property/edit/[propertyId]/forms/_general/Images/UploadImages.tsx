@@ -32,7 +32,7 @@ export interface UploadProps extends DropzoneOptions {
     disableMultiple?: boolean;
 
     //
-    onImageClick?: (file: IPropertyImage) => void;
+    onImageClick: (file: IPropertyImage) => void;
     onUpload?: VoidFunction;
     onDelete?: VoidFunction;
     onRemove?: (file: IPropertyImage) => void;

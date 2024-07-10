@@ -10,7 +10,7 @@ import { IPropertyImage } from "@/types/file";
 interface ImagePreviewProps {
     images: IPropertyImage[];
     placeholder?: React.ReactNode;
-    onImageClick?: (i: IPropertyImage) => void;
+    onImageClick: (i: IPropertyImage) => void;
 }
 
 export default function ImagePreview({
@@ -32,9 +32,7 @@ export default function ImagePreview({
                                 src={image.url}
                                 label={image.thumbnail ? "main" : ""}
                                 hidden={image.hidden}
-                                onClick={() =>
-                                    onImageClick && onImageClick(image)
-                                }
+                                onClick={() => onImageClick(image)}
                             />
                         </motion.div>
                     ) : (

@@ -89,7 +89,7 @@ const usePropertyUpload = (
         ): Promise<UploadResponse> => {
             if (!file) throw new Error("null image!");
 
-            const { type: contentType, name: filename } = file;
+            const { type: contentType } = file;
             const { key, url, cdnUrl } = fileResponse;
 
             if (!contentType) throw new Error("contentType cannot be null");

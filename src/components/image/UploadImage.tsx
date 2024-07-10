@@ -33,6 +33,9 @@ const ProgressLabel = ({ progress }: ProgressLabelProps) => {
     );
 };
 
+// Default image
+const defaultImage = "/static/img/previewImage.png";
+
 const UploadImage = ({
     animate = false,
     progress,
@@ -40,9 +43,6 @@ const UploadImage = ({
     sx,
     ...props
 }: UploadImageProps) => {
-    // Default image
-    const defaultImage = "/static/img/previewImage.png";
-
     // INFO: ignore the ref, please do not pass it to Image
 
     const [reached100, setReached100] = useState(false);
