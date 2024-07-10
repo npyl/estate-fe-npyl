@@ -5,7 +5,7 @@ import {
 } from "@/services/properties/file";
 import { IPropertyFileRes } from "@/types/file";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 type TFileVariant = "image" | "blueprint" | "document";
@@ -50,6 +50,8 @@ const usePropertyUpload = (
     const [uploadFile] = useUploadPropertyFileMutation(); // PUTS to Amazon
 
     const dispatch = useDispatch();
+
+    const [isLoading, setLoading] = useState(false);
 
     const invalidateTags = () => {
         const tag = getTag(variant);
@@ -112,7 +114,9 @@ const usePropertyUpload = (
         [onProgressUpdate]
     );
 
-    const upload = useCallback(async (acceptedFiles: File[]) => {
+    const uploadFiles = useCallback(async (acceptedFiles: File[]) => {
+        setLoading(true);
+
         const fileResponses = await Promise.all(acceptedFiles.map(step0));
 
         /* Upload Sequentially */
@@ -122,10 +126,11 @@ const usePropertyUpload = (
 
         executeSequentially(uploadPromises)
             .then(invalidateTags)
+            .then(() => setLoading(false))
             .catch((error) => console.error("SequentialUploadError:", error));
     }, []);
 
-    return [upload, invalidateTags] as const;
+    return { uploadFiles, invalidateTags, isLoading };
 };
 
 export default usePropertyUpload;

@@ -16,8 +16,6 @@ interface ImageItemProps {
 const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
     const { url, thumbnail, hidden, key } = image;
 
-    console.log("img: ", image);
-
     const { uploadProgress } = useUploadFileContext();
 
     if (url) {

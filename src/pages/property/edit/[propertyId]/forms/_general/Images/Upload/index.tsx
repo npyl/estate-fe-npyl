@@ -20,7 +20,7 @@ import {
     useUploadFileContext,
 } from "@/contexts/uploadFile";
 
-export interface UploadProps extends DropzoneOptions {
+export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
     multiple?: boolean;
     sx?: SxProps<Theme>;
@@ -52,7 +52,6 @@ const StyledDropZone = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 function UploadImages({
-    disabled,
     multiple = true,
     error,
     helperText,
@@ -66,7 +65,10 @@ function UploadImages({
 }: UploadProps) {
     const { setUploadProgress } = useUploadFileContext();
 
-    const [uploadFiles] = usePropertyUpload("image", setUploadProgress);
+    const { uploadFiles, isLoading } = usePropertyUpload(
+        "image",
+        setUploadProgress
+    );
 
     const {
         getRootProps,
@@ -76,7 +78,7 @@ function UploadImages({
         fileRejections,
     } = useDropzone({
         multiple,
-        disabled,
+        disabled: isLoading,
         accept: {
             "image/jpeg": ["jpeg", "jpg"],
             "image/png": ["png"],
@@ -101,7 +103,7 @@ function UploadImages({
                         bgcolor: "error.lighter",
                         borderColor: "error.light",
                     }),
-                    ...(disabled && {
+                    ...(isLoading && {
                         opacity: 0.48,
                         pointerEvents: "none",
                     }),

@@ -12,7 +12,7 @@ const DocumentsSection: React.FC = () => {
 
     const { documents, propertyId } = usePropertyDocuments();
 
-    const [uploadFiles, invalidateTags] = usePropertyUpload("document");
+    const { uploadFiles, invalidateTags } = usePropertyUpload("document");
     const [deleteDocument] = useDeletePropertyDocumentMutation();
 
     const [pdfUrl, setPdfUrl] = useState("");

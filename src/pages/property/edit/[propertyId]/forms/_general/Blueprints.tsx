@@ -12,7 +12,7 @@ const BlueprintsSection: React.FC = () => {
 
     const { blueprints, propertyId } = usePropertyBlueprints();
 
-    const [uploadFiles, invalidateTags] = usePropertyUpload("blueprint");
+    const { uploadFiles, invalidateTags } = usePropertyUpload("blueprint");
     const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
 
     const [blueprintUrl, setBlueprintUrl] = useState("");
