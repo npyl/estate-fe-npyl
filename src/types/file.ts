@@ -1,10 +1,22 @@
 import { ILabel } from "./label";
 
-export interface IFileResponse {
+// ----------------------------------------------------------------------------------------
+// Used when calling BE (See notion.so 1st. step)
+// ----------------------------------------------------------------------------------------
+
+export interface IPropertyFileReq {
+    contentType: string;
+    filename: string;
+    size: number;
+}
+
+export interface IPropertyFileRes {
     key: string;
     url: string; // amazon to PUT image
     cdnUrl: string; // where image **WILL** be downloadable from when PUT finishes
 }
+
+// ----------------------------------------------------------------------------------------
 
 export interface IPropertyImagePOST {
     id?: number;
@@ -17,32 +29,26 @@ export interface IPropertyImagePOST {
     key?: string;
 }
 
-export interface IPropertyImage {
+interface IPropertyFile {
     id: number;
+    url: string | null;
+    key: string;
+    filename: string;
+}
+
+export interface IPropertyImage extends IPropertyFile {
     hidden: boolean;
     description: string;
     title: string;
     orderNumber: number;
-    url: string | null;
-    key: string;
     thumbnail: boolean;
-    filename: string;
 }
 
-export interface IPropertyDocument {
-    id: number;
-    url: string | null;
-    key: string;
-    filename: string;
+export interface IPropertyDocument extends IPropertyFile {
     labels: ILabel[];
 }
 
-export interface IPropertyBlueprint {
-    id: number;
-    url: string | null;
-    filename: string;
-    key: string;
-}
+export interface IPropertyBlueprint extends IPropertyFile {}
 
 export interface IPropertyDocumentPOST {
     id?: number;
@@ -52,9 +58,3 @@ export interface IPropertyDocumentPOST {
 }
 
 export interface IPropertyBlueprintPOST extends IPropertyDocumentPOST {}
-
-export interface IFileModel {
-    filename: string;
-    contentType: string;
-    url: string;
-}

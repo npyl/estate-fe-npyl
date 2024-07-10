@@ -1,4 +1,4 @@
-import { IFileResponse } from "@/types/file";
+import { IPropertyFileRes } from "@/types/file";
 import { IIntegration, IIntegrationPOST } from "@/types/integrations";
 import { IntegrationSite } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -61,7 +61,7 @@ export const company = createApi({
 
         // Logo or Watermark
         uploadCompanyImage: builder.mutation<
-            IFileResponse,
+            IPropertyFileRes,
             IUploadCompanyImage
         >({
             query: (body) => ({

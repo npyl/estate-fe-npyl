@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     IPropertyBlueprint,
-    IFileResponse,
+    IPropertyFileRes,
     IPropertyBlueprintPOST,
 } from "src/types/file";
 import {
@@ -54,7 +54,7 @@ const BlueprintsSection: React.FC = () => {
 
     const [blueprintUrl, setBlueprintUrl] = useState("");
 
-    const addFile = async (image: File): Promise<IFileResponse> => {
+    const addFile = async (image: File): Promise<IPropertyFileRes> => {
         const { name: filename, type: contentType, size } = image;
 
         if (!filename || !contentType)
@@ -78,7 +78,7 @@ const BlueprintsSection: React.FC = () => {
 
     const uploadFile = async (
         file: File | undefined,
-        fileResponse: IFileResponse
+        fileResponse: IPropertyFileRes
     ): Promise<UploadResponse> => {
         if (!file) throw new Error("null image!");
 

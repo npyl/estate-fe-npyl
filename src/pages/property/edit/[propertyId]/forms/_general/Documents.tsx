@@ -11,7 +11,7 @@ import {
     useGetPropertyByIdQuery,
     useUploadPropertyFileMutation,
 } from "src/services/properties";
-import { IFileResponse, IPropertyDocumentPOST } from "src/types/file";
+import { IPropertyFileRes, IPropertyDocumentPOST } from "src/types/file";
 import { PDFViewer } from "../components/PDFViewer";
 
 interface UploadResponse {
@@ -49,7 +49,7 @@ const DocumentsSection: React.FC = () => {
 
     const [pdfUrl, setPdfUrl] = useState("");
 
-    const addFile = async (image: File): Promise<IFileResponse> => {
+    const addFile = async (image: File): Promise<IPropertyFileRes> => {
         const { name: filename, type: contentType, size } = image;
 
         if (!filename || !contentType)
@@ -73,7 +73,7 @@ const DocumentsSection: React.FC = () => {
 
     const uploadFile = async (
         file: File | undefined,
-        fileResponse: IFileResponse
+        fileResponse: IPropertyFileRes
     ): Promise<UploadResponse> => {
         if (!file) throw new Error("null image!");
 
