@@ -7,6 +7,7 @@ import {
     TableCell,
     TableHead,
     TableRow,
+    TableRowProps,
 } from "@mui/material";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +20,7 @@ import { ListingCard } from "./card";
 interface ListingRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    onClick: () => void;
     loading: boolean;
 }
 
@@ -94,7 +96,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 };
 
-function ListingRow({ row, onRemove, loading }: ListingRowProps) {
+function ListingRow({ row, onRemove, loading, onClick }: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
 
     return (
@@ -106,6 +108,7 @@ function ListingRow({ row, onRemove, loading }: ListingRowProps) {
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 loading={loading}
+                onClick={onClick}
             />
             {open ? <Collapsible id={row?.id} open={open} /> : null}
         </Fragment>

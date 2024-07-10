@@ -69,10 +69,12 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const router = useRouter();
     const ref = useRef<HTMLDivElement>();
 
-    const address =
+    const addressParts =
         i18n.language === "en"
-            ? `${regionEN} ${cityEN} ${complexEN}`
-            : `${regionGR} ${cityGR} ${complexGR}`;
+            ? [regionEN, cityEN, complexEN]
+            : [regionGR, cityGR, complexGR];
+
+    const address = addressParts.filter((part) => part).join(", ");
 
     const convertedImages = useMemo(
         () =>
@@ -268,7 +270,6 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                             </Stack>
                         </Stack>
                     )}
-
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">

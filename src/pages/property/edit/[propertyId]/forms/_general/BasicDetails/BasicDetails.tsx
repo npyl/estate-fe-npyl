@@ -152,25 +152,34 @@ const BasicSection: React.FC<any> = () => {
                         sm={6}
                         display="flex"
                         width="100%"
-                        direction="row"
                         alignItems="center"
                         gap={1}
                     >
-                        <Autocomplete />
-                        <Tooltip
-                            title="Create a new Customer/Owner"
-                            placement="top"
+                        <Stack
+                            direction="row"
+                            width="100%"
+                            alignItems="center"
+                            gap={1.5}
                         >
-                            <AddOutlinedIcon
-                                sx={{
-                                    color: "blue",
-                                    "&:hover": {
-                                        cursor: "pointer",
-                                    },
-                                }}
-                                onClick={handleOpen}
-                            />
-                        </Tooltip>
+                            <Autocomplete />
+                            <Tooltip
+                                title="Create a new Customer/Owner"
+                                placement="top"
+                            >
+                                <AddOutlinedIcon
+                                    sx={{
+                                        color: "blue",
+                                        "&:hover": {
+                                            cursor: "pointer",
+                                        },
+                                        fontSize: "large",
+                                        border: "1px solid blue",
+                                        borderRadius: "50%",
+                                    }}
+                                    onClick={handleOpen}
+                                />
+                            </Tooltip>
+                        </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <RHFOnlyNumbers
@@ -187,13 +196,22 @@ const BasicSection: React.FC<any> = () => {
                             options={stateEnum}
                         />
                     </Grid>
+
                     <Grid item xs={12} sm={6}>
-                        <RHFOnlyNumbers
-                            fullWidth
-                            name="price"
-                            label={t("Price")}
-                            adornment="€"
-                        />
+                        <Stack direction="row" gap={3}>
+                            <RHFOnlyNumbers
+                                fullWidth
+                                name="price"
+                                label={t("Price")}
+                                adornment="€"
+                            />
+
+                            <RHFCheckbox
+                                name="hidePrice"
+                                sx={{ textWrap: "nowrap" }}
+                                label={t("Hide Price")}
+                            />
+                        </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <RHFOnlyNumbers

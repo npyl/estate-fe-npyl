@@ -70,6 +70,16 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
     const region = i18n.language === "en" ? regionEN : regionGR;
     const city = i18n.language === "en" ? cityEN : cityGR;
 
+    const addressParts = [
+        region,
+        option?.location?.street
+            ? `${option?.location?.street} ${option?.location?.number || ""}`
+            : "",
+        city,
+    ];
+
+    const address = addressParts.filter((part) => part).join(", ");
+
     const stateColor = _state?.value ? getStatusColor(_state.value) : "#537f91";
 
     const code = useMemo(
@@ -173,9 +183,10 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     </Grid>
                     <Grid
                         item
-                        xs={7}
-                        sm={2}
+                        xs={9}
+                        sm={4.3}
                         sx={{
+                            ml: 1.3,
                             textAlign: { xs: "center", sm: "center" },
                         }}
                     >
@@ -232,8 +243,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             mt={-2.5}
                             color="text.secondary"
                         >
-                            {option?.location?.street}{" "}
-                            {option?.location?.number}, {city}
+                            {address}{" "}
                         </Typography>
                     ) : (
                         <Typography
@@ -242,8 +252,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             mr={1.5}
                             color="text.secondary"
                         >
-                            {region}, {option?.location?.street}{" "}
-                            {option?.location?.number}, {city}
+                            {address}{" "}
                         </Typography>
                     )}
                 </Stack>
@@ -356,7 +365,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                 </Grid>
 
                 <Grid container spacing={1} alignItems="center" mt={1} ml={2}>
-                    <Grid item xs={6} sm={5}>
+                    <Grid item xs={6} sm={5.7}>
                         <Box
                             sx={{
                                 display: "flex",
@@ -378,7 +387,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                         </Box>
                     </Grid>
 
-                    <Grid item xs={10} sm={4}>
+                    <Grid item xs={12} sm={5}>
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
                             color={"#ffcc00"}

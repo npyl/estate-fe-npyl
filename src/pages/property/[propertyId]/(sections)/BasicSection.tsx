@@ -126,6 +126,10 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     ],
 };
 
+const formatNumberWithDots = (number: number) => {
+    return new Intl.NumberFormat("de-DE").format(number);
+};
+
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
@@ -288,7 +292,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Price")}
-                        value={data?.price ? `${data?.price}€` : "-"}
+                        value={
+                            data?.price
+                                ? `${data?.price.toLocaleString("de-DE")}€`
+                                : "-"
+                        }
                     />
                 );
             case "Key Code":
