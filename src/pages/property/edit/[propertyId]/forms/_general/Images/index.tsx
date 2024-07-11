@@ -5,10 +5,11 @@ import useDialog from "@/hooks/useDialog";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Gallery from "./Gallery";
 import usePropertyImages from "./hook";
 import { PREVIEW_IMAGES_COUNT } from "./constants";
-import SeeMore from "./SeeMore";
+import dynamic from "next/dynamic";
+const SeeMore = dynamic(() => import("./SeeMore"));
+const Gallery = dynamic(() => import("./Gallery"));
 
 // ---------------------------------------------------------------
 
