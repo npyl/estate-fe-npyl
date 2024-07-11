@@ -1,26 +1,25 @@
+import CheckIcon from "@mui/icons-material/Check";
+import Item, { ItemProps } from "./Item";
+
 interface SelectableItemProps extends ItemProps {
     selectMultiple: boolean;
     compare: boolean;
     selected: boolean;
 }
 
-export const SelectableItem = ({
+const SelectableItem = ({
     selectMultiple,
     compare,
     selected,
     image,
-    index,
     onClick,
 }: SelectableItemProps) => {
-    const checked = useMemo(
-        () => (compare || selectMultiple) && selected,
-        [selectMultiple, selected, compare]
-    );
+    const checked = (compare || selectMultiple) && selected;
 
     return (
         <div style={{ position: "relative" }}>
             {checked && (
-                <Check
+                <CheckIcon
                     sx={{
                         position: "absolute",
                         top: 1,
@@ -32,7 +31,9 @@ export const SelectableItem = ({
                     }}
                 />
             )}
-            <Item image={image} index={index} onClick={onClick} />
+            <Item image={image} onClick={onClick} />
         </div>
     );
 };
+
+export default SelectableItem;

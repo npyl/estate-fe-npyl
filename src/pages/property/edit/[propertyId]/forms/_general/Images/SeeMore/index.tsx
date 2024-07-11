@@ -5,10 +5,8 @@ import {
     Divider,
     Typography,
 } from "@mui/material";
-import { useCallback, useState } from "react";
-import MultiFilePreviewReorder from "./MultiFilePreviewReorder";
+import { useCallback, useMemo, useState } from "react";
 import { IPropertyImage } from "src/types/file";
-import { Over25ImagesPreview } from "./SeeMorePreview";
 import {
     useBulkDeletePropertyImagesMutation,
     useBulkEditPropertyImagesMutation,
@@ -20,6 +18,9 @@ import usePropertyImages from "../hook";
 import { styled } from "@mui/material/styles";
 import Controls from "./Controls";
 import useDialog from "@/hooks/useDialog";
+import SelectableItem from "./Selectable";
+import MultiFilePreviewReorder from "./PreviewReorder/Normal";
+import { Over25ImagesPreview } from "./PreviewReorder/Over25";
 
 const StyledTitle = styled(DialogTitle)({
     position: "fixed",
@@ -60,7 +61,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
     const toggleCompare = () =>
         setMode((old) => (old === "compare" ? "" : "compare"));
 
-    const handleImageClick = (image: IPropertyImage) => {
+    const handleImageClick = (image: IPropertyImage) =>
         setSelectedImages((oldSelectedImages) => {
             const alreadySelected = oldSelectedImages.includes(image.key);
 
@@ -68,7 +69,6 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 ? oldSelectedImages.filter((key) => key !== image.key) // remove
                 : [...oldSelectedImages, image.key]; // add
         });
-    };
 
     const onSetMain = (key: string) => {
         const allKeys = images.map((file) => file.key);
@@ -132,6 +132,43 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
     const handleReorder = (items: string[]) =>
         reorderImages({ id: propertyId, body: items });
 
+    const createItem = useCallback(
+        (f: IPropertyImage, index: number) => {
+            const isSelected =
+                selectedImages.findIndex((key) => key === f.key) > -1;
+
+            return {
+                id: index,
+                value: (
+                    <SelectableItem
+                        selectMultiple={mode === "multiple"}
+                        compare={mode === "compare"}
+                        selected={isSelected}
+                        image={f}
+                        onClick={() => handleImageClick(f)}
+                    />
+                ),
+            };
+        },
+        [mode, selectedImages]
+    );
+
+    const { items, publicImages, privateImages } = useMemo(
+        () => ({
+            items: images.length <= 25 ? images.map(createItem) : [],
+
+            publicImages:
+                images.length > 25
+                    ? images.filter((f) => !f.hidden).map(createItem)
+                    : [],
+            privateImages:
+                images.length > 25
+                    ? images.filter((f) => f.hidden).map(createItem)
+                    : [],
+        }),
+        [images, createItem]
+    );
+
     return (
         <>
             <Dialog
@@ -178,11 +215,8 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 >
                     {images.length > 25 ? (
                         <Over25ImagesPreview
-                            compare={mode === "compare"}
-                            selectMultiple={mode === "multiple"}
-                            // ...
-                            selectedImages={selectedImages}
-                            onImageClick={handleImageClick}
+                            publicImages={publicImages}
+                            privateImages={privateImages}
                             onReorder={handleReorder}
                             onReorderWithVisibility={
                                 handleReorderWithVisibility
@@ -190,13 +224,8 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                         />
                     ) : (
                         <MultiFilePreviewReorder
-                            selectMultiple={mode === "multiple"}
-                            compare={mode === "compare"}
-                            selectedImages={selectedImages}
-                            // ...
+                            items={items}
                             columns={5}
-                            thumbnail={false}
-                            onImageClick={handleImageClick}
                             onReorder={handleReorder}
                         />
                     )}

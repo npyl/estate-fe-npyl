@@ -7,60 +7,31 @@ import {
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { TwoDimentionsDndNoContext } from "src/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
 import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
-import { SelectableItem } from "./MultiFilePreviewReorder";
-import { IPropertyImage } from "src/types/file";
-import usePropertyImages from "../hook";
-import { ImagePreviewReorderProps } from "./types";
+import { DndItem } from "./types";
+import usePropertyImages from "../../hook";
 
 const COLUMNS = 5;
 
-const compareImages = [];
+interface ImagePreviewReorderProps {
+    publicImages: DndItem[];
+    privateImages: DndItem[];
+    onReorder: (keys: string[]) => void;
+    onReorderWithVisibility: (
+        imageKeys: string[],
+        imageKey: string,
+        hidden: boolean
+    ) => void;
+}
 
 export const Over25ImagesPreview = ({
-    selectMultiple,
-    selectedImages,
-    compare,
-    onImageClick,
+    publicImages,
+    privateImages,
     onReorder,
     onReorderWithVisibility,
 }: ImagePreviewReorderProps) => {
     const { images: files } = usePropertyImages();
 
-    const createItem = useCallback(
-        (image: IPropertyImage, index: number) => {
-            const isSelected =
-                selectedImages.findIndex((key) => key === image.key) > -1;
-
-            return {
-                id: image.id,
-                value: (
-                    <SelectableItem
-                        selectMultiple={selectMultiple}
-                        compare={compare}
-                        selected={isSelected}
-                        image={image}
-                        index={index}
-                        onClick={() => onImageClick(image)}
-                    />
-                ),
-            };
-        },
-        [selectMultiple, selectedImages, compare]
-    );
-
-    const publicImages = useMemo(
-        () => files.filter((f) => !f.hidden).map(createItem),
-        [files, createItem]
-    );
-    const privateImages = useMemo(
-        () => files.filter((f) => f.hidden).map(createItem),
-        [files, createItem]
-    );
-
-    const secondDndStartIndex = useMemo(
-        () => publicImages.length,
-        [publicImages]
-    );
+    const secondDndStartIndex = publicImages.length;
 
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
