@@ -54,7 +54,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                     unmountOnExit
                     sx={{
                         p: 0,
-                        height: "640px",
+                        height: "580px",
                     }}
                 >
                     <Table
@@ -99,7 +99,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                             height={"100%"}
                             sx={{ mt: 4, gap: 7 }}
                         >
-                            <Box width={"15%"} alignContent={"center"}>
+                            <Box width={"25%"} alignContent={"center"}>
                                 {listing?.description}
                             </Box>
 
