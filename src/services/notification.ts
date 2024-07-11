@@ -64,7 +64,7 @@ export const notification = createApi({
             }
         ),
 
-        filterNotifications: builder.mutation<
+        filterNotifications: builder.query<
             IPage<INotificationResponse>,
             INotificationFilterParams
         >({
@@ -79,16 +79,13 @@ export const notification = createApi({
                     direction,
                 },
             }),
+            providesTags: ["Notifications"],
         }),
 
-        toggleNotificationViewedStatus: builder.mutation<
-            void,
-            { id: number; viewed: boolean }
-        >({
-            query: ({ id, viewed }) => ({
+        toggleNotificationViewedStatus: builder.mutation<void, number>({
+            query: (id) => ({
                 url: `${id}/toggle-viewed`,
                 method: "PATCH",
-                body: { viewed },
             }),
             invalidatesTags: ["Notifications"],
         }),
@@ -110,7 +107,7 @@ export const {
     useGetNotificationsQuery,
     useGetNotificationByIdQuery,
     useGetNonViewedNotificationsCountQuery,
-    useFilterNotificationsMutation,
+    useFilterNotificationsQuery,
     useToggleNotificationViewedStatusMutation,
     useDeleteNotificationMutation,
 } = notification;

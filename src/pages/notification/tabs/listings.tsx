@@ -1,6 +1,6 @@
 import {
     useDeleteNotificationMutation,
-    useFilterNotificationsMutation,
+    useFilterNotificationsQuery,
     useToggleNotificationViewedStatusMutation,
 } from "src/services/notification";
 import Table from "../table";
@@ -14,62 +14,17 @@ const Listings = () => {
     const [sortBy, setSortBy] = useState("createdAt"); // assuming 'createdAt' is a valid field to sort by
     const [direction, setDirection] = useState("ASC");
 
-    const [deleteNotification, { isLoading: isDeleting }] =
-        useDeleteNotificationMutation();
-    const [toggleNotificationViewedStatus] =
-        useToggleNotificationViewedStatusMutation();
-    const [filterNotifications, { data: listings, isLoading }] =
-        useFilterNotificationsMutation();
-
-    const [notifications, setNotifications] = useState<ContactNotification[]>(
-        []
-    );
-
-    const fetchFilteredNotifications = () => {
-        filterNotifications({
-            filter: { types: ["LISTING"] }, // Assuming 'listing' is a valid type to filter by
-            page,
-            pageSize,
-            sortBy,
-            direction,
-        });
-    };
-
-    useEffect(() => {
-        fetchFilteredNotifications();
-    }, [page, pageSize, sortBy, direction]);
-
-    useEffect(() => {
-        if (listings?.content) {
-            setNotifications(listings.content);
-        }
-    }, [listings]);
+    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
+    const { data: listings } = useFilterNotificationsQuery({
+        filter: { types: ["LISTING"] },
+        page,
+        pageSize,
+        sortBy,
+        direction,
+    });
 
     const handleRemove = (id: number) => {
-        deleteNotification(id).then(() => {
-            setNotifications((prevNotifications) =>
-                prevNotifications.filter((notif) => notif.id !== id)
-            );
-        });
-    };
-
-    const handleViewNotification = async (
-        notification: ContactNotification
-    ) => {
-        if (!notification.viewed) {
-            await toggleNotificationViewedStatus({
-                id: notification.id || 0,
-                viewed: true,
-            });
-
-            setNotifications((prevNotifications) =>
-                prevNotifications.map((notif) =>
-                    notif.id === notification.id
-                        ? { ...notif, viewed: true }
-                        : notif
-                )
-            );
-        }
+        deleteNotification(id);
     };
 
     const handlePageChange = (event: any, newPage: any) => {
@@ -85,10 +40,9 @@ const Listings = () => {
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
                 variant="LISTING"
-                rows={notifications}
+                rows={listings?.content || []}
                 onRemove={handleRemove}
-                loading={isLoading || isDeleting}
-                onViewNotification={handleViewNotification}
+                loading={isLoading}
                 sortBy={sortBy}
                 direction={direction}
                 page={page}

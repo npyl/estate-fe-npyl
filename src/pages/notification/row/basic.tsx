@@ -7,6 +7,7 @@ import Iconify from "src/components/iconify";
 import { ContactNotification } from "src/types/notification";
 import ViewedNotificationIcon from "../components/ViewedNotificationIcon";
 import UnViewedNotificationIcon from "../components/UnViewedNotificationIcon";
+import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
 
 export const getDate = (s?: string) =>
     s ? new Date(s).toISOString().split("T")[0] : "";
@@ -19,7 +20,6 @@ interface BasicRowProps {
     onRemove: () => void;
     onClick: () => void;
     loading: boolean;
-    // onViewToggle: (notification: ContactNotification) => void;
 }
 
 const BasicRow = ({
@@ -30,24 +30,30 @@ const BasicRow = ({
     onRemove,
     onClick,
     loading,
-}: // onViewToggle,
-BasicRowProps) => {
-    const handleViewToggle = (event: React.MouseEvent) => {
-        event.stopPropagation();
-        // onViewToggle(row);
+}: BasicRowProps) => {
+    const [toggleNotificationViewedStatus] =
+        useToggleNotificationViewedStatusMutation();
+
+    const handleToggleRead = () => {
+        toggleNotificationViewedStatus(row.id!);
     };
+
+    const handleToggleCollapsible = () => {
+        onToggle();
+
+        if (!row.viewed) {
+            toggleNotificationViewedStatus(row.id!);
+        }
+    };
+
     return (
         <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
             <TableCell>
-                <Stack flexDirection="row" alignItems="center" gap={1}>
+                <Stack flexDirection="row" alignItems="end" gap={1}>
                     <Box display="flex" onClick={onClick}>
                         <IconButton
-                            onClick={onToggle}
+                            onClick={handleToggleCollapsible}
                             size="small"
-                            // onClick={(e) => {
-                            //     e.stopPropagation();
-                            //     onToggle();
-                            // }}
                         >
                             {open ? (
                                 <KeyboardArrowUpIcon />
@@ -56,15 +62,16 @@ BasicRowProps) => {
                             )}
                         </IconButton>
                     </Box>
+
                     {row.viewed ? (
                         <ViewedNotificationIcon
                             key={`viewed-${row.id}`}
-                            onClick={handleViewToggle}
+                            onClick={handleToggleRead}
                         />
                     ) : (
                         <UnViewedNotificationIcon
                             key={`unviewed-${row.id}`}
-                            onClick={handleViewToggle}
+                            onClick={handleToggleRead}
                         />
                     )}
                 </Stack>

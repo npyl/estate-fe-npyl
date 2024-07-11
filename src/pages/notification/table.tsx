@@ -20,7 +20,6 @@ import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
 
 import { useMediaQuery } from "@mui/material";
-import { useFilterNotificationsMutation } from "@/services/notification";
 import { INotificationFilter } from "@/types/notification/notification";
 
 interface TableProps {
@@ -30,7 +29,6 @@ interface TableProps {
     direction: string;
     onRemove: (index: number) => void;
     loading: boolean;
-    onViewNotification: (notification: ContactNotification) => void;
     page: number;
     pageSize: number;
     onPageChange: (event: unknown, newPage: number) => void;
@@ -43,7 +41,6 @@ const Table = ({
     rows,
     onRemove,
     loading,
-    onViewNotification,
     sortBy,
     direction,
     page,
@@ -53,27 +50,6 @@ const Table = ({
     totalRows,
 }: TableProps) => {
     const { t } = useTranslation();
-
-    // const [filter, setFilter] = useState<INotificationFilter>({
-    //     types: [variant],
-    //     viewed: false,
-    // });
-
-    // const [filterNotifications] = useFilterNotificationsMutation();
-
-    // const revalidate = () => {
-    //     filterNotifications({
-    //         filter,
-    //         page,
-    //         pageSize,
-    //         sortBy,
-    //         direction,
-    //     });
-    // };
-
-    // useEffect(() => {
-    //     revalidate();
-    // }, [filter, page, pageSize, sortBy, direction]);
 
     const COLUMNS: string[] = useMemo(
         () => [
@@ -152,14 +128,15 @@ const Table = ({
                         {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
                     {rows.map((row, i) => (
                         <RowComponent
                             key={i}
                             row={row}
                             onRemove={() => onRemove(row.id || 0)}
-                            onClick={() => onViewNotification(row)}
                             loading={loading}
+                            onClick={() => {}}
                         />
                     ))}
                 </TableBody>
