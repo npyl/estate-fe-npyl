@@ -8,11 +8,15 @@ import { ImageProps } from "./types";
 
 // ----------------------------------------------------------------------
 
+const defaultImage = "/static/img/previewImage.png";
+
 const Image = forwardRef<HTMLSpanElement, ImageProps>(
     (
         {
             ratio,
             disabledEffect = false,
+            alt,
+            src,
             effect = "blur",
             size = {
                 width: "100%",
@@ -24,15 +28,11 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         ref
     ) => {
         const content = (
-            <Box
-                component={LazyLoadImage}
+            <LazyLoadImage
                 wrapperClassName="wrapper"
-                effect={disabledEffect ? undefined : effect}
-                placeholderSrc={
-                    disabledEffect
-                        ? "/static/transparent.png"
-                        : "/static/placeholder.svg"
-                }
+                alt={alt || "img"}
+                src={src || defaultImage}
+                placeholderSrc={defaultImage}
                 width={size.width}
                 height={size.height}
                 {...other}

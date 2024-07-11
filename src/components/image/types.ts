@@ -17,7 +17,8 @@ export type ImageRatio =
     | "9/21"
     | "1/1";
 
-export interface ImageProps extends IProps {
+export interface ImageProps extends Omit<IProps, "src"> {
+    src?: string | null;
     ratio?: ImageRatio;
     disabledEffect?: boolean;
     size?: { width: string; height: string };
