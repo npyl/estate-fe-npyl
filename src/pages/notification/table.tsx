@@ -31,6 +31,7 @@ interface TableProps {
     onPageChange: (event: unknown, newPage: number) => void;
     onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     totalRows: number;
+    filter: any;
 }
 
 const Table = ({
@@ -38,6 +39,7 @@ const Table = ({
     rows,
     onRemove,
     loading,
+    filter,
     page,
     pageSize,
     onPageChange,
@@ -45,7 +47,7 @@ const Table = ({
     totalRows,
 }: TableProps) => {
     const { t } = useTranslation();
-
+    console.log(filter);
     const COLUMNS: string[] = useMemo(
         () => [
             t("Name"),
@@ -131,6 +133,7 @@ const Table = ({
                             row={row}
                             onRemove={() => onRemove(row.id || 0)}
                             loading={loading}
+                            filter={filter}
                             onClick={() => {}}
                         />
                     ))}

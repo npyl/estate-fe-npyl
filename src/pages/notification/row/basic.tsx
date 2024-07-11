@@ -27,6 +27,7 @@ interface BasicRowProps {
     onRemove: () => void;
     onClick: () => void;
     loading: boolean;
+    filter: any;
 }
 
 const BasicRow = ({
@@ -34,6 +35,7 @@ const BasicRow = ({
     row,
     open,
     onToggle,
+    filter,
     onRemove,
     onClick,
     loading,
@@ -42,11 +44,17 @@ const BasicRow = ({
         useToggleNotificationViewedStatusMutation();
 
     const handleToggleRead = () => {
+        if (filter === "viewed") return;
+        if (filter === "notViewed") return;
         toggleNotificationViewedStatus(row.id!);
     };
 
     const handleToggleCollapsible = () => {
         onToggle();
+        // I HAVE TO PASS THE Filter here
+
+        if (filter === "viewed") return;
+        if (filter === "notViewed") return;
 
         if (!row.viewed) {
             toggleNotificationViewedStatus(row.id!);
@@ -70,32 +78,36 @@ const BasicRow = ({
                         </IconButton>
                     </Box>
 
-                    {row.viewed ? (
-                        <Tooltip
-                            title="Change to Not Seen "
-                            placement="top"
-                            enterDelay={800}
-                            leaveDelay={100}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            <ViewedNotificationIcon
-                                key={`viewed-${row.id}`}
-                                onClick={handleToggleRead}
-                            />
-                        </Tooltip>
-                    ) : (
-                        <Tooltip
-                            title="Change to Seen "
-                            placement="top"
-                            enterDelay={800}
-                            leaveDelay={100}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            <UnViewedNotificationIcon
-                                key={`unviewed-${row.id}`}
-                                onClick={handleToggleRead}
-                            />
-                        </Tooltip>
+                    {filter !== "viewed" && filter !== "notViewed" && (
+                        <>
+                            {row.viewed ? (
+                                <Tooltip
+                                    title="Change to Not Seen "
+                                    placement="top"
+                                    enterDelay={800}
+                                    leaveDelay={100}
+                                    sx={{ cursor: "pointer" }}
+                                >
+                                    <ViewedNotificationIcon
+                                        key={`viewed-${row.id}`}
+                                        onClick={handleToggleRead}
+                                    />
+                                </Tooltip>
+                            ) : (
+                                <Tooltip
+                                    title="Change to Seen "
+                                    placement="top"
+                                    enterDelay={800}
+                                    leaveDelay={100}
+                                    sx={{ cursor: "pointer" }}
+                                >
+                                    <UnViewedNotificationIcon
+                                        key={`unviewed-${row.id}`}
+                                        onClick={handleToggleRead}
+                                    />
+                                </Tooltip>
+                            )}
+                        </>
                     )}
                 </Stack>
             </TableCell>

@@ -26,12 +26,15 @@ interface TourRowProps {
     row: ContactNotification;
     onRemove: () => void;
     onClick: () => void;
+    filter: any;
     loading: boolean;
 }
 
-function TourRow({ row, onRemove, loading, onClick }: TourRowProps) {
+function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
+
+    console.log("filter: ", filter);
 
     // const [getAllProperties ] =
     const { data: property } = useGetPropertyByCodeQuery(row.propertyCode);
@@ -41,6 +44,7 @@ function TourRow({ row, onRemove, loading, onClick }: TourRowProps) {
             <BasicRow
                 row={row}
                 open={open}
+                filter={filter}
                 variant="showType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}

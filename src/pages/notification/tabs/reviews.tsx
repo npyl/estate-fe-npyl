@@ -50,6 +50,7 @@ const Reviews = ({ filter }: any) => {
                 sortBy={sortBy}
                 direction={direction}
                 page={page}
+                filter={filter}
                 pageSize={pageSize}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}

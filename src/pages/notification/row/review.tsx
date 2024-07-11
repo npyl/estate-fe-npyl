@@ -27,9 +27,16 @@ interface ReviewRowProps {
     onRemove: () => void;
     onClick: () => void;
     loading: boolean;
+    filter: any;
 }
 
-function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
+function ReviewRow({
+    row,
+    onRemove,
+    loading,
+    onClick,
+    filter,
+}: ReviewRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
     const { data: review, isLoading } = useGetNotificationByIdQuery(row.id!, {
@@ -50,6 +57,7 @@ function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
                 variant="showType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
+                filter={filter}
                 loading={loading}
                 onClick={onClick}
             />

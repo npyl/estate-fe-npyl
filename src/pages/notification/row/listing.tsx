@@ -23,6 +23,7 @@ interface ListingRowProps {
     row: ContactNotification;
     onRemove: () => void;
     onClick: () => void;
+    filter: any;
     loading: boolean;
 }
 
@@ -112,7 +113,13 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 };
 
-function ListingRow({ row, onRemove, loading, onClick }: ListingRowProps) {
+function ListingRow({
+    row,
+    onRemove,
+    loading,
+    onClick,
+    filter,
+}: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
 
     return (
@@ -124,6 +131,7 @@ function ListingRow({ row, onRemove, loading, onClick }: ListingRowProps) {
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 loading={loading}
+                filter={filter}
                 onClick={onClick}
             />
             {open ? <Collapsible id={row?.id} open={open} /> : null}

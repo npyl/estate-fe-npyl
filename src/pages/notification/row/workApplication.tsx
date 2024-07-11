@@ -22,6 +22,7 @@ interface ListingRowProps {
     onRemove: () => void;
     onClick: () => void;
     loading: boolean;
+    filter: any;
 }
 
 interface CollapsibleProps {
@@ -155,7 +156,13 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 };
 
-function WorkApplication({ row, onRemove, loading, onClick }: ListingRowProps) {
+function WorkApplication({
+    row,
+    onRemove,
+    loading,
+    onClick,
+    filter,
+}: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
 
     return (
@@ -166,6 +173,7 @@ function WorkApplication({ row, onRemove, loading, onClick }: ListingRowProps) {
                 variant="dontShowType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
+                filter={filter}
                 loading={loading}
                 onClick={onClick}
             />
