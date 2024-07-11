@@ -6,7 +6,7 @@ import Table from "../table";
 import { Box } from "@mui/material";
 import { useState } from "react";
 
-const Reviews = () => {
+const Reviews = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt"); // assuming 'createdAt' is a valid field to sort by
@@ -34,11 +34,17 @@ const Reviews = () => {
         setPage(0); // reset to the first page
     };
 
+    const filteredReviews =
+        reviews?.content?.filter((review) => {
+            if (filter === "viewed") return review.viewed === true;
+            if (filter === "notViewed") return review.viewed === false;
+            return true; //ALL
+        }) || [];
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
                 variant="REVIEW"
-                rows={reviews?.content || []}
+                rows={filteredReviews || []}
                 onRemove={handleRemove}
                 loading={isLoading}
                 sortBy={sortBy}

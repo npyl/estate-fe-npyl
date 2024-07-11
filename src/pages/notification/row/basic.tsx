@@ -71,16 +71,25 @@ const BasicRow = ({
                     </Box>
 
                     {row.viewed ? (
-                        <ViewedNotificationIcon
-                            key={`viewed-${row.id}`}
-                            onClick={handleToggleRead}
-                        />
+                        <Tooltip
+                            title="Change to Not Seen "
+                            placement="top"
+                            enterDelay={800}
+                            leaveDelay={100}
+                            sx={{ cursor: "pointer" }}
+                        >
+                            <ViewedNotificationIcon
+                                key={`viewed-${row.id}`}
+                                onClick={handleToggleRead}
+                            />
+                        </Tooltip>
                     ) : (
                         <Tooltip
                             title="Change to Seen "
                             placement="top"
                             enterDelay={800}
                             leaveDelay={100}
+                            sx={{ cursor: "pointer" }}
                         >
                             <UnViewedNotificationIcon
                                 key={`unviewed-${row.id}`}

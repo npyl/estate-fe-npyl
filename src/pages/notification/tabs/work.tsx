@@ -6,7 +6,7 @@ import Table from "../table";
 import { Box } from "@mui/material";
 import { useState } from "react";
 
-const WorkApplications = () => {
+const WorkApplications = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt"); // assuming 'createdAt' is a valid field to sort by
@@ -33,11 +33,18 @@ const WorkApplications = () => {
         setPageSize(parseInt(event.target.value, 10));
         setPage(0); // reset to the first page
     };
+
+    const filteredWorks =
+        works?.content?.filter((work) => {
+            if (filter === "viewed") return work.viewed === true;
+            if (filter === "notViewed") return work.viewed === false;
+            return true; //ALL
+        }) || [];
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
                 variant="WORK_FOR_US"
-                rows={works?.content || []}
+                rows={filteredWorks || []}
                 onRemove={handleRemove}
                 loading={isLoading}
                 sortBy={sortBy}

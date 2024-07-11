@@ -10,17 +10,14 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ContactNotification, NotificationType } from "src/types/notification";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 // rows
 import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
 import ReviewRow from "./row/review";
-import { selectAll } from "src/slices/filters";
-import { useSelector } from "react-redux";
 
 import { useMediaQuery } from "@mui/material";
-import { INotificationFilter } from "@/types/notification/notification";
 
 interface TableProps {
     variant: NotificationType;
@@ -41,8 +38,6 @@ const Table = ({
     rows,
     onRemove,
     loading,
-    sortBy,
-    direction,
     page,
     pageSize,
     onPageChange,

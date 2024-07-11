@@ -8,7 +8,7 @@ import { ContactNotification } from "@/types/notification";
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const Listings = () => {
+const Listings = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt"); // assuming 'createdAt' is a valid field to sort by
@@ -36,11 +36,18 @@ const Listings = () => {
         setPage(0); // reset to the first page
     };
 
+    const filteredListing =
+        listings?.content?.filter((listing) => {
+            if (filter === "viewed") return listing.viewed === true;
+            if (filter === "notViewed") return listing.viewed === false;
+            return true; //ALL
+        }) || [];
+
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
                 variant="LISTING"
-                rows={listings?.content || []}
+                rows={filteredListing || []}
                 onRemove={handleRemove}
                 loading={isLoading}
                 sortBy={sortBy}

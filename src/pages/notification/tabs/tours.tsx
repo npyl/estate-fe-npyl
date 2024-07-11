@@ -3,10 +3,10 @@ import {
     useFilterNotificationsQuery,
 } from "src/services/notification";
 import Table from "../table";
-import { Box } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const Tours = () => {
+const Tours = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt");
@@ -21,6 +21,8 @@ const Tours = () => {
         direction,
     });
 
+    console.log(tours?.content?.map((t) => t.viewed));
+
     const handleRemove = (id: number) => {
         deleteNotification(id);
     };
@@ -34,11 +36,18 @@ const Tours = () => {
         setPage(0); // reset to the first page
     };
 
+    const filteredTours =
+        tours?.content?.filter((tour) => {
+            if (filter === "viewed") return tour.viewed === true;
+            if (filter === "notViewed") return tour.viewed === false;
+            return true; //ALL
+        }) || [];
+
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
                 variant="CONTACT"
-                rows={tours?.content || []}
+                rows={filteredTours || []}
                 onRemove={handleRemove}
                 loading={isLoading}
                 sortBy={sortBy}
