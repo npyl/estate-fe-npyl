@@ -1,4 +1,4 @@
-import { Box, Divider } from "@mui/material";
+import { Divider } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
@@ -10,62 +10,51 @@ import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { SelectableItem } from "./MultiFilePreviewReorder";
 import { IPropertyImage } from "src/types/file";
 import usePropertyImages from "../hook";
-
-interface SeeMorePreviewProps {
-    selectMultiple: boolean;
-    selectedImages: string[];
-    compare: boolean;
-    compareImages: string[];
-    onImageClick: (i: IPropertyImage) => void;
-    onReorder: (keys: string[]) => void;
-    onReorderWithVisibility: (
-        imageKeys: string[],
-        imageKey: string,
-        hidden: boolean
-    ) => void;
-}
+import { ImagePreviewReorderProps } from "./types";
 
 const COLUMNS = 5;
+
+const compareImages = [];
 
 export const Over25ImagesPreview = ({
     selectMultiple,
     selectedImages,
     compare,
-    compareImages,
     onImageClick,
     onReorder,
     onReorderWithVisibility,
-}: SeeMorePreviewProps) => {
+}: ImagePreviewReorderProps) => {
     const { images: files } = usePropertyImages();
 
     const createItem = useCallback(
-        (image: IPropertyImage, index: number) => ({
-            id: image.id,
-            value: (
-                <SelectableItem
-                    selectMultiple={selectMultiple}
-                    compare={compare}
-                    selected={
-                        selectedImages.findIndex((key) => key === image.key) >
-                            -1 ||
-                        compareImages.findIndex((key) => key === image.key) > -1
-                    }
-                    image={image}
-                    index={index}
-                    onClick={() => onImageClick && onImageClick(image)}
-                />
-            ),
-        }),
-        [selectMultiple, selectedImages, compare, compareImages]
+        (image: IPropertyImage, index: number) => {
+            const isSelected =
+                selectedImages.findIndex((key) => key === image.key) > -1;
+
+            return {
+                id: image.id,
+                value: (
+                    <SelectableItem
+                        selectMultiple={selectMultiple}
+                        compare={compare}
+                        selected={isSelected}
+                        image={image}
+                        index={index}
+                        onClick={() => onImageClick(image)}
+                    />
+                ),
+            };
+        },
+        [selectMultiple, selectedImages, compare]
     );
 
     const publicImages = useMemo(
         () => files.filter((f) => !f.hidden).map(createItem),
-        [files, selectMultiple, selectedImages, compare, compareImages]
+        [files, createItem]
     );
     const privateImages = useMemo(
         () => files.filter((f) => f.hidden).map(createItem),
-        [files, selectMultiple, selectedImages, compare, compareImages]
+        [files, createItem]
     );
 
     const secondDndStartIndex = useMemo(

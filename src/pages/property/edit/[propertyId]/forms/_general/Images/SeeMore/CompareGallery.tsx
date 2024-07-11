@@ -6,27 +6,40 @@ import {
     Stack,
     DialogActions,
 } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import { IPropertyImage } from "src/types/file";
-import ComparisonFrame from "./ComparisonFrame";
-import ComparisonImage from "./ComparisonImage";
+import { ComparisonFrame, ComparisonImage } from "./styled";
+import usePropertyImages from "../hook";
 
 interface ICompareGallery {
     open: boolean;
-    image1: IPropertyImage;
-    image2: IPropertyImage;
-    onClose: () => void;
+    image1: string;
+    image2: string;
+    onClose: VoidFunction;
     setMain: (str: string) => void;
 }
 
 export const CompareGallery: React.FC<ICompareGallery> = (props) => {
-    const { open, image1, image2, onClose, setMain } = props;
+    const {
+        open,
+        image1: image1Key,
+        image2: image2Key,
+        onClose,
+        setMain,
+    } = props;
+
+    const { images } = usePropertyImages();
+
+    const { image1, image2 } = useMemo(
+        () => ({
+            image1: images.find(({ key }) => key === image1Key),
+            image2: images.find(({ key }) => key === image2Key),
+        }),
+        [images, image1Key, image2Key]
+    );
 
     const [selectedKey, setSelectedKey] = useState("");
-    const handleImageClick = (imageKey: string) => {
-        setSelectedKey(imageKey);
-    };
+
     const handleSetMain = () => {
         if (selectedKey) {
             setMain(selectedKey);
@@ -52,22 +65,18 @@ export const CompareGallery: React.FC<ICompareGallery> = (props) => {
             <DialogTitle>Comparison Window</DialogTitle>
             <DialogContent sx={{ padding: "0" }}>
                 <ComparisonFrame>
-                    {image1.url && image2.url && (
-                        <>
-                            <ComparisonImage
-                                isSelected={selectedKey === image1.key}
-                                src={image1.url}
-                                alt="image 1"
-                                onClick={() => handleImageClick(image1.key)}
-                            />
-                            <ComparisonImage
-                                isSelected={selectedKey === image2.key}
-                                src={image2.url}
-                                alt="image 1"
-                                onClick={() => handleImageClick(image2.key)}
-                            />
-                        </>
-                    )}
+                    <ComparisonImage
+                        isSelected={selectedKey === image1?.key}
+                        src={image1?.url || ""}
+                        alt="image 1"
+                        onClick={() => setSelectedKey(image1Key)}
+                    />
+                    <ComparisonImage
+                        isSelected={selectedKey === image2?.key}
+                        src={image2?.url || ""}
+                        alt="image 1"
+                        onClick={() => setSelectedKey(image2Key)}
+                    />
                 </ComparisonFrame>
             </DialogContent>
             <DialogActions

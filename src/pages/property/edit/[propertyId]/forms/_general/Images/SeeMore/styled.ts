@@ -1,11 +1,19 @@
 import { styled } from "@mui/material/styles";
 import { ImgHTMLAttributes } from "react";
 
+export const ComparisonFrame = styled("div")(() => ({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    minHeight: "40vh",
+}));
+
 interface ComparisonImageProps extends ImgHTMLAttributes<HTMLImageElement> {
     isSelected: boolean;
 }
 
-const ComparisonImage = styled("img")<ComparisonImageProps>(
+export const ComparisonImage = styled("img")<ComparisonImageProps>(
     ({ theme, isSelected }) => ({
         width: "100%",
         maxWidth: "45%",
@@ -17,5 +25,3 @@ const ComparisonImage = styled("img")<ComparisonImageProps>(
         cursor: "pointer", // Make the images clickable
     })
 );
-
-export default ComparisonImage;

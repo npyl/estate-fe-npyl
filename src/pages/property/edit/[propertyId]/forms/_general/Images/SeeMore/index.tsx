@@ -1,15 +1,11 @@
-import { Lock, LockOpen } from "@mui/icons-material";
 import {
-    Box,
     Dialog,
     DialogContent,
     DialogTitle,
     Divider,
-    IconButton,
     Typography,
 } from "@mui/material";
 import { useCallback, useState } from "react";
-import { SoftButton } from "src/components/SoftButton";
 import MultiFilePreviewReorder from "./MultiFilePreviewReorder";
 import { IPropertyImage } from "src/types/file";
 import { Over25ImagesPreview } from "./SeeMorePreview";
@@ -19,10 +15,11 @@ import {
     useReorderPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 } from "src/services/properties";
-import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { CompareGallery } from "./CompareGallery";
 import usePropertyImages from "../hook";
 import { styled } from "@mui/material/styles";
+import Controls from "./Controls";
+import useDialog from "@/hooks/useDialog";
 
 const StyledTitle = styled(DialogTitle)({
     position: "fixed",
@@ -53,56 +50,24 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
     const [reorderImagesWithVisibility] =
         useReorderPropertyImagesWithSetImageVisibilityMutation();
 
-    const [selectMultiple, setSelectMultiple] = useState(false);
+    const [mode, setMode] = useState<"" | "multiple" | "compare">("");
+
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
-    const toggleSelectMultiple = () => setSelectMultiple(!selectMultiple);
+    const toggleMultiple = () =>
+        setMode((old) => (old === "multiple" ? "" : "multiple"));
 
-    const [compare, setCompare] = useState(false);
-    const [compareImages, setCompareImages] = useState<string[]>([]); // keys
-    const [compareImage1, setCompareImage1] = useState<IPropertyImage | null>(
-        null
-    );
-    const [compareImage2, setCompareImage2] = useState<IPropertyImage | null>(
-        null
-    );
-
-    const [compareGalleryOpen, setCompareGalleryOpen] = useState(false);
-    const toggleCompare = () => setCompare(!compare);
-    const closeCompareGallery = () => setCompareGalleryOpen(false);
-
-    const handleCompareBtnClick = () => {
-        setCompareImage1(
-            images.find((image) => image.key === compareImages[0]) || null
-        );
-        setCompareImage2(
-            images.find((image) => image.key === compareImages[1]) || null
-        );
-        setCompareGalleryOpen(true);
-    };
+    const [isCompareOpen, openCompareDialog, closeCompareDialog] = useDialog();
+    const toggleCompare = () =>
+        setMode((old) => (old === "compare" ? "" : "compare"));
 
     const handleImageClick = (image: IPropertyImage) => {
-        if (selectMultiple) {
-            setSelectedImages((oldSelectedImages) => {
-                const alreadySelected = oldSelectedImages.includes(image.key);
+        setSelectedImages((oldSelectedImages) => {
+            const alreadySelected = oldSelectedImages.includes(image.key);
 
-                return alreadySelected
-                    ? oldSelectedImages.filter((key) => key !== image.key) // remove
-                    : [...oldSelectedImages, image.key]; // add
-            });
-        } else if (compare) {
-            if (compareImages.includes(image.key)) {
-                // If the image.key is already in the array, remove it
-                setCompareImages((prevImages) =>
-                    prevImages.filter((key) => key !== image.key)
-                );
-            } else if (compareImages.length < 2) {
-                // If less than 2 images are selected, add the new image
-                setCompareImages((prevImages) => [...prevImages, image.key]);
-            } else {
-                // Replace the first selected image with the new image, and keep the second selected image as is
-                setCompareImages((prevImages) => [prevImages[1], image.key]);
-            }
-        }
+            return alreadySelected
+                ? oldSelectedImages.filter((key) => key !== image.key) // remove
+                : [...oldSelectedImages, image.key]; // add
+        });
     };
 
     const onSetMain = (key: string) => {
@@ -154,15 +119,12 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         return "";
     }, [images, selectedImages]);
 
-    const handleBulkDelete = useCallback(
-        () =>
-            bulkDeleteImages({
-                propertyId: +propertyId!,
-                imageKeys: selectedImages,
-                newThumbnailKey: findNextAvailableThumbnail(),
-            }),
-        [selectedImages]
-    );
+    const handleBulkDelete = () =>
+        bulkDeleteImages({
+            propertyId: +propertyId!,
+            imageKeys: selectedImages,
+            newThumbnailKey: findNextAvailableThumbnail(),
+        });
 
     const handleMakePublic = () => handleBulkChangeVisibility(false);
     const handleMakePrivate = () => handleBulkChangeVisibility(true);
@@ -185,79 +147,26 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 }}
             >
                 <StyledTitle>
-                    <Box>
+                    <Typography>
                         Edit{" "}
-                        {selectMultiple
+                        {mode === "multiple"
                             ? `(${selectedImages.length} selected)`
                             : ""}
-                    </Box>
+                    </Typography>
 
-                    <Box display="flex" alignItems="center" gap={1}>
-                        {selectMultiple && selectedImages.length > 0 && (
-                            <>
-                                <Typography mr={1}>Make</Typography>
-                                <SoftButton
-                                    startIcon={<LockOpen />}
-                                    onClick={handleMakePublic}
-                                >
-                                    Public
-                                </SoftButton>
-                                <SoftButton
-                                    startIcon={<Lock />}
-                                    onClick={handleMakePrivate}
-                                >
-                                    Private
-                                </SoftButton>
-                                <SoftButton
-                                    color="error"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={handleBulkDelete}
-                                >
-                                    Delete
-                                </SoftButton>
-                            </>
-                        )}
-                        {compare === false && (
-                            <>
-                                <Divider orientation="vertical" />
-                                <SoftButton
-                                    onClick={toggleSelectMultiple}
-                                    variant="outlined"
-                                    color={selectMultiple ? "error" : "primary"}
-                                >
-                                    {selectMultiple
-                                        ? "Cancel Select"
-                                        : "Select Multiple"}
-                                </SoftButton>
-                            </>
-                        )}
-                        {compare === true && compareImages.length === 2 && (
-                            <>
-                                <SoftButton
-                                    color="primary"
-                                    onClick={handleCompareBtnClick}
-                                >
-                                    Compare
-                                </SoftButton>
-                            </>
-                        )}
-                        {selectMultiple === false && (
-                            <>
-                                <Divider orientation="vertical" />
-                                <SoftButton
-                                    onClick={toggleCompare}
-                                    variant="outlined"
-                                    color={compare ? "error" : "primary"}
-                                >
-                                    {compare ? "Close" : "Compare Mode"}
-                                </SoftButton>
-                            </>
-                        )}
-
-                        <IconButton onClick={onClose}>
-                            <CloseIcon />
-                        </IconButton>
-                    </Box>
+                    <Controls
+                        mode={mode}
+                        selectedImages={selectedImages.length}
+                        // ...
+                        onToggleCompare={toggleCompare}
+                        onToggleMultiple={toggleMultiple}
+                        onMakePublic={handleMakePublic}
+                        onMakePrivate={handleMakePrivate}
+                        // ...
+                        onCompare={openCompareDialog}
+                        onBulkDelete={handleBulkDelete}
+                        onClose={onClose}
+                    />
                 </StyledTitle>
                 <Divider />
                 <DialogContent
@@ -269,10 +178,10 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 >
                     {images.length > 25 ? (
                         <Over25ImagesPreview
-                            selectMultiple={selectMultiple}
+                            compare={mode === "compare"}
+                            selectMultiple={mode === "multiple"}
+                            // ...
                             selectedImages={selectedImages}
-                            compare={compare}
-                            compareImages={compareImages}
                             onImageClick={handleImageClick}
                             onReorder={handleReorder}
                             onReorderWithVisibility={
@@ -281,10 +190,10 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                         />
                     ) : (
                         <MultiFilePreviewReorder
-                            selectMultiple={selectMultiple}
+                            selectMultiple={mode === "multiple"}
+                            compare={mode === "compare"}
                             selectedImages={selectedImages}
-                            compare={compare}
-                            compareImages={compareImages}
+                            // ...
                             columns={5}
                             thumbnail={false}
                             onImageClick={handleImageClick}
@@ -294,15 +203,15 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 </DialogContent>
             </Dialog>
 
-            {compareImage1 && compareImage2 && (
+            {isCompareOpen ? (
                 <CompareGallery
-                    open={compareGalleryOpen}
-                    image1={compareImage1}
-                    image2={compareImage2}
-                    onClose={closeCompareGallery}
+                    open={isCompareOpen}
+                    image1={selectedImages[0]}
+                    image2={selectedImages[1]}
+                    onClose={closeCompareDialog}
                     setMain={onSetMain}
                 />
-            )}
+            ) : null}
         </>
     );
 };
