@@ -6,7 +6,7 @@ import {
     parseRowId,
 } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
-import usePropertyImages from "../../hook";
+import usePropertyImages from "../../../hook";
 import { DndItem } from "./types";
 
 interface MultiFilePreviewReorder {

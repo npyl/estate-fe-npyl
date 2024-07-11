@@ -3,7 +3,6 @@ import {
     DialogTitle,
     DialogContent,
     Button,
-    Stack,
     DialogActions,
 } from "@mui/material";
 import { useMemo, useState } from "react";
@@ -11,22 +10,40 @@ import { useMemo, useState } from "react";
 import { ComparisonFrame, ComparisonImage } from "./styled";
 import usePropertyImages from "../hook";
 
+import { styled } from "@mui/material/styles";
+import { useReorderPropertyImagesMutation } from "@/services/properties/file";
+import { useRouter } from "next/router";
+
+const StyledDialog = styled(Dialog)({
+    "& .MuiDialog-container": {
+        "& .MuiPaper-root": {
+            minWidth: "90vw",
+        },
+    },
+});
+const StyledActions = styled(DialogActions)(({ theme }) => ({
+    float: "right",
+    display: "flex",
+    flexDirection: "row",
+    gap: theme.spacing(1),
+    justifyContent: "right",
+}));
+
 interface ICompareGallery {
     open: boolean;
     image1: string;
     image2: string;
     onClose: VoidFunction;
-    setMain: (str: string) => void;
 }
 
-export const CompareGallery: React.FC<ICompareGallery> = (props) => {
-    const {
-        open,
-        image1: image1Key,
-        image2: image2Key,
-        onClose,
-        setMain,
-    } = props;
+export const CompareGallery: React.FC<ICompareGallery> = ({
+    open,
+    image1: image1Key,
+    image2: image2Key,
+    onClose,
+}) => {
+    const router = useRouter();
+    const { propertyId } = router.query;
 
     const { images } = usePropertyImages();
 
@@ -38,32 +55,36 @@ export const CompareGallery: React.FC<ICompareGallery> = (props) => {
         [images, image1Key, image2Key]
     );
 
+    const [reorderImages] = useReorderPropertyImagesMutation();
+
     const [selectedKey, setSelectedKey] = useState("");
+
+    const allKeys = useMemo(() => images.map((file) => file.key), [images]);
 
     const handleSetMain = () => {
         if (selectedKey) {
-            setMain(selectedKey);
+            const keyIndex = allKeys.indexOf(selectedKey);
+
+            // Move the selected key to the front and reorder the keys array
+            const reorderedKeys = [
+                selectedKey,
+                ...allKeys.slice(0, keyIndex),
+                ...allKeys.slice(keyIndex + 1),
+            ];
+
+            reorderImages({
+                id: +propertyId!,
+                body: reorderedKeys,
+            });
         } else {
             alert("Please Select an Image to set as Main Thumbnail");
         }
     };
 
     return (
-        <Dialog
-            fullWidth
-            open={open}
-            sx={{
-                "& .MuiDialog-container": {
-                    "& .MuiPaper-root": {
-                        minWidth: "90vw",
-                    },
-                },
-            }}
-            onClose={onClose}
-            closeAfterTransition={true}
-        >
+        <StyledDialog open={open} onClose={onClose} closeAfterTransition={true}>
             <DialogTitle>Comparison Window</DialogTitle>
-            <DialogContent sx={{ padding: "0" }}>
+            <DialogContent sx={{ padding: 0 }}>
                 <ComparisonFrame>
                     <ComparisonImage
                         isSelected={selectedKey === image1?.key}
@@ -79,28 +100,18 @@ export const CompareGallery: React.FC<ICompareGallery> = (props) => {
                     />
                 </ComparisonFrame>
             </DialogContent>
-            <DialogActions
-                sx={{
-                    float: "right",
-                }}
-            >
-                <Stack direction={"row"} justifyContent={"right"} spacing={1}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSetMain}
-                    >
-                        Set Main
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={onClose}
-                    >
-                        Close
-                    </Button>
-                </Stack>
-            </DialogActions>
-        </Dialog>
+            <StyledActions>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSetMain}
+                >
+                    Set Main
+                </Button>
+                <Button variant="outlined" color="secondary" onClick={onClose}>
+                    Close
+                </Button>
+            </StyledActions>
+        </StyledDialog>
     );
 };

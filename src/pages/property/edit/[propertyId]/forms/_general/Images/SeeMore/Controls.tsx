@@ -5,13 +5,15 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Lock, LockOpen } from "@mui/icons-material";
+import {
+    useBulkDeletePropertyImagesMutation,
+    useBulkEditPropertyImagesMutation,
+} from "@/services/properties/file";
+import { useRouter } from "next/router";
 
 interface ControlsProps {
     mode: "" | "multiple" | "compare";
-    selectedImages: number;
-    onMakePublic: VoidFunction;
-    onMakePrivate: VoidFunction;
-    onBulkDelete: VoidFunction;
+    selectedImages: string[];
     onToggleCompare: VoidFunction;
     onToggleMultiple: VoidFunction;
     onCompare: VoidFunction;
@@ -22,31 +24,57 @@ const Controls: React.FC<ControlsProps> = ({
     mode,
     selectedImages,
     // ...
-    onMakePublic,
-    onMakePrivate,
-    onBulkDelete,
-    // ...
     onToggleCompare,
     onToggleMultiple,
     // ...
     onCompare,
     onClose,
 }) => {
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const [bulkEditImages] = useBulkEditPropertyImagesMutation();
+    const [bulkDeleteImages] = useBulkDeletePropertyImagesMutation();
+
+    const handleBulkChangeVisibility = (hidden: boolean) =>
+        bulkEditImages({
+            propertyId: +propertyId!,
+            body: {
+                imageKeys: selectedImages,
+                hidden,
+            },
+        });
+
+    const handleMakePublic = () => handleBulkChangeVisibility(false);
+    const handleMakePrivate = () => handleBulkChangeVisibility(true);
+
+    const handleBulkDelete = () =>
+        bulkDeleteImages({
+            propertyId: +propertyId!,
+            imageKeys: selectedImages,
+        });
+
     return (
         <Stack direction="row" alignItems="center" gap={1}>
-            {mode === "multiple" && selectedImages > 0 ? (
+            {mode === "multiple" && selectedImages.length > 0 ? (
                 <>
                     <Typography mr={1}>Make</Typography>
-                    <SoftButton startIcon={<LockOpen />} onClick={onMakePublic}>
+                    <SoftButton
+                        startIcon={<LockOpen />}
+                        onClick={handleMakePublic}
+                    >
                         Public
                     </SoftButton>
-                    <SoftButton startIcon={<Lock />} onClick={onMakePrivate}>
+                    <SoftButton
+                        startIcon={<Lock />}
+                        onClick={handleMakePrivate}
+                    >
                         Private
                     </SoftButton>
                     <SoftButton
                         color="error"
                         startIcon={<DeleteIcon />}
-                        onClick={onBulkDelete}
+                        onClick={handleBulkDelete}
                     >
                         Delete
                     </SoftButton>
@@ -66,7 +94,7 @@ const Controls: React.FC<ControlsProps> = ({
                     </SoftButton>
                 </>
             )}
-            {mode === "compare" && selectedImages === 2 ? (
+            {mode === "compare" && selectedImages.length === 2 ? (
                 <SoftButton color="primary" onClick={onCompare}>
                     Compare
                 </SoftButton>

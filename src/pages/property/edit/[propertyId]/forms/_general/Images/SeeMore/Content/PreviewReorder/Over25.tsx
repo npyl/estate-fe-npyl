@@ -1,14 +1,14 @@
 import { Divider } from "@mui/material";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
     parseItemId,
     parseRowId,
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
-import { TwoDimentionsDndNoContext } from "src/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
+import { TwoDimentionsDndNoContext } from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
 import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { DndItem } from "./types";
-import usePropertyImages from "../../hook";
+import usePropertyImages from "../../../hook";
 
 const COLUMNS = 5;
 
@@ -23,7 +23,7 @@ interface ImagePreviewReorderProps {
     ) => void;
 }
 
-export const Over25ImagesPreview = ({
+const Over25ImagesPreview = ({
     publicImages,
     privateImages,
     onReorder,
@@ -121,3 +121,5 @@ export const Over25ImagesPreview = ({
         </DragDropContext>
     );
 };
+
+export default Over25ImagesPreview;

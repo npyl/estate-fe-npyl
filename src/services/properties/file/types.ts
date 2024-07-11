@@ -24,5 +24,4 @@ export interface IDeleteFileProps {
 export interface BulkDeletePropertyImagesParams {
     propertyId: number;
     imageKeys: string[];
-    newThumbnailKey: string;
 }
