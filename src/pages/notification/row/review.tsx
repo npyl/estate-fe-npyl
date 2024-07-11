@@ -1,6 +1,7 @@
 import {
     Box,
     Collapse,
+    Rating,
     Table,
     TableBody,
     TableCell,
@@ -16,6 +17,7 @@ import {
     useGetNotificationByIdQuery,
     useGetNotificationsQuery,
 } from "@/services/notification";
+import { CodeBadge } from "../components/CodeBadge";
 
 interface ReviewRowProps {
     row: ContactNotification;
@@ -48,11 +50,18 @@ function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
             />
             <TableRow>
                 <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
+                    style={{
+                        padding: 0,
+                    }}
                     colSpan={7}
                 >
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
+                    <Collapse
+                        in={open}
+                        timeout="auto"
+                        unmountOnExit
+                        sx={{ backgroundColor: "neutral.100" }}
+                    >
+                        <Box sx={{ margin: 1, pb: 2 }}>
                             <Table
                                 size="small"
                                 sx={{
@@ -83,16 +92,65 @@ function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
                                 </TableHead>
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell>{review?.name}</TableCell>
-                                        <TableCell>{review?.email}</TableCell>
-                                        <TableCell align="center">
-                                            {row?.propertyCode}
+                                        <TableCell>
+                                            <CodeBadge
+                                                name={`${t("")} ${
+                                                    review?.name || ""
+                                                }`}
+                                                color={"#3366ff"}
+                                                sx={{
+                                                    fontWeight: "bold",
+                                                    color: "aliceblue",
+                                                    width: "100%",
+                                                }}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <CodeBadge
+                                                name={`${t("")} ${
+                                                    review?.email || ""
+                                                }`}
+                                                color={"#3366ff"}
+                                                sx={{
+                                                    fontWeight: "bold",
+                                                    color: "aliceblue",
+                                                    width: "100%",
+                                                }}
+                                            />
                                         </TableCell>
                                         <TableCell align="center">
-                                            {review?.presentationRating}
+                                            <CodeBadge
+                                                name={`${t("")} ${
+                                                    row?.propertyCode || ""
+                                                }`}
+                                                color={"#3366ff"}
+                                                sx={{
+                                                    fontWeight: "bold",
+                                                    color: "aliceblue",
+                                                    width: "55%",
+                                                }}
+                                            />
                                         </TableCell>
-                                        <TableCell align="center">
-                                            {review?.propertyRating}
+                                        <TableCell align="left">
+                                            <Rating
+                                                name="property-rating"
+                                                value={
+                                                    review?.presentationRating ||
+                                                    0
+                                                }
+                                                readOnly
+                                                precision={0.5}
+                                            />
+                                        </TableCell>
+                                        <TableCell align="left">
+                                            <Rating
+                                                name="property-rating"
+                                                value={
+                                                    review?.propertyRating || 0
+                                                }
+                                                readOnly
+                                                precision={0.5}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>

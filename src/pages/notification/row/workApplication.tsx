@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     Collapse,
     Table,
@@ -6,6 +7,7 @@ import {
     TableCell,
     TableHead,
     TableRow,
+    Typography,
 } from "@mui/material";
 import { Fragment, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,21 +49,18 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 
     const handleOpenPDF = useCallback(() => {
-        // Check if we have the attachment
         const attachment = workForUs?.attachments;
         if (!attachment) {
             console.error("No attachment found.");
             return;
         }
 
-        // Extract the base64 encoded data
         const base64Data = attachment.split("base64,")[1];
         if (!base64Data) {
             console.error("Invalid attachment data.");
             return;
         }
 
-        // Convert base64 to binary
         const binaryString = window.atob(base64Data);
         const len = binaryString.length;
         const bytes = new Uint8Array(len);
@@ -69,52 +68,51 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
             bytes[i] = binaryString.charCodeAt(i);
         }
 
-        // Create a Blob from the PDF bytes
         const blob = new Blob([bytes], { type: "application/pdf" });
-        // Generate a URL for the Blob
         const blobUrl = URL.createObjectURL(blob);
 
-        // Create an anchor element and trigger a download
         const a = document.createElement("a");
         a.href = blobUrl;
-        a.download = "attachment.pdf"; // You can name the download file here
-        document.body.appendChild(a); // Append the anchor to body
-        a.click(); // Trigger a click on the element
-        document.body.removeChild(a); // Clean up
+        a.download = "attachment.pdf";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
 
-        // If you prefer to open the PDF in a new tab, you can use this instead:
+        // To open the PDF in a new tab, uncomment the following line:
         // window.open(blobUrl, '_blank');
     }, [workForUs?.attachments]);
 
     return (
         <TableRow>
-            <TableCell
-                style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
-                colSpan={6}
-            >
-                <Collapse
-                    in={open}
-                    timeout="auto"
-                    unmountOnExit
-                    sx={{
-                        p: 2,
-                        height: "auto",
-                    }}
-                >
+            <TableCell colSpan={6} style={{ padding: 0 }}>
+                <Collapse in={open} timeout="auto" unmountOnExit sx={{ p: 2 }}>
                     <Table
                         size="small"
                         sx={{
                             "& .MuiTableCell-root": {
                                 borderBottom: "none",
                                 borderRadius: "0px",
+                                padding: "10px",
                             },
                         }}
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>{t("Positions")}</TableCell>
-                                <TableCell>{t("Work Regions")}</TableCell>
-                                <TableCell>{t("Attachment")}</TableCell>
+                                <TableCell>
+                                    <Typography variant="subtitle2">
+                                        {t("Positions")}
+                                    </Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography variant="subtitle2">
+                                        {t("Work Regions")}
+                                    </Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography variant="subtitle2">
+                                        {t("Attachment")}
+                                    </Typography>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -124,20 +122,27 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                                         ? Object.entries(workForUs?.positions)
                                               .filter(([key, value]) => !!value)
                                               .map(([key], i) => (
-                                                  <div key={i}>
+                                                  <Typography
+                                                      key={i}
+                                                      variant="body2"
+                                                  >
                                                       {i + 1}. {key}
-                                                  </div>
+                                                  </Typography>
                                               ))
                                         : null}
                                 </TableCell>
-                                <TableCell>{workRegion}</TableCell>
+                                <TableCell>
+                                    <Typography variant="body2">
+                                        {workRegion}
+                                    </Typography>
+                                </TableCell>
                                 <TableCell>
                                     {workForUs?.attachments ? (
                                         <Button
                                             startIcon={<DocumentSvg />}
                                             onClick={handleOpenPDF}
                                         >
-                                            Download PDF
+                                            {t("Download PDF")}
                                         </Button>
                                     ) : null}
                                 </TableCell>

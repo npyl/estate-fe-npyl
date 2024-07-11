@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
 import BasicRow, { getDate } from "./basic";
-
+import { NormalBadge } from "@/components/PropertyCard/styled";
+import { CodeBadge } from "../components/CodeBadge";
 type TourType = "inPerson" | "inVideo";
 
 const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
@@ -41,17 +42,29 @@ function TourRow({ row, onRemove, loading, onClick }: TourRowProps) {
             />
             <TableRow>
                 <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
+                    style={{
+                        padding: 0,
+                    }}
                     colSpan={7}
                 >
-                    <Collapse in={open} timeout="auto">
-                        <Box sx={{ margin: 1 }}>
+                    <Collapse
+                        in={open}
+                        timeout="auto"
+                        unmountOnExit
+                        sx={{ p: 2, backgroundColor: "neutral.100" }}
+                    >
+                        <Box
+                            sx={{
+                                margin: 1,
+                            }}
+                        >
                             <Table
                                 size="small"
                                 sx={{
                                     "& .MuiTableCell-root": {
                                         borderBottom: "none",
                                         borderRadius: "0px",
+                                        padding: "10px",
                                     },
                                 }}
                             >
@@ -80,9 +93,33 @@ function TourRow({ row, onRemove, loading, onClick }: TourRowProps) {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell>
-                                            {row.propertyCode}
+                                            <CodeBadge
+                                                name={`${t("")} ${
+                                                    row.propertyCode || ""
+                                                }`}
+                                                color={"#3366ff"}
+                                                sx={{
+                                                    fontWeight: "bold",
+                                                    color: "aliceblue",
+                                                    width: "25%",
+                                                }}
+                                            />
                                         </TableCell>
-                                        <TableCell>{row.message}</TableCell>
+                                        <TableCell align="left">
+                                            {row.message ? (
+                                                <CodeBadge
+                                                    name={`${t("")} ${
+                                                        row.message
+                                                    }`}
+                                                    color={"#3366ff"}
+                                                    sx={{
+                                                        fontWeight: "bold",
+                                                        color: "aliceblue",
+                                                        width: "27%",
+                                                    }}
+                                                />
+                                            ) : null}
+                                        </TableCell>
 
                                         {/* Show only if we have live tour */}
                                         {isLiveTour(
@@ -90,10 +127,32 @@ function TourRow({ row, onRemove, loading, onClick }: TourRowProps) {
                                         ) ? (
                                             <>
                                                 <TableCell>
-                                                    {getDate(row.tourDate)}
+                                                    <CodeBadge
+                                                        name={`${t("")} ${
+                                                            getDate(
+                                                                row.tourDate
+                                                            ) || ""
+                                                        }`}
+                                                        color={"#3366ff"}
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                            color: "aliceblue",
+                                                            width: "35%",
+                                                        }}
+                                                    />
                                                 </TableCell>
                                                 <TableCell>
-                                                    {row.tourTime}
+                                                    <CodeBadge
+                                                        name={`${t("")} ${
+                                                            row.tourTime
+                                                        }`}
+                                                        color={"#3366ff"}
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                            color: "aliceblue",
+                                                            width: "35%",
+                                                        }}
+                                                    />
                                                 </TableCell>
                                             </>
                                         ) : null}

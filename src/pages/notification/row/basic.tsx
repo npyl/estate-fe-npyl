@@ -97,6 +97,7 @@ const BasicRow = ({
                     overflow: "auto",
                     alignItems: "center",
                     gap: 1,
+                    fontWeight: "600",
                 }}
                 component="th"
                 scope="row"
@@ -104,17 +105,28 @@ const BasicRow = ({
                 {row.customerName}
             </TableCell>
             <TableCell
-                sx={{ textOverflow: "ellipsis", overflow: "auto" }}
+                sx={{
+                    textOverflow: "ellipsis",
+                    overflow: "auto",
+                    fontWeight: "600",
+                }}
                 align="center"
             >
                 {row.customerEmail}
             </TableCell>
-            <TableCell align="center">{row.customerMobile}</TableCell>
-            <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+            <TableCell align="center" sx={{ fontWeight: "600" }}>
+                {row.customerMobile}
+            </TableCell>
+            <TableCell
+                align="right"
+                sx={{ textWrap: "nowrap", fontWeight: "600" }}
+            >
                 {getDate(row.notificationDate)}
             </TableCell>
             {variant === "showType" ? (
-                <TableCell align="right">{row.tourType}</TableCell>
+                <TableCell align="right" sx={{ fontWeight: "600" }}>
+                    {row.tourType}
+                </TableCell>
             ) : null}
             <TableCell align="right">
                 <IconButton onClick={onRemove} disabled={loading}>

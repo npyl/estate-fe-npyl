@@ -2,12 +2,14 @@ import {
     Box,
     Collapse,
     Skeleton,
+    Stack,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
     TableRowProps,
+    Typography,
 } from "@mui/material";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,18 +43,18 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     });
 
     return (
-        <TableRow>
+        <TableRow sx={{ backgroundColor: "neutral.100" }}>
             <TableCell
                 style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
-                colSpan={6}
+                colSpan={7}
             >
                 <Collapse
                     in={open}
                     timeout="auto"
                     unmountOnExit
                     sx={{
-                        p: 2,
-                        height: "600px",
+                        p: 0,
+                        height: "640px",
                     }}
                 >
                     <Table
@@ -66,14 +68,22 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>{t("Title")}</TableCell>
-                                <TableCell>{t("Description")}</TableCell>
+                                <TableCell>{t("")}</TableCell>
+                                <TableCell>{t("")}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell>{listing?.title}</TableCell>
-                                <TableCell>{listing?.description}</TableCell>
+                                <TableCell>
+                                    <Stack gap={1}>
+                                        <Typography
+                                            textAlign="center"
+                                            fontWeight="bold"
+                                        >
+                                            {listing?.title}
+                                        </Typography>
+                                    </Stack>
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -85,8 +95,14 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                             display={"flex"}
                             flexDirection={"row"}
                             justifyContent={"center"}
+                            marginInline={8}
                             height={"100%"}
+                            sx={{ mt: 4, gap: 7 }}
                         >
+                            <Box width={"15%"} alignContent={"center"}>
+                                {listing?.description}
+                            </Box>
+
                             <ListingCard item={listing} />
                         </Box>
                     )}
