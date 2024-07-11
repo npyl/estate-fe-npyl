@@ -7,6 +7,7 @@ import {
     TableCell,
     TableHead,
     TableRow,
+    Typography,
 } from "@mui/material";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,8 @@ import {
     useGetNotificationsQuery,
 } from "@/services/notification";
 import { CodeBadge } from "../components/CodeBadge";
+import Link from "next/link";
+import { useGetPropertyByCodeQuery } from "@/services/properties";
 
 interface ReviewRowProps {
     row: ContactNotification;
@@ -36,6 +39,8 @@ function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
             isLoading,
         }),
     });
+
+    const { data: property } = useGetPropertyByCodeQuery(row.propertyCode);
 
     return (
         <Fragment>
@@ -119,17 +124,40 @@ function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
                                             />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <CodeBadge
-                                                name={`${t("")} ${
-                                                    row?.propertyCode || ""
-                                                }`}
-                                                color={"#3366ff"}
-                                                sx={{
-                                                    fontWeight: "bold",
-                                                    color: "aliceblue",
-                                                    width: "55%",
+                                            <Link
+                                                style={{
+                                                    textDecoration: "none",
                                                 }}
-                                            />
+                                                href={`/property/${property?.id}`}
+                                                passHref
+                                            >
+                                                <Typography
+                                                    component="a"
+                                                    sx={{
+                                                        textDecoration: "none",
+                                                        color: "aliceblue",
+                                                        "&:hover": {
+                                                            color: "black",
+                                                        },
+                                                    }}
+                                                >
+                                                    <CodeBadge
+                                                        name={`${t("")} ${
+                                                            row.propertyCode ||
+                                                            ""
+                                                        }`}
+                                                        color={"#3366ff"}
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                            color: "aliceblue",
+                                                            width: "75%",
+                                                            "&:hover": {
+                                                                opacity: 1.1,
+                                                            },
+                                                        }}
+                                                    />
+                                                </Typography>
+                                            </Link>
                                         </TableCell>
                                         <TableCell align="left">
                                             <Rating
