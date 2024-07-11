@@ -2,7 +2,14 @@ import {
     KeyboardArrowDown as KeyboardArrowDownIcon,
     KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@mui/icons-material";
-import { Box, IconButton, Stack, TableCell, TableRow } from "@mui/material";
+import {
+    Box,
+    IconButton,
+    Stack,
+    TableCell,
+    TableRow,
+    Tooltip,
+} from "@mui/material";
 import Iconify from "src/components/iconify";
 import { ContactNotification } from "src/types/notification";
 import ViewedNotificationIcon from "../components/ViewedNotificationIcon";
@@ -69,10 +76,17 @@ const BasicRow = ({
                             onClick={handleToggleRead}
                         />
                     ) : (
-                        <UnViewedNotificationIcon
-                            key={`unviewed-${row.id}`}
-                            onClick={handleToggleRead}
-                        />
+                        <Tooltip
+                            title="Change to Seen "
+                            placement="top"
+                            enterDelay={800}
+                            leaveDelay={100}
+                        >
+                            <UnViewedNotificationIcon
+                                key={`unviewed-${row.id}`}
+                                onClick={handleToggleRead}
+                            />
+                        </Tooltip>
                     )}
                 </Stack>
             </TableCell>
