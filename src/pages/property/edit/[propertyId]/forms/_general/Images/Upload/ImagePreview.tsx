@@ -20,7 +20,12 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
 
     if (url) {
         return (
-            <motion.div whileHover={{ scale: 0.95, cursor: "pointer" }}>
+            <motion.div
+                whileHover={{
+                    scale: 0.95,
+                    cursor: "pointer",
+                }}
+            >
                 <LabeledImage
                     src={url}
                     label={thumbnail ? "main" : ""}

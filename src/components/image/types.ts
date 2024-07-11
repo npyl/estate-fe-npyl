@@ -33,6 +33,6 @@ export interface IPreviewImageProps extends ImageProps {
     animate?: boolean;
 }
 
-export interface UploadImageProps extends IPreviewImageProps {
+export interface UploadImageProps extends Omit<IPreviewImageProps, "src"> {
     progress: number;
 }

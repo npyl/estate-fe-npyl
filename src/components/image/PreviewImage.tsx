@@ -6,11 +6,10 @@ const PreviewImage = ({
     animate = false,
     // INFO: ignore the ref, please do not pass it to Image
     ref,
-    sx,
     ...props
 }: IPreviewImageProps) => (
-    <div style={{ position: "relative", display: "inline-block" }}>
-        <Image sx={sx} {...props} />
+    <div style={{ position: "relative" }}>
+        <Image {...props} />
         {animate && (
             <CircularProgress
                 sx={{

@@ -40,7 +40,6 @@ const UploadImage = ({
     animate = false,
     progress,
     ref,
-    sx,
     ...props
 }: UploadImageProps) => {
     // INFO: ignore the ref, please do not pass it to Image
@@ -52,8 +51,8 @@ const UploadImage = ({
     }, [progress]);
 
     return (
-        <div style={{ position: "relative", display: "inline-block" }}>
-            <Image src={defaultImage} sx={sx} {...props} />
+        <div style={{ position: "relative" }}>
+            <Image src={defaultImage} {...props} />
 
             {animate && !reached100 && (
                 <CircularProgress

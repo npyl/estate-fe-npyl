@@ -39,48 +39,25 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
             />
         );
 
-        if (ratio) {
-            return (
-                <Box
-                    ref={ref}
-                    component="span"
-                    sx={{
-                        borderRadius: 1,
-                        width: 1,
-                        lineHeight: 1,
-                        display: "block",
-                        overflow: "hidden",
-                        position: "relative",
-                        pt: getRatio(ratio),
-                        "& .wrapper": {
-                            top: 0,
-                            left: 0,
-                            width: 1,
-                            height: 1,
-                            position: "absolute",
-                            backgroundSize: "cover !important",
-                        },
-                        ...sx,
-                    }}
-                >
-                    {content}
-                </Box>
-            );
-        }
-
         return (
             <Box
                 ref={ref}
                 component="span"
                 sx={{
+                    borderRadius: 1,
+                    width: 1,
                     lineHeight: 1,
                     display: "block",
                     overflow: "hidden",
                     position: "relative",
+                    pt: getRatio(ratio),
                     "& .wrapper": {
+                        top: 0,
+                        left: 0,
                         width: 1,
                         height: 1,
-                        backgroundSize: "cover !important",
+                        position: "absolute",
+                        backgroundSize: ratio ? "cover !important" : "",
                     },
                     ...sx,
                 }}
