@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import usePropertyImages from "./hook";
 import { PREVIEW_IMAGES_COUNT } from "./constants";
 import dynamic from "next/dynamic";
+import { UploadFileProvider } from "@/contexts/uploadFile";
 const SeeMore = dynamic(() => import("./SeeMore"));
 const Gallery = dynamic(() => import("./Gallery"));
 
@@ -44,7 +45,7 @@ const ImagesSection = () => {
     const closeGallery = () => setGalleryImage("");
 
     return (
-        <>
+        <UploadFileProvider>
             <Panel
                 label={t("Upload Images")}
                 endNode={
@@ -71,7 +72,7 @@ const ImagesSection = () => {
             {isSeeMoreOpen ? (
                 <SeeMore open={isSeeMoreOpen} onClose={closeSeeMore} />
             ) : null}
-        </>
+        </UploadFileProvider>
     );
 };
 

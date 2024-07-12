@@ -1,33 +1,14 @@
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    Button,
-    DialogActions,
-} from "@mui/material";
+import { DialogTitle, DialogContent, Button } from "@mui/material";
 import { useMemo, useState } from "react";
-
-import { ComparisonFrame, ComparisonImage } from "./styled";
-import usePropertyImages from "../hook";
-
-import { styled } from "@mui/material/styles";
+import {
+    ComparisonFrame,
+    ComparisonImage,
+    StyledActions,
+    StyledDialog,
+} from "./styled";
+import usePropertyImages from "../../hook";
 import { useReorderPropertyImagesMutation } from "@/services/properties/file";
 import { useRouter } from "next/router";
-
-const StyledDialog = styled(Dialog)({
-    "& .MuiDialog-container": {
-        "& .MuiPaper-root": {
-            minWidth: "90vw",
-        },
-    },
-});
-const StyledActions = styled(DialogActions)(({ theme }) => ({
-    float: "right",
-    display: "flex",
-    flexDirection: "row",
-    gap: theme.spacing(1),
-    justifyContent: "right",
-}));
 
 interface ICompareGallery {
     open: boolean;

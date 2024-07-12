@@ -1,7 +1,19 @@
 import CheckIcon from "@mui/icons-material/Check";
-import Item, { ItemProps } from "./Item";
+import ImageItem from "../../_shared/ImageItem";
+import { ImageItemProps } from "../../_shared/types";
+import { styled } from "@mui/material/styles";
 
-interface SelectableItemProps extends ItemProps {
+const StyledCheckIcon = styled(CheckIcon)(({ theme }) => ({
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    zIndex: 1,
+    fontSize: "35px",
+    color: "yellow",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+}));
+
+interface SelectableItemProps extends ImageItemProps {
     selectMultiple: boolean;
     compare: boolean;
     selected: boolean;
@@ -11,27 +23,14 @@ const SelectableItem = ({
     selectMultiple,
     compare,
     selected,
-    image,
-    onClick,
+    ...props
 }: SelectableItemProps) => {
     const checked = (compare || selectMultiple) && selected;
 
     return (
         <div style={{ position: "relative" }}>
-            {checked && (
-                <CheckIcon
-                    sx={{
-                        position: "absolute",
-                        top: 1,
-                        right: 1,
-                        zIndex: 1,
-                        fontSize: 35,
-                        color: "yellow",
-                        backgroundColor: "rgba(0, 0, 0, 0.7)",
-                    }}
-                />
-            )}
-            <Item image={image} onClick={onClick} />
+            {checked ? <StyledCheckIcon /> : null}
+            <ImageItem {...props} />
         </div>
     );
 };
