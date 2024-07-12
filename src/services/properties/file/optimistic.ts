@@ -87,12 +87,9 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
         ...((variant === "document" ? { labels: [] } : {}) as any),
     };
 
-    let newLength = 0;
-
     const patchResult = dispatch(
         filesApiSlice.util.updateQueryData(query, id, (draft) => {
-            newLength = draft.push(content);
-            return draft;
+            draft.push(content);
         })
     );
 
@@ -102,12 +99,15 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
         // Now that we have data, updateQueryData with proper key so that we can use it for our uploadFileContext
         dispatch(
             filesApiSlice.util.updateQueryData(query, id, (draft) => {
-                draft[newLength - 1] = {
-                    ...draft[newLength - 1],
+                const availIdx = draft.findIndex(({ key }) => !key);
+
+                draft[availIdx] = {
+                    ...draft[availIdx],
                     ...actualRes.data,
                     // make sure we keep loading the images though
                     url: null,
                 };
+
                 return draft;
             })
         );
