@@ -140,7 +140,7 @@ const Gallery: React.FC<GalleryProps> = ({
                 }
                 content={
                     <Grid container spacing={1}>
-                        <Grid item xs={10} position={"relative"}>
+                        <Grid item xs={10}>
                             <CarouselSimple
                                 onImageChange={handleImageChange}
                                 mainLabel="main"
