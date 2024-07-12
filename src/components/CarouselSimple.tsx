@@ -91,20 +91,22 @@ export default function CarouselSimple({
                     asNavFor={nav1}
                     ref={carousel1}
                 >
-                    {data.map(({ id, title, url, hidden }, index) => (
-                        <LabeledImage
-                            key={id}
-                            alt={title}
-                            src={url || ""}
-                            hidden={hidden}
-                            label={mainLabel && index === 0 ? mainLabel : ""}
-                            onClick={() => {
-                                onImageClick && onImageClick();
-                            }}
-                            size={size}
-                            ratio={ratio! as ImageRatio}
-                        />
-                    ))}
+                    {data.map(
+                        ({ id, title, url, hidden, thumbnail }, index) => (
+                            <LabeledImage
+                                key={id}
+                                alt={title}
+                                src={url || ""}
+                                hidden={hidden}
+                                label={mainLabel && thumbnail ? mainLabel : ""}
+                                onClick={() => {
+                                    onImageClick && onImageClick();
+                                }}
+                                size={size}
+                                ratio={ratio! as ImageRatio}
+                            />
+                        )
+                    )}
                 </Carousel>
             </Box>
             <CarouselArrowIndex

@@ -5,6 +5,7 @@ import {
     IPropertyFileReq,
     IPropertyBlueprint,
     IPropertyDocument,
+    TFileVariant,
 } from "src/types/file";
 
 import axios, { AxiosProgressEvent } from "axios";
@@ -72,7 +73,7 @@ interface BulkEditPropertyImagesParams {
 }
 
 interface UploadDocumentToAmazonProps {
-    variant: "image" | "blueprint" | "document" | "googleEarth" | "OTHER"; // INFO: for image variant, we must also strip metadata
+    variant: TFileVariant; // INFO: for image variant, we must also strip metadata
     url: string;
     file: File;
     onProgressUpdate?: (p: number) => void;
@@ -218,15 +219,16 @@ export const filesApiSlice = properties.injectEndpoints({
 
                     const handleUploadProgress = ({
                         loaded,
+                        total,
                     }: AxiosProgressEvent) => {
-                        if (onProgressUpdate) {
-                            // Calculate and report the upload progress here
-                            const progress = Math.round(
-                                (loaded / file.size) * 100
-                            );
+                        if (!total) return;
 
-                            onProgressUpdate(progress);
-                        }
+                        const progress = Math.min(
+                            Math.round((loaded / total) * 100),
+                            100
+                        );
+
+                        onProgressUpdate?.(progress);
                     };
 
                     const response = await axios.put(url, cleanFile, {

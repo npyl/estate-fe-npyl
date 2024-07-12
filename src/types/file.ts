@@ -1,5 +1,7 @@
 import { ILabel } from "./label";
 
+export type TFileVariant = "image" | "blueprint" | "document" | "OTHER";
+
 // ----------------------------------------------------------------------------------------
 // Used when calling BE (See notion.so 1st. step)
 // ----------------------------------------------------------------------------------------

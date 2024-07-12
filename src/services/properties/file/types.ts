@@ -1,6 +1,8 @@
+import { TFileVariant } from "@/types/file";
+
 export interface IPropertyAddFileParams<T> {
     id: number;
-    variant: "image" | "blueprint" | "document";
+    variant: TFileVariant;
     body: T;
 }
 

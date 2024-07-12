@@ -14,20 +14,24 @@ const ImagePreview = ({
     placeholder,
     onImageClick,
     ...props
-}: ImagePreviewProps) => (
-    <Grid container spacing={0.5} {...props}>
-        {images.map((image) => (
-            <Grid item xs={4} key={`${image.filename}-${image.key}`}>
-                <ImageItem image={image} onImageClick={onImageClick} />
-            </Grid>
-        ))}
+}: ImagePreviewProps) => {
+    console.log("images: ", images);
 
-        {placeholder ? (
-            <Grid item xs={4}>
-                {placeholder}
-            </Grid>
-        ) : null}
-    </Grid>
-);
+    return (
+        <Grid container spacing={0.5} {...props}>
+            {images.map((image) => (
+                <Grid item xs={4} key={`${image.filename}-${image.key}`}>
+                    <ImageItem image={image} onImageClick={onImageClick} />
+                </Grid>
+            ))}
+
+            {placeholder ? (
+                <Grid item xs={4}>
+                    {placeholder}
+                </Grid>
+            ) : null}
+        </Grid>
+    );
+};
 
 export default ImagePreview;

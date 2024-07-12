@@ -4,12 +4,10 @@ import {
     useAddPropertyFileMutation,
     useUploadPropertyFileMutation,
 } from "@/services/properties/file";
-import { IPropertyFileRes } from "@/types/file";
+import { IPropertyFileRes, TFileVariant } from "@/types/file";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-
-type TFileVariant = "image" | "blueprint" | "document";
 
 interface UploadResponse {
     key: string;
