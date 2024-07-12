@@ -126,8 +126,8 @@ const Gallery: React.FC<GalleryProps> = ({
                 {...props}
                 // ...
                 submit
-                // ...
                 hideTitle
+                maxWidth="xl"
                 closeAfterTransition={true}
                 DialogContentComponent={StyledContent}
                 DialogActionsComponent={StyledActions}
