@@ -152,7 +152,6 @@ const BasicSection: React.FC<any> = () => {
                         sm={6}
                         display="flex"
                         width="100%"
-                        direction="row"
                         alignItems="center"
                         gap={1}
                     >

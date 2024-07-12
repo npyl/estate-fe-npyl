@@ -146,8 +146,8 @@ const Gallery: React.FC<GalleryProps> = ({
                             <Grid
                                 item
                                 xs={2}
-                                component={Stack}
-                                direction="column"
+                                display="flex"
+                                flexDirection="column"
                                 gap={1}
                             >
                                 <LanguageButton

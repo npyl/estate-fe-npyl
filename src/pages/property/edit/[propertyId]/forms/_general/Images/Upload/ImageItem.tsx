@@ -40,7 +40,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
         );
     }
 
-    return <UploadImage animate progress={progress} borderRadius={0.3} />;
+    return <UploadImage animate progress={progress} />;
 };
 
 export default ImageItem;

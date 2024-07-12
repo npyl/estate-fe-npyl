@@ -66,7 +66,10 @@ function UploadImages({
 
     const { uploadFiles, isLoading } = usePropertyUpload(
         "image",
-        setUploadProgress
+        ({ key, p }) => {
+            console.log("key: ", key, " p: ", p);
+            setUploadProgress({ key, p });
+        }
     );
 
     const {
