@@ -12,7 +12,12 @@ import ICarouselImage from "@/components/carousel/types";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 import usePropertyImages from "../hook";
-import { StyledDialog, DescriptionField } from "./styled";
+import {
+    StyledDialog,
+    DescriptionField,
+    StyledContent,
+    StyledActions,
+} from "./styled";
 import { FormProvider, useForm } from "react-hook-form";
 import { DialogProps } from "@/components/Dialog";
 import { RHFRadioGroup, RHFTextField } from "@/components/hook-form";
@@ -122,96 +127,95 @@ const Gallery: React.FC<GalleryProps> = ({
                 // ...
                 submit
                 // ...
+                hideTitle
                 closeAfterTransition={true}
-                title={
-                    <>
-                        {t("Gallery")}
-
-                        <LanguageButton
-                            updatesGlobalLanguage={false}
-                            sx={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                            }}
-                            onLanguageChange={handleLanguageChange}
-                        />
-                    </>
-                }
+                DialogContentComponent={StyledContent}
+                DialogActionsComponent={StyledActions}
+                // ...
                 content={
-                    <Grid container spacing={1}>
-                        <Grid item xs={10}>
-                            <CarouselSimple
-                                onImageChange={handleImageChange}
-                                mainLabel="main"
-                                data={images as ICarouselImage[]}
-                                initialIndex={carouselIndex}
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            xs={2}
-                            component={Stack}
-                            direction="column"
-                            gap={1}
-                            mt={1}
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Skeleton width="100%" height="30px" />
-                                    <Skeleton width="100%" height="30px" />
-                                    <Skeleton width="100%" height="30px" />
-                                </>
-                            ) : (
-                                <>
-                                    <RHFTextField
-                                        fullWidth
-                                        label="Title"
-                                        name="title"
-                                    />
+                    <>
+                        <Grid container spacing={1}>
+                            <Grid item xs={10}>
+                                <CarouselSimple
+                                    onImageChange={handleImageChange}
+                                    mainLabel="main"
+                                    data={images as ICarouselImage[]}
+                                    initialIndex={carouselIndex}
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={2}
+                                component={Stack}
+                                direction="column"
+                                gap={1}
+                            >
+                                <LanguageButton
+                                    updatesGlobalLanguage={false}
+                                    onLanguageChange={handleLanguageChange}
+                                    sx={{
+                                        alignSelf: "flex-end",
+                                        width: "max-content",
+                                    }}
+                                />
 
-                                    <DescriptionField
-                                        fullWidth
-                                        name="description"
-                                        multiline
-                                        rows={5}
-                                    />
+                                {isLoading ? (
+                                    <>
+                                        <Skeleton width="100%" height="30px" />
+                                        <Skeleton width="100%" height="30px" />
+                                        <Skeleton width="100%" height="30px" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <RHFTextField
+                                            fullWidth
+                                            label="Title"
+                                            name="title"
+                                        />
 
-                                    <RHFRadioGroup
-                                        name="hidden"
-                                        options={VISIBILITY_OPTIONS}
-                                    />
-                                </>
-                            )}
+                                        <DescriptionField
+                                            fullWidth
+                                            name="description"
+                                            multiline
+                                            rows={5}
+                                        />
 
-                            {isDirty ? (
-                                <Stack
-                                    direction="row"
-                                    justifyContent={"right"}
-                                    spacing={1}
-                                    mt={2}
-                                >
-                                    <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={handleClear}
+                                        <RHFRadioGroup
+                                            name="hidden"
+                                            options={VISIBILITY_OPTIONS}
+                                        />
+                                    </>
+                                )}
+
+                                {isDirty ? (
+                                    <Stack
+                                        direction="row"
+                                        justifyContent={"right"}
+                                        spacing={1}
+                                        mt={2}
                                     >
-                                        {t("Clear")}
-                                    </Button>
+                                        <Button
+                                            variant="outlined"
+                                            color="secondary"
+                                            onClick={handleClear}
+                                        >
+                                            {t("Clear")}
+                                        </Button>
 
-                                    <LoadingButton
-                                        variant="contained"
-                                        color="secondary"
-                                        loading={isUpdating}
-                                        disabled={isUpdating}
-                                        onClick={handleUpdate}
-                                    >
-                                        {t("Update")}
-                                    </LoadingButton>
-                                </Stack>
-                            ) : null}
+                                        <LoadingButton
+                                            variant="contained"
+                                            color="secondary"
+                                            loading={isUpdating}
+                                            disabled={isUpdating}
+                                            onClick={handleUpdate}
+                                        >
+                                            {t("Update")}
+                                        </LoadingButton>
+                                    </Stack>
+                                ) : null}
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </>
                 }
                 actions={
                     <>

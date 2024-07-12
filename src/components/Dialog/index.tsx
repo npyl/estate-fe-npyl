@@ -6,6 +6,9 @@ import {
     DialogContent,
     DialogTitle,
     IconButton as MuiIconButton,
+    DialogActionsProps,
+    DialogContentProps,
+    DialogTitleProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ReactNode, forwardRef } from "react";
@@ -25,6 +28,13 @@ export type DialogProps = {
     content?: ReactNode;
     actions?: ReactNode;
     submit?: boolean; // support <form> mode
+
+    hideTitle?: boolean;
+
+    DialogTitleComponent?: React.ComponentType<DialogTitleProps>;
+    DialogContentComponent?: React.ComponentType<DialogContentProps>;
+    DialogActionsComponent?: React.ComponentType<DialogActionsProps>;
+
     onClose?: () => void;
 } & Omit<MuiDialogProps, "title" | "content">;
 
@@ -34,6 +44,12 @@ const Dialog = ({
     title,
     actions,
     content,
+
+    hideTitle = false,
+
+    DialogTitleComponent = DialogTitle,
+    DialogContentComponent = DialogContent,
+    DialogActionsComponent = DialogActions,
     onClose,
     ...props
 }: DialogProps) =>
@@ -48,18 +64,20 @@ const Dialog = ({
             // ...
             {...props}
         >
-            <DialogTitle>
-                {onClose ? (
-                    <IconButton onClick={onClose}>
-                        <Iconify icon="line-md:close" />
-                    </IconButton>
-                ) : null}
-                <Stack alignItems="center" mt={1}>
-                    {title}
-                </Stack>
-            </DialogTitle>
-            <DialogContent>{content}</DialogContent>
-            <DialogActions>{actions}</DialogActions>
+            {!hideTitle ? (
+                <DialogTitleComponent>
+                    {onClose ? (
+                        <IconButton onClick={onClose}>
+                            <Iconify icon="line-md:close" />
+                        </IconButton>
+                    ) : null}
+                    <Stack alignItems="center" mt={1}>
+                        {title}
+                    </Stack>
+                </DialogTitleComponent>
+            ) : null}
+            <DialogContentComponent>{content}</DialogContentComponent>
+            <DialogActionsComponent>{actions}</DialogActionsComponent>
         </MuiDialog>
     );
 
