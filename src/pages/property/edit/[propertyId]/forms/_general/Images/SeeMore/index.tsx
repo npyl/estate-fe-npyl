@@ -46,12 +46,14 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         setMode((old) => (old === "compare" ? "" : "compare"));
 
     const handleImageClick = (image: IPropertyImage) =>
-        setSelectedImages((oldSelectedImages) => {
-            const alreadySelected = oldSelectedImages.includes(image.key);
+        setSelectedImages((old) => {
+            const isAlreadySelected = old.includes(image.key);
 
-            return alreadySelected
-                ? oldSelectedImages.filter((key) => key !== image.key) // remove
-                : [...oldSelectedImages, image.key]; // add
+            return isAlreadySelected
+                ? old.filter((key) => key !== image.key) // remove
+                : mode === "multiple" || (mode === "compare" && old.length < 2) // add
+                ? [...old, image.key]
+                : old;
         });
 
     const createItem = useCallback(
