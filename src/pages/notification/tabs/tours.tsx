@@ -10,7 +10,7 @@ const Tours = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt");
-    const [direction, setDirection] = useState("ASC");
+    const [direction, setDirection] = useState("DESC");
 
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
     const { data: tours } = useFilterNotificationsQuery({

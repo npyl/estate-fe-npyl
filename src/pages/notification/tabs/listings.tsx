@@ -1,18 +1,16 @@
 import {
     useDeleteNotificationMutation,
     useFilterNotificationsQuery,
-    useToggleNotificationViewedStatusMutation,
 } from "src/services/notification";
 import Table from "../table";
-import { ContactNotification } from "@/types/notification";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Listings = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sortBy, setSortBy] = useState("createdAt"); // assuming 'createdAt' is a valid field to sort by
-    const [direction, setDirection] = useState("ASC");
+    const [sortBy, setSortBy] = useState("createdAt");
+    const [direction, setDirection] = useState("DESC");
 
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
     const { data: listings } = useFilterNotificationsQuery({

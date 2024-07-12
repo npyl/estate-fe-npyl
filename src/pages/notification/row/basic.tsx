@@ -95,7 +95,7 @@ const BasicRow = ({
                                 </Tooltip>
                             ) : (
                                 <Tooltip
-                                    title="Change to Seen "
+                                    title="Change to Seen"
                                     placement="top"
                                     enterDelay={800}
                                     leaveDelay={100}

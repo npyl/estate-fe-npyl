@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
 import BasicRow, { getDate } from "./basic";
-import { NormalBadge } from "@/components/PropertyCard/styled";
 import { CodeBadge } from "../components/CodeBadge";
 import { useGetPropertyByCodeQuery } from "@/services/properties";
 type TourType = "inPerson" | "inVideo";

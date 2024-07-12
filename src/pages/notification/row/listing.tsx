@@ -8,7 +8,6 @@ import {
     TableCell,
     TableHead,
     TableRow,
-    TableRowProps,
     Typography,
 } from "@mui/material";
 import { Fragment } from "react";
