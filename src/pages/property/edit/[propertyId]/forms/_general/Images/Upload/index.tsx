@@ -57,7 +57,6 @@ function UploadImages({
     helperText,
     placeholder,
     //
-    //
     files,
     onImageClick,
     sx,

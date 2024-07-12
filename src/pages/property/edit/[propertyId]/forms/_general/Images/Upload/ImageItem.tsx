@@ -4,6 +4,7 @@ import UploadImage from "@/components/image/UploadImage";
 import { useUploadFileContext } from "@/contexts/uploadFile";
 import { IPropertyImage } from "@/types/file";
 import React from "react";
+import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 
 interface ImageItemProps {
     image: IPropertyImage;
@@ -14,6 +15,12 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
     const { url, thumbnail, hidden, key } = image;
 
     const { uploadProgress } = useUploadFileContext();
+
+    const progress = useConditionalMemo(
+        () => uploadProgress.p,
+        () => uploadProgress.key === key,
+        [key, uploadProgress]
+    );
 
     if (url) {
         return (
@@ -33,13 +40,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
         );
     }
 
-    return (
-        <UploadImage
-            animate
-            progress={uploadProgress[key]}
-            borderRadius={0.3}
-        />
-    );
+    return <UploadImage animate progress={progress} borderRadius={0.3} />;
 };
 
 export default ImageItem;

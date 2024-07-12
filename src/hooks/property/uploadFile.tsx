@@ -1,3 +1,4 @@
+import { UploadProgress } from "@/contexts/uploadFile";
 import {
     filesApiSlice,
     useAddPropertyFileMutation,
@@ -41,7 +42,7 @@ const getTag = (variant: TFileVariant) =>
 
 const usePropertyUpload = (
     variant: TFileVariant,
-    onProgressUpdate?: (key: string, p: number) => void
+    onProgressUpdate?: (p: UploadProgress) => void
 ) => {
     const router = useRouter();
     const { propertyId } = router.query;
@@ -102,8 +103,7 @@ const usePropertyUpload = (
                 variant: "image",
                 url,
                 file,
-                onProgressUpdate: (progress) =>
-                    onProgressUpdate?.(key, progress),
+                onProgressUpdate: (p) => onProgressUpdate?.({ key, p }),
             });
 
             if (!response)
