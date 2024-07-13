@@ -3,17 +3,13 @@ import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Lock, LockOpen } from "@mui/icons-material";
-import {
-    useBulkDeletePropertyImagesMutation,
-    useBulkEditPropertyImagesMutation,
-} from "@/services/properties/file";
 import { useRouter } from "next/router";
-
 import CompareIcon from "@mui/icons-material/Compare";
 import MultipleIcon from "@mui/icons-material/LibraryAdd";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { TMode } from "./types";
 import { useTranslation } from "react-i18next";
+import { useImageOperations } from "../context/ImageOperations";
 
 interface ControlsProps {
     mode: TMode;
@@ -41,8 +37,8 @@ const Controls: React.FC<ControlsProps> = ({
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const [bulkEditImages] = useBulkEditPropertyImagesMutation();
-    const [bulkDeleteImages] = useBulkDeletePropertyImagesMutation();
+    const { bulkEditImages, bulkDeleteImages, isLoading } =
+        useImageOperations();
 
     const handleBulkChangeVisibility = (hidden: boolean) =>
         bulkEditImages({
@@ -64,8 +60,8 @@ const Controls: React.FC<ControlsProps> = ({
             imageKeys: selectedImages,
         });
 
-    return (
-        <Stack direction="row" alignItems="center" gap={1}>
+    const controls = () => (
+        <>
             {mode === "multiple" && selectedImages.length > 0 ? (
                 <>
                     <SoftButton
@@ -125,6 +121,12 @@ const Controls: React.FC<ControlsProps> = ({
                     </ToggleButton>
                 ) : null}
             </ToggleButtonGroup>
+        </>
+    );
+
+    return (
+        <Stack direction="row" alignItems="center" gap={1}>
+            {!isLoading ? controls() : null}
 
             <IconButton onClick={onClose}>
                 <CloseIcon />

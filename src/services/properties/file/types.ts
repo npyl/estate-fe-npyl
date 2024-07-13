@@ -27,3 +27,11 @@ export interface BulkDeletePropertyImagesParams {
     propertyId: number;
     imageKeys: string[];
 }
+
+export interface BulkEditPropertyImagesParams {
+    propertyId: number;
+    body: {
+        imageKeys: string[];
+        hidden: boolean;
+    };
+}

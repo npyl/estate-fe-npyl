@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { LabeledImage } from "@/components/image";
 import UploadImage from "@/components/image/UploadImage";
-import { useUploadFileContext } from "@/contexts/uploadFile";
+import { useUploadFileContext } from "../context/UploadProgress";
 import React from "react";
 import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 import { ImageItemProps } from "./types";

@@ -1,9 +1,5 @@
+import { UploadProgress } from "@/types/file";
 import { createContext, useContext, useState } from "react";
-
-export type UploadProgress = {
-    key: string;
-    p: number;
-};
 
 export type IUploadFileContextState = {
     uploadProgress: UploadProgress;

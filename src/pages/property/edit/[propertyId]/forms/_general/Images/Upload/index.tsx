@@ -8,14 +8,13 @@ import {
     Theme,
     Typography,
 } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
 // assets
 import { IPropertyImage } from "@/types/file";
 import { UploadIllustration } from "@/assets/illustrations";
 import RejectionFiles from "@/components/upload/errors/RejectionFiles";
 import ImagePreview from "./ImagePreview";
-import usePropertyUpload from "@/hooks/property/uploadFile";
-import { useUploadFileContext } from "@/contexts/uploadFile";
+import { useImageOperations } from "../context/ImageOperations";
+import StyledDropZone from "./styled";
 
 export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
@@ -31,23 +30,6 @@ export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
 
 // ----------------------------------------------------------------------
 
-const StyledDropZone = styled("div")(({ theme }) => ({
-    outline: "none",
-    cursor: "pointer",
-    overflow: "hidden",
-    position: "relative",
-    padding: theme.spacing(2, 1),
-    borderRadius: theme.shape.borderRadius,
-    transition: theme.transitions.create("padding"),
-    backgroundColor: theme.palette.background.paper, // TODO: neutral
-    border: `1px dashed ${alpha(theme.palette.grey[500], 0.32)}`,
-    "&:hover": {
-        opacity: 0.72,
-    },
-}));
-
-// ----------------------------------------------------------------------
-
 function UploadImages({
     multiple = true,
     error,
@@ -59,12 +41,7 @@ function UploadImages({
     sx,
     ...other
 }: UploadProps) {
-    const { setUploadProgress } = useUploadFileContext();
-
-    const { uploadFiles, isLoading } = usePropertyUpload(
-        "image",
-        ({ key, p }) => setUploadProgress({ key, p })
-    );
+    const { upload, isLoading } = useImageOperations();
 
     const {
         getRootProps,
@@ -79,7 +56,7 @@ function UploadImages({
             "image/jpeg": ["jpeg", "jpg"],
             "image/png": ["png"],
         },
-        onDrop: uploadFiles,
+        onDrop: upload,
         ...other,
     });
 
@@ -87,7 +64,7 @@ function UploadImages({
     const isError = isDragReject || !!error;
 
     return (
-        <Box sx={{ width: 1, position: "relative", ...sx }}>
+        <Box width={1} position="relative" sx={{ ...sx }}>
             <StyledDropZone
                 {...getRootProps()}
                 sx={{

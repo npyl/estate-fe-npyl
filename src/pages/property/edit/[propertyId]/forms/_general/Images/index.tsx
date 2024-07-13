@@ -8,7 +8,8 @@ import { useTranslation } from "react-i18next";
 import usePropertyImages from "./hook";
 import { PREVIEW_IMAGES_COUNT } from "./constants";
 import dynamic from "next/dynamic";
-import { UploadFileProvider } from "@/contexts/uploadFile";
+import { UploadFileProvider } from "./context/UploadProgress";
+import { ImageOperationsProvider } from "./context/ImageOperations";
 const SeeMore = dynamic(() => import("./SeeMore"));
 const Gallery = dynamic(() => import("./Gallery"));
 
@@ -46,32 +47,34 @@ const ImagesSection = () => {
 
     return (
         <UploadFileProvider>
-            <Panel
-                label={t("Upload Images")}
-                endNode={
-                    <SoftButton onClick={openSeeMore}>
-                        {`${t("Edit")} (${images?.length || 0} images)`}
-                    </SoftButton>
-                }
-            >
-                <UploadImages
-                    files={previewImages}
-                    onImageClick={setGalleryImage}
-                    placeholder={
-                        <Placeholder imagesLength={images.length || 0} />
+            <ImageOperationsProvider>
+                <Panel
+                    label={t("Upload Images")}
+                    endNode={
+                        <SoftButton onClick={openSeeMore}>
+                            {`${t("Edit")} (${images?.length || 0} images)`}
+                        </SoftButton>
                     }
+                >
+                    <UploadImages
+                        files={previewImages}
+                        onImageClick={setGalleryImage}
+                        placeholder={
+                            <Placeholder imagesLength={images.length || 0} />
+                        }
+                    />
+                </Panel>
+
+                <Gallery
+                    open={!!galleryImage && images.length > 0}
+                    openImageKey={galleryImage}
+                    onClose={closeGallery}
                 />
-            </Panel>
 
-            <Gallery
-                open={!!galleryImage && images.length > 0}
-                openImageKey={galleryImage}
-                onClose={closeGallery}
-            />
-
-            {isSeeMoreOpen ? (
-                <SeeMore open={isSeeMoreOpen} onClose={closeSeeMore} />
-            ) : null}
+                {isSeeMoreOpen ? (
+                    <SeeMore open={isSeeMoreOpen} onClose={closeSeeMore} />
+                ) : null}
+            </ImageOperationsProvider>
         </UploadFileProvider>
     );
 };

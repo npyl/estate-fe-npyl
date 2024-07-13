@@ -3,25 +3,9 @@ import MultiFilePreviewReorder from "./PreviewReorder/Normal";
 import Over25ImagesPreview from "./PreviewReorder/Over25";
 import { IPropertyImage } from "@/types/file";
 import usePropertyImages from "../../hook";
-import {
-    useReorderPropertyImagesMutation,
-    useReorderPropertyImagesWithSetImageVisibilityMutation,
-} from "@/services/properties/file";
 import { DndItem } from "./PreviewReorder/types";
 import DropZone from "./DropZone";
-
-const useReorderImages = () => {
-    const [reorderImages, { isLoading: isLoading0 }] =
-        useReorderPropertyImagesMutation();
-    const [reorderImagesWithVisibility, { isLoading: isLoading1 }] =
-        useReorderPropertyImagesWithSetImageVisibilityMutation();
-
-    return {
-        reorderImages,
-        reorderImagesWithVisibility,
-        isLoading: isLoading0 || isLoading1,
-    };
-};
+import { useImageOperations } from "../../context/ImageOperations";
 
 interface ContentProps {
     createItemCb: (f: IPropertyImage, index: number) => DndItem;
@@ -31,7 +15,7 @@ const Content: React.FC<ContentProps> = ({ createItemCb }) => {
     const { images, propertyId } = usePropertyImages();
 
     const { reorderImages, reorderImagesWithVisibility, isLoading } =
-        useReorderImages();
+        useImageOperations();
 
     const handleReorder = (items: string[]) => {
         if (isLoading) return;

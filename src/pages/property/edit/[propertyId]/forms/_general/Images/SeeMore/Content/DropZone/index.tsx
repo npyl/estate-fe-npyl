@@ -1,8 +1,8 @@
-import usePropertyUpload from "@/hooks/property/uploadFile";
 import React, { ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
 import { styled } from "@mui/material/styles";
 import DragOverlay from "./DragOverlay";
+import { useImageOperations } from "../../../context/ImageOperations";
 
 const StyledRoot = styled("div")({
     height: "100%",
@@ -13,11 +13,11 @@ interface DropZoneProps {
 }
 
 const DropZone: React.FC<DropZoneProps> = ({ children }) => {
-    const { uploadFiles, isLoading } = usePropertyUpload("image");
+    const { upload, isLoading } = useImageOperations();
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         disabled: isLoading,
-        onDrop: uploadFiles,
+        onDrop: upload,
         // Allow only file drop
         noClick: true,
         noKeyboard: true,

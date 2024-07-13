@@ -2,6 +2,11 @@ import { ILabel } from "./label";
 
 export type TFileVariant = "image" | "blueprint" | "document" | "OTHER";
 
+export type UploadProgress = {
+    key: string;
+    p: number;
+};
+
 // ----------------------------------------------------------------------------------------
 // Used when calling BE (See notion.so 1st. step)
 // ----------------------------------------------------------------------------------------

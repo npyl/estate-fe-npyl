@@ -20,6 +20,7 @@ import {
 } from "./optimistic";
 import {
     BulkDeletePropertyImagesParams,
+    BulkEditPropertyImagesParams,
     IDeleteFileProps,
     IPropertyAddFileParams,
     IPropertyFileManipulation,
@@ -63,14 +64,6 @@ const removeMetadata = async (file: File): Promise<Blob> => {
         reader.readAsDataURL(file);
     });
 };
-
-interface BulkEditPropertyImagesParams {
-    propertyId: number;
-    body: {
-        imageKeys: string[];
-        hidden: boolean;
-    };
-}
 
 interface UploadDocumentToAmazonProps {
     variant: TFileVariant; // INFO: for image variant, we must also strip metadata
@@ -275,7 +268,6 @@ export const {
     useBulkEditPropertyImagesMutation,
     useBulkDeletePropertyImagesMutation,
     useDeletePropertyImageMutation,
-    useLazyGetPropertyBlueprintsQuery,
     useReorderPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 

@@ -1,4 +1,4 @@
-import { UploadProgress } from "@/contexts/uploadFile";
+import { UploadProgress } from "@/types/file";
 import {
     filesApiSlice,
     useAddPropertyFileMutation,
