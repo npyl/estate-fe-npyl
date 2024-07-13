@@ -117,7 +117,6 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
 };
 
 // --------------------------------------------------------------------------------
-
 export const optimisticReorder: OptimisticReorderCb = async (
     { id, body: imageKeys },
     { dispatch, queryFulfilled }
@@ -125,11 +124,12 @@ export const optimisticReorder: OptimisticReorderCb = async (
     const patchResult = dispatch(
         filesApiSlice.util.updateQueryData("getPropertyImages", id, (draft) => {
             // reorder based on imageKeys
-            let reordered = imageKeys.map(
+            const reordered = imageKeys.map(
                 (k) => draft.find((i) => i.key === k)!
             );
 
-            return reordered;
+            // Update the draft directly
+            draft.splice(0, draft.length, ...reordered);
         })
     );
     try {
@@ -149,20 +149,22 @@ export const optimisticReorderWithVisibility: OptimisticReorderWithVisibilityCb 
                 "getPropertyImages",
                 propertyId,
                 (draft) => {
+                    const imageKeyIdx = draft.findIndex(
+                        ({ key }) => key === imageKey
+                    );
+                    if (imageKeyIdx < 0) return;
+
+                    draft[imageKeyIdx].hidden = hidden;
+
                     // reorder based on imageKeys
                     const reordered = imageKeys.map(
                         (k) => draft.find((i) => i.key === k)!
                     );
-                    if (!reordered) return [];
 
-                    // set visibility
-                    const toSetVisibilityIndex = reordered.findIndex(
-                        (i) => i.key === imageKey
-                    );
-                    if (toSetVisibilityIndex < 0) return [];
-                    reordered[toSetVisibilityIndex].hidden = hidden;
+                    if (reordered.length === 0) return;
 
-                    return reordered;
+                    // Update the draft directly
+                    draft.splice(0, draft.length, ...reordered);
                 }
             )
         );

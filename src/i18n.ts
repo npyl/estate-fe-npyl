@@ -748,10 +748,12 @@ const resources = {
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
             Compare: "Compare",
+            "Set Main": "Set Main",
         },
     },
     el: {
         translation: {
+            "Set Main": "Κάνε την πρώτη",
             Compare: "Σύγκριση",
             Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",

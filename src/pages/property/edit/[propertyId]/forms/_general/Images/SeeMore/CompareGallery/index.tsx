@@ -7,8 +7,8 @@ import {
     StyledDialog,
 } from "./styled";
 import usePropertyImages from "../../hook";
-import { useReorderPropertyImagesMutation } from "@/services/properties/file";
-import { useRouter } from "next/router";
+import { useReorderPropertyImagesWithSetImageVisibilityMutation } from "@/services/properties/file";
+import { useTranslation } from "react-i18next";
 
 interface ICompareGallery {
     open: boolean;
@@ -23,10 +23,9 @@ export const CompareGallery: React.FC<ICompareGallery> = ({
     image2: image2Key,
     onClose,
 }) => {
-    const router = useRouter();
-    const { propertyId } = router.query;
+    const { t } = useTranslation();
 
-    const { images } = usePropertyImages();
+    const { images, propertyId } = usePropertyImages();
 
     const { image1, image2 } = useMemo(
         () => ({
@@ -36,35 +35,34 @@ export const CompareGallery: React.FC<ICompareGallery> = ({
         [images, image1Key, image2Key]
     );
 
-    const [reorderImages] = useReorderPropertyImagesMutation();
+    const [reorderImages] =
+        useReorderPropertyImagesWithSetImageVisibilityMutation();
 
     const [selectedKey, setSelectedKey] = useState("");
 
-    const allKeys = useMemo(() => images.map((file) => file.key), [images]);
+    const allKeys = useMemo(() => images.map(({ key }) => key), [images]);
 
     const handleSetMain = () => {
-        if (selectedKey) {
-            const keyIndex = allKeys.indexOf(selectedKey);
+        const keyIndex = allKeys.indexOf(selectedKey);
 
-            // Move the selected key to the front and reorder the keys array
-            const reorderedKeys = [
-                selectedKey,
-                ...allKeys.slice(0, keyIndex),
-                ...allKeys.slice(keyIndex + 1),
-            ];
+        // Move the selected key to the front and reorder the keys array
+        const reorderedKeys = [
+            selectedKey,
+            ...allKeys.slice(0, keyIndex),
+            ...allKeys.slice(keyIndex + 1),
+        ];
 
-            reorderImages({
-                id: +propertyId!,
-                body: reorderedKeys,
-            });
-        } else {
-            alert("Please Select an Image to set as Main Thumbnail");
-        }
+        reorderImages({
+            propertyId,
+            imageKeys: reorderedKeys,
+            imageKey: selectedKey,
+            hidden: false,
+        }).then(onClose);
     };
 
     return (
         <StyledDialog open={open} onClose={onClose} closeAfterTransition={true}>
-            <DialogTitle>Comparison Window</DialogTitle>
+            <DialogTitle>{t("Compare")}</DialogTitle>
             <DialogContent sx={{ padding: 0 }}>
                 <ComparisonFrame>
                     <ComparisonImage
@@ -82,15 +80,17 @@ export const CompareGallery: React.FC<ICompareGallery> = ({
                 </ComparisonFrame>
             </DialogContent>
             <StyledActions>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSetMain}
-                >
-                    Set Main
-                </Button>
+                {!!selectedKey ? (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSetMain}
+                    >
+                        {t("Set Main")}
+                    </Button>
+                ) : null}
                 <Button variant="outlined" color="secondary" onClick={onClose}>
-                    Close
+                    {t("Close")}
                 </Button>
             </StyledActions>
         </StyledDialog>

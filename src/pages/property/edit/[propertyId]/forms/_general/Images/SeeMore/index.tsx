@@ -59,6 +59,11 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         setMode(m);
     };
 
+    const handleCloseCompareDialog = () => {
+        setSelectedImages([]);
+        closeCompareDialog();
+    };
+
     const createItem = useCallback(
         (f: IPropertyImage, index: number) => {
             const isSelected =
@@ -116,7 +121,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                     open={isCompareOpen}
                     image1={selectedImages[0]}
                     image2={selectedImages[1]}
-                    onClose={closeCompareDialog}
+                    onClose={handleCloseCompareDialog}
                 />
             ) : null}
         </>
