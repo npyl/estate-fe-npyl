@@ -60,23 +60,26 @@ const Controls: React.FC<ControlsProps> = ({
             imageKeys: selectedImages,
         });
 
-    const controls = () => (
-        <>
+    return (
+        <Stack direction="row" alignItems="center" gap={1}>
             {mode === "multiple" && selectedImages.length > 0 ? (
                 <>
                     <SoftButton
+                        disabled={isLoading}
                         startIcon={<LockOpen />}
                         onClick={handleMakePublic}
                     >
                         {t("Public")}
                     </SoftButton>
                     <SoftButton
+                        disabled={isLoading}
                         startIcon={<Lock />}
                         onClick={handleMakePrivate}
                     >
                         {t("Private")}
                     </SoftButton>
                     <SoftButton
+                        disabled={isLoading}
                         color="error"
                         startIcon={<DeleteIcon />}
                         onClick={handleBulkDelete}
@@ -88,6 +91,7 @@ const Controls: React.FC<ControlsProps> = ({
 
             {mode === "multiple" ? (
                 <SoftButton
+                    disabled={isLoading}
                     onClick={onToggleSelectAll}
                     variant="outlined"
                     color={isAllSelected ? "error" : "primary"}
@@ -97,7 +101,11 @@ const Controls: React.FC<ControlsProps> = ({
             ) : null}
 
             {mode === "compare" && selectedImages.length === 2 ? (
-                <SoftButton color="primary" onClick={onCompare}>
+                <SoftButton
+                    disabled={isLoading}
+                    color="primary"
+                    onClick={onCompare}
+                >
                     {t("Compare")}
                 </SoftButton>
             ) : null}
@@ -106,6 +114,7 @@ const Controls: React.FC<ControlsProps> = ({
                 value={mode}
                 size="small"
                 exclusive
+                disabled={isLoading}
                 onChange={handleModeChange}
             >
                 <ToggleButton value="multiple">
@@ -121,12 +130,6 @@ const Controls: React.FC<ControlsProps> = ({
                     </ToggleButton>
                 ) : null}
             </ToggleButtonGroup>
-        </>
-    );
-
-    return (
-        <Stack direction="row" alignItems="center" gap={1}>
-            {!isLoading ? controls() : null}
 
             <IconButton onClick={onClose}>
                 <CloseIcon />
