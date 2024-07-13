@@ -8,6 +8,7 @@ import {
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 } from "@/services/properties/file";
 import { DndItem } from "./PreviewReorder/types";
+import DropZone from "./DropZone";
 
 const useReorderImages = () => {
     const [reorderImages, { isLoading: isLoading0 }] =
@@ -70,7 +71,7 @@ const Content: React.FC<ContentProps> = ({ createItemCb }) => {
     );
 
     return (
-        <>
+        <DropZone>
             {images.length > 25 ? (
                 <Over25ImagesPreview
                     publicImages={publicImages}
@@ -85,7 +86,7 @@ const Content: React.FC<ContentProps> = ({ createItemCb }) => {
                     onReorder={handleReorder}
                 />
             )}
-        </>
+        </DropZone>
     );
 };
 

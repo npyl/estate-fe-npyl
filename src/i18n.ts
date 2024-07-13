@@ -751,10 +751,12 @@ const resources = {
             "Set Main": "Set Main",
             "Select All": "Select All",
             "Deselect All": "Deselect All",
+            "Add images": "Add images",
         },
     },
     el: {
         translation: {
+            "Add images": "Προσθήκη εικόνων",
             "Select All": "Επιλογή Όλων",
             "Deselect All": "Καμία Επιλογή",
             "Set Main": "Κάνε την πρώτη",
