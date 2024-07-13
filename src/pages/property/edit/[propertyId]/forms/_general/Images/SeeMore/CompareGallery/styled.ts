@@ -18,7 +18,6 @@ export const ComparisonImage = styled("img")<ComparisonImageProps>(
     ({ theme, isSelected }) => ({
         width: "100%",
         maxWidth: "45%",
-        height: "auto",
         borderRadius: theme.shape.borderRadius,
         marginBottom: "20px",
         marginTop: "20px",

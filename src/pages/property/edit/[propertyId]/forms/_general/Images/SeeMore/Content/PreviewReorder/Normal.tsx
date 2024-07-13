@@ -53,7 +53,7 @@ export default function MultiFilePreviewReorder({
                 );
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
 
-                onReorder && onReorder(updatedItems.map((i) => i.key));
+                onReorder(updatedItems.map((i) => i.key));
             }
         },
         [images, columns, items]

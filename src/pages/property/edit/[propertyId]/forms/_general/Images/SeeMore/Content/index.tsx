@@ -9,6 +9,19 @@ import {
 } from "@/services/properties/file";
 import { DndItem } from "./PreviewReorder/types";
 
+const useReorderImages = () => {
+    const [reorderImages, { isLoading: isLoading0 }] =
+        useReorderPropertyImagesMutation();
+    const [reorderImagesWithVisibility, { isLoading: isLoading1 }] =
+        useReorderPropertyImagesWithSetImageVisibilityMutation();
+
+    return {
+        reorderImages,
+        reorderImagesWithVisibility,
+        isLoading: isLoading0 || isLoading1,
+    };
+};
+
 interface ContentProps {
     createItemCb: (f: IPropertyImage, index: number) => DndItem;
 }
@@ -16,24 +29,29 @@ interface ContentProps {
 const Content: React.FC<ContentProps> = ({ createItemCb }) => {
     const { images, propertyId } = usePropertyImages();
 
-    const [reorderImages] = useReorderPropertyImagesMutation();
-    const [reorderImagesWithVisibility] =
-        useReorderPropertyImagesWithSetImageVisibilityMutation();
+    const { reorderImages, reorderImagesWithVisibility, isLoading } =
+        useReorderImages();
 
-    const handleReorder = (items: string[]) =>
+    const handleReorder = (items: string[]) => {
+        if (isLoading) return;
+
         reorderImages({ id: propertyId, body: items });
+    };
 
     const handleReorderWithVisibility = (
         imageKeys: string[],
         imageKey: string,
         hidden: boolean
-    ) =>
+    ) => {
+        if (isLoading) return;
+
         reorderImagesWithVisibility({
             propertyId,
             imageKeys,
             imageKey,
             hidden,
         });
+    };
 
     const { items, publicImages, privateImages } = useMemo(
         () => ({

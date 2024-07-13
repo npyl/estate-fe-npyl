@@ -32,7 +32,7 @@ export const TwoDimentionsDndNoContext = ({
     }, []);
 
     return (
-        <Stack direction={"column"} gap={gap}>
+        <Stack gap={gap}>
             {rows.map((row, i) => (
                 <Droppable
                     droppableId={
