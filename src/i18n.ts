@@ -749,10 +749,14 @@ const resources = {
             "Download PDF": "Download PDF",
             Compare: "Compare",
             "Set Main": "Set Main",
+            "Select All": "Select All",
+            "Deselect All": "Deselect All",
         },
     },
     el: {
         translation: {
+            "Select All": "Επιλογή Όλων",
+            "Deselect All": "Καμία Επιλογή",
             "Set Main": "Κάνε την πρώτη",
             Compare: "Σύγκριση",
             Locations: "Τοποθεσίες",

@@ -15,6 +15,7 @@ import SelectableItem from "./Content/Selectable";
 import { StyledTitle } from "./styled";
 import { TMode } from "./types";
 import { styled } from "@mui/material/styles";
+import usePropertyImages from "../hook";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
 
@@ -38,10 +39,17 @@ interface SeeMoreProps {
 }
 
 const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
+    const { images } = usePropertyImages();
+
     const [mode, setMode] = useState<"" | "multiple" | "compare">("");
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
 
     const [isCompareOpen, openCompareDialog, closeCompareDialog] = useDialog();
+
+    const isAllSelected =
+        selectedImages.length > 0 &&
+        images.length > 0 &&
+        selectedImages.length === images.length;
 
     const handleImageClick = (imageKey: string) =>
         setSelectedImages((old) => {
@@ -58,6 +66,11 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         setSelectedImages([]);
         setMode(m);
     };
+
+    const handleToggleAll = () =>
+        setSelectedImages((old) =>
+            old.length > 0 ? [] : images.map(({ key }) => key)
+        );
 
     const handleCloseCompareDialog = () => {
         setSelectedImages([]);
@@ -105,7 +118,9 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                         mode={mode}
                         onModeChange={handleModeChange}
                         selectedImages={selectedImages}
+                        isAllSelected={isAllSelected}
                         // ...
+                        onToggleSelectAll={handleToggleAll}
                         onCompare={openCompareDialog}
                         onClose={onClose}
                     />

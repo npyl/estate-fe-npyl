@@ -19,6 +19,9 @@ interface ControlsProps {
     mode: TMode;
     onModeChange: (v: TMode) => void;
     selectedImages: string[];
+    isAllSelected: boolean;
+    // ...
+    onToggleSelectAll: VoidFunction;
     onCompare: VoidFunction;
     onClose: VoidFunction;
 }
@@ -27,7 +30,9 @@ const Controls: React.FC<ControlsProps> = ({
     mode,
     onModeChange,
     selectedImages,
+    isAllSelected,
     // ...
+    onToggleSelectAll,
     onCompare,
     onClose,
 }) => {
@@ -83,6 +88,16 @@ const Controls: React.FC<ControlsProps> = ({
                         {t("Delete")}
                     </SoftButton>
                 </>
+            ) : null}
+
+            {mode === "multiple" ? (
+                <SoftButton
+                    onClick={onToggleSelectAll}
+                    variant="outlined"
+                    color={isAllSelected ? "error" : "primary"}
+                >
+                    {t(isAllSelected ? "Deselect All" : "Select All")}
+                </SoftButton>
             ) : null}
 
             {mode === "compare" && selectedImages.length === 2 ? (

@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { DialogTitle } from "@mui/material";
+import getBorderColor from "@/theme/borderColor";
 
 export const StyledTitle = styled(DialogTitle)(({ theme }) => ({
     position: "fixed",
@@ -8,8 +9,9 @@ export const StyledTitle = styled(DialogTitle)(({ theme }) => ({
     justifyContent: "space-between",
     alignItems: "center",
     // ....
-    backgroundColor: "#fff",
-    borderBottom: "1px solid #ccc",
+    backgroundColor: theme.palette.background.paper,
+    borderBottom: "1px solid",
+    borderColor: getBorderColor(theme),
     boxSizing: "border-box",
     padding: theme.spacing(1),
     // ...
