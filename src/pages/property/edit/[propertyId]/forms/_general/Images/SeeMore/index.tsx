@@ -1,4 +1,10 @@
-import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
+import {
+    Dialog,
+    DialogContent,
+    Divider,
+    PaperProps,
+    Typography,
+} from "@mui/material";
 import { useCallback, useState } from "react";
 import { IPropertyImage } from "src/types/file";
 import { CompareGallery } from "./CompareGallery";
@@ -7,24 +13,35 @@ import useDialog from "@/hooks/useDialog";
 import Content from "./Content";
 import SelectableItem from "./Content/Selectable";
 import { StyledTitle } from "./styled";
+import { TMode } from "./types";
+import { styled } from "@mui/material/styles";
+
+// (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
+
+const DialogPaperProps: PaperProps = {
+    sx: {
+        overflow: "hidden", // (1)
+        minWidth: "95vw",
+        minHeight: "95vh",
+    },
+};
+
+const StyledContent = styled(DialogContent)({
+    overflow: "hidden", // (1)
+    mt: 5,
+    p: 5,
+});
 
 interface SeeMoreProps {
     open: boolean;
     onClose: () => void;
 }
 
-// (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
-
 const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
     const [mode, setMode] = useState<"" | "multiple" | "compare">("");
-
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
-    const toggleMultiple = () =>
-        setMode((old) => (old === "multiple" ? "" : "multiple"));
 
     const [isCompareOpen, openCompareDialog, closeCompareDialog] = useDialog();
-    const toggleCompare = () =>
-        setMode((old) => (old === "compare" ? "" : "compare"));
 
     const handleImageClick = (imageKey: string) =>
         setSelectedImages((old) => {
@@ -36,6 +53,11 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 ? [...old, imageKey]
                 : old;
         });
+
+    const handleModeChange = (m: TMode) => {
+        setSelectedImages([]);
+        setMode(m);
+    };
 
     const createItem = useCallback(
         (f: IPropertyImage, index: number) => {
@@ -64,13 +86,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 open={open}
                 onClose={onClose}
                 scroll="body" // (1)
-                PaperProps={{
-                    style: {
-                        overflow: "hidden", // (1)
-                        minWidth: "95vw",
-                        minHeight: "95vh",
-                    },
-                }}
+                PaperProps={DialogPaperProps}
             >
                 <StyledTitle>
                     <Typography>
@@ -82,25 +98,17 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
 
                     <Controls
                         mode={mode}
+                        onModeChange={handleModeChange}
                         selectedImages={selectedImages}
-                        // ...
-                        onToggleCompare={toggleCompare}
-                        onToggleMultiple={toggleMultiple}
                         // ...
                         onCompare={openCompareDialog}
                         onClose={onClose}
                     />
                 </StyledTitle>
                 <Divider />
-                <DialogContent
-                    sx={{
-                        overflow: "hidden", // (1)
-                        mt: 5,
-                        p: 5,
-                    }}
-                >
+                <StyledContent>
                     <Content createItemCb={createItem} />
-                </DialogContent>
+                </StyledContent>
             </Dialog>
 
             {isCompareOpen ? (

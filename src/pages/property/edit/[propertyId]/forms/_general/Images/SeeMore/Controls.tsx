@@ -1,9 +1,7 @@
 import { SoftButton } from "@/components/SoftButton";
 import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { Stack } from "@mui/material";
-import Divider from "@mui/material/Divider";
+import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import { Lock, LockOpen } from "@mui/icons-material";
 import {
     useBulkDeletePropertyImagesMutation,
@@ -11,25 +9,30 @@ import {
 } from "@/services/properties/file";
 import { useRouter } from "next/router";
 
+import CompareIcon from "@mui/icons-material/Compare";
+import MultipleIcon from "@mui/icons-material/LibraryAdd";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { TMode } from "./types";
+import { useTranslation } from "react-i18next";
+
 interface ControlsProps {
-    mode: "" | "multiple" | "compare";
+    mode: TMode;
+    onModeChange: (v: TMode) => void;
     selectedImages: string[];
-    onToggleCompare: VoidFunction;
-    onToggleMultiple: VoidFunction;
     onCompare: VoidFunction;
     onClose: VoidFunction;
 }
 
 const Controls: React.FC<ControlsProps> = ({
     mode,
+    onModeChange,
     selectedImages,
-    // ...
-    onToggleCompare,
-    onToggleMultiple,
     // ...
     onCompare,
     onClose,
 }) => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -45,6 +48,8 @@ const Controls: React.FC<ControlsProps> = ({
             },
         });
 
+    const handleModeChange = (_: any, v: TMode) => onModeChange(v);
+
     const handleMakePublic = () => handleBulkChangeVisibility(false);
     const handleMakePrivate = () => handleBulkChangeVisibility(true);
 
@@ -58,60 +63,53 @@ const Controls: React.FC<ControlsProps> = ({
         <Stack direction="row" alignItems="center" gap={1}>
             {mode === "multiple" && selectedImages.length > 0 ? (
                 <>
-                    <Typography mr={1}>Make</Typography>
                     <SoftButton
                         startIcon={<LockOpen />}
                         onClick={handleMakePublic}
                     >
-                        Public
+                        {t("Public")}
                     </SoftButton>
                     <SoftButton
                         startIcon={<Lock />}
                         onClick={handleMakePrivate}
                     >
-                        Private
+                        {t("Private")}
                     </SoftButton>
                     <SoftButton
                         color="error"
                         startIcon={<DeleteIcon />}
                         onClick={handleBulkDelete}
                     >
-                        Delete
+                        {t("Delete")}
                     </SoftButton>
                 </>
             ) : null}
-            {mode !== "compare" && (
-                <>
-                    <Divider orientation="vertical" />
-                    <SoftButton
-                        onClick={onToggleMultiple}
-                        variant="outlined"
-                        color={mode === "multiple" ? "error" : "primary"}
-                    >
-                        {mode === "multiple"
-                            ? "Cancel Select"
-                            : "Select Multiple"}
-                    </SoftButton>
-                </>
-            )}
+
             {mode === "compare" && selectedImages.length === 2 ? (
                 <SoftButton color="primary" onClick={onCompare}>
-                    Compare
+                    {t("Compare")}
                 </SoftButton>
             ) : null}
 
-            {mode !== "multiple" && (
-                <>
-                    <Divider orientation="vertical" />
-                    <SoftButton
-                        onClick={onToggleCompare}
-                        variant="outlined"
-                        color={mode === "compare" ? "error" : "primary"}
-                    >
-                        {mode === "compare" ? "Close" : "Compare Mode"}
-                    </SoftButton>
-                </>
-            )}
+            <ToggleButtonGroup
+                value={mode}
+                size="small"
+                exclusive
+                onChange={handleModeChange}
+            >
+                <ToggleButton value="multiple">
+                    <MultipleIcon />
+                </ToggleButton>
+                <ToggleButton value="compare">
+                    <CompareIcon />
+                </ToggleButton>
+
+                {mode !== "" ? (
+                    <ToggleButton value="">
+                        <CloseOutlinedIcon />
+                    </ToggleButton>
+                ) : null}
+            </ToggleButtonGroup>
 
             <IconButton onClick={onClose}>
                 <CloseIcon />

@@ -747,10 +747,12 @@ const resources = {
 
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
+            Compare: "Compare",
         },
     },
     el: {
         translation: {
+            Compare: "Σύγκριση",
             Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
