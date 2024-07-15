@@ -27,11 +27,10 @@ const DialogPaperProps: PaperProps = {
     },
 };
 
-const StyledContent = styled(DialogContent)({
+const StyledContent = styled(DialogContent)(({ theme }) => ({
     overflow: "hidden", // (1)
-    mt: 5,
-    p: 5,
-});
+    marginTop: theme.spacing(3),
+}));
 
 interface SeeMoreProps {
     open: boolean;
