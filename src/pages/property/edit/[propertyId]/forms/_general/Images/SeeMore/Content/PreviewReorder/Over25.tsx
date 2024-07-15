@@ -1,12 +1,12 @@
 import { Divider } from "@mui/material";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
     parseItemId,
     parseRowId,
-} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+} from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { TwoDimentionsDndNoContext } from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
-import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
+import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { DndItem } from "./types";
 import usePropertyImages from "../../../hook";
 
@@ -29,61 +29,80 @@ const Over25ImagesPreview = ({
     onReorder,
     onReorderWithVisibility,
 }: ImagePreviewReorderProps) => {
-    const { images: files } = usePropertyImages();
+    const { images } = usePropertyImages();
+
+    const { publicKeys, privateKeys } = useMemo(
+        () => ({
+            publicKeys: images
+                .filter(({ hidden }) => !hidden)
+                .map(({ key }) => key),
+
+            privateKeys: images
+                .filter(({ hidden }) => hidden)
+                .map(({ key }) => key),
+        }),
+        [images]
+    );
 
     const secondDndStartIndex = publicImages.length;
 
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
-            if (type === DroppableTypeItem) {
-                const { itemId: draggedItemId, dndId: srcDndId } =
-                    parseItemId(draggableId);
-                if (draggedItemId === -1) return;
+            if (type !== DroppableTypeItem) return;
 
-                const { rowId: dstRow, dndId: dstDndId } = parseRowId(
-                    destination?.droppableId
+            const { itemId: draggedItemId, dndId: srcDndId } =
+                parseItemId(draggableId);
+            if (draggedItemId === -1) return;
+
+            const { rowId: srcRow } = parseRowId(source.droppableId);
+            const { rowId: dstRow, dndId: dstDndId } = parseRowId(
+                destination?.droppableId
+            );
+
+            // checks
+            if (dstRow < 0) return;
+            if (srcDndId === undefined || dstDndId === undefined) return;
+            if (srcDndId < 0 || dstDndId < 0) return;
+            if (destination?.index === undefined) return;
+
+            let updatedItems = [...publicKeys, ...privateKeys];
+
+            // Calculate srcIdx
+            const srcCol =
+                (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) /
+                srcDndId;
+            const srcIdx =
+                srcRow * COLUMNS +
+                srcCol +
+                (srcDndId === 1 ? 0 : secondDndStartIndex);
+
+            // Calculate dstIdx
+            const dstCol =
+                (destination?.index -
+                    (dstDndId === 1 ? 0 : secondDndStartIndex)) /
+                dstDndId;
+            let dstIdx =
+                dstRow * COLUMNS +
+                dstCol +
+                (dstDndId === 1 ? 0 : secondDndStartIndex);
+
+            /* NOTE: compensate for when user moves a section at the end of the board */
+            if (dstIdx === updatedItems.length) dstIdx -= 1;
+
+            const [removedKey] = updatedItems.splice(srcIdx, 1);
+            updatedItems.splice(dstIdx, 0, removedKey);
+
+            if (srcDndId === dstDndId) {
+                onReorder(updatedItems);
+            } else {
+                onReorderWithVisibility(
+                    updatedItems,
+                    removedKey,
+                    dstDndId === 1 ? false : true
                 );
+            }
 
-                // checks
-                if (dstRow < 0) return;
-                if (srcDndId === undefined || dstDndId === undefined) return;
-                if (srcDndId < 0 || dstDndId < 0) return;
-                if (destination?.index === undefined) return;
-
-                const dstCol =
-                    (destination?.index -
-                        (dstDndId === 1 ? 0 : secondDndStartIndex)) /
-                    dstDndId;
-
-                let oneDimentionArrayDstIndex =
-                    dstRow * COLUMNS +
-                    dstCol +
-                    (dstDndId === 1 ? 0 : secondDndStartIndex);
-
-                /* NOTE: compensate for when user moves a section at the end of the board */
-                if (oneDimentionArrayDstIndex === files.length)
-                    oneDimentionArrayDstIndex -= 1;
-
-                const removedIndex = files.findIndex(
-                    (f) => f.id === +draggedItemId
-                );
-                if (removedIndex < 0) return;
-
-                const updatedItems = [...files];
-                const [removed] = updatedItems.splice(removedIndex, 1);
-                updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
-
-                if (srcDndId === dstDndId) {
-                    onReorder(updatedItems.map((i) => i.key));
-                } else {
-                    onReorderWithVisibility(
-                        updatedItems.map((i) => i.key),
-                        removed.key,
-                        dstDndId === 1 ? false : true
-                    );
-                }
-
-                /* 
+            /* 
                     DEBUGGING:
 
                     const srcCol = (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) / srcDndId;
@@ -96,9 +115,8 @@ const Over25ImagesPreview = ({
                     );
 
                 */
-            }
         },
-        [files, secondDndStartIndex]
+        [publicKeys, privateKeys, secondDndStartIndex]
     );
 
     return (
