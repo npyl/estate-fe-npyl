@@ -14,25 +14,14 @@ const StyledCheckIcon = styled(CheckIcon)(({ theme }) => ({
 }));
 
 interface SelectableItemProps extends ImageItemProps {
-    selectMultiple: boolean;
-    compare: boolean;
     selected: boolean;
 }
 
-const SelectableItem = ({
-    selectMultiple,
-    compare,
-    selected,
-    ...props
-}: SelectableItemProps) => {
-    const checked = (compare || selectMultiple) && selected;
-
-    return (
-        <div style={{ position: "relative" }}>
-            {checked ? <StyledCheckIcon /> : null}
-            <ImageItem {...props} />
-        </div>
-    );
-};
+const SelectableItem = ({ selected, ...props }: SelectableItemProps) => (
+    <div style={{ position: "relative" }}>
+        {selected ? <StyledCheckIcon /> : null}
+        <ImageItem {...props} />
+    </div>
+);
 
 export default SelectableItem;

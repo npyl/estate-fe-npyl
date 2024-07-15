@@ -63,14 +63,14 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         });
 
     const handleModeChange = (m: TMode) => {
+        if (m === null) return; // Prevent unselecting an already selected button
+
         setSelectedImages([]);
         setMode(m);
     };
 
     const handleToggleAll = () =>
-        setSelectedImages((old) =>
-            old.length > 0 ? [] : images.map(({ key }) => key)
-        );
+        setSelectedImages(isAllSelected ? [] : images.map(({ key }) => key));
 
     const handleCloseCompareDialog = () => {
         setSelectedImages([]);
@@ -86,8 +86,6 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 id: index,
                 value: (
                     <SelectableItem
-                        selectMultiple={mode === "multiple"}
-                        compare={mode === "compare"}
                         selected={isSelected}
                         image={f}
                         onImageClick={handleImageClick}

@@ -5,11 +5,12 @@ import IconButton from "@mui/material/IconButton";
 import { Lock, LockOpen } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import CompareIcon from "@mui/icons-material/Compare";
-import MultipleIcon from "@mui/icons-material/LibraryAdd";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { TMode } from "./types";
+import { TMode } from "../types";
 import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../context/ImageOperations";
+import { useImageOperations } from "../../context/ImageOperations";
+import { Icon } from "@iconify/react";
+import AddButton from "./Add";
 
 interface ControlsProps {
     mode: TMode;
@@ -89,7 +90,7 @@ const Controls: React.FC<ControlsProps> = ({
                 </>
             ) : null}
 
-            {mode === "multiple" ? (
+            {mode !== "compare" ? (
                 <SoftButton
                     disabled={isLoading}
                     onClick={onToggleSelectAll}
@@ -118,7 +119,7 @@ const Controls: React.FC<ControlsProps> = ({
                 onChange={handleModeChange}
             >
                 <ToggleButton value="multiple">
-                    <MultipleIcon />
+                    <Icon icon="carbon:select-window" width={20} />
                 </ToggleButton>
                 <ToggleButton value="compare">
                     <CompareIcon />
@@ -130,6 +131,8 @@ const Controls: React.FC<ControlsProps> = ({
                     </ToggleButton>
                 ) : null}
             </ToggleButtonGroup>
+
+            <AddButton />
 
             <IconButton onClick={onClose}>
                 <CloseIcon />
