@@ -36,7 +36,6 @@ export interface IPropertyImage extends IPropertyFile {
     hidden: boolean;
     description: string;
     title: string;
-    orderNumber: number;
     thumbnail: boolean;
 }
 

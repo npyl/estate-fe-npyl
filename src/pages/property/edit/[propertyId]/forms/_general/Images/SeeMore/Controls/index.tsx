@@ -63,7 +63,7 @@ const Controls: React.FC<ControlsProps> = ({
 
     return (
         <Stack direction="row" alignItems="center" gap={1}>
-            {mode === "multiple" && selectedImages.length > 0 ? (
+            {mode !== "compare" && selectedImages.length > 0 ? (
                 <>
                     <SoftButton
                         disabled={isLoading}

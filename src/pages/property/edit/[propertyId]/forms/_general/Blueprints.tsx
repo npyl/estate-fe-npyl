@@ -1,4 +1,3 @@
-import { Card, CardHeader, CardContent } from "@mui/material";
 import { IPropertyFile, Upload } from "src/components/upload";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,6 +5,7 @@ import { useDeletePropertyBlueprintMutation } from "src/services/properties";
 import { BlueprintViewer } from "../components/BlueprintViewer";
 import usePropertyUpload from "@/hooks/property/uploadFile";
 import { usePropertyBlueprints } from "@/hooks/property";
+import Panel from "@/components/Panel";
 
 const BlueprintsSection: React.FC = () => {
     const { t } = useTranslation();
@@ -38,29 +38,26 @@ const BlueprintsSection: React.FC = () => {
         ).then(invalidateTags);
 
     return (
-        <Card>
-            <CardHeader title={t("Blueprints")} />
-            <CardContent>
-                <Upload
-                    multiple
-                    disabled={isLoading}
-                    thumbnail={false}
-                    files={blueprints}
-                    onDrop={uploadFiles}
-                    onFileClick={handleFileClick}
-                    onRemove={handleRemoveFile}
-                    onRemoveAll={handleRemoveAllFileData}
-                />
+        <Panel label={t("Blueprints")}>
+            <Upload
+                multiple
+                disabled={isLoading}
+                thumbnail={false}
+                files={blueprints}
+                onDrop={uploadFiles}
+                onFileClick={handleFileClick}
+                onRemove={handleRemoveFile}
+                onRemoveAll={handleRemoveAllFileData}
+            />
 
-                {blueprintUrl && (
-                    <BlueprintViewer
-                        open={!!blueprintUrl}
-                        url={blueprintUrl}
-                        onClose={() => setBlueprintUrl("")}
-                    />
-                )}
-            </CardContent>
-        </Card>
+            {blueprintUrl && (
+                <BlueprintViewer
+                    open={!!blueprintUrl}
+                    url={blueprintUrl}
+                    onClose={() => setBlueprintUrl("")}
+                />
+            )}
+        </Panel>
     );
 };
 export default BlueprintsSection;
