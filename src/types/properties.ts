@@ -322,7 +322,7 @@ export interface IProperties {
     keyCode: string;
     video: string;
     descriptions: Record<string, DescriptionEntry>;
-
+    hidePrice: boolean;
     createdAt: string;
     updatedAt: string;
 

@@ -91,9 +91,6 @@ export const DashboardNavbarSearch: FC = () => {
                             <MenuItem value="customers">
                                 {t("Customers")}
                             </MenuItem>
-                            <MenuItem value="locations">
-                                {t("Locations")}
-                            </MenuItem>
                         </Select>
                     </InputAdornment>
                 }

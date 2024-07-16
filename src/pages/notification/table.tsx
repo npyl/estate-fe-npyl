@@ -23,9 +23,16 @@ interface TableProps {
     rows: ContactNotification[];
     onRemove: (index?: number) => void;
     loading: boolean;
+    onViewNotification: (notification: ContactNotification) => void;
 }
 
-const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
+const Table = ({
+    variant,
+    rows,
+    onRemove,
+    loading,
+    onViewNotification,
+}: TableProps) => {
     const { t } = useTranslation();
 
     const COLUMNS: string[] = useMemo(
@@ -54,18 +61,21 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
             component={Paper}
             sx={{
                 mt: 1,
+                width: "100%",
+                overflowX: "auto",
             }}
         >
             <MuiTable
                 aria-label="collapsible table"
                 sx={{
+                    width: "100%",
                     "& th, & td": {
                         fontSize: isMobile ? "0.8rem" : "1rem",
-                        padding: isMobile ? "6px 24px" : "16px 48px", // Increase padding for larger column spaces
+                        padding: isMobile ? "6px 12px" : "12px 44px",
                     },
                 }}
             >
-                <TableHead>
+                <TableHead sx={{ width: "100%" }}>
                     <TableRow>
                         <TableCell />
                         {COLUMNS.map((c, i) => (
@@ -82,11 +92,24 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
                                 {t(c)}
                             </TableCell>
                         ))}
+
                         {variant === "contact" || variant === "tour" ? (
-                            <TableCell align="right"> {t("Type")}</TableCell>
+                            <TableCell align="center"> {t("Type")}</TableCell>
                         ) : null}
-                        <TableCell />
-                        <TableCell />
+
+                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
+                        {variant === "contact" ||
+                        variant === "tour" ||
+                        variant === "listing" ||
+                        variant === "review" ||
+                        variant === "workForUs" ? (
+                            <TableCell align="center"> {""}</TableCell>
+                        ) : null}
+
+                        {variant === "review" ? (
+                            <TableCell align="center"> {""}</TableCell>
+                        ) : null}
+                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -95,6 +118,7 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
                             key={i}
                             row={row}
                             onRemove={() => onRemove(row.id)}
+                            onClick={() => onViewNotification(row)}
                             loading={loading}
                         />
                     ))}

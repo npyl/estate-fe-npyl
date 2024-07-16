@@ -46,6 +46,13 @@ interface ReviewDetails {
     propertyRating?: number;
     source?: string;
 }
+
+export interface NotViewedContactNotifications {
+    total: number;
+    types: {
+        [key: string]: number;
+    };
+}
 export interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
     workForUsDetails: IWorkForUs;

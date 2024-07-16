@@ -31,13 +31,16 @@ function renderLocation(params: GridCellParams<IPropertyResultResponse>) {
 
     const { t, i18n } = useTranslation();
 
-    const address =
+    const addressParts =
         i18n.language === "en"
-            ? `${regionEN} ${cityEN} ${complexEN}`
-            : `${regionGR} ${cityGR} ${complexGR}`;
+            ? [regionEN, cityEN, complexEN]
+            : [regionGR, cityGR, complexGR];
 
+    const address = addressParts.filter((part) => part).join(", ");
     return (
-        <Typography sx={{ fontSize: "small", textWrap: "wrap" }}>
+        <Typography
+            sx={{ fontSize: "small", textAlign: "center", textWrap: "wrap" }}
+        >
             {address}
         </Typography>
     );

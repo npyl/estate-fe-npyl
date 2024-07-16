@@ -214,6 +214,16 @@ export default function StackedAreas() {
         return formattedDate;
     };
 
+    const xAxisTicks = useMemo(() => {
+        if (chartData.length <= 10) {
+            return chartData.map((data) => data.date);
+        }
+        const interval = Math.floor(chartData.length / 10);
+        return chartData
+            .filter((_, index) => index % interval === 0)
+            .map((data) => data.date);
+    }, [chartData]);
+
     const formatYAxis = (tickItem: number) => {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
@@ -278,14 +288,14 @@ export default function StackedAreas() {
                         dataKey="date"
                         tickFormatter={formatDateTick}
                         tickMargin={7}
-                        // tickCount={10}
-                        interval={
-                            timeframe === "WEEK"
-                                ? 0
-                                : timeframe === "MONTH"
-                                ? 2
-                                : 8
-                        }
+                        ticks={xAxisTicks}
+                        // interval={
+                        //     timeframe === "WEEK"
+                        //         ? 0
+                        //         : timeframe === "MONTH"
+                        //         ? 2
+                        //         : 8
+                        // }
                     />
                     {category && parentCategory ? (
                         <>

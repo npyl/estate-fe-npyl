@@ -20,10 +20,11 @@ import {
 interface ReviewRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    onClick: () => void;
     loading: boolean;
 }
 
-function ReviewRow({ row, onRemove, loading }: ReviewRowProps) {
+function ReviewRow({ row, onRemove, loading, onClick }: ReviewRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
     const { data: review, isLoading } = useGetNotificationByIdQuery(row.id!, {
@@ -43,6 +44,7 @@ function ReviewRow({ row, onRemove, loading }: ReviewRowProps) {
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 loading={loading}
+                onClick={onClick}
             />
             <TableRow>
                 <TableCell
