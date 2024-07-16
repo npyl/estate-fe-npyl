@@ -1,7 +1,6 @@
 import { ButtonProps, IconButton } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
 import { Language } from "./types";
 
@@ -52,21 +51,19 @@ export const LanguageButton = ({
 
     return (
         <>
-            <IconButton
-                onClick={handleOpenPopover}
-                ref={anchorRef}
-                sx={{ ml: 1 }}
-                {...props}
-            >
-                <Image alt="" src={imageSrc} width={20} height={20} />
+            <IconButton onClick={handleOpenPopover} ref={anchorRef} {...props}>
+                <img src={imageSrc} width={20} height={20} />
             </IconButton>
-            <LanguagePopover
-                updatesGlobalLanguage={updatesGlobalLanguage}
-                anchorEl={anchorRef.current}
-                onClose={handleClosePopover}
-                onChange={handleChange}
-                open={openPopover}
-            />
+
+            {openPopover ? (
+                <LanguagePopover
+                    updatesGlobalLanguage={updatesGlobalLanguage}
+                    anchorEl={anchorRef.current}
+                    onClose={handleClosePopover}
+                    onChange={handleChange}
+                    open={openPopover}
+                />
+            ) : null}
         </>
     );
 };

@@ -749,6 +749,12 @@ const resources = {
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
 
+            Compare: "Compare",
+            "Set Main": "Set Main",
+            "Select All": "Select All",
+            "Deselect All": "Deselect All",
+            "Add images": "Add images",
+
             "Green Map": "Green Map",
             Panels: "Panels",
             "Annual energy": "Annual energy",
@@ -774,6 +780,12 @@ const resources = {
     },
     el: {
         translation: {
+            "Add images": "Προσθήκη εικόνων",
+            "Select All": "Επιλογή Όλων",
+            "Deselect All": "Καμία Επιλογή",
+            "Set Main": "Κάνε την πρώτη",
+            Compare: "Σύγκριση",
+
             "Other Pollutants": "Λοιποί Ρύποι",
             "Health Recommendations": "Συστάσεις Υγείας",
             "Dominant Pollutants": "Κύριοι Ρύποι",

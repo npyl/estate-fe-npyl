@@ -8,7 +8,7 @@ interface DocumentIconProps extends SvgIconProps {
 
 export const DocumentIcon = ({ isPreview, ...other }: DocumentIconProps) => {
     return (
-        <div style={{ position: "relative", display: "inline-block" }}>
+        <div style={{ position: "relative" }}>
             <DocumentSvg {...other} />
             {isPreview && (
                 <CircularProgress

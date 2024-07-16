@@ -6,7 +6,7 @@ import {
     LabelResourceType,
     ILabelPOST,
 } from "src/types/label";
-import { properties } from "./properties";
+import { filesApiSlice, properties } from "./properties";
 import { customers } from "./customers";
 
 import type { AnyAction } from "redux";
@@ -55,7 +55,7 @@ const optimisticCreate = (
         );
     } else if (resource === "document") {
         res = dispatch(
-            properties.util.updateQueryData(
+            filesApiSlice.util.updateQueryData(
                 "getPropertyDocuments",
                 resourceId,
                 (draft) => {
@@ -98,7 +98,7 @@ const optimisticDelete = (
         );
     } else if (resource === "document") {
         res = dispatch(
-            properties.util.updateQueryData(
+            filesApiSlice.util.updateQueryData(
                 "getPropertyDocuments",
                 resourceId,
                 (draft) => {

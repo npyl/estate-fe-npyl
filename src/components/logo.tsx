@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 
 type Variant = "light" | "primary";
@@ -54,11 +53,3 @@ export const Logo = styled((props: LogoProps) => {
         </svg>
     );
 })``;
-
-Logo.defaultProps = {
-    variant: "primary",
-};
-
-Logo.propTypes = {
-    variant: PropTypes.oneOf<Variant>(["light", "primary"]),
-};

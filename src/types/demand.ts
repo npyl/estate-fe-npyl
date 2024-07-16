@@ -1,5 +1,6 @@
 import { IPropertyFeatures } from "./features";
 import { KeyValue } from "./KeyValue";
+
 export interface IDemandFilters {
     minBedrooms: number;
     maxBedrooms: number;
@@ -52,17 +53,22 @@ export interface IDemandFiltersPOST {
     [key: string]: any;
 }
 
+export interface IPriorityFeatures extends IPropertyFeatures {
+    alarmSystem: boolean;
+}
+
 export interface IDemand {
     filters: IDemandFilters;
-    priorityFeatures: IPropertyFeatures;
+    priorityFeatures: IPriorityFeatures;
     timeframe: KeyValue;
     shapes: string[]; // map shape
 }
 
 export interface IDemandPOST {
     filters: Partial<IDemandFiltersPOST>;
-    priorityFeatures: IPropertyFeatures;
+    priorityFeatures: IPriorityFeatures;
     timeframe?: string;
     shapes: string[];
 }
+
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";

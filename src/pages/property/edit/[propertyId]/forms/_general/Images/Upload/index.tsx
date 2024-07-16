@@ -2,75 +2,47 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 // @mui
 import {
     Box,
-    Button,
     Stack,
     StackProps,
     SxProps,
     Theme,
     Typography,
 } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
 // assets
-import { IPropertyImage } from "src/types/file";
-import { UploadIllustration } from "../../assets/illustrations";
-import RejectionFiles from "./errors/RejectionFiles";
-import ImagePreview from "./preview/ImagePreview";
+import { IPropertyImage } from "@/types/file";
+import { UploadIllustration } from "@/assets/illustrations";
+import RejectionFiles from "@/components/upload/errors/RejectionFiles";
+import ImagePreview from "./ImagePreview";
+import { useImageOperations } from "../context/ImageOperations";
+import StyledDropZone from "./styled";
 
-export interface UploadProps extends DropzoneOptions {
+export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
     multiple?: boolean;
     sx?: SxProps<Theme>;
     files?: IPropertyImage[];
-    thumbnail?: boolean;
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
     disableMultiple?: boolean;
 
-    //
-    onImageClick?: (file: IPropertyImage) => void;
-    onUpload?: VoidFunction;
-    onDelete?: VoidFunction;
-    onRemove?: (file: IPropertyImage) => void;
-    onRemoveAll?: VoidFunction;
+    onImageClick: (key: string) => void;
 }
 
 // ----------------------------------------------------------------------
 
-const StyledDropZone = styled("div")(({ theme }) => ({
-    outline: "none",
-    cursor: "pointer",
-    overflow: "hidden",
-    position: "relative",
-    padding: theme.spacing(2, 1),
-    borderRadius: theme.shape.borderRadius,
-    transition: theme.transitions.create("padding"),
-    backgroundColor: theme.palette.background.paper, // TODO: neutral
-    border: `1px dashed ${alpha(theme.palette.grey[500], 0.32)}`,
-    "&:hover": {
-        opacity: 0.72,
-    },
-}));
-
-// ----------------------------------------------------------------------
-
-export default function UploadImages({
-    disabled,
+function UploadImages({
     multiple = true,
     error,
     helperText,
     placeholder,
     //
-    //
     files,
-    thumbnail,
     onImageClick,
-    onDelete,
-    onUpload,
-    onRemove,
-    onRemoveAll,
     sx,
     ...other
 }: UploadProps) {
+    const { upload, isLoading } = useImageOperations();
+
     const {
         getRootProps,
         getInputProps,
@@ -79,11 +51,12 @@ export default function UploadImages({
         fileRejections,
     } = useDropzone({
         multiple,
-        disabled,
+        disabled: isLoading,
         accept: {
             "image/jpeg": ["jpeg", "jpg"],
             "image/png": ["png"],
         },
+        onDrop: upload,
         ...other,
     });
 
@@ -91,7 +64,7 @@ export default function UploadImages({
     const isError = isDragReject || !!error;
 
     return (
-        <Box sx={{ width: 1, position: "relative", ...sx }}>
+        <Box width={1} position="relative" sx={{ ...sx }}>
             <StyledDropZone
                 {...getRootProps()}
                 sx={{
@@ -103,7 +76,7 @@ export default function UploadImages({
                         bgcolor: "error.lighter",
                         borderColor: "error.light",
                     }),
-                    ...(disabled && {
+                    ...(isLoading && {
                         opacity: 0.48,
                         pointerEvents: "none",
                     }),
@@ -117,42 +90,12 @@ export default function UploadImages({
             <RejectionFiles fileRejections={fileRejections} />
 
             {hasFiles && (
-                <>
-                    <Box mt={1}>
-                        <ImagePreview
-                            images={files}
-                            onImageClick={onImageClick}
-                            placeholder={placeholder}
-                        />
-                    </Box>
-
-                    <Stack
-                        direction="row"
-                        justifyContent="flex-end"
-                        spacing={1.5}
-                    >
-                        {onRemoveAll && (
-                            <Button
-                                color="inherit"
-                                variant="outlined"
-                                size="small"
-                                onClick={onRemoveAll}
-                            >
-                                Remove all
-                            </Button>
-                        )}
-
-                        {onUpload && (
-                            <Button
-                                size="small"
-                                variant="contained"
-                                onClick={onUpload}
-                            >
-                                Upload files
-                            </Button>
-                        )}
-                    </Stack>
-                </>
+                <ImagePreview
+                    mt={1}
+                    images={files}
+                    onImageClick={onImageClick}
+                    placeholder={placeholder}
+                />
             )}
 
             {helperText && helperText}
@@ -191,3 +134,5 @@ function Placeholder({ sx, ...other }: StackProps) {
         </Stack>
     );
 }
+
+export default UploadImages;

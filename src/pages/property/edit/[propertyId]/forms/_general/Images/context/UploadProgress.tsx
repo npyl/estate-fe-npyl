@@ -1,15 +1,9 @@
-import {
-    Dispatch,
-    SetStateAction,
-    createContext,
-    useContext,
-    useState,
-} from "react";
-import { NoUploadProgress, UploadProgress } from "src/components/image";
+import { UploadProgress } from "@/types/file";
+import { createContext, useContext, useState } from "react";
 
 export type IUploadFileContextState = {
     uploadProgress: UploadProgress;
-    setUploadProgress: Dispatch<SetStateAction<UploadProgress>>;
+    setUploadProgress: (p: UploadProgress) => void;
 };
 
 export const UploadFileContext = createContext<
@@ -26,20 +20,21 @@ export const useUploadFileContext = () => {
     return context;
 };
 
-const useUploadFileState = () => {
-    const [uploadProgress, setUploadProgress] =
-        useState<UploadProgress>(NoUploadProgress);
-
-    return {
-        uploadProgress,
-        setUploadProgress,
-    };
-};
-
 export const UploadFileProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
-    const value = useUploadFileState();
+    const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
+        key: "",
+        p: 0,
+    });
 
-    return <UploadFileContext.Provider value={value} {...props} />;
+    return (
+        <UploadFileContext.Provider
+            value={{
+                uploadProgress,
+                setUploadProgress,
+            }}
+            {...props}
+        />
+    );
 };

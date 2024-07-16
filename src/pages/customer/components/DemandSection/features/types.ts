@@ -1,6 +1,6 @@
-import { IPropertyFeatures } from "src/types/features";
+import { IPriorityFeatures } from "@/types/demand";
 
 export interface IFeatureSectionProps {
-    features: IPropertyFeatures;
+    features: IPriorityFeatures;
     onChange: (key: string, checked: boolean) => void;
 }

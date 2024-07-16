@@ -7,8 +7,6 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 
-const defaultImage = "/static/noImage.png";
-
 function renderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
 ) {
@@ -17,11 +15,9 @@ function renderImage(
     return (
         <Image
             src={
-                `${
-                    typeof propertyImage === "string"
-                        ? propertyImage
-                        : propertyImage?.url
-                }` || defaultImage
+                typeof propertyImage === "string"
+                    ? propertyImage
+                    : propertyImage?.url
             }
             alt=""
             ratio="16/9"
