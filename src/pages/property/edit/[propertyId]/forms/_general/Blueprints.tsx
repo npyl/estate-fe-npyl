@@ -42,7 +42,6 @@ const BlueprintsSection: React.FC = () => {
             <Upload
                 multiple
                 disabled={isLoading}
-                thumbnail={false}
                 files={blueprints}
                 onDrop={uploadFiles}
                 onFileClick={handleFileClick}

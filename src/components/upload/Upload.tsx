@@ -41,7 +41,6 @@ export default function Upload({
     onDelete,
     //
     files,
-    thumbnail,
     onUpload,
     onRemove,
     onRemoveAll,
@@ -129,9 +128,9 @@ export default function Upload({
                     <MultiFilePreview
                         files={files}
                         variant={variant}
-                        thumbnail={false}
                         onFileClick={onFileClick}
                         onRemove={onRemove}
+                        my={1}
                     />
 
                     <Stack

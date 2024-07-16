@@ -44,7 +44,6 @@ const DocumentsSection: React.FC = () => {
                     multiple
                     disabled={isLoading}
                     variant="document"
-                    thumbnail={false}
                     files={documents}
                     onFileClick={handleFileClick}
                     onDrop={uploadFiles}
