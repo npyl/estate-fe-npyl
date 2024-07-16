@@ -1,4 +1,4 @@
-import { IconButton, Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Typography, ButtonBase } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import SpitogatosSvg from "src/assets/SpitogatosSvg";
@@ -52,19 +52,35 @@ const OpenIn = () => {
     if (hasNothing) return null;
 
     return (
-        <CustomStack flexDirection="row" gap={0.5} alignItems="center">
-            <Typography>{t("Open in")}</Typography>
-            {hasPublic ? (
-                <IconButton size="small" onClick={openPublic}>
-                    <PublicSvg />
-                </IconButton>
-            ) : null}
-            {hasSpitogato ? (
-                <IconButton size="small" onClick={openSpitogato}>
-                    <SpitogatosSvg />
-                </IconButton>
-            ) : null}
-        </CustomStack>
+        <ButtonBase
+            onClick={
+                hasPublic
+                    ? openPublic
+                    : hasSpitogato
+                    ? openSpitogato
+                    : undefined
+            }
+            sx={{ width: "100%", borderRadius: "10px" }} //Code to make the entire customStack clickable
+        >
+            <CustomStack
+                flexDirection="row"
+                gap={1.5}
+                alignItems="center"
+                sx={{ width: "100%" }}
+            >
+                <Typography ml={1}>{t("Open in")}</Typography>
+                {hasPublic && (
+                    <IconButton size="small">
+                        <PublicSvg />
+                    </IconButton>
+                )}
+                {hasSpitogato && (
+                    <IconButton size="small">
+                        <SpitogatosSvg />
+                    </IconButton>
+                )}
+            </CustomStack>
+        </ButtonBase>
     );
 };
 
