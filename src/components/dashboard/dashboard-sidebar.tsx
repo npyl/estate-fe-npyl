@@ -195,7 +195,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             <Scrollbar
                 sx={{
                     height: "100%",
-                    "&.simplebar-content": {
+                    "& .simplebar-content": {
                         height: "100%",
                     },
                 }}
