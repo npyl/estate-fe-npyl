@@ -1,0 +1,56 @@
+import { IAgreement } from "@/types/agreements";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
+import { Card } from "./styled";
+import PropertyDetails from "./PropertyDetails";
+import Controls from "./Controls";
+import CardImage from "./Image";
+import { CardLabel, DraftLabel } from "./Labels";
+
+// ------------------------------------------------------------
+
+interface Props {
+    a: IAgreement;
+    onEdit: (id: number) => void;
+    onDelete: (id: number) => void;
+}
+
+const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
+    <Card>
+        <CardImage variant={a.variant} />
+
+        <Stack spacing={1} height={1}>
+            <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="flex-end"
+            >
+                <CardLabel variant={a.variant} />
+                {a.draft ? <DraftLabel /> : null}
+            </Stack>
+
+            <Stack spacing={1} px={1}>
+                <Typography variant="h6" py={0.5}>
+                    {a.title}
+                </Typography>
+
+                <PropertyDetails
+                    propertyId={a.assignedProperty.id}
+                    code={a.assignedProperty.code}
+                />
+            </Stack>
+
+            <Box flexGrow={1} />
+
+            <Controls
+                onEdit={() => onEdit(a.id)}
+                onDelete={() => onDelete(a.id)}
+            />
+        </Stack>
+    </Card>
+);
+
+export default AgreementCard;

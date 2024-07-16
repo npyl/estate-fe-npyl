@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { FormHelperText, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { StyledStack } from "./styled";
+import dayjs from "dayjs";
 
 // ------------------------------------------------------------------------
 
@@ -82,6 +83,14 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
     const router = useRouter();
     const { propertyId } = router.query;
 
+    const { setValue } = useFormContext();
+
+    // Everytime startingDate changes, update expirationDate as +12 months
+    const handleStartingChange = (value: dayjs.Dayjs) => {
+        setValue("availableAfter", value);
+        setValue("expirationDate", value.add(12, "month"));
+    };
+
     return (
         <StyledStack>
             {/* /property/[propertyId] & CREATE case */}
@@ -93,12 +102,17 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
             <RHFTextField name="title" label="Title" />
             <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <RHFDatePicker name="startingDate" label="Starting Date" />
+                    <RHFDatePicker
+                        name="startingDate"
+                        label="Starting Date"
+                        onChange={handleStartingChange}
+                    />
                 </Grid>
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="expirationDate"
                         label="Expiration Date"
+                        defaultValue={dayjs().add(12, "month")} // Initial value (12 months ahead from today)
                     />
                 </Grid>
                 <Grid item xs={6}>

@@ -7,7 +7,7 @@ const Schema = yup.object<IAgreementReq>().shape({
     id: yup.number().moreThan(0).optional(),
     propertyId: yup
         .number()
-        .moreThan(0)
+        .moreThan(0, "Please make sure to select a property!")
         .required("Please make sure to select a property!"),
 
     variant: yup

@@ -6,8 +6,7 @@ import SaveFab from "./SaveFab";
 import PDFEditor from "./Editor";
 import { useFormContext } from "react-hook-form";
 import ErrorTooltips from "./ErrorTooltips";
-
-const TRIGGER_OPTIONS = ["owner", "property", "commissionAndDuration", "gdpr"];
+import { TRIGGER_OPTIONS } from "./constants/trigger";
 
 interface Props extends Omit<DialogProps, "onClose"> {
     onClose: VoidFunction;

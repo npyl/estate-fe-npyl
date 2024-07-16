@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { createRoot, Root } from "react-dom/client";
-import ErrorTooltip from "./Tooltip";
+import ErrorTooltip from "../../_shared/ErrorTooltip";
 
 //
 //  INFO:

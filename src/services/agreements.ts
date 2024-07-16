@@ -1,4 +1,8 @@
-import { IAgreement, IAgreementsFilters } from "@/types/agreements";
+import {
+    IAgreement,
+    IAgreementReq,
+    IAgreementsFilters,
+} from "@/types/agreements";
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -37,8 +41,37 @@ export const agreements = createApi({
             }),
             providesTags: ["AgreementById"],
         }),
+        createAgreement: builder.mutation<number, IAgreementReq>({
+            query: (body) => ({
+                url: "",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Agreements"],
+        }),
+        updateAgreement: builder.mutation<number, IAgreementReq>({
+            query: (body) => ({
+                url: "",
+                method: "PUT",
+                body,
+            }),
+            invalidatesTags: ["Agreements", "AgreementById"],
+        }),
+        deleteAgreement: builder.mutation<void, number>({
+            query: (body) => ({
+                url: "",
+                method: "DELETE",
+                body,
+            }),
+            invalidatesTags: ["Agreements", "AgreementById"],
+        }),
     }),
 });
 
-export const { useFilterAgreementsMutation, useGetAgreementByIdQuery } =
-    agreements;
+export const {
+    useFilterAgreementsMutation,
+    useGetAgreementByIdQuery,
+    useCreateAgreementMutation,
+    useUpdateAgreementMutation,
+    useDeleteAgreementMutation,
+} = agreements;

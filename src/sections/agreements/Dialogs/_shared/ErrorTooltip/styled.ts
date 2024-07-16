@@ -1,4 +1,4 @@
-import { Tooltip, TooltipProps, Typography, alpha } from "@mui/material";
+import { Tooltip, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
@@ -23,14 +23,4 @@ const StyledTooltip = styled(Tooltip)({
     zIndex: 1500,
 });
 
-interface ErrorTooltipProps extends Omit<TooltipProps, "title" | "children"> {
-    error: string;
-}
-
-const ErrorTooltip = ({ error, ...props }: ErrorTooltipProps) => (
-    <StyledTooltip title={<Typography>{error}</Typography>} {...props}>
-        <StyledErrorOutlineIcon />
-    </StyledTooltip>
-);
-
-export default ErrorTooltip;
+export { StyledErrorOutlineIcon, StyledTooltip };

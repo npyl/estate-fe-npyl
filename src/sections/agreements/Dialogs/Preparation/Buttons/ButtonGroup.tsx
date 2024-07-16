@@ -9,7 +9,6 @@ type Option = { label: string; value: IAgreementType };
 
 const OPTIONS: Option[] = [
     { label: "Basic", value: "basic" },
-    { label: "Basic Exclusive", value: "basic_exclusive" },
     { label: "Purchase", value: "purchase" },
 ];
 

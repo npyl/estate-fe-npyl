@@ -36,29 +36,28 @@ const Dialog = ({
     content,
     onClose,
     ...props
-}: DialogProps) =>
-    !open ? null : (
-        <MuiDialog
-            open={open}
-            onClose={onClose}
-            fullWidth
-            maxWidth="sm"
-            // INFO: make the dialog work as a <form> component
-            component={submit ? DialogForm : undefined}
-            // ...
-            {...props}
-        >
-            <DialogTitle>
-                <IconButton onClick={onClose}>
-                    <Iconify icon="line-md:close" />
-                </IconButton>
-                <Stack alignItems="center" mt={1}>
-                    {title}
-                </Stack>
-            </DialogTitle>
-            <DialogContent>{content}</DialogContent>
-            <DialogActions>{actions}</DialogActions>
-        </MuiDialog>
-    );
+}: DialogProps) => (
+    <MuiDialog
+        open={open}
+        onClose={onClose}
+        fullWidth
+        maxWidth="sm"
+        // INFO: make the dialog work as a <form> component
+        component={submit ? DialogForm : undefined}
+        // ...
+        {...props}
+    >
+        <DialogTitle>
+            <IconButton onClick={onClose}>
+                <Iconify icon="line-md:close" />
+            </IconButton>
+            <Stack alignItems="center" mt={1}>
+                {title}
+            </Stack>
+        </DialogTitle>
+        <DialogContent>{content}</DialogContent>
+        <DialogActions>{actions}</DialogActions>
+    </MuiDialog>
+);
 
 export default Dialog;

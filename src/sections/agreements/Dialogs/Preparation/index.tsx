@@ -4,19 +4,28 @@ import Dialog, { DialogProps } from "@/components/Dialog";
 import { RHFCheckbox } from "@/components/hook-form";
 import { IAgreementReq } from "@/types/agreements";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
-import ButtonGroup from "./ButtonGroup";
 import useDialog from "@/hooks/useDialog";
 import { useCallback, useMemo } from "react";
 import Schema, { getValues } from "./schema";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { TLanguageType } from "@/types/translation";
-import { useGetAgreementByIdQuery } from "@/services/agreements";
+import {
+    useCreateAgreementMutation,
+    useGetAgreementByIdQuery,
+    useUpdateAgreementMutation,
+} from "@/services/agreements";
 import dynamic from "next/dynamic";
+import {
+    ButtonGroup,
+    EditPDFButton,
+    ExportButton,
+    SubmitButton,
+} from "./Buttons";
 const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
@@ -43,6 +52,9 @@ const PreparationDialog: React.FC<Props> = ({
 }) => {
     const { t } = useTranslation();
 
+    const [createAgreement] = useCreateAgreementMutation();
+    const [updateAgreement] = useUpdateAgreementMutation();
+
     const [isPDFOpen, openPDF, closePDF] = useDialog();
 
     const values = useInitialValues(editedAgreementId);
@@ -60,7 +72,10 @@ const PreparationDialog: React.FC<Props> = ({
         []
     );
 
-    const handleSubmit = () => {};
+    const handleSubmit = async (d: IAgreementReq) => {
+        const cb = d.id ? updateAgreement : createAgreement;
+        await cb(d);
+    };
 
     return (
         <>
@@ -83,9 +98,7 @@ const PreparationDialog: React.FC<Props> = ({
                                     onLanguageChange={setLang}
                                 />
 
-                                <Button onClick={openPDF}>
-                                    {t("Edit PDF")}
-                                </Button>
+                                <EditPDFButton onClick={openPDF} />
                             </Stack>
 
                             <PropertyDetails shouldAutofill={shouldAutofill} />
@@ -100,7 +113,8 @@ const PreparationDialog: React.FC<Props> = ({
                     actions={
                         <>
                             <RHFCheckbox name="draft" label="Save as draft" />
-                            <Button type="submit">{t("Save")}</Button>
+                            <SubmitButton />
+                            <ExportButton />
                         </>
                     }
                 />
