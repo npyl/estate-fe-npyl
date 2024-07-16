@@ -1464,13 +1464,13 @@ const resources = {
 
             Overview: "Συνολικά",
             "Quick View": "Συνοπτικά",
-            "Matching Customers": "Ταιριαστοί πελάτες",
+            "Matching Customers": "Αντιστοίχιση πελατών",
             Photos: "Εικόνες",
             "All Photos": "Όλες οι Εικόνες",
             "Public Photos": "Δημόσιες Εικόνες",
             "Private Photos": "Ιδιωτικές Εικόνες",
 
-            Integrations: "Συνδεδεμένα",
+            Integrations: "Διασύνδεση",
             Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
             "Share PDF": "Κοινοποίση PDF",
