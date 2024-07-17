@@ -1300,7 +1300,13 @@ const resources = {
             "Fill in property location first":
                 "Συμπληρώστε την τοποθεσία του ακινήτου πρώτα",
             Demands: "Απαιτήσεις",
+            "Features for Land Category": "Χαρακτηριστικά για Γη",
+            "Features for Residential Category": "Χαρακτηριστικά για Κατοικία",
+            "Features for Commercial Category":
+                "Χαρακτηριστικά για Επαγγελματική στέγη",
+            "Features for Other Category": "Χαρακτηριστικά για κατηγορία Άλλο",
 
+            // "Features for Residential Category": "Χαρακτηριστικά για επαγ",
             //Description
             Description: "Περιγραφή",
             Generate: "Δημιουργία",

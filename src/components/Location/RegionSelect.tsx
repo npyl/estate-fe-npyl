@@ -6,28 +6,26 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
+    ListItemText,
+    Button,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-
 import { useGetRegionsQuery } from "src/services/location";
+import React from "react";
 
 interface IRegionSelectProps {
-    regionCode: string;
-    onChange: (regionCode: string, lat: number, lng: number) => void;
+    selectedRegions: string[];
+    onChange: (selectedRegions: string[]) => void;
 }
 
 const RegionSelect = (props: IRegionSelectProps) => {
-    const { regionCode, onChange } = props;
+    const { selectedRegions, onChange } = props;
     const { t } = useTranslation();
     const regions = useGetRegionsQuery(undefined).data || [];
 
-    const handleChange = (event: SelectChangeEvent<string>) => {
-        const areaID = event.target.value;
-        const selectedArea = regions!.filter(
-            (region) => region.areaID === +areaID // filter by areaID
-        )[0];
-
-        onChange(areaID, selectedArea.latitude, selectedArea.longitude);
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
+        const value = event.target.value as string[];
+        onChange(value);
     };
 
     if (!regions) return null;
@@ -36,23 +34,31 @@ const RegionSelect = (props: IRegionSelectProps) => {
         <FormControl fullWidth>
             <InputLabel>{t("Prefecture")}</InputLabel>
             <Select
-                value={regionCode}
-                onChange={(event) => handleChange(event)}
+                multiple
+                value={selectedRegions}
+                onChange={handleChange}
                 renderValue={(selected) => {
-                    const option = regions.find(
-                        (region) => region.areaID === +selected
+                    const selectedRegions = regions.filter((region) =>
+                        selected.includes(region.areaID.toString())
                     );
-                    return option ? option.nameGR : "";
+                    return selectedRegions
+                        .map((region) => region.nameGR)
+                        .join(", ");
                 }}
                 input={<OutlinedInput label={t("Prefecture")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {regions.map((region, index) => (
-                    <MenuItem key={index} value={region.areaID}>
+                {regions.map((region) => (
+                    <MenuItem
+                        key={region.areaID}
+                        value={region.areaID.toString()}
+                    >
                         <Checkbox
-                            checked={regionCode === region.areaID.toString()}
+                            checked={selectedRegions.includes(
+                                region.areaID.toString()
+                            )}
                         />
-                        {region.nameGR}
+                        <ListItemText primary={region.nameGR} />
                     </MenuItem>
                 ))}
             </Select>
