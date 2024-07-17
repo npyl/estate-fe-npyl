@@ -5,7 +5,14 @@
 import { IAgreementType } from "@/types/agreements";
 import { TLanguageType } from "@/types/translation";
 import { Template } from "@pdfme/common";
-import { BasicSchema } from "./constants";
+import {
+    BasicEn,
+    BasicExclusiveEn,
+    PurchaseEn,
+    BasicEl,
+    BasicExclusiveEl,
+    PurchaseEl,
+} from "./constants";
 
 export interface NestedObject {
     [key: string]: any;
@@ -31,8 +38,29 @@ function flattenObject(obj: NestedObject, parentKey = ""): NestedObject {
     return flattened;
 }
 
-const getSampleTemplate = (basePdf: any): Template => ({
-    schemas: BasicSchema,
+const getSchemaEn = (variant: IAgreementType) =>
+    variant === "basic"
+        ? BasicEn
+        : variant === "basic_exclusive"
+        ? BasicExclusiveEn
+        : variant === "purchase"
+        ? PurchaseEn
+        : BasicEn; // fallback
+const getSchemaEl = (variant: IAgreementType) =>
+    variant === "basic"
+        ? BasicEl
+        : variant === "basic_exclusive"
+        ? BasicExclusiveEl
+        : variant === "purchase"
+        ? PurchaseEl
+        : BasicEl; // fallback
+
+const getSampleTemplate = (
+    variant: IAgreementType,
+    lang: TLanguageType,
+    basePdf: any
+): Template => ({
+    schemas: lang === "en" ? getSchemaEn(variant) : getSchemaEl(variant),
     basePdf,
 });
 
@@ -53,7 +81,7 @@ const loadPdf = async (variant: IAgreementType, lang: TLanguageType) => {
 
         const basePdf = await res.text();
 
-        const template = getSampleTemplate(basePdf);
+        const template = getSampleTemplate(variant, lang, basePdf);
 
         return template;
     } catch (error) {

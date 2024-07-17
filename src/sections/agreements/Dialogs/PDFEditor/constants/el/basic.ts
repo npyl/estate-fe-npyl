@@ -1,10 +1,8 @@
-import icon from "./icon";
-
 const BasicSchema = [
     {
         "owner.fullname": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 38.1,
@@ -24,7 +22,7 @@ const BasicSchema = [
         },
         "owner.email": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 141.41,
@@ -44,7 +42,7 @@ const BasicSchema = [
         },
         "owner.maidenName": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 30.37,
@@ -64,7 +62,7 @@ const BasicSchema = [
         },
         "owner.idCardNo": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 105.46,
@@ -84,7 +82,7 @@ const BasicSchema = [
         },
         "owner.vat": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 16.5,
@@ -104,7 +102,7 @@ const BasicSchema = [
         },
         "owner.city": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 69.09,
@@ -124,7 +122,7 @@ const BasicSchema = [
         },
         "owner.street": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 108.19,
@@ -144,7 +142,7 @@ const BasicSchema = [
         },
         "owner.number": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 189.9,
@@ -164,7 +162,7 @@ const BasicSchema = [
         },
         "owner.actingOnMyBehalfFiller": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 65.75,
@@ -184,7 +182,7 @@ const BasicSchema = [
         },
         "property.region": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 18.83,
@@ -204,7 +202,7 @@ const BasicSchema = [
         },
         "property.address": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 67.46,
@@ -224,7 +222,7 @@ const BasicSchema = [
         },
         "property.addressNo": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 190.69,
@@ -244,7 +242,7 @@ const BasicSchema = [
         },
         "property.type": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 15.27,
@@ -264,7 +262,7 @@ const BasicSchema = [
         },
         "property.floor": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 63.64,
@@ -284,7 +282,7 @@ const BasicSchema = [
         },
         "property.livingSpace": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 93.75,
@@ -304,7 +302,7 @@ const BasicSchema = [
         },
         "property.description": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 7.18,
@@ -324,7 +322,7 @@ const BasicSchema = [
         },
         "property.price": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 36.65,
@@ -344,7 +342,7 @@ const BasicSchema = [
         },
         "commissionAndDuration.payment": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 60.41,
@@ -364,7 +362,7 @@ const BasicSchema = [
         },
         "commissionAndDuration.flatRate": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 171.27,
@@ -384,7 +382,7 @@ const BasicSchema = [
         },
         "commissionAndDuration.defects": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 6.65,
@@ -404,7 +402,7 @@ const BasicSchema = [
         },
         "gdpr.email": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 84.96,
@@ -424,7 +422,7 @@ const BasicSchema = [
         },
         "gdpr.address": {
             type: "text",
-            icon,
+
             defaultValue: "\n",
             position: {
                 x: 23.21,
