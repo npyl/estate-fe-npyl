@@ -98,7 +98,7 @@ const usePropertyUpload = (
 
             // PUT to amazon url
             const response = await uploadFile({
-                variant: "image",
+                variant,
                 url,
                 file,
                 onProgressUpdate: (p) => onProgressUpdate?.({ key, p }),

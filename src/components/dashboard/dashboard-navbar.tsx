@@ -135,7 +135,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             {/* <Tooltip title="Alex Gamiesai file">
                             </Tooltip> */}
                             <StyledTypography variant="h5">
-                                PropertyPro v0.86
+                                PropertyPro v0.87
                             </StyledTypography>
                         </Link>
                     </Box>

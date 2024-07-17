@@ -5,7 +5,7 @@ import Iconify from "../../iconify";
 //
 import { IPropertyFile, UploadVariant } from "../types";
 import { LabelCreate } from "@/components/Label";
-import { DocumentIcon } from "./DocumentIcon";
+import DocumentIcon from "./DocumentIcon";
 import { styled } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
