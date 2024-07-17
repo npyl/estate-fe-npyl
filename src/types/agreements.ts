@@ -92,5 +92,7 @@ export interface IAgreementsFilters {
     signed: boolean | null;
     expirationDate: string;
 
+    propertyId?: number;
+
     [key: string]: any;
 }

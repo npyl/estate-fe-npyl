@@ -25,15 +25,13 @@ export const agreements = createApi({
     tagTypes: ["Agreements", "AgreementById"],
 
     endpoints: (builder) => ({
-        filterAgreements: builder.mutation<
-            IPage<IAgreement>,
-            IAgreementsFilters
-        >({
+        filterAgreements: builder.query<IPage<IAgreement>, IAgreementsFilters>({
             query: (body) => ({
                 url: "/filter",
                 method: "POST",
                 body,
             }),
+            providesTags: ["Agreements"],
         }),
         getAgreementById: builder.query<IAgreement, number>({
             query: (id) => ({
@@ -69,7 +67,7 @@ export const agreements = createApi({
 });
 
 export const {
-    useFilterAgreementsMutation,
+    useFilterAgreementsQuery,
     useGetAgreementByIdQuery,
     useCreateAgreementMutation,
     useUpdateAgreementMutation,

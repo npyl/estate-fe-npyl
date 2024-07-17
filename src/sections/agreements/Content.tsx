@@ -2,7 +2,7 @@ import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
 import AgreementCard from "./Card/AgreementCard";
 import AgreementCardSkeleton from "./Card/AgreementCardSkeleton";
 import { Suspense, lazy, useEffect, useState } from "react";
-import { useFilterAgreementsMutation } from "@/services/agreements";
+import { useFilterAgreementsQuery } from "@/services/agreements";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { Grid } from "@mui/material";
 const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
@@ -10,7 +10,7 @@ const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
 const PAGE_SIZE = 5;
 
 interface Props {
-    // Are we on a property/[propertyId] page or the agreements page?
+    // Are we on a property/[propertyId] page or the Agreements page?
     propertyId?: number;
     onEditAgreement: (id: number) => void;
 }
@@ -18,13 +18,10 @@ interface Props {
 const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
     const { filters } = useAgreementsFiltersContext();
 
-    const [filterAgreements, { data, isLoading }] =
-        useFilterAgreementsMutation();
-
-    useEffect(() => {
-        // TODO: if propertyId get them from the respective propertyId filter
-        filterAgreements(filters);
-    }, [filters]);
+    const { data, isLoading } = useFilterAgreementsQuery({
+        ...filters,
+        propertyId,
+    });
 
     const [deletableAgreement, setDeletableAgreement] = useState(-1);
 
