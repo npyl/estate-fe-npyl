@@ -79,7 +79,7 @@ const Schema = yup.object<IAgreementReq>().shape({
     }),
 });
 
-export const getValues = (agreement?: IAgreement) => {
+export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
     const {
         id,
         assignedProperty,
@@ -106,7 +106,7 @@ export const getValues = (agreement?: IAgreement) => {
         id,
         propertyId: propertyId || -1,
         // ...
-        variant: variant || "basic",
+        variant: isCustomer ? "basic_exclusive" : variant || "basic",
         lang: lang || "el",
         draft: draft || false,
         keys: keys || false,

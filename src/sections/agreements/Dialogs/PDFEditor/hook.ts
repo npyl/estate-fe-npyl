@@ -24,7 +24,7 @@ export const useForm = (
                         template,
                         inputs: inputs || [{}],
                         // ...
-                        plugins: {},
+                        // plugins: {},
                         // options: { font },
                     });
 

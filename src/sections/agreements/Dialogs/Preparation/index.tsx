@@ -26,18 +26,24 @@ import {
     ExportButton,
     SubmitButton,
 } from "./Buttons";
+import { usePathname } from "next/navigation";
 const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
 
 const useInitialValues = (id?: number) => {
+    const isCustomer = usePathname().includes("customer");
+
     const { data: editedAgreement } = useGetAgreementByIdQuery(id!, {
         skip: !id || id === -1,
     });
 
-    const values = useMemo(() => getValues(editedAgreement), [editedAgreement]);
+    const values = useMemo(
+        () => getValues(isCustomer, editedAgreement),
+        [isCustomer, editedAgreement]
+    );
 
-    return values;
+    return { values, isCustomer };
 };
 
 // -------------------------------------------------------------------
@@ -57,7 +63,7 @@ const PreparationDialog: React.FC<Props> = ({
 
     const [isPDFOpen, openPDF, closePDF] = useDialog();
 
-    const values = useInitialValues(editedAgreementId);
+    const { values, isCustomer } = useInitialValues(editedAgreementId);
     const shouldAutofill = !editedAgreementId || editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
     const methods = useForm<IAgreementReq>({
@@ -90,7 +96,7 @@ const PreparationDialog: React.FC<Props> = ({
                     content={
                         <Stack spacing={1}>
                             <Stack direction="row" spacing={1}>
-                                <ButtonGroup />
+                                {!isCustomer ? <ButtonGroup /> : null}
 
                                 <LanguageButton
                                     updatesGlobalLanguage={false}
