@@ -1,11 +1,15 @@
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
 import AgreementCard from "./Card/AgreementCard";
 import AgreementCardSkeleton from "./Card/AgreementCardSkeleton";
-import { Suspense, lazy, useEffect, useState } from "react";
-import { useFilterAgreementsQuery } from "@/services/agreements";
+import { useState } from "react";
+import {
+    useDeleteAgreementMutation,
+    useFilterAgreementsQuery,
+} from "@/services/agreements";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { Grid } from "@mui/material";
-const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
+import dynamic from "next/dynamic";
+const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 
 const PAGE_SIZE = 5;
 
@@ -24,8 +28,12 @@ const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
     });
 
     const [deletableAgreement, setDeletableAgreement] = useState(-1);
+    const closeDeleteDialog = () => setDeletableAgreement(-1);
 
     const pagination = usePagination();
+
+    const [deleteAgreement] = useDeleteAgreementMutation();
+    const handleDelete = () => deleteAgreement(deletableAgreement);
 
     return (
         <>
@@ -61,13 +69,11 @@ const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
             </Pagination>
 
             {deletableAgreement !== -1 ? (
-                <Suspense>
-                    <DeleteDialog
-                        open
-                        onClose={() => setDeletableAgreement(-1)}
-                        onDelete={() => {}}
-                    />
-                </Suspense>
+                <DeleteDialog
+                    open
+                    onClose={closeDeleteDialog}
+                    onDelete={handleDelete}
+                />
             ) : null}
         </>
     );
