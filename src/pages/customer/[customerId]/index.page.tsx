@@ -18,20 +18,13 @@ import {
     OwnedProperties,
     Logs,
 } from "./sections";
-
 import TabPanel from "src/components/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
-
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import React from "react";
+import Agreements from "@/sections/agreements";
 
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        "aria-controls": `simple-tabpanel-${index}`,
-    };
-}
 type TabConfig = {
     label: string;
     content: JSX.Element;
@@ -116,6 +109,10 @@ const CustomerView: NextPage = () => {
             content: <MatchingProperties />,
         },
         {
+            label: t("Agreements"),
+            content: <Agreements customerId={+customerId!} />,
+        },
+        {
             label: t("Logs"),
             content: <Logs />,
         },
@@ -128,17 +125,9 @@ const CustomerView: NextPage = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             >
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="View Property Tabs"
-                >
+                <Tabs value={value} onChange={handleChange}>
                     {tabsConfig.map((tab, index) => (
-                        <Tab
-                            key={index}
-                            label={tab!.label}
-                            {...a11yProps(index)}
-                        />
+                        <Tab key={index} label={tab!.label} />
                     ))}
                 </Tabs>
             </ViewHeader>

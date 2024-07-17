@@ -9,9 +9,10 @@ const PreparationDialog = dynamic(() => import("./Dialogs/Preparation"));
 interface Props {
     // Are we on a property/[propertyId] page or the agreements page?
     propertyId?: number;
+    customerId?: number;
 }
 
-const AgreementsSection: React.FC<Props> = ({ propertyId }) => {
+const AgreementsSection: React.FC<Props> = ({ propertyId, customerId }) => {
     // -1: closed
     // 0: create
     // >0: edit with agreement id
@@ -27,6 +28,7 @@ const AgreementsSection: React.FC<Props> = ({ propertyId }) => {
                     <FiltersBar onClickNew={openCreateDialog} />
                     <CardsContent
                         propertyId={propertyId}
+                        customerId={customerId}
                         onEditAgreement={openEditDialog}
                     />
                 </Stack>

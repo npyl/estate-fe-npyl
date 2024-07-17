@@ -93,6 +93,7 @@ export interface IAgreementsFilters {
     expirationDate: string;
 
     propertyId?: number;
+    customerId?: number;
 
     [key: string]: any;
 }

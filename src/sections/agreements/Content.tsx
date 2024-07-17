@@ -16,15 +16,21 @@ const PAGE_SIZE = 5;
 interface Props {
     // Are we on a property/[propertyId] page or the Agreements page?
     propertyId?: number;
+    customerId?: number;
     onEditAgreement: (id: number) => void;
 }
 
-const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
+const CardsContent: React.FC<Props> = ({
+    propertyId,
+    customerId,
+    onEditAgreement,
+}) => {
     const { filters } = useAgreementsFiltersContext();
 
     const { data, isLoading } = useFilterAgreementsQuery({
         ...filters,
         propertyId,
+        customerId,
     });
 
     const [deletableAgreement, setDeletableAgreement] = useState(-1);
