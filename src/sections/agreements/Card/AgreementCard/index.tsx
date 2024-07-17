@@ -46,6 +46,7 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
             <Box flexGrow={1} />
 
             <Controls
+                agreement={a}
                 onEdit={() => onEdit(a.id)}
                 onDelete={() => onDelete(a.id)}
             />
