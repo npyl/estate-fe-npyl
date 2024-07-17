@@ -5,11 +5,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import DownloadIcon from "@mui/icons-material/Download";
 import { IAgreement } from "@/types/agreements";
-import React, { useMemo } from "react";
+import React, { useMemo, useState, MouseEvent } from "react";
 import { flattenObject } from "../../Dialogs/PDFEditor/util";
 import { useGeneratePDF } from "../../Dialogs/_shared/hook";
 import downloadBlob from "@/utils/downloadBlob";
 import LoadingIconButton from "@/components/LoadingIconButton";
+import dynamic from "next/dynamic";
+const SharePopover = dynamic(() => import("@/components/Share"));
 
 // ------------------------------------------------------------
 
@@ -19,15 +21,30 @@ interface CustomButtonProps {
 
 // TODO: share
 const ShareButton: React.FC<CustomButtonProps> = ({ agreement }) => {
-    const { variant, lang } = agreement;
-    const inputs = useMemo(() => [flattenObject(agreement)], [agreement]);
+    // const { variant, lang } = agreement;
+    // const inputs = useMemo(() => [flattenObject(agreement)], [agreement]);
 
-    const handleShare = () => {};
+    const [anchorEl, setAnchor] = useState<HTMLButtonElement>();
+
+    const openPopover = (e: MouseEvent<HTMLButtonElement>) =>
+        setAnchor(e.currentTarget);
+    const closePopover = () => setAnchor(undefined);
 
     return (
-        <IconButton onClick={handleShare}>
-            <ShareIcon />
-        </IconButton>
+        <>
+            <IconButton onClick={openPopover}>
+                <ShareIcon />
+            </IconButton>
+
+            {!!anchorEl ? (
+                <SharePopover
+                    anchorEl={anchorEl}
+                    open={!!anchorEl}
+                    shareUrl={window.location.href}
+                    onClose={closePopover}
+                />
+            ) : null}
+        </>
     );
 };
 

@@ -26,6 +26,7 @@ import LinkIcon from "./LinkIcon";
 import Button from "./button";
 import { useCallback } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { StyledPaper } from "./styled";
 
 interface SharePopoverProps extends Omit<PopoverProps, "onClose"> {
     shareUrl: string;
@@ -56,34 +57,30 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 horizontal: "center",
             }}
             keepMounted
-            PaperProps={{
-                sx: {
-                    p: 2,
-                    width: "280px",
-                    maxWidth: "90vw",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1.5,
-                    alignItems: "flex-start",
-                    position: "relative",
-                    borderRadius: 2,
-                    boxShadow: 3,
-                    backgroundColor: "background.paper",
-                },
+            slots={{
+                paper: StyledPaper,
             }}
         >
+            <Typography
+                variant="h6"
+                sx={{
+                    alignSelf: "center",
+                }}
+            >
+                {t("Share")}
+            </Typography>
+
             <IconButton
-                sx={{ position: "absolute", top: 8, right: 8 }}
+                sx={{
+                    position: "absolute",
+                    top: 4,
+                    right: 4,
+                }}
                 onClick={(event) => onClose(event, "backdropClick")}
             >
                 <CloseIcon />
             </IconButton>
-
-            <Typography variant="h6" sx={{ mb: 1, alignSelf: "center" }}>
-                {t("Share")}
-            </Typography>
-
-            <Divider sx={{ width: "100%" }} />
+            <Divider sx={{ width: 1 }} />
 
             <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
                 {t("Chat")}

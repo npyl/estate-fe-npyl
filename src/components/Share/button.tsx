@@ -4,7 +4,6 @@ interface ButtonProps {
     Component: ComponentType<any>;
     icon: React.FC<any>;
     label: string;
-    className?: string;
     shareUrl: string;
 }
 
@@ -12,7 +11,6 @@ const Button: React.FC<ButtonProps> = ({
     Component,
     icon: Icon,
     label,
-    className,
     shareUrl,
 }) => (
     <Component
@@ -25,7 +23,6 @@ const Button: React.FC<ButtonProps> = ({
             width: "100%",
             textAlign: "left",
         }}
-        className={`flex flex-row !bg-neutral-100 dark:!bg-neutral-700 ${className}`}
         url={shareUrl}
     >
         <p style={{ margin: 0 }}>{label}</p>

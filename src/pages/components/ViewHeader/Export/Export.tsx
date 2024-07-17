@@ -5,28 +5,12 @@ import { exportPDF } from "@/services/exports";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Popover from "./popover";
-import { SharePopover } from "../ShareExport";
+import SharePopover from "@/components/Share";
+import downloadBlob from "@/utils/downloadBlob";
 
-// TODO: introduce helper
-const downloadBlob = (blob: Blob): void => {
-    const filename = "PropertyExport.pdf";
+const filename = "PropertyExport.pdf";
 
-    // Convert the blob to a URL
-    const blobUrl = URL.createObjectURL(blob);
-
-    // Create an anchor element and attach the blob URL to it
-    const anchor = document.createElement("a");
-    anchor.href = blobUrl;
-    anchor.download = filename;
-
-    // Append the anchor to the document and trigger a click on it
-    document.body.appendChild(anchor);
-    anchor.click();
-
-    // Clean up by removing the anchor and revoking the blob URL
-    document.body.removeChild(anchor);
-    URL.revokeObjectURL(blobUrl);
-};
+const downloadBlob0 = (b: Blob) => downloadBlob(b, filename);
 
 const ExportButton = () => {
     const { t, i18n } = useTranslation();
@@ -55,10 +39,7 @@ const ExportButton = () => {
             publicImages: version === "LONG",
             lang: i18n.language as "en" | "el",
         })
-            .then(downloadBlob)
-            .catch((error) => {
-                console.error("Download failed:", error);
-            })
+            .then(downloadBlob0)
             .finally(() => {
                 setLoading(false);
             });
@@ -96,12 +77,14 @@ const ExportButton = () => {
                 />
             ) : null}
 
-            <SharePopover
-                open={isShareOpen}
-                anchorEl={shareAnchorEl}
-                onClose={handleShareClose}
-                shareUrl={window.location.href}
-            />
+            {isShareOpen ? (
+                <SharePopover
+                    open={isShareOpen}
+                    anchorEl={shareAnchorEl}
+                    onClose={handleShareClose}
+                    shareUrl={window.location.href}
+                />
+            ) : null}
         </>
     );
 };
