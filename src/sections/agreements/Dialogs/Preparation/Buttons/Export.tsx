@@ -3,6 +3,7 @@ import { flattenObject } from "../../PDFEditor/util";
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
 import { useGeneratePDF } from "../../_shared/hook";
+import { IAgreementReq } from "@/types/agreements";
 
 const ExportButton = () => {
     const { t } = useTranslation();
@@ -12,8 +13,8 @@ const ExportButton = () => {
         formState: { isSubmitSuccessful },
     } = useFormContext();
 
-    const all = watch();
-    const { variant, lang } = all;
+    const all = watch() as IAgreementReq;
+    const { variant, lang, title } = all;
     const inputs = [flattenObject(all)];
 
     const { generatePDF, isGenerating } = useGeneratePDF(variant, lang, inputs);
@@ -26,13 +27,13 @@ const ExportButton = () => {
 
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "generated_document.pdf";
+        link.download = `${title}.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
 
-    // if (!isSubmitSuccessful) return null;
+    if (!isSubmitSuccessful) return null;
 
     return (
         <LoadingButton loading={isGenerating} onClick={handleGenerate}>
