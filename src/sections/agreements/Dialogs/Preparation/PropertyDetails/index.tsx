@@ -112,7 +112,6 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
                     <RHFDatePicker
                         name="expirationDate"
                         label="Expiration Date"
-                        defaultValue={dayjs().add(12, "month")} // Initial value (12 months ahead from today)
                     />
                 </Grid>
                 <Grid item xs={6}>

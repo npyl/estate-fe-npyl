@@ -112,7 +112,9 @@ export const getValues = (agreement?: IAgreement) => {
         keys: keys || false,
         title: title || "",
         startingDate: startingDate || dayjs().toISOString(),
-        expirationDate: expirationDate || dayjs().toISOString(), // TODO: +12 months
+        // Initial value (12 months ahead from today)
+        expirationDate:
+            expirationDate || dayjs().add(12, "month").toISOString(),
         availableAfter: availableAfter || dayjs().toISOString(),
         // ...
         manager: {
