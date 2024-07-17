@@ -15,7 +15,7 @@ import {
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { Label } from "@/components/Label";
-import { DocumentIcon } from "src/components/upload/preview/DocumentIcon";
+import DocumentIcon from "src/components/upload/preview/DocumentIcon";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { downloadDocuments } from "@/services/exports";
 import { LoadingButton } from "@mui/lab";
