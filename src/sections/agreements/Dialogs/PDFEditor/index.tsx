@@ -6,17 +6,17 @@ import SaveFab from "./SaveFab";
 import PDFEditor from "./Editor";
 import { useFormContext } from "react-hook-form";
 import ErrorTooltips from "./ErrorTooltips";
-import { TRIGGER_OPTIONS } from "./constants/trigger";
+import { useValidatePDF } from "./hook";
 
 interface Props extends Omit<DialogProps, "onClose"> {
     onClose: VoidFunction;
 }
 
 const PDFEditorDialog: React.FC<Props> = (props) => {
-    const { trigger } = useFormContext();
+    const { validate } = useValidatePDF();
 
     const handleSave = async () => {
-        const res = await trigger(TRIGGER_OPTIONS);
+        const res = await validate();
 
         if (res) {
             // we are ok; close the dialog

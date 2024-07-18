@@ -48,6 +48,8 @@ const useInitialValues = (id?: number) => {
 
 // -------------------------------------------------------------------
 
+type Draft<T> = T | Partial<T>;
+
 interface Props extends DialogProps {
     editedAgreementId?: number;
 }
@@ -66,7 +68,7 @@ const PreparationDialog: React.FC<Props> = ({
     const { values, isCustomer } = useInitialValues(editedAgreementId);
     const shouldAutofill = !editedAgreementId || editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
-    const methods = useForm<IAgreementReq>({
+    const methods = useForm<Draft<IAgreementReq>>({
         resolver: yupResolver(Schema),
         values,
     });
@@ -78,9 +80,9 @@ const PreparationDialog: React.FC<Props> = ({
         []
     );
 
-    const handleSubmit = async (d: IAgreementReq) => {
+    const handleSubmit = async (d: Draft<IAgreementReq>) => {
         const cb = d.id ? updateAgreement : createAgreement;
-        await cb(d);
+        await cb(d as IAgreementReq);
     };
 
     return (

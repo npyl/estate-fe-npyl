@@ -3,7 +3,9 @@ import * as yup from "yup";
 import dayjs from "dayjs";
 import { TLanguageType } from "@/types/translation";
 
-const Schema = yup.object<IAgreementReq>().shape({
+const EmptySchema = yup.object().shape({});
+
+const FullSchema = yup.object<IAgreementReq>().shape({
     id: yup.number().moreThan(0).optional(),
     propertyId: yup
         .number()
@@ -77,6 +79,12 @@ const Schema = yup.object<IAgreementReq>().shape({
         commisionerSignature: yup.string().required(),
         agentSignature: yup.string().required(),
     }),
+});
+
+const Schema = yup.object<IAgreementReq>().when("draft", {
+    is: true,
+    then: () => EmptySchema,
+    otherwise: () => FullSchema,
 });
 
 export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {

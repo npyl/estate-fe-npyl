@@ -1,20 +1,28 @@
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import { TRIGGER_OPTIONS } from "../../PDFEditor/constants/trigger";
+import { getTRIGGER_OPTIONS } from "../../PDFEditor/constants/trigger";
 import ErrorTooltip, { ErrorTooltipProps } from "../../_shared/ErrorTooltip";
 import Box from "@mui/material/Box";
+import { IAgreementType } from "@/types/agreements";
 
 interface Props extends Omit<ErrorTooltipProps, "error"> {}
 
 const PDFErrorsTooltip: React.FC<Props> = (props) => {
-    const { formState } = useFormContext();
+    const { watch, formState } = useFormContext();
+
+    const variant = watch("variant") as IAgreementType;
+
+    const TRIGGER_OPTIONS = useMemo(
+        () => getTRIGGER_OPTIONS(variant),
+        [variant]
+    );
 
     const havePDFErrors = useMemo(
         () =>
             Object.keys(formState.errors).some((key) =>
                 TRIGGER_OPTIONS.includes(key)
             ),
-        [formState]
+        [formState, TRIGGER_OPTIONS]
     );
 
     if (havePDFErrors)

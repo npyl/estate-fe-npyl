@@ -1,3 +1,12 @@
-const TRIGGER_OPTIONS = ["owner", "property", "commissionAndDuration", "gdpr"];
+import { IAgreementType } from "@/types/agreements";
 
-export { TRIGGER_OPTIONS };
+const getTRIGGER_OPTIONS = (variant: IAgreementType) => [
+    "owner",
+    "property",
+    "commissionAndDuration",
+    "gdpr",
+    // If we are on a purchase form add one more trigger
+    ...(variant === "purchase" ? ["suggestedProperties"] : []),
+];
+
+export { getTRIGGER_OPTIONS };

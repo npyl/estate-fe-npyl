@@ -1,12 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { Form } from "@pdfme/ui";
 import { useFormContext } from "react-hook-form";
-import { IAgreementReq } from "@/types/agreements";
+import { IAgreementReq, IAgreementType } from "@/types/agreements";
 import { flattenObject, loadPdf } from "./util";
+import { getTRIGGER_OPTIONS } from "./constants/trigger";
 
-export const useForm = (
-    formRef: React.MutableRefObject<HTMLDivElement | null>
-) => {
+const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
     const { watch, setValue } = useFormContext();
     const all = watch() as IAgreementReq;
     const { variant, lang } = all;
@@ -38,3 +37,28 @@ export const useForm = (
 
     return form.current;
 };
+
+//
+//  Validates only the pdfme form using trigger()
+//
+const useValidatePDF = () => {
+    const { watch, trigger } = useFormContext();
+
+    const isDraft = watch("draft");
+    const variant = watch("variant") as IAgreementType;
+
+    const TRIGGER_OPTIONS = useMemo(
+        () => getTRIGGER_OPTIONS(variant),
+        [variant]
+    );
+
+    const validate = async () => {
+        if (isDraft) return true;
+
+        return await trigger(TRIGGER_OPTIONS);
+    };
+
+    return { validate };
+};
+
+export { useForm, useValidatePDF };
