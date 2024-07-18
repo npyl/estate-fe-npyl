@@ -1,15 +1,15 @@
-import {
-    Grid,
-    InputAdornment,
-    SliderProps,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Grid, InputAdornment, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { RHFDoubleSlider, RHFTextField } from "src/components/hook-form";
+import { RHFDoubleSlider } from "src/components/hook-form";
+import RHFSelectDemandForm from "@/components/hook-form/RHFSelectDemandForm";
 
-type DemandFormSliderProps = Omit<SliderProps, "min" | "max"> & {
+// Function for the format of the options from '10,000' to '10.000'
+const formatNumber = (value: number) => {
+    return value.toLocaleString("de-DE"); // Using German locale for formatting with periods
+};
+
+type DemandFormSliderProps = {
     label: any;
     min: string;
     max: string;
@@ -18,6 +18,7 @@ type DemandFormSliderProps = Omit<SliderProps, "min" | "max"> & {
     demandIndex: number;
     adornment?: string;
     step?: number;
+    options?: number[];
 };
 
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
@@ -29,6 +30,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     demandIndex,
     adornment,
     step = 1,
+    options = [],
 }) => {
     const { t } = useTranslation();
 
@@ -49,37 +51,21 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                 />
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <RHFTextField
+                        <RHFSelectDemandForm
                             label={t("Min")}
                             name={minName}
-                            type="number"
-                            InputProps={{
-                                endAdornment: adornment ? (
-                                    <InputAdornment position="end">
-                                        {adornment}
-                                    </InputAdornment>
-                                ) : null,
-                                inputProps: {
-                                    step,
-                                },
-                            }}
+                            adornment={adornment}
+                            options={options}
+                            children={""}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <RHFTextField
+                        <RHFSelectDemandForm
                             label={t("Max")}
                             name={maxName}
-                            type="number"
-                            InputProps={{
-                                endAdornment: adornment ? (
-                                    <InputAdornment position="end">
-                                        {adornment}
-                                    </InputAdornment>
-                                ) : null,
-                                inputProps: {
-                                    step,
-                                },
-                            }}
+                            adornment={adornment}
+                            options={options}
+                            children={""}
                         />
                     </Grid>
                 </Grid>
