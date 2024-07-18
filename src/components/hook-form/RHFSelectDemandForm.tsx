@@ -33,13 +33,14 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
         control,
     });
 
-    const currentValue = field.value;
+    const currentValue = field.value || ""; // the || "" is used to handle the size and size of plot label in place and not get the error for the initialized value
 
     return (
         <FormControl fullWidth variant="outlined" error={!!error}>
             <InputLabel>{label}</InputLabel>
             <Select
                 {...field}
+                value={currentValue}
                 displayEmpty
                 endAdornment={
                     adornment && (
@@ -63,7 +64,9 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
                         },
                     },
                 }}
-                renderValue={(value) => value?.toLocaleString("de-DE")}
+                renderValue={(value) =>
+                    value === "" ? <em></em> : value?.toLocaleString("de-DE")
+                }
             >
                 {options?.map((option) => (
                     <MenuItem key={option} value={option}>
