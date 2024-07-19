@@ -16,6 +16,7 @@ const Content: React.FC<ContentProps> = ({ tab, createItemCb }) => {
     const { publicImages, privateImages, handleDragEnd, isLoading } =
         useContentOperations(tab, createItemCb);
 
+    // TODO: see if this can become responsive
     // TODO: see how to disable dropzone for other tabs
 
     return (

@@ -19,14 +19,8 @@ const useCRMContentOperations: TUseContentOperations = (
 
     const { publicImages, privateImages } = useMemo(
         () => ({
-            publicImages:
-                images.length > 25
-                    ? images.filter((f) => !f.hidden).map(createItemCb)
-                    : [],
-            privateImages:
-                images.length > 25
-                    ? images.filter((f) => f.hidden).map(createItemCb)
-                    : [],
+            publicImages: images.filter((f) => !f.hidden).map(createItemCb),
+            privateImages: images.filter((f) => f.hidden).map(createItemCb),
         }),
         [images, createItemCb]
     );

@@ -6,7 +6,7 @@ import Controls from "./Controls";
 import useDialog from "@/hooks/useDialog";
 import SelectableItem from "./Content/Selectable";
 import { StyledTitle } from "./styled";
-import { TMode } from "./types";
+import { TListingTab, TMode } from "./types";
 import { styled } from "@mui/material/styles";
 import usePropertyImages from "../hook";
 import Tabs from "./Tabs";
@@ -35,7 +35,7 @@ interface SeeMoreProps {
 const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
     const { images } = usePropertyImages();
 
-    const [tab, setTab] = useState<"CRM" | "SPITOGATOS">("CRM");
+    const [tab, setTab] = useState<TListingTab>("CRM");
 
     const [mode, setMode] = useState<"" | "multiple" | "compare">("");
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
@@ -91,6 +91,8 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         },
         [selectedImages]
     );
+
+    // TODO: see how controls work for tab !== 'CRM'
 
     return (
         <>

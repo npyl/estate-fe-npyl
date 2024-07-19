@@ -25,6 +25,7 @@ import { publicDashboard } from "@/services/publicDashboard";
 import { translation } from "@/services/translate";
 import { company } from "../services/company";
 import { solar, airQuality } from "@/services/googleapi";
+import { integrations } from "@/services/integrations";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -62,6 +63,7 @@ export const createStore = (
                 translation.middleware,
                 solar.middleware,
                 airQuality.middleware,
+                integrations.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,
