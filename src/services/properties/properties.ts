@@ -7,7 +7,6 @@ import {
     IPropertyResultResponse,
 } from "src/types/properties";
 import IPage from "src/types/page";
-import { IPropertyBlueprint, IPropertyDocument } from "src/types/file";
 
 import { ILabel } from "src/types/label";
 import { ICustomer } from "src/types/customer";
@@ -199,16 +198,6 @@ export const properties = createApi({
                 },
             }),
         }),
-        mapViewProperties: builder.mutation<
-            IContent<IPropertyResultResponse>,
-            IPropertyFilter
-        >({
-            query: (body) => ({
-                url: "/map",
-                method: "POST",
-                body,
-            }),
-        }),
         suggestForCustomer: builder.query<
             IProperties[],
             ISuggestForCustomerParams
@@ -298,7 +287,6 @@ export const {
     useClonePropertyMutation,
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
-    useMapViewPropertiesMutation,
     useSuggestForCustomerQuery,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
