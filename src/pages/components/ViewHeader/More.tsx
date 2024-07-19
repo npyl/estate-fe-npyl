@@ -24,7 +24,6 @@ const MoreButton = ({
     const { t } = useTranslation();
 
     const [isDeleteOpen, openDelete, closeDelete] = useDialog();
-
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
         null
     );
@@ -44,58 +43,74 @@ const MoreButton = ({
                 <MoreVertOutlinedIcon />
             </IconButton>
 
-            {open ? (
-                <Popover
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                    }}
+            <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                }}
+            >
+                <Stack
+                    alignItems="center"
+                    p={1}
+                    spacing={1}
+                    sx={{ minWidth: 150 }}
                 >
-                    <Stack alignItems="center" p={1} spacing={1}>
-                        {isProperty ? <OpenIn /> : null}
+                    {isProperty && <OpenIn />}
 
-                        {onClone ? (
-                            <Button
-                                fullWidth
-                                variant="outlined"
-                                color="secondary"
-                                onClick={onClone}
-                            >
-                                {t("Clone")}
-                            </Button>
-                        ) : null}
-
+                    {onClone && (
                         <Button
                             fullWidth
                             variant="outlined"
                             color="secondary"
-                            onClick={onEdit}
+                            onClick={() => {
+                                onClone();
+                                handleClose();
+                            }}
                         >
-                            {t("Edit")}
+                            {t("Clone")}
                         </Button>
+                    )}
 
-                        <SoftButton
-                            fullWidth
-                            color="error"
-                            onClick={openDelete}
-                            startIcon={<DeleteIcon />}
-                        >
-                            {t("Delete")}
-                        </SoftButton>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => {
+                            onEdit();
+                            handleClose();
+                        }}
+                    >
+                        {t("Edit")}
+                    </Button>
 
-                        {isDeleteOpen ? (
-                            <DeleteDialog
-                                open={isDeleteOpen}
-                                onClose={closeDelete}
-                                onDelete={onDelete}
-                            />
-                        ) : null}
-                    </Stack>
-                </Popover>
-            ) : null}
+                    <SoftButton
+                        fullWidth
+                        color="error"
+                        onClick={() => {
+                            openDelete();
+                            handleClose();
+                        }}
+                        startIcon={<DeleteIcon />}
+                    >
+                        {t("Delete")}
+                    </SoftButton>
+
+                    {isDeleteOpen && (
+                        <DeleteDialog
+                            open={isDeleteOpen}
+                            onClose={closeDelete}
+                            onDelete={onDelete}
+                        />
+                    )}
+                </Stack>
+            </Popover>
         </>
     );
 };
