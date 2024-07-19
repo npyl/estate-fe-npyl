@@ -286,6 +286,7 @@ const resources = {
             "Upload Images": "Upload Images",
 
             //Location
+
             Prefecture: "Prefecture",
             "Search on map...": "Search on map...",
             Map: "Map",

@@ -9,6 +9,7 @@ import { useGetLabelsQuery } from "src/services/labels";
 import AreaOfPreference from "./AreaOfPreference";
 import FeaturesDemandSection from "./FeaturesDemand";
 import useGetCustomer from "@/hooks/customer";
+import AreaOfPreferenceDemands from "./AreaOfPreferenceDemands";
 
 interface DemandSectionProps {
     index: number;
@@ -219,7 +220,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                     </Grid>
                 </Grid>
                 <Divider sx={{ width: "maxWidth" }} />
-                <AreaOfPreference index={index} />
+                <AreaOfPreferenceDemands index={index} />
                 <FeaturesDemandSection index={index}></FeaturesDemandSection>
             </Paper>
         );

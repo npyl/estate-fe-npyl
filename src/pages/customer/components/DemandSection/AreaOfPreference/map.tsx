@@ -18,6 +18,9 @@ import {
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
+import RegionSelectDemands from "@/components/Location/RegionSelectDemands";
+import MunicipSelectDemands from "@/components/Location/MunicipSelectDemands";
+import NeighbourSelectDemands from "@/components/Location/NeighbourSelectDemands";
 
 const NextShapeCenter = lazy(() => import("./center"));
 
@@ -266,20 +269,20 @@ const AreaOfPreference: FC<Props> = ({
 
             <Grid container spacing={2} p={1}>
                 <Grid item xs={4}>
-                    <RegionSelect
+                    <RegionSelectDemands
                         selectedRegions={selectedRegions}
                         onChange={handleRegionChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <MunicipSelect
+                    <MunicipSelectDemands
                         regionCode={regionCode || ""}
                         municipCodes={municipCodes || []}
                         onChange={handleMunicipChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <NeighbourSelect
+                    <NeighbourSelectDemands
                         municipCode={cities[0] || ""}
                         neighbourCodes={neighbourCodes || []}
                         onChange={handleNeighbourChange}
