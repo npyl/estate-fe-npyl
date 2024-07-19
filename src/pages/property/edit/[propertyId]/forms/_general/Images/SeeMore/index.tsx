@@ -1,21 +1,16 @@
-import {
-    Dialog,
-    DialogContent,
-    Divider,
-    PaperProps,
-    Typography,
-} from "@mui/material";
+import { Dialog, DialogContent, Divider, PaperProps } from "@mui/material";
 import { useCallback, useState } from "react";
 import { IPropertyImage } from "src/types/file";
 import { CompareGallery } from "./CompareGallery";
 import Controls from "./Controls";
 import useDialog from "@/hooks/useDialog";
-import Content from "./Content";
 import SelectableItem from "./Content/Selectable";
 import { StyledTitle } from "./styled";
 import { TMode } from "./types";
 import { styled } from "@mui/material/styles";
 import usePropertyImages from "../hook";
+import Tabs from "./Tabs";
+import Content from "./Content";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
 
@@ -39,6 +34,8 @@ interface SeeMoreProps {
 
 const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
     const { images } = usePropertyImages();
+
+    const [tab, setTab] = useState<"CRM" | "SPITOGATOS">("CRM");
 
     const [mode, setMode] = useState<"" | "multiple" | "compare">("");
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
@@ -92,7 +89,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 ),
             };
         },
-        [mode, selectedImages]
+        [selectedImages]
     );
 
     return (
@@ -104,12 +101,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 PaperProps={DialogPaperProps}
             >
                 <StyledTitle>
-                    <Typography>
-                        Edit{" "}
-                        {mode === "multiple"
-                            ? `(${selectedImages.length} selected)`
-                            : ""}
-                    </Typography>
+                    <Tabs tab={tab} onChange={setTab} />
 
                     <Controls
                         mode={mode}
@@ -124,7 +116,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
                 </StyledTitle>
                 <Divider />
                 <StyledContent>
-                    <Content createItemCb={createItem} />
+                    <Content tab={tab} createItemCb={createItem} />
                 </StyledContent>
             </Dialog>
 

@@ -7,11 +7,7 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { KanbanColumn } from "./components";
 
 import { useMemo } from "react";
-import {
-    TwoDimentionsDnd,
-    parseItemId,
-    parseRowId,
-} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import {
     DroppableTypeItem,
     TwoDimentionsDndItem,
@@ -26,6 +22,7 @@ import {
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 import KanbanColumnAdd from "./components/column/KanbanColumnAdd";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 
 // ----------------------------------------------------------------------
 // Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
