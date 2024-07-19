@@ -5,6 +5,7 @@ import Over25ImagesPreview from "./PreviewReorder/Over25";
 import useContentOperations from "./hook";
 import { useCallback } from "react";
 import SelectableItem from "./Selectable";
+import React from "react";
 
 const COLUMNS = 5;
 
@@ -41,11 +42,12 @@ const Content: React.FC<ContentProps> = ({
     const { publicImages, privateImages, handleDragEnd, isLoading } =
         useContentOperations(tab, createItem);
 
+    const isNotCRM = tab !== "CRM";
+
     // TODO: see if this can become responsive
-    // TODO: see how to disable dropzone for other tabs
 
     return (
-        <DropZone>
+        <DropZone disabled={isNotCRM}>
             <Over25ImagesPreview
                 publicImages={publicImages}
                 privateImages={privateImages}

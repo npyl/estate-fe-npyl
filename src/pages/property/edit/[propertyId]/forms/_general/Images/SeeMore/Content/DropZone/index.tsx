@@ -10,13 +10,14 @@ const StyledRoot = styled("div")({
 
 interface DropZoneProps {
     children: ReactNode;
+    disabled?: boolean;
 }
 
-const DropZone: React.FC<DropZoneProps> = ({ children }) => {
+const DropZone: React.FC<DropZoneProps> = ({ disabled = false, children }) => {
     const { upload, isLoading } = useImageOperations();
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        disabled: isLoading,
+        disabled: disabled || isLoading,
         onDrop: upload,
         // Allow only file drop
         noClick: true,
