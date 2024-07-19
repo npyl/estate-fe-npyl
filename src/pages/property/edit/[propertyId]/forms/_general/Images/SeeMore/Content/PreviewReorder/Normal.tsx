@@ -56,7 +56,7 @@ export default function MultiFilePreviewReorder({
                 onReorder(updatedItems.map((i) => i.key));
             }
         },
-        [images, columns, items]
+        [images, columns, items, onReorder]
     );
 
     return (
