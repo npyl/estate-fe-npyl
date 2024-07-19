@@ -116,7 +116,13 @@ const Over25ImagesPreview = ({
 
                 */
         },
-        [publicKeys, privateKeys, secondDndStartIndex]
+        [
+            publicKeys,
+            privateKeys,
+            secondDndStartIndex,
+            onReorder,
+            onReorderWithVisibility,
+        ]
     );
 
     return (
