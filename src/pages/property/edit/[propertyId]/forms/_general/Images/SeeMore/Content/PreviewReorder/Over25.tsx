@@ -8,19 +8,17 @@ interface ImagePreviewReorderProps
     publicImages: DndItem[];
     privateImages: DndItem[];
     columns: number;
-    loading: boolean;
+    preventDrag?: boolean;
 }
 
 const Over25ImagesPreview = ({
     publicImages,
     privateImages,
     columns,
-    loading,
+    preventDrag = false,
     ...props
 }: ImagePreviewReorderProps) => {
     const secondDndStartIndex = publicImages.length;
-
-    // TODO: if loading prevent drag start
 
     return (
         <DragDropContext {...props}>
@@ -30,6 +28,7 @@ const Over25ImagesPreview = ({
                 items={publicImages}
                 columns={columns}
                 gap={0.5}
+                preventDrag={preventDrag}
             />
             <Divider sx={{ mt: 2, mb: 2 }} />
             <TwoDimentionsDndNoContext
@@ -38,6 +37,7 @@ const Over25ImagesPreview = ({
                 items={privateImages}
                 columns={columns}
                 gap={0.5}
+                preventDrag={preventDrag}
             />
         </DragDropContext>
     );

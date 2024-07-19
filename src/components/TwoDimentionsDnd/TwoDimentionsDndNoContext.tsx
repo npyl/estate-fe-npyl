@@ -18,6 +18,7 @@ export const TwoDimentionsDndNoContext = ({
     gap,
     dndId,
     startIndex,
+    preventDrag = false,
 }: TwoDimentionsDndNoContextProps) => {
     const rows = useMemo(() => chunks(items, columns), [items, columns]);
 
@@ -67,6 +68,7 @@ export const TwoDimentionsDndNoContext = ({
                                                     ? startIndex + dndId * j
                                                     : j
                                             }
+                                            isDragDisabled={preventDrag}
                                         >
                                             {(provided) => (
                                                 <div

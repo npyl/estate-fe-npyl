@@ -27,6 +27,8 @@ export interface TwoDimentionsDndNoContextProps {
     // Multiple Dnds
     dndId?: number;
     startIndex?: number;
+
+    preventDrag?: boolean;
 }
 
 export const DroppableTypeItem = "ITEM";

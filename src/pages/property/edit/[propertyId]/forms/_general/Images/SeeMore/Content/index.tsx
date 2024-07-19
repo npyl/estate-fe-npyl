@@ -47,10 +47,10 @@ const Content: React.FC<ContentProps> = ({
     return (
         <DropZone>
             <Over25ImagesPreview
-                loading={isLoading}
                 publicImages={publicImages}
                 privateImages={privateImages}
                 columns={COLUMNS}
+                preventDrag={isLoading}
                 onDragEnd={handleDragEnd}
             />
         </DropZone>
