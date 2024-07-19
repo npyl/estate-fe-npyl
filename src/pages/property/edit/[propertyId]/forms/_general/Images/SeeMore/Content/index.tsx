@@ -1,20 +1,45 @@
 import { IPropertyImage } from "@/types/file";
-import { DndItem } from "./PreviewReorder/types";
 import { TListingTab } from "../types";
 import DropZone from "./DropZone";
 import Over25ImagesPreview from "./PreviewReorder/Over25";
 import useContentOperations from "./hook";
+import { useCallback } from "react";
+import SelectableItem from "./Selectable";
 
 const COLUMNS = 5;
 
 interface ContentProps {
     tab: TListingTab;
-    createItemCb: (f: IPropertyImage, index: number) => DndItem;
+    selectedImages: string[];
+    onImageClick: (key: string) => void;
 }
 
-const Content: React.FC<ContentProps> = ({ tab, createItemCb }) => {
+const Content: React.FC<ContentProps> = ({
+    tab,
+    selectedImages,
+    onImageClick,
+}) => {
+    const createItem = useCallback(
+        (f: IPropertyImage, index: number) => {
+            const isSelected =
+                selectedImages.findIndex((key) => key === f.key) > -1;
+
+            return {
+                id: index,
+                value: (
+                    <SelectableItem
+                        selected={isSelected}
+                        image={f}
+                        onImageClick={onImageClick}
+                    />
+                ),
+            };
+        },
+        [selectedImages, onImageClick]
+    );
+
     const { publicImages, privateImages, handleDragEnd, isLoading } =
-        useContentOperations(tab, createItemCb);
+        useContentOperations(tab, createItem);
 
     // TODO: see if this can become responsive
     // TODO: see how to disable dropzone for other tabs
