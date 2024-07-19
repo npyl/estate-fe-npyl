@@ -64,11 +64,13 @@ const OpenIn = () => {
         >
             <CustomStack
                 flexDirection="row"
-                gap={1.5}
+                gap={1}
                 alignItems="center"
                 sx={{ width: "100%" }}
             >
-                <Typography ml={1}>{t("Open in")}</Typography>
+                <Typography ml={1} sx={{ textWrap: "nowrap" }}>
+                    {t("Open in")}
+                </Typography>
                 {hasPublic && (
                     <IconButton size="small">
                         <PublicSvg />

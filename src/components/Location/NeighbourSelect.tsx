@@ -47,7 +47,7 @@ const NeighbourSelect = (props: NeighbourSelectProps) => {
         <FormControl fullWidth>
             <InputLabel>{t("Neighborhood")}</InputLabel>
             <Select
-                multiple
+                // multiple
                 value={neighbourCodes}
                 onChange={handleChange}
                 renderValue={(selected) => {

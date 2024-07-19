@@ -34,7 +34,7 @@ const RegionSelect = (props: IRegionSelectProps) => {
         <FormControl fullWidth>
             <InputLabel>{t("Prefecture")}</InputLabel>
             <Select
-                multiple
+                // multiple
                 value={selectedRegions}
                 onChange={handleChange}
                 renderValue={(selected) => {

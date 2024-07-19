@@ -46,7 +46,7 @@ const MunicipSelect = (props: IMunicipSelectProps) => {
         <FormControl fullWidth>
             <InputLabel>{t("Municipality")}</InputLabel>
             <Select
-                multiple
+                // multiple
                 value={municipCodes}
                 onChange={handleChange}
                 renderValue={(selected) => {

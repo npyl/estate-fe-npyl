@@ -51,7 +51,7 @@ const MoreButton = ({
                     onClose={handleClose}
                     anchorOrigin={{
                         vertical: "bottom",
-                        horizontal: "right",
+                        horizontal: "left",
                     }}
                 >
                     <Stack alignItems="center" p={1} spacing={1}>
