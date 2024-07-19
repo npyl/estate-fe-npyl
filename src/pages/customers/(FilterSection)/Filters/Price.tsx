@@ -70,12 +70,27 @@ const PriceSelect = ({ type }: { type: string }) => {
     };
 
     const handleInputChangeMin = (event: any) => {
-        const newValue = event.target.value;
-        dispatch(setMinValue(isNaN(newValue) ? "" : newValue));
+        let newValue = event.target.value;
+        if (newValue === "" || isNaN(newValue)) {
+            dispatch(setMinValue(""));
+        } else {
+            if (valueMin === 0) {
+                newValue = newValue.slice(-1);
+            }
+            dispatch(setMinValue(newValue));
+        }
     };
+
     const handleInputChangeMax = (event: any) => {
-        const newValue = event.target.value;
-        dispatch(setMaxValue(isNaN(newValue) ? "" : newValue));
+        let newValue = event.target.value;
+        if (newValue === "" || isNaN(newValue)) {
+            dispatch(setMaxValue(""));
+        } else {
+            if (valueMax === 0) {
+                newValue = newValue.slice(-1);
+            }
+            dispatch(setMaxValue(newValue));
+        }
     };
     const symbol = useMemo(() => {
         if (type === "price") {
