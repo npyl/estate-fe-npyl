@@ -1,13 +1,19 @@
 import { SpaceBetween } from "@/components/styled";
 import { Box, Grid, Typography } from "@mui/material";
-
-import { FC, Suspense, lazy, useCallback, useMemo, useState } from "react";
+import {
+    FC,
+    Suspense,
+    lazy,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import MunicipSelect from "src/components/Location/MunicipSelect";
-import NeighbourSelect from "src/components/Location/NeighbourSelect";
-import RegionSelect from "src/components/Location/RegionSelect";
-
+import MunicipSelectDemands from "src/components/Location/MunicipSelectDemands";
+import NeighbourSelectDemands from "src/components/Location/NeighbourSelectDemands";
+import RegionSelectDemands from "src/components/Location/RegionSelectDemands";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
@@ -18,10 +24,6 @@ import {
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
-import RegionSelectDemands from "@/components/Location/RegionSelectDemands";
-import MunicipSelectDemands from "@/components/Location/MunicipSelectDemands";
-import NeighbourSelectDemands from "@/components/Location/NeighbourSelectDemands";
-
 const NextShapeCenter = lazy(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -58,6 +60,25 @@ const AreaOfPreference: FC<Props> = ({
     const cities = (watch(citiesName) as string[]) || [];
     const complexes = (watch(complexesName) as string[]) || [];
     const shapes = (watch(shapesName) as string[]) || [];
+
+    // Initialize state from watched values to hold the actual valies of Regions , Municipalities and Neighbourhoods
+    const [selectedRegions, setSelectedRegions] = useState<string[]>(regions);
+    const [selectedMunicipalities, setSelectedMunicipalities] =
+        useState<string[]>(cities);
+    const [selectedNeighbours, setSelectedNeighbours] =
+        useState<string[]>(complexes);
+
+    useEffect(() => {
+        setSelectedRegions(regions);
+    }, [regions]);
+
+    useEffect(() => {
+        setSelectedMunicipalities(cities);
+    }, [cities]);
+
+    useEffect(() => {
+        setSelectedNeighbours(complexes);
+    }, [complexes]);
 
     // current demand's decoded shapes
     const shapeData = useMemo(
@@ -175,7 +196,6 @@ const AreaOfPreference: FC<Props> = ({
         updateMainMarkerCoordinates(lat, lng);
     };
 
-    const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
     const handleRegionChange = useCallback(
         (regions: string[]) => {
             setSelectedRegions(regions);
@@ -184,9 +204,6 @@ const AreaOfPreference: FC<Props> = ({
         [regionsName]
     );
 
-    const [selectedMunicipalities, setSelectedMunicipalities] = useState<
-        string[]
-    >([]);
     const handleMunicipChange = useCallback(
         (municipCodes: string[], lat?: number, lng?: number) => {
             if (lat && lng) {
@@ -201,7 +218,6 @@ const AreaOfPreference: FC<Props> = ({
         [citiesName]
     );
 
-    const [selectedNeighbours, setSelectedNeighbours] = useState<string[]>([]);
     const handleNeighbourChange = useCallback(
         (neighbourCodes: string[], lat?: number, lng?: number) => {
             if (lat && lng) {

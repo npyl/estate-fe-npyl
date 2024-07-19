@@ -21,14 +21,13 @@ interface NeighbourSelectProps {
 const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
     const { municipCode, neighbourCodes, onChange } = props;
     const { t } = useTranslation();
-    const neighbours =
-        useGetNeighbourhoodsQuery(+municipCode, {
-            skip: !municipCode,
-        }).data || [];
+    const { data: neighbours } = useGetNeighbourhoodsQuery(+municipCode, {
+        skip: !municipCode,
+    });
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const selectedCodes = event.target.value as string[];
-        const selectedNeighbour = neighbours.find(
+        const selectedNeighbour = neighbours?.find(
             (neighbour) =>
                 neighbour.areaID.toString() ===
                 selectedCodes[selectedCodes.length - 1] // get the last selected
@@ -40,7 +39,6 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
             selectedNeighbour ? selectedNeighbour.longitude : undefined
         );
     };
-
     if (!neighbours) return null;
 
     return (
