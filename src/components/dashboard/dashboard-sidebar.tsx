@@ -216,10 +216,9 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 key={section.title}
                                 path={router.asPath}
                                 sx={{
-                                    mt: 2,
-                                    "& + &": {
-                                        mt: 2,
-                                    },
+                                    height: "100vh",
+                                    pt: 2,
+                                    overflowY: "hidden",
                                 }}
                                 {...section}
                             />
