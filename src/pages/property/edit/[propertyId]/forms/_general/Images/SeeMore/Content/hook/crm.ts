@@ -4,17 +4,11 @@ import { useImageOperations } from "../../../context/ImageOperations";
 import { DropResult } from "react-beautiful-dnd";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
-import { IPropertyImage } from "@/types/file";
-import { DndItem } from "../PreviewReorder/types";
 import TUseContentOperations from "./type";
-import { TListingTab } from "../../types";
 
 const COLUMNS = 5;
 
-const useCRMContentOperations: TUseContentOperations = (
-    _: TListingTab,
-    createItemCb: (f: IPropertyImage, index: number) => DndItem
-) => {
+const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
     const { images, propertyId } = usePropertyImages();
 
     const { publicImages, privateImages } = useMemo(

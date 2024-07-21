@@ -1,12 +1,12 @@
 import { Divider } from "@mui/material";
 import { DragDropContext, DragDropContextProps } from "react-beautiful-dnd";
-import { TwoDimentionsDndNoContext } from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
-import { DndItem } from "./types";
+import TwoDimentionsDndNoContext from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
+import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
 
 interface ImagePreviewReorderProps
     extends Omit<DragDropContextProps, "children"> {
-    publicImages: DndItem[];
-    privateImages: DndItem[];
+    publicImages: TwoDimentionsDndNode[];
+    privateImages: TwoDimentionsDndNode[];
     columns: number;
     preventDrag?: boolean;
 }
@@ -25,20 +25,22 @@ const Over25ImagesPreview = ({
             <TwoDimentionsDndNoContext
                 dndId={1}
                 startIndex={0}
-                items={publicImages}
                 columns={columns}
                 gap={0.5}
                 preventDrag={preventDrag}
-            />
+            >
+                {publicImages}
+            </TwoDimentionsDndNoContext>
             <Divider sx={{ mt: 2, mb: 2 }} />
             <TwoDimentionsDndNoContext
                 dndId={2}
                 startIndex={secondDndStartIndex}
-                items={privateImages}
                 columns={columns}
                 gap={0.5}
                 preventDrag={preventDrag}
-            />
+            >
+                {privateImages}
+            </TwoDimentionsDndNoContext>
         </DragDropContext>
     );
 };

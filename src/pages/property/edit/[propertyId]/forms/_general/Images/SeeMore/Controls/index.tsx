@@ -21,7 +21,7 @@ interface ControlsProps {
     selectedImages: string[];
     setSelectedImages: Dispatch<SetStateAction<string[]>>;
     mode: "" | "multiple" | "compare";
-    setMode: Dispatch<SetStateAction<"" | "multiple" | "compare">>;
+    setMode: (m: "" | "multiple" | "compare") => void;
     onClose: VoidFunction;
 }
 

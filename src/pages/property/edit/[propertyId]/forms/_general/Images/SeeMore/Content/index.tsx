@@ -1,7 +1,7 @@
 import { IPropertyImage } from "@/types/file";
 import { TListingTab } from "../types";
 import DropZone from "./DropZone";
-import Over25ImagesPreview from "./PreviewReorder/Over25";
+import Over25ImagesPreview from "./PreviewReorder";
 import useContentOperations from "./hook";
 import { useCallback } from "react";
 import SelectableItem from "./Selectable";
@@ -25,16 +25,15 @@ const Content: React.FC<ContentProps> = ({
             const isSelected =
                 selectedImages.findIndex((key) => key === f.key) > -1;
 
-            return {
-                id: index,
-                value: (
-                    <SelectableItem
-                        selected={isSelected}
-                        image={f}
-                        onImageClick={onImageClick}
-                    />
-                ),
-            };
+            return (
+                <SelectableItem
+                    id={index}
+                    key={f.key}
+                    selected={isSelected}
+                    image={f}
+                    onImageClick={onImageClick}
+                />
+            );
         },
         [selectedImages, onImageClick]
     );

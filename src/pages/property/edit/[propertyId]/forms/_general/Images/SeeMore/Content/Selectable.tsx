@@ -14,6 +14,7 @@ const StyledCheckIcon = styled(CheckIcon)(({ theme }) => ({
 }));
 
 interface SelectableItemProps extends ImageItemProps {
+    id: number; // INFO: necessary for TwoDimentionsDnd
     selected: boolean;
 }
 

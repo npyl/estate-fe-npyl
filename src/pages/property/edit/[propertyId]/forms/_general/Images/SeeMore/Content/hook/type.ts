@@ -1,17 +1,17 @@
 import { IPropertyImage } from "@/types/file";
 import { TListingTab } from "../../types";
-import { DndItem } from "../PreviewReorder/types";
+import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
 
 type Ops = {
-    publicImages: DndItem[];
-    privateImages: DndItem[];
+    publicImages: TwoDimentionsDndNode[];
+    privateImages: TwoDimentionsDndNode[];
     isLoading: boolean;
     handleDragEnd: any;
 };
 
 type TUseContentOperations = (
     tab: TListingTab,
-    createItemCb: (f: IPropertyImage, index: number) => DndItem
+    createItemCb: (f: IPropertyImage, index: number) => TwoDimentionsDndNode
 ) => Ops;
 
 export default TUseContentOperations;

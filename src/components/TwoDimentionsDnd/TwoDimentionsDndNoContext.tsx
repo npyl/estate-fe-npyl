@@ -1,26 +1,50 @@
 import { Grid, Stack } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { Children, isValidElement, ReactNode, useEffect, useMemo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import {
-    DroppableTypeItem,
-    TwoDimentionsDndItem,
-    TwoDimentionsDndNoContextProps,
-} from "./types";
+import { DroppableTypeItem, TwoDimentionsDndNoContextProps } from "./types";
+import React from "react";
 
-const chunks = (arr: TwoDimentionsDndItem[], size: number) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-        arr.slice(i * size, i * size + size)
+const chunks = (children: ReactNode, size: number): ReactNode[][] => {
+    const childrenArray = Children.toArray(children);
+    return Array.from(
+        { length: Math.ceil(childrenArray.length / size) },
+        (_, i) => childrenArray.slice(i * size, i * size + size)
     );
+};
 
-export const TwoDimentionsDndNoContext = ({
-    items,
+const getNodeId = (node: ReactNode): any => {
+    // Check if the node is a valid React element
+    if (!isValidElement(node)) return;
+
+    const props = node.props as { id?: number | string };
+
+    // Check if the id exists and is of the correct type
+    if (
+        props.id !== undefined &&
+        (typeof props.id === "number" || typeof props.id === "string")
+    ) {
+        return props.id;
+    }
+
+    // Return null if the id wasn't found or wasn't of the correct type
+    return null;
+};
+
+// Get draggable's Id
+const getId = (dndId: number | undefined, item: ReactNode) =>
+    dndId !== undefined
+        ? `${dndId}-item-${getNodeId(item)}`
+        : `item-${getNodeId(item)}`;
+
+const TwoDimentionsDndNoContext = ({
     columns,
     gap,
     dndId,
     startIndex,
     preventDrag = false,
+    children,
 }: TwoDimentionsDndNoContextProps) => {
-    const rows = useMemo(() => chunks(items, columns), [items, columns]);
+    const rows = useMemo(() => chunks(children, columns), [children, columns]);
 
     useEffect(() => {
         if (dndId !== undefined && dndId < 1)
@@ -52,16 +76,8 @@ export const TwoDimentionsDndNoContext = ({
                                 {row.map((item, j) => (
                                     <Grid item xs={12 / columns} key={j}>
                                         <Draggable
-                                            draggableId={
-                                                dndId !== undefined
-                                                    ? `${dndId}-item-${item.id}`
-                                                    : `item-${item.id}`
-                                            }
-                                            key={
-                                                dndId !== undefined
-                                                    ? `${dndId}-item-${item.id}`
-                                                    : `item-${item.id}`
-                                            }
+                                            draggableId={getId(dndId, item)}
+                                            key={getId(dndId, item)}
                                             index={
                                                 startIndex !== undefined &&
                                                 dndId !== undefined
@@ -76,7 +92,7 @@ export const TwoDimentionsDndNoContext = ({
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
                                                 >
-                                                    {item.value}
+                                                    {item}
                                                 </div>
                                             )}
                                         </Draggable>
@@ -91,3 +107,5 @@ export const TwoDimentionsDndNoContext = ({
         </Stack>
     );
 };
+
+export default React.memo(TwoDimentionsDndNoContext);

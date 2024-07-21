@@ -1,18 +1,15 @@
 import { useCallback, useMemo } from "react";
 import usePropertyImages from "../../../hook";
 import { DropResult } from "react-beautiful-dnd";
-import { IPropertyImage } from "@/types/file";
-import { DndItem } from "../PreviewReorder/types";
 import TUseContentOperations from "./type";
-import { TListingTab } from "../../types";
 import { useGetIntegrationOrderedImagesQuery } from "@/services/integrations";
 import { IntegrationSite } from "@/types/listings";
 
 const isLoading = false;
 
 const useListingContentOperations: TUseContentOperations = (
-    tab: TListingTab,
-    createItemCb: (f: IPropertyImage, index: number) => DndItem
+    tab,
+    createItemCb
 ) => {
     const { images, propertyId } = usePropertyImages();
 

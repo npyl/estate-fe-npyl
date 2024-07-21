@@ -1,11 +1,12 @@
 import { Dialog, DialogContent, Divider, PaperProps } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Controls from "./Controls";
 import { StyledTitle } from "./styled";
 import { TListingTab } from "./types";
 import { styled } from "@mui/material/styles";
 import Tabs from "./Tabs";
 import Content from "./Content";
+import useRefState from "@/hooks/useRefState";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
 
@@ -28,24 +29,26 @@ interface SeeMoreProps {
 }
 
 const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
-    const [tab, setTab] = useState<TListingTab>("CRM");
+    const [tab, setTab, tabRef] = useRefState<TListingTab>("CRM");
+    const [mode, setMode, modeRef] = useRefState<"" | "multiple" | "compare">(
+        ""
+    );
 
-    const [mode, setMode] = useState<"" | "multiple" | "compare">("");
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
 
-    const handleImageClick = (imageKey: string) => {
-        if (tab !== "CRM") return;
+    const handleImageClick = useCallback((imageKey: string) => {
+        if (tabRef.current !== "CRM") return;
 
         setSelectedImages((old) => {
             const isAlreadySelected = old.includes(imageKey);
-
             return isAlreadySelected
-                ? old.filter((key) => key !== imageKey) // remove
-                : mode === "multiple" || (mode === "compare" && old.length < 2) // add
+                ? old.filter((key) => key !== imageKey)
+                : modeRef.current === "multiple" ||
+                  (modeRef.current === "compare" && old.length < 2)
                 ? [...old, imageKey]
                 : old;
         });
-    };
+    }, []);
 
     return (
         <Dialog
