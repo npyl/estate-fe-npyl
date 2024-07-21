@@ -1,11 +1,13 @@
 import { Dialog, DialogContent, Divider, PaperProps } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import Controls from "./Controls";
 import { StyledTitle } from "./styled";
 import { TListingTab } from "./types";
 import { styled } from "@mui/material/styles";
 import Tabs from "./Tabs";
 import Content from "./Content";
+import React from "react";
+import useArrayState from "@/hooks/useArrayState";
 import useRefState from "@/hooks/useRefState";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
@@ -34,7 +36,9 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
         ""
     );
 
-    const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
+    // keys
+    const [selectedImages, setSelectedImages, resetSelectedImages] =
+        useArrayState<string[]>([]);
 
     const handleImageClick = useCallback((imageKey: string) => {
         if (tabRef.current !== "CRM") return;
@@ -60,15 +64,16 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
             <StyledTitle>
                 <Tabs tab={tab} onChange={setTab} />
 
-                {tab === "CRM" ? (
-                    <Controls
-                        selectedImages={selectedImages}
-                        setSelectedImages={setSelectedImages}
-                        mode={mode}
-                        setMode={setMode}
-                        onClose={onClose}
-                    />
-                ) : null}
+                <Controls
+                    visibility={tab === "CRM" ? "visible" : "hidden"}
+                    // ...
+                    selectedImages={selectedImages}
+                    setSelectedImages={setSelectedImages}
+                    onResetSelectedImages={resetSelectedImages}
+                    mode={mode}
+                    setMode={setMode}
+                    onClose={onClose}
+                />
             </StyledTitle>
             <Divider />
             <StyledContent>

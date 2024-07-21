@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 //
 //  hook that contains a ref but looks like a useState. Can be used to replace a useState almost without changes
@@ -8,9 +8,12 @@ import { useRef } from "react";
 
 const useRefState = <T>(initialValue: T) => {
     const ref = useRef<T>(initialValue);
+    const [state, setState] = useState<T>(initialValue);
+
     return [
-        ref.current,
+        state,
         (v: T) => {
+            setState(v);
             ref.current = v;
         },
         // ...

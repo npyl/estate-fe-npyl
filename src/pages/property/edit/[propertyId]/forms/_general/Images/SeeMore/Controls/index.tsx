@@ -1,6 +1,11 @@
 import { SoftButton } from "@/components/SoftButton";
 import { Close as CloseIcon } from "@mui/icons-material";
-import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+    Stack,
+    StackProps,
+    ToggleButton,
+    ToggleButtonGroup,
+} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CompareIcon from "@mui/icons-material/Compare";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -17,9 +22,10 @@ import usePropertyImages from "../../hook";
 import useDialog from "@/hooks/useDialog";
 import { CompareGallery } from "./CompareGallery";
 
-interface ControlsProps {
+interface ControlsProps extends StackProps {
     selectedImages: string[];
     setSelectedImages: Dispatch<SetStateAction<string[]>>;
+    onResetSelectedImages: VoidFunction;
     mode: "" | "multiple" | "compare";
     setMode: (m: "" | "multiple" | "compare") => void;
     onClose: VoidFunction;
@@ -28,10 +34,14 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({
     selectedImages,
     setSelectedImages,
+    onResetSelectedImages,
     mode,
     setMode,
     onClose,
+    ...props
 }) => {
+    console.log("GOT: ", mode);
+
     const { t } = useTranslation();
 
     const { images } = usePropertyImages();
@@ -47,21 +57,23 @@ const Controls: React.FC<ControlsProps> = ({
     const handleModeChange = (_: any, m: TMode) => {
         if (m === null) return; // Prevent unselecting an already selected button
 
-        setSelectedImages([]);
+        onResetSelectedImages();
         setMode(m);
     };
 
-    const handleToggleAll = () =>
-        setSelectedImages(isAllSelected ? [] : images.map(({ key }) => key));
+    const handleToggleAll = () => {
+        if (isAllSelected) onResetSelectedImages();
+        else setSelectedImages(images.map(({ key }) => key));
+    };
 
     const handleCloseCompareDialog = () => {
-        setSelectedImages([]);
+        onResetSelectedImages;
         closeCompareDialog();
     };
 
     return (
         <>
-            <Stack direction="row" alignItems="center" gap={1}>
+            <Stack direction="row" alignItems="center" gap={1} {...props}>
                 {mode !== "compare" && selectedImages.length > 0 ? (
                     <>
                         <PublicButton selectedImages={selectedImages} />
