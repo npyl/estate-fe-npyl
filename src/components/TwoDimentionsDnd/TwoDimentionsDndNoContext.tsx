@@ -43,6 +43,7 @@ const TwoDimentionsDndNoContext = ({
     startIndex,
     preventDrag = false,
     children,
+    ...props
 }: TwoDimentionsDndNoContextProps) => {
     const rows = useMemo(() => chunks(children, columns), [children, columns]);
 
@@ -57,7 +58,7 @@ const TwoDimentionsDndNoContext = ({
     }, []);
 
     return (
-        <Stack gap={gap}>
+        <Stack gap={gap} {...props}>
             {rows.map((row, i) => (
                 <Droppable
                     droppableId={

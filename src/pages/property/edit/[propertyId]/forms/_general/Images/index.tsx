@@ -72,7 +72,11 @@ const ImagesSection = () => {
                 />
 
                 {isSeeMoreOpen ? (
-                    <SeeMore open={isSeeMoreOpen} onClose={closeSeeMore} />
+                    <SeeMore
+                        open={isSeeMoreOpen}
+                        onOpenGalleryImage={setGalleryImage}
+                        onClose={closeSeeMore}
+                    />
                 ) : null}
             </ImageOperationsProvider>
         </UploadFileProvider>

@@ -28,6 +28,7 @@ const Over25ImagesPreview = ({
                 columns={columns}
                 gap={0.5}
                 preventDrag={preventDrag}
+                minHeight="200px"
             >
                 {publicImages}
             </TwoDimentionsDndNoContext>
@@ -38,6 +39,7 @@ const Over25ImagesPreview = ({
                 columns={columns}
                 gap={0.5}
                 preventDrag={preventDrag}
+                minHeight="200px"
             >
                 {privateImages}
             </TwoDimentionsDndNoContext>

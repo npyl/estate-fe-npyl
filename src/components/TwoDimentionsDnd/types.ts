@@ -1,3 +1,4 @@
+import { StackProps } from "@mui/material";
 import { ReactElement } from "react";
 
 interface ChildProps {
@@ -24,7 +25,8 @@ export type TwoDimentionsDndNode = ReactElement<ChildProps> | null;
  *              draggableId (and key):      item-{someId}
  *              draggable index:            {j}
  */
-export interface TwoDimentionsDndNoContextProps {
+export interface TwoDimentionsDndNoContextProps
+    extends Omit<StackProps, "children"> {
     columns: number;
     gap?: number;
 

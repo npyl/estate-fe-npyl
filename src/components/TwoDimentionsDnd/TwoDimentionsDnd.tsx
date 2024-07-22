@@ -3,7 +3,8 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { TwoDimentionsDndNoContextProps } from "./types";
 import TwoDimentionsDndNoContext from "./TwoDimentionsDndNoContext";
 
-interface TwoDimentionsDndProps extends TwoDimentionsDndNoContextProps {
+interface TwoDimentionsDndProps
+    extends Omit<TwoDimentionsDndNoContextProps, "onDragEnd"> {
     onDragEnd: (results: DropResult) => void;
 }
 

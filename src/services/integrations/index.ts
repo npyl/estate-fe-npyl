@@ -1,22 +1,9 @@
-import { IntegrationSite } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-interface ImagesOrderRes {
-    image: {
-        id: number;
-        url: string;
-    };
-    order: number;
-}
-
-interface GetImagesOrderReq {
-    propertyId: number;
-    integrationSite: IntegrationSite;
-}
-interface UpdateImagesOrderReq {
-    propertyId: number;
-    propertyImages: number[]; // ids
-}
+import {
+    GetImagesOrderReq,
+    ImagesOrderRes,
+    UpdateImagesOrderReq,
+} from "./types";
 
 export const integrations = createApi({
     reducerPath: "integrations",
@@ -51,10 +38,14 @@ export const integrations = createApi({
             void,
             UpdateImagesOrderReq
         >({
-            query: ({ propertyId, propertyImages }) => ({
+            query: ({ integrationSite, propertyId, propertyImages }) => ({
                 url: `image-order/${propertyId}`,
                 body: propertyImages,
+                params: {
+                    integrationSite,
+                },
                 method: "POST",
+                // TODO: optimistic
             }),
             invalidatesTags: ["IntegrationOrderedImages"],
         }),

@@ -40,8 +40,6 @@ const Controls: React.FC<ControlsProps> = ({
     onClose,
     ...props
 }) => {
-    console.log("GOT: ", mode);
-
     const { t } = useTranslation();
 
     const { images } = usePropertyImages();

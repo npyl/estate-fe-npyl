@@ -9,6 +9,7 @@ import Content from "./Content";
 import React from "react";
 import useArrayState from "@/hooks/useArrayState";
 import useRefState from "@/hooks/useRefState";
+import ListingControls from "./ListingControls";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
 
@@ -27,10 +28,15 @@ const StyledContent = styled(DialogContent)(({ theme }) => ({
 
 interface SeeMoreProps {
     open: boolean;
+    onOpenGalleryImage: (s: string) => void;
     onClose: () => void;
 }
 
-const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
+const SeeMore: React.FC<SeeMoreProps> = ({
+    open,
+    onOpenGalleryImage,
+    onClose,
+}) => {
     const [tab, setTab, tabRef] = useRefState<TListingTab>("CRM");
     const [mode, setMode, modeRef] = useRefState<"" | "multiple" | "compare">(
         ""
@@ -42,6 +48,13 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
 
     const handleImageClick = useCallback((imageKey: string) => {
         if (tabRef.current !== "CRM") return;
+
+        // Open in Gallery
+        if (modeRef.current === "") {
+            onOpenGalleryImage(imageKey);
+            onClose();
+            return;
+        }
 
         setSelectedImages((old) => {
             const isAlreadySelected = old.includes(imageKey);
@@ -64,16 +77,18 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
             <StyledTitle>
                 <Tabs tab={tab} onChange={setTab} />
 
-                <Controls
-                    visibility={tab === "CRM" ? "visible" : "hidden"}
-                    // ...
-                    selectedImages={selectedImages}
-                    setSelectedImages={setSelectedImages}
-                    onResetSelectedImages={resetSelectedImages}
-                    mode={mode}
-                    setMode={setMode}
-                    onClose={onClose}
-                />
+                {tab === "CRM" ? (
+                    <Controls
+                        selectedImages={selectedImages}
+                        setSelectedImages={setSelectedImages}
+                        onResetSelectedImages={resetSelectedImages}
+                        mode={mode}
+                        setMode={setMode}
+                        onClose={onClose}
+                    />
+                ) : null}
+
+                {tab !== "CRM" ? <ListingControls tab={tab} /> : null}
             </StyledTitle>
             <Divider />
             <StyledContent>
