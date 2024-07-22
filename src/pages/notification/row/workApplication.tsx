@@ -163,7 +163,14 @@ function WorkApplication({
     filter,
 }: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
+    const { data: workForUs } = useGetNotificationByIdQuery(row.id!, {
+        skip: !row.id && !open,
+        selectFromResult: ({ data }) => ({
+            data: data?.workForUsDetails,
+        }),
+    });
 
+    console.log(workForUs);
     return (
         <Fragment>
             <BasicRow
@@ -175,8 +182,9 @@ function WorkApplication({
                 filter={filter}
                 loading={loading}
                 onClick={onClick}
+                workDetails={workForUs}
             />
-            {open ? <Collapsible id={row?.id} open={open} /> : null}
+            {/* {open ? <Collapsible id={row?.id} open={open} /> : null} */}
         </Fragment>
     );
 }

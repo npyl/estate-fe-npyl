@@ -51,24 +51,6 @@ function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
                 onClick={onClick}
                 propertyDetails={property}
             />
-            <TableRow>
-                <Box
-                    sx={{
-                        margin: 0,
-                    }}
-                >
-                    <Table
-                        size="small"
-                        sx={{
-                            "& .MuiTableCell-root": {
-                                borderBottom: "none",
-                                borderRadius: "0px",
-                                padding: "10px",
-                            },
-                        }}
-                    ></Table>
-                </Box>
-            </TableRow>
         </Fragment>
     );
 }

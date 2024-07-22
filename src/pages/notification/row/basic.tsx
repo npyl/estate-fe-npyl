@@ -9,7 +9,7 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-import { ContactNotification } from "src/types/notification";
+import { ContactNotification, IWorkForUs } from "src/types/notification";
 import Iconify from "src/components/iconify";
 import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
 import Link from "next/link";
@@ -17,10 +17,38 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import { ArrowDropDown, ArrowDropUp, LocalPhone } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import { IProperties } from "@/types/properties";
+import { useRouter } from "next/router";
+import {
+    format,
+    isToday,
+    isYesterday,
+    isThisWeek,
+    formatDistanceToNow,
+    differenceInDays,
+} from "date-fns";
+import { ListingNotification } from "@/types/notification/listing";
+export const getDate = (s?: string) => {
+    if (!s) return "";
+    const date = new Date(s);
+    const now = new Date();
 
-export const getDate = (s?: string) =>
-    s ? new Date(s).toISOString().split("T")[0] : "";
+    if (isToday(date)) {
+        return "Today";
+    }
+    if (isYesterday(date)) {
+        return "Yesterday";
+    }
+    if (isThisWeek(date, { weekStartsOn: 1 })) {
+        // If the date is within this week but not today or yesterday
+        return format(date, "EEEE"); // e.g., Monday, Tuesday
+    }
+    if (differenceInDays(now, date) <= 7) {
+        // If the date is within the last seven days but not within this week
+        return format(date, "EEEE"); // e.g., Monday, Tuesday
+    }
 
+    return format(date, "d MMMM yyyy"); // e.g., 11 July 2024
+};
 interface BasicRowProps {
     row: ContactNotification;
     open: boolean;
@@ -31,6 +59,8 @@ interface BasicRowProps {
     loading: boolean;
     filter: any;
     propertyDetails?: IProperties;
+    contactDetails?: ListingNotification;
+    workDetails?: IWorkForUs;
 }
 
 const BasicRow = ({
@@ -43,7 +73,10 @@ const BasicRow = ({
     onClick,
     loading,
     propertyDetails,
+    contactDetails,
+    workDetails,
 }: BasicRowProps) => {
+    const router = useRouter();
     const [toggleNotificationViewedStatus] =
         useToggleNotificationViewedStatusMutation();
 
@@ -69,9 +102,21 @@ const BasicRow = ({
         handleToggleRead();
     };
 
-    console.log(row?.propertyCode);
+    const handleRowClick = () => {
+        router.push(`/notification/${row.id}`);
+    };
+
     return (
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+        <TableRow
+            sx={{
+                "& > *": { borderBottom: "unset" },
+                "&:hover": {
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer",
+                },
+            }}
+            // onClick={handleRowClick}
+        >
             <TableCell>
                 <Stack
                     direction="row"
@@ -81,11 +126,25 @@ const BasicRow = ({
                 >
                     <Box>
                         <img
-                            src={propertyDetails?.propertyImage?.url || ""}
+                            src={
+                                propertyDetails?.propertyImage?.url ||
+                                contactDetails?.photo ||
+                                ""
+                            }
+                            alt={"property Image"}
+                            style={{
+                                width: 180,
+                                height: 120,
+                                borderRadius: 8,
+                            }}
+                        />
+                        {/* <img
+                            src={contactDetails?.photo || ""}
                             alt={"property Image"}
                             style={{ width: 180, height: 120, borderRadius: 8 }}
-                        />
+                        /> */}
                     </Box>
+
                     <Stack direction="column">
                         <Box>
                             <Typography fontWeight={600}>
@@ -94,51 +153,67 @@ const BasicRow = ({
 
                             <Box flexDirection="row">
                                 <Typography variant="body2">
-                                    Property for {propertyDetails?.state?.value}{" "}
-                                    {propertyDetails?.area} m² |{" "}
-                                    {propertyDetails?.price} €
+                                    {propertyDetails?.category?.value ||
+                                        contactDetails?.category?.value}{" "}
+                                    {" for "}
+                                    {propertyDetails?.state?.value ||
+                                        contactDetails?.state?.value}{" "}
+                                    {propertyDetails?.area ||
+                                        contactDetails?.area}{" "}
+                                    m² |{" "}
+                                    {propertyDetails?.price ||
+                                        contactDetails?.price}{" "}
+                                    €
                                     {propertyDetails?.state?.key === "RENT"
                                         ? "/month"
                                         : null}
                                 </Typography>
                             </Box>
                             <Box flexDirection="row">
-                                {row.propertyCode ? (
-                                    <Stack
-                                        direction="row"
-                                        gap={0.5}
-                                        alignItems="center"
-                                    >
-                                        <Typography variant="body2">
-                                            {" "}
-                                            {
-                                                propertyDetails?.location
-                                                    ?.complex
-                                            }{" "}
-                                            ({propertyDetails?.location?.city}),
-                                        </Typography>
-                                        <Typography variant="body2" ml={0.5}>
-                                            Property Code:{" "}
-                                        </Typography>
-                                        <Link
-                                            href={`/property/${propertyDetails?.id}`}
-                                            passHref
-                                        >
+                                <Stack
+                                    direction="row"
+                                    gap={0.5}
+                                    alignItems="center"
+                                >
+                                    <Typography variant="body2">
+                                        {" "}
+                                        {propertyDetails?.location?.complex ||
+                                            contactDetails?.location
+                                                ?.complex}{" "}
+                                        (
+                                        {propertyDetails?.location?.city ||
+                                            contactDetails?.location?.city}
+                                        )
+                                    </Typography>
+
+                                    {row.propertyCode ? (
+                                        <>
                                             <Typography
                                                 variant="body2"
-                                                component="a"
-                                                sx={{
-                                                    textDecoration: "none",
-                                                    color: "black",
-                                                    display: "block",
-                                                }}
+                                                ml={0.5}
                                             >
-                                                {" "}
-                                                {row.propertyCode}
+                                                Property Code:{" "}
                                             </Typography>
-                                        </Link>
-                                    </Stack>
-                                ) : null}
+                                            <Link
+                                                href={`/property/${propertyDetails?.id}`}
+                                                passHref
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    component="a"
+                                                    sx={{
+                                                        textDecoration: "none",
+                                                        color: "black",
+                                                        display: "block",
+                                                    }}
+                                                >
+                                                    {" "}
+                                                    {row.propertyCode}
+                                                </Typography>
+                                            </Link>
+                                        </>
+                                    ) : null}
+                                </Stack>
                             </Box>
                         </Box>
                         <Stack
