@@ -124,97 +124,113 @@ const BasicRow = ({
                     spacing={2}
                     width="100%"
                 >
-                    <Box>
-                        <img
-                            src={
-                                propertyDetails?.propertyImage?.url ||
-                                contactDetails?.photo ||
-                                ""
-                            }
-                            alt={"property Image"}
-                            style={{
-                                width: 180,
-                                height: 120,
-                                borderRadius: 8,
-                            }}
-                        />
-                        {/* <img
-                            src={contactDetails?.photo || ""}
-                            alt={"property Image"}
-                            style={{ width: 180, height: 120, borderRadius: 8 }}
-                        /> */}
-                    </Box>
+                    {propertyDetails || contactDetails ? (
+                        <Box>
+                            <img
+                                src={
+                                    propertyDetails?.propertyImage?.url ||
+                                    contactDetails?.photo ||
+                                    ""
+                                }
+                                alt={"property Image"}
+                                style={{
+                                    width: 180,
+                                    height: 120,
+                                    borderRadius: 8,
+                                }}
+                            />
+                        </Box>
+                    ) : null}
 
                     <Stack direction="column">
                         <Box>
                             <Typography fontWeight={600}>
                                 {row.customerName}
                             </Typography>
-
-                            <Box flexDirection="row">
-                                <Typography variant="body2">
-                                    {propertyDetails?.category?.value ||
-                                        contactDetails?.category?.value}{" "}
-                                    {" for "}
-                                    {propertyDetails?.state?.value ||
-                                        contactDetails?.state?.value}{" "}
-                                    {propertyDetails?.area ||
-                                        contactDetails?.area}{" "}
-                                    m² |{" "}
-                                    {propertyDetails?.price ||
-                                        contactDetails?.price}{" "}
-                                    €
-                                    {propertyDetails?.state?.key === "RENT"
-                                        ? "/month"
-                                        : null}
-                                </Typography>
-                            </Box>
-                            <Box flexDirection="row">
-                                <Stack
-                                    direction="row"
-                                    gap={0.5}
-                                    alignItems="center"
-                                >
+                            {propertyDetails || contactDetails ? (
+                                <Box flexDirection="row">
                                     <Typography variant="body2">
-                                        {" "}
-                                        {propertyDetails?.location?.complex ||
-                                            contactDetails?.location
-                                                ?.complex}{" "}
-                                        (
-                                        {propertyDetails?.location?.city ||
-                                            contactDetails?.location?.city}
-                                        )
+                                        {propertyDetails?.category?.value ||
+                                            contactDetails?.category
+                                                ?.value}{" "}
+                                        {" for "}
+                                        {propertyDetails?.state?.value ||
+                                            contactDetails?.state?.value}{" "}
+                                        {propertyDetails?.area ||
+                                            contactDetails?.area}{" "}
+                                        m² |{" "}
+                                        {propertyDetails?.price ||
+                                            contactDetails?.price}{" "}
+                                        €
+                                        {propertyDetails?.state?.key === "RENT"
+                                            ? "/month"
+                                            : null}
                                     </Typography>
+                                </Box>
+                            ) : (
+                                <Box>
+                                    <Typography>{row.message}</Typography>
+                                </Box>
+                            )}
+                            {propertyDetails || contactDetails ? (
+                                <Box flexDirection="row">
+                                    <Stack
+                                        direction="row"
+                                        gap={0.5}
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="body2">
+                                            {" "}
+                                            {propertyDetails?.location
+                                                ?.complex ||
+                                                contactDetails?.location
+                                                    ?.complex}{" "}
+                                            (
+                                            {propertyDetails?.location?.city ||
+                                                contactDetails?.location?.city}
+                                            )
+                                        </Typography>
 
-                                    {row.propertyCode ? (
-                                        <>
-                                            <Typography
-                                                variant="body2"
-                                                ml={0.5}
-                                            >
-                                                Property Code:{" "}
-                                            </Typography>
-                                            <Link
-                                                href={`/property/${propertyDetails?.id}`}
-                                                passHref
-                                            >
+                                        {row.propertyCode ? (
+                                            <>
                                                 <Typography
                                                     variant="body2"
-                                                    component="a"
-                                                    sx={{
-                                                        textDecoration: "none",
-                                                        color: "black",
-                                                        display: "block",
-                                                    }}
+                                                    ml={0.5}
                                                 >
-                                                    {" "}
-                                                    {row.propertyCode}
+                                                    Property Code:{" "}
                                                 </Typography>
-                                            </Link>
-                                        </>
+                                                <Link
+                                                    href={`/property/${propertyDetails?.id}`}
+                                                    passHref
+                                                >
+                                                    <Typography
+                                                        variant="body2"
+                                                        component="a"
+                                                        sx={{
+                                                            textDecoration:
+                                                                "none",
+                                                            color: "black",
+                                                            display: "block",
+                                                        }}
+                                                    >
+                                                        {" "}
+                                                        {row.propertyCode}
+                                                    </Typography>
+                                                </Link>
+                                            </>
+                                        ) : null}
+                                    </Stack>
+                                </Box>
+                            ) : (
+                                <Box>
+                                    {workDetails?.workRegion ? (
+                                        <Typography>
+                                            Location:{" "}
+                                            {workDetails?.workRegion?.nameGR}
+                                        </Typography>
                                     ) : null}
-                                </Stack>
-                            </Box>
+                                </Box>
+                            )}{" "}
                         </Box>
                         <Stack
                             flexDirection="row"
