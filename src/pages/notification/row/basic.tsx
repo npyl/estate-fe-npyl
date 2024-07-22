@@ -27,6 +27,7 @@ import {
     differenceInDays,
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
+
 export const getDate = (s?: string) => {
     if (!s) return "";
     const date = new Date(s);
@@ -49,6 +50,7 @@ export const getDate = (s?: string) => {
 
     return format(date, "d MMMM yyyy"); // e.g., 11 July 2024
 };
+
 interface BasicRowProps {
     row: ContactNotification;
     open: boolean;
@@ -86,24 +88,19 @@ const BasicRow = ({
         toggleNotificationViewedStatus(row.id!);
     };
 
-    const handleToggleCollapsible = () => {
-        onToggle();
-        if (filter === "viewed") return;
-        if (filter === "notViewed") return;
-
-        if (!row.viewed) {
-            toggleNotificationViewedStatus(row.id!);
-        }
-    };
-
     const handleStatusChange = (
         event: SelectChangeEvent<"Viewed" | "Not Viewed">
     ) => {
+        event.stopPropagation(); // Prevent row click event
         handleToggleRead();
     };
 
     const handleRowClick = () => {
-        router.push(`/notification/${row.id}`);
+        router.push(`/notification/row/${row.id}`);
+    };
+
+    const handlePropertyCodeClick = (event: React.MouseEvent) => {
+        event.stopPropagation(); // Prevent row click event
     };
 
     return (
@@ -115,7 +112,7 @@ const BasicRow = ({
                     cursor: "pointer",
                 },
             }}
-            // onClick={handleRowClick}
+            onClick={handleRowClick}
         >
             <TableCell>
                 <Stack
@@ -206,6 +203,9 @@ const BasicRow = ({
                                                     <Typography
                                                         variant="body2"
                                                         component="a"
+                                                        onClick={
+                                                            handlePropertyCodeClick
+                                                        }
                                                         sx={{
                                                             textDecoration:
                                                                 "none",
@@ -275,6 +275,7 @@ const BasicRow = ({
                     value={row.viewed ? "Viewed" : "Not Viewed"}
                     onChange={handleStatusChange}
                     displayEmpty
+                    onClick={(e) => e.stopPropagation()}
                     sx={{
                         color: "black",
                         fontWeight: row.viewed ? "normal" : "bold",
@@ -301,13 +302,6 @@ const BasicRow = ({
                     {getDate(row.notificationDate)}
                 </Typography>
             </TableCell>
-
-            {/* THIS WILL BE VISIBLE ON HOVER ONLY */}
-            {/* <TableCell align="right">
-                <IconButton onClick={onRemove} disabled={loading}>
-                    <Iconify icon={"eva:trash-2-outline"} />
-                </IconButton>
-            </TableCell> */}
         </TableRow>
     );
 };
