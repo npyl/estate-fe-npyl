@@ -49,152 +49,25 @@ function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
                 onRemove={onRemove}
                 loading={loading}
                 onClick={onClick}
+                propertyDetails={property}
             />
             <TableRow>
-                <TableCell
-                    style={{
-                        padding: 0,
+                <Box
+                    sx={{
+                        margin: 0,
                     }}
-                    colSpan={7}
                 >
-                    <Collapse
-                        in={open}
-                        timeout="auto"
-                        unmountOnExit
-                        sx={{ p: 2, backgroundColor: "neutral.100" }}
-                    >
-                        <Box
-                            sx={{
-                                margin: 1,
-                            }}
-                        >
-                            <Table
-                                size="small"
-                                sx={{
-                                    "& .MuiTableCell-root": {
-                                        borderBottom: "none",
-                                        borderRadius: "0px",
-                                        padding: "10px",
-                                    },
-                                }}
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                            {t("Property Code")}
-                                        </TableCell>
-                                        <TableCell>{t("Message")}</TableCell>
-
-                                        {/* Show only if we have live tour */}
-                                        {isLiveTour(
-                                            row.tourType as TourType
-                                        ) ? (
-                                            <>
-                                                <TableCell>
-                                                    {t("Tour Date")}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {t("Tour Time")}
-                                                </TableCell>
-                                            </>
-                                        ) : null}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell>
-                                            <Link
-                                                style={{
-                                                    textDecoration: "none",
-                                                }}
-                                                href={`/property/${property?.id}`}
-                                                passHref
-                                            >
-                                                <Typography
-                                                    component="a"
-                                                    sx={{
-                                                        textDecoration: "none",
-                                                        color: "aliceblue",
-                                                        "&:hover": {
-                                                            color: "black",
-                                                        },
-                                                    }}
-                                                >
-                                                    <CodeBadge
-                                                        name={`${t("")} ${
-                                                            row.propertyCode ||
-                                                            ""
-                                                        }`}
-                                                        color={"#3366ff"}
-                                                        sx={{
-                                                            fontWeight: "bold",
-                                                            color: "aliceblue",
-                                                            width: "25%",
-                                                            "&:hover": {
-                                                                opacity: 1.1,
-                                                            },
-                                                        }}
-                                                    />
-                                                </Typography>
-                                            </Link>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            {row.message ? (
-                                                <CodeBadge
-                                                    name={`${t("")} ${
-                                                        row.message
-                                                    }`}
-                                                    color={"#3366ff"}
-                                                    sx={{
-                                                        fontWeight: "bold",
-                                                        color: "aliceblue",
-                                                        width: "27%",
-                                                    }}
-                                                />
-                                            ) : null}
-                                        </TableCell>
-
-                                        {/* Show only if we have live tour */}
-                                        {isLiveTour(
-                                            row.tourType as TourType
-                                        ) ? (
-                                            <>
-                                                <TableCell>
-                                                    <CodeBadge
-                                                        name={`${t("")} ${
-                                                            getDate(
-                                                                row.tourDate
-                                                            ) || ""
-                                                        }`}
-                                                        color={"#3366ff"}
-                                                        sx={{
-                                                            fontWeight: "bold",
-                                                            color: "aliceblue",
-                                                            width: "35%",
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <CodeBadge
-                                                        name={`${t("")} ${
-                                                            row.tourTime
-                                                        }`}
-                                                        color={"#3366ff"}
-                                                        sx={{
-                                                            fontWeight: "bold",
-                                                            color: "aliceblue",
-                                                            width: "35%",
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                            </>
-                                        ) : null}
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
+                    <Table
+                        size="small"
+                        sx={{
+                            "& .MuiTableCell-root": {
+                                borderBottom: "none",
+                                borderRadius: "0px",
+                                padding: "10px",
+                            },
+                        }}
+                    ></Table>
+                </Box>
             </TableRow>
         </Fragment>
     );

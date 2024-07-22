@@ -1,20 +1,22 @@
 import {
-    KeyboardArrowDown as KeyboardArrowDownIcon,
-    KeyboardArrowUp as KeyboardArrowUpIcon,
-} from "@mui/icons-material";
-import {
     Box,
     IconButton,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
     Stack,
     TableCell,
     TableRow,
-    Tooltip,
+    Typography,
 } from "@mui/material";
-import Iconify from "src/components/iconify";
 import { ContactNotification } from "src/types/notification";
-import ViewedNotificationIcon from "../components/ViewedNotificationIcon";
-import UnViewedNotificationIcon from "../components/UnViewedNotificationIcon";
+import Iconify from "src/components/iconify";
 import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
+import Link from "next/link";
+import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
+import { ArrowDropDown, ArrowDropUp, LocalPhone } from "@mui/icons-material";
+import EmailIcon from "@mui/icons-material/Email";
+import { IProperties } from "@/types/properties";
 
 export const getDate = (s?: string) =>
     s ? new Date(s).toISOString().split("T")[0] : "";
@@ -28,6 +30,7 @@ interface BasicRowProps {
     onClick: () => void;
     loading: boolean;
     filter: any;
+    propertyDetails?: IProperties;
 }
 
 const BasicRow = ({
@@ -39,6 +42,7 @@ const BasicRow = ({
     onRemove,
     onClick,
     loading,
+    propertyDetails,
 }: BasicRowProps) => {
     const [toggleNotificationViewedStatus] =
         useToggleNotificationViewedStatusMutation();
@@ -51,8 +55,6 @@ const BasicRow = ({
 
     const handleToggleCollapsible = () => {
         onToggle();
-        // I HAVE TO PASS THE Filter here
-
         if (filter === "viewed") return;
         if (filter === "notViewed") return;
 
@@ -61,99 +63,160 @@ const BasicRow = ({
         }
     };
 
+    const handleStatusChange = (
+        event: SelectChangeEvent<"Viewed" | "Not Viewed">
+    ) => {
+        handleToggleRead();
+    };
+
+    console.log(row?.propertyCode);
     return (
         <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
             <TableCell>
-                <Stack flexDirection="row" alignItems="end" gap={1}>
-                    <Box display="flex" onClick={onClick}>
-                        <IconButton
-                            onClick={handleToggleCollapsible}
-                            size="small"
-                        >
-                            {open ? (
-                                <KeyboardArrowUpIcon />
-                            ) : (
-                                <KeyboardArrowDownIcon />
-                            )}
-                        </IconButton>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={2}
+                    width="100%"
+                >
+                    <Box>
+                        <img
+                            src={propertyDetails?.propertyImage?.url || ""}
+                            alt={"property Image"}
+                            style={{ width: 180, height: 120, borderRadius: 8 }}
+                        />
                     </Box>
+                    <Stack direction="column">
+                        <Box>
+                            <Typography fontWeight={600}>
+                                {row.customerName}
+                            </Typography>
 
-                    {filter !== "viewed" && filter !== "notViewed" && (
-                        <>
-                            {row.viewed ? (
-                                <Tooltip
-                                    title="Change to Not Seen "
-                                    placement="top"
-                                    enterDelay={800}
-                                    leaveDelay={100}
-                                    sx={{ cursor: "pointer" }}
-                                >
-                                    <ViewedNotificationIcon
-                                        key={`viewed-${row.id}`}
-                                        onClick={handleToggleRead}
-                                    />
-                                </Tooltip>
-                            ) : (
-                                <Tooltip
-                                    title="Change to Seen"
-                                    placement="top"
-                                    enterDelay={800}
-                                    leaveDelay={100}
-                                    sx={{ cursor: "pointer" }}
-                                >
-                                    <UnViewedNotificationIcon
-                                        key={`unviewed-${row.id}`}
-                                        onClick={handleToggleRead}
-                                    />
-                                </Tooltip>
-                            )}
-                        </>
-                    )}
+                            <Box flexDirection="row">
+                                <Typography variant="body2">
+                                    Property for {propertyDetails?.state?.value}{" "}
+                                    {propertyDetails?.area} m² |{" "}
+                                    {propertyDetails?.price} €
+                                    {propertyDetails?.state?.key === "RENT"
+                                        ? "/month"
+                                        : null}
+                                </Typography>
+                            </Box>
+                            <Box flexDirection="row">
+                                {row.propertyCode ? (
+                                    <Stack
+                                        direction="row"
+                                        gap={0.5}
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="body2">
+                                            {" "}
+                                            {
+                                                propertyDetails?.location
+                                                    ?.complex
+                                            }{" "}
+                                            ({propertyDetails?.location?.city}),
+                                        </Typography>
+                                        <Typography variant="body2" ml={0.5}>
+                                            Property Code:{" "}
+                                        </Typography>
+                                        <Link
+                                            href={`/property/${propertyDetails?.id}`}
+                                            passHref
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                component="a"
+                                                sx={{
+                                                    textDecoration: "none",
+                                                    color: "black",
+                                                    display: "block",
+                                                }}
+                                            >
+                                                {" "}
+                                                {row.propertyCode}
+                                            </Typography>
+                                        </Link>
+                                    </Stack>
+                                ) : null}
+                            </Box>
+                        </Box>
+                        <Stack
+                            flexDirection="row"
+                            gap={2}
+                            alignItems="center"
+                            mt={3}
+                        >
+                            <Typography
+                                variant="body2"
+                                display="flex"
+                                alignItems="center"
+                            >
+                                <LocalPhone
+                                    sx={{
+                                        color: "black",
+                                        fontSize: "medium",
+                                        mr: 1,
+                                    }}
+                                />
+                                {row.customerMobile}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                display="flex"
+                                alignItems="center"
+                            >
+                                <EmailIcon
+                                    sx={{
+                                        color: "black",
+                                        fontSize: "medium",
+                                        mr: 1,
+                                    }}
+                                />
+                                {row.customerEmail}
+                            </Typography>
+                        </Stack>
+                    </Stack>
                 </Stack>
             </TableCell>
-
-            <TableCell
-                sx={{
-                    textOverflow: "ellipsis",
-                    overflow: "auto",
-                    alignItems: "center",
-                    gap: 1,
-                    fontWeight: "600",
-                }}
-                component="th"
-                scope="row"
-            >
-                {row.customerName}
-            </TableCell>
-            <TableCell
-                sx={{
-                    textOverflow: "ellipsis",
-                    overflow: "auto",
-                    fontWeight: "600",
-                }}
-                align="center"
-            >
-                {row.customerEmail}
-            </TableCell>
-            <TableCell align="center" sx={{ fontWeight: "600" }}>
-                {row.customerMobile}
-            </TableCell>
-            <TableCell
-                align="right"
-                sx={{ textWrap: "nowrap", fontWeight: "600" }}
-            >
-                {getDate(row.notificationDate)}
-            </TableCell>
-            {variant === "showType" ? (
-                <TableCell align="right" sx={{ fontWeight: "600" }}>
-                    {row.tourType}
-                </TableCell>
-            ) : null}
             <TableCell align="right">
+                <Select
+                    value={row.viewed ? "Viewed" : "Not Viewed"}
+                    onChange={handleStatusChange}
+                    displayEmpty
+                    sx={{
+                        color: "black",
+                        fontWeight: row.viewed ? "normal" : "bold",
+                        "& .MuiSelect-select": {
+                            padding: 0,
+                        },
+                        "&:before": {
+                            border: 0,
+                        },
+                        "&:after": {
+                            border: 0,
+                        },
+                        "& .MuiSvgIcon-root": {
+                            right: 0,
+                        },
+                    }}
+                    variant="standard"
+                    disableUnderline
+                >
+                    <MenuItem value="Viewed">Viewed</MenuItem>
+                    <MenuItem value="Not Viewed">Not Viewed</MenuItem>
+                </Select>
+                <Typography variant="body2" color="text.secondary">
+                    {getDate(row.notificationDate)}
+                </Typography>
+            </TableCell>
+
+            {/* THIS WILL BE VISIBLE ON HOVER ONLY */}
+            {/* <TableCell align="right">
                 <IconButton onClick={onRemove} disabled={loading}>
                     <Iconify icon={"eva:trash-2-outline"} />
                 </IconButton>
-            </TableCell>
+            </TableCell> */}
         </TableRow>
     );
 };

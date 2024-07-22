@@ -1,3 +1,4 @@
+import { IPropertyImage } from "../file";
 import { KeyValue } from "../KeyValue";
 import { ListingNotification } from "./listing";
 import IWorkForUs from "./workForUs";
@@ -21,9 +22,17 @@ export type NotificationType =
     | "WORK_FOR_US"
     | "REVIEW";
 
+interface IPropertyLocation {
+    street: string;
+    number: string;
+    city: string;
+    region: string;
+}
 export interface ContactNotification {
     id?: number;
-
+    propertyId: number;
+    propertyImage: IPropertyImage;
+    location: IPropertyLocation;
     customerName: string;
     customerEmail: string;
     customerMobile: string;
@@ -34,7 +43,6 @@ export interface ContactNotification {
     tourType: string;
     notificationDate: string;
     viewed: boolean;
-
     notificationType: NotificationType;
 }
 
@@ -55,6 +63,9 @@ export interface INotificationResponse {
     type: KeyValue;
     viewed: boolean;
     workForUsDetails: IWorkForUs;
+    propertyImage: IPropertyImage;
+    location: IPropertyLocation;
+    propertyId: number;
 }
 
 export interface INotificationFilter {

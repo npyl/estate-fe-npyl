@@ -88,44 +88,6 @@ const Table = ({
                     },
                 }}
             >
-                <TableHead sx={{ width: "100%" }}>
-                    <TableRow>
-                        <TableCell />
-                        {COLUMNS.map((c, i) => (
-                            <TableCell
-                                align={
-                                    i === 0
-                                        ? "left"
-                                        : i === COLUMNS.length - 1
-                                        ? "right"
-                                        : "center"
-                                }
-                                key={i}
-                            >
-                                {t(c)}
-                            </TableCell>
-                        ))}
-
-                        {variant === "CONTACT" || variant === "TOUR" ? (
-                            <TableCell align="center"> {t("Type")}</TableCell>
-                        ) : null}
-
-                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
-                        {variant === "CONTACT" ||
-                        variant === "TOUR" ||
-                        variant === "LISTING" ||
-                        variant === "REVIEW" ||
-                        variant === "WORK_FOR_US" ? (
-                            <TableCell align="center"> {""}</TableCell>
-                        ) : null}
-
-                        {variant === "REVIEW" ? (
-                            <TableCell align="center"> {""}</TableCell>
-                        ) : null}
-                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
-                    </TableRow>
-                </TableHead>
-
                 <TableBody>
                     {rows.map((row, i) => (
                         <RowComponent
