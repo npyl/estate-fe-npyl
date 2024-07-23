@@ -44,7 +44,17 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Rooms",
         "Storeroom",
     ],
-    LAND: ["Orientation", "Accessibility", "Land Use", "Distance From Sea"],
+    LAND: [
+        "Orientation",
+        "Accessibility",
+        "Land Use",
+        "Distance From Sea",
+        "Irrigation",
+        "Water Supply",
+        "Electricity Supply",
+        "Building",
+        "Building Permit",
+    ],
     OTHER: [
         "Floor",
         "Layers",
@@ -264,6 +274,42 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Golden Visa")}
                         status={details?.goldenVisa || false}
+                    />
+                );
+
+            case "Irrigation":
+                return (
+                    <ListBooleanItem
+                        label={t("Irrigation")}
+                        status={details?.irrigation || false}
+                    />
+                );
+            case "Water Supply":
+                return (
+                    <ListBooleanItem
+                        label={t("Water Supply")}
+                        status={details?.waterSupply || false}
+                    />
+                );
+            case "Electricity Supply":
+                return (
+                    <ListBooleanItem
+                        label={t("Electricity Supply")}
+                        status={details?.electricitySupply || false}
+                    />
+                );
+            case "Building":
+                return (
+                    <ListBooleanItem
+                        label={t("Building")}
+                        status={details?.hasBuilding || false}
+                    />
+                );
+            case "Building Permit":
+                return (
+                    <ListBooleanItem
+                        label={t("Building Permit")}
+                        status={details?.hasBuildingPermit || false}
                     />
                 );
         }

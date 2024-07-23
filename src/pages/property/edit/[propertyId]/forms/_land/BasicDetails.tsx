@@ -43,6 +43,10 @@ const getCHECKBOXES = (t: TranslationType) => [
         label: t("Water Supply"),
     },
     {
+        name: "details.electricitySupply",
+        label: t("Electricity Supply"),
+    },
+    {
         name: "details.hasBuildingPermit",
         label: t("Building Permit"),
     },
