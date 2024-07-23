@@ -244,7 +244,9 @@ const AreaOfPreference: FC<Props> = ({
         () => selectedNeighbours,
         [selectedNeighbours]
     );
-
+    console.log(`selected regions: ${selectedRegions}`);
+    console.log(`selected cities: ${selectedMunicipalities}`);
+    console.log(`selected complexes: ${selectedNeighbours}`);
     return (
         <>
             <SpaceBetween py={1} alignItems="center">
@@ -292,14 +294,14 @@ const AreaOfPreference: FC<Props> = ({
                 </Grid>
                 <Grid item xs={4}>
                     <MunicipSelectDemands
-                        regionCode={regionCode || ""}
+                        regionCodes={selectedRegions}
                         municipCodes={municipCodes || []}
                         onChange={handleMunicipChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
                     <NeighbourSelectDemands
-                        municipCode={cities[0] || ""}
+                        municipCodes={selectedMunicipalities}
                         neighbourCodes={neighbourCodes || []}
                         onChange={handleNeighbourChange}
                     />

@@ -193,14 +193,14 @@ const LocationDemandsSection = () => {
                             </Grid>
                             <Grid item xs={4}>
                                 <MunicipSelectDemands
-                                    regionCode={regions.join(", ")}
+                                    regionCodes={regions.join(", ")}
                                     municipCodes={cities}
                                     onChange={handleMunicipChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
                                 <NeighbourSelectDemands
-                                    municipCode={cities.join(", ")}
+                                    municipCodes={cities.join(", ")}
                                     neighbourCodes={complexes}
                                     onChange={handleNeighbourChange}
                                 />

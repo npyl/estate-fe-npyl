@@ -8,12 +8,15 @@ import {
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
+    useLazyGetMunicipalitiesQuery,
+    useLazyGetNeighbourhoodsQuery,
 } from "src/services/location";
 
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
 import useGetCustomer from "@/hooks/customer";
 import useHumanReadable from "@/components/Location/hook";
+import { IGeoLocation } from "@/types/geolocation";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -35,14 +38,49 @@ export const ViewLocationMini = ({
     const { t } = useTranslation();
 
     const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(+regionCodes[0], {
-        skip: !regionCodes[0] || !isNumberString(regionCodes[0]),
-    });
-    const { data: neighbs } = useGetNeighbourhoodsQuery(+cityCodes[0], {
-        skip: !cityCodes[0] || !isNumberString(cityCodes[0]),
-    });
+    const [allMunicipalities, setAllMunicipalities] = useState<IGeoLocation[]>(
+        []
+    );
+    const [allNeighbourhoods, setAllNeighbourhoods] = useState<IGeoLocation[]>(
+        []
+    );
+    const [getMunicipalities] = useLazyGetMunicipalitiesQuery();
+    const [getNeighbourhoods] = useLazyGetNeighbourhoodsQuery();
 
-    //Code for rendering the region,cities,neighbourhoods in the same Line
+    useEffect(() => {
+        const fetchAllMunicipalities = async () => {
+            const municipalitiesData: IGeoLocation[] = [];
+
+            for (const code of regionCodes) {
+                const { data: municipalities } = await getMunicipalities(+code);
+                if (municipalities) {
+                    municipalitiesData.push(...municipalities);
+                }
+            }
+
+            setAllMunicipalities(municipalitiesData);
+        };
+
+        fetchAllMunicipalities();
+    }, [regionCodes, getMunicipalities]);
+
+    useEffect(() => {
+        const fetchAllNeighbourhoods = async () => {
+            const neighbourhoodsData: IGeoLocation[] = [];
+
+            for (const code of cityCodes) {
+                const { data: neighbourhoods } = await getNeighbourhoods(+code);
+                if (neighbourhoods) {
+                    neighbourhoodsData.push(...neighbourhoods);
+                }
+            }
+
+            setAllNeighbourhoods(neighbourhoodsData);
+        };
+
+        fetchAllNeighbourhoods();
+    }, [cityCodes, getNeighbourhoods]);
+
     const getHumanReadable = (code: string, data: any) =>
         useHumanReadable(code, data);
 
@@ -61,11 +99,17 @@ export const ViewLocationMini = ({
             <Grid item xs={6}>
                 <List>
                     {renderListItem("Region", regionCodes, regions)}
-                    {renderListItem("Neighborhood", complexCodes, neighbs)}
+                    {renderListItem(
+                        "Neighborhood",
+                        complexCodes,
+                        allNeighbourhoods
+                    )}
                 </List>
             </Grid>
             <Grid item xs={6}>
-                <List>{renderListItem("City", cityCodes, municips)}</List>
+                <List>
+                    {renderListItem("City", cityCodes, allMunicipalities)}
+                </List>
             </Grid>
         </Grid>
     );
@@ -115,7 +159,7 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
     });
 
     const [map, setMap] = useState<google.maps.Map>();
-
+    console.log(complexes);
     useEffect(() => {
         if (!map) return;
 

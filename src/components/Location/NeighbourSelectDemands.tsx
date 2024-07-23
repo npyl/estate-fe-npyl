@@ -9,25 +9,43 @@ import {
     ListItemText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-
-import { useGetNeighbourhoodsQuery } from "src/services/location";
+import { useEffect, useState } from "react";
+import { useLazyGetNeighbourhoodsQuery } from "src/services/location";
+import { IGeoLocation } from "@/types/geolocation";
 
 interface NeighbourSelectProps {
-    municipCode: string;
+    municipCodes: string[];
     neighbourCodes: string[];
     onChange: (neighbourCodes: string[], lat?: number, lng?: number) => void;
 }
 
 const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
-    const { municipCode, neighbourCodes, onChange } = props;
+    const { municipCodes, neighbourCodes, onChange } = props;
     const { t } = useTranslation();
-    const { data: neighbours } = useGetNeighbourhoodsQuery(+municipCode, {
-        skip: !municipCode,
-    });
+    const [allNeighbours, setAllNeighbours] = useState<IGeoLocation[]>([]);
+    const [getNeighbourhoods] = useLazyGetNeighbourhoodsQuery();
+
+    useEffect(() => {
+        const fetchAllNeighbours = async () => {
+            const allNeighboursData: IGeoLocation[] = [];
+
+            for (const code of municipCodes) {
+                const { data: neighbours } = await getNeighbourhoods(+code);
+
+                if (neighbours) {
+                    allNeighboursData.push(...neighbours);
+                }
+            }
+
+            setAllNeighbours(allNeighboursData);
+        };
+
+        fetchAllNeighbours();
+    }, [municipCodes, getNeighbourhoods]);
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const selectedCodes = event.target.value as string[];
-        const selectedNeighbour = neighbours?.find(
+        const selectedNeighbour = allNeighbours.find(
             (neighbour) =>
                 neighbour.areaID.toString() ===
                 selectedCodes[selectedCodes.length - 1] // get the last selected
@@ -39,7 +57,12 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
             selectedNeighbour ? selectedNeighbour.longitude : undefined
         );
     };
-    if (!neighbours) return null;
+
+    const availableNeighbours = allNeighbours.filter((neighbour) =>
+        municipCodes.includes(neighbour.parentID.toString())
+    );
+
+    if (!availableNeighbours.length) return null;
 
     return (
         <FormControl fullWidth>
@@ -49,8 +72,9 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
                 value={neighbourCodes}
                 onChange={handleChange}
                 renderValue={(selected) => {
-                    const selectedNeighbours = neighbours.filter((neighbour) =>
-                        selected.includes(neighbour.areaID.toString())
+                    const selectedNeighbours = availableNeighbours.filter(
+                        (neighbour) =>
+                            selected.includes(neighbour.areaID.toString())
                     );
                     return selectedNeighbours
                         .map((neighbour) => neighbour.nameGR)
@@ -61,7 +85,7 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
                     PaperProps: { sx: { maxHeight: "60vh" } },
                 }}
             >
-                {neighbours.map((option) => (
+                {availableNeighbours.map((option) => (
                     <MenuItem
                         key={option.areaID}
                         value={option.areaID.toString()}

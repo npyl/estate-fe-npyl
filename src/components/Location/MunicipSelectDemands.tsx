@@ -9,25 +9,45 @@ import {
     ListItemText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-
-import { useGetMunicipalitiesQuery } from "src/services/location";
+import { useEffect, useState } from "react";
+import { useLazyGetMunicipalitiesQuery } from "src/services/location";
+import { IGeoLocation } from "@/types/geolocation";
 
 interface IMunicipSelectProps {
-    regionCode: string;
+    regionCodes: string[];
     municipCodes: string[];
     onChange: (municipCodes: string[], lat?: number, lng?: number) => void;
 }
 
 const MunicipSelectDemands = (props: IMunicipSelectProps) => {
-    const { municipCodes, regionCode, onChange } = props;
+    const { municipCodes, regionCodes, onChange } = props;
     const { t } = useTranslation();
-    const municips =
-        useGetMunicipalitiesQuery(+regionCode, { skip: !regionCode }).data ||
-        [];
+    const [allMunicipalities, setAllMunicipalities] = useState<IGeoLocation[]>(
+        []
+    );
+    const [getMunicipalities] = useLazyGetMunicipalitiesQuery();
+
+    useEffect(() => {
+        const fetchAllMunicipalities = async () => {
+            const allMunicipalitiesData: IGeoLocation[] = [];
+
+            for (const code of regionCodes) {
+                const { data: municipalities } = await getMunicipalities(+code);
+
+                if (municipalities) {
+                    allMunicipalitiesData.push(...municipalities);
+                }
+            }
+
+            setAllMunicipalities(allMunicipalitiesData);
+        };
+
+        fetchAllMunicipalities();
+    }, [regionCodes, getMunicipalities]);
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const selectedCodes = event.target.value as string[];
-        const selectedMunicip = municips.find(
+        const selectedMunicip = allMunicipalities.find(
             (municip) =>
                 municip.areaID.toString() ===
                 selectedCodes[selectedCodes.length - 1] // get the last selected
@@ -40,7 +60,7 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
         );
     };
 
-    if (!municips) return null;
+    if (!allMunicipalities.length) return null;
 
     return (
         <FormControl fullWidth>
@@ -50,8 +70,9 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
                 value={municipCodes}
                 onChange={handleChange}
                 renderValue={(selected) => {
-                    const selectedMunicips = municips.filter((municip) =>
-                        selected.includes(municip.areaID.toString())
+                    const selectedMunicips = allMunicipalities.filter(
+                        (municip) =>
+                            selected.includes(municip.areaID.toString())
                     );
                     return selectedMunicips
                         .map((municip) => municip.nameGR)
@@ -62,7 +83,7 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
                     PaperProps: { sx: { maxHeight: "60vh" } },
                 }}
             >
-                {municips.map((option) => (
+                {allMunicipalities.map((option) => (
                     <MenuItem
                         key={option.areaID}
                         value={option.areaID.toString()}
