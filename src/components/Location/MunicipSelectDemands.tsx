@@ -33,7 +33,6 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
 
             for (const code of regionCodes) {
                 const { data: municipalities } = await getMunicipalities(+code);
-
                 if (municipalities) {
                     allMunicipalitiesData.push(...municipalities);
                 }
@@ -59,6 +58,13 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
             selectedMunicip ? selectedMunicip.longitude : undefined
         );
     };
+
+    // Clear cities and complexes if no region is selected
+    useEffect(() => {
+        if (regionCodes.length === 0) {
+            onChange([]);
+        }
+    }, [regionCodes, onChange]);
 
     if (!allMunicipalities.length) return null;
 

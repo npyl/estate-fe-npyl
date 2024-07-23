@@ -58,11 +58,14 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
         );
     };
 
-    const availableNeighbours = allNeighbours.filter((neighbour) =>
-        municipCodes.includes(neighbour.parentID.toString())
-    );
+    // Clear neighbours if no municipalities are selected
+    useEffect(() => {
+        if (municipCodes.length === 0) {
+            onChange([]);
+        }
+    }, [municipCodes, onChange]);
 
-    if (!availableNeighbours.length) return null;
+    if (!allNeighbours.length) return null;
 
     return (
         <FormControl fullWidth>
@@ -72,7 +75,7 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
                 value={neighbourCodes}
                 onChange={handleChange}
                 renderValue={(selected) => {
-                    const selectedNeighbours = availableNeighbours.filter(
+                    const selectedNeighbours = allNeighbours.filter(
                         (neighbour) =>
                             selected.includes(neighbour.areaID.toString())
                     );
@@ -85,7 +88,7 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
                     PaperProps: { sx: { maxHeight: "60vh" } },
                 }}
             >
-                {availableNeighbours.map((option) => (
+                {allNeighbours.map((option) => (
                     <MenuItem
                         key={option.areaID}
                         value={option.areaID.toString()}
