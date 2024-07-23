@@ -83,8 +83,8 @@ const BasicRow = ({
         useToggleNotificationViewedStatusMutation();
 
     const handleToggleRead = () => {
-        if (filter === "viewed") return;
-        if (filter === "notViewed") return;
+        if (filter === "Viewed") return;
+        if (filter === "NotViewed") return;
         toggleNotificationViewedStatus(row.id!);
     };
 
@@ -96,12 +96,10 @@ const BasicRow = ({
     };
 
     const handleRowClick = () => {
-        if (filter === "viewed") {
-            router.push(`/notification/row/${row.id}`);
-        } else {
+        if (!row.viewed) {
             toggleNotificationViewedStatus(row.id!);
-            router.push(`/notification/row/${row.id}`);
         }
+        router.push(`/notification/row/${row.id}`);
     };
 
     const handlePropertyCodeClick = (event: React.MouseEvent) => {
