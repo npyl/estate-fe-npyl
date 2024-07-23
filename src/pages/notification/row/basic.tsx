@@ -96,7 +96,12 @@ const BasicRow = ({
     };
 
     const handleRowClick = () => {
-        router.push(`/notification/row/${row.id}`);
+        if (filter === "viewed") {
+            router.push(`/notification/row/${row.id}`);
+        } else {
+            toggleNotificationViewedStatus(row.id!);
+            router.push(`/notification/row/${row.id}`);
+        }
     };
 
     const handlePropertyCodeClick = (event: React.MouseEvent) => {

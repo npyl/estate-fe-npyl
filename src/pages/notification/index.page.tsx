@@ -75,9 +75,9 @@ const NotificationPage: NextPage = () => {
                                     gap={1}
                                 >
                                     {t("Tours")}
-                                    {/* <UnReadBadge
+                                    <UnReadBadge
                                         count={getUnreadCount("TOUR")}
-                                    /> */}
+                                    />
                                 </Box>
                             }
                             value={0}
@@ -91,9 +91,9 @@ const NotificationPage: NextPage = () => {
                                     gap={1}
                                 >
                                     {t("Listings")}
-                                    {/* <UnReadBadge
+                                    <UnReadBadge
                                         count={getUnreadCount("LISTING")}
-                                    /> */}
+                                    />
                                 </Box>
                             }
                             value={1}
@@ -107,9 +107,9 @@ const NotificationPage: NextPage = () => {
                                     gap={1}
                                 >
                                     {t("Work Applications")}
-                                    {/* <UnReadBadge
+                                    <UnReadBadge
                                         count={getUnreadCount("WORK_FOR_US")}
-                                    /> */}
+                                    />
                                 </Box>
                             }
                             value={2}
@@ -123,9 +123,9 @@ const NotificationPage: NextPage = () => {
                                     gap={1}
                                 >
                                     {t("Reviews")}
-                                    {/* <UnReadBadge
+                                    <UnReadBadge
                                         count={getUnreadCount("REVIEW")}
-                                    /> */}
+                                    />
                                 </Box>
                             }
                             value={3}
