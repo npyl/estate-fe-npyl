@@ -1,3 +1,4 @@
+import { useGetPropertyByCodeQuery } from "@/services/properties";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Avatar, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
 import { green, purple, yellow } from "@mui/material/colors";
@@ -15,7 +16,8 @@ export interface LogCardProps {
 export const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
-
+    console.log(log);
+    // const {data:property} = useGetPropertyByCodeQuery(+propertyCode!);
     const getCardBackgroundColor = () => {
         switch (log?.action?.key) {
             case "CREATE":
@@ -98,7 +100,7 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
                                 href={
                                     log?.customerId
                                         ? `/customer/${log?.customerId}`
-                                        : `/property/${log?.propertyCode}`
+                                        : `/property/${log?.propertyId}`
                                 }
                                 passHref
                             >

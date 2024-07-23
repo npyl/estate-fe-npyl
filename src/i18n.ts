@@ -968,7 +968,7 @@ const resources = {
             Sidewalk: "Πεζόδρομος",
             Paved: "Πλακόστρωτο",
             "Dirt Road": "Χωματόδρομος",
-            "Land Use": "Χρήση Γης",
+            "Land Use": "Ζώνη",
             Unknown: "Άγνωστο",
 
             Rural: "Αγροτική",
