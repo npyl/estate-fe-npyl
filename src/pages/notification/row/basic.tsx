@@ -27,6 +27,8 @@ import {
     differenceInDays,
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
+import { NormalBadge } from "@/components/PropertyCard/styled";
+import { t } from "i18next";
 
 export const getDate = (s?: string) => {
     if (!s) return "";
@@ -96,10 +98,10 @@ const BasicRow = ({
     };
 
     const handleRowClick = () => {
+        router.push(`/notification/row/${row.id}`);
         if (!row.viewed) {
             toggleNotificationViewedStatus(row.id!);
         }
-        router.push(`/notification/row/${row.id}`);
     };
 
     const handlePropertyCodeClick = (event: React.MouseEvent) => {
@@ -114,6 +116,8 @@ const BasicRow = ({
                     boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
                     cursor: "pointer",
                 },
+                backgroundColor: !row.viewed ? "neutral.100" : "transparent",
+                border: "1px solid lightgray",
             }}
             onClick={handleRowClick}
         >
@@ -192,35 +196,29 @@ const BasicRow = ({
                                         </Typography>
 
                                         {row.propertyCode ? (
-                                            <>
-                                                <Typography
-                                                    variant="body2"
-                                                    ml={0.5}
-                                                >
-                                                    Property Code:{" "}
-                                                </Typography>
+                                            <Stack ml={1.5}>
                                                 <Link
                                                     href={`/property/${propertyDetails?.id}`}
                                                     passHref
+                                                    style={{
+                                                        textDecoration: "none",
+                                                    }}
                                                 >
-                                                    <Typography
-                                                        variant="body2"
-                                                        component="a"
+                                                    <NormalBadge
+                                                        name={`${t("Code")}: ${
+                                                            propertyDetails?.code ||
+                                                            ""
+                                                        }`}
+                                                        color={"#ffcc00"}
+                                                        sx={{
+                                                            color: "#854D0E",
+                                                        }}
                                                         onClick={
                                                             handlePropertyCodeClick
                                                         }
-                                                        sx={{
-                                                            textDecoration:
-                                                                "none",
-                                                            color: "black",
-                                                            display: "block",
-                                                        }}
-                                                    >
-                                                        {" "}
-                                                        {row.propertyCode}
-                                                    </Typography>
+                                                    />
                                                 </Link>
-                                            </>
+                                            </Stack>
                                         ) : null}
                                     </Stack>
                                 </Box>

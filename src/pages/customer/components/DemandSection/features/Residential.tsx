@@ -220,7 +220,7 @@ const FeaturesSection = ({
                     <Grid item xs={6} sm={3}>
                         <CheckboxItem
                             label={t("Independent Heating Per Room")}
-                            value={!!features?.fireDetector}
+                            value={!!features?.independentHeatingPerRoom}
                             sliceKey={"independentHeatingPerRoom"}
                             onChange={handleChange}
                         />
