@@ -7,14 +7,15 @@ const SubmitButton = () => {
 
     const {
         watch,
-        formState: { isDirty, isSubmitting },
+        formState: { isValid, isSubmitting },
     } = useFormContext();
 
     const isDraft = watch("draft");
+    const isDisabled = !isDraft && !isValid;
 
     return (
         <LoadingButton
-            disabled={!isDirty && !isDraft}
+            disabled={isDisabled}
             loading={isSubmitting}
             type="submit"
         >

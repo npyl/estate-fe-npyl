@@ -18,6 +18,8 @@ const ErrorTooltips = () => {
 
     const rootRefs = useRef<Record<InputName, Root>>({});
 
+    console.log("erros: ", formState.errors);
+
     useLayoutEffect(() => {
         const { errors } = formState;
 

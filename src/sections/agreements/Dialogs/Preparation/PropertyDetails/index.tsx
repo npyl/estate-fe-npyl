@@ -23,6 +23,7 @@ const RHFPropertySearch = () => {
             getProperty(id)
                 .unwrap()
                 .then((p) => {
+                    setValue("ownerId", p.owner.id);
                     setValue("propertyId", p.id);
                     setValue("title", p.descriptions[i18n.language].title);
                 }),
@@ -64,6 +65,7 @@ const PropertyFiller = () => {
         getProperty(+propertyId!)
             .unwrap()
             .then((p) => {
+                setValue("ownerId", p.owner.id);
                 setValue("propertyId", p.id);
                 setValue("title", p.descriptions[i18n.language].title);
             });

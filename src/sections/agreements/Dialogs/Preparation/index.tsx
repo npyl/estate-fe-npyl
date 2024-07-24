@@ -3,7 +3,7 @@
 import Dialog, { DialogProps } from "@/components/Dialog";
 import { RHFCheckbox } from "@/components/hook-form";
 import { IAgreementReq } from "@/types/agreements";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import Stack from "@mui/material/Stack";
@@ -69,9 +69,11 @@ const PreparationDialog: React.FC<Props> = ({
     const shouldAutofill = !editedAgreementId || editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
     const methods = useForm<Draft<IAgreementReq>>({
-        resolver: yupResolver(Schema),
+        resolver: zodResolver(Schema),
         values,
     });
+
+    console.log("ERRORS: ", methods.formState.errors);
 
     const lang = (methods.watch("lang") as TLanguageType) || "el";
 
@@ -81,6 +83,8 @@ const PreparationDialog: React.FC<Props> = ({
     );
 
     const handleSubmit = async (d: Draft<IAgreementReq>) => {
+        console.log("HRE!");
+
         const cb = d.id ? updateAgreement : createAgreement;
         await cb(d as IAgreementReq);
     };

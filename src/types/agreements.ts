@@ -91,7 +91,7 @@ export interface IAgreementReq
     extends Omit<IAgreement, "id" | "assignedProperty" | "code" | "owner"> {
     id?: number;
     propertyId: number;
-    onwerId: number;
+    ownerId: number;
 
     owner: Omit<IAgreementOwner, "id">;
 

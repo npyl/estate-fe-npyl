@@ -1,96 +1,120 @@
-import { IAgreement, IAgreementReq, IAgreementType } from "@/types/agreements";
-import * as yup from "yup";
+import { IAgreement, IAgreementReq } from "@/types/agreements";
+import { z } from "zod";
 import dayjs from "dayjs";
-import { TLanguageType } from "@/types/translation";
 
-const EmptySchema = yup.object().shape({});
+const baseSchema = z.object({
+    propertyId: z.number().min(1, "Please make sure to select a property!"),
+    ownerId: z.number().min(1, "Please make sure to select a property!"),
+    variant: z.enum(["BASIC", "BASIC_EXCLUSIVE", "PURCHASE"]),
+    draft: z.boolean(),
+});
 
-const FullSchema = yup.object<IAgreementReq>().shape({
-    id: yup.number().moreThan(0).optional(),
-    propertyId: yup
-        .number()
-        .moreThan(0, "Please make sure to select a property!")
-        .required("Please make sure to select a property!"),
-    ownerId: yup
-        .number()
-        .moreThan(0, "Please make sure to select a property!")
-        .required("Please make sure to select a property!"),
+const EmptySchema = baseSchema.extend({
+    draft: z.literal(true),
+});
 
-    variant: yup
-        .string()
-        .oneOf<IAgreementType>(["BASIC", "BASIC_EXCLUSIVE", "PURCHASE"])
-        .required(),
-    lang: yup.string().oneOf<TLanguageType>(["en", "el"]).required(),
-    draft: yup.boolean().required(),
-    keys: yup.boolean().required(),
-    signed: yup.boolean().required(),
-    title: yup.string().required(),
-    startingDate: yup.string().required(),
-    expirationDate: yup.string().required(),
-    availableAfter: yup.string().required(),
+const mandatorySchema = baseSchema.extend({
+    id: z.number().gt(0).optional(),
+    propertyId: z.number().gt(0, "Please make sure to select a property!"),
+    ownerId: z.number().gt(0, "Please make sure to select a property!"),
+
+    lang: z.enum(["en", "el"]),
+    draft: z.literal(false),
+    keys: z.boolean(),
+    signed: z.boolean(),
+    title: z.string(),
+    startingDate: z.string(),
+    expirationDate: z.string(),
+    availableAfter: z.string(),
     // ...
-    manager: yup.object({
-        fullName: yup.string().required(),
-        title: yup.string().required(),
-        vat: yup.string().required(),
-        taxOffice: yup.string().required(),
-        genComReg: yup.string().required(), // ΓΕΜΗ
+    manager: z.object({
+        fullName: z.string(),
+        title: z.string(),
+        vat: z.string(),
+        taxOffice: z.string(),
+        genComReg: z.string(), // ΓΕΜΗ
     }),
-    company: yup.object({
-        address: yup.string().required(),
-        homePhone: yup.string().required(),
-        mobilePhone: yup.string().required(),
-        email: yup.string().required(),
+    company: z.object({
+        address: z.string(),
+        homePhone: z.string(),
+        mobilePhone: z.string(),
+        email: z.string(),
     }),
-    owner: yup.object({
-        fullName: yup.string().required(),
-        email: yup.string().required(),
-        maidenName: yup.string().required(),
-        idCardNumber: yup.string().required(),
-        mobilePhone: yup.string().required(),
-        vat: yup.string().required(),
+    owner: z.object({
+        fullName: z.string(),
+        email: z.string(),
+        maidenName: z.string(),
+        idCardNumber: z.string(),
+        vat: z.string(),
         // ...
-        city: yup.string().required(),
-        street: yup.string().required(),
-        number: yup.string().required(),
+        city: z.string(),
+        street: z.string(),
+        number: z.string(),
         // ...
-        actingOnMyBehalf: yup.string().required(),
+        actingOnMyBehalf: z.string(),
     }),
-    property: yup.object({
-        region: yup.string().required(),
-        address: yup.string().required(),
-        addressNumber: yup.string().required(),
-        type: yup.string().required(),
-        floor: yup.string().required(),
-        livingSpace: yup.string().required(),
-        description: yup.string().required(),
-        price: yup.string().required(),
+    property: z.object({
+        region: z.string(),
+        address: z.string(),
+        addressNumber: z.string(),
+        type: z.string(),
+        floor: z.string(),
+        livingSpace: z.string(),
+        description: z.string(),
+        price: z.string(),
     }),
-    commissionAndDuration: yup.object({
-        payment: yup.string().required(),
-        flatRate: yup.string().required(),
-        percentage: yup.string().required(),
-        months: yup.string().required(),
-        defects: yup.string().required(),
+    commissionAndDuration: z.object({
+        payment: z.string(),
+        flatRate: z.string(),
+        percentage: z.string(),
+        defects: z.string(),
     }),
-    gdpr: yup
+    gdpr: z
         .object({
-            email: yup.string().email().optional(),
-            address: yup.string().optional(),
+            email: z.string().email().optional(),
+            address: z.string().optional(),
         })
         .optional(),
-    additional: yup.object({
-        date: yup.string().required(),
-        commisionerSignature: yup.string().required(),
-        agentSignature: yup.string().required(),
+    additional: z.object({
+        // TODO: ...
+        date: z.string().optional(),
+        commisionerSignature: z.string().optional(),
+        agentSignature: z.string().optional(),
     }),
 });
 
-const Schema = yup.object<IAgreementReq>().when("draft", {
-    is: true,
-    then: () => EmptySchema,
-    otherwise: () => FullSchema,
+const basicSchema = mandatorySchema.extend({
+    variant: z.literal("BASIC"),
 });
+
+const basicExclusiveSchema = mandatorySchema.extend({
+    variant: z.literal("BASIC_EXCLUSIVE"),
+
+    owner: z.object({
+        mobilePhone: z.string(),
+    }),
+    commissionAndDuration: z.object({
+        months: z.string(),
+    }),
+});
+
+const purchaseSchema = mandatorySchema.extend({
+    variant: z.literal("PURCHASE"),
+});
+
+const DraftSchema = z
+    .object({
+        draft: z.literal(true),
+    })
+    .merge(EmptySchema);
+
+const NonDraftSchema = z.discriminatedUnion("variant", [
+    basicSchema,
+    basicExclusiveSchema,
+    purchaseSchema,
+]);
+
+const Schema = z.union([DraftSchema, NonDraftSchema]);
 
 export const getValues = (
     isCustomer: boolean,
@@ -185,7 +209,7 @@ export const getValues = (
             agentSignature: additional?.agentSignature || "",
         },
 
-        onwerId: owner?.id || -1,
+        ownerId: owner?.id || -1,
 
         suggestedProperties: suggestedProperties,
 
