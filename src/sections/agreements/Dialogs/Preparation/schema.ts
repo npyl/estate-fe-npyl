@@ -2,18 +2,7 @@ import { IAgreement, IAgreementReq } from "@/types/agreements";
 import { z } from "zod";
 import dayjs from "dayjs";
 
-const baseSchema = z.object({
-    propertyId: z.number().min(1, "Please make sure to select a property!"),
-    ownerId: z.number().min(1, "Please make sure to select a property!"),
-    variant: z.enum(["BASIC", "BASIC_EXCLUSIVE", "PURCHASE"]),
-    draft: z.boolean(),
-});
-
-const EmptySchema = baseSchema.extend({
-    draft: z.literal(true),
-});
-
-const mandatorySchema = baseSchema.extend({
+const mandatorySchema = z.object({
     id: z.number().gt(0).optional(),
     propertyId: z.number().gt(0, "Please make sure to select a property!"),
     ownerId: z.number().gt(0, "Please make sure to select a property!"),
@@ -78,9 +67,98 @@ const mandatorySchema = baseSchema.extend({
     additional: z.object({
         // TODO: ...
         date: z.string().optional(),
-        commisionerSignature: z.string().optional(),
+        commissionerSignature: z.string().optional(),
         agentSignature: z.string().optional(),
     }),
+});
+
+const EmptySchema = z.object({
+    id: z.number().gt(0).optional(),
+    propertyId: z.number().gt(0, "Please make sure to select a property!"),
+    ownerId: z.number().gt(0, "Please make sure to select a property!"),
+    language: z.enum(["ENGLISH", "GREEK"]),
+    draft: z.literal(true),
+
+    keys: z.boolean().optional(),
+
+    signed: z.boolean().optional(),
+
+    title: z.string().optional(),
+
+    startingDate: z.string().optional(),
+    expirationDate: z.string().optional(),
+
+    availableAfter: z.string().optional(),
+
+    // ...
+    manager: z
+        .object({
+            fullName: z.string(),
+            title: z.string(),
+            vat: z.string(),
+            taxOffice: z.string(),
+            genComReg: z.string(), // ΓΕΜΗ
+        })
+        .optional(),
+
+    company: z
+        .object({
+            address: z.string(),
+            homePhone: z.string(),
+            mobilePhone: z.string(),
+            email: z.string(),
+        })
+        .optional(),
+
+    owner: z
+        .object({
+            fullName: z.string(),
+            email: z.string(),
+            maidenName: z.string(),
+            idCardNumber: z.string(),
+            vat: z.string(),
+            // ...
+            city: z.string(),
+            street: z.string(),
+            number: z.string(),
+            // ...
+            actingOnMyBehalf: z.string(),
+        })
+        .optional(),
+    property: z
+        .object({
+            region: z.string(),
+            address: z.string(),
+            addressNumber: z.string(),
+            type: z.string(),
+            floor: z.string(),
+            livingSpace: z.string(),
+            description: z.string(),
+            price: z.string(),
+        })
+        .optional(),
+    commissionAndDuration: z
+        .object({
+            payment: z.string(),
+            flatRate: z.string(),
+            percentage: z.string(),
+            defects: z.string(),
+        })
+        .optional(),
+    gdpr: z
+        .object({
+            email: z.string().email().optional(),
+            address: z.string().optional(),
+        })
+        .optional(),
+    additional: z
+        .object({
+            // TODO: ...
+            date: z.string().optional(),
+            commissionerSignature: z.string().optional(),
+            agentSignature: z.string().optional(),
+        })
+        .optional(),
 });
 
 const basicSchema = mandatorySchema.extend({
@@ -203,18 +281,19 @@ export const getValues = (
             months: commissionAndDuration?.months || "",
             defects: commissionAndDuration?.defects || "",
         },
-        gdpr,
+        gdpr: {
+            address: gdpr?.address || "",
+        },
         additional: {
             date: additional?.date || "",
-            commisionerSignature: additional?.commisionerSignature || "",
+            commissionerSignature: additional?.commissionerSignature || "",
             agentSignature: additional?.agentSignature || "",
         },
 
         suggestedProperties: suggestedProperties,
 
         signed:
-            !!additional?.commisionerSignature &&
-            !!additional.commisionerSignature,
+            !!additional?.commissionerSignature && !!additional.agentSignature,
     };
 };
 

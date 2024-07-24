@@ -58,7 +58,7 @@ interface IAgreementFormData {
     };
     additional: {
         date: string;
-        commisionerSignature: string;
+        commissionerSignature: string;
         agentSignature: string;
     };
 
