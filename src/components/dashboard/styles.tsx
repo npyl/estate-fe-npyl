@@ -15,7 +15,7 @@ export const StyledPopper = styled((props: StyledPopperProps) => (
     top: "10px !important",
     boxShadow: theme.shadows[20],
     width: "40vw",
-    left: searchCategory === "all" ? "-107px !important" : "-50px !important",
+    left: searchCategory === "all" ? "-130px !important" : "-70px !important",
 
     zIndex: 99999,
     [theme.breakpoints.down("sm")]: {

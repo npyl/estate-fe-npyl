@@ -1,4 +1,5 @@
 import {
+    Box,
     Divider,
     Grid,
     Paper,
@@ -19,6 +20,8 @@ import { useSearchPropertyQuery } from "@/services/properties";
 import { useSearchCustomerQuery } from "@/services/customers";
 import { SearchCategory } from "./types";
 import { Theme } from "@mui/system/createTheme";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 const PAGE_SIZE = 25;
 //Custom hook to hold the screenWidth for the categoryView ALL
@@ -74,15 +77,29 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
         <Grid
             item
             xs={12}
+            // md={12}
             sx={{
-                // borderRight: {
-                //     lg: "1px solid blue",
-                //     md: 0,
-                // },
                 marginY: "10px",
             }}
         >
-            <Typography variant="h6" textAlign="center">
+            <Typography
+                variant="h6"
+                display="flex"
+                justifyContent="center"
+                gap={1}
+                alignItems="center"
+                width="100%"
+                sx={{
+                    borderBottom: "1px solid lightgrey",
+                }}
+            >
+                <HomeOutlinedIcon
+                    sx={{
+                        color: "black",
+                        width: "22px",
+                        height: "22px",
+                    }}
+                />
                 {t("Properties")}
             </Typography>
 
@@ -141,9 +158,9 @@ export const SearchList = ({
     const screenWidth = useScreenWidth();
 
     const paperWidth = useMemo(() => {
-        if (screenWidth > 1400 && screenWidth <= 1600) return "192%";
-        if (screenWidth > 1600 && screenWidth <= 2100) return "154%";
-        if (screenWidth > 2100) return "145%";
+        if (screenWidth > 1400 && screenWidth <= 1600) return "185%";
+        if (screenWidth > 1600 && screenWidth <= 2100) return "195%";
+        if (screenWidth > 2100) return "149%";
         return "100%";
     }, [screenWidth]);
 
@@ -152,7 +169,6 @@ export const SearchList = ({
             <StyledPopper
                 open={open}
                 anchorEl={anchorEl}
-                style={{ position: "absolute", left: 10 }}
                 searchCategory={searchCategory}
                 placement={
                     isMobile
@@ -164,7 +180,7 @@ export const SearchList = ({
             >
                 <Paper
                     sx={{
-                        maxHeight: "85vh",
+                        maxHeight: "91vh",
                         width: isMobile
                             ? "130%"
                             : searchCategory === "properties"
@@ -173,45 +189,78 @@ export const SearchList = ({
                             ? "100%"
                             : paperWidth,
                         overflowX: "hidden",
+                        overflowY: "hidden",
                     }}
                 >
-                    {/* <ScrollBox scrollbarWidth="15px"> */}
                     <Grid container>
                         {searchCategory === "properties" && (
-                            <PropertiesSubList searchString={searchText} />
+                            <ScrollBox scrollbarWidth="15px">
+                                <PropertiesSubList searchString={searchText} />
+                            </ScrollBox>
                         )}
 
                         {searchCategory === "all" && (
-                            <Stack direction={isMobile ? "column" : "row"}>
-                                <Grid item xs={12} md={7.5}>
-                                    <PropertiesSubList
-                                        searchString={searchText}
-                                    />
+                            <Stack
+                                direction={isMobile ? "column" : "row"}
+                                width="100%"
+                            >
+                                <Grid item xs={12} md={7}>
+                                    <ScrollBox scrollbarWidth="15px">
+                                        <PropertiesSubList
+                                            searchString={searchText}
+                                        />
+                                    </ScrollBox>
                                 </Grid>
                                 {customers.length > 0 && (
                                     <Grid
                                         item
                                         xs={12}
-                                        md={5.5}
+                                        md={5}
                                         sx={{
                                             marginY: "10px",
 
                                             borderLeft: "1px solid grey",
                                         }}
                                     >
-                                        <Typography
-                                            variant="h6"
-                                            textAlign={"center"}
-                                        >
-                                            {t("Customers")}
-                                        </Typography>
-                                        {customers.map((option, index) => (
-                                            <CustomerSearchItem
-                                                key={index}
-                                                option={option}
-                                                searchText={searchText}
-                                            />
-                                        ))}
+                                        <ScrollBox scrollbarWidth="15px">
+                                            <Typography
+                                                variant="h6"
+                                                display="flex"
+                                                justifyContent="center"
+                                                gap={1}
+                                                alignItems="center"
+                                                // width="100%"
+                                                sx={{
+                                                    borderBottom:
+                                                        "1px solid lightgrey",
+                                                }}
+                                            >
+                                                <PersonOutlineOutlinedIcon
+                                                    sx={{
+                                                        color: "black",
+                                                        width: "22px",
+                                                        height: "22px",
+                                                    }}
+                                                />
+                                                {t("Customers")}
+                                            </Typography>
+                                            <Box
+                                                width="100%"
+                                                sx={{ overflowX: "hidden" }}
+                                            >
+                                                {customers.map(
+                                                    (option, index) => (
+                                                        <CustomerSearchItem
+                                                            key={index}
+                                                            option={option}
+                                                            searchText={
+                                                                searchText
+                                                            }
+                                                        />
+                                                    )
+                                                )}
+                                            </Box>
+                                        </ScrollBox>
                                     </Grid>
                                 )}
                             </Stack>
@@ -226,19 +275,37 @@ export const SearchList = ({
                                         marginY: "10px",
                                     }}
                                 >
-                                    <Typography
-                                        variant="h6"
-                                        textAlign={"center"}
-                                    >
-                                        {t("Customers")}
-                                    </Typography>
-                                    {customers.map((option, index) => (
-                                        <CustomerSearchItem
-                                            key={index}
-                                            option={option}
-                                            searchText={searchText}
-                                        />
-                                    ))}
+                                    <ScrollBox scrollbarWidth="15px">
+                                        <Typography
+                                            variant="h6"
+                                            display="flex"
+                                            justifyContent="center"
+                                            gap={1}
+                                            alignItems="center"
+                                            width="100%"
+                                            sx={{
+                                                borderBottom:
+                                                    "1px solid lightgrey",
+                                            }}
+                                        >
+                                            <PersonOutlineOutlinedIcon
+                                                sx={{
+                                                    color: "black",
+                                                    width: "22px",
+                                                    height: "22px",
+                                                }}
+                                            />
+                                            {t("Customers")}
+                                        </Typography>
+
+                                        {customers.map((option, index) => (
+                                            <CustomerSearchItem
+                                                key={index}
+                                                option={option}
+                                                searchText={searchText}
+                                            />
+                                        ))}
+                                    </ScrollBox>
                                 </Grid>
                             )}
                     </Grid>

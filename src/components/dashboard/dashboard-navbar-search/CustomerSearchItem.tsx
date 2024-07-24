@@ -13,6 +13,7 @@ import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Link from "next/link";
 import { TypeLabels } from "@/components/TypeLabels";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
