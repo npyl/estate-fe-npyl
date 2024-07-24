@@ -46,6 +46,16 @@ export interface IPropertyForNotification {
     country: string;
     street: string;
     number: string;
+    descriptions?: IPropertyDescriptionsForNotification;
+}
+
+interface DescriptionType {
+    title: string;
+    desription: string;
+}
+export interface IPropertyDescriptionsForNotification {
+    el: DescriptionType;
+    en: DescriptionType;
 }
 
 export interface ContactNotification {
@@ -65,6 +75,7 @@ export interface ContactNotification {
     viewed: boolean;
     notificationType: NotificationType;
     property?: IPropertyForNotification;
+    descriptions?: IPropertyDescriptionsForNotification;
 }
 
 export interface INotificationResponse {

@@ -254,11 +254,11 @@ const NotificationDetailPage: NextPage = () => {
                             justifyContent="space-between"
                             width="100%"
                         >
-                            {/* {property ? (
+                            {property ? (
                                 <Typography variant="h6">
-                                    {data?.descriptions.el.title}
+                                    {property?.descriptions?.el?.title}
                                 </Typography>
-                            ) : null} */}
+                            ) : null}
 
                             {listing ? (
                                 <Typography variant="h6">
