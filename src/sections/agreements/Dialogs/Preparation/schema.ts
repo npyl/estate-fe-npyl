@@ -102,19 +102,13 @@ const purchaseSchema = mandatorySchema.extend({
     variant: z.literal("PURCHASE"),
 });
 
-const DraftSchema = z
-    .object({
-        draft: z.literal(true),
-    })
-    .merge(EmptySchema);
-
 const NonDraftSchema = z.discriminatedUnion("variant", [
     basicSchema,
     basicExclusiveSchema,
     purchaseSchema,
 ]);
 
-const Schema = z.union([DraftSchema, NonDraftSchema]);
+const Schema = z.union([EmptySchema, NonDraftSchema]);
 
 export const getValues = (
     isCustomer: boolean,
@@ -123,6 +117,7 @@ export const getValues = (
     const {
         id,
         property: assignedProperty,
+        owner: assignedOwner,
         formData,
         variant,
         language,
@@ -146,10 +141,12 @@ export const getValues = (
     } = formData || {};
 
     const { id: propertyId } = assignedProperty || {};
+    const { id: ownerId } = assignedOwner || {};
 
     return {
         id,
         propertyId: propertyId || -1,
+        ownerId: ownerId || -1,
         // ...
         variant: isCustomer ? "BASIC_EXCLUSIVE" : variant?.key || "BASIC",
         language: language?.key || "GREEK",
@@ -212,8 +209,6 @@ export const getValues = (
             commisionerSignature: additional?.commisionerSignature || "",
             agentSignature: additional?.agentSignature || "",
         },
-
-        ownerId: owner?.id || -1,
 
         suggestedProperties: suggestedProperties,
 

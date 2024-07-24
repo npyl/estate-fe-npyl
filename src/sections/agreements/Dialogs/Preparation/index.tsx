@@ -72,10 +72,10 @@ const PreparationDialog: React.FC<Props> = ({
         values,
     });
 
-    const handleSubmit = async (d: Draft<IAgreementReq>) => {
-        console.log("HRE!");
+    // console.log("ERRORS: ", methods.formState.errors);
 
-        const cb = d.id ? updateAgreement : createAgreement;
+    const handleSubmit = async (d: Draft<IAgreementReq>) => {
+        const cb = !!editedAgreementId ? updateAgreement : createAgreement;
         await cb(d as IAgreementReq);
     };
 

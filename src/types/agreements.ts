@@ -76,7 +76,6 @@ export interface IAgreement {
     id: number;
     title: string;
     code: string;
-    // ...
     variant: KeyValue<IAgreementType>;
     language: KeyValue<PreferredLanguageType>;
     draft: boolean;
@@ -91,25 +90,18 @@ export interface IAgreement {
         id: number;
         code: string;
     };
+    owner: {
+        id: number;
+        name: string;
+    };
 
     // ... Form Data ...
     formData: IAgreementFormData;
 }
 
-// unused:
-// owner: {
-//     id: number;
-//     name: string;
-// };
-
 export interface IAgreementShort {
     id: number;
     code: string;
-    property: {
-        id: number;
-        code: string;
-    };
-    // ...
     variant: KeyValue<IAgreementType>;
     language: KeyValue<PreferredLanguageType>;
     draft: boolean;
@@ -120,12 +112,17 @@ export interface IAgreementShort {
     expirationDate: string;
     availableAfter: string;
 
+    property: {
+        id: number;
+        code: string;
+    };
     owner: {
         id: number;
         name: string;
     };
 }
 
+// Take parts from IAgreement and IAgreementFormData
 type IAgreementReqBase = Omit<IAgreementFormData, "owner"> &
     Omit<
         IAgreement,

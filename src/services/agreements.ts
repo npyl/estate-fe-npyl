@@ -49,18 +49,17 @@ export const agreements = createApi({
             invalidatesTags: ["Agreements"],
         }),
         updateAgreement: builder.mutation<number, IAgreementReq>({
-            query: (body) => ({
-                url: "",
+            query: ({ id, ...body }) => ({
+                url: `${id}`,
                 method: "PUT",
                 body,
             }),
             invalidatesTags: ["Agreements", "AgreementById"],
         }),
         deleteAgreement: builder.mutation<void, number>({
-            query: (body) => ({
-                url: "",
+            query: (id) => ({
+                url: `${id}`,
                 method: "DELETE",
-                body,
             }),
             invalidatesTags: ["Agreements", "AgreementById"],
         }),
