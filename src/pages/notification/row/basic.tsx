@@ -157,7 +157,7 @@ const BasicRow = ({
                                             contactDetails?.price}{" "}
                                         €
                                         {propertyDetails?.state?.key === "RENT"
-                                            ? "/month"
+                                            ? "/μήνα"
                                             : null}
                                     </Typography>
                                 </Box>

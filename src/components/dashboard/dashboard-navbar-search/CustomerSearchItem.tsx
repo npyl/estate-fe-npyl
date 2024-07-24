@@ -89,6 +89,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
             direction={"row"}
             alignItems={"center"}
             onClick={() => router.push(`/customer/${option.id}`)}
+            sx={{ height: "195px", width: "auto" }}
         >
             <Stack direction={"column"} flex={1} gap={2}>
                 <Stack direction={"row"} flex={1} gap={1} alignItems="center">

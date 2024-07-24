@@ -2,15 +2,20 @@ import { Popper, PopperProps, Stack, StackProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { alpha } from "@mui/system";
 import { bgBlur } from "src/utils/cssStyles";
+import { SearchCategory } from "./dashboard-navbar-search/types";
 
-export const StyledPopper = styled((props: PopperProps) => (
+interface StyledPopperProps extends PopperProps {
+    searchCategory: SearchCategory;
+}
+
+export const StyledPopper = styled((props: StyledPopperProps) => (
     <Popper {...props} />
-))<PopperProps>(({ theme }) => ({
-    position: `relative`,
-    top: `10px !important`,
+))<StyledPopperProps>(({ theme, searchCategory }) => ({
+    position: "relative",
+    top: "10px !important",
     boxShadow: theme.shadows[20],
     width: "40vw",
-    left: "-17px !important",
+    left: searchCategory === "all" ? "-107px !important" : "-50px !important",
 
     zIndex: 99999,
     [theme.breakpoints.down("sm")]: {

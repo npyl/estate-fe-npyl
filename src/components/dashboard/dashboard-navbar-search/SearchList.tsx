@@ -1,6 +1,14 @@
-import { Divider, Grid, Paper, PopperProps, Typography } from "@mui/material";
+import {
+    Divider,
+    Grid,
+    Paper,
+    PopperProps,
+    Stack,
+    Typography,
+    useMediaQuery,
+} from "@mui/material";
 import { StyledPopper } from "../styles";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
@@ -10,8 +18,27 @@ import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { useSearchCustomerQuery } from "@/services/customers";
 import { SearchCategory } from "./types";
+import { Theme } from "@mui/system/createTheme";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 25;
+//Custom hook to hold the screenWidth for the categoryView ALL
+const useScreenWidth = () => {
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    return screenWidth;
+};
 
 interface PropertiesSubListProps {
     searchString: string;
@@ -48,10 +75,10 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
             item
             xs={12}
             sx={{
-                borderRight: {
-                    lg: "1px solid blue",
-                    md: 0,
-                },
+                // borderRight: {
+                //     lg: "1px solid blue",
+                //     md: 0,
+                // },
                 marginY: "10px",
             }}
         >
@@ -78,6 +105,8 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
     );
 };
 
+export default useScreenWidth;
+
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchText: string;
     searchCategory: SearchCategory;
@@ -92,7 +121,9 @@ export const SearchList = ({
     anchorEl,
 }: SearchListProps) => {
     const { t } = useTranslation();
-
+    const isMobile = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down("sm")
+    );
     const ref = useRef<HTMLDivElement>(null);
 
     useClickOutside(ref, () => {
@@ -107,65 +138,65 @@ export const SearchList = ({
         () => (searchCategory !== "properties" ? customersResults || [] : []),
         [searchCategory, customersResults]
     );
+    const screenWidth = useScreenWidth();
+
+    const paperWidth = useMemo(() => {
+        if (screenWidth > 1400 && screenWidth <= 1600) return "192%";
+        if (screenWidth > 1600 && screenWidth <= 2100) return "154%";
+        if (screenWidth > 2100) return "145%";
+        return "100%";
+    }, [screenWidth]);
 
     return (
         <div ref={ref}>
             <StyledPopper
                 open={open}
                 anchorEl={anchorEl}
-                placement="bottom-start"
+                style={{ position: "absolute", left: 10 }}
+                searchCategory={searchCategory}
+                placement={
+                    isMobile
+                        ? "top"
+                        : searchCategory === "all"
+                        ? "top"
+                        : "bottom-start"
+                }
             >
                 <Paper
                     sx={{
-                        maxHeight: "90vh",
-                        width: "100%",
+                        maxHeight: "85vh",
+                        width: isMobile
+                            ? "130%"
+                            : searchCategory === "properties"
+                            ? "100%"
+                            : searchCategory === "customers"
+                            ? "100%"
+                            : paperWidth,
                         overflowX: "hidden",
                     }}
                 >
-                    <ScrollBox scrollbarWidth="15px">
-                        <Grid container>
-                            {searchCategory === "properties" && (
-                                <PropertiesSubList searchString={searchText} />
-                            )}
+                    {/* <ScrollBox scrollbarWidth="15px"> */}
+                    <Grid container>
+                        {searchCategory === "properties" && (
+                            <PropertiesSubList searchString={searchText} />
+                        )}
 
-                            {searchCategory === "all" && (
-                                <>
+                        {searchCategory === "all" && (
+                            <Stack direction={isMobile ? "column" : "row"}>
+                                <Grid item xs={12} md={7.5}>
                                     <PropertiesSubList
                                         searchString={searchText}
                                     />
-                                    {customers.length > 0 && (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            sx={{
-                                                marginY: "10px",
-                                            }}
-                                        >
-                                            <Typography
-                                                variant="h6"
-                                                textAlign={"center"}
-                                            >
-                                                {t("Customers")}
-                                            </Typography>
-                                            {customers.map((option, index) => (
-                                                <CustomerSearchItem
-                                                    key={index}
-                                                    option={option}
-                                                    searchText={searchText}
-                                                />
-                                            ))}
-                                        </Grid>
-                                    )}
-                                </>
-                            )}
-
-                            {searchCategory === "customers" &&
-                                customers.length > 0 && (
+                                </Grid>
+                                {customers.length > 0 && (
                                     <Grid
                                         item
                                         xs={12}
+                                        md={5.5}
                                         sx={{
                                             marginY: "10px",
+
+                                            borderLeft: "1px solid grey",
                                         }}
                                     >
                                         <Typography
@@ -183,8 +214,35 @@ export const SearchList = ({
                                         ))}
                                     </Grid>
                                 )}
-                        </Grid>
-                    </ScrollBox>
+                            </Stack>
+                        )}
+
+                        {searchCategory === "customers" &&
+                            customers.length > 0 && (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sx={{
+                                        marginY: "10px",
+                                    }}
+                                >
+                                    <Typography
+                                        variant="h6"
+                                        textAlign={"center"}
+                                    >
+                                        {t("Customers")}
+                                    </Typography>
+                                    {customers.map((option, index) => (
+                                        <CustomerSearchItem
+                                            key={index}
+                                            option={option}
+                                            searchText={searchText}
+                                        />
+                                    ))}
+                                </Grid>
+                            )}
+                    </Grid>
+                    {/* </ScrollBox> */}
                 </Paper>
             </StyledPopper>
         </div>
