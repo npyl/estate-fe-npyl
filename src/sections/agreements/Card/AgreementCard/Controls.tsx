@@ -4,7 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import DownloadIcon from "@mui/icons-material/Download";
-import { IAgreement } from "@/types/agreements";
+import { IAgreement, IAgreementShort } from "@/types/agreements";
 import React, { useMemo, useState, MouseEvent } from "react";
 import { flattenObject } from "../../Dialogs/PDFEditor/util";
 import { useGeneratePDF } from "../../Dialogs/_shared/hook";
@@ -16,7 +16,7 @@ const SharePopover = dynamic(() => import("@/components/Share"));
 // ------------------------------------------------------------
 
 interface CustomButtonProps {
-    agreement: IAgreement;
+    agreement: IAgreementShort;
 }
 
 // TODO: share
@@ -49,31 +49,37 @@ const ShareButton: React.FC<CustomButtonProps> = ({ agreement }) => {
 };
 
 const ExportButton: React.FC<CustomButtonProps> = ({ agreement }) => {
-    const { variant, lang, title } = agreement;
-    const inputs = useMemo(() => [flattenObject(agreement)], [agreement]);
+    return <>TODO</>;
 
-    const { generatePDF, isGenerating } = useGeneratePDF(variant, lang, inputs);
+    // const { variant, language, title } = agreement;
+    // const inputs = useMemo(() => [flattenObject(agreement)], [agreement]);
 
-    const handleGenerate = async () => {
-        const pdf = await generatePDF();
-        if (!pdf) return;
+    // const { generatePDF, isGenerating } = useGeneratePDF(
+    //     variant,
+    //     language,
+    //     inputs
+    // );
 
-        const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+    // const handleGenerate = async () => {
+    //     const pdf = await generatePDF();
+    //     if (!pdf) return;
 
-        downloadBlob(blob, `${title}.pdf`);
-    };
+    //     const blob = new Blob([pdf.buffer], { type: "application/pdf" });
 
-    return (
-        <LoadingIconButton loading={isGenerating} onClick={handleGenerate}>
-            <DownloadIcon />
-        </LoadingIconButton>
-    );
+    //     downloadBlob(blob, `${title}.pdf`);
+    // };
+
+    // return (
+    //     <LoadingIconButton loading={isGenerating} onClick={handleGenerate}>
+    //         <DownloadIcon />
+    //     </LoadingIconButton>
+    // );
 };
 
 // ------------------------------------------------------------
 
 interface ControlsProps {
-    agreement: IAgreement;
+    agreement: IAgreementShort;
     onEdit: VoidFunction;
     onDelete: VoidFunction;
 }

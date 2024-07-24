@@ -1,4 +1,4 @@
-import { IAgreement } from "@/types/agreements";
+import { IAgreementShort } from "@/types/agreements";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -12,14 +12,14 @@ import { CardLabel, DraftLabel } from "./Labels";
 // ------------------------------------------------------------
 
 interface Props {
-    a: IAgreement;
+    a: IAgreementShort;
     onEdit: (id: number) => void;
     onDelete: (id: number) => void;
 }
 
 const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
     <Card>
-        <CardImage variant={a.variant} />
+        <CardImage variant={a.variant.key} />
 
         <Stack spacing={1} height={1}>
             <Stack
@@ -28,7 +28,7 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
                 alignItems="center"
                 justifyContent="flex-end"
             >
-                <CardLabel variant={a.variant} />
+                <CardLabel variant={a.variant.key} />
                 {a.draft ? <DraftLabel /> : null}
             </Stack>
 
@@ -38,8 +38,8 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
                 </Typography>
 
                 <PropertyDetails
-                    propertyId={a.assignedProperty.id}
-                    code={a.assignedProperty.code}
+                    propertyId={a.property.id}
+                    code={a.property.code}
                 />
             </Stack>
 

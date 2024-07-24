@@ -18,7 +18,7 @@ const mandatorySchema = baseSchema.extend({
     propertyId: z.number().gt(0, "Please make sure to select a property!"),
     ownerId: z.number().gt(0, "Please make sure to select a property!"),
 
-    lang: z.enum(["en", "el"]),
+    language: z.enum(["ENGLISH", "GREEK"]),
     draft: z.literal(false),
     keys: z.boolean(),
     signed: z.boolean(),
@@ -122,15 +122,19 @@ export const getValues = (
 ): IAgreementReq => {
     const {
         id,
-        assignedProperty,
+        property: assignedProperty,
+        formData,
         variant,
-        lang,
+        language,
         draft,
         keys,
         title,
         startingDate,
         expirationDate,
         availableAfter,
+    } = agreement || {};
+
+    const {
         gdpr,
         manager,
         company,
@@ -139,7 +143,7 @@ export const getValues = (
         owner,
         property,
         suggestedProperties,
-    } = agreement || {};
+    } = formData || {};
 
     const { id: propertyId } = assignedProperty || {};
 
@@ -147,8 +151,8 @@ export const getValues = (
         id,
         propertyId: propertyId || -1,
         // ...
-        variant: isCustomer ? "BASIC_EXCLUSIVE" : variant || "BASIC",
-        lang: lang || "el",
+        variant: isCustomer ? "BASIC_EXCLUSIVE" : variant?.key || "BASIC",
+        language: language?.key || "GREEK",
         draft: draft || false,
         keys: keys || false,
         title: title || "",

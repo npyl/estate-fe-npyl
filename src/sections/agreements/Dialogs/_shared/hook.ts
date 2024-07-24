@@ -1,12 +1,12 @@
 import { IAgreementType } from "@/types/agreements";
-import { TLanguageType } from "@/types/translation";
 import { loadPdf, NestedObject } from "../PDFEditor/util";
 import { useState } from "react";
 import { generate } from "@pdfme/generator";
+import { PreferredLanguageType } from "@/types/enums";
 
 const useGeneratePDF = (
     variant: IAgreementType,
-    lang: TLanguageType,
+    lang: PreferredLanguageType,
     inputs: NestedObject[]
 ) => {
     const [isGenerating, setGenerating] = useState(false);

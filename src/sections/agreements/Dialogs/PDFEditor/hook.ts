@@ -8,12 +8,12 @@ import { getTRIGGER_OPTIONS } from "./constants/trigger";
 const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
     const { watch, setValue } = useFormContext();
     const all = watch() as IAgreementReq;
-    const { variant, lang } = all;
+    const { variant, language } = all;
 
     const form = useRef<Form | null>(null);
 
     useEffect(() => {
-        loadPdf(variant, lang).then((template) => {
+        loadPdf(variant, language).then((template) => {
             if (formRef.current && form.current === null && !!template) {
                 import("@pdfme/ui").then(({ Form }) => {
                     const inputs = [flattenObject(all)];

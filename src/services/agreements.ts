@@ -2,6 +2,7 @@ import {
     IAgreement,
     IAgreementReq,
     IAgreementsFilters,
+    IAgreementShort,
 } from "@/types/agreements";
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -22,7 +23,10 @@ export const agreements = createApi({
     tagTypes: ["Agreements", "AgreementById"],
 
     endpoints: (builder) => ({
-        filterAgreements: builder.query<IPage<IAgreement>, IAgreementsFilters>({
+        filterAgreements: builder.query<
+            IPage<IAgreementShort>,
+            IAgreementsFilters
+        >({
             query: (body) => ({
                 url: "/filter",
                 method: "POST",

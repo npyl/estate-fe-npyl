@@ -15,10 +15,14 @@ const ExportButton = () => {
     } = useFormContext();
 
     const all = watch() as IAgreementReq;
-    const { variant, lang, title } = all;
+    const { variant, language, title } = all;
     const inputs = [flattenObject(all)];
 
-    const { generatePDF, isGenerating } = useGeneratePDF(variant, lang, inputs);
+    const { generatePDF, isGenerating } = useGeneratePDF(
+        variant,
+        language,
+        inputs
+    );
 
     const handleGenerate = async () => {
         const pdf = await generatePDF();

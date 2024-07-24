@@ -1,4 +1,5 @@
-import { TLanguageType } from "./translation";
+import { PreferredLanguageType } from "./enums";
+import { KeyValue } from "./KeyValue";
 
 export type IAgreementType = "BASIC" | "BASIC_EXCLUSIVE" | "PURCHASE";
 
@@ -18,23 +19,7 @@ interface IAgreementOwner {
     actingOnMyBehalf: string;
 }
 
-export interface IAgreement {
-    id: number;
-    code: string;
-    assignedProperty: {
-        id: number;
-        code: string;
-    };
-    // ...
-    variant: IAgreementType;
-    lang: TLanguageType;
-    draft: boolean;
-    keys: boolean;
-    title: string;
-    startingDate: string;
-    expirationDate: string;
-    availableAfter: string;
-    // ... Form Data ...
+interface IAgreementFormData {
     manager: {
         fullName: string;
         title: string;
@@ -87,17 +72,80 @@ export interface IAgreement {
     }[];
 }
 
-export interface IAgreementReq
-    extends Omit<IAgreement, "id" | "assignedProperty" | "code" | "owner"> {
+export interface IAgreement {
+    id: number;
+    title: string;
+    code: string;
+    // ...
+    variant: KeyValue<IAgreementType>;
+    language: KeyValue<PreferredLanguageType>;
+    draft: boolean;
+    keys: boolean;
+    signed: boolean;
+
+    startingDate: string;
+    expirationDate: string;
+    availableAfter: string;
+
+    property: {
+        id: number;
+        code: string;
+    };
+
+    // ... Form Data ...
+    formData: IAgreementFormData;
+}
+
+// unused:
+// owner: {
+//     id: number;
+//     name: string;
+// };
+
+export interface IAgreementShort {
+    id: number;
+    code: string;
+    property: {
+        id: number;
+        code: string;
+    };
+    // ...
+    variant: KeyValue<IAgreementType>;
+    language: KeyValue<PreferredLanguageType>;
+    draft: boolean;
+    keys: boolean;
+    title: string;
+
+    startingDate: string;
+    expirationDate: string;
+    availableAfter: string;
+
+    owner: {
+        id: number;
+        name: string;
+    };
+}
+
+type IAgreementReqBase = Omit<IAgreementFormData, "owner"> &
+    Omit<
+        IAgreement,
+        | "id"
+        | "property"
+        | "code"
+        | "owner"
+        | "variant"
+        | "language"
+        | "formData"
+    >;
+
+export interface IAgreementReq extends IAgreementReqBase {
     id?: number;
     propertyId: number;
     ownerId: number;
 
     owner: Omit<IAgreementOwner, "id">;
-
-    // NOTE: BE requires this
-    // true when there is commisionerSignature *AND* agentSignature
-    signed: boolean;
+    variant: IAgreementType;
+    language: PreferredLanguageType;
 }
 
 export interface IAgreementPDFReq {

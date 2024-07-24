@@ -3,7 +3,6 @@
 // The result is a flat structure where complex nested data is represented by keys like "parent.child.grandchild",
 
 import { IAgreementType } from "@/types/agreements";
-import { TLanguageType } from "@/types/translation";
 import { Template } from "@pdfme/common";
 import {
     BasicEn,
@@ -13,6 +12,7 @@ import {
     BasicExclusiveEl,
     PurchaseEl,
 } from "./constants";
+import { PreferredLanguageType } from "@/types/enums";
 
 export interface NestedObject {
     [key: string]: any;
@@ -57,14 +57,17 @@ const getSchemaEl = (variant: IAgreementType) =>
 
 const getSampleTemplate = (
     variant: IAgreementType,
-    lang: TLanguageType,
+    lang: PreferredLanguageType,
     basePdf: any
 ): Template => ({
-    schemas: lang === "en" ? getSchemaEn(variant) : getSchemaEl(variant),
+    schemas: lang === "ENGLISH" ? getSchemaEn(variant) : getSchemaEl(variant),
     basePdf,
 });
 
-const loadPdf = async (variant: IAgreementType, lang: TLanguageType) => {
+const loadPdf = async (
+    variant: IAgreementType,
+    lang: PreferredLanguageType
+) => {
     try {
         const res = await fetch("/api/pdf", {
             method: "POST",

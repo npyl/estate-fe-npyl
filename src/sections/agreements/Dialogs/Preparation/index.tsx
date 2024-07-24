@@ -10,10 +10,8 @@ import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
 import useDialog from "@/hooks/useDialog";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import Schema, { getValues } from "./schema";
-import { LanguageButton } from "@/components/Language/LanguageButton";
-import { TLanguageType } from "@/types/translation";
 import {
     useCreateAgreementMutation,
     useGetAgreementByIdQuery,
@@ -27,6 +25,7 @@ import {
     SubmitButton,
 } from "./Buttons";
 import { usePathname } from "next/navigation";
+import RHFLanguageButton from "./Buttons/LanguageButton";
 const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
@@ -73,15 +72,6 @@ const PreparationDialog: React.FC<Props> = ({
         values,
     });
 
-    console.log("ERRORS: ", methods.formState.errors);
-
-    const lang = (methods.watch("lang") as TLanguageType) || "el";
-
-    const setLang = useCallback(
-        (l: TLanguageType) => methods.setValue("lang", l),
-        []
-    );
-
     const handleSubmit = async (d: Draft<IAgreementReq>) => {
         console.log("HRE!");
 
@@ -104,11 +94,7 @@ const PreparationDialog: React.FC<Props> = ({
                             <Stack direction="row" spacing={1}>
                                 {!isCustomer ? <ButtonGroup /> : null}
 
-                                <LanguageButton
-                                    updatesGlobalLanguage={false}
-                                    language={lang}
-                                    onLanguageChange={setLang}
-                                />
+                                <RHFLanguageButton />
 
                                 <EditPDFButton onClick={openPDF} />
                             </Stack>
