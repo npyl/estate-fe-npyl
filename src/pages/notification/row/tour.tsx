@@ -1,22 +1,9 @@
-import {
-    Box,
-    Collapse,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography,
-} from "@mui/material";
 import { Fragment } from "react";
-import Link from "next/link";
 
 import { useTranslation } from "react-i18next";
 import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
-import BasicRow, { getDate } from "./basic";
-import { CodeBadge } from "../components/CodeBadge";
-import { useGetPropertyByCodeQuery } from "@/services/properties";
+import BasicRow from "./basic";
 type TourType = "inPerson" | "inVideo";
 
 const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
@@ -36,7 +23,7 @@ function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
     console.log("filter: ", filter);
 
     // const [getAllProperties ] =
-    const { data: property } = useGetPropertyByCodeQuery(row.propertyCode);
+    // const { data: property } = useGetPropertyByCodeQuery(row.propertyCode);
 
     return (
         <Fragment>
@@ -49,7 +36,7 @@ function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
                 onRemove={onRemove}
                 loading={loading}
                 onClick={onClick}
-                propertyDetails={property}
+                // propertyDetails={property}
             />
         </Fragment>
     );

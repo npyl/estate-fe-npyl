@@ -32,8 +32,7 @@ const NotificationDetailPage: NextPage = () => {
     const { data, isLoading, error } = useGetNotificationByIdQuery(
         Number(rowId)
     );
-    const propertyCode = data?.propertyCode;
-    const [trigger, { data: property }] = useLazyGetPropertyByCodeQuery();
+
     const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
         skip: !rowId && !open,
         selectFromResult: ({ data, isLoading }) => ({
@@ -50,15 +49,16 @@ const NotificationDetailPage: NextPage = () => {
     });
 
     // Lazy triggering the getProperty to get rid of the fetch error .
-    useEffect(() => {
-        if (propertyCode) {
-            trigger(propertyCode);
-        }
-    }, [propertyCode, trigger]);
+    // useEffect(() => {
+    //     if (propertyCode) {
+    //         trigger(propertyCode);
+    //     }
+    // }, [propertyCode, trigger]);
 
     if (error || !data) {
         return <Typography>Error loading notification</Typography>;
     }
+    const property = data?.property;
 
     const handlePropertyCodeClick = () => {
         if (property) {
@@ -203,11 +203,7 @@ const NotificationDetailPage: NextPage = () => {
                     {workForUs ? null : (
                         <CardMedia
                             component="img"
-                            image={
-                                property?.propertyImage.url ||
-                                listing?.photo ||
-                                ""
-                            }
+                            image={property?.thumbnail || listing?.photo || ""}
                             alt=""
                             sx={{ width: "250px", maxHeight: "180px", p: 1 }}
                         />
@@ -258,11 +254,11 @@ const NotificationDetailPage: NextPage = () => {
                             justifyContent="space-between"
                             width="100%"
                         >
-                            {property ? (
+                            {/* {property ? (
                                 <Typography variant="h6">
-                                    {property?.descriptions.el.title}
+                                    {data?.descriptions.el.title}
                                 </Typography>
-                            ) : null}
+                            ) : null} */}
 
                             {listing ? (
                                 <Typography variant="h6">
@@ -278,9 +274,9 @@ const NotificationDetailPage: NextPage = () => {
                                     €/μήνα
                                 </Typography>
                                 <Typography variant="body2">
-                                    {property?.location.city} (
-                                    {property?.location.street}{" "}
-                                    {property?.location.number})
+                                    {property?.regionGR}, {property?.cityGR}
+                                    {", "}
+                                    {property?.street} {property?.number}
                                 </Typography>
                             </>
                         ) : null}
@@ -293,9 +289,10 @@ const NotificationDetailPage: NextPage = () => {
                                 </Typography>
                                 <Typography variant="body2">
                                     {listing?.location?.region},{" "}
-                                    {listing?.location.city} (
+                                    {listing?.location.city}
+                                    {", "}
                                     {listing?.location.street}{" "}
-                                    {listing?.location.number})
+                                    {listing?.location.number}
                                 </Typography>
                             </>
                         ) : null}
@@ -310,9 +307,14 @@ const NotificationDetailPage: NextPage = () => {
                                     />
 
                                     <NormalBadge
-                                        name={`${property?.code}`}
+                                        name={`${t("Code")}: ${
+                                            property?.code || ""
+                                        }`}
                                         color="#ffcc00"
-                                        sx={{ width: "50%", color: "#854D0E" }}
+                                        sx={{
+                                            width: "100%",
+                                            color: "#854D0E",
+                                        }}
                                     />
                                 </>
                             ) : null}

@@ -57,7 +57,6 @@ function ReviewRow({
                 filter={filter}
                 loading={loading}
                 onClick={onClick}
-                propertyDetails={property}
             />
             <TableRow>
                 <TableCell

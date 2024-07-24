@@ -28,9 +28,29 @@ interface IPropertyLocation {
     city: string;
     region: string;
 }
+
+export interface IPropertyForNotification {
+    id: number;
+    code: string;
+    category: KeyValue;
+    state: KeyValue;
+    area: number;
+    price: number;
+    thumbnail: string;
+    regionEN: string;
+    regionGR: string;
+    complexEN: string;
+    complexGR: string;
+    cityEN: string;
+    cityGR: string;
+    country: string;
+    street: string;
+    number: string;
+}
+
 export interface ContactNotification {
     id?: number;
-    propertyId: number;
+    // propertyId: number;
     propertyImage: IPropertyImage;
     location: IPropertyLocation;
     customerName: string;
@@ -44,6 +64,7 @@ export interface ContactNotification {
     notificationDate: string;
     viewed: boolean;
     notificationType: NotificationType;
+    property?: IPropertyForNotification;
 }
 
 export interface INotificationResponse {

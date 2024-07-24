@@ -1,6 +1,5 @@
 import {
     Box,
-    IconButton,
     MenuItem,
     Select,
     SelectChangeEvent,
@@ -10,25 +9,22 @@ import {
     Typography,
 } from "@mui/material";
 import { ContactNotification, IWorkForUs } from "src/types/notification";
-import Iconify from "src/components/iconify";
 import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
 import Link from "next/link";
-import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
-import { ArrowDropDown, ArrowDropUp, LocalPhone } from "@mui/icons-material";
+import { LocalPhone } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
-import { IProperties } from "@/types/properties";
 import { useRouter } from "next/router";
 import {
     format,
     isToday,
     isYesterday,
     isThisWeek,
-    formatDistanceToNow,
     differenceInDays,
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { t } from "i18next";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
 export const getDate = (s?: string) => {
     if (!s) return "";
@@ -62,7 +58,6 @@ interface BasicRowProps {
     onClick: () => void;
     loading: boolean;
     filter: any;
-    propertyDetails?: IProperties;
     contactDetails?: ListingNotification;
     workDetails?: IWorkForUs;
 }
@@ -70,13 +65,7 @@ interface BasicRowProps {
 const BasicRow = ({
     variant = "dontShowType",
     row,
-    open,
-    onToggle,
     filter,
-    onRemove,
-    onClick,
-    loading,
-    propertyDetails,
     contactDetails,
     workDetails,
 }: BasicRowProps) => {
@@ -108,6 +97,7 @@ const BasicRow = ({
         event.stopPropagation(); // Prevent row click event
     };
 
+    const propertyDetails = row?.property;
     return (
         <TableRow
             sx={{
@@ -128,11 +118,11 @@ const BasicRow = ({
                     spacing={2}
                     width="100%"
                 >
-                    {propertyDetails || contactDetails ? (
+                    {propertyDetails?.thumbnail || contactDetails ? (
                         <Box>
                             <img
                                 src={
-                                    propertyDetails?.propertyImage?.url ||
+                                    propertyDetails?.thumbnail ||
                                     contactDetails?.photo ||
                                     ""
                                 }
@@ -185,17 +175,15 @@ const BasicRow = ({
                                     >
                                         <Typography variant="body2">
                                             {" "}
-                                            {propertyDetails?.location
-                                                ?.complex ||
+                                            {propertyDetails?.complexGR ||
                                                 contactDetails?.location
-                                                    ?.complex}{" "}
-                                            (
-                                            {propertyDetails?.location?.city ||
+                                                    ?.complex}
+                                            {", "}
+                                            {propertyDetails?.cityGR ||
                                                 contactDetails?.location?.city}
-                                            )
                                         </Typography>
 
-                                        {row.propertyCode ? (
+                                        {propertyDetails ? (
                                             <Stack ml={1.5}>
                                                 <Link
                                                     href={`/property/${propertyDetails?.id}`}
@@ -223,10 +211,15 @@ const BasicRow = ({
                                     </Stack>
                                 </Box>
                             ) : (
-                                <Box>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mt={0.5}
+                                >
+                                    <LocationOnOutlinedIcon fontSize="small" />{" "}
                                     {workDetails?.workRegion ? (
                                         <Typography>
-                                            Location:{" "}
                                             {workDetails?.workRegion?.nameGR}
                                         </Typography>
                                     ) : null}
