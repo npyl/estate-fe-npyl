@@ -5,12 +5,18 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import { useAgreementsFiltersContext } from "../FiltersContext";
+import { IAgreementType } from "@/types/agreements";
 
-const key = "variant";
+const key = "variants";
 
-const OPTIONS = [
-    { key: "basic", label: "Basic" },
-    { key: "purchase", label: "Purchase" },
+interface Option {
+    key: IAgreementType;
+    label: string;
+}
+
+const OPTIONS: Option[] = [
+    { key: "BASIC", label: "Basic" },
+    { key: "PURCHASE", label: "Purchase" },
 ];
 
 export default function FilterType() {
@@ -18,7 +24,7 @@ export default function FilterType() {
     const { filters, setFilter, clearFilter } = useAgreementsFiltersContext();
 
     const handleChange = (e: SelectChangeEvent<any>) =>
-        e.target.value === ""
+        e.target.value.includes("")
             ? clearFilter(key)
             : setFilter(key, e.target.value);
 
