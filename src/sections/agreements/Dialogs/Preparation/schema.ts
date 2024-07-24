@@ -11,6 +11,10 @@ const FullSchema = yup.object<IAgreementReq>().shape({
         .number()
         .moreThan(0, "Please make sure to select a property!")
         .required("Please make sure to select a property!"),
+    ownerId: yup
+        .number()
+        .moreThan(0, "Please make sure to select a property!")
+        .required("Please make sure to select a property!"),
 
     variant: yup
         .string()
@@ -19,13 +23,14 @@ const FullSchema = yup.object<IAgreementReq>().shape({
     lang: yup.string().oneOf<TLanguageType>(["en", "el"]).required(),
     draft: yup.boolean().required(),
     keys: yup.boolean().required(),
+    signed: yup.boolean().required(),
     title: yup.string().required(),
     startingDate: yup.string().required(),
     expirationDate: yup.string().required(),
     availableAfter: yup.string().required(),
     // ...
     manager: yup.object({
-        fullname: yup.string().required(),
+        fullName: yup.string().required(),
         title: yup.string().required(),
         vat: yup.string().required(),
         taxOffice: yup.string().required(),
@@ -38,10 +43,10 @@ const FullSchema = yup.object<IAgreementReq>().shape({
         email: yup.string().required(),
     }),
     owner: yup.object({
-        fullname: yup.string().required(),
+        fullName: yup.string().required(),
         email: yup.string().required(),
         maidenName: yup.string().required(),
-        idCardNo: yup.string().required(),
+        idCardNumber: yup.string().required(),
         mobilePhone: yup.string().required(),
         vat: yup.string().required(),
         // ...
@@ -49,23 +54,23 @@ const FullSchema = yup.object<IAgreementReq>().shape({
         street: yup.string().required(),
         number: yup.string().required(),
         // ...
-        actingOnMyBehalfFiller: yup.string().required(),
+        actingOnMyBehalf: yup.string().required(),
     }),
     property: yup.object({
         region: yup.string().required(),
         address: yup.string().required(),
-        addressNo: yup.string().required(),
+        addressNumber: yup.string().required(),
         type: yup.string().required(),
-        floor: yup.number().required(),
-        livingSpace: yup.number().required(),
+        floor: yup.string().required(),
+        livingSpace: yup.string().required(),
         description: yup.string().required(),
-        price: yup.number().required(),
+        price: yup.string().required(),
     }),
     commissionAndDuration: yup.object({
-        payment: yup.number().required(),
-        flatRate: yup.number().required(),
-        percentage: yup.number().required(),
-        months: yup.number().required(),
+        payment: yup.string().required(),
+        flatRate: yup.string().required(),
+        percentage: yup.string().required(),
+        months: yup.string().required(),
         defects: yup.string().required(),
     }),
     gdpr: yup
@@ -87,7 +92,10 @@ const Schema = yup.object<IAgreementReq>().when("draft", {
     otherwise: () => FullSchema,
 });
 
-export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
+export const getValues = (
+    isCustomer: boolean,
+    agreement?: IAgreement
+): IAgreementReq => {
     const {
         id,
         assignedProperty,
@@ -106,6 +114,7 @@ export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
         additional,
         owner,
         property,
+        suggestedProperties,
     } = agreement || {};
 
     const { id: propertyId } = assignedProperty || {};
@@ -126,7 +135,7 @@ export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
         availableAfter: availableAfter || dayjs().toISOString(),
         // ...
         manager: {
-            fullname: manager?.fullname || "",
+            fullName: manager?.fullName || "",
             title: manager?.title || "",
             vat: manager?.vat || "",
             taxOffice: manager?.taxOffice || "",
@@ -139,10 +148,10 @@ export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
             email: company?.email || "",
         },
         owner: {
-            fullname: owner?.fullname || "",
+            fullName: owner?.fullName || "",
             email: owner?.email || "",
             maidenName: owner?.maidenName || "",
-            idCardNo: owner?.idCardNo || "",
+            idCardNumber: owner?.idCardNumber || "",
             mobilePhone: owner?.mobilePhone || "",
             vat: owner?.vat || "",
             // ...
@@ -150,23 +159,23 @@ export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
             street: owner?.street || "",
             number: owner?.number || "",
             // ...
-            actingOnMyBehalfFiller: owner?.actingOnMyBehalfFiller || "",
+            actingOnMyBehalf: owner?.actingOnMyBehalf || "",
         },
         property: {
             region: property?.region || "",
             address: property?.address || "",
-            addressNo: property?.addressNo || "",
+            addressNumber: property?.addressNumber || "",
             type: property?.type || "",
-            floor: property?.floor || 0,
-            livingSpace: property?.livingSpace || 0,
+            floor: property?.floor || "",
+            livingSpace: property?.livingSpace || "",
             description: property?.description || "",
-            price: property?.price || 0,
+            price: property?.price || "",
         },
         commissionAndDuration: {
-            payment: commissionAndDuration?.payment || 0,
-            flatRate: commissionAndDuration?.flatRate || 0,
-            percentage: commissionAndDuration?.percentage || 0,
-            months: commissionAndDuration?.months || 0,
+            payment: commissionAndDuration?.payment || "",
+            flatRate: commissionAndDuration?.flatRate || "",
+            percentage: commissionAndDuration?.percentage || "",
+            months: commissionAndDuration?.months || "",
             defects: commissionAndDuration?.defects || "",
         },
         gdpr,
@@ -175,6 +184,14 @@ export const getValues = (isCustomer: boolean, agreement?: IAgreement) => {
             commisionerSignature: additional?.commisionerSignature || "",
             agentSignature: additional?.agentSignature || "",
         },
+
+        onwerId: owner?.id || -1,
+
+        suggestedProperties: suggestedProperties,
+
+        signed:
+            !!additional?.commisionerSignature &&
+            !!additional.commisionerSignature,
     };
 };
 

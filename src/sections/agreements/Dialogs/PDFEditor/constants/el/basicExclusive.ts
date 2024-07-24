@@ -1,6 +1,6 @@
 const BasicExclusive = [
     {
-        "owner.fullname": {
+        "owner.fullName": {
             type: "text",
             content: "\n",
             position: { x: 37.58, y: 60.85 },
@@ -51,7 +51,7 @@ const BasicExclusive = [
             opacity: 1,
             fontName: "Roboto",
         },
-        "owner.idCardNo": {
+        "owner.idCardNumber": {
             type: "text",
             content: "\n",
             position: { x: 70.49, y: 68.89 },
@@ -153,7 +153,7 @@ const BasicExclusive = [
             opacity: 1,
             fontName: "Roboto",
         },
-        "owner.actingOnMyBehalfFiller": {
+        "owner.actingOnMyBehalf": {
             type: "text",
             content: "\n",
             position: { x: 65.57, y: 84.61 },
@@ -204,7 +204,7 @@ const BasicExclusive = [
             opacity: 1,
             fontName: "Roboto",
         },
-        "property.addressNo": {
+        "property.addressNumber": {
             type: "text",
             content: "\n",
             position: { x: 190.9433728, y: 111.12 },

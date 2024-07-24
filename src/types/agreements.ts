@@ -2,8 +2,25 @@ import { TLanguageType } from "./translation";
 
 export type IAgreementType = "basic" | "basic_exclusive" | "purchase";
 
+interface IAgreementOwner {
+    id: number;
+    fullName: string;
+    email: string;
+    maidenName: string;
+    idCardNumber: string;
+    mobilePhone: string;
+    vat: string;
+    // ...
+    city: string;
+    street: string;
+    number: string;
+    // ...
+    actingOnMyBehalf: string;
+}
+
 export interface IAgreement {
     id: number;
+    code: string;
     assignedProperty: {
         id: number;
         code: string;
@@ -19,7 +36,7 @@ export interface IAgreement {
     availableAfter: string;
     // ... Form Data ...
     manager: {
-        fullname: string;
+        fullName: string;
         title: string;
         vat: string;
         taxOffice: string;
@@ -31,38 +48,26 @@ export interface IAgreement {
         mobilePhone: string;
         email: string;
     };
-    owner: {
-        fullname: string;
-        email: string;
-        maidenName: string;
-        idCardNo: string;
-        mobilePhone: string;
-        vat: string;
-        // ...
-        city: string;
-        street: string;
-        number: string;
-        // ...
-        actingOnMyBehalfFiller: string;
-    };
+    owner: IAgreementOwner;
     property: {
         region: string;
         address: string;
-        addressNo: string;
+        addressNumber: string;
         type: string;
-        floor: number;
-        livingSpace: number;
+        floor: string;
+        livingSpace: string;
         description: string;
-        price: number;
+        price: string;
     };
     commissionAndDuration: {
-        payment: number;
-        flatRate: number;
-        percentage: number;
-        months: number;
+        payment: string;
+        flatRate: string;
+        percentage: string;
+        months: string;
         defects: string;
     };
     gdpr?: {
+        // TODO: this
         email?: string;
         address?: string;
     };
@@ -71,12 +76,28 @@ export interface IAgreement {
         commisionerSignature: string;
         agentSignature: string;
     };
+
+    suggestedProperties?: {
+        area: string;
+        address: string;
+        type: string;
+        livingSpace: string;
+        price: string;
+        fee: string;
+    }[];
 }
 
 export interface IAgreementReq
-    extends Omit<IAgreement, "id" | "assignedProperty"> {
+    extends Omit<IAgreement, "id" | "assignedProperty" | "code" | "owner"> {
     id?: number;
     propertyId: number;
+    onwerId: number;
+
+    owner: Omit<IAgreementOwner, "id">;
+
+    // NOTE: BE requires this
+    // true when there is commisionerSignature *AND* agentSignature
+    signed: boolean;
 }
 
 export interface IAgreementPDFReq {

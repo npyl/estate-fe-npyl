@@ -6,13 +6,10 @@ import {
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// ${process.env.NEXT_PUBLIC_API_URL}
-const baseUrl = "/api";
-
 export const agreements = createApi({
     reducerPath: "agreements",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${baseUrl}/agreements`,
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/agreements`,
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",

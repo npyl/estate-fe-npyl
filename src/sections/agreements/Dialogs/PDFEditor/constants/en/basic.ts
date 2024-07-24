@@ -1,6 +1,6 @@
 const BasicSchema = [
     {
-        "owner.fullname": {
+        "owner.fullName": {
             type: "text",
 
             defaultValue: "\n",
@@ -60,7 +60,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "owner.idCardNo": {
+        "owner.idCardNumber": {
             type: "text",
 
             defaultValue: "\n",
@@ -160,7 +160,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "owner.actingOnMyBehalfFiller": {
+        "owner.actingOnMyBehalf": {
             type: "text",
 
             defaultValue: "\n",
@@ -220,7 +220,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "property.addressNo": {
+        "property.addressNumber": {
             type: "text",
 
             defaultValue: "\n",
