@@ -174,11 +174,14 @@ const BasicRow = ({
                                         alignItems="center"
                                     >
                                         <Typography variant="body2">
-                                            {" "}
                                             {propertyDetails?.complexGR ||
-                                                contactDetails?.location
-                                                    ?.complex}
-                                            {", "}
+                                            contactDetails?.location?.complex
+                                                ? `${
+                                                      propertyDetails?.complexGR ||
+                                                      contactDetails?.location
+                                                          ?.complex
+                                                  }, `
+                                                : ""}
                                             {propertyDetails?.cityGR ||
                                                 contactDetails?.location?.city}
                                         </Typography>

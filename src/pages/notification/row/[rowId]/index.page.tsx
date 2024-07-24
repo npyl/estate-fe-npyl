@@ -271,11 +271,18 @@ const NotificationDetailPage: NextPage = () => {
                                 <Typography variant="body2" mt={2}>
                                     {property?.category.value} |{" "}
                                     {property?.area} m² | {property?.price}{" "}
-                                    €/μήνα
+                                    {property?.state?.key === "RENT"
+                                        ? "€/μήνα"
+                                        : "€"}
                                 </Typography>
                                 <Typography variant="body2">
-                                    {property?.regionGR}, {property?.cityGR}
-                                    {", "}
+                                    {property?.regionGR}
+                                    {property?.regionGR ? ", " : ""}
+                                    {property?.cityGR}
+                                    {property?.cityGR &&
+                                    (property?.street || property?.number)
+                                        ? ", "
+                                        : ""}
                                     {property?.street} {property?.number}
                                 </Typography>
                             </>
@@ -285,7 +292,10 @@ const NotificationDetailPage: NextPage = () => {
                             <>
                                 <Typography variant="body2" mt={2}>
                                     {listing?.category.value} | {listing?.area}{" "}
-                                    m² | {listing?.price} €/μήνα
+                                    m² | {listing?.price}{" "}
+                                    {listing?.state?.key === "RENT"
+                                        ? "€/μήνα"
+                                        : "€"}
                                 </Typography>
                                 <Typography variant="body2">
                                     {listing?.location?.region},{" "}
