@@ -6,7 +6,7 @@ const getTRIGGER_OPTIONS = (variant: IAgreementType) => [
     "commissionAndDuration",
     "gdpr",
     // If we are on a purchase form add one more trigger
-    ...(variant === "purchase" ? ["suggestedProperties"] : []),
+    ...(variant === "PURCHASE" ? ["suggestedProperties"] : []),
 ];
 
 export { getTRIGGER_OPTIONS };

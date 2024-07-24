@@ -39,19 +39,19 @@ function flattenObject(obj: NestedObject, parentKey = ""): NestedObject {
 }
 
 const getSchemaEn = (variant: IAgreementType) =>
-    variant === "basic"
+    variant === "BASIC"
         ? BasicEn
-        : variant === "basic_exclusive"
+        : variant === "BASIC_EXCLUSIVE"
         ? BasicExclusiveEn
-        : variant === "purchase"
+        : variant === "PURCHASE"
         ? PurchaseEn
         : BasicEn; // fallback
 const getSchemaEl = (variant: IAgreementType) =>
-    variant === "basic"
+    variant === "BASIC"
         ? BasicEl
-        : variant === "basic_exclusive"
+        : variant === "BASIC_EXCLUSIVE"
         ? BasicExclusiveEl
-        : variant === "purchase"
+        : variant === "PURCHASE"
         ? PurchaseEl
         : BasicEl; // fallback
 

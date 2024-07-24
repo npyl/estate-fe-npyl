@@ -34,7 +34,7 @@ const INITIAL_FILTER_STATE: IAgreementsFilters = {
     draft: null,
     keys: null,
     signed: null,
-    expirationDate: "",
+    expiresBy: null,
 };
 
 export const AgreementsFiltersProvider: React.FC<

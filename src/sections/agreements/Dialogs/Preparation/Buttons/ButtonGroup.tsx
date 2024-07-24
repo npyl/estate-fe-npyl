@@ -8,8 +8,8 @@ import { IAgreementType } from "@/types/agreements";
 type Option = { label: string; value: IAgreementType };
 
 const OPTIONS: Option[] = [
-    { label: "Basic", value: "basic" },
-    { label: "Purchase", value: "purchase" },
+    { label: "Basic", value: "BASIC" },
+    { label: "Purchase", value: "PURCHASE" },
 ];
 
 const getVariant = (b: boolean) => (b ? "contained" : "outlined");

@@ -18,7 +18,7 @@ const FullSchema = yup.object<IAgreementReq>().shape({
 
     variant: yup
         .string()
-        .oneOf<IAgreementType>(["basic", "basic_exclusive", "purchase"])
+        .oneOf<IAgreementType>(["BASIC", "BASIC_EXCLUSIVE", "PURCHASE"])
         .required(),
     lang: yup.string().oneOf<TLanguageType>(["en", "el"]).required(),
     draft: yup.boolean().required(),
@@ -123,7 +123,7 @@ export const getValues = (
         id,
         propertyId: propertyId || -1,
         // ...
-        variant: isCustomer ? "basic_exclusive" : variant || "basic",
+        variant: isCustomer ? "BASIC_EXCLUSIVE" : variant || "BASIC",
         lang: lang || "el",
         draft: draft || false,
         keys: keys || false,

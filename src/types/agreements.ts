@@ -1,6 +1,6 @@
 import { TLanguageType } from "./translation";
 
-export type IAgreementType = "basic" | "basic_exclusive" | "purchase";
+export type IAgreementType = "BASIC" | "BASIC_EXCLUSIVE" | "PURCHASE";
 
 interface IAgreementOwner {
     id: number;
@@ -111,7 +111,7 @@ export interface IAgreementsFilters {
     draft: boolean | null;
     keys: boolean | null;
     signed: boolean | null;
-    expirationDate: string;
+    expiresBy: string | null;
 
     propertyId?: number;
     customerId?: number;

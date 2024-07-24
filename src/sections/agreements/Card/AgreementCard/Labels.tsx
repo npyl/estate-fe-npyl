@@ -8,7 +8,7 @@ interface CardLabelProps {
 const CardLabel: React.FC<CardLabelProps> = ({ variant }) => (
     <Label
         opaque
-        color={variant === "basic" ? "primary" : "info"}
+        color={variant === "BASIC" ? "primary" : "info"}
         name={variant}
     />
 );

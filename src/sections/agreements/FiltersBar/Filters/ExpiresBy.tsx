@@ -12,19 +12,21 @@ const SlotProps: DatePickerSlotProps<dayjs.Dayjs, false> = {
     },
 };
 
+const key = "expiresBy";
+
 export default function FilterActive() {
     const { t } = useTranslation();
     const { filters, setFilter } = useAgreementsFiltersContext();
 
-    const value = filters.expirationDate ? dayjs(filters.expirationDate) : null;
+    const value = filters[key] ? dayjs(filters[key]) : null;
 
     const handleChange = (d: dayjs.Dayjs | null) =>
-        setFilter("expirationDate", d?.toISOString());
+        setFilter(key, d?.toISOString());
 
     return (
         <DatePicker
             slotProps={SlotProps}
-            label={t("Expiration Date")}
+            label={t("Expiration")}
             value={value}
             onChange={handleChange}
         />
