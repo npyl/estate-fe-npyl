@@ -29,7 +29,7 @@ export const useAgreementsFiltersContext = () => {
 };
 
 const INITIAL_FILTER_STATE: IAgreementsFilters = {
-    type: null,
+    variants: null,
     active: null,
     draft: null,
     keys: null,

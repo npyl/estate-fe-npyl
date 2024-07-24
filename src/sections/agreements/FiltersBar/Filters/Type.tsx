@@ -6,6 +6,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import { useAgreementsFiltersContext } from "../FiltersContext";
 
+const key = "variant";
+
 const OPTIONS = [
     { key: "basic", label: "Basic" },
     { key: "purchase", label: "Purchase" },
@@ -17,14 +19,15 @@ export default function FilterType() {
 
     const handleChange = (e: SelectChangeEvent<any>) =>
         e.target.value === ""
-            ? clearFilter("type")
-            : setFilter("type", e.target.value);
+            ? clearFilter(key)
+            : setFilter(key, e.target.value);
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
             <StyledInputLabel>{t("Type")}</StyledInputLabel>
             <Select
-                value={filters.type || ""}
+                multiple
+                value={filters[key] || []}
                 onChange={handleChange}
                 input={<OutlinedInput />}
             >

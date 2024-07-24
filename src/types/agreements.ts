@@ -106,7 +106,7 @@ export interface IAgreementPDFReq {
 }
 
 export interface IAgreementsFilters {
-    type: IAgreementType | null;
+    variants: IAgreementType[] | null;
     active: boolean | null;
     draft: boolean | null;
     keys: boolean | null;
