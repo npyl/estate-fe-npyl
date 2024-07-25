@@ -72,4 +72,6 @@ export const {
     useCreateAgreementMutation,
     useUpdateAgreementMutation,
     useDeleteAgreementMutation,
+
+    useLazyGetAgreementByIdQuery,
 } = agreements;

@@ -4,14 +4,14 @@ import { useState } from "react";
 import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
 
-const useGeneratePDF = (
-    variant: IAgreementType,
-    lang: PreferredLanguageType,
-    inputs: NestedObject[]
-) => {
+const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);
 
-    const generatePDF = async () => {
+    const generatePDF = async (
+        variant: IAgreementType,
+        lang: PreferredLanguageType,
+        inputs: NestedObject[]
+    ) => {
         setGenerating(true);
 
         const template = await loadPdf(variant, lang);

@@ -18,14 +18,10 @@ const ExportButton = () => {
     const { variant, language, title } = all;
     const inputs = [flattenObject(all)];
 
-    const { generatePDF, isGenerating } = useGeneratePDF(
-        variant,
-        language,
-        inputs
-    );
+    const { generatePDF, isGenerating } = useGeneratePDF();
 
     const handleGenerate = async () => {
-        const pdf = await generatePDF();
+        const pdf = await generatePDF(variant, language, inputs);
         if (!pdf) return;
 
         const blob = new Blob([pdf.buffer], { type: "application/pdf" });
