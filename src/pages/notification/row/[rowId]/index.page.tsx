@@ -321,13 +321,6 @@ const NotificationDetailPage: NextPage = () => {
                                     <Typography variant="h6">
                                         {property?.descriptions?.el?.title}
                                     </Typography>
-                                    {type === "REVIEW" ? (
-                                        <>
-                                            <Typography>
-                                                {reviewDetails?.name}
-                                            </Typography>
-                                        </>
-                                    ) : null}
                                 </>
                             ) : null}
 
