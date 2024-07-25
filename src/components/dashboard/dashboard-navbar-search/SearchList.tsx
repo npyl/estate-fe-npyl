@@ -160,7 +160,7 @@ export const SearchList = ({
     const paperWidth = useMemo(() => {
         if (screenWidth > 1400 && screenWidth <= 1600) return "185%";
         if (screenWidth > 1600 && screenWidth <= 2100) return "195%";
-        if (screenWidth > 2100) return "149%";
+        if (screenWidth > 2100) return "180%";
         return "100%";
     }, [screenWidth]);
 
@@ -172,7 +172,7 @@ export const SearchList = ({
                 searchCategory={searchCategory}
                 placement={
                     isMobile
-                        ? "top"
+                        ? "bottom-start"
                         : searchCategory === "all"
                         ? "top"
                         : "bottom-start"
@@ -182,14 +182,14 @@ export const SearchList = ({
                     sx={{
                         maxHeight: "91vh",
                         width: isMobile
-                            ? "130%"
+                            ? "140%"
                             : searchCategory === "properties"
                             ? "100%"
                             : searchCategory === "customers"
                             ? "100%"
                             : paperWidth,
                         overflowX: "hidden",
-                        overflowY: "hidden",
+                        overflowY: isMobile ? "auto" : "hidden",
                     }}
                 >
                     <Grid container>
@@ -205,11 +205,17 @@ export const SearchList = ({
                                 width="100%"
                             >
                                 <Grid item xs={12} md={7}>
-                                    <ScrollBox scrollbarWidth="15px">
+                                    {isMobile ? (
                                         <PropertiesSubList
                                             searchString={searchText}
                                         />
-                                    </ScrollBox>
+                                    ) : (
+                                        <ScrollBox scrollbarWidth="15px">
+                                            <PropertiesSubList
+                                                searchString={searchText}
+                                            />
+                                        </ScrollBox>
+                                    )}
                                 </Grid>
                                 {customers.length > 0 && (
                                     <Grid
@@ -222,45 +228,87 @@ export const SearchList = ({
                                             borderLeft: "1px solid grey",
                                         }}
                                     >
-                                        <ScrollBox scrollbarWidth="15px">
-                                            <Typography
-                                                variant="h6"
-                                                display="flex"
-                                                justifyContent="center"
-                                                gap={1}
-                                                alignItems="center"
-                                                // width="100%"
-                                                sx={{
-                                                    borderBottom:
-                                                        "1px solid lightgrey",
-                                                }}
-                                            >
-                                                <PersonOutlineOutlinedIcon
+                                        {isMobile ? (
+                                            <>
+                                                <Typography
+                                                    variant="h6"
+                                                    display="flex"
+                                                    justifyContent="center"
+                                                    gap={1}
+                                                    alignItems="center"
+                                                    // width="100%"
                                                     sx={{
-                                                        color: "black",
-                                                        width: "22px",
-                                                        height: "22px",
+                                                        borderBottom:
+                                                            "1px solid lightgrey",
                                                     }}
-                                                />
-                                                {t("Customers")}
-                                            </Typography>
-                                            <Box
-                                                width="100%"
-                                                sx={{ overflowX: "hidden" }}
-                                            >
-                                                {customers.map(
-                                                    (option, index) => (
-                                                        <CustomerSearchItem
-                                                            key={index}
-                                                            option={option}
-                                                            searchText={
-                                                                searchText
-                                                            }
-                                                        />
-                                                    )
-                                                )}
-                                            </Box>
-                                        </ScrollBox>
+                                                >
+                                                    <PersonOutlineOutlinedIcon
+                                                        sx={{
+                                                            color: "black",
+                                                            width: "22px",
+                                                            height: "22px",
+                                                        }}
+                                                    />
+                                                    {t("Customers")}
+                                                </Typography>
+                                                <Box
+                                                    width="100%"
+                                                    sx={{ overflowX: "hidden" }}
+                                                >
+                                                    {customers.map(
+                                                        (option, index) => (
+                                                            <CustomerSearchItem
+                                                                key={index}
+                                                                option={option}
+                                                                searchText={
+                                                                    searchText
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
+                                                </Box>
+                                            </>
+                                        ) : (
+                                            <ScrollBox scrollbarWidth="15px">
+                                                <Typography
+                                                    variant="h6"
+                                                    display="flex"
+                                                    justifyContent="center"
+                                                    gap={1}
+                                                    alignItems="center"
+                                                    // width="100%"
+                                                    sx={{
+                                                        borderBottom:
+                                                            "1px solid lightgrey",
+                                                    }}
+                                                >
+                                                    <PersonOutlineOutlinedIcon
+                                                        sx={{
+                                                            color: "black",
+                                                            width: "22px",
+                                                            height: "22px",
+                                                        }}
+                                                    />
+                                                    {t("Customers")}
+                                                </Typography>
+                                                <Box
+                                                    width="100%"
+                                                    sx={{ overflowX: "hidden" }}
+                                                >
+                                                    {customers.map(
+                                                        (option, index) => (
+                                                            <CustomerSearchItem
+                                                                key={index}
+                                                                option={option}
+                                                                searchText={
+                                                                    searchText
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
+                                                </Box>
+                                            </ScrollBox>
+                                        )}
                                     </Grid>
                                 )}
                             </Stack>

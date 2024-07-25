@@ -15,16 +15,24 @@ export const StyledPopper = styled((props: StyledPopperProps) => (
     top: "10px !important",
     boxShadow: theme.shadows[20],
     width: "40vw",
-    left: searchCategory === "all" ? "-130px !important" : "-70px !important",
-
     zIndex: 99999,
+    left: searchCategory === "all" ? "-90px !important" : "-70px !important",
+
     [theme.breakpoints.down("sm")]: {
         width: "65vw",
+        left:
+            searchCategory === "all" ? "-90px !important" : "-90px !important",
     },
 
     [theme.breakpoints.up("md")]: {
         top: "10px",
     },
+
+    [theme.breakpoints.up("lg")]: {
+        left:
+            searchCategory === "all" ? "-170px !important" : "-45px !important",
+    },
+
     "& .MuiAutocomplete-paper": {
         padding: theme.spacing(1, 0),
     },
