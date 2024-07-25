@@ -4,7 +4,6 @@ import { KeyValue } from "./KeyValue";
 export type IAgreementType = "BASIC" | "BASIC_EXCLUSIVE" | "PURCHASE";
 
 interface IAgreementOwner {
-    id: number;
     fullName: string;
     email: string;
     maidenName: string;
@@ -52,7 +51,6 @@ interface IAgreementFormData {
         defects: string;
     };
     gdpr?: {
-        // TODO: this
         email?: string;
         address?: string;
     };
@@ -140,7 +138,7 @@ export interface IAgreementReq extends IAgreementReqBase {
     propertyId: number;
     ownerId: number;
 
-    owner: Omit<IAgreementOwner, "id">;
+    owner: IAgreementOwner;
     variant: IAgreementType;
     language: PreferredLanguageType;
 }

@@ -1,78 +1,11 @@
-import { useCallback, useEffect } from "react";
-import Search from "./Search";
-import { useLazyGetPropertyByIdQuery } from "@/services/properties";
 import { RHFDatePicker, RHFTextField } from "@/components/hook-form";
-import { Controller, useFormContext } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { FormHelperText, Grid } from "@mui/material";
+import { useFormContext } from "react-hook-form";
+import { Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { StyledStack } from "./styled";
 import dayjs from "dayjs";
-
-// ------------------------------------------------------------------------
-
-const RHFPropertySearch = () => {
-    const { i18n } = useTranslation();
-
-    const { control, setValue } = useFormContext();
-
-    const [getProperty] = useLazyGetPropertyByIdQuery();
-
-    const handlePropertySelect = useCallback(
-        (id: number) =>
-            getProperty(id)
-                .unwrap()
-                .then((p) => {
-                    setValue("ownerId", p.owner.id);
-                    setValue("propertyId", p.id);
-                    setValue("title", p.descriptions[i18n.language].title);
-                }),
-        [i18n.language]
-    );
-
-    return (
-        <Controller
-            name="propertyId"
-            control={control}
-            render={({ fieldState: { error } }) => (
-                <>
-                    <Search onSelectProperty={handlePropertySelect} />
-
-                    {!!error ? (
-                        <FormHelperText error sx={{ px: 2 }}>
-                            {error.message}
-                        </FormHelperText>
-                    ) : null}
-                </>
-            )}
-        />
-    );
-};
-
-// ------------------------------------------------------------------------
-
-const PropertyFiller = () => {
-    const { i18n } = useTranslation();
-    const { setValue } = useFormContext();
-
-    const router = useRouter();
-    const { propertyId } = router.query;
-
-    const [getProperty] = useLazyGetPropertyByIdQuery();
-
-    // NOTE: make sure we setValue() AFTER the ui has loaded to prevent not-showing change
-    useEffect(() => {
-        getProperty(+propertyId!)
-            .unwrap()
-            .then((p) => {
-                setValue("ownerId", p.owner.id);
-                setValue("propertyId", p.id);
-                setValue("title", p.descriptions[i18n.language].title);
-            });
-    }, [i18n.language]);
-
-    return null;
-};
+import RHFPropertySearch from "./RHFSearch";
+import PropertyFiller from "./PropertyFiller";
 
 // ------------------------------------------------------------------------
 

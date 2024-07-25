@@ -201,8 +201,8 @@ export const getValues = (
         commissionAndDuration: {
             payment: commissionAndDuration?.payment || "",
             flatRate: commissionAndDuration?.flatRate || "",
-            percentage: commissionAndDuration?.percentage || "",
-            months: commissionAndDuration?.months || "",
+            percentage: commissionAndDuration?.percentage || "2%",
+            months: commissionAndDuration?.months || "12",
             defects: commissionAndDuration?.defects || "",
         },
         gdpr: {

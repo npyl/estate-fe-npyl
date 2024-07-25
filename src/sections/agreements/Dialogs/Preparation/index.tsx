@@ -75,11 +75,16 @@ const PreparationDialog: React.FC<Props> = ({
     const handleSubmit = async (d: Draft<IAgreementReq>) => {
         const cb = !!editedAgreementId ? updateAgreement : createAgreement;
 
+        // NOTE: we strip gdpr.email
+        const gdpr = {
+            address: d?.gdpr?.address || "",
+        };
+
         // NOTE: BE wants us to calculate signed
         const { agentSignature, commissionerSignature } = d?.additional || {};
         const signed = !!agentSignature && !!commissionerSignature;
 
-        await cb({ ...d, signed } as IAgreementReq);
+        await cb({ ...d, signed, gdpr } as IAgreementReq);
     };
 
     return (
