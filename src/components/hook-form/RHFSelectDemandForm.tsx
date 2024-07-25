@@ -1,76 +1,82 @@
 import {
-    FormControl,
-    InputLabel,
     MenuItem,
-    OutlinedInput,
     Select,
+    InputLabel,
+    FormControl,
     InputAdornment,
+    Typography,
 } from "@mui/material";
-import { useController, useFormContext } from "react-hook-form";
-import { FC } from "react";
+import { useController, UseControllerProps } from "react-hook-form";
+import { FC, useEffect, useState } from "react";
 
-type RHFSelectDemandFormProps = {
-    name: string;
+type RHFSelectDemandFormProps = UseControllerProps & {
     label: string;
     adornment?: string;
-    children: React.ReactNode;
-    options?: number[];
+    options: number[];
+    allowClear?: boolean;
 };
 
 const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
-    name,
     label,
     adornment,
-    children,
     options,
+    allowClear = false,
+    ...props
 }) => {
-    const { control } = useFormContext();
-    const {
-        field,
-        fieldState: { error },
-    } = useController({
-        name,
-        control,
-    });
+    const { field } = useController(props);
+    const [currentValue, setCurrentValue] = useState(field.value);
 
-    const currentValue = field.value || ""; // the || "" is used to handle the size and size of plot label in place and not get the error for the initialized value
+    const handleChange = (event: any) => {
+        const value = event.target.value;
+        field.onChange(value === "" ? null : value);
+        setCurrentValue(value === "" ? null : value);
+    };
+
+    useEffect(() => {
+        setCurrentValue(field.value);
+    }, [field.value]);
+
+    // Ensure the current value is included in the options if not already present
+    const displayOptions = [...options];
+    if (
+        currentValue !== null &&
+        currentValue !== undefined &&
+        !displayOptions.includes(currentValue)
+    ) {
+        displayOptions.push(currentValue);
+    }
 
     return (
-        <FormControl fullWidth variant="outlined" error={!!error}>
-            <InputLabel>{label}</InputLabel>
+        <FormControl fullWidth variant="outlined">
+            <InputLabel
+                shrink={currentValue !== null && currentValue !== undefined}
+            >
+                {label}
+            </InputLabel>
             <Select
                 {...field}
+                label={label}
                 value={currentValue}
-                displayEmpty
-                endAdornment={
-                    adornment && (
-                        <InputAdornment
-                            position="end"
-                            sx={{
-                                position: "absolute",
-                                right: 30,
-                                top: "calc(50%)",
-                            }}
-                        >
-                            {adornment}
-                        </InputAdornment>
-                    )
+                onChange={handleChange}
+                renderValue={(selected) =>
+                    selected
+                        ? `${selected.toLocaleString("de-DE")}${
+                              adornment ? ` ${adornment}` : ""
+                          }`
+                        : ""
                 }
-                MenuProps={{
-                    PaperProps: {
-                        style: {
-                            maxHeight: 200,
-                            width: 160,
-                        },
-                    },
-                }}
-                renderValue={(value) =>
-                    value === "" ? <em></em> : value?.toLocaleString("de-DE")
-                }
+                displayEmpty={allowClear}
             >
-                {options?.map((option) => (
+                {allowClear && (
+                    <MenuItem value="">
+                        <Typography>Clear Value</Typography>
+                    </MenuItem>
+                )}
+                {displayOptions.map((option) => (
                     <MenuItem key={option} value={option}>
-                        {option?.toLocaleString("de-DE")}
+                        {adornment
+                            ? `${option.toLocaleString("de-DE")} ${adornment}`
+                            : `${option.toLocaleString("de-DE")}`}
                     </MenuItem>
                 ))}
             </Select>

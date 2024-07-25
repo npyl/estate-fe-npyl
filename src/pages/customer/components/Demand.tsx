@@ -98,7 +98,7 @@ const DemandSection: FC<Props> = ({ onClose }) => {
     return (
         <>
             <SpaceBetween alignItems="center">
-                <Typography variant="h5">{t("Demands")}</Typography>
+                <Typography variant="h6">{t("Demands")}</Typography>
 
                 <Stack direction="row" spacing={1} alignItems="center">
                     <IconButton onClick={handleTabCreate}>

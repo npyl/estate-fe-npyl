@@ -37,8 +37,8 @@ const generateRange = (start: number, end: number, step: number = 1) => {
 const priceOptions = generateRange(10000, 1000000, 10000);
 const sizeOptions = generateRange(0, 300, 10);
 const plotSizeOptions = generateRange(0, 500, 10);
-const bedroomOptions = generateRange(0, 10);
-const bathroomOptions = generateRange(0, 10);
+const bedroomOptions = generateRange(0, 10, 1);
+const bathroomOptions = generateRange(0, 10, 1);
 const yearOptions = generateRange(1960, 2024);
 
 const useDemandEnums = () => {
@@ -266,6 +266,7 @@ const getSLIDERS = (
         defaultMin={0}
         defaultMax={10}
         demandIndex={index}
+        step={1}
         options={bedroomOptions}
     />,
     // eslint-disable-next-line react/jsx-key
@@ -276,6 +277,7 @@ const getSLIDERS = (
         defaultMin={0}
         defaultMax={10}
         demandIndex={index}
+        step={1}
         options={bathroomOptions}
     />,
     // eslint-disable-next-line react/jsx-key

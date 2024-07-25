@@ -46,7 +46,11 @@ const getRangeDisplayValue = (
     min: number | null | undefined,
     max: number | null | undefined
 ) => {
-    if (min === null && max === null) return "-";
+    if (
+        (min === null || min === undefined) &&
+        (max === null || max === undefined)
+    )
+        return "-";
 
     const minValue = min !== null && min !== undefined ? formatPrice(min) : 0;
     const maxValue = max !== null && max !== undefined ? formatPrice(max) : 0;
