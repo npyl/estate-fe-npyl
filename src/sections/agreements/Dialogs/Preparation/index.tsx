@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
 import useDialog from "@/hooks/useDialog";
 import { useMemo } from "react";
-import Schema, { getValues } from "./schema";
+import Schema from "./schema";
 import {
     useCreateAgreementMutation,
     useGetAgreementByIdQuery,
@@ -26,11 +26,14 @@ import {
 } from "./Buttons";
 import { usePathname } from "next/navigation";
 import RHFLanguageButton from "./Buttons/LanguageButton";
+import { TLanguageType } from "@/types/translation";
+import { getValues } from "./mapper";
 const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
 
 const useInitialValues = (id?: number) => {
+    const { i18n } = useTranslation();
     const isCustomer = usePathname().includes("customer");
 
     const { data: editedAgreement } = useGetAgreementByIdQuery(id!, {
@@ -38,8 +41,13 @@ const useInitialValues = (id?: number) => {
     });
 
     const values = useMemo(
-        () => getValues(isCustomer, editedAgreement),
-        [isCustomer, editedAgreement]
+        () =>
+            getValues(
+                isCustomer,
+                editedAgreement,
+                i18n.language as TLanguageType
+            ),
+        [isCustomer, editedAgreement, i18n.language]
     );
 
     return { values, isCustomer };
