@@ -2,6 +2,14 @@ import { IAgreement, IAgreementReq } from "@/types/agreements";
 import { z } from "zod";
 import dayjs from "dayjs";
 
+const nonEmptyString = z.string().min(1);
+
+const EmptySchema = z
+    .object({
+        draft: z.literal(true),
+    })
+    .passthrough();
+
 const mandatorySchema = z.object({
     id: z.number().gt(0).optional(),
     propertyId: z.number().gt(0, "Please make sure to select a property!"),
@@ -11,154 +19,65 @@ const mandatorySchema = z.object({
     draft: z.literal(false),
     keys: z.boolean(),
     signed: z.boolean(),
-    title: z.string(),
-    startingDate: z.string(),
-    expirationDate: z.string(),
-    availableAfter: z.string(),
+    title: nonEmptyString,
+    startingDate: nonEmptyString,
+    expirationDate: nonEmptyString,
+    availableAfter: nonEmptyString,
     // ...
     manager: z.object({
-        fullName: z.string(),
-        title: z.string(),
-        vat: z.string(),
-        taxOffice: z.string(),
-        genComReg: z.string(), // ΓΕΜΗ
+        fullName: nonEmptyString,
+        title: nonEmptyString,
+        vat: nonEmptyString,
+        taxOffice: nonEmptyString,
+        genComReg: nonEmptyString, // ΓΕΜΗ
     }),
     company: z.object({
-        address: z.string(),
-        homePhone: z.string(),
-        mobilePhone: z.string(),
-        email: z.string(),
+        address: nonEmptyString,
+        homePhone: nonEmptyString,
+        mobilePhone: nonEmptyString,
+        email: nonEmptyString,
     }),
     owner: z.object({
-        fullName: z.string(),
-        email: z.string(),
-        maidenName: z.string(),
-        idCardNumber: z.string(),
-        vat: z.string(),
+        fullName: nonEmptyString,
+        email: nonEmptyString,
+        maidenName: nonEmptyString,
+        idCardNumber: nonEmptyString,
+        vat: nonEmptyString,
         // ...
-        city: z.string(),
-        street: z.string(),
-        number: z.string(),
+        city: nonEmptyString,
+        street: nonEmptyString,
+        number: nonEmptyString,
         // ...
-        actingOnMyBehalf: z.string(),
+        actingOnMyBehalf: nonEmptyString,
     }),
     property: z.object({
-        region: z.string(),
-        address: z.string(),
-        addressNumber: z.string(),
-        type: z.string(),
-        floor: z.string(),
-        livingSpace: z.string(),
-        description: z.string(),
-        price: z.string(),
+        region: nonEmptyString,
+        address: nonEmptyString,
+        addressNumber: nonEmptyString,
+        type: nonEmptyString,
+        floor: nonEmptyString,
+        livingSpace: nonEmptyString,
+        description: nonEmptyString,
+        price: nonEmptyString,
     }),
     commissionAndDuration: z.object({
-        payment: z.string(),
-        flatRate: z.string(),
-        percentage: z.string(),
-        defects: z.string(),
+        payment: nonEmptyString,
+        flatRate: nonEmptyString,
+        percentage: nonEmptyString,
+        defects: nonEmptyString,
     }),
     gdpr: z
         .object({
-            email: z.string().email().optional(),
-            address: z.string().optional(),
+            email: nonEmptyString.email().optional(),
+            address: nonEmptyString.optional(),
         })
         .optional(),
     additional: z.object({
         // TODO: ...
-        date: z.string().optional(),
-        commissionerSignature: z.string().optional(),
-        agentSignature: z.string().optional(),
+        date: nonEmptyString.optional(),
+        commissionerSignature: nonEmptyString.optional(),
+        agentSignature: nonEmptyString.optional(),
     }),
-});
-
-const EmptySchema = z.object({
-    id: z.number().gt(0).optional(),
-    propertyId: z.number().gt(0, "Please make sure to select a property!"),
-    ownerId: z.number().gt(0, "Please make sure to select a property!"),
-    language: z.enum(["ENGLISH", "GREEK"]),
-    draft: z.literal(true),
-
-    keys: z.boolean().optional(),
-
-    signed: z.boolean().optional(),
-
-    title: z.string().optional(),
-
-    startingDate: z.string().optional(),
-    expirationDate: z.string().optional(),
-
-    availableAfter: z.string().optional(),
-
-    // ...
-    manager: z
-        .object({
-            fullName: z.string(),
-            title: z.string(),
-            vat: z.string(),
-            taxOffice: z.string(),
-            genComReg: z.string(), // ΓΕΜΗ
-        })
-        .optional(),
-
-    company: z
-        .object({
-            address: z.string(),
-            homePhone: z.string(),
-            mobilePhone: z.string(),
-            email: z.string(),
-        })
-        .optional(),
-
-    owner: z
-        .object({
-            fullName: z.string(),
-            email: z.string(),
-            maidenName: z.string(),
-            idCardNumber: z.string(),
-            vat: z.string(),
-            // ...
-            city: z.string(),
-            street: z.string(),
-            number: z.string(),
-            // ...
-            actingOnMyBehalf: z.string(),
-        })
-        .optional(),
-    property: z
-        .object({
-            region: z.string(),
-            address: z.string(),
-            addressNumber: z.string(),
-            type: z.string(),
-            floor: z.string(),
-            livingSpace: z.string(),
-            description: z.string(),
-            price: z.string(),
-        })
-        .optional(),
-    commissionAndDuration: z
-        .object({
-            payment: z.string(),
-            flatRate: z.string(),
-            percentage: z.string(),
-            defects: z.string(),
-        })
-        .optional(),
-    gdpr: z
-        .object({
-            email: z.string().email().optional(),
-            address: z.string().optional(),
-        })
-        .optional(),
-    additional: z
-        .object({
-            // TODO: ...
-            date: z.string().optional(),
-            commissionerSignature: z.string().optional(),
-            agentSignature: z.string().optional(),
-        })
-        .optional(),
 });
 
 const basicSchema = mandatorySchema.extend({
@@ -169,10 +88,10 @@ const basicExclusiveSchema = mandatorySchema.extend({
     variant: z.literal("BASIC_EXCLUSIVE"),
 
     owner: z.object({
-        mobilePhone: z.string(),
+        mobilePhone: nonEmptyString,
     }),
     commissionAndDuration: z.object({
-        months: z.string(),
+        months: nonEmptyString,
     }),
 });
 
