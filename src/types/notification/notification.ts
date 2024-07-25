@@ -47,6 +47,7 @@ export interface IPropertyForNotification {
     street: string;
     number: string;
     descriptions?: IPropertyDescriptionsForNotification;
+    type: KeyValue;
 }
 
 interface DescriptionType {
@@ -76,6 +77,9 @@ export interface ContactNotification {
     notificationType: NotificationType;
     property?: IPropertyForNotification;
     descriptions?: IPropertyDescriptionsForNotification;
+    type: KeyValue;
+
+    reviewDetails: ReviewDetails;
 }
 
 export interface INotificationResponse {

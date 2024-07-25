@@ -5,6 +5,7 @@ import {
     Card,
     CardContent,
     CardMedia,
+    Rating,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 
@@ -25,6 +26,7 @@ import { NormalBadge } from "@/components/PropertyCard/styled";
 import PropertyCard from "@/components/PropertyCard/Horizontal";
 import { useEffect } from "react";
 import { format } from "date-fns";
+import CommentIcon from "@mui/icons-material/Comment";
 
 const NotificationDetailPage: NextPage = () => {
     const router = useRouter();
@@ -59,6 +61,8 @@ const NotificationDetailPage: NextPage = () => {
         return <Typography>Error loading notification</Typography>;
     }
     const property = data?.property;
+    const type = data?.type?.key;
+    const reviewDetails = data?.reviewDetails;
 
     const handlePropertyCodeClick = () => {
         if (property) {
@@ -98,7 +102,7 @@ const NotificationDetailPage: NextPage = () => {
         <Box>
             <Card sx={{ marginBottom: 2, padding: 2 }}>
                 <CardContent>
-                    {property ? (
+                    {type === "TOUR" ? (
                         <Typography
                             variant="h5"
                             gutterBottom
@@ -106,6 +110,15 @@ const NotificationDetailPage: NextPage = () => {
                             pb={1}
                         >
                             {t("Tour request details")}
+                        </Typography>
+                    ) : type === "REVIEW" ? (
+                        <Typography
+                            variant="h5"
+                            gutterBottom
+                            borderBottom="1px solid lightgray"
+                            pb={1}
+                        >
+                            {t("Review details")}
                         </Typography>
                     ) : listing ? (
                         <Typography
@@ -170,6 +183,51 @@ const NotificationDetailPage: NextPage = () => {
                                 {customerEmail}
                             </Typography>
                         </Box>
+                        {type === "REVIEW" ? (
+                            <Stack mt={1}>
+                                <Stack
+                                    mt={1}
+                                    flexDirection="row"
+                                    gap={1}
+                                    alignItems="center"
+                                >
+                                    <CommentIcon fontSize="small" />
+                                    <Typography>
+                                        {reviewDetails?.comment}
+                                    </Typography>
+                                </Stack>
+
+                                <Stack direction="row" gap={0.5}>
+                                    <Typography>
+                                        {t("Property rating")}:
+                                    </Typography>
+                                    <Rating
+                                        name="property-rating"
+                                        value={
+                                            reviewDetails?.propertyRating || 0
+                                        }
+                                        precision={0.5}
+                                        readOnly
+                                    />
+                                </Stack>
+                                <Stack direction="row" gap={0.5}>
+                                    <Typography>
+                                        {t("Property presentation")}:
+                                    </Typography>
+
+                                    <Rating
+                                        name="presentation-rating"
+                                        value={
+                                            reviewDetails?.presentationRating ||
+                                            0
+                                        }
+                                        precision={0.5}
+                                        readOnly
+                                    />
+                                </Stack>
+                            </Stack>
+                        ) : null}
+
                         {message ? (
                             <>
                                 <Typography fontWeight="bold" mt={3}>
@@ -254,10 +312,23 @@ const NotificationDetailPage: NextPage = () => {
                             justifyContent="space-between"
                             width="100%"
                         >
-                            {property ? (
+                            {type === "TOUR" ? (
                                 <Typography variant="h6">
                                     {property?.descriptions?.el?.title}
                                 </Typography>
+                            ) : type === "REVIEW" ? (
+                                <>
+                                    <Typography variant="h6">
+                                        {property?.descriptions?.el?.title}
+                                    </Typography>
+                                    {type === "REVIEW" ? (
+                                        <>
+                                            <Typography>
+                                                {reviewDetails?.name}
+                                            </Typography>
+                                        </>
+                                    ) : null}
+                                </>
                             ) : null}
 
                             {listing ? (
