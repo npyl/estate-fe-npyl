@@ -147,7 +147,7 @@ const BasicRow = ({
                                         {propertyDetails?.category?.value ||
                                             contactDetails?.category
                                                 ?.value}{" "}
-                                        {" for "}
+                                        {t(` for `)}
                                         {propertyDetails?.state?.value ||
                                             contactDetails?.state?.value}{" "}
                                         {propertyDetails?.area ||
@@ -157,7 +157,7 @@ const BasicRow = ({
                                             contactDetails?.price}{" "}
                                         €
                                         {propertyDetails?.state?.key === "RENT"
-                                            ? "/μήνα"
+                                            ? t(`/month`)
                                             : null}
                                     </Typography>
                                 </Box>
@@ -187,7 +187,7 @@ const BasicRow = ({
                                         </Typography>
 
                                         {propertyDetails ? (
-                                            <Stack ml={1.5}>
+                                            <Stack ml={1.5} sx={{}}>
                                                 <Link
                                                     href={`/property/${propertyDetails?.id}`}
                                                     passHref
@@ -203,6 +203,10 @@ const BasicRow = ({
                                                         color={"#ffcc00"}
                                                         sx={{
                                                             color: "#854D0E",
+                                                            "&:hover": {
+                                                                backgroundColor:
+                                                                    "#e6b800",
+                                                            },
                                                         }}
                                                         onClick={
                                                             handlePropertyCodeClick
@@ -292,8 +296,8 @@ const BasicRow = ({
                     variant="standard"
                     disableUnderline
                 >
-                    <MenuItem value="Viewed">Viewed</MenuItem>
-                    <MenuItem value="Not Viewed">Not Viewed</MenuItem>
+                    <MenuItem value="Viewed">{t("Viewed")}</MenuItem>
+                    <MenuItem value="Not Viewed">{t(`Not Viewed`)}</MenuItem>
                 </Select>
                 <Typography variant="body2" color="text.secondary">
                     {getDate(row.notificationDate)}

@@ -27,6 +27,7 @@ const FilterFormControl = styled(FormControl)(({ theme }) => ({
 
     "& .MuiInputLabel-root": {
         color: theme.palette.text.primary,
+        fontSize: "medium",
     },
     "& .MuiSelect-select": {
         padding: theme.spacing(1),
@@ -131,20 +132,29 @@ const NotificationPage: NextPage = () => {
                             value={3}
                         />
                     </Tabs>
-                    <FilterFormControl sx={{ minWidth: 120 }}>
+                    <FilterFormControl
+                        sx={{ minWidth: 120, borderColor: "1px solid red" }}
+                    >
                         <InputLabel
-                            sx={{ fontSize: "medium", color: "primary" }}
+                            sx={{
+                                fontSize: "medium",
+                                color: "primary",
+                                display: "flex",
+                            }}
                         >
-                            View Status
+                            {t(`  View `)}
                         </InputLabel>
+
                         <Select
                             value={filter}
                             label="Filter"
                             onChange={handleFilterChange}
                         >
-                            <MenuItem value="all">All</MenuItem>
-                            <MenuItem value="viewed">Viewed</MenuItem>
-                            <MenuItem value="notViewed">Not Viewed</MenuItem>
+                            <MenuItem value="all">{t(`All`)}</MenuItem>
+                            <MenuItem value="viewed">{t(`Viewed`)}</MenuItem>
+                            <MenuItem value="notViewed">
+                                {t(`Not Viewed`)}
+                            </MenuItem>
                         </Select>
                     </FilterFormControl>
                 </Stack>

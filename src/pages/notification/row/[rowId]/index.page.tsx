@@ -222,7 +222,7 @@ const NotificationDetailPage: NextPage = () => {
                                 gap={0.5}
                             >
                                 <Typography fontWeight="bold">
-                                    Location:
+                                    {t("Location")}:
                                 </Typography>
                                 <Typography
                                     variant="body2"
@@ -272,7 +272,7 @@ const NotificationDetailPage: NextPage = () => {
                                     {property?.category.value} |{" "}
                                     {property?.area} m² | {property?.price}{" "}
                                     {property?.state?.key === "RENT"
-                                        ? "€/μήνα"
+                                        ? t("€/month")
                                         : "€"}
                                 </Typography>
                                 <Typography variant="body2">
@@ -294,7 +294,7 @@ const NotificationDetailPage: NextPage = () => {
                                     {listing?.category.value} | {listing?.area}{" "}
                                     m² | {listing?.price}{" "}
                                     {listing?.state?.key === "RENT"
-                                        ? "€/μήνα"
+                                        ? t("€/month")
                                         : "€"}
                                 </Typography>
                                 <Typography variant="body2">
