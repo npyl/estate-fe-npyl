@@ -39,7 +39,8 @@ const CardsContent: React.FC<Props> = ({
     const pagination = usePagination();
 
     const [deleteAgreement] = useDeleteAgreementMutation();
-    const handleDelete = () => deleteAgreement(deletableAgreement);
+    const handleDelete = () =>
+        deleteAgreement(deletableAgreement).then(closeDeleteDialog);
 
     return (
         <>

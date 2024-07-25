@@ -1,10 +1,12 @@
 import SearchInput from "@/components/SearchInput";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { useDebounce } from "use-debounce";
 import { usePagination } from "@/components/Pagination";
 import ResultsPopper from "./Popper";
 import { PaginationHookProps } from "@/components/Pagination/types";
+import useDialog from "@/hooks/useDialog";
+import Portal from "@mui/material/Portal";
 
 const pageSize = 5;
 
@@ -45,42 +47,42 @@ const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
         searchString
     );
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const anchorRef = useRef<HTMLDivElement>(null);
+    const [isSearchOpen, openSearch, closeSearch] = useDialog();
 
     const handleCardClick = useCallback((propertyId: number) => {
         setSearch("");
         onSelectProperty(propertyId);
-        setAnchorEl(null);
+        closeSearch();
     }, []);
-    const handleClose = useCallback(() => setAnchorEl(null), []);
 
     return (
         <>
             <SearchInput
-                sx={{
-                    width: "50%",
-                }}
+                ref={anchorRef}
                 placeholder="Search property"
                 value={search}
                 onChange={(e) => {
                     setSearch(e.target.value);
-                    setAnchorEl(e.currentTarget);
+                    openSearch();
                 }}
             />
 
-            {anchorEl ? (
-                <ResultsPopper
-                    open
-                    anchorEl={anchorEl}
-                    // ...
-                    isLoading={isLoading}
-                    totalElements={totalElements}
-                    pageSize={pageSize}
-                    pagination={pagination}
-                    content={content}
-                    onCardClick={handleCardClick}
-                    onClose={handleClose}
-                />
+            {isSearchOpen ? (
+                <Portal>
+                    <ResultsPopper
+                        open
+                        anchorEl={anchorRef.current}
+                        // ...
+                        isLoading={isLoading}
+                        totalElements={totalElements}
+                        pageSize={pageSize}
+                        pagination={pagination}
+                        content={content}
+                        onCardClick={handleCardClick}
+                        onClose={closeSearch}
+                    />
+                </Portal>
             ) : null}
         </>
     );

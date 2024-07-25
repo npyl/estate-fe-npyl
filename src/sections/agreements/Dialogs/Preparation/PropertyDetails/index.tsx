@@ -6,6 +6,7 @@ import { StyledStack } from "./styled";
 import dayjs from "dayjs";
 import RHFPropertySearch from "./RHFSearch";
 import PropertyFiller from "./PropertyFiller";
+import SelectedProperty from "./SelectedProperty";
 
 // ------------------------------------------------------------------------
 
@@ -33,6 +34,8 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
 
             {/* Property Search: /agreements & CREATE case */}
             {!propertyId && shouldAutofill ? <RHFPropertySearch /> : null}
+
+            {!propertyId ? <SelectedProperty /> : null}
 
             <RHFTextField name="title" label="Title" />
             <Grid container spacing={1}>

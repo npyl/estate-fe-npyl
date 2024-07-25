@@ -17,6 +17,13 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     border: "1px solid",
     borderColor: getBorderColor2(theme),
     padding: theme.spacing(2),
+
+    zIndex: 3000,
+    maxWidth: "90vw",
+
+    marginTop: theme.spacing(1),
+    marginLeft: "auto",
+    marginRight: "auto",
 }));
 
 interface ResultsPopperProps extends Omit<PopperProps, "content"> {
@@ -45,7 +52,12 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     };
 
     return (
-        <Popper {...props} component={StyledPaper}>
+        <Popper
+            {...props}
+            component={StyledPaper}
+            placement="bottom-end"
+            disablePortal
+        >
             <SpaceBetween mb={2}>
                 <Typography>{totalElements} items</Typography>
 

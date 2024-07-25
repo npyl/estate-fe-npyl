@@ -54,10 +54,10 @@ const useAutofill = (setValue: UseFormSetValue<FieldValues>) => {
 
             const type = join(
                 p?.parentCategory?.value,
-                p.category?.value,
+                p?.category?.value,
                 " - "
             );
-            const ownerFullname = join(owner?.firstName, owner.lastName, " ");
+            const ownerFullname = join(owner?.firstName, owner?.lastName, " ");
             const userFullname = join(user?.firstName, user?.lastName, " ");
 
             setValue("ownerId", p.owner.id);

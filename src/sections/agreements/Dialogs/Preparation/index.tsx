@@ -99,6 +99,8 @@ const PreparationDialog: React.FC<Props> = ({
                     title={<Typography>{t("Agreement")}</Typography>}
                     content={
                         <Stack spacing={1}>
+                            <PropertyDetails shouldAutofill={shouldAutofill} />
+
                             <Stack direction="row" spacing={1}>
                                 {!isCustomer ? <ButtonGroup /> : null}
 
@@ -106,8 +108,6 @@ const PreparationDialog: React.FC<Props> = ({
 
                                 <EditPDFButton onClick={openPDF} />
                             </Stack>
-
-                            <PropertyDetails shouldAutofill={shouldAutofill} />
 
                             <RHFCheckbox
                                 labelPlacement="start"
