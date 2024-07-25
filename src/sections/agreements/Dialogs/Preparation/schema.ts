@@ -6,7 +6,12 @@ const nonEmptyString = z.string().min(1);
 
 const EmptySchema = z
     .object({
+        id: z.number().gt(0).optional(),
         draft: z.literal(true),
+        propertyId: z.number().gt(0, "Please make sure to select a property!"),
+        ownerId: z.number().gt(0, "Please make sure to select a property!"),
+        language: z.enum(["ENGLISH", "GREEK"]),
+        variant: z.enum(["BASIC", "BASIC_EXCLUSIVE", "PURCHASE"]),
     })
     .passthrough();
 

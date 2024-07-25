@@ -72,11 +72,14 @@ const PreparationDialog: React.FC<Props> = ({
         values,
     });
 
-    console.log("ERRORS: ", methods.formState.errors);
-
     const handleSubmit = async (d: Draft<IAgreementReq>) => {
         const cb = !!editedAgreementId ? updateAgreement : createAgreement;
-        await cb(d as IAgreementReq);
+
+        // NOTE: BE wants us to calculate signed
+        const { agentSignature, commissionerSignature } = d?.additional || {};
+        const signed = !!agentSignature && !!commissionerSignature;
+
+        await cb({ ...d, signed } as IAgreementReq);
     };
 
     return (
