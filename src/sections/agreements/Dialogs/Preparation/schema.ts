@@ -30,17 +30,17 @@ const mandatorySchema = z.object({
     availableAfter: nonEmptyString,
     // ...
     manager: z.object({
-        fullName: nonEmptyString,
-        title: nonEmptyString,
-        vat: nonEmptyString,
-        taxOffice: nonEmptyString,
-        genComReg: nonEmptyString, // ΓΕΜΗ
+        fullName: z.string(),
+        title: z.string(),
+        vat: z.string(),
+        taxOffice: z.string(),
+        genComReg: z.string(), // ΓΕΜΗ
     }),
     company: z.object({
-        address: nonEmptyString,
-        homePhone: nonEmptyString,
-        mobilePhone: nonEmptyString,
-        email: nonEmptyString,
+        address: z.string(),
+        homePhone: z.string(),
+        mobilePhone: z.string(),
+        email: z.string(),
     }),
     owner: z.object({
         fullName: nonEmptyString,
@@ -73,15 +73,15 @@ const mandatorySchema = z.object({
     }),
     gdpr: z
         .object({
-            email: nonEmptyString.email().optional(),
-            address: nonEmptyString.optional(),
+            email: z.string().email().optional(),
+            address: z.string().optional(),
         })
         .optional(),
     additional: z.object({
         // TODO: ...
-        date: nonEmptyString.optional(),
-        commissionerSignature: nonEmptyString.optional(),
-        agentSignature: nonEmptyString.optional(),
+        date: z.string().optional(),
+        commissionerSignature: z.string().optional(),
+        agentSignature: z.string().optional(),
     }),
 });
 

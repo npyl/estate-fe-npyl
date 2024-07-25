@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useGeneratePDF } from "../../_shared/hook";
 import { IAgreementReq } from "@/types/agreements";
 import downloadBlob from "@/utils/downloadBlob";
+import { useEffect, useState } from "react";
 
 const ExportButton = () => {
     const { t } = useTranslation();
@@ -13,6 +14,8 @@ const ExportButton = () => {
         watch,
         formState: { isSubmitSuccessful },
     } = useFormContext();
+
+    const [visible, setVisible] = useState(false);
 
     const all = watch() as IAgreementReq;
     const { variant, language, title } = all;
@@ -26,12 +29,17 @@ const ExportButton = () => {
 
         const blob = new Blob([pdf.buffer], { type: "application/pdf" });
 
-        downloadBlob(blob, `${title}.pdf`);
+        await downloadBlob(blob, `${title}.pdf`);
+
+        setVisible(false);
     };
 
-    // TODO: test isSubmitSuccessful
+    useEffect(() => {
+        if (!isSubmitSuccessful) return;
+        setVisible(true);
+    }, [isSubmitSuccessful]);
 
-    if (!isSubmitSuccessful) return null;
+    if (!visible) return null;
 
     return (
         <LoadingButton loading={isGenerating} onClick={handleGenerate}>
