@@ -747,9 +747,11 @@ const resources = {
 
             "Property presentation Rate": "Property presentation Rate",
             "Property Rating": "Property Rating",
+            "Property Presentation": "Property Presentation",
             Reviews: "Reviews",
+            Review: "Review",
             Locations: "Locations",
-
+            "Review Details": "Review Details",
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
         },
@@ -758,9 +760,11 @@ const resources = {
         translation: {
             Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
+            Review: "Αξιολόγηση",
+            "Review Details": "Λεπτομέρειες Αξιολόγησης",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
             "Property Rating": "Αξιολόγηση ακινήτου",
-
+            "Property Presentation": "Παρουσίαση ακινήτου",
             "Copy Link": "Αντιγραφή Συνδέσμου",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",

@@ -118,7 +118,7 @@ const NotificationDetailPage: NextPage = () => {
                             borderBottom="1px solid lightgray"
                             pb={1}
                         >
-                            {t("Review details")}
+                            {t("Review Details")}
                         </Typography>
                     ) : listing ? (
                         <Typography
@@ -191,7 +191,9 @@ const NotificationDetailPage: NextPage = () => {
                                     gap={1}
                                     alignItems="center"
                                 >
-                                    <CommentIcon fontSize="small" />
+                                    <CommentIcon
+                                        sx={{ width: 18, height: 18 }}
+                                    />
                                     <Typography>
                                         {reviewDetails?.comment}
                                     </Typography>
@@ -199,7 +201,7 @@ const NotificationDetailPage: NextPage = () => {
 
                                 <Stack direction="row" gap={0.5}>
                                     <Typography>
-                                        {t("Property rating")}:
+                                        {t("Property Rating")}:
                                     </Typography>
                                     <Rating
                                         name="property-rating"
@@ -212,7 +214,7 @@ const NotificationDetailPage: NextPage = () => {
                                 </Stack>
                                 <Stack direction="row" gap={0.5}>
                                     <Typography>
-                                        {t("Property presentation")}:
+                                        {t("Property Presentation")}:
                                     </Typography>
 
                                     <Rating
