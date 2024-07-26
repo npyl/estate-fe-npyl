@@ -9,9 +9,9 @@ export const demandFiltersMapper = (
     demandFilters: IDemandFilters
 ): IDemandFiltersPOST => ({
     minBedrooms: demandFilters.minBedrooms,
-    maxBedrooms: demandFilters.minBedrooms,
-    minBathrooms: demandFilters.minBedrooms,
-    maxBathrooms: demandFilters.minBedrooms,
+    maxBedrooms: demandFilters.maxBedrooms,
+    minBathrooms: demandFilters.minBathrooms,
+    maxBathrooms: demandFilters.maxBathrooms,
     furnished: demandFilters.furnished.map((i) => i.key) || [],
     maxCovered: demandFilters.maxCovered,
     minCovered: demandFilters.minCovered,

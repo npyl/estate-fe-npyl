@@ -146,12 +146,13 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
             direction={"row"}
             alignItems={"center"}
             onClick={() => router.push(`/property/${option.id}`)}
+            sx={{ overflowX: "hidden" }}
         >
             {option?.propertyImage ? (
                 <Image
                     padding={0}
                     sx={{ borderRadius: 1 }}
-                    width={isMobile ? 170 : 300}
+                    width={isMobile ? 170 : 420}
                     height={isMobile ? 170 : 175}
                     src={option.propertyImage}
                 />
@@ -251,6 +252,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             ml={1}
                             mr={1.5}
                             color="text.secondary"
+                            sx={{ textWrap: "nowrap" }}
                         >
                             {address}{" "}
                         </Typography>
@@ -387,7 +389,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} sm={5}>
+                    <Grid item xs={10} sm={5}>
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
                             color={"#ffcc00"}

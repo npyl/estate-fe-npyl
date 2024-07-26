@@ -18,6 +18,25 @@ const emptyDemand: IDemandPOST = {
         labels: [],
         regions: [],
         cities: [],
+        complexes: [],
+        categories: [],
+        parentCategories: [],
+        furnished: [],
+
+        minPlot: 0,
+        maxPlot: 0,
+        minPrice: 0,
+        maxPrice: 0,
+        minBathrooms: 0,
+        maxBathrooms: 0,
+        minCovered: 0,
+        maxCovered: 0,
+        minBedrooms: 0,
+        maxBedrooms: 0,
+        minYearOfConstruction: 0,
+        maxYearOfConstruction: 0,
+        minFloor: "",
+        maxFloor: "",
     },
     priorityFeatures: {
         panoramicView: false,
@@ -98,7 +117,7 @@ const DemandSection: FC<Props> = ({ onClose }) => {
     return (
         <>
             <SpaceBetween alignItems="center">
-                <Typography variant="h5">{t("Demands")}</Typography>
+                <Typography variant="h6">{t("Demands")}</Typography>
 
                 <Stack direction="row" spacing={1} alignItems="center">
                     <IconButton onClick={handleTabCreate}>

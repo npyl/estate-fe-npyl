@@ -12,7 +12,11 @@ import {
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
-import { StyledBox, FilterButton, ListItem } from "@/components/Filters/styled";
+import {
+    StyledBox,
+    StyledPriceButton,
+    ListItem,
+} from "@/components/Filters/styled";
 import {
     selectMaxArea,
     selectMaxPrice,
@@ -66,12 +70,27 @@ const PriceSelect = ({ type }: { type: string }) => {
     };
 
     const handleInputChangeMin = (event: any) => {
-        const newValue = event.target.value;
-        dispatch(setMinValue(isNaN(newValue) ? "" : newValue));
+        let newValue = event.target.value;
+        if (newValue === "" || isNaN(newValue)) {
+            dispatch(setMinValue(""));
+        } else {
+            if (valueMin === 0) {
+                newValue = newValue.slice(-1);
+            }
+            dispatch(setMinValue(newValue));
+        }
     };
+
     const handleInputChangeMax = (event: any) => {
-        const newValue = event.target.value;
-        dispatch(setMaxValue(isNaN(newValue) ? "" : newValue));
+        let newValue = event.target.value;
+        if (newValue === "" || isNaN(newValue)) {
+            dispatch(setMaxValue(""));
+        } else {
+            if (valueMax === 0) {
+                newValue = newValue.slice(-1);
+            }
+            dispatch(setMaxValue(newValue));
+        }
     };
     const symbol = useMemo(() => {
         if (type === "price") {
@@ -111,15 +130,15 @@ const PriceSelect = ({ type }: { type: string }) => {
             onClickAway={() => setOpen(false)}
         >
             <Box>
-                <FilterButton
-                    sx={{ minWidth: "135px" }}
+                <StyledPriceButton
+                    sx={{ minWidth: "135px", textWrap: "nowrap" }}
                     open={open}
                     variant="outlined"
                     endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     onClick={handleClick}
                 >
                     {renderLabel}
-                </FilterButton>
+                </StyledPriceButton>
                 {open && (
                     <Popper
                         open={open}

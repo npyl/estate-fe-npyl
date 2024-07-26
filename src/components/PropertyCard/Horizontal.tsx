@@ -30,6 +30,36 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         area,
         plotArea,
     } = item || {};
+
+    type PropertyStatus =
+        | "SOLD"
+        | "SALE"
+        | "RENTED"
+        | "UNAVAILABLE"
+        | "RENT"
+        | "TAKEN"
+        | "UNDER_CONSTRUCTION"
+        | "UNDER_MAINTENANCE";
+
+    const STATUS_COLORS: Record<PropertyStatus, Color> = {
+        SOLD: "#79798a",
+        SALE: "#57825e",
+        RENT: "#bd9e39",
+        RENTED: "#3e78c2",
+        UNAVAILABLE: "#c72c2e",
+        TAKEN: "#7d673e",
+        UNDER_CONSTRUCTION: "#A300D8",
+        UNDER_MAINTENANCE: "#E0067C",
+    };
+    type Color = string;
+
+    const getStatusColor = (status: string): Color => {
+        const statusUpper = status.toUpperCase() as PropertyStatus;
+        console.log(statusUpper);
+
+        return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+    };
+
     const { bathrooms, bedrooms } = details || {};
     const { lat, lng } = location || {};
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
@@ -78,7 +108,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     }, [isActive]);
 
     const handleClick = useCallback(() => router.push(`property/${id}`), []);
-
+    const stateColor = state?.value ? getStatusColor(state.value) : "#537f91";
     return (
         <StyledBox
             borderRadius="12px"
@@ -216,20 +246,21 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                             {state?.value ? (
                                 <NormalBadge
                                     name={t(state?.value)}
-                                    color="indigo"
+                                    color={stateColor}
                                 />
                             ) : null}
                             {category?.value ? (
                                 <NormalBadge
                                     name={t(category?.value)}
-                                    color="indigo"
+                                    color="#3730a3"
                                 />
                             ) : null}
                         </Stack>
                         <SpaceBetween alignItems="center">
                             <NormalBadge
                                 name={`${t("Code")}: ${code || ""}`}
-                                color="yellow"
+                                color="#ffcc00"
+                                sx={{ color: "#854D0E" }}
                             />
 
                             <PriceBadge price={price} />

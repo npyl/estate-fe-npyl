@@ -286,6 +286,7 @@ const resources = {
             "Upload Images": "Upload Images",
 
             //Location
+
             Prefecture: "Prefecture",
             "Search on map...": "Search on map...",
             Map: "Map",
@@ -594,6 +595,10 @@ const resources = {
             Description: "Description",
             "Property Code": "Property Code",
             Message: "Message",
+            Viewed: "Viewed",
+            "/month": "/month",
+            for: "for",
+            "Not Viewed": "Not Viewed",
             "Tour Date": "Tour Date",
             "Tour Time": "Tour Time",
             "Total Properties": "Total Properties",
@@ -743,9 +748,11 @@ const resources = {
 
             "Property presentation Rate": "Property presentation Rate",
             "Property Rating": "Property Rating",
+            "Property Presentation": "Property Presentation",
             Reviews: "Reviews",
+            Review: "Review",
             Locations: "Locations",
-
+            "Review Details": "Review Details",
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
 
@@ -813,9 +820,11 @@ const resources = {
 
             Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
+            Review: "Αξιολόγηση",
+            "Review Details": "Λεπτομέρειες Αξιολόγησης",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
             "Property Rating": "Αξιολόγηση ακινήτου",
-
+            "Property Presentation": "Παρουσίαση ακινήτου",
             "Copy Link": "Αντιγραφή Συνδέσμου",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",
@@ -1028,7 +1037,7 @@ const resources = {
             Sidewalk: "Πεζόδρομος",
             Paved: "Πλακόστρωτο",
             "Dirt Road": "Χωματόδρομος",
-            "Land Use": "Χρήση Γης",
+            "Land Use": "Ζώνη",
             Unknown: "Άγνωστο",
 
             Rural: "Αγροτική",
@@ -1361,7 +1370,13 @@ const resources = {
             "Fill in property location first":
                 "Συμπληρώστε την τοποθεσία του ακινήτου πρώτα",
             Demands: "Απαιτήσεις",
+            "Features for Land Category": "Χαρακτηριστικά για Γη",
+            "Features for Residential Category": "Χαρακτηριστικά για Κατοικία",
+            "Features for Commercial Category":
+                "Χαρακτηριστικά για Επαγγελματική στέγη",
+            "Features for Other Category": "Χαρακτηριστικά για κατηγορία Άλλο",
 
+            // "Features for Residential Category": "Χαρακτηριστικά για επαγ",
             //Description
             Description: "Περιγραφή",
             Generate: "Δημιουργία",
@@ -1522,16 +1537,19 @@ const resources = {
             "Total Rented Properties": "Συνολικά Ενοικιαζόμενα Ακίνητα",
             "Properties Distribution": "Διανομή Ακινήτων",
             "Total Properties per User": "Συνολικά Ακίνητα ανά Χρήστη",
-
+            Viewed: "Αναγνωσμένο",
+            for: "",
+            "/month": "/μήνα",
+            "Not Viewed": "Μη αναγνωσμένο",
             Overview: "Συνολικά",
             "Quick View": "Συνοπτικά",
-            "Matching Customers": "Ταιριαστοί πελάτες",
+            "Matching Customers": "Αντιστοίχιση πελατών",
             Photos: "Εικόνες",
             "All Photos": "Όλες οι Εικόνες",
             "Public Photos": "Δημόσιες Εικόνες",
             "Private Photos": "Ιδιωτικές Εικόνες",
 
-            Integrations: "Συνδεδεμένα",
+            Integrations: "Διασύνδεση",
             Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
             "Share PDF": "Κοινοποίση PDF",

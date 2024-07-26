@@ -36,13 +36,13 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
                         />
                     )}
                     {parentCategory === "LAND" && (
+                        <Land features={features} onChange={handleChange} />
+                    )}
+                    {parentCategory === "COMMERCIAL" && (
                         <Commercial
                             features={features}
                             onChange={handleChange}
                         />
-                    )}
-                    {parentCategory === "COMMERCIAL" && (
-                        <Land features={features} onChange={handleChange} />
                     )}
                     {parentCategory === "OTHER" && (
                         <Other features={features} onChange={handleChange} />

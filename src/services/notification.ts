@@ -1,9 +1,22 @@
-import { NotViewedContactNotifications } from "@/types/notification/notification";
+import {
+    INotificationFilter,
+    INotificationResponse,
+    NotViewedContactNotifications,
+} from "@/types/notification/notification";
+import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ContactNotification,
     ContactNotificationExtended,
 } from "src/types/notification";
+
+interface INotificationFilterParams {
+    filter: INotificationFilter;
+    page: number;
+    pageSize: number;
+    sortBy: string;
+    direction: string; // asc - desc
+}
 
 export const notification = createApi({
     reducerPath: "contactNotification",
@@ -51,14 +64,28 @@ export const notification = createApi({
             }
         ),
 
-        toggleNotificationViewedStatus: builder.mutation<
-            void,
-            { id: number; viewed: boolean }
+        filterNotifications: builder.query<
+            IPage<INotificationResponse>,
+            INotificationFilterParams
         >({
-            query: ({ id, viewed }) => ({
+            query: ({ filter, page, pageSize, sortBy, direction }) => ({
+                url: "/filter",
+                method: "POST",
+                body: filter,
+                params: {
+                    page,
+                    pageSize,
+                    sortBy,
+                    direction,
+                },
+            }),
+            providesTags: ["Notifications"],
+        }),
+
+        toggleNotificationViewedStatus: builder.mutation<void, number>({
+            query: (id) => ({
                 url: `${id}/toggle-viewed`,
                 method: "PATCH",
-                body: { viewed },
             }),
             invalidatesTags: ["Notifications"],
         }),
@@ -80,6 +107,7 @@ export const {
     useGetNotificationsQuery,
     useGetNotificationByIdQuery,
     useGetNonViewedNotificationsCountQuery,
+    useFilterNotificationsQuery,
     useToggleNotificationViewedStatusMutation,
     useDeleteNotificationMutation,
 } = notification;

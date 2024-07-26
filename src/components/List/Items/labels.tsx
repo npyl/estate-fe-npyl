@@ -22,11 +22,11 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
     return (
         <ListItem
             {...other}
-            sx={{
-                height: labels.length === 0 ? "2.9rem" : "5.75rem",
-                maxHeight: labels.length === 0 ? "2.9rem" : "5.75rem",
-                overflow: labels.length <= 2 ? "hidden" : "auto",
-            }}
+            // sx={{
+            //     height: labels.length === 0 ? "2.9rem" : "5.75rem",
+            //     maxHeight: labels.length === 0 ? "2.9rem" : "5.75rem",
+            //     overflow: labels.length <= 2 ? "hidden" : "auto",
+            // }}
         >
             <Stack spacing={1} mt={1} ml={0.5}>
                 {visibleLabels.map(({ color, name }, i) => (

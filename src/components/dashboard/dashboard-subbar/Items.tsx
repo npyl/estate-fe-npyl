@@ -93,11 +93,18 @@ const SubbarItems = (props: StackProps) => {
             const isCurrentLast = appTabs[appTabs.length - 1].id === id;
             const hasMoreAfterRemove = tabsAfterRemove.length > 0;
 
+            // Determine the base path based on the current path
+            const basePath = currentPath.startsWith("/property")
+                ? "/property"
+                : currentPath.startsWith("/customer")
+                ? "/customers"
+                : "/customers";
+
             const newUrl = hasMoreAfterRemove
                 ? isCurrentLast
                     ? tabsAfterRemove[tabsAfterRemove.length - 1].path
                     : tabsAfterRemove[currentTabIndex].path
-                : "/property";
+                : basePath;
 
             removeTab(id);
 

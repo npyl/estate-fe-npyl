@@ -1,48 +1,62 @@
 import {
     useDeleteNotificationMutation,
-    useGetNotificationsQuery,
-    useToggleNotificationViewedStatusMutation,
+    useFilterNotificationsQuery,
 } from "src/services/notification";
 import Table from "../table";
-import { ContactNotification } from "@/types/notification";
+import { Box } from "@mui/material";
+import { useState } from "react";
 
-const Reviews = () => {
+const Reviews = ({ filter }: any) => {
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sortBy, setSortBy] = useState("createdAt");
+    const [direction, setDirection] = useState("DESC");
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
-    const [toggleNotificationViewedStatus] =
-        useToggleNotificationViewedStatusMutation();
 
-    const { data: rows } = useGetNotificationsQuery(undefined, {
-        selectFromResult: ({ data }) => ({
-            data:
-                data?.filter(
-                    ({ notificationType }) => notificationType === "review"
-                ) || [],
-        }),
+    const { data: reviews } = useFilterNotificationsQuery({
+        filter: { types: ["REVIEW"] },
+        page,
+        pageSize,
+        sortBy,
+        direction,
     });
 
-    const handleRemove = (index = -1) => {
-        deleteNotification(index);
+    const handleRemove = (id: number) => {
+        deleteNotification(id);
     };
 
-    const handleViewNotification = async (
-        notification: ContactNotification
-    ) => {
-        if (!notification.viewed) {
-            await toggleNotificationViewedStatus({
-                id: notification.id || 0,
-                viewed: true,
-            });
-        }
+    const handlePageChange = (event: any, newPage: any) => {
+        setPage(newPage);
     };
 
+    const handleRowsPerPageChange = (event: any) => {
+        setPageSize(parseInt(event.target.value, 10));
+        setPage(0); // reset to the first page
+    };
+
+    const filteredReviews =
+        reviews?.content?.filter((review) => {
+            if (filter === "viewed") return review.viewed === true;
+            if (filter === "notViewed") return review.viewed === false;
+            return true; //ALL
+        }) || [];
     return (
-        <Table
-            variant="review"
-            rows={rows || []}
-            onRemove={handleRemove}
-            loading={isLoading}
-            onViewNotification={handleViewNotification}
-        />
+        <Box sx={{ width: "100%", overflowX: "auto" }}>
+            <Table
+                variant="REVIEW"
+                rows={filteredReviews || []}
+                onRemove={handleRemove}
+                loading={isLoading}
+                sortBy={sortBy}
+                direction={direction}
+                page={page}
+                filter={filter}
+                pageSize={pageSize}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                totalRows={reviews?.totalElements || 0}
+            />
+        </Box>
     );
 };
 

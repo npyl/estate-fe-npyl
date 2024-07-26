@@ -11,14 +11,17 @@ import { useFormContext } from "react-hook-form";
 import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
 import Panel from "src/components/Panel";
 import DistancesSection from "./Distances/Distances";
-import {
-    MunicipSelect,
-    NeighbourSelect,
-    RegionSelect,
-} from "src/components/Location";
+// import {
+//     MunicipSelect,
+//     NeighbourSelect,
+//     RegionSelect,
+// } from "src/components/Location";
 import LocationDisplay from "./LocationDisplay";
+import MunicipSelectDemands from "@/components/Location/MunicipSelectDemands";
+import RegionSelectDemands from "@/components/Location/RegionSelectDemands";
+import NeighbourSelectDemands from "@/components/Location/NeighbourSelectDemands";
 
-const LocationSection = () => {
+const LocationDemandsSection = () => {
     const { watch, setValue } = useFormContext();
     const { t } = useTranslation();
 
@@ -183,21 +186,21 @@ const LocationSection = () => {
                     <Grid item xs={12}>
                         <Grid container direction={"row"} spacing={2}>
                             <Grid item xs={4}>
-                                <RegionSelect
+                                <RegionSelectDemands
                                     selectedRegions={regions}
                                     onChange={handleRegionChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
-                                <MunicipSelect
-                                    regionCode={regions}
+                                <MunicipSelectDemands
+                                    regionCodes={regions.join(", ")}
                                     municipCodes={cities}
                                     onChange={handleMunicipChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
-                                <NeighbourSelect
-                                    municipCode={cities}
+                                <NeighbourSelectDemands
+                                    municipCodes={cities.join(", ")}
                                     neighbourCodes={complexes}
                                     onChange={handleNeighbourChange}
                                 />
@@ -264,4 +267,4 @@ const LocationSection = () => {
         </>
     );
 };
-export default LocationSection;
+export default LocationDemandsSection;
