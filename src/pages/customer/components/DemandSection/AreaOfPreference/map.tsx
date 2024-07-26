@@ -11,9 +11,9 @@ import {
 } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import MunicipSelectDemands from "src/components/Location/MunicipSelectDemands";
-import NeighbourSelectDemands from "src/components/Location/NeighbourSelectDemands";
-import RegionSelectDemands from "src/components/Location/RegionSelectDemands";
+import MunicipSelectDemands from "./MunicipSelectDemands";
+import NeighbourSelectDemands from "./NeighbourSelectDemands";
+import RegionSelectDemands from "./RegionSelectDemands";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
