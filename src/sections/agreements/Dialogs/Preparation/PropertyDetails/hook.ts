@@ -4,35 +4,6 @@ import { IProperties } from "@/types/properties";
 import { useCallback } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
-// interface IAgreementFormData {
-//     manager: {
-//         fullName: string;
-//         title: string;
-//         vat: string;
-//         taxOffice: string;
-//         genComReg: string; // ΓΕΜΗ
-//     };
-//     company: {
-//         address: string;
-//         homePhone: string;
-//         mobilePhone: string;
-//         email: string;
-//     };
-//     owner: IAgreementOwner;
-//     commissionAndDuration: {
-//         payment: string;
-//         flatRate: string;
-//         percentage: string;
-//         months: string;
-//         defects: string;
-//     };
-//     gdpr?: {
-//         // TODO: this
-//         email?: string;
-//         address?: string;
-//     };
-// }
-
 const join = (v0: string | undefined, v1: string | undefined, sep: string) =>
     [v0, v1].filter((s) => !!s).join(sep) || "";
 
@@ -60,7 +31,7 @@ const useAutofill = (setValue: UseFormSetValue<FieldValues>) => {
             const ownerFullname = join(owner?.firstName, owner?.lastName, " ");
             const userFullname = join(user?.firstName, user?.lastName, " ");
 
-            setValue("ownerId", p.owner.id);
+            setValue("ownerId", p.owner?.id || -1);
             setValue("propertyId", p.id);
             setValue("title", description.title);
             // ...

@@ -28,7 +28,7 @@ const PDFErrorsTooltip: React.FC<Props> = (props) => {
     if (havePDFErrors)
         return (
             <Box position="relative" width={24}>
-                <ErrorTooltip {...props} error="Errors in PDF form" />;
+                <ErrorTooltip {...props} error="Errors in PDF form" />
             </Box>
         );
 

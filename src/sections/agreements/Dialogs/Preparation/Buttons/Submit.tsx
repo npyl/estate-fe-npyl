@@ -6,11 +6,11 @@ const SubmitButton = () => {
     const { t } = useTranslation();
 
     const {
-        formState: { isDirty, isSubmitting },
+        formState: { isSubmitting },
     } = useFormContext();
 
     return (
-        <LoadingButton disabled={!isDirty} loading={isSubmitting} type="submit">
+        <LoadingButton loading={isSubmitting} type="submit">
             {t("Save")}
         </LoadingButton>
     );
