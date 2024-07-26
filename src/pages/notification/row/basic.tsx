@@ -111,6 +111,7 @@ const BasicRow = ({
     };
 
     const propertyDetails = row?.property;
+    const agreement = row?.type?.key === "AGREEMENT";
     return (
         <TableRow
             sx={{

@@ -18,6 +18,7 @@ import { Listings, Tours, WorkApplications, Reviews } from "./tabs";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import UnReadBadge from "./components/UnReadBadge";
 import { styled } from "@mui/system";
+import Agreements from "./tabs/agreements";
 
 const FilterFormControl = styled(FormControl)(({ theme }) => ({
     minWidth: 120,
@@ -131,6 +132,22 @@ const NotificationPage: NextPage = () => {
                             }
                             value={3}
                         />
+                        <Tab
+                            label={
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    position="relative"
+                                    gap={1}
+                                >
+                                    {t("Agreements")}
+                                    <UnReadBadge
+                                        count={getUnreadCount("AGREEMENT")}
+                                    />
+                                </Box>
+                            }
+                            value={4}
+                        />
                     </Tabs>
                     <FilterFormControl
                         sx={{ minWidth: 120, borderColor: "1px solid red" }}
@@ -170,6 +187,9 @@ const NotificationPage: NextPage = () => {
             </TabPanel>
             <TabPanel value={tab} index={3}>
                 <Reviews filter={filter} />
+            </TabPanel>
+            <TabPanel value={tab} index={4}>
+                <Agreements filter={filter} />
             </TabPanel>
         </>
     );
