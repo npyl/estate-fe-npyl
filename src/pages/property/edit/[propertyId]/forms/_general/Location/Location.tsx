@@ -28,9 +28,9 @@ const LocationSection = () => {
 
     const lat = watch("location.lat");
     const lng = watch("location.lng");
-    const regions = watch("location.region") || [];
-    const cities = watch("location.city") || [];
-    const complexes = watch("location.complex") || [];
+    const region = watch("location.region");
+    const city = watch("location.city");
+    const complex = watch("location.complex");
 
     const mainMarker = useMemo<IMapMarker>(
         () => ({
@@ -47,66 +47,35 @@ const LocationSection = () => {
             setValue("location.lat", lat);
             setValue("location.lng", lng);
         },
-        [setValue]
+        []
     );
 
     const handleRegionChange = useCallback(
-        (regionCodes: string[]) => {
-            setValue("location.region", regionCodes);
-        },
-        [setValue]
-    );
+        (regionCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
+            // update
+            setValue("location.region", regionCode);
+        },
+        []
+    );
     const handleMunicipChange = useCallback(
-        (municipCodes: string[]) => {
-            setValue("location.city", municipCodes);
-        },
-        [setValue]
-    );
+        (municipCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
+            // update
+            setValue("location.city", municipCode);
+        },
+        []
+    );
     const handleNeighbourChange = useCallback(
-        (neighbourCodes: string[]) => {
-            setValue("location.complex", neighbourCodes);
+        (neighbourCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
+
+            // update
+            setValue("location.complex", neighbourCode);
         },
-        [setValue]
-    );
-
-    const getClosest = useCallback(
-        async (lat: number, lng: number) => {
-            const { data: closest, error } = await getClosestQuery({
-                latitude: lat,
-                longitude: lng,
-            });
-
-            if (!closest) {
-                console.error("Error getting closest: ", error);
-                return;
-            }
-
-            // update slice
-            if (closest.level === 2) {
-                setValue("location.region", [closest.parentID.toString()]);
-                setValue("location.city", [closest.areaID.toString()]);
-            } else if (closest.level === 3) {
-                const neighbId = closest.areaID;
-                const municipId = closest.parentID;
-
-                setValue("location.complex", [neighbId.toString()]);
-                setValue("location.city", [municipId.toString()]);
-
-                // For region
-                getHierarchy(municipId)
-                    .unwrap()
-                    .then((municipHierarchy) => {
-                        const regionId = municipHierarchy.parentID;
-                        if (!regionId) return;
-
-                        setValue("location.region", [regionId.toString()]);
-                    })
-                    .catch((reason) => console.log("getHierarchy: ", reason));
-            }
-        },
-        [getClosestQuery, getHierarchy, setValue]
+        []
     );
 
     //
@@ -124,7 +93,7 @@ const LocationSection = () => {
             setValue("location.number", address.number);
             setValue("location.zipCode", address.zipCode);
         },
-        [updateMainMarkerCoordinates, setValue, getClosest]
+        []
     );
 
     const handleMarkerDragEnd = useCallback(
@@ -142,7 +111,7 @@ const LocationSection = () => {
             setValue("location.number", address.number);
             setValue("location.zipCode", address.zipCode);
         },
-        [updateMainMarkerCoordinates, setValue, getClosest]
+        []
     );
 
     const handleSearchSelect = useCallback(
@@ -157,8 +126,43 @@ const LocationSection = () => {
             setValue("location.number", address.number);
             setValue("location.zipCode", address.zipCode);
         },
-        [updateMainMarkerCoordinates, setValue, getClosest]
+        []
     );
+
+    const getClosest = useCallback(async (lat: number, lng: number) => {
+        const { data: closest, error } = await getClosestQuery({
+            latitude: lat,
+            longitude: lng,
+        });
+
+        if (!closest) {
+            console.error("Error getting closest: ", error);
+            return;
+        }
+
+        // update slice
+        if (closest.level === 2) {
+            setValue("location.region", closest.parentID.toString());
+            setValue("location.city", closest.areaID.toString());
+        } else if (closest.level === 3) {
+            const neighbId = closest.areaID;
+            const municipId = closest.parentID;
+
+            setValue("location.complex", neighbId.toString());
+            setValue("location.city", municipId.toString());
+
+            // For region
+            getHierarchy(municipId)
+                .unwrap()
+                .then((municipHierarchy) => {
+                    const regionId = municipHierarchy.parentID;
+                    if (!regionId) return;
+
+                    setValue("location.region", regionId.toString());
+                })
+                .catch((reason) => console.log("getHierarchy: ", reason));
+        }
+    }, []);
 
     return (
         <>
@@ -184,21 +188,21 @@ const LocationSection = () => {
                         <Grid container direction={"row"} spacing={2}>
                             <Grid item xs={4}>
                                 <RegionSelect
-                                    selectedRegions={regions}
+                                    regionCode={region}
                                     onChange={handleRegionChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
                                 <MunicipSelect
-                                    regionCode={regions}
-                                    municipCodes={cities}
+                                    regionCode={region}
+                                    municipCode={city}
                                     onChange={handleMunicipChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
                                 <NeighbourSelect
-                                    municipCode={cities}
-                                    neighbourCodes={complexes}
+                                    municipCode={city}
+                                    neighbourCode={complex}
                                     onChange={handleNeighbourChange}
                                 />
                             </Grid>
@@ -264,4 +268,5 @@ const LocationSection = () => {
         </>
     );
 };
+
 export default LocationSection;

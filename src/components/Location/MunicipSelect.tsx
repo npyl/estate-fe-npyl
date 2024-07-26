@@ -6,7 +6,6 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
-    ListItemText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -14,29 +13,27 @@ import { useGetMunicipalitiesQuery } from "src/services/location";
 
 interface IMunicipSelectProps {
     regionCode: string;
-    municipCodes: string[];
-    onChange: (municipCodes: string[], lat?: number, lng?: number) => void;
+    municipCode: string;
+    onChange: (municipCode: string, lat: number, lng: number) => void;
 }
 
 const MunicipSelect = (props: IMunicipSelectProps) => {
-    const { municipCodes, regionCode, onChange } = props;
+    const { municipCode, regionCode, onChange } = props;
     const { t } = useTranslation();
     const municips =
         useGetMunicipalitiesQuery(+regionCode, { skip: !regionCode }).data ||
         [];
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
-        const selectedCodes = event.target.value as string[];
-        const selectedMunicip = municips.find(
-            (municip) =>
-                municip.areaID.toString() ===
-                selectedCodes[selectedCodes.length - 1] // get the last selected
-        );
+    const handleChange = (event: SelectChangeEvent<string>) => {
+        const municipCode = event.target.value;
+        const selectedSubArea = municips!.filter(
+            (municip) => municip.areaID.toString() === municipCode // filter by id
+        )[0];
 
         onChange(
-            selectedCodes,
-            selectedMunicip ? selectedMunicip.latitude : undefined,
-            selectedMunicip ? selectedMunicip.longitude : undefined
+            municipCode,
+            selectedSubArea.latitude,
+            selectedSubArea.longitude
         );
     };
 
@@ -46,16 +43,13 @@ const MunicipSelect = (props: IMunicipSelectProps) => {
         <FormControl fullWidth>
             <InputLabel>{t("Municipality")}</InputLabel>
             <Select
-                // multiple
-                value={municipCodes}
+                value={municipCode}
                 onChange={handleChange}
                 renderValue={(selected) => {
-                    const selectedMunicips = municips.filter((municip) =>
-                        selected.includes(municip.areaID.toString())
+                    const option = municips.find(
+                        (municip) => municip.areaID.toString() === selected
                     );
-                    return selectedMunicips
-                        .map((municip) => municip.nameGR)
-                        .join(", ");
+                    return option ? option.nameGR : "";
                 }}
                 input={<OutlinedInput label={t("Municipality")} />}
                 MenuProps={{
@@ -68,11 +62,9 @@ const MunicipSelect = (props: IMunicipSelectProps) => {
                         value={option.areaID.toString()}
                     >
                         <Checkbox
-                            checked={municipCodes.includes(
-                                option.areaID.toString()
-                            )}
+                            checked={option.areaID.toString() === municipCode}
                         />
-                        <ListItemText primary={option.nameGR} />
+                        {option.nameGR}
                     </MenuItem>
                 ))}
             </Select>
