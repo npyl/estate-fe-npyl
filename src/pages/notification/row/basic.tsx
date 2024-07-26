@@ -25,6 +25,19 @@ import { ListingNotification } from "@/types/notification/listing";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { t } from "i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import dayjs from "dayjs";
+
+type TourType = "inPerson" | "askQuestion";
+
+const tourTypeMapper: Record<TourType, string> = {
+    inPerson: "In Person",
+    askQuestion: "Ask Question",
+};
+
+// Function to format the date
+const formatTourDate = (dateString: any) => {
+    return dayjs(dateString).format("D MMMM YYYY");
+};
 
 export const getDate = (s?: string) => {
     if (!s) return "";
@@ -187,7 +200,7 @@ const BasicRow = ({
                                         </Typography>
 
                                         {propertyDetails ? (
-                                            <Stack ml={1.5} sx={{}}>
+                                            <Stack ml={1.5}>
                                                 <Link
                                                     href={`/property/${propertyDetails?.id}`}
                                                     passHref
@@ -216,6 +229,28 @@ const BasicRow = ({
                                             </Stack>
                                         ) : null}
                                     </Stack>
+                                    <Box
+                                        display="flex"
+                                        flexDirection="row"
+                                        gap={0.5}
+                                    >
+                                        <Typography variant="body2">
+                                            {
+                                                tourTypeMapper[
+                                                    row?.tourType as TourType
+                                                ]
+                                            }
+                                        </Typography>
+                                        {row?.tourDate ? (
+                                            <Typography variant="body2">
+                                                {formatTourDate(row?.tourDate)}
+                                            </Typography>
+                                        ) : null}
+
+                                        <Typography variant="body2">
+                                            {row?.tourTime}
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             ) : (
                                 <Box
@@ -237,7 +272,11 @@ const BasicRow = ({
                             flexDirection="row"
                             gap={2}
                             alignItems="center"
-                            mt={3}
+                            mt={
+                                row?.tourType || row?.tourDate || row?.tourTime
+                                    ? 0.5
+                                    : 3
+                            }
                         >
                             <Typography
                                 variant="body2"
