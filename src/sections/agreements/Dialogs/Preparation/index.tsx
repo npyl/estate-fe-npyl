@@ -94,7 +94,11 @@ const PreparationDialog: React.FC<Props> = ({
         const { agentSignature, commissionerSignature } = d?.additional || {};
         const signed = !!agentSignature && !!commissionerSignature;
 
-        await cb({ ...d, signed, gdpr } as IAgreementReq);
+        await cb({
+            ...d,
+            signed,
+            gdpr,
+        } as IAgreementReq);
     };
 
     return (

@@ -75,9 +75,7 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     homePhone: customer?.homePhone || "",
     fax: customer?.fax || "",
     idNumber: customer?.idNumber || "",
-    dateOfBirth: customer?.dateOfBirth
-        ? dayjs(customer.dateOfBirth).toISOString()
-        : "",
+    dateOfBirth: customer?.dateOfBirth,
     passportNumber: customer?.passportNumber || "",
 
     // WARN: BE crashes if these are: "" (therefore I have them required)

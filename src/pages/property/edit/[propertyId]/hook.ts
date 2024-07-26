@@ -171,15 +171,9 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
         category: getEnumKey(property?.category?.key),
         parentCategory: getEnumKey(property?.parentCategory?.key),
         rented: notNot(property?.rented),
-        rentalStart: property?.rentalStart
-            ? dayjs(property?.rentalStart).toISOString()
-            : "",
-        rentalEnd: property?.rentalEnd
-            ? dayjs(property?.rentalEnd).toISOString()
-            : "",
-        availableAfter: property?.availableAfter
-            ? dayjs(property.availableAfter).toISOString()
-            : "",
+        rentalStart: property?.rentalStart || dayjs().toISOString(),
+        rentalEnd: property?.rentalEnd || dayjs().toISOString(),
+        availableAfter: property?.availableAfter || dayjs().toISOString(),
         auction: notNot(property?.auction),
         exclusive: notNot(property?.exclusive),
         debatablePrice: notNot(property?.debatablePrice),

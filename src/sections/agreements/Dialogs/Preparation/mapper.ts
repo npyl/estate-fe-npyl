@@ -1,5 +1,6 @@
 import { IAgreement, IAgreementReq } from "@/types/agreements";
 import { TLanguageType } from "@/types/translation";
+import toLocalDate from "@/utils/toLocalDate";
 import dayjs from "dayjs";
 
 const MANAGER = {
@@ -79,11 +80,12 @@ export const getValues = (
         draft: draft || false,
         keys: keys || false,
         title: title || "",
-        startingDate: startingDate || dayjs().toISOString(),
+        startingDate: startingDate || toLocalDate(dayjs().toISOString()),
         // Initial value (12 months ahead from today)
         expirationDate:
-            expirationDate || dayjs().add(12, "month").toISOString(),
-        availableAfter: availableAfter || dayjs().toISOString(),
+            expirationDate ||
+            toLocalDate(dayjs().add(12, "month").toISOString()),
+        availableAfter: availableAfter || toLocalDate(dayjs().toISOString()),
         // ...
         manager: {
             fullName: manager?.fullName || "",
@@ -133,7 +135,7 @@ export const getValues = (
             address: gdpr?.address || "",
         },
         additional: {
-            date: additional?.date || "",
+            date: additional?.date || toLocalDate(dayjs().toISOString()),
             commissionerSignature: additional?.commissionerSignature || "",
             agentSignature: additional?.agentSignature || "",
         },

@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import RHFPropertySearch from "./RHFSearch";
 import PropertyFiller from "./PropertyFiller";
 import SelectedProperty from "./SelectedProperty";
+import toLocalDate from "@/utils/toLocalDate";
 
 // ------------------------------------------------------------------------
 
@@ -22,9 +23,12 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
     const { setValue } = useFormContext();
 
     // Everytime startingDate changes, update expirationDate as +12 months
-    const handleStartingChange = (value: dayjs.Dayjs) => {
-        setValue("availableAfter", value);
-        setValue("expirationDate", value.add(12, "month"));
+    const handleStartingChange = (v: string) => {
+        setValue("availableAfter", v);
+        setValue(
+            "expirationDate",
+            toLocalDate(dayjs(v, "YYYY-MM-DD").add(12, "month").toISOString())
+        );
     };
 
     return (
@@ -43,6 +47,7 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
                     <RHFDatePicker
                         name="startingDate"
                         label="Starting Date"
+                        disablePast
                         onChange={handleStartingChange}
                     />
                 </Grid>
@@ -50,12 +55,14 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
                     <RHFDatePicker
                         name="expirationDate"
                         label="Expiration Date"
+                        disablePast
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="availableAfter"
                         label="Available After"
+                        disablePast
                     />
                 </Grid>
             </Grid>
