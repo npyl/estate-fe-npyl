@@ -6,7 +6,6 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
-    ListItemText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -14,30 +13,28 @@ import { useGetNeighbourhoodsQuery } from "src/services/location";
 
 interface NeighbourSelectProps {
     municipCode: string;
-    neighbourCodes: string[];
-    onChange: (neighbourCodes: string[], lat?: number, lng?: number) => void;
+    neighbourCode: string;
+    onChange: (neighbourCode: string, lat: number, lng: number) => void;
 }
 
 const NeighbourSelect = (props: NeighbourSelectProps) => {
-    const { municipCode, neighbourCodes, onChange } = props;
+    const { municipCode, neighbourCode, onChange } = props;
     const { t } = useTranslation();
     const neighbours =
         useGetNeighbourhoodsQuery(+municipCode, {
             skip: !municipCode,
         }).data || [];
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
-        const selectedCodes = event.target.value as string[];
-        const selectedNeighbour = neighbours.find(
-            (neighbour) =>
-                neighbour.areaID.toString() ===
-                selectedCodes[selectedCodes.length - 1] // get the last selected
-        );
+    const handleChange = (event: SelectChangeEvent<string>) => {
+        const neighbourCode = event.target.value;
+        const selectedNeighbour = neighbours!.filter(
+            (neighbour) => neighbour.areaID.toString() === neighbourCode // filter by id
+        )[0];
 
         onChange(
-            selectedCodes,
-            selectedNeighbour ? selectedNeighbour.latitude : undefined,
-            selectedNeighbour ? selectedNeighbour.longitude : undefined
+            neighbourCode,
+            selectedNeighbour.latitude,
+            selectedNeighbour.longitude
         );
     };
 
@@ -47,16 +44,13 @@ const NeighbourSelect = (props: NeighbourSelectProps) => {
         <FormControl fullWidth>
             <InputLabel>{t("Neighborhood")}</InputLabel>
             <Select
-                // multiple
-                value={neighbourCodes}
+                value={neighbourCode}
                 onChange={handleChange}
                 renderValue={(selected) => {
-                    const selectedNeighbours = neighbours.filter((neighbour) =>
-                        selected.includes(neighbour.areaID.toString())
+                    const option = neighbours.find(
+                        (neighbour) => neighbour.areaID.toString() === selected
                     );
-                    return selectedNeighbours
-                        .map((neighbour) => neighbour.nameGR)
-                        .join(", ");
+                    return option ? option.nameGR : "";
                 }}
                 input={<OutlinedInput label={t("Neighborhood")} />}
                 MenuProps={{
@@ -69,11 +63,9 @@ const NeighbourSelect = (props: NeighbourSelectProps) => {
                         value={option.areaID.toString()}
                     >
                         <Checkbox
-                            checked={neighbourCodes.includes(
-                                option.areaID.toString()
-                            )}
+                            checked={option.areaID.toString() === neighbourCode}
                         />
-                        <ListItemText primary={option.nameGR} />
+                        {option.nameGR}
                     </MenuItem>
                 ))}
             </Select>
