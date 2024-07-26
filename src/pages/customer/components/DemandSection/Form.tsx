@@ -25,6 +25,22 @@ interface DemandFormProps {
 const leaserName = "leaser";
 const buyerName = "buyer";
 
+// Function to generate the options for each field
+const generateRange = (start: number, end: number, step: number = 1) => {
+    const range = [];
+    for (let i = start; i <= end; i += step) {
+        range.push(i);
+    }
+    return range;
+};
+
+const priceOptions = generateRange(10000, 1000000, 10000);
+const sizeOptions = generateRange(0, 300, 10);
+const plotSizeOptions = generateRange(0, 500, 10);
+const bedroomOptions = generateRange(0, 10, 1);
+const bathroomOptions = generateRange(0, 10, 1);
+const yearOptions = generateRange(1960, 2024);
+
 const useDemandEnums = () => {
     const enums = useGlobals();
 
@@ -216,6 +232,7 @@ const getSLIDERS = (
         demandIndex={index}
         adornment="€"
         step={stepValue}
+        options={priceOptions}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -227,6 +244,7 @@ const getSLIDERS = (
         demandIndex={index}
         adornment="m²"
         step={10}
+        options={sizeOptions}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -238,6 +256,7 @@ const getSLIDERS = (
         demandIndex={index}
         adornment="m²"
         step={10}
+        options={plotSizeOptions}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -247,6 +266,8 @@ const getSLIDERS = (
         defaultMin={0}
         defaultMax={10}
         demandIndex={index}
+        step={1}
+        options={bedroomOptions}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -256,6 +277,8 @@ const getSLIDERS = (
         defaultMin={0}
         defaultMax={10}
         demandIndex={index}
+        step={1}
+        options={bathroomOptions}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -265,6 +288,7 @@ const getSLIDERS = (
         defaultMin={1960}
         defaultMax={new Date().getFullYear()}
         demandIndex={index}
+        options={yearOptions}
     />,
     // eslint-disable-next-line react/jsx-key
     <FloorSlider onDemandFilterName={onDemandFilterName} />,

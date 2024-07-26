@@ -1,6 +1,7 @@
+import { createSvgIcon } from "@mui/material";
 import React from "react";
 
-const UnViewedNotificationIcon = () => (
+const UnViewedNotificationIcon = createSvgIcon(
     <svg
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
@@ -43,11 +44,12 @@ const UnViewedNotificationIcon = () => (
             textAnchor="none"
             style={{ mixBlendMode: "normal" }}
         >
-            <g transform="scale(8,8)">
+            <g transform="scale(6,6)">
                 <circle cx="16" cy="16" r="16"></circle>
             </g>
         </g>
-    </svg>
+    </svg>,
+    "unViewedIcon"
 );
 
 export default UnViewedNotificationIcon;

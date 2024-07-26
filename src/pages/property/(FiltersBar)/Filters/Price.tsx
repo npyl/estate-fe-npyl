@@ -77,13 +77,30 @@ const PriceSelect = ({ type }: Props) => {
         setOpen(!open);
     };
 
+    //Code for deleting the '0' in minValue textField when a number is typed
     const handleInputChangeMin = (event: any) => {
-        const newValue = event.target.value;
-        dispatch(setMinValue(isNaN(newValue) ? "" : newValue));
+        let newValue = event.target.value;
+        if (newValue === "" || isNaN(newValue)) {
+            dispatch(setMinValue(""));
+        } else {
+            if (valueMin === 0) {
+                newValue = newValue.slice(-1);
+            }
+            dispatch(setMinValue(newValue));
+        }
     };
+
+    //Code for deleting the '0' in maxValue textField when a number is typed
     const handleInputChangeMax = (event: any) => {
-        const newValue = event.target.value;
-        dispatch(setMaxValue(isNaN(newValue) ? "" : newValue));
+        let newValue = event.target.value;
+        if (newValue === "" || isNaN(newValue)) {
+            dispatch(setMaxValue(""));
+        } else {
+            if (valueMax === 0) {
+                newValue = newValue.slice(-1);
+            }
+            dispatch(setMaxValue(newValue));
+        }
     };
 
     const values = useMemo(() => {

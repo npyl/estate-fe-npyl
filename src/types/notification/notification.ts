@@ -1,3 +1,5 @@
+import { IPropertyImage } from "../file";
+import { KeyValue } from "../KeyValue";
 import { ListingNotification } from "./listing";
 import IWorkForUs from "./workForUs";
 
@@ -14,15 +16,54 @@ export interface ContactNotificationPOST {
 }
 
 export type NotificationType =
-    | "listing"
-    | "contact"
-    | "tour"
-    | "workForUs"
-    | "review";
+    | "LISTING"
+    | "CONTACT"
+    | "TOUR"
+    | "WORK_FOR_US"
+    | "REVIEW";
+
+interface IPropertyLocation {
+    street: string;
+    number: string;
+    city: string;
+    region: string;
+}
+
+export interface IPropertyForNotification {
+    id: number;
+    code: string;
+    category: KeyValue;
+    state: KeyValue;
+    area: number;
+    price: number;
+    thumbnail: string;
+    regionEN: string;
+    regionGR: string;
+    complexEN: string;
+    complexGR: string;
+    cityEN: string;
+    cityGR: string;
+    country: string;
+    street: string;
+    number: string;
+    descriptions?: IPropertyDescriptionsForNotification;
+    type: KeyValue;
+}
+
+interface DescriptionType {
+    title: string;
+    desription: string;
+}
+export interface IPropertyDescriptionsForNotification {
+    el: DescriptionType;
+    en: DescriptionType;
+}
 
 export interface ContactNotification {
     id?: number;
-
+    // propertyId: number;
+    propertyImage: IPropertyImage;
+    location: IPropertyLocation;
     customerName: string;
     customerEmail: string;
     customerMobile: string;
@@ -33,8 +74,39 @@ export interface ContactNotification {
     tourType: string;
     notificationDate: string;
     viewed: boolean;
-
     notificationType: NotificationType;
+    property?: IPropertyForNotification;
+    descriptions?: IPropertyDescriptionsForNotification;
+    type: KeyValue;
+
+    reviewDetails: ReviewDetails;
+}
+
+export interface INotificationResponse {
+    customerEmail: string;
+    customerMobile: string;
+    customerName: string;
+    id?: number;
+    listingDetails: ListingNotification;
+    message: string;
+    notificationDate: string;
+    notificationType: NotificationType;
+    propertyCode: string;
+    reviewDetails: ReviewDetails;
+    tourDate: string;
+    tourTime: string;
+    tourType: string;
+    type: KeyValue;
+    viewed: boolean;
+    workForUsDetails: IWorkForUs;
+    propertyImage: IPropertyImage;
+    location: IPropertyLocation;
+    propertyId: number;
+}
+
+export interface INotificationFilter {
+    types: NotificationType[];
+    viewed?: boolean;
 }
 
 interface ReviewDetails {

@@ -1,15 +1,11 @@
-import {
-    Grid,
-    InputAdornment,
-    SliderProps,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { RHFDoubleSlider, RHFTextField } from "src/components/hook-form";
+import { useFormContext, Controller } from "react-hook-form";
+import RHFDoubleSlider from "src/components/hook-form/RHFDoubleSlider"; // Adjust the import as needed
+import RHFSelectDemandForm from "@/components/hook-form/RHFSelectDemandForm";
 
-type DemandFormSliderProps = Omit<SliderProps, "min" | "max"> & {
+type DemandFormSliderProps = {
     label: any;
     min: string;
     max: string;
@@ -18,6 +14,7 @@ type DemandFormSliderProps = Omit<SliderProps, "min" | "max"> & {
     demandIndex: number;
     adornment?: string;
     step?: number;
+    options?: number[];
 };
 
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
@@ -29,57 +26,64 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     demandIndex,
     adornment,
     step = 1,
+    options = [],
 }) => {
     const { t } = useTranslation();
+    const { setValue, getValues } = useFormContext();
 
     const minName = `demands[${demandIndex}].filters.${min}`;
     const maxName = `demands[${demandIndex}].filters.${max}`;
+
+    const handleSliderChange = (name: string, value: number | number[]) => {
+        if (Array.isArray(value)) {
+            const [minValue, maxValue] = value;
+            setValue(minName, minValue === defaultMin ? null : minValue);
+            setValue(maxName, maxValue === defaultMin ? null : maxValue);
+        }
+    };
 
     return (
         <>
             <Typography variant="h6">{label}</Typography>
             <Stack mt={1} px={1}>
-                <RHFDoubleSlider
-                    orientation="horizontal"
-                    minName={minName}
-                    maxName={maxName}
-                    valueLabelDisplay="auto"
-                    min={defaultMin}
-                    max={defaultMax}
+                <Controller
+                    name={minName}
+                    render={({ field }) => (
+                        <RHFDoubleSlider
+                            {...field}
+                            minName={minName}
+                            maxName={maxName}
+                            min={defaultMin}
+                            max={defaultMax}
+                            step={step}
+                            value={[
+                                getValues(minName) ?? defaultMin,
+                                getValues(maxName) ?? defaultMax,
+                            ]}
+                            onChange={(event, value) =>
+                                handleSliderChange(minName, value)
+                            }
+                            valueLabelDisplay="auto"
+                        />
+                    )}
                 />
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <RHFTextField
+                        <RHFSelectDemandForm
                             label={t("Min")}
                             name={minName}
-                            type="number"
-                            InputProps={{
-                                endAdornment: adornment ? (
-                                    <InputAdornment position="end">
-                                        {adornment}
-                                    </InputAdornment>
-                                ) : null,
-                                inputProps: {
-                                    step,
-                                },
-                            }}
+                            adornment={adornment}
+                            options={options}
+                            allowClear
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <RHFTextField
+                        <RHFSelectDemandForm
                             label={t("Max")}
                             name={maxName}
-                            type="number"
-                            InputProps={{
-                                endAdornment: adornment ? (
-                                    <InputAdornment position="end">
-                                        {adornment}
-                                    </InputAdornment>
-                                ) : null,
-                                inputProps: {
-                                    step,
-                                },
-                            }}
+                            adornment={adornment}
+                            options={options}
+                            allowClear
                         />
                     </Grid>
                 </Grid>

@@ -1,13 +1,19 @@
 import { SpaceBetween } from "@/components/styled";
 import { Box, Grid, Typography } from "@mui/material";
-
-import { FC, Suspense, lazy, useCallback, useMemo, useState } from "react";
+import {
+    FC,
+    Suspense,
+    lazy,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import MunicipSelect from "src/components/Location/MunicipSelect";
-import NeighbourSelect from "src/components/Location/NeighbourSelect";
-import RegionSelect from "src/components/Location/RegionSelect";
-
+import MunicipSelectDemands from "src/components/Location/MunicipSelectDemands";
+import NeighbourSelectDemands from "src/components/Location/NeighbourSelectDemands";
+import RegionSelectDemands from "src/components/Location/RegionSelectDemands";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
@@ -18,7 +24,6 @@ import {
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
-
 const NextShapeCenter = lazy(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -55,6 +60,25 @@ const AreaOfPreference: FC<Props> = ({
     const cities = (watch(citiesName) as string[]) || [];
     const complexes = (watch(complexesName) as string[]) || [];
     const shapes = (watch(shapesName) as string[]) || [];
+
+    // Initialize state from watched values to hold the actual valies of Regions , Municipalities and Neighbourhoods
+    const [selectedRegions, setSelectedRegions] = useState<string[]>(regions);
+    const [selectedMunicipalities, setSelectedMunicipalities] =
+        useState<string[]>(cities);
+    const [selectedNeighbours, setSelectedNeighbours] =
+        useState<string[]>(complexes);
+
+    useEffect(() => {
+        setSelectedRegions(regions);
+    }, [regions]);
+
+    useEffect(() => {
+        setSelectedMunicipalities(cities);
+    }, [cities]);
+
+    useEffect(() => {
+        setSelectedNeighbours(complexes);
+    }, [complexes]);
 
     // current demand's decoded shapes
     const shapeData = useMemo(
@@ -173,41 +197,56 @@ const AreaOfPreference: FC<Props> = ({
     };
 
     const handleRegionChange = useCallback(
-        (regionCode: string, lat: number, lng: number) => {
-            updateMainMarkerCoordinates(lat, lng);
-            setZoom(ZOOM_LEVELS.REGION);
-
-            // update
-            setValue(regionsName, [regionCode]);
+        (regions: string[]) => {
+            setSelectedRegions(regions);
+            setValue(regionsName, regions); // Update form value
         },
         [regionsName]
     );
-    const handleMunicipChange = useCallback(
-        (municipCode: string, lat: number, lng: number) => {
-            updateMainMarkerCoordinates(lat, lng);
-            setZoom(ZOOM_LEVELS.MUNICIP);
 
-            // update
-            setValue(citiesName, [municipCode]);
+    const handleMunicipChange = useCallback(
+        (municipCodes: string[], lat?: number, lng?: number) => {
+            if (lat && lng) {
+                updateMainMarkerCoordinates(lat, lng);
+                setZoom(ZOOM_LEVELS.MUNICIP);
+            }
+
+            // update form value
+            setSelectedMunicipalities(municipCodes);
+            setValue(citiesName, municipCodes);
         },
         [citiesName]
     );
-    const handleNeighbourChange = useCallback(
-        (neighbourCode: string, lat: number, lng: number) => {
-            updateMainMarkerCoordinates(lat, lng);
-            setZoom(ZOOM_LEVELS.NEIGHB);
 
-            // updates
-            setValue(complexesName, [neighbourCode]);
+    const handleNeighbourChange = useCallback(
+        (neighbourCodes: string[], lat?: number, lng?: number) => {
+            if (lat && lng) {
+                updateMainMarkerCoordinates(lat, lng);
+                setZoom(ZOOM_LEVELS.NEIGHB);
+            }
+
+            // update form value
+            setSelectedNeighbours(neighbourCodes);
+            setValue(complexesName, neighbourCodes);
         },
         [complexesName]
     );
 
-    // TODO: support multiple?
-    const regionCode = useMemo(() => regions?.at(0) || "", [regions]);
-    const cityCode = useMemo(() => cities?.at(0) || "", [cities]);
-    const complexCode = useMemo(() => complexes.at(0) || "", [complexes]);
-
+    const regionCode = useMemo(
+        () => selectedRegions.join(","),
+        [selectedRegions]
+    );
+    const municipCodes = useMemo(
+        () => selectedMunicipalities,
+        [selectedMunicipalities]
+    );
+    const neighbourCodes = useMemo(
+        () => selectedNeighbours,
+        [selectedNeighbours]
+    );
+    console.log(`selected regions: ${selectedRegions}`);
+    console.log(`selected cities: ${selectedMunicipalities}`);
+    console.log(`selected complexes: ${selectedNeighbours}`);
     return (
         <>
             <SpaceBetween py={1} alignItems="center">
@@ -248,22 +287,22 @@ const AreaOfPreference: FC<Props> = ({
 
             <Grid container spacing={2} p={1}>
                 <Grid item xs={4}>
-                    <RegionSelect
-                        regionCode={regionCode || ""}
+                    <RegionSelectDemands
+                        selectedRegions={selectedRegions}
                         onChange={handleRegionChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <MunicipSelect
-                        regionCode={regionCode || ""}
-                        municipCode={cityCode || ""}
+                    <MunicipSelectDemands
+                        regionCodes={selectedRegions}
+                        municipCodes={municipCodes || []}
                         onChange={handleMunicipChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <NeighbourSelect
-                        municipCode={cityCode || ""}
-                        neighbourCode={complexCode || ""}
+                    <NeighbourSelectDemands
+                        municipCodes={selectedMunicipalities}
+                        neighbourCodes={neighbourCodes || []}
                         onChange={handleNeighbourChange}
                     />
                 </Grid>

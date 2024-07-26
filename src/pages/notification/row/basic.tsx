@@ -1,15 +1,66 @@
 import {
-    KeyboardArrowDown as KeyboardArrowDownIcon,
-    KeyboardArrowUp as KeyboardArrowUpIcon,
-} from "@mui/icons-material";
-import { Box, IconButton, TableCell, TableRow } from "@mui/material";
-import Iconify from "src/components/iconify";
-import { ContactNotification } from "src/types/notification";
-import ViewedNotificationIcon from "../components/ViewedNotificationIcon";
-import UnViewedNotificationIcon from "../components/UnViewedNotificationIcon";
+    Box,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Stack,
+    TableCell,
+    TableRow,
+    Typography,
+} from "@mui/material";
+import { ContactNotification, IWorkForUs } from "src/types/notification";
+import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
+import Link from "next/link";
+import { LocalPhone } from "@mui/icons-material";
+import EmailIcon from "@mui/icons-material/Email";
+import { useRouter } from "next/router";
+import {
+    format,
+    isToday,
+    isYesterday,
+    isThisWeek,
+    differenceInDays,
+} from "date-fns";
+import { ListingNotification } from "@/types/notification/listing";
+import { NormalBadge } from "@/components/PropertyCard/styled";
+import { t } from "i18next";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import dayjs from "dayjs";
 
-export const getDate = (s?: string) =>
-    s ? new Date(s).toISOString().split("T")[0] : "";
+type TourType = "inPerson" | "askQuestion";
+
+const tourTypeMapper: Record<TourType, string> = {
+    inPerson: "In Person",
+    askQuestion: "Ask Question",
+};
+
+// Function to format the date
+const formatTourDate = (dateString: any) => {
+    return dayjs(dateString).format("D MMMM YYYY");
+};
+
+export const getDate = (s?: string) => {
+    if (!s) return "";
+    const date = new Date(s);
+    const now = new Date();
+
+    if (isToday(date)) {
+        return "Today";
+    }
+    if (isYesterday(date)) {
+        return "Yesterday";
+    }
+    if (isThisWeek(date, { weekStartsOn: 1 })) {
+        // If the date is within this week but not today or yesterday
+        return format(date, "EEEE"); // e.g., Monday, Tuesday
+    }
+    if (differenceInDays(now, date) <= 7) {
+        // If the date is within the last seven days but not within this week
+        return format(date, "EEEE"); // e.g., Monday, Tuesday
+    }
+
+    return format(date, "d MMMM yyyy"); // e.g., 11 July 2024
+};
 
 interface BasicRowProps {
     row: ContactNotification;
@@ -19,68 +70,277 @@ interface BasicRowProps {
     onRemove: () => void;
     onClick: () => void;
     loading: boolean;
+    filter: any;
+    contactDetails?: ListingNotification;
+    workDetails?: IWorkForUs;
 }
 
 const BasicRow = ({
     variant = "dontShowType",
     row,
-    open,
-    onToggle,
-    onRemove,
-    onClick,
-    loading,
+    filter,
+    contactDetails,
+    workDetails,
 }: BasicRowProps) => {
-    console.log("Row :", row.id); // Log the row.viewed value
+    const router = useRouter();
+    const [toggleNotificationViewedStatus] =
+        useToggleNotificationViewedStatusMutation();
 
+    const handleToggleRead = () => {
+        if (filter === "Viewed") return;
+        if (filter === "NotViewed") return;
+        toggleNotificationViewedStatus(row.id!);
+    };
+
+    const handleStatusChange = (
+        event: SelectChangeEvent<"Viewed" | "Not Viewed">
+    ) => {
+        event.stopPropagation(); // Prevent row click event
+        handleToggleRead();
+    };
+
+    const handleRowClick = () => {
+        router.push(`/notification/row/${row.id}`);
+        if (!row.viewed) {
+            toggleNotificationViewedStatus(row.id!);
+        }
+    };
+
+    const handlePropertyCodeClick = (event: React.MouseEvent) => {
+        event.stopPropagation(); // Prevent row click event
+    };
+
+    const propertyDetails = row?.property;
     return (
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }} onClick={onClick}>
+        <TableRow
+            sx={{
+                "& > *": { borderBottom: "unset" },
+                "&:hover": {
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer",
+                },
+                backgroundColor: !row.viewed ? "neutral.100" : "transparent",
+                border: "1px solid lightgray",
+            }}
+            onClick={handleRowClick}
+        >
             <TableCell>
-                <Box display="flex" alignItems="center" gap={1}>
-                    <IconButton size="small" onClick={onToggle}>
-                        {open ? (
-                            <KeyboardArrowUpIcon />
-                        ) : (
-                            <KeyboardArrowDownIcon />
-                        )}
-                    </IconButton>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={2}
+                    width="100%"
+                >
+                    {propertyDetails?.thumbnail || contactDetails ? (
+                        <Box>
+                            <img
+                                src={
+                                    propertyDetails?.thumbnail ||
+                                    contactDetails?.photo ||
+                                    ""
+                                }
+                                alt={"property Image"}
+                                style={{
+                                    width: 180,
+                                    height: 120,
+                                    borderRadius: 8,
+                                }}
+                            />
+                        </Box>
+                    ) : null}
 
-                    {row.viewed ? (
-                        <ViewedNotificationIcon key={`viewed-${row.id}`} />
-                    ) : (
-                        <UnViewedNotificationIcon key={`unviewed-${row.id}`} />
-                    )}
-                </Box>
-            </TableCell>
+                    <Stack direction="column">
+                        <Box>
+                            <Typography fontWeight={600}>
+                                {row.customerName}
+                            </Typography>
+                            {propertyDetails || contactDetails ? (
+                                <Box flexDirection="row">
+                                    <Typography variant="body2">
+                                        {propertyDetails?.category?.value ||
+                                            contactDetails?.category
+                                                ?.value}{" "}
+                                        {t(` for `)}
+                                        {propertyDetails?.state?.value ||
+                                            contactDetails?.state?.value}{" "}
+                                        {propertyDetails?.area ||
+                                            contactDetails?.area}{" "}
+                                        m² |{" "}
+                                        {propertyDetails?.price ||
+                                            contactDetails?.price}{" "}
+                                        €
+                                        {propertyDetails?.state?.key === "RENT"
+                                            ? t(`/month`)
+                                            : null}
+                                    </Typography>
+                                </Box>
+                            ) : (
+                                <Box>
+                                    <Typography>{row.message}</Typography>
+                                </Box>
+                            )}
+                            {propertyDetails || contactDetails ? (
+                                <Box flexDirection="row">
+                                    <Stack
+                                        direction="row"
+                                        gap={0.5}
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="body2">
+                                            {propertyDetails?.complexGR ||
+                                            contactDetails?.location?.complex
+                                                ? `${
+                                                      propertyDetails?.complexGR ||
+                                                      contactDetails?.location
+                                                          ?.complex
+                                                  }, `
+                                                : ""}
+                                            {propertyDetails?.cityGR ||
+                                                contactDetails?.location?.city}
+                                        </Typography>
 
-            <TableCell
-                sx={{
-                    textOverflow: "ellipsis",
-                    overflow: "auto",
-                    alignItems: "center",
-                    gap: 1,
-                }}
-                component="th"
-                scope="row"
-            >
-                {row.customerName}
+                                        {propertyDetails ? (
+                                            <Stack ml={1.5}>
+                                                <Link
+                                                    href={`/property/${propertyDetails?.id}`}
+                                                    passHref
+                                                    style={{
+                                                        textDecoration: "none",
+                                                    }}
+                                                >
+                                                    <NormalBadge
+                                                        name={`${t("Code")}: ${
+                                                            propertyDetails?.code ||
+                                                            ""
+                                                        }`}
+                                                        color={"#ffcc00"}
+                                                        sx={{
+                                                            color: "#854D0E",
+                                                            "&:hover": {
+                                                                backgroundColor:
+                                                                    "#e6b800",
+                                                            },
+                                                        }}
+                                                        onClick={
+                                                            handlePropertyCodeClick
+                                                        }
+                                                    />
+                                                </Link>
+                                            </Stack>
+                                        ) : null}
+                                    </Stack>
+                                    <Box
+                                        display="flex"
+                                        flexDirection="row"
+                                        gap={0.5}
+                                    >
+                                        <Typography variant="body2">
+                                            {
+                                                tourTypeMapper[
+                                                    row?.tourType as TourType
+                                                ]
+                                            }
+                                        </Typography>
+                                        {row?.tourDate ? (
+                                            <Typography variant="body2">
+                                                {formatTourDate(row?.tourDate)}
+                                            </Typography>
+                                        ) : null}
+
+                                        <Typography variant="body2">
+                                            {row?.tourTime}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            ) : (
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mt={0.5}
+                                >
+                                    <LocationOnOutlinedIcon fontSize="small" />{" "}
+                                    {workDetails?.workRegion ? (
+                                        <Typography>
+                                            {workDetails?.workRegion?.nameGR}
+                                        </Typography>
+                                    ) : null}
+                                </Box>
+                            )}{" "}
+                        </Box>
+                        <Stack
+                            flexDirection="row"
+                            gap={2}
+                            alignItems="center"
+                            mt={
+                                row?.tourType || row?.tourDate || row?.tourTime
+                                    ? 0.5
+                                    : 3
+                            }
+                        >
+                            <Typography
+                                variant="body2"
+                                display="flex"
+                                alignItems="center"
+                            >
+                                <LocalPhone
+                                    sx={{
+                                        color: "black",
+                                        fontSize: "medium",
+                                        mr: 1,
+                                    }}
+                                />
+                                {row.customerMobile}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                display="flex"
+                                alignItems="center"
+                            >
+                                <EmailIcon
+                                    sx={{
+                                        color: "black",
+                                        fontSize: "medium",
+                                        mr: 1,
+                                    }}
+                                />
+                                {row.customerEmail}
+                            </Typography>
+                        </Stack>
+                    </Stack>
+                </Stack>
             </TableCell>
-            <TableCell
-                sx={{ textOverflow: "ellipsis", overflow: "auto" }}
-                align="center"
-            >
-                {row.customerEmail}
-            </TableCell>
-            <TableCell align="center">{row.customerMobile}</TableCell>
-            <TableCell align="right" sx={{ textWrap: "nowrap" }}>
-                {getDate(row.notificationDate)}
-            </TableCell>
-            {variant === "showType" ? (
-                <TableCell align="right">{row.tourType}</TableCell>
-            ) : null}
             <TableCell align="right">
-                <IconButton onClick={onRemove} disabled={loading}>
-                    <Iconify icon={"eva:trash-2-outline"} />
-                </IconButton>
+                <Select
+                    value={row.viewed ? "Viewed" : "Not Viewed"}
+                    onChange={handleStatusChange}
+                    displayEmpty
+                    onClick={(e) => e.stopPropagation()}
+                    sx={{
+                        color: "black",
+                        fontWeight: row.viewed ? "normal" : "bold",
+                        "& .MuiSelect-select": {
+                            padding: 0,
+                        },
+                        "&:before": {
+                            border: 0,
+                        },
+                        "&:after": {
+                            border: 0,
+                        },
+                        "& .MuiSvgIcon-root": {
+                            right: 0,
+                        },
+                    }}
+                    variant="standard"
+                    disableUnderline
+                >
+                    <MenuItem value="Viewed">{t("Viewed")}</MenuItem>
+                    <MenuItem value="Not Viewed">{t(`Not Viewed`)}</MenuItem>
+                </Select>
+                <Typography variant="body2" color="text.secondary">
+                    {getDate(row.notificationDate)}
+                </Typography>
             </TableCell>
         </TableRow>
     );

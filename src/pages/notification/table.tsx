@@ -5,6 +5,7 @@ import {
     TableCell,
     TableContainer,
     TableHead,
+    TablePagination,
     TableRow,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -21,9 +22,16 @@ import { useMediaQuery } from "@mui/material";
 interface TableProps {
     variant: NotificationType;
     rows: ContactNotification[];
-    onRemove: (index?: number) => void;
+    sortBy: string;
+    direction: string;
+    onRemove: (index: number) => void;
     loading: boolean;
-    onViewNotification: (notification: ContactNotification) => void;
+    page: number;
+    pageSize: number;
+    onPageChange: (event: unknown, newPage: number) => void;
+    onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    totalRows: number;
+    filter: any;
 }
 
 const Table = ({
@@ -31,10 +39,15 @@ const Table = ({
     rows,
     onRemove,
     loading,
-    onViewNotification,
+    filter,
+    page,
+    pageSize,
+    onPageChange,
+    onRowsPerPageChange,
+    totalRows,
 }: TableProps) => {
     const { t } = useTranslation();
-
+    console.log(filter);
     const COLUMNS: string[] = useMemo(
         () => [
             t("Name"),
@@ -46,11 +59,11 @@ const Table = ({
     );
 
     const RowComponent =
-        variant === "listing"
+        variant === "LISTING"
             ? ListingRow
-            : variant === "workForUs"
+            : variant === "WORK_FOR_US"
             ? WorkApplicationRow
-            : variant === "review"
+            : variant === "REVIEW"
             ? ReviewRow
             : TourRow;
 
@@ -75,55 +88,28 @@ const Table = ({
                     },
                 }}
             >
-                <TableHead sx={{ width: "100%" }}>
-                    <TableRow>
-                        <TableCell />
-                        {COLUMNS.map((c, i) => (
-                            <TableCell
-                                align={
-                                    i === 0
-                                        ? "left"
-                                        : i === COLUMNS.length - 1
-                                        ? "right"
-                                        : "center"
-                                }
-                                key={i}
-                            >
-                                {t(c)}
-                            </TableCell>
-                        ))}
-
-                        {variant === "contact" || variant === "tour" ? (
-                            <TableCell align="center"> {t("Type")}</TableCell>
-                        ) : null}
-
-                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
-                        {variant === "contact" ||
-                        variant === "tour" ||
-                        variant === "listing" ||
-                        variant === "review" ||
-                        variant === "workForUs" ? (
-                            <TableCell align="center"> {""}</TableCell>
-                        ) : null}
-
-                        {variant === "review" ? (
-                            <TableCell align="center"> {""}</TableCell>
-                        ) : null}
-                        {/* CODE HERE FOR FULL WIDTH OF TABLEHEAD  */}
-                    </TableRow>
-                </TableHead>
                 <TableBody>
                     {rows.map((row, i) => (
                         <RowComponent
                             key={i}
                             row={row}
-                            onRemove={() => onRemove(row.id)}
-                            onClick={() => onViewNotification(row)}
+                            onRemove={() => onRemove(row.id || 0)}
                             loading={loading}
+                            filter={filter}
+                            onClick={() => {}}
                         />
                     ))}
                 </TableBody>
             </MuiTable>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={totalRows}
+                rowsPerPage={pageSize}
+                page={page}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+            />
         </TableContainer>
     );
 };

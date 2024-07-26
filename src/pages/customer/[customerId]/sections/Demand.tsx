@@ -9,10 +9,15 @@ import { useGetLabelsQuery } from "src/services/labels";
 import AreaOfPreference from "./AreaOfPreference";
 import FeaturesDemandSection from "./FeaturesDemand";
 import useGetCustomer from "@/hooks/customer";
+import AreaOfPreferenceDemands from "./AreaOfPreferenceDemands";
 
 interface DemandSectionProps {
     index: number;
 }
+
+const formatPrice = (price: any) => {
+    return new Intl.NumberFormat("de-DE").format(price);
+};
 
 const isEmptyOrComma = (str: string | string[]): boolean => {
     if (typeof str === "string") {
@@ -26,8 +31,7 @@ const isEmptyOrComma = (str: string | string[]): boolean => {
     }
     return true;
 };
-
-const getRangeDisplayValue = (
+const getRangeDisplayValueForYearOfConstruction = (
     min: number | null | undefined,
     max: number | null | undefined
 ) => {
@@ -35,6 +39,21 @@ const getRangeDisplayValue = (
 
     const minValue = min !== null && min !== undefined ? min : 0;
     const maxValue = max !== null && max !== undefined ? max : 0;
+    return `${minValue} - ${maxValue}`;
+};
+
+const getRangeDisplayValue = (
+    min: number | null | undefined,
+    max: number | null | undefined
+) => {
+    if (
+        (min === null || min === undefined) &&
+        (max === null || max === undefined)
+    )
+        return "-";
+
+    const minValue = min !== null && min !== undefined ? formatPrice(min) : 0;
+    const maxValue = max !== null && max !== undefined ? formatPrice(max) : 0;
     return `${minValue} - ${maxValue}`;
 };
 
@@ -72,7 +91,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );
-
     if (
         !demandFilters?.minYearOfConstruction &&
         !demandFilters?.maxYearOfConstruction &&
@@ -140,7 +158,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                             />
                             <ListItem
                                 label={t("Construction")}
-                                value={getRangeDisplayValue(
+                                value={getRangeDisplayValueForYearOfConstruction(
                                     demandFilters?.minYearOfConstruction,
                                     demandFilters?.maxYearOfConstruction
                                 )}
@@ -219,7 +237,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                     </Grid>
                 </Grid>
                 <Divider sx={{ width: "maxWidth" }} />
-                <AreaOfPreference index={index} />
+                <AreaOfPreferenceDemands index={index} />
                 <FeaturesDemandSection index={index}></FeaturesDemandSection>
             </Paper>
         );

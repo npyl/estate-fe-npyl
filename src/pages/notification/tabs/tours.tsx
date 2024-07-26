@@ -1,53 +1,61 @@
 import {
     useDeleteNotificationMutation,
-    useGetNotificationsQuery,
-    useToggleNotificationViewedStatusMutation,
+    useFilterNotificationsQuery,
 } from "src/services/notification";
 import Table from "../table";
-import { ContactNotification } from "@/types/notification";
 import { Box } from "@mui/material";
+import { useState } from "react";
 
-const Tours = () => {
+const Tours = ({ filter }: any) => {
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sortBy, setSortBy] = useState("createdAt");
+    const [direction, setDirection] = useState("DESC");
+
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
-    const [toggleNotificationViewedStatus] =
-        useToggleNotificationViewedStatusMutation();
-
-    const { data: tours } = useGetNotificationsQuery(undefined, {
-        selectFromResult: ({ data }) => ({
-            data:
-                // select only notifications with notificationType !== "listing"
-                data?.filter(
-                    ({ notificationType }) =>
-                        notificationType === "contact" ||
-                        notificationType === "tour"
-                ) || [],
-        }),
+    const { data: tours } = useFilterNotificationsQuery({
+        filter: { types: ["TOUR"] },
+        page,
+        pageSize,
+        sortBy,
+        direction,
     });
 
-    const handleRemove = (index = -1) => {
-        deleteNotification(index);
+    const handleRemove = (id: number) => {
+        deleteNotification(id);
     };
 
-    const handleViewNotification = async (
-        notification: ContactNotification
-    ) => {
-        if (!notification.viewed) {
-            await toggleNotificationViewedStatus({
-                id: notification.id || 0,
-                viewed: true,
-            });
-        }
+    const handlePageChange = (event: any, newPage: any) => {
+        setPage(newPage);
     };
+
+    const handleRowsPerPageChange = (event: any) => {
+        setPageSize(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+    console.log(filter);
+    const filteredTours =
+        tours?.content?.filter((tour) => {
+            if (filter === "viewed") return tour.viewed === true;
+            if (filter === "notViewed") return tour.viewed === false;
+            return true; //ALL
+        }) || [];
 
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
-            {" "}
             <Table
-                variant="contact"
-                rows={tours || []}
+                variant="CONTACT"
+                rows={filteredTours || []}
                 onRemove={handleRemove}
                 loading={isLoading}
-                onViewNotification={handleViewNotification}
+                sortBy={sortBy}
+                filter={filter}
+                direction={direction}
+                page={page}
+                pageSize={pageSize}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                totalRows={tours?.totalElements || 0}
             />
         </Box>
     );

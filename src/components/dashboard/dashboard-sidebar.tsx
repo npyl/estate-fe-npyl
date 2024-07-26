@@ -143,8 +143,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();
 
-    console.log(nonViewedNotificationsCount);
-
     const sections = useMemo(() => {
         const sectionsData = getSections(
             t,
@@ -218,10 +216,9 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 key={section.title}
                                 path={router.asPath}
                                 sx={{
-                                    mt: 2,
-                                    "& + &": {
-                                        mt: 2,
-                                    },
+                                    height: "100vh",
+                                    pt: 2,
+                                    overflowY: "hidden",
                                 }}
                                 {...section}
                             />

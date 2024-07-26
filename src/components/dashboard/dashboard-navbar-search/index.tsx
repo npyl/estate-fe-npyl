@@ -1,4 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { IconButton, InputAdornment, MenuItem, Select } from "@mui/material";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,9 +8,12 @@ import { SearchList } from "./SearchList";
 import { SearchInput } from "./styles";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const [searchText, setSearchText] = useState("");
     const [debouncedSearch] = useDebounce(searchText, 300);
@@ -62,8 +67,8 @@ export const DashboardNavbarSearch: FC = () => {
                 endAdornment={
                     <InputAdornment
                         sx={{
-                            paddingLeft: "100px",
-                            display: { xs: "none", md: "flex" },
+                            // paddingLeft: "100px",
+                            display: { xs: "flex", md: "flex" },
                         }}
                         position="end"
                     >
@@ -72,7 +77,7 @@ export const DashboardNavbarSearch: FC = () => {
                                 borderLeft: "1px solid",
                                 borderColor: "divider",
                                 borderRadius: 0,
-                                width: "150px",
+                                width: isMobile ? "85px" : "150px",
                                 ".MuiOutlinedInput-notchedOutline": {
                                     border: 0,
                                 },
@@ -80,16 +85,25 @@ export const DashboardNavbarSearch: FC = () => {
                                     {
                                         border: 0,
                                     },
+                                alignItems: "center",
                             }}
                             value={searchCategory}
                             onChange={handleChangeCategory}
                         >
                             <MenuItem value="all">{t("All")}</MenuItem>
                             <MenuItem value="properties">
-                                {t("Properties")}
+                                {isMobile ? (
+                                    <HomeOutlinedIcon sx={{ mt: 1 }} />
+                                ) : (
+                                    t("Properties")
+                                )}
                             </MenuItem>
                             <MenuItem value="customers">
-                                {t("Customers")}
+                                {isMobile ? (
+                                    <PersonOutlineOutlinedIcon sx={{ mt: 1 }} />
+                                ) : (
+                                    t("Customers")
+                                )}
                             </MenuItem>
                         </Select>
                     </InputAdornment>
