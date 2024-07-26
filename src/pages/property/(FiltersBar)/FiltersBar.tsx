@@ -104,7 +104,7 @@ const FilterBar = ({
                 <SpaceBetween pb={1} pl={1}>
                     <Stack
                         direction="row"
-                        spacing={0.3}
+                        spacing={0.8}
                         overflow="auto hidden"
                         // INFO: paddings added in this container to allow badge to show up without overflow hacks
                         pt={1}

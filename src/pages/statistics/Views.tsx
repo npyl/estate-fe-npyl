@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import {
     AreaChart,
     Area,
@@ -18,16 +17,14 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
-import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
 import DateRangePicker from "./DateRangePicker";
-import format from "date-fns/format";
-import useResponsive from "@/hooks/useResponsive";
+import { format } from "date-fns";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -88,13 +85,8 @@ export default function StackedAreas() {
         }
     };
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
         setTimeframe(e.target.value as TTimeFrame);
-        if (e.target.value !== "CUSTOM") {
-            setStartDate("");
-            setEndDate("");
-        }
-    };
 
     // Prepare chart data
     const chartData = useMemo(
@@ -137,26 +129,6 @@ export default function StackedAreas() {
         payload,
     }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
-            const currentDate = payload[0].payload.date;
-            const currentTotalViews =
-                payload[0].payload.All +
-                payload[0].payload.parentCategory +
-                payload[0].payload.category;
-            const previousDataIndex = chartData.findIndex(
-                (data) => data.date === currentDate
-            );
-            const previousTotalViews =
-                previousDataIndex > 0
-                    ? chartData[previousDataIndex - 1].All +
-                      chartData[previousDataIndex - 1].parentCategory +
-                      chartData[previousDataIndex - 1].category
-                    : 0;
-            const viewDifference = currentTotalViews - previousTotalViews;
-            const viewPercentageChange = previousTotalViews
-                ? (viewDifference / previousTotalViews) * 100
-                : 0;
-            const isIncrease = viewDifference >= 0;
-
             return (
                 <div
                     style={{
@@ -167,30 +139,10 @@ export default function StackedAreas() {
                         boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                     }}
                 >
-                    <div style={{ borderBottom: "1px solid #eee" }}>
-                        <p
-                            style={{
-                                color: "#000",
-                                margin: 0,
-                                fontWeight: "bold",
-                            }}
-                        >
-                            {new Date(currentDate).toLocaleDateString()}
-                        </p>
-                        {parentCategory && (
-                            <p
-                                style={{
-                                    color: "#000",
-                                    margin: 0,
-                                    marginBottom: "10px",
-                                    fontWeight: "semibold",
-                                }}
-                            >
-                                Total Views: {currentTotalViews}
-                            </p>
-                        )}
-                    </div>
-
+                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
+                        Property Views
+                    </p>
+                    <hr style={{ borderColor: "grey" }} />
                     {payload.map((entry) => (
                         <div
                             key={entry.name}
@@ -218,32 +170,6 @@ export default function StackedAreas() {
                             )}: ${entry.value}`}</span>
                         </div>
                     ))}
-                    {previousDataIndex > 0 && (
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginTop: "5px",
-                                color: isIncrease ? "#388e3c" : "#d32f2f",
-                                borderTop: "1px solid #eee",
-                            }}
-                        >
-                            {isIncrease ? (
-                                <NorthRoundedIcon fontWeight="bold" />
-                            ) : (
-                                <SouthRoundedIcon fontWeight="bold" />
-                            )}
-                            <span
-                                style={{
-                                    marginLeft: "5px",
-                                    fontWeight: "bold",
-                                    marginTop: "5px",
-                                }}
-                            >
-                                {viewPercentageChange.toFixed(0)}%
-                            </span>
-                        </div>
-                    )}
                 </div>
             );
         }
@@ -266,13 +192,10 @@ export default function StackedAreas() {
                     .replace(/,\s*/g, " "); // remove the comma and space
                 break;
             case "DAY":
-                formattedDate = date
-                    .toLocaleDateString("en-GB", {
-                        weekday: "short",
-                        day: "2-digit",
-                        month: "2-digit",
-                    })
-                    .replace(/,\s*/g, " "); // remove the comma and space
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    hour: "2-digit",
+                    hour12: true,
+                });
                 break;
             case "MONTH":
                 formattedDate = date.toLocaleDateString("en-GB", {
@@ -291,11 +214,19 @@ export default function StackedAreas() {
         return formattedDate;
     };
 
+    const xAxisTicks = useMemo(() => {
+        if (chartData.length <= 10) {
+            return chartData.map((data) => data.date);
+        }
+        const interval = Math.floor(chartData.length / 10);
+        return chartData
+            .filter((_, index) => index % interval === 0)
+            .map((data) => data.date);
+    }, [chartData]);
+
     const formatYAxis = (tickItem: number) => {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
-
-    const belowMd = useResponsive("down", "md");
 
     return (
         <>
@@ -303,8 +234,7 @@ export default function StackedAreas() {
                 <Typography variant={"h5"} p={1}>
                     {t("Views of Properties")}
                 </Typography>
-
-                <Stack direction="row" p={1} gap={1} flexWrap="wrap">
+                <Stack direction="row" padding={1} spacing={2}>
                     <Select value={timeframe} onChange={handleTimeframeSelect}>
                         <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
                         <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
@@ -312,7 +242,6 @@ export default function StackedAreas() {
                         <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                         <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                     </Select>
-
                     <Select
                         value={parentCategory}
                         onChange={handleParentCategorySelect}
@@ -325,7 +254,6 @@ export default function StackedAreas() {
                             </MenuItem>
                         ))}
                     </Select>
-
                     <Select
                         value={category}
                         onChange={handleCategorySelect}
@@ -353,14 +281,21 @@ export default function StackedAreas() {
                 </Stack>
             </Stack>
 
-            <ResponsiveContainer height={300}>
+            <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
                     <CartesianGrid vertical={false} />
                     <XAxis
-                        visibility={belowMd ? "hidden" : "visible"}
                         dataKey="date"
                         tickFormatter={formatDateTick}
                         tickMargin={7}
+                        ticks={xAxisTicks}
+                        // interval={
+                        //     timeframe === "WEEK"
+                        //         ? 0
+                        //         : timeframe === "MONTH"
+                        //         ? 2
+                        //         : 8
+                        // }
                     />
                     {category && parentCategory ? (
                         <>

@@ -1,3 +1,4 @@
+import { NotViewedContactNotifications } from "@/types/notification/notification";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ContactNotification,
@@ -32,12 +33,36 @@ export const notification = createApi({
 
             providesTags: ["Notifications"],
         }),
+        getNonViewedNotificationsCount: builder.query<
+            NotViewedContactNotifications,
+            void
+        >({
+            query: () => ({
+                url: "non-viewed/count",
+            }),
+
+            providesTags: ["Notifications"],
+        }),
+
         getNotificationById: builder.query<ContactNotificationExtended, number>(
             {
                 query: (id) => `${id}`,
                 providesTags: ["NotificationById"],
             }
         ),
+
+        toggleNotificationViewedStatus: builder.mutation<
+            void,
+            { id: number; viewed: boolean }
+        >({
+            query: ({ id, viewed }) => ({
+                url: `${id}/toggle-viewed`,
+                method: "PATCH",
+                body: { viewed },
+            }),
+            invalidatesTags: ["Notifications"],
+        }),
+
         deleteNotification: builder.mutation<
             ContactNotificationExtended,
             number
@@ -54,5 +79,7 @@ export const notification = createApi({
 export const {
     useGetNotificationsQuery,
     useGetNotificationByIdQuery,
+    useGetNonViewedNotificationsCountQuery,
+    useToggleNotificationViewedStatusMutation,
     useDeleteNotificationMutation,
 } = notification;

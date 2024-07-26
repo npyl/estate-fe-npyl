@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -6,8 +6,6 @@ import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-
-const defaultImage = "/static/noImage.png";
 
 function renderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
@@ -17,15 +15,34 @@ function renderImage(
     return (
         <Image
             src={
-                `${
-                    typeof propertyImage === "string"
-                        ? propertyImage
-                        : propertyImage?.url
-                }` || defaultImage
+                typeof propertyImage === "string"
+                    ? propertyImage
+                    : propertyImage?.url
             }
             alt=""
             ratio="16/9"
         />
+    );
+}
+
+function renderLocation(params: GridCellParams<IPropertyResultResponse>) {
+    const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
+        params.row || {};
+
+    const { t, i18n } = useTranslation();
+
+    const addressParts =
+        i18n.language === "en"
+            ? [regionEN, cityEN, complexEN]
+            : [regionGR, cityGR, complexGR];
+
+    const address = addressParts.filter((part) => part).join(", ");
+    return (
+        <Typography
+            sx={{ fontSize: "small", textAlign: "center", textWrap: "wrap" }}
+        >
+            {address}
+        </Typography>
     );
 }
 
@@ -175,47 +192,56 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
     },
     {
-        field: "createdAt",
+        field: "location",
         headerAlign: "center",
         align: "center",
-        headerName: t("Creation Date") as string,
-
+        headerName: t("Location") as string,
+        renderCell: renderLocation,
         flex: 1,
-
-        renderCell: (params) => {
-            const { i18n } = useTranslation();
-            const date = new Date(params.value);
-
-            return i18n.language === "el"
-                ? date.toLocaleDateString("el-GR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                  })
-                : date.toDateString();
-        },
     },
-    {
-        field: "updatedAt",
-        headerAlign: "center",
-        align: "center",
-        headerName: t("Updated At") as string,
 
-        flex: 1,
+    // {
+    //     field: "createdAt",
+    //     headerAlign: "center",
+    //     align: "center",
+    //     headerName: t("Creation Date") as string,
 
-        renderCell: (params) => {
-            const { i18n } = useTranslation();
-            const date = new Date(params.value);
+    //     flex: 1,
 
-            return i18n.language === "el"
-                ? date.toLocaleDateString("el-GR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                  })
-                : date.toDateString();
-        },
-    },
+    //     renderCell: (params) => {
+    //         const { i18n } = useTranslation();
+    //         const date = new Date(params.value);
+
+    //         return i18n.language === "el"
+    //             ? date.toLocaleDateString("el-GR", {
+    //                   year: "numeric",
+    //                   month: "long",
+    //                   day: "numeric",
+    //               })
+    //             : date.toDateString();
+    //     },
+    // },
+    // {
+    //     field: "updatedAt",
+    //     headerAlign: "center",
+    //     align: "center",
+    //     headerName: t("Updated At") as string,
+
+    //     flex: 1,
+
+    //     renderCell: (params) => {
+    //         const { i18n } = useTranslation();
+    //         const date = new Date(params.value);
+
+    //         return i18n.language === "el"
+    //             ? date.toLocaleDateString("el-GR", {
+    //                   year: "numeric",
+    //                   month: "long",
+    //                   day: "numeric",
+    //               })
+    //             : date.toDateString();
+    //     },
+    // },
 ];
 
 //

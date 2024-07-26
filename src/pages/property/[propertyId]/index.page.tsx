@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mui/material";
+import { Tab, TabProps, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Suspense, lazy, useState } from "react";
@@ -18,6 +18,7 @@ import "photoswipe/dist/photoswipe.css";
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
+import Iconify from "@/components/iconify";
 
 // Tabs
 const MainContainer = lazy(() => import("./(tabs)/MainContainer"));
@@ -30,7 +31,36 @@ const MatchingCustomersSection = lazy(
 );
 const PhotosOnly = lazy(() => import("./(tabs)/PhotosOnly"));
 const PropertyLogs = lazy(() => import("./(sections)/Logs"));
+const GreenMap = lazy(() => import("./(tabs)/Green"));
 const AgreementsTab = lazy(() => import("./(tabs)/Agreements"));
+
+import { styled } from "@mui/material/styles";
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    "&.Mui-selected": { color: "#00b32d" },
+}));
+
+const GreenMapTab: React.FC<TabProps> = (props) => (
+    <StyledTab
+        {...props}
+        iconPosition="start"
+        icon={
+            <Iconify
+                icon="ph:tree"
+                fontSize="25px"
+                width={30}
+                height={30}
+                sx={{
+                    "&.Mui-selected": { color: "#00b32d" },
+                }}
+            />
+        }
+    />
+);
+
+// -----------------------------------------------------------------
 
 const SingleProperty: NextPage = () => {
     const router = useRouter();
@@ -76,7 +106,18 @@ const SingleProperty: NextPage = () => {
                 onDelete={handleDelete}
                 onClone={handleClone}
             >
-                <Tabs value={value} onChange={handleChange}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    sx={{
+                        // GreenMapTab Indicator
+                        "& .MuiTabs-indicator": {
+                            ...(value === 10
+                                ? { backgroundColor: "#00b32d" }
+                                : {}),
+                        },
+                    }}
+                >
                     <Tab label={t("Overview")} />
                     <Tab label={t("Quick View")} />
                     <Tab label={t("Tickets")} />
@@ -88,6 +129,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Map")} />
                     <Tab label={t("Street View")} />
                     <Tab label={t("Agreements")} />
+                    <GreenMapTab label={t("Green Map")} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>
@@ -119,6 +161,9 @@ const SingleProperty: NextPage = () => {
                 </TabPanel>
                 <TabPanel value={value} index={10}>
                     <AgreementsTab />
+                </TabPanel>
+                <TabPanel value={value} index={10}>
+                    <GreenMap />
                 </TabPanel>
             </Suspense>
 

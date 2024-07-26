@@ -43,7 +43,7 @@ const ExportButton = () => {
             .finally(() => {
                 setLoading(false);
             });
-    }, [blueprints, version]);
+    }, [blueprints, version, propertyId]);
 
     // Share Popover state
     const [shareAnchorEl, setShareAnchorEl] =

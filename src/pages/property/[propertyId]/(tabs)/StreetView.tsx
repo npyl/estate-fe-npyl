@@ -1,7 +1,7 @@
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useRouter } from "next/router";
 import { StreetViewMap } from "src/components/Map";
-import MapUnavailable from "./MapUnavailable";
+import MapUnavailable from "@/components/Map/MapUnavailable";
 import Box from "@mui/material/Box";
 
 export interface IMapCoord {

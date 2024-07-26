@@ -17,12 +17,8 @@ export type ImageRatio =
     | "9/21"
     | "1/1";
 
-export type UploadProgress = {
-    filename: string;
-    progress: number;
-};
-
-export interface ImageProps extends IProps {
+export interface ImageProps extends Omit<IProps, "src"> {
+    src?: string | null;
     ratio?: ImageRatio;
     disabledEffect?: boolean;
     size?: { width: string; height: string };
@@ -37,11 +33,6 @@ export interface IPreviewImageProps extends ImageProps {
     animate?: boolean;
 }
 
-export interface UploadImageProps extends IPreviewImageProps {
+export interface UploadImageProps extends Omit<IPreviewImageProps, "src"> {
     progress: number;
 }
-
-export const NoUploadProgress: UploadProgress = {
-    filename: "",
-    progress: -1,
-};

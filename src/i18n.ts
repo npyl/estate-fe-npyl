@@ -731,6 +731,7 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+
             Custom: "Custom",
             "Select Date Range": "Select Date Range",
             "Total Views": "Total Views",
@@ -747,12 +748,69 @@ const resources = {
 
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
+
+            Compare: "Compare",
+            "Set Main": "Set Main",
+            "Select All": "Select All",
+            "Deselect All": "Deselect All",
+            "Add images": "Add images",
+
+            "Green Map": "Green Map",
+            Panels: "Panels",
+            "Annual energy": "Annual energy",
+            "Panels count": "Panels count",
+            "Current Installation": "Current Installation",
+            "Maximum Gain Installation": "Maximum Gain Installation",
+            "Max Panel Required": "Max Panel Required",
+
+            "Panel Lifespan(Yrs)": "Panel Lifespan(Yrs)",
+            "Area(m²)": "Area(m²)",
+            "Max Sunshine Hours/Year": "Max Sunshine Hours/Year",
+            "Carbon Offset Factor (kg/MWh)": "Carbon Offset Factor (kg/MWh)",
+            "Watts Per Panel": "Watts Per Panel",
+            "Panel Dimension(m)(Height x Width)":
+                "Panel Dimension(m)(Height x Width)",
+            "Sunshine Quantiles": "Sunshine Quantiles",
+            "Sunniness Over Roof area": "Sunniness Over Roof area",
+            "Air Pollution": "Air Pollution",
+            "Dominant Pollutants": "Dominant Pollutants",
+            "Health Recommendations": "Health Recommendations",
+            "Other Pollutants": "Other Pollutants",
             Agreements: "Agreements",
         },
     },
     el: {
         translation: {
             Agreements: "Εντολές",
+            "Add images": "Προσθήκη εικόνων",
+            "Select All": "Επιλογή Όλων",
+            "Deselect All": "Καμία Επιλογή",
+            "Set Main": "Κάνε την πρώτη",
+            Compare: "Σύγκριση",
+
+            "Other Pollutants": "Λοιποί Ρύποι",
+            "Health Recommendations": "Συστάσεις Υγείας",
+            "Dominant Pollutants": "Κύριοι Ρύποι",
+            "Air Pollution": "Ρύπανση Αέρα",
+            "Sunniness Over Roof area": "Ηλιοφάνεια στην επιφάνεια οροφής",
+            "Sunshine Quantiles": "Ηλιοφάνεια Ποσοστιαία",
+            "Max Panel Required": "Μέγιστα Απαιτούμενα Πάνελ",
+            "Panel Lifespan(Yrs)": "Ζωή Πάνελ (Χρόνια)",
+            "Area(m²)": "Εμβαδό(m²)",
+            "Max Sunshine Hours/Year": "Μέγιστη Ηλιοφάνεια Ώρες/Χρόνο",
+            "Carbon Offset Factor (kg/MWh)":
+                "Συντελεστής Αντιστάθμισης Άνθρακα (kg/MWh)",
+            "Watts Per Panel": "Watts ανά Πάνελ",
+            "Panel Dimension(m)(Height x Width)":
+                "Διαστάσεις Πάνελ(m)(Height x Width)",
+
+            "Current Installation": "Τωρινή Εγκατάσταση",
+            "Maximum Gain Installation": "Εγκατάσταση για Μέγιστο Κέρδος",
+            "Panels count": "Πλήθος πάνελ",
+            "Annual energy": "Ετήσια ενέργεια",
+            Panels: "Πάνελ",
+            "Green Map": "Πράσινος Χάρτης",
+
             Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
@@ -770,6 +828,7 @@ const resources = {
             "Total Views": "Συνολικές Προβολές",
             "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
             Custom: "Προσαρμοσμένο",
+
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":

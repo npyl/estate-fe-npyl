@@ -19,7 +19,7 @@ export default function RHFOnlyNumbers({
     name,
     label,
     disabled = false,
-    acceptsDecimal = false,
+    acceptsDecimal = true,
     adornment = "",
     ...other
 }: Props) {

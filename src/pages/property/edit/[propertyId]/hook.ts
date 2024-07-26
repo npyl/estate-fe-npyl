@@ -394,7 +394,6 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
             drilling: notNot(property?.features?.drilling),
             masonryFence: notNot(property?.features?.masonryFence),
             accessForDisabled: notNot(property?.features?.accessForDisabled),
-            alarmSystem: notNot(property?.features?.alarmSystem),
             has24HoursSecurity: notNot(property?.features?.has24HoursSecurity),
             cctv: notNot(property?.features?.cctv),
             internet: notNot(property?.features?.internet),

@@ -64,7 +64,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = () => {
                         fullWidth
                         label={t("Frontage")}
                         name="details.frontage"
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
             </Grid>

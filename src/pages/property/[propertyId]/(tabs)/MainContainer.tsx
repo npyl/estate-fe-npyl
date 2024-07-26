@@ -46,7 +46,7 @@ const MainContainer: React.FC = () => {
     return data ? (
         <Grid container spacing={1}>
             <Grid item xs={12} lg={8} order={"row"}>
-                <Stack spacing={1}>
+                <Grid container gap={1}>
                     <Grid item xs={12}>
                         <ImageSection data={data} />
                     </Grid>
@@ -71,10 +71,10 @@ const MainContainer: React.FC = () => {
                     <Grid item xs={12}>
                         <VideoSection data={data} />
                     </Grid>
-                </Stack>
+                </Grid>
             </Grid>
             <Grid item xs={12} lg={4} order={"row"}>
-                <Stack spacing={1}>
+                <Grid container gap={1}>
                     <Grid item xs={12}>
                         <BasicSection data={data} />
                     </Grid>
@@ -102,7 +102,7 @@ const MainContainer: React.FC = () => {
                     <Grid item xs={12}>
                         <BlueprintsSection data={data} />
                     </Grid>
-                </Stack>
+                </Grid>
             </Grid>
         </Grid>
     ) : null;

@@ -5,11 +5,13 @@ import { useTranslation } from "react-i18next";
 import { SearchList } from "./SearchList";
 import SearchInput from "@/components/SearchInput";
 import { SearchCategory } from "./types";
+import { useDebounce } from "use-debounce";
 
 export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
 
     const [searchText, setSearchText] = useState("");
+    const [debouncedSearch] = useDebounce(searchText, 300);
 
     const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
 
@@ -91,9 +93,6 @@ export const DashboardNavbarSearch: FC = () => {
                             <MenuItem value="customers">
                                 {t("Customers")}
                             </MenuItem>
-                            <MenuItem value="locations">
-                                {t("Locations")}
-                            </MenuItem>
                         </Select>
                     </InputAdornment>
                 }
@@ -103,7 +102,7 @@ export const DashboardNavbarSearch: FC = () => {
                 <SearchList
                     open={open}
                     anchorEl={anchorEl}
-                    searchText={searchText}
+                    searchText={debouncedSearch}
                     searchCategory={searchCategory}
                     onClickOutside={() => setAnchorEl(null)}
                 />

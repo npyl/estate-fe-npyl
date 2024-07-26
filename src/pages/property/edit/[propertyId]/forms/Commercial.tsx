@@ -4,7 +4,6 @@ import * as React from "react";
 import {
     Areas,
     BasicDetails,
-    Distances,
     Blueprints,
     Images,
     VideoLink,

@@ -1,6 +1,6 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { IMapMarker } from "../Map/Map";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography, alpha } from "@mui/material";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
@@ -15,7 +15,34 @@ type PropertyCardProps = {
 
 const defaultImage = "/static/noImage.png";
 
-// -------------------------------------------------------------
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+const STATUS_COLORS: Record<PropertyStatus, Color> = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+type Color = string;
+
+const getStatusColor = (status: string): Color => {
+    const statusUpper = status.toUpperCase() as PropertyStatus;
+    console.log(statusUpper);
+
+    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+};
 
 const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const {
@@ -42,10 +69,12 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const router = useRouter();
     const ref = useRef<HTMLDivElement>();
 
-    const address =
+    const addressParts =
         i18n.language === "en"
-            ? `${regionEN} ${cityEN} ${complexEN}`
-            : `${regionGR} ${cityGR} ${complexGR}`;
+            ? [regionEN, cityEN, complexEN]
+            : [regionGR, cityGR, complexGR];
+
+    const address = addressParts.filter((part) => part).join(", ");
 
     const convertedImages = useMemo(
         () =>
@@ -81,6 +110,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     }, [isActive]);
 
     const handleClick = useCallback(() => router.push(`property/${id}`), []);
+
+    const stateColor = state?.value ? getStatusColor(state.value) : "#537f91"; // default color
 
     return (
         <StyledBox
@@ -239,8 +270,6 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                             </Stack>
                         </Stack>
                     )}
-
-                    {/* ---- */}
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">
@@ -273,16 +302,20 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Stack direction="row" spacing={1}>
                     {state?.value ? (
-                        <NormalBadge name={t(state?.value)} color="indigo" />
+                        <NormalBadge name={t(state.value)} color={stateColor} />
                     ) : null}
                     {category?.value ? (
-                        <NormalBadge name={t(category?.value)} color="indigo" />
+                        <NormalBadge
+                            name={t(category.value)}
+                            color={"#3730a3"}
+                        />
                     ) : null}
                 </Stack>
                 <SpaceBetween alignItems="center">
                     <NormalBadge
                         name={`${t("Code")}: ${code || ""}`}
-                        color="yellow"
+                        color={"#ffcc00"}
+                        sx={{ color: "#854D0E" }}
                     />
 
                     <PriceBadge price={price} />

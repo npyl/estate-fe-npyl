@@ -24,6 +24,7 @@ import { user } from "../services/user";
 import { publicDashboard } from "@/services/publicDashboard";
 import { translation } from "@/services/translate";
 import { company } from "../services/company";
+import { solar, airQuality } from "@/services/googleapi";
 import { agreements } from "@/services/agreements";
 import { rootReducer } from "./root-reducer";
 
@@ -60,6 +61,8 @@ export const createStore = (
                 spitogatosListing.middleware,
                 // ...
                 translation.middleware,
+                solar.middleware,
+                airQuality.middleware,
                 agreements.middleware,
                 rtkQueryErrorLogger
             ),

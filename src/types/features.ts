@@ -22,7 +22,6 @@ export interface IPropertyFeatures {
     drilling: boolean;
     masonryFence: boolean;
     accessForDisabled: boolean;
-    alarmSystem: boolean;
     has24HoursSecurity: boolean;
     cctv: boolean;
     internet: boolean;

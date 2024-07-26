@@ -38,6 +38,16 @@ function result(format: string, key = ".00") {
     return isInteger ? format.replace(key, "") : format;
 }
 
+export function formatThousands(number: number) {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Use a regular expression to add dots as thousand separators
+    const formattedNumber = numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    return formattedNumber;
+}
+
 export function formatNumberWithCommas(number: number) {
     // Convert the number to a string and split it into parts
     const parts = number.toString().split(".");

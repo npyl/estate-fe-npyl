@@ -217,6 +217,16 @@ export default function ViewsOfPropertiesChart() {
 
     const belowMd = useResponsive("down", "md");
 
+    const xAxisTicks = useMemo(() => {
+        if (chartData.length <= 10) {
+            return chartData.map((data) => data.date);
+        }
+        const interval = Math.floor(chartData.length / 10);
+        return chartData
+            .filter((_, index) => index % interval === 0)
+            .map((data) => data.date);
+    }, [chartData]);
+
     return (
         <>
             <Stack direction={{ xs: "column", md: "row" }} spacing={2} p={1}>
@@ -255,6 +265,14 @@ export default function ViewsOfPropertiesChart() {
                         dataKey="date"
                         tickFormatter={formatDateTick}
                         tickMargin={7}
+                        ticks={xAxisTicks}
+                        // interval={
+                        //     timeframe === "WEEK"
+                        //         ? 0
+                        //         : timeframe === "MONTH"
+                        //         ? 2
+                        //         : 8
+                        // }
                     />
                     <YAxis width={20} tickFormatter={formatYAxis} />
                     <Tooltip content={renderTooltipContent} />
