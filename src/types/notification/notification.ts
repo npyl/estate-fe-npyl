@@ -79,7 +79,7 @@ export interface ContactNotification {
     descriptions?: IPropertyDescriptionsForNotification;
     type: KeyValue;
     reviewDetails: ReviewDetails;
-    agreementDetails: AgreementDetails;
+    agreement?: AgreementDetails;
 }
 
 export interface INotificationResponse {
@@ -134,7 +134,7 @@ interface AgreementDetails {
     code: string;
     expirationDate: string;
     expiredToday: boolean;
-    expireSoon: boolean;
+    expiresSoon: boolean;
     id: number;
     owner: OwnerAgreement;
     property: PropertyAgreement;
