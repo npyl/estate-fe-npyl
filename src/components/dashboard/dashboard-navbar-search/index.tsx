@@ -9,6 +9,7 @@ import SearchInput from "@/components/SearchInput";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
 import { useMediaQuery, useTheme } from "@mui/material";
+import HandshakeIcon from "@mui/icons-material/Handshake";
 
 export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
@@ -105,6 +106,13 @@ export const DashboardNavbarSearch: FC = () => {
                                     <PersonOutlineOutlinedIcon sx={{ mt: 1 }} />
                                 ) : (
                                     t("Customers")
+                                )}
+                            </MenuItem>
+                            <MenuItem value="agreements">
+                                {isMobile ? (
+                                    <HandshakeIcon sx={{ mt: 1 }} />
+                                ) : (
+                                    t("Agreements")
                                 )}
                             </MenuItem>
                         </Select>

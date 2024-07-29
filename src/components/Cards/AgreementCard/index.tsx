@@ -13,8 +13,8 @@ import { CardLabel, DraftLabel } from "./Labels";
 
 interface Props {
     a: IAgreementShort;
-    onEdit: (id: number) => void;
-    onDelete: (id: number) => void;
+    onEdit?: (id: number) => void;
+    onDelete?: (id: number) => void;
 }
 
 const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
@@ -45,11 +45,13 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
 
             <Box flexGrow={1} />
 
-            <Controls
-                agreement={a}
-                onEdit={() => onEdit(a.id)}
-                onDelete={() => onDelete(a.id)}
-            />
+            {onDelete && onEdit ? (
+                <Controls
+                    agreement={a}
+                    onEdit={() => onEdit(a.id)}
+                    onDelete={() => onDelete(a.id)}
+                />
+            ) : null}
         </Stack>
     </Card>
 );

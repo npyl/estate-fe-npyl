@@ -7,7 +7,6 @@ import {
     IPropertyResultResponse,
 } from "src/types/properties";
 import IPage from "src/types/page";
-import { IPropertyBlueprint, IPropertyDocument } from "src/types/file";
 
 import { ILabel } from "src/types/label";
 import { ICustomer } from "src/types/customer";

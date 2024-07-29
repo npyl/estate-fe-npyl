@@ -1,6 +1,5 @@
 import {
     Box,
-    Divider,
     Grid,
     Paper,
     PopperProps,
@@ -9,7 +8,7 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { StyledPopper } from "../styles";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
@@ -22,26 +21,10 @@ import { SearchCategory } from "./types";
 import { Theme } from "@mui/system/createTheme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import AgreementItems from "./AgreementItems";
+import useScreenWidth from "./hook";
 
 const PAGE_SIZE = 25;
-//Custom hook to hold the screenWidth for the categoryView ALL
-const useScreenWidth = () => {
-    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setScreenWidth(window.innerWidth);
-        };
-
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
-
-    return screenWidth;
-};
 
 interface PropertiesSubListProps {
     searchString: string;
@@ -77,7 +60,6 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
         <Grid
             item
             xs={12}
-            // md={12}
             sx={{
                 marginY: "10px",
             }}
@@ -122,8 +104,6 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
     );
 };
 
-export default useScreenWidth;
-
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchText: string;
     searchCategory: SearchCategory;
@@ -155,6 +135,7 @@ export const SearchList = ({
         () => (searchCategory !== "properties" ? customersResults || [] : []),
         [searchCategory, customersResults]
     );
+
     const screenWidth = useScreenWidth();
 
     const paperWidth = useMemo(() => {
@@ -357,7 +338,11 @@ export const SearchList = ({
                                 </Grid>
                             )}
                     </Grid>
-                    {/* </ScrollBox> */}
+
+                    {searchCategory === "all" ||
+                    searchCategory === "agreements" ? (
+                        <AgreementItems search={searchText} />
+                    ) : null}
                 </Paper>
             </StyledPopper>
         </div>

@@ -7,6 +7,12 @@ import {
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+interface IAgreementSearchParams {
+    search: string;
+    page: number;
+    pageSize: number;
+}
+
 export const agreements = createApi({
     reducerPath: "agreements",
     baseQuery: fetchBaseQuery({
@@ -33,6 +39,16 @@ export const agreements = createApi({
                 body,
             }),
             providesTags: ["Agreements"],
+        }),
+        searchAgreements: builder.query<
+            IPage<IAgreementShort>,
+            IAgreementSearchParams
+        >({
+            query: (params) => ({
+                url: "/search",
+                method: "POST",
+                params,
+            }),
         }),
         getAgreementById: builder.query<IAgreement, number>({
             query: (id) => ({
@@ -68,6 +84,7 @@ export const agreements = createApi({
 
 export const {
     useFilterAgreementsQuery,
+    useSearchAgreementsQuery,
     useGetAgreementByIdQuery,
     useCreateAgreementMutation,
     useUpdateAgreementMutation,
