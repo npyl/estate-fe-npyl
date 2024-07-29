@@ -15,14 +15,12 @@ const ViewAgreementPage: NextPage = () => {
         +agreementId!
     );
 
-    const { variant, language } = agreement || {};
-
-    if (isLoading) return <Skeleton />;
+    if (isLoading || !agreement) return <Skeleton />;
 
     return (
         <>
-            <Description a={agreement!} />
-            <PDFViewer variant={variant?.key!} language={language?.key!} />
+            <Description a={agreement} />
+            <PDFViewer a={agreement} />
         </>
     );
 };
