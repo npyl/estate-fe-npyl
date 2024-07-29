@@ -56,26 +56,32 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({
                     gap={0.5}
                     alignItems="flex-start"
                 >
-                    <Link
-                        href={`/property/${data?.agreement?.property?.id}`}
-                        passHref
-                        style={{ textDecoration: "none" }}
-                    >
-                        <NormalBadge
-                            name={`${t("Code")}: ${
-                                data?.agreement?.property?.code || ""
-                            }`}
-                            color={"#ffcc00"}
-                            sx={{
-                                color: "#854D0E",
-                                width: "100%",
-                                "&:hover": {
-                                    backgroundColor: "#e6b800",
-                                },
-                            }}
-                            onClick={handlePropertyCodeClick}
-                        />
-                    </Link>
+                    <Stack direction="row" gap={0.5} alignItems="center">
+                        <Typography variant="body2" color="text.secondary">
+                            Property with
+                        </Typography>
+                        <Link
+                            href={`/property/${data?.agreement?.property?.id}`}
+                            passHref
+                            style={{ textDecoration: "none" }}
+                        >
+                            <NormalBadge
+                                name={`${t("Code")}: ${
+                                    data?.agreement?.property?.code || ""
+                                }`}
+                                color={"#ffcc00"}
+                                sx={{
+                                    color: "#854D0E",
+                                    width: "100%",
+                                    "&:hover": {
+                                        backgroundColor: "#e6b800",
+                                    },
+                                }}
+                                onClick={handlePropertyCodeClick}
+                            />
+                        </Link>
+                    </Stack>
+
                     <Stack direction="row" gap={0.5} mt={0.5}>
                         <Typography
                             variant="body2"

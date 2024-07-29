@@ -120,6 +120,7 @@ const NotificationDetailPage: NextPage = () => {
                     <TitleSection
                         type={type}
                         agreementVariant={data?.agreement?.variant?.value}
+                        isAgreementActive={data?.agreement?.active}
                     />
 
                     {type !== "AGREEMENT" ? (

@@ -8,12 +8,14 @@ interface TitleSectionProps {
     type: string;
     variant?: string;
     agreementVariant?: string;
+    isAgreementActive?: boolean;
     data?: ContactNotificationExtended;
 }
 
 const TitleSection: React.FC<TitleSectionProps> = ({
     type,
     agreementVariant,
+    isAgreementActive,
 }) => {
     const getTitle = () => {
         switch (type) {
@@ -56,6 +58,27 @@ const TitleSection: React.FC<TitleSectionProps> = ({
                             mb: 0.5,
                         }}
                     />
+                    {isAgreementActive ? (
+                        <NormalBadge
+                            name={`${t("Active")}`}
+                            color={"#43c6b7"}
+                            sx={{
+                                color: "#43c6b7 ",
+                                width: "13%",
+                                mb: 0.5,
+                            }}
+                        />
+                    ) : (
+                        <NormalBadge
+                            name={`${t("Not active")}`}
+                            color={"#da6868"}
+                            sx={{
+                                color: "#da6868",
+                                width: "13%",
+                                mb: 0.5,
+                            }}
+                        />
+                    )}
                 </Stack>
             ) : (
                 <Typography
