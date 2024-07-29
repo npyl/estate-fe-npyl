@@ -146,34 +146,45 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
             direction={"row"}
             alignItems={"center"}
             onClick={() => router.push(`/property/${option.id}`)}
-            sx={{ overflowX: "hidden" }}
+            sx={{
+                overflowX: "hidden",
+                overflowY: "hidden",
+                minHeight: isMobile ? "400px" : "195px",
+            }}
         >
-            {option?.propertyImage ? (
-                <Image
-                    padding={0}
-                    sx={{ borderRadius: 1 }}
-                    width={isMobile ? 170 : 420}
-                    height={isMobile ? 170 : 175}
-                    src={option.propertyImage}
-                />
-            ) : (
-                <PreviewImage
-                    padding={0}
-                    sx={{ borderRadius: 1 }}
-                    width={isMobile ? 170 : 300}
-                    height={isMobile ? 170 : 175}
-                />
-            )}
-
+            {" "}
+            <Box
+                sx={{
+                    width: isMobile ? 420 : 420,
+                    height: isMobile ? 220 : 175,
+                    borderColor: "1px solid red",
+                    borderRadius: 1,
+                    overflow: "hidden",
+                }}
+            >
+                {option?.propertyImage ? (
+                    <Image
+                        padding={0}
+                        sx={{
+                            objectFit: "cover",
+                            width: "100%",
+                            height: "100%",
+                        }}
+                        src={option.propertyImage}
+                    />
+                ) : (
+                    <PreviewImage padding={0} sx={{ borderRadius: 1 }} />
+                )}
+            </Box>
             <Stack direction={"column"} width="100%">
                 <Grid
                     container
                     spacing={1}
                     justifyContent="flex-start"
                     alignItems="center"
-                    marginLeft={2}
+                    marginLeft={1}
                 >
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={6} mr={isMobile ? 1 : 0}>
                         {option?.title ? (
                             <Typography variant="h6">
                                 {option?.title}
