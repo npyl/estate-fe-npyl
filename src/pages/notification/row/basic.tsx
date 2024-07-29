@@ -6,6 +6,7 @@ import {
     Stack,
     TableCell,
     TableRow,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import { ContactNotification, IWorkForUs } from "src/types/notification";
@@ -29,6 +30,8 @@ import dayjs from "dayjs";
 import PropertyRegion from "./components/PropertyRegion";
 import CustomerInfo from "./components/CustomerInfo";
 import PropertyDetails from "./components/PropertyDetails";
+import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriate icon
+import ExpiredIcon from "@mui/icons-material/Error";
 
 type TourType = "inPerson" | "askQuestion";
 
@@ -175,7 +178,9 @@ const BasicRow = ({
                                     <Typography>{row.message}</Typography>
                                 </Box>
                             ) : type === "AGREEMENT" ? (
-                                <Typography>{row?.agreement?.title}</Typography>
+                                <Typography fontWeight="bold">
+                                    {row?.agreement?.title}
+                                </Typography>
                             ) : null}
                             {type === "TOUR" ||
                             type === "REVIEW" ||
@@ -204,13 +209,60 @@ const BasicRow = ({
                                 </Box>
                             ) : type === "AGREEMENT" ? (
                                 <Box>
-                                    <Typography>{row?.message}</Typography>
-                                    <Typography>
-                                        Expiration Date:{" "}
-                                        {row?.agreement?.expirationDate}
+                                    <Typography variant="body2">
+                                        {row?.message}
                                     </Typography>
                                     <Stack
                                         direction="row"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <Typography variant="body2">
+                                            Expiration Date:{" "}
+                                            {row?.agreement?.expirationDate}
+                                        </Typography>
+                                        <Stack
+                                            direction="row"
+                                            gap={1}
+                                            alignItems="center"
+                                        >
+                                            {row?.agreement?.expiresSoon && (
+                                                <>
+                                                    <Tooltip
+                                                        title="Expires soon"
+                                                        placement="top"
+                                                    >
+                                                        <ExpireIcon
+                                                            color="warning"
+                                                            sx={{
+                                                                width: "21px",
+                                                                height: "21px",
+                                                            }}
+                                                        />
+                                                    </Tooltip>
+                                                </>
+                                            )}
+
+                                            {row?.agreement?.expiredToday && (
+                                                <Tooltip
+                                                    title="Expired"
+                                                    placement="top"
+                                                >
+                                                    <ExpiredIcon
+                                                        color="error"
+                                                        sx={{
+                                                            width: "21px",
+                                                            height: "21px",
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            )}
+                                        </Stack>
+                                    </Stack>
+
+                                    <Stack
+                                        direction="row"
+                                        mt={0.5}
                                         gap={0.5}
                                         alignItems="center"
                                     >
@@ -245,9 +297,12 @@ const BasicRow = ({
                                     <Link
                                         href={`/customer/${row?.agreement?.owner?.id}`}
                                         passHref
-                                        style={{ textDecoration: "none" }}
+                                        style={{
+                                            textDecoration: "none",
+                                        }}
                                     >
                                         <Typography
+                                            variant="body2"
                                             onClick={handleCustomerNameClick}
                                         >
                                             Owner{": "}
