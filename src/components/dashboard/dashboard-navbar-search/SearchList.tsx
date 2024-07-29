@@ -159,8 +159,8 @@ export const SearchList = ({
 
     const paperWidth = useMemo(() => {
         if (screenWidth > 1400 && screenWidth <= 1600) return "185%";
-        if (screenWidth > 1600 && screenWidth <= 2100) return "195%";
-        if (screenWidth > 2100) return "180%";
+        if (screenWidth > 1600 && screenWidth <= 2100) return "155%";
+        if (screenWidth > 2100) return "160%";
         return "100%";
     }, [screenWidth]);
 
