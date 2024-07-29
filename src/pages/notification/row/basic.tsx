@@ -212,53 +212,6 @@ const BasicRow = ({
                                     <Typography variant="body2">
                                         {row?.message}
                                     </Typography>
-                                    <Stack
-                                        direction="row"
-                                        alignItems="center"
-                                        gap={1}
-                                    >
-                                        <Typography variant="body2">
-                                            Expiration Date:{" "}
-                                            {row?.agreement?.expirationDate}
-                                        </Typography>
-                                        <Stack
-                                            direction="row"
-                                            gap={1}
-                                            alignItems="center"
-                                        >
-                                            {row?.agreement?.expiresSoon && (
-                                                <>
-                                                    <Tooltip
-                                                        title="Expires soon"
-                                                        placement="top"
-                                                    >
-                                                        <ExpireIcon
-                                                            color="warning"
-                                                            sx={{
-                                                                width: "21px",
-                                                                height: "21px",
-                                                            }}
-                                                        />
-                                                    </Tooltip>
-                                                </>
-                                            )}
-
-                                            {row?.agreement?.expiredToday && (
-                                                <Tooltip
-                                                    title="Expired"
-                                                    placement="top"
-                                                >
-                                                    <ExpiredIcon
-                                                        color="error"
-                                                        sx={{
-                                                            width: "21px",
-                                                            height: "21px",
-                                                        }}
-                                                    />
-                                                </Tooltip>
-                                            )}
-                                        </Stack>
-                                    </Stack>
 
                                     <Stack
                                         direction="row"
@@ -309,6 +262,53 @@ const BasicRow = ({
                                             {row?.agreement?.owner?.name}
                                         </Typography>
                                     </Link>
+                                    <Stack
+                                        direction="row"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <Typography variant="body2">
+                                            Expiration Date:{" "}
+                                            {row?.agreement?.expirationDate}
+                                        </Typography>
+                                        <Stack
+                                            direction="row"
+                                            gap={1}
+                                            alignItems="center"
+                                        >
+                                            {row?.agreement?.expiresSoon && (
+                                                <>
+                                                    <Tooltip
+                                                        title="Expires soon"
+                                                        placement="top"
+                                                    >
+                                                        <ExpireIcon
+                                                            color="warning"
+                                                            sx={{
+                                                                width: "21px",
+                                                                height: "21px",
+                                                            }}
+                                                        />
+                                                    </Tooltip>
+                                                </>
+                                            )}
+
+                                            {row?.agreement?.expiredToday && (
+                                                <Tooltip
+                                                    title="Expired"
+                                                    placement="top"
+                                                >
+                                                    <ExpiredIcon
+                                                        color="error"
+                                                        sx={{
+                                                            width: "21px",
+                                                            height: "21px",
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            )}
+                                        </Stack>
+                                    </Stack>
                                 </Box>
                             ) : null}{" "}
                         </Box>
