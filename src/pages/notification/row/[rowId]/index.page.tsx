@@ -34,6 +34,13 @@ import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriat
 import ExpiredIcon from "@mui/icons-material/Error";
 import AgreementDetails from "./components/AgreementDetails";
 import PropertyDetails from "../components/PropertyDetails";
+import TourPropertyBadges from "./components/TourPropertyBadges";
+import ListingStateBadge from "./components/ListingStateBadge";
+import CustomerInfo from "../components/CustomerInfo";
+import PropertyRating from "./components/PropertyRating";
+import TourPropertyDetails from "./components/TourPropertyDetails";
+import ListingPropertyDetails from "./components/ListingPropertyDetails";
+import TitleSection from "./components/TitleSection";
 
 const NotificationDetailPage: NextPage = () => {
     const router = useRouter();
@@ -99,7 +106,7 @@ const NotificationDetailPage: NextPage = () => {
         secretary: boolean;
     };
 
-    // Filtering true positions
+    // Filtering true work positions
     const truePositions = workForUs
         ? (Object.keys(workForUs.positions) as (keyof Positions)[]).filter(
               (key) => workForUs.positions[key]
@@ -110,77 +117,10 @@ const NotificationDetailPage: NextPage = () => {
         <Box>
             <Card sx={{ marginBottom: 2, padding: 2 }}>
                 <CardContent>
-                    {type === "TOUR" ? (
-                        <Typography
-                            variant="h5"
-                            gutterBottom
-                            borderBottom="1px solid lightgray"
-                            pb={1}
-                        >
-                            {t("Tour request details")}
-                        </Typography>
-                    ) : type === "REVIEW" ? (
-                        <Typography
-                            variant="h5"
-                            gutterBottom
-                            borderBottom="1px solid lightgray"
-                            pb={1}
-                        >
-                            {t("Review Details")}
-                        </Typography>
-                    ) : type === "LISTING" ? (
-                        <Typography
-                            variant="h5"
-                            gutterBottom
-                            borderBottom="1px solid lightgray"
-                            pb={1}
-                        >
-                            {t("Listing  details")}
-                        </Typography>
-                    ) : type === "WORK_FOR_US" ? (
-                        <Typography
-                            variant="h5"
-                            gutterBottom
-                            borderBottom="1px solid lightgray"
-                            pb={1}
-                        >
-                            {t("Work application details")}
-                        </Typography>
-                    ) : type === "AGREEMENT" ? (
-                        <Stack
-                            direction="row"
-                            justifyContent="flex-start"
-                            borderBottom="1px solid lightgray"
-                            gap={2}
-                            alignItems="center"
-                        >
-                            <Stack
-                                direction="row"
-                                alignItems="flex-center"
-                                gap={1}
-                            >
-                                <Typography
-                                    variant="h5"
-                                    gutterBottom
-                                    width="100%"
-                                >
-                                    {t("Property Agreement details")}
-                                </Typography>
-                            </Stack>
-
-                            <NormalBadge
-                                name={`${t("\t")} ${
-                                    data?.agreement?.variant?.value || ""
-                                }`}
-                                color={"#84a9ff"}
-                                sx={{
-                                    color: "#84a9ff",
-                                    width: "10%",
-                                    mb: 0.5,
-                                }}
-                            />
-                        </Stack>
-                    ) : null}
+                    <TitleSection
+                        type={type}
+                        agreementVariant={data?.agreement?.variant?.value}
+                    />
 
                     {type !== "AGREEMENT" ? (
                         <>
@@ -205,82 +145,20 @@ const NotificationDetailPage: NextPage = () => {
                                 </Typography>
                             </Stack>
                             <Stack direction="column" mt={2}>
-                                <Box display="flex" flexDirection="row" gap={7}>
-                                    <Typography
-                                        display="flex"
-                                        alignItems="center"
-                                    >
-                                        {" "}
-                                        <LocalPhone
-                                            sx={{
-                                                color: "black",
-                                                fontSize: "medium",
-                                                mr: 1,
-                                            }}
-                                        />
-                                        {customerMobile}
-                                    </Typography>
-                                    <Typography
-                                        display="flex"
-                                        alignItems="center"
-                                    >
-                                        {" "}
-                                        <EmailIcon
-                                            sx={{
-                                                color: "black",
-                                                fontSize: "medium",
-                                                mr: 1,
-                                            }}
-                                        />
-                                        {customerEmail}
-                                    </Typography>
-                                </Box>
+                                <CustomerInfo
+                                    customerEmail={customerEmail}
+                                    customerMobile={customerMobile}
+                                />
                                 {type === "REVIEW" ? (
-                                    <Stack mt={1}>
-                                        <Stack
-                                            mt={1}
-                                            flexDirection="row"
-                                            gap={1}
-                                            alignItems="center"
-                                        >
-                                            <CommentIcon
-                                                sx={{ width: 18, height: 18 }}
-                                            />
-                                            <Typography>
-                                                {reviewDetails?.comment}
-                                            </Typography>
-                                        </Stack>
-
-                                        <Stack direction="row" gap={0.5}>
-                                            <Typography>
-                                                {t("Property Rating")}:
-                                            </Typography>
-                                            <Rating
-                                                name="property-rating"
-                                                value={
-                                                    reviewDetails?.propertyRating ||
-                                                    0
-                                                }
-                                                precision={0.5}
-                                                readOnly
-                                            />
-                                        </Stack>
-                                        <Stack direction="row" gap={0.5}>
-                                            <Typography>
-                                                {t("Property Presentation")}:
-                                            </Typography>
-
-                                            <Rating
-                                                name="presentation-rating"
-                                                value={
-                                                    reviewDetails?.presentationRating ||
-                                                    0
-                                                }
-                                                precision={0.5}
-                                                readOnly
-                                            />
-                                        </Stack>
-                                    </Stack>
+                                    <PropertyRating
+                                        comment={reviewDetails?.comment || ""}
+                                        propertyRating={
+                                            reviewDetails?.propertyRating || 0
+                                        }
+                                        presentationRating={
+                                            reviewDetails?.propertyRating || 0
+                                        }
+                                    />
                                 ) : null}
 
                                 {message ? (
@@ -351,11 +229,7 @@ const NotificationDetailPage: NextPage = () => {
                                 justifyContent="space-between"
                                 width="100%"
                             >
-                                {type === "TOUR" ? (
-                                    <Typography variant="h6">
-                                        {property?.descriptions?.el?.title}
-                                    </Typography>
-                                ) : type === "REVIEW" ? (
+                                {type === "TOUR" || "REVIEW" ? (
                                     <Typography variant="h6">
                                         {property?.descriptions?.el?.title}
                                     </Typography>
@@ -368,82 +242,25 @@ const NotificationDetailPage: NextPage = () => {
                                 ) : null}
                             </Stack>
                             {property ? (
-                                <>
-                                    <Typography variant="body2" mt={2}>
-                                        {property?.category.value} |{" "}
-                                        {property?.area} m² | {property?.price}{" "}
-                                        {property?.state?.key === "RENT"
-                                            ? t("€/month")
-                                            : "€"}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {property?.regionGR}
-                                        {property?.regionGR ? ", " : ""}
-                                        {property?.cityGR}
-                                        {property?.cityGR &&
-                                        (property?.street || property?.number)
-                                            ? ", "
-                                            : ""}
-                                        {property?.street} {property?.number}
-                                    </Typography>
-                                </>
+                                <TourPropertyDetails property={property} />
                             ) : null}
 
                             {listing ? (
-                                <>
-                                    <Typography variant="body2" mt={2}>
-                                        {listing?.category.value} |{" "}
-                                        {listing?.area} m² | {listing?.price}{" "}
-                                        {listing?.state?.key === "RENT"
-                                            ? t("€/month")
-                                            : "€"}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {listing?.location?.region},{" "}
-                                        {listing?.location.city}
-                                        {", "}
-                                        {listing?.location.street}{" "}
-                                        {listing?.location.number}
-                                    </Typography>
-                                </>
+                                <ListingPropertyDetails listing={listing} />
                             ) : null}
 
                             <Stack mt={3} gap={2} direction="row">
                                 {property ? (
-                                    <>
-                                        <NormalBadge
-                                            name={`${property?.state?.value}`}
-                                            color="#3730a3"
-                                            sx={{
-                                                width: "50%",
-                                                color: "#3730a3",
-                                            }}
-                                        />
-
-                                        <NormalBadge
-                                            name={`${t("Code")}: ${
-                                                property?.code || ""
-                                            }`}
-                                            color="#ffcc00"
-                                            sx={{
-                                                width: "100%",
-                                                color: "#854D0E",
-                                            }}
-                                        />
-                                    </>
+                                    <TourPropertyBadges
+                                        stateValue={property?.state?.value}
+                                        code={property?.code}
+                                    />
                                 ) : null}
 
                                 {listing ? (
-                                    <>
-                                        <NormalBadge
-                                            name={`${listing?.state?.value}`}
-                                            color="#3730a3"
-                                            sx={{
-                                                width: "50%",
-                                                color: "#3730a3",
-                                            }}
-                                        />
-                                    </>
+                                    <ListingStateBadge
+                                        stateValue={listing?.state?.value}
+                                    />
                                 ) : null}
                             </Stack>
                         </CardContent>
