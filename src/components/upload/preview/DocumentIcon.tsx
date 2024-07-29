@@ -16,7 +16,7 @@ const DocumentIcon = ({ isPreview, ...other }: DocumentIconProps) => (
     >
         <DocumentSvg {...other} />
 
-        {true ? (
+        {isPreview ? (
             <CircularProgress
                 size={20}
                 sx={{
