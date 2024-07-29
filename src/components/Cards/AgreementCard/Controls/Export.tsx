@@ -4,6 +4,7 @@ import { useGeneratePDF } from "@/sections/agreements/Dialogs/_shared/hook";
 import downloadBlob from "@/utils/downloadBlob";
 import LoadingIconButton from "@/components/LoadingIconButton";
 import DownloadIcon from "@mui/icons-material/Download";
+import { MouseEvent } from "react";
 
 interface Props {
     agreementId: number;
@@ -14,7 +15,9 @@ const ExportButton: React.FC<Props> = ({ agreementId }) => {
 
     const { generatePDF, isGenerating } = useGeneratePDF();
 
-    const handleGenerate = async () => {
+    const handleGenerate = async (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
         const agreement = await getAgreement(agreementId).unwrap();
 
         const { variant, language, title, formData } = agreement || {};

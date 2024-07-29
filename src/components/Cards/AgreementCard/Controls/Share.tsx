@@ -16,8 +16,10 @@ const ShareButton: React.FC<Props> = ({ agreement }) => {
 
     const [anchorEl, setAnchor] = useState<HTMLButtonElement>();
 
-    const openPopover = (e: MouseEvent<HTMLButtonElement>) =>
+    const openPopover = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setAnchor(e.currentTarget);
+    };
     const closePopover = () => setAnchor(undefined);
 
     return (
