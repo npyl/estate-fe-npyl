@@ -33,7 +33,7 @@ export const signature: Plugin<Signature> = {
         const signaturePad = new SignaturePad(canvas);
         try {
             value
-                ? signaturePad.fromData(JSON.parse(value))
+                ? signaturePad.fromDataURL(value, { ratio: resetScale })
                 : signaturePad.clear();
         } catch (e) {
             console.error(e);
@@ -55,8 +55,8 @@ export const signature: Plugin<Signature> = {
             rootElement.appendChild(clearButton);
 
             signaturePad.addEventListener("endStroke", () => {
-                const data = signaturePad.toData();
-                data && onChange?.(JSON.stringify(data));
+                const data = signaturePad.toDataURL("image/png");
+                data && onChange?.(data);
             });
         }
         rootElement.appendChild(canvas);

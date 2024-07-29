@@ -3,6 +3,8 @@ import { loadPdf, NestedObject } from "../PDFEditor/util";
 import { useState } from "react";
 import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
+import { text } from "@pdfme/schemas";
+import { signature } from "../PDFEditor/plugins/signature";
 
 const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);
@@ -20,7 +22,11 @@ const useGeneratePDF = () => {
             return;
         }
 
-        const pdf = await generate({ template, inputs });
+        const pdf = await generate({
+            template,
+            inputs,
+            plugins: { text, signature },
+        });
 
         setGenerating(false);
 

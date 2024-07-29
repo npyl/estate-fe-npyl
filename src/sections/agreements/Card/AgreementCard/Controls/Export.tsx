@@ -20,8 +20,6 @@ const ExportButton: React.FC<Props> = ({ agreementId }) => {
         const { variant, language, title, formData } = agreement || {};
         const inputs = [flattenObject(formData)];
 
-        console.log("got: ", inputs);
-
         const pdf = await generatePDF(variant?.key!, language?.key!, inputs);
         if (!pdf) return;
 
