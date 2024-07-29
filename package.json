@@ -104,6 +104,7 @@
         "recharts": "^2.12.4",
         "redux": "^4.2.1",
         "redux-thunk": "^2.4.2",
+        "signature_pad": "^5.0.2",
         "simplebar": "^6.2.3",
         "simplebar-react": "^3.2.2",
         "typescript": "^5.0.2",

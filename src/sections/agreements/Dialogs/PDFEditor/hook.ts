@@ -4,6 +4,8 @@ import { useFormContext } from "react-hook-form";
 import { IAgreementReq, IAgreementType } from "@/types/agreements";
 import { flattenObject, loadPdf } from "./util";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
+import { signature } from "./plugins/signature";
+import { text } from "@pdfme/schemas";
 
 const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
     const { watch, setValue } = useFormContext();
@@ -22,9 +24,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
                         domContainer: formRef.current!!,
                         template,
                         inputs: inputs || [{}],
-                        // ...
-                        // plugins: {},
-                        // options: { font },
+                        plugins: { text, signature },
                     });
 
                     form.current.onChangeInput(({ key, value }) =>

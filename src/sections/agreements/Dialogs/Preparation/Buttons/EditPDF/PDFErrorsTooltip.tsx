@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import { getTRIGGER_OPTIONS } from "../../PDFEditor/constants/trigger";
-import ErrorTooltip, { ErrorTooltipProps } from "../../_shared/ErrorTooltip";
+import { getTRIGGER_OPTIONS } from "../../../PDFEditor/constants/trigger";
+import ErrorTooltip, { ErrorTooltipProps } from "../../../_shared/ErrorTooltip";
 import Box from "@mui/material/Box";
 import { IAgreementType } from "@/types/agreements";
 
