@@ -1,10 +1,9 @@
 import {
-    AddOutlined,
     CircleNotifications,
     ConfirmationNumber,
     LabelImportant,
 } from "@mui/icons-material";
-import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import HandshakeIcon from "@mui/icons-material/Handshake";
 import {
     Box,
     Drawer,
@@ -116,11 +115,18 @@ const getSections = (
                 adminOnly: true,
             },
             {
+                title: t("Agreements"),
+                path: "/agreements",
+                icon: <HandshakeIcon fontSize="small" />,
+                adminOnly: true,
+            },
+            {
                 title: t("Security"),
                 path: "/security",
                 icon: <UsersIcon fontSize="small" />,
                 adminOnly: true,
             },
+
             // {
             //     title: t("Calendar"),
             //     path: "/calendar",
