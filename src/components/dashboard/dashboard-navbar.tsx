@@ -156,6 +156,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         {belowMd ? null : (
                             <>
                                 <LanguageButton />
+
                                 <SettingsButton />
                             </>
                         )}

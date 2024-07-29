@@ -1,4 +1,4 @@
-import { ButtonProps, IconButton } from "@mui/material";
+import { Box, ButtonProps, IconButton } from "@mui/material";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "../image/Image";
@@ -36,8 +36,28 @@ export const LanguageButton = ({
 
     return (
         <>
-            <IconButton onClick={openPopover} ref={anchorRef} {...props}>
-                <Image alt="" src={imageSrc} width={20} height={20} />
+            <IconButton
+                onClick={openPopover}
+                ref={anchorRef}
+                {...props}
+                sx={{
+                    padding: 0,
+                    "&:hover": {
+                        backgroundColor: "transparent",
+                    },
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: 28,
+                        height: 20,
+                    }}
+                >
+                    <Image alt="" src={imageSrc} width={18} height={18} />
+                </Box>
             </IconButton>
 
             {isPopoverOpen ? (
