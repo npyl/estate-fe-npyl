@@ -16,6 +16,7 @@ interface Option {
 
 const OPTIONS: Option[] = [
     { key: "BASIC", label: "Basic" },
+    { key: "BASIC_EXCLUSIVE", label: "Basic Exclusive" },
     { key: "PURCHASE", label: "Purchase" },
 ];
 
