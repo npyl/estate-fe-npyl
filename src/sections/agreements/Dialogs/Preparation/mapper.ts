@@ -144,5 +144,11 @@ export const getValues = (
 
         signed:
             !!additional?.commissionerSignature && !!additional.agentSignature,
+
+        auto: {
+            day: -1,
+            month: -1,
+            year: -1,
+        },
     };
 };

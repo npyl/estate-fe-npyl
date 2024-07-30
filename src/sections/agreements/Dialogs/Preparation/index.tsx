@@ -84,7 +84,10 @@ const PreparationDialog: React.FC<Props> = ({
 
     console.log("ERRORS: ", methods.formState.errors);
 
-    const handleSubmit = async (d: Draft<IAgreementReq>) => {
+    const handleSubmit = async ({ auto, ...d }: Draft<IAgreementReq>) => {
+        // NOTE: we must not pass this to BE
+        auto;
+
         const cb = !!editedAgreementId ? updateAgreement : createAgreement;
 
         // NOTE: we strip gdpr.email
