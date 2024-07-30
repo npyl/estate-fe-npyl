@@ -19,7 +19,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(2),
 
     zIndex: 3000,
-    maxWidth: "90vw",
+    width: "100%",
 
     marginTop: theme.spacing(1),
     marginLeft: "auto",
@@ -52,12 +52,7 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     };
 
     return (
-        <Popper
-            {...props}
-            component={StyledPaper}
-            placement="bottom-end"
-            disablePortal
-        >
+        <Popper {...props} component={StyledPaper}>
             <SpaceBetween mb={2}>
                 <Typography>{totalElements} items</Typography>
 
