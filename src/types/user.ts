@@ -30,6 +30,7 @@ export interface IUser {
     registrationDate: string;
 
     preferredLanguage: KeyValue<PreferredLanguageType>;
+    notificationsEnabled: boolean;
 }
 
 export interface IUserPOST {
