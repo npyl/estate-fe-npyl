@@ -2,12 +2,8 @@ const BasicSchema = [
     {
         "owner.fullName": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 38.1,
-                y: 60.85,
-            },
+            position: { x: 38.1, y: 60.85 },
             width: 93.68,
             height: 6.56,
             rotate: 0,
@@ -22,12 +18,8 @@ const BasicSchema = [
         },
         "owner.email": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 141.41,
-                y: 60.24,
-            },
+            position: { x: 141.41, y: 60.24 },
             width: 61.13,
             height: 6.56,
             rotate: 0,
@@ -42,12 +34,8 @@ const BasicSchema = [
         },
         "owner.maidenName": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 30.37,
-                y: 68.47,
-            },
+            position: { x: 30.37, y: 68.47 },
             width: 65.64,
             height: 6.56,
             rotate: 0,
@@ -62,12 +50,8 @@ const BasicSchema = [
         },
         "owner.idCardNumber": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 105.46,
-                y: 68.15,
-            },
+            position: { x: 105.46, y: 68.67 },
             width: 96.6,
             height: 6.56,
             rotate: 0,
@@ -82,12 +66,8 @@ const BasicSchema = [
         },
         "owner.vat": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 16.5,
-                y: 76.56,
-            },
+            position: { x: 16.5, y: 76.56 },
             width: 40.5,
             height: 6.56,
             rotate: 0,
@@ -102,12 +82,8 @@ const BasicSchema = [
         },
         "owner.city": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 69.09,
-                y: 76.24,
-            },
+            position: { x: 69.09, y: 76.24 },
             width: 30.97,
             height: 6.56,
             rotate: 0,
@@ -122,12 +98,8 @@ const BasicSchema = [
         },
         "owner.street": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 108.19,
-                y: 76.19,
-            },
+            position: { x: 108.19, y: 76.19 },
             width: 73.56,
             height: 6.56,
             rotate: 0,
@@ -142,12 +114,8 @@ const BasicSchema = [
         },
         "owner.number": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 189.9,
-                y: 76.39,
-            },
+            position: { x: 189.9, y: 76.39 },
             width: 12.18,
             height: 6.56,
             rotate: 0,
@@ -162,12 +130,8 @@ const BasicSchema = [
         },
         "owner.actingOnMyBehalf": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 65.75,
-                y: 83.75,
-            },
+            position: { x: 65.75, y: 84.01 },
             width: 136.27,
             height: 6.56,
             rotate: 0,
@@ -182,12 +146,8 @@ const BasicSchema = [
         },
         "property.region": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 18.83,
-                y: 111.16,
-            },
+            position: { x: 18.83, y: 111.16 },
             width: 40.5,
             height: 6.56,
             rotate: 0,
@@ -202,12 +162,8 @@ const BasicSchema = [
         },
         "property.address": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 67.46,
-                y: 111.11,
-            },
+            position: { x: 67.46, y: 111.11 },
             width: 114.32,
             height: 6.56,
             rotate: 0,
@@ -222,12 +178,8 @@ const BasicSchema = [
         },
         "property.addressNumber": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 190.69,
-                y: 110.73,
-            },
+            position: { x: 190.69, y: 110.99 },
             width: 12.18,
             height: 6.56,
             rotate: 0,
@@ -242,12 +194,8 @@ const BasicSchema = [
         },
         "property.type": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 15.27,
-                y: 120.2,
-            },
+            position: { x: 15.27, y: 120.2 },
             width: 35.73,
             height: 6.56,
             rotate: 0,
@@ -262,12 +210,8 @@ const BasicSchema = [
         },
         "property.floor": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 63.64,
-                y: 120.14,
-            },
+            position: { x: 63.64, y: 120.14 },
             width: 15.62,
             height: 6.56,
             rotate: 0,
@@ -282,12 +226,8 @@ const BasicSchema = [
         },
         "property.livingSpace": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 93.75,
-                y: 120.09,
-            },
+            position: { x: 93.75, y: 120.09 },
             width: 19.06,
             height: 6.56,
             rotate: 0,
@@ -302,12 +242,8 @@ const BasicSchema = [
         },
         "property.description": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 7.18,
-                y: 127.71,
-            },
+            position: { x: 7.18, y: 127.97 },
             width: 196.06,
             height: 7.62,
             rotate: 0,
@@ -322,12 +258,8 @@ const BasicSchema = [
         },
         "property.price": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 36.65,
-                y: 138.14,
-            },
+            position: { x: 36.65, y: 138.14 },
             width: 76.74,
             height: 6.56,
             rotate: 0,
@@ -342,12 +274,8 @@ const BasicSchema = [
         },
         "commissionAndDuration.payment": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 60.41,
-                y: 161.37,
-            },
+            position: { x: 60.41, y: 160.58 },
             width: 88.64,
             height: 5.24,
             rotate: 0,
@@ -362,14 +290,10 @@ const BasicSchema = [
         },
         "commissionAndDuration.flatRate": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 171.27,
-                y: 158.71,
-            },
-            width: 18.53,
-            height: 6.56,
+            position: { x: 171.28, y: 160.57 },
+            width: 18.52,
+            height: 4.7,
             rotate: 0,
             alignment: "left",
             verticalAlignment: "bottom",
@@ -382,12 +306,8 @@ const BasicSchema = [
         },
         "commissionAndDuration.defects": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 6.65,
-                y: 180.63,
-            },
+            position: { x: 6.65, y: 179.84 },
             width: 196.59,
             height: 5.24,
             rotate: 0,
@@ -402,12 +322,8 @@ const BasicSchema = [
         },
         "gdpr.email": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 84.96,
-                y: 225.61,
-            },
+            position: { x: 84.96, y: 225.08 },
             width: 118.81,
             height: 4.44,
             rotate: 0,
@@ -422,12 +338,8 @@ const BasicSchema = [
         },
         "gdpr.address": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 23.21,
-                y: 228.73,
-            },
+            position: { x: 23.21, y: 228.2 },
             width: 40.49,
             height: 4.44,
             rotate: 0,
@@ -440,7 +352,6 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-
         "additional.commissionerSignature": {
             type: "signature",
             defaultValue: "\n",
