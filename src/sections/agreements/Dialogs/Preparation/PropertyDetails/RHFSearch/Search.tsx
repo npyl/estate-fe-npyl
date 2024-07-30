@@ -5,6 +5,7 @@ import { useDebounce } from "use-debounce";
 import { usePagination } from "@/components/Pagination";
 import ResultsPopper from "./Popper";
 import { PaginationHookProps } from "@/components/Pagination/types";
+import { useRouter } from "next/router";
 
 const pageSize = 5;
 
@@ -12,10 +13,14 @@ const useSearchContent = (
     pagination: PaginationHookProps,
     searchString: string
 ) => {
+    const router = useRouter();
+    const { customerId } = router.query;
+
     const { data, isLoading } = useSearchPropertyQuery({
         searchString,
         page: pagination.page,
         pageSize,
+        customer: !!customerId ? +customerId : undefined,
     });
 
     const content = useMemo(
@@ -26,7 +31,7 @@ const useSearchContent = (
     return {
         content,
         isLoading,
-        totalElements: data?.totalElements || pageSize,
+        totalElements: data?.totalElements || 0,
     };
 };
 
