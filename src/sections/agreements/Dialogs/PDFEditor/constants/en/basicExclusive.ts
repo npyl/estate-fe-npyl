@@ -2,13 +2,9 @@ const BasicSchema = [
     {
         "owner.fullName": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 38.1,
-                y: 60.85,
-            },
-            width: 93.68,
+            position: { x: 29.63, y: 61.9 },
+            width: 86.54,
             height: 6.56,
             rotate: 0,
             alignment: "left",
@@ -22,13 +18,9 @@ const BasicSchema = [
         },
         "owner.email": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 141.41,
-                y: 60.24,
-            },
-            width: 61.13,
+            position: { x: 126.33, y: 61.82 },
+            width: 76.21,
             height: 6.56,
             rotate: 0,
             alignment: "left",
@@ -42,14 +34,10 @@ const BasicSchema = [
         },
         "owner.maidenName": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 30.37,
-                y: 68.47,
-            },
-            width: 65.64,
-            height: 6.56,
+            position: { x: 47.83, y: 69.26 },
+            width: 46.06,
+            height: 7.36,
             rotate: 0,
             alignment: "left",
             verticalAlignment: "top",
@@ -59,16 +47,13 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            content: "",
         },
         "owner.idCardNumber": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 105.46,
-                y: 68.15,
-            },
-            width: 96.6,
+            position: { x: 112.34, y: 69.21 },
+            width: 42.89,
             height: 6.56,
             rotate: 0,
             alignment: "left",
@@ -79,17 +64,14 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            content: "",
         },
         "owner.vat": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 16.5,
-                y: 76.56,
-            },
-            width: 40.5,
-            height: 6.56,
+            position: { x: 163.61, y: 69.14 },
+            width: 39.18,
+            height: 6.57,
             rotate: 0,
             alignment: "left",
             verticalAlignment: "top",
@@ -99,17 +81,14 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            content: "",
         },
         "owner.city": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 69.09,
-                y: 76.24,
-            },
-            width: 30.97,
-            height: 6.56,
+            position: { x: 24.64, y: 77.28 },
+            width: 57.16,
+            height: 6.57,
             rotate: 0,
             alignment: "left",
             verticalAlignment: "top",
@@ -119,16 +98,13 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            content: "",
         },
         "owner.street": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 108.19,
-                y: 76.19,
-            },
-            width: 73.56,
+            position: { x: 93.11, y: 77.25 },
+            width: 88.64,
             height: 6.56,
             rotate: 0,
             alignment: "left",
@@ -139,15 +115,12 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            content: "",
         },
         "owner.number": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 189.9,
-                y: 76.39,
-            },
+            position: { x: 190.43, y: 77.18 },
             width: 12.18,
             height: 6.56,
             rotate: 0,
@@ -162,13 +135,9 @@ const BasicSchema = [
         },
         "owner.actingOnMyBehalf": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 65.75,
-                y: 83.75,
-            },
-            width: 136.27,
+            position: { x: 69.19, y: 93.27 },
+            width: 133.36,
             height: 6.56,
             rotate: 0,
             alignment: "left",
@@ -180,14 +149,28 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
+        "owner.mobilePhone": {
+            type: "text",
+            defaultValue: "\n",
+            position: { x: 14, y: 85.71 },
+            width: 188.92,
+            height: 6.57,
+            rotate: 0,
+            alignment: "left",
+            verticalAlignment: "top",
+            fontSize: 13,
+            lineHeight: 1,
+            characterSpacing: 0,
+            fontColor: "#000000",
+            backgroundColor: "",
+            opacity: 1,
+            content: "",
+            fontName: "Roboto",
+        },
         "property.region": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 18.83,
-                y: 111.16,
-            },
+            position: { x: 14.86, y: 116.72 },
             width: 40.5,
             height: 6.56,
             rotate: 0,
@@ -202,12 +185,8 @@ const BasicSchema = [
         },
         "property.address": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 67.46,
-                y: 111.11,
-            },
+            position: { x: 67.99, y: 116.67 },
             width: 114.32,
             height: 6.56,
             rotate: 0,
@@ -222,12 +201,8 @@ const BasicSchema = [
         },
         "property.addressNumber": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 190.69,
-                y: 110.73,
-            },
+            position: { x: 189.9, y: 116.55 },
             width: 12.18,
             height: 6.56,
             rotate: 0,
@@ -242,12 +217,8 @@ const BasicSchema = [
         },
         "property.type": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 15.27,
-                y: 120.2,
-            },
+            position: { x: 14.48, y: 125.76 },
             width: 35.73,
             height: 6.56,
             rotate: 0,
@@ -262,12 +233,8 @@ const BasicSchema = [
         },
         "property.floor": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 63.64,
-                y: 120.14,
-            },
+            position: { x: 60.2, y: 125.43 },
             width: 15.62,
             height: 6.56,
             rotate: 0,
@@ -282,12 +249,8 @@ const BasicSchema = [
         },
         "property.livingSpace": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 93.75,
-                y: 120.09,
-            },
+            position: { x: 86.08, y: 125.38 },
             width: 19.06,
             height: 6.56,
             rotate: 0,
@@ -302,14 +265,10 @@ const BasicSchema = [
         },
         "property.description": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 7.18,
-                y: 127.71,
-            },
-            width: 196.06,
-            height: 7.62,
+            position: { x: 121.74, y: 125.32 },
+            width: 82.03,
+            height: 6.56,
             rotate: 0,
             alignment: "left",
             verticalAlignment: "top",
@@ -319,15 +278,12 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            fontName: "Roboto",
         },
         "property.price": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 36.65,
-                y: 138.14,
-            },
+            position: { x: 36.65, y: 143.43 },
             width: 76.74,
             height: 6.56,
             rotate: 0,
@@ -342,13 +298,9 @@ const BasicSchema = [
         },
         "commissionAndDuration.payment": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 60.41,
-                y: 161.37,
-            },
-            width: 88.64,
+            position: { x: 45.86, y: 165.87 },
+            width: 86.79,
             height: 5.24,
             rotate: 0,
             alignment: "left",
@@ -362,12 +314,8 @@ const BasicSchema = [
         },
         "commissionAndDuration.flatRate": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 171.27,
-                y: 158.71,
-            },
+            position: { x: 159.62, y: 164.53 },
             width: 18.53,
             height: 6.56,
             rotate: 0,
@@ -382,12 +330,8 @@ const BasicSchema = [
         },
         "commissionAndDuration.defects": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 6.65,
-                y: 180.63,
-            },
+            position: { x: 6.65, y: 180.63 },
             width: 196.59,
             height: 5.24,
             rotate: 0,
@@ -402,13 +346,9 @@ const BasicSchema = [
         },
         "gdpr.email": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 84.96,
-                y: 225.61,
-            },
-            width: 118.81,
+            position: { x: 45.8, y: 225.87 },
+            width: 133.63,
             height: 4.44,
             rotate: 0,
             alignment: "left",
@@ -419,16 +359,13 @@ const BasicSchema = [
             fontColor: "#000000",
             backgroundColor: "",
             opacity: 1,
+            content: "",
         },
         "gdpr.address": {
             type: "text",
-
             defaultValue: "\n",
-            position: {
-                x: 23.21,
-                y: 228.73,
-            },
-            width: 40.49,
+            position: { x: 8.39, y: 229.26 },
+            width: 51.34,
             height: 4.44,
             rotate: 0,
             alignment: "left",
@@ -440,7 +377,6 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-
         "additional.commissionerSignature": {
             type: "signature",
             defaultValue: "\n",
