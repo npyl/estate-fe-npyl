@@ -100,7 +100,7 @@ const getFIELDS = (
         options={nationalitiesEnum}
     />,
     <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
-    <RHFDatePicker disableFuture name="dateOfBirth" label={t("")} />,
+    <RHFDatePicker disableFuture name="dateOfBirth" />,
     <RHFTextField
         fullWidth
         name="passportNumber"
