@@ -25,7 +25,10 @@ const AgreementsSection: React.FC<Props> = ({ propertyId, customerId }) => {
         <>
             <AgreementsFiltersProvider>
                 <Stack spacing={1}>
-                    <FiltersBar onClickNew={openCreateDialog} />
+                    <FiltersBar
+                        customer={!!customerId}
+                        onClickNew={openCreateDialog}
+                    />
                     <CardsContent
                         propertyId={propertyId}
                         customerId={customerId}

@@ -13,17 +13,18 @@ import {
 import FilterDraft from "./Filters/Draft";
 
 interface Props {
+    customer: boolean;
     onClickNew: VoidFunction;
 }
 
-const AgreementsFiltersBar: React.FC<Props> = ({ onClickNew }) => {
+const AgreementsFiltersBar: React.FC<Props> = ({ customer, onClickNew }) => {
     const { t } = useTranslation();
 
     return (
         <FiltersBar
             filters={
                 <>
-                    <FilterType />
+                    {customer ? null : <FilterType />}
                     <FilterExpirationDate />
                     <FilterActive />
                     <FilterKeys />
