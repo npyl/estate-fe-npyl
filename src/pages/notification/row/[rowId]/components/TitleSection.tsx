@@ -49,36 +49,38 @@ const TitleSection: React.FC<TitleSectionProps> = ({
                             {getTitle()}
                         </Typography>
                     </Stack>
-                    <NormalBadge
-                        name={`${t("\t")} ${agreementVariant || ""}`}
-                        color={"#84a9ff"}
-                        sx={{
-                            color: "#84a9ff",
-                            width: "10%",
-                            mb: 0.5,
-                        }}
-                    />
-                    {isAgreementActive ? (
+                    <Stack direction="row" gap={2}>
                         <NormalBadge
-                            name={`${t("Active")}`}
-                            color={"#43c6b7"}
+                            name={`${t("\t")} ${agreementVariant || ""}`}
+                            color={"#84a9ff"}
                             sx={{
-                                color: "#43c6b7 ",
-                                width: "13%",
+                                color: "#84a9ff",
+                                width: "100%",
                                 mb: 0.5,
                             }}
                         />
-                    ) : (
-                        <NormalBadge
-                            name={`${t("Not active")}`}
-                            color={"#da6868"}
-                            sx={{
-                                color: "#da6868",
-                                width: "13%",
-                                mb: 0.5,
-                            }}
-                        />
-                    )}
+                        {isAgreementActive ? (
+                            <NormalBadge
+                                name={`${t("Active")}`}
+                                color={"#43c6b7"}
+                                sx={{
+                                    color: "#43c6b7 ",
+                                    width: "100%",
+                                    mb: 0.5,
+                                }}
+                            />
+                        ) : (
+                            <NormalBadge
+                                name={`${t("Not active")}`}
+                                color={"#da6868"}
+                                sx={{
+                                    color: "#da6868",
+                                    width: "100%",
+                                    mb: 0.5,
+                                }}
+                            />
+                        )}
+                    </Stack>
                 </Stack>
             ) : (
                 <Typography

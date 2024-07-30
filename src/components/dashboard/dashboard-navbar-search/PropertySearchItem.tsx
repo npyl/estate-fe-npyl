@@ -186,11 +186,11 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                 >
                     <Grid item xs={12} sm={6} mr={isMobile ? 1 : 0}>
                         {option?.title ? (
-                            <Typography variant="h6">
+                            <Typography fontWeight={600}>
                                 {option?.title}
                             </Typography>
                         ) : (
-                            <Typography variant="h6">Name</Typography>
+                            <Typography fontWeight={600}>Name</Typography>
                         )}
                     </Grid>
                     <Grid
@@ -263,7 +263,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             ml={1}
                             mr={1.5}
                             color="text.secondary"
-                            sx={{ textWrap: "nowrap" }}
+                            sx={{ textWrap: "wrap" }}
                         >
                             {address}{" "}
                         </Typography>
