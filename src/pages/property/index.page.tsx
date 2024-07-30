@@ -14,6 +14,7 @@ import { getOptions } from "./(FiltersBar)/constants";
 import ViewAll from "./(ViewAll)";
 import MediaCard from "./(MediaCard)";
 import MapView from "./(MapView)";
+import { GridRowSelectionModel } from "@mui/x-data-grid";
 
 const useResponsiveOptionView = () => {
     const belowLg = useResponsive("down", "lg");
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
     // sorting
     const sortingOptions = useMemo(() => getOptions(t), [t]);
     const [sorting, setSorting] = useState("default"); // general
+    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const { sortBy, direction } = useMemo(
         () =>
             sortingOptions.find(({ value }) => value === sorting)?.sorting || {
@@ -47,7 +49,11 @@ const Home: NextPage = () => {
     );
 
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
-
+    const handleRowSelectionChange = (
+        selectionModel: GridRowSelectionModel
+    ) => {
+        setSelectedRows(selectionModel);
+    };
     return (
         <Box
             sx={{
@@ -78,10 +84,10 @@ const Home: NextPage = () => {
                     <ViewAll
                         sortBy={sortBy}
                         direction={direction}
-                        // ...
                         isBulkEditOpen={isBulkEditOpen}
                         onBulkEditOpen={openBulkEdit}
                         onBulkEditClose={closeBulkEdit}
+                        onRowSelectionModelChange={handleRowSelectionChange}
                     />
                 ) : null}
                 {optionViewProps.optionView === "grid" ? (
