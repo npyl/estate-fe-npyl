@@ -141,6 +141,15 @@ export interface IAgreementReq extends IAgreementReqBase {
     owner: IAgreementOwner;
     variant: IAgreementType;
     language: PreferredLanguageType;
+
+    // NOTE: must not be sent to BE;
+    //       they are automatically filled
+    //       and are required only when generating the PDF
+    auto: {
+        day: number;
+        month: number;
+        year: number;
+    };
 }
 
 export interface IAgreementPDFReq {

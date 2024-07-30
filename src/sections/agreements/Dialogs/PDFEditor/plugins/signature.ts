@@ -20,7 +20,7 @@ const getEffectiveScale = (element: HTMLElement | null) => {
     return scale;
 };
 
-export const signature: Plugin<Signature> = {
+const signature: Plugin<Signature> = {
     ui: async (arg) => {
         const { schema, value, onChange, rootElement, mode, i18n } = arg;
 
@@ -75,3 +75,5 @@ export const signature: Plugin<Signature> = {
         },
     },
 };
+
+export default signature;

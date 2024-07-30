@@ -4,7 +4,8 @@ import { useState } from "react";
 import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
 import { text } from "@pdfme/schemas";
-import { signature } from "../PDFEditor/plugins/signature";
+import readOnly from "../PDFEditor/plugins/readOnly";
+import signature from "../PDFEditor/plugins/signature";
 
 const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);
@@ -25,7 +26,7 @@ const useGeneratePDF = () => {
         const pdf = await generate({
             template,
             inputs,
-            plugins: { text, signature },
+            plugins: { text, readOnly, signature },
         });
 
         setGenerating(false);

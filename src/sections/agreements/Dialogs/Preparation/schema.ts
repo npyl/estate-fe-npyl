@@ -76,7 +76,7 @@ const mandatorySchema = z.object({
         })
         .optional(),
     additional: z.object({
-        date: z.string().optional(),
+        date: z.string(),
         commissionerSignature: z.string().optional(),
         agentSignature: z.string().optional(),
     }),
