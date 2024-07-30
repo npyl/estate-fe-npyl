@@ -1,10 +1,11 @@
 // Fill-in basic information for property, customer, etc. before filling-in the actual pdf
 
 import Dialog, { DialogProps } from "@/components/Dialog";
-import { RHFCheckbox } from "@/components/hook-form";
+import { RHFCheckbox, RHFDatePicker } from "@/components/hook-form";
 import { IAgreementReq } from "@/types/agreements";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { FormProvider, useForm } from "react-hook-form";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
@@ -28,6 +29,7 @@ import { usePathname } from "next/navigation";
 import RHFLanguageButton from "./Buttons/LanguageButton";
 import { TLanguageType } from "@/types/translation";
 import { getValues } from "./mapper";
+import { StyledActions } from "./styled";
 const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
@@ -130,8 +132,17 @@ const PreparationDialog: React.FC<Props> = ({
                             />
                         </Stack>
                     }
+                    DialogActionsComponent={StyledActions}
                     actions={
                         <>
+                            <FormControlLabel
+                                label={t("Export date")}
+                                labelPlacement="start"
+                                control={
+                                    <RHFDatePicker name="additional.date" />
+                                }
+                            />
+
                             <RHFCheckbox name="draft" label="Save as draft" />
                             <SubmitButton />
                             <ExportButton />

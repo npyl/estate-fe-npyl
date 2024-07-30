@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import toLocalDate from "@/utils/toLocalDate";
 
 interface Props extends Omit<DatePickerProps<dayjs.Dayjs>, "onChange"> {
-    label: string;
+    label?: string;
     name: string;
     onChange?: (v: string) => void;
 }
@@ -37,7 +37,9 @@ const DatePicker = ({ name, label, onChange, ...others }: Props) => {
                 fieldState: { error },
             }) => (
                 <Stack spacing={1}>
-                    <Typography variant="subtitle1">{label}</Typography>
+                    {label ? (
+                        <Typography variant="subtitle1">{label}</Typography>
+                    ) : null}
                     <MuiDatePicker
                         {...field}
                         {...others}
