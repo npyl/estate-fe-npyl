@@ -21,6 +21,7 @@ import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import { Logo } from "../logo";
 import useResponsive from "@/hooks/useResponsive";
+import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
