@@ -47,6 +47,19 @@ const RenderAreaCell = ({ row }: GridCellParams) => {
     return <Typography>{areas}</Typography>;
 };
 
+const renderDateCell = ({ row }: GridCellParams) => {
+    const timestamp = row.createdAt;
+    const date = new Date(timestamp);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+    return (
+        <Typography
+            style={{ fontSize: "inherit", fontFamily: "inherit" }}
+        >{`${day}/${month}/${year}`}</Typography>
+    );
+};
+
 const getColumns = (t: TranslationType): GridColDef[] => [
     {
         flex: 1,
@@ -92,6 +105,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Date of Entry").toString(),
         headerAlign: "center",
         align: "center",
+        renderCell: renderDateCell,
     },
     {
         flex: 1,
