@@ -38,7 +38,7 @@ export default function FilterType() {
                 onChange={handleChange}
                 input={<OutlinedInput />}
             >
-                <MenuItem value="">{t("No option")}</MenuItem>
+                <MenuItem value="">{t("Not selected")}</MenuItem>
                 {OPTIONS.map(({ key, label }) => (
                     <MenuItem key={key} value={key}>
                         {t(label)}

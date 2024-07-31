@@ -29,10 +29,10 @@ const FilterToggle: React.FC<FilterToggleProps> = ({ label, filterKey }) => {
                     -
                 </ToggleButton>
                 <ToggleButton value={true} onClick={enable}>
-                    {t("YES")}
+                    {t("_YES_")}
                 </ToggleButton>
                 <ToggleButton value={false} onClick={disable}>
-                    {t("NO")}
+                    {t("_NO_")}
                 </ToggleButton>
             </FilterButtonGroup>
         </FilterBox>

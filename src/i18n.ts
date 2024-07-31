@@ -784,10 +784,38 @@ const resources = {
             "Other Pollutants": "Other Pollutants",
             Agreements: "Agreements",
             FILL_IN_ALL_FIELDS_ERROR: "Fill in all fields",
+            New: "New",
+
+            Basic: "Basic",
+            "Basic Exclusive": "Basic Exclusive",
+            Purchase: "Purchase",
+
+            Expiration: "Expiration",
+
+            _Active_: "Αctive",
+            Keys: "Keys",
+            Signed: "Signed",
+            Draft: "Draft",
+            _YES_: "Yes",
+            _NO_: "No",
         },
     },
     el: {
         translation: {
+            _YES_: "Ναι",
+            _NO_: "Όχι",
+            Draft: "Προσχέδιο",
+            Signed: "Υπογραφή",
+            Keys: "Κλειδιά",
+            _Active_: "Ενεργή",
+
+            Expiration: "Λήξη",
+
+            Basic: "Βασική",
+            "Basic Exclusive": "Βασική Αποκλειστική",
+            Purchase: "Αγοράς",
+
+            New: "Νέα",
             FILL_IN_ALL_FIELDS_ERROR: "Συμπληρώστε όλα τα πεδία",
             Agreements: "Εντολές",
             "Add images": "Προσθήκη εικόνων",
