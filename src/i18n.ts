@@ -804,10 +804,20 @@ const resources = {
             _BASIC_: "Basic",
             _BASIC_EXCLUSIVE_: "Basic Exclusive",
             _PURCHASE_: "Purchase",
+
+            Language: "Language",
+
+            "Starting Date": "Starting Date",
+            "Expiration Date": "Expiration Date",
         },
     },
     el: {
         translation: {
+            "Starting Date": "Ημ/νία Έναρξης",
+            "Expiration Date": "Ημ/νία Λήξης",
+
+            Language: "Γλώσσα",
+
             _BASIC_: "Βασική",
             _BASIC_EXCLUSIVE_: "Βασική Αποκλειστική",
             _PURCHASE_: "Αγορά",

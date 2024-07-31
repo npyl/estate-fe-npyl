@@ -31,7 +31,7 @@ const Description: React.FC<Props> = ({ a }) => {
         <Grid container component={Paper} p={1}>
             <Grid item component={List} xs={6}>
                 <ListItem label={t("Title")} value={title || "-"} />
-                <ListItem label={t("Variant")} value={variant?.value || "_"} />
+                <ListItem label={t("Type")} value={variant?.value || "_"} />
             </Grid>
             <Grid item xs={6} component={List}>
                 <ListItem label={t("Code")} value={code || "-"} />
@@ -42,24 +42,24 @@ const Description: React.FC<Props> = ({ a }) => {
             </Grid>
             <Divider />
             <Grid item component={List} xs={6}>
-                <ListBooleanItem label={t("Draft")} status={draft} />
-                <ListBooleanItem label={t("Signed")} status={signed} />
+                <ListBooleanItem label={t("_draft_")} status={draft} />
+                <ListBooleanItem label={t("_signed_")} status={signed} />
             </Grid>
             <Grid item component={List} xs={6}>
-                <ListBooleanItem label={t("Keys")} status={keys} />
+                <ListBooleanItem label={t("_keys_")} status={keys} />
             </Grid>
             <Divider />
             <Grid item xs={6} component={List}>
                 <ListDateItem label={t("Starting Date")} value={startingDate} />
                 <ListDateItem
-                    label={t("Expiration Date")}
-                    value={expirationDate}
+                    label={t("Available After")}
+                    value={availableAfter}
                 />
             </Grid>
             <Grid item xs={6} component={List}>
                 <ListDateItem
-                    label={t("Available After")}
-                    value={availableAfter}
+                    label={t("Expiration Date")}
+                    value={expirationDate}
                 />
             </Grid>
         </Grid>
