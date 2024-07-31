@@ -815,10 +815,12 @@ const resources = {
             "Export date": "Export Date",
             "Save as draft": "Save as draft",
             properties: "properties",
+            "Errors in PDF form": "Errors in PDF form",
         },
     },
     el: {
         translation: {
+            "Errors in PDF form": "Λάθη στην PDF φόρμα",
             properties: "ακίνητα",
             "Save as draft": "Αποθήκευση ως προσχέδιο",
             "Export date": "Ημ/νία Εξαγωγής",

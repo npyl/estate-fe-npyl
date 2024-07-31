@@ -4,10 +4,13 @@ import { getTRIGGER_OPTIONS } from "../../../PDFEditor/constants/trigger";
 import ErrorTooltip, { ErrorTooltipProps } from "../../../_shared/ErrorTooltip";
 import Box from "@mui/material/Box";
 import { IAgreementType } from "@/types/agreements";
+import { useTranslation } from "react-i18next";
 
 interface Props extends Omit<ErrorTooltipProps, "error"> {}
 
 const PDFErrorsTooltip: React.FC<Props> = (props) => {
+    const { t } = useTranslation();
+
     const { watch, formState } = useFormContext();
 
     const variant = watch("variant") as IAgreementType;
@@ -28,7 +31,7 @@ const PDFErrorsTooltip: React.FC<Props> = (props) => {
     if (havePDFErrors)
         return (
             <Box position="relative" width={24}>
-                <ErrorTooltip {...props} error="Errors in PDF form" />
+                <ErrorTooltip {...props} error={t("Errors in PDF form")} />
             </Box>
         );
 

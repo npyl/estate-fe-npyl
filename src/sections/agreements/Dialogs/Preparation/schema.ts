@@ -99,10 +99,10 @@ const basicSchema = mandatorySchema.extend({
 const basicExclusiveSchema = mandatorySchema.extend({
     variant: z.literal("BASIC_EXCLUSIVE"),
 
-    owner: z.object({
+    owner: mandatorySchema.shape.owner.extend({
         mobilePhone: nonEmptyString,
     }),
-    commissionAndDuration: z.object({
+    commissionAndDuration: mandatorySchema.shape.commissionAndDuration.extend({
         months: nonEmptyString,
     }),
 });
