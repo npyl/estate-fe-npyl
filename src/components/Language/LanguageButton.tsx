@@ -1,7 +1,6 @@
 import { ButtonProps, IconButton } from "@mui/material";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
 import { Language } from "./types";
 import useDialog from "@/hooks/useDialog";
@@ -37,7 +36,7 @@ export const LanguageButton = ({
     return (
         <>
             <IconButton onClick={openPopover} ref={anchorRef} {...props}>
-                <Image alt="" src={imageSrc} width={20} height={20} />
+                <img alt="" src={imageSrc} width={20} height={20} />
             </IconButton>
 
             {isPopoverOpen ? (
