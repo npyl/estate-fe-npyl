@@ -1,20 +1,36 @@
 import { IAgreementType } from "@/types/agreements";
 import { Label } from "@/components/Label";
+import { useTranslation } from "react-i18next";
 
 interface CardLabelProps {
     variant: IAgreementType;
+    name: string;
 }
 
-const CardLabel: React.FC<CardLabelProps> = ({ variant }) => (
+const CardLabel: React.FC<CardLabelProps> = ({ variant, name }) => (
     <Label
         opaque
-        color={variant === "BASIC" ? "primary" : "info"}
-        name={variant}
+        color={
+            variant === "BASIC"
+                ? "primary"
+                : variant === "BASIC_EXCLUSIVE"
+                ? "info"
+                : "success"
+        }
+        name={name}
     />
 );
 
-const DraftLabel = () => (
-    <Label opaque color="warning" justifyContent="center" name="Draft" />
-);
+const DraftLabel = () => {
+    const { t } = useTranslation();
+    return (
+        <Label
+            opaque
+            color="warning"
+            justifyContent="center"
+            name={t("_draft_")}
+        />
+    );
+};
 
 export { CardLabel, DraftLabel };

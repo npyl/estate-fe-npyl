@@ -29,7 +29,7 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
                 alignItems="center"
                 justifyContent="flex-end"
             >
-                <CardLabel variant={a.variant.key} />
+                <CardLabel variant={a.variant.key} name={a.variant.value} />
                 {a.draft ? <DraftLabel /> : null}
             </Stack>
 
