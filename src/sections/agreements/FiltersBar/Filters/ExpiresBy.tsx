@@ -26,7 +26,7 @@ export default function FilterActive() {
     return (
         <DatePicker
             slotProps={SlotProps}
-            label={t("Expiration")}
+            label={t("_expiresBy_")}
             value={value}
             onChange={handleChange}
         />

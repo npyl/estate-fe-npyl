@@ -5,5 +5,5 @@ const key = "signed";
 
 export default function FilterActive() {
     const { t } = useTranslation();
-    return <FilterToggle label={t("Signed")} filterKey={key} />;
+    return <FilterToggle label={t("_signed_")} filterKey={key} />;
 }

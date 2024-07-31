@@ -5,5 +5,5 @@ const key = "draft";
 
 export default function FilterActive() {
     const { t } = useTranslation();
-    return <FilterToggle label={t("Draft")} filterKey={key} />;
+    return <FilterToggle label={t("_draft_")} filterKey={key} />;
 }

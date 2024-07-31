@@ -792,22 +792,34 @@ const resources = {
 
             Expiration: "Expiration",
 
-            _Active_: "Αctive",
-            Keys: "Keys",
-            Signed: "Signed",
-            Draft: "Draft",
+            _active_: "Active",
+            _keys_: "Keys",
+            _signed_: "Signed",
+            _draft_: "Draft",
             _YES_: "Yes",
             _NO_: "No",
+            _expiresBy_: "Expiration",
+            _variants_: "Types",
+
+            _BASIC_: "Basic",
+            _BASIC_EXCLUSIVE_: "Basic Exclusive",
+            _PURCHASE_: "Purchase",
         },
     },
     el: {
         translation: {
+            _BASIC_: "Βασική",
+            _BASIC_EXCLUSIVE_: "Βασική Αποκλειστική",
+            _PURCHASE_: "Αγορά",
+
+            _variants_: "Τύποι",
+            _expiresBy_: "Λήξη",
+            _active_: "Ενεργή",
+            _keys_: "Κλειδιά",
+            _signed_: "Υπογραφή",
+            _draft_: "Προσχέδιο",
             _YES_: "Ναι",
             _NO_: "Όχι",
-            Draft: "Προσχέδιο",
-            Signed: "Υπογραφή",
-            Keys: "Κλειδιά",
-            _Active_: "Ενεργή",
 
             Expiration: "Λήξη",
 
