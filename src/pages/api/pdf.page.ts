@@ -5,15 +5,16 @@ export const config = {
     runtime: "edge",
 };
 
-const rawUrl = "https://raw.githubusercontent.com/npyl/temp/main";
+const companyId = 3; // NOTE: only Kopanitsanos
+
+const rawUrl = "https://d1o8f6oijbfd0m.cloudfront.net/ca_template";
 
 const getPDFUrl = (type: IAgreementType, lang: "en" | "el") =>
-    `${rawUrl}/${type}_${lang}.pdf`;
+    `${rawUrl}_${companyId}_${type}_${lang}.pdf`;
 
 export default async function POST(req: NextRequest) {
     try {
         const { variant, lang } = (await req.json()) as IAgreementPDFReq;
-
         if (!variant) throw new Error("Bad variant!");
 
         const result = await fetch(getPDFUrl(variant, lang), {
