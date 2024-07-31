@@ -51,7 +51,6 @@ interface IAgreementFormData {
         defects: string;
     };
     gdpr?: {
-        email?: string;
         address?: string;
     };
     additional: {
@@ -144,8 +143,9 @@ export interface IAgreementReq extends IAgreementReqBase {
 
     // NOTE: must not be sent to BE;
     //       they are automatically filled
-    //       and are required only when generating the PDF
+    //       (required only when generating a PDF)
     auto: {
+        gdprEmail: string;
         day: number;
         month: number;
         year: number;

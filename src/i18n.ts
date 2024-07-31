@@ -1,5 +1,4 @@
 import i18n from "i18next";
-import { Calendar } from "react-date-range";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
@@ -784,10 +783,12 @@ const resources = {
             "Health Recommendations": "Health Recommendations",
             "Other Pollutants": "Other Pollutants",
             Agreements: "Agreements",
+            FILL_IN_ALL_FIELDS_ERROR: "Fill in all fields",
         },
     },
     el: {
         translation: {
+            FILL_IN_ALL_FIELDS_ERROR: "Συμπληρώστε όλα τα πεδία",
             Agreements: "Εντολές",
             "Add images": "Προσθήκη εικόνων",
             "Select All": "Επιλογή Όλων",

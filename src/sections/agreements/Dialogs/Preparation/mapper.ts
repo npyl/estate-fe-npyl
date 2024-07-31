@@ -146,6 +146,7 @@ export const getValues = (
             !!additional?.commissionerSignature && !!additional.agentSignature,
 
         auto: {
+            gdprEmail: "",
             day: -1,
             month: -1,
             year: -1,

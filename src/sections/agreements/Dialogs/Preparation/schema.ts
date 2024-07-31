@@ -71,7 +71,6 @@ const mandatorySchema = z.object({
     }),
     gdpr: z
         .object({
-            email: z.string().email().optional(),
             address: z.string().optional(),
         })
         .optional(),
@@ -81,6 +80,17 @@ const mandatorySchema = z.object({
         agentSignature: z.string().optional(),
     }),
 });
+
+const SuggestedPropertiesSchema = z.object({
+    area: z.string(),
+    address: z.string(),
+    type: z.string(),
+    livingSpace: z.string(),
+    price: z.string(),
+    fee: z.string(),
+});
+
+// ----------------------------------------------------------------------
 
 const basicSchema = mandatorySchema.extend({
     variant: z.literal("BASIC"),
@@ -99,6 +109,8 @@ const basicExclusiveSchema = mandatorySchema.extend({
 
 const purchaseSchema = mandatorySchema.extend({
     variant: z.literal("PURCHASE"),
+
+    suggestedProperties: z.array(SuggestedPropertiesSchema).min(1).max(4),
 });
 
 const NonDraftSchema = z.discriminatedUnion("variant", [

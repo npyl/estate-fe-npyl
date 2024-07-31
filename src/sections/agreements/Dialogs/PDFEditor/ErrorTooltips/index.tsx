@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { createRoot, Root } from "react-dom/client";
 import ErrorTooltip from "../../_shared/ErrorTooltip";
+import { useTranslation } from "react-i18next";
 
 //
 //  INFO:
@@ -17,6 +18,8 @@ const ErrorTooltips = () => {
     const { formState } = useFormContext();
 
     const rootRefs = useRef<Record<InputName, Root>>({});
+
+    const { t } = useTranslation();
 
     useLayoutEffect(() => {
         const { errors } = formState;
@@ -48,7 +51,10 @@ const ErrorTooltips = () => {
                 }
 
                 // @ts-ignore
-                const error = errors?.[parent]?.[child]?.message || "";
+                const errorObject = errors?.[parent]?.[child];
+                const error = Object.keys(errorObject).includes("message")
+                    ? errorObject?.message || ""
+                    : t("FILL_IN_ALL_FIELDS_ERROR"); // NOTE: this is in case we have an array (e.g. suggestedProperties)
 
                 // render or re-render (in case of update)
                 currentRoot.render(<ErrorTooltip error={error} />);
@@ -67,7 +73,7 @@ const ErrorTooltips = () => {
                 if (container) el.removeChild(container);
             }
         });
-    }, [formState]);
+    }, [t, formState]);
 
     useLayoutEffect(() => {
         // Unmount all remaining tooltips
