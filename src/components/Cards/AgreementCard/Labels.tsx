@@ -2,7 +2,7 @@ import { IAgreementType } from "@/types/agreements";
 import { Label } from "@/components/Label";
 import { useTranslation } from "react-i18next";
 
-interface CardLabelProps {
+export interface CardLabelProps {
     variant: IAgreementType;
     name: string;
 }

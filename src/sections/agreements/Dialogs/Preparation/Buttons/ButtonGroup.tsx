@@ -1,8 +1,4 @@
-import {
-    Button,
-    ButtonGroup as MuiButtonGroup,
-    Typography,
-} from "@mui/material";
+import { Button, ButtonGroup as MuiButtonGroup } from "@mui/material";
 import {
     Controller,
     FieldValues,
@@ -13,7 +9,10 @@ import Stack from "@mui/material/Stack";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useTranslation } from "react-i18next";
 import { IAgreementType } from "@/types/agreements";
-import { CardLabel } from "@/components/Cards/AgreementCard/Labels";
+import {
+    CardLabel,
+    CardLabelProps,
+} from "@/components/Cards/AgreementCard/Labels";
 
 type Option = { label: string; value: IAgreementType };
 
@@ -52,11 +51,18 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({ variant, setValue }) => {
 
 // ------------------------------------------------------------------------
 
-const RHFButtonGroup = () => {
+const TranslatedCardLabel: React.FC<CardLabelProps> = ({ variant, name }) => {
     const { t } = useTranslation();
+    const translatedName = t(`_${variant}_`);
+    return <CardLabel variant={variant} name={translatedName} />;
+};
+
+// ------------------------------------------------------------------------
+
+const RHFButtonGroup = () => {
     const { control, watch, setValue } = useFormContext();
 
-    const variant = watch("variant");
+    const variant = watch("variant") as IAgreementType;
 
     return (
         <Controller
@@ -65,7 +71,7 @@ const RHFButtonGroup = () => {
             render={({ fieldState: { error } }) => (
                 <>
                     {variant === "BASIC_EXCLUSIVE" ? (
-                        <CardLabel variant={variant} />
+                        <TranslatedCardLabel variant={variant} name={variant} />
                     ) : null}
 
                     {variant !== "BASIC_EXCLUSIVE" ? (
