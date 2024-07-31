@@ -127,7 +127,7 @@ const Customers: NextPage = () => {
                     mb: 1,
                     position: "sticky",
                     top: 64,
-                    zIndex: 10,
+                    zIndex: 1,
                     border: "1px solid rgba(255, 255, 255, 0.18)",
                 }}
                 sorting={sorting}

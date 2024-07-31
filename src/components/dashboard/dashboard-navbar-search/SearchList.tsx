@@ -86,7 +86,6 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
             <Grid
                 item
                 xs={12}
-                // md={12}
                 sx={{
                     marginY: "10px",
                 }}
@@ -160,6 +159,8 @@ export const SearchList = ({
     const { data: customersResults } = useSearchCustomerQuery(searchText, {
         skip: searchText === "",
     });
+
+    // console.log(`searchString: ${searchString}`);
 
     const customers = useMemo(
         () => (searchCategory !== "properties" ? customersResults || [] : []),

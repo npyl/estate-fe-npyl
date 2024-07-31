@@ -209,7 +209,7 @@ const BasicRow = ({
                                 </Box>
                             ) : type === "AGREEMENT" ? (
                                 <Box>
-                                    <Typography variant="body2">
+                                    <Typography variant="body2" mt={0.5}>
                                         {row?.message}
                                     </Typography>
 
@@ -257,6 +257,7 @@ const BasicRow = ({
                                         <Typography
                                             variant="body2"
                                             onClick={handleCustomerNameClick}
+                                            mt={0.5}
                                         >
                                             Owner{": "}
                                             {row?.agreement?.owner?.name}
@@ -267,7 +268,7 @@ const BasicRow = ({
                                         alignItems="center"
                                         gap={1}
                                     >
-                                        <Typography variant="body2">
+                                        <Typography variant="body2" mt={0.5}>
                                             Expiration Date:{" "}
                                             {row?.agreement?.expirationDate}
                                         </Typography>

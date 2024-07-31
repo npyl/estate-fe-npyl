@@ -29,8 +29,7 @@ export const StyledPopper = styled((props: StyledPopperProps) => (
     },
 
     [theme.breakpoints.up("lg")]: {
-        left:
-            searchCategory === "all" ? "-170px !important" : "-45px !important",
+        left: searchCategory === "all" ? "-170px !important" : "0px !important",
     },
 
     "& .MuiAutocomplete-paper": {

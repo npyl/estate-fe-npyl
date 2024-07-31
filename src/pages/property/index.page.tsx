@@ -69,7 +69,7 @@ const Home: NextPage = () => {
                 sx={{
                     position: "sticky",
                     top: 64,
-                    zIndex: 10,
+                    zIndex: 1,
                     // background: "rgba(255, 255, 255, 0.7)",
                     // boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
                     // backdropFilter: "blur(8.5px)",
