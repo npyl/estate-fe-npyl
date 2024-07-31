@@ -131,7 +131,7 @@ const PreparationDialog: React.FC<Props> = ({
                             <RHFCheckbox
                                 labelPlacement="start"
                                 name="keys"
-                                label={t("Keys")}
+                                label={t("_keys_")}
                             />
                         </Stack>
                     }
@@ -146,7 +146,10 @@ const PreparationDialog: React.FC<Props> = ({
                                 }
                             />
 
-                            <RHFCheckbox name="draft" label="Save as draft" />
+                            <RHFCheckbox
+                                name="draft"
+                                label={t("Save as draft")}
+                            />
                             <SubmitButton />
                             <ExportButton />
                         </>

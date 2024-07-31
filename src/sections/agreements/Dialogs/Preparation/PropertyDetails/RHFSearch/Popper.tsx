@@ -12,6 +12,7 @@ import { getBorderColor2 } from "@/theme/borderColor";
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import { SpaceBetween } from "@/components/styled";
+import { useTranslation } from "react-i18next";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
     border: "1px solid",
@@ -46,6 +47,8 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     onClose,
     ...props
 }) => {
+    const { t } = useTranslation();
+
     const handleCardClick = (e: MouseEvent<HTMLButtonElement>, id: number) => {
         e.stopPropagation();
         onCardClick(id);
@@ -54,7 +57,9 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     return (
         <Popper {...props} component={StyledPaper}>
             <SpaceBetween mb={2}>
-                <Typography>{totalElements} items</Typography>
+                <Typography>
+                    {totalElements} {t("properties")}
+                </Typography>
 
                 <IconButton onClick={onClose}>
                     <CloseIcon />

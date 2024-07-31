@@ -8,6 +8,8 @@ import RHFPropertySearch from "./RHFSearch";
 import PropertyFiller from "./PropertyFiller";
 import SelectedProperty from "./SelectedProperty";
 import toLocalDate from "@/utils/toLocalDate";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 // ------------------------------------------------------------------------
 
@@ -17,6 +19,8 @@ interface Props {
 }
 
 const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -41,12 +45,12 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
 
             {!propertyId ? <SelectedProperty /> : null}
 
-            <RHFTextField name="title" label="Title" />
+            <RHFTextField name="title" label={t("Title").toString()} />
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="startingDate"
-                        label="Starting Date"
+                        label={t("Starting Date").toString()}
                         disablePast
                         onChange={handleStartingChange}
                     />
@@ -54,14 +58,14 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="expirationDate"
-                        label="Expiration Date"
+                        label={t("Expiration Date").toString()}
                         disablePast
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="availableAfter"
-                        label="Available After"
+                        label={t("Available After").toString()}
                         disablePast
                     />
                 </Grid>

@@ -809,10 +809,22 @@ const resources = {
 
             "Starting Date": "Starting Date",
             "Expiration Date": "Expiration Date",
+            Agreement: "Agreement",
+            "Search property": "Search property",
+            "Edit PDF": "Edit PDF",
+            "Export date": "Export Date",
+            "Save as draft": "Save as draft",
+            properties: "properties",
         },
     },
     el: {
         translation: {
+            properties: "ακίνητα",
+            "Save as draft": "Αποθήκευση ως προσχέδιο",
+            "Export date": "Ημ/νία Εξαγωγής",
+            "Edit PDF": "Επεξεργασία PDF",
+            "Search property": "Αναζήτηση ακινήτου",
+            Agreement: "Εντολή",
             "Starting Date": "Ημ/νία Έναρξης",
             "Expiration Date": "Ημ/νία Λήξης",
 

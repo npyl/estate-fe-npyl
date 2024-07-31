@@ -6,6 +6,7 @@ import { usePagination } from "@/components/Pagination";
 import ResultsPopper from "./Popper";
 import { PaginationHookProps } from "@/components/Pagination/types";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 const pageSize = 5;
 
@@ -40,6 +41,8 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
+    const { t } = useTranslation();
+
     const [search, setSearch] = useState("");
     const [searchString] = useDebounce(search, 300);
 
@@ -62,7 +65,7 @@ const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
     return (
         <>
             <SearchInput
-                placeholder="Search property"
+                placeholder={t("Search property").toString()}
                 value={search}
                 onChange={(e) => {
                     setSearch(e.target.value);
