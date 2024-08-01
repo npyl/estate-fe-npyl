@@ -60,6 +60,8 @@ const GreenMapTab: React.FC<TabProps> = (props) => (
     />
 );
 
+const GREEN_MAP_INDEX = 11;
+
 // -----------------------------------------------------------------
 
 const SingleProperty: NextPage = () => {
@@ -112,7 +114,7 @@ const SingleProperty: NextPage = () => {
                     sx={{
                         // GreenMapTab Indicator
                         "& .MuiTabs-indicator": {
-                            ...(value === 10
+                            ...(value === GREEN_MAP_INDEX
                                 ? { backgroundColor: "#00b32d" }
                                 : {}),
                         },
@@ -162,7 +164,7 @@ const SingleProperty: NextPage = () => {
                 <TabPanel value={value} index={10}>
                     <AgreementsTab />
                 </TabPanel>
-                <TabPanel value={value} index={10}>
+                <TabPanel value={value} index={GREEN_MAP_INDEX}>
                     <GreenMap />
                 </TabPanel>
             </Suspense>
