@@ -47,6 +47,7 @@ export default function UserCard({ c, ...props }: Props) {
         <Card
             sx={{
                 textAlign: "center",
+                minHeight: "320px",
             }}
             onClick={onClick}
             {...props}
