@@ -20,7 +20,7 @@ import {
 } from "@/services/agreements";
 import dynamic from "next/dynamic";
 import {
-    ButtonGroup,
+    RHFButtonGroup,
     EditPDFButton,
     ExportButton,
     SubmitButton,
@@ -82,28 +82,27 @@ const PreparationDialog: React.FC<Props> = ({
         values,
     });
 
-    console.log("ERRORS: ", methods.formState.errors);
-
-    const handleSubmit = async ({ auto, ...d }: Draft<IAgreementReq>) => {
+    const handleSubmit = async ({
+        auto,
+        property,
+        ...d
+    }: Draft<IAgreementReq>) => {
         // NOTE: we must not pass this to BE
         auto;
 
         const cb = !!editedAgreementId ? updateAgreement : createAgreement;
 
-        // NOTE: we strip gdpr.email
-        const gdpr = {
-            address: d?.gdpr?.address || "",
-        };
-
         // NOTE: BE wants us to calculate signed
         const { agentSignature, commissionerSignature } = d?.additional || {};
         const signed = !!agentSignature && !!commissionerSignature;
 
-        await cb({
+        const body = {
             ...d,
+            ...(d.variant === "PURCHASE" ? {} : property),
             signed,
-            gdpr,
-        } as IAgreementReq);
+        } as IAgreementReq;
+
+        await cb(body);
     };
 
     return (
@@ -121,7 +120,7 @@ const PreparationDialog: React.FC<Props> = ({
                             <PropertyDetails shouldAutofill={shouldAutofill} />
 
                             <Stack direction="row" spacing={1}>
-                                {!isCustomer ? <ButtonGroup /> : null}
+                                {!isCustomer ? <RHFButtonGroup /> : null}
 
                                 <RHFLanguageButton />
 

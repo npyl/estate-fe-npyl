@@ -75,7 +75,7 @@ export const getValues = (
         propertyId: propertyId || -1,
         ownerId: ownerId || -1,
         // ...
-        variant: isCustomer ? "BASIC_EXCLUSIVE" : variant?.key || "BASIC",
+        variant: isCustomer ? "PURCHASE" : variant?.key || "BASIC",
         language: language?.key || "GREEK",
         draft: draft || false,
         keys: keys || false,
