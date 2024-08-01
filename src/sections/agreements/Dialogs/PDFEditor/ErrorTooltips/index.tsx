@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { createRoot, Root } from "react-dom/client";
 import ErrorTooltip from "../../_shared/ErrorTooltip";
 import { useTranslation } from "react-i18next";
+import { TranslationType } from "@/types/translation";
 
 //
 //  INFO:
@@ -13,6 +14,11 @@ import { useTranslation } from "react-i18next";
 type InputName = string;
 
 const removeTooltip = (root: Root) => setTimeout(() => root.unmount(), 0);
+
+const messageFromObjectSchema = (errorObject: any, t: TranslationType) =>
+    Object.keys(errorObject).includes("message")
+        ? errorObject?.message || ""
+        : t("FILL_IN_ALL_FIELDS_ERROR"); // INFO: this is for cases like: z.array(z.object({ z.string(), ... })) (e.g. suggestedProperties)
 
 const ErrorTooltips = () => {
     const { formState } = useFormContext();
@@ -35,7 +41,10 @@ const ErrorTooltips = () => {
 
             const [parent, child] = title.split(".");
 
-            if (child in (errors?.[parent] || {})) {
+            const isObjectSchema = child in (errors?.[parent] || {}); // z.object()
+            const isArraySchema = "message" in (errors?.[parent] || {}); // z.array()
+
+            if (isObjectSchema || isArraySchema) {
                 // if we don't already have it:
                 if (!currentRoot) {
                     // create a container
@@ -50,11 +59,11 @@ const ErrorTooltips = () => {
                     el.appendChild(container);
                 }
 
-                // @ts-ignore
-                const errorObject = errors?.[parent]?.[child];
-                const error = Object.keys(errorObject).includes("message")
-                    ? errorObject?.message || ""
-                    : t("FILL_IN_ALL_FIELDS_ERROR"); // NOTE: this is in case we have an array (e.g. suggestedProperties)
+                const error = isArraySchema
+                    ? errors?.[parent]?.message
+                    : // Object Schema:
+                      // @ts-ignore
+                      messageFromObjectSchema(errors?.[parent]?.[child], t);
 
                 // render or re-render (in case of update)
                 currentRoot.render(<ErrorTooltip error={error} />);

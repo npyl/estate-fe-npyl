@@ -6,6 +6,7 @@ import { flattenObject, loadPdf } from "./util";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
 import signature from "./plugins/signature";
 import readOnly from "./plugins/readOnly";
+import errorTooltip from "./plugins/errorTooltip";
 import { text } from "@pdfme/schemas";
 
 const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
@@ -25,7 +26,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
                         domContainer: formRef.current!!,
                         template,
                         inputs: inputs || [{}],
-                        plugins: { text, readOnly, signature },
+                        plugins: { text, readOnly, errorTooltip, signature },
                     });
 
                     form.current.onChangeInput(({ key, value }) =>

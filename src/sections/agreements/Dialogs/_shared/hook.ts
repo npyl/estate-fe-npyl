@@ -5,6 +5,7 @@ import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
 import { text } from "@pdfme/schemas";
 import readOnly from "../PDFEditor/plugins/readOnly";
+import errorTooltip from "../PDFEditor/plugins/errorTooltip";
 import signature from "../PDFEditor/plugins/signature";
 
 const useGeneratePDF = () => {
@@ -26,7 +27,7 @@ const useGeneratePDF = () => {
         const pdf = await generate({
             template,
             inputs,
-            plugins: { text, readOnly, signature },
+            plugins: { text, readOnly, errorTooltip, signature },
         });
 
         setGenerating(false);
