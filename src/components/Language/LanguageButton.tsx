@@ -7,6 +7,7 @@ import useDialog from "@/hooks/useDialog";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LanguageImage from "./languageImage";
 
 interface LanguageButtonProps extends ButtonProps {
     onLanguageChange?: (language: Language) => void;
@@ -31,15 +32,15 @@ export const LanguageButton = ({
     return (
         <>
             <IconButton
-                onClick={openPopover}
                 ref={anchorRef}
+                onClick={openPopover}
                 {...props}
                 sx={{
                     padding: 0,
                     color: "neutral.500",
                     "&:hover": {
-                        // backgroundColor: "transparent",
-                        color: "neutral.700",
+                        backgroundColor: "transparent",
+                        color: "neutral.600",
                     },
                 }}
             >
@@ -54,13 +55,7 @@ export const LanguageButton = ({
                         height: 20,
                     }}
                 >
-                    <LanguageOutlinedIcon
-                        sx={{
-                            color: "inherit",
-                            width: 20,
-                            height: 20,
-                        }}
-                    />
+                    <LanguageImage />
                     <Typography sx={{ color: "inherit", fontSize: "small" }}>
                         {languageAbbreviation}
                     </Typography>

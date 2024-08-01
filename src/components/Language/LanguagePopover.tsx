@@ -12,6 +12,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
 import { toast } from "react-hot-toast";
+import { VerticalAlignBottom } from "@mui/icons-material";
 
 interface LanguagePopoverProps {
     updatesGlobalLanguage: boolean;
@@ -60,8 +61,12 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
         <Popover
             anchorEl={anchorEl}
             anchorOrigin={{
-                horizontal: "left",
+                horizontal: "right",
                 vertical: "bottom",
+            }}
+            transformOrigin={{
+                horizontal: "right",
+                vertical: "top",
             }}
             keepMounted
             onClose={onClose}
@@ -71,12 +76,12 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                     width: 180,
                     borderRadius: 2,
                     paddingInline: 0.9,
-                    transition: "opacity 0.8s ease, transform 0.3s ease",
+                    transition: "opacity 0.95s ease, transform 0.3s ease",
                     opacity: open ? 1 : 0,
                     transform: open ? "scale(1)" : "scale(0.95)",
                 },
             }}
-            transitionDuration={900}
+            transitionDuration={1200}
             {...other}
         >
             <List sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -90,7 +95,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                                 flexDirection: "column",
                                 alignItems: "flex-start",
                                 py: 0.4,
-                                borderRadius: 2,
+                                borderRadius: 1,
                                 backgroundColor:
                                     currentLanguage === language
                                         ? "rgba(0, 0, 0, 0.07)"
@@ -101,17 +106,17 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                             }}
                         >
                             <Typography
-                                variant="subtitle1"
+                                variant="body1"
                                 sx={{ color: "neutral.500" }}
                                 fontWeight={"600"}
                             >
-                                {languageOptions[language].label}
+                                {t(languageOptions[language].label)}
                             </Typography>
                             <Typography
-                                variant="body2"
+                                fontSize="small"
                                 sx={{ color: "neutral.400" }}
                             >
-                                {languageOptions[language].description}
+                                {t(languageOptions[language].description || "")}
                             </Typography>
                         </MenuItem>
                     )
