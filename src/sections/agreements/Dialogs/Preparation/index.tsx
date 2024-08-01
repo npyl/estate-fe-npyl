@@ -19,17 +19,13 @@ import {
     useUpdateAgreementMutation,
 } from "@/services/agreements";
 import dynamic from "next/dynamic";
-import {
-    RHFButtonGroup,
-    EditPDFButton,
-    ExportButton,
-    SubmitButton,
-} from "./Buttons";
 import { usePathname } from "next/navigation";
-import RHFLanguageButton from "./Buttons/LanguageButton";
 import { TLanguageType } from "@/types/translation";
 import { getValues } from "./mapper";
 import { StyledActions } from "./styled";
+import SubmitButton from "./Buttons/Submit";
+import ExportButton from "./Buttons/Export";
+import EditPDFButton from "./Buttons/EditPDF";
 const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
 
 // -------------------------------------------------------------------
@@ -117,21 +113,12 @@ const PreparationDialog: React.FC<Props> = ({
                     title={<Typography>{t("Agreement")}</Typography>}
                     content={
                         <Stack spacing={1}>
-                            <PropertyDetails shouldAutofill={shouldAutofill} />
-
-                            <Stack direction="row" spacing={1}>
-                                {!isCustomer ? <RHFButtonGroup /> : null}
-
-                                <RHFLanguageButton />
-
-                                <EditPDFButton onClick={openPDF} />
-                            </Stack>
-
-                            <RHFCheckbox
-                                labelPlacement="start"
-                                name="keys"
-                                label={t("_keys_")}
+                            <PropertyDetails
+                                isCustomer={isCustomer}
+                                shouldAutofill={shouldAutofill}
                             />
+
+                            <EditPDFButton onClick={openPDF} />
                         </Stack>
                     }
                     DialogActionsComponent={StyledActions}

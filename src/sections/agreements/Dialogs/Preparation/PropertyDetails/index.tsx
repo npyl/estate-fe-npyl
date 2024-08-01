@@ -1,21 +1,30 @@
-import { RHFDatePicker, RHFTextField } from "@/components/hook-form";
+import {
+    RHFCheckbox,
+    RHFDatePicker,
+    RHFTextField,
+} from "@/components/hook-form";
 import { useFormContext } from "react-hook-form";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
 import { StyledStack } from "./styled";
 import dayjs from "dayjs";
 import Autofiller from "./Autofiller";
 import SelectedProperty from "./SelectedProperty";
 import toLocalDate from "@/utils/toLocalDate";
 import { useTranslation } from "react-i18next";
+import RHFButtonGroup from "./Buttons/RHFButtonGroup";
+import RHFLanguageButton from "./Buttons/LanguageButton";
 
 // ------------------------------------------------------------------------
 
 interface Props {
+    isCustomer: boolean;
     // INFO: this means agreement's fields will be filled with property data
     shouldAutofill: boolean;
 }
 
-const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
+const PropertyDetails: React.FC<Props> = ({ isCustomer, shouldAutofill }) => {
     const { t } = useTranslation();
 
     const { setValue } = useFormContext();
@@ -37,6 +46,17 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
             <SelectedProperty />
 
             <RHFTextField name="title" label={t("Title").toString()} />
+
+            <Divider />
+
+            <Stack direction="row" justifyContent="center" spacing={1}>
+                {!isCustomer ? <RHFButtonGroup /> : null}
+
+                <RHFLanguageButton />
+            </Stack>
+
+            <Divider />
+
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     <RHFDatePicker
@@ -58,6 +78,13 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
                         name="availableAfter"
                         label={t("Available After").toString()}
                         disablePast
+                    />
+                </Grid>
+                <Grid item xs={6} display="flex" alignItems="center">
+                    <RHFCheckbox
+                        labelPlacement="start"
+                        name="keys"
+                        label={t("_keys_")}
                     />
                 </Grid>
             </Grid>
