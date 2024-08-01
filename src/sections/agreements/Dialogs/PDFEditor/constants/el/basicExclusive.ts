@@ -306,7 +306,7 @@ const BasicExclusive = [
             opacity: 1,
             fontName: "Roboto",
         },
-        "commissionAndDuration.payment": {
+        "commissionAndDuration.flatRate": {
             type: "text",
             content: "\n",
             position: { x: 60.7, y: 163.13 },
@@ -446,7 +446,6 @@ const BasicExclusive = [
             underline: false,
             fontName: "Roboto",
         },
-
         "auto.day": {
             type: "PROPERTY_PRO_READ_ONLY",
             defaultValue: "\n",
