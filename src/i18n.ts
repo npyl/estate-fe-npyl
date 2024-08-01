@@ -816,10 +816,12 @@ const resources = {
             "Save as draft": "Save as draft",
             properties: "properties",
             "Errors in PDF form": "Errors in PDF form",
+            "Selected Property": "Selected Property",
         },
     },
     el: {
         translation: {
+            "Selected Property": "Επιλεγμένο Ακίνητο",
             "Errors in PDF form": "Λάθη στην PDF φόρμα",
             properties: "ακίνητα",
             "Save as draft": "Αποθήκευση ως προσχέδιο",
