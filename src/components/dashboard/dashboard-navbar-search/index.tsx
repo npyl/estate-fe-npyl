@@ -163,6 +163,7 @@ export const DashboardNavbarSearch: FC = () => {
                                             },
                                         alignItems: "center",
                                     }}
+                                    MenuProps={{ disableScrollLock: true }}
                                     value={searchCategory}
                                     onChange={handleChangeCategory}
                                 >

@@ -68,6 +68,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                 horizontal: "right",
                 vertical: "top",
             }}
+            disableScrollLock={true} // disable scroll lock
             keepMounted
             onClose={onClose}
             open={!!open}
