@@ -44,7 +44,6 @@ interface IAgreementFormData {
         price: string;
     };
     commissionAndDuration: {
-        payment: string;
         flatRate: string;
         percentage: string;
         months: string;

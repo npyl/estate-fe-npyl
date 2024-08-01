@@ -64,7 +64,6 @@ const mandatorySchema = z.object({
         price: nonEmptyString,
     }),
     commissionAndDuration: z.object({
-        payment: nonEmptyString,
         flatRate: nonEmptyString,
         percentage: nonEmptyString,
         defects: nonEmptyString,
