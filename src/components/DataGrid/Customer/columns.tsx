@@ -30,7 +30,11 @@ const RenderPriceCell = ({ row }: GridCellParams) => {
     if (!row.budget) return null;
 
     const formattedPrice = formatPrice(row.budget);
-    return <Typography>{formattedPrice}</Typography>;
+    return (
+        <Typography style={{ fontSize: "inherit", fontFamily: "inherit" }}>
+            {formattedPrice}
+        </Typography>
+    );
 };
 
 const RenderAreaCell = ({ row }: GridCellParams) => {
@@ -44,7 +48,11 @@ const RenderAreaCell = ({ row }: GridCellParams) => {
         )
         .join(", ");
 
-    return <Typography>{areas}</Typography>;
+    return (
+        <Typography style={{ fontSize: "inherit", fontFamily: "inherit" }}>
+            {areas}
+        </Typography>
+    );
 };
 
 const renderDateCell = ({ row }: GridCellParams) => {
@@ -91,14 +99,16 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         renderCell: RenderPriceCell,
     },
+
     {
         flex: 1,
         field: "areas",
-        headerName: t("Area").toString(),
+        headerName: t("Region").toString(),
         headerAlign: "center",
         align: "center",
         renderCell: RenderAreaCell,
     },
+
     {
         flex: 1,
         field: "createdAt",
@@ -116,7 +126,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         renderCell: StatusColor,
     },
     {
-        width: 180,
+        width: 255,
         field: "labels",
         headerAlign: "center",
         align: "center",
