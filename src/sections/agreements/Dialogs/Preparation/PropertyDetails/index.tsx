@@ -1,14 +1,11 @@
 import { RHFDatePicker, RHFTextField } from "@/components/hook-form";
 import { useFormContext } from "react-hook-form";
 import { Grid } from "@mui/material";
-import { useRouter } from "next/router";
 import { StyledStack } from "./styled";
 import dayjs from "dayjs";
-import RHFPropertySearch from "./RHFSearch";
-import PropertyFiller from "./PropertyFiller";
+import Autofiller from "./Autofiller";
 import SelectedProperty from "./SelectedProperty";
 import toLocalDate from "@/utils/toLocalDate";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 // ------------------------------------------------------------------------
@@ -20,9 +17,6 @@ interface Props {
 
 const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
     const { t } = useTranslation();
-
-    const router = useRouter();
-    const { propertyId } = router.query;
 
     const { setValue } = useFormContext();
 
@@ -37,13 +31,10 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
 
     return (
         <StyledStack>
-            {/* /property/[propertyId] & CREATE case */}
-            {propertyId && shouldAutofill ? <PropertyFiller /> : null}
+            {/* Autofiller */}
+            {shouldAutofill ? <Autofiller /> : null}
 
-            {/* Property Search: /agreements & CREATE case */}
-            {!propertyId && shouldAutofill ? <RHFPropertySearch /> : null}
-
-            {!propertyId ? <SelectedProperty /> : null}
+            <SelectedProperty />
 
             <RHFTextField name="title" label={t("Title").toString()} />
             <Grid container spacing={1}>

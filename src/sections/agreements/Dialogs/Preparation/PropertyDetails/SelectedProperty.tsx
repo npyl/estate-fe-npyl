@@ -17,6 +17,8 @@ const useSelectedProperty = () => {
     return { property, isLoading };
 };
 
+// ----------------------------------------------------------------------
+
 const SelectedProperty = () => {
     const { property, isLoading } = useSelectedProperty();
 
