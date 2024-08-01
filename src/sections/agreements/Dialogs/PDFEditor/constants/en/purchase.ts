@@ -163,7 +163,7 @@ const BasicSchema = [
             opacity: 1,
             fontName: "Roboto",
         },
-        "commissionAndDuration.payment": {
+        "commissionAndDuration.flatRate": {
             type: "text",
             defaultValue: "\n",
             position: { x: 47.98, y: 182.33 },
@@ -694,7 +694,6 @@ const BasicSchema = [
             opacity: 1,
             fontName: "Roboto",
         },
-
         "auto.day": {
             type: "PROPERTY_PRO_READ_ONLY",
             defaultValue: "\n",
@@ -745,6 +744,24 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
             fontName: "Roboto",
+        },
+        suggestedProperties: {
+            type: "PROPERTY_PRO_ERROR_TOOLTIP",
+            defaultValue: "\n",
+            position: { x: 119.1, y: 116.13 },
+            width: 12.97,
+            height: 6.55,
+            rotate: 0,
+            alignment: "left",
+            verticalAlignment: "bottom",
+            fontSize: 11,
+            lineHeight: 1,
+            characterSpacing: 0,
+            fontColor: "#000000",
+            backgroundColor: "",
+            opacity: 1,
+            fontName: "Roboto",
+            content: "",
         },
     },
 ];
