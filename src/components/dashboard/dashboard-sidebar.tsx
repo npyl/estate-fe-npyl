@@ -142,12 +142,19 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();
+    console.log(nonViewedNotificationsCount);
+
+    //  filter out the Contact notifications for now as in the page they are not shown and if there is one i get the unerad badge for something that i can not see at all
+    const filteredNotificationsCount = useMemo(() => {
+        if (nonViewedNotificationsCount) {
+            const { CONTACT, ...rest } = nonViewedNotificationsCount.types;
+            return Object.values(rest).reduce((sum, count) => sum + count, 0);
+        }
+        return 0;
+    }, [nonViewedNotificationsCount]);
 
     const sections = useMemo(() => {
-        const sectionsData = getSections(
-            t,
-            nonViewedNotificationsCount?.total ?? 0
-        );
+        const sectionsData = getSections(t, filteredNotificationsCount ?? 0);
 
         // Check if the user is not an admin (isAdmin is false)
         if (!isAdmin) {

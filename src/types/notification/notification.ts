@@ -17,7 +17,7 @@ export interface ContactNotificationPOST {
 
 export type NotificationType =
     | "LISTING"
-    | "CONTACT"
+    // | "CONTACT"
     | "TOUR"
     | "WORK_FOR_US"
     | "REVIEW"
