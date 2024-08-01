@@ -296,7 +296,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "commissionAndDuration.payment": {
+        "commissionAndDuration.flatRate": {
             type: "text",
             defaultValue: "\n",
             position: { x: 45.86, y: 164.87 },
@@ -312,7 +312,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "commissionAndDuration.flatRate": {
+        "commissionAndDuration.percentage": {
             type: "text",
             defaultValue: "\n",
             position: { x: 159.62, y: 163.53 },
@@ -432,7 +432,6 @@ const BasicSchema = [
             opacity: 1,
             fontName: "Roboto",
         },
-
         "auto.day": {
             type: "PROPERTY_PRO_READ_ONLY",
             defaultValue: "\n",
