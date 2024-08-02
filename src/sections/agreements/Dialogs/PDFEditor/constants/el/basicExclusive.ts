@@ -374,8 +374,8 @@ const BasicExclusive = [
             opacity: 1,
             fontName: "Roboto",
         },
-        "gdpr.email": {
-            type: "text",
+        "auto.gdprEmail": {
+            type: "PROPERTY_PRO_READ_ONLY",
             content: "\n",
             position: { x: 84.46, y: 231.34 },
             width: 95.54,

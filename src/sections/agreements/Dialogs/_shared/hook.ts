@@ -9,7 +9,7 @@ import errorTooltip from "../PDFEditor/plugins/errorTooltip";
 import signature from "@/components/PDFPlugins/signature";
 import dayjs from "dayjs";
 
-const getAuto = (date: string) => {
+const getAuto = (date: string, ownerEmail: string) => {
     const dateObject = dayjs(date, "YYYY-MM-DD");
 
     return {
@@ -17,6 +17,7 @@ const getAuto = (date: string) => {
             day: dateObject.date(),
             month: dateObject.month() + 1,
             year: Number(dateObject.format("YY")),
+            gdprEmail: ownerEmail,
         },
     };
 };
@@ -35,7 +36,7 @@ const useGeneratePDF = () => {
 
         const data = {
             ...formData,
-            ...getAuto(additional?.date),
+            ...getAuto(additional?.date, formData?.owner?.email || ""),
         };
 
         const inputs = [flattenObject(data)];

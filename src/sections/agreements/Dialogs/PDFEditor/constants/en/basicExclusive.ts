@@ -344,8 +344,8 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "gdpr.email": {
-            type: "text",
+        "auto.gdprEmail": {
+            type: "PROPERTY_PRO_READ_ONLY",
             defaultValue: "\n",
             position: { x: 45.8, y: 224.87 },
             width: 133.63,
