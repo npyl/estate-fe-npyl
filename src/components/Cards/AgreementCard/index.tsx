@@ -48,7 +48,7 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
 
             {onDelete && onEdit ? (
                 <Controls
-                    agreement={a}
+                    agreementId={a.id}
                     onEdit={() => onEdit(a.id)}
                     onDelete={() => onDelete(a.id)}
                 />

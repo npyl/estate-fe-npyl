@@ -1,42 +1,45 @@
 import IconButton from "@mui/material/IconButton";
 import ShareIcon from "@mui/icons-material/Share";
-import React, { useState, MouseEvent } from "react";
-import dynamic from "next/dynamic";
-import { IAgreementShort } from "@/types/agreements";
-const SharePopover = dynamic(() => import("@/components/Share"));
+import React, { MouseEvent } from "react";
+import { useGeneratePDF } from "@/sections/agreements/Dialogs/_shared/hook";
+import { useLazyGetAgreementByIdQuery } from "@/services/agreements";
+import downloadBlob from "@/utils/downloadBlob";
+
+const openMailClient = (title: string, email: string) => {
+    const mailtoLink = `mailto:${email}?subject=${title}&body=Please add the attachment!`;
+    window.location.href = mailtoLink;
+};
 
 interface Props {
-    agreement: IAgreementShort;
+    agreementId: number;
 }
 
-// TODO: share
-const ShareButton: React.FC<Props> = ({ agreement }) => {
-    // const { variant, lang } = agreement;
-    // const inputs = useMemo(() => [flattenObject(agreement)], [agreement]);
+const ShareButton: React.FC<Props> = ({ agreementId }) => {
+    const [getAgreement] = useLazyGetAgreementByIdQuery();
+    const { generatePDF, isGenerating } = useGeneratePDF();
 
-    const [anchorEl, setAnchor] = useState<HTMLButtonElement>();
-
-    const openPopover = (e: MouseEvent<HTMLButtonElement>) => {
+    const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setAnchor(e.currentTarget);
+
+        const agreement = await getAgreement(agreementId).unwrap();
+        if (!agreement) return;
+
+        const { variant, language, title, formData } = agreement || {};
+
+        const pdf = await generatePDF(variant?.key!, language?.key!, formData);
+        if (!pdf) return;
+
+        const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+
+        downloadBlob(blob, `${title}.pdf`);
+
+        openMailClient(`${title}.pdf`, formData.owner.email);
     };
-    const closePopover = () => setAnchor(undefined);
 
     return (
-        <>
-            <IconButton onClick={openPopover}>
-                <ShareIcon />
-            </IconButton>
-
-            {!!anchorEl ? (
-                <SharePopover
-                    anchorEl={anchorEl}
-                    open={!!anchorEl}
-                    shareUrl={window.location.href}
-                    onClose={closePopover}
-                />
-            ) : null}
-        </>
+        <IconButton onClick={handleClick}>
+            <ShareIcon />
+        </IconButton>
     );
 };
 
