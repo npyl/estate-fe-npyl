@@ -2,15 +2,25 @@ import { FieldValues, UseFormSetValue } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IProperties } from "@/types/properties";
 import { useCallback } from "react";
+import { toast } from "react-toastify";
 
 const join = (v0: string | undefined, v1: string | undefined, sep: string) =>
     [v0, v1].filter((s) => !!s).join(sep) || "";
 
+const NO_OWNER_LITERAL = "_NO_OWNER_LITERAL_";
+
 const useAutofill = (setValue: UseFormSetValue<FieldValues>) => {
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const autofill = useCallback(
         (p: IProperties) => {
+            // Prevent from autofilling from property without owner
+            if (!p?.owner?.id) {
+                toast.error(t(NO_OWNER_LITERAL));
+                setValue("propertyId", -1);
+                return;
+            }
+
             const { owner, location, descriptions } = p || {};
             const {
                 region,
