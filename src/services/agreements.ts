@@ -83,7 +83,7 @@ export const agreements = createApi({
                 url: `${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Agreements", "AgreementById"],
+            invalidatesTags: ["Agreements"],
         }),
     }),
 });
