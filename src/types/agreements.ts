@@ -18,7 +18,7 @@ interface IAgreementOwner {
     actingOnMyBehalf: string;
 }
 
-interface IAgreementFormData {
+export interface IAgreementFormData {
     manager: {
         fullName: string;
         title: string;

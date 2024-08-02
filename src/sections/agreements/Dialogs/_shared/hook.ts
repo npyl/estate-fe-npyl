@@ -1,5 +1,5 @@
-import { IAgreementType } from "@/types/agreements";
-import { loadPdf, NestedObject } from "../PDFEditor/util";
+import { IAgreementFormData, IAgreementType } from "@/types/agreements";
+import { flattenObject, loadPdf } from "../PDFEditor/util";
 import { useState } from "react";
 import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
@@ -7,6 +7,19 @@ import { text } from "@pdfme/schemas";
 import readOnly from "@/components/PDFPlugins/readOnly";
 import errorTooltip from "../PDFEditor/plugins/errorTooltip";
 import signature from "@/components/PDFPlugins/signature";
+import dayjs from "dayjs";
+
+const getAuto = (date: string) => {
+    const dateObject = dayjs(date, "YYYY-MM-DD");
+
+    return {
+        auto: {
+            day: dateObject.date(),
+            month: dateObject.month() + 1,
+            year: Number(dateObject.format("YY")),
+        },
+    };
+};
 
 const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);
@@ -14,9 +27,18 @@ const useGeneratePDF = () => {
     const generatePDF = async (
         variant: IAgreementType,
         lang: PreferredLanguageType,
-        inputs: NestedObject[]
+        formData: IAgreementFormData
     ) => {
         setGenerating(true);
+
+        const { additional } = formData || {};
+
+        const data = {
+            ...formData,
+            ...getAuto(additional?.date),
+        };
+
+        const inputs = [flattenObject(data)];
 
         const template = await loadPdf(variant, lang);
         if (!template) {
