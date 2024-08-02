@@ -94,7 +94,7 @@ const PreparationDialog: React.FC<Props> = ({
 
         const body = {
             ...d,
-            ...(d.variant === "PURCHASE" ? {} : property),
+            ...(d.variant === "PURCHASE" ? {} : { property }),
             signed,
         } as IAgreementReq;
 
