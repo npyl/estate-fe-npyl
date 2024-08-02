@@ -4,9 +4,9 @@ import { useState } from "react";
 import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
 import { text } from "@pdfme/schemas";
-import readOnly from "../PDFEditor/plugins/readOnly";
+import readOnly from "@/components/PDFPlugins/readOnly";
 import errorTooltip from "../PDFEditor/plugins/errorTooltip";
-import signature from "../PDFEditor/plugins/signature";
+import signature from "@/components/PDFPlugins/signature";
 
 const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);

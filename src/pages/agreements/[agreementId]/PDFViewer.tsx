@@ -1,8 +1,11 @@
+import readOnly from "@/components/PDFPlugins/readOnly";
+import signature from "@/components/PDFPlugins/signature";
 import {
     flattenObject,
     loadPdf,
 } from "@/sections/agreements/Dialogs/PDFEditor/util";
 import { IAgreement } from "@/types/agreements";
+import { text } from "@pdfme/schemas";
 import { Viewer } from "@pdfme/ui";
 import { useEffect, useRef } from "react";
 
@@ -29,6 +32,7 @@ const PDFViewer: React.FC<Props> = ({ a }) => {
                 domContainer: containerRef.current!,
                 template,
                 inputs,
+                plugins: { text, readOnly, signature },
             });
         });
     }, [containerRef.current, formData, variant, language]);

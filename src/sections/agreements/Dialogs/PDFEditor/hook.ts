@@ -4,8 +4,8 @@ import { useFormContext } from "react-hook-form";
 import { IAgreementReq, IAgreementType } from "@/types/agreements";
 import { flattenObject, loadPdf } from "./util";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
-import signature from "./plugins/signature";
-import readOnly from "./plugins/readOnly";
+import signature from "@/components/PDFPlugins/signature";
+import readOnly from "@/components/PDFPlugins/readOnly";
 import errorTooltip from "./plugins/errorTooltip";
 import { text } from "@pdfme/schemas";
 
