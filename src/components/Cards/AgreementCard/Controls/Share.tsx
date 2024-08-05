@@ -33,7 +33,7 @@ const ShareButton: React.FC<Props> = ({ agreementId }) => {
 
         downloadBlob(blob, `${title}.pdf`);
 
-        openMailClient(`${title}.pdf`, formData.owner.email);
+        openMailClient(title, formData.owner.email);
     };
 
     return (

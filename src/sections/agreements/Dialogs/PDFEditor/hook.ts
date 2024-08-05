@@ -9,12 +9,49 @@ import readOnly from "@/components/PDFPlugins/readOnly";
 import errorTooltip from "./plugins/errorTooltip";
 import { text } from "@pdfme/schemas";
 
+const flatRateKey = "commissionAndDuration.flatRate";
+const percentageKey = "commissionAndDuration.percentage";
+const priceKey = "property.price";
+
+interface KeyValuePair {
+    key: string;
+    value: string;
+}
+
 const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
     const { watch, setValue } = useFormContext();
     const all = watch() as IAgreementReq;
     const { variant, language } = all;
 
     const form = useRef<Form | null>(null);
+
+    const handleInputChange = ({ key, value }: KeyValuePair) => {
+        setValue(key, value);
+
+        //
+        // Custom handling for flatRate and percentage
+        //
+        if (key !== flatRateKey && key !== percentageKey) return;
+
+        if (key === flatRateKey) {
+            setValue(percentageKey, "-");
+        }
+
+        if (key === percentageKey) {
+            const price = watch(priceKey);
+
+            if (isNaN(Number(price)) || isNaN(Number(value))) return;
+
+            const flatRate = (+price * +value) / 100;
+
+            setValue(flatRateKey, flatRate);
+        }
+
+        // update inputs so that change is visible!
+        const all = watch();
+        const inputs = [flattenObject(all)];
+        form.current?.setInputs(inputs);
+    };
 
     useEffect(() => {
         loadPdf(variant, language).then((template) => {
@@ -26,12 +63,15 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
                         domContainer: formRef.current!!,
                         template,
                         inputs: inputs || [{}],
-                        plugins: { text, readOnly, errorTooltip, signature },
+                        plugins: {
+                            text,
+                            readOnly,
+                            errorTooltip,
+                            signature,
+                        },
                     });
 
-                    form.current.onChangeInput(({ key, value }) =>
-                        setValue(key, value)
-                    );
+                    form.current.onChangeInput(handleInputChange);
                 });
             }
         });
