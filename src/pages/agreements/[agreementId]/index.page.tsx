@@ -6,14 +6,31 @@ import { useRouter } from "next/router";
 import Skeleton from "./Skeleton";
 import PDFViewer from "./PDFViewer";
 import Description from "./Description";
+import { useTabsContext } from "@/contexts/tabs";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewAgreementPage: NextPage = () => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const { agreementId } = router.query;
+
+    const { pushTab } = useTabsContext();
 
     const { data: agreement, isLoading } = useGetAgreementByIdQuery(
         +agreementId!
     );
+
+    useEffect(() => {
+        if (agreement && agreementId) {
+            pushTab({
+                path: `/agreements/${agreementId}`,
+                id: agreementId as string,
+                label: `${t("Agreement")} ${agreement?.code}`,
+            });
+        }
+    }, [agreement, agreementId, t]);
 
     if (isLoading || !agreement) return <Skeleton />;
 
