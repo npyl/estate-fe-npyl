@@ -4,9 +4,11 @@ import { styled } from "@mui/material/styles";
 
 const StyledActions = styled(DialogActions)(({ theme }) => ({
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
+    [theme.breakpoints.up("sm")]: {
+        flexDirection: "row",
+    },
     gap: theme.spacing(1),
-    // ...
     borderTop: "1px solid",
     borderTopColor: getBorderColor(theme),
 }));

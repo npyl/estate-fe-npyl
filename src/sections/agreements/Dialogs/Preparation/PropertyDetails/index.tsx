@@ -49,7 +49,11 @@ const PropertyDetails: React.FC<Props> = ({ isCustomer, shouldAutofill }) => {
 
             <Divider />
 
-            <Stack direction="row" justifyContent="center" spacing={1}>
+            <Stack
+                direction={{ xs: "column", sm: "row" }}
+                justifyContent="center"
+                spacing={1}
+            >
                 {!isCustomer ? <RHFButtonGroup /> : null}
 
                 <RHFLanguageButton />
@@ -58,7 +62,7 @@ const PropertyDetails: React.FC<Props> = ({ isCustomer, shouldAutofill }) => {
             <Divider />
 
             <Grid container spacing={1}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFDatePicker
                         name="startingDate"
                         label={t("Starting Date").toString()}
@@ -66,21 +70,21 @@ const PropertyDetails: React.FC<Props> = ({ isCustomer, shouldAutofill }) => {
                         onChange={handleStartingChange}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFDatePicker
                         name="expirationDate"
                         label={t("Expiration Date").toString()}
                         disablePast
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFDatePicker
                         name="availableAfter"
                         label={t("Available After").toString()}
                         disablePast
                     />
                 </Grid>
-                <Grid item xs={6} display="flex" alignItems="center">
+                <Grid item xs={12} sm={6} display="flex" alignItems="center">
                     <RHFCheckbox
                         labelPlacement="start"
                         name="keys"
