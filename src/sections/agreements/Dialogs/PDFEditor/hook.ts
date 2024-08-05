@@ -44,7 +44,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
 
             const flatRate = (+price * +value) / 100;
 
-            setValue(flatRateKey, flatRate);
+            setValue(flatRateKey, flatRate.toString());
         }
 
         // update inputs so that change is visible!
