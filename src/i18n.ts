@@ -818,13 +818,13 @@ const resources = {
             "Errors in PDF form": "Errors in PDF form",
             "Selected Property": "Selected Property",
             _NO_OWNER_LITERAL_:
-                "This property does not have an owner assigned! Please assign and then come back!",
+                "This property does not have an owner assigned! Please assign and try again!",
         },
     },
     el: {
         translation: {
             _NO_OWNER_LITERAL_:
-                "Αυτό το ακίνητο δεν έχει ιδιοκτήτη! Παρακαλώ προσθέστε και επιστρέψτε ξανά!",
+                "Αυτό το ακίνητο δεν έχει ιδιοκτήτη! Παρακαλώ προσθέστε και προσπαθήστε ξανά!",
             "Selected Property": "Επιλεγμένο Ακίνητο",
             "Errors in PDF form": "Λάθη στην PDF φόρμα",
             properties: "ακίνητα",

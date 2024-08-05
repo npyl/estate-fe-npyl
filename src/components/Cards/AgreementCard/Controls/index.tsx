@@ -2,7 +2,6 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IAgreementShort } from "@/types/agreements";
 import React, { MouseEvent } from "react";
 import ShareButton from "./Share";
 import ExportButton from "./Export";
@@ -31,10 +30,13 @@ const Controls: React.FC<ControlsProps> = ({
 
     return (
         <Stack
+            className="AgreementCardButtons"
             spacing={1}
             direction="row"
-            justifyContent="flex-end"
-            className="AgreementCardButtons"
+            // ...
+            position="absolute"
+            bottom={0}
+            right={0}
         >
             <IconButton onClick={handleEdit}>
                 <EditIcon />
