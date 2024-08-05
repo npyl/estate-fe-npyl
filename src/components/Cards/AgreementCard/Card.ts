@@ -19,6 +19,11 @@ const Card = styled(NextLink)(({ theme }) => ({
     // ...
     "& .AgreementCardButtons": {
         visibility: "hidden",
+
+        // Visible on mobile
+        [theme.breakpoints.down("lg")]: {
+            visibility: "visible",
+        },
     },
     "&:hover": {
         boxShadow: theme.shadows[20],
