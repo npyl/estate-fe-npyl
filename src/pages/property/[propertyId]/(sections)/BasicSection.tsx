@@ -214,7 +214,9 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         label={t("Estimated Rent Price")}
                         value={
                             data?.estimatedRentPrice
-                                ? `${data?.estimatedRentPrice}€`
+                                ? `${data?.estimatedRentPrice.toLocaleString(
+                                      "de-DE"
+                                  )}€`
                                 : "-"
                         }
                     />
@@ -246,7 +248,9 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         label={t("Current Rent Price")}
                         value={
                             data?.currentRentPrice
-                                ? `${data?.currentRentPrice}€`
+                                ? `${data?.currentRentPrice.toLocaleString(
+                                      "de-DE"
+                                  )}€`
                                 : "-"
                         }
                     />
@@ -275,7 +279,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Average Utilities")}
                         value={
-                            data?.averageUtils ? `${data?.averageUtils} €` : "-"
+                            data?.averageUtils
+                                ? `${data?.averageUtils.toLocaleString(
+                                      "de-DE"
+                                  )}€`
+                                : "-"
                         }
                     />
                 );

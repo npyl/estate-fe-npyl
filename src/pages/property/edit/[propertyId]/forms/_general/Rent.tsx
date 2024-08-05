@@ -9,6 +9,7 @@ import {
 } from "src/components/hook-form";
 import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
+import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 
 const StyledBox = styled(Box)(({ theme }) => ({
     border: "1px dashed",
@@ -56,7 +57,7 @@ const Rent = () => {
                         display="flex"
                         alignItems="flex-end"
                     >
-                        <RHFOnlyNumbers
+                        <RHFOnlyNumbersForPrice
                             name="currentRentPrice"
                             label={t("Current Rent Price")}
                             adornment="€"
