@@ -28,14 +28,22 @@ const PDFViewer: React.FC<Props> = ({ a }) => {
         loadPdf(variant.key, language.key).then((template) => {
             if (!template) return;
 
-            viewRef.current = new Viewer({
-                domContainer: containerRef.current!,
-                template,
-                inputs,
-                plugins: { text, readOnly, signature },
-            });
+            try {
+                viewRef.current = new Viewer({
+                    domContainer: containerRef.current!,
+                    template,
+                    inputs,
+                    plugins: { text, readOnly, signature },
+                });
+            } catch (ex) {}
         });
     }, [containerRef.current, formData, variant, language]);
+
+    useEffect(() => {
+        return () => {
+            viewRef.current?.destroy();
+        };
+    }, []);
 
     return <div ref={containerRef} />;
 };

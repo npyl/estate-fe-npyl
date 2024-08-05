@@ -57,24 +57,30 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
         loadPdf(variant, language).then((template) => {
             if (formRef.current && form.current === null && !!template) {
                 import("@pdfme/ui").then(({ Form }) => {
-                    const inputs = [flattenObject(all)];
+                    try {
+                        const inputs = [flattenObject(all)];
 
-                    form.current = new Form({
-                        domContainer: formRef.current!!,
-                        template,
-                        inputs: inputs || [{}],
-                        plugins: {
-                            text,
-                            readOnly,
-                            errorTooltip,
-                            signature,
-                        },
-                    });
+                        form.current = new Form({
+                            domContainer: formRef.current!!,
+                            template,
+                            inputs: inputs || [{}],
+                            plugins: {
+                                text,
+                                readOnly,
+                                errorTooltip,
+                                signature,
+                            },
+                        });
 
-                    form.current.onChangeInput(handleInputChange);
+                        form.current.onChangeInput(handleInputChange);
+                    } catch (ex) {}
                 });
             }
         });
+
+        return () => {
+            form.current?.destroy();
+        };
     }, []);
 
     return form.current;
