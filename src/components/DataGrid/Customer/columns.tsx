@@ -30,7 +30,11 @@ const RenderPriceCell = ({ row }: GridCellParams) => {
     if (!row.budget) return null;
 
     const formattedPrice = formatPrice(row.budget);
-    return <Typography>{formattedPrice}</Typography>;
+    return (
+        <Typography style={{ fontSize: "inherit", fontFamily: "inherit" }}>
+            {formattedPrice}
+        </Typography>
+    );
 };
 
 const RenderAreaCell = ({ row }: GridCellParams) => {
@@ -44,7 +48,24 @@ const RenderAreaCell = ({ row }: GridCellParams) => {
         )
         .join(", ");
 
-    return <Typography>{areas}</Typography>;
+    return (
+        <Typography style={{ fontSize: "inherit", fontFamily: "inherit" }}>
+            {areas}
+        </Typography>
+    );
+};
+
+const renderDateCell = ({ row }: GridCellParams) => {
+    const timestamp = row.createdAt;
+    const date = new Date(timestamp);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+    return (
+        <Typography
+            style={{ fontSize: "inherit", fontFamily: "inherit" }}
+        >{`${day}/${month}/${year}`}</Typography>
+    );
 };
 
 const getColumns = (t: TranslationType): GridColDef[] => [
@@ -78,20 +99,23 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         renderCell: RenderPriceCell,
     },
+
     {
         flex: 1,
         field: "areas",
-        headerName: t("Area").toString(),
+        headerName: t("Region").toString(),
         headerAlign: "center",
         align: "center",
         renderCell: RenderAreaCell,
     },
+
     {
         flex: 1,
         field: "createdAt",
         headerName: t("Date of Entry").toString(),
         headerAlign: "center",
         align: "center",
+        renderCell: renderDateCell,
     },
     {
         flex: 1,
@@ -102,7 +126,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         renderCell: StatusColor,
     },
     {
-        width: 180,
+        width: 255,
         field: "labels",
         headerAlign: "center",
         align: "center",

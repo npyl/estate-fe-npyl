@@ -26,7 +26,7 @@ interface DeleteDialogProps {
     onDelete: () => void;
 }
 
-export const DeleteDialog = ({
+const DeleteDialog = ({
     open,
     multiple = false,
     onClose,
@@ -73,3 +73,5 @@ export const DeleteDialog = ({
         </Dialog>
     );
 };
+
+export default DeleteDialog;

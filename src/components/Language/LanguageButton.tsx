@@ -1,67 +1,83 @@
-import { ButtonProps, IconButton } from "@mui/material";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Box, ButtonProps, IconButton, Typography } from "@mui/material";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { LanguagePopover } from "./LanguagePopover";
 import { Language } from "./types";
-
-const languages: Record<Language, string> = {
-    en: "/static/icons/uk_flag.svg",
-    el: "/static/icons/gr_flag.svg",
-};
+import useDialog from "@/hooks/useDialog";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LanguageImage from "./languageImage";
 
 interface LanguageButtonProps extends ButtonProps {
-    updatesGlobalLanguage?: boolean;
     onLanguageChange?: (language: Language) => void;
+    // ...
+    updatesGlobalLanguage?: boolean;
+    language?: Language;
 }
 
 export const LanguageButton = ({
     updatesGlobalLanguage = true, // update by default
+    language = "el",
     onLanguageChange,
     ...props
 }: LanguageButtonProps) => {
     const { i18n } = useTranslation();
     const anchorRef = useRef<HTMLButtonElement | null>(null);
 
-    const [language, setLanguage] = useState<Language>("en");
-    const [openPopover, setOpenPopover] = useState<boolean>(false);
+    const [isPopoverOpen, openPopover, closePopover] = useDialog();
 
-    const handleOpenPopover = (): void => setOpenPopover(true);
-    const handleClosePopover = (): void => setOpenPopover(false);
-
-    const handleChange = (language: Language) => {
-        setLanguage(language);
-        onLanguageChange?.(language);
-    };
-
-    const imageSrc = useMemo(
-        () =>
-            languages[
-                updatesGlobalLanguage ? (i18n.language as Language) : language
-            ],
-        [updatesGlobalLanguage, i18n.language, language]
-    );
-
-    useEffect(() => {
-        const savedLanguage = localStorage.getItem("language");
-        if (savedLanguage) {
-            setLanguage(savedLanguage as Language);
-            i18n.changeLanguage(savedLanguage);
-        }
-    }, [i18n]);
+    const currentLanguage = updatesGlobalLanguage ? i18n.language : language;
+    const languageAbbreviation = currentLanguage === "en" ? "EN" : "GR";
 
     return (
         <>
-            <IconButton onClick={handleOpenPopover} ref={anchorRef} {...props}>
-                <img src={imageSrc} width={20} height={20} />
+            <IconButton
+                ref={anchorRef}
+                onClick={openPopover}
+                {...props}
+                sx={{
+                    padding: 0,
+                    color: "neutral.500",
+                    "&:hover": {
+                        backgroundColor: "transparent",
+                        color: "neutral.600",
+                    },
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 0.5,
+                        width: 60,
+                        height: 20,
+                    }}
+                >
+                    <LanguageImage />
+                    <Typography sx={{ color: "inherit", fontSize: "small" }}>
+                        {languageAbbreviation}
+                    </Typography>
+                    {isPopoverOpen ? (
+                        <KeyboardArrowUpIcon
+                            sx={{ color: "inherit", width: 17, height: 17 }}
+                        />
+                    ) : (
+                        <KeyboardArrowDownIcon
+                            sx={{ color: "inherit", width: 17, height: 17 }}
+                        />
+                    )}
+                </Box>
             </IconButton>
 
-            {openPopover ? (
+            {isPopoverOpen ? (
                 <LanguagePopover
                     updatesGlobalLanguage={updatesGlobalLanguage}
                     anchorEl={anchorRef.current}
-                    onClose={handleClosePopover}
-                    onChange={handleChange}
-                    open={openPopover}
+                    onClose={closePopover}
+                    onChange={onLanguageChange}
+                    open={isPopoverOpen}
                 />
             ) : null}
         </>

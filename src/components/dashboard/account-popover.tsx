@@ -47,6 +47,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
                 horizontal: "center",
                 vertical: "bottom",
             }}
+            disableScrollLock={true}
             keepMounted
             onClose={onClose}
             open={!!open}

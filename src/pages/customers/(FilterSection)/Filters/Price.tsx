@@ -12,11 +12,7 @@ import {
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
-import {
-    StyledBox,
-    StyledPriceButton,
-    ListItem,
-} from "@/components/Filters/styled";
+import { StyledBox, FilterButton, ListItem } from "@/components/Filters/styled";
 import {
     selectMaxArea,
     selectMaxPrice,
@@ -130,7 +126,7 @@ const PriceSelect = ({ type }: { type: string }) => {
             onClickAway={() => setOpen(false)}
         >
             <Box>
-                <StyledPriceButton
+                <FilterButton
                     sx={{ minWidth: "135px", textWrap: "nowrap" }}
                     open={open}
                     variant="outlined"
@@ -138,7 +134,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                     onClick={handleClick}
                 >
                     {renderLabel}
-                </StyledPriceButton>
+                </FilterButton>
                 {open && (
                     <Popper
                         open={open}

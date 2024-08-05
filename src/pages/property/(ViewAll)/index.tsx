@@ -7,7 +7,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { DeleteDialog } from "src/components/Dialog/Delete";
+import DeleteDialog from "src/components/Dialog/Delete";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import {
     useBulkDeletePropertiesMutation,
@@ -24,6 +24,7 @@ interface ViewAllProps {
     isBulkEditOpen: boolean;
     onBulkEditOpen: VoidFunction;
     onBulkEditClose: VoidFunction;
+    onRowSelectionModelChange: (selectionModel: GridRowSelectionModel) => void;
 }
 
 const ViewAll = ({
@@ -33,6 +34,7 @@ const ViewAll = ({
     isBulkEditOpen,
     onBulkEditOpen,
     onBulkEditClose,
+    onRowSelectionModelChange,
 }: ViewAllProps) => {
     const { t } = useTranslation();
 
@@ -122,6 +124,13 @@ const ViewAll = ({
         );
     };
 
+    const handleRowSelectionModelChange = (
+        selectionModel: GridRowSelectionModel
+    ) => {
+        setSelectedRows(selectionModel);
+        onRowSelectionModelChange(selectionModel);
+    };
+
     return (
         <Box
             sx={{
@@ -145,6 +154,10 @@ const ViewAll = ({
                             onPaginationModelChange={
                                 handlePaginationModelChange
                             }
+                            checkboxSelection
+                            onRowSelectionModelChange={
+                                handleRowSelectionModelChange
+                            }
                             onBulkDelete={openBulkDeleteDialog}
                             onBulkEdit={handleBulkEdit}
                         />
@@ -156,6 +169,7 @@ const ViewAll = ({
                         skeleton
                         page={page}
                         pageSize={pageSize}
+                        checkboxSelection
                         totalRows={totalRows}
                         onPaginationModelChange={handlePaginationModelChange}
                     />

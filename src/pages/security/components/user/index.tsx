@@ -23,6 +23,7 @@ import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import {
     useAllUsersQuery,
+    useToggleActiveNotificationMutation,
     useToggleActiveUserMutation,
 } from "src/services/user";
 
@@ -34,26 +35,38 @@ type ActiveStatusesType = {
     [userId: number]: boolean;
 };
 
+type ActiveNotificationsType = {
+    [userId: number]: boolean;
+};
+
 const UserPage: FC<Props> = ({ changeTab }) => {
     const router = useRouter();
     const { data: users } = useAllUsersQuery();
     const { setSelectedUser } = useSecurityContext();
     const [toggleActiveUser] = useToggleActiveUserMutation();
+    const [toggleActiveNotification] = useToggleActiveNotificationMutation();
+
     const [openUserForm, setOpenUserForm] = useState(false);
     const [activeStatuses, setActiveStatuses] = useState<ActiveStatusesType>(
         {}
     );
+    const [activeNotifications, setActiveNotifications] =
+        useState<ActiveNotificationsType>({});
+
     useEffect(() => {
         if (users) {
             const initialStatuses: ActiveStatusesType = {};
+            const initialNotifications: ActiveNotificationsType = {};
             users.forEach((user) => {
                 initialStatuses[user.id] = user.isActive;
+                initialNotifications[user.id] = user.notificationsEnabled;
             });
             setActiveStatuses(initialStatuses);
+            setActiveNotifications(initialNotifications);
         }
     }, [users]);
 
-    const handleToggleActive = async (
+    const handleToggleActiveStatus = async (
         event: React.ChangeEvent<HTMLInputElement>,
         userId: number
     ) => {
@@ -80,6 +93,36 @@ const UserPage: FC<Props> = ({ changeTab }) => {
 
             // Optionally, show an error message to the user
             console.error("Failed to update user status:", error);
+        }
+    };
+
+    const handleToggleActiveNotifications = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+        userId: number
+    ) => {
+        // Prevent further propagation of the event
+        event.stopPropagation();
+
+        const currentNotificationStatus = event.target.checked;
+
+        // Optimistically update the UI for a faster response
+        setActiveNotifications((prevNotifications) => ({
+            ...prevNotifications,
+            [userId]: currentNotificationStatus,
+        }));
+
+        try {
+            // Make the API request and await its result
+            await toggleActiveNotification(userId);
+        } catch (error) {
+            // If the request fails, revert the UI change
+            setActiveNotifications((prevNotifications) => ({
+                ...prevNotifications,
+                [userId]: !currentNotificationStatus, // revert the status
+            }));
+
+            // Optionally, show an error message to the user
+            console.error("Failed to update user notification status:", error);
         }
     };
 
@@ -111,6 +154,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                             <TableCell>{t("Last Name")}</TableCell>
                             <TableCell>{t("Email")}</TableCell>
                             <TableCell>{t("Status")}</TableCell>
+                            <TableCell>{t("Notifications")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
                             <TableCell>{t("Update")}</TableCell>
                             <TableCell>{t("Permissions")}</TableCell>
@@ -144,7 +188,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                                         } // fallback to 'false' if the id is not yet in the state
                                                         onChange={(e) => {
                                                             e.stopPropagation();
-                                                            handleToggleActive(
+                                                            handleToggleActiveStatus(
                                                                 e,
                                                                 user.id
                                                             );
@@ -161,6 +205,43 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                         </FormGroup>
                                     )}
                                 </TableCell>
+                                <TableCell>
+                                    {user.isAdmin ? (
+                                        <Label
+                                            opaque
+                                            color="info"
+                                            name={t("Admin")}
+                                        />
+                                    ) : (
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                control={
+                                                    <IOSSwitch
+                                                        checked={
+                                                            activeNotifications[
+                                                                user.id
+                                                            ] || false
+                                                        } // fallback to 'false' if the id is not yet in the state
+                                                        onChange={(e) => {
+                                                            e.stopPropagation();
+                                                            handleToggleActiveNotifications(
+                                                                e,
+                                                                user.id
+                                                            );
+                                                        }}
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                        name="isActiveSwitch"
+                                                        sx={{ m: 1 }}
+                                                    />
+                                                }
+                                                label="View all"
+                                            />
+                                        </FormGroup>
+                                    )}
+                                </TableCell>
+
                                 <TableCell>{user.mobilePhone}</TableCell>
                                 <TableCell>
                                     <IconButton

@@ -17,10 +17,11 @@ export interface ContactNotificationPOST {
 
 export type NotificationType =
     | "LISTING"
-    | "CONTACT"
+    // | "CONTACT"
     | "TOUR"
     | "WORK_FOR_US"
-    | "REVIEW";
+    | "REVIEW"
+    | "AGREEMENT";
 
 interface IPropertyLocation {
     street: string;
@@ -61,7 +62,6 @@ export interface IPropertyDescriptionsForNotification {
 
 export interface ContactNotification {
     id?: number;
-    // propertyId: number;
     propertyImage: IPropertyImage;
     location: IPropertyLocation;
     customerName: string;
@@ -78,8 +78,8 @@ export interface ContactNotification {
     property?: IPropertyForNotification;
     descriptions?: IPropertyDescriptionsForNotification;
     type: KeyValue;
-
     reviewDetails: ReviewDetails;
+    agreement?: AgreementDetails;
 }
 
 export interface INotificationResponse {
@@ -99,6 +99,7 @@ export interface INotificationResponse {
     type: KeyValue;
     viewed: boolean;
     workForUsDetails: IWorkForUs;
+    agreementDetails: AgreementDetails;
     propertyImage: IPropertyImage;
     location: IPropertyLocation;
     propertyId: number;
@@ -119,6 +120,28 @@ interface ReviewDetails {
     source?: string;
 }
 
+interface OwnerAgreement {
+    id: number;
+    name: string;
+}
+
+interface PropertyAgreement {
+    code: string;
+    id: number;
+}
+interface AgreementDetails {
+    active: boolean;
+    code: string;
+    expirationDate: string;
+    expiredToday: boolean;
+    expiresSoon: boolean;
+    id: number;
+    owner: OwnerAgreement;
+    property: PropertyAgreement;
+    title: string;
+    variant: KeyValue;
+}
+
 export interface NotViewedContactNotifications {
     total: number;
     types: {
@@ -129,4 +152,5 @@ export interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
     workForUsDetails: IWorkForUs;
     reviewDetails: ReviewDetails;
+    agreementDetails: AgreementDetails;
 }

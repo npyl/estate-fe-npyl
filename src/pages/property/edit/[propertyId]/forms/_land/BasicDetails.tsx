@@ -25,6 +25,7 @@ import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CustomerModal from "../_general/BasicDetails/CustomerModal";
 import CustomerForm from "@/pages/customer/components/Form";
+import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 
 const getCHECKBOXES = (t: TranslationType) => [
     { name: "debatablePrice", label: t("Debatable Price") },
@@ -205,7 +206,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <RHFOnlyNumbers
+                        <RHFOnlyNumbersForPrice
                             fullWidth
                             name="price"
                             label={t("Price")}
@@ -222,7 +223,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <RHFOnlyNumbers
+                        <RHFOnlyNumbersForPrice
                             fullWidth
                             name="estimatedRentPrice"
                             label={t("Estimated Rent Price")}

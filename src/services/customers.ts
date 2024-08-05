@@ -133,8 +133,6 @@ export const {
     useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
     useBulkDeleteCustomersMutation,
-
     useGetCustomerLabelsQuery,
-
     useLazyGetCustomerByIdQuery,
 } = customers;

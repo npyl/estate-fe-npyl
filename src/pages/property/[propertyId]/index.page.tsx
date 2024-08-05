@@ -32,32 +32,36 @@ const MatchingCustomersSection = lazy(
 const PhotosOnly = lazy(() => import("./(tabs)/PhotosOnly"));
 const PropertyLogs = lazy(() => import("./(sections)/Logs"));
 const GreenMap = lazy(() => import("./(tabs)/Green"));
+const AgreementsTab = lazy(() => import("./(tabs)/Agreements"));
 
 import { styled } from "@mui/material/styles";
 
 const StyledTab = styled(Tab)(({ theme }) => ({
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     "&.Mui-selected": { color: "#00b32d" },
 }));
 
 const GreenMapTab: React.FC<TabProps> = (props) => (
     <StyledTab
         {...props}
-        iconPosition="start"
+        iconPosition="end"
         icon={
             <Iconify
                 icon="ph:tree"
-                fontSize="25px"
-                width={30}
-                height={30}
+                fontSize="20px"
+                width={20}
+                height={20}
                 sx={{
                     "&.Mui-selected": { color: "#00b32d" },
+                    mb: 1,
                 }}
             />
         }
     />
 );
+
+const GREEN_MAP_INDEX = 11;
 
 // -----------------------------------------------------------------
 
@@ -111,7 +115,7 @@ const SingleProperty: NextPage = () => {
                     sx={{
                         // GreenMapTab Indicator
                         "& .MuiTabs-indicator": {
-                            ...(value === 10
+                            ...(value === GREEN_MAP_INDEX
                                 ? { backgroundColor: "#00b32d" }
                                 : {}),
                         },
@@ -127,7 +131,8 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Documents")} />
                     <Tab label={t("Map")} />
                     <Tab label={t("Street View")} />
-                    <GreenMapTab label={t("Green Map")} />
+                    <Tab label={t("Agreements")} />
+                    <GreenMapTab label={t("Eco Map")} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>
@@ -158,6 +163,9 @@ const SingleProperty: NextPage = () => {
                     <StreetView />
                 </TabPanel>
                 <TabPanel value={value} index={10}>
+                    <AgreementsTab />
+                </TabPanel>
+                <TabPanel value={value} index={GREEN_MAP_INDEX}>
                     <GreenMap />
                 </TabPanel>
             </Suspense>

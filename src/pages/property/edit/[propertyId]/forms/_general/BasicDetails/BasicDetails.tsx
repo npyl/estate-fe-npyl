@@ -36,6 +36,7 @@ import { ICustomer, ICustomerPOST } from "@/types/customer";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 import { ClearIcon } from "@mui/x-date-pickers";
 import CustomerModal from "./CustomerModal";
+import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 
 interface ICustomerLocationYup {
     street: string;
@@ -199,7 +200,7 @@ const BasicSection: React.FC<any> = () => {
 
                     <Grid item xs={12} sm={6}>
                         <Stack direction="row" gap={3}>
-                            <RHFOnlyNumbers
+                            <RHFOnlyNumbersForPrice
                                 fullWidth
                                 name="price"
                                 label={t("Price")}
@@ -228,7 +229,7 @@ const BasicSection: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <RHFOnlyNumbers
+                        <RHFOnlyNumbersForPrice
                             name="averageUtils"
                             label={t("Average Utils")}
                             adornment="€/Month"
@@ -236,7 +237,7 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <RHFOnlyNumbers
+                        <RHFOnlyNumbersForPrice
                             fullWidth
                             name="estimatedRentPrice"
                             label={t("Estimated Rent Price")}

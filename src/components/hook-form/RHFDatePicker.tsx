@@ -6,27 +6,45 @@ import {
 import Stack from "@mui/material/Stack";
 import { FormHelperText, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { useCallback } from "react";
+import toLocalDate from "@/utils/toLocalDate";
 
-interface Props extends DatePickerProps<any> {
-    label: string;
+interface Props extends Omit<DatePickerProps<dayjs.Dayjs>, "onChange"> {
+    label?: string;
     name: string;
+    onChange?: (v: string) => void;
 }
 
-// INFO: value prop must be an ISO date string
-const DatePicker = ({ name, label, ...others }: Props) => {
-    const { control } = useFormContext();
+// INFO: value prop must be an LocalDate (YYYY-MM-DD)
+
+const DatePicker = ({ name, label, onChange, ...others }: Props) => {
+    const { control, setValue } = useFormContext();
+
+    const handleChange = useCallback(
+        (v: dayjs.Dayjs | null) => {
+            setValue(name, toLocalDate(v?.toISOString() || ""));
+            onChange?.(v?.toISOString() || "");
+        },
+        [onChange]
+    );
 
     return (
         <Controller
             name={name}
             control={control}
-            render={({ field: { value, ...field }, fieldState: { error } }) => (
+            render={({
+                field: { value, onChange: _, ...field },
+                fieldState: { error },
+            }) => (
                 <Stack spacing={1}>
-                    <Typography variant="subtitle1">{label}</Typography>
+                    {label ? (
+                        <Typography variant="subtitle1">{label}</Typography>
+                    ) : null}
                     <MuiDatePicker
                         {...field}
                         {...others}
-                        value={value ? dayjs(value) : null}
+                        value={value ? dayjs(value, "YYYY-MM-DD") : null}
+                        onChange={handleChange}
                     />
                     {error ? (
                         <FormHelperText error>{error?.message}</FormHelperText>

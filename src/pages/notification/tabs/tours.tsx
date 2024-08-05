@@ -44,7 +44,7 @@ const Tours = ({ filter }: any) => {
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
-                variant="CONTACT"
+                variant="TOUR"
                 rows={filteredTours || []}
                 onRemove={handleRemove}
                 loading={isLoading}

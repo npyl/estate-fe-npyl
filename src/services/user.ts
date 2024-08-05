@@ -50,6 +50,14 @@ export const user = createApi({
             invalidatesTags: ["Users"],
         }),
 
+        toggleActiveNotification: builder.mutation<IUser[], number>({
+            query: (userId: number) => ({
+                url: `toggle-notification-view/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Users"],
+        }),
+
         isAdmin: builder.query<boolean, number>({
             query: (userId) => ({
                 url: `${userId}/isAdmin`,
@@ -89,6 +97,7 @@ export const {
     useAddUserMutation,
     useAllUsersQuery,
     useToggleActiveUserMutation,
+    useToggleActiveNotificationMutation,
     useLazyIsAdminQuery,
     useLazyProfileQuery,
     useDeleteUserMutation,

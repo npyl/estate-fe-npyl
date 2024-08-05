@@ -15,7 +15,12 @@ const RenderLabelsCell = (params: GridCellParams) => {
     return (
         <Stack spacing={0.5} alignItems="center">
             {labels.slice(0, 2).map(({ id, color, name }) => (
-                <Label key={id} color={color} name={name} />
+                <Label
+                    key={id}
+                    color={color}
+                    name={name}
+                    // sx={{ maxWidth: "3vw" }}
+                />
             ))}
 
             {more > 0 ? (

@@ -96,6 +96,7 @@ function MyComponent() {
                         {
                             center,
                             zoom: 15 - +radius * 0.6,
+                            gestureHandling: "greedy", // enable zoom in/out with mouse scroll
                         }
                     );
                     // Check if latitude and longitude are available before adding a marker

@@ -3,17 +3,25 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { LabeledSwitch } from "./Switch";
 import Item from "./styled";
+import { IconButton } from "@mui/material";
 
 interface PublicItemProps {
     label: string;
     published: boolean;
     onClick: () => void;
 }
+const publicLogo = "/static/PublicLogo.png";
 
 const PublicItem = ({ label, published, onClick }: PublicItemProps) => (
     <Item>
         <Stack direction="row" spacing={0.8} alignItems="center">
-            <PublicSvg />
+            <IconButton size="small">
+                <img
+                    src={publicLogo}
+                    alt="Public Logo"
+                    style={{ width: "20px", height: "20px" }}
+                />
+            </IconButton>
             <Typography>{label}</Typography>
         </Stack>
 

@@ -4,7 +4,6 @@ import { Button, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Residential, Commercial, Land, Other } from "./forms";
 import { useCallback, useMemo } from "react";
-import PreventButton from "src/components/Button/Prevent";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 
 // Form
@@ -74,13 +73,13 @@ export default function Form({
                 spacing={1}
                 mt={2}
             >
-                <PreventButton
+                <Button
                     variant="outlined"
                     startIcon={<CancelIcon />}
                     onClick={onCancel}
                 >
                     {t("Cancel")}
-                </PreventButton>
+                </Button>
                 <Button
                     variant="outlined"
                     startIcon={<DeleteIcon />}

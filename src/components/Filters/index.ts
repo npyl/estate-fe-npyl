@@ -1,7 +1,7 @@
 export {
     StyledBox,
     ListItem,
-    StyledPriceButton,
+    FilterButton,
     StyledDialogContent,
     StyledInputLabel,
 } from "./styled";

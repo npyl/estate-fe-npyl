@@ -7,11 +7,13 @@ import { StyledLabel } from "./styles";
 import { LabelProps } from "./types";
 // icons
 import { Close as CloseIcon } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 // ----------------------------------------------------------------------
 
 const iconStyle = {
     minWidth: 16,
+
     minHeight: 16,
     "& svg, img": { width: 1, height: 1, objectFit: "cover" },
 };
@@ -33,7 +35,8 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
         ref
     ) => {
         const theme = useTheme();
-
+        const router = useRouter();
+        const isCustomerRoute = router.pathname.includes("/customer");
         return (
             <StyledLabel
                 color={color}
@@ -42,6 +45,7 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
                 sx={{
                     px: 0.75,
                     borderRadius: radius,
+                    // ...(isCustomerRoute && { maxWidth: "9vw" }),
                     ...sx,
                 }}
                 theme={theme}

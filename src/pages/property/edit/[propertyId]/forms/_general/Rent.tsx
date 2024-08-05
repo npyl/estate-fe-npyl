@@ -1,5 +1,5 @@
 import { Grid, Box } from "@mui/material";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -9,6 +9,7 @@ import {
 } from "src/components/hook-form";
 import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
+import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 
 const StyledBox = styled(Box)(({ theme }) => ({
     border: "1px dashed",
@@ -27,14 +28,14 @@ const Rent = () => {
     const availDate = watch("availableAfter");
     const startDate = watch("rentalStart");
 
-    useEffect(() => {
+    const handleAvailableAfterChange = useCallback(() => {
         setValue("rentalStart", "");
         setValue("rentalEnd", "");
-    }, [availDate]);
+    }, []);
 
-    useEffect(() => {
+    const handleRentalStartChange = useCallback(() => {
         setValue("rentalEnd", "");
-    }, [startDate]);
+    }, []);
 
     return (
         <>
@@ -46,6 +47,8 @@ const Rent = () => {
                         <RHFDatePicker
                             name="availableAfter"
                             label={t("Available After").toString()}
+                            disablePast
+                            onChange={handleAvailableAfterChange}
                         />
                     </Grid>
 
@@ -56,7 +59,7 @@ const Rent = () => {
                         display="flex"
                         alignItems="flex-end"
                     >
-                        <RHFOnlyNumbers
+                        <RHFOnlyNumbersForPrice
                             name="currentRentPrice"
                             label={t("Current Rent Price")}
                             adornment="€"
@@ -68,7 +71,13 @@ const Rent = () => {
                         <RHFDatePicker
                             name="rentalStart"
                             label={t("Rental Period Start").toString()}
-                            minDate={availDate ? dayjs(availDate) : null}
+                            disablePast
+                            minDate={
+                                availDate
+                                    ? dayjs(availDate, "YYYY-MM-DD")
+                                    : undefined
+                            }
+                            onChange={handleRentalStartChange}
                         />
                     </Grid>
 
@@ -76,7 +85,12 @@ const Rent = () => {
                         <RHFDatePicker
                             name="rentalEnd"
                             label={t("Rental Period End").toString()}
-                            minDate={startDate ? dayjs(startDate) : null}
+                            disablePast
+                            minDate={
+                                startDate
+                                    ? dayjs(startDate, "YYYY-MM-DD")
+                                    : undefined
+                            }
                         />
                     </Grid>
                 </Grid>

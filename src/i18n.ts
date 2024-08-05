@@ -1,5 +1,4 @@
 import i18n from "i18next";
-import { Calendar } from "react-date-range";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
@@ -567,6 +566,8 @@ const resources = {
             Inactive: "Inactive",
             Greek: "Greek",
             English: "English",
+            "United States": "United States",
+            "Modern Greek": "Modern Greek",
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.":
                 "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.",
             "Reset Password": "Reset Password",
@@ -783,10 +784,84 @@ const resources = {
             "Dominant Pollutants": "Dominant Pollutants",
             "Health Recommendations": "Health Recommendations",
             "Other Pollutants": "Other Pollutants",
+            Agreements: "Agreements",
+            FILL_IN_ALL_FIELDS_ERROR: "Fill in all fields",
+            New: "New",
+
+            Basic: "Basic",
+            "Basic Exclusive": "Basic Exclusive",
+            Purchase: "Purchase",
+
+            Expiration: "Expiration",
+
+            _active_: "Active",
+            _keys_: "Keys",
+            _signed_: "Signed",
+            _draft_: "Draft",
+            _YES_: "Yes",
+            _NO_: "No",
+            _expiresBy_: "Expiration",
+            _variants_: "Types",
+
+            _BASIC_: "Basic",
+            _BASIC_EXCLUSIVE_: "Basic Exclusive",
+            _PURCHASE_: "Purchase",
+
+            Language: "Language",
+
+            "Starting Date": "Starting Date",
+            "Expiration Date": "Expiration Date",
+            Agreement: "Agreement",
+            "Search property": "Search property",
+            "Edit PDF": "Edit PDF",
+            "Export date": "Export Date",
+            "Save as draft": "Save as draft",
+            properties: "properties",
+            "Errors in PDF form": "Errors in PDF form",
+            "Selected Property": "Selected Property",
+            _NO_OWNER_LITERAL_:
+                "This property does not have an owner assigned! Please assign and try again!",
         },
     },
     el: {
         translation: {
+            _NO_OWNER_LITERAL_:
+                "Αυτό το ακίνητο δεν έχει ιδιοκτήτη! Παρακαλώ προσθέστε και προσπαθήστε ξανά!",
+            "Selected Property": "Επιλεγμένο Ακίνητο",
+            "Errors in PDF form": "Λάθη στην PDF φόρμα",
+            properties: "ακίνητα",
+            "Save as draft": "Αποθήκευση ως προσχέδιο",
+            "Export date": "Ημ/νία Εξαγωγής",
+            "Edit PDF": "Επεξεργασία PDF",
+            "Search property": "Αναζήτηση ακινήτου",
+            Agreement: "Εντολή",
+            "Starting Date": "Ημ/νία Έναρξης",
+            "Expiration Date": "Ημ/νία Λήξης",
+
+            Language: "Γλώσσα",
+
+            _BASIC_: "Βασική",
+            _BASIC_EXCLUSIVE_: "Βασική Αποκλειστική",
+            _PURCHASE_: "Αγορά",
+
+            _variants_: "Τύποι",
+            _expiresBy_: "Λήξη",
+            _active_: "Ενεργή",
+            _keys_: "Κλειδιά",
+            _signed_: "Υπογραφή",
+            _draft_: "Προσχέδιο",
+            _YES_: "Ναι",
+            _NO_: "Όχι",
+
+            Expiration: "Λήξη",
+
+            Basic: "Βασική",
+            "Basic Exclusive": "Βασική Αποκλειστική",
+            Purchase: "Αγοράς",
+
+            New: "Νέα",
+            FILL_IN_ALL_FIELDS_ERROR: "Συμπληρώστε όλα τα πεδία",
+            Agreements: "Εντολές",
             "Add images": "Προσθήκη εικόνων",
             "Select All": "Επιλογή Όλων",
             "Deselect All": "Καμία Επιλογή",
@@ -1500,6 +1575,8 @@ const resources = {
             Inactive: "Ανενεργός",
             Greek: "Ελληνικά",
             English: "Αγγλικά",
+            "United States": "Ηνωμένων Πολιτειών",
+            "Modern Greek": "Ελληνικά (Σύγχρονα)",
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.":
                 "Ο κωδικός πρόσβασης πρέπει να αποτελείται από τουλάχιστον 8 χαρακτήρες και να περιλαμβάνει τουλάχιστον ένα κεφαλαίο γράμμα. Επιτρέπονται: γράμματα, αριθμοί ή ειδικοί χαρακτήρες.",
             "Reset Password": "Επαναφορά κωδικού",
