@@ -17,6 +17,10 @@ type DemandFormSliderProps = {
     options?: number[];
 };
 
+const formatNumber = (value: number) => {
+    return value.toLocaleString("de-DE");
+};
+
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     label,
     min,
@@ -64,6 +68,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                                 handleSliderChange(minName, value)
                             }
                             valueLabelDisplay="auto"
+                            valueLabelFormat={formatNumber}
                         />
                     )}
                 />

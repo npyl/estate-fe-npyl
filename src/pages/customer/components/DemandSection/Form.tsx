@@ -181,9 +181,9 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
 
     return (
         <>
-            <Typography variant="h6">{t("Floor")}</Typography>
-            <Stack mt={1} px={1}>
-                <Slider
+            <Typography variant="h6">{t("Floors")}</Typography>
+            <Stack mt={2} px={1}>
+                {/* <Slider
                     orientation="horizontal"
                     value={[
                         minFloorsKeys.indexOf(minFloor),
@@ -194,19 +194,19 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
                     valueLabelFormat={valueLabelFormat}
                     min={0}
                     max={maxFloorsKeys.length - 41}
-                />
+                /> */}
                 <Grid container direction="row" spacing={1.5}>
                     <Grid item xs={6}>
                         <Select
                             name={minName}
-                            label={t("Min Floor")}
+                            label={t("Min")}
                             options={minFloors}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <Select
                             name={maxName}
-                            label={t("Max Floor")}
+                            label={t("Max")}
                             options={maxFloors}
                         />
                     </Grid>
