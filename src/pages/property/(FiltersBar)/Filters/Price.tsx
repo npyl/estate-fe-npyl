@@ -124,7 +124,7 @@ const PriceSelect = ({ type }: Props) => {
         >
             <Box>
                 <FilterButton
-                    sx={{ minWidth: "135px" }}
+                    sx={{ minWidth: "135px", textWrap: "nowrap" }}
                     open={open}
                     variant="outlined"
                     endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
@@ -140,8 +140,13 @@ const PriceSelect = ({ type }: Props) => {
                         sx={{ zIndex: 2000 }}
                         placement="bottom-start"
                     >
-                        <StyledBox>
-                            <Grid container p={1} spacing={3}>
+                        <StyledBox sx={{ textWrap: "nowrap" }}>
+                            <Grid
+                                container
+                                p={1}
+                                spacing={3}
+                                sx={{ textWrap: "nowrap" }}
+                            >
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         label={`${symbol} ${t("from")}`}
@@ -254,18 +259,18 @@ function formatNumber(num: number) {
 function generateNumbers(states: string[], type: string) {
     const numbers = [];
 
-    const HUNDRED_K = 100 * 1000;
-    const HUNDRED = 100;
+    const FIVE_K = 5000;
     const TEN_M = 10 * 1000 * 1000;
-    const TEN_K = 10 * 1000;
+    const FIFTY = 50;
+    const HUNDRED_K = 100 * 1000;
 
     if (type === "price") {
-        if (states.includes("Sale")) {
-            for (let i = TEN_K; i <= TEN_M; i += HUNDRED_K - TEN_K) {
+        if (states.includes("RENT") || states.includes("RENTED")) {
+            for (let i = 0; i <= FIVE_K; i += FIFTY) {
                 numbers.push(i);
             }
         } else {
-            for (let i = HUNDRED; i <= TEN_K; i += HUNDRED) {
+            for (let i = 0; i <= TEN_M; i += HUNDRED_K) {
                 numbers.push(i);
             }
         }
