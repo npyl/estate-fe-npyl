@@ -1,11 +1,10 @@
 import { IAgreementType } from "@/types/agreements";
-import Image from "next/image";
 
 interface CardImageProps {
     variant: IAgreementType;
 }
 const CardImage: React.FC<CardImageProps> = ({ variant }) => (
-    <Image
+    <img
         src="/static/files/ic_file.svg"
         alt={variant}
         width={0}

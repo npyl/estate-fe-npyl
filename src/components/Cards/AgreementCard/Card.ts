@@ -9,8 +9,9 @@ const Card = styled(NextLink)(({ theme }) => ({
     borderRadius: "15px",
     padding: theme.spacing(1),
     boxShadow: theme.shadows[10],
-    height: "250px",
+    backgroundColor: theme.palette.background.paper,
     // ...
+    height: "250px",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

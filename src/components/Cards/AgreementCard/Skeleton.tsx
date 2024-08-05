@@ -13,6 +13,7 @@ const AgreementCardSkeleton = () => (
                 p: 1,
                 display: "flex",
                 flexDirection: "row",
+                borderRadius: "15px",
             }}
         >
             {/* Image skeleton */}

@@ -1,6 +1,6 @@
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
-import AgreementCard from "../../components/Cards/AgreementCard";
-import AgreementCardSkeleton from "../../components/Cards/AgreementCard/Skeleton";
+import AgreementCard from "@/components/Cards/AgreementCard";
+import AgreementCardSkeleton from "@/components/Cards/AgreementCard/Skeleton";
 import { useState } from "react";
 import {
     useDeleteAgreementMutation,
