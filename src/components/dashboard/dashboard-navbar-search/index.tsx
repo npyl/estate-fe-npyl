@@ -242,10 +242,13 @@ export const DashboardNavbarSearch: FC = () => {
                                                 }
                                                 sx={{
                                                     borderRadius: "50%",
+                                                    padding: "1px",
+
                                                     "&:hover": {
                                                         backgroundColor:
-                                                            "rgba(0, 0, 0, 0.1)", // Adjust the background color as needed
+                                                            "rgba(0, 0, 0, 0.1)",
                                                         borderRadius: "50%",
+                                                        padding: "1px",
                                                     },
                                                     mr: 0.5,
                                                 }}

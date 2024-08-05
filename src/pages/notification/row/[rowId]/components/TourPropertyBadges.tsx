@@ -18,7 +18,9 @@ const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
                 name={stateValue}
                 color="#3730a3"
                 sx={{
-                    width: "50%",
+                    textWrap: "nowrap",
+
+                    width: "100%",
                     color: "#3730a3",
                 }}
             />
@@ -26,6 +28,7 @@ const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
                 name={`${t("Code")}: ${code}`}
                 color="#ffcc00"
                 sx={{
+                    textWrap: "nowrap",
                     width: "100%",
                     color: "#854D0E",
                 }}

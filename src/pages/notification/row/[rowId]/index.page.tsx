@@ -115,6 +115,8 @@ const NotificationDetailPage: NextPage = () => {
 
     return (
         <Box>
+            {/* FIRST CARD IN UI */}
+
             <Card sx={{ marginBottom: 2, padding: 2 }}>
                 <CardContent>
                     <TitleSection
@@ -191,7 +193,7 @@ const NotificationDetailPage: NextPage = () => {
                     )}
                 </CardContent>
             </Card>
-
+            {/* SECOND CARD IN UI */}
             {type !== "AGREEMENT" ? (
                 <Card
                     onClick={handlePropertyCodeClick}
@@ -199,11 +201,12 @@ const NotificationDetailPage: NextPage = () => {
                         boxShadow: 1,
                         "&:hover": {
                             boxShadow: 18,
-                            cursor: "pointer",
+                            cursor: type === "LISTING" ? null : "pointer",
                         },
                     }}
                 >
                     <Stack direction="row">
+                        {/* If it is work application it does not have an image */}
                         {workForUs ? null : (
                             <CardMedia
                                 component="img"
@@ -242,6 +245,7 @@ const NotificationDetailPage: NextPage = () => {
                                     </Typography>
                                 ) : null}
                             </Stack>
+                            {/* property exists in Tour and Review */}
                             {property ? (
                                 <TourPropertyDetails property={property} />
                             ) : null}
