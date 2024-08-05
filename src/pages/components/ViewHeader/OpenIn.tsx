@@ -2,7 +2,7 @@ import { IconButton, Stack, Typography, ButtonBase } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import SpitogatosSvg from "src/assets/SpitogatosSvg";
-import { PublicSvg } from "src/assets/PublicSvg";
+
 import { useGetProperty } from "@/hooks/property";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
@@ -18,6 +18,7 @@ const CustomStack = styled(Stack)(({ theme }) => ({
 
 const OpenIn = () => {
     const { t } = useTranslation();
+    const publicLogo = "/static/PublicLogo.png";
 
     const { property } = useGetProperty();
     const { publicListings, restListings } = usePropertyListings();
@@ -66,6 +67,7 @@ const OpenIn = () => {
                 flexDirection="row"
                 gap={1}
                 alignItems="center"
+                padding={0.8}
                 sx={{ width: "100%" }}
             >
                 <Typography ml={1} sx={{ textWrap: "nowrap" }}>
@@ -73,7 +75,12 @@ const OpenIn = () => {
                 </Typography>
                 {hasPublic && (
                     <IconButton size="small">
-                        <PublicSvg />
+                        <img
+                            src={publicLogo}
+                            alt="Public Logo"
+                            style={{ width: "20px", height: "20px" }}
+                        />
+                        {/* <Typography>Luxury Homes</Typography> */}
                     </IconButton>
                 )}
                 {hasSpitogato && (
