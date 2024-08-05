@@ -1,13 +1,6 @@
-import {
-    MenuItem,
-    Select,
-    InputLabel,
-    FormControl,
-    InputAdornment,
-    Typography,
-} from "@mui/material";
+import { Autocomplete, TextField, InputAdornment } from "@mui/material";
 import { useController, UseControllerProps } from "react-hook-form";
-import { FC, useEffect, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 type RHFSelectDemandFormProps = UseControllerProps & {
     label: string;
@@ -24,63 +17,64 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
     ...props
 }) => {
     const { field } = useController(props);
-    const [currentValue, setCurrentValue] = useState(field.value);
-
-    const handleChange = (event: any) => {
-        const value = event.target.value;
-        field.onChange(value === "" ? null : value);
-        setCurrentValue(value === "" ? null : value);
-    };
+    const [inputValue, setInputValue] = useState<string>("");
 
     useEffect(() => {
-        setCurrentValue(field.value);
+        setInputValue(field.value ? formatNumber(field.value) : "");
     }, [field.value]);
 
-    // Ensure the current value is included in the options if not already present
-    const displayOptions = [...options];
-    if (
-        currentValue !== null &&
-        currentValue !== undefined &&
-        !displayOptions.includes(currentValue)
-    ) {
-        displayOptions.push(currentValue);
-    }
+    const formatNumber = (value: number | string) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value.replace(/[^\d]/g, "");
+        const numberValue = parseFloat(value);
+        if (!isNaN(numberValue)) {
+            field.onChange(numberValue);
+            setInputValue(formatNumber(value));
+        } else {
+            setInputValue(value);
+        }
+    };
+
+    const handleAutocompleteChange = (event: any, newValue: string | null) => {
+        if (newValue !== null) {
+            field.onChange(newValue);
+            setInputValue(formatNumber(newValue));
+        } else {
+            setInputValue("");
+        }
+    };
 
     return (
-        <FormControl fullWidth variant="outlined">
-            <InputLabel
-                shrink={currentValue !== null && currentValue !== undefined}
-            >
-                {label}
-            </InputLabel>
-            <Select
-                {...field}
-                label={label}
-                value={currentValue}
-                onChange={handleChange}
-                renderValue={(selected) =>
-                    selected
-                        ? `${selected.toLocaleString("de-DE")}${
-                              adornment ? ` ${adornment}` : ""
-                          }`
-                        : ""
-                }
-                displayEmpty={allowClear}
-            >
-                {allowClear && (
-                    <MenuItem value="">
-                        <Typography>Clear Value</Typography>
-                    </MenuItem>
-                )}
-                {displayOptions.map((option) => (
-                    <MenuItem key={option} value={option}>
-                        {adornment
-                            ? `${option.toLocaleString("de-DE")} ${adornment}`
-                            : `${option.toLocaleString("de-DE")}`}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <Autocomplete
+            freeSolo
+            options={options.map((option) => formatNumber(option))}
+            value={formatNumber(field.value ?? "")}
+            onChange={handleAutocompleteChange}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                handleInputChange({
+                    target: { value: newInputValue },
+                } as React.ChangeEvent<HTMLInputElement>);
+            }}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label={label}
+                    onChange={handleInputChange}
+                    InputProps={{
+                        ...params.InputProps,
+                        endAdornment: adornment ? (
+                            <InputAdornment position="end">
+                                {adornment}
+                            </InputAdornment>
+                        ) : null,
+                    }}
+                />
+            )}
+        />
     );
 };
 

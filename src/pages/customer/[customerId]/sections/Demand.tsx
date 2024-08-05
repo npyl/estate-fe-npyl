@@ -37,8 +37,8 @@ const getRangeDisplayValueForYearOfConstruction = (
 ) => {
     if (min === null && max === null) return "-";
 
-    const minValue = min !== null && min !== undefined ? min : 0;
-    const maxValue = max !== null && max !== undefined ? max : 0;
+    const minValue = min !== null && min !== undefined ? min : "";
+    const maxValue = max !== null && max !== undefined ? max : "";
     return `${minValue} - ${maxValue}`;
 };
 
@@ -52,8 +52,10 @@ const getRangeDisplayValue = (
     )
         return "-";
 
-    const minValue = min !== null && min !== undefined ? formatPrice(min) : 0;
-    const maxValue = max !== null && max !== undefined ? formatPrice(max) : 0;
+    const minValue =
+        min !== null && min !== undefined && min !== 0 ? formatPrice(min) : "";
+    const maxValue =
+        max !== null && max !== undefined && max !== 0 ? formatPrice(max) : "";
     return `${minValue} - ${maxValue}`;
 };
 
@@ -63,8 +65,10 @@ const getRangeDisplayValueString = (
 ): string => {
     if (min === null && max === null) return "-";
 
-    const minValue = min !== null && min !== undefined ? min : "0";
-    const maxValue = max !== null && max !== undefined ? max : "0";
+    const minValue =
+        min !== null && min !== undefined && min !== "0" ? min : "";
+    const maxValue =
+        max !== null && max !== undefined && max !== "0" ? max : "";
     return `${minValue} - ${maxValue}`;
 };
 
