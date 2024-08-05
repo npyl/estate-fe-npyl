@@ -9,7 +9,7 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { StyledPopper } from "../styles";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
@@ -26,24 +26,6 @@ import AgreementItems from "./AgreementItems";
 import useScreenWidth from "./hook";
 
 const PAGE_SIZE = 20;
-//Custom hook to hold the screenWidth for the categoryView ALL
-const useScreenWidth = () => {
-    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setScreenWidth(window.innerWidth);
-        };
-
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
-
-    return screenWidth;
-};
 
 interface PropertiesSubListProps {
     searchString: string;

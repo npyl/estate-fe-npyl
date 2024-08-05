@@ -1,11 +1,9 @@
-import { ButtonProps, IconButton } from "@mui/material";
+import { Box, ButtonProps, IconButton, Typography } from "@mui/material";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
 import { Language } from "./types";
 import useDialog from "@/hooks/useDialog";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LanguageImage from "./languageImage";

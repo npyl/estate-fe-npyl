@@ -22,6 +22,7 @@ import { useDebounce } from "use-debounce";
 import { useMediaQuery, useTheme } from "@mui/material";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import HandshakeIcon from "@mui/icons-material/Handshake";
 
 const SEARCH_HISTORY_KEY = "search_history";
 
