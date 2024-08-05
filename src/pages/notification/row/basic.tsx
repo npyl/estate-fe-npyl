@@ -6,6 +6,7 @@ import {
     Stack,
     TableCell,
     TableRow,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import { ContactNotification, IWorkForUs } from "src/types/notification";
@@ -26,6 +27,11 @@ import { NormalBadge } from "@/components/PropertyCard/styled";
 import { t } from "i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import dayjs from "dayjs";
+import PropertyRegion from "./components/PropertyRegion";
+import CustomerInfo from "./components/CustomerInfo";
+import PropertyDetails from "./components/PropertyDetails";
+import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriate icon
+import ExpiredIcon from "@mui/icons-material/Error";
 
 type TourType = "inPerson" | "askQuestion";
 
@@ -110,7 +116,13 @@ const BasicRow = ({
         event.stopPropagation(); // Prevent row click event
     };
 
+    const handleCustomerNameClick = (event: React.MouseEvent) => {
+        event.stopPropagation(); // Prevent row click event
+    };
+
     const propertyDetails = row?.property;
+
+    const type = row?.type?.key;
     return (
         <TableRow
             sx={{
@@ -154,105 +166,34 @@ const BasicRow = ({
                             <Typography fontWeight={600}>
                                 {row.customerName}
                             </Typography>
-                            {propertyDetails || contactDetails ? (
-                                <Box flexDirection="row">
-                                    <Typography variant="body2">
-                                        {propertyDetails?.category?.value ||
-                                            contactDetails?.category
-                                                ?.value}{" "}
-                                        {t(` for `)}
-                                        {propertyDetails?.state?.value ||
-                                            contactDetails?.state?.value}{" "}
-                                        {propertyDetails?.area ||
-                                            contactDetails?.area}{" "}
-                                        m² |{" "}
-                                        {propertyDetails?.price ||
-                                            contactDetails?.price}{" "}
-                                        €
-                                        {propertyDetails?.state?.key === "RENT"
-                                            ? t(`/month`)
-                                            : null}
-                                    </Typography>
-                                </Box>
-                            ) : (
+                            {type === "TOUR" ||
+                            type === "LISTING" ||
+                            type === "REVIEW" ? (
+                                <PropertyDetails
+                                    propertyDetails={propertyDetails}
+                                    contactDetails={contactDetails}
+                                />
+                            ) : type === "WORK_FOR_US" ? (
                                 <Box>
                                     <Typography>{row.message}</Typography>
                                 </Box>
-                            )}
-                            {propertyDetails || contactDetails ? (
-                                <Box flexDirection="row">
-                                    <Stack
-                                        direction="row"
-                                        gap={0.5}
-                                        alignItems="center"
-                                    >
-                                        <Typography variant="body2">
-                                            {propertyDetails?.complexGR ||
-                                            contactDetails?.location?.complex
-                                                ? `${
-                                                      propertyDetails?.complexGR ||
-                                                      contactDetails?.location
-                                                          ?.complex
-                                                  }, `
-                                                : ""}
-                                            {propertyDetails?.cityGR ||
-                                                contactDetails?.location?.city}
-                                        </Typography>
-
-                                        {propertyDetails ? (
-                                            <Stack ml={1.5}>
-                                                <Link
-                                                    href={`/property/${propertyDetails?.id}`}
-                                                    passHref
-                                                    style={{
-                                                        textDecoration: "none",
-                                                    }}
-                                                >
-                                                    <NormalBadge
-                                                        name={`${t("Code")}: ${
-                                                            propertyDetails?.code ||
-                                                            ""
-                                                        }`}
-                                                        color={"#ffcc00"}
-                                                        sx={{
-                                                            color: "#854D0E",
-                                                            "&:hover": {
-                                                                backgroundColor:
-                                                                    "#e6b800",
-                                                            },
-                                                        }}
-                                                        onClick={
-                                                            handlePropertyCodeClick
-                                                        }
-                                                    />
-                                                </Link>
-                                            </Stack>
-                                        ) : null}
-                                    </Stack>
-                                    <Box
-                                        display="flex"
-                                        flexDirection="row"
-                                        gap={0.5}
-                                    >
-                                        <Typography variant="body2">
-                                            {
-                                                tourTypeMapper[
-                                                    row?.tourType as TourType
-                                                ]
-                                            }
-                                        </Typography>
-                                        {row?.tourDate ? (
-                                            <Typography variant="body2">
-                                                {formatTourDate(row?.tourDate)}
-                                            </Typography>
-                                        ) : null}
-
-                                        <Typography variant="body2">
-                                            {row?.tourTime}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            ) : (
+                            ) : type === "AGREEMENT" ? (
+                                <Typography fontWeight="bold">
+                                    {row?.agreement?.title}
+                                </Typography>
+                            ) : null}
+                            {type === "TOUR" ||
+                            type === "REVIEW" ||
+                            type === "LISTING" ? (
+                                <PropertyRegion
+                                    propertyDetails={propertyDetails}
+                                    contactDetails={contactDetails}
+                                    row={row}
+                                    handlePropertyCodeClick={
+                                        handlePropertyCodeClick
+                                    }
+                                />
+                            ) : type === "WORK_FOR_US" ? (
                                 <Box
                                     display="flex"
                                     alignItems="center"
@@ -266,47 +207,121 @@ const BasicRow = ({
                                         </Typography>
                                     ) : null}
                                 </Box>
-                            )}{" "}
+                            ) : type === "AGREEMENT" ? (
+                                <Box>
+                                    <Typography variant="body2" mt={0.5}>
+                                        {row?.message}
+                                    </Typography>
+
+                                    <Stack
+                                        direction="row"
+                                        mt={0.5}
+                                        gap={0.5}
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="body2">
+                                            For property with{" "}
+                                        </Typography>
+                                        <Link
+                                            href={`/property/${row?.agreement?.property?.id}`}
+                                            passHref
+                                            style={{ textDecoration: "none" }}
+                                        >
+                                            <NormalBadge
+                                                name={`${t("Code")}: ${
+                                                    row?.agreement?.property
+                                                        ?.code || ""
+                                                }`}
+                                                color={"#ffcc00"}
+                                                sx={{
+                                                    color: "#854D0E",
+                                                    width: "100%",
+                                                    "&:hover": {
+                                                        backgroundColor:
+                                                            "#e6b800",
+                                                    },
+                                                }}
+                                                onClick={
+                                                    handlePropertyCodeClick
+                                                }
+                                            />
+                                        </Link>
+                                    </Stack>
+                                    <Link
+                                        href={`/customer/${row?.agreement?.owner?.id}`}
+                                        passHref
+                                        style={{
+                                            textDecoration: "none",
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="body2"
+                                            onClick={handleCustomerNameClick}
+                                            mt={0.5}
+                                        >
+                                            Owner{": "}
+                                            {row?.agreement?.owner?.name}
+                                        </Typography>
+                                    </Link>
+                                    <Stack
+                                        direction="row"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <Typography variant="body2" mt={0.5}>
+                                            Expiration Date:{" "}
+                                            {row?.agreement?.expirationDate}
+                                        </Typography>
+                                        <Stack
+                                            direction="row"
+                                            gap={1}
+                                            alignItems="center"
+                                        >
+                                            {row?.agreement?.expiresSoon && (
+                                                <>
+                                                    <Tooltip
+                                                        title="Expires soon"
+                                                        placement="top"
+                                                    >
+                                                        <ExpireIcon
+                                                            color="warning"
+                                                            sx={{
+                                                                width: "21px",
+                                                                height: "21px",
+                                                            }}
+                                                        />
+                                                    </Tooltip>
+                                                </>
+                                            )}
+
+                                            {row?.agreement?.expiredToday && (
+                                                <Tooltip
+                                                    title="Expired"
+                                                    placement="top"
+                                                >
+                                                    <ExpiredIcon
+                                                        color="error"
+                                                        sx={{
+                                                            width: "21px",
+                                                            height: "21px",
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            )}
+                                        </Stack>
+                                    </Stack>
+                                </Box>
+                            ) : null}{" "}
                         </Box>
-                        <Stack
-                            flexDirection="row"
-                            gap={2}
-                            alignItems="center"
-                            mt={
-                                row?.tourType || row?.tourDate || row?.tourTime
-                                    ? 0.5
-                                    : 3
-                            }
-                        >
-                            <Typography
-                                variant="body2"
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <LocalPhone
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "medium",
-                                        mr: 1,
-                                    }}
-                                />
-                                {row.customerMobile}
-                            </Typography>
-                            <Typography
-                                variant="body2"
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <EmailIcon
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "medium",
-                                        mr: 1,
-                                    }}
-                                />
-                                {row.customerEmail}
-                            </Typography>
-                        </Stack>
+                        {type !== "AGREEMENT" ? (
+                            <CustomerInfo
+                                customerMobile={row.customerMobile}
+                                customerEmail={row.customerEmail}
+                                tourType={row.tourType}
+                                tourDate={row.tourDate}
+                                tourTime={row.tourTime}
+                            />
+                        ) : null}
                     </Stack>
                 </Stack>
             </TableCell>

@@ -91,8 +91,9 @@ const Documents: React.FC = () => {
                                     alignItems="center"
                                     width="100%"
                                 >
-                                    {/* isPreview set to false in order not to show loading the documentIcon */}
-                                    <DocumentIcon isPreview={false} />
+                                    <DocumentIcon
+                                        isPreview={isLoading ? true : false}
+                                    />
 
                                     <Typography variant="h6">
                                         {filename || "N/A"}

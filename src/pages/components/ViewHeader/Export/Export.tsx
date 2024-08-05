@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import Popover from "./popover";
 import SharePopover from "@/components/Share";
 import downloadBlob from "@/utils/downloadBlob";
+import ExportImage from "./ExportImage";
 
 const filename = "PropertyExport.pdf";
 
@@ -58,8 +59,10 @@ const ExportButton = () => {
     return (
         <>
             <IconButton onClick={handleOpen}>
-                <Typography mr={1}>{t("Export")}</Typography>
-                <DocumentSvg />
+                <Typography mr={1} variant="body2">
+                    {t("Export")}
+                </Typography>
+                <ExportImage />
             </IconButton>
 
             {isOpen ? (

@@ -566,6 +566,8 @@ const resources = {
             Inactive: "Inactive",
             Greek: "Greek",
             English: "English",
+            "United States": "United States",
+            "Modern Greek": "Modern Greek",
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.":
                 "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.",
             "Reset Password": "Reset Password",
@@ -1573,6 +1575,8 @@ const resources = {
             Inactive: "Ανενεργός",
             Greek: "Ελληνικά",
             English: "Αγγλικά",
+            "United States": "Ηνωμένων Πολιτειών",
+            "Modern Greek": "Ελληνικά (Σύγχρονα)",
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.":
                 "Ο κωδικός πρόσβασης πρέπει να αποτελείται από τουλάχιστον 8 χαρακτήρες και να περιλαμβάνει τουλάχιστον ένα κεφαλαίο γράμμα. Επιτρέπονται: γράμματα, αριθμοί ή ειδικοί χαρακτήρες.",
             "Reset Password": "Επαναφορά κωδικού",

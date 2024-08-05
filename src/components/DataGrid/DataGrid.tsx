@@ -1,5 +1,5 @@
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import { Button, Box } from "@mui/material";
+import { Button } from "@mui/material";
 import MuiLink from "@mui/material/Link";
 import {
     GridDeleteIcon,
@@ -10,12 +10,12 @@ import {
     GridRow,
     GridRowProps,
     GridToolbarContainerProps,
+    GridCallbackDetails,
 } from "@mui/x-data-grid";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
-import NextLink from "next/link";
 
 // ------------------------------------------------------------------------
 
@@ -24,7 +24,16 @@ interface CustomRowProps extends GridRowProps {
 }
 
 const CustomRow = ({ resource, ...props }: CustomRowProps) => (
-    <MuiLink component={NextLink} href={`/${resource}/${props.row?.id}`}>
+    <MuiLink
+        href={`/${resource}/${props.row?.id}`}
+        onClick={(event) => {
+            // Prevent navigation if clicking on the checkbox
+            event.target &&
+                (event.target as HTMLElement).closest(
+                    ".MuiDataGrid-checkboxInput"
+                );
+        }}
+    >
         <GridRow {...props} />
     </MuiLink>
 );
@@ -49,7 +58,7 @@ const CustomToolbar = ({
 
             {haveSelectedRows ? (
                 <>
-                    {onBulkDelete ? (
+                    {onBulkEdit ? (
                         <Button
                             onClick={onBulkEdit}
                             startIcon={<EditNoteIcon />}
@@ -64,7 +73,7 @@ const CustomToolbar = ({
                         </Button>
                     ) : null}
 
-                    {onBulkEdit ? (
+                    {onBulkDelete ? (
                         <Button
                             startIcon={<GridDeleteIcon />}
                             onClick={onBulkDelete}
@@ -83,25 +92,27 @@ const CustomToolbar = ({
 const DataGridTable: FC<GridProps> = ({
     rows,
     columns,
-
     page,
     pageSize,
     totalRows,
     onPaginationModelChange,
-
     onBulkDelete,
     onBulkEdit,
-
     resource = "property",
-
     ...props
 }) => {
     const { t } = useTranslation();
 
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
-    const handleRowSelectionChange = (model: GridRowSelectionModel, _: any) =>
+    const handleRowSelectionChange = (
+        model: GridRowSelectionModel,
+        details: GridCallbackDetails
+    ) => {
         setSelectedRows(model);
+        props.onRowSelectionModelChange?.(model, details);
+        console.log(model, details);
+    };
 
     return (
         <>
@@ -155,8 +166,8 @@ const DataGridTable: FC<GridProps> = ({
                     );
                 }}
                 checkboxSelection
-                autoHeight
                 disableRowSelectionOnClick
+                autoHeight
                 rows={rows}
                 columns={columns}
                 pageSizeOptions={[25, 50, 100]}

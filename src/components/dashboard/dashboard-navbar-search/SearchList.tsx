@@ -1,5 +1,6 @@
 import {
     Box,
+    Divider,
     Grid,
     Paper,
     PopperProps,
@@ -24,7 +25,25 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import AgreementItems from "./AgreementItems";
 import useScreenWidth from "./hook";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 20;
+//Custom hook to hold the screenWidth for the categoryView ALL
+const useScreenWidth = () => {
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    return screenWidth;
+};
 
 interface PropertiesSubListProps {
     searchString: string;
@@ -56,51 +75,61 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
         pagination.onChange(event, page);
     };
 
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = 0;
+        }
+    }, [pagination.page]);
+
     return (
-        <Grid
-            item
-            xs={12}
-            sx={{
-                marginY: "10px",
-            }}
-        >
-            <Typography
-                variant="h6"
-                display="flex"
-                justifyContent="center"
-                gap={1}
-                alignItems="center"
-                width="100%"
+        <ScrollBox ref={scrollRef} scrollbarWidth="15px">
+            <Grid
+                item
+                xs={12}
                 sx={{
-                    borderBottom: "1px solid lightgrey",
+                    marginY: "10px",
                 }}
             >
-                <HomeOutlinedIcon
+                <Typography
+                    variant="h6"
+                    display="flex"
+                    justifyContent="center"
+                    gap={1}
+                    alignItems="center"
+                    width="100%"
                     sx={{
-                        color: "black",
-                        width: "22px",
-                        height: "22px",
+                        borderBottom: "1px solid lightgrey",
                     }}
-                />
-                {t("Properties")}
-            </Typography>
-
-            <Pagination
-                {...pagination}
-                isLoading={isLoading}
-                pageSize={PAGE_SIZE}
-                totalItems={data?.totalElements ?? 0}
-                onChange={handlePageChange}
-            >
-                {properties.map((option) => (
-                    <PropertySearchItem
-                        key={option.id}
-                        option={option}
-                        searchText={searchString}
+                >
+                    <HomeOutlinedIcon
+                        sx={{
+                            color: "black",
+                            width: "22px",
+                            height: "22px",
+                        }}
                     />
-                ))}
-            </Pagination>
-        </Grid>
+                    {t("Properties")}
+                </Typography>
+
+                <Pagination
+                    {...pagination}
+                    isLoading={isLoading}
+                    pageSize={PAGE_SIZE}
+                    totalItems={data?.totalElements ?? 0}
+                    onChange={handlePageChange}
+                >
+                    {properties.map((option) => (
+                        <PropertySearchItem
+                            key={option.id}
+                            option={option}
+                            searchText={searchString}
+                        />
+                    ))}
+                </Pagination>
+            </Grid>
+        </ScrollBox>
     );
 };
 
@@ -140,8 +169,8 @@ export const SearchList = ({
 
     const paperWidth = useMemo(() => {
         if (screenWidth > 1400 && screenWidth <= 1600) return "185%";
-        if (screenWidth > 1600 && screenWidth <= 2100) return "195%";
-        if (screenWidth > 2100) return "180%";
+        if (screenWidth > 1600 && screenWidth <= 2100) return "155%";
+        if (screenWidth > 2100) return "160%";
         return "100%";
     }, [screenWidth]);
 
@@ -175,9 +204,7 @@ export const SearchList = ({
                 >
                     <Grid container>
                         {searchCategory === "properties" && (
-                            <ScrollBox scrollbarWidth="15px">
-                                <PropertiesSubList searchString={searchText} />
-                            </ScrollBox>
+                            <PropertiesSubList searchString={searchText} />
                         )}
 
                         {searchCategory === "all" && (
@@ -191,11 +218,9 @@ export const SearchList = ({
                                             searchString={searchText}
                                         />
                                     ) : (
-                                        <ScrollBox scrollbarWidth="15px">
-                                            <PropertiesSubList
-                                                searchString={searchText}
-                                            />
-                                        </ScrollBox>
+                                        <PropertiesSubList
+                                            searchString={searchText}
+                                        />
                                     )}
                                 </Grid>
                                 {customers.length > 0 && (

@@ -6,15 +6,15 @@ import Table from "../table";
 import { Box } from "@mui/material";
 import { useState } from "react";
 
-const Tours = ({ filter }: any) => {
+const Agreements = ({ filter }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt");
     const [direction, setDirection] = useState("DESC");
-
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
-    const { data: tours } = useFilterNotificationsQuery({
-        filter: { types: ["TOUR"] },
+
+    const { data: agreements } = useFilterNotificationsQuery({
+        filter: { types: ["AGREEMENT"] },
         page,
         pageSize,
         sortBy,
@@ -31,34 +31,33 @@ const Tours = ({ filter }: any) => {
 
     const handleRowsPerPageChange = (event: any) => {
         setPageSize(parseInt(event.target.value, 10));
-        setPage(0);
+        setPage(0); // reset to the first page
     };
-    console.log(filter);
-    const filteredTours =
-        tours?.content?.filter((tour) => {
-            if (filter === "viewed") return tour.viewed === true;
-            if (filter === "notViewed") return tour.viewed === false;
+
+    const fileteredAgreements =
+        agreements?.content?.filter((agreement) => {
+            if (filter === "viewed") return agreement.viewed === true;
+            if (filter === "notViewed") return agreement.viewed === false;
             return true; //ALL
         }) || [];
-
     return (
         <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Table
-                variant="TOUR"
-                rows={filteredTours || []}
+                variant="AGREEMENT"
+                rows={fileteredAgreements || []}
                 onRemove={handleRemove}
                 loading={isLoading}
                 sortBy={sortBy}
-                filter={filter}
                 direction={direction}
                 page={page}
+                filter={filter}
                 pageSize={pageSize}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
-                totalRows={tours?.totalElements || 0}
+                totalRows={agreements?.totalElements || 0}
             />
         </Box>
     );
 };
 
-export default Tours;
+export default Agreements;

@@ -2,7 +2,8 @@ export type Language = "en" | "el";
 
 export type LanguageOptions = {
     [key in Language]: {
-        icon: string;
+        icon?: string;
         label: string;
+        description?: string;
     };
 };

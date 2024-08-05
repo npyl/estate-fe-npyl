@@ -1,14 +1,14 @@
 import { ButtonProps, IconButton } from "@mui/material";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
 import { Language } from "./types";
 import useDialog from "@/hooks/useDialog";
-
-const languages: Record<Language, string> = {
-    en: "/static/icons/uk_flag.svg",
-    el: "/static/icons/gr_flag.svg",
-};
+import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LanguageImage from "./languageImage";
 
 interface LanguageButtonProps extends ButtonProps {
     onLanguageChange?: (language: Language) => void;
@@ -28,15 +28,49 @@ export const LanguageButton = ({
 
     const [isPopoverOpen, openPopover, closePopover] = useDialog();
 
-    const imageSrc =
-        languages[
-            updatesGlobalLanguage ? (i18n.language as Language) : language
-        ];
+    const currentLanguage = updatesGlobalLanguage ? i18n.language : language;
+    const languageAbbreviation = currentLanguage === "en" ? "EN" : "GR";
 
     return (
         <>
-            <IconButton onClick={openPopover} ref={anchorRef} {...props}>
-                <img alt="" src={imageSrc} width={20} height={20} />
+            <IconButton
+                ref={anchorRef}
+                onClick={openPopover}
+                {...props}
+                sx={{
+                    padding: 0,
+                    color: "neutral.500",
+                    "&:hover": {
+                        backgroundColor: "transparent",
+                        color: "neutral.600",
+                    },
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 0.5,
+                        width: 60,
+                        height: 20,
+                    }}
+                >
+                    <LanguageImage />
+                    <Typography sx={{ color: "inherit", fontSize: "small" }}>
+                        {languageAbbreviation}
+                    </Typography>
+                    {isPopoverOpen ? (
+                        <KeyboardArrowUpIcon
+                            sx={{ color: "inherit", width: 17, height: 17 }}
+                        />
+                    ) : (
+                        <KeyboardArrowDownIcon
+                            sx={{ color: "inherit", width: 17, height: 17 }}
+                        />
+                    )}
+                </Box>
             </IconButton>
 
             {isPopoverOpen ? (

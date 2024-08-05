@@ -37,23 +37,24 @@ const AgreementsTab = lazy(() => import("./(tabs)/Agreements"));
 import { styled } from "@mui/material/styles";
 
 const StyledTab = styled(Tab)(({ theme }) => ({
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     "&.Mui-selected": { color: "#00b32d" },
 }));
 
 const GreenMapTab: React.FC<TabProps> = (props) => (
     <StyledTab
         {...props}
-        iconPosition="start"
+        iconPosition="end"
         icon={
             <Iconify
                 icon="ph:tree"
-                fontSize="25px"
-                width={30}
-                height={30}
+                fontSize="20px"
+                width={20}
+                height={20}
                 sx={{
                     "&.Mui-selected": { color: "#00b32d" },
+                    mb: 1,
                 }}
             />
         }
@@ -131,7 +132,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Map")} />
                     <Tab label={t("Street View")} />
                     <Tab label={t("Agreements")} />
-                    <GreenMapTab label={t("Green Map")} />
+                    <GreenMapTab label={t("Eco Map")} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>

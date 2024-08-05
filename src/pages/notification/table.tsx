@@ -16,7 +16,7 @@ import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
 import ReviewRow from "./row/review";
-
+import AgreementRow from "./row/agreement";
 import { useMediaQuery } from "@mui/material";
 
 interface TableProps {
@@ -65,6 +65,8 @@ const Table = ({
             ? WorkApplicationRow
             : variant === "REVIEW"
             ? ReviewRow
+            : variant === "AGREEMENT"
+            ? AgreementRow
             : TourRow;
 
     const isMobile = useMediaQuery("(max-width:600px)");

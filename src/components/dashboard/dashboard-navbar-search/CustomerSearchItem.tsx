@@ -98,6 +98,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                         value={option.firstName}
                         highlight={firstName.highlight}
                     />
+
                     <Item
                         value={option.lastName}
                         highlight={lastName.highlight}
