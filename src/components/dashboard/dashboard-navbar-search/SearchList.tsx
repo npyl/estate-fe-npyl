@@ -22,6 +22,7 @@ import { SearchCategory } from "./types";
 import { Theme } from "@mui/system/createTheme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { addSearchHistory } from ".";
 
 const PAGE_SIZE = 20;
 //Custom hook to hold the screenWidth for the categoryView ALL
@@ -45,9 +46,13 @@ const useScreenWidth = () => {
 
 interface PropertiesSubListProps {
     searchString: string;
+    onItemClick: (value: string) => void;
 }
 
-const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
+const PropertiesSubList = ({
+    searchString,
+    onItemClick,
+}: PropertiesSubListProps) => {
     const { t } = useTranslation();
 
     const pagination = usePagination();
@@ -123,6 +128,7 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
                             key={option.id}
                             option={option}
                             searchText={searchString}
+                            onClick={onItemClick}
                         />
                     ))}
                 </Pagination>
@@ -160,7 +166,9 @@ export const SearchList = ({
         skip: searchText === "",
     });
 
-    // console.log(`searchString: ${searchString}`);
+    const handleItemClick = (value: string) => {
+        addSearchHistory(value);
+    };
 
     const customers = useMemo(
         () => (searchCategory !== "properties" ? customersResults || [] : []),
@@ -205,7 +213,10 @@ export const SearchList = ({
                 >
                     <Grid container>
                         {searchCategory === "properties" && (
-                            <PropertiesSubList searchString={searchText} />
+                            <PropertiesSubList
+                                searchString={searchText}
+                                onItemClick={handleItemClick}
+                            />
                         )}
 
                         {searchCategory === "all" && (
@@ -217,10 +228,12 @@ export const SearchList = ({
                                     {isMobile ? (
                                         <PropertiesSubList
                                             searchString={searchText}
+                                            onItemClick={handleItemClick}
                                         />
                                     ) : (
                                         <PropertiesSubList
                                             searchString={searchText}
+                                            onItemClick={handleItemClick}
                                         />
                                     )}
                                 </Grid>
@@ -270,6 +283,9 @@ export const SearchList = ({
                                                                 searchText={
                                                                     searchText
                                                                 }
+                                                                onClick={
+                                                                    handleItemClick
+                                                                }
                                                             />
                                                         )
                                                     )}
@@ -309,6 +325,9 @@ export const SearchList = ({
                                                                 option={option}
                                                                 searchText={
                                                                     searchText
+                                                                }
+                                                                onClick={
+                                                                    handleItemClick
                                                                 }
                                                             />
                                                         )
@@ -358,6 +377,7 @@ export const SearchList = ({
                                                 key={index}
                                                 option={option}
                                                 searchText={searchText}
+                                                onClick={handleItemClick}
                                             />
                                         ))}
                                     </ScrollBox>

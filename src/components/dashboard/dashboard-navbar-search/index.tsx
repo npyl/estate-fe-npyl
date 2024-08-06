@@ -30,7 +30,7 @@ const getSearchHistory = (): string[] => {
     return history ? JSON.parse(history) : [];
 };
 
-const addSearchHistory = (searchTerm: string) => {
+export const addSearchHistory = (searchTerm: string) => {
     const history = getSearchHistory();
     if (!history.includes(searchTerm)) {
         history.unshift(searchTerm); // Add to the beginning of the list
