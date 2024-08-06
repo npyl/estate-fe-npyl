@@ -3,6 +3,10 @@
     "version": "1.0.3",
     "author": "Pete Marakos",
     "private": true,
+    "overrides": {
+        "canvas": "empty-npm-package@1.0.0",
+        "path2d-polyfill": "empty-npm-package@1.0.0"
+    },
     "scripts": {
         "dev": "next",
         "build": "next build",

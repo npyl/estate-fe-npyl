@@ -6,8 +6,8 @@ RUN mkdir -p /usr/src
 WORKDIR /usr/src
 # copy source files
 COPY . /usr/src
-# install dependencies
-RUN yarn install
+# install dependencies (See doc/build.md for build errors and --ignore-optional)
+RUN yarn install --ignore-optional
 # start app
 RUN yarn build
 EXPOSE 3000
