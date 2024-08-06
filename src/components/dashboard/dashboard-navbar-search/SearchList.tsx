@@ -22,7 +22,7 @@ import { SearchCategory } from "./types";
 import { Theme } from "@mui/system/createTheme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import { addSearchHistory } from ".";
+import { addSearchHistory, getSearchHistory } from ".";
 
 const PAGE_SIZE = 20;
 //Custom hook to hold the screenWidth for the categoryView ALL
@@ -143,6 +143,7 @@ interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchText: string;
     searchCategory: SearchCategory;
     onClickOutside: () => void;
+    updateSearchHistory: (history: string[]) => void;
 }
 
 export const SearchList = ({
@@ -151,6 +152,7 @@ export const SearchList = ({
     open,
     onClickOutside,
     anchorEl,
+    updateSearchHistory,
 }: SearchListProps) => {
     const { t } = useTranslation();
     const isMobile = useMediaQuery((theme: Theme) =>
@@ -168,6 +170,7 @@ export const SearchList = ({
 
     const handleItemClick = (value: string) => {
         addSearchHistory(value);
+        updateSearchHistory(getSearchHistory());
     };
 
     const customers = useMemo(
