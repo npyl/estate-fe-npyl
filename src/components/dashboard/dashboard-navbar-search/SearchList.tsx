@@ -95,43 +95,47 @@ const PropertiesSubList = ({
                     marginY: "10px",
                 }}
             >
-                <Typography
-                    variant="h6"
-                    display="flex"
-                    justifyContent="center"
-                    gap={1}
-                    alignItems="center"
-                    width="100%"
-                    sx={{
-                        borderBottom: "1px solid lightgrey",
-                    }}
-                >
-                    <HomeOutlinedIcon
-                        sx={{
-                            color: "black",
-                            width: "22px",
-                            height: "22px",
-                        }}
-                    />
-                    {t("Properties")}
-                </Typography>
+                {properties.length === 0 ? null : (
+                    <>
+                        <Typography
+                            variant="h6"
+                            display="flex"
+                            justifyContent="center"
+                            gap={1}
+                            alignItems="center"
+                            width="100%"
+                            sx={{
+                                borderBottom: "1px solid lightgrey",
+                            }}
+                        >
+                            <HomeOutlinedIcon
+                                sx={{
+                                    color: "black",
+                                    width: "22px",
+                                    height: "22px",
+                                }}
+                            />
+                            {t("Properties")}
+                        </Typography>
 
-                <Pagination
-                    {...pagination}
-                    isLoading={isLoading}
-                    pageSize={PAGE_SIZE}
-                    totalItems={data?.totalElements ?? 0}
-                    onChange={handlePageChange}
-                >
-                    {properties.map((option) => (
-                        <PropertySearchItem
-                            key={option.id}
-                            option={option}
-                            searchText={searchString}
-                            onClick={onItemClick}
-                        />
-                    ))}
-                </Pagination>
+                        <Pagination
+                            {...pagination}
+                            isLoading={isLoading}
+                            pageSize={PAGE_SIZE}
+                            totalItems={data?.totalElements ?? 0}
+                            onChange={handlePageChange}
+                        >
+                            {properties.map((option) => (
+                                <PropertySearchItem
+                                    key={option.id}
+                                    option={option}
+                                    searchText={searchString}
+                                    onClick={onItemClick}
+                                />
+                            ))}
+                        </Pagination>
+                    </>
+                )}
             </Grid>
         </ScrollBox>
     );
