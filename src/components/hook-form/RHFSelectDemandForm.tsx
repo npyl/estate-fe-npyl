@@ -1,5 +1,9 @@
 import { Autocomplete, TextField, InputAdornment } from "@mui/material";
-import { useController, UseControllerProps } from "react-hook-form";
+import {
+    useController,
+    UseControllerProps,
+    useFormContext,
+} from "react-hook-form";
 import { FC, useState, useEffect } from "react";
 
 type RHFSelectDemandFormProps = UseControllerProps & {
@@ -17,15 +21,16 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
     ...props
 }) => {
     const { field } = useController(props);
+    const { control, getValues, setValue } = useFormContext();
     const [inputValue, setInputValue] = useState<string>("");
-
-    useEffect(() => {
-        setInputValue(field.value ? formatNumber(field.value) : "");
-    }, [field.value]);
 
     const formatNumber = (value: number | string) => {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
+
+    useEffect(() => {
+        setInputValue(field.value ? formatNumber(field.value) : "");
+    }, [field.value]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value.replace(/[^\d]/g, "");
@@ -40,10 +45,37 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
 
     const handleAutocompleteChange = (event: any, newValue: string | null) => {
         if (newValue !== null) {
-            field.onChange(newValue);
-            setInputValue(formatNumber(newValue));
+            const numberValue = parseFloat(newValue.replace(/[^\d]/g, ""));
+            if (!isNaN(numberValue)) {
+                field.onChange(numberValue);
+                setInputValue(formatNumber(newValue));
+            } else {
+                setInputValue(newValue);
+            }
         } else {
             setInputValue("");
+        }
+    };
+    //check the min input value to be less than max value and opossite
+    const handleChangeWithValidation = (value: string) => {
+        const numberValue = parseFloat(value.replace(/[^\d]/g, ""));
+        if (!isNaN(numberValue)) {
+            const [minName, maxName] = field.name.includes("min")
+                ? [field.name, field.name.replace("min", "max")]
+                : [field.name.replace("max", "min"), field.name];
+
+            const minValue = getValues(minName);
+            const maxValue = getValues(maxName);
+
+            if (field.name.includes("min") && numberValue > maxValue) {
+                setValue(maxName, numberValue);
+            } else if (field.name.includes("max") && numberValue < minValue) {
+                setValue(minName, numberValue);
+            }
+            field.onChange(numberValue);
+            setInputValue(formatNumber(value));
+        } else {
+            setInputValue(value);
         }
     };
 
@@ -51,19 +83,16 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
         <Autocomplete
             freeSolo
             options={options.map((option) => formatNumber(option))}
-            value={formatNumber(field.value ?? "")}
+            value={inputValue}
             onChange={handleAutocompleteChange}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
-                handleInputChange({
-                    target: { value: newInputValue },
-                } as React.ChangeEvent<HTMLInputElement>);
+                handleChangeWithValidation(newInputValue);
             }}
             renderInput={(params) => (
                 <TextField
                     {...params}
                     label={label}
-                    onChange={handleInputChange}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: adornment ? (
@@ -72,6 +101,11 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
                             </InputAdornment>
                         ) : null,
                     }}
+                    onChange={(event) =>
+                        handleInputChange(
+                            event as React.ChangeEvent<HTMLInputElement>
+                        )
+                    }
                 />
             )}
         />

@@ -40,7 +40,13 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
 
     const handleSliderChange = (name: string, value: number | number[]) => {
         if (Array.isArray(value)) {
-            const [minValue, maxValue] = value;
+            let [minValue, maxValue] = value;
+
+            // Ensure minValue is not greater than maxValue
+            if (minValue > maxValue) {
+                minValue = maxValue;
+            }
+
             setValue(minName, minValue);
             setValue(maxName, maxValue);
         }

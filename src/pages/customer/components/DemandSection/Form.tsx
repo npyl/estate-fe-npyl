@@ -1,5 +1,12 @@
-import { Divider, Grid, Slider, Stack, Typography } from "@mui/material";
-import { FC, Suspense, lazy, useCallback, useMemo } from "react";
+import {
+    Divider,
+    Grid,
+    SelectChangeEvent,
+    Slider,
+    Stack,
+    Typography,
+} from "@mui/material";
+import { FC, Suspense, lazy, useCallback, useEffect, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import { LabelSelect } from "./LabelSelect";
@@ -140,8 +147,7 @@ const getFIELDS = (
 interface FloorSliderProps {
     onDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
 }
-
-const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
+const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
     const { minFloors, maxFloors, minFloorsKeys, maxFloorsKeys } =
@@ -153,54 +159,52 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
     const minFloor = watch(minName) || -1;
     const maxFloor = watch(maxName) || -1;
 
-    const valueLabelFormat = useCallback(
-        (value: number, index: number): string => {
-            if (minFloors.length < value || maxFloors.length < value) return "";
+    const handleChangeMin = useCallback(
+        (event: SelectChangeEvent<string>, child: React.ReactNode) => {
+            const min = parseInt(event.target.value, 10);
+            const currentMax = watch(maxName);
 
-            return (
-                (index === 0
-                    ? minFloors[value]?.value
-                    : maxFloors[value]?.value) || ""
-            );
-        },
-        [minFloors, maxFloors]
-    );
-
-    const handleChange = useCallback(
-        (e: any, v: number | number[]) => {
-            if (!Array.isArray(v)) return;
-
-            const min = minFloorsKeys[v[0]];
-            const max = maxFloorsKeys[v[1]];
+            if (min > currentMax) {
+                setValue(maxName, min);
+            }
 
             setValue(minName, min);
+        },
+        [maxName, minName, setValue, watch]
+    );
+
+    const handleChangeMax = useCallback(
+        (event: SelectChangeEvent<string>, child: React.ReactNode) => {
+            const max = parseInt(event.target.value, 10);
+            const currentMin = watch(minName);
+
+            if (max < currentMin) {
+                setValue(minName, max);
+            }
+
             setValue(maxName, max);
         },
-        [minName, maxName]
+        [maxName, minName, setValue, watch]
     );
+
+    useEffect(() => {
+        if (minFloor > maxFloor) {
+            setValue(maxName, minFloor);
+        }
+    }, [minFloor, maxFloor, setValue, maxName]);
 
     return (
         <>
             <Typography variant="h6">{t("Floors")}</Typography>
             <Stack mt={2} px={1}>
-                {/* <Slider
-                    orientation="horizontal"
-                    value={[
-                        minFloorsKeys.indexOf(minFloor),
-                        maxFloorsKeys.indexOf(maxFloor),
-                    ]}
-                    onChange={handleChange}
-                    valueLabelDisplay="auto"
-                    valueLabelFormat={valueLabelFormat}
-                    min={0}
-                    max={maxFloorsKeys.length - 41}
-                /> */}
                 <Grid container direction="row" spacing={1.5}>
                     <Grid item xs={6}>
                         <Select
                             name={minName}
                             label={t("Min")}
                             options={minFloors}
+                            value={minFloor.toString()}
+                            onChange={handleChangeMin}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -208,6 +212,8 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
                             name={maxName}
                             label={t("Max")}
                             options={maxFloors}
+                            value={maxFloor.toString()}
+                            onChange={handleChangeMax}
                         />
                     </Grid>
                 </Grid>

@@ -31,47 +31,53 @@ const isEmptyOrComma = (str: string | string[]): boolean => {
     }
     return true;
 };
+
 const getRangeDisplayValueForYearOfConstruction = (
     min: number | null | undefined,
     max: number | null | undefined
 ) => {
-    if (min === null && max === null) return "-";
+    const hasMin = min !== null && min !== undefined;
+    const hasMax = max !== null && max !== undefined;
 
-    const minValue = min !== null && min !== undefined ? min : "";
-    const maxValue = max !== null && max !== undefined ? max : "";
-    return `${minValue} - ${maxValue}`;
+    if (!hasMin && !hasMax) return "-";
+    if (hasMin && !hasMax) return `${min}`;
+    if (!hasMin && hasMax) return `${max}`;
+
+    return min === max ? `${min}` : `${min} - ${max}`;
 };
 
 const getRangeDisplayValue = (
     min: number | null | undefined,
     max: number | null | undefined
 ) => {
-    if (
-        (min === null || min === undefined) &&
-        (max === null || max === undefined)
-    )
-        return "-";
+    const hasMin = min !== null && min !== undefined && min !== 0;
+    const hasMax = max !== null && max !== undefined && max !== 0;
 
-    const minValue =
-        min !== null && min !== undefined && min !== 0 ? formatPrice(min) : "";
-    const maxValue =
-        max !== null && max !== undefined && max !== 0 ? formatPrice(max) : "";
-    return `${minValue} - ${maxValue}`;
+    if (!hasMin && !hasMax) return "-";
+    if (hasMin && !hasMax) return formatPrice(min);
+    if (!hasMin && hasMax) return `0 - ${formatPrice(max)}`;
+
+    const minValue = formatPrice(min);
+    const maxValue = formatPrice(max);
+
+    return minValue === maxValue ? minValue : `${minValue} - ${maxValue}`;
 };
 
 const getRangeDisplayValueString = (
     min: string | null | undefined,
     max: string | null | undefined
 ): string => {
-    if (min === null && max === null) return "-";
-
     const minValue =
         min !== null && min !== undefined && min !== "0" ? min : "";
     const maxValue =
         max !== null && max !== undefined && max !== "0" ? max : "";
-    return `${minValue} - ${maxValue}`;
-};
 
+    if (!minValue && !maxValue) return "-";
+    if (minValue && !maxValue) return minValue;
+    if (!minValue && maxValue) return maxValue;
+
+    return minValue === maxValue ? minValue : `${minValue} - ${maxValue}`;
+};
 const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
     const { t } = useTranslation();
 
@@ -229,12 +235,11 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                     ) + " m²"
                                 }
                             />
-
                             <ListItem
                                 label={t("Floor")}
                                 value={getRangeDisplayValueString(
-                                    demandFilters?.minFloor.value,
-                                    demandFilters?.maxFloor.value
+                                    demandFilters?.minFloor?.value,
+                                    demandFilters?.maxFloor?.value
                                 )}
                             />
                         </List>
