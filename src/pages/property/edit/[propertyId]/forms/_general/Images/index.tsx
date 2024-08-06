@@ -10,6 +10,7 @@ import { PREVIEW_IMAGES_COUNT } from "./constants";
 import dynamic from "next/dynamic";
 import { UploadFileProvider } from "./context/UploadProgress";
 import { ImageOperationsProvider } from "./context/ImageOperations";
+const Lightbox = dynamic(() => import("@/components/Lightbox"));
 const SeeMore = dynamic(() => import("./SeeMore"));
 const Gallery = dynamic(() => import("./Gallery"));
 
@@ -42,8 +43,14 @@ const ImagesSection = () => {
 
     const [isSeeMoreOpen, openSeeMore, closeSeeMore] = useDialog();
 
+    // Gallery
     const [galleryImage, setGalleryImage] = useState("");
     const closeGallery = () => setGalleryImage("");
+
+    // Lightbox
+    const [lightboxImage, setLightboxImage] = useState("");
+    const lightboxIndex = images.findIndex(({ key }) => key === lightboxImage);
+    const closeLightbox = () => setLightboxImage("");
 
     return (
         <UploadFileProvider>
@@ -65,17 +72,29 @@ const ImagesSection = () => {
                     />
                 </Panel>
 
+                {/* Gallery */}
                 <Gallery
                     open={!!galleryImage && images.length > 0}
                     openImageKey={galleryImage}
                     onClose={closeGallery}
                 />
 
+                {/* SeeMore */}
                 {isSeeMoreOpen ? (
                     <SeeMore
                         open={isSeeMoreOpen}
-                        onOpenGalleryImage={setGalleryImage}
+                        onOpenLightbox={setLightboxImage}
                         onClose={closeSeeMore}
+                    />
+                ) : null}
+
+                {/* Lightbox */}
+                {lightboxIndex !== -1 ? (
+                    <Lightbox
+                        open
+                        images={images}
+                        index={lightboxIndex}
+                        onClose={closeLightbox}
                     />
                 ) : null}
             </ImageOperationsProvider>

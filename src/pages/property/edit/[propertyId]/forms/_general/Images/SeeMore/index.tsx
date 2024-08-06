@@ -28,15 +28,11 @@ const StyledContent = styled(DialogContent)(({ theme }) => ({
 
 interface SeeMoreProps {
     open: boolean;
-    onOpenGalleryImage: (s: string) => void;
+    onOpenLightbox: (key: string) => void;
     onClose: () => void;
 }
 
-const SeeMore: React.FC<SeeMoreProps> = ({
-    open,
-    onOpenGalleryImage,
-    onClose,
-}) => {
+const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
     const [tab, setTab, tabRef] = useRefState<TListingTab>("CRM");
     const [mode, setMode, modeRef] = useRefState<"" | "multiple" | "compare">(
         ""
@@ -51,7 +47,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({
 
         // Open in Gallery
         if (modeRef.current === "") {
-            onOpenGalleryImage(imageKey);
+            onOpenLightbox(imageKey);
             onClose();
             return;
         }
