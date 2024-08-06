@@ -27,6 +27,13 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
             >
                 <LabeledImage
                     src={url}
+                    ratio="1/1"
+                    style={{
+                        objectFit: "contain",
+                    }}
+                    sx={{
+                        backgroundColor: "neutral.200",
+                    }}
                     label={thumbnail ? "main" : ""}
                     hidden={hidden}
                     onClick={() => onImageClick(key)}
