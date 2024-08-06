@@ -143,28 +143,33 @@ const getFIELDS = (
         options={timeframeEnum}
     />,
 ];
-
 interface FloorSliderProps {
     onDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
 }
+
 const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
-    const { minFloors, maxFloors, minFloorsKeys, maxFloorsKeys } =
-        useDemandEnums();
+    const { minFloors, maxFloors } = useDemandEnums();
 
     const minName = onDemandFilterName("minFloor");
     const maxName = onDemandFilterName("maxFloor");
 
-    const minFloor = watch(minName) || -1;
-    const maxFloor = watch(maxName) || -1;
+    const minFloor = watch(minName);
+    const maxFloor = watch(maxName);
+
+    console.log(`minFloor: ${minFloor} , ${typeof minFloor}`);
+    console.log(`maxFloor: ${maxFloor} , ${typeof maxFloor}`);
 
     const handleChangeMin = useCallback(
         (event: SelectChangeEvent<string>, child: React.ReactNode) => {
-            const min = parseInt(event.target.value, 10);
+            const min =
+                event.target.value === ""
+                    ? null
+                    : parseInt(event.target.value, 10);
             const currentMax = watch(maxName);
 
-            if (min > currentMax) {
+            if (min !== null && min > currentMax) {
                 setValue(maxName, min);
             }
 
@@ -175,10 +180,13 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
 
     const handleChangeMax = useCallback(
         (event: SelectChangeEvent<string>, child: React.ReactNode) => {
-            const max = parseInt(event.target.value, 10);
+            const max =
+                event.target.value === ""
+                    ? null
+                    : parseInt(event.target.value, 10);
             const currentMin = watch(minName);
 
-            if (max < currentMin) {
+            if (max !== null && max < currentMin) {
                 setValue(minName, max);
             }
 
@@ -187,8 +195,19 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
         [maxName, minName, setValue, watch]
     );
 
+    // Ensure the values are set to null when they are empty strings to meet the requirements for the Post request
     useEffect(() => {
-        if (minFloor > maxFloor) {
+        if (minFloor === "") {
+            setValue(minName, null);
+        }
+        if (maxFloor === "") {
+            setValue(maxName, null);
+        }
+    }, [minFloor, maxFloor, setValue, minName, maxName]);
+
+    // Ensure maxFloor is updated if it is less than minFloor
+    useEffect(() => {
+        if (minFloor !== null && maxFloor !== null && minFloor > maxFloor) {
             setValue(maxName, minFloor);
         }
     }, [minFloor, maxFloor, setValue, maxName]);
@@ -203,7 +222,7 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
                             name={minName}
                             label={t("Min")}
                             options={minFloors}
-                            value={minFloor.toString()}
+                            value={minFloor !== null ? minFloor.toString() : ""}
                             onChange={handleChangeMin}
                         />
                     </Grid>
@@ -212,7 +231,7 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
                             name={maxName}
                             label={t("Max")}
                             options={maxFloors}
-                            value={maxFloor.toString()}
+                            value={maxFloor !== null ? maxFloor.toString() : ""}
                             onChange={handleChangeMax}
                         />
                     </Grid>
