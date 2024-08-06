@@ -1,15 +1,24 @@
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+    CSSProperties,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { DrawShape, IMapCoordinates, ShapeData, StopDraw } from "./types";
-import uuidv4 from "src/utils/uuidv4";
 import useLoadApi from "./hook";
+import dynamic from "next/dynamic";
 
 // plugins
-import { DrawMultiple, Draw, Search } from "./plugins/";
+const Draw = dynamic(() => import("./plugins/Draw"));
+const Search = dynamic(() => import("./plugins/Search"));
+const DrawMultiple = dynamic(() => import("./plugins/DrawMultiple"));
 
-const containerStyle = {
+const containerStyle: CSSProperties = {
     width: "100%",
     height: "100%",
+    position: "relative",
 };
 
 export type IMapMarker = IMapCoordinates;
@@ -224,7 +233,7 @@ const Map = ({
 
                 return (
                     <MarkerF
-                        key={uuidv4()}
+                        key={JSON.stringify({ lat, lng })}
                         position={{ lat, lng }}
                         onMouseUp={() => setActiveMarker?.(ind)}
                         icon={"/static/icons/mapIcon.svg"}
@@ -296,11 +305,11 @@ const Map = ({
                     {search ? (
                         <Search onSearchSelect={handleSearchSelect} />
                     ) : null}
+
+                    {/* Markers */}
+                    {MARKERS}
                 </>
             ) : null}
-
-            {/* Markers */}
-            {MARKERS}
         </GoogleMap>
     );
 };

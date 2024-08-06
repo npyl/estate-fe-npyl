@@ -176,8 +176,8 @@ const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
 
     return drawing ? (
         <Stack
-            style={{
-                padding: 3,
+            sx={{
+                padding: 0.5,
                 position: "absolute",
                 left: 10,
                 top: "15vh",
