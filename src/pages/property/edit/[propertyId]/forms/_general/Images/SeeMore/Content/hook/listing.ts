@@ -10,24 +10,25 @@ import { IntegrationSite } from "@/types/listings";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 
-const isLoading = false;
 const COLUMNS = 5;
 
 const useListingContentOperations: TUseContentOperations = (
     tab,
     createItemCb
 ) => {
-    const { images, propertyId } = usePropertyImages();
+    const { images, propertyId, isLoading } = usePropertyImages();
 
-    const { data } = useGetIntegrationOrderedImagesQuery(
-        {
-            integrationSite: tab as IntegrationSite,
-            propertyId,
-        },
-        { skip: tab === "CRM" }
-    );
+    const { data, isLoading: isIntegrationImagesLoading } =
+        useGetIntegrationOrderedImagesQuery(
+            {
+                integrationSite: tab as IntegrationSite,
+                propertyId,
+            },
+            { skip: tab === "CRM" }
+        );
 
-    const [reorder] = useSetIntegrationOrderedImagesMutation();
+    const [reorder, { isLoading: isReorderLoading }] =
+        useSetIntegrationOrderedImagesMutation();
 
     const { publicImages, privateImages, publicIds, privateIds } =
         useMemo(() => {
@@ -108,16 +109,19 @@ const useListingContentOperations: TUseContentOperations = (
 
             // 1.
             if (srcDndId === dstDndId && dstDndId === 1) {
+                // alert("1h");
                 const [removedItem] = updatedItems.splice(srcIdx, 1);
                 updatedItems.splice(dstIdx, 0, removedItem);
             }
             // 2.
             if (srcDndId === 1 && dstDndId === 2) {
+                // alert("2h");
                 const removedId = updatedItems[srcIdx];
                 updatedItems = updatedItems.filter((id) => id !== removedId);
             }
             // 4.
             if (srcDndId === 2 && dstDndId === 1) {
+                // alert("4h");
                 const draggedItemId = privateIds[srcIdx];
                 updatedItems.splice(dstIdx, 0, draggedItemId);
             }
@@ -131,7 +135,12 @@ const useListingContentOperations: TUseContentOperations = (
         [tab, publicIds, privateIds]
     );
 
-    return { publicImages, privateImages, isLoading, handleDragEnd };
+    return {
+        publicImages,
+        privateImages,
+        isLoading: isLoading || isIntegrationImagesLoading || isReorderLoading,
+        handleDragEnd,
+    };
 };
 
 export default useListingContentOperations;

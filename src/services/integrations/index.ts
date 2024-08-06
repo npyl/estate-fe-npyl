@@ -4,6 +4,7 @@ import {
     ImagesOrderRes,
     UpdateImagesOrderReq,
 } from "./types";
+import { optimisticSetOrderedImages } from "./optimistic";
 
 export const integrations = createApi({
     reducerPath: "integrations",
@@ -45,8 +46,8 @@ export const integrations = createApi({
                     integrationSite,
                 },
                 method: "POST",
-                // TODO: optimistic
             }),
+            onQueryStarted: optimisticSetOrderedImages,
             invalidatesTags: ["IntegrationOrderedImages"],
         }),
     }),
