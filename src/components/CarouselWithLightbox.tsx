@@ -6,23 +6,8 @@ import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 import Carousel from "./carousel";
 import Image from "src/components/image";
 
-import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox";
-import Captions from "yet-another-react-lightbox/plugins/captions";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import Video from "yet-another-react-lightbox/plugins/video";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import Counter from "yet-another-react-lightbox/plugins/counter";
+import Lightbox from "@/components/Lightbox";
 
-// INFO: This is a custom implementation of yet-another-react-lightbox/plugins/fullscreen that triggers the events: fullscreen and fullscreenExited
-import Fullscreen from "./lightbox-plugins/fullscreen";
-import HideGallery from "./lightbox-plugins/hideGallery";
-
-import "yet-another-react-lightbox/plugins/captions.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
-import "yet-another-react-lightbox/plugins/counter.css";
-import "yet-another-react-lightbox/styles.css";
-
-import { FullscreenRef } from "yet-another-react-lightbox";
 import ICarouselImage from "./carousel/types";
 
 // ----------------------------------------------------------------------
@@ -40,7 +25,9 @@ export default function CarouselWithLightbox({ data }: Props) {
 
     const carousel1 = useRef<Carousel | null>(null);
 
-    const [galleryOpen, setGalleryOpen] = useState(false);
+    // Lightbox
+    const [clickedImageIndex, setClickedImageIndex] = useState(-1);
+    const closeLightbox = () => setClickedImageIndex(-1);
 
     const carouselSettings1 = {
         dots: false,
@@ -85,7 +72,7 @@ export default function CarouselWithLightbox({ data }: Props) {
                         borderRadius={2}
                         padding={1}
                         paddingRight={index !== data.length - 1 ? 0 : 1}
-                        onClick={() => setGalleryOpen(true)}
+                        onClick={() => setClickedImageIndex(index)}
                     />
                 ))}
             </Carousel>
@@ -99,34 +86,6 @@ export default function CarouselWithLightbox({ data }: Props) {
         </Box>
     );
 
-    const _images = data.map((item, index) => {
-        return { src: item.url || "" };
-    });
-
-    const fullscreenRef = useRef<FullscreenRef>(null);
-    const thumbnailsRef = useRef<ThumbnailsRef>(null);
-
-    const initialPluginList = [
-        Captions,
-        Fullscreen,
-        Thumbnails,
-        Video,
-        Zoom,
-        Counter,
-    ];
-
-    const pluginListWithHideGallery = [
-        Captions,
-        Fullscreen,
-        Thumbnails,
-        Video,
-        Zoom,
-        Counter,
-        HideGallery,
-    ];
-
-    const [plugins, setPlugins] = useState(initialPluginList);
-
     return (
         <Box
             sx={{
@@ -138,32 +97,14 @@ export default function CarouselWithLightbox({ data }: Props) {
         >
             {renderLargeImg}
 
-            <Lightbox
-                open={galleryOpen}
-                close={() => setGalleryOpen(false)}
-                slides={_images}
-                plugins={plugins}
-                carousel={{ finite: true }}
-                fullscreen={{ ref: fullscreenRef }}
-                thumbnails={{ ref: thumbnailsRef }}
-                on={{
-                    fullscreen() {
-                        // add HideGallery to the plugins
-                        setPlugins(pluginListWithHideGallery);
-                    },
-                    fullscreenExit() {
-                        // remove HideGallery
-                        setPlugins(initialPluginList);
-                    },
-
-                    hideGalleryEntered() {
-                        thumbnailsRef.current?.hide();
-                    },
-                    hideGalleryExited() {
-                        thumbnailsRef.current?.show();
-                    },
-                }}
-            />
+            {clickedImageIndex !== -1 ? (
+                <Lightbox
+                    open
+                    images={data}
+                    index={clickedImageIndex}
+                    onClose={closeLightbox}
+                />
+            ) : null}
         </Box>
     );
 }

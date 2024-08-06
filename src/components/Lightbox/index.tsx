@@ -17,7 +17,8 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
 import React, { useMemo, useRef, useState } from "react";
-import { IPropertyImage } from "@/types/file";
+
+type TLightboxImage<T extends {} = {}> = { url: string | null } & T;
 
 const initialPluginList = [
     Captions,
@@ -40,7 +41,7 @@ const pluginListWithHideGallery = [
 
 interface LightboxProps {
     open: boolean;
-    images: IPropertyImage[];
+    images: TLightboxImage[];
     index?: number;
     onClose: VoidFunction;
 }
