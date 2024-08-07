@@ -104,24 +104,18 @@ const useListingContentOperations: TUseContentOperations = (
                 dstDndId;
             let dstIdx = dstRow * COLUMNS + dstCol;
 
-            /* NOTE: compensate for when user moves a section at the end of the board */
-            if (dstIdx === updatedItems.length) dstIdx -= 1;
-
             // 1.
             if (srcDndId === dstDndId && dstDndId === 1) {
-                // alert("1h");
                 const [removedItem] = updatedItems.splice(srcIdx, 1);
                 updatedItems.splice(dstIdx, 0, removedItem);
             }
             // 2.
             if (srcDndId === 1 && dstDndId === 2) {
-                // alert("2h");
                 const removedId = updatedItems[srcIdx];
                 updatedItems = updatedItems.filter((id) => id !== removedId);
             }
             // 4.
             if (srcDndId === 2 && dstDndId === 1) {
-                // alert("4h");
                 const draggedItemId = privateIds[srcIdx];
                 updatedItems.splice(dstIdx, 0, draggedItemId);
             }
