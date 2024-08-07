@@ -386,6 +386,7 @@ export const sumOfChangedProperties = createSelector(
             "minConstructionYear",
             "maxConstructionYear",
             "managerId",
+            "active",
 
             // multiple
 

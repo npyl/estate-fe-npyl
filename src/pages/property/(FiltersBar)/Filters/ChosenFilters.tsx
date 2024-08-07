@@ -150,7 +150,7 @@ const ChosenFilters = (props: Props) => {
         <Grid container direction="row" gap={0.3} {...props}>
             {ids.map((key, index) => {
                 const values = changedProps[key];
-                let label = filterTags[key]?.label;
+                let label = filterTags[key].label;
 
                 if (
                     values === 0 ||

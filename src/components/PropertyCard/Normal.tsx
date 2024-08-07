@@ -59,6 +59,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         plotArea,
     } = item || {};
 
+    console.log(item);
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
         (item as IPropertyResultResponse) || {};
 
@@ -137,6 +138,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                           ]
                 }
                 ratio="4/3"
+                isActive={item.active}
             />
 
             <Stack px={2} py={2} spacing={0.8}>

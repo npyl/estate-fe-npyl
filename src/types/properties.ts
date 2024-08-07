@@ -27,7 +27,7 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
-
+    active: boolean;
     createdAt: string;
     updatedAt: string;
 
@@ -340,7 +340,7 @@ export interface IProperties {
     buildable: boolean;
     auction: boolean;
     exclusive: boolean;
-
+    active: boolean;
     state: KeyValue;
     parentCategory: KeyValue;
     category: KeyValue;
