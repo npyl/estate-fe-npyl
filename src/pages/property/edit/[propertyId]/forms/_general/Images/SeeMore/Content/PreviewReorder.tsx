@@ -1,14 +1,24 @@
 import { Divider } from "@mui/material";
-import { DragDropContext, DragDropContextProps } from "react-beautiful-dnd";
+import {
+    DragDropContext,
+    DragDropContextProps,
+    OnDragEndResponder,
+} from "react-beautiful-dnd";
 import TwoDimentionsDndNoContext from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
+import useResponsiveColumns, {
+    ResponsiveColumns,
+} from "./useResponsiveColumns";
+import { useCallback } from "react";
+import { ExtendedDropResult } from "./hook/type";
 
 interface ImagePreviewReorderProps
-    extends Omit<DragDropContextProps, "children"> {
+    extends Omit<DragDropContextProps, "onDragEnd" | "children"> {
     publicImages: TwoDimentionsDndNode[];
     privateImages: TwoDimentionsDndNode[];
-    columns: number;
+    columns: ResponsiveColumns;
     preventDrag?: boolean;
+    onDragEnd: (r: ExtendedDropResult) => void;
 }
 
 const Over25ImagesPreview = ({
@@ -16,16 +26,24 @@ const Over25ImagesPreview = ({
     privateImages,
     columns,
     preventDrag = false,
+    onDragEnd,
     ...props
 }: ImagePreviewReorderProps) => {
     const secondDndStartIndex = publicImages.length;
 
+    const responsiveColumns = useResponsiveColumns(columns);
+
+    const handleDragEnd: OnDragEndResponder = useCallback(
+        (args) => onDragEnd({ ...args, columns: responsiveColumns }),
+        [onDragEnd, responsiveColumns]
+    );
+
     return (
-        <DragDropContext {...props}>
+        <DragDropContext onDragEnd={handleDragEnd} {...props}>
             <TwoDimentionsDndNoContext
                 dndId={1}
                 startIndex={0}
-                columns={columns}
+                columns={responsiveColumns}
                 gap={0.5}
                 preventDrag={preventDrag}
                 minHeight="200px"
@@ -36,7 +54,7 @@ const Over25ImagesPreview = ({
             <TwoDimentionsDndNoContext
                 dndId={2}
                 startIndex={secondDndStartIndex}
-                columns={columns}
+                columns={responsiveColumns}
                 gap={0.5}
                 preventDrag={preventDrag}
                 minHeight="200px"

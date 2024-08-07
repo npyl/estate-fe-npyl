@@ -1,12 +1,17 @@
 import { IPropertyImage } from "@/types/file";
 import { TListingTab } from "../../types";
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
+import { DropResult } from "react-beautiful-dnd";
+
+export interface ExtendedDropResult extends DropResult {
+    columns: number;
+}
 
 type Ops = {
     publicImages: TwoDimentionsDndNode[];
     privateImages: TwoDimentionsDndNode[];
     isLoading: boolean;
-    handleDragEnd: any;
+    handleDragEnd: (r: ExtendedDropResult) => void;
 };
 
 type TUseContentOperations = (

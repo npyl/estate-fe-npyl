@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from "react";
 import usePropertyImages from "../../../hook";
-import { DropResult } from "react-beautiful-dnd";
-import TUseContentOperations from "./type";
+import TUseContentOperations, { ExtendedDropResult } from "./type";
 import {
     useGetIntegrationOrderedImagesQuery,
     useSetIntegrationOrderedImagesMutation,
@@ -9,8 +8,6 @@ import {
 import { IntegrationSite } from "@/types/listings";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
-
-const COLUMNS = 5;
 
 const useListingContentOperations: TUseContentOperations = (
     tab,
@@ -69,7 +66,13 @@ const useListingContentOperations: TUseContentOperations = (
     //  3. private -> private  (NOT PERMITTED)
     //  4. private -> public   (REORDER + make public)
     const handleDragEnd = useCallback(
-        ({ type, draggableId, source, destination }: DropResult) => {
+        ({
+            type,
+            draggableId,
+            source,
+            destination,
+            columns,
+        }: ExtendedDropResult) => {
             if (type !== DroppableTypeItem) return;
 
             const { dndId: srcDndId } = parseItemId(draggableId);
@@ -95,14 +98,14 @@ const useListingContentOperations: TUseContentOperations = (
             const srcCol =
                 (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) /
                 srcDndId;
-            const srcIdx = srcRow * COLUMNS + srcCol;
+            const srcIdx = srcRow * columns + srcCol;
 
             // Calculate dstIdx
             const dstCol =
                 (destination?.index -
                     (dstDndId === 1 ? 0 : secondDndStartIndex)) /
                 dstDndId;
-            let dstIdx = dstRow * COLUMNS + dstCol;
+            let dstIdx = dstRow * columns + dstCol;
 
             // 1.
             if (srcDndId === dstDndId && dstDndId === 1) {
@@ -116,6 +119,7 @@ const useListingContentOperations: TUseContentOperations = (
             }
             // 4.
             if (srcDndId === 2 && dstDndId === 1) {
+                // alert("4h");
                 const draggedItemId = privateIds[srcIdx];
                 updatedItems.splice(dstIdx, 0, draggedItemId);
             }

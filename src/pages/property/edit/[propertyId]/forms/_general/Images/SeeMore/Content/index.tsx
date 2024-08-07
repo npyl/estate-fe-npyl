@@ -7,7 +7,13 @@ import { useCallback } from "react";
 import SelectableItem from "./Selectable";
 import React from "react";
 
-const COLUMNS = 5;
+const COLUMNS = {
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+};
 
 interface ContentProps {
     tab: TListingTab;
@@ -42,8 +48,6 @@ const Content: React.FC<ContentProps> = ({
         useContentOperations(tab, createItem);
 
     const isNotCRM = tab !== "CRM";
-
-    // TODO: see if this can become responsive
 
     return (
         <DropZone disabled={isNotCRM}>

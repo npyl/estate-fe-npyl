@@ -1,12 +1,9 @@
 import { useCallback, useMemo } from "react";
 import usePropertyImages from "../../../hook";
 import { useImageOperations } from "../../../context/ImageOperations";
-import { DropResult } from "react-beautiful-dnd";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
-import TUseContentOperations from "./type";
-
-const COLUMNS = 5;
+import TUseContentOperations, { ExtendedDropResult } from "./type";
 
 const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
     const { images, propertyId } = usePropertyImages();
@@ -53,7 +50,13 @@ const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
         });
 
     const handleDragEnd = useCallback(
-        ({ type, draggableId, source, destination }: DropResult) => {
+        ({
+            type,
+            draggableId,
+            source,
+            destination,
+            columns,
+        }: ExtendedDropResult) => {
             if (type !== DroppableTypeItem) return;
 
             const { itemId: draggedItemId, dndId: srcDndId } =
@@ -78,7 +81,7 @@ const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
                 (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) /
                 srcDndId;
             const srcIdx =
-                srcRow * COLUMNS +
+                srcRow * columns +
                 srcCol +
                 (srcDndId === 1 ? 0 : secondDndStartIndex);
 
@@ -88,7 +91,7 @@ const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
                     (dstDndId === 1 ? 0 : secondDndStartIndex)) /
                 dstDndId;
             let dstIdx =
-                dstRow * COLUMNS +
+                dstRow * columns +
                 dstCol +
                 (dstDndId === 1 ? 0 : secondDndStartIndex);
 
