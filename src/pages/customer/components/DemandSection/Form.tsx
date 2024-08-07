@@ -158,9 +158,6 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
     const minFloor = watch(minName);
     const maxFloor = watch(maxName);
 
-    console.log(`minFloor: ${minFloor} , ${typeof minFloor}`);
-    console.log(`maxFloor: ${maxFloor} , ${typeof maxFloor}`);
-
     const handleChangeMin = useCallback(
         (event: SelectChangeEvent<string>, child: React.ReactNode) => {
             const min =
