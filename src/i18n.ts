@@ -523,7 +523,8 @@ const resources = {
             Preview: "Preview",
 
             /////////////////
-
+            "The active properties are published in public sites.":
+                "The active properties are published in public sites.",
             "Pool Size": "Pool Size",
             Frontage: "Frontage",
             "Plot Frontage": "Plot Frontage",
@@ -1083,7 +1084,8 @@ const resources = {
             "Area of Preference": "Περιοχή Προτίμησης",
             "There are no matching properties":
                 "Δεν υπάρχουν ταιριαστά ακίνητα",
-
+            "The active properties are published in public sites.":
+                "Ενεργά ακίνητα θεωρούνται αυτά που είναι δημοσιευμένα σε sites.",
             Renovated: "Ανακαινισμένο",
             "Needs Renovation": "Χρήζει ανακαίνισης",
             Elevator: "Ανελκυστήρας",
