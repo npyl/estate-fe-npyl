@@ -54,8 +54,9 @@ export interface IPropertyFilter {
     minConstructionYear?: number;
     maxConstructionYear?: number;
     managerId?: number;
-
+    active?: boolean | null;
     // multiple
+
     cities: string[];
     states: string[];
     categories: string[];

@@ -7,6 +7,7 @@ import PriceSelect from "./Filters/Price";
 import SaleSelect from "./Filters/Sale";
 
 import { selectLabels, setLabels } from "src/slices/filters";
+import ActiveSelect from "./Filters/ActiveSelect";
 
 const FilterSection = () => {
     const labels = useSelector(selectLabels) || [];
@@ -23,6 +24,7 @@ const FilterSection = () => {
                 labels={labels}
                 setLabels={setLabels}
             />
+            <ActiveSelect />
         </>
     );
 };

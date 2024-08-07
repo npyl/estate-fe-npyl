@@ -85,6 +85,9 @@ const ChosenFilters = (props: Props) => {
         labels: {
             label: t("Labels"),
         },
+        active: {
+            label: t("Active Property"),
+        },
     };
 
     const pairFilterTags: Record<string, { label: string }> = {
@@ -147,7 +150,7 @@ const ChosenFilters = (props: Props) => {
         <Grid container direction="row" gap={0.3} {...props}>
             {ids.map((key, index) => {
                 const values = changedProps[key];
-                let label = filterTags[key].label;
+                let label = filterTags[key]?.label;
 
                 if (
                     values === 0 ||
@@ -219,6 +222,10 @@ const ChosenFilters = (props: Props) => {
                             ? getLabelNames(values)
                             : key === "managerId"
                             ? getManagerName(values)
+                            : key === "active"
+                            ? values === true
+                                ? "True"
+                                : "False"
                             : values;
 
                     return (

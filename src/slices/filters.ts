@@ -21,6 +21,7 @@ const initialState: IFilterProps = {
         frameType: [],
         furnished: [],
         heatingType: [],
+        active: null,
     },
     ids: [],
 };
@@ -121,6 +122,12 @@ const slice = createSlice({
             !state.ids.includes("parentCategories") &&
                 state.ids.push("parentCategories");
         },
+
+        setActiveState(state, { payload }) {
+            state.filters.active = payload;
+            !state.ids.includes("active") && state.ids.push("active");
+        },
+
         deleteSubCategory(state, { payload }) {
             state.filters.categories.length === 1 &&
                 state.ids.filter((id) => id !== payload);
@@ -267,6 +274,10 @@ const slice = createSlice({
         resetState: () => {
             return initialState;
         },
+        resetActiveState(state) {
+            state.filters.active = initialState.filters.active;
+            state.ids = state.ids.filter((id) => id !== "active");
+        },
     },
 });
 
@@ -287,6 +298,7 @@ export const {
     setMinFloor,
     setMinPrice,
     setIds,
+    setActiveState,
     // multiple
     setLabels,
     setParentLocation,
@@ -311,6 +323,7 @@ export const {
     resetConstructionYear,
     resetPoints,
     resetState,
+    resetActiveState,
 } = slice.actions;
 
 export const selectCode = ({ filters }: RootState) => filters.filters.code;
@@ -354,7 +367,8 @@ export const selectIds = ({ filters }: RootState) => filters.ids;
 export const selectPoints = ({ filters }: RootState) => filters.filters.points;
 
 export const selectAll = ({ filters }: RootState) => filters.filters;
-
+export const selectActiveState = ({ filters }: RootState) =>
+    filters.filters.active;
 export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.filters,
     (filter) => {
