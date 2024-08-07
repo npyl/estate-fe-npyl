@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { NormalBadge } from "@/components/PropertyCard/styled";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import Link from "next/link";
 import {
@@ -9,6 +9,7 @@ import {
     IPropertyForNotification,
 } from "@/types/notification/notification";
 import { ListingNotification } from "@/types/notification/listing";
+import { t } from "i18next";
 
 const formatTourDate = (dateString: any) => {
     return dayjs(dateString).format("D MMMM YYYY");
@@ -34,18 +35,22 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
     row,
     handlePropertyCodeClick,
 }) => {
+    const { i18n } = useTranslation();
+    const isEnglish = i18n.language === "en";
+
+    const complex = isEnglish
+        ? propertyDetails?.complexEN || contactDetails?.location?.complex
+        : propertyDetails?.complexGR || contactDetails?.location?.complex;
+    const city = isEnglish
+        ? propertyDetails?.cityEN || contactDetails?.location?.city
+        : propertyDetails?.cityGR || contactDetails?.location?.city;
+
     return (
         <Box flexDirection="row">
             <Stack direction="row" gap={0.5} alignItems="center">
                 <Typography variant="body2">
-                    {propertyDetails?.complexGR ||
-                    contactDetails?.location?.complex
-                        ? `${
-                              propertyDetails?.complexGR ||
-                              contactDetails?.location?.complex
-                          }, `
-                        : ""}
-                    {propertyDetails?.cityGR || contactDetails?.location?.city}
+                    {complex ? `${complex}, ` : ""}
+                    {city}
                 </Typography>
 
                 {propertyDetails ? (
@@ -74,7 +79,7 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
             </Stack>
             <Box display="flex" flexDirection="row" gap={0.5}>
                 <Typography variant="body2">
-                    {tourTypeMapper[row?.tourType as TourType]}
+                    {t(row?.tourType as TourType)}
                 </Typography>
                 {row?.tourDate ? (
                     <Typography variant="body2">
