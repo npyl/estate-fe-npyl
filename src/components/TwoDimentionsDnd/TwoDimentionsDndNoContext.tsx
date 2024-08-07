@@ -4,6 +4,7 @@ import { TwoDimentionsDndNoContextProps, TwoDimentionsDndNode } from "./types";
 import React from "react";
 import DroppableRow from "./DroppableRow";
 import DraggableItem from "./DraggableItem";
+import PlaceholderRow from "./PlaceholderRow";
 
 const chunks = (children: ReactNode, size: number): ReactNode[][] => {
     const childrenArray = Children.toArray(children);
@@ -36,6 +37,15 @@ const TwoDimentionsDndNoContext = ({
 
     return (
         <Stack gap={gap} {...props}>
+            {rows.length === 0 ? (
+                <PlaceholderRow
+                    dndId={dndId}
+                    gap={gap}
+                    startIndex={startIndex}
+                    columns={columns}
+                />
+            ) : null}
+
             {rows.map((row, i) => (
                 <DroppableRow
                     key={`${dndId}_${i}`}

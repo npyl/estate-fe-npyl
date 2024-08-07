@@ -9,7 +9,7 @@ interface DroppableRowProps {
     dndId?: number;
     index: number;
     gap: number;
-    children: TwoDimentionsDndNode[];
+    children: TwoDimentionsDndNode | TwoDimentionsDndNode[];
 }
 
 const DroppableRow: React.FC<DroppableRowProps> = ({

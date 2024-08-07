@@ -1,10 +1,8 @@
 import { StackProps } from "@mui/material";
 import { ReactElement } from "react";
-import { DropResult } from "react-beautiful-dnd";
 
 interface ChildProps {
     id: number | string; // INFO: this is the id referred to as "someId" below
-
     [key: string]: any;
 }
 
