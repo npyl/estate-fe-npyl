@@ -6,22 +6,47 @@ import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
+import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 
 function renderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
 ) {
     const propertyImage = params.row?.propertyImage;
-
+    const isActive = params.row?.active;
     return (
-        <Image
-            src={
-                typeof propertyImage === "string"
-                    ? propertyImage
-                    : propertyImage?.url
-            }
-            alt=""
-            ratio="16/9"
-        />
+        <Box sx={{ position: "relative", width: "100%", height: "85%" }}>
+            <Image
+                src={
+                    typeof propertyImage === "string"
+                        ? propertyImage
+                        : propertyImage?.url
+                }
+                alt=""
+                ratio="16/9"
+                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+            {!isActive && (
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: -5,
+                        right: -7,
+                        zIndex: 1,
+                        width: 23,
+                        height: 23,
+                        bgcolor: "grey.400",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <LinkOffOutlinedIcon
+                        sx={{ color: "aliceblue", fontSize: 18 }}
+                    />
+                </Box>
+            )}
+        </Box>
     );
 }
 
