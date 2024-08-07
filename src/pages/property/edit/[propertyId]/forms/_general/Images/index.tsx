@@ -10,6 +10,7 @@ import { PREVIEW_IMAGES_COUNT } from "./constants";
 import dynamic from "next/dynamic";
 import { UploadFileProvider } from "./context/UploadProgress";
 import { ImageOperationsProvider } from "./context/ImageOperations";
+import { IntegrationsOperationsProvider } from "./context/IntegrationsOperations";
 const Lightbox = dynamic(() => import("@/components/Lightbox"));
 const SeeMore = dynamic(() => import("./SeeMore"));
 const Gallery = dynamic(() => import("./Gallery"));
@@ -55,48 +56,52 @@ const ImagesSection = () => {
     return (
         <UploadFileProvider>
             <ImageOperationsProvider>
-                <Panel
-                    label={t("Upload Images")}
-                    endNode={
-                        <SoftButton onClick={openSeeMore}>
-                            {`${t("Edit")} (${images?.length || 0} images)`}
-                        </SoftButton>
-                    }
-                >
-                    <UploadImages
-                        files={previewImages}
-                        onImageClick={setGalleryImage}
-                        placeholder={
-                            <Placeholder imagesLength={images.length || 0} />
+                <IntegrationsOperationsProvider>
+                    <Panel
+                        label={t("Upload Images")}
+                        endNode={
+                            <SoftButton onClick={openSeeMore}>
+                                {`${t("Edit")} (${images?.length || 0} images)`}
+                            </SoftButton>
                         }
-                    />
-                </Panel>
+                    >
+                        <UploadImages
+                            files={previewImages}
+                            onImageClick={setGalleryImage}
+                            placeholder={
+                                <Placeholder
+                                    imagesLength={images.length || 0}
+                                />
+                            }
+                        />
+                    </Panel>
 
-                {/* Gallery */}
-                <Gallery
-                    open={!!galleryImage && images.length > 0}
-                    openImageKey={galleryImage}
-                    onClose={closeGallery}
-                />
-
-                {/* SeeMore */}
-                {isSeeMoreOpen ? (
-                    <SeeMore
-                        open={isSeeMoreOpen}
-                        onOpenLightbox={setLightboxImage}
-                        onClose={closeSeeMore}
+                    {/* Gallery */}
+                    <Gallery
+                        open={!!galleryImage && images.length > 0}
+                        openImageKey={galleryImage}
+                        onClose={closeGallery}
                     />
-                ) : null}
 
-                {/* Lightbox */}
-                {lightboxIndex !== -1 ? (
-                    <Lightbox
-                        open
-                        images={images}
-                        index={lightboxIndex}
-                        onClose={closeLightbox}
-                    />
-                ) : null}
+                    {/* SeeMore */}
+                    {isSeeMoreOpen ? (
+                        <SeeMore
+                            open={isSeeMoreOpen}
+                            onOpenLightbox={setLightboxImage}
+                            onClose={closeSeeMore}
+                        />
+                    ) : null}
+
+                    {/* Lightbox */}
+                    {lightboxIndex !== -1 ? (
+                        <Lightbox
+                            open
+                            images={images}
+                            index={lightboxIndex}
+                            onClose={closeLightbox}
+                        />
+                    ) : null}
+                </IntegrationsOperationsProvider>
             </ImageOperationsProvider>
         </UploadFileProvider>
     );

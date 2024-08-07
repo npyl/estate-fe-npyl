@@ -8,6 +8,7 @@ import {
 import { IntegrationSite } from "@/types/listings";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
+import { useIntegrationsOperations } from "../../../context/IntegrationsOperations";
 
 const useListingContentOperations: TUseContentOperations = (
     tab,
@@ -24,8 +25,8 @@ const useListingContentOperations: TUseContentOperations = (
             { skip: tab === "CRM" }
         );
 
-    const [reorder, { isLoading: isReorderLoading }] =
-        useSetIntegrationOrderedImagesMutation();
+    const { setOrderedImages, isLoading: isReorderLoading } =
+        useIntegrationsOperations();
 
     const { publicImages, privateImages, publicIds, privateIds } =
         useMemo(() => {
@@ -124,7 +125,7 @@ const useListingContentOperations: TUseContentOperations = (
                 updatedItems.splice(dstIdx, 0, draggedItemId);
             }
 
-            reorder({
+            setOrderedImages({
                 integrationSite: tab as IntegrationSite,
                 propertyId,
                 propertyImages: updatedItems,
