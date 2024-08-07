@@ -1,10 +1,7 @@
 import { useCallback, useMemo } from "react";
 import usePropertyImages from "../../../hook";
 import TUseContentOperations, { ExtendedDropResult } from "./type";
-import {
-    useGetIntegrationOrderedImagesQuery,
-    useSetIntegrationOrderedImagesMutation,
-} from "@/services/integrations";
+import { useGetIntegrationOrderedImagesQuery } from "@/services/integrations";
 import { IntegrationSite } from "@/types/listings";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";

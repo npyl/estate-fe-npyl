@@ -1,7 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
 import usePropertyImages from "../../hook";
-import { useSetIntegrationOrderedImagesMutation } from "@/services/integrations";
 import { useRouter } from "next/router";
 import React from "react";
 import { TListingTab } from "../types";
