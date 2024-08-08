@@ -1,8 +1,5 @@
-import { forwardRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 // @mui
-import { Box } from "@mui/material";
-//
+import Box from "@mui/material/Box";
 import getRatio from "./getRatio";
 import { ImageProps } from "./types";
 
@@ -10,62 +7,53 @@ import { ImageProps } from "./types";
 
 const defaultImage = "/static/img/previewImage.png";
 
-const Image = forwardRef<HTMLSpanElement, ImageProps>(
-    (
-        {
-            ratio,
-            disabledEffect = false,
-            alt,
-            src,
-            effect = "blur",
-            size = {
-                width: "100%",
-                height: "100%",
-            },
-            sx,
-            ...other
-        },
-        ref
-    ) => {
-        const content = (
-            <LazyLoadImage
-                wrapperClassName="wrapper"
-                alt={alt || "img"}
-                src={src || defaultImage}
-                placeholderSrc={defaultImage}
+const Image: React.FC<ImageProps> = ({
+    ratio,
+    disabledEffect = false,
+    alt = "img",
+    src = defaultImage,
+    size = {
+        width: "100%",
+        height: "100%",
+    },
+    sx,
+    ...other
+}) => (
+    <Box
+        component="span"
+        sx={{
+            borderRadius: 1,
+            width: 1,
+            lineHeight: 1,
+            display: "block",
+            overflow: "hidden",
+            position: "relative",
+            pt: getRatio(ratio),
+            ...sx,
+        }}
+    >
+        <Box
+            className="wrapper"
+            sx={{
+                top: 0,
+                left: 0,
+                width: 1,
+                height: 1,
+                position: "absolute",
+                backgroundSize: ratio ? "cover !important" : "",
+            }}
+            // TODO: investigate if this {...other} should go on the container box; currently changing it breaks carousel thumbnail
+            {...other}
+        >
+            <img
+                alt={alt}
+                src={src!}
+                loading="lazy"
                 width={size.width}
                 height={size.height}
-                {...other}
             />
-        );
-
-        return (
-            <Box
-                ref={ref}
-                component="span"
-                sx={{
-                    borderRadius: 1,
-                    width: 1,
-                    lineHeight: 1,
-                    display: "block",
-                    overflow: "hidden",
-                    position: "relative",
-                    pt: getRatio(ratio),
-                    "& .wrapper": {
-                        top: 0,
-                        left: 0,
-                        width: 1,
-                        height: 1,
-                        position: "absolute",
-                        backgroundSize: ratio ? "cover !important" : "",
-                    },
-                    ...sx,
-                }}
-            >
-                {content}
-            </Box>
-        );
-    }
+        </Box>
+    </Box>
 );
 
 export default Image;

@@ -23,7 +23,6 @@ import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { TabsProvider } from "src/contexts/tabs";
 
 // DatePicker

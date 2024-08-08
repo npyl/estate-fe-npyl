@@ -1,10 +1,7 @@
-import { LazyLoadImageProps } from "react-lazy-load-image-component";
 // @mui
 import { BoxProps } from "@mui/material";
 
 // ----------------------------------------------------------------------
-
-type IProps = BoxProps & LazyLoadImageProps;
 
 export type ImageRatio =
     | "4/3"
@@ -17,16 +14,12 @@ export type ImageRatio =
     | "9/21"
     | "1/1";
 
-export interface ImageProps extends Omit<IProps, "src"> {
+export interface ImageProps extends BoxProps {
     src?: string | null;
+    alt?: string;
     ratio?: ImageRatio;
     disabledEffect?: boolean;
     size?: { width: string; height: string };
-}
-
-export interface LabeledImageProps extends ImageProps {
-    label?: string;
-    hidden?: boolean;
 }
 
 export interface IPreviewImageProps extends ImageProps {
