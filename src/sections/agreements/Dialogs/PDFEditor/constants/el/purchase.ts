@@ -219,7 +219,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "property.address": {
+        "property.addressNumber": {
             type: "text",
 
             defaultValue: "\n",
@@ -239,7 +239,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "property.addressNumber": {
+        "property.floor": {
             type: "text",
 
             defaultValue: "\n",
@@ -279,7 +279,7 @@ const BasicSchema = [
             backgroundColor: "",
             opacity: 1,
         },
-        "property.floor": {
+        "property.address": {
             type: "text",
 
             defaultValue: "\n",
