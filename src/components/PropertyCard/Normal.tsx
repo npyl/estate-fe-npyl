@@ -39,7 +39,6 @@ type Color = string;
 
 const getStatusColor = (status: string): Color => {
     const statusUpper = status.toUpperCase() as PropertyStatus;
-    console.log(statusUpper);
 
     return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 };
@@ -59,11 +58,12 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         plotArea,
     } = item || {};
 
-    console.log(item);
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
         (item as IPropertyResultResponse) || {};
 
-    const { bathrooms, bedrooms } = details || {};
+    const bathrooms = details?.bathrooms;
+    const bedrooms = details?.bedrooms;
+
     const { lat, lng } = location || {};
 
     const { t, i18n } = useTranslation();
@@ -163,7 +163,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {plotArea || "-"}
-                                    {"m²"}
+                                    {" m²"}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -179,7 +179,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {area || "-"}
-                                    {"m²"}
+                                    {" m²"}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -194,8 +194,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {bedrooms || "-"}
-                                    {"beds"}
+                                    {bedrooms || item.bedrooms || "-"}
+                                    {" beds"}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -210,8 +210,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {bathrooms || "-"}
-                                    {"baths"}
+                                    {bathrooms || item.bathrooms || "-"}
+                                    {" baths"}
                                 </Typography>
                             </Stack>
                         </Stack>
@@ -235,7 +235,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {plotArea || "-"}
-                                    {"m²"}
+                                    {" m²"}
                                 </Typography>
                             </Stack>
                             <Stack
