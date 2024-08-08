@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, Divider, PaperProps } from "@mui/material";
 import { useCallback } from "react";
 import Controls from "./Controls";
-import { StyledTitle } from "./styled";
 import { TListingTab } from "./types";
 import { styled } from "@mui/material/styles";
 import Tabs from "./Tabs";
@@ -10,6 +9,7 @@ import React from "react";
 import useArrayState from "@/hooks/useArrayState";
 import useRefState from "@/hooks/useRefState";
 import ListingControls from "./ListingControls";
+import DialogTitle from "./DialogTitle";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
 
@@ -48,7 +48,6 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
         // Open in Gallery
         if (modeRef.current === "") {
             onOpenLightbox(imageKey);
-            onClose();
             return;
         }
 
@@ -70,7 +69,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
             scroll="body" // (1)
             PaperProps={DialogPaperProps}
         >
-            <StyledTitle>
+            <DialogTitle onClose={onClose}>
                 <Tabs tab={tab} onChange={setTab} />
 
                 {tab === "CRM" ? (
@@ -80,12 +79,11 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
                         onResetSelectedImages={resetSelectedImages}
                         mode={mode}
                         setMode={setMode}
-                        onClose={onClose}
                     />
                 ) : null}
 
                 {tab !== "CRM" ? <ListingControls tab={tab} /> : null}
-            </StyledTitle>
+            </DialogTitle>
             <Divider />
             <StyledContent>
                 <Content

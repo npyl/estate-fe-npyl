@@ -6,7 +6,6 @@ export const StyledTitle = styled(DialogTitle)(({ theme }) => ({
     position: "fixed",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     // ....
     backgroundColor: theme.palette.background.paper,

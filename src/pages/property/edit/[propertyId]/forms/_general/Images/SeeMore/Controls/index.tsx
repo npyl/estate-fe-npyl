@@ -1,12 +1,10 @@
 import { SoftButton } from "@/components/SoftButton";
-import { Close as CloseIcon } from "@mui/icons-material";
 import {
     Stack,
     StackProps,
     ToggleButton,
     ToggleButtonGroup,
 } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import CompareIcon from "@mui/icons-material/Compare";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { TMode } from "../types";
@@ -28,7 +26,6 @@ interface ControlsProps extends StackProps {
     onResetSelectedImages: VoidFunction;
     mode: "" | "multiple" | "compare";
     setMode: (m: "" | "multiple" | "compare") => void;
-    onClose: VoidFunction;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -37,7 +34,6 @@ const Controls: React.FC<ControlsProps> = ({
     onResetSelectedImages,
     mode,
     setMode,
-    onClose,
     ...props
 }) => {
     const { t } = useTranslation();
@@ -123,10 +119,6 @@ const Controls: React.FC<ControlsProps> = ({
                 </ToggleButtonGroup>
 
                 <AddButton />
-
-                <IconButton onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
             </Stack>
 
             {isCompareOpen ? (

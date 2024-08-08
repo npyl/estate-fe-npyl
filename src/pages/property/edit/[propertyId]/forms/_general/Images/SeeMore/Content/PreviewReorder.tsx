@@ -1,4 +1,3 @@
-import { Divider } from "@mui/material";
 import {
     DragDropContext,
     DragDropContextProps,
@@ -11,6 +10,7 @@ import useResponsiveColumns, {
 } from "./useResponsiveColumns";
 import { useCallback } from "react";
 import { ExtendedDropResult } from "./hook/type";
+import Separator from "./Separator";
 
 interface ImagePreviewReorderProps
     extends Omit<DragDropContextProps, "onDragEnd" | "children"> {
@@ -50,7 +50,7 @@ const Over25ImagesPreview = ({
             >
                 {publicImages}
             </TwoDimentionsDndNoContext>
-            <Divider sx={{ mt: 2, mb: 2 }} />
+            <Separator />
             <TwoDimentionsDndNoContext
                 dndId={2}
                 startIndex={secondDndStartIndex}

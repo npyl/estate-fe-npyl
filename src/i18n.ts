@@ -776,10 +776,14 @@ const resources = {
             "Dominant Pollutants": "Dominant Pollutants",
             "Health Recommendations": "Health Recommendations",
             "Other Pollutants": "Other Pollutants",
+
+            Private_FEMININE: "Private",
         },
     },
     el: {
         translation: {
+            Private_FEMININE: "Ιδιωτικές",
+
             "Add images": "Προσθήκη εικόνων",
             "Select All": "Επιλογή Όλων",
             "Deselect All": "Καμία Επιλογή",
