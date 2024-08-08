@@ -44,18 +44,21 @@ const PropertyDetails: React.FC<Props> = ({ shouldAutofill }) => {
                         name="startingDate"
                         label="Starting Date"
                         onChange={handleStartingChange}
+                        format="D MMMM YYYY"
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="expirationDate"
                         label="Expiration Date"
+                        format="D MMMM YYYY"
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <RHFDatePicker
                         name="availableAfter"
                         label="Available After"
+                        format="D MMMM YYYY"
                     />
                 </Grid>
             </Grid>
