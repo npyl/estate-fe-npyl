@@ -188,7 +188,7 @@ const resources = {
             "Area (lowest first)": "Area (lowest first)",
             "Land area (highest first)": "Land area (highest first)",
             "Rating (highest first)": "Rating (highest first)",
-
+            "Popular Properties": "Popular Properties",
             //Distances
 
             Distances: "Distances",
@@ -747,6 +747,10 @@ const resources = {
             Custom: "Custom",
             "Select Date Range": "Select Date Range",
             "Total Views": "Total Views",
+            "Monthly Views": "Monthly Views",
+            "Weekly Views": "Weekly Views",
+            "Yearly Views": "Yearly Views",
+            "Daily Views": "Daily Views",
 
             "Copy Link": "Copy Link",
             "Social Networks": "Social Networks",
@@ -842,6 +846,11 @@ const resources = {
                 "Εκτεταμένη Έκδοση: Περιέχει όλες τις φωτογραφίες",
 
             "Total Views": "Συνολικές Προβολές",
+
+            "Monthly Views": "Μηνιαίες Προβολές",
+            "Weekly Views": "Εβδομαδιαίες Προβολές",
+            "Yearly Views": "Ετήσιες Προβολές",
+            "Daily Views": "Ημερήσιες Προβολές",
             "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
             Custom: "Προσαρμοσμένο",
 
@@ -1109,7 +1118,7 @@ const resources = {
             "Area (lowest first)": "Εμβαδόν (χαμηλότερο πρώτα)",
             "Land area (highest first)": "Εμβαδόν οικοπέδου (υψηλότερο πρώτα)",
             "Rating (highest first)": "Αξιολόγηση (υψηλή πρώτα)",
-
+            "Popular Properties": "Δημοφιλή ακίνητα",
             // Tickets
             "Add section": "Προσθήκη Τμήματος",
             "Add Task": "Προσθήκη Εργασίας",

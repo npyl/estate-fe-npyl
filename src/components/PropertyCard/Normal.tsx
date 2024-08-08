@@ -266,8 +266,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {details?.frontage || "-"}
-                                    {""}
+                                    {details?.frontage || item?.plotArea || "-"}
+                                    {" m²"}
                                 </Typography>
                             </Stack>
                         </Stack>
