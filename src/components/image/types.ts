@@ -18,7 +18,6 @@ export interface ImageProps extends BoxProps {
     src?: string | null;
     alt?: string;
     ratio?: ImageRatio;
-    disabledEffect?: boolean;
     size?: { width: string; height: string };
 }
 

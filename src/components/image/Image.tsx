@@ -9,7 +9,6 @@ const defaultImage = "/static/img/previewImage.png";
 
 const Image: React.FC<ImageProps> = ({
     ratio,
-    disabledEffect = false,
     alt = "img",
     src = defaultImage,
     size = {
@@ -33,7 +32,6 @@ const Image: React.FC<ImageProps> = ({
         }}
     >
         <Box
-            className="wrapper"
             sx={{
                 top: 0,
                 left: 0,

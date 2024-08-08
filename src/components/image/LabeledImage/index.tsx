@@ -8,9 +8,9 @@
 // TODO: will be named PropertyImage
 
 import Box from "@mui/material/Box";
-import Image from "src/components/image/Image";
 import { Label, LockIcon } from "./styled";
 import { ImageProps } from "../types";
+import Image from "@/components/image";
 
 export interface LabeledImageProps extends ImageProps {
     label?: string;

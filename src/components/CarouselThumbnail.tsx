@@ -178,7 +178,6 @@ export default function CarouselThumbnail({ data }: Props) {
                         url ? (
                             <Image
                                 key={id}
-                                disabledEffect
                                 alt={title}
                                 src={url}
                                 sx={{

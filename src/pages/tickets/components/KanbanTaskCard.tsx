@@ -85,7 +85,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
 
                         {!!attachments.length && (
                             <Image
-                                disabledEffect
                                 alt={attachments[0]}
                                 src={attachments[0]}
                                 ratio="4/3"
