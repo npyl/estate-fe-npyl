@@ -1,3 +1,5 @@
+import { textAlign } from "@mui/system";
+
 const BasicExclusive = [
     {
         "owner.fullName": {
@@ -7,7 +9,7 @@ const BasicExclusive = [
             width: 94.74,
             height: 7.89,
             rotate: 0,
-            alignment: "left",
+            alignment: "center",
             verticalAlignment: "middle",
             fontSize: 11,
             lineHeight: 1,
@@ -24,7 +26,7 @@ const BasicExclusive = [
             width: 61.67,
             height: 7.89,
             rotate: 0,
-            alignment: "left",
+            alignment: "center",
             verticalAlignment: "middle",
             fontSize: 11,
             lineHeight: 1,
@@ -41,7 +43,7 @@ const BasicExclusive = [
             width: 29.92,
             height: 7.89,
             rotate: 0,
-            alignment: "left",
+            alignment: "center",
             verticalAlignment: "middle",
             fontSize: 11,
             lineHeight: 1,
@@ -58,7 +60,7 @@ const BasicExclusive = [
             width: 39.44,
             height: 7.89,
             rotate: 0,
-            alignment: "left",
+            alignment: "center",
             verticalAlignment: "middle",
             fontSize: 11,
             lineHeight: 1,
