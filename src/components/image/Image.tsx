@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import getRatio from "./getRatio";
 import { ImageProps } from "./types";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
     (
         {
             ratio,
-            alt = "img",
+            alt = "",
             src = defaultImage,
             size = {
                 width: "100%",
@@ -24,47 +24,56 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
             ...other
         },
         ref
-    ) => (
-        <Box
-            component="span"
-            sx={{
-                borderRadius: 1,
-                width: 1,
-                lineHeight: 1,
-                display: "block",
-                overflow: "hidden",
-                position: "relative",
-                pt: getRatio(ratio),
-                ...containerSx,
-            }}
-        >
+    ) => {
+        // Set defaultImage
+        const handleError = useCallback(() => {
+            if (!ref || typeof ref !== "object" || !ref.current) return;
+            ref.current.src = defaultImage;
+        }, []);
+
+        return (
             <Box
+                component="span"
                 sx={{
-                    top: 0,
-                    left: 0,
+                    borderRadius: 1,
                     width: 1,
-                    height: 1,
-                    position: "absolute",
-                    ...sx,
+                    lineHeight: 1,
+                    display: "block",
+                    overflow: "hidden",
+                    position: "relative",
+                    pt: getRatio(ratio),
+                    ...containerSx,
                 }}
-                // TODO: investigate if this {...other} should go on the container box; currently changing it breaks carousel thumbnail
-                {...other}
             >
-                <img
-                    ref={ref}
-                    className="PPImage-img"
-                    alt={alt}
-                    src={src!}
-                    loading="lazy"
-                    width={size.width}
-                    height={size.height}
-                    style={{
-                        ...imgStyle,
+                <Box
+                    sx={{
+                        top: 0,
+                        left: 0,
+                        width: 1,
+                        height: 1,
+                        position: "absolute",
+                        ...sx,
                     }}
-                />
+                    // TODO: investigate if this {...other} should go on the container box; currently changing it breaks carousel thumbnail
+                    {...other}
+                >
+                    <img
+                        ref={ref}
+                        className="PPImage-img"
+                        alt={alt}
+                        src={src!}
+                        loading="lazy"
+                        width={size.width}
+                        height={size.height}
+                        style={{
+                            ...imgStyle,
+                        }}
+                        onError={handleError}
+                    />
+                </Box>
             </Box>
-        </Box>
-    )
+        );
+    }
 );
 
 export default Image;
