@@ -18,11 +18,6 @@ import { WrapperSx } from "./styled";
 
 const epsilon = 0.01; // floating-point imprecision
 
-const DEFAULT_SIZE = {
-    width: "100%",
-    height: "100%",
-};
-
 const isCloseToRatio = (actual: number, expected: number) =>
     Math.abs(actual - expected) < epsilon;
 
@@ -33,7 +28,6 @@ export interface SmartImage extends Omit<ImageProps, "size"> {
 
 const SmartImage = ({ src, label, hidden, ref, ...props }: SmartImage) => {
     const [ratio, setRatio] = useState<ImageRatio>("4/3");
-    const [size, setSize] = useState(DEFAULT_SIZE);
 
     const imageRef = useRef<HTMLImageElement>(null);
 
@@ -51,10 +45,6 @@ const SmartImage = ({ src, label, hidden, ref, ...props }: SmartImage) => {
         // Vertical (1365x2048)
         if (isCloseToRatio(aspectRatio, 1365 / 2048)) {
             setRatio("1/1");
-            setSize({
-                width: "auto",
-                height: "100%",
-            });
             imageRef.current.style.objectFit = "contain";
             return;
         }
@@ -62,10 +52,6 @@ const SmartImage = ({ src, label, hidden, ref, ...props }: SmartImage) => {
         // Drone (2048x1152)
         if (isCloseToRatio(aspectRatio, 2048 / 1152)) {
             setRatio("1/1");
-            setSize({
-                width: "100%",
-                height: "auto",
-            });
             imageRef.current.style.objectFit = "contain";
             return;
         }
@@ -78,10 +64,6 @@ const SmartImage = ({ src, label, hidden, ref, ...props }: SmartImage) => {
                 src={src}
                 ratio={ratio}
                 sx={WrapperSx}
-                imgStyle={{
-                    width: size.width,
-                    height: size.width,
-                }}
                 {...props}
             />
 
