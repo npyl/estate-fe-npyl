@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { LabeledImage } from "@/components/image";
 import UploadImage from "@/components/image/UploadImage";
 import { useUploadFileContext } from "../context/UploadProgress";
 import React from "react";
 import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 import { ImageItemProps } from "./types";
+import SmartImage from "./SmartImage";
 
 const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
     const { url, thumbnail, hidden, key } = image;
@@ -25,7 +25,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
                     cursor: "pointer",
                 }}
             >
-                <LabeledImage
+                <SmartImage
                     src={url}
                     label={thumbnail ? "main" : ""}
                     hidden={hidden}

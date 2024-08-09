@@ -1,5 +1,6 @@
 // @mui
 import { BoxProps } from "@mui/material";
+import { CSSProperties } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +20,7 @@ export interface ImageProps extends BoxProps {
     alt?: string;
     ratio?: ImageRatio;
     size?: { width: string; height: string };
+    imgStyle?: CSSProperties;
 }
 
 export interface IPreviewImageProps extends ImageProps {
