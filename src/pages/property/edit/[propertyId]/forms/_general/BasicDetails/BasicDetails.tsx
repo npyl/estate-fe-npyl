@@ -37,6 +37,8 @@ import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 import { ClearIcon } from "@mui/x-date-pickers";
 import CustomerModal from "./CustomerModal";
 import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
+import { getValues } from "@/sections/agreements/Dialogs/Preparation/mapper";
+import { useGetPropertyByIdQuery } from "@/services/properties";
 
 interface ICustomerLocationYup {
     street: string;
@@ -76,6 +78,7 @@ const BasicSection: React.FC<any> = () => {
 
     const { propertyId } = router.query;
     const parentCategory = watch("parentCategory") || "";
+    const { data } = useGetPropertyByIdQuery(+propertyId!);
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -205,6 +208,7 @@ const BasicSection: React.FC<any> = () => {
                                 name="price"
                                 label={t("Price")}
                                 adornment="€"
+                                initialValue={data?.price}
                             />
 
                             <RHFCheckbox
@@ -233,6 +237,7 @@ const BasicSection: React.FC<any> = () => {
                             name="averageUtils"
                             label={t("Average Utils")}
                             adornment="€/Month"
+                            initialValue={data?.averageUtils}
                         />
                     </Grid>
 
@@ -242,6 +247,7 @@ const BasicSection: React.FC<any> = () => {
                             name="estimatedRentPrice"
                             label={t("Estimated Rent Price")}
                             adornment="€"
+                            initialValue={data?.estimatedRentPrice}
                         />
                     </Grid>
 
