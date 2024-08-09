@@ -139,7 +139,7 @@ const DataGridTable: FC<GridProps> = ({
                     ),
                 }}
                 localeText={{
-                    toolbarColumns: "Fields",
+                    toolbarColumns: t("Fields"),
                     columnsPanelTextFieldLabel: "Search Field",
                     columnsPanelTextFieldPlaceholder: "Name of Fields",
                     MuiTablePagination: {

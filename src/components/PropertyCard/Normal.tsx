@@ -142,10 +142,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             />
 
             <Stack px={2} py={2} spacing={0.8}>
-                <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
+                <Stack spacing={1} direction="row" mt={1} flexWrap="wrap">
                     {parentCategory.key !== "LAND" ? (
                         <Stack
-                            spacing={1}
+                            spacing={2}
                             direction="row"
                             mt={1}
                             flexWrap="nowrap"
@@ -161,9 +161,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {plotArea || "-"}
-                                    {" m²"}
+                                    {plotArea || "N/A"}
+                                    {plotArea ? " m²" : null}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -177,14 +178,15 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {area || "-"}
-                                    {" m²"}
+                                    {area || "N/A"}
+                                    {area ? " m²" : null}
                                 </Typography>
                             </Stack>
                             <Stack
                                 direction="row"
-                                spacing={0.5}
+                                spacing={0.8}
                                 alignItems="center"
                             >
                                 <Typography>
@@ -193,14 +195,15 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {bedrooms || item.bedrooms || "-"}
-                                    {" beds"}
+                                    {bedrooms || item.bedrooms || "N/A"}{" "}
+                                    {/* {t("beds")} */}
                                 </Typography>
                             </Stack>
                             <Stack
                                 direction="row"
-                                spacing={0.5}
+                                spacing={0.8}
                                 alignItems="center"
                             >
                                 <Typography>
@@ -209,9 +212,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {bathrooms || item.bathrooms || "-"}
-                                    {" baths"}
+                                    {bathrooms || item.bathrooms || "N/A"}{" "}
+                                    {/* {t("baths")} */}
                                 </Typography>
                             </Stack>
                         </Stack>
@@ -304,7 +308,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Stack direction="row" spacing={1}>
                     {state?.value ? (
-                        <NormalBadge name={t(state.value)} color={stateColor} />
+                        <NormalBadge
+                            name={t(state.value)} //fa
+                            color={stateColor}
+                        />
                     ) : null}
                     {category?.value ? (
                         <NormalBadge

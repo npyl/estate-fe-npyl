@@ -101,14 +101,14 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
             case "Year of Construction":
                 return (
                     <ListItem
-                        label={t("Year Of Construction")}
+                        label={t("Year of Construction")}
                         value={construction?.yearOfConstruction || "-"}
                     />
                 );
             case "Year of Renovation":
                 return (
                     <ListItem
-                        label={t("Year Of Renovation")}
+                        label={t("Year of Renovation")}
                         value={construction?.yearOfRenovation || "-"}
                     />
                 );

@@ -1,3 +1,4 @@
+import { secondsInDay } from "date-fns";
 import i18n from "i18next";
 import { Calendar } from "react-date-range";
 import { initReactI18next } from "react-i18next";
@@ -106,8 +107,15 @@ const resources = {
             Basement: "Basement",
             "Semi-basement": "Semi-basement",
             "Ground Floor": "Ground Floor",
+            First: "First",
+            Second: "Second",
+            Third: "Third",
+            Fourth: "Fourth",
+            Fifth: "Fifth",
             Mezzanine: "Mezzanine",
             Bedrooms: "Bedrooms",
+            beds: "beds",
+            baths: "baths",
             Layers: "Layers",
             Kitchens: "Kitchens",
             "Living Rooms": "Living Rooms",
@@ -116,6 +124,8 @@ const resources = {
             View: "View",
             Sea: "Sea",
             "Distance From Sea": "Distance From Sea",
+            Distance: "Distance",
+            "Walking time": "Walking time",
             Mountain: "Mountain",
             Forest: "Forest",
             Unlimited: "Unlimited",
@@ -469,7 +479,8 @@ const resources = {
             "Rental Period Start": "Rental Period Start",
             "Rental Period End": "Rental Period End",
             All: "All",
-
+            "Open in": "Open in",
+            Clone: "Clone",
             "Creation Date": "Creation Date",
             "Updated At": "Updated At",
             Update: "Update",
@@ -521,7 +532,7 @@ const resources = {
             "Edit Label": "Edit Label",
             "Label's name": "Label's name",
             Preview: "Preview",
-
+            "Closest points": "Closest points",
             /////////////////
             "The active properties are published in public sites.":
                 "The active properties are published in public sites.",
@@ -568,7 +579,7 @@ const resources = {
             Address: "Address",
             "Zip code": "Zip code",
             "Call Center Number": "Call Center Number",
-            "Active Property":"Active Property",
+            "Active Property": "Active Property",
             Active: "Active",
             Inactive: "Inactive",
             Greek: "Greek",
@@ -1035,8 +1046,15 @@ const resources = {
             Basement: "Υπόγειο",
             "Semi-basement": "Ημιυπόγειο",
             "Ground Floor": "Ισόγειο",
+            First: "Πρώτος όροφος",
+            Second: "Δεύτερος όροφος",
+            Third: "Τρίτος όροφος",
+            Fourth: "Τέταρτος όροφος",
+            Fifth: "Πέμπτος όροφος",
             Mezzanine: "Ημιόροφος",
             Bedrooms: "Υπνοδωμάτια",
+            beds: "Υπνοδωμάτια",
+            baths: "Μπάνια",
             Layers: "Επίπεδα",
             Kitchens: "Κουζίνες",
             "Living Rooms": "Σαλόνια",
@@ -1045,6 +1063,8 @@ const resources = {
             View: "Θέα",
             Sea: "Θάλασσα",
             "Distance From Sea": "Απόσταση από τη Θάλασσα",
+            Distance: "Απόσταση",
+            "Walking time": "Χρόνος με τα πόδια",
             Mountain: "Βουνό",
             Forest: "Δάσος",
             Unlimited: "Απεριόριστη",
@@ -1214,7 +1234,7 @@ const resources = {
 
             "Loading Dock": "Αποβάθρα Φόρτωσης",
             Consideration: "Αντιπαροχή",
-            "Floor To Area Ratio": "Συντελεστής Δόμησης",
+            "Floor to Area Ratio": "Συντελεστής Δόμησης",
             "Coverage Factor": "Συντελεστής Κάλυψης",
             "Facade Length": "Μήκος Πρόσοψης",
             Inclination: "Κλίση",
@@ -1429,6 +1449,8 @@ const resources = {
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
             All: "Όλα",
+            "Open in": "Άνοιγμα σε ",
+            Clone: "Κλωνοποίηση",
             Delete: "Διαγραφή",
             "Creation Date": "Ημ/νία Δημιουργίας",
             "Updated At": "Ημ/νία Ενημέρωσης",
@@ -1481,7 +1503,7 @@ const resources = {
             "Edit Label": "Επεξεργασία Ετικέτας",
             "Label's name": "Όνομα Ετικέτας",
             Preview: "Προεπισκόπηση",
-
+            "Closest points": "Κοντινά σημεία",
             "Fill in Code and State!":
                 "Συμπληρώστε Κωδικό (Code) και Κατάσταση (State)!",
 
@@ -1519,7 +1541,7 @@ const resources = {
             Address: "Διεύθυνση",
             "Zip code": "Ταχυδρομικός κώδικας",
             "Call Center Number": "Τηλεφωνικό Κέντρο",
-            "Active Property":'Ενεργό ακίνητο',
+            "Active Property": "Ενεργό ακίνητο",
             Active: "Ενεργό",
             Inactive: "Ανενεργό",
             Greek: "Ελληνικά",

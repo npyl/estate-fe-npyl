@@ -22,6 +22,7 @@ import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
 import Grid from "@mui/material/Grid";
 import MapUnavailable from "@/components/Map/MapUnavailable";
+import { t } from "i18next";
 
 const initialState: any[] = [];
 
@@ -315,7 +316,7 @@ function MyComponent() {
             <Grid item xs={12} md={6}>
                 <RelatedPlaces
                     data={data}
-                    title="Closest points"
+                    title={t("Closest points") || ""}
                     list={places}
                     duration={state}
                 />

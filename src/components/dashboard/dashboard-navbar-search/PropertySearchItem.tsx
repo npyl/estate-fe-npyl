@@ -199,11 +199,7 @@ export const PropertySearchItem = ({
                             <Typography fontWeight="bold" fontSize="0.9375rem">
                                 {option?.title}
                             </Typography>
-                        ) : (
-                            <Typography fontWeight="bold" fontSize="0.9375rem">
-                                Name
-                            </Typography>
-                        )}
+                        ) : null}
                     </Grid>
                     <Grid
                         item
@@ -299,10 +295,12 @@ export const PropertySearchItem = ({
                             <Typography>
                                 <i className="las la-bed" />
                             </Typography>
-                            <Typography color="text.secondary">
+                            <Typography color="text.secondary" variant="body2">
                                 {option?.details?.bedrooms === null
-                                    ? "N/A beds"
-                                    : `${option?.details?.bedrooms} beds`}
+                                    ? `N/A ${t("beds")}`
+                                    : `${option?.details?.bedrooms} ${t(
+                                          "beds"
+                                      )}`}
                             </Typography>
                         </Box>
                     </Grid>
@@ -316,10 +314,12 @@ export const PropertySearchItem = ({
                             <Typography>
                                 <i className="las la-bath" />
                             </Typography>
-                            <Typography color="text.secondary">
+                            <Typography color="text.secondary" variant="body2">
                                 {option?.details?.bathrooms === null
-                                    ? "N/A baths"
-                                    : `${option?.details?.bathrooms} baths`}
+                                    ? `N/A ${t("baths")}`
+                                    : `${option?.details?.bathrooms} ${t(
+                                          "baths"
+                                      )}`}
                             </Typography>
                         </Box>
                     </Grid>
