@@ -6,7 +6,7 @@ type ResponseData = {
 };
 
 export const config = {
-    runtime: "experimental-edge",
+    runtime: "edge",
 };
 
 const apiKey = "02d3203c-cf1f-45ad-a803-7bc398509b0c:fx";
