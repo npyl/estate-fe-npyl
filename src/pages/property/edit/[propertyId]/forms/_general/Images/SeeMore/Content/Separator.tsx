@@ -23,7 +23,7 @@ const Separator = () => {
     const { t } = useTranslation();
 
     return (
-        <StyledTypography variant="h3">
+        <StyledTypography variant="h5">
             {t("Private_FEMININE")}
         </StyledTypography>
     );

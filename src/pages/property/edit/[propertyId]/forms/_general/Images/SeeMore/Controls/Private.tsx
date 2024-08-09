@@ -31,7 +31,7 @@ const PrivateButton: React.FC<PrivateButtonProps> = ({ selectedImages }) => {
             startIcon={<LockIcon />}
             onClick={handleClick}
         >
-            {t("Public")}
+            {t("Private")}
         </SoftButton>
     );
 };

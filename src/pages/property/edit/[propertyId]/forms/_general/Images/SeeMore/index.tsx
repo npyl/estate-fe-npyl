@@ -42,6 +42,12 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
     const [selectedImages, setSelectedImages, resetSelectedImages] =
         useArrayState<string[]>([]);
 
+    const handleTabChange = useCallback((t: TListingTab) => {
+        resetSelectedImages();
+        setMode("");
+        setTab(t);
+    }, []);
+
     const handleImageClick = useCallback((imageKey: string) => {
         if (tabRef.current !== "CRM") return;
 
@@ -70,7 +76,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
             PaperProps={DialogPaperProps}
         >
             <DialogTitle onClose={onClose}>
-                <Tabs tab={tab} onChange={setTab} />
+                <Tabs tab={tab} onChange={handleTabChange} />
 
                 {tab === "CRM" ? (
                     <Controls
