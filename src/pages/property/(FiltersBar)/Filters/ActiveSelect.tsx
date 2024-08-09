@@ -43,15 +43,15 @@ export default function ActiveSelect() {
             >
                 <MenuItem value="">
                     <Checkbox checked={activeState === null} />
-                    All
+                    {t("All")}
                 </MenuItem>
                 <MenuItem value="true">
                     <Checkbox checked={activeState === true} />
-                    Active
+                    {t("Active")}
                 </MenuItem>
                 <MenuItem value="false">
                     <Checkbox checked={activeState === false} />
-                    Inactive
+                    {t("Inactive")}
                 </MenuItem>
             </Select>
         </FormControl>

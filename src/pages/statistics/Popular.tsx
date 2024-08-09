@@ -77,7 +77,7 @@ export default function StackedAreas() {
         if (selectedItem) {
             setCategory(selectedItem.key);
         } else if (parentCategory && selectedKey === "") {
-            setCategory("");
+            setCategory("");  //check
         }
     };
 
