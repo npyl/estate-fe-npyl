@@ -778,10 +778,15 @@ const resources = {
             "Other Pollutants": "Other Pollutants",
 
             Private_FEMININE: "Private",
+
+            "Add first 20": "Add first 20",
+            "Remove All": "Remove all",
         },
     },
     el: {
         translation: {
+            "Remove All": "Αφαίρεση όλων",
+            "Add first 20": "Προσθήκη 20 πρώτων",
             Private_FEMININE: "Ιδιωτικές",
 
             "Add images": "Προσθήκη εικόνων",

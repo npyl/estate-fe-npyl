@@ -2,6 +2,7 @@ import { isValidElement, ReactNode } from "react";
 import { TwoDimentionsDndNode } from "./types";
 import { Draggable } from "react-beautiful-dnd";
 import Grid from "@mui/material/Grid";
+import { CenteredDiv } from "./styled";
 
 const getNodeId = (node: ReactNode): any => {
     // Check if the node is a valid React element
@@ -56,13 +57,13 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
             isDragDisabled={preventDrag}
         >
             {(provided) => (
-                <div
+                <CenteredDiv
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
                     {item}
-                </div>
+                </CenteredDiv>
             )}
         </Draggable>
     </Grid>
