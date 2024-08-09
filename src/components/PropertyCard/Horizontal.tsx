@@ -134,6 +134,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                   ]
                         }
                         ratio="4/3"
+                        isActive={item.active}
                     />
                 </Grid>
                 <Grid item xs={8}>

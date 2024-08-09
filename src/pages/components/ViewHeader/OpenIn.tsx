@@ -61,14 +61,22 @@ const OpenIn = () => {
                     ? openSpitogato
                     : undefined
             }
-            sx={{ width: "100%", borderRadius: "10px" }} //Code to make the entire customStack clickable
+            sx={{
+                width: "100%",
+                borderRadius: "10px",
+            }} //Code to make the entire customStack clickable
         >
             <CustomStack
                 flexDirection="row"
                 gap={1}
                 alignItems="center"
                 padding={0.8}
-                sx={{ width: "100%" }}
+                sx={{
+                    width: "100%",
+                    "&:hover": {
+                        borderColor: "neutral.400",
+                    },
+                }}
             >
                 <Typography ml={1} sx={{ textWrap: "nowrap" }}>
                     {t("Open in")}
@@ -80,6 +88,7 @@ const OpenIn = () => {
                             alt="Public Logo"
                             style={{ width: "20px", height: "20px" }}
                         />
+
                         {/* <Typography>Luxury Homes</Typography> */}
                     </IconButton>
                 )}

@@ -73,6 +73,11 @@ const Dashboard: NextPage = () => {
                     <CardWithIcon
                         title={data?.totalActiveProperties.toString() ?? ""}
                         subtitle={t("Total Active Properties")}
+                        info={
+                            t(
+                                "The active properties are published in public sites."
+                            ) as string
+                        }
                     />
                 </Grid>
 

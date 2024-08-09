@@ -25,9 +25,8 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <Typography variant="body2">
                 {propertyDetails?.category?.value ||
                     contactDetails?.category?.value}{" "}
-                {t(` for `)}
-                {propertyDetails?.state?.value ||
-                    contactDetails?.state?.value}{" "}
+                {t(`for`)}{" "}
+                {propertyDetails?.state?.value || contactDetails?.state?.value}{" "}
                 {propertyDetails?.area || contactDetails?.area} m² |{" "}
                 {formatPrice(propertyDetails?.price) || contactDetails?.price} €
                 {propertyDetails?.state?.key === "RENT" ? t(`/month`) : null}

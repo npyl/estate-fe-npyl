@@ -1,13 +1,10 @@
+import { Autocomplete, TextField, InputAdornment } from "@mui/material";
 import {
-    MenuItem,
-    Select,
-    InputLabel,
-    FormControl,
-    InputAdornment,
-    Typography,
-} from "@mui/material";
-import { useController, UseControllerProps } from "react-hook-form";
-import { FC, useEffect, useState } from "react";
+    useController,
+    UseControllerProps,
+    useFormContext,
+} from "react-hook-form";
+import { FC, useState, useEffect } from "react";
 
 type RHFSelectDemandFormProps = UseControllerProps & {
     label: string;
@@ -24,63 +21,94 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
     ...props
 }) => {
     const { field } = useController(props);
-    const [currentValue, setCurrentValue] = useState(field.value);
+    const { control, getValues, setValue } = useFormContext();
+    const [inputValue, setInputValue] = useState<string>("");
 
-    const handleChange = (event: any) => {
-        const value = event.target.value;
-        field.onChange(value === "" ? null : value);
-        setCurrentValue(value === "" ? null : value);
+    const formatNumber = (value: number | string) => {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     useEffect(() => {
-        setCurrentValue(field.value);
+        setInputValue(field.value ? formatNumber(field.value) : "");
     }, [field.value]);
 
-    // Ensure the current value is included in the options if not already present
-    const displayOptions = [...options];
-    if (
-        currentValue !== null &&
-        currentValue !== undefined &&
-        !displayOptions.includes(currentValue)
-    ) {
-        displayOptions.push(currentValue);
-    }
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value.replace(/[^\d]/g, "");
+        const numberValue = parseFloat(value);
+        if (!isNaN(numberValue)) {
+            field.onChange(numberValue);
+            setInputValue(formatNumber(value));
+        } else {
+            setInputValue(value);
+        }
+    };
+
+    const handleAutocompleteChange = (event: any, newValue: string | null) => {
+        if (newValue !== null) {
+            const numberValue = parseFloat(newValue.replace(/[^\d]/g, ""));
+            if (!isNaN(numberValue)) {
+                field.onChange(numberValue);
+                setInputValue(formatNumber(newValue));
+            } else {
+                setInputValue(newValue);
+            }
+        } else {
+            setInputValue("");
+        }
+    };
+    //check the min input value to be less than max value and opossite
+    const handleChangeWithValidation = (value: string) => {
+        const numberValue = parseFloat(value.replace(/[^\d]/g, ""));
+        if (!isNaN(numberValue)) {
+            const [minName, maxName] = field.name.includes("min")
+                ? [field.name, field.name.replace("min", "max")]
+                : [field.name.replace("max", "min"), field.name];
+
+            const minValue = getValues(minName);
+            const maxValue = getValues(maxName);
+
+            if (field.name.includes("min") && numberValue > maxValue) {
+                setValue(maxName, numberValue);
+            } else if (field.name.includes("max") && numberValue < minValue) {
+                setValue(minName, numberValue);
+            }
+            field.onChange(numberValue);
+            setInputValue(formatNumber(value));
+        } else {
+            setInputValue(value);
+        }
+    };
 
     return (
-        <FormControl fullWidth variant="outlined">
-            <InputLabel
-                shrink={currentValue !== null && currentValue !== undefined}
-            >
-                {label}
-            </InputLabel>
-            <Select
-                {...field}
-                label={label}
-                value={currentValue}
-                onChange={handleChange}
-                renderValue={(selected) =>
-                    selected
-                        ? `${selected.toLocaleString("de-DE")}${
-                              adornment ? ` ${adornment}` : ""
-                          }`
-                        : ""
-                }
-                displayEmpty={allowClear}
-            >
-                {allowClear && (
-                    <MenuItem value="">
-                        <Typography>Clear Value</Typography>
-                    </MenuItem>
-                )}
-                {displayOptions.map((option) => (
-                    <MenuItem key={option} value={option}>
-                        {adornment
-                            ? `${option.toLocaleString("de-DE")} ${adornment}`
-                            : `${option.toLocaleString("de-DE")}`}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <Autocomplete
+            freeSolo
+            options={options.map((option) => formatNumber(option))}
+            value={inputValue}
+            onChange={handleAutocompleteChange}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                handleChangeWithValidation(newInputValue);
+            }}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label={label}
+                    InputProps={{
+                        ...params.InputProps,
+                        endAdornment: adornment ? (
+                            <InputAdornment position="end">
+                                {adornment}
+                            </InputAdornment>
+                        ) : null,
+                    }}
+                    onChange={(event) =>
+                        handleInputChange(
+                            event as React.ChangeEvent<HTMLInputElement>
+                        )
+                    }
+                />
+            )}
+        />
     );
 };
 

@@ -42,9 +42,14 @@ import { useTranslation } from "react-i18next";
 interface SearchItemProps {
     searchText: string;
     option: IPropertyResultResponse;
+    onClick: (value: string) => void;
 }
 
-export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
+export const PropertySearchItem = ({
+    option,
+    searchText,
+    onClick,
+}: SearchItemProps) => {
     const { i18n } = useTranslation();
 
     const router = useRouter();
@@ -136,6 +141,11 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         return result;
     }, [rest, searchText]);
 
+    const handleClick = () => {
+        onClick(`${option.code}`);
+        router.push(`/property/${option.id}`);
+    };
+
     return (
         <StyledSearchStack
             justifyContent={"flex-start"}
@@ -145,7 +155,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
             flex={1}
             direction={"row"}
             alignItems={"center"}
-            onClick={() => router.push(`/property/${option.id}`)}
+            onClick={handleClick}
             sx={{
                 overflowX: "hidden",
                 overflowY: "hidden",

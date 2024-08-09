@@ -24,14 +24,19 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AgreementItems from "./AgreementItems";
 import useScreenWidth from "./hook";
+import { addSearchHistory, getSearchHistory } from ".";
 
 const PAGE_SIZE = 20;
 
 interface PropertiesSubListProps {
     searchString: string;
+    onItemClick: (value: string) => void;
 }
 
-const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
+const PropertiesSubList = ({
+    searchString,
+    onItemClick,
+}: PropertiesSubListProps) => {
     const { t } = useTranslation();
 
     const pagination = usePagination();
@@ -74,42 +79,47 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
                     marginY: "10px",
                 }}
             >
-                <Typography
-                    variant="h6"
-                    display="flex"
-                    justifyContent="center"
-                    gap={1}
-                    alignItems="center"
-                    width="100%"
-                    sx={{
-                        borderBottom: "1px solid lightgrey",
-                    }}
-                >
-                    <HomeOutlinedIcon
-                        sx={{
-                            color: "black",
-                            width: "22px",
-                            height: "22px",
-                        }}
-                    />
-                    {t("Properties")}
-                </Typography>
+                {properties.length === 0 ? null : (
+                    <>
+                        <Typography
+                            variant="h6"
+                            display="flex"
+                            justifyContent="center"
+                            gap={1}
+                            alignItems="center"
+                            width="100%"
+                            sx={{
+                                borderBottom: "1px solid lightgrey",
+                            }}
+                        >
+                            <HomeOutlinedIcon
+                                sx={{
+                                    color: "black",
+                                    width: "22px",
+                                    height: "22px",
+                                }}
+                            />
+                            {t("Properties")}
+                        </Typography>
 
-                <Pagination
-                    {...pagination}
-                    isLoading={isLoading}
-                    pageSize={PAGE_SIZE}
-                    totalItems={data?.totalElements ?? 0}
-                    onChange={handlePageChange}
-                >
-                    {properties.map((option) => (
-                        <PropertySearchItem
-                            key={option.id}
-                            option={option}
-                            searchText={searchString}
-                        />
-                    ))}
-                </Pagination>
+                        <Pagination
+                            {...pagination}
+                            isLoading={isLoading}
+                            pageSize={PAGE_SIZE}
+                            totalItems={data?.totalElements ?? 0}
+                            onChange={handlePageChange}
+                        >
+                            {properties.map((option) => (
+                                <PropertySearchItem
+                                    key={option.id}
+                                    option={option}
+                                    searchText={searchString}
+                                    onClick={onItemClick}
+                                />
+                            ))}
+                        </Pagination>
+                    </>
+                )}
             </Grid>
         </ScrollBox>
     );
@@ -119,6 +129,7 @@ interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchText: string;
     searchCategory: SearchCategory;
     onClickOutside: () => void;
+    updateSearchHistory: (history: string[]) => void;
 }
 
 export const SearchList = ({
@@ -127,6 +138,7 @@ export const SearchList = ({
     open,
     onClickOutside,
     anchorEl,
+    updateSearchHistory,
 }: SearchListProps) => {
     const { t } = useTranslation();
     const isMobile = useMediaQuery((theme: Theme) =>
@@ -141,6 +153,11 @@ export const SearchList = ({
     const { data: customersResults } = useSearchCustomerQuery(searchText, {
         skip: searchText === "",
     });
+
+    const handleItemClick = (value: string) => {
+        addSearchHistory(value);
+        updateSearchHistory(getSearchHistory());
+    };
 
     const customers = useMemo(
         () => (searchCategory !== "properties" ? customersResults || [] : []),
@@ -186,7 +203,10 @@ export const SearchList = ({
                 >
                     <Grid container>
                         {searchCategory === "properties" && (
-                            <PropertiesSubList searchString={searchText} />
+                            <PropertiesSubList
+                                searchString={searchText}
+                                onItemClick={handleItemClick}
+                            />
                         )}
 
                         {searchCategory === "all" && (
@@ -198,10 +218,12 @@ export const SearchList = ({
                                     {isMobile ? (
                                         <PropertiesSubList
                                             searchString={searchText}
+                                            onItemClick={handleItemClick}
                                         />
                                     ) : (
                                         <PropertiesSubList
                                             searchString={searchText}
+                                            onItemClick={handleItemClick}
                                         />
                                     )}
                                 </Grid>
@@ -251,6 +273,9 @@ export const SearchList = ({
                                                                 searchText={
                                                                     searchText
                                                                 }
+                                                                onClick={
+                                                                    handleItemClick
+                                                                }
                                                             />
                                                         )
                                                     )}
@@ -290,6 +315,9 @@ export const SearchList = ({
                                                                 option={option}
                                                                 searchText={
                                                                     searchText
+                                                                }
+                                                                onClick={
+                                                                    handleItemClick
                                                                 }
                                                             />
                                                         )
@@ -339,6 +367,7 @@ export const SearchList = ({
                                                 key={index}
                                                 option={option}
                                                 searchText={searchText}
+                                                onClick={handleItemClick}
                                             />
                                         ))}
                                     </ScrollBox>

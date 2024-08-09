@@ -26,12 +26,12 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 
 const SEARCH_HISTORY_KEY = "search_history";
 
-const getSearchHistory = (): string[] => {
+export const getSearchHistory = (): string[] => {
     const history = localStorage.getItem(SEARCH_HISTORY_KEY);
     return history ? JSON.parse(history) : [];
 };
 
-const addSearchHistory = (searchTerm: string) => {
+export const addSearchHistory = (searchTerm: string) => {
     const history = getSearchHistory();
     if (!history.includes(searchTerm)) {
         history.unshift(searchTerm); // Add to the beginning of the list
@@ -284,6 +284,7 @@ export const DashboardNavbarSearch: FC = () => {
                     searchText={debouncedSearch}
                     searchCategory={searchCategory}
                     onClickOutside={() => setAnchorEl(null)}
+                    updateSearchHistory={setSearchHistory}
                 />
             ) : null}
         </>

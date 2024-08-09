@@ -27,7 +27,7 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
-
+    active: boolean;
     createdAt: string;
     updatedAt: string;
 
@@ -54,8 +54,9 @@ export interface IPropertyFilter {
     minConstructionYear?: number;
     maxConstructionYear?: number;
     managerId?: number;
-
+    active?: boolean | null;
     // multiple
+
     cities: string[];
     states: string[];
     categories: string[];
@@ -339,7 +340,7 @@ export interface IProperties {
     buildable: boolean;
     auction: boolean;
     exclusive: boolean;
-
+    active: boolean;
     state: KeyValue;
     parentCategory: KeyValue;
     category: KeyValue;
