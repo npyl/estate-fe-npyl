@@ -35,20 +35,24 @@ const SmartImage = ({ src, label, hidden, ref, ...props }: SmartImage) => {
 
         // Horizontal
         if (Math.abs(aspectRatio - 2048 / 1365) < epsilon) {
+            console.log("Horizontal");
             setRatio("1/1");
             imageRef.current.style.objectFit = "contain";
             imageRef.current.style.backgroundColor = "#F4F6F8"; // neutral.200
         }
         // vertical
         else if (Math.abs(aspectRatio - 1365 / 2048) < epsilon) {
+            console.log("Vertical");
         }
         // drone
         else if (Math.abs(aspectRatio - 2048 / 1152) < epsilon) {
+            console.log("Drone");
             setRatio("1/1");
             imageRef.current.style.objectFit = "contain";
             imageRef.current.style.backgroundColor = "#F4F6F8"; // neutral.200
         } else {
             // OTHER
+            console.log("Other");
         }
     }, []);
 

@@ -18,6 +18,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
                 width: "100%",
                 height: "100%",
             },
+            containerSx,
             sx,
             imgStyle,
             ...other
@@ -34,6 +35,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
                 overflow: "hidden",
                 position: "relative",
                 pt: getRatio(ratio),
+                ...containerSx,
             }}
         >
             <Box
