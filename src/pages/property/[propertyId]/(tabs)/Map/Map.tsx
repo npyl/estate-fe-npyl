@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import useTheme from "@mui/system/useTheme";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
@@ -64,6 +64,7 @@ const reducer = (state: any, action: any) => {
 };
 
 function MyComponent() {
+    const { t } = useTranslation();
     const theme = useTheme();
     const router = useRouter();
     const { isLoaded, loadError } = useLoadApi();
