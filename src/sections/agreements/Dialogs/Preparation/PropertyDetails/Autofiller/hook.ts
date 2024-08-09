@@ -2,7 +2,7 @@ import { FieldValues, UseFormSetValue } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IProperties } from "@/types/properties";
 import { useCallback } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const join = (v0: string | undefined, v1: string | undefined, sep: string) =>
     [v0, v1].filter((s) => !!s).join(sep) || "";

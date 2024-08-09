@@ -1,12 +1,3 @@
-//
-// Three types of images (width x height):
-//  1. 2048x1365
-//  2. 1365x2048
-//  3. 2048x1152
-//
-
-// TODO: will be named PropertyImage
-
 import Box from "@mui/material/Box";
 import { Label, LockIcon } from "./styled";
 import { ImageProps } from "../types";

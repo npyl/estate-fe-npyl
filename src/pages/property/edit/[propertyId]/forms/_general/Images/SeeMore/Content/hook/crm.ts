@@ -115,8 +115,8 @@ const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
             publicKeys,
             privateKeys,
             secondDndStartIndex,
-            onReorder,
-            onReorderWithVisibility,
+            handleReorder,
+            handleReorderWithVisibility,
         ]
     );
 
