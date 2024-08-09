@@ -2,8 +2,6 @@ import { FileRejection } from "react-dropzone";
 // @mui
 import { alpha } from "@mui/material/styles";
 import { Box, Paper, Typography } from "@mui/material";
-// utils
-import { fData } from "../../../utils/formatNumber";
 //
 import { fileData } from "../../file-thumbnail";
 
@@ -35,7 +33,7 @@ export default function RejectionFiles({ fileRejections }: Props) {
                 return (
                     <Box key={path} sx={{ my: 1 }}>
                         <Typography variant="subtitle2" noWrap>
-                            {path} - {size ? fData(size) : ""}
+                            {path}
                         </Typography>
 
                         {errors.map((error) => (
