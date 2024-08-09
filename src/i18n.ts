@@ -783,10 +783,14 @@ const resources = {
             "Remove All": "Remove all",
 
             _main_: "Main",
+            Success: "Success",
+            "Unable to logout": "Unable to logout",
         },
     },
     el: {
         translation: {
+            "Unable to logout": "Αποτυχία κατά την αποσύνδεση",
+            Success: "Επιτυχία",
             _main_: "Κύρια",
 
             "Remove All": "Αφαίρεση όλων",

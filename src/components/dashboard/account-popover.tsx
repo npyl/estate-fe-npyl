@@ -37,7 +37,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             window.location.replace("/authentication/login");
         } catch (err) {
             console.error(err);
-            toast.error("Unable to logout.");
+            toast.error(t("Unable to logout"));
         }
     };
     return (

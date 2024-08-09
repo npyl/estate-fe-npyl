@@ -21,7 +21,7 @@ import {
     Divider,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import LinkIcon from "./LinkIcon";
 import Button from "./button";
 import { useCallback } from "react";
@@ -29,7 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 interface SharePopoverProps extends Omit<PopoverProps, "onClose"> {
     shareUrl: string;
-    onClose: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void;
+    onClose: VoidFunction;
 }
 
 const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
@@ -39,7 +39,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
         () =>
             navigator.clipboard
                 .writeText(shareUrl)
-                .then(() => toast.info(t("Copied to clipboard")))
+                .then(() => toast.success(t("Copied to clipboard")))
                 .catch(() => {}),
         [shareUrl, t]
     );
@@ -74,7 +74,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
         >
             <IconButton
                 sx={{ position: "absolute", top: 8, right: 8 }}
-                onClick={(event) => onClose(event, "backdropClick")}
+                onClick={onClose}
             >
                 <CloseIcon />
             </IconButton>

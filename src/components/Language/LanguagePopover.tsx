@@ -9,7 +9,6 @@ import {
 import Image from "next/image";
 import PropTypes from "prop-types";
 import { FC } from "react";
-import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
 
@@ -48,10 +47,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
         onChange?.(language);
         localStorage.setItem("language", language);
 
-        if (updatesGlobalLanguage)
-            i18n.changeLanguage(language).then(() =>
-                toast.success(t("Language changed") as string)
-            );
+        if (updatesGlobalLanguage) i18n.changeLanguage(language);
     };
 
     return (
