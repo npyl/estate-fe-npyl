@@ -20,7 +20,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { RHFSelect, RHFTextField } from "src/components/hook-form";
 import Iconify from "src/components/iconify";
 import { useSecurityContext } from "src/contexts/security";
@@ -106,13 +106,13 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
             (e: any) => {
                 handleCloseDelete();
                 onClose();
-                !e.error && toast.success("Success");
+                !e.error && toast.success(t("Success"));
             }
         );
     };
     const handleResetPassword = () => {
         resetPassword({ userId: selectedUser, newPassword }).then(
-            (e: any) => !e.error && toast.success("Success")
+            (e: any) => !e.error && toast.success(t("Success"))
         );
         setOpenReset(false);
         onClose();

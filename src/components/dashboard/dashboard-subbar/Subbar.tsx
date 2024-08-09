@@ -1,18 +1,9 @@
-import {
-    Box,
-    Button,
-    Fab,
-    MenuItem,
-    Paper,
-    Popover,
-    Stack,
-} from "@mui/material";
+import { Button, Fab, MenuItem, Paper, Popover, Stack } from "@mui/material";
 import { MouseEvent, useState, useCallback } from "react";
 import StyledMenu from "@/components/StyledMenu";
 import SubbarItems from "./Items";
 import { useTranslation } from "react-i18next";
 import { BsPlusCircle } from "react-icons/bs";
-import useAutosaveRouter from "@/components/Router/Autosave";
 
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
@@ -24,8 +15,8 @@ import AddIcon from "@mui/icons-material/Add";
 
 import { styled } from "@mui/material/styles";
 import getBorderColor from "@/theme/borderColor";
-import useTheme from "@mui/system/useTheme";
 import { SpaceBetween } from "@/components/styled";
+import { useRouter } from "next/router";
 
 const propertyItemType = "property-menu-item";
 const managerItemType = "manager-menu-item";
@@ -154,8 +145,8 @@ const FabMenu = ({ onClick }: FabMenuProps) => {
 
 const Subbar = () => {
     const { t } = useTranslation();
-    const router = useAutosaveRouter();
-    const theme = useTheme();
+    const router = useRouter();
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 

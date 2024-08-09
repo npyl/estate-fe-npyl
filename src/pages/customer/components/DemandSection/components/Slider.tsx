@@ -17,6 +17,10 @@ type DemandFormSliderProps = {
     options?: number[];
 };
 
+const formatNumber = (value: number) => {
+    return value.toLocaleString("de-DE");
+};
+
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     label,
     min,
@@ -36,9 +40,15 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
 
     const handleSliderChange = (name: string, value: number | number[]) => {
         if (Array.isArray(value)) {
-            const [minValue, maxValue] = value;
-            setValue(minName, minValue === defaultMin ? null : minValue);
-            setValue(maxName, maxValue === defaultMin ? null : maxValue);
+            let [minValue, maxValue] = value;
+
+            // Ensure minValue is not greater than maxValue
+            if (minValue > maxValue) {
+                minValue = maxValue;
+            }
+
+            setValue(minName, minValue);
+            setValue(maxName, maxValue);
         }
     };
 
@@ -64,6 +74,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                                 handleSliderChange(minName, value)
                             }
                             valueLabelDisplay="auto"
+                            valueLabelFormat={formatNumber}
                         />
                     )}
                 />

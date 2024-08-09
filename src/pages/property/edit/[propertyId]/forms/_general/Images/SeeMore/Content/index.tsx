@@ -1,77 +1,65 @@
-import { useMemo } from "react";
-import MultiFilePreviewReorder from "./PreviewReorder/Normal";
-import Over25ImagesPreview from "./PreviewReorder/Over25";
 import { IPropertyImage } from "@/types/file";
-import usePropertyImages from "../../hook";
-import { DndItem } from "./PreviewReorder/types";
+import { TListingTab } from "../types";
 import DropZone from "./DropZone";
-import { useImageOperations } from "../../context/ImageOperations";
+import Over25ImagesPreview from "./PreviewReorder";
+import useContentOperations from "./hook";
+import { useCallback } from "react";
+import SelectableItem from "./Selectable";
+import React from "react";
+
+const COLUMNS = {
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+};
 
 interface ContentProps {
-    createItemCb: (f: IPropertyImage, index: number) => DndItem;
+    tab: TListingTab;
+    selectedImages: string[];
+    onImageClick: (key: string) => void;
 }
 
-const Content: React.FC<ContentProps> = ({ createItemCb }) => {
-    const { images, propertyId } = usePropertyImages();
+const Content: React.FC<ContentProps> = ({
+    tab,
+    selectedImages,
+    onImageClick,
+}) => {
+    const createItem = useCallback(
+        (f: IPropertyImage, index: number) => {
+            const isSelected =
+                selectedImages.findIndex((key) => key === f.key) > -1;
 
-    const { reorderImages, reorderImagesWithVisibility, isLoading } =
-        useImageOperations();
-
-    const handleReorder = (items: string[]) => {
-        if (isLoading) return;
-
-        reorderImages({ id: propertyId, body: items });
-    };
-
-    const handleReorderWithVisibility = (
-        imageKeys: string[],
-        imageKey: string,
-        hidden: boolean
-    ) => {
-        if (isLoading) return;
-
-        reorderImagesWithVisibility({
-            propertyId,
-            imageKeys,
-            imageKey,
-            hidden,
-        });
-    };
-
-    const { items, publicImages, privateImages } = useMemo(
-        () => ({
-            items: images.length <= 25 ? images.map(createItemCb) : [],
-
-            publicImages:
-                images.length > 25
-                    ? images.filter((f) => !f.hidden).map(createItemCb)
-                    : [],
-            privateImages:
-                images.length > 25
-                    ? images.filter((f) => f.hidden).map(createItemCb)
-                    : [],
-        }),
-        [images, createItemCb]
+            return (
+                <SelectableItem
+                    id={index}
+                    key={f.key}
+                    selected={isSelected}
+                    image={f}
+                    onImageClick={onImageClick}
+                />
+            );
+        },
+        [selectedImages, onImageClick]
     );
 
+    const { publicImages, privateImages, handleDragEnd, isLoading } =
+        useContentOperations(tab, createItem);
+
+    const isNotCRM = tab !== "CRM";
+
     return (
-        <DropZone>
-            {images.length > 25 ? (
-                <Over25ImagesPreview
-                    publicImages={publicImages}
-                    privateImages={privateImages}
-                    onReorder={handleReorder}
-                    onReorderWithVisibility={handleReorderWithVisibility}
-                />
-            ) : (
-                <MultiFilePreviewReorder
-                    items={items}
-                    columns={5}
-                    onReorder={handleReorder}
-                />
-            )}
+        <DropZone disabled={isNotCRM}>
+            <Over25ImagesPreview
+                publicImages={publicImages}
+                privateImages={privateImages}
+                columns={COLUMNS}
+                preventDrag={isLoading}
+                onDragEnd={handleDragEnd}
+            />
         </DropZone>
     );
 };
 
-export default Content;
+export default React.memo(Content);

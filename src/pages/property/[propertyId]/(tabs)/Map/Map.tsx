@@ -15,13 +15,14 @@ import {
 } from "@mui/material";
 import useTheme from "@mui/system/useTheme";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
 import Grid from "@mui/material/Grid";
 import MapUnavailable from "@/components/Map/MapUnavailable";
+import { useTranslation } from "react-i18next";
 
 const initialState: any[] = [];
 
@@ -63,6 +64,7 @@ const reducer = (state: any, action: any) => {
 };
 
 function MyComponent() {
+    const { t } = useTranslation();
     const theme = useTheme();
     const router = useRouter();
     const { isLoaded, loadError } = useLoadApi();
@@ -315,7 +317,7 @@ function MyComponent() {
             <Grid item xs={12} md={6}>
                 <RelatedPlaces
                     data={data}
-                    title="Closest points"
+                    title={t("Closest points") || ""}
                     list={places}
                     duration={state}
                 />

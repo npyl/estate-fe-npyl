@@ -3,7 +3,7 @@ import { LoadingButton } from "@mui/lab";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const SERVICES = [
     { service: "hospital", RHFName: "distances.hospital" },

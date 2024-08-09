@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
-import { toast } from "react-hot-toast";
 import { VerticalAlignBottom } from "@mui/icons-material";
 
 interface LanguagePopoverProps {
@@ -48,11 +47,10 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
         onClose?.();
         onChange?.(language);
         localStorage.setItem("language", language);
-        if (updatesGlobalLanguage)
-            i18n.changeLanguage(language).then(() =>
-                toast.success(t("Language changed") as string)
-            );
+
+        if (updatesGlobalLanguage) i18n.changeLanguage(language);
     };
+
     const currentLanguage = updatesGlobalLanguage
         ? i18n.language
         : (i18n.language as Language);

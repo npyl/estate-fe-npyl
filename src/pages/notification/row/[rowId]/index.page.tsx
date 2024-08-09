@@ -5,10 +5,7 @@ import {
     Card,
     CardContent,
     CardMedia,
-    Rating,
-    Tooltip,
 } from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
 
 import { AdminGuard } from "src/components/authentication/admin-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -17,23 +14,10 @@ import type { NextPage } from "next";
 import { useGetNotificationByIdQuery } from "@/services/notification";
 
 import { useRouter } from "next/router";
-import {
-    useGetPropertyByCodeQuery,
-    useLazyGetPropertyByCodeQuery,
-} from "@/services/properties";
-import { t } from "i18next";
-import { LocalPhone } from "@mui/icons-material";
-import { NormalBadge } from "@/components/PropertyCard/styled";
-import PropertyCard from "@/components/PropertyCard/Horizontal";
-import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
-import CommentIcon from "@mui/icons-material/Comment";
 import WorkDetails from "./components/WorkDetails";
-import Link from "next/link";
-import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriate icon
-import ExpiredIcon from "@mui/icons-material/Error";
 import AgreementDetails from "./components/AgreementDetails";
-import PropertyDetails from "../components/PropertyDetails";
 import TourPropertyBadges from "./components/TourPropertyBadges";
 import ListingStateBadge from "./components/ListingStateBadge";
 import CustomerInfo from "../components/CustomerInfo";
@@ -43,11 +27,10 @@ import ListingPropertyDetails from "./components/ListingPropertyDetails";
 import TitleSection from "./components/TitleSection";
 
 const NotificationDetailPage: NextPage = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { rowId } = router.query;
-    const { data, isLoading, error } = useGetNotificationByIdQuery(
-        Number(rowId)
-    );
+    const { data, error } = useGetNotificationByIdQuery(Number(rowId));
 
     const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
         skip: !rowId && !open,
@@ -222,10 +205,12 @@ const NotificationDetailPage: NextPage = () => {
                             />
                         )}
                         {workForUs ? (
-                            <WorkDetails
-                                workForUs={workForUs}
-                                truePositions={truePositions}
-                            />
+                            <Box p={1}>
+                                <WorkDetails
+                                    workForUs={workForUs}
+                                    truePositions={truePositions}
+                                />
+                            </Box>
                         ) : null}
                         <CardContent sx={{ ml: 5 }}>
                             <Stack
@@ -233,40 +218,44 @@ const NotificationDetailPage: NextPage = () => {
                                 justifyContent="space-between"
                                 width="100%"
                             >
-                                {type === "TOUR" || "REVIEW" ? (
-                                    <Typography variant="h6">
-                                        {property?.descriptions?.el?.title}
-                                    </Typography>
-                                ) : null}
-
                                 {type === "LISTING" ? (
-                                    <Typography variant="h6">
-                                        {listing?.title}
-                                    </Typography>
-                                ) : null}
-                            </Stack>
-                            {/* property exists in Tour and Review */}
-                            {property ? (
-                                <TourPropertyDetails property={property} />
-                            ) : null}
+                                    <Stack direction={"column"}>
+                                        <Typography variant="h6">
+                                            {listing?.title}
+                                        </Typography>
 
-                            {listing ? (
-                                <ListingPropertyDetails listing={listing} />
-                            ) : null}
-
-                            <Stack mt={3} gap={2} direction="row">
-                                {property ? (
-                                    <TourPropertyBadges
-                                        stateValue={property?.state?.value}
-                                        code={property?.code}
-                                    />
+                                        <ListingPropertyDetails
+                                            listing={listing}
+                                        />
+                                        <Stack mt={3} gap={2} direction="row">
+                                            <ListingStateBadge
+                                                stateValue={
+                                                    listing?.state?.value || ""
+                                                }
+                                            />
+                                        </Stack>
+                                    </Stack>
                                 ) : null}
 
-                                {listing ? (
-                                    <ListingStateBadge
-                                        stateValue={listing?.state?.value}
-                                    />
-                                ) : null}
+                                {(type === "TOUR" || type === "REVIEW") && (
+                                    <Stack>
+                                        <Typography variant="h6">
+                                            {property?.descriptions?.el?.title}
+                                        </Typography>
+                                        <TourPropertyDetails
+                                            property={property}
+                                        />
+
+                                        <Stack mt={3} gap={2} direction="row">
+                                            <TourPropertyBadges
+                                                stateValue={
+                                                    property?.state?.value || ""
+                                                }
+                                                code={property?.code || ""}
+                                            />
+                                        </Stack>
+                                    </Stack>
+                                )}
                             </Stack>
                         </CardContent>
                     </Stack>

@@ -17,6 +17,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
+    onClick: (value: string) => void;
 }
 
 interface ItemProps {
@@ -42,7 +43,11 @@ const Item = ({ highlight, label, value }: ItemProps) => {
     );
 };
 
-export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
+export const CustomerSearchItem = ({
+    option,
+    searchText,
+    onClick,
+}: SearchItemProps) => {
     const router = useRouter();
     const firstName = useMemo(
         () => ({
@@ -80,6 +85,11 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
         [option.city, searchText]
     );
 
+    const handleClick = () => {
+        onClick(`${option.firstName} ${option.lastName}`);
+        router.push(`/customer/${option.id}`);
+    };
+
     return (
         <StyledSearchStack
             justifyContent={"flex-start"}
@@ -89,7 +99,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
             flex={1}
             direction={"row"}
             alignItems={"center"}
-            onClick={() => router.push(`/customer/${option.id}`)}
+            onClick={handleClick}
             sx={{ height: "195px", width: "auto" }}
         >
             <Stack direction={"column"} flex={1} gap={2}>

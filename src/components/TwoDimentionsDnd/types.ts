@@ -1,7 +1,12 @@
-export interface TwoDimentionsDndItem {
-    id: number;
-    value: any;
+import { StackProps } from "@mui/material";
+import { ReactElement } from "react";
+
+interface ChildProps {
+    id: number | string; // INFO: this is the id referred to as "someId" below
+    [key: string]: any;
 }
+
+export type TwoDimentionsDndNode = ReactElement<ChildProps> | null;
 
 /*
  *  dndId:  To be used when we have multiple dnds under the same DragDropContext.
@@ -19,14 +24,17 @@ export interface TwoDimentionsDndItem {
  *              draggableId (and key):      item-{someId}
  *              draggable index:            {j}
  */
-export interface TwoDimentionsDndNoContextProps {
-    items: TwoDimentionsDndItem[];
+export interface TwoDimentionsDndNoContextProps
+    extends Omit<StackProps, "children"> {
     columns: number;
     gap?: number;
 
     // Multiple Dnds
     dndId?: number;
     startIndex?: number;
+
+    preventDrag?: boolean;
+    children: TwoDimentionsDndNode | TwoDimentionsDndNode[];
 }
 
 export const DroppableTypeItem = "ITEM";

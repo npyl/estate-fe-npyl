@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/PropertyCard/styled"; // Adjust the path as necessary
 
 interface TourPropertyBadgesProps {
@@ -12,6 +12,8 @@ const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
     stateValue,
     code,
 }) => {
+    const { t } = useTranslation();
+
     return (
         <Stack direction="row" gap={2}>
             <NormalBadge

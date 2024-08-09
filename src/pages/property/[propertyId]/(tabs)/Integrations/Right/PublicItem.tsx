@@ -14,7 +14,7 @@ const publicLogo = "/static/PublicLogo.png";
 
 const PublicItem = ({ label, published, onClick }: PublicItemProps) => (
     <Item>
-        <Stack direction="row" spacing={0.8} alignItems="center">
+        <Stack direction="row" spacing={1.5} alignItems="center">
             <IconButton size="small">
                 <img
                     src={publicLogo}
@@ -22,16 +22,18 @@ const PublicItem = ({ label, published, onClick }: PublicItemProps) => (
                     style={{ width: "20px", height: "20px" }}
                 />
             </IconButton>
-            <Typography>{label}</Typography>
-        </Stack>
+            <Typography sx={{ position: "relative", left: -7 }}>
+                {label}
+            </Typography>
 
-        <LabeledSwitch
-            checked={published}
-            labelOn="Published"
-            labelOff="Unpublished"
-            onChange={onClick}
-            name="checkedA"
-        />
+            <LabeledSwitch
+                checked={published}
+                labelOn="Published"
+                labelOff="Unpublished"
+                onChange={onClick}
+                name="checkedA"
+            />
+        </Stack>
     </Item>
 );
 

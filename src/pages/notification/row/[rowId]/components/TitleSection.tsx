@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack, Typography } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { ContactNotificationExtended } from "@/types/notification";
 
@@ -17,6 +17,8 @@ const TitleSection: React.FC<TitleSectionProps> = ({
     agreementVariant,
     isAgreementActive,
 }) => {
+    const { t } = useTranslation();
+
     const getTitle = () => {
         switch (type) {
             case "TOUR":

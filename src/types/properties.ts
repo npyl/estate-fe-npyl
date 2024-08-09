@@ -27,7 +27,7 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
-
+    active: boolean;
     createdAt: string;
     updatedAt: string;
 
@@ -38,6 +38,8 @@ export interface IPropertyResultResponse {
     cityGR: string;
     complexEN: string;
     complexGR: string;
+    bedrooms?: number;
+    bathrooms?: number;
 }
 
 export interface IPropertyFilter {
@@ -54,8 +56,9 @@ export interface IPropertyFilter {
     minConstructionYear?: number;
     maxConstructionYear?: number;
     managerId?: number;
-
+    active?: boolean | null;
     // multiple
+
     cities: string[];
     states: string[];
     categories: string[];
@@ -339,7 +342,7 @@ export interface IProperties {
     buildable: boolean;
     auction: boolean;
     exclusive: boolean;
-
+    active: boolean;
     state: KeyValue;
     parentCategory: KeyValue;
     category: KeyValue;
@@ -365,6 +368,8 @@ export interface IProperties {
     googleEarth: IGoogleEarth;
 
     visitors: number;
+    bedrooms: number;
+    bathrooms: number;
 }
 
 export interface IPropertyMarker {

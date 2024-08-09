@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
 // @mui
 import { Box } from "@mui/material";
+import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 // components
 import Carousel from "./carousel";
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
-
 import { ImageRatio, LabeledImage } from "src/components/image";
 import ICarouselImage from "./carousel/types";
 
@@ -21,6 +21,7 @@ type Props = {
     mainLabel?: string;
     onImageChange?: (newImage: ICarouselImage) => void;
     onImageClick?: () => void;
+    isActive?: boolean;
 };
 
 // ----------------------------------------------------------------------
@@ -33,6 +34,7 @@ export default function CarouselSimple({
     mainLabel,
     ratio = "16/9",
     size,
+    isActive,
 }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -85,28 +87,41 @@ export default function CarouselSimple({
                 onClick={() => {
                     onImageClick && onImageClick();
                 }}
+                sx={{ position: "relative" }}
             >
+                {isActive === false && (
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            top: 5,
+                            right: 10,
+                            zIndex: 1,
+                        }}
+                    >
+                        <LinkOffOutlinedIcon
+                            sx={{ color: "aliceblue", fontSize: 25 }}
+                        />
+                    </Box>
+                )}
                 <Carousel
                     {...carouselSettings1}
                     asNavFor={nav1}
                     ref={carousel1}
                 >
-                    {data.map(
-                        ({ id, title, url, hidden, thumbnail }, index) => (
-                            <LabeledImage
-                                key={id}
-                                alt={title}
-                                src={url || ""}
-                                hidden={hidden}
-                                label={mainLabel && thumbnail ? mainLabel : ""}
-                                onClick={() => {
-                                    onImageClick && onImageClick();
-                                }}
-                                size={size}
-                                ratio={ratio! as ImageRatio}
-                            />
-                        )
-                    )}
+                    {data.map(({ id, title, url, hidden, thumbnail }) => (
+                        <LabeledImage
+                            key={id}
+                            alt={title}
+                            src={url || ""}
+                            hidden={hidden}
+                            label={mainLabel && thumbnail ? mainLabel : ""}
+                            onClick={() => {
+                                onImageClick && onImageClick();
+                            }}
+                            size={size}
+                            ratio={ratio! as ImageRatio}
+                        />
+                    ))}
                 </Carousel>
             </Box>
             <CarouselArrowIndex

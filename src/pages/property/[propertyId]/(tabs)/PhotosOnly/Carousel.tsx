@@ -1,4 +1,4 @@
-import { Suspense, lazy, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 // @mui
 import { Box, Button, Divider, Grid, Stack, Tab, Tabs } from "@mui/material";
 import { LabeledImage } from "src/components/image";
@@ -9,9 +9,10 @@ import PreviewImage from "@/components/image/PreviewImage";
 import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
 import { IPropertyImage } from "@/types/file";
+import dynamic from "next/dynamic";
 
-const Lightbox = lazy(() => import("./Lightbox"));
-const DownloadDialog = lazy(() => import("./Dialog"));
+const Lightbox = dynamic(() => import("@/components/Lightbox"));
+const DownloadDialog = dynamic(() => import("./Dialog"));
 
 const downloadBlob = (blob: Blob, hidden: boolean): void => {
     const filename = hidden ? "AllImages.zip" : "PublicImages.zip";
@@ -51,11 +52,6 @@ function OnlyPhotosCarousel({ data }: Props) {
     const closeLightbox = () => setClickedImageIndex(-1);
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
-    const lightboxImages = useMemo(
-        () => data.map(({ url }) => ({ src: url || "" })),
-        [data]
-    );
-
     const handleExport = async (hidden: boolean) => {
         setLoading(true);
         downloadZip({
@@ -69,30 +65,35 @@ function OnlyPhotosCarousel({ data }: Props) {
 
     const [selectedTab, setSelectedTab] = useState(0);
 
-    const IMAGES = useMemo(() => {
-        const filtered =
+    const filtered = useMemo(
+        () =>
             selectedTab === 0 // all
                 ? data
                 : selectedTab === 1 // public
                 ? data.filter(({ hidden }) => !hidden)
-                : data.filter(({ hidden }) => !!hidden); // private
+                : data.filter(({ hidden }) => !!hidden),
+        [selectedTab, data]
+    );
 
-        return filtered.map(({ id, url, title, hidden }, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
-                {url ? (
-                    <LabeledImage
-                        alt={title}
-                        src={url}
-                        hidden={hidden}
-                        ratio="16/9"
-                        onClick={() => setClickedImageIndex(index)}
-                    />
-                ) : (
-                    <PreviewImage />
-                )}
-            </Grid>
-        ));
-    }, [data, selectedTab]);
+    const IMAGES = useMemo(
+        () =>
+            filtered.map(({ id, url, title, hidden }, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
+                    {url ? (
+                        <LabeledImage
+                            alt={title}
+                            src={url}
+                            hidden={hidden}
+                            ratio="16/9"
+                            onClick={() => setClickedImageIndex(index)}
+                        />
+                    ) : (
+                        <PreviewImage />
+                    )}
+                </Grid>
+            )),
+        [filtered]
+    );
 
     const handleTabChange = (_: any, t: number) => setSelectedTab(t);
 
@@ -129,28 +130,24 @@ function OnlyPhotosCarousel({ data }: Props) {
 
             {/* Lightbox */}
             {clickedImageIndex > -1 ? (
-                <Suspense>
-                    <Lightbox
-                        open={clickedImageIndex > -1}
-                        clickedImage={clickedImageIndex}
-                        images={lightboxImages}
-                        onClose={closeLightbox}
-                    />
-                </Suspense>
+                <Lightbox
+                    open
+                    index={clickedImageIndex}
+                    images={filtered}
+                    onClose={closeLightbox}
+                />
             ) : null}
 
             {/* Dialog */}
             {isDialogOpen ? (
-                <Suspense>
-                    <DownloadDialog
-                        open={isDialogOpen}
-                        onClose={closeDialog}
-                        // ...
-                        loading={loading}
-                        onExportAll={() => handleExport(true)}
-                        onExportPublic={() => handleExport(false)}
-                    />
-                </Suspense>
+                <DownloadDialog
+                    open={isDialogOpen}
+                    onClose={closeDialog}
+                    // ...
+                    loading={loading}
+                    onExportAll={() => handleExport(true)}
+                    onExportPublic={() => handleExport(false)}
+                />
             ) : null}
         </>
     );

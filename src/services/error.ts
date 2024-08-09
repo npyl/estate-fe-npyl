@@ -3,7 +3,7 @@ import {
     MiddlewareAPI,
     isRejectedWithValue,
 } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 /**
  * Log a warning and show a toast!

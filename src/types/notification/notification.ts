@@ -129,7 +129,7 @@ interface PropertyAgreement {
     code: string;
     id: number;
 }
-interface AgreementDetails {
+export interface AgreementDetails {
     active: boolean;
     code: string;
     expirationDate: string;

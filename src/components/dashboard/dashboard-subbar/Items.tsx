@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 import { useCallback, useMemo, MouseEvent } from "react";
 import { useTabsContext } from "src/contexts/tabs";
-import useAutosaveRouter from "src/components/Router/Autosave";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
 import useResponsive from "@/hooks/useResponsive";
+import { useRouter } from "next/router";
 
 interface SubbarItemProps extends ButtonProps {
     current: boolean;
@@ -71,7 +71,7 @@ const getLabel = (belowSm: boolean, label: string) => {
 };
 
 const SubbarItems = (props: StackProps) => {
-    const router = useAutosaveRouter();
+    const router = useRouter();
     const { appTabs, removeTab, removeTabNoChange } = useTabsContext();
 
     const currentPath = useMemo(() => router.asPath, [router.asPath]);

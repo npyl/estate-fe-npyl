@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { IPropertyForNotification } from "@/types/notification/notification";
 
 const formatPrice = (price: number | undefined) => {
@@ -17,6 +17,8 @@ interface TourPropertyDetailsProps {
 const TourPropertyDetails: React.FC<TourPropertyDetailsProps> = ({
     property,
 }) => {
+    const { t } = useTranslation();
+
     if (!property) return null;
 
     return (

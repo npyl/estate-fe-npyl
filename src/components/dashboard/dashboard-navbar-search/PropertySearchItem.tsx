@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { MatchResult } from "./types";
 import useTheme from "@mui/system/useTheme";
 import { NormalBadge } from "@/components/PropertyCard/styled";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type PropertyStatus =
     | "SOLD"
@@ -37,15 +37,18 @@ const getStatusColor = (status: string): string => {
     return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 };
 
-import { useTranslation } from "react-i18next";
-
 interface SearchItemProps {
     searchText: string;
     option: IPropertyResultResponse;
+    onClick: (value: string) => void;
 }
 
-export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
-    const { i18n } = useTranslation();
+export const PropertySearchItem = ({
+    option,
+    searchText,
+    onClick,
+}: SearchItemProps) => {
+    const { i18n, t } = useTranslation();
 
     const router = useRouter();
     const theme = useTheme();
@@ -136,6 +139,11 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         return result;
     }, [rest, searchText]);
 
+    const handleClick = () => {
+        onClick(`${option.code}`);
+        router.push(`/property/${option.id}`);
+    };
+
     return (
         <StyledSearchStack
             justifyContent={"flex-start"}
@@ -145,7 +153,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
             flex={1}
             direction={"row"}
             alignItems={"center"}
-            onClick={() => router.push(`/property/${option.id}`)}
+            onClick={handleClick}
             sx={{
                 overflowX: "hidden",
                 overflowY: "hidden",
@@ -189,11 +197,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             <Typography fontWeight="bold" fontSize="0.9375rem">
                                 {option?.title}
                             </Typography>
-                        ) : (
-                            <Typography fontWeight="bold" fontSize="0.9375rem">
-                                Name
-                            </Typography>
-                        )}
+                        ) : null}
                     </Grid>
                     <Grid
                         item
@@ -289,10 +293,12 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             <Typography>
                                 <i className="las la-bed" />
                             </Typography>
-                            <Typography color="text.secondary">
+                            <Typography color="text.secondary" variant="body2">
                                 {option?.details?.bedrooms === null
-                                    ? "N/A beds"
-                                    : `${option?.details?.bedrooms} beds`}
+                                    ? `N/A ${t("beds")}`
+                                    : `${option?.details?.bedrooms} ${t(
+                                          "beds"
+                                      )}`}
                             </Typography>
                         </Box>
                     </Grid>
@@ -306,10 +312,12 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             <Typography>
                                 <i className="las la-bath" />
                             </Typography>
-                            <Typography color="text.secondary">
+                            <Typography color="text.secondary" variant="body2">
                                 {option?.details?.bathrooms === null
-                                    ? "N/A baths"
-                                    : `${option?.details?.bathrooms} baths`}
+                                    ? `N/A ${t("baths")}`
+                                    : `${option?.details?.bathrooms} ${t(
+                                          "baths"
+                                      )}`}
                             </Typography>
                         </Box>
                     </Grid>

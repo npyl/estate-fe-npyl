@@ -12,8 +12,6 @@ import {
 import { ContactNotification, IWorkForUs } from "src/types/notification";
 import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
 import Link from "next/link";
-import { LocalPhone } from "@mui/icons-material";
-import EmailIcon from "@mui/icons-material/Email";
 import { useRouter } from "next/router";
 import {
     format,
@@ -24,7 +22,7 @@ import {
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
 import { NormalBadge } from "@/components/PropertyCard/styled";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import dayjs from "dayjs";
 import PropertyRegion from "./components/PropertyRegion";
@@ -88,6 +86,8 @@ const BasicRow = ({
     contactDetails,
     workDetails,
 }: BasicRowProps) => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const [toggleNotificationViewedStatus] =
         useToggleNotificationViewedStatusMutation();
@@ -169,149 +169,159 @@ const BasicRow = ({
                             {type === "TOUR" ||
                             type === "LISTING" ||
                             type === "REVIEW" ? (
-                                <PropertyDetails
-                                    propertyDetails={propertyDetails}
-                                    contactDetails={contactDetails}
-                                />
+                                <>
+                                    <PropertyDetails
+                                        propertyDetails={propertyDetails}
+                                        contactDetails={contactDetails}
+                                    />
+                                    <PropertyRegion
+                                        propertyDetails={propertyDetails}
+                                        contactDetails={contactDetails}
+                                        row={row}
+                                        handlePropertyCodeClick={
+                                            handlePropertyCodeClick
+                                        }
+                                    />
+                                </>
                             ) : type === "WORK_FOR_US" ? (
                                 <Box>
                                     <Typography>{row.message}</Typography>
-                                </Box>
-                            ) : type === "AGREEMENT" ? (
-                                <Typography fontWeight="bold">
-                                    {row?.agreement?.title}
-                                </Typography>
-                            ) : null}
-                            {type === "TOUR" ||
-                            type === "REVIEW" ||
-                            type === "LISTING" ? (
-                                <PropertyRegion
-                                    propertyDetails={propertyDetails}
-                                    contactDetails={contactDetails}
-                                    row={row}
-                                    handlePropertyCodeClick={
-                                        handlePropertyCodeClick
-                                    }
-                                />
-                            ) : type === "WORK_FOR_US" ? (
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    gap={1}
-                                    mt={0.5}
-                                >
-                                    <LocationOnOutlinedIcon fontSize="small" />{" "}
-                                    {workDetails?.workRegion ? (
-                                        <Typography>
-                                            {workDetails?.workRegion?.nameGR}
-                                        </Typography>
-                                    ) : null}
-                                </Box>
-                            ) : type === "AGREEMENT" ? (
-                                <Box>
-                                    <Typography variant="body2" mt={0.5}>
-                                        {row?.message}
-                                    </Typography>
-
-                                    <Stack
-                                        direction="row"
-                                        mt={0.5}
-                                        gap={0.5}
-                                        alignItems="center"
-                                    >
-                                        <Typography variant="body2">
-                                            For property with{" "}
-                                        </Typography>
-                                        <Link
-                                            href={`/property/${row?.agreement?.property?.id}`}
-                                            passHref
-                                            style={{ textDecoration: "none" }}
-                                        >
-                                            <NormalBadge
-                                                name={`${t("Code")}: ${
-                                                    row?.agreement?.property
-                                                        ?.code || ""
-                                                }`}
-                                                color={"#ffcc00"}
-                                                sx={{
-                                                    color: "#854D0E",
-                                                    width: "100%",
-                                                    "&:hover": {
-                                                        backgroundColor:
-                                                            "#e6b800",
-                                                    },
-                                                }}
-                                                onClick={
-                                                    handlePropertyCodeClick
-                                                }
-                                            />
-                                        </Link>
-                                    </Stack>
-                                    <Link
-                                        href={`/customer/${row?.agreement?.owner?.id}`}
-                                        passHref
-                                        style={{
-                                            textDecoration: "none",
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="body2"
-                                            onClick={handleCustomerNameClick}
-                                            mt={0.5}
-                                        >
-                                            Owner{": "}
-                                            {row?.agreement?.owner?.name}
-                                        </Typography>
-                                    </Link>
-                                    <Stack
-                                        direction="row"
+                                    <Box
+                                        display="flex"
                                         alignItems="center"
                                         gap={1}
+                                        mt={0.5}
                                     >
+                                        <LocationOnOutlinedIcon fontSize="small" />{" "}
+                                        {workDetails?.workRegion ? (
+                                            <Typography>
+                                                {
+                                                    workDetails?.workRegion
+                                                        ?.nameGR
+                                                }
+                                            </Typography>
+                                        ) : null}
+                                    </Box>
+                                </Box>
+                            ) : type === "AGREEMENT" ? ( // TODO: See if the AgreementDetails component  is working as expected
+                                <>
+                                    <Typography fontWeight="bold">
+                                        {row?.agreement?.title}
+                                    </Typography>
+                                    <Box>
                                         <Typography variant="body2" mt={0.5}>
-                                            Expiration Date:{" "}
-                                            {row?.agreement?.expirationDate}
+                                            {row?.message}
                                         </Typography>
+
                                         <Stack
                                             direction="row"
-                                            gap={1}
+                                            mt={0.5}
+                                            gap={0.5}
                                             alignItems="center"
                                         >
-                                            {row?.agreement?.expiresSoon && (
-                                                <>
+                                            <Typography variant="body2">
+                                                For property with{" "}
+                                            </Typography>
+                                            <Link
+                                                href={`/property/${row?.agreement?.property?.id}`}
+                                                passHref
+                                                style={{
+                                                    textDecoration: "none",
+                                                }}
+                                            >
+                                                <NormalBadge
+                                                    name={`${t("Code")}: ${
+                                                        row?.agreement?.property
+                                                            ?.code || ""
+                                                    }`}
+                                                    color={"#ffcc00"}
+                                                    sx={{
+                                                        color: "#854D0E",
+                                                        width: "100%",
+                                                        "&:hover": {
+                                                            backgroundColor:
+                                                                "#e6b800",
+                                                        },
+                                                    }}
+                                                    onClick={
+                                                        handlePropertyCodeClick
+                                                    }
+                                                />
+                                            </Link>
+                                        </Stack>
+                                        <Link
+                                            href={`/customer/${row?.agreement?.owner?.id}`}
+                                            passHref
+                                            style={{
+                                                textDecoration: "none",
+                                            }}
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                onClick={
+                                                    handleCustomerNameClick
+                                                }
+                                                mt={0.5}
+                                            >
+                                                Owner{": "}
+                                                {row?.agreement?.owner?.name}
+                                            </Typography>
+                                        </Link>
+                                        <Stack
+                                            direction="row"
+                                            alignItems="center"
+                                            gap={1}
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                mt={0.5}
+                                            >
+                                                Expiration Date:{" "}
+                                                {row?.agreement?.expirationDate}
+                                            </Typography>
+                                            <Stack
+                                                direction="row"
+                                                gap={1}
+                                                alignItems="center"
+                                            >
+                                                {row?.agreement
+                                                    ?.expiresSoon && (
+                                                    <>
+                                                        <Tooltip
+                                                            title="Expires soon"
+                                                            placement="top"
+                                                        >
+                                                            <ExpireIcon
+                                                                color="warning"
+                                                                sx={{
+                                                                    width: "21px",
+                                                                    height: "21px",
+                                                                }}
+                                                            />
+                                                        </Tooltip>
+                                                    </>
+                                                )}
+
+                                                {row?.agreement
+                                                    ?.expiredToday && (
                                                     <Tooltip
-                                                        title="Expires soon"
+                                                        title="Expired"
                                                         placement="top"
                                                     >
-                                                        <ExpireIcon
-                                                            color="warning"
+                                                        <ExpiredIcon
+                                                            color="error"
                                                             sx={{
                                                                 width: "21px",
                                                                 height: "21px",
                                                             }}
                                                         />
                                                     </Tooltip>
-                                                </>
-                                            )}
-
-                                            {row?.agreement?.expiredToday && (
-                                                <Tooltip
-                                                    title="Expired"
-                                                    placement="top"
-                                                >
-                                                    <ExpiredIcon
-                                                        color="error"
-                                                        sx={{
-                                                            width: "21px",
-                                                            height: "21px",
-                                                        }}
-                                                    />
-                                                </Tooltip>
-                                            )}
+                                                )}
+                                            </Stack>
                                         </Stack>
-                                    </Stack>
-                                </Box>
-                            ) : null}{" "}
+                                    </Box>
+                                </>
+                            ) : null}
                         </Box>
                         {type !== "AGREEMENT" ? (
                             <CustomerInfo

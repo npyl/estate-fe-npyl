@@ -201,16 +201,6 @@ export const properties = createApi({
                 },
             }),
         }),
-        mapViewProperties: builder.mutation<
-            IContent<IPropertyResultResponse>,
-            IPropertyFilter
-        >({
-            query: (body) => ({
-                url: "/map",
-                method: "POST",
-                body,
-            }),
-        }),
         suggestForCustomer: builder.query<
             IProperties[],
             ISuggestForCustomerParams
@@ -300,7 +290,6 @@ export const {
     useClonePropertyMutation,
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
-    useMapViewPropertiesMutation,
     useSuggestForCustomerQuery,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,

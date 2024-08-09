@@ -85,6 +85,9 @@ const ChosenFilters = (props: Props) => {
         labels: {
             label: t("Labels"),
         },
+        active: {
+            label: t("Active Property"),
+        },
     };
 
     const pairFilterTags: Record<string, { label: string }> = {
@@ -219,6 +222,10 @@ const ChosenFilters = (props: Props) => {
                             ? getLabelNames(values)
                             : key === "managerId"
                             ? getManagerName(values)
+                            : key === "active"
+                            ? values === true
+                                ? "True"
+                                : "False"
                             : values;
 
                     return (
