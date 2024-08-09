@@ -4,8 +4,24 @@
     "author": "Pete Marakos",
     "private": true,
     "overrides": {
-        "canvas": "empty-npm-package@1.0.0",
-        "path2d-polyfill": "empty-npm-package@1.0.0"
+        "canvas": "empty-npm-package",
+        "path2d-polyfill": "empty-npm-package",
+        "@pdfme/common": "3.4.3",
+        "@pdfme/schemas": {
+            "@pdfme/common": "3.4.3"
+        },
+        "@pdfme/generator": {
+            "@pdfme/common": "3.4.3"
+        },
+        "@pdfme/ui": {
+            "@pdfme/schemas": "3.4.3"
+        }
+    },
+    "resolutions": {
+        "@pdfme/common": "3.4.3",
+        "@pdfme/schemas/@pdfme/common": "3.4.3",
+        "@pdfme/generator/@pdfme/common": "3.4.3",
+        "@pdfme/ui/@pdfme/schemas": "3.4.3"
     },
     "scripts": {
         "dev": "next",
@@ -57,7 +73,6 @@
         "@reduxjs/toolkit": "^1.9.3",
         "@types/node": "^18.15.10",
         "@types/nprogress": "^0.2.0",
-        "@types/numeral": "^2.0.2",
         "@types/react": "^18.0.30",
         "@types/react-beautiful-dnd": "^13.1.4",
         "@types/react-dom": "^18.3.0",
@@ -70,13 +85,11 @@
         "date-fns": "^3.6.0",
         "dayjs": "^1.11.10",
         "draft-js": "^0.11.7",
-        "formik": "^2.2.9",
         "framer-motion": "^10.16.4",
         "gray-matter": "^4.0.3",
         "i18next": "^22.5.0",
         "next": "^13.2.4",
         "nprogress": "^0.2.0",
-        "numeral": "^2.0.6",
         "photoswipe": "^5.3.7",
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
@@ -114,8 +127,6 @@
         "@svgr/webpack": "^7.0.0",
         "@types/react-color": "^3.0.6",
         "@types/react-date-range": "^1.4.5",
-        "@types/react-slick": "^0.23.10",
-        "eslint": "^8.36.0",
-        "eslint-config-next": "^13.2.4"
+        "@types/react-slick": "^0.23.10"
     }
 }
