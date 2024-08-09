@@ -1,47 +1,38 @@
-import { forwardRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 // @mui
-import { Box } from "@mui/material";
-//
+import Box from "@mui/material/Box";
 import getRatio from "./getRatio";
 import { ImageProps } from "./types";
+import { forwardRef, useCallback } from "react";
 
 // ----------------------------------------------------------------------
 
 const defaultImage = "/static/img/previewImage.png";
 
-const Image = forwardRef<HTMLSpanElement, ImageProps>(
+const Image = forwardRef<HTMLImageElement, ImageProps>(
     (
         {
             ratio,
-            disabledEffect = false,
-            alt,
-            src,
-            effect = "blur",
+            alt = "",
+            src = defaultImage,
             size = {
                 width: "100%",
                 height: "100%",
             },
+            containerSx,
             sx,
+            imgStyle,
             ...other
         },
         ref
     ) => {
-        const content = (
-            <LazyLoadImage
-                wrapperClassName="wrapper"
-                alt={alt || "img"}
-                src={src || defaultImage}
-                placeholderSrc={defaultImage}
-                width={size.width}
-                height={size.height}
-                {...other}
-            />
-        );
+        // Set defaultImage
+        const handleError = useCallback(() => {
+            if (!ref || typeof ref !== "object" || !ref.current) return;
+            ref.current.src = defaultImage;
+        }, []);
 
         return (
             <Box
-                ref={ref}
                 component="span"
                 sx={{
                     borderRadius: 1,
@@ -51,18 +42,35 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
                     overflow: "hidden",
                     position: "relative",
                     pt: getRatio(ratio),
-                    "& .wrapper": {
+                    ...containerSx,
+                }}
+            >
+                <Box
+                    sx={{
                         top: 0,
                         left: 0,
                         width: 1,
                         height: 1,
                         position: "absolute",
-                        backgroundSize: ratio ? "cover !important" : "",
-                    },
-                    ...sx,
-                }}
-            >
-                {content}
+                        ...sx,
+                    }}
+                    // TODO: investigate if this {...other} should go on the container box; currently changing it breaks carousel thumbnail
+                    {...other}
+                >
+                    <img
+                        ref={ref}
+                        className="PPImage-img"
+                        alt={alt}
+                        src={src!}
+                        loading="lazy"
+                        width={size.width}
+                        height={size.height}
+                        style={{
+                            ...imgStyle,
+                        }}
+                        onError={handleError}
+                    />
+                </Box>
             </Box>
         );
     }

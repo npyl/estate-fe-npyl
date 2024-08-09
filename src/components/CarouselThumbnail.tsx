@@ -6,25 +6,11 @@ import { alpha, styled } from "@mui/material/styles";
 // utils
 import { bgGradient } from "src/utils/cssStyles";
 // components
-import Carousel, { CarouselArrowIndex } from "src/components/carousel";
-import Image from "src/components/image";
+import Carousel, { CarouselArrowIndex } from "@/components/carousel";
+import Image from "@/components/image";
 
-import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox";
-import Captions from "yet-another-react-lightbox/plugins/captions";
-import Counter from "yet-another-react-lightbox/plugins/counter";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import Video from "yet-another-react-lightbox/plugins/video";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Lightbox from "./Lightbox";
 
-// INFO: This is a custom implementation of yet-another-react-lightbox/plugins/fullscreen that triggers the events: fullscreen and fullscreenExited
-import Fullscreen from "./lightbox-plugins/fullscreen";
-import HideGallery from "./lightbox-plugins/hideGallery";
-
-import "yet-another-react-lightbox/plugins/captions.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
-import "yet-another-react-lightbox/styles.css";
-
-import { FullscreenRef } from "yet-another-react-lightbox";
 import ICarouselImage from "./carousel/types";
 import PreviewImage from "./image/PreviewImage";
 
@@ -96,16 +82,16 @@ const StyledThumbnailsContainer = styled("div", {
 
 export default function CarouselThumbnail({ data }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [clickedImageIndex, setClickedImageIndex] = useState(0);
-    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
 
+    // Lightbox
+    const [clickedImageIndex, setClickedImageIndex] = useState(-1);
+    const closeLightbox = () => setClickedImageIndex(-1);
+
+    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
     const [nav2, setNav2] = useState<Carousel | undefined>(undefined);
 
     const carousel1 = useRef<Carousel | null>(null);
-
     const carousel2 = useRef<Carousel | null>(null);
-
-    const [galleryOpen, setGalleryOpen] = useState(false);
 
     const carouselSettings1 = {
         dots: false,
@@ -162,10 +148,7 @@ export default function CarouselThumbnail({ data }: Props) {
                             alt={title}
                             src={url}
                             ratio="16/9"
-                            onClick={() => {
-                                setClickedImageIndex(index);
-                                setGalleryOpen(true);
-                            }}
+                            onClick={() => setClickedImageIndex(index)}
                         />
                     ) : (
                         // eslint-disable-next-line react/jsx-key
@@ -195,7 +178,6 @@ export default function CarouselThumbnail({ data }: Props) {
                         url ? (
                             <Image
                                 key={id}
-                                disabledEffect
                                 alt={title}
                                 src={url}
                                 sx={{
@@ -230,34 +212,6 @@ export default function CarouselThumbnail({ data }: Props) {
         </Box>
     );
 
-    const _images = data.map((item) => {
-        return { src: item.url || "" };
-    });
-
-    const fullscreenRef = useRef<FullscreenRef>(null);
-    const thumbnailsRef = useRef<ThumbnailsRef>(null);
-
-    const initialPluginList = [
-        Captions,
-        Fullscreen,
-        Thumbnails,
-        Video,
-        Zoom,
-        Counter,
-    ];
-
-    const pluginListWithHideGallery = [
-        Captions,
-        Fullscreen,
-        Thumbnails,
-        Video,
-        Zoom,
-        Counter,
-        HideGallery,
-    ];
-
-    const [plugins, setPlugins] = useState(initialPluginList);
-
     return (
         <Box
             sx={{
@@ -270,34 +224,14 @@ export default function CarouselThumbnail({ data }: Props) {
             <Grid>{renderLargeImg}</Grid>
             <Grid>{renderThumbnails}</Grid>
 
-            <Lightbox
-                open={galleryOpen}
-                close={() => setGalleryOpen(false)}
-                slides={_images
-                    .slice(clickedImageIndex)
-                    .concat(_images.slice(0, clickedImageIndex))} // Re-order images so clicked image is first
-                plugins={plugins}
-                carousel={{ finite: true }}
-                fullscreen={{ ref: fullscreenRef }}
-                thumbnails={{ ref: thumbnailsRef }}
-                on={{
-                    fullscreen() {
-                        // add HideGallery to the plugins
-                        setPlugins(pluginListWithHideGallery);
-                    },
-                    fullscreenExit() {
-                        // remove HideGallery
-                        setPlugins(initialPluginList);
-                    },
-
-                    hideGalleryEntered() {
-                        thumbnailsRef.current?.hide();
-                    },
-                    hideGalleryExited() {
-                        thumbnailsRef.current?.show();
-                    },
-                }}
-            />
+            {clickedImageIndex !== -1 ? (
+                <Lightbox
+                    open
+                    index={clickedImageIndex}
+                    images={data}
+                    onClose={closeLightbox}
+                />
+            ) : null}
         </Box>
     );
 }

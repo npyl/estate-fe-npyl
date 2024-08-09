@@ -6,16 +6,9 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
 import { KanbanColumn } from "./components";
 
-import { useMemo } from "react";
-import {
-    TwoDimentionsDnd,
-    parseItemId,
-    parseRowId,
-} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
-import {
-    DroppableTypeItem,
-    TwoDimentionsDndItem,
-} from "src/components/TwoDimentionsDnd/types";
+import { Children, useMemo } from "react";
+import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import {
     useGetBoardQuery,
@@ -26,6 +19,7 @@ import {
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 import KanbanColumnAdd from "./components/column/KanbanColumnAdd";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 
 // ----------------------------------------------------------------------
 // Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
@@ -45,7 +39,7 @@ const columnId = (str?: string) => {
 };
 
 export default function KanbanPage() {
-    const { data: board } = useGetBoardQuery();
+    const { data: board, isLoading } = useGetBoardQuery();
 
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
@@ -56,30 +50,27 @@ export default function KanbanPage() {
 
     const COLUMNS = isMobile ? 1 : 3;
 
-    const items: TwoDimentionsDndItem[] = useMemo(
+    const items = useMemo(
         () =>
-            (board?.columnOrder
-                .map((columnId) => {
-                    // get column for id
-                    const column = board.columns?.find(
-                        (c) => c.id === columnId
+            board?.columnOrder.map((columnId) => {
+                // get column for id
+                const column = board.columns?.find((c) => c.id === columnId);
+
+                if (column)
+                    return (
+                        <KanbanColumn
+                            id={columnId}
+                            key={columnId}
+                            column={column}
+                        />
                     );
 
-                    return column
-                        ? {
-                              id: columnId,
-                              value: (
-                                  <KanbanColumn
-                                      key={columnId}
-                                      column={column}
-                                  />
-                              ),
-                          }
-                        : null;
-                })
-                .filter((i) => !!i) as TwoDimentionsDndItem[]) || [], // filter nulls
+                return null;
+            }),
         [board?.columnOrder, board?.columns]
     );
+
+    const itemsLength = useMemo(() => Children.count(items), [items]);
 
     const handleDragEnd = ({
         source,
@@ -103,7 +94,7 @@ export default function KanbanPage() {
             let oneDimentionArrayDstIndex = dstRow * COLUMNS + dstCol;
 
             /* NOTE: compensate for when user moves a section at the end of the board */
-            if (oneDimentionArrayDstIndex === items.length)
+            if (oneDimentionArrayDstIndex === itemsLength)
                 oneDimentionArrayDstIndex -= 1;
 
             reorderColumn({
@@ -152,13 +143,14 @@ export default function KanbanPage() {
             >
                 {board && items ? (
                     <TwoDimentionsDnd
-                        items={items}
                         columns={COLUMNS}
                         onDragEnd={handleDragEnd}
-                    />
-                ) : (
-                    <SkeletonKanbanColumn />
-                )}
+                    >
+                        {items}
+                    </TwoDimentionsDnd>
+                ) : null}
+
+                {isLoading ? <SkeletonKanbanColumn /> : null}
             </Container>
 
             <KanbanColumnAdd

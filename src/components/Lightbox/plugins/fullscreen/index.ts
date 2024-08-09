@@ -15,6 +15,11 @@ declare module "yet-another-react-lightbox" {
         };
     }
 
+    interface Labels {
+        "Exit Fullscreen"?: string;
+        "Enter Fullscreen"?: string;
+    }
+
     interface Render {
         /** render custom Enter/Exit Fullscreen button */
         buttonFullscreen?: RenderFunction<FullscreenRef>;

@@ -1,21 +1,24 @@
-import { useMemo, useRef, useState } from "react";
-
-import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox";
+import YARLightbox, {
+    ThumbnailsRef,
+    FullscreenRef,
+} from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
-import Counter from "yet-another-react-lightbox/plugins/counter";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Video from "yet-another-react-lightbox/plugins/video";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Counter from "yet-another-react-lightbox/plugins/counter";
 
 // INFO: This is a custom implementation of yet-another-react-lightbox/plugins/fullscreen that triggers the events: fullscreen and fullscreenExited
-import Fullscreen from "@/components/lightbox-plugins/fullscreen";
-import HideGallery from "@/components/lightbox-plugins/hideGallery";
+import Fullscreen from "./plugins/fullscreen";
+import HideGallery from "./plugins/hideGallery";
 
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
+import React, { useMemo, useRef, useState } from "react";
 
-import { FullscreenRef } from "yet-another-react-lightbox";
+type TLightboxImage<T extends {} = {}> = { url: string | null } & T;
 
 const initialPluginList = [
     Captions,
@@ -36,30 +39,35 @@ const pluginListWithHideGallery = [
     HideGallery,
 ];
 
-interface Props {
+interface LightboxProps {
     open: boolean;
-    images: { src: string }[];
-    clickedImage: number;
+    images: TLightboxImage[];
+    index?: number;
     onClose: VoidFunction;
 }
 
-const FullscreenLightbox = ({ open, images, clickedImage, onClose }: Props) => {
-    const [plugins, setPlugins] = useState(initialPluginList);
-
+const Lightbox: React.FC<LightboxProps> = ({
+    open,
+    images,
+    index,
+    onClose,
+}) => {
     const fullscreenRef = useRef<FullscreenRef>(null);
     const thumbnailsRef = useRef<ThumbnailsRef>(null);
 
-    // Re-order images so clicked image is first
+    const [plugins, setPlugins] = useState(initialPluginList);
+
     const slides = useMemo(
-        () => images.slice(clickedImage).concat(images.slice(0, clickedImage)),
-        [images, clickedImage]
+        () => images?.map(({ url }) => ({ src: url || "" })),
+        [images]
     );
 
     return (
-        <Lightbox
+        <YARLightbox
             open={open}
             close={onClose}
             slides={slides}
+            index={index}
             plugins={plugins}
             carousel={{ finite: true }}
             fullscreen={{ ref: fullscreenRef }}
@@ -85,4 +93,4 @@ const FullscreenLightbox = ({ open, images, clickedImage, onClose }: Props) => {
     );
 };
 
-export default FullscreenLightbox;
+export default Lightbox;

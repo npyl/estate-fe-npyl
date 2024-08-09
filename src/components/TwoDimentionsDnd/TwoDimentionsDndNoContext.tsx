@@ -1,25 +1,29 @@
-import { Grid, Stack } from "@mui/material";
-import { useEffect, useMemo } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
-import {
-    DroppableTypeItem,
-    TwoDimentionsDndItem,
-    TwoDimentionsDndNoContextProps,
-} from "./types";
+import Stack from "@mui/material/Stack";
+import { Children, ReactNode, useEffect, useMemo } from "react";
+import { TwoDimentionsDndNoContextProps, TwoDimentionsDndNode } from "./types";
+import React from "react";
+import DroppableRow from "./DroppableRow";
+import DraggableItem from "./DraggableItem";
+import PlaceholderRow from "./PlaceholderRow";
 
-const chunks = (arr: TwoDimentionsDndItem[], size: number) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-        arr.slice(i * size, i * size + size)
+const chunks = (children: ReactNode, size: number): ReactNode[][] => {
+    const childrenArray = Children.toArray(children);
+    return Array.from(
+        { length: Math.ceil(childrenArray.length / size) },
+        (_, i) => childrenArray.slice(i * size, i * size + size)
     );
+};
 
-export const TwoDimentionsDndNoContext = ({
-    items,
+const TwoDimentionsDndNoContext = ({
     columns,
-    gap,
+    gap = 0.3,
     dndId,
     startIndex,
+    preventDrag = false,
+    children,
+    ...props
 }: TwoDimentionsDndNoContextProps) => {
-    const rows = useMemo(() => chunks(items, columns), [items, columns]);
+    const rows = useMemo(() => chunks(children, columns), [children, columns]);
 
     useEffect(() => {
         if (dndId !== undefined && dndId < 1)
@@ -32,60 +36,38 @@ export const TwoDimentionsDndNoContext = ({
     }, []);
 
     return (
-        <Stack gap={gap}>
+        <Stack gap={gap} {...props}>
+            {rows.length === 0 ? (
+                <PlaceholderRow
+                    dndId={dndId}
+                    gap={gap}
+                    startIndex={startIndex}
+                    columns={columns}
+                />
+            ) : null}
+
             {rows.map((row, i) => (
-                <Droppable
-                    droppableId={
-                        dndId !== undefined ? `${dndId}-row-${i}` : `row-${i}`
-                    }
-                    type={DroppableTypeItem}
-                    key={dndId !== undefined ? `${dndId}-row-${i}` : `row-${i}`}
-                    direction="horizontal"
+                <DroppableRow
+                    key={`${dndId}_${i}`}
+                    dndId={dndId}
+                    index={i}
+                    gap={gap}
                 >
-                    {(provided) => (
-                        <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            <Grid container direction={"row"} spacing={gap}>
-                                {row.map((item, j) => (
-                                    <Grid item xs={12 / columns} key={j}>
-                                        <Draggable
-                                            draggableId={
-                                                dndId !== undefined
-                                                    ? `${dndId}-item-${item.id}`
-                                                    : `item-${item.id}`
-                                            }
-                                            key={
-                                                dndId !== undefined
-                                                    ? `${dndId}-item-${item.id}`
-                                                    : `item-${item.id}`
-                                            }
-                                            index={
-                                                startIndex !== undefined &&
-                                                dndId !== undefined
-                                                    ? startIndex + dndId * j
-                                                    : j
-                                            }
-                                        >
-                                            {(provided) => (
-                                                <div
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    ref={provided.innerRef}
-                                                >
-                                                    {item.value}
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+                    {row.map((item, j) => (
+                        <DraggableItem
+                            key={`${dndId}_${i}_${j}`}
+                            item={item as TwoDimentionsDndNode}
+                            dndStartIndex={startIndex}
+                            index={j}
+                            dndId={dndId}
+                            preventDrag={preventDrag}
+                            columns={columns}
+                        />
+                    ))}
+                </DroppableRow>
             ))}
         </Stack>
     );
 };
+
+export default React.memo(TwoDimentionsDndNoContext);

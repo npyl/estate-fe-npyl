@@ -1,21 +1,15 @@
-import {
-    Dialog,
-    DialogContent,
-    Divider,
-    PaperProps,
-    Typography,
-} from "@mui/material";
-import { useCallback, useState } from "react";
-import { IPropertyImage } from "src/types/file";
-import { CompareGallery } from "./CompareGallery";
+import { Dialog, DialogContent, Divider, PaperProps } from "@mui/material";
+import { useCallback } from "react";
 import Controls from "./Controls";
-import useDialog from "@/hooks/useDialog";
-import Content from "./Content";
-import SelectableItem from "./Content/Selectable";
-import { StyledTitle } from "./styled";
-import { TMode } from "./types";
+import { TListingTab } from "./types";
 import { styled } from "@mui/material/styles";
-import usePropertyImages from "../hook";
+import Tabs from "./Tabs";
+import Content from "./Content";
+import React from "react";
+import useArrayState from "@/hooks/useArrayState";
+import useRefState from "@/hooks/useRefState";
+import ListingControls from "./ListingControls";
+import DialogTitle from "./DialogTitle";
 
 // (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
 
@@ -34,109 +28,77 @@ const StyledContent = styled(DialogContent)(({ theme }) => ({
 
 interface SeeMoreProps {
     open: boolean;
+    onOpenLightbox: (key: string) => void;
     onClose: () => void;
 }
 
-const SeeMore: React.FC<SeeMoreProps> = ({ open, onClose }) => {
-    const { images } = usePropertyImages();
+const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
+    const [tab, setTab, tabRef] = useRefState<TListingTab>("CRM");
+    const [mode, setMode, modeRef] = useRefState<"" | "multiple" | "compare">(
+        ""
+    );
 
-    const [mode, setMode] = useState<"" | "multiple" | "compare">("");
-    const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
+    // keys
+    const [selectedImages, setSelectedImages, resetSelectedImages] =
+        useArrayState<string[]>([]);
 
-    const [isCompareOpen, openCompareDialog, closeCompareDialog] = useDialog();
+    const handleTabChange = useCallback((t: TListingTab) => {
+        resetSelectedImages();
+        setMode("");
+        setTab(t);
+    }, []);
 
-    const isAllSelected =
-        selectedImages.length > 0 &&
-        images.length > 0 &&
-        selectedImages.length === images.length;
+    const handleImageClick = useCallback((imageKey: string) => {
+        if (tabRef.current !== "CRM") return;
 
-    const handleImageClick = (imageKey: string) =>
+        // Open in Gallery
+        if (modeRef.current === "") {
+            onOpenLightbox(imageKey);
+            return;
+        }
+
         setSelectedImages((old) => {
             const isAlreadySelected = old.includes(imageKey);
-
             return isAlreadySelected
-                ? old.filter((key) => key !== imageKey) // remove
-                : mode === "multiple" || (mode === "compare" && old.length < 2) // add
+                ? old.filter((key) => key !== imageKey)
+                : modeRef.current === "multiple" ||
+                  (modeRef.current === "compare" && old.length < 2)
                 ? [...old, imageKey]
                 : old;
         });
-
-    const handleModeChange = (m: TMode) => {
-        if (m === null) return; // Prevent unselecting an already selected button
-
-        setSelectedImages([]);
-        setMode(m);
-    };
-
-    const handleToggleAll = () =>
-        setSelectedImages(isAllSelected ? [] : images.map(({ key }) => key));
-
-    const handleCloseCompareDialog = () => {
-        setSelectedImages([]);
-        closeCompareDialog();
-    };
-
-    const createItem = useCallback(
-        (f: IPropertyImage, index: number) => {
-            const isSelected =
-                selectedImages.findIndex((key) => key === f.key) > -1;
-
-            return {
-                id: index,
-                value: (
-                    <SelectableItem
-                        selected={isSelected}
-                        image={f}
-                        onImageClick={handleImageClick}
-                    />
-                ),
-            };
-        },
-        [mode, selectedImages]
-    );
+    }, []);
 
     return (
-        <>
-            <Dialog
-                open={open}
-                onClose={onClose}
-                scroll="body" // (1)
-                PaperProps={DialogPaperProps}
-            >
-                <StyledTitle>
-                    <Typography>
-                        Edit{" "}
-                        {mode === "multiple"
-                            ? `(${selectedImages.length} selected)`
-                            : ""}
-                    </Typography>
+        <Dialog
+            open={open}
+            onClose={onClose}
+            scroll="body" // (1)
+            PaperProps={DialogPaperProps}
+        >
+            <DialogTitle onClose={onClose}>
+                <Tabs tab={tab} onChange={handleTabChange} />
 
+                {tab === "CRM" ? (
                     <Controls
-                        mode={mode}
-                        onModeChange={handleModeChange}
                         selectedImages={selectedImages}
-                        isAllSelected={isAllSelected}
-                        // ...
-                        onToggleSelectAll={handleToggleAll}
-                        onCompare={openCompareDialog}
-                        onClose={onClose}
+                        setSelectedImages={setSelectedImages}
+                        onResetSelectedImages={resetSelectedImages}
+                        mode={mode}
+                        setMode={setMode}
                     />
-                </StyledTitle>
-                <Divider />
-                <StyledContent>
-                    <Content createItemCb={createItem} />
-                </StyledContent>
-            </Dialog>
+                ) : null}
 
-            {isCompareOpen ? (
-                <CompareGallery
-                    open={isCompareOpen}
-                    image1={selectedImages[0]}
-                    image2={selectedImages[1]}
-                    onClose={handleCloseCompareDialog}
+                {tab !== "CRM" ? <ListingControls tab={tab} /> : null}
+            </DialogTitle>
+            <Divider />
+            <StyledContent>
+                <Content
+                    tab={tab}
+                    selectedImages={selectedImages}
+                    onImageClick={handleImageClick}
                 />
-            ) : null}
-        </>
+            </StyledContent>
+        </Dialog>
     );
 };
 

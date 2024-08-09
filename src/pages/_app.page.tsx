@@ -10,8 +10,6 @@ import Router from "next/router";
 import nProgress from "nprogress";
 import type { FC } from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { SplashScreen } from "../components/splash-screen";
 import { AuthConsumer, AuthProvider } from "../contexts/jwt-context";
 import {
@@ -23,12 +21,12 @@ import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { TabsProvider } from "src/contexts/tabs";
 
 // DatePicker
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Toaster } from "react-hot-toast";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -76,7 +74,7 @@ const App: FC<EnhancedAppProps> = (props) => {
                                 >
                                     <CssBaseline />
                                     <TabsProvider>
-                                        <ToastContainer position="top-center" />
+                                        <Toaster />
                                         <AuthConsumer>
                                             {(auth) =>
                                                 !auth.isInitialized ? (

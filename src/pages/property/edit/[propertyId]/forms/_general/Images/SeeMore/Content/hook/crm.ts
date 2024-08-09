@@ -1,35 +1,20 @@
-import { Divider } from "@mui/material";
 import { useCallback, useMemo } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import {
-    parseItemId,
-    parseRowId,
-} from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
-import { TwoDimentionsDndNoContext } from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
-import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
-import { DndItem } from "./types";
 import usePropertyImages from "../../../hook";
+import { useImageOperations } from "../../../context/ImageOperations";
+import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
+import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
+import TUseContentOperations, { ExtendedDropResult } from "./type";
 
-const COLUMNS = 5;
+const useCRMContentOperations: TUseContentOperations = (_, createItemCb) => {
+    const { images, propertyId } = usePropertyImages();
 
-interface ImagePreviewReorderProps {
-    publicImages: DndItem[];
-    privateImages: DndItem[];
-    onReorder: (keys: string[]) => void;
-    onReorderWithVisibility: (
-        imageKeys: string[],
-        imageKey: string,
-        hidden: boolean
-    ) => void;
-}
-
-const Over25ImagesPreview = ({
-    publicImages,
-    privateImages,
-    onReorder,
-    onReorderWithVisibility,
-}: ImagePreviewReorderProps) => {
-    const { images } = usePropertyImages();
+    const { publicImages, privateImages } = useMemo(
+        () => ({
+            publicImages: images.filter((f) => !f.hidden).map(createItemCb),
+            privateImages: images.filter((f) => f.hidden).map(createItemCb),
+        }),
+        [images, createItemCb]
+    );
 
     const { publicKeys, privateKeys } = useMemo(
         () => ({
@@ -44,10 +29,34 @@ const Over25ImagesPreview = ({
         [images]
     );
 
-    const secondDndStartIndex = publicImages.length;
+    const secondDndStartIndex = publicKeys.length;
+
+    const { reorderImages, reorderImagesWithVisibility, isLoading } =
+        useImageOperations();
+
+    const handleReorder = (items: string[]) =>
+        reorderImages({ id: propertyId, body: items });
+
+    const handleReorderWithVisibility = (
+        imageKeys: string[],
+        imageKey: string,
+        hidden: boolean
+    ) =>
+        reorderImagesWithVisibility({
+            propertyId,
+            imageKeys,
+            imageKey,
+            hidden,
+        });
 
     const handleDragEnd = useCallback(
-        ({ type, draggableId, source, destination }: DropResult) => {
+        ({
+            type,
+            draggableId,
+            source,
+            destination,
+            columns,
+        }: ExtendedDropResult) => {
             if (type !== DroppableTypeItem) return;
 
             const { itemId: draggedItemId, dndId: srcDndId } =
@@ -72,7 +81,7 @@ const Over25ImagesPreview = ({
                 (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) /
                 srcDndId;
             const srcIdx =
-                srcRow * COLUMNS +
+                srcRow * columns +
                 srcCol +
                 (srcDndId === 1 ? 0 : secondDndStartIndex);
 
@@ -82,7 +91,7 @@ const Over25ImagesPreview = ({
                     (dstDndId === 1 ? 0 : secondDndStartIndex)) /
                 dstDndId;
             let dstIdx =
-                dstRow * COLUMNS +
+                dstRow * columns +
                 dstCol +
                 (dstDndId === 1 ? 0 : secondDndStartIndex);
 
@@ -93,28 +102,14 @@ const Over25ImagesPreview = ({
             updatedItems.splice(dstIdx, 0, removedKey);
 
             if (srcDndId === dstDndId) {
-                onReorder(updatedItems);
+                handleReorder(updatedItems);
             } else {
-                onReorderWithVisibility(
+                handleReorderWithVisibility(
                     updatedItems,
                     removedKey,
                     dstDndId === 1 ? false : true
                 );
             }
-
-            /* 
-                    DEBUGGING:
-
-                    const srcCol = (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) / srcDndId;
-                    let oneDimentionArraySrcIndex = srcRow * COLUMNS + srcCol + (srcDndId === 1 ? 0 : secondDndStartIndex);
-                    console.log(
-                        "1dSrcIndex: ",
-                        oneDimentionArraySrcIndex,
-                        " 1dDstIndex: ",
-                        oneDimentionArrayDstIndex
-                    );
-
-                */
         },
         [
             publicKeys,
@@ -125,25 +120,7 @@ const Over25ImagesPreview = ({
         ]
     );
 
-    return (
-        <DragDropContext onDragEnd={handleDragEnd}>
-            <TwoDimentionsDndNoContext
-                dndId={1}
-                startIndex={0}
-                items={publicImages}
-                columns={COLUMNS}
-                gap={0.5}
-            />
-            <Divider sx={{ mt: 2, mb: 2 }} />
-            <TwoDimentionsDndNoContext
-                dndId={2}
-                startIndex={secondDndStartIndex}
-                items={privateImages}
-                columns={COLUMNS}
-                gap={0.5}
-            />
-        </DragDropContext>
-    );
+    return { publicImages, privateImages, isLoading, handleDragEnd };
 };
 
-export default Over25ImagesPreview;
+export default useCRMContentOperations;

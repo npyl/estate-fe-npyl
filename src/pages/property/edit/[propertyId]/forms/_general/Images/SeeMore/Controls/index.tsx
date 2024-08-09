@@ -1,9 +1,10 @@
 import { SoftButton } from "@/components/SoftButton";
-import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import { Lock, LockOpen } from "@mui/icons-material";
-import { useRouter } from "next/router";
+import {
+    Stack,
+    StackProps,
+    ToggleButton,
+    ToggleButtonGroup,
+} from "@mui/material";
 import CompareIcon from "@mui/icons-material/Compare";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { TMode } from "../types";
@@ -11,133 +12,124 @@ import { useTranslation } from "react-i18next";
 import { useImageOperations } from "../../context/ImageOperations";
 import { Icon } from "@iconify/react";
 import AddButton from "./Add";
+import DeleteButton from "./Delete";
+import PublicButton from "./Public";
+import PrivateButton from "./Private";
+import { Dispatch, SetStateAction } from "react";
+import usePropertyImages from "../../hook";
+import useDialog from "@/hooks/useDialog";
+import { CompareGallery } from "./CompareGallery";
 
-interface ControlsProps {
-    mode: TMode;
-    onModeChange: (v: TMode) => void;
+interface ControlsProps extends StackProps {
     selectedImages: string[];
-    isAllSelected: boolean;
-    // ...
-    onToggleSelectAll: VoidFunction;
-    onCompare: VoidFunction;
-    onClose: VoidFunction;
+    setSelectedImages: Dispatch<SetStateAction<string[]>>;
+    onResetSelectedImages: VoidFunction;
+    mode: "" | "multiple" | "compare";
+    setMode: (m: "" | "multiple" | "compare") => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
-    mode,
-    onModeChange,
     selectedImages,
-    isAllSelected,
-    // ...
-    onToggleSelectAll,
-    onCompare,
-    onClose,
+    setSelectedImages,
+    onResetSelectedImages,
+    mode,
+    setMode,
+    ...props
 }) => {
     const { t } = useTranslation();
 
-    const router = useRouter();
-    const { propertyId } = router.query;
+    const { images } = usePropertyImages();
+    const { isLoading } = useImageOperations();
 
-    const { bulkEditImages, bulkDeleteImages, isLoading } =
-        useImageOperations();
+    const [isCompareOpen, openCompareDialog, closeCompareDialog] = useDialog();
 
-    const handleBulkChangeVisibility = (hidden: boolean) =>
-        bulkEditImages({
-            propertyId: +propertyId!,
-            body: {
-                imageKeys: selectedImages,
-                hidden,
-            },
-        });
+    const isAllSelected =
+        selectedImages.length > 0 &&
+        images.length > 0 &&
+        selectedImages.length === images.length;
 
-    const handleModeChange = (_: any, v: TMode) => onModeChange(v);
+    const handleModeChange = (_: any, m: TMode) => {
+        if (m === null) return; // Prevent unselecting an already selected button
 
-    const handleMakePublic = () => handleBulkChangeVisibility(false);
-    const handleMakePrivate = () => handleBulkChangeVisibility(true);
+        onResetSelectedImages();
+        setMode(m);
+    };
 
-    const handleBulkDelete = () =>
-        bulkDeleteImages({
-            propertyId: +propertyId!,
-            imageKeys: selectedImages,
-        });
+    const handleToggleAll = () => {
+        if (isAllSelected) onResetSelectedImages();
+        else setSelectedImages(images.map(({ key }) => key));
+    };
+
+    const handleCloseCompareDialog = () => {
+        onResetSelectedImages;
+        closeCompareDialog();
+    };
 
     return (
-        <Stack direction="row" alignItems="center" gap={1}>
-            {mode !== "compare" && selectedImages.length > 0 ? (
-                <>
-                    <SoftButton
-                        disabled={isLoading}
-                        startIcon={<LockOpen />}
-                        onClick={handleMakePublic}
-                    >
-                        {t("Public")}
-                    </SoftButton>
-                    <SoftButton
-                        disabled={isLoading}
-                        startIcon={<Lock />}
-                        onClick={handleMakePrivate}
-                    >
-                        {t("Private")}
-                    </SoftButton>
-                    <SoftButton
-                        disabled={isLoading}
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        onClick={handleBulkDelete}
-                    >
-                        {t("Delete")}
-                    </SoftButton>
-                </>
-            ) : null}
-
-            {mode !== "compare" ? (
-                <SoftButton
-                    disabled={isLoading}
-                    onClick={onToggleSelectAll}
-                    variant="outlined"
-                    color={isAllSelected ? "error" : "primary"}
-                >
-                    {t(isAllSelected ? "Deselect All" : "Select All")}
-                </SoftButton>
-            ) : null}
-
-            {mode === "compare" && selectedImages.length === 2 ? (
-                <SoftButton
-                    disabled={isLoading}
-                    color="primary"
-                    onClick={onCompare}
-                >
-                    {t("Compare")}
-                </SoftButton>
-            ) : null}
-
-            <ToggleButtonGroup
-                value={mode}
-                size="small"
-                exclusive
-                disabled={isLoading}
-                onChange={handleModeChange}
-            >
-                <ToggleButton value="multiple">
-                    <Icon icon="carbon:select-window" width={20} />
-                </ToggleButton>
-                <ToggleButton value="compare">
-                    <CompareIcon />
-                </ToggleButton>
-
-                {mode !== "" ? (
-                    <ToggleButton value="">
-                        <CloseOutlinedIcon />
-                    </ToggleButton>
+        <>
+            <Stack direction="row" alignItems="center" gap={1} {...props}>
+                {mode !== "compare" && selectedImages.length > 0 ? (
+                    <>
+                        <PublicButton selectedImages={selectedImages} />
+                        <PrivateButton selectedImages={selectedImages} />
+                        <DeleteButton selectedImages={selectedImages} />
+                    </>
                 ) : null}
-            </ToggleButtonGroup>
 
-            <AddButton />
+                {mode !== "compare" ? (
+                    <SoftButton
+                        disabled={isLoading}
+                        onClick={handleToggleAll}
+                        variant="outlined"
+                        color={isAllSelected ? "error" : "primary"}
+                    >
+                        {t(isAllSelected ? "Deselect All" : "Select All")}
+                    </SoftButton>
+                ) : null}
 
-            <IconButton onClick={onClose}>
-                <CloseIcon />
-            </IconButton>
-        </Stack>
+                {mode === "compare" && selectedImages.length === 2 ? (
+                    <SoftButton
+                        disabled={isLoading}
+                        color="primary"
+                        onClick={openCompareDialog}
+                    >
+                        {t("Compare")}
+                    </SoftButton>
+                ) : null}
+
+                <ToggleButtonGroup
+                    value={mode}
+                    size="small"
+                    exclusive
+                    disabled={isLoading}
+                    onChange={handleModeChange}
+                >
+                    <ToggleButton value="multiple">
+                        <Icon icon="carbon:select-window" width={20} />
+                    </ToggleButton>
+                    <ToggleButton value="compare">
+                        <CompareIcon />
+                    </ToggleButton>
+
+                    {mode !== "" ? (
+                        <ToggleButton value="">
+                            <CloseOutlinedIcon />
+                        </ToggleButton>
+                    ) : null}
+                </ToggleButtonGroup>
+
+                <AddButton />
+            </Stack>
+
+            {isCompareOpen ? (
+                <CompareGallery
+                    open={isCompareOpen}
+                    image1={selectedImages[0]}
+                    image2={selectedImages[1]}
+                    onClose={handleCloseCompareDialog}
+                />
+            ) : null}
+        </>
     );
 };
 

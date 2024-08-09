@@ -39,6 +39,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
+    id: number; // INFO: Necessary for TwoDimentionsDnd!
     column: IKanbanColumn;
 };
 

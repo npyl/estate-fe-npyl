@@ -163,8 +163,8 @@ const DrawMultiple = ({
 
     return drawing ? (
         <Stack
-            style={{
-                padding: 3,
+            sx={{
+                padding: 0.5,
                 position: "absolute",
                 left: 10,
 

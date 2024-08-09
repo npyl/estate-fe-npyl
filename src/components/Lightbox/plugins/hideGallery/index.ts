@@ -12,6 +12,10 @@ declare module "yet-another-react-lightbox" {
         iconUnhideGallery?: RenderFunction;
     }
 
+    interface Labels {
+        Download?: string;
+    }
+
     // noinspection JSUnusedGlobalSymbols
     interface Callbacks {
         hideGalleryEntered?: Callback;

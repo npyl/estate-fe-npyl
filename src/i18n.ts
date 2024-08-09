@@ -285,7 +285,6 @@ const resources = {
             "Upload Images": "Upload Images",
 
             //Location
-
             Prefecture: "Prefecture",
             "Search on map...": "Search on map...",
             Map: "Map",
@@ -821,10 +820,27 @@ const resources = {
             "Selected Property": "Selected Property",
             _NO_OWNER_LITERAL_:
                 "This property does not have an owner assigned! Please assign and try again!",
+
+            Private_FEMININE: "Private",
+
+            "Add first 20": "Add first 20",
+            "Remove All": "Remove all",
+
+            _main_: "Main",
+            Success: "Success",
+            "Unable to logout": "Unable to logout",
         },
     },
     el: {
         translation: {
+            "Unable to logout": "Αποτυχία κατά την αποσύνδεση",
+            Success: "Επιτυχία",
+            _main_: "Κύρια",
+
+            "Remove All": "Αφαίρεση όλων",
+            "Add first 20": "Προσθήκη 20 πρώτων",
+            Private_FEMININE: "Ιδιωτικές",
+
             _NO_OWNER_LITERAL_:
                 "Αυτό το ακίνητο δεν έχει ιδιοκτήτη! Παρακαλώ προσθέστε και προσπαθήστε ξανά!",
             "Selected Property": "Επιλεγμένο Ακίνητο",
@@ -865,7 +881,7 @@ const resources = {
             "Add images": "Προσθήκη εικόνων",
             "Select All": "Επιλογή Όλων",
             "Deselect All": "Καμία Επιλογή",
-            "Set Main": "Κάνε την πρώτη",
+            "Set Main": "Κάνε την κύρια",
             Compare: "Σύγκριση",
 
             "Other Pollutants": "Λοιποί Ρύποι",
@@ -1449,7 +1465,6 @@ const resources = {
                 "Χαρακτηριστικά για Επαγγελματική στέγη",
             "Features for Other Category": "Χαρακτηριστικά για κατηγορία Άλλο",
 
-            // "Features for Residential Category": "Χαρακτηριστικά για επαγ",
             //Description
             Description: "Περιγραφή",
             Generate: "Δημιουργία",

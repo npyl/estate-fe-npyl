@@ -1,11 +1,11 @@
 // @mui
 import { Avatar, Stack, Typography } from "@mui/material";
 // utils
-import { fToNow } from "../../../../utils/formatTime";
+import { fToNow } from "@/utils/formatTime";
 // @types
 import { IKanbanComment } from "src/types/kanban";
 // components
-import Image from "../../../../components/image";
+import Image from "@/components/image";
 
 // ----------------------------------------------------------------------
 

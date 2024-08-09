@@ -138,7 +138,7 @@ const Gallery: React.FC<GalleryProps> = ({
                             <Grid item xs={10}>
                                 <CarouselSimple
                                     onImageChange={handleImageChange}
-                                    mainLabel="main"
+                                    mainLabel={t("_main_").toString()}
                                     data={images as ICarouselImage[]}
                                     initialIndex={carouselIndex}
                                 />
