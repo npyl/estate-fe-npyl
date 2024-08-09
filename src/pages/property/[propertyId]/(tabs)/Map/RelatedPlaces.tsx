@@ -11,11 +11,9 @@ import {
 // utils
 // components
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Label } from "@/components/Label";
 import { Place } from "src/types/googleMap";
 import { Scrollbar } from "src/components/scrollbar";
-import { relative } from "path";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
@@ -69,7 +67,8 @@ type ApplicationItemProps = {
 
 function ApplicationItem({ app, duration }: ApplicationItemProps) {
     const { vicinity, rating, name } = app;
-    console.log(vicinity);
+    const { t } = useTranslation();
+
     return (
         <Stack direction="row" alignItems="center" spacing={2}>
             <Box sx={{ flexGrow: 1, minWidth: 160 }}>
