@@ -22,7 +22,7 @@ import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
 import Grid from "@mui/material/Grid";
 import MapUnavailable from "@/components/Map/MapUnavailable";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const initialState: any[] = [];
 
