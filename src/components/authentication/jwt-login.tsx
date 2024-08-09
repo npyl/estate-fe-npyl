@@ -71,7 +71,7 @@ export const JWTLogin: FC = (props) => {
                     name="email"
                     type="email"
                 />
-                <TextField
+                <RHFTextField
                     fullWidth
                     placeholder={t("Password") || ""}
                     margin="normal"
