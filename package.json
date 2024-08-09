@@ -5,7 +5,23 @@
     "private": true,
     "overrides": {
         "canvas": "empty-npm-package",
-        "path2d-polyfill": "empty-npm-package"
+        "path2d-polyfill": "empty-npm-package",
+        "@pdfme/common": "3.4.3",
+        "@pdfme/schemas": {
+            "@pdfme/common": "3.4.3"
+        },
+        "@pdfme/generator": {
+            "@pdfme/common": "3.4.3"
+        },
+        "@pdfme/ui": {
+            "@pdfme/schemas": "3.4.3"
+        }
+    },
+    "resolutions": {
+        "@pdfme/common": "3.4.3",
+        "@pdfme/schemas/@pdfme/common": "3.4.3",
+        "@pdfme/generator/@pdfme/common": "3.4.3",
+        "@pdfme/ui/@pdfme/schemas": "3.4.3"
     },
     "scripts": {
         "dev": "next",
