@@ -6,6 +6,7 @@ import { ImageItemProps } from "./types";
 import SmartImage from "./SmartImage";
 import { SxProps } from "@mui/system";
 import { Theme } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const SmartImageContainerSx: SxProps<Theme> = {
     transition: "transform 0.2s ease-in-out",
@@ -18,6 +19,7 @@ const SmartImageContainerSx: SxProps<Theme> = {
 const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
     const { url, thumbnail, hidden, key } = image;
 
+    const { t } = useTranslation();
     const { uploadProgress } = useUploadFileContext();
 
     const progress = useConditionalMemo(
@@ -30,7 +32,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
         return (
             <SmartImage
                 src={url}
-                label={thumbnail ? "main" : ""}
+                label={thumbnail ? t("_main_").toString() : ""}
                 hidden={hidden}
                 onClick={() => onImageClick(key)}
                 containerSx={SmartImageContainerSx}

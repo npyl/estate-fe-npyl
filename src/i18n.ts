@@ -781,10 +781,14 @@ const resources = {
 
             "Add first 20": "Add first 20",
             "Remove All": "Remove all",
+
+            _main_: "Main",
         },
     },
     el: {
         translation: {
+            _main_: "Κύρια",
+
             "Remove All": "Αφαίρεση όλων",
             "Add first 20": "Προσθήκη 20 πρώτων",
             Private_FEMININE: "Ιδιωτικές",
@@ -792,7 +796,7 @@ const resources = {
             "Add images": "Προσθήκη εικόνων",
             "Select All": "Επιλογή Όλων",
             "Deselect All": "Καμία Επιλογή",
-            "Set Main": "Κάνε την πρώτη",
+            "Set Main": "Κάνε την κύρια",
             Compare: "Σύγκριση",
 
             "Other Pollutants": "Λοιποί Ρύποι",
