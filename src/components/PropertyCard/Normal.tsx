@@ -39,7 +39,6 @@ type Color = string;
 
 const getStatusColor = (status: string): Color => {
     const statusUpper = status.toUpperCase() as PropertyStatus;
-    console.log(statusUpper);
 
     return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 };
@@ -59,11 +58,12 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         plotArea,
     } = item || {};
 
-    console.log(item);
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
         (item as IPropertyResultResponse) || {};
 
-    const { bathrooms, bedrooms } = details || {};
+    const bathrooms = details?.bathrooms;
+    const bedrooms = details?.bedrooms;
+
     const { lat, lng } = location || {};
 
     const { t, i18n } = useTranslation();
@@ -142,10 +142,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             />
 
             <Stack px={2} py={2} spacing={0.8}>
-                <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
+                <Stack spacing={1} direction="row" mt={1} flexWrap="wrap">
                     {parentCategory.key !== "LAND" ? (
                         <Stack
-                            spacing={1}
+                            spacing={2}
                             direction="row"
                             mt={1}
                             flexWrap="nowrap"
@@ -161,9 +161,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {plotArea || "-"}
-                                    {"m²"}
+                                    {plotArea || "N/A"}
+                                    {plotArea ? " m²" : null}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -177,14 +178,15 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {area || "-"}
-                                    {"m²"}
+                                    {area || "N/A"}
+                                    {area ? " m²" : null}
                                 </Typography>
                             </Stack>
                             <Stack
                                 direction="row"
-                                spacing={0.5}
+                                spacing={0.8}
                                 alignItems="center"
                             >
                                 <Typography>
@@ -193,14 +195,15 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {bedrooms || "-"}
-                                    {"beds"}
+                                    {bedrooms || item.bedrooms || "N/A"}{" "}
+                                    {/* {t("beds")} */}
                                 </Typography>
                             </Stack>
                             <Stack
                                 direction="row"
-                                spacing={0.5}
+                                spacing={0.8}
                                 alignItems="center"
                             >
                                 <Typography>
@@ -209,9 +212,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
                                 >
-                                    {bathrooms || "-"}
-                                    {"baths"}
+                                    {bathrooms || item.bathrooms || "N/A"}{" "}
+                                    {/* {t("baths")} */}
                                 </Typography>
                             </Stack>
                         </Stack>
@@ -235,7 +239,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {plotArea || "-"}
-                                    {"m²"}
+                                    {" m²"}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -266,8 +270,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {details?.frontage || "-"}
-                                    {""}
+                                    {details?.frontage || item?.plotArea || "-"}
+                                    {" m²"}
                                 </Typography>
                             </Stack>
                         </Stack>
@@ -304,7 +308,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Stack direction="row" spacing={1}>
                     {state?.value ? (
-                        <NormalBadge name={t(state.value)} color={stateColor} />
+                        <NormalBadge
+                            name={t(state.value)} //fa
+                            color={stateColor}
+                        />
                     ) : null}
                     {category?.value ? (
                         <NormalBadge

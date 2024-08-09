@@ -1,3 +1,4 @@
+import { secondsInDay } from "date-fns";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -105,8 +106,15 @@ const resources = {
             Basement: "Basement",
             "Semi-basement": "Semi-basement",
             "Ground Floor": "Ground Floor",
+            First: "First",
+            Second: "Second",
+            Third: "Third",
+            Fourth: "Fourth",
+            Fifth: "Fifth",
             Mezzanine: "Mezzanine",
             Bedrooms: "Bedrooms",
+            beds: "beds",
+            baths: "baths",
             Layers: "Layers",
             Kitchens: "Kitchens",
             "Living Rooms": "Living Rooms",
@@ -115,6 +123,8 @@ const resources = {
             View: "View",
             Sea: "Sea",
             "Distance From Sea": "Distance From Sea",
+            Distance: "Distance",
+            "Walking time": "Walking time",
             Mountain: "Mountain",
             Forest: "Forest",
             Unlimited: "Unlimited",
@@ -187,7 +197,7 @@ const resources = {
             "Area (lowest first)": "Area (lowest first)",
             "Land area (highest first)": "Land area (highest first)",
             "Rating (highest first)": "Rating (highest first)",
-
+            "Popular Properties": "Popular Properties",
             //Distances
 
             Distances: "Distances",
@@ -467,7 +477,8 @@ const resources = {
             "Rental Period Start": "Rental Period Start",
             "Rental Period End": "Rental Period End",
             All: "All",
-
+            "Open in": "Open in",
+            Clone: "Clone",
             "Creation Date": "Creation Date",
             "Updated At": "Updated At",
             Update: "Update",
@@ -519,7 +530,7 @@ const resources = {
             "Edit Label": "Edit Label",
             "Label's name": "Label's name",
             Preview: "Preview",
-
+            "Closest points": "Closest points",
             /////////////////
             "The active properties are published in public sites.":
                 "The active properties are published in public sites.",
@@ -566,6 +577,7 @@ const resources = {
             Address: "Address",
             "Zip code": "Zip code",
             "Call Center Number": "Call Center Number",
+            "Active Property": "Active Property",
             Active: "Active",
             Inactive: "Inactive",
             Greek: "Greek",
@@ -745,6 +757,10 @@ const resources = {
             Custom: "Custom",
             "Select Date Range": "Select Date Range",
             "Total Views": "Total Views",
+            "Monthly Views": "Monthly Views",
+            "Weekly Views": "Weekly Views",
+            "Yearly Views": "Yearly Views",
+            "Daily Views": "Daily Views",
 
             "Copy Link": "Copy Link",
             "Social Networks": "Social Networks",
@@ -929,6 +945,11 @@ const resources = {
                 "Εκτεταμένη Έκδοση: Περιέχει όλες τις φωτογραφίες",
 
             "Total Views": "Συνολικές Προβολές",
+
+            "Monthly Views": "Μηνιαίες Προβολές",
+            "Weekly Views": "Εβδομαδιαίες Προβολές",
+            "Yearly Views": "Ετήσιες Προβολές",
+            "Daily Views": "Ημερήσιες Προβολές",
             "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
             Custom: "Προσαρμοσμένο",
 
@@ -1112,8 +1133,15 @@ const resources = {
             Basement: "Υπόγειο",
             "Semi-basement": "Ημιυπόγειο",
             "Ground Floor": "Ισόγειο",
+            First: "Πρώτος όροφος",
+            Second: "Δεύτερος όροφος",
+            Third: "Τρίτος όροφος",
+            Fourth: "Τέταρτος όροφος",
+            Fifth: "Πέμπτος όροφος",
             Mezzanine: "Ημιόροφος",
             Bedrooms: "Υπνοδωμάτια",
+            beds: "Υπνοδωμάτια",
+            baths: "Μπάνια",
             Layers: "Επίπεδα",
             Kitchens: "Κουζίνες",
             "Living Rooms": "Σαλόνια",
@@ -1122,6 +1150,8 @@ const resources = {
             View: "Θέα",
             Sea: "Θάλασσα",
             "Distance From Sea": "Απόσταση από τη Θάλασσα",
+            Distance: "Απόσταση",
+            "Walking time": "Χρόνος με τα πόδια",
             Mountain: "Βουνό",
             Forest: "Δάσος",
             Unlimited: "Απεριόριστη",
@@ -1196,7 +1226,7 @@ const resources = {
             "Area (lowest first)": "Εμβαδόν (χαμηλότερο πρώτα)",
             "Land area (highest first)": "Εμβαδόν οικοπέδου (υψηλότερο πρώτα)",
             "Rating (highest first)": "Αξιολόγηση (υψηλή πρώτα)",
-
+            "Popular Properties": "Δημοφιλή ακίνητα",
             // Tickets
             "Add section": "Προσθήκη Τμήματος",
             "Add Task": "Προσθήκη Εργασίας",
@@ -1291,7 +1321,7 @@ const resources = {
 
             "Loading Dock": "Αποβάθρα Φόρτωσης",
             Consideration: "Αντιπαροχή",
-            "Floor To Area Ratio": "Συντελεστής Δόμησης",
+            "Floor to Area Ratio": "Συντελεστής Δόμησης",
             "Coverage Factor": "Συντελεστής Κάλυψης",
             "Facade Length": "Μήκος Πρόσοψης",
             Inclination: "Κλίση",
@@ -1505,6 +1535,8 @@ const resources = {
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
             All: "Όλα",
+            "Open in": "Άνοιγμα σε ",
+            Clone: "Κλωνοποίηση",
             Delete: "Διαγραφή",
             "Creation Date": "Ημ/νία Δημιουργίας",
             "Updated At": "Ημ/νία Ενημέρωσης",
@@ -1557,7 +1589,7 @@ const resources = {
             "Edit Label": "Επεξεργασία Ετικέτας",
             "Label's name": "Όνομα Ετικέτας",
             Preview: "Προεπισκόπηση",
-
+            "Closest points": "Κοντινά σημεία",
             "Fill in Code and State!":
                 "Συμπληρώστε Κωδικό (Code) και Κατάσταση (State)!",
 
@@ -1595,8 +1627,9 @@ const resources = {
             Address: "Διεύθυνση",
             "Zip code": "Ταχυδρομικός κώδικας",
             "Call Center Number": "Τηλεφωνικό Κέντρο",
-            Active: "Ενεργός",
-            Inactive: "Ανενεργός",
+            "Active Property": "Ενεργό ακίνητο",
+            Active: "Ενεργό",
+            Inactive: "Ανενεργό",
             Greek: "Ελληνικά",
             English: "Αγγλικά",
             "United States": "Ηνωμένων Πολιτειών",

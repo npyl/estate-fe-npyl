@@ -11,10 +11,9 @@ import {
 // utils
 // components
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Label } from "@/components/Label";
 import { Place } from "src/types/googleMap";
 import { Scrollbar } from "src/components/scrollbar";
-import { relative } from "path";
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
@@ -68,6 +67,7 @@ type ApplicationItemProps = {
 
 function ApplicationItem({ app, duration }: ApplicationItemProps) {
     const { vicinity, rating, name } = app;
+    const { t } = useTranslation();
 
     return (
         <Stack direction="row" alignItems="center" spacing={2}>
@@ -79,11 +79,11 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
                     sx={{ mt: 0.5, color: "text.secondary" }}
                 >
                     <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
-                        Distance: {duration?.distance?.text}
+                        {t("Distance")}: {duration?.distance?.text}
                     </Typography>
 
                     <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
-                        Walking time:{" "}
+                        {t("Walking time")}:{" "}
                         <DirectionsWalkIcon sx={{ fontSize: "13px" }} />{" "}
                         {duration?.duration?.text}
                     </Typography>

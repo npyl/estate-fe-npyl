@@ -38,6 +38,8 @@ export interface IPropertyResultResponse {
     cityGR: string;
     complexEN: string;
     complexGR: string;
+    bedrooms?: number;
+    bathrooms?: number;
 }
 
 export interface IPropertyFilter {
@@ -366,6 +368,8 @@ export interface IProperties {
     googleEarth: IGoogleEarth;
 
     visitors: number;
+    bedrooms: number;
+    bathrooms: number;
 }
 
 export interface IPropertyMarker {

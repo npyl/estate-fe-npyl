@@ -97,8 +97,9 @@ const STATUS_COLORS: StatusColors = {
 };
 
 function statusColor(params: GridCellParams) {
-    if (!params.value) return <></>;
+    const { t } = useTranslation();
 
+    if (!params.value) return <></>;
     const value = params.value as KeyValue;
     const status = (value.value as string)?.trim();
 
@@ -114,7 +115,7 @@ function statusColor(params: GridCellParams) {
             sx={{
                 width: 150,
                 height: 30,
-                bgcolor: color,
+                backgroundColor: color,
                 color: "white",
                 borderRadius: "20px",
                 display: "flex",
@@ -122,7 +123,7 @@ function statusColor(params: GridCellParams) {
                 justifyContent: "center",
             }}
         >
-            {status}
+            {t(status)}
         </Box>
     );
 }
@@ -162,7 +163,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Parent Category") as string,
-        renderCell: (params) => (params.value as KeyValue)?.value,
+        renderCell: (params) => t((params.value as KeyValue)?.value),
 
         flex: 1,
     },
@@ -171,7 +172,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Category") as string,
-        renderCell: (params) => (params.value as KeyValue)?.value,
+        renderCell: (params) => t((params.value as KeyValue)?.value),
 
         flex: 1,
     },
