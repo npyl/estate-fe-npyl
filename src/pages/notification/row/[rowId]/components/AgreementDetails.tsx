@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Typography, Tooltip } from "@mui/material";
 import { format } from "date-fns";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import ExpireIcon from "@mui/icons-material/AccessTime";
 import ExpiredIcon from "@mui/icons-material/Error";
 // Adjust the path as necessary
@@ -22,6 +22,8 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({
     handlePropertyCodeClick,
     handleCustomerNameClick,
 }) => {
+    const { t } = useTranslation();
+
     const expirationDate = data?.agreement?.expirationDate
         ? format(new Date(data?.agreement?.expirationDate), "dd MMMM yyyy")
         : "";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Typography, Rating } from "@mui/material";
 import CommentIcon from "@mui/icons-material/Comment";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface PropertyRatingProps {
     comment: string;
@@ -14,6 +14,8 @@ const PropertyRating: React.FC<PropertyRatingProps> = ({
     propertyRating,
     presentationRating,
 }) => {
+    const { t } = useTranslation();
+
     return (
         <Stack mt={1}>
             <Stack mt={1} flexDirection="row" gap={1} alignItems="center">

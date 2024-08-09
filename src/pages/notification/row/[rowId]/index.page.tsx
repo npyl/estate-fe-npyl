@@ -14,7 +14,7 @@ import type { NextPage } from "next";
 import { useGetNotificationByIdQuery } from "@/services/notification";
 
 import { useRouter } from "next/router";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import WorkDetails from "./components/WorkDetails";
 import AgreementDetails from "./components/AgreementDetails";
@@ -27,11 +27,10 @@ import ListingPropertyDetails from "./components/ListingPropertyDetails";
 import TitleSection from "./components/TitleSection";
 
 const NotificationDetailPage: NextPage = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { rowId } = router.query;
-    const { data, isLoading, error } = useGetNotificationByIdQuery(
-        Number(rowId)
-    );
+    const { data, error } = useGetNotificationByIdQuery(Number(rowId));
 
     const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
         skip: !rowId && !open,

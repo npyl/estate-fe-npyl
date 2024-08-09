@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { MatchResult } from "./types";
 import useTheme from "@mui/system/useTheme";
 import { NormalBadge } from "@/components/PropertyCard/styled";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type PropertyStatus =
     | "SOLD"
@@ -37,8 +37,6 @@ const getStatusColor = (status: string): string => {
     return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 };
 
-import { useTranslation } from "react-i18next";
-
 interface SearchItemProps {
     searchText: string;
     option: IPropertyResultResponse;
@@ -50,7 +48,7 @@ export const PropertySearchItem = ({
     searchText,
     onClick,
 }: SearchItemProps) => {
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
 
     const router = useRouter();
     const theme = useTheme();

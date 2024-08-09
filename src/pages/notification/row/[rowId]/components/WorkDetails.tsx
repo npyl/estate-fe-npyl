@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack, Typography, Box } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface WorkDetailsProps {
     workForUs: any;
@@ -11,6 +11,8 @@ const WorkDetails: React.FC<WorkDetailsProps> = ({
     workForUs,
     truePositions,
 }) => {
+    const { t } = useTranslation();
+
     return (
         <Stack
             direction="row"

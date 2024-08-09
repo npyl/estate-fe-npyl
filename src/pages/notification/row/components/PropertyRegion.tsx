@@ -9,7 +9,6 @@ import {
     IPropertyForNotification,
 } from "@/types/notification/notification";
 import { ListingNotification } from "@/types/notification/listing";
-import { t } from "i18next";
 
 const formatTourDate = (dateString: any) => {
     return dayjs(dateString).format("D MMMM YYYY");
@@ -35,7 +34,7 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
     row,
     handlePropertyCodeClick,
 }) => {
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
     const isEnglish = i18n.language === "en";
 
     const complex = isEnglish

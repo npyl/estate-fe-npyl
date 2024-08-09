@@ -12,8 +12,6 @@ import {
 import { ContactNotification, IWorkForUs } from "src/types/notification";
 import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
 import Link from "next/link";
-import { LocalPhone } from "@mui/icons-material";
-import EmailIcon from "@mui/icons-material/Email";
 import { useRouter } from "next/router";
 import {
     format,
@@ -24,7 +22,7 @@ import {
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
 import { NormalBadge } from "@/components/PropertyCard/styled";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import dayjs from "dayjs";
 import PropertyRegion from "./components/PropertyRegion";
@@ -88,6 +86,8 @@ const BasicRow = ({
     contactDetails,
     workDetails,
 }: BasicRowProps) => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const [toggleNotificationViewedStatus] =
         useToggleNotificationViewedStatusMutation();

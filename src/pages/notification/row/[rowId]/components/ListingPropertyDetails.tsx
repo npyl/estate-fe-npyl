@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { ListingNotification } from "@/types/notification/listing";
 
 interface ListingPropertyDetailsProps {
@@ -10,6 +10,8 @@ interface ListingPropertyDetailsProps {
 const ListingPropertyDetails: React.FC<ListingPropertyDetailsProps> = ({
     listing,
 }) => {
+    const { t } = useTranslation();
+
     if (!listing) return null;
 
     return (

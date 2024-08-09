@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { IPropertyForNotification } from "@/types/notification/notification";
 import { ListingNotification } from "@/types/notification/listing";
 
@@ -20,6 +20,8 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     propertyDetails,
     contactDetails,
 }) => {
+    const { t } = useTranslation();
+
     return (
         <Box flexDirection="row">
             <Typography variant="body2">
