@@ -6,9 +6,10 @@ RUN mkdir -p /usr/src
 WORKDIR /usr/src
 # copy source files
 COPY . /usr/src
-# install dependencies (See doc/build.md for build errors and --ignore-optional)
-RUN yarn install --ignore-optional
+RUN rm -rf .next node_modules package-lock.json yarn.lock
+# install dependencies (See doc/build.md for build errors and use --ignore-optional for yarn)
+RUN npm i
 # start app
-RUN yarn build
+RUN npm run build
 EXPOSE 3000
-CMD yarn start
+CMD npm start
