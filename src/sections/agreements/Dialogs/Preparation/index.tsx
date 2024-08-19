@@ -127,7 +127,7 @@ const PreparationDialog: React.FC<Props> = ({
                     actions={
                         <>
                             <FormControlLabel
-                                label={t("Export date")}
+                                label={t("Agreement date")}
                                 labelPlacement="start"
                                 control={
                                     <RHFDatePicker name="additional.date" />
