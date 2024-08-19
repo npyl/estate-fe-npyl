@@ -133,7 +133,7 @@ type IAgreementReqBase = Omit<IAgreementFormData, "owner"> &
 
 export interface IAgreementReq extends IAgreementReqBase {
     id?: number;
-    propertyId: number;
+    propertyId?: number; // undefined for "PURCHASE"
     ownerId: number;
 
     owner: IAgreementOwner;

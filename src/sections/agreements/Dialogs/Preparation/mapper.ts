@@ -72,7 +72,7 @@ export const getValues = (
 
     return {
         id,
-        propertyId: propertyId || -1,
+        propertyId: propertyId || undefined,
         ownerId: ownerId || -1,
         // ...
         variant: isCustomer ? "PURCHASE" : variant?.key || "BASIC",
