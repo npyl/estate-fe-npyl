@@ -7,13 +7,10 @@ const EditPDFButton: React.FC<ButtonProps> = (props) => {
     const { t } = useTranslation();
 
     return (
-        <>
-            <Button {...props} startIcon={<EditNoteIcon />}>
-                {t("Edit PDF")}
-            </Button>
-
+        <Button {...props} startIcon={<EditNoteIcon />}>
+            {t("Edit PDF")}
             <PDFErrorsTooltip />
-        </>
+        </Button>
     );
 };
 
