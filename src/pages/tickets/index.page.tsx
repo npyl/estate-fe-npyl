@@ -154,6 +154,7 @@ export default function KanbanPage() {
                     <TwoDimentionsDnd
                         columns={COLUMNS}
                         onDragEnd={handleDragEnd}
+                        notCenter
                     >
                         {items}
                     </TwoDimentionsDnd>

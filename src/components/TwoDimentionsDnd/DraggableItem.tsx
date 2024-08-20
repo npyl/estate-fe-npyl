@@ -35,6 +35,7 @@ interface DraggableItemProps {
     index: number;
     preventDrag: boolean;
     columns: number;
+    notCenter?: boolean;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
@@ -44,6 +45,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     index,
     preventDrag,
     columns,
+    notCenter,
 }) => (
     <Grid item xs={12 / columns}>
         <Draggable
@@ -61,6 +63,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
+                    sx={{ justifyContent: notCenter ? "flex-start" : "center" }}
                 >
                     {item}
                 </CenteredDiv>

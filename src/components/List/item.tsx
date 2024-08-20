@@ -37,7 +37,6 @@ const ListItem: FC<ListItemProps> = (props) => {
         <StyledListItem
             sx={{
                 px: disableGutters ? 0 : 3,
-                py: 3
             }}
             {...other}
         >

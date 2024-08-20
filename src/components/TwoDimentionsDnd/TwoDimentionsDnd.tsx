@@ -6,6 +6,7 @@ import TwoDimentionsDndNoContext from "./TwoDimentionsDndNoContext";
 interface TwoDimentionsDndProps
     extends Omit<TwoDimentionsDndNoContextProps, "onDragEnd"> {
     onDragEnd: (results: DropResult) => void;
+    notCenter?: boolean;
 }
 
 export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
@@ -13,9 +14,14 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
     gap = 3,
     onDragEnd,
     children,
+    notCenter,
 }) => (
     <DragDropContext onDragEnd={onDragEnd}>
-        <TwoDimentionsDndNoContext columns={columns} gap={gap}>
+        <TwoDimentionsDndNoContext
+            columns={columns}
+            gap={gap}
+            notCenter={notCenter}
+        >
             {children}
         </TwoDimentionsDndNoContext>
     </DragDropContext>

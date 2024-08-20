@@ -171,7 +171,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Visitors")}
                         value={data?.visitors ?? "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "ParentCategory":
@@ -179,7 +179,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Parent Category")}
                         value={t(data?.parentCategory.value) || "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Category":
@@ -187,7 +187,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Category")}
                         value={t(data?.category.value) || "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Area":
@@ -195,7 +195,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Living Space")}
                         value={data?.area ? `${data?.area}m²` : "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Exclusive":
@@ -203,7 +203,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Exclusive")}
                         status={data?.exclusive ?? "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Plot Area":
@@ -211,7 +211,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Plot Size")}
                         value={data?.plotArea ? `${data?.plotArea}m²` : "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Estimated Rent Price":
@@ -225,7 +225,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                   )}€`
                                 : "-"
                         }
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Available After":
@@ -233,7 +233,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListDateItem
                         label={t("Available After")}
                         value={data?.availableAfter}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Rental Period Start":
@@ -241,7 +241,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListDateItem
                         label={t("Rental Period Start")}
                         value={data?.rentalStart}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Rental Period End":
@@ -249,7 +249,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListDateItem
                         label={t("Rental Period End")}
                         value={data?.rentalEnd}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Current Rent Price":
@@ -263,7 +263,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                   )}€`
                                 : "-"
                         }
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Labels":
@@ -271,12 +271,12 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListLabelsItem
                         labels={data?.labels || []}
                         label={t("Labels")}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "ROI":
                 return (
-                    <ListItem label={"ROI"} sx={{minHeight:"60px"}}>
+                    <ListItem label={"ROI"} sx={{ minHeight: "60px" }}>
                         <Button
                             sx={{ height: "23px" }}
                             variant="outlined"
@@ -297,7 +297,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                   )}€`
                                 : "-"
                         }
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Year of Construction":
@@ -305,11 +305,17 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Year of Construction")}
                         value={data?.construction?.yearOfConstruction || "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Code":
-                return <ListItem label={t("Code")} value={data?.code || "-"} sx={{minHeight:"60px"}}/>;
+                return (
+                    <ListItem
+                        label={t("Code")}
+                        value={data?.code || "-"}
+                        sx={{ minHeight: "60px" }}
+                    />
+                );
             case "Price":
                 return (
                     <ListItem
@@ -319,7 +325,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 ? `${data?.price.toLocaleString("de-DE")}€`
                                 : "-"
                         }
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Key Code":
@@ -327,19 +333,24 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Key Code")}
                         value={data?.keyCode || "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
 
             case "Manager":
                 if (data.manager != null)
-                    return <ListManagerItem manager={manager} sx={{minHeight:"61px"}}/>;
+                    return (
+                        <ListManagerItem
+                            manager={manager}
+                            sx={{ minHeight: "61px" }}
+                        />
+                    );
                 else
                     return (
                         <ListItem
                             label={t("Manager")}
                             value={"-"} // Displaying '-' when managedBy is null
-                            sx={{minHeight:"61px"}}
+                            sx={{ minHeight: "61px" }}
                         />
                     );
 
@@ -348,7 +359,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("State")}
                         value={t(data?.state.value) || "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Rented":
@@ -356,7 +367,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Rented")}
                         status={data?.rented ?? "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Debatable Price":
@@ -364,7 +375,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Debatable Price")}
                         status={data?.debatablePrice ?? "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Auction":
@@ -372,7 +383,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Auction")}
                         status={data?.auction ?? "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Buildable":
@@ -380,17 +391,23 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Buildable")}
                         status={data?.buildable ?? "-"}
-                        sx={{minHeight:"60px"}}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Owner":
-                if (data.owner != null) return <ListOwnerItem owner={owner} sx={{minHeight:"60px"}} />;
+                if (data.owner != null)
+                    return (
+                        <ListOwnerItem
+                            owner={owner}
+                            sx={{ minHeight: "60px" }}
+                        />
+                    );
                 else
                     return (
                         <ListItem
                             label={t("Owner")}
                             value={"-"} // Displaying '-' when managedBy is null
-                            sx={{minHeight:"60px"}}
+                            sx={{ minHeight: "60px" }}
                         />
                     );
             default:

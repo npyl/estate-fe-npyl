@@ -35,6 +35,9 @@ export interface TwoDimentionsDndNoContextProps
 
     preventDrag?: boolean;
     children: TwoDimentionsDndNode | TwoDimentionsDndNode[];
+
+    //centering
+    notCenter?: boolean;
 }
 
 export const DroppableTypeItem = "ITEM";
