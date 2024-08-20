@@ -13,9 +13,14 @@ import { EnterOverlay } from "../EnterOverlay";
 interface DescriptionProps {
     taskDescription: string;
     onUpdate: (card: Partial<IKanbanCardPOST>) => void;
+    onClose: () => void;
 }
 
-const Description = ({ taskDescription, onUpdate }: DescriptionProps) => {
+const Description = ({
+    taskDescription,
+    onClose,
+    onUpdate,
+}: DescriptionProps) => {
     const { t } = useTranslation();
 
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -77,14 +82,17 @@ const Description = ({ taskDescription, onUpdate }: DescriptionProps) => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={handleClick}
+                onClick={() => {
+                    handleClick();
+                    onClose();
+                }}
                 sx={{
                     width: "fit-content",
                     alignSelf: "center",
                     textTransform: "none",
                 }}
             >
-                Update Description
+                {t("Update")}
             </Button>
         </Stack>
     );
