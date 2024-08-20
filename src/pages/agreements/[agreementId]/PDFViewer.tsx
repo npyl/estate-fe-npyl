@@ -9,6 +9,7 @@ import { IAgreement } from "@/types/agreements";
 import { text } from "@pdfme/schemas";
 import { Viewer } from "@pdfme/ui";
 import { useEffect, useRef } from "react";
+import { getAuto } from "@/sections/agreements/Dialogs/Preparation/mapper";
 
 interface Props {
     a: IAgreement;
@@ -24,7 +25,14 @@ const PDFViewer: React.FC<Props> = ({ a }) => {
         if (!containerRef.current) return;
         if (!variant?.key || !language?.key) return;
 
-        const inputs = [flattenObject(formData)];
+        const { additional } = formData;
+
+        const data = {
+            ...formData,
+            ...getAuto(additional?.date, formData?.owner?.email || ""),
+        };
+
+        const inputs = [flattenObject(data)];
 
         loadPdf(variant.key, language.key).then((template) => {
             if (!template) return;
