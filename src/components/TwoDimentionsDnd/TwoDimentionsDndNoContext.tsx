@@ -20,6 +20,7 @@ const TwoDimentionsDndNoContext = ({
     dndId,
     startIndex,
     preventDrag = false,
+    draggableSx,
     children,
     ...props
 }: TwoDimentionsDndNoContextProps) => {
@@ -62,6 +63,7 @@ const TwoDimentionsDndNoContext = ({
                             dndId={dndId}
                             preventDrag={preventDrag}
                             columns={columns}
+                            draggableSx={draggableSx}
                         />
                     ))}
                 </DroppableRow>

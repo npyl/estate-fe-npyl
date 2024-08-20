@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 // @mui
-import { Button, Paper, Stack, Grid } from "@mui/material";
+import { Button, Paper, Stack } from "@mui/material";
 // @types
 import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
@@ -27,13 +27,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
     borderRadius: theme.spacing(1),
     borderStyle: "dashed",
-
     backgroundColor:
         theme.palette.mode === "light"
-            ? theme.palette.grey?.[100]
+            ? "#F7F8F9"
             : theme.palette.background.default,
 
-    minWidth: "min-content",
+    width: "20vw",
 }));
 
 // ----------------------------------------------------------------------
@@ -92,7 +91,8 @@ export default function KanbanColumn({ column }: Props) {
                     <Stack
                         spacing={1}
                         // NOTE: a minimum height helps a dropped card not fall on the column name glitch
-                        minHeight={150}
+                        minHeight={100}
+                        width={1}
                     >
                         <KanbanColumnToolBar
                             columnName={column.name}
@@ -133,6 +133,7 @@ export default function KanbanColumn({ column }: Props) {
                             onClick={handleToggleAddTask}
                             sx={{
                                 mt: 2,
+                                fontSize: "12px",
                             }}
                         >
                             {t("Add Task")}

@@ -24,7 +24,7 @@ export default function KanbanColumnToolBar({
 }: Props) {
     const renameRef = useRef<HTMLInputElement>(null);
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState<string>();
 
     const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -58,7 +58,7 @@ export default function KanbanColumnToolBar({
     ) => {
         if (event.key === "Enter" && renameRef.current) {
             renameRef.current.blur();
-            onUpdate(value);
+            value ? onUpdate(value) : onUpdate("");
         }
     };
 
@@ -75,7 +75,7 @@ export default function KanbanColumnToolBar({
                 <KanbanInputName
                     inputRef={renameRef}
                     placeholder="Section name"
-                    value={value || columnName}
+                    value={value !== undefined ? value : columnName}
                     onChange={handleChangeColumnName}
                     onKeyUp={handleUpdateColumn}
                 />

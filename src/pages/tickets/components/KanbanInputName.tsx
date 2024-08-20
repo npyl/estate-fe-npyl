@@ -12,7 +12,9 @@ export default function KanbanInputName({ sx, ...other }: InputBaseProps) {
                 "& .MuiInputBase-input": {
                     py: 1,
                     borderRadius: 1,
-                    typography: "h6",
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
                     border: `solid 1px transparent`,
                     transition: (theme) =>
                         theme.transitions.create([
