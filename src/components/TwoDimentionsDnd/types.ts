@@ -1,4 +1,4 @@
-import { StackProps } from "@mui/material";
+import { StackProps, SxProps, Theme } from "@mui/material";
 import { ReactElement } from "react";
 
 interface ChildProps {
@@ -37,7 +37,7 @@ export interface TwoDimentionsDndNoContextProps
     children: TwoDimentionsDndNode | TwoDimentionsDndNode[];
 
     //centering
-    notCenter?: boolean;
+    draggableSx?: SxProps<Theme>;
 }
 
 export const DroppableTypeItem = "ITEM";

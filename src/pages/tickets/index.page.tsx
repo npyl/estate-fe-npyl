@@ -154,7 +154,7 @@ export default function KanbanPage() {
                     <TwoDimentionsDnd
                         columns={COLUMNS}
                         onDragEnd={handleDragEnd}
-                        notCenter
+                        draggableSx={{ justifyContent: "flex-start" }}
                     >
                         {items}
                     </TwoDimentionsDnd>
