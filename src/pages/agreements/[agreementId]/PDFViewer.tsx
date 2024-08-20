@@ -1,5 +1,6 @@
 import readOnly from "@/components/PDFPlugins/readOnly";
 import signature from "@/components/PDFPlugins/signature";
+import errorTooltip from "@/components/PDFPlugins/errorTooltip";
 import {
     flattenObject,
     loadPdf,
@@ -33,7 +34,7 @@ const PDFViewer: React.FC<Props> = ({ a }) => {
                     domContainer: containerRef.current!,
                     template,
                     inputs,
-                    plugins: { text, readOnly, signature },
+                    plugins: { text, readOnly, errorTooltip, signature },
                 });
             } catch (ex) {}
         });

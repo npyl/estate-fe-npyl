@@ -5,7 +5,7 @@ import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
 import { text } from "@pdfme/schemas";
 import readOnly from "@/components/PDFPlugins/readOnly";
-import errorTooltip from "../PDFEditor/plugins/errorTooltip";
+import errorTooltip from "@/components/PDFPlugins/errorTooltip";
 import signature from "@/components/PDFPlugins/signature";
 import { getAuto } from "../Preparation/mapper";
 
