@@ -26,6 +26,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import CustomerModal from "../_general/BasicDetails/CustomerModal";
 import CustomerForm from "@/pages/customer/components/Form";
 import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
+import { useGetPropertyByIdQuery } from "@/services/properties";
 
 const getCHECKBOXES = (t: TranslationType) => [
     { name: "debatablePrice", label: t("Debatable Price") },
@@ -76,6 +77,7 @@ const BasicForLandSection: React.FC<any> = () => {
     const { data: managers } = useAllUsersQuery();
 
     const { propertyId } = router.query;
+    const { data } = useGetPropertyByIdQuery(+propertyId!);
 
     const parentCategory = watch("parentCategory") || "";
 
@@ -211,6 +213,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             name="price"
                             label={t("Price")}
                             adornment="€"
+                            initialValue={data?.price}
                         />
                     </Grid>
 
@@ -228,6 +231,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             name="estimatedRentPrice"
                             label={t("Estimated Rent Price")}
                             adornment="€"
+                            initialValue={data?.estimatedRentPrice}
                         />
                     </Grid>
 
