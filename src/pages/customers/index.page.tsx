@@ -24,6 +24,7 @@ import FilterSection from "./(FilterSection)";
 import { getOptions } from "./(FilterSection)/constants";
 import BulkEdit from "./(BulkEdit)";
 import Pagination, { usePagination } from "@/components/Pagination";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -156,12 +157,13 @@ const Customers: NextPage = () => {
                 sorting={sorting}
                 onSortingChange={setSorting}
             />
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-end" p={1}>
                 {selectedRows && selectedRows.length > 0 ? (
                     <Button
                         variant="contained"
                         color="error"
                         onClick={handleBulkDelete}
+                        startIcon={<DeleteIcon />}
                     >
                         {t("Delete")}
                     </Button>

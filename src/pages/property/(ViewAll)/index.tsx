@@ -15,6 +15,7 @@ import {
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
 import { BulkEdit } from "../../components/BulkEdit/BulkEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ViewAllProps {
     sortBy: string;
@@ -133,12 +134,13 @@ const ViewAll = ({
                 height: "100%",
             }}
         >
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-end" p={1}>
                 {selectedRows && selectedRows.length > 0 ? (
                     <Button
                         variant="contained"
                         color="error"
                         onClick={handleBulkDelete}
+                        startIcon={<DeleteIcon />}
                     >
                         {t("Delete")}
                     </Button>
