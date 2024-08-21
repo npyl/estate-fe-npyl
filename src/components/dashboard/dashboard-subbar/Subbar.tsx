@@ -17,6 +17,7 @@ import { styled } from "@mui/material/styles";
 import getBorderColor from "@/theme/borderColor";
 import { SpaceBetween } from "@/components/styled";
 import { useRouter } from "next/router";
+import { LAYOUT } from "@/utils/config";
 
 const propertyItemType = "property-menu-item";
 const managerItemType = "manager-menu-item";
@@ -88,7 +89,7 @@ const FabMenu = ({ onClick }: FabMenuProps) => {
                 color="primary"
                 sx={{
                     position: "fixed",
-                    bottom: 30,
+                    bottom: LAYOUT.FAB_OFFSET_BOTTOM,
                     right: 30,
                     boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.45)",
                 }}

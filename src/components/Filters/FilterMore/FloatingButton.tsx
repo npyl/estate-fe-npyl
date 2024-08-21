@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Badge, Button } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import { useTranslation } from "react-i18next";
+import { LAYOUT } from "@/utils/config";
 
 interface FloatingButtonProps {
     badgeContent: number;
@@ -17,7 +18,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     return (
         <Box
             position="fixed"
-            bottom={30}
+            bottom={LAYOUT.FAB_OFFSET_BOTTOM}
             zIndex={2}
             left="50%"
             sx={{
