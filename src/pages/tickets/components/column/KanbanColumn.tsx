@@ -109,6 +109,8 @@ export default function KanbanColumn({ column }: Props) {
                             ) : null;
                         })}
 
+                        {provided.placeholder}
+
                         {/* Add Task button */}
                         {openAddTask ? (
                             <KanbanTaskAdd
