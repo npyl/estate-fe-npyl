@@ -1,4 +1,4 @@
-import { IPropertyFile, Upload } from "src/components/upload";
+import { Upload } from "src/components/upload";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDeletePropertyBlueprintMutation } from "src/services/properties";
@@ -12,41 +12,29 @@ const BlueprintsSection: React.FC = () => {
 
     const { blueprints, propertyId } = usePropertyBlueprints();
 
-    const { uploadFiles, invalidateTags, isLoading } =
+    const { uploadFiles, isLoading: isUploading } =
         usePropertyUpload("blueprint");
-    const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
+
+    const [deleteBlueprint, { isLoading: isDeleting }] =
+        useDeletePropertyBlueprintMutation();
 
     const [blueprintUrl, setBlueprintUrl] = useState("");
 
-    const handleFileClick = ({ url }: IPropertyFile) =>
-        url && setBlueprintUrl(url);
-
-    const handleRemoveFile = (inputFile: IPropertyFile) =>
+    const handleRemoveFile = (key: string) =>
         deleteBlueprint({
             propertyId,
-            imageKey: inputFile.key,
+            imageKey: key,
         });
-
-    const handleRemoveAllFileData = () =>
-        Promise.all(
-            blueprints.map((blueprint) =>
-                deleteBlueprint({
-                    propertyId: +propertyId!,
-                    imageKey: blueprint.key,
-                })
-            )
-        ).then(invalidateTags);
 
     return (
         <Panel label={t("Blueprints")}>
             <Upload
                 multiple
-                disabled={isLoading}
+                disabled={isUploading || isDeleting}
                 files={blueprints}
                 onDrop={uploadFiles}
-                onFileClick={handleFileClick}
+                onFileClick={setBlueprintUrl}
                 onRemove={handleRemoveFile}
-                onRemoveAll={handleRemoveAllFileData}
             />
 
             {blueprintUrl && (
