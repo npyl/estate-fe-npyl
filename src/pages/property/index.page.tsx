@@ -38,7 +38,6 @@ const Home: NextPage = () => {
     // sorting
     const sortingOptions = useMemo(() => getOptions(t), [t]);
     const [sorting, setSorting] = useState("default"); // general
-    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const { sortBy, direction } = useMemo(
         () =>
             sortingOptions.find(({ value }) => value === sorting)?.sorting || {
@@ -49,11 +48,7 @@ const Home: NextPage = () => {
     );
 
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
-    const handleRowSelectionChange = (
-        selectionModel: GridRowSelectionModel
-    ) => {
-        setSelectedRows(selectionModel);
-    };
+
     return (
         <Box
             sx={{
@@ -64,37 +59,27 @@ const Home: NextPage = () => {
             <FilterBar
                 sorting={sorting}
                 onSortingChange={setSorting}
-                // ...
                 {...optionViewProps}
                 sx={{
                     position: "sticky",
                     top: 64,
                     zIndex: 1,
-                    // background: "rgba(255, 255, 255, 0.7)",
-                    // boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
-                    // backdropFilter: "blur(8.5px)",
-                    // borderRadius: "10px",
-                    // border: "1px solid rgba(255, 255, 255, 0.18)",
-                    // width: "100%",
                 }}
             />
 
-            <>
-                {optionViewProps.optionView === "list" ? (
-                    <ViewAll
-                        sortBy={sortBy}
-                        direction={direction}
-                        isBulkEditOpen={isBulkEditOpen}
-                        onBulkEditOpen={openBulkEdit}
-                        onBulkEditClose={closeBulkEdit}
-                        onRowSelectionModelChange={handleRowSelectionChange}
-                    />
-                ) : null}
-                {optionViewProps.optionView === "grid" ? (
-                    <MediaCard sortBy={sortBy} direction={direction} />
-                ) : null}
-                {optionViewProps.optionView === "map" ? <MapView /> : null}
-            </>
+            {optionViewProps.optionView === "list" ? (
+                <ViewAll
+                    sortBy={sortBy}
+                    direction={direction}
+                    isBulkEditOpen={isBulkEditOpen}
+                    onBulkEditOpen={openBulkEdit}
+                    onBulkEditClose={closeBulkEdit}
+                />
+            ) : null}
+            {optionViewProps.optionView === "grid" ? (
+                <MediaCard sortBy={sortBy} direction={direction} />
+            ) : null}
+            {optionViewProps.optionView === "map" ? <MapView /> : null}
         </Box>
     );
 };

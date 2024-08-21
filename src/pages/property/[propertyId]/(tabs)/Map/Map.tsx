@@ -23,6 +23,7 @@ import RelatedPlaces from "./RelatedPlaces";
 import Grid from "@mui/material/Grid";
 import MapUnavailable from "@/components/Map/MapUnavailable";
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const initialState: any[] = [];
 
