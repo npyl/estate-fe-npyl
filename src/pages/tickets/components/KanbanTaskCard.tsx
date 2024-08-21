@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 // @mui
-import { Checkbox, Paper, Typography } from "@mui/material";
+import { Box, Checkbox, Paper, Typography } from "@mui/material";
 // @types
 import { IKanbanCard } from "src/types/kanban";
 // components
@@ -66,8 +66,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                             flexDirection: "row",
 
                             cursor: "pointer",
-
-                            minWidth: "280px",
                         }}
                         onClick={handleOpenDetails}
                     >
@@ -101,27 +99,28 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                 }}
                             />
                         )}
-
-                        <Typography
-                            noWrap
-                            variant="subtitle2"
-                            sx={{
-                                pr: 1,
-                                pl: 6,
-                                height: 72,
-                                lineHeight: "72px",
-                                transition: (theme) =>
-                                    theme.transitions.create("opacity", {
-                                        duration:
-                                            theme.transitions.duration.shortest,
+                        <Box sx={{ flexGrow: 1, textAlign: "center", ml: -7 }}>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{
+                                    height: 72,
+                                    lineHeight: "72px",
+                                    fontSize: "12px",
+                                    alignSelf: "center",
+                                    transition: (theme) =>
+                                        theme.transitions.create("opacity", {
+                                            duration:
+                                                theme.transitions.duration
+                                                    .shortest,
+                                        }),
+                                    ...(completed && {
+                                        opacity: 0.48,
                                     }),
-                                ...(completed && {
-                                    opacity: 0.48,
-                                }),
-                            }}
-                        >
-                            {name}
-                        </Typography>
+                                }}
+                            >
+                                {name}
+                            </Typography>
+                        </Box>
                     </Paper>
                 )}
             </Draggable>

@@ -6,7 +6,7 @@ import { flattenObject, loadPdf } from "./util";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
 import signature from "@/components/PDFPlugins/signature";
 import readOnly from "@/components/PDFPlugins/readOnly";
-import errorTooltip from "./plugins/errorTooltip";
+import errorTooltip from "@/components/PDFPlugins/errorTooltip";
 import { text } from "@pdfme/schemas";
 
 const flatRateKey = "commissionAndDuration.flatRate";

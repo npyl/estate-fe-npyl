@@ -1,5 +1,5 @@
 // @mui
-import { Box, Container } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { DropResult } from "react-beautiful-dnd";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -48,7 +48,7 @@ export default function KanbanPage() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-    const COLUMNS = isMobile ? 1 : 3;
+    const COLUMNS = isMobile ? 1 : 4;
 
     const items = useMemo(
         () =>
@@ -137,14 +137,24 @@ export default function KanbanPage() {
             <Container
                 maxWidth="xl"
                 sx={{
-                    mt: 10,
+                    mt: 1,
                     mb: 3,
                 }}
             >
+                <Stack direction={"row"} justifyContent={"flex-end"}>
+                    <KanbanColumnAdd
+                        sx={{
+                            mb: 2,
+                            width: "35px",
+                            height: "35px",
+                        }}
+                    />
+                </Stack>
                 {board && items ? (
                     <TwoDimentionsDnd
                         columns={COLUMNS}
                         onDragEnd={handleDragEnd}
+                        draggableSx={{ justifyContent: "flex-start" }}
                     >
                         {items}
                     </TwoDimentionsDnd>
@@ -152,14 +162,6 @@ export default function KanbanPage() {
 
                 {isLoading ? <SkeletonKanbanColumn /> : null}
             </Container>
-
-            <KanbanColumnAdd
-                sx={{
-                    position: "absolute",
-                    top: 2,
-                    right: 2,
-                }}
-            />
         </Box>
     );
 }

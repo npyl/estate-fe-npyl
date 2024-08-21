@@ -47,7 +47,7 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
                     {a.title}
                 </Typography>
 
-                <PropertyDetails code={a.property.code} />
+                {a.property ? <PropertyDetails code={a.property.code} /> : null}
             </Stack>
 
             {onDelete && onEdit ? (

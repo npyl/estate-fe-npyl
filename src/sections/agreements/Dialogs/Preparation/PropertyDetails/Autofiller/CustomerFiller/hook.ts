@@ -9,6 +9,7 @@ const useCustomerAutofill = (setValue: UseFormSetValue<FieldValues>) => {
     const autofill = useCallback((c: ICustomer) => {
         const fullName = join(c?.firstName, c?.lastName, " ");
 
+        setValue("ownerId", c.id);
         setValue("owner", {
             fullName,
             email: c?.email || "",

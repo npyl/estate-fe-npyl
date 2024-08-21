@@ -3,6 +3,8 @@ import { TLanguageType } from "@/types/translation";
 import toLocalDate from "@/utils/toLocalDate";
 import dayjs from "dayjs";
 
+const TODAY = toLocalDate(dayjs().toISOString());
+
 const MANAGER = {
     en: {
         fullName: "Mr. Georgios A. Kopanitsanos",
@@ -33,6 +35,19 @@ const COMPANY = {
         mobilePhone: "6946.184.15",
         email: "kopanitsanosgiorgos@gmail.com",
     },
+};
+
+export const getAuto = (date: string, ownerEmail?: string) => {
+    const dateObject = dayjs(date, "YYYY-MM-DD");
+
+    return {
+        auto: {
+            day: dateObject.date(),
+            month: dateObject.month() + 1,
+            year: Number(dateObject.format("YY")),
+            gdprEmail: ownerEmail || "",
+        },
+    };
 };
 
 export const getValues = (
@@ -72,7 +87,7 @@ export const getValues = (
 
     return {
         id,
-        propertyId: propertyId || -1,
+        propertyId: propertyId || undefined,
         ownerId: ownerId || -1,
         // ...
         variant: isCustomer ? "PURCHASE" : variant?.key || "BASIC",
@@ -80,12 +95,12 @@ export const getValues = (
         draft: draft || false,
         keys: keys || false,
         title: title || "",
-        startingDate: startingDate || toLocalDate(dayjs().toISOString()),
+        startingDate: startingDate || TODAY,
         // Initial value (12 months ahead from today)
         expirationDate:
             expirationDate ||
             toLocalDate(dayjs().add(12, "month").toISOString()),
-        availableAfter: availableAfter || toLocalDate(dayjs().toISOString()),
+        availableAfter: availableAfter || TODAY,
         // ...
         manager: {
             fullName: manager?.fullName || "",
@@ -134,7 +149,7 @@ export const getValues = (
             address: gdpr?.address || "",
         },
         additional: {
-            date: additional?.date || toLocalDate(dayjs().toISOString()),
+            date: additional?.date || TODAY,
             commissionerSignature: additional?.commissionerSignature || "",
             agentSignature: additional?.agentSignature || "",
         },
@@ -144,11 +159,6 @@ export const getValues = (
         signed:
             !!additional?.commissionerSignature && !!additional.agentSignature,
 
-        auto: {
-            gdprEmail: "",
-            day: -1,
-            month: -1,
-            year: -1,
-        },
+        auto: getAuto(additional?.date || TODAY, owner?.email).auto,
     };
 };

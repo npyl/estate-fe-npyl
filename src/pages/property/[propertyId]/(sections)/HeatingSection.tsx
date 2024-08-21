@@ -84,6 +84,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Energy Class")}
                         value={heating?.energyClass.value || "-"}
+                        sx={{ minHeight: "70px" }}
                     />
                 );
             case "Heating Type":
@@ -91,6 +92,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Heating Type")}
                         value={heating?.heatingType.value || "-"}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Heating System":
@@ -98,6 +100,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Heating System")}
                         value={heating?.heatingSystem.value || "-"}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Electricity Type":
@@ -105,6 +108,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Electricity Type")}
                         value={heating?.electricityType.value || "-"}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Floor Heating":
@@ -112,6 +116,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Floor Heating")}
                         status={heating?.floorHeating}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Air Conditioning":
@@ -119,6 +124,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Air Conditioning")}
                         status={heating?.airConditioning}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
 
@@ -127,6 +133,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Solar Boiler")}
                         status={heating?.solarBoiler}
+                        sx={{ minHeight: "70px" }}
                     />
                 );
             case "Off Peak Electricity":
@@ -134,6 +141,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Off Peak Electricity")}
                         status={heating?.offPeakElectricity}
+                        sx={{ minHeight: "60px" }}
                     />
                 );
         }
@@ -143,7 +151,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     return (
         <Grid container spacing={1}>
             <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
+                <Paper elevation={10} sx={{ overflow: "hidden", pb: 2 }}>
                     <Box
                         sx={{
                             px: 3,

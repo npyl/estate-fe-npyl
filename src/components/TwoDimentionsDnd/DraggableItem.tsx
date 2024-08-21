@@ -3,6 +3,7 @@ import { TwoDimentionsDndNode } from "./types";
 import { Draggable } from "react-beautiful-dnd";
 import Grid from "@mui/material/Grid";
 import { CenteredDiv } from "./styled";
+import { SxProps, Theme } from "@mui/material";
 
 const getNodeId = (node: ReactNode): any => {
     // Check if the node is a valid React element
@@ -35,6 +36,7 @@ interface DraggableItemProps {
     index: number;
     preventDrag: boolean;
     columns: number;
+    draggableSx?: SxProps<Theme>;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
@@ -44,6 +46,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     index,
     preventDrag,
     columns,
+    draggableSx,
 }) => (
     <Grid item xs={12 / columns}>
         <Draggable
@@ -61,6 +64,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
+                    sx={draggableSx}
                 >
                     {item}
                 </CenteredDiv>

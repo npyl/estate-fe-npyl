@@ -5,22 +5,9 @@ import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
 import { text } from "@pdfme/schemas";
 import readOnly from "@/components/PDFPlugins/readOnly";
-import errorTooltip from "../PDFEditor/plugins/errorTooltip";
+import errorTooltip from "@/components/PDFPlugins/errorTooltip";
 import signature from "@/components/PDFPlugins/signature";
-import dayjs from "dayjs";
-
-const getAuto = (date: string, ownerEmail: string) => {
-    const dateObject = dayjs(date, "YYYY-MM-DD");
-
-    return {
-        auto: {
-            day: dateObject.date(),
-            month: dateObject.month() + 1,
-            year: Number(dateObject.format("YY")),
-            gdprEmail: ownerEmail,
-        },
-    };
-};
+import { getAuto } from "../Preparation/mapper";
 
 const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);

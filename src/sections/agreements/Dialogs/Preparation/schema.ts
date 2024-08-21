@@ -78,6 +78,8 @@ const mandatorySchema = z.object({
         commissionerSignature: z.string().optional(),
         agentSignature: z.string().optional(),
     }),
+
+    suggestedProperties: z.array(z.object({})).optional(),
 });
 
 const SuggestedPropertiesSchema = z.object({
@@ -108,6 +110,9 @@ const basicExclusiveSchema = mandatorySchema.extend({
 
 const purchaseSchema = mandatorySchema.extend({
     variant: z.literal("PURCHASE"),
+
+    propertyId: z.literal(undefined),
+    property: z.object({}),
 
     suggestedProperties: z.array(SuggestedPropertiesSchema).min(1).max(4),
 });
