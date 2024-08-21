@@ -55,8 +55,6 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
     const getStatusColor = (status: string): Color => {
         const statusUpper = status.toUpperCase() as PropertyStatus;
-        console.log(statusUpper);
-
         return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
     };
 

@@ -13,8 +13,6 @@ import PropTypes from "prop-types";
 import type { FC } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/use-auth";
-import { Cog as CogIcon } from "../../icons/cog";
-import { SwitchHorizontalOutlined as SwitchHorizontalOutlinedIcon } from "../../icons/switch-horizontal-outlined";
 import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
 import { useTranslation } from "react-i18next";
 
@@ -62,22 +60,6 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
                     display: "flex",
                 }}
             >
-                {/* {user && (
-          // <Avatar
-          //   alt={user?.imageResponse[0]?.name}
-          //   src={
-          //     user?.imageResponse[0]
-          //       ? `data:image/jpeg;base64,${user?.imageResponse[0]?.imageBinary}`
-          //       : ""
-          //   }
-          //   sx={{
-          //     height: 40,
-          //     width: 40,
-          //   }}
-          // >
-          //   <UserCircleIcon fontSize='small' />
-          // </Avatar>
-        )} */}
                 <Box
                     sx={{
                         ml: 1,
@@ -97,34 +79,6 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
                             primary={
                                 <Typography variant="body1">
                                     {t("Profile")}
-                                </Typography>
-                            }
-                        />
-                    </MenuItem>
-                </Link>
-                <Link href="/account">
-                    <MenuItem>
-                        <ListItemIcon>
-                            <CogIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={
-                                <Typography variant="body1">
-                                    {t("Settings")}
-                                </Typography>
-                            }
-                        />
-                    </MenuItem>
-                </Link>
-                <Link href="/">
-                    <MenuItem>
-                        <ListItemIcon>
-                            <SwitchHorizontalOutlinedIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={
-                                <Typography variant="body1">
-                                    {t("Change organization")}
                                 </Typography>
                             }
                         />

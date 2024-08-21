@@ -16,7 +16,7 @@ export interface LogCardProps {
 export const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
-    console.log(log);
+
     // const {data:property} = useGetPropertyByCodeQuery(+propertyCode!);
     const getCardBackgroundColor = () => {
         switch (log?.action?.key) {

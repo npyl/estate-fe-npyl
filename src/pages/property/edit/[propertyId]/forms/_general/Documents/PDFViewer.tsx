@@ -13,7 +13,7 @@ interface PDFViewerProps {
     onClose: () => void;
 }
 
-export const PDFViewer = ({ open, url, onClose }: PDFViewerProps) => {
+const PDFViewer = ({ open, url, onClose }: PDFViewerProps) => {
     return open ? (
         <Dialog
             open={open}
@@ -54,3 +54,5 @@ export const PDFViewer = ({ open, url, onClose }: PDFViewerProps) => {
         </Dialog>
     ) : null;
 };
+
+export default PDFViewer;

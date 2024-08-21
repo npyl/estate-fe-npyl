@@ -159,7 +159,7 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
     });
 
     const [map, setMap] = useState<google.maps.Map>();
-    console.log(complexes);
+
     useEffect(() => {
         if (!map) return;
 

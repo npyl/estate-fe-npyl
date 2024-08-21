@@ -1,3 +1,7 @@
+export const LAYOUT = {
+    FAB_OFFSET_BOTTOM: 60,
+};
+
 export const HEADER = {
     H_MOBILE: 64,
     H_MAIN_DESKTOP: 88,

@@ -33,7 +33,7 @@ const Tours = ({ filter }: any) => {
         setPageSize(parseInt(event.target.value, 10));
         setPage(0);
     };
-    console.log(filter);
+
     const filteredTours =
         tours?.content?.filter((tour) => {
             if (filter === "viewed") return tour.viewed === true;

@@ -31,8 +31,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
         theme.palette.mode === "light"
             ? "#F7F8F9"
             : theme.palette.background.default,
-
-    width: "20vw",
 }));
 
 // ----------------------------------------------------------------------
@@ -86,8 +84,6 @@ export default function KanbanColumn({ column }: Props) {
                     ref={provided.innerRef}
                     variant="outlined"
                 >
-                    {provided.placeholder}
-
                     <Stack
                         spacing={1}
                         // NOTE: a minimum height helps a dropped card not fall on the column name glitch
@@ -112,6 +108,8 @@ export default function KanbanColumn({ column }: Props) {
                                 />
                             ) : null;
                         })}
+
+                        {provided.placeholder}
 
                         {/* Add Task button */}
                         {openAddTask ? (

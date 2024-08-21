@@ -23,9 +23,15 @@ import { useDispatch } from "react-redux";
 interface ILabelCreateProps extends BoxProps {
     variant: LabelResourceType;
     resourceId: number; // > 0 valid, -1 invalid
+    disabled?: boolean;
 }
 
-const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
+const LabelCreate = ({
+    variant,
+    resourceId,
+    disabled = false,
+    ...props
+}: ILabelCreateProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -155,7 +161,7 @@ const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
                 <IconButton
                     size="small"
                     onClick={handleOpenDialog}
-                    disabled={isLoading}
+                    disabled={disabled || isLoading}
                 >
                     <AddCircleIcon />
                 </IconButton>
@@ -168,7 +174,7 @@ const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
                             key={index}
                             color={color}
                             name={name}
-                            disabled={isLoading}
+                            disabled={disabled || isLoading}
                             onClose={() => handleRemoveLabel(id)}
                         />
                     ))}

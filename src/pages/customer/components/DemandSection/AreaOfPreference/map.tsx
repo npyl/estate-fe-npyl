@@ -244,9 +244,7 @@ const AreaOfPreference: FC<Props> = ({
         () => selectedNeighbours,
         [selectedNeighbours]
     );
-    console.log(`selected regions: ${selectedRegions}`);
-    console.log(`selected cities: ${selectedMunicipalities}`);
-    console.log(`selected complexes: ${selectedNeighbours}`);
+
     return (
         <>
             <SpaceBetween py={1} alignItems="center">

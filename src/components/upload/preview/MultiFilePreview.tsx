@@ -25,22 +25,28 @@ const StyledContainer = styled(Grid)(({ theme }) => ({
 interface ItemProps {
     variant: UploadVariant;
     file: IPropertyFile;
-    onClick?: (f: IPropertyFile) => void;
-    onRemove?: (f: IPropertyFile) => void;
+    disabled?: boolean;
+    onClick?: (url: string) => void;
+    onRemove?: (key: string) => void;
 }
 
-const Item = ({ variant, file, onClick, onRemove }: ItemProps) => {
+const Item = ({
+    variant,
+    file,
+    disabled = false,
+    onClick,
+    onRemove,
+}: ItemProps) => {
     const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        onRemove?.(file);
+        onRemove?.(file.key);
+    };
+    const handleClick = () => {
+        onClick?.(file?.url || "");
     };
 
     return (
-        <StyledContainer
-            container
-            alignItems="center"
-            onClick={() => onClick?.(file)}
-        >
+        <StyledContainer container alignItems="center" onClick={handleClick}>
             <Grid item xs={2}>
                 {variant === "image" && <FileThumbnail file={file} />}
 
@@ -66,12 +72,21 @@ const Item = ({ variant, file, onClick, onRemove }: ItemProps) => {
             <Grid item xs={4} display="flex" justifyContent="flex-end">
                 {variant === "document" && file.url && (
                     <div onClick={(e) => e.stopPropagation()}>
-                        <LabelCreate variant="document" resourceId={file.id} />
+                        <LabelCreate
+                            variant="document"
+                            resourceId={file.id}
+                            disabled={disabled}
+                        />
                     </div>
                 )}
 
                 {onRemove && file.url && (
-                    <IconButton edge="end" size="small" onClick={handleRemove}>
+                    <IconButton
+                        edge="end"
+                        size="small"
+                        disabled={disabled}
+                        onClick={handleRemove}
+                    >
                         <Iconify icon="eva:close-fill" />
                     </IconButton>
                 )}
@@ -85,23 +100,26 @@ const Item = ({ variant, file, onClick, onRemove }: ItemProps) => {
 interface MultiFilePreviewProps extends StackProps {
     files: IPropertyFile[];
     variant: UploadVariant;
-    onFileClick?: (file: IPropertyFile) => void;
-    onRemove?: (file: IPropertyFile) => void;
+    disabled?: boolean;
+    onFileClick?: (url: string) => void;
+    onRemove?: (key: string) => void;
 }
 
 const MultiFilePreview = ({
     files,
     variant,
+    disabled = false,
     onFileClick,
     onRemove,
     ...props
 }: MultiFilePreviewProps) => (
     <Stack {...props} spacing={1}>
-        {files.map((file) => (
+        {files.map((file, i) => (
             <Item
-                key={file.key}
+                key={`${file.filename}_${i}`}
                 variant={variant}
                 file={file}
+                disabled={disabled}
                 onClick={onFileClick}
                 onRemove={onRemove}
             />
