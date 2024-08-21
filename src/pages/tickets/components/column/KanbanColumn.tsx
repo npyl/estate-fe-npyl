@@ -31,8 +31,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
         theme.palette.mode === "light"
             ? "#F7F8F9"
             : theme.palette.background.default,
-
-    width: "20vw",
 }));
 
 // ----------------------------------------------------------------------
