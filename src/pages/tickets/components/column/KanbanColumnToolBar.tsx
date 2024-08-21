@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Box, Button, IconButton, MenuItem, Stack } from "@mui/material";
 // components
 import ConfirmDialog from "src/components/confirm-dialog";
-import Iconify from "../../../../components/iconify";
-import MenuPopover from "../../../../components/menu-popover";
+import Iconify from "@/components/iconify";
+import MenuPopover from "@/components/menu-popover";
 //
 import KanbanInputName from "../KanbanInputName";
 import { useTranslation } from "react-i18next";

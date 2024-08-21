@@ -84,8 +84,6 @@ export default function KanbanColumn({ column }: Props) {
                     ref={provided.innerRef}
                     variant="outlined"
                 >
-                    {provided.placeholder}
-
                     <Stack
                         spacing={1}
                         // NOTE: a minimum height helps a dropped card not fall on the column name glitch
