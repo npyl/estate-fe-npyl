@@ -13,7 +13,9 @@ interface StyledBoxProps extends BoxProps {
     isActive: boolean;
 }
 
-export const StyledBox = styled(Box)<StyledBoxProps>(({ isActive, theme }) => ({
+export const StyledBox = styled(Box, {
+    shouldForwardProp: (prop) => prop !== "isActive",
+})<StyledBoxProps>(({ isActive, theme }) => ({
     "&:hover": {
         ...getCss(theme),
     },
