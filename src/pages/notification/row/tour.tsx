@@ -20,8 +20,6 @@ function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
 
-    console.log("filter: ", filter);
-
     // const [getAllProperties ] =
     // const { data: property } = useGetPropertyByCodeQuery(row.propertyCode);
 

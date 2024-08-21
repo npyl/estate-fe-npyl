@@ -104,8 +104,6 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
         useUpdateCompanyDetailsMutation();
 
     const onSubmit = async (data: ICompanyPOST) => {
-        console.log("data:", data);
-
         try {
             await updateCompanyDetails(data).unwrap();
             onClose();

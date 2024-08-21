@@ -47,7 +47,7 @@ const Table = ({
     totalRows,
 }: TableProps) => {
     const { t } = useTranslation();
-    console.log(filter);
+
     const COLUMNS: string[] = useMemo(
         () => [
             t("Name"),

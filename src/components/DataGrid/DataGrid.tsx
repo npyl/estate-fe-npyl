@@ -111,7 +111,6 @@ const DataGridTable: FC<GridProps> = ({
     ) => {
         setSelectedRows(model);
         props.onRowSelectionModelChange?.(model, details);
-        console.log(model, details);
     };
 
     return (

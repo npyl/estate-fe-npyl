@@ -81,9 +81,7 @@ export const DashboardNavbarSearch: FC = () => {
     // search history functions
     const handleSelectHistory = (searchTerm: string, event: any) => {
         setSearchText(searchTerm);
-
         setAnchorEl(inputRef.current);
-        console.log(`anchorEl: ${anchorEl}`);
     };
 
     const handleKeyDown = (event: any) => {

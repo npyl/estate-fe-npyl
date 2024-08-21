@@ -148,7 +148,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();
-    console.log(nonViewedNotificationsCount);
 
     //  filter out the Contact notifications for now as in the page they are not shown and if there is one i get the unerad badge for something that i can not see at all
     const filteredNotificationsCount = useMemo(() => {
