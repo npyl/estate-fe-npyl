@@ -41,7 +41,6 @@ export default function Upload({
     onDelete,
     //
     files,
-    onUpload,
     onRemove,
     onRemoveAll,
     sx,
@@ -103,6 +102,7 @@ export default function Upload({
             {hasFile && onDelete && (
                 <IconButton
                     size="small"
+                    disabled={disabled}
                     onClick={onDelete}
                     sx={{
                         top: 16,
@@ -128,41 +128,33 @@ export default function Upload({
                     <MultiFilePreview
                         files={files}
                         variant={variant}
+                        disabled={disabled}
                         onFileClick={onFileClick}
                         onRemove={onRemove}
                         my={1}
                     />
 
-                    <Stack
-                        direction="row"
-                        justifyContent="flex-end"
-                        spacing={1.5}
-                    >
-                        {onRemoveAll && (
+                    {onRemoveAll ? (
+                        <Stack
+                            direction="row"
+                            justifyContent="flex-end"
+                            spacing={1.5}
+                        >
                             <Button
                                 color="inherit"
                                 variant="outlined"
                                 size="small"
                                 onClick={onRemoveAll}
+                                disabled={disabled}
                             >
                                 Remove all
                             </Button>
-                        )}
-
-                        {onUpload && (
-                            <Button
-                                size="small"
-                                variant="contained"
-                                onClick={onUpload}
-                            >
-                                Upload files
-                            </Button>
-                        )}
-                    </Stack>
+                        </Stack>
+                    ) : null}
                 </>
             )}
 
-            {helperText && helperText}
+            {helperText}
         </Box>
     );
 }
