@@ -30,16 +30,11 @@ const Name = ({ taskName, onUpdate }: NameProps) => {
         []
     );
 
-    const handleUpdate = useCallback(
-        (event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter" && renameRef.current) {
-                renameRef.current.blur();
-
-                onUpdate({ name });
-            }
-        },
-        [name]
-    );
+    const handleBlur = useCallback(() => {
+        if (renameRef.current) {
+            onUpdate({ name });
+        }
+    }, [name]);
 
     return (
         <EnterOverlay show={name !== initialState}>
@@ -49,7 +44,7 @@ const Name = ({ taskName, onUpdate }: NameProps) => {
                 placeholder={t("Task name") as string}
                 value={name}
                 onChange={handleChange}
-                onKeyUp={handleUpdate}
+                onBlur={handleBlur}
             />
         </EnterOverlay>
     );

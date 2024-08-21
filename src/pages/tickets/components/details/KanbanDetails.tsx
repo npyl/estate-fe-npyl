@@ -296,6 +296,7 @@ export default function KanbanDetails({
                     <Description
                         taskDescription={description}
                         onUpdate={handleUpdate}
+                        onClose={onCloseDetails}
                     />
 
                     {/* Attachments */}
