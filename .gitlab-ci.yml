@@ -1,27 +1,27 @@
 stages:
-  - build
-  - deploy
+    - build
+    - deploy
 build_image:
-  stage: build
-  tags:
-    - estate-fe
-  script:
-    - free -m
-    - cd /var/www/estate-fe
-    - git pull origin main
-    - docker build --build-arg NODE_OPTIONS="--max-old-space-size=8192" --memory=6g --memory-swap=8g -t estate-fe .
+    stage: build
+    tags:
+        - estate-fe
+    script:
+        - free -m
+        - cd /var/www/estate-fe
+        - git pull origin main
+        - docker build --build-arg -t estate-fe .
 
-  only:
-    - main
+    only:
+        - main
 deploy_application:
-  stage: deploy
-  tags:
-    - estate-fe
-  script:
-    - echo "Deploying application..."
-    - docker stop estate-fe
-    - docker rm estate-fe
-    - docker run -d --name estate-fe --network my-bridge-network -p 3000:3000 --log-driver=awslogs --log-opt awslogs-region=eu-south-1 --log-opt awslogs-group=estate-frontend --log-opt awslogs-stream=estate-frontend estate-fe
+    stage: deploy
+    tags:
+        - estate-fe
+    script:
+        - echo "Deploying application..."
+        - docker stop estate-fe
+        - docker rm estate-fe
+        - docker run -d --name estate-fe --network my-bridge-network -p 3000:3000 --log-driver=awslogs --log-opt awslogs-region=eu-south-1 --log-opt awslogs-group=estate-frontend --log-opt awslogs-stream=estate-frontend estate-fe
 
-  only:
-    - main
+    only:
+        - main

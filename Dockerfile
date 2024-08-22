@@ -1,6 +1,5 @@
 # base image
 FROM --platform=linux/amd64 node:18-alpine
-ENV NODE_OPTIONS="--max-old-space-size=8192"
 # create & set working directory
 RUN mkdir -p /usr/src
 WORKDIR /usr/src
