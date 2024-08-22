@@ -146,7 +146,6 @@ const getFIELDS = (
 interface FloorSliderProps {
     onDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
 }
-
 const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
@@ -158,16 +157,22 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
     const minFloor = watch(minName);
     const maxFloor = watch(maxName);
 
-    const handleChangeMin = useCallback(
-        (event: SelectChangeEvent<string>, child: React.ReactNode) => {
-            const min =
-                event.target.value === ""
-                    ? null
-                    : parseInt(event.target.value, 10);
-            const currentMax = watch(maxName);
+    //  function to remove underscores and convert to number so i can compare them in order to not get maxValue less than minValue
+    const cleanValue = (value: string | null): number | null => {
+        if (!value) return null;
+        return parseInt(value.replace(/^_/, ""), 10);
+    };
 
-            if (min !== null && min > currentMax) {
-                setValue(maxName, min);
+    const handleChangeMin = useCallback(
+        (event: SelectChangeEvent<string>) => {
+            const min = event.target.value === "" ? null : event.target.value;
+            const max = watch(maxName);
+
+            const cleanMin = cleanValue(min);
+            const cleanMax = cleanValue(max);
+
+            if (cleanMin !== null && cleanMax !== null && cleanMin > cleanMax) {
+                setValue(maxName, min); // Set maxFloor to minFloor value if min is greater
             }
 
             setValue(minName, min);
@@ -176,15 +181,15 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
     );
 
     const handleChangeMax = useCallback(
-        (event: SelectChangeEvent<string>, child: React.ReactNode) => {
-            const max =
-                event.target.value === ""
-                    ? null
-                    : parseInt(event.target.value, 10);
-            const currentMin = watch(minName);
+        (event: SelectChangeEvent<string>) => {
+            const max = event.target.value === "" ? null : event.target.value;
+            const min = watch(minName);
 
-            if (max !== null && max < currentMin) {
-                setValue(minName, max);
+            const cleanMax = cleanValue(max);
+            const cleanMin = cleanValue(min);
+
+            if (cleanMax !== null && cleanMin !== null && cleanMax < cleanMin) {
+                setValue(minName, max); // Set minFloor to maxFloor value if max is less
             }
 
             setValue(maxName, max);
@@ -192,7 +197,7 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
         [maxName, minName, setValue, watch]
     );
 
-    // Ensure the values are set to null when they are empty strings to meet the requirements for the Post request
+    // Ensure the values are set to null when they are empty strings
     useEffect(() => {
         if (minFloor === "") {
             setValue(minName, null);
@@ -204,8 +209,15 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
 
     // Ensure maxFloor is updated if it is less than minFloor
     useEffect(() => {
-        if (minFloor !== null && maxFloor !== null && minFloor > maxFloor) {
-            setValue(maxName, minFloor);
+        const cleanMinFloor = cleanValue(minFloor);
+        const cleanMaxFloor = cleanValue(maxFloor);
+
+        if (
+            cleanMinFloor !== null &&
+            cleanMaxFloor !== null &&
+            cleanMinFloor > cleanMaxFloor
+        ) {
+            setValue(maxName, minFloor); // Adjust maxFloor to be equal to minFloor
         }
     }, [minFloor, maxFloor, setValue, maxName]);
 
@@ -219,7 +231,7 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
                             name={minName}
                             label={t("Min")}
                             options={minFloors}
-                            value={minFloor !== null ? minFloor.toString() : ""}
+                            value={minFloor !== null ? minFloor : ""}
                             onChange={handleChangeMin}
                         />
                     </Grid>
@@ -228,7 +240,7 @@ const FloorSlider: FC<FloorSliderProps> = ({ onDemandFilterName }) => {
                             name={maxName}
                             label={t("Max")}
                             options={maxFloors}
-                            value={maxFloor !== null ? maxFloor.toString() : ""}
+                            value={maxFloor !== null ? maxFloor : ""}
                             onChange={handleChangeMax}
                         />
                     </Grid>
@@ -255,6 +267,7 @@ const getSLIDERS = (
         adornment="€"
         step={stepValue}
         options={priceOptions}
+        isForPrice={true}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -311,6 +324,7 @@ const getSLIDERS = (
         defaultMax={new Date().getFullYear()}
         demandIndex={index}
         options={yearOptions}
+        isForYearOfConstruction={true}
     />,
     // eslint-disable-next-line react/jsx-key
     <FloorSlider onDemandFilterName={onDemandFilterName} />,

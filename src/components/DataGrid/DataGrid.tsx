@@ -155,7 +155,7 @@ const DataGridTable: FC<GridProps> = ({
                 // ------------------
                 disableColumnFilter
                 disableDensitySelector
-                rowHeight={100}
+                rowHeight={125}
                 getRowId={(e) => e.id}
                 onRowClick={(e) => {
                     // Save the current scroll height to local storage

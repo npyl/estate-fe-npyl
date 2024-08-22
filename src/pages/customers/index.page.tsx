@@ -1,4 +1,4 @@
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, Button, Grid, Paper } from "@mui/material";
 import {
     GridCallbackDetails,
     GridPaginationModel,
@@ -24,6 +24,7 @@ import FilterSection from "./(FilterSection)";
 import { getOptions } from "./(FilterSection)/constants";
 import BulkEdit from "./(BulkEdit)";
 import Pagination, { usePagination } from "@/components/Pagination";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -116,9 +117,13 @@ const Customers: NextPage = () => {
 
     const handleBulkDelete = () => {
         closeBulkDeleteDialog();
-        bulkDeleteCustomers(selectedRows.map((row) => +row)).then(() =>
-            revalidate()
-        );
+        try {
+            bulkDeleteCustomers(selectedRows.map((row) => +row)).unwrap();
+            setSelectedRows([]); // Clear selection
+            revalidate(); // Revalidate to refresh the datagrid
+        } catch (error) {
+            console.error("Failed to delete customers:", error);
+        }
     };
 
     const handleRowSelectionModelChange = (
@@ -126,10 +131,13 @@ const Customers: NextPage = () => {
     ) => {
         setSelectedRows(selectionModel);
     };
+
     const belowMd = useResponsive("down", "md");
+
     const handlePageChange = (_: any, newPage: number) => {
         setPage(newPage);
     };
+
     return (
         <Box
             sx={{
@@ -149,6 +157,18 @@ const Customers: NextPage = () => {
                 sorting={sorting}
                 onSortingChange={setSorting}
             />
+            <Box display="flex" justifyContent="flex-end" p={1}>
+                {selectedRows && selectedRows.length > 0 ? (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleBulkDelete}
+                        startIcon={<DeleteIcon />}
+                    >
+                        {t("Delete")}
+                    </Button>
+                ) : null}
+            </Box>
             {belowMd ? (
                 <Pagination
                     {...pagination}
@@ -187,6 +207,7 @@ const Customers: NextPage = () => {
                     />
                 </Paper>
             )}
+
             <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}

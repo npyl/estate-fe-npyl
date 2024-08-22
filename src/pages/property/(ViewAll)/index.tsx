@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Button } from "@mui/material";
 import {
     GridCallbackDetails,
     GridPaginationModel,
@@ -7,7 +7,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import DeleteDialog from "src/components/Dialog/Delete";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import {
     useBulkDeletePropertiesMutation,
@@ -16,41 +15,40 @@ import {
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
 import { BulkEdit } from "../../components/BulkEdit/BulkEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ViewAllProps {
     sortBy: string;
     direction: string;
-    // ...
     isBulkEditOpen: boolean;
     onBulkEditOpen: VoidFunction;
     onBulkEditClose: VoidFunction;
-    onRowSelectionModelChange: (selectionModel: GridRowSelectionModel) => void;
 }
 
 const ViewAll = ({
     sortBy,
     direction,
-    // ...
     isBulkEditOpen,
     onBulkEditOpen,
     onBulkEditClose,
-    onRowSelectionModelChange,
 }: ViewAllProps) => {
     const { t } = useTranslation();
 
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
-    // pagination
+    // Pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
     const allFilters = useSelector(selectAll);
 
-    const [bulkDeleteProperties] = useBulkDeletePropertiesMutation();
+    const [bulkDeleteProperties, { isLoading: isDeleting }] =
+        useBulkDeletePropertiesMutation();
     const [filterProperties, { isLoading, data }] =
         useFilterPropertiesMutation();
 
+    // Internal revalidation logic
     const revalidate = () => {
         filterProperties({
             filter: allFilters,
@@ -63,7 +61,7 @@ const ViewAll = ({
 
     useEffect(() => {
         revalidate();
-    }, [allFilters, page, pageSize, sortBy, direction]);
+    }, [filterProperties, allFilters, page, pageSize, sortBy, direction]);
 
     const rows = useMemo(() => {
         return data?.content ? data?.content : [];
@@ -108,36 +106,47 @@ const ViewAll = ({
         setSelectedRows(selectedRows);
     };
 
-    const handleBulkEditSave = () => revalidate();
+    const handleBulkEditSave = () => revalidate(); // Revalidate after bulk edit
 
     // Bulk Delete
-    const openBulkDeleteDialog = (selectedRows: GridRowSelectionModel) => {
-        setBulkDeleteDialogOpen(true);
-        setSelectedRows(selectedRows);
-    };
-    const closeBulkDeleteDialog = () => setBulkDeleteDialogOpen(false);
     const handleBulkDelete = () => {
-        closeBulkDeleteDialog();
-        // INFO: bulk delete rows; By default the DataGrid looks for a property named `id` when getting the rows, so selectedRow = id
-        bulkDeleteProperties(selectedRows.map((row) => +row)).then(() =>
-            revalidate()
-        );
+        if (selectedRows.length === 0) return;
+
+        try {
+            bulkDeleteProperties(selectedRows as number[]).unwrap();
+            setSelectedRows([]);
+            revalidate(); // Revalidate after deletion to refresh the datagrid
+        } catch (error) {
+            console.error("Failed to delete properties:", error);
+        }
     };
 
     const handleRowSelectionModelChange = (
         selectionModel: GridRowSelectionModel
     ) => {
         setSelectedRows(selectionModel);
-        onRowSelectionModelChange(selectionModel);
     };
 
     return (
         <Box
             sx={{
                 position: "relative",
-                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
+                height: "100%",
             }}
         >
+            <Box display="flex" justifyContent="flex-end" p={1}>
+                {selectedRows && selectedRows.length > 0 ? (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleBulkDelete}
+                        startIcon={<DeleteIcon />}
+                    >
+                        {t("Delete")}
+                    </Button>
+                ) : null}
+            </Box>
+
             {rows && !isLoading ? (
                 <>
                     <Paper
@@ -158,7 +167,7 @@ const ViewAll = ({
                             onRowSelectionModelChange={
                                 handleRowSelectionModelChange
                             }
-                            onBulkDelete={openBulkDeleteDialog}
+                            onBulkDelete={handleBulkDelete}
                             onBulkEdit={handleBulkEdit}
                         />
                     </Paper>
@@ -181,12 +190,6 @@ const ViewAll = ({
                 selectedIds={selectedRows.map((row) => +row)}
                 onSave={handleBulkEditSave}
                 onClose={onBulkEditClose}
-            />
-            <DeleteDialog
-                multiple
-                open={bulkDeleteDialogOpen}
-                onClose={closeBulkDeleteDialog}
-                onDelete={handleBulkDelete}
             />
         </Box>
     );

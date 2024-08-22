@@ -33,8 +33,14 @@ const MoreButton = ({
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleDelete = () => {
+        openDelete();
+        handleClose(); // Ensure the popover is closed before showing the delete dialog
     };
 
     return (
@@ -93,24 +99,19 @@ const MoreButton = ({
                     <SoftButton
                         fullWidth
                         color="error"
-                        onClick={() => {
-                            openDelete();
-                            handleClose();
-                        }}
+                        onClick={handleDelete}
                         startIcon={<DeleteIcon />}
                     >
                         {t("Delete")}
                     </SoftButton>
-
-                    {isDeleteOpen && (
-                        <DeleteDialog
-                            open={isDeleteOpen}
-                            onClose={closeDelete}
-                            onDelete={onDelete}
-                        />
-                    )}
                 </Stack>
             </Popover>
+
+            <DeleteDialog
+                open={isDeleteOpen}
+                onClose={closeDelete}
+                onDelete={onDelete}
+            />
         </>
     );
 };

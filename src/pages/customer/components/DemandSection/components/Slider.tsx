@@ -1,5 +1,5 @@
 import { Grid, Stack, Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext, Controller } from "react-hook-form";
 import RHFDoubleSlider from "src/components/hook-form/RHFDoubleSlider"; // Adjust the import as needed
@@ -14,13 +14,14 @@ type DemandFormSliderProps = {
     demandIndex: number;
     adornment?: string;
     step?: number;
+    isForPrice?: boolean;
+    isForYearOfConstruction?: boolean;
     options?: number[];
 };
 
 const formatNumber = (value: number) => {
     return value.toLocaleString("de-DE");
 };
-
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     label,
     min,
@@ -30,6 +31,8 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     demandIndex,
     adornment,
     step = 1,
+    isForPrice,
+    isForYearOfConstruction,
     options = [],
 }) => {
     const { t } = useTranslation();
@@ -38,19 +41,36 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     const minName = `demands[${demandIndex}].filters.${min}`;
     const maxName = `demands[${demandIndex}].filters.${max}`;
 
-    const handleSliderChange = (name: string, value: number | number[]) => {
-        if (Array.isArray(value)) {
-            let [minValue, maxValue] = value;
+    // Initialize the  values to null if they are not set
+    useEffect(() => {
+        const minValue = getValues(minName);
+        const maxValue = getValues(maxName);
 
-            // Ensure minValue is not greater than maxValue
-            if (minValue > maxValue) {
-                minValue = maxValue;
-            }
-
-            setValue(minName, minValue);
-            setValue(maxName, maxValue);
+        if (minValue === 0 || minValue === "") {
+            setValue(minName, null);
         }
+        if (maxValue === 0 || maxValue === "") {
+            setValue(maxName, null);
+        }
+    }, [getValues, setValue, minName, maxName]);
+
+    const handleSliderChange = (name: string, value: number[]) => {
+        let [minValue, maxValue] = value;
+
+        // Ensure minValue is not greater than maxValue
+        if (minValue > maxValue) {
+            minValue = maxValue;
+        }
+
+        // Set value to default if it matches the default min and max
+        setValue(minName, minValue === defaultMin ? defaultMin : minValue);
+        setValue(maxName, maxValue === defaultMax ? defaultMax : maxValue);
     };
+
+    const sliderValue = [
+        getValues(minName) === null ? defaultMin : getValues(minName),
+        getValues(maxName) === null ? defaultMax : getValues(maxName),
+    ];
 
     return (
         <>
@@ -66,15 +86,12 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                             min={defaultMin}
                             max={defaultMax}
                             step={step}
-                            value={[
-                                getValues(minName) ?? defaultMin,
-                                getValues(maxName) ?? defaultMax,
-                            ]}
+                            value={sliderValue}
                             onChange={(event, value) =>
-                                handleSliderChange(minName, value)
+                                handleSliderChange(minName, value as number[])
                             }
                             valueLabelDisplay="auto"
-                            valueLabelFormat={formatNumber}
+                            isForPrice={isForPrice}
                         />
                     )}
                 />
@@ -86,6 +103,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                             adornment={adornment}
                             options={options}
                             allowClear
+                            isForYearOfConstruction={isForYearOfConstruction}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -95,6 +113,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                             adornment={adornment}
                             options={options}
                             allowClear
+                            isForYearOfConstruction={isForYearOfConstruction}
                         />
                     </Grid>
                 </Grid>

@@ -34,4 +34,9 @@ export const PPButton = styled(Button)<PPButtonProps>(({ theme, clicked }) => ({
                 : theme.palette.divider[200],
         backgroundColor: "transparent",
     },
+
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: "100%",
 }));
