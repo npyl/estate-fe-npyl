@@ -14,6 +14,8 @@ type DemandFormSliderProps = {
     demandIndex: number;
     adornment?: string;
     step?: number;
+    isForPrice?: boolean;
+    isForYearOfConstruction?: boolean;
     options?: number[];
 };
 
@@ -29,6 +31,8 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     demandIndex,
     adornment,
     step = 1,
+    isForPrice,
+    isForYearOfConstruction,
     options = [],
 }) => {
     const { t } = useTranslation();
@@ -87,6 +91,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                                 handleSliderChange(minName, value as number[])
                             }
                             valueLabelDisplay="auto"
+                            isForPrice={isForPrice}
                         />
                     )}
                 />
@@ -98,6 +103,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                             adornment={adornment}
                             options={options}
                             allowClear
+                            isForYearOfConstruction={isForYearOfConstruction}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -107,6 +113,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                             adornment={adornment}
                             options={options}
                             allowClear
+                            isForYearOfConstruction={isForYearOfConstruction}
                         />
                     </Grid>
                 </Grid>

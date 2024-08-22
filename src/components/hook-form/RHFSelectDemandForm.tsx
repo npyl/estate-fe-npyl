@@ -11,6 +11,7 @@ type RHFSelectDemandFormProps = UseControllerProps & {
     adornment?: string;
     options: number[];
     allowClear?: boolean;
+    isForYearOfConstruction?: boolean;
 };
 
 const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
@@ -18,6 +19,7 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
     adornment,
     options,
     allowClear = false,
+    isForYearOfConstruction,
     ...props
 }) => {
     const { field } = useController(props);
@@ -25,7 +27,9 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
     const [inputValue, setInputValue] = useState<string>("");
 
     const formatNumber = (value: number | string) => {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return isForYearOfConstruction
+            ? value.toString()
+            : value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     useEffect(() => {

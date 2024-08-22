@@ -267,6 +267,7 @@ const getSLIDERS = (
         adornment="€"
         step={stepValue}
         options={priceOptions}
+        isForPrice={true}
     />,
     // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
@@ -323,6 +324,7 @@ const getSLIDERS = (
         defaultMax={new Date().getFullYear()}
         demandIndex={index}
         options={yearOptions}
+        isForYearOfConstruction={true}
     />,
     // eslint-disable-next-line react/jsx-key
     <FloorSlider onDemandFilterName={onDemandFilterName} />,
