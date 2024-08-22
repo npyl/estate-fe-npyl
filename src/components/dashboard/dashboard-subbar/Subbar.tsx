@@ -7,7 +7,6 @@ import { BsPlusCircle } from "react-icons/bs";
 
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { Users as UsersIcon } from "@/icons/users";
 import useResponsive from "@/hooks/useResponsive";
 
@@ -20,7 +19,6 @@ import { useRouter } from "next/router";
 import { LAYOUT } from "@/utils/config";
 
 const propertyItemType = "property-menu-item";
-const managerItemType = "manager-menu-item";
 const ownerItemType = "owner-menu-item";
 const labelItemType = "label-menu-item";
 
@@ -28,7 +26,6 @@ const itemTypeToPath: { [key: string]: string } = {
     [propertyItemType]: "/property/create",
     [ownerItemType]: "/customer/create",
     [labelItemType]: "/label",
-    [managerItemType]: "/user/create",
 };
 
 const MENU_ITEMS = [
@@ -46,11 +43,6 @@ const MENU_ITEMS = [
         label: "Label",
         path: labelItemType,
         icon: <LabelImportantIcon />,
-    },
-    {
-        label: "Manager",
-        path: managerItemType,
-        icon: <ManageAccountsIcon />,
     },
 ];
 
