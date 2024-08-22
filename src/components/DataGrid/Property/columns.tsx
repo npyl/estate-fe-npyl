@@ -14,7 +14,7 @@ function renderImage(
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
     return (
-        <Box sx={{ position: "relative", width: "100%", height: "75%" }}>
+        <Box sx={{ position: "relative", width: "100%", height: "85%" }}>
             <Image
                 src={
                     typeof propertyImage === "string"
