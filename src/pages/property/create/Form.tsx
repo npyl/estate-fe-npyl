@@ -6,7 +6,6 @@ import {
     Typography,
     Container,
     Grid,
-    useTheme,
 } from "@mui/material";
 
 import * as React from "react";
@@ -20,6 +19,7 @@ import { KeyValue } from "src/types/KeyValue";
 import { useCallback, useMemo, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { PPButton } from "@/components/styled";
+import Img from "./Img";
 
 const icons: Record<string, string> = {
     RESIDENTIAL: "/static/categories/commercial.png",
@@ -79,9 +79,6 @@ export default function Form({
         }
     };
 
-    const theme = useTheme();
-    const isDark = useMemo(() => theme.palette.mode === "dark", [theme]);
-
     return (
         <Container maxWidth="md">
             <Paper component={Stack} p={2}>
@@ -94,29 +91,25 @@ export default function Form({
                     )}
                 </Typography>
 
-                <Grid container m={1} my={3} gap={1} justifyContent="center">
+                <Grid
+                    container
+                    mr={1}
+                    my={3}
+                    spacing={1}
+                    direction={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                >
                     {parentCategoryEnum.map(({ key, value }) => (
-                        <Grid
-                            item
-                            component={PPButton}
-                            key={key}
-                            clicked={key === parentCategory}
-                            onClick={() => setParentCategory(key)}
-                            xs={5} // NOTE: 6 doesn't work.
-                            width={1}
-                            height={1}
-                            direction="column"
-                        >
-                            <img
-                                src={icons[key]}
-                                style={{
-                                    filter: isDark
-                                        ? "brightness(0) saturate(100%) invert(41%) sepia(10%) saturate(1037%) hue-rotate(176deg) brightness(93%) contrast(88%)"
-                                        : "brightness(0) saturate(100%) invert(0)",
-                                }}
-                            />
-
-                            <Typography mt={1}>{value}</Typography>
+                        <Grid key={key} item xs={1} sm={6} width={1} height={1}>
+                            <PPButton
+                                clicked={key === parentCategory}
+                                onClick={() => setParentCategory(key)}
+                            >
+                                <Img src={icons[key]} />
+                                <Typography mt={1}>{value}</Typography>
+                            </PPButton>
                         </Grid>
                     ))}
                 </Grid>
