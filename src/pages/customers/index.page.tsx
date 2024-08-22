@@ -142,7 +142,7 @@ const Customers: NextPage = () => {
         <Box
             sx={{
                 position: "relative",
-                height: "100%",
+                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
             }}
         >
             <FilterSection
