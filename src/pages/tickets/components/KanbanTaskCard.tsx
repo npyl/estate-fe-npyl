@@ -99,14 +99,15 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                 }}
                             />
                         )}
-                        <Box sx={{ flexGrow: 1, textAlign: "center", ml: -7 }}>
+                        <Box sx={{ flexGrow: 1, overflow: "clip" }}>
                             <Typography
                                 variant="subtitle2"
                                 sx={{
                                     height: 72,
                                     lineHeight: "72px",
                                     fontSize: "12px",
-                                    alignSelf: "center",
+                                    width: "200px",
+                                    overflow: "ellipsis",
                                     transition: (theme) =>
                                         theme.transitions.create("opacity", {
                                             duration:
