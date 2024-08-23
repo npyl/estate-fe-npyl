@@ -3,11 +3,8 @@ import { flattenObject, loadPdf } from "../PDFEditor/util";
 import { useState } from "react";
 import { generate } from "@pdfme/generator";
 import { PreferredLanguageType } from "@/types/enums";
-import { text } from "@pdfme/schemas";
-import readOnly from "@/components/PDFPlugins/readOnly";
-import errorTooltip from "@/components/PDFPlugins/errorTooltip";
-import signature from "@/components/PDFPlugins/signature";
 import { getAuto } from "../Preparation/mapper";
+import { PDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
 
 const useGeneratePDF = () => {
     const [isGenerating, setGenerating] = useState(false);
@@ -37,7 +34,7 @@ const useGeneratePDF = () => {
         const pdf = await generate({
             template,
             inputs,
-            plugins: { text, readOnly, errorTooltip, signature },
+            plugins: PDF_PLUGINS_LIST,
         });
 
         setGenerating(false);

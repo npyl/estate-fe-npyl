@@ -8,7 +8,7 @@ import {
     VERTICAL_ALIGN_BOTTOM,
     DEFAULT_LINE_HEIGHT,
     DEFAULT_CHARACTER_SPACING,
-} from "./constants";
+} from "../_shared/constants";
 
 const mapVerticalAlignToFlex = (verticalAlignmentValue: string | undefined) => {
     switch (verticalAlignmentValue) {

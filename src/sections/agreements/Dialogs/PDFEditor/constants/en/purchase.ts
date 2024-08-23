@@ -285,7 +285,7 @@ const BasicSchema = [
             fontName: "Roboto",
         },
         "suggestedProperties.0.area": {
-            type: "text",
+            type: "PROPERTY_PRO_SUGGEST_BUTTON",
             defaultValue: "\n",
             position: { x: 7.98, y: 131.55 },
             width: 24.09,
@@ -387,7 +387,7 @@ const BasicSchema = [
             fontName: "Roboto",
         },
         "suggestedProperties.1.area": {
-            type: "text",
+            type: "PROPERTY_PRO_SUGGEST_BUTTON",
             defaultValue: "\n",
             position: { x: 8.47, y: 138.92 },
             width: 23.55,
@@ -491,7 +491,7 @@ const BasicSchema = [
             fontName: "Roboto",
         },
         "suggestedProperties.2.area": {
-            type: "text",
+            type: "PROPERTY_PRO_SUGGEST_BUTTON",
             defaultValue: "\n",
             position: { x: 8.4, y: 146.26 },
             width: 23.3,
@@ -593,7 +593,7 @@ const BasicSchema = [
             fontName: "Roboto",
         },
         "suggestedProperties.3.area": {
-            type: "text",
+            type: "PROPERTY_PRO_SUGGEST_BUTTON",
             defaultValue: "\n",
             position: { x: 8.36, y: 153.89 },
             width: 23.29,

@@ -4,10 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { IAgreementReq, IAgreementType } from "@/types/agreements";
 import { flattenObject, loadPdf } from "./util";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
-import signature from "@/components/PDFPlugins/signature";
-import readOnly from "@/components/PDFPlugins/readOnly";
-import errorTooltip from "@/components/PDFPlugins/errorTooltip";
-import { text } from "@pdfme/schemas";
+import { PDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
 
 const flatRateKey = "commissionAndDuration.flatRate";
 const percentageKey = "commissionAndDuration.percentage";
@@ -64,12 +61,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
                             domContainer: formRef.current!!,
                             template,
                             inputs: inputs || [{}],
-                            plugins: {
-                                text,
-                                readOnly,
-                                errorTooltip,
-                                signature,
-                            },
+                            plugins: PDF_PLUGINS_LIST,
                         });
 
                         form.current.onChangeInput(handleInputChange);
@@ -80,6 +72,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
 
         return () => {
             form.current?.destroy();
+            form.current = null;
         };
     }, []);
 
