@@ -51,7 +51,7 @@ const Login: NextPage = () => {
                     muted
                 >
                     <source
-                        src="/static/background/site.mp4"
+                        src="https://d1o8f6oijbfd0m.cloudfront.net/property_pro_login_video.mp4"
                         type="video/mp4"
                     />
                 </video>
