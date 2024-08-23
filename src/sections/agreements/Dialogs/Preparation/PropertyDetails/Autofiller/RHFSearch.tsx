@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import Search from "./Search";
 import { useLazyGetPropertyByIdQuery } from "@/services/properties";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormHelperText } from "@mui/material";
-import useAutofill from "../hook";
+import PropertySearch from "@/components/Search/PropertySearch";
+import useAutofill from "./hook";
 
 const RHFPropertySearch = () => {
     const { control, setValue } = useFormContext();
@@ -22,7 +22,7 @@ const RHFPropertySearch = () => {
             control={control}
             render={({ fieldState: { error } }) => (
                 <>
-                    <Search onSelectProperty={handlePropertySelect} />
+                    <PropertySearch onSelectProperty={handlePropertySelect} />
 
                     {!!error ? (
                         <FormHelperText error sx={{ px: 2 }}>

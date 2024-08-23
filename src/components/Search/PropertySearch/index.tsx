@@ -1,46 +1,22 @@
 import SearchInput from "@/components/SearchInput";
-import { useCallback, useMemo, useState } from "react";
-import { useSearchPropertyQuery } from "@/services/properties";
+import { useCallback, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { usePagination } from "@/components/Pagination";
-import ResultsPopper from "./Popper";
-import { PaginationHookProps } from "@/components/Pagination/types";
-import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import { useSearchContent } from "./hook";
+import { pageSize } from "./constants";
+import dynamic from "next/dynamic";
+const ResultsPopper = dynamic(() => import("./Popper"));
 
-const pageSize = 5;
-
-const useSearchContent = (
-    pagination: PaginationHookProps,
-    searchString: string
-) => {
-    const router = useRouter();
-    const { customerId } = router.query;
-
-    const { data, isLoading } = useSearchPropertyQuery({
-        searchString,
-        page: pagination.page,
-        pageSize,
-        customer: !!customerId ? +customerId : undefined,
-    });
-
-    const content = useMemo(
-        () => (Array.isArray(data?.content) ? data.content : []),
-        [data?.content]
-    );
-
-    return {
-        content,
-        isLoading,
-        totalElements: data?.totalElements || 0,
-    };
-};
-
-interface SearchProps {
+interface PropertySearchProps {
+    customerId?: number;
     onSelectProperty: (id: number) => void;
 }
 
-const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
+const PropertySearch: React.FC<PropertySearchProps> = ({
+    customerId,
+    onSelectProperty,
+}) => {
     const { t } = useTranslation();
 
     const [search, setSearch] = useState("");
@@ -50,7 +26,8 @@ const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
 
     const { content, isLoading, totalElements } = useSearchContent(
         pagination,
-        searchString
+        searchString,
+        customerId
     );
 
     const [anchorEl, setAnchorEl] = useState<HTMLInputElement>();
@@ -91,4 +68,4 @@ const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
     );
 };
 
-export default Search;
+export default PropertySearch;

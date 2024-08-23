@@ -1,6 +1,8 @@
+import PropertySearch from "@/components/Search/PropertySearch";
 import MuiPopover, {
     PopoverProps as MuiPopoverProps,
 } from "@mui/material/Popover";
+import { useRouter } from "next/router";
 import { FC } from "react";
 
 interface PopoverProps
@@ -9,6 +11,9 @@ interface PopoverProps
 }
 
 const Popover: FC<PopoverProps> = ({ row, ...props }) => {
+    const router = useRouter();
+    const { customerId } = router.query;
+
     return (
         <MuiPopover
             open
@@ -22,7 +27,10 @@ const Popover: FC<PopoverProps> = ({ row, ...props }) => {
             }}
             {...props}
         >
-            sdsdsdsds
+            <PropertySearch
+                customerId={+customerId!}
+                onSelectProperty={() => {}}
+            />
         </MuiPopover>
     );
 };

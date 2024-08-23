@@ -4,15 +4,17 @@ import { Box, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
 import PDFEditor from "./Editor";
-import { useFormContext } from "react-hook-form";
 import ErrorTooltips from "./ErrorTooltips";
 import { useValidatePDF } from "./hook";
+import dynamic from "next/dynamic";
+const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 
 interface Props extends Omit<DialogProps, "onClose"> {
+    suggestProperties: boolean;
     onClose: VoidFunction;
 }
 
-const PDFEditorDialog: React.FC<Props> = (props) => {
+const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
     const { validate } = useValidatePDF();
 
     const handleSave = async () => {
@@ -27,10 +29,11 @@ const PDFEditorDialog: React.FC<Props> = (props) => {
     return (
         <Box position="relative">
             <Dialog {...props} fullScreen>
-                <PDFEditor />
+                <PDFEditor>
+                    {suggestProperties ? <SuggestProperties /> : null}
+                    <ErrorTooltips />
+                </PDFEditor>
             </Dialog>
-
-            <ErrorTooltips />
 
             {/* Close */}
             <Fab

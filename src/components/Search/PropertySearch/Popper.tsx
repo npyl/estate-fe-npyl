@@ -4,28 +4,13 @@ import PropertyCard from "@/components/PropertyCard";
 import { IPropertyResultResponse } from "@/types/properties";
 import { Fab, IconButton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Popper, { PopperProps } from "@mui/material/Popper";
 import { MouseEvent } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { getBorderColor2 } from "@/theme/borderColor";
-import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import { SpaceBetween } from "@/components/styled";
 import { useTranslation } from "react-i18next";
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-    border: "1px solid",
-    borderColor: getBorderColor2(theme),
-    padding: theme.spacing(2),
-
-    zIndex: 3000,
-    width: "100%",
-
-    marginTop: theme.spacing(1),
-    marginLeft: "auto",
-    marginRight: "auto",
-}));
+import { StyledPaper } from "@/components/Share/styled";
 
 interface ResultsPopperProps extends Omit<PopperProps, "content"> {
     isLoading: boolean;

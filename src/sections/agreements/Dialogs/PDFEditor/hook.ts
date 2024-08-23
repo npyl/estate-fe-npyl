@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
-import type { Form } from "@pdfme/ui";
 import { useFormContext } from "react-hook-form";
 import { IAgreementReq, IAgreementType } from "@/types/agreements";
 import { flattenObject, loadPdf } from "./util";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
-import { PDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
+import { getPDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
+import { Form } from "@pdfme/ui";
 
 const flatRateKey = "commissionAndDuration.flatRate";
 const percentageKey = "commissionAndDuration.percentage";
@@ -15,7 +15,10 @@ interface KeyValuePair {
     value: string;
 }
 
-const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
+const useForm = (
+    formRef: React.MutableRefObject<HTMLDivElement | null>,
+    onLoad: () => void
+) => {
     const { watch, setValue } = useFormContext();
     const all = watch() as IAgreementReq;
     const { variant, language } = all;
@@ -61,7 +64,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
                             domContainer: formRef.current!!,
                             template,
                             inputs: inputs || [{}],
-                            plugins: PDF_PLUGINS_LIST,
+                            plugins: getPDF_PLUGINS_LIST(onLoad),
                         });
 
                         form.current.onChangeInput(handleInputChange);
@@ -74,7 +77,7 @@ const useForm = (formRef: React.MutableRefObject<HTMLDivElement | null>) => {
             form.current?.destroy();
             form.current = null;
         };
-    }, []);
+    }, [onLoad]);
 
     return form.current;
 };
