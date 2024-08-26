@@ -7,6 +7,7 @@ import PDFEditor from "./Editor";
 import ErrorTooltips from "./ErrorTooltips";
 import { useValidatePDF } from "./hook";
 import dynamic from "next/dynamic";
+import { Z_INDEX } from "@/config";
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 
 interface Props extends Omit<DialogProps, "onClose"> {
@@ -41,7 +42,7 @@ const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
                     position: "fixed",
                     top: 30,
                     right: 30,
-                    zIndex: 1500,
+                    zIndex: Z_INDEX.AGREEMENT_FORM,
                 }}
                 onClick={props.onClose}
             >
@@ -53,7 +54,7 @@ const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
                 position="fixed"
                 bottom={30}
                 right={30}
-                zIndex={1500}
+                zIndex={Z_INDEX.AGREEMENT_FORM}
                 onClick={handleSave}
             />
         </Box>
