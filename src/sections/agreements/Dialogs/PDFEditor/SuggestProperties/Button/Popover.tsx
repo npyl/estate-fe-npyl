@@ -4,6 +4,7 @@ import MuiPopover, {
 } from "@mui/material/Popover";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { useFormContext } from "react-hook-form";
 
 interface PopoverProps
     extends Omit<MuiPopoverProps, "open" | "anchorOrigin" | "transformOrigin"> {
@@ -12,7 +13,13 @@ interface PopoverProps
 
 const Popover: FC<PopoverProps> = ({ row, ...props }) => {
     const router = useRouter();
-    const { customerId } = router.query;
+    const { customerId: id_0 } = router.query;
+
+    const { watch } = useFormContext();
+    const id_1 = watch("ownerId") as number;
+
+    // INFO: first try from router (/customer/[id]: create/edit); then try ownerId (/agreements: edit)
+    const ownerId = id_0 ? +id_0 : id_1;
 
     return (
         <MuiPopover
@@ -27,10 +34,7 @@ const Popover: FC<PopoverProps> = ({ row, ...props }) => {
             }}
             {...props}
         >
-            <PropertySearch
-                customerId={+customerId!}
-                onSelectProperty={() => {}}
-            />
+            <PropertySearch customerId={ownerId} onSelectProperty={() => {}} />
         </MuiPopover>
     );
 };

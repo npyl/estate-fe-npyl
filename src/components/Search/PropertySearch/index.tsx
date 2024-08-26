@@ -1,5 +1,5 @@
-import SearchInput from "@/components/SearchInput";
-import { useCallback, useState } from "react";
+import SearchInput from "@/components/Search/SearchInput";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { usePagination } from "@/components/Pagination";
 import { useTranslation } from "react-i18next";
@@ -30,11 +30,13 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
         customerId
     );
 
-    const [anchorEl, setAnchorEl] = useState<HTMLInputElement>();
-    const closeSearch = () => setAnchorEl(undefined);
+    const anchorRef = useRef<HTMLInputElement>(null);
+
+    const closeSearch = () => setSearch("");
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+        setSearch(e.target.value);
 
     const handleCardClick = useCallback((propertyId: number) => {
-        setSearch("");
         onSelectProperty(propertyId);
         closeSearch();
     }, []);
@@ -42,24 +44,22 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
     return (
         <>
             <SearchInput
+                ref={anchorRef}
                 placeholder={t("Search property").toString()}
                 value={search}
-                onChange={(e) => {
-                    setSearch(e.target.value);
-                    setAnchorEl(e.currentTarget as any);
-                }}
+                onChange={handleChange}
             />
 
-            {!!anchorEl ? (
+            {search ? (
                 <ResultsPopper
-                    open
-                    anchorEl={anchorEl}
+                    anchorEl={anchorRef.current!}
                     // ...
                     isLoading={isLoading}
                     totalElements={totalElements}
                     pageSize={pageSize}
                     pagination={pagination}
                     content={content}
+                    // ...
                     onCardClick={handleCardClick}
                     onClose={closeSearch}
                 />

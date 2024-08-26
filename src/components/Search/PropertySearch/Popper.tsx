@@ -2,17 +2,20 @@ import Pagination from "@/components/Pagination";
 import { PaginationHookProps } from "@/components/Pagination/types";
 import PropertyCard from "@/components/PropertyCard";
 import { IPropertyResultResponse } from "@/types/properties";
-import { Fab, IconButton, Typography } from "@mui/material";
+import Fab from "@mui/material/Fab";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Popper, { PopperProps } from "@mui/material/Popper";
 import { MouseEvent } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { SpaceBetween } from "@/components/styled";
 import { useTranslation } from "react-i18next";
-import { StyledPaper } from "@/components/Share/styled";
+import PopoverPaper from "./PopoverPaper";
+import { Modal } from "@mui/material";
 
-interface ResultsPopperProps extends Omit<PopperProps, "content"> {
+interface ResultsPopperProps {
+    anchorEl: HTMLInputElement;
     isLoading: boolean;
     totalElements: number;
     content: IPropertyResultResponse[];
@@ -23,6 +26,7 @@ interface ResultsPopperProps extends Omit<PopperProps, "content"> {
 }
 
 const ResultsPopper: React.FC<ResultsPopperProps> = ({
+    anchorEl,
     content,
     isLoading,
     totalElements,
@@ -30,7 +34,6 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     pageSize,
     onCardClick,
     onClose,
-    ...props
 }) => {
     const { t } = useTranslation();
 
@@ -40,55 +43,67 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     };
 
     return (
-        <Popper {...props} component={StyledPaper}>
-            <SpaceBetween mb={2}>
-                <Typography>
-                    {totalElements} {t("properties")}
-                </Typography>
+        <Modal
+            open
+            hideBackdrop
+            disableEnforceFocus
+            sx={{
+                position: "absolute",
+                top: anchorEl.getBoundingClientRect().bottom,
+                overflowY: "auto",
+                overflowX: "hidden",
+            }}
+            onClose={onClose}
+        >
+            <PopoverPaper>
+                <SpaceBetween mb={2}>
+                    <Typography>
+                        {totalElements} {t("properties")}
+                    </Typography>
 
-                <IconButton onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
-            </SpaceBetween>
+                    <IconButton onClick={onClose}>
+                        <CloseIcon />
+                    </IconButton>
+                </SpaceBetween>
 
-            <Pagination
-                {...pagination}
-                isLoading={isLoading}
-                pageSize={pageSize}
-                totalItems={totalElements}
-                // ...
-                Container={Grid}
-                ContainerProps={{
-                    container: true,
-                    spacing: 1,
-                }}
-            >
-                {content.map((p) => (
-                    <Grid
-                        item
-                        key={p.id}
-                        xs={12}
-                        md={6}
-                        lg={4}
-                        position="relative"
-                    >
-                        <PropertyCard item={p} selectedMarker={null} />
-
-                        <Fab
-                            sx={{
-                                position: "absolute",
-                                top: -2,
-                                right: -4,
-                            }}
-                            size="small"
-                            onClick={(e) => handleCardClick(e, p.id)}
+                <Pagination
+                    {...pagination}
+                    isLoading={isLoading}
+                    pageSize={pageSize}
+                    totalItems={totalElements}
+                    // ...
+                    Container={Grid}
+                    ContainerProps={{
+                        container: true,
+                        spacing: 1,
+                    }}
+                >
+                    {content.map((p) => (
+                        <Grid
+                            item
+                            key={p.id}
+                            xs={12}
+                            md={3}
+                            position="relative"
                         >
-                            <AddIcon />
-                        </Fab>
-                    </Grid>
-                ))}
-            </Pagination>
-        </Popper>
+                            <PropertyCard item={p} selectedMarker={null} />
+
+                            <Fab
+                                sx={{
+                                    position: "absolute",
+                                    top: -2,
+                                    right: -4,
+                                }}
+                                size="small"
+                                onClick={(e) => handleCardClick(e, p.id)}
+                            >
+                                <AddIcon />
+                            </Fab>
+                        </Grid>
+                    ))}
+                </Pagination>
+            </PopoverPaper>
+        </Modal>
     );
 };
 

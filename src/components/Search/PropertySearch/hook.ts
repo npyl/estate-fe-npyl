@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { PaginationHookProps } from "@/components/Pagination/types";
-import { useRouter } from "next/router";
 import { pageSize } from "./constants";
 
 const useSearchContent = (

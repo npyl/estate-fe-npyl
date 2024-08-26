@@ -11,8 +11,10 @@ const PopoverPaper = styled(Paper)(({ theme }) => ({
     width: "100%",
 
     marginTop: theme.spacing(1),
-    marginLeft: "auto",
-    marginRight: "auto",
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+
+    maxHeight: "max-content",
 }));
 
-export { PopoverPaper };
+export default PopoverPaper;
