@@ -16,7 +16,7 @@ import { useSecurityContext } from "src/contexts/security";
 import { UserCircle } from "src/icons/user-circle";
 import { IUser } from "src/types/user";
 import ListLanguageItem from "../List/Items/language";
-import { SoftButton } from "../SoftButton";
+import SoftButton from "@/components/SoftButton";
 import { UserForm } from "./Form";
 import { SpaceBetween } from "../styled";
 

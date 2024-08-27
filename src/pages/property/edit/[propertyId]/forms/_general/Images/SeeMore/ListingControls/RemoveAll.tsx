@@ -1,4 +1,4 @@
-import { SoftButton } from "@/components/SoftButton";
+import SoftButton from "@/components/SoftButton";
 import { IntegrationSite } from "@/types/listings";
 import { useTranslation } from "react-i18next";
 import { TListingTab } from "../types";

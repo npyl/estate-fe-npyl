@@ -49,8 +49,6 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
     }, []);
 
     const handleImageClick = useCallback((imageKey: string) => {
-        if (tabRef.current !== "CRM") return;
-
         // Open in Gallery
         if (modeRef.current === "") {
             onOpenLightbox(imageKey);
@@ -78,17 +76,16 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
             <DialogTitle onClose={onClose}>
                 <Tabs tab={tab} onChange={handleTabChange} />
 
-                {tab === "CRM" ? (
-                    <Controls
-                        selectedImages={selectedImages}
-                        setSelectedImages={setSelectedImages}
-                        onResetSelectedImages={resetSelectedImages}
-                        mode={mode}
-                        setMode={setMode}
-                    />
-                ) : null}
-
                 {tab !== "CRM" ? <ListingControls tab={tab} /> : null}
+
+                <Controls
+                    tab={tab}
+                    selectedImages={selectedImages}
+                    setSelectedImages={setSelectedImages}
+                    onResetSelectedImages={resetSelectedImages}
+                    mode={mode}
+                    setMode={setMode}
+                />
             </DialogTitle>
             <Divider />
             <StyledContent>

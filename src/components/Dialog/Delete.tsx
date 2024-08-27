@@ -6,7 +6,7 @@ import {
     DialogTitle,
     Typography,
 } from "@mui/material";
-import { SoftButton } from "../SoftButton";
+import SoftButton from "@/components/SoftButton";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/material/styles";
 import { HighlightOff as HighlightOffIcon } from "@mui/icons-material";

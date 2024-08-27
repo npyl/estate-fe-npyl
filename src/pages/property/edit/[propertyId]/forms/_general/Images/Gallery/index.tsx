@@ -1,6 +1,6 @@
 import { Grid, Button, Stack, Skeleton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { SoftButton } from "@/components/SoftButton";
+import SoftButton from "@/components/SoftButton";
 import { useMemo, useState } from "react";
 import {
     useDeletePropertyImageMutation,

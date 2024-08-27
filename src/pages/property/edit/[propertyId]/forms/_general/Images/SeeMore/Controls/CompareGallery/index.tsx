@@ -17,7 +17,7 @@ interface ICompareGallery {
     onClose: VoidFunction;
 }
 
-export const CompareGallery: React.FC<ICompareGallery> = ({
+const CompareGallery: React.FC<ICompareGallery> = ({
     open,
     image1: image1Key,
     image2: image2Key,
@@ -96,3 +96,5 @@ export const CompareGallery: React.FC<ICompareGallery> = ({
         </StyledDialog>
     );
 };
+
+export default CompareGallery;

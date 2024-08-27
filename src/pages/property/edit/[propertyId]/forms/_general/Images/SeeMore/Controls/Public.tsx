@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { useImageOperations } from "../../context/ImageOperations";
-import { SoftButton } from "@/components/SoftButton";
 import { useRouter } from "next/router";
 import React from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { ResponsiveSoftButton } from "./styled";
 
 interface PublicButtonProps {
     selectedImages: string[];
@@ -26,13 +26,13 @@ const PublicButton: React.FC<PublicButtonProps> = ({ selectedImages }) => {
         });
 
     return (
-        <SoftButton
+        <ResponsiveSoftButton
             disabled={isLoading}
             startIcon={<LockOpenIcon />}
             onClick={handleClick}
         >
             {t("Public")}
-        </SoftButton>
+        </ResponsiveSoftButton>
     );
 };
 
