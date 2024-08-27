@@ -1,6 +1,5 @@
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-import MuiCircularProgress from "@mui/material/CircularProgress";
 import { PaperProps } from "@mui/material/Paper";
 
 const StyledIconButton = styled(IconButton)({
@@ -9,11 +8,6 @@ const StyledIconButton = styled(IconButton)({
     bottom: "-5px",
     zIndex: 5000,
 
-    width: "30px",
-    height: "30px",
-});
-
-const CircularProgress = styled(MuiCircularProgress)({
     width: "30px",
     height: "30px",
 });
@@ -32,4 +26,4 @@ const PopoverSlotProps: {
     },
 };
 
-export { StyledIconButton, CircularProgress, PopoverSlotProps };
+export { StyledIconButton, PopoverSlotProps };

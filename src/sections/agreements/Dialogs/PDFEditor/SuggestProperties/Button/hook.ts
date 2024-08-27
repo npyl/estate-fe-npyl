@@ -1,34 +1,36 @@
-import { useLazyGetPropertyByIdQuery } from "@/services/properties";
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { usePDFEditorContext } from "../../Editor/context";
+import { IPropertyResultResponse } from "@/types/properties";
+import { PreferredLanguageType } from "@/types/enums";
+import { formatThousands } from "@/utils/formatNumber";
 
-const useAutofill = (row: number) => {
+const useAutofill = (row: number, onAutofill: VoidFunction) => {
     const { reloadInputs } = usePDFEditorContext();
-    const { setValue } = useFormContext();
-
-    const [getProperty, { isLoading }] = useLazyGetPropertyByIdQuery();
+    const { watch, setValue } = useFormContext();
 
     const autofill = useCallback(
-        (id: number) =>
-            getProperty(id)
-                .unwrap()
-                .then((p) => {
-                    setValue(`suggestedProperties.${row}`, {
-                        area: p.location.region,
-                        address: p.location.street,
-                        type: p.parentCategory.value,
-                        livingSpace: p.area,
-                        fee: p.price,
-                    });
+        (p: IPropertyResultResponse) => {
+            const lang = watch("language") as PreferredLanguageType;
 
-                    // update form
-                    reloadInputs();
-                }),
-        [row]
+            setValue(`suggestedProperties.${row}`, {
+                area: lang === "GREEK" ? p.regionGR : p.regionEN || "-",
+                address: p.location.street || "-",
+                type: p.parentCategory.value || "-",
+                livingSpace: p.area || "-",
+                price: p.price ? formatThousands(p.price) : "-",
+                fee: "-",
+            });
+
+            // update form
+            reloadInputs();
+
+            onAutofill();
+        },
+        [row, reloadInputs]
     );
 
-    return { isLoading, autofill };
+    return { autofill };
 };
 
 export default useAutofill;

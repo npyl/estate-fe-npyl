@@ -5,3 +5,6 @@ export enum LocationDisplay {
 }
 
 export type PreferredLanguageType = "ENGLISH" | "GREEK";
+
+export const PreferredToI18Language = (p: PreferredLanguageType) =>
+    p === "ENGLISH" ? "en" : "el";

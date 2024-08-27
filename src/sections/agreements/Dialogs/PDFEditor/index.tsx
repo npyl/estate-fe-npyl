@@ -3,11 +3,11 @@ import Dialog, { DialogProps } from "@mui/material/Dialog";
 import { Box, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
-import PDFEditor from "./Editor";
 import ErrorTooltips from "./ErrorTooltips";
 import useValidatePDF from "./useValidatePDF";
 import dynamic from "next/dynamic";
 import { Z_INDEX } from "@/config";
+const PDFEditor = dynamic(() => import("./Editor"));
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 
 interface Props extends Omit<DialogProps, "onClose"> {

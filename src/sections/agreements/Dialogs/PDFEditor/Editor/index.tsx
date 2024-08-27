@@ -13,7 +13,6 @@ const priceKey = "property.price";
 
 const PDFEditor: FC<PropsWithChildren> = ({ children }) => {
     const { watch, setValue } = useFormContext();
-    const all = watch() as IAgreementReq;
 
     const [isLoaded, setLoaded] = useDialog();
 
@@ -46,16 +45,17 @@ const PDFEditor: FC<PropsWithChildren> = ({ children }) => {
     };
 
     const reloadInputs = () => {
+        const all = watch() as IAgreementReq;
         const inputs = [flattenObject(all)];
         form?.setInputs(inputs);
     };
 
-    const form = useForm(formRef, all, setLoaded, handleInputChange);
+    const form = useForm(formRef, setLoaded, handleInputChange);
 
     return (
         <div ref={formRef}>
             {/* If form is loaded, load any children */}
-            {isLoaded ? (
+            {isLoaded && children ? (
                 <PDFEditorProvider reloadInputs={reloadInputs}>
                     {children}
                 </PDFEditorProvider>

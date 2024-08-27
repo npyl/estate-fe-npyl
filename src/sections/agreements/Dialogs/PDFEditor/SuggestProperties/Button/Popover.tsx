@@ -6,12 +6,15 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { useFormContext } from "react-hook-form";
 import useAutofill from "./hook";
-import LoadingIndicator from "./LoadingIndicator";
 import { PopoverSlotProps } from "./styled";
 
 interface PopoverProps
-    extends Omit<MuiPopoverProps, "open" | "anchorOrigin" | "transformOrigin"> {
+    extends Omit<
+        MuiPopoverProps,
+        "open" | "anchorOrigin" | "transformOrigin" | "onClose"
+    > {
     row: number;
+    onClose: VoidFunction;
 }
 
 const Popover: FC<PopoverProps> = ({ row, ...props }) => {
@@ -24,7 +27,7 @@ const Popover: FC<PopoverProps> = ({ row, ...props }) => {
     // INFO: try from router (/customer/[id]: create/edit); then try ownerId (/agreements: edit)
     const ownerId = id_0 ? +id_0 : id_1;
 
-    const { isLoading, autofill } = useAutofill(row);
+    const { autofill } = useAutofill(row, props.onClose);
 
     return (
         <MuiPopover
@@ -45,8 +48,6 @@ const Popover: FC<PopoverProps> = ({ row, ...props }) => {
                 customerId={ownerId}
                 onSelectProperty={autofill}
             />
-
-            {isLoading ? <LoadingIndicator /> : null}
         </MuiPopover>
     );
 };

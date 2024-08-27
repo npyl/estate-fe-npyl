@@ -7,12 +7,13 @@ import { useSearchContent } from "./hook";
 import { pageSize } from "./constants";
 import dynamic from "next/dynamic";
 import useDialog from "@/hooks/useDialog";
+import { IPropertyResultResponse } from "@/types/properties";
 const ResultsPopper = dynamic(() => import("./Popper"));
 
 interface PropertySearchProps {
     showEmpty?: boolean;
     customerId?: number;
-    onSelectProperty: (id: number) => void;
+    onSelectProperty: (p: IPropertyResultResponse) => void;
 }
 
 const PropertySearch: React.FC<PropertySearchProps> = ({
@@ -38,8 +39,8 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
     const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
         setSearch(e.target.value);
 
-    const handleCardClick = useCallback((propertyId: number) => {
-        onSelectProperty(propertyId);
+    const handleCardClick = useCallback((p: IPropertyResultResponse) => {
+        onSelectProperty(p);
         closeAnyway();
     }, []);
 

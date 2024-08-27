@@ -5,15 +5,17 @@ import { getPDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
 import { Form } from "@pdfme/ui";
 import { KeyValuePair } from "./types";
 import flattenObject from "@/utils/flattenObject";
+import { useFormContext } from "react-hook-form";
 
 const useForm = (
     formRef: React.MutableRefObject<HTMLDivElement | null>,
-    agreement: IAgreementReq,
     // ...
     onLoad: () => void,
     onInputChange: ({ key, value }: KeyValuePair) => void
 ) => {
-    const { variant, language } = agreement;
+    const { watch } = useFormContext();
+    const all = watch() as IAgreementReq;
+    const { variant, language } = all;
 
     const form = useRef<Form | null>(null);
 
@@ -23,7 +25,7 @@ const useForm = (
             if (!formRef.current || form.current !== null) return;
 
             try {
-                const inputs = [flattenObject(agreement)];
+                const inputs = [flattenObject(all)];
 
                 form.current = new Form({
                     domContainer: formRef.current!!,

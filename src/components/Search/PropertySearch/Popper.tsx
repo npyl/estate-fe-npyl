@@ -22,7 +22,7 @@ interface ResultsPopperProps {
     content: IPropertyResultResponse[];
     pagination: PaginationHookProps;
     pageSize: number;
-    onCardClick: (id: number) => void;
+    onCardClick: (p: IPropertyResultResponse) => void;
     onClose: VoidFunction;
 }
 
@@ -38,9 +38,12 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const handleCardClick = (e: MouseEvent<HTMLButtonElement>, id: number) => {
+    const handleCardClick = (
+        e: MouseEvent<HTMLButtonElement>,
+        p: IPropertyResultResponse
+    ) => {
         e.stopPropagation();
-        onCardClick(id);
+        onCardClick(p);
     };
 
     return (
@@ -99,7 +102,7 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
                                     right: -4,
                                 }}
                                 size="small"
-                                onClick={(e) => handleCardClick(e, p.id)}
+                                onClick={(e) => handleCardClick(e, p)}
                             >
                                 <AddIcon />
                             </Fab>
