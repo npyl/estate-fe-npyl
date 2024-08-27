@@ -22,7 +22,7 @@ export const rtkQueryErrorLogger: Middleware =
             toast.error(
                 action.payload?.data?.error?.detail ||
                     action.payload?.data?.error ||
-                    "Something went wrong"
+                    "End of session (Λήξη συνεδρίας)"
             );
         }
 

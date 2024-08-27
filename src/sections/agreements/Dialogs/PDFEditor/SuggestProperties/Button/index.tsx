@@ -14,6 +14,7 @@ const Button: FC<Props> = ({ schemaKey }) => {
     const row = getRow(schemaKey);
 
     const anchorRef = useRef(null);
+
     const [isOpen, openPopover, closePopover] = useDialog();
 
     return (

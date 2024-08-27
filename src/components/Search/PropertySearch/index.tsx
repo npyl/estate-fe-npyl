@@ -6,14 +6,17 @@ import { useTranslation } from "react-i18next";
 import { useSearchContent } from "./hook";
 import { pageSize } from "./constants";
 import dynamic from "next/dynamic";
+import useDialog from "@/hooks/useDialog";
 const ResultsPopper = dynamic(() => import("./Popper"));
 
 interface PropertySearchProps {
+    showEmpty?: boolean;
     customerId?: number;
     onSelectProperty: (id: number) => void;
 }
 
 const PropertySearch: React.FC<PropertySearchProps> = ({
+    showEmpty = false,
     customerId,
     onSelectProperty,
 }) => {
@@ -30,29 +33,32 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
         customerId
     );
 
-    const anchorRef = useRef<HTMLInputElement>(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLInputElement>();
 
-    const closeSearch = () => setSearch("");
     const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
         setSearch(e.target.value);
 
     const handleCardClick = useCallback((propertyId: number) => {
         onSelectProperty(propertyId);
-        closeSearch();
+        closeAnyway();
     }, []);
+
+    // INFO: contradicts showEmpty
+    const [isOpenAnyway, openAnyway, closeAnyway] = useDialog();
 
     return (
         <>
             <SearchInput
-                ref={anchorRef}
+                ref={setAnchorEl}
                 placeholder={t("Search property").toString()}
                 value={search}
+                onClick={openAnyway}
                 onChange={handleChange}
             />
 
-            {search ? (
+            {anchorEl && (search || showEmpty) && isOpenAnyway ? (
                 <ResultsPopper
-                    anchorEl={anchorRef.current!}
+                    anchorEl={anchorEl}
                     // ...
                     isLoading={isLoading}
                     totalElements={totalElements}
@@ -61,7 +67,7 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
                     content={content}
                     // ...
                     onCardClick={handleCardClick}
-                    onClose={closeSearch}
+                    onClose={closeAnyway}
                 />
             ) : null}
         </>

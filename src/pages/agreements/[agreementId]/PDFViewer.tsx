@@ -1,12 +1,10 @@
-import {
-    flattenObject,
-    loadPdf,
-} from "@/sections/agreements/Dialogs/PDFEditor/util";
+import { loadPdf } from "@/sections/agreements/Dialogs/PDFEditor/util";
 import { IAgreement } from "@/types/agreements";
 import { Viewer } from "@pdfme/ui";
 import { useEffect, useRef } from "react";
 import { getAuto } from "@/sections/agreements/Dialogs/Preparation/mapper";
 import { PDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
+import flattenObject from "@/utils/flattenObject";
 
 interface Props {
     a: IAgreement;

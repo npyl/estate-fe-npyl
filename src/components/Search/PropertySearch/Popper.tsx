@@ -47,10 +47,11 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
         <Modal
             open
             hideBackdrop
-            disableEnforceFocus
+            disableAutoFocus // prevent focus ring
+            disableEnforceFocus // prevent search losing focus
             sx={{
                 position: "absolute",
-                top: anchorEl.getBoundingClientRect().bottom,
+                top: anchorEl?.getBoundingClientRect()?.bottom || 0,
                 overflowY: "auto",
                 overflowX: "hidden",
                 zIndex: Z_INDEX.AGREEMENT_FORM + 1,

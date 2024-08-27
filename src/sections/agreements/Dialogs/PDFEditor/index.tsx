@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
 import PDFEditor from "./Editor";
 import ErrorTooltips from "./ErrorTooltips";
-import { useValidatePDF } from "./hook";
+import useValidatePDF from "./useValidatePDF";
 import dynamic from "next/dynamic";
 import { Z_INDEX } from "@/config";
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
@@ -32,9 +32,10 @@ const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
             <Dialog {...props} fullScreen>
                 <PDFEditor>
                     {suggestProperties ? <SuggestProperties /> : null}
-                    <ErrorTooltips />
                 </PDFEditor>
             </Dialog>
+
+            <ErrorTooltips />
 
             {/* Close */}
             <Fab
