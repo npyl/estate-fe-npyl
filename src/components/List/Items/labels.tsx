@@ -1,18 +1,17 @@
-import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import { Stack, Tooltip, Typography } from "@mui/material";
 import type { FC } from "react";
 import Label from "@/components/Label/Label";
 import { ILabel } from "src/types/label";
 import ListItem from "../item";
-import { useTranslation } from "react-i18next";
 import ListItemProps from "../types";
-import MoreChip from "@/components/Label/MoreChip";
 
 interface ListLabelsItemProps extends ListItemProps {
     labels: ILabel[];
 }
 
 const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
-    const { t } = useTranslation();
+    // NOTE: show this list item *only* if we have 1+ labels
+    if (labels.length === 0) return null;
 
     // Show only the first label
     const visibleLabel = labels[0];
