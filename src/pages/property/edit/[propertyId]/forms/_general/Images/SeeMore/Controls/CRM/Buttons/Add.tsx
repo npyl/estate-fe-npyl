@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
-import { useImageOperations } from "../../../context/ImageOperations";
-import StyledIconButton from "../styled";
+import { useImageOperations } from "../../../../context/ImageOperations";
+import StyledIconButton from "../../styled";
 
 const AddButton = () => {
     const { upload, isLoading } = useImageOperations();

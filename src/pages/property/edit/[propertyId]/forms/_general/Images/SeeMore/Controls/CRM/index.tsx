@@ -7,9 +7,9 @@ import {
 } from "@mui/material";
 import CompareIcon from "@mui/icons-material/Compare";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { TMode } from "../types";
+import { TMode } from "../../types";
 import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../../context/ImageOperations";
+import { useImageOperations } from "../../../context/ImageOperations";
 import { Icon } from "@iconify/react";
 import AddButton from "./Buttons/Add";
 import DeleteButton from "./Buttons/Delete";

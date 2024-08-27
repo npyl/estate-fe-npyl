@@ -1,15 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../../../context/ImageOperations";
+import { useImageOperations } from "../../../../context/ImageOperations";
 import { useRouter } from "next/router";
 import React from "react";
-import LockIcon from "@mui/icons-material/Lock";
-import { ResponsiveSoftButton } from "../styled";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { ResponsiveSoftButton } from "../../styled";
 
-interface PrivateButtonProps {
+interface PublicButtonProps {
     selectedImages: string[];
 }
 
-const PrivateButton: React.FC<PrivateButtonProps> = ({ selectedImages }) => {
+const PublicButton: React.FC<PublicButtonProps> = ({ selectedImages }) => {
     const { t } = useTranslation();
     const router = useRouter();
     const { propertyId } = router.query;
@@ -21,19 +21,19 @@ const PrivateButton: React.FC<PrivateButtonProps> = ({ selectedImages }) => {
             propertyId: +propertyId!,
             body: {
                 imageKeys: selectedImages,
-                hidden: true,
+                hidden: false,
             },
         });
 
     return (
         <ResponsiveSoftButton
             disabled={isLoading}
-            startIcon={<LockIcon />}
+            startIcon={<LockOpenIcon />}
             onClick={handleClick}
         >
-            {t("Private")}
+            {t("Public")}
         </ResponsiveSoftButton>
     );
 };
 
-export default PrivateButton;
+export default PublicButton;

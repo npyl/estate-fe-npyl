@@ -1,28 +1,30 @@
 import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../../../context/ImageOperations";
 import { useRouter } from "next/router";
 import React from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { ResponsiveSoftButton } from "../styled";
+import { ResponsiveSoftButton } from "../../styled";
+import { useIntegrationsOperations } from "../../../../context/IntegrationsOperations";
+import { TListingTab } from "../../../types";
+import { IntegrationSite } from "@/types/listings";
 
 interface PublicButtonProps {
+    tab: TListingTab;
     selectedImages: string[];
 }
 
-const PublicButton: React.FC<PublicButtonProps> = ({ selectedImages }) => {
+const PublicButton: React.FC<PublicButtonProps> = ({ tab, selectedImages }) => {
     const { t } = useTranslation();
+
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const { bulkEditImages, isLoading } = useImageOperations();
+    const { setOrderedImages, isLoading } = useIntegrationsOperations();
 
     const handleClick = () =>
-        bulkEditImages({
+        setOrderedImages({
+            integrationSite: tab as IntegrationSite,
             propertyId: +propertyId!,
-            body: {
-                imageKeys: selectedImages,
-                hidden: false,
-            },
+            propertyImages: [],
         });
 
     return (

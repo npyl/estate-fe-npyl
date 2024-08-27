@@ -6,14 +6,15 @@ import {
     ToggleButtonGroup,
 } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { TMode } from "../types";
+import { TListingTab, TMode } from "../../types";
 import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../../context/ImageOperations";
+import { useImageOperations } from "../../../context/ImageOperations";
 import { Icon } from "@iconify/react";
 import PublicButton from "./Buttons/Public";
 import PrivateButton from "./Buttons/Private";
 
 interface ListingControlsProps extends StackProps {
+    tab: TListingTab;
     mode: "" | "multiple" | "compare";
     selectedImages: string[];
     isAllSelected: boolean;
@@ -22,6 +23,7 @@ interface ListingControlsProps extends StackProps {
 }
 
 const ListingControls: React.FC<ListingControlsProps> = ({
+    tab,
     mode,
     selectedImages,
     isAllSelected,
@@ -37,8 +39,8 @@ const ListingControls: React.FC<ListingControlsProps> = ({
         <Stack direction="row" alignItems="center" gap={1} {...props}>
             {selectedImages.length > 0 ? (
                 <>
-                    <PublicButton selectedImages={selectedImages} />
-                    <PrivateButton selectedImages={selectedImages} />
+                    <PublicButton tab={tab} selectedImages={selectedImages} />
+                    <PrivateButton tab={tab} selectedImages={selectedImages} />
                 </>
             ) : null}
 
