@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { IPropertyForNotification } from "@/types/notification/notification";
-import { useTranslation } from "react-i18next";
+
 const formatPrice = (price: number | undefined) => {
     if (price != null) {
         return new Intl.NumberFormat("de-DE").format(price); // 'de-DE' uses dot as thousand separator
