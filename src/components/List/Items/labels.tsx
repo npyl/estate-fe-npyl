@@ -14,34 +14,66 @@ interface ListLabelsItemProps extends ListItemProps {
 const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
     const { t } = useTranslation();
 
-    const visibleLabels = labels.slice(0, 2);
-    // remainingLabels are used for the tooltip
-    const remainingLabels = labels.slice(2);
-    const remainingLabelCount = labels.length - 2;
+    // Show only the first label
+    const visibleLabel = labels[0];
+    const remainingLabels = labels.slice(1);
 
     return (
-        <ListItem
-            {...other}
-            // sx={{
-            //     height: labels.length === 0 ? "2.9rem" : "5.75rem",
-            //     maxHeight: labels.length === 0 ? "2.9rem" : "5.75rem",
-            //     overflow: labels.length <= 2 ? "hidden" : "auto",
-            // }}
-        >
-            <Stack spacing={1} mt={1} ml={0.5}>
-                {visibleLabels.map(({ color, name }, i) => (
+        <ListItem {...other}>
+            <Stack spacing={1} ml={0.5} alignItems="center">
+                {remainingLabels.length > 0 ? (
+                    <Tooltip
+                        title={remainingLabels.map(({ color, name }, i) => (
+                            <Label
+                                key={i}
+                                color={color}
+                                width="min-content"
+                                maxWidth="100%"
+                                name={name}
+                                sx={{ mb: 0.7, mt: 0.7, ml: 0.8, mr: 0.8 }}
+                            />
+                        ))}
+                        placement="top"
+                        PopperProps={{
+                            sx: {
+                                "& .MuiTooltip-tooltip": {
+                                    backgroundColor: "white",
+                                    color: "black",
+                                    border: "1px solid #ddd",
+                                    padding: "8px",
+                                },
+                            },
+                        }}
+                    >
+                        <Stack
+                            display="flex"
+                            direction="row"
+                            alignItems="center"
+                        >
+                            <Label
+                                color={visibleLabel?.color}
+                                width="min-content"
+                                maxWidth="100%"
+                                name={visibleLabel?.name}
+                            />
+                            {remainingLabels.length > 0 && (
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    component="span"
+                                    sx={{ ml: 1 }}
+                                >
+                                    +{remainingLabels.length} more
+                                </Typography>
+                            )}
+                        </Stack>
+                    </Tooltip>
+                ) : (
                     <Label
-                        key={i}
-                        color={color}
+                        color={visibleLabel?.color}
                         width="min-content"
                         maxWidth="100%"
-                        name={name}
-                    />
-                ))}
-                {remainingLabelCount > 0 && (
-                    <MoreChip
-                        labels={remainingLabels}
-                        label={`+${remainingLabelCount} more`}
+                        name={visibleLabel?.name}
                     />
                 )}
             </Stack>

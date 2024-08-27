@@ -4,7 +4,7 @@ import StyledListItem from "./styled";
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
 import ListItemProps, { Direction } from "./types";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useTranslation } from "react-i18next";
 
 interface CustomProps extends ListItemTextProps {
@@ -60,7 +60,7 @@ const ListItem: FC<ListItemProps & { hidePrice?: boolean }> = (props) => {
                                 )}
                                 placement="top"
                             >
-                                <VisibilityOffOutlinedIcon
+                                <VisibilityOffIcon
                                     sx={{ fontSize: 16 }}
                                     color="primary"
                                 />
