@@ -4,7 +4,7 @@ import {
     ImagesOrderRes,
     UpdateImagesOrderReq,
 } from "./types";
-import { optimisticSetOrderedImages } from "./optimistic";
+// import { optimisticSetOrderedImages } from "./optimistic";
 
 export const integrations = createApi({
     reducerPath: "integrations",
@@ -23,7 +23,7 @@ export const integrations = createApi({
 
     endpoints: (builder) => ({
         getIntegrationOrderedImages: builder.query<
-            ImagesOrderRes[],
+            ImagesOrderRes,
             GetImagesOrderReq
         >({
             query: ({ propertyId, integrationSite }) => ({
@@ -47,7 +47,7 @@ export const integrations = createApi({
                 },
                 method: "POST",
             }),
-            onQueryStarted: optimisticSetOrderedImages,
+            // onQueryStarted: optimisticSetOrderedImages,
             invalidatesTags: ["IntegrationOrderedImages"],
         }),
     }),
