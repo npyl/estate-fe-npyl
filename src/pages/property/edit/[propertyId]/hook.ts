@@ -164,6 +164,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
         ownerId: property?.owner?.id || "",
         area: property?.area || undefined,
         price: property?.price || undefined,
+        hidePrice: notNot(property?.hidePrice),
         plotArea: property?.plotArea || undefined,
         averageUtils: property?.averageUtils || undefined,
         estimatedRentPrice: property?.estimatedRentPrice || undefined,

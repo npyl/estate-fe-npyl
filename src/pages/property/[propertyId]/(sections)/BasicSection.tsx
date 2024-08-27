@@ -203,7 +203,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Exclusive")}
                         status={data?.exclusive ?? "-"}
-                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Plot Area":
@@ -263,7 +262,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                   )}€`
                                 : "-"
                         }
-                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Labels":
@@ -325,6 +323,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 ? `${data?.price.toLocaleString("de-DE")}€`
                                 : "-"
                         }
+                        hidePrice={data?.hidePrice}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -391,7 +390,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Buildable")}
                         status={data?.buildable ?? "-"}
-                        sx={{ minHeight: "60px" }}
                     />
                 );
             case "Owner":

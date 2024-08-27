@@ -262,6 +262,8 @@ const resources = {
             Flat: "Flat",
             Inclined: "Inclined",
             Amphitheater: "Amphitheater",
+            "The price for this property is hidden on the public site":
+                "The price for this property is hidden on the public",
 
             // Tickets
             "Add section": "Add section",
@@ -1333,6 +1335,8 @@ const resources = {
             "Write a note...": "Γράψτε μια σημείωση...",
             "Upload Images": "Ανέβασμα Εικόνων",
             "Remove all": "Αφαίρεση όλων",
+            "The price for this property is hidden on the public site":
+                "Η τιμή για αυτό το ακίνητο δεν είναι ορατή στο site",
 
             //Location
             Prefecture: "Νομός",

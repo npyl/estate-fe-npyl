@@ -295,6 +295,7 @@ export interface IPropertiesPOST {
     area?: number;
     plotArea?: number;
     price?: number;
+    hidePrice?: boolean;
     averageUtils?: number;
     currentRentPrice?: number;
     estimatedRentPrice?: number;
