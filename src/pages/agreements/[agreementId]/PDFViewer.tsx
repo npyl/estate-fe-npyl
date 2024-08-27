@@ -1,15 +1,10 @@
-import readOnly from "@/components/PDFPlugins/readOnly";
-import signature from "@/components/PDFPlugins/signature";
-import errorTooltip from "@/components/PDFPlugins/errorTooltip";
-import {
-    flattenObject,
-    loadPdf,
-} from "@/sections/agreements/Dialogs/PDFEditor/util";
+import { loadPdf } from "@/sections/agreements/Dialogs/PDFEditor/util";
 import { IAgreement } from "@/types/agreements";
-import { text } from "@pdfme/schemas";
 import { Viewer } from "@pdfme/ui";
 import { useEffect, useRef } from "react";
 import { getAuto } from "@/sections/agreements/Dialogs/Preparation/mapper";
+import { PDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
+import flattenObject from "@/utils/flattenObject";
 
 interface Props {
     a: IAgreement;
@@ -42,7 +37,7 @@ const PDFViewer: React.FC<Props> = ({ a }) => {
                     domContainer: containerRef.current!,
                     template,
                     inputs,
-                    plugins: { text, readOnly, errorTooltip, signature },
+                    plugins: PDF_PLUGINS_LIST,
                 });
             } catch (ex) {}
         });
@@ -51,6 +46,7 @@ const PDFViewer: React.FC<Props> = ({ a }) => {
     useEffect(() => {
         return () => {
             viewRef.current?.destroy();
+            viewRef.current = undefined;
         };
     }, []);
 

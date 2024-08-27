@@ -1,6 +1,7 @@
 import { Tooltip, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Z_INDEX } from "@/config";
 
 const StyledErrorOutlineIcon = styled(ErrorOutlineIcon)(({ theme }) => ({
     padding: theme.spacing(0.1),
@@ -20,7 +21,7 @@ const StyledTooltip = styled(Tooltip)({
     width: "max-content",
     borderRadius: "100%",
     bgcolor: "background.paper",
-    zIndex: 1500,
+    zIndex: Z_INDEX.AGREEMENT_FORM,
 });
 
 export { StyledErrorOutlineIcon, StyledTooltip };

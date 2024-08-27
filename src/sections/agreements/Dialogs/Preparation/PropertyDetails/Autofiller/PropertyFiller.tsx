@@ -1,17 +1,14 @@
 import { useEffect } from "react";
 import { useLazyGetPropertyByIdQuery } from "@/services/properties";
-import { useFormContext } from "react-hook-form";
 import { useRouter } from "next/router";
 import useAutofill from "./hook";
 
 const PropertyFiller = () => {
-    const { setValue } = useFormContext();
-
     const router = useRouter();
     const { propertyId } = router.query;
 
     const [getProperty] = useLazyGetPropertyByIdQuery();
-    const { autofill } = useAutofill(setValue);
+    const { autofill } = useAutofill();
 
     // NOTE: make sure we setValue() AFTER the ui has loaded to prevent not-showing change
     useEffect(() => {

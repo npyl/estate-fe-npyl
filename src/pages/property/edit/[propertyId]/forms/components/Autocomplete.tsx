@@ -2,6 +2,7 @@ import { TextField, Autocomplete as MuiAutocomplete } from "@mui/material";
 import { useAllCustomersQuery } from "src/services/customers";
 import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 // Utility function to normalize strings by removing accents/diacritical marks
 const normalizeString = (str: string) => {
@@ -12,6 +13,8 @@ const normalizeString = (str: string) => {
 };
 
 const Autocomplete = () => {
+    const { t } = useTranslation();
+
     const { watch, setValue } = useFormContext();
     const { data: owners } = useAllCustomersQuery();
     const owner = watch("ownerId");
@@ -71,15 +74,14 @@ const Autocomplete = () => {
 
     return (
         <MuiAutocomplete
-            disablePortal
+            fullWidth
             options={ownerNames}
             value={value}
             getOptionLabel={(o) => `${o.firstName} ${o.lastName}`}
             filterOptions={filterOptions}
             onChange={handleChange}
-            sx={{ width: "100%" }}
             renderInput={(params) => (
-                <TextField {...params} label="Owner" sx={{ width: "100%" }} />
+                <TextField {...params} label={t("Owner")} />
             )}
             renderOption={(props, option) => (
                 <li {...props} key={option.id}>
