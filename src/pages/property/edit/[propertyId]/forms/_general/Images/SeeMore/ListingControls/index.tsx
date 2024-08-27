@@ -20,12 +20,11 @@ const ListingControls: React.FC<ListingControlsProps> = ({ tab }) => {
         integrationSite: tab as IntegrationSite,
     });
 
-    const hasNoImages = data?.length === 0;
-    const hasImages = data?.length && data.length > 0;
+    const hasImages = data?.publicKeys.length && data?.publicKeys.length > 0;
 
     return (
         <Stack direction="row" alignItems="center" gap={1}>
-            {hasNoImages ? <Add20Button tab={tab} /> : null}
+            {!hasImages ? <Add20Button tab={tab} /> : null}
             {hasImages ? <RemoveAll tab={tab} /> : null}
         </Stack>
     );

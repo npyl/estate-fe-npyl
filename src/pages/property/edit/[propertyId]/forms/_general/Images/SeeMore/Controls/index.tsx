@@ -63,6 +63,7 @@ const Controls: React.FC<ControlsProps> = ({
 
     return (
         <ListingControls
+            tab={tab}
             mode={mode}
             selectedImages={selectedImages}
             isAllSelected={isAllSelected}

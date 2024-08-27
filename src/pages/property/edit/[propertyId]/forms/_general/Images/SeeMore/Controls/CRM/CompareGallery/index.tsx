@@ -6,7 +6,7 @@ import {
     StyledActions,
     StyledDialog,
 } from "./styled";
-import usePropertyImages from "../../../hook";
+import usePropertyImages from "../../../../hook";
 import { useReorderPropertyImagesWithSetImageVisibilityMutation } from "@/services/properties/file";
 import { useTranslation } from "react-i18next";
 

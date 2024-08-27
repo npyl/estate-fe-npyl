@@ -24,7 +24,7 @@ const Add20Button: React.FC<Add20ButtonProps> = ({ tab }) => {
     const handleClick = () => {
         setOrderedImages({
             propertyId: +propertyId!,
-            propertyImages: images.slice(0, 20).map(({ id }) => id),
+            propertyImages: images.slice(0, 20).map(({ key }) => key),
             integrationSite: tab as IntegrationSite,
         });
     };
