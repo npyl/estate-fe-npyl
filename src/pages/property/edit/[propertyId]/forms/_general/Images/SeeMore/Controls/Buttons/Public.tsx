@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../../context/ImageOperations";
+import { useImageOperations } from "../../../context/ImageOperations";
 import { useRouter } from "next/router";
 import React from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { ResponsiveSoftButton } from "./styled";
+import { ResponsiveSoftButton } from "../styled";
 
 interface PublicButtonProps {
     selectedImages: string[];
