@@ -1,5 +1,3 @@
-import { Tabs, Tab, Box, useMediaQuery } from "@mui/material";
-import { SxProps } from "@mui/system";
 import { createContext, useCallback, useContext, useState } from "react";
 import { ITab } from "src/interfaces/tabs";
 
