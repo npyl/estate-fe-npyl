@@ -20,7 +20,7 @@ const ListingControls: React.FC<ListingControlsProps> = ({ tab }) => {
         integrationSite: tab as IntegrationSite,
     });
 
-    const hasImages = data?.publicKeys.length && data?.publicKeys.length > 0;
+    const hasImages = data?.publicKeys?.length && data?.publicKeys.length > 0;
 
     return (
         <Stack direction="row" alignItems="center" gap={1}>

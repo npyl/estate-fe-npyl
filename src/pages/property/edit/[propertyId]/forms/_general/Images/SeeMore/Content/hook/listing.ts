@@ -29,10 +29,10 @@ const useListingContentOperations: TUseContentOperations = (
     const { publicImages, privateImages, publicKeys, privateKeys } =
         useMemo(() => {
             // all images that come from the endpoint are in the first section
-            const publicImages = data?.publicImages.map(createItemCb) || [];
+            const publicImages = data?.publicImages?.map(createItemCb) || [];
 
             // all images that do not are supposed to be hidden from the integration
-            const privateImages = data?.privateImages.map(createItemCb) || [];
+            const privateImages = data?.privateImages?.map(createItemCb) || [];
 
             return {
                 publicImages,
