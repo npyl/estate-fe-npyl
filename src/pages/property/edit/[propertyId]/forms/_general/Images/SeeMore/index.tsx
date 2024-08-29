@@ -76,7 +76,9 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
             <DialogTitle onClose={onClose}>
                 <Tabs tab={tab} onChange={handleTabChange} />
 
-                {tab !== "CRM" ? <ListingControls tab={tab} /> : null}
+                {tab !== "CRM" ? (
+                    <ListingControls integrationSite={tab} />
+                ) : null}
 
                 <Controls
                     tab={tab}

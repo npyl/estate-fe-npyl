@@ -3,15 +3,24 @@ import { useTranslation } from "react-i18next";
 import usePropertyImages from "../../hook";
 import { useRouter } from "next/router";
 import React from "react";
-import { TListingTab } from "../types";
 import { IntegrationSite } from "@/types/listings";
 import { useIntegrationsOperations } from "../../context/IntegrationsOperations";
 
-interface Add20ButtonProps {
-    tab: TListingTab;
+const COUNTS: Record<IntegrationSite, number> = {
+    SPITOGATOS: 25,
+    JAMES_EDITION: 20,
+    // ...
+    FERIMMO: 10,
+    PLOT_GR: 10,
+    RIGHT_MOVE: 10,
+    XE: 10,
+};
+
+interface AddXButtonProps {
+    integrationSite: IntegrationSite;
 }
 
-const Add20Button: React.FC<Add20ButtonProps> = ({ tab }) => {
+const AddXButton: React.FC<AddXButtonProps> = ({ integrationSite }) => {
     const { t } = useTranslation();
 
     const router = useRouter();
@@ -21,11 +30,13 @@ const Add20Button: React.FC<Add20ButtonProps> = ({ tab }) => {
 
     const { images } = usePropertyImages();
 
+    const count = COUNTS[integrationSite];
+
     const handleClick = () => {
         setOrderedImages({
             propertyId: +propertyId!,
-            propertyImages: images.slice(0, 20).map(({ key }) => key),
-            integrationSite: tab as IntegrationSite,
+            propertyImages: images.slice(0, count).map(({ key }) => key),
+            integrationSite,
         });
     };
 
@@ -35,9 +46,9 @@ const Add20Button: React.FC<Add20ButtonProps> = ({ tab }) => {
             variant="contained"
             onClick={handleClick}
         >
-            {t("Add first 20")}
+            {`${t("Add first")} ${count}`}
         </LoadingButton>
     );
 };
 
-export default Add20Button;
+export default AddXButton;

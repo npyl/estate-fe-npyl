@@ -846,7 +846,7 @@ const resources = {
 
             Private_FEMININE: "Private",
 
-            "Add first 20": "Add first 20",
+            "Add first": "Add first",
             "Remove All": "Remove all",
 
             _main_: "Main",
@@ -861,7 +861,7 @@ const resources = {
             _main_: "Κύρια",
 
             "Remove All": "Αφαίρεση όλων",
-            "Add first 20": "Προσθήκη 20 πρώτων",
+            "Add first": "Προσθήκη πρώτων",
             Private_FEMININE: "Ιδιωτικές",
 
             _NO_OWNER_LITERAL_:
