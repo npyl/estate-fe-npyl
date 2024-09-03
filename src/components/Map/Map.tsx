@@ -243,6 +243,7 @@ const Map = ({
             options={{
                 gestureHandling: "auto",
                 scrollwheel: true,
+                mapTypeControl: false,
             }}
         >
             {map ? (
