@@ -1,18 +1,16 @@
 import { MenuItem, Paper, Popper, Stack, TextField } from "@mui/material";
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
 } from "use-places-autocomplete";
+import { IMapAddress } from "../Map";
+import getAddressComponent from "../util/getAddressComponent";
 
 interface SearchOnMapProps {
-    onSearchSelect: (
-        selection: google.maps.GeocoderAddressComponent[],
-        lat: number,
-        lng: number
-    ) => void;
+    onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 }
 
 const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
@@ -20,7 +18,7 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
         ready,
         value,
         setValue,
-        suggestions: { status, data },
+        suggestions: { data },
         clearSuggestions,
     } = usePlacesAutocomplete();
 
@@ -29,10 +27,14 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const open = useMemo(() => !!anchorEl, [anchorEl]);
+
     const { t } = useTranslation();
+
     const handleClick = async (
         o: google.maps.places.AutocompletePrediction
     ) => {
+        if (!onSearchSelect) return;
+
         clearSuggestions();
 
         // get street, number, zipCode
@@ -49,8 +51,14 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
         const latLng = getLatLng(results[0]);
         if (!latLng) return null;
 
-        // send to parent
-        onSearchSelect(address_components, latLng.lat, latLng.lng);
+        const street = getAddressComponent(address_components, "route");
+        const number = getAddressComponent(address_components, "street_number");
+        const zipCode = getAddressComponent(
+            address_components,
+            "postal_code"
+        ).replace(/\s/g, ""); // remove spaces
+
+        onSearchSelect?.({ street, number, zipCode }, latLng.lat, latLng.lng);
     };
 
     return (

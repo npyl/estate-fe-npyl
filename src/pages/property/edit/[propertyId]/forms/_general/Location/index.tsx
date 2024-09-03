@@ -10,12 +10,16 @@ import DistancesSection from "./Distances/Distances";
 import { MunicipSelect, NeighbourSelect, RegionSelect } from "./Select";
 import LocationDisplay from "./LocationDisplay";
 import useClosest from "./useClosest";
+import useToggle from "@/hooks/useToggle";
+import PinLock from "./PinLock";
 
 const LocationSection = () => {
     const { watch, setValue } = useFormContext();
     const { t } = useTranslation();
 
     const [map, setMap] = useState<google.maps.Map>();
+
+    const [isPinLocked, togglePinLock, setPinLocked] = useToggle(false);
 
     const lat = watch("location.lat");
     const lng = watch("location.lng");
@@ -27,13 +31,10 @@ const LocationSection = () => {
 
     const { getClosest } = useClosest();
 
-    const updateMainMarkerCoordinates = useCallback(
-        (lat: number, lng: number) => {
-            setValue("location.lat", lat);
-            setValue("location.lng", lng);
-        },
-        []
-    );
+    const updateMainMarkerCoords = useCallback((lat: number, lng: number) => {
+        setValue("location.lat", lat);
+        setValue("location.lng", lng);
+    }, []);
 
     //
     // Map
@@ -43,30 +44,31 @@ const LocationSection = () => {
             if (!lat || !lng) return;
 
             getClosest(lat, lng);
-            updateMainMarkerCoordinates(lat, lng);
+            updateMainMarkerCoords(lat, lng);
 
             // update
             setValue("location.street", address.street);
             setValue("location.number", address.number);
             setValue("location.zipCode", address.zipCode);
+
+            // Lock pin for now on
+            setPinLocked(true);
         },
         []
     );
 
     const handleMarkerDragEnd = useCallback(
-        (
-            marker: IMapMarker,
-            newLat: number,
-            newLng: number,
-            address: IMapAddress
-        ) => {
+        (_: any, newLat: number, newLng: number, address: IMapAddress) => {
             getClosest(newLat, newLng);
-            updateMainMarkerCoordinates(newLat, newLng);
+            updateMainMarkerCoords(newLat, newLng);
 
             // update
             setValue("location.street", address.street);
             setValue("location.number", address.number);
             setValue("location.zipCode", address.zipCode);
+
+            // Lock pin for now on
+            setPinLocked(true);
         },
         []
     );
@@ -76,21 +78,30 @@ const LocationSection = () => {
             if (!lat || !lng) return;
 
             getClosest(lat, lng);
-            updateMainMarkerCoordinates(lat, lng);
+            updateMainMarkerCoords(lat, lng);
 
             // update
             setValue("location.street", address.street);
             setValue("location.number", address.number);
             setValue("location.zipCode", address.zipCode);
+
+            // Lock pin for now on
+            setPinLocked(true);
         },
         []
     );
 
+    // INFO: when pin is locked pass undefined which skips unecessary calculations inside Map component
+    const onClickMethod = isPinLocked ? undefined : handleMapClick;
+    const onDragMethod = isPinLocked ? undefined : handleMarkerDragEnd;
+    const onSearchMethod = isPinLocked ? undefined : handleSearchSelect;
+    const onChangeMethod = isPinLocked ? undefined : updateMainMarkerCoords;
+
     return (
         <>
             <Panel label={t("Location")}>
-                <Box display={"flex"} pb={2}>
-                    <Box height={`50vh`} width={"100%"}>
+                <Box display="flex" pb={2}>
+                    <Box height="50vh" width="100%">
                         <Map
                             onReady={setMap}
                             search
@@ -98,10 +109,15 @@ const LocationSection = () => {
                             drawing={false}
                             markers={[mainMarker]}
                             mainMarker={mainMarker}
-                            onDragEnd={handleMarkerDragEnd}
-                            onClick={handleMapClick}
-                            onSearchSelect={handleSearchSelect}
-                        />
+                            onDragEnd={onDragMethod}
+                            onClick={onClickMethod}
+                            onSearchSelect={onSearchMethod}
+                        >
+                            <PinLock
+                                locked={isPinLocked}
+                                onToggle={togglePinLock}
+                            />
+                        </Map>
                     </Box>
                 </Box>
 
@@ -109,19 +125,13 @@ const LocationSection = () => {
                     <Grid item xs={12}>
                         <Grid container direction={"row"} spacing={2}>
                             <Grid item xs={4}>
-                                <RegionSelect
-                                    onChange={updateMainMarkerCoordinates}
-                                />
+                                <RegionSelect onChange={onChangeMethod} />
                             </Grid>
                             <Grid item xs={4}>
-                                <MunicipSelect
-                                    onChange={updateMainMarkerCoordinates}
-                                />
+                                <MunicipSelect onChange={onChangeMethod} />
                             </Grid>
                             <Grid item xs={4}>
-                                <NeighbourSelect
-                                    onChange={updateMainMarkerCoordinates}
-                                />
+                                <NeighbourSelect onChange={onChangeMethod} />
                             </Grid>
                         </Grid>
                     </Grid>

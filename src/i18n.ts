@@ -852,10 +852,16 @@ const resources = {
             _main_: "Main",
             Success: "Success",
             "Unable to logout": "Unable to logout",
+
+            "Locked Pin": "Locked Pin",
+            "Free Pin": "Free Pin",
         },
     },
     el: {
         translation: {
+            "Locked Pin": "Κλειδωμένη Πινέζα",
+            "Free Pin": "Ελεύθερη Πινέζα",
+
             "Unable to logout": "Αποτυχία κατά την αποσύνδεση",
             Success: "Επιτυχία",
             _main_: "Κύρια",

@@ -1,6 +1,7 @@
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import React, {
     CSSProperties,
+    ReactNode,
     useCallback,
     useMemo,
     useRef,
@@ -9,6 +10,7 @@ import React, {
 import { DrawShape, IMapCoordinates, ShapeData, StopDraw } from "./types";
 import useLoadApi from "./hook";
 import dynamic from "next/dynamic";
+import getAddressComponent from "./util/getAddressComponent";
 
 // plugins
 const Draw = dynamic(() => import("./plugins/Draw"));
@@ -63,20 +65,11 @@ interface IMapProps {
     drawing?: boolean;
     multipleShapes?: boolean;
     search?: boolean;
+
+    children?: ReactNode;
 }
 
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
-
-// Helper function to extract the address component value based on the type
-const getAddressComponent = (
-    addressComponents: google.maps.GeocoderAddressComponent[],
-    type: string
-) => {
-    const component = addressComponents.find((component) =>
-        component.types.includes(type)
-    );
-    return component ? component.long_name : "";
-};
 
 //--------------------------------------------------------
 //
@@ -107,6 +100,7 @@ const Map = ({
     multipleShapes = false,
     drawing = true,
     search = false,
+    children,
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
 
@@ -171,58 +165,40 @@ const Map = ({
     //
     //	Map
     //
-    const handleMapClick = useCallback((event: google.maps.MapMouseEvent) => {
-        const latLng = event.latLng;
-        const lat = latLng?.lat();
-        const lng = latLng?.lng();
+    const handleMapClick = useCallback(
+        async (event: google.maps.MapMouseEvent) => {
+            if (!onClick) return;
 
-        if (lat === undefined || lng === undefined) return;
+            const latLng = event.latLng;
+            const lat = latLng?.lat();
+            const lng = latLng?.lng();
 
-        onClick &&
-            getAddressFromLatLng(lat, lng).then((response) =>
-                onClick(lat, lng, response as IMapAddress)
-            );
-    }, []);
+            if (lat === undefined || lng === undefined) return;
+
+            const response = await getAddressFromLatLng(lat, lng);
+
+            onClick(lat, lng, response as IMapAddress);
+        },
+        [onClick]
+    );
 
     //
     // 	Markers
     //
     const onMarkerDragEnd = useCallback(
-        (latLng: any, index: number) => {
+        async (latLng: any, index: number) => {
+            if (!onDragEnd) return;
             if (!markers) return;
             if (markers?.length < index) return;
+
             const lat = latLng.lat();
             const lng = latLng.lng();
-            // also call parent callback
-            onDragEnd &&
-                getAddressFromLatLng(lat, lng).then((response) =>
-                    onDragEnd(markers[index], lat, lng, response as IMapAddress)
-                );
+
+            const response = await getAddressFromLatLng(lat, lng);
+
+            onDragEnd(markers[index], lat, lng, response as IMapAddress);
         },
-        [markers]
-    );
-
-    const handleSearchSelect = useCallback(
-        (
-            addressComponent: google.maps.GeocoderAddressComponent[],
-            lat: number,
-            lng: number
-        ) => {
-            console.log("a: ", addressComponent);
-
-            const street = getAddressComponent(addressComponent, "route");
-            const number = getAddressComponent(
-                addressComponent,
-                "street_number"
-            );
-            const zipCode = getAddressComponent(
-                addressComponent,
-                "postal_code"
-            ).replace(/\s/g, ""); // remove spaces
-
-            onSearchSelect?.({ street, number, zipCode }, lat, lng);
-        },
-        []
+        [markers, onDragEnd]
     );
 
     const MARKERS = useMemo(
@@ -247,14 +223,12 @@ const Map = ({
                             // Start the bounce animation, then stop after 2 seconds
                             setActiveMarker?.(ind);
                         }}
-                        draggable={marker === mainMarker}
-                        onDragEnd={(e: google.maps.MapMouseEvent) =>
-                            onMarkerDragEnd(e.latLng, ind)
-                        }
+                        draggable={onDragEnd && marker === mainMarker}
+                        onDragEnd={(e) => onMarkerDragEnd(e.latLng, ind)}
                     />
                 );
             }),
-        [markers, mainMarker]
+        [markers, mainMarker, onDragEnd]
     );
 
     if (!isLoaded) return null;
@@ -302,12 +276,12 @@ const Map = ({
                     ) : null}
 
                     {/* Search */}
-                    {search ? (
-                        <Search onSearchSelect={handleSearchSelect} />
-                    ) : null}
+                    {search ? <Search onSearchSelect={onSearchSelect} /> : null}
 
                     {/* Markers */}
                     {MARKERS}
+
+                    {children}
                 </>
             ) : null}
         </GoogleMap>
