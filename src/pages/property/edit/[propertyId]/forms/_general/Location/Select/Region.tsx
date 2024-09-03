@@ -1,16 +1,14 @@
 import { RHFSelect } from "@/components/hook-form";
 import {
-    Checkbox,
     FormControl,
     InputLabel,
-    MenuItem,
     OutlinedInput,
-    Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import MenuItem from "./MenuItem";
 
 import { useGetRegionsQuery } from "src/services/location";
 
@@ -23,7 +21,8 @@ interface IRegionSelectProps {
 const RegionSelect: FC<IRegionSelectProps> = ({ onChange }) => {
     const { watch, setValue } = useFormContext();
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
     const regions = useGetRegionsQuery(undefined).data || [];
 
     const regionCode = watch(name);
@@ -42,10 +41,20 @@ const RegionSelect: FC<IRegionSelectProps> = ({ onChange }) => {
         onChange(selectedArea.latitude, selectedArea.longitude);
     };
 
-    const renderValue = (selected: string) => {
-        const option = regions.find((region) => region.areaID === +selected);
-        return option ? option.nameGR : "";
-    };
+    const renderValue = useCallback(
+        (selected: string) => {
+            const option = regions.find(
+                (region) => region.areaID === +selected
+            );
+
+            return option
+                ? i18n.language === "en"
+                    ? option.nameEN
+                    : option.nameGR
+                : "";
+        },
+        [regions, i18n.language]
+    );
 
     return (
         <FormControl fullWidth>
@@ -58,12 +67,13 @@ const RegionSelect: FC<IRegionSelectProps> = ({ onChange }) => {
                 input={<OutlinedInput label={t("Prefecture")} />}
             >
                 {regions.map((region, index) => (
-                    <MenuItem key={index} value={region.areaID}>
-                        <Checkbox
-                            checked={regionCode === region.areaID.toString()}
-                        />
-                        {region.nameGR}
-                    </MenuItem>
+                    <MenuItem
+                        key={region.areaID}
+                        value={region.areaID}
+                        nameEN={region.nameEN}
+                        nameGR={region.nameGR}
+                        checked={regionCode === region.areaID.toString()}
+                    />
                 ))}
             </RHFSelect>
         </FormControl>

@@ -1,17 +1,17 @@
 import { RHFSelect } from "@/components/hook-form";
 import {
-    Checkbox,
     FormControl,
     InputLabel,
-    MenuItem,
     OutlinedInput,
     SelectChangeEvent,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useGetNeighbourhoodsQuery } from "src/services/location";
+
+import MenuItem from "./MenuItem";
 
 const name = "location.complex";
 const municipName = "location.city";
@@ -23,7 +23,7 @@ interface NeighbourSelectProps {
 const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
     const { watch, setValue } = useFormContext();
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const neighbourCode = watch(name);
     const municipCode = watch(municipName);
@@ -48,12 +48,19 @@ const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
         onChange(selectedNeighbour.latitude, selectedNeighbour.longitude);
     };
 
-    const renderValue = (selected: string) => {
-        const option = neighbours.find(
-            (neighbour) => neighbour.areaID.toString() === selected
-        );
-        return option ? option.nameGR : "";
-    };
+    const renderValue = useCallback(
+        (selected: string) => {
+            const option = neighbours.find(
+                (neighbour) => neighbour.areaID.toString() === selected
+            );
+            return option
+                ? i18n.language === "en"
+                    ? option.nameEN
+                    : option.nameGR
+                : "";
+        },
+        [neighbours, i18n.language]
+    );
 
     return (
         <FormControl fullWidth>
@@ -69,12 +76,10 @@ const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
                     <MenuItem
                         key={option.areaID}
                         value={option.areaID.toString()}
-                    >
-                        <Checkbox
-                            checked={option.areaID.toString() === neighbourCode}
-                        />
-                        {option.nameGR}
-                    </MenuItem>
+                        nameEN={option.nameEN}
+                        nameGR={option.nameGR}
+                        checked={option.areaID.toString() === neighbourCode}
+                    />
                 ))}
             </RHFSelect>
         </FormControl>
