@@ -15,7 +15,8 @@ const StyledTextField = styled(TextField)({
     position: "absolute",
     top: 11,
     left: 10,
-    width: "90%",
+
+    width: "calc(100% - 100px)",
 
     backgroundColor: "white",
     borderRadius: "10px",
