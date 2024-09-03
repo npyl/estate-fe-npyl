@@ -20,7 +20,7 @@ import {
     DescriptionEditor,
 } from "./_general";
 
-import LocationSection from "./_general/Location/Location";
+import LocationSection from "./_general/Location";
 import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";
 

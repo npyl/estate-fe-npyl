@@ -23,7 +23,7 @@ import {
     TechnicalFeaturesAndInterior,
 } from "./_other";
 
-import LocationSection from "./_general/Location/Location";
+import LocationSection from "./_general/Location";
 
 import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";

@@ -25,7 +25,7 @@ import {
     HeatingAndEnergy,
 } from "./_residential";
 
-import LocationSection from "src/pages/property/edit/[propertyId]/forms/_general/Location/Location";
+import LocationSection from "./_general/Location";
 
 import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";

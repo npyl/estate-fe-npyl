@@ -1,25 +1,33 @@
+import { RHFSelect } from "@/components/hook-form";
 import {
     Checkbox,
     FormControl,
     InputLabel,
     MenuItem,
     OutlinedInput,
-    Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { FC } from "react";
+import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useGetNeighbourhoodsQuery } from "src/services/location";
 
+const name = "location.complex";
+const municipName = "location.city";
+
 interface NeighbourSelectProps {
-    municipCode: string;
-    neighbourCode: string;
-    onChange: (neighbourCode: string, lat: number, lng: number) => void;
+    onChange?: (lat: number, lng: number) => void;
 }
 
-const NeighbourSelect = (props: NeighbourSelectProps) => {
-    const { municipCode, neighbourCode, onChange } = props;
+const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
+    const { watch, setValue } = useFormContext();
+
     const { t } = useTranslation();
+
+    const neighbourCode = watch(name);
+    const municipCode = watch(municipName);
+
     const neighbours =
         useGetNeighbourhoodsQuery(+municipCode, {
             skip: !municipCode,
@@ -27,35 +35,35 @@ const NeighbourSelect = (props: NeighbourSelectProps) => {
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const neighbourCode = event.target.value;
+
+        // update
+        setValue(name, neighbourCode);
+
+        if (!onChange) return;
+
         const selectedNeighbour = neighbours!.filter(
             (neighbour) => neighbour.areaID.toString() === neighbourCode // filter by id
         )[0];
 
-        onChange(
-            neighbourCode,
-            selectedNeighbour.latitude,
-            selectedNeighbour.longitude
-        );
+        onChange(selectedNeighbour.latitude, selectedNeighbour.longitude);
     };
 
-    if (!neighbours) return null;
+    const renderValue = (selected: string) => {
+        const option = neighbours.find(
+            (neighbour) => neighbour.areaID.toString() === selected
+        );
+        return option ? option.nameGR : "";
+    };
 
     return (
         <FormControl fullWidth>
             <InputLabel>{t("Neighborhood")}</InputLabel>
-            <Select
-                value={neighbourCode}
+            <RHFSelect
+                disabled={neighbours.length === 0}
+                name={name}
                 onChange={handleChange}
-                renderValue={(selected) => {
-                    const option = neighbours.find(
-                        (neighbour) => neighbour.areaID.toString() === selected
-                    );
-                    return option ? option.nameGR : "";
-                }}
+                renderValue={renderValue}
                 input={<OutlinedInput label={t("Neighborhood")} />}
-                MenuProps={{
-                    PaperProps: { sx: { maxHeight: "60vh" } },
-                }}
             >
                 {neighbours.map((option) => (
                     <MenuItem
@@ -68,7 +76,7 @@ const NeighbourSelect = (props: NeighbourSelectProps) => {
                         {option.nameGR}
                     </MenuItem>
                 ))}
-            </Select>
+            </RHFSelect>
         </FormControl>
     );
 };
