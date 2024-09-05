@@ -1,27 +1,39 @@
+import { InputAdornment, TextFieldProps } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
-import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
 
-const beToVisible = (input: string): string => input.replace(".", ",");
+const BEtoVisible = (s: string): string => {
+    if (!s) return "";
 
-const visibleToBe = (
+    const num = parseFloat(s);
+    if (isNaN(num)) return "";
+
+    return num.toLocaleString("de-DE", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 20,
+    });
+};
+
+const visibleToBE = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     onChange?: (s: string) => void
 ) => {
-    const inputValue = e.target.value;
-    // Remove all dots (thousand separators)
-    const withoutDots = inputValue.replace(/\./g, "");
-    // Replace comma with dot (if exists)
-    const standardDecimal = withoutDots.replace(",", ".");
+    const value = e.target.value.replace(/\./g, "").replace(",", ".");
+    const num = parseFloat(value);
 
-    onChange?.(standardDecimal);
+    if (!isNaN(num)) {
+        onChange?.(num.toString());
+    } else if (value === "" || value === "-") {
+        onChange?.(value);
+    }
 };
 
 export interface OnlyNumbersInputProps
-    extends Omit<TextFieldProps, "value" | "onChange"> {
-    value: string;
-    onChange: (s: string) => void;
+    extends Omit<TextFieldProps<"standard">, "value" | "onChange"> {
     acceptsDecimal?: boolean;
     adornment?: string;
+    value: string;
+    onChange: (s: string) => void;
 }
 
 const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
@@ -30,19 +42,21 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     value,
     onChange,
     ...other
-}) => (
-    <TextField
-        value={beToVisible(value)}
-        onChange={(e) => visibleToBe(e, onChange)}
-        {...other}
-        InputProps={{
-            ...other.InputProps,
-            // Adornment
-            endAdornment: adornment ? (
-                <InputAdornment position="end">{adornment}</InputAdornment>
-            ) : null,
-        }}
-    />
-);
+}) => {
+    return (
+        <TextField
+            value={BEtoVisible(value)}
+            onChange={(e) => visibleToBE(e, onChange)}
+            {...other}
+            InputProps={{
+                ...other.InputProps,
+                // Adornment
+                endAdornment: adornment ? (
+                    <InputAdornment position="end">{adornment}</InputAdornment>
+                ) : null,
+            }}
+        />
+    );
+};
 
-export default OnlyNumbersInput;
+export default React.memo(OnlyNumbersInput);
