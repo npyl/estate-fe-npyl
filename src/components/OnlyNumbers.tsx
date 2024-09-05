@@ -4,12 +4,21 @@ import React, { ChangeEvent } from "react";
 
 const BEtoVisible = (s: string): string => {
     if (!s) return "";
-    const num = parseFloat(s);
+
+    const [integer, decimal] = s.split(".");
+
+    const num = parseFloat(integer);
     if (isNaN(num)) return "";
-    return num.toLocaleString("de-DE", {
+
+    const thousands = num.toLocaleString("de-DE", {
         minimumFractionDigits: 0,
         maximumFractionDigits: 20,
     });
+
+    // INFO: we don't have a dot; this means that we don't have a decimal part (or even a start-of decimal part)
+    if (!s.includes(".")) return thousands;
+
+    return [thousands, decimal].join(",");
 };
 
 const visibleToBE = (
@@ -17,25 +26,29 @@ const visibleToBE = (
     onChange: (s: string) => void,
     acceptsDecimal: boolean
 ) => {
+    // Remove all dots
     let value = e.target.value.replace(/\./g, "");
 
+    // Accept only numbers
+    if (!/^[0-9,]*$/.test(value)) {
+        // If it contains other characters, don't update the value
+        return;
+    }
+
+    // Ιf decimals are accepted accept ','
     if (acceptsDecimal) {
-        // Replace the first comma with a dot, keep subsequent commas
         const parts = value.split(",");
-        if (parts.length > 1) {
-            value = parts[0] + "." + parts.slice(1).join("");
+        if (parts[1] === "") value = `${parts[0]}.`;
+        else {
+            value = parts.join(".");
         }
-    } else {
-        // Remove all commas if decimals are not accepted
+    }
+    // Otherwise, remove all commas
+    else {
         value = value.replace(/,/g, "");
     }
 
-    const num = parseFloat(value);
-    if (!isNaN(num)) {
-        onChange?.(num.toString());
-    } else if (value === "" || value === "-") {
-        onChange?.(value);
-    }
+    onChange?.(value);
 };
 
 export interface OnlyNumbersInputProps
