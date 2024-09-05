@@ -3,6 +3,8 @@ import { TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 
 const BEtoVisible = (v: string | number): string => {
+    if (!v) return "";
+
     const s = typeof v === "number" ? v.toString() : v;
     if (!s) return "";
 

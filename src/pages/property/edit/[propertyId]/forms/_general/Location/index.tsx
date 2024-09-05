@@ -34,6 +34,17 @@ const LocationSection = () => {
     const updateMainMarkerCoords = useCallback((lat: number, lng: number) => {
         setValue("location.lat", lat);
         setValue("location.lng", lng);
+
+        setValue("distances", {
+            schools: "",
+            supermarket: "",
+            cafeRestaurant: "",
+            hospital: "",
+            airport: "",
+            sea: "",
+            publicTransport: "",
+            entertainment: "",
+        });
     }, []);
 
     //
