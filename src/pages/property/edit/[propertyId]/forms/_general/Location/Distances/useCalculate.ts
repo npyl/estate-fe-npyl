@@ -1,10 +1,9 @@
 import useDialog from "@/hooks/useDialog";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { SERVICES } from "./constants";
-import { IPropertyDistances } from "@/types/properties";
 import { TService } from "./types";
 
 type TExtendedService = TService & { location: google.maps.LatLng };
@@ -13,8 +12,6 @@ const useCalculate = (map?: google.maps.Map) => {
     const { t } = useTranslation();
 
     const { setValue, watch } = useFormContext();
-
-    const distances = useRef<IPropertyDistances>();
 
     const [loading, startLoading, stopLoading] = useDialog();
 
