@@ -2,7 +2,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 // @mui
 import { TextField, TextFieldProps } from "@mui/material";
-import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +11,6 @@ export type RHFTextFieldProps = TextFieldProps & {
 
 export default function RHFTextField({ name, ...other }: RHFTextFieldProps) {
     const { control } = useFormContext();
-    const { t } = useTranslation();
     return (
         <Controller
             name={name}
@@ -29,7 +27,7 @@ export default function RHFTextField({ name, ...other }: RHFTextFieldProps) {
                         autoComplete: "new-password",
                     }}
                     error={!!error}
-                    helperText={t(error?.message ?? "")}
+                    helperText={error?.message ?? ""}
                     {...other}
                 />
             )}

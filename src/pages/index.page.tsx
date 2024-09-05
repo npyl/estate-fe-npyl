@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 
 import type { NextPage } from "next";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "react-slideshow-image/dist/styles.css";
 import { AuthGuard } from "src/components/authentication/auth-guard";
@@ -16,6 +16,7 @@ import SeoIllustration from "./dashboard/SeoIllustration";
 import AppConversionRates from "./dashboard/app-conversion-rates";
 import AppWelcome from "./dashboard/app-welcome";
 import TotalProperties from "./dashboard/total-properties";
+import OnlyNumbersInput from "@/components/OnlyNumbers";
 
 const Dashboard: NextPage = () => {
     const { t } = useTranslation();
@@ -42,8 +43,17 @@ const Dashboard: NextPage = () => {
         );
     }, [allProperties]);
 
+    const [value, setValue] = useState("1000.3");
+    console.log("value: ", value);
+
     return (
         <Box m="20px">
+            <OnlyNumbersInput
+                acceptsDecimal
+                value={value}
+                onChange={setValue}
+            />
+
             <Grid container spacing={3} mt={1}>
                 <Grid item xs={12} md={7}>
                     <AppWelcome

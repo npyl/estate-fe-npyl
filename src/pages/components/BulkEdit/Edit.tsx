@@ -12,12 +12,12 @@ import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";
 
+interface Fullnames {
+    [key: string]: string;
+}
+
 export const EditManager = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
-
-    interface Fullnames {
-        [key: string]: string;
-    }
 
     const usersData = useAllUsersQuery().data || [];
 
@@ -41,14 +41,16 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
     const idToFullname = (id: string) =>
         Object.keys(fullnames).find((key) => fullnames[key] === id) || "";
 
+    const handleDisable = () => setData("");
+
     return (
-        <DefaultOrEdit label={t("Manager")} onDisable={() => setData("")}>
+        <DefaultOrEdit label={t("Manager")} onDisable={handleDisable}>
             <Autocomplete
                 disablePortal
                 value={idToFullname(data) || ""}
                 onChange={autocompleteChange}
                 options={Object.keys(fullnames)}
-                renderInput={(params) => <StyledTextField {...params} />}
+                renderInput={StyledTextField}
             />
         </DefaultOrEdit>
     );
@@ -56,10 +58,6 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
 
 export const EditOwner = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
-
-    interface Fullnames {
-        [key: string]: string;
-    }
 
     const usersData = useAllCustomersQuery().data || [];
 
@@ -83,14 +81,16 @@ export const EditOwner = ({ data, setData }: EditProps<string>) => {
     const idToFullname = (id: string) =>
         Object.keys(fullnames).find((key) => fullnames[key] === id) || "";
 
+    const handleDisable = () => setData("");
+
     return (
-        <DefaultOrEdit label={t("Owner")} onDisable={() => setData("")}>
+        <DefaultOrEdit label={t("Owner")} onDisable={handleDisable}>
             <Autocomplete
                 disablePortal
                 value={idToFullname(data) || ""}
                 onChange={autocompleteChange}
                 options={Object.keys(fullnames)}
-                renderInput={(params) => <StyledTextField {...params} />}
+                renderInput={StyledTextField}
             />
         </DefaultOrEdit>
     );
@@ -99,12 +99,14 @@ export const EditOwner = ({ data, setData }: EditProps<string>) => {
 export const EditZipCode = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
+    const handleDisable = () => setData("");
+
     return (
-        <DefaultOrEdit label={t("Zip Code")} onDisable={() => setData("")}>
+        <DefaultOrEdit label={t("Zip Code")} onDisable={handleDisable}>
             <StyledOnlyNumbersInput
                 label=""
                 value={+data}
-                onChange={(n) => setData(n.toString())}
+                onChange={(e) => setData(e.target.value.toString())}
             />
         </DefaultOrEdit>
     );
@@ -113,12 +115,13 @@ export const EditZipCode = ({ data, setData }: EditProps<string>) => {
 export const EditArea = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
+    const handleDisable = () => setData("");
+
     return (
-        <DefaultOrEdit label={t("Living Space")} onDisable={() => setData("")}>
+        <DefaultOrEdit label={t("Living Space")} onDisable={handleDisable}>
             <StyledOnlyNumbersInput
-                label=""
                 value={+data}
-                onChange={(n) => setData(n.toString())}
+                onChange={(e) => setData(e.target.value.toString())}
                 adornment="m²"
             />
         </DefaultOrEdit>
@@ -128,14 +131,15 @@ export const EditArea = ({ data, setData }: EditProps<string>) => {
 export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
+    const handleDisable = () => setData("");
+
     return (
-        <DefaultOrEdit label={t("Bedrooms")} onDisable={() => setData("")}>
+        <DefaultOrEdit label={t("Bedrooms")} onDisable={handleDisable}>
             <StyledOnlyNumbersInput
                 type="number"
-                label=""
                 placeholder="1,2,3..."
                 value={+data}
-                onChange={(n) => setData(n.toString())}
+                onChange={(e) => setData(e.target.value.toString())}
             />
         </DefaultOrEdit>
     );
