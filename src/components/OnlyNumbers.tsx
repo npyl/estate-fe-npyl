@@ -2,7 +2,8 @@ import { InputAdornment, TextFieldProps } from "@mui/material";
 import { TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 
-const BEtoVisible = (s: string): string => {
+const BEtoVisible = (v: string | number): string => {
+    const s = typeof v === "number" ? v.toString() : v;
     if (!s) return "";
 
     const [integer, decimal] = s.split(".");
