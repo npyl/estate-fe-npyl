@@ -1,67 +1,84 @@
-import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
-import { useEffect, useState } from "react";
-import { NumberFormatValues, NumericFormat } from "react-number-format";
-import { useDebouncedCallback } from "use-debounce";
+import { InputAdornment, TextFieldProps } from "@mui/material";
+import { TextField } from "@mui/material";
+import React, { ChangeEvent } from "react";
 
-interface OnlyNumbersInputProps
-    extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
-    label: string;
-    value?: number;
+const BEtoVisible = (v: string | number): string => {
+    const s = typeof v === "number" ? v.toString() : v;
+    if (!s) return "";
+
+    const [integer, decimal] = s.split(".");
+
+    const num = parseFloat(integer);
+    if (isNaN(num)) return "";
+
+    const thousands = num.toLocaleString("de-DE", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 20,
+    });
+
+    // INFO: we don't have a dot; this means that we don't have a decimal part (or even a start-of decimal part)
+    if (!s.includes(".")) return thousands;
+
+    return [thousands, decimal].join(",");
+};
+
+const visibleToBE = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    onChange: (s: string) => void,
+    acceptsDecimal: boolean
+) => {
+    // Remove all dots
+    let value = e.target.value.replace(/\./g, "");
+
+    // Accept only numbers
+    if (!/^[0-9,]*$/.test(value)) {
+        // If it contains other characters, don't update the value
+        return;
+    }
+
+    // Ιf decimals are accepted accept ','
+    if (acceptsDecimal) {
+        const parts = value.split(",");
+        if (parts[1] === "") value = `${parts[0]}.`;
+        else {
+            value = parts.join(".");
+        }
+    }
+    // Otherwise, remove all commas
+    else {
+        value = value.replace(/,/g, "");
+    }
+
+    onChange?.(value);
+};
+
+export interface OnlyNumbersInputProps
+    extends Omit<TextFieldProps<"standard">, "value" | "onChange"> {
     acceptsDecimal?: boolean;
-    onChange: (value: number) => void;
     adornment?: string;
-    disabled?: boolean;
+    value: string;
+    onChange: (s: string) => void;
 }
 
 const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
-    label,
+    adornment = "",
+    acceptsDecimal = false,
     value,
     onChange,
-    adornment = "",
-    disabled = false,
-    acceptsDecimal = false,
-    ...props
-}) => {
-    const [localValue, setLocalValue] = useState("");
+    ...other
+}) => (
+    <TextField
+        value={BEtoVisible(value)}
+        onChange={(e) => visibleToBE(e, onChange, acceptsDecimal)}
+        {...other}
+        InputProps={{
+            ...other.InputProps,
+            // Adornment
+            endAdornment: adornment ? (
+                <InputAdornment position="end">{adornment}</InputAdornment>
+            ) : null,
+        }}
+    />
+);
 
-    useEffect(() => {
-        setLocalValue(value?.toString() || "");
-    }, [value]);
-
-    const debouncedChange = useDebouncedCallback(
-        (n: number) => onChange(n),
-        50
-    );
-
-    const handleChange = (values: NumberFormatValues) => {
-        debouncedChange(values.floatValue || 0);
-        setLocalValue(values.formattedValue);
-    };
-
-    // TODO: make it show thousands and work with acceptDecimal true / false
-
-    return (
-        <NumericFormat
-            fullWidth
-            customInput={TextField}
-            label={label}
-            onValueChange={handleChange}
-            value={localValue}
-            variant="outlined"
-            // thousandSeparator="."
-            decimalSeparator=","
-            allowedDecimalSeparators={[","]}
-            // fixedDecimalScale={acceptsDecimal}
-            // decimalScale={acceptsDecimal ? 2 : undefined}
-            // {...props}
-            disabled={disabled}
-            InputProps={{
-                endAdornment: adornment ? (
-                    <InputAdornment position="end">{adornment}</InputAdornment>
-                ) : null,
-            }}
-        />
-    );
-};
-
-export default OnlyNumbersInput;
+export default React.memo(OnlyNumbersInput);

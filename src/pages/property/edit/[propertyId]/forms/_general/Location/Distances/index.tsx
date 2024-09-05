@@ -19,8 +19,6 @@ const useAutoclear = () => {
     useEffect(() => {
         if (!lat || !lng) return;
 
-        console.log("UPDATE: ", lat, lng);
-
         setValue("distances", {
             schools: "",
             supermarket: "",
