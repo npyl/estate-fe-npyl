@@ -103,11 +103,7 @@ export const EditZipCode = ({ data, setData }: EditProps<string>) => {
 
     return (
         <DefaultOrEdit label={t("Zip Code")} onDisable={handleDisable}>
-            <StyledOnlyNumbersInput
-                label=""
-                value={+data}
-                onChange={(e) => setData(e.target.value.toString())}
-            />
+            <StyledOnlyNumbersInput label="" value={data} onChange={setData} />
         </DefaultOrEdit>
     );
 };
@@ -120,8 +116,8 @@ export const EditArea = ({ data, setData }: EditProps<string>) => {
     return (
         <DefaultOrEdit label={t("Living Space")} onDisable={handleDisable}>
             <StyledOnlyNumbersInput
-                value={+data}
-                onChange={(e) => setData(e.target.value.toString())}
+                value={data}
+                onChange={setData}
                 adornment="m²"
             />
         </DefaultOrEdit>
@@ -138,8 +134,8 @@ export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
             <StyledOnlyNumbersInput
                 type="number"
                 placeholder="1,2,3..."
-                value={+data}
-                onChange={(e) => setData(e.target.value.toString())}
+                value={data}
+                onChange={setData}
             />
         </DefaultOrEdit>
     );

@@ -65,21 +65,19 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     value,
     onChange,
     ...other
-}) => {
-    return (
-        <TextField
-            value={BEtoVisible(value)}
-            onChange={(e) => visibleToBE(e, onChange, acceptsDecimal)}
-            {...other}
-            InputProps={{
-                ...other.InputProps,
-                // Adornment
-                endAdornment: adornment ? (
-                    <InputAdornment position="end">{adornment}</InputAdornment>
-                ) : null,
-            }}
-        />
-    );
-};
+}) => (
+    <TextField
+        value={BEtoVisible(value)}
+        onChange={(e) => visibleToBE(e, onChange, acceptsDecimal)}
+        {...other}
+        InputProps={{
+            ...other.InputProps,
+            // Adornment
+            endAdornment: adornment ? (
+                <InputAdornment position="end">{adornment}</InputAdornment>
+            ) : null,
+        }}
+    />
+);
 
 export default React.memo(OnlyNumbersInput);
