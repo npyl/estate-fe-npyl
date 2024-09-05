@@ -9,16 +9,10 @@ import {
 import { useTheme } from "@mui/material/styles";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
-import { gtm } from "../lib/gtm";
 
 const AuthorizationRequired: NextPage = () => {
     const theme = useTheme();
     const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
-
-    useEffect(() => {
-        gtm.push({ event: "page_view" });
-    }, []);
 
     return (
         <>
