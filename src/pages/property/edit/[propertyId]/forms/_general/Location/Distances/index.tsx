@@ -4,6 +4,37 @@ import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { RHFOnlyNumbers } from "src/components/hook-form";
 import CalculateDistances from "./Calculate";
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+
+// --------------------------------------------------------------------------------
+
+// INFO: if lat, lng changes, make sure to clear Distances fields automatically
+const useAutoclear = () => {
+    const { watch, setValue } = useFormContext();
+
+    const lat = watch("location.lat");
+    const lng = watch("location.lng");
+
+    useEffect(() => {
+        if (!lat || !lng) return;
+
+        console.log("UPDATE: ", lat, lng);
+
+        setValue("distances", {
+            schools: "",
+            supermarket: "",
+            cafeRestaurant: "",
+            hospital: "",
+            airport: "",
+            sea: "",
+            publicTransport: "",
+            entertainment: "",
+        });
+    }, [setValue, lat, lng]);
+};
+
+// --------------------------------------------------------------------------------
 
 interface SectionProps {
     map?: google.maps.Map;
@@ -11,6 +42,8 @@ interface SectionProps {
 
 const DistancesSection: React.FC<SectionProps> = ({ map }) => {
     const { t } = useTranslation();
+
+    useAutoclear();
 
     return (
         <Panel

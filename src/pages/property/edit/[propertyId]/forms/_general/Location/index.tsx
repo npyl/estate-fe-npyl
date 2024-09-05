@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
 import Panel from "src/components/Panel";
-import DistancesSection from "./Distances/Distances";
+import DistancesSection from "./Distances";
 import { MunicipSelect, NeighbourSelect, RegionSelect } from "./Select";
 import LocationDisplay from "./LocationDisplay";
 import useClosest from "./useClosest";
@@ -24,7 +24,7 @@ const LocationSection = () => {
     const lat = watch("location.lat");
     const lng = watch("location.lng");
 
-    const mainMarker = {
+    const mainMarker: IMapMarker = {
         lat,
         lng,
     };
