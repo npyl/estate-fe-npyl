@@ -3,16 +3,19 @@ import Dialog, { DialogProps } from "@mui/material/Dialog";
 import { Box, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
-import PDFEditor from "./Editor";
-import { useFormContext } from "react-hook-form";
 import ErrorTooltips from "./ErrorTooltips";
-import { useValidatePDF } from "./hook";
+import useValidatePDF from "./useValidatePDF";
+import dynamic from "next/dynamic";
+import { Z_INDEX } from "@/config";
+const PDFEditor = dynamic(() => import("./Editor"));
+const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 
 interface Props extends Omit<DialogProps, "onClose"> {
+    suggestProperties: boolean;
     onClose: VoidFunction;
 }
 
-const PDFEditorDialog: React.FC<Props> = (props) => {
+const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
     const { validate } = useValidatePDF();
 
     const handleSave = async () => {
@@ -27,7 +30,9 @@ const PDFEditorDialog: React.FC<Props> = (props) => {
     return (
         <Box position="relative">
             <Dialog {...props} fullScreen>
-                <PDFEditor />
+                <PDFEditor>
+                    {suggestProperties ? <SuggestProperties /> : null}
+                </PDFEditor>
             </Dialog>
 
             <ErrorTooltips />
@@ -38,7 +43,7 @@ const PDFEditorDialog: React.FC<Props> = (props) => {
                     position: "fixed",
                     top: 30,
                     right: 30,
-                    zIndex: 1500,
+                    zIndex: Z_INDEX.AGREEMENT_FORM,
                 }}
                 onClick={props.onClose}
             >
@@ -50,7 +55,7 @@ const PDFEditorDialog: React.FC<Props> = (props) => {
                 position="fixed"
                 bottom={30}
                 right={30}
-                zIndex={1500}
+                zIndex={Z_INDEX.AGREEMENT_FORM}
                 onClick={handleSave}
             />
         </Box>

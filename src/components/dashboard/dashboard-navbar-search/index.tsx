@@ -16,7 +16,7 @@ import {
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SearchList } from "./SearchList";
-import SearchInput from "@/components/SearchInput";
+import SearchInput from "@/components/Search/SearchInput";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
 import { useMediaQuery, useTheme } from "@mui/material";

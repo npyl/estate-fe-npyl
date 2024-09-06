@@ -78,6 +78,8 @@ const PreparationDialog: React.FC<Props> = ({
         values,
     });
 
+    const isPurchase = values.variant === "PURCHASE";
+
     console.log("ERRORS: ", methods.formState.errors);
 
     const handleSubmit = async ({
@@ -144,7 +146,13 @@ const PreparationDialog: React.FC<Props> = ({
                     }
                 />
 
-                {isPDFOpen ? <PDFEditorDialog open onClose={closePDF} /> : null}
+                {isPDFOpen ? (
+                    <PDFEditorDialog
+                        open
+                        suggestProperties={isPurchase}
+                        onClose={closePDF}
+                    />
+                ) : null}
             </FormProvider>
         </>
     );
