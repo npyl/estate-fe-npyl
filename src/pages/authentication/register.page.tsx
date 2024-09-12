@@ -2,27 +2,17 @@ import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 import { JWTRegister } from "../../components/authentication/jwt-register";
 import { Logo } from "../../components/logo";
 import { useAuth } from "../../hooks/use-auth";
-import { gtm } from "../../lib/gtm";
 
 type Platform = "JWT";
-
-const platformIcons: { [key in Platform]: string } = {
-    JWT: "/static/icons/jwt.svg",
-};
 
 const Register: NextPage = () => {
     const router = useRouter();
     const { platform }: { platform: Platform } = useAuth();
     const { disableGuard } = router.query;
-
-    useEffect(() => {
-        gtm.push({ event: "page_view" });
-    }, []);
 
     return (
         <>

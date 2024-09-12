@@ -165,12 +165,6 @@ export default function KanbanContactsDialog({
                     </Box>
 
                     <DialogContent sx={{ p: 0 }}>
-                        {/* {isNotFound ? (
-                    <SearchNotFound
-                        query={searchContacts}
-                        sx={{ mt: 3, mb: 10 }}
-                    />
-                ) : ( */}
                         <Scrollbar
                             sx={{
                                 px: 2.5,
@@ -189,37 +183,10 @@ export default function KanbanContactsDialog({
                                     onClick={toggleAssignee}
                                 />
                             ))}
-                            {/* {dataFiltered.map((contact) => {
-                            
-                        }) */}
                         </Scrollbar>
-                        {/* )} */}
                     </DialogContent>
                 </Dialog>
             ) : null}
         </>
     );
 }
-
-// ----------------------------------------------------------------------
-
-// function applyFilter({
-//     inputData,
-//     query,
-// }: {
-//     inputData: IUser[];
-//     query: string;
-// }) {
-//     if (query) {
-//         inputData = inputData.filter(
-//             (contact) =>
-//                 contact.firstName.toLowerCase().indexOf(query.toLowerCase()) !==
-//                     -1 ||
-//                 contact.lastName.toLowerCase().indexOf(query.toLowerCase()) !==
-//                     -1 ||
-//                 contact.email.toLowerCase().indexOf(query.toLowerCase()) !== -1
-//         );
-//     }
-
-//     return inputData;
-// }

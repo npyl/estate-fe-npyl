@@ -6,7 +6,7 @@ import useDialog from "@/hooks/useDialog";
 import EditDialog from "./EditDialog";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { SpaceBetween } from "@/components/styled";
-import { SoftButton } from "@/components/SoftButton";
+import SoftButton from "@/components/SoftButton";
 import Stack from "@mui/material/Stack";
 import UploadImage from "./UploadImage";
 

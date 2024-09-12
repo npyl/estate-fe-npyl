@@ -1,9 +1,9 @@
 import { Button, IconButton, Popover, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { SoftButton } from "src/components/SoftButton";
+import SoftButton from "@/components/SoftButton";
 import { useTranslation } from "react-i18next";
-import DeleteDialog from "src/components/Dialog/Delete";
-import useDialog from "src/hooks/useDialog";
+import DeleteDialog from "@/components/Dialog/Delete";
+import useDialog from "@/hooks/useDialog";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import React from "react";
 import OpenIn from "./OpenIn";

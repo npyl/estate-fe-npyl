@@ -67,7 +67,8 @@ function MyComponent() {
     const { t } = useTranslation();
     const theme = useTheme();
     const router = useRouter();
-    const { isLoaded, loadError } = useLoadApi();
+
+    const { isLoaded } = useLoadApi();
 
     const { propertyId } = router.query;
 
@@ -215,10 +216,6 @@ function MyComponent() {
         setAlignment(newAlignment);
 
     const handleSliderRadius = useDebouncedCallback((e) => setRadius(e), 300);
-
-    if (loadError) {
-        return <div>Error loading maps</div>;
-    }
 
     if (
         !(

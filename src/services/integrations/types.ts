@@ -1,11 +1,12 @@
+import { IPropertyImage } from "@/types/file";
 import { IntegrationSite } from "@/types/listings";
 
 interface ImagesOrderRes {
-    image: {
-        id: number;
-        url: string;
-    };
-    order: number;
+    publicImages: IPropertyImage[];
+    privateImages: IPropertyImage[];
+
+    publicKeys: string[];
+    privateKeys: string[];
 }
 
 interface GetImagesOrderReq {
@@ -13,7 +14,7 @@ interface GetImagesOrderReq {
     integrationSite: IntegrationSite;
 }
 interface UpdateImagesOrderReq extends GetImagesOrderReq {
-    propertyImages: number[]; // ids
+    propertyImages: string[]; // keys
 }
 
 export type { ImagesOrderRes, GetImagesOrderReq, UpdateImagesOrderReq };

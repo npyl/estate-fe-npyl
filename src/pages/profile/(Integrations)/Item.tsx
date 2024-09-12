@@ -8,7 +8,7 @@ import {
     Stack,
 } from "@mui/material";
 import { List, ListItem } from "src/components/List";
-import { SoftButton } from "@/components/SoftButton";
+import SoftButton from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
 import { useGetIntegrationsQuery } from "@/services/company";
 import { useTranslation } from "react-i18next";

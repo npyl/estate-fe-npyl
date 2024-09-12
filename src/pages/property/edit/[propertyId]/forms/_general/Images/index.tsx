@@ -1,5 +1,5 @@
 import Panel from "@/components/Panel";
-import { SoftButton } from "@/components/SoftButton";
+import SoftButton from "@/components/SoftButton";
 import UploadImages from "./Upload";
 import useDialog from "@/hooks/useDialog";
 import Typography from "@mui/material/Typography";

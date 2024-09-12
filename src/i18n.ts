@@ -846,22 +846,28 @@ const resources = {
 
             Private_FEMININE: "Private",
 
-            "Add first 20": "Add first 20",
+            "Add first": "Add first",
             "Remove All": "Remove all",
 
             _main_: "Main",
             Success: "Success",
             "Unable to logout": "Unable to logout",
+
+            "Locked Pin": "Locked Pin",
+            "Free Pin": "Free Pin",
         },
     },
     el: {
         translation: {
+            "Locked Pin": "Κλειδωμένη Πινέζα",
+            "Free Pin": "Ελεύθερη Πινέζα",
+
             "Unable to logout": "Αποτυχία κατά την αποσύνδεση",
             Success: "Επιτυχία",
             _main_: "Κύρια",
 
             "Remove All": "Αφαίρεση όλων",
-            "Add first 20": "Προσθήκη 20 πρώτων",
+            "Add first": "Προσθήκη πρώτων",
             Private_FEMININE: "Ιδιωτικές",
 
             _NO_OWNER_LITERAL_:

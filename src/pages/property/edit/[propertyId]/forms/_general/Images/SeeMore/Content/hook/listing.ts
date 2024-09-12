@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import usePropertyImages from "../../../hook";
+import { useRouter } from "next/router";
 import TUseContentOperations, { ExtendedDropResult } from "./type";
 import { useGetIntegrationOrderedImagesQuery } from "@/services/integrations";
 import { IntegrationSite } from "@/types/listings";
@@ -11,13 +11,14 @@ const useListingContentOperations: TUseContentOperations = (
     tab,
     createItemCb
 ) => {
-    const { images, propertyId, isLoading } = usePropertyImages();
+    const router = useRouter();
+    const { propertyId } = router.query;
 
     const { data, isLoading: isIntegrationImagesLoading } =
         useGetIntegrationOrderedImagesQuery(
             {
                 integrationSite: tab as IntegrationSite,
-                propertyId,
+                propertyId: +propertyId!,
             },
             { skip: tab === "CRM" }
         );
@@ -25,38 +26,28 @@ const useListingContentOperations: TUseContentOperations = (
     const { setOrderedImages, isLoading: isReorderLoading } =
         useIntegrationsOperations();
 
-    const { publicImages, privateImages, publicIds, privateIds } =
+    const { publicImages, privateImages, publicKeys, privateKeys } =
         useMemo(() => {
-            const tmp =
-                data
-                    ?.map(({ image: { id: _id } }) =>
-                        images.find(({ id }) => id === _id)
-                    )
-                    .filter((img) => !!img) || [];
-
-            const tmp2 = images
-                ?.filter(
-                    ({ id }) =>
-                        data?.findIndex(
-                            ({ image: { id: _id } }) => id === _id
-                        ) === -1
-                )
-                .filter((img) => !!img);
-
             // all images that come from the endpoint are in the first section
-            const publicImages = tmp.map(createItemCb) || [];
+            const publicImages = data?.publicImages?.map(createItemCb) || [];
 
             // all images that do not are supposed to be hidden from the integration
-            const privateImages = tmp2.map(createItemCb) || [];
+            const privateImages = data?.privateImages?.map(createItemCb) || [];
 
             return {
                 publicImages,
                 privateImages,
 
-                publicIds: tmp.map(({ id }) => id),
-                privateIds: tmp2.map(({ id }) => id),
+                publicKeys: data?.publicKeys || [],
+                privateKeys: data?.privateKeys || [],
             };
-        }, [images, data, createItemCb]);
+        }, [
+            data?.publicImages,
+            data?.privateImages,
+            data?.publicKeys,
+            data?.privateKeys,
+            createItemCb,
+        ]);
 
     // Combinations:
     //  1. public -> public    (REORDER)
@@ -90,7 +81,7 @@ const useListingContentOperations: TUseContentOperations = (
 
             const secondDndStartIndex = publicImages.length;
 
-            let updatedItems = [...publicIds];
+            let updatedItems = [...publicKeys];
 
             // Calculate srcIdx
             const srcCol =
@@ -118,23 +109,23 @@ const useListingContentOperations: TUseContentOperations = (
             // 4.
             if (srcDndId === 2 && dstDndId === 1) {
                 // alert("4h");
-                const draggedItemId = privateIds[srcIdx];
+                const draggedItemId = privateKeys[srcIdx];
                 updatedItems.splice(dstIdx, 0, draggedItemId);
             }
 
             setOrderedImages({
                 integrationSite: tab as IntegrationSite,
-                propertyId,
+                propertyId: +propertyId!,
                 propertyImages: updatedItems,
             });
         },
-        [tab, publicIds, privateIds]
+        [tab, publicKeys, privateKeys]
     );
 
     return {
         publicImages,
         privateImages,
-        isLoading: isLoading || isIntegrationImagesLoading || isReorderLoading,
+        isLoading: isIntegrationImagesLoading || isReorderLoading,
         handleDragEnd,
     };
 };

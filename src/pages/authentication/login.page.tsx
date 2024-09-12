@@ -1,12 +1,10 @@
 import { Box, Card, Container, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
-import { GuestGuard } from "../../components/authentication/guest-guard";
-import { JWTLogin } from "../../components/authentication/jwt-login";
-import { Logo } from "../../components/logo";
-import { useAuth } from "../../hooks/use-auth";
-import { gtm } from "../../lib/gtm";
+import { GuestGuard } from "@/components/authentication/guest-guard";
+import { JWTLogin } from "@/components/authentication/jwt-login";
+import { Logo } from "@/components/logo";
+import { useAuth } from "@/hooks/use-auth";
 import { useTranslation } from "react-i18next";
 
 type Platform = "JWT";
@@ -14,10 +12,6 @@ type Platform = "JWT";
 const Login: NextPage = () => {
     const { t } = useTranslation();
     const { platform }: { platform: Platform } = useAuth();
-
-    useEffect(() => {
-        gtm.push({ event: "page_view" });
-    }, []);
 
     return (
         <>

@@ -1,47 +1,34 @@
-import { SoftButton } from "@/components/SoftButton";
-import {
-    Stack,
-    StackProps,
-    ToggleButton,
-    ToggleButtonGroup,
-} from "@mui/material";
-import CompareIcon from "@mui/icons-material/Compare";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { TMode } from "../types";
-import { useTranslation } from "react-i18next";
-import { useImageOperations } from "../../context/ImageOperations";
-import { Icon } from "@iconify/react";
-import AddButton from "./Add";
-import DeleteButton from "./Delete";
-import PublicButton from "./Public";
-import PrivateButton from "./Private";
+import { StackProps } from "@mui/material";
+import { TListingTab, TMode } from "../types";
 import { Dispatch, SetStateAction } from "react";
 import usePropertyImages from "../../hook";
-import useDialog from "@/hooks/useDialog";
-import { CompareGallery } from "./CompareGallery";
+import CRMControls from "./CRM";
+import dynamic from "next/dynamic";
+const ListingControls = dynamic(() => import("./Listing"));
 
 interface ControlsProps extends StackProps {
+    tab: TListingTab;
+    // ...
     selectedImages: string[];
+    mode: "" | "multiple" | "compare";
+    // ...
     setSelectedImages: Dispatch<SetStateAction<string[]>>;
     onResetSelectedImages: VoidFunction;
-    mode: "" | "multiple" | "compare";
     setMode: (m: "" | "multiple" | "compare") => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
+    tab,
     selectedImages,
+    mode,
+    // ...
     setSelectedImages,
     onResetSelectedImages,
-    mode,
     setMode,
+    // ...
     ...props
 }) => {
-    const { t } = useTranslation();
-
     const { images } = usePropertyImages();
-    const { isLoading } = useImageOperations();
-
-    const [isCompareOpen, openCompareDialog, closeCompareDialog] = useDialog();
 
     const isAllSelected =
         selectedImages.length > 0 &&
@@ -60,76 +47,31 @@ const Controls: React.FC<ControlsProps> = ({
         else setSelectedImages(images.map(({ key }) => key));
     };
 
-    const handleCloseCompareDialog = () => {
-        onResetSelectedImages;
-        closeCompareDialog();
-    };
+    if (tab === "CRM")
+        return (
+            <CRMControls
+                mode={mode}
+                selectedImages={selectedImages}
+                isAllSelected={isAllSelected}
+                // ...
+                onToggleAll={handleToggleAll}
+                onResetSelectedImages={onResetSelectedImages}
+                onModeChange={handleModeChange}
+                {...props}
+            />
+        );
 
     return (
-        <>
-            <Stack direction="row" alignItems="center" gap={1} {...props}>
-                {mode !== "compare" && selectedImages.length > 0 ? (
-                    <>
-                        <PublicButton selectedImages={selectedImages} />
-                        <PrivateButton selectedImages={selectedImages} />
-                        <DeleteButton selectedImages={selectedImages} />
-                    </>
-                ) : null}
-
-                {mode !== "compare" ? (
-                    <SoftButton
-                        disabled={isLoading}
-                        onClick={handleToggleAll}
-                        variant="outlined"
-                        color={isAllSelected ? "error" : "primary"}
-                    >
-                        {t(isAllSelected ? "Deselect All" : "Select All")}
-                    </SoftButton>
-                ) : null}
-
-                {mode === "compare" && selectedImages.length === 2 ? (
-                    <SoftButton
-                        disabled={isLoading}
-                        color="primary"
-                        onClick={openCompareDialog}
-                    >
-                        {t("Compare")}
-                    </SoftButton>
-                ) : null}
-
-                <ToggleButtonGroup
-                    value={mode}
-                    size="small"
-                    exclusive
-                    disabled={isLoading}
-                    onChange={handleModeChange}
-                >
-                    <ToggleButton value="multiple">
-                        <Icon icon="carbon:select-window" width={20} />
-                    </ToggleButton>
-                    <ToggleButton value="compare">
-                        <CompareIcon />
-                    </ToggleButton>
-
-                    {mode !== "" ? (
-                        <ToggleButton value="">
-                            <CloseOutlinedIcon />
-                        </ToggleButton>
-                    ) : null}
-                </ToggleButtonGroup>
-
-                <AddButton />
-            </Stack>
-
-            {isCompareOpen ? (
-                <CompareGallery
-                    open={isCompareOpen}
-                    image1={selectedImages[0]}
-                    image2={selectedImages[1]}
-                    onClose={handleCloseCompareDialog}
-                />
-            ) : null}
-        </>
+        <ListingControls
+            tab={tab}
+            mode={mode}
+            selectedImages={selectedImages}
+            isAllSelected={isAllSelected}
+            // ...
+            onToggleAll={handleToggleAll}
+            onModeChange={handleModeChange}
+            {...props}
+        />
     );
 };
 
