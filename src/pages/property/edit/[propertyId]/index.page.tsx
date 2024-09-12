@@ -9,7 +9,7 @@ import {
 } from "src/services/properties";
 import Form from "./Form";
 import { useTabsContext } from "src/contexts/tabs";
-import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
+import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
 import { useTranslation } from "react-i18next";
 

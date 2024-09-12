@@ -1,7 +1,7 @@
 import { Tab, TabProps, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Suspense, lazy, useState } from "react";
+import { Suspense, useState } from "react";
 import {
     useClonePropertyMutation,
     useDeletePropertyMutation,
@@ -11,30 +11,32 @@ import TabPanel from "src/components/Tabs";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
-import ViewHeader from "src/pages/components/ViewHeader";
+import ViewHeader from "@/sections/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
 
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
-import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
+import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import Iconify from "@/components/iconify";
 
 // Tabs
-const MainContainer = lazy(() => import("./(tabs)/MainContainer"));
-const Documents = lazy(() => import("./(tabs)/Documents"));
-const Integrations = lazy(() => import("./(tabs)/Integrations"));
-const StreetView = lazy(() => import("./(tabs)/StreetView"));
-const Map = lazy(() => import("./(tabs)/Map"));
-const MatchingCustomersSection = lazy(
+const MainContainer = dynamic(() => import("./(tabs)/MainContainer"));
+const Documents = dynamic(() => import("./(tabs)/Documents"));
+const Integrations = dynamic(() => import("./(tabs)/Integrations"));
+const StreetView = dynamic(() => import("./(tabs)/StreetView"));
+const Map = dynamic(() => import("./(tabs)/Map"));
+const MatchingCustomersSection = dynamic(
     () => import("./(tabs)/MatchingCustomers")
 );
-const PhotosOnly = lazy(() => import("./(tabs)/PhotosOnly"));
-const PropertyLogs = lazy(() => import("./(sections)/Logs"));
-const GreenMap = lazy(() => import("./(tabs)/Green"));
-const AgreementsTab = lazy(() => import("./(tabs)/Agreements"));
+const PhotosOnly = dynamic(() => import("./(tabs)/PhotosOnly"));
+const PropertyLogs = dynamic(() => import("./(sections)/Logs"));
+const GreenMap = dynamic(() => import("./(tabs)/Green"));
+const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
 
 import { styled } from "@mui/material/styles";
+
+import dynamic from "next/dynamic";
 
 const StyledTab = styled(Tab)(({ theme }) => ({
     marginLeft: theme.spacing(3),

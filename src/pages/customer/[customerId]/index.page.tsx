@@ -19,7 +19,7 @@ import {
     Logs,
 } from "./sections";
 import TabPanel from "src/components/Tabs";
-import ViewHeader from "src/pages/components/ViewHeader";
+import ViewHeader from "@/sections/ViewHeader";
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import React from "react";
