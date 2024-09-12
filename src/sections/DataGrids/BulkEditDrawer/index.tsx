@@ -23,49 +23,44 @@ export const BulkEditDrawer = ({
             open={open}
             anchor="right"
             onClose={onClose}
-            // ModalProps={{ sx: { zIndex: 999999 } }}
-            PaperProps={{ sx: { width: "fit-content" } }}
+            PaperProps={{
+                sx: {
+                    p: 2,
+                    width: "fit-content",
+                    borderTopLeftRadius: "10px",
+                    borderBottomLeftRadius: "10px",
+                },
+            }}
         >
-            <Stack textAlign={"center"} flex={1} p={1} mt={1}>
-                <Typography variant="h6">{t("Bulk Edit")}</Typography>
+            <Typography variant="h6">{t("Bulk Edit")}</Typography>
 
-                <Stack mt={2} gap={1} spacing={1}>
-                    {children}
-                </Stack>
+            <Stack mt={2} gap={4}>
+                {children}
+            </Stack>
 
-                <Stack
-                    direction={"row"}
-                    justifyContent={"right"}
-                    spacing={1}
-                    m={1}
-                >
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={onClose}
-                    >
-                        {t("Close")}
-                    </Button>
+            <Stack direction={"row"} justifyContent={"right"} spacing={1} m={1}>
+                <Button variant="outlined" color="secondary" onClick={onClose}>
+                    {t("Close")}
+                </Button>
 
-                    {Object.keys(changed).length > 0 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={onClear}
-                            >
-                                {t("Clear")}
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={onSave}
-                            >
-                                {t("Save")}
-                            </Button>
-                        </>
-                    )}
-                </Stack>
+                {Object.keys(changed).length > 0 && (
+                    <>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={onClear}
+                        >
+                            {t("Clear")}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={onSave}
+                        >
+                            {t("Save")}
+                        </Button>
+                    </>
+                )}
             </Stack>
         </Drawer>
     );

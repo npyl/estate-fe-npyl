@@ -6,6 +6,7 @@ import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
+import { useTranslation } from "react-i18next";
 
 type Variant = "property" | "customer";
 
@@ -14,6 +15,8 @@ interface EditLabelsProps extends EditProps<number[]> {
 }
 
 export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
+    const { t } = useTranslation();
+
     const { data: allLabels } = useGetLabelsQuery();
 
     const labelOptions =
@@ -35,7 +38,7 @@ export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
         selected.map((id) => nameForId(id)).join(", ");
 
     return (
-        <DefaultOrEdit label="Add Labels" onDisable={() => setData([])}>
+        <DefaultOrEdit label={t("Labels")} onDisable={() => setData([])}>
             <Select
                 multiple
                 value={data}
