@@ -24,6 +24,16 @@ type StateType = {
     state: string;
 };
 
+const initialState: StateType = {
+    managerId: "",
+    ownerId: "",
+    zipCode: "",
+    area: "",
+    labels: [],
+    bedrooms: "",
+    state: "",
+};
+
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
@@ -40,19 +50,6 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
     const [state, setState] = useState<StateType["state"]>("");
 
     const [bulkEdit] = useBulkEditPropertiesMutation();
-
-    const initialState: StateType = useMemo(
-        () => ({
-            managerId: "",
-            ownerId: "",
-            zipCode: "",
-            area: "",
-            labels: [],
-            bedrooms: "",
-            state: "",
-        }),
-        []
-    );
 
     const currentState: StateType = useMemo(
         () => ({

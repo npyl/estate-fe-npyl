@@ -50,7 +50,7 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
                 value={idToFullname(data) || ""}
                 onChange={autocompleteChange}
                 options={Object.keys(fullnames)}
-                renderInput={StyledTextField}
+                renderInput={(params) => <StyledTextField {...params} />}
             />
         </DefaultOrEdit>
     );
@@ -90,7 +90,7 @@ export const EditOwner = ({ data, setData }: EditProps<string>) => {
                 value={idToFullname(data) || ""}
                 onChange={autocompleteChange}
                 options={Object.keys(fullnames)}
-                renderInput={StyledTextField}
+                renderInput={(params) => <StyledTextField {...params} />}
             />
         </DefaultOrEdit>
     );
