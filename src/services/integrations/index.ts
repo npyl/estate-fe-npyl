@@ -9,7 +9,7 @@ import {
 export const integrations = createApi({
     reducerPath: "integrations",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/integrations`,
+        baseUrl: `/api/integrations`,
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",
