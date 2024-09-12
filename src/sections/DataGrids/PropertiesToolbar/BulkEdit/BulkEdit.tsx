@@ -6,7 +6,7 @@ import {
     EditState,
     EditZipCode,
 } from "./Edit";
-import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
+import { BulkEditDrawer } from "@/sections/DataGrids/BulkEditDrawer";
 import { useMemo, useState } from "react";
 import {
     BulkEditRequest,
@@ -14,29 +14,23 @@ import {
 } from "src/services/properties";
 import { EditLabels } from "./EditLabels";
 
+type StateType = {
+    managerId: string;
+    ownerId: string;
+    zipCode: string;
+    area: string;
+    labels: number[];
+    bedrooms: string;
+    state: string;
+};
+
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
-    onSave: () => void;
     onClose: () => void;
 }
 
-export const BulkEdit = ({
-    open,
-    selectedIds,
-    onSave,
-    onClose,
-}: BulkEditProps) => {
-    type StateType = {
-        managerId: string;
-        ownerId: string;
-        zipCode: string;
-        area: string;
-        labels: number[];
-        bedrooms: string;
-        state: string;
-    };
-
+export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
     const [managerId, setManagerId] = useState<StateType["managerId"]>("");
     const [ownerId, setOwnerId] = useState<StateType["ownerId"]>("");
     const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
@@ -120,7 +114,6 @@ export const BulkEdit = ({
             propertyIds: selectedIds,
         } as BulkEditRequest).then(() => {
             clearState();
-            onSave();
             onClose();
         });
     };

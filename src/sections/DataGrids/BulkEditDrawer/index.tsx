@@ -20,21 +20,11 @@ export const BulkEditDrawer = ({
     const { t } = useTranslation();
     return (
         <Drawer
-            key={open ? "opened" : "closed"} // INFO: trick to force drawer to reset state after close
             open={open}
-            variant="persistent"
             anchor="right"
             onClose={onClose}
-            ModalProps={{ sx: { zIndex: 999999 } }}
-            PaperProps={{ sx: { width: 310 } }}
-            sx={{
-                "& .MuiDrawer-paper": open
-                    ? {
-                          borderRadius: 1,
-                          position: "absolute",
-                      }
-                    : {}, // prevent horizontal scrollbar from exceeding page-content size
-            }}
+            // ModalProps={{ sx: { zIndex: 999999 } }}
+            PaperProps={{ sx: { width: "fit-content" } }}
         >
             <Stack textAlign={"center"} flex={1} p={1} mt={1}>
                 <Typography variant="h6">{t("Bulk Edit")}</Typography>

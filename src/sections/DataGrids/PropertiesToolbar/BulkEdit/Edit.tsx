@@ -7,7 +7,7 @@ import {
     StyledOnlyNumbersInput,
     StyledTextField,
     StyledSelect,
-} from "src/pages/components/BulkEditDrawer/style";
+} from "@/sections/DataGrids/BulkEditDrawer/style";
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";

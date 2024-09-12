@@ -855,10 +855,12 @@ const resources = {
 
             "Locked Pin": "Locked Pin",
             "Free Pin": "Free Pin",
+            "Bulk Edit": "Bulk Edit",
         },
     },
     el: {
         translation: {
+            "Bulk Edit": "Επεξεργασία Πολλαπλών",
             "Locked Pin": "Κλειδωμένη Πινέζα",
             "Free Pin": "Ελεύθερη Πινέζα",
 

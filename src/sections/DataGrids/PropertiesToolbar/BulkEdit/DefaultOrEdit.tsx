@@ -1,6 +1,6 @@
 import { InputLabel, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { StyledButton } from "src/pages/components/BulkEditDrawer/style";
+import { StyledButton } from "@/sections/DataGrids/BulkEditDrawer/style";
 import CheckIcon from "@mui/icons-material/Check";
 import { Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";

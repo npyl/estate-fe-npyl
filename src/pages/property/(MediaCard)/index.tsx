@@ -4,7 +4,7 @@ import { Grid, GridProps } from "@mui/material";
 import PropertyCard from "@/components/PropertyCard";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useFilterPropertiesMutation } from "src/services/properties";
+import { useFilterPropertiesQuery } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import useResponsive from "@/hooks/useResponsive";
 import Pagination, { usePagination } from "@/components/Pagination";
@@ -29,20 +29,18 @@ export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
 
     const allFilters = useSelector(selectAll);
 
-    const [filterProperties, { data, isLoading }] =
-        useFilterPropertiesMutation();
+    const { data, isLoading } = useFilterPropertiesQuery({
+        filter: allFilters,
+        page: pagination.page,
+        pageSize,
+        sortBy,
+        direction,
+    });
 
-    useEffect(() => {
-        filterProperties({
-            filter: allFilters,
-            page: pagination.page,
-            pageSize,
-            sortBy,
-            direction,
-        });
-    }, [allFilters, pagination.page, pageSize, sortBy, direction]);
-
-    const content = useMemo(() => data?.content || [], [data]);
+    const content = useMemo(
+        () => (Array.isArray(data?.content) ? data.content : []),
+        [data?.content]
+    );
 
     return (
         <Pagination

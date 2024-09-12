@@ -2,9 +2,9 @@ import { Autocomplete } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "src/services/user";
-import { StyledTextField } from "src/pages/components/BulkEditDrawer/style";
-import { EditProps } from "src/pages/components/BulkEdit/types";
-import { DefaultOrEdit } from "src/pages/components/BulkEdit/DefaultOrEdit";
+import { StyledTextField } from "@/sections/DataGrids/BulkEditDrawer/style";
+import { EditProps } from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/types";
+import { DefaultOrEdit } from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/DefaultOrEdit";
 
 export const EditManager = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();

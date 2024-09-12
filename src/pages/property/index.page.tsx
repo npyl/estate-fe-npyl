@@ -3,9 +3,9 @@ import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Box } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import useDialog from "src/hooks/useDialog";
 import useResponsive from "@/hooks/useResponsive";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
 // filters
 import FilterBar from "./(FiltersBar)";
 import { optionType } from "./(FiltersBar)/types";
@@ -13,8 +13,9 @@ import { getOptions } from "./(FiltersBar)/constants";
 // modes
 import ViewAll from "./(ViewAll)";
 import MediaCard from "./(MediaCard)";
-import MapView from "./(MapView)";
-import { GridRowSelectionModel } from "@mui/x-data-grid";
+const MapView = dynamic(() => import("./(MapView)"));
+
+// -----------------------------------------------------------------------
 
 const useResponsiveOptionView = () => {
     const belowLg = useResponsive("down", "lg");
@@ -29,6 +30,8 @@ const useResponsiveOptionView = () => {
 
     return { optionView, setOptionView, belowLg };
 };
+
+// -----------------------------------------------------------------------
 
 const Home: NextPage = () => {
     const { t } = useTranslation();
@@ -46,8 +49,6 @@ const Home: NextPage = () => {
             },
         [sortingOptions, sorting]
     );
-
-    const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
 
     return (
         <Box
@@ -68,13 +69,7 @@ const Home: NextPage = () => {
             />
 
             {optionViewProps.optionView === "list" ? (
-                <ViewAll
-                    sortBy={sortBy}
-                    direction={direction}
-                    isBulkEditOpen={isBulkEditOpen}
-                    onBulkEditOpen={openBulkEdit}
-                    onBulkEditClose={closeBulkEdit}
-                />
+                <ViewAll sortBy={sortBy} direction={direction} />
             ) : null}
             {optionViewProps.optionView === "grid" ? (
                 <MediaCard sortBy={sortBy} direction={direction} />

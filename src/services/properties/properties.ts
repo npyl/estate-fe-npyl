@@ -185,7 +185,8 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
-        filterProperties: builder.mutation<
+
+        filterProperties: builder.query<
             IPage<IPropertyResultResponse>,
             IPropertyFilterParams
         >({
@@ -200,7 +201,9 @@ export const properties = createApi({
                     direction,
                 },
             }),
+            providesTags: ["Properties"],
         }),
+
         suggestForCustomer: builder.query<
             IProperties[],
             ISuggestForCustomerParams
@@ -276,6 +279,7 @@ export const properties = createApi({
 export const {
     // get
     useSearchPropertyQuery,
+    useFilterPropertiesQuery,
     useAllPropertiesQuery,
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
@@ -289,7 +293,6 @@ export const {
     useCreatePropertyMutation,
     useClonePropertyMutation,
     useDeletePropertyMutation,
-    useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
