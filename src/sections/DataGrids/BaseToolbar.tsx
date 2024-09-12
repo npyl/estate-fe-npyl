@@ -19,7 +19,7 @@ const BaseToolbar: FC<BaseToolbarProps> = ({
     const { t } = useTranslation();
 
     return (
-        <Stack direction="row" justifyContent="flex-end" p={1} spacing={1}>
+        <Stack direction="row" justifyContent="flex-end" my={1} spacing={1}>
             <LoadingButton
                 loading={loading}
                 variant="contained"

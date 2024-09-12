@@ -69,8 +69,8 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
                 <Toolbar selectedRows={selectedRows} />
             ) : null}
 
-            {rows && !isLoading ? (
-                <Paper sx={{ mt: 1 }}>
+            <Paper>
+                {rows && !isLoading ? (
                     <DataGrid
                         rows={rows}
                         page={page}
@@ -80,9 +80,7 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
                         checkboxSelection
                         onRowSelectionModelChange={setSelectedRows as any}
                     />
-                </Paper>
-            ) : (
-                <Paper sx={{ mt: 2 }}>
+                ) : (
                     <DataGrid
                         skeleton
                         page={page}
@@ -91,8 +89,8 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
                         totalRows={totalRows}
                         onPaginationModelChange={handlePaginationChange}
                     />
-                </Paper>
-            )}
+                )}
+            </Paper>
         </>
     );
 };
