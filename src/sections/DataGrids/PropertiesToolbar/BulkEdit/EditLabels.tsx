@@ -1,11 +1,12 @@
 import { MenuItem } from "@mui/material";
-import { StyledOutlinedInput } from "src/pages/components/BulkEditDrawer/style";
+import { StyledOutlinedInput } from "@/sections/DataGrids/BulkEditDrawer/style";
 
 import { Checkbox, Select, SelectChangeEvent } from "@mui/material";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
+import { useTranslation } from "react-i18next";
 
 type Variant = "property" | "customer";
 
@@ -14,11 +15,14 @@ interface EditLabelsProps extends EditProps<number[]> {
 }
 
 export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
+    const { t } = useTranslation();
+
     const { data: allLabels } = useGetLabelsQuery();
+
     const labelOptions =
-        variant === "property"
+        (variant === "property"
             ? allLabels?.propertyLabels
-            : allLabels?.customerLabels;
+            : allLabels?.customerLabels) || [];
 
     const handleChange = (event: SelectChangeEvent<number[]>) => {
         const {
@@ -33,26 +37,21 @@ export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
     const renderValue = (selected: number[]) =>
         selected.map((id) => nameForId(id)).join(", ");
 
-    if (!labelOptions) return null;
-
     return (
-        <DefaultOrEdit label="Add Labels" onDisable={() => setData([])}>
+        <DefaultOrEdit label={t("Labels")} onDisable={() => setData([])}>
             <Select
                 multiple
                 value={data}
                 onChange={handleChange}
                 renderValue={renderValue}
                 input={<StyledOutlinedInput />}
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {labelOptions.map((option) => {
-                    return (
-                        <MenuItem key={option.id} value={option.id}>
-                            <Checkbox checked={data.indexOf(option.id!) > -1} />
-                            <Label color={option.color} name={option.name} />
-                        </MenuItem>
-                    );
-                })}
+                {labelOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        <Checkbox checked={data.indexOf(option.id!) > -1} />
+                        <Label color={option.color} name={option.name} />
+                    </MenuItem>
+                ))}
             </Select>
         </DefaultOrEdit>
     );

@@ -1,44 +1,67 @@
-import { EditManager } from "./Edit";
-import { EditLabels } from "src/pages/components/BulkEdit/EditLabels";
+import {
+    EditArea,
+    EditBedrooms,
+    EditManager,
+    EditOwner,
+    EditState,
+    EditZipCode,
+} from "./Edit";
+import { BulkEditDrawer } from "@/sections/DataGrids/BulkEditDrawer";
 import { useMemo, useState } from "react";
-import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
 import {
     BulkEditRequest,
-    useBulkEditCustomersMutation,
-} from "src/services/customers";
+    useBulkEditPropertiesMutation,
+} from "src/services/properties";
+import { EditLabels } from "./EditLabels";
+
+type StateType = {
+    managerId: string;
+    ownerId: string;
+    zipCode: string;
+    area: string;
+    labels: number[];
+    bedrooms: string;
+    state: string;
+};
+
+const initialState: StateType = {
+    managerId: "",
+    ownerId: "",
+    zipCode: "",
+    area: "",
+    labels: [],
+    bedrooms: "",
+    state: "",
+};
 
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
-    onSave: () => void;
     onClose: () => void;
 }
 
-const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
-    type StateType = {
-        managerId: string;
-        labels: number[];
-    };
-
+export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
     const [managerId, setManagerId] = useState<StateType["managerId"]>("");
+    const [ownerId, setOwnerId] = useState<StateType["ownerId"]>("");
+    const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
+    const [area, setArea] = useState<StateType["area"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
+    const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
+    const [state, setState] = useState<StateType["state"]>("");
 
-    const [bulkEdit] = useBulkEditCustomersMutation();
-
-    const initialState: StateType = useMemo(
-        () => ({
-            managerId: "",
-            labels: [],
-        }),
-        []
-    );
+    const [bulkEdit] = useBulkEditPropertiesMutation();
 
     const currentState: StateType = useMemo(
         () => ({
             managerId,
+            ownerId,
+            zipCode,
+            area,
             labels,
+            bedrooms,
+            state,
         }),
-        [managerId, labels]
+        [managerId, ownerId, zipCode, area, labels, bedrooms, state]
     );
 
     const changed: Partial<StateType> = useMemo(() => {
@@ -58,7 +81,11 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
             })
             .reduce((acc: Partial<StateType>, key: keyof StateType) => {
                 // INFO: Cast currentState[key] to `any` to avoid type errors
-                if (key !== "labels" && !isNaN(Number(currentState[key]))) {
+                if (
+                    key !== "state" &&
+                    key !== "labels" &&
+                    !isNaN(Number(currentState[key]))
+                ) {
                     // every string except state is expected to be int in Backend
                     acc[key] = parseInt(currentState[key] as string, 10) as any;
                 } else {
@@ -66,20 +93,24 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
                 }
                 return acc;
             }, {});
-    }, [managerId, labels]);
+    }, [managerId, ownerId, zipCode, area, labels, bedrooms, state]);
 
     const clearState = () => {
         setManagerId("");
+        setOwnerId("");
+        setZipCode("");
+        setArea("");
         setLabels([]);
+        setBedrooms("");
+        setState("");
     };
 
     const handleSave = () => {
         bulkEdit({
             ...changed,
-            customerIds: selectedIds,
+            propertyIds: selectedIds,
         } as BulkEditRequest).then(() => {
             clearState();
-            onSave();
             onClose();
         });
     };
@@ -100,9 +131,12 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
             onClose={handleClose}
         >
             <EditManager data={managerId} setData={setManagerId} />
-            <EditLabels variant="customer" data={labels} setData={setLabels} />
+            <EditOwner data={ownerId} setData={setOwnerId} />
+            <EditZipCode data={zipCode} setData={setZipCode} />
+            <EditArea data={area} setData={setArea} />
+            <EditLabels variant="property" data={labels} setData={setLabels} />
+            <EditBedrooms data={bedrooms} setData={setBedrooms} />
+            <EditState data={state} setData={setState} />
         </BulkEditDrawer>
     );
 };
-
-export default BulkEdit;

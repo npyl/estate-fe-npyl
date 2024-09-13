@@ -27,7 +27,7 @@ import DateRangePicker from "./DateRangePicker";
 import { format } from "date-fns";
 
 export default function StackedAreas() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
@@ -103,7 +103,7 @@ export default function StackedAreas() {
     // Render text for legends based on selections
     const renderLegendText = (value: string) => {
         if (!parentCategory && !category) {
-            return "All";
+            return t("All");
         }
 
         if (value === "parentCategory" && parentCategory) {
@@ -140,7 +140,7 @@ export default function StackedAreas() {
                     }}
                 >
                     <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        Property Views
+                        {t("Property Views")}
                     </p>
                     <hr style={{ borderColor: "grey" }} />
                     {payload.map((entry) => (
@@ -177,14 +177,14 @@ export default function StackedAreas() {
     };
 
     // Date formatter for X-axis ticks
-    const formatDateTick = (tickItem: string) => {
+    const formatDateTick = (tickItem: string, locale: string) => {
         const date = new Date(tickItem);
         let formattedDate;
 
         switch (timeframe) {
             case "WEEK":
                 formattedDate = date
-                    .toLocaleDateString("en-GB", {
+                    .toLocaleDateString(locale, {
                         weekday: "short",
                         day: "2-digit",
                         month: "2-digit",
@@ -192,19 +192,19 @@ export default function StackedAreas() {
                     .replace(/,\s*/g, " "); // remove the comma and space
                 break;
             case "DAY":
-                formattedDate = date.toLocaleDateString("en-GB", {
+                formattedDate = date.toLocaleDateString(locale, {
                     hour: "2-digit",
                     hour12: true,
                 });
                 break;
             case "MONTH":
-                formattedDate = date.toLocaleDateString("en-GB", {
+                formattedDate = date.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                 });
                 break;
             default:
-                formattedDate = date.toLocaleDateString("en-GB", {
+                formattedDate = date.toLocaleDateString(locale, {
                     year: "numeric",
                     month: "short",
                 });
@@ -222,7 +222,7 @@ export default function StackedAreas() {
         return chartData
             .filter((_, index) => index % interval === 0)
             .map((data) => data.date);
-    }, [chartData]);
+    }, [chartData, i18n.language]);
 
     const formatYAxis = (tickItem: number) => {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
@@ -286,7 +286,9 @@ export default function StackedAreas() {
                     <CartesianGrid vertical={false} />
                     <XAxis
                         dataKey="date"
-                        tickFormatter={formatDateTick}
+                        tickFormatter={(tickItem) =>
+                            formatDateTick(tickItem, i18n.language)
+                        }
                         tickMargin={7}
                         ticks={xAxisTicks}
                         // interval={

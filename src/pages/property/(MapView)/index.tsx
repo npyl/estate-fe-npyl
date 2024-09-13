@@ -1,13 +1,13 @@
 import FlipIcon from "@mui/icons-material/Flip";
 import { Button, Grid, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
+import { useState } from "react";
+import Map, { IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
 import {
-    useFilterPropertiesMutation,
+    useFilterPropertiesQuery,
     useGetPropertyLocationMarkersQuery,
 } from "src/services/properties";
 import { selectAll, setPoints, resetPoints } from "src/slices/filters";
@@ -89,9 +89,6 @@ const PropertiesList = ({
 const MapView = () => {
     const dispatch = useDispatch();
 
-    const [filterProperties, { data: properties, isLoading }] =
-        useFilterPropertiesMutation();
-
     const [activeMarker, setActiveMarker] = useState<number>();
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: 38.246639,
@@ -105,19 +102,16 @@ const MapView = () => {
     const belowLg = useResponsive("down", "lg");
 
     const pageSize = belowSm ? 5 : belowLg ? 10 : 25;
-    const { page } = pagination;
 
     const allFilters = useSelector(selectAll);
 
-    useEffect(() => {
-        filterProperties({
-            filter: allFilters,
-            page: page,
-            pageSize,
-            sortBy: "updatedAt",
-            direction: "DESC",
-        });
-    }, [allFilters, page, pageSize]);
+    const { data: properties, isLoading } = useFilterPropertiesQuery({
+        filter: allFilters,
+        page: pagination.page,
+        pageSize,
+        sortBy: "updatedAt",
+        direction: "DESC",
+    });
 
     // respective markers
     const { data: markers } = useGetPropertyLocationMarkersQuery();
@@ -142,11 +136,7 @@ const MapView = () => {
         setMainMarker(newMarker);
     };
 
-    const handleSearchSelect = (
-        address: IMapAddress,
-        lat: number,
-        lng: number
-    ) => {
+    const handleSearchSelect = (_: any, lat: number, lng: number) => {
         if (!lat || !lng) return;
 
         updateMainMarkerCoordinates(lat, lng);

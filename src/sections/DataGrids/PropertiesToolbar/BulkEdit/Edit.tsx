@@ -7,7 +7,7 @@ import {
     StyledOnlyNumbersInput,
     StyledTextField,
     StyledSelect,
-} from "src/pages/components/BulkEditDrawer/style";
+} from "@/sections/DataGrids/BulkEditDrawer/style";
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -50,7 +50,7 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
                 value={idToFullname(data) || ""}
                 onChange={autocompleteChange}
                 options={Object.keys(fullnames)}
-                renderInput={StyledTextField}
+                renderInput={(params) => <StyledTextField {...params} />}
             />
         </DefaultOrEdit>
     );
@@ -90,7 +90,7 @@ export const EditOwner = ({ data, setData }: EditProps<string>) => {
                 value={idToFullname(data) || ""}
                 onChange={autocompleteChange}
                 options={Object.keys(fullnames)}
-                renderInput={StyledTextField}
+                renderInput={(params) => <StyledTextField {...params} />}
             />
         </DefaultOrEdit>
     );

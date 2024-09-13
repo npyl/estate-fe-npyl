@@ -1,41 +1,20 @@
-import { Box, Paper, Button } from "@mui/material";
-import {
-    GridCallbackDetails,
-    GridPaginationModel,
-    GridRowSelectionModel,
-} from "@mui/x-data-grid";
+import { Paper } from "@mui/material";
+import { GridPaginationModel } from "@mui/x-data-grid";
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
-import {
-    useBulkDeletePropertiesMutation,
-    useFilterPropertiesMutation,
-} from "src/services/properties";
+import { useFilterPropertiesQuery } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
-import { BulkEdit } from "../../components/BulkEdit/BulkEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Toolbar from "../../../sections/DataGrids/PropertiesToolbar";
 
 interface ViewAllProps {
     sortBy: string;
     direction: string;
-    isBulkEditOpen: boolean;
-    onBulkEditOpen: VoidFunction;
-    onBulkEditClose: VoidFunction;
 }
 
-const ViewAll = ({
-    sortBy,
-    direction,
-    isBulkEditOpen,
-    onBulkEditOpen,
-    onBulkEditClose,
-}: ViewAllProps) => {
-    const { t } = useTranslation();
-
-    const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
-    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
+const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
+    const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
     // Pagination
     const [page, setPage] = useState(0);
@@ -43,34 +22,20 @@ const ViewAll = ({
 
     const allFilters = useSelector(selectAll);
 
-    const [bulkDeleteProperties, { isLoading: isDeleting }] =
-        useBulkDeletePropertiesMutation();
-    const [filterProperties, { isLoading, data }] =
-        useFilterPropertiesMutation();
+    const { data, isLoading } = useFilterPropertiesQuery({
+        filter: allFilters,
+        page,
+        pageSize,
+        sortBy,
+        direction,
+    });
 
-    // Internal revalidation logic
-    const revalidate = () => {
-        filterProperties({
-            filter: allFilters,
-            page,
-            pageSize,
-            sortBy,
-            direction,
-        });
-    };
-
-    useEffect(() => {
-        revalidate();
-    }, [filterProperties, allFilters, page, pageSize, sortBy, direction]);
-
-    const rows = useMemo(() => {
-        return data?.content ? data?.content : [];
-    }, [data?.content]);
-
-    const totalRows = useMemo(
-        () => (data?.totalElements ? data?.totalElements : 100000),
-        [data?.totalElements]
+    const rows = useMemo(
+        () => (Array.isArray(data?.content) ? data.content : []),
+        [data?.content]
     );
+
+    const totalRows = data?.totalElements || 10;
 
     useLocalStorageScrollRestore();
 
@@ -87,12 +52,10 @@ const ViewAll = ({
         }
     }, []);
 
-    const handlePaginationModelChange = (
-        model: GridPaginationModel,
-        details: GridCallbackDetails
-    ) => {
+    const handlePaginationChange = (model: GridPaginationModel) => {
         setPageSize(model.pageSize);
         setPage(model.page);
+
         const paginationState = { page: model.page };
         localStorage.setItem(
             "propertyPaginationState",
@@ -100,98 +63,35 @@ const ViewAll = ({
         );
     };
 
-    // Bulk Edit
-    const handleBulkEdit = (selectedRows: GridRowSelectionModel) => {
-        onBulkEditOpen();
-        setSelectedRows(selectedRows);
-    };
-
-    const handleBulkEditSave = () => revalidate(); // Revalidate after bulk edit
-
-    // Bulk Delete
-    const handleBulkDelete = () => {
-        if (selectedRows.length === 0) return;
-
-        try {
-            bulkDeleteProperties(selectedRows as number[]).unwrap();
-            setSelectedRows([]);
-            revalidate(); // Revalidate after deletion to refresh the datagrid
-        } catch (error) {
-            console.error("Failed to delete properties:", error);
-        }
-    };
-
-    const handleRowSelectionModelChange = (
-        selectionModel: GridRowSelectionModel
-    ) => {
-        setSelectedRows(selectionModel);
-    };
-
     return (
-        <Box
-            sx={{
-                position: "relative",
-                height: "100%",
-            }}
-        >
-            <Box display="flex" justifyContent="flex-end" p={1}>
-                {selectedRows && selectedRows.length > 0 ? (
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={handleBulkDelete}
-                        startIcon={<DeleteIcon />}
-                    >
-                        {t("Delete")}
-                    </Button>
-                ) : null}
-            </Box>
+        <>
+            {selectedRows && selectedRows.length > 0 ? (
+                <Toolbar selectedRows={selectedRows} />
+            ) : null}
 
-            {rows && !isLoading ? (
-                <>
-                    <Paper
-                        sx={{ mt: 1 }}
-                        style={{
-                            marginRight: isBulkEditOpen ? 320 : 0,
-                        }}
-                    >
-                        <DataGrid
-                            rows={rows}
-                            page={page}
-                            pageSize={pageSize}
-                            totalRows={totalRows}
-                            onPaginationModelChange={
-                                handlePaginationModelChange
-                            }
-                            checkboxSelection
-                            onRowSelectionModelChange={
-                                handleRowSelectionModelChange
-                            }
-                            onBulkDelete={handleBulkDelete}
-                            onBulkEdit={handleBulkEdit}
-                        />
-                    </Paper>
-                </>
-            ) : (
-                <Paper sx={{ mt: 2 }}>
+            <Paper>
+                {rows && !isLoading ? (
+                    <DataGrid
+                        rows={rows}
+                        page={page}
+                        pageSize={pageSize}
+                        totalRows={totalRows}
+                        onPaginationModelChange={handlePaginationChange}
+                        checkboxSelection
+                        onRowSelectionModelChange={setSelectedRows as any}
+                    />
+                ) : (
                     <DataGrid
                         skeleton
                         page={page}
                         pageSize={pageSize}
                         checkboxSelection
                         totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationModelChange}
+                        onPaginationModelChange={handlePaginationChange}
                     />
-                </Paper>
-            )}
-
-            <BulkEdit
-                open={isBulkEditOpen}
-                selectedIds={selectedRows.map((row) => +row)}
-                onSave={handleBulkEditSave}
-                onClose={onBulkEditClose}
-            />
-        </Box>
+                )}
+            </Paper>
+        </>
     );
 };
 

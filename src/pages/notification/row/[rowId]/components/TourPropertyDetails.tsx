@@ -26,7 +26,7 @@ const TourPropertyDetails: React.FC<TourPropertyDetailsProps> = ({
     return (
         <>
             <Typography variant="body2" mt={2}>
-                {property.category.value} | {property.area} m² |{" "}
+                {t(property.category.value)} | {property.area} m² |{" "}
                 {formatPrice(property.price)}{" "}
                 {property.state.key === "RENT" ? t("€/month") : "€"}
             </Typography>

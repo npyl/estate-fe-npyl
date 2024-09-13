@@ -60,7 +60,7 @@ export const customers = createApi({
             providesTags: ["CustomerByIdLabels"],
         }),
 
-        filterCustomers: builder.mutation<
+        filterCustomers: builder.query<
             IPage<ICustomerResultResponse>,
             ICustomerFilterProps
         >({
@@ -75,7 +75,7 @@ export const customers = createApi({
                     direction,
                 },
             }),
-            invalidatesTags: ["Customers"],
+            providesTags: ["Customers"],
         }),
 
         createOrUpdateCustomer: builder.mutation<number, ICustomerPOST>({
@@ -127,7 +127,7 @@ export const customers = createApi({
 export const {
     useAllCustomersQuery,
     useGetCustomerByIdQuery,
-    useFilterCustomersMutation,
+    useFilterCustomersQuery,
     useSearchCustomerQuery,
     useCreateOrUpdateCustomerMutation,
     useDeleteCustomerMutation,

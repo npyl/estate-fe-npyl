@@ -32,7 +32,7 @@ const formatYAxis = (tickItem: number) => {
 };
 
 export default function ViewsOfPropertiesChart() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
 
@@ -74,11 +74,11 @@ export default function ViewsOfPropertiesChart() {
         return <span>{t(value)}</span>;
     };
 
-    const formatDateTick = (tickItem: string) => {
+    const formatDateTick = (tickItem: string, locale: string) => {
         const date = new Date(tickItem);
         return timeframe === "WEEK"
             ? date
-                  .toLocaleDateString("en-GB", {
+                  .toLocaleDateString(locale, {
                       weekday: "short",
                       day: "2-digit",
                       month: "2-digit",
@@ -149,7 +149,7 @@ export default function ViewsOfPropertiesChart() {
                                 marginBottom: "5px",
                             }}
                         >
-                            Total views: {totalViews}
+                            {t("Total views")}: {totalViews}
                         </p>
                     </div>
                     <div style={{ borderBottom: "1px solid #eee" }}>
@@ -263,7 +263,9 @@ export default function ViewsOfPropertiesChart() {
                     <XAxis
                         visibility={belowMd ? "hidden" : "visible"}
                         dataKey="date"
-                        tickFormatter={formatDateTick}
+                        tickFormatter={(tickItem) =>
+                            formatDateTick(tickItem, i18n.language)
+                        }
                         tickMargin={7}
                         ticks={xAxisTicks}
                         // interval={

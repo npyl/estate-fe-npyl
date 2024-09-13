@@ -25,10 +25,17 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     return (
         <Box flexDirection="row">
             <Typography variant="body2">
-                {propertyDetails?.category?.value ||
-                    contactDetails?.category?.value}{" "}
+                {t(
+                    propertyDetails?.category?.value ??
+                        contactDetails?.category?.value ??
+                        ""
+                )}{" "}
                 {t(`for`)}{" "}
-                {propertyDetails?.state?.value || contactDetails?.state?.value}{" "}
+                {t(
+                    propertyDetails?.state?.value ??
+                        contactDetails?.state?.value ??
+                        ""
+                )}{" "}
                 {propertyDetails?.area || contactDetails?.area} m² |{" "}
                 {formatPrice(propertyDetails?.price) || contactDetails?.price} €
                 {propertyDetails?.state?.key === "RENT" ? t(`/month`) : null}

@@ -4,9 +4,9 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
-import { AuthGuard } from "src/components/authentication/auth-guard";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAllCustomersQuery } from "src/services/customers";
+import { AuthGuard } from "@/components/authentication/auth-guard";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { useAllCustomersQuery } from "@/services/customers";
 import {
     labels,
     // general
@@ -18,9 +18,9 @@ import {
     useDeleteDocumentLabelMutation,
     useDeletePropertyLabelMutation,
 } from "src/services/labels";
-import { useAllPropertiesQuery } from "src/services/properties";
-import { LabelResourceType } from "src/types/label";
-import { ConfirmationDialogBox } from "../components/ConfirmationDialogBox";
+import { useAllPropertiesQuery } from "@/services/properties";
+import { LabelResourceType } from "@/types/label";
+import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { Preview } from "./components/Preview";

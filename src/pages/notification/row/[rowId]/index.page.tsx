@@ -25,9 +25,11 @@ import PropertyRating from "./components/PropertyRating";
 import TourPropertyDetails from "./components/TourPropertyDetails";
 import ListingPropertyDetails from "./components/ListingPropertyDetails";
 import TitleSection from "./components/TitleSection";
+import enGB from "date-fns/locale/en-GB";
+import el from "date-fns/locale/el";
 
 const NotificationDetailPage: NextPage = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const { rowId } = router.query;
     const { data, error } = useGetNotificationByIdQuery(Number(rowId));
@@ -96,6 +98,7 @@ const NotificationDetailPage: NextPage = () => {
           )
         : [];
 
+    const locale = i18n.language === "el" ? el : enGB;
     return (
         <Box>
             {/* FIRST CARD IN UI */}
@@ -126,7 +129,8 @@ const NotificationDetailPage: NextPage = () => {
                                 >
                                     {format(
                                         new Date(notificationDate),
-                                        "dd MMM yyyy"
+                                        "dd MMM yyyy",
+                                        { locale }
                                     )}
                                 </Typography>
                             </Stack>
@@ -230,7 +234,10 @@ const NotificationDetailPage: NextPage = () => {
                                         <Stack mt={3} gap={2} direction="row">
                                             <ListingStateBadge
                                                 stateValue={
-                                                    listing?.state?.value || ""
+                                                    t(
+                                                        listing?.state?.value ??
+                                                            ""
+                                                    ) || ""
                                                 }
                                             />
                                         </Stack>
@@ -248,9 +255,9 @@ const NotificationDetailPage: NextPage = () => {
 
                                         <Stack mt={3} gap={2} direction="row">
                                             <TourPropertyBadges
-                                                stateValue={
+                                                stateValue={t(
                                                     property?.state?.value || ""
-                                                }
+                                                )}
                                                 code={property?.code || ""}
                                             />
                                         </Stack>
