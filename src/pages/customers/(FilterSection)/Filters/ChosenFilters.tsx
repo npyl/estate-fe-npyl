@@ -203,15 +203,16 @@ const ChosenFilters = (props: GridProps) => {
                                             paddingRight: 1,
                                         }}
                                     >
-                                        {label}
-                                        {isRole ? "" : ":"}
+                                        {label}:{/* {isRole ? "" : ":"} */}
                                     </Typography>
                                     <Typography
                                         sx={{ textTransform: "lowercase" }}
                                     >
                                         {Array.isArray(valuesToDisplay)
-                                            ? valuesToDisplay.join(", ")
-                                            : valuesToDisplay}
+                                            ? valuesToDisplay
+                                                  .map((value) => t(value))
+                                                  .join(", ")
+                                            : t(valuesToDisplay)}
                                     </Typography>
                                 </Stack>
                             }
