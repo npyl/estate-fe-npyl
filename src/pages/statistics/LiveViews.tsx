@@ -127,7 +127,7 @@ export default function ViewsChart() {
                             marginTop: "5px",
                         }}
                     >
-                        <b>Time :</b> {timeString}
+                        <b>{t("Time")} :</b> {timeString}
                         :00
                     </p>
                     <hr
@@ -157,7 +157,7 @@ export default function ViewsChart() {
                                 marginBottom: "5px",
                             }}
                         >
-                            <b>Views:</b> {payload[0].value}
+                            <b>{t("Views")}:</b> {payload[0].value}
                         </p>
                     </div>
                 </Box>

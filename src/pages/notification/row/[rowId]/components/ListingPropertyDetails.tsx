@@ -17,7 +17,8 @@ const ListingPropertyDetails: React.FC<ListingPropertyDetailsProps> = ({
     return (
         <>
             <Typography variant="body2" mt={2}>
-                {listing.category.value} | {listing.area} m² | {listing.price}{" "}
+                {t(listing.category.value)} | {listing.area} m² |{" "}
+                {listing.price}{" "}
                 {listing.state.key === "RENT" ? t("€/month") : "€"}
             </Typography>
             <Typography variant="body2">
