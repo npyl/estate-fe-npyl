@@ -75,7 +75,7 @@ const ListItem: FC<ListItemProps & { hidePrice?: boolean }> = (props) => {
                             variant="body2"
                             textAlign="right"
                         >
-                            {value?.toString() || ""}
+                            {t(value?.toString()) || ""}
                         </Typography>
                     )
                 }

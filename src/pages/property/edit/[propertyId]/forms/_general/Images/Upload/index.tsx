@@ -15,6 +15,7 @@ import RejectionFiles from "@/components/upload/errors/RejectionFiles";
 import ImagePreview from "./ImagePreview";
 import { useImageOperations } from "../context/ImageOperations";
 import StyledDropZone from "./styled";
+import { useTranslation } from "react-i18next";
 
 export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
@@ -106,6 +107,7 @@ function UploadImages({
 // ----------------------------------------------------------------------
 
 function Placeholder({ sx, ...other }: StackProps) {
+    const { t } = useTranslation();
     return (
         <Stack
             alignItems="center"
@@ -128,7 +130,7 @@ function Placeholder({ sx, ...other }: StackProps) {
 
             <Box sx={{ p: 3 }}>
                 <Typography gutterBottom variant="h5">
-                    Drop or Select files
+                    {t("Drop or Select files")}
                 </Typography>
             </Box>
         </Stack>

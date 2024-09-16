@@ -61,7 +61,9 @@ const ImagesSection = () => {
                         label={t("Upload Images")}
                         endNode={
                             <SoftButton onClick={openSeeMore}>
-                                {`${t("Edit")} (${images?.length || 0} images)`}
+                                {`${t("Edit")} (${images?.length || 0} ${t(
+                                    "images"
+                                )})`}
                             </SoftButton>
                         }
                     >

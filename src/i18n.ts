@@ -924,7 +924,7 @@ const resources = {
             "Maximum Price": "Maximum Price",
             "Minimum Area": "Minimum Area",
             "Maximum Area": "Maximum Area",
-
+            "Not selected": "Not selected",
             APARTMENT: "apartment",
             STUDIO: "studio",
             MAISONETTE: "maisonette",
@@ -938,6 +938,34 @@ const resources = {
             HOUSEBOAT: "houseboat",
             DETACHED_HOUSE: "detached",
             OTHER_RESIDENTIAL: "other residential",
+
+            images: "images",
+            //
+            Θάλασσα: "Sea",
+            Βουνό: "Mountain",
+            Δάσος: "Forest",
+            Απεριόριστη: "Unlimited",
+            Άσφαλτο: "Road",
+            Πεζόδρομος: "Sidewalk",
+            Πλακόστρωτο: "Paved",
+            Χωματόδρομος: "Dirt Road",
+            "Οικιστική Ζώνη": "Residential Zone",
+            "Εμπορική Ζώνη": "Commercial Zone",
+            "Αγροτική Ζώνη": "Agricultural Zone",
+            "Βιομηχανική Ζώνη": "Industrial Zone",
+            "Εκτός Σχεδίου": "Unincorporated Zone",
+            "Ζώνη Ανάπλασης": "Recreational Zone",
+
+            Άγνωστο: "Unknown",
+            "Εντός Πολεοδομικού Σχεδίου": "Within City Plan",
+            "Εκτός Πολεοδομικού Σχεδίου": "Outside of City Plan",
+            "Εντός Κατοικημένης Ζώνης": "Residential Zone",
+            Ισόγειο: "Ground Floor",
+            Υπόγειο: "Basement",
+            Ημιυπόγειο: "Semi-basement",
+            Ημιόροφος: "Mezzanine",
+            Ανατολικός: "East",
+            Ανατολικοδυτικός: "",
         },
     },
     el: {
@@ -1067,7 +1095,7 @@ const resources = {
             "Date of Entry": "Ημ/νία Καταχώρησης",
 
             "Drop or Select files": "Ρίξτε ή Επιλέξτε αρχεία",
-
+            images: "εικόνες",
             "Download Photos": "Λήψη Εικόνων",
             "Please select between All or only Public photos":
                 "Παρακαλώ επιλέξτε μεταξύ Όλων ή μόνο Δημόσιων εικόνων",

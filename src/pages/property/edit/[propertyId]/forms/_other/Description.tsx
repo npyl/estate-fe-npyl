@@ -8,6 +8,7 @@ import { useGlobals } from "src/hooks/useGlobals";
 
 const useEnums = () => {
     const data = useGlobals();
+
     const details = useMemo(() => data?.property?.details, [data]);
 
     const enums = useMemo(
