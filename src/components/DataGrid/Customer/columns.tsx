@@ -74,6 +74,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         field: "firstName",
         headerName: t("First Name").toString(),
         headerAlign: "center",
+        sortable: false,
         align: "center",
     },
     {
@@ -81,6 +82,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         field: "lastName",
         headerName: t("Last Name").toString(),
         headerAlign: "center",
+        sortable: false,
         align: "center",
     },
     {
@@ -88,6 +90,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         field: "mobilePhone",
         headerName: t("Mobile Phone").toString(),
         headerAlign: "center",
+        sortable: false,
         align: "center",
     },
 
@@ -97,6 +100,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Price").toString(),
         headerAlign: "center",
         align: "center",
+        sortable: false,
         renderCell: RenderPriceCell,
     },
 
@@ -106,6 +110,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Region").toString(),
         headerAlign: "center",
         align: "center",
+        sortable: false,
         renderCell: RenderAreaCell,
     },
 
@@ -115,6 +120,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Date of Entry").toString(),
         headerAlign: "center",
         align: "center",
+        sortable: false,
         renderCell: renderDateCell,
     },
     {
@@ -123,6 +129,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("_SubCategory").toString(),
+        sortable: false,
         renderCell: StatusColor,
     },
     {
@@ -131,6 +138,7 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Labels").toString(),
+        sortable: false,
         renderCell: RenderLabelsCell,
     },
 ];

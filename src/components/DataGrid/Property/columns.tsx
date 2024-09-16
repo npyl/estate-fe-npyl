@@ -147,7 +147,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         renderCell: renderImage,
-
+        sortable: false,
         flex: 1,
     },
     {
@@ -155,7 +155,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Code") as string,
         headerAlign: "center",
         align: "center",
-
+        sortable: false,
         flex: 1,
     },
     {
@@ -164,7 +164,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         headerName: t("Parent Category") as string,
         renderCell: (params) => t((params.value as KeyValue)?.value),
-
+        sortable: false,
         flex: 1,
     },
     {
@@ -172,6 +172,8 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Category") as string,
+        sortable: false,
+
         renderCell: (params) => t((params.value as KeyValue)?.value),
 
         flex: 1,
@@ -180,6 +182,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "price",
         headerAlign: "center",
         align: "center",
+        sortable: false,
         headerName: t("Price") as string,
         renderCell: (params: GridCellParams) => {
             const formattedPrice = formatNumberWithPeriod(params.value);
@@ -194,7 +197,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("State") as string,
         renderCell: statusColor,
-
+        sortable: false,
         flex: 1,
     },
     {
@@ -202,6 +205,8 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Area") as string,
+        sortable: false,
+
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
@@ -214,7 +219,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
-
+        sortable: false,
         flex: 1,
     },
     {
@@ -223,6 +228,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("Location") as string,
         renderCell: renderLocation,
+        sortable: false,
         flex: 1,
     },
 
@@ -280,6 +286,7 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
+        sortable: false,
         renderCell: renderImage,
     },
     {
@@ -287,7 +294,7 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Reference ID") || "",
         width: 180,
         headerAlign: "center",
-
+        sortable: false,
         align: "center",
     },
     {
@@ -296,6 +303,7 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
+        sortable: false,
         renderCell: (params) => params.value?.key,
     },
     {
@@ -304,6 +312,8 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
+        sortable: false,
+
         renderCell: (params) => params.value?.key,
     },
 ];

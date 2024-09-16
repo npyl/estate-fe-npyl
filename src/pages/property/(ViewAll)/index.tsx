@@ -79,6 +79,7 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
                         onPaginationModelChange={handlePaginationChange}
                         checkboxSelection
                         onRowSelectionModelChange={setSelectedRows as any}
+                        disableColumnMenu
                     />
                 ) : (
                     <DataGrid
@@ -88,6 +89,7 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
                         checkboxSelection
                         totalRows={totalRows}
                         onPaginationModelChange={handlePaginationChange}
+                        disableColumnMenu
                     />
                 )}
             </Paper>

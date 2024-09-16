@@ -876,6 +876,8 @@ const resources = {
             "Εκθεσειακός χώρος": "Showroom",
             "Κτίριο επιχειρηματικών χώρων": "Business building",
             Μονοκατοικία: "Detached",
+            Επιχείρηση: "Business building",
+            Άλλο: "Other",
             Βίλα: "Villa",
             Μεζονέτα: "Maisonette",
             "Πλωτό σπίτι": "Houseboat",
@@ -938,7 +940,7 @@ const resources = {
             HOUSEBOAT: "houseboat",
             DETACHED_HOUSE: "detached",
             OTHER_RESIDENTIAL: "other residential",
-
+            "Hide Price": "Hide Price",
             images: "images",
             //
             Θάλασσα: "Sea",
@@ -1237,6 +1239,7 @@ const resources = {
             Area: "Εμβαδόν",
             "Plot Area": "Εμβαδόν Οικοπέδου",
             Price: "Τιμή",
+            "Hide Price": "Απόκρυψη τιμής",
             Statistics: "Στατιστικά",
             "Total views": "Συνολικές προβολές",
             Time: "Ώρα",
