@@ -24,4 +24,25 @@ const useHumanReadable = (
     return result;
 };
 
+const useHumanReadableCallback = () => {
+    const { i18n } = useTranslation();
+
+    const greekVersion = useMemo(() => i18n.language === "el", [i18n.language]);
+
+    const getHumanReadable = (
+        code: string | undefined,
+        data: IGeoLocation[] | undefined
+    ) => {
+        if (!code) return "";
+        if (!isNumberString(code)) return code;
+
+        const found = data?.find((r) => r.areaID === +code);
+
+        return (greekVersion ? found?.nameGR : found?.nameEN) || "";
+    };
+
+    return { getHumanReadable };
+};
+
+export { useHumanReadableCallback };
 export default useHumanReadable;

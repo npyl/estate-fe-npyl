@@ -6,23 +6,15 @@ import { ShapeData } from "src/components/Map/types";
 import { decodeShape } from "src/components/Map/util";
 import {
     useGetMunicipalitiesQuery,
-    useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
     useLazyGetMunicipalitiesQuery,
     useLazyGetNeighbourhoodsQuery,
 } from "src/services/location";
-
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
 import useGetCustomer from "@/hooks/customer";
-import useHumanReadable from "@/components/Location/hook";
 import { IGeoLocation } from "@/types/geolocation";
-
-// INFO: hack to fix hook rules violation; this "component" returns a string which is actually used with join(', ') later on
-const GetHumanReadable: FC<{ code: string; data: any }> = ({ code, data }) => {
-    const text = useHumanReadable(code, data);
-    return text;
-};
+import { useHumanReadableCallback } from "@/components/Location/hook";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -87,13 +79,13 @@ export const ViewLocationMini = ({
         fetchAllNeighbourhoods();
     }, [cityCodes, getNeighbourhoods]);
 
+    const { getHumanReadable } = useHumanReadableCallback();
+
     const renderListItem = (label: string, codes: string[], data: any) => (
         <ListItem
             label={t(label)}
             value={codes
-                .map((code) => (
-                    <GetHumanReadable code={code} data={data} key={code} />
-                ))
+                .map((code) => getHumanReadable(code, data))
                 .filter(Boolean)
                 .join(", ")}
         />
