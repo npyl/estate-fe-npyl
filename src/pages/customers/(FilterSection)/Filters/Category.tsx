@@ -97,7 +97,7 @@ export default function FilterCategory() {
                                 <Checkbox
                                     checked={subCategories.indexOf(key) > -1}
                                 />
-                                {value}
+                                {t(value)}
                             </MenuItem>
                         )
                     ),

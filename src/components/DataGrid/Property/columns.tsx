@@ -14,7 +14,7 @@ function renderImage(
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
     return (
-        <Box sx={{ position: "relative", width: "100%", height: "85%" }}>
+        <Box sx={{ position: "relative", width: "100%", height: "70%" }}>
             <Image
                 src={
                     typeof propertyImage === "string"
@@ -145,10 +145,11 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "propertyImage",
         headerName: t("Thumbnail") as string,
         align: "center",
+
         headerAlign: "center",
         renderCell: renderImage,
         sortable: false,
-        flex: 1,
+        flex: 1.1,
     },
     {
         field: "code",
@@ -156,7 +157,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         sortable: false,
-        flex: 1,
+        flex: 0.8,
     },
     {
         field: "parentCategory",
@@ -165,7 +166,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Parent Category") as string,
         renderCell: (params) => t((params.value as KeyValue)?.value),
         sortable: false,
-        flex: 1,
+        flex: 1.2,
     },
     {
         field: "category",
@@ -176,7 +177,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
 
         renderCell: (params) => t((params.value as KeyValue)?.value),
 
-        flex: 1,
+        flex: 1.7,
     },
     {
         field: "price",
