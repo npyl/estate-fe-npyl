@@ -3,6 +3,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
+import "dayjs/locale/en"; // English locale
+import "dayjs/locale/el"; // Greek locale
 import Link from "next/link";
 import {
     ContactNotification,
@@ -10,8 +12,32 @@ import {
 } from "@/types/notification/notification";
 import { ListingNotification } from "@/types/notification/listing";
 
-const formatTourDate = (dateString: any) => {
-    return dayjs(dateString).format("D MMMM YYYY");
+//Mapper gia na exw tous mines stin geniki giati me to dayjs tous fernei like "Αυγουστος".
+const greekGenitiveMonths = [
+    "Ιανουαρίου",
+    "Φεβρουαρίου",
+    "Μαρτίου",
+    "Απριλίου",
+    "Μαΐου",
+    "Ιουνίου",
+    "Ιουλίου",
+    "Αυγούστου",
+    "Σεπτεμβρίου",
+    "Οκτωβρίου",
+    "Νοεμβρίου",
+    "Δεκεμβρίου",
+];
+
+const formatTourDate = (dateString: any, language?: string) => {
+    const date = dayjs(dateString);
+    const locale = language === "el" ? "el" : "en";
+    if (language === "el") {
+        const day = date.format("D");
+        const monthIndex = parseInt(date.format("M"), 10) - 1; // Get zero-indexed month
+        const year = date.format("YYYY");
+        return `${day} ${greekGenitiveMonths[monthIndex]} ${year}`;
+    }
+    return dayjs(dateString).locale(locale).format("D MMMM YYYY");
 };
 
 type TourType = "inPerson" | "askQuestion";
@@ -82,7 +108,7 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
                 </Typography>
                 {row?.tourDate ? (
                     <Typography variant="body2">
-                        {formatTourDate(row?.tourDate)}
+                        - {formatTourDate(row?.tourDate, i18n.language)}
                     </Typography>
                 ) : null}
                 <Typography variant="body2">{row?.tourTime}</Typography>
