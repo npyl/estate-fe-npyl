@@ -1,4 +1,11 @@
-import { Box, Stack, Typography, Grid, useMediaQuery } from "@mui/material";
+import {
+    Box,
+    Stack,
+    Typography,
+    Grid,
+    useMediaQuery,
+    useTheme,
+} from "@mui/material";
 import Image from "src/components/image/Image";
 import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../styles";
@@ -6,7 +13,6 @@ import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
 import { MatchResult } from "./types";
-import useTheme from "@mui/system/useTheme";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 

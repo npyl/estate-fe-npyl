@@ -11,9 +11,9 @@ import {
     Slider,
     ToggleButton,
     ToggleButtonGroup,
+    useTheme,
     Typography,
 } from "@mui/material";
-import useTheme from "@mui/system/useTheme";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";

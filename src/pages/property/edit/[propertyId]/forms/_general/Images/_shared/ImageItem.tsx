@@ -4,7 +4,7 @@ import React from "react";
 import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 import { ImageItemProps } from "./types";
 import SmartImage from "./SmartImage";
-import { SxProps } from "@mui/system";
+import { SxProps } from "@mui/material";
 import { Theme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 

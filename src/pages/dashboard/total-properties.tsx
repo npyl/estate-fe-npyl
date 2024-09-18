@@ -1,6 +1,5 @@
-import { Card, CardHeader } from "@mui/material";
+import { Card, CardHeader, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import useTheme from "@mui/system/useTheme";
 import dynamic from "next/dynamic"; // Import 'next/dynamic'
 import PropTypes from "prop-types";
 import useChart from "src/components/chart/use-chart";
@@ -24,6 +23,7 @@ const StyledChart = styled(DynamicChart)(({ theme }) => ({
         top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
     },
 }));
+
 interface ChartData {
     label: string;
     value: number;

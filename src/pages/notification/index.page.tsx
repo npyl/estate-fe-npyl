@@ -17,7 +17,7 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { Listings, Tours, WorkApplications, Reviews } from "./tabs";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import UnReadBadge from "./components/UnReadBadge";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material";
 import Agreements from "./tabs/agreements";
 
 const FilterFormControl = styled(FormControl)(({ theme }) => ({

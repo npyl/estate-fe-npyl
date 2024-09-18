@@ -48,7 +48,6 @@
         "@mui/icons-material": "^5.15.20",
         "@mui/lab": "^5.0.0-alpha.155",
         "@mui/material": "^5.15.20",
-        "@mui/system": "^5.11.15",
         "@mui/x-data-grid": "^6.0.4",
         "@mui/x-date-pickers": "^7.5.0",
         "@pdfme/common": "3.4.3",

@@ -1,10 +1,10 @@
 import {
     Box,
-    Divider,
     Grid,
     Paper,
     PopperProps,
     Stack,
+    Theme,
     Typography,
     useMediaQuery,
 } from "@mui/material";
@@ -19,7 +19,6 @@ import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { useSearchCustomerQuery } from "@/services/customers";
 import { SearchCategory } from "./types";
-import { Theme } from "@mui/system/createTheme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AgreementItems from "./AgreementItems";

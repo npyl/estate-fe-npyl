@@ -1,6 +1,6 @@
 import { Popper, PopperProps, Stack, StackProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { alpha } from "@mui/system";
+import { alpha } from "@mui/material";
 import { bgBlur } from "src/utils/cssStyles";
 import { SearchCategory } from "./dashboard-navbar-search/types";
 

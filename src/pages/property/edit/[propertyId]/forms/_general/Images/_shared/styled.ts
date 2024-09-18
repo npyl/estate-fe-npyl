@@ -1,4 +1,4 @@
-import { SxProps } from "@mui/system";
+import { SxProps } from "@mui/material";
 import { Theme } from "@mui/material";
 
 const WrapperSx: SxProps<Theme> = {

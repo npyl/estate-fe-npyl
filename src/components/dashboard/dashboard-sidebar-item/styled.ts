@@ -1,14 +1,12 @@
 import type { ButtonProps } from "@mui/material";
 import { Button as MuiButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { shouldForwardProp as muiShouldForwardProp } from "@mui/system";
 
 interface LeafButtonProps extends ButtonProps {
     isActive?: boolean;
 }
 
-const shouldForwardProp = (prop: PropertyKey) =>
-    prop !== "isActive" && muiShouldForwardProp(prop);
+const shouldForwardProp = (prop: PropertyKey) => prop !== "isActive";
 
 const NavigationButton = styled(MuiButton, {
     shouldForwardProp,
