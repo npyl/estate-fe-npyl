@@ -3,8 +3,7 @@ import { MouseEvent, useState, useCallback } from "react";
 import StyledMenu from "@/components/StyledMenu";
 import SubbarItems from "./Items";
 import { useTranslation } from "react-i18next";
-import { BsPlusCircle } from "react-icons/bs";
-
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 import { Users as UsersIcon } from "@/icons/users";
@@ -173,7 +172,7 @@ const Subbar = () => {
                     <Button
                         variant="contained"
                         color="primary"
-                        startIcon={<BsPlusCircle />}
+                        startIcon={<AddCircleOutlineIcon />}
                         onClick={showDropdown}
                         sx={{
                             color: "white",
