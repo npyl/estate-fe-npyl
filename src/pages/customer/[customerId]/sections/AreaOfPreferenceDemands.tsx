@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Map from "src/components/Map/Map";
 import { ShapeData } from "src/components/Map/types";
@@ -17,6 +17,12 @@ import { ListItem } from "src/components/List";
 import useGetCustomer from "@/hooks/customer";
 import useHumanReadable from "@/components/Location/hook";
 import { IGeoLocation } from "@/types/geolocation";
+
+// INFO: hack to fix hook rules violation; this "component" returns a string which is actually used with join(', ') later on
+const GetHumanReadable: FC<{ code: string; data: any }> = ({ code, data }) => {
+    const text = useHumanReadable(code, data);
+    return text;
+};
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -81,14 +87,13 @@ export const ViewLocationMini = ({
         fetchAllNeighbourhoods();
     }, [cityCodes, getNeighbourhoods]);
 
-    const getHumanReadable = (code: string, data: any) =>
-        useHumanReadable(code, data);
-
     const renderListItem = (label: string, codes: string[], data: any) => (
         <ListItem
             label={t(label)}
             value={codes
-                .map((code) => getHumanReadable(code, data))
+                .map((code) => (
+                    <GetHumanReadable code={code} data={data} key={code} />
+                ))
                 .filter(Boolean)
                 .join(", ")}
         />

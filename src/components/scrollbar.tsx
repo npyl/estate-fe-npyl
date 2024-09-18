@@ -25,3 +25,5 @@ export const Scrollbar = forwardRef<
         />
     );
 });
+
+Scrollbar.displayName = "Scrollbar";
