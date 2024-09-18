@@ -17,13 +17,8 @@
             "@pdfme/schemas": "3.4.3"
         }
     },
-    "resolutions": {
-        "@pdfme/common": "3.4.3",
-        "@pdfme/schemas/@pdfme/common": "3.4.3",
-        "@pdfme/generator/@pdfme/common": "3.4.3",
-        "@pdfme/ui/@pdfme/schemas": "3.4.3"
-    },
     "scripts": {
+        "preinstall": "node tools/preinstall.js",
         "dev": "next",
         "build": "next build",
         "start": "next start -p 3000",
