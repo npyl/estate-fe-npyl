@@ -6,7 +6,8 @@ WORKDIR /usr/src
 # copy source files
 COPY . /usr/src
 RUN rm -rf .next node_modules package-lock.json yarn.lock
-# install dependencies (See doc/build.md for build errors and use --ignore-optional for yarn)
+# install dependencies
+RUN npm i -g only-allow
 RUN npm i
 # start app
 RUN npm run build
