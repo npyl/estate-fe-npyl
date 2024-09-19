@@ -84,4 +84,6 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
     }
 );
 
+Label.displayName = "Label";
+
 export default Label;

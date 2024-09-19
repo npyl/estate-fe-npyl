@@ -1,22 +1,20 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Map from "src/components/Map/Map";
 import { ShapeData } from "src/components/Map/types";
 import { decodeShape } from "src/components/Map/util";
 import {
     useGetMunicipalitiesQuery,
-    useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
     useLazyGetMunicipalitiesQuery,
     useLazyGetNeighbourhoodsQuery,
 } from "src/services/location";
-
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
 import useGetCustomer from "@/hooks/customer";
-import useHumanReadable from "@/components/Location/hook";
 import { IGeoLocation } from "@/types/geolocation";
+import { useHumanReadableCallback } from "@/components/Location/hook";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -81,8 +79,7 @@ export const ViewLocationMini = ({
         fetchAllNeighbourhoods();
     }, [cityCodes, getNeighbourhoods]);
 
-    const getHumanReadable = (code: string, data: any) =>
-        useHumanReadable(code, data);
+    const { getHumanReadable } = useHumanReadableCallback();
 
     const renderListItem = (label: string, codes: string[], data: any) => (
         <ListItem

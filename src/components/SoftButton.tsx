@@ -1,12 +1,26 @@
-import { Button } from "@mui/material";
-import { alpha, styled } from "@mui/system";
+import Button, { ButtonProps } from "@mui/material/Button";
+import { alpha, styled } from "@mui/material/styles";
 
-const SoftButton = styled(Button)(({ theme, color = "primary" }) => ({
-    color: theme.palette[color].main,
-    backgroundColor: alpha(theme.palette[color].main, 0.16),
-    "&:hover": {
-        backgroundColor: alpha(theme.palette[color].main, 0.32),
-    },
-}));
+type ColorType =
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning";
+
+interface SoftButtonProps extends Omit<ButtonProps, "color"> {
+    color?: ColorType;
+}
+
+const SoftButton = styled(Button)<SoftButtonProps>(
+    ({ theme, color = "primary" }) => ({
+        color: theme.palette[color].main,
+        backgroundColor: alpha(theme.palette[color].main, 0.16),
+        "&:hover": {
+            backgroundColor: alpha(theme.palette[color].main, 0.32),
+        },
+    })
+);
 
 export default SoftButton;

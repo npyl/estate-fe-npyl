@@ -1,5 +1,5 @@
 import { Divider, Grid, List, Paper, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box } from "@mui/material";
 import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";

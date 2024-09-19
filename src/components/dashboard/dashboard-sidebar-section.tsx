@@ -3,6 +3,7 @@ import { List, ListSubheader } from "@mui/material";
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import DashboardSidebarItem from "./dashboard-sidebar-item";
+import { TranslationType } from "@/types/translation";
 
 interface Item {
     path?: string;
@@ -23,15 +24,17 @@ const renderNavItems = ({
     depth = 0,
     items,
     path,
+    t,
 }: {
     depth?: number;
     items: Item[];
     path: string;
+    t: TranslationType;
 }): JSX.Element => (
     <List disablePadding>
         {items.reduce(
             (acc: JSX.Element[], item) =>
-                reduceChildRoutes({ acc, depth, item, path }),
+                reduceChildRoutes({ acc, depth, item, path, t }),
             []
         )}
     </List>
@@ -42,14 +45,16 @@ const reduceChildRoutes = ({
     depth,
     item,
     path,
+    t,
 }: {
     acc: JSX.Element[];
     depth: number;
     item: Item;
     path: string;
+    t: TranslationType;
 }): Array<JSX.Element> => {
-    const { t } = useTranslation();
     const key = `${item.title}-${depth}`;
+
     const partialMatch =
         item.title === t("Dashboard") && path === "/"
             ? true
@@ -74,6 +79,7 @@ const reduceChildRoutes = ({
                     depth: depth + 1,
                     items: item.children,
                     path,
+                    t,
                 })}
             </DashboardSidebarItem>
         );
@@ -104,6 +110,8 @@ export const DashboardSidebarSection: FC<DashboardSidebarSectionProps> = (
 ) => {
     const { items, path, title, ...other } = props;
 
+    const { t } = useTranslation();
+
     return (
         <List
             subheader={
@@ -127,6 +135,7 @@ export const DashboardSidebarSection: FC<DashboardSidebarSectionProps> = (
             {renderNavItems({
                 items,
                 path,
+                t,
             })}
         </List>
     );

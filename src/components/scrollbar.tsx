@@ -1,6 +1,6 @@
 import type { Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import type { SxProps } from "@mui/system";
+import type { SxProps } from "@mui/material";
 import type { MutableRefObject } from "react";
 import { forwardRef } from "react";
 import SimpleBar, { Props } from "simplebar-react";
@@ -25,3 +25,5 @@ export const Scrollbar = forwardRef<
         />
     );
 });
+
+Scrollbar.displayName = "Scrollbar";

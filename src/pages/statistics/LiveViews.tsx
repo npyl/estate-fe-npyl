@@ -10,7 +10,7 @@ import {
     TooltipProps,
 } from "recharts";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
-import { Box, Stack } from "@mui/system";
+import { Box, Stack } from "@mui/material";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetDailyViewsQuery } from "@/services/publicDashboard";

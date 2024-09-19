@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import type { EditorProps } from "react-draft-wysiwyg";
 import { styled } from "@mui/material/styles";
 import type { Theme } from "@mui/material";
-import type { SxProps } from "@mui/system";
+import type { SxProps } from "@mui/material";
 
 const Editor = dynamic(
     async () => {

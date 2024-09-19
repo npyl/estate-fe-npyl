@@ -23,6 +23,8 @@ const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
     <form ref={ref} {...props} method="POST" />
 ));
 
+DialogForm.displayName = "DialogForm";
+
 export type DialogProps = {
     title?: ReactNode;
     content?: ReactNode;
