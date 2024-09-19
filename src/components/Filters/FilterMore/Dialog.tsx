@@ -39,7 +39,9 @@ export default function FilterMore({
             </DialogTitle>
 
             <StyledDialogContent>
-                <Stack spacing={2}>{children}</Stack>
+                <Stack spacing={2} width={"100%"}>
+                    {children}
+                </Stack>
             </StyledDialogContent>
 
             <DialogActions sx={{ justifyContent: "space-between" }}>

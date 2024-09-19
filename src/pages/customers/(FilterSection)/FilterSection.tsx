@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Paper, PaperProps, Stack } from "@mui/material";
+import { ClickAwayListener, Paper, PaperProps, Stack } from "@mui/material";
 import {
     selectLabels,
     setLabels,
@@ -52,10 +52,11 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                 labels={labels}
                 setLabels={setLabels}
             />
+
             <PriceSelect type={"price"} />
             <PriceSelect type={"area"} />
+
             <FilterManager />
-            <FilterStatus />
         </>
     );
 
@@ -105,6 +106,8 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     onResetFilter={() => {}}
                 >
                     {filterContent}
+                    <FilterStatus />{" "}
+                    {/* the status is only visible inside the dialog! */}
                 </FilterMore>
             ) : null}
         </>

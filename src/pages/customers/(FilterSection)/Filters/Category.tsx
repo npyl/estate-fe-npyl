@@ -20,7 +20,10 @@ import {
 import { useDispatch, useSelector } from "src/store";
 import { KeyValue } from "src/types/KeyValue";
 
-export default function FilterCategory() {
+interface FilterCategoryProps {
+    sx?: object;
+}
+export default function FilterCategory({ sx }: FilterCategoryProps) {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
@@ -58,7 +61,7 @@ export default function FilterCategory() {
     const isDisabled = parentCategories.length === 0;
 
     return (
-        <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
+        <FormControl sx={{ minWidth: "130px" }}>
             <InputLabel>{t("Category")}</InputLabel>
             <Select
                 multiple
