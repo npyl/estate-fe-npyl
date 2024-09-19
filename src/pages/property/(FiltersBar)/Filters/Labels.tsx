@@ -63,6 +63,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
         <FormControl
             sx={{
                 minWidth: "130px",
+                maxWidth: "200px",
                 maxHeight: "38px",
 
                 display: {

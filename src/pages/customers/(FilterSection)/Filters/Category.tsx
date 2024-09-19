@@ -58,7 +58,7 @@ export default function FilterCategory() {
     const isDisabled = parentCategories.length === 0;
 
     return (
-        <FormControl sx={{ minWidth: "130px" }}>
+        <FormControl sx={{ minWidth: "130px", maxWidth: "200px" }}>
             <InputLabel>{t("Category")}</InputLabel>
             <Select
                 multiple

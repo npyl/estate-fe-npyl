@@ -39,7 +39,7 @@ export default function FilterMore({
             </DialogTitle>
 
             <StyledDialogContent>
-                <Stack spacing={2} width={"100%"}>
+                <Stack spacing={2} width={"100%"} paddingInline={6}>
                     {children}
                 </Stack>
             </StyledDialogContent>

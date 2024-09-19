@@ -129,6 +129,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                 <FilterButton
                     sx={{
                         minWidth: "135px",
+                        maxWidth: "200px",
                         width: "100%",
                         textWrap: "nowrap",
                         display: "flex",

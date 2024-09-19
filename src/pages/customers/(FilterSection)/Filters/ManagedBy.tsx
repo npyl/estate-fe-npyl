@@ -38,7 +38,7 @@ export default function FilterManager() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px" }}>
+        <FormControl sx={{ minWidth: "130px", maxWidth: "200px" }}>
             <StyledInputLabel>{t("Managers")}</StyledInputLabel>
             <Select
                 value={manager || ""}

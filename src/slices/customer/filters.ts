@@ -110,6 +110,7 @@ const slice = createSlice({
             state.filters.states = payload;
             !state.ids.includes("states") && state.ids.push("states");
         },
+
         // general delete
         deleteFilter(state, { payload }) {
             const key = payload;
@@ -125,9 +126,8 @@ const slice = createSlice({
             state.filters[key] = initialValue;
         },
 
-        resetState: () => {
-            return initialState;
-        },
+        // Reset all filters to initial state
+        resetState: () => initialState,
     },
 });
 
@@ -154,6 +154,7 @@ export const {
     resetState,
 } = slice.actions;
 
+// Selectors
 export const selectStatus = ({ customerFilters }: RootState) =>
     customerFilters.filters.status;
 export const selectManagerId = ({ customerFilters }: RootState) =>
@@ -188,6 +189,7 @@ export const selectMaxArea = ({ customerFilters }: RootState) =>
 export const selectAll = ({ customerFilters }: RootState) =>
     customerFilters.filters;
 
+// Calculate number of changed properties
 export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.customerFilters,
     (filter) => {
@@ -225,6 +227,7 @@ export const sumOfChangedProperties = createSelector(
     }
 );
 
+// Get changed fields
 export const getChangedFields = createSelector(
     (state: RootState) => state.customerFilters,
     (filter) => {
