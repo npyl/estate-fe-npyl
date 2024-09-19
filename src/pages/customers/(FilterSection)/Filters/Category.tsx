@@ -20,10 +20,7 @@ import {
 import { useDispatch, useSelector } from "src/store";
 import { KeyValue } from "src/types/KeyValue";
 
-interface FilterCategoryProps {
-    sx?: object;
-}
-export default function FilterCategory({ sx }: FilterCategoryProps) {
+export default function FilterCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();

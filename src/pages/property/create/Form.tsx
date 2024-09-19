@@ -22,10 +22,10 @@ import { PPButton } from "@/components/styled";
 import Img from "./Img";
 
 const icons: Record<string, string> = {
-    RESIDENTIAL: "/static/categories/commercial.png",
-    COMMERCIAL: "/static/categories/land.png",
+    RESIDENTIAL: "/static/categories/residential.png",
+    COMMERCIAL: "/static/categories/commercial.png",
     LAND: "/static/categories/other.png",
-    OTHER: "/static/categories/residential.png",
+    OTHER: "/static/categories/other.svg",
 };
 
 interface IFormProps {
@@ -66,6 +66,13 @@ export default function Form({
         [parentCategory, category]
     );
 
+    const handleParentCategorySelect = (key: string) => {
+        setParentCategory(key);
+        if (parentCategory === key) {
+            return;
+        } else setCategory(""); // Reset subcategory when parent category changes
+    };
+
     const handleCategorySelect = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -105,7 +112,7 @@ export default function Form({
                         <Grid key={key} item xs={1} sm={6} width={1} height={1}>
                             <PPButton
                                 clicked={key === parentCategory}
-                                onClick={() => setParentCategory(key)}
+                                onClick={() => handleParentCategorySelect(key)}
                             >
                                 <Img src={icons[key]} />
                                 <Typography mt={1}>{value}</Typography>
@@ -137,6 +144,7 @@ export default function Form({
                     variant="contained"
                     startIcon={<SendIcon />}
                     onClick={handleSave}
+                    disabled={category === "" || isLoading}
                 >
                     {t("Save")}
                 </LoadingButton>

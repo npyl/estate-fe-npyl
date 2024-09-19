@@ -12,6 +12,7 @@ import {
     MenuItem,
     Select,
     Stack,
+    Typography,
 } from "@mui/material";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,8 +23,8 @@ import { useDebounce } from "use-debounce";
 import { useMediaQuery, useTheme } from "@mui/material";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import HandshakeIcon from "@mui/icons-material/Handshake";
-
+import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
+import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 const SEARCH_HISTORY_KEY = "search_history";
 
 export const getSearchHistory = (): string[] => {
@@ -164,12 +165,37 @@ export const DashboardNavbarSearch: FC = () => {
                                     value={searchCategory}
                                     onChange={handleChangeCategory}
                                 >
-                                    <MenuItem value="all">{t("All")}</MenuItem>
+                                    <MenuItem value="all">
+                                        {" "}
+                                        <Stack
+                                            direction="row"
+                                            alignItems="center"
+                                            gap={0.6}
+                                        >
+                                            <SelectAllOutlinedIcon
+                                                sx={{
+                                                    fontSize: "18px",
+                                                }}
+                                            />{" "}
+                                            {t("All")}
+                                        </Stack>
+                                    </MenuItem>
                                     <MenuItem value="properties">
                                         {isMobile ? (
                                             <HomeOutlinedIcon sx={{ mt: 1 }} />
                                         ) : (
-                                            t("Properties")
+                                            <Stack
+                                                direction="row"
+                                                alignItems="center"
+                                                gap={0.6}
+                                            >
+                                                <HomeOutlinedIcon
+                                                    sx={{
+                                                        fontSize: "18px",
+                                                    }}
+                                                />{" "}
+                                                {t("Properties")}
+                                            </Stack>
                                         )}
                                     </MenuItem>
                                     <MenuItem value="customers">
@@ -178,14 +204,38 @@ export const DashboardNavbarSearch: FC = () => {
                                                 sx={{ mt: 1 }}
                                             />
                                         ) : (
-                                            t("Customers")
+                                            <Stack
+                                                direction="row"
+                                                alignItems="center"
+                                                gap={0.6}
+                                            >
+                                                <PersonOutlineOutlinedIcon
+                                                    sx={{
+                                                        fontSize: "18px",
+                                                    }}
+                                                />{" "}
+                                                {t("Customers")}
+                                            </Stack>
                                         )}
                                     </MenuItem>
                                     <MenuItem value="agreements">
                                         {isMobile ? (
-                                            <HandshakeIcon sx={{ mt: 1 }} />
+                                            <HandshakeOutlinedIcon
+                                                sx={{ mt: 1 }}
+                                            />
                                         ) : (
-                                            t("Agreements")
+                                            <Stack
+                                                direction="row"
+                                                alignItems="center"
+                                                gap={0.6}
+                                            >
+                                                <HandshakeOutlinedIcon
+                                                    sx={{
+                                                        fontSize: "18px",
+                                                    }}
+                                                />{" "}
+                                                {t("Agreements")}
+                                            </Stack>
                                         )}
                                     </MenuItem>
                                 </Select>
