@@ -3,16 +3,16 @@
 import { IUser } from "./user";
 
 export type IKanbanComment = {
-    id: string;
-    avatar: string;
-    name: string;
-    createdAt: string;
+    id: number;
+    avatar?: string;
+    name?: string;
+    createdAt?: string;
     messageType: "image" | "text";
     message: string;
 };
 
 export type IKanbanCommentPOST = Omit<IKanbanComment, "id"> & {
-    id?: string;
+    id?: number;
 };
 
 export type IKanbanCard = {
@@ -56,3 +56,9 @@ export type IKanbanState = {
         columnOrder: number[];
     };
 };
+
+// export type IKanbanCommentPOST = {
+//     id?: number;
+//     message: string;
+//     messageType: string;
+// };

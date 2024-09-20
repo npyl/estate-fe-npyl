@@ -10,6 +10,7 @@ import Image from "src/components/image";
 //
 import KanbanDetails from "./details/KanbanDetails";
 import { useEditCardMutation } from "src/services/tickets";
+import { useTheme } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +22,7 @@ type Props = {
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
     const { id, name, attachments, completed, priority, user } = card || {};
-
+    const theme = useTheme();
     const [editCard] = useEditCardMutation();
 
     const [openDetails, setOpenDetails] = useState(false);
@@ -36,6 +37,10 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
             completed: !completed,
             userIds: user.map((u) => u.id),
         });
+    const scrollbarColor = theme.palette.mode === "dark" ? "#444" : "#bbb";
+    const scrollbarHoverColor = theme.palette.mode === "dark" ? "#666" : "#888";
+    const scrollbarTrackColor =
+        theme.palette.mode === "dark" ? "#222" : "#f1f1f1";
 
     if (!card) return null;
 
@@ -81,27 +86,31 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                             onChange={handleChangeComplete}
                         />
 
-                        {!!attachments.length && (
-                            <Image
-                                alt={attachments[0]}
-                                src={attachments[0]}
-                                ratio="4/3"
-                                sx={{
-                                    transition: (theme) =>
-                                        theme.transitions.create("opacity", {
-                                            duration:
-                                                theme.transitions.duration
-                                                    .shortest,
-                                        }),
-                                    ...(completed && {
-                                        opacity: 0.48,
-                                    }),
-                                }}
-                            />
-                        )}
-                        <Box sx={{ flexGrow: 1, overflow: "clip" }}>
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                // overflow: "clip",
+                                maxHeight: "170px",
+                                overflowX: "hidden",
+                                overflowY: "auto",
+                                "&::-webkit-scrollbar": {
+                                    height: "2px",
+                                    width: "9px",
+                                },
+                                "&::-webkit-scrollbar-thumb": {
+                                    backgroundColor: scrollbarColor,
+                                    borderRadius: "10px",
+                                },
+                                "&::-webkit-scrollbar-thumb:hover": {
+                                    backgroundColor: scrollbarHoverColor,
+                                },
+                                "&::-webkit-scrollbar-track": {
+                                    backgroundColor: scrollbarTrackColor,
+                                },
+                            }}
+                        >
                             <Typography
-                                variant="subtitle2"
+                                variant="body1"
                                 sx={{
                                     height: 72,
                                     lineHeight: "72px",
@@ -121,6 +130,45 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                             >
                                 {name}
                             </Typography>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    "& > *:not(:last-child)": {
+                                        marginBottom: "-34px", // Reduce space between the images
+                                    },
+                                    // Add a small gap between images (you can adjust this value)
+                                }}
+                            >
+                                {attachments
+                                    .slice(0, 3)
+                                    .map((attachment, index) => (
+                                        <Image
+                                            key={index}
+                                            alt={`attachment-${index}`}
+                                            src={attachment}
+                                            ratio="4/3"
+                                            sx={{
+                                                height: "70px",
+                                                width: "230px",
+                                                transition: (theme) =>
+                                                    theme.transitions.create(
+                                                        "opacity",
+                                                        {
+                                                            duration:
+                                                                theme
+                                                                    .transitions
+                                                                    .duration
+                                                                    .shortest,
+                                                        }
+                                                    ),
+                                                ...(completed && {
+                                                    opacity: 0.48,
+                                                }),
+                                            }}
+                                        />
+                                    ))}
+                            </Box>
                         </Box>
                     </Paper>
                 )}
