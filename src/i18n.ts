@@ -703,7 +703,7 @@ const resources = {
                 "Please make sure this property has a location or try again later.",
 
             _SubCategory: "Category",
-
+            attachment: "attachment",
             "Company Information": "Company Information",
             "Company Name": "Company Name",
             "Email Address": "Email Address",
@@ -1392,7 +1392,7 @@ const resources = {
             Preserved: "Διατηρητέο",
             "Floor Apartment": "Οροφοδιαμέρισμα",
             _SubCategory: "Κατηγορία",
-
+            attachment: "Συνημμένο",
             "Last update": "Τελευταία αλλαγή",
             "Last entry": "Τελευταία καταχώρηση",
             "Price (cheap first)": "Τιμή (φθηνά πρώτα)",

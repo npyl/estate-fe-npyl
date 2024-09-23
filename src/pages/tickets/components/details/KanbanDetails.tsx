@@ -104,6 +104,7 @@ export default function KanbanDetails({
             editCard({
                 id,
                 name: name,
+                attachments,
                 description,
                 priority,
                 completed: !completed,
