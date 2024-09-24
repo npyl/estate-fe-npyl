@@ -16,8 +16,6 @@ module.exports = {
         },
     },
 
-    transpilePackages: ["@mui/x-charts"],
-
     images: {
         remotePatterns: [
             {
@@ -27,13 +25,5 @@ module.exports = {
                 pathname: "/**",
             },
         ],
-    },
-
-    webpack(config) {
-        config.module.rules.push({
-            test: /\.svg$/,
-            use: ["@svgr/webpack"],
-        });
-        return config;
     },
 };

@@ -1,8 +1,7 @@
+import { useRef, ChangeEvent, FC, useState } from "react";
 import { MenuItem, Paper, Popper, Stack, TextField } from "@mui/material";
-import { ChangeEvent, FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
-
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
@@ -13,17 +12,26 @@ import { styled } from "@mui/material/styles";
 
 const StyledTextField = styled(TextField)({
     position: "absolute",
-    top: 11,
-    left: 10,
-
-    width: "calc(100% - 100px)",
-
+    width: "30%",
+    top: 9,
+    left: "50%",
+    transform: "translateX(-50%)",
     backgroundColor: "white",
-    borderRadius: "10px",
+    borderRadius: "20px",
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-
+    transition: "all 0.3s ease-in-out",
+    "& .MuiInputBase-input": {
+        paddingLeft: 5,
+    },
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "20px",
+        height: "45px",
+    },
     "& .MuiOutlinedInput-notchedOutline": {
         borderColor: "rgba(0, 0, 0, 0.23)",
+    },
+    "&:focus-within": {
+        width: "calc(100% - 9px)",
     },
 });
 
@@ -39,33 +47,25 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
         suggestions: { data },
         clearSuggestions,
     } = usePlacesAutocomplete();
-
     const textFieldRef = useRef(null);
-
     const { t } = useTranslation();
+    const [isFocused, setIsFocused] = useState(false);
 
     const handleClick = async (
         o: google.maps.places.AutocompletePrediction
     ) => {
         if (!onSearchSelect) return;
-
         try {
             clearSuggestions();
-
-            // get street, number, zipCode
             const results = await getGeocode({
                 placeId: o.place_id,
                 language: "el",
             });
             if (results.length === 0) return null;
-
             const { address_components } = results[0];
             if (!address_components) return null;
-
-            // get lat, lng
             const latLng = getLatLng(results[0]);
             if (!latLng) return null;
-
             const street = getAddressComponent(address_components, "route");
             const number = getAddressComponent(
                 address_components,
@@ -74,8 +74,7 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
             const zipCode = getAddressComponent(
                 address_components,
                 "postal_code"
-            ).replace(/\s/g, ""); // remove spaces
-
+            ).replace(/\s/g, "");
             onSearchSelect?.(
                 { street, number, zipCode },
                 latLng.lat,
@@ -101,7 +100,6 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
                     startAdornment: <SearchIcon />,
                 }}
             />
-
             {value.length > 3 ? (
                 <Popper
                     open

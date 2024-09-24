@@ -9,10 +9,10 @@ import CategoryViewsBarChart from "./CategoryViews";
 import PopularProperties from "./Popular";
 
 const CHARTS = [
-    <ViewsChart />,
-    <PropertyViewLineChart />,
-    <CategoryViewsBarChart />,
-    <PopularProperties />,
+    <ViewsChart key="ViewsChart" />,
+    <PropertyViewLineChart key="PropertyViewChart" />,
+    <CategoryViewsBarChart key="CategoryViewsBarChart" />,
+    <PopularProperties key="PopularPropertiesChart" />,
 ];
 
 const Statistics: NextPage = () => (

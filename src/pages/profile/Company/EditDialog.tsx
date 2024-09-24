@@ -23,6 +23,8 @@ const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
     <form ref={ref} {...props} method="POST" />
 ));
 
+DialogForm.displayName = "DialogForm";
+
 interface FormProps {
     open: boolean;
     onClose: () => void;

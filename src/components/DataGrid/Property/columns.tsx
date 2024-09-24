@@ -13,6 +13,7 @@ function renderImage(
 ) {
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
+
     return (
         <Box sx={{ position: "relative", width: "100%", height: "85%" }}>
             <Image
@@ -50,11 +51,11 @@ function renderImage(
     );
 }
 
-function renderLocation(params: GridCellParams<IPropertyResultResponse>) {
+function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
         params.row || {};
 
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
 
     const addressParts =
         i18n.language === "en"
@@ -62,6 +63,7 @@ function renderLocation(params: GridCellParams<IPropertyResultResponse>) {
             : [regionGR, cityGR, complexGR];
 
     const address = addressParts.filter((part) => part).join(", ");
+
     return (
         <Typography
             sx={{ fontSize: "small", textAlign: "center", textWrap: "wrap" }}
@@ -96,7 +98,7 @@ const STATUS_COLORS: StatusColors = {
     UNDER_MAINTENANCE: "#E0067C",
 };
 
-function statusColor(params: GridCellParams) {
+function StatusColor(params: GridCellParams) {
     const { t } = useTranslation();
 
     if (!params.value) return <></>;
@@ -207,8 +209,8 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("State") as string,
-        renderCell: statusColor,
         sortable: false,
+        renderCell: StatusColor,
         flex: 1,
     },
     {
@@ -238,53 +240,10 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Location") as string,
-        renderCell: renderLocation,
         sortable: false,
+        renderCell: RenderLocation,
         flex: 1,
     },
-
-    // {
-    //     field: "createdAt",
-    //     headerAlign: "center",
-    //     align: "center",
-    //     headerName: t("Creation Date") as string,
-
-    //     flex: 1,
-
-    //     renderCell: (params) => {
-    //         const { i18n } = useTranslation();
-    //         const date = new Date(params.value);
-
-    //         return i18n.language === "el"
-    //             ? date.toLocaleDateString("el-GR", {
-    //                   year: "numeric",
-    //                   month: "long",
-    //                   day: "numeric",
-    //               })
-    //             : date.toDateString();
-    //     },
-    // },
-    // {
-    //     field: "updatedAt",
-    //     headerAlign: "center",
-    //     align: "center",
-    //     headerName: t("Updated At") as string,
-
-    //     flex: 1,
-
-    //     renderCell: (params) => {
-    //         const { i18n } = useTranslation();
-    //         const date = new Date(params.value);
-
-    //         return i18n.language === "el"
-    //             ? date.toLocaleDateString("el-GR", {
-    //                   year: "numeric",
-    //                   month: "long",
-    //                   day: "numeric",
-    //               })
-    //             : date.toDateString();
-    //     },
-    // },
 ];
 
 //

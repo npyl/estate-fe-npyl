@@ -1,9 +1,15 @@
-import { useGetPropertyByCodeQuery } from "@/services/properties";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Avatar, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
+import {
+    Avatar,
+    Chip,
+    Divider,
+    Grid,
+    Paper,
+    Typography,
+    useTheme,
+} from "@mui/material";
 import { green, purple, yellow } from "@mui/material/colors";
 import { alpha } from "@mui/material/styles";
-import useTheme from "@mui/system/useTheme";
 import { format } from "date-fns"; // for date formatting
 import Link from "next/link";
 import { FC } from "react";
