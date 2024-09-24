@@ -7,7 +7,10 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
-
+import { NormalBadge } from "@/components/PropertyCard/styled";
+import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
+import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
 function renderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
 ) {
@@ -98,6 +101,44 @@ const STATUS_COLORS: StatusColors = {
     UNDER_MAINTENANCE: "#E0067C",
 };
 
+const categoryToIcon = (category: string) => {
+    switch (category.trim().toLowerCase()) {
+        case "κατοικία":
+            return (
+                <HomeOutLinedIcon
+                    sx={{
+                        marginRight: 1,
+                        color: "neutral.600",
+                        fontSize: "21px",
+                    }}
+                />
+            );
+        case "επαγγελματική στέγη":
+            return (
+                <BusinessOutlinedIcon
+                    sx={{
+                        marginRight: 1,
+                        color: "neutral.600",
+                        fontSize: "21px",
+                    }}
+                />
+            );
+        case "γη":
+            return (
+                <LandslideOutlinedIcon
+                    sx={{
+                        marginRight: 1,
+                        color: "neutral.600",
+                        fontSize: "21px",
+                    }}
+                />
+            );
+
+        default:
+            return null;
+    }
+};
+
 function StatusColor(params: GridCellParams) {
     const { t } = useTranslation();
 
@@ -110,7 +151,7 @@ function StatusColor(params: GridCellParams) {
     const statusForColor = (value.key as string)?.trim();
     const statusUpper = statusForColor?.toUpperCase() as PropertyStatus;
 
-    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+    const color = STATUS_COLORS[statusUpper] || "#537f91";
 
     return (
         <Box
@@ -159,6 +200,13 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         sortable: false,
+        renderCell: (params: GridCellParams) => (
+            <NormalBadge
+                name={`${params.value || ""}`}
+                color={"#ffcc00"}
+                sx={{ color: "#854D0E" }}
+            />
+        ),
         flex: 1,
     },
     {
@@ -166,9 +214,40 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Parent Category") as string,
-        renderCell: (params) => t((params.value as KeyValue)?.value),
+        renderCell: (params: GridCellParams) => {
+            const categoryValue = (params.value as KeyValue)?.value;
+
+            if (!categoryValue) return null;
+
+            const categories = Array.isArray(categoryValue)
+                ? categoryValue
+                : categoryValue.split(/,\s*/);
+            return (
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    {categories.map((category: string, index: number) => (
+                        <Box
+                            key={index}
+                            sx={{ display: "flex", alignItems: "center" }}
+                        >
+                            <Typography
+                                sx={{ marginRight: 1, fontSize: "small" }}
+                            >
+                                {t(category)}
+                            </Typography>{" "}
+                            {categoryToIcon(category)}{" "}
+                        </Box>
+                    ))}
+                </Box>
+            );
+        },
         sortable: false,
-        flex: 1,
+        flex: 1.4,
     },
     {
         field: "category",
@@ -202,7 +281,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
             return formattedPrice ? `${formattedPrice} €` : "";
         },
 
-        flex: 1,
+        flex: 0.8,
     },
     {
         field: "state",
@@ -224,7 +303,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
             return params.value ? `${params.value} m²` : "";
         },
 
-        flex: 1,
+        flex: 0.8,
     },
     {
         field: "labels",

@@ -151,11 +151,11 @@ export const tickets = createApi({
             { cardId: number; body: IKanbanCommentPOST }
         >({
             query: ({ cardId, body }) => ({
-                url: `/comment/${cardId}`, // cardId is now part of the URL
+                url: `/comment/${cardId}`,
                 method: "POST",
-                body, // body will be of type IKanbanCommentPUT
+                body,
             }),
-            invalidatesTags: ["Board"], // Invalidate cache for "Board" after mutation
+            invalidatesTags: ["Board"],
         }),
 
         moveCard: builder.mutation<void, MoveCardProps>({

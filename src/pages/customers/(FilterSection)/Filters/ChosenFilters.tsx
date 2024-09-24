@@ -163,7 +163,7 @@ const ChosenFilters = (props: GridProps) => {
                                     </Typography> */}
                                     <Typography
                                         sx={{
-                                            textTransform: "lowercase",
+                                            textTransform: "capitalize",
                                             paddingRight: 1,
                                         }}
                                     >
@@ -178,7 +178,7 @@ const ChosenFilters = (props: GridProps) => {
                                         -
                                     </Typography>
                                     <Typography
-                                        sx={{ textTransform: "lowercase" }}
+                                        sx={{ textTransform: "capitalize" }}
                                     >
                                         {maxValue}
                                     </Typography>
@@ -206,7 +206,7 @@ const ChosenFilters = (props: GridProps) => {
                                         {label}:{/* {isRole ? "" : ":"} */}
                                     </Typography>
                                     <Typography
-                                        sx={{ textTransform: "lowercase" }}
+                                        sx={{ textTransform: "capitalize" }}
                                     >
                                         {Array.isArray(valuesToDisplay)
                                             ? valuesToDisplay

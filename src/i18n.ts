@@ -1758,6 +1758,7 @@ const resources = {
             Seller: "Πωλητής",
             Lessor: "Εκμισθωτής",
             Leaser: "Ενοικιαστής",
+
             Buyer: "Αγοραστής",
             "Address Details": "Λεπτομέρειες Διεύθυνσης",
             Features: "Χαρακτηριστικά",
