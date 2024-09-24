@@ -30,7 +30,7 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
             >
                 {comments.map((comment) => (
                     <Stack key={comment.id} direction="row" spacing={2}>
-                        <Avatar src={comment.avatar} />
+                        {/* <Avatar src={comment.avatar} /> */}
 
                         <Stack>
                             <Stack
@@ -38,16 +38,16 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
                                 alignItems="center"
                                 spacing={1}
                             >
-                                <Typography variant="subtitle2">
+                                {/* <Typography variant="subtitle2">
                                     {" "}
                                     {comment.name}
-                                </Typography>
+                                </Typography> */}
 
                                 <Typography
                                     variant="caption"
                                     sx={{ color: "text.secondary" }}
                                 >
-                                    {fToNow(comment.createdAt)}
+                                    {fToNow(comment?.createdAt || "")}
                                 </Typography>
                             </Stack>
 

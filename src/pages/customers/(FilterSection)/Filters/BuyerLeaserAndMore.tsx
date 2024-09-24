@@ -46,7 +46,7 @@ export default function FilterBuyerLeaserAndMore() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px" }}>
+        <FormControl sx={{ minWidth: "130px", maxWidth: "200px" }}>
             <StyledInputLabel id="roles-label">{t("Roles")}</StyledInputLabel>
             <Select
                 labelId="roles-label"

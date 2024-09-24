@@ -52,7 +52,7 @@ const ListItem: FC<ListItemProps & { hidePrice?: boolean }> = (props) => {
                 disableTypography
                 primary={
                     <Stack direction="row" alignItems="center" gap={1}>
-                        <Typography variant="subtitle2">{label}</Typography>
+                        <Typography variant="subtitle2">{t(label)}</Typography>
                         {hidePrice && (
                             <Tooltip
                                 title={t(
@@ -75,7 +75,7 @@ const ListItem: FC<ListItemProps & { hidePrice?: boolean }> = (props) => {
                             variant="body2"
                             textAlign="right"
                         >
-                            {value?.toString() || ""}
+                            {t(value?.toString()) || ""}
                         </Typography>
                     )
                 }

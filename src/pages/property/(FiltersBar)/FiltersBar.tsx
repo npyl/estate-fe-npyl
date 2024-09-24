@@ -3,7 +3,7 @@ import Paper, { PaperProps } from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { SvgIconTypeMap } from "@mui/material";
+import { SvgIconTypeMap, useTheme } from "@mui/material";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { sumOfChangedProperties, resetState } from "src/slices/filters";
@@ -73,6 +73,7 @@ const FilterBar = ({
 }: Props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
@@ -98,6 +99,11 @@ const FilterBar = ({
 
     const options = useMemo(() => getOptions(t), [t]);
 
+    const scrollbarColor = theme.palette.mode === "dark" ? "#444" : "#bbb";
+    const scrollbarHoverColor = theme.palette.mode === "dark" ? "#666" : "#888";
+    const scrollbarTrackColor =
+        theme.palette.mode === "dark" ? "#222" : "#f1f1f1";
+
     return (
         <>
             <Paper {...props}>
@@ -108,7 +114,22 @@ const FilterBar = ({
                         overflow="auto hidden"
                         // INFO: paddings added in this container to allow badge to show up without overflow hacks
                         pt={1}
-                        pb={0}
+                        pb={0.5}
+                        sx={{
+                            "&::-webkit-scrollbar": {
+                                height: "8px",
+                            },
+                            "&::-webkit-scrollbar-thumb": {
+                                backgroundColor: scrollbarColor,
+                                borderRadius: "10px",
+                            },
+                            "&::-webkit-scrollbar-thumb:hover": {
+                                backgroundColor: scrollbarHoverColor,
+                            },
+                            "&::-webkit-scrollbar-track": {
+                                backgroundColor: scrollbarTrackColor,
+                            },
+                        }}
                     >
                         {belowLg ? null : <FilterSection />}
 

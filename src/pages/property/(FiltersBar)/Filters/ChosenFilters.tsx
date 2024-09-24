@@ -35,31 +35,31 @@ const ChosenFilters = (props: Props) => {
             label: t("Minimum Price"),
         },
         maxPrice: {
-            label: t("Maximun Price"),
+            label: t("Maximum Price"),
         },
         minArea: {
             label: t("Minimum Area"),
         },
         maxArea: {
-            label: t("Maximun Area"),
+            label: t("Maximum Area"),
         },
         minBedrooms: {
-            label: t("Minimun Number of Bedrooms"),
+            label: t("Minimum Number of Bedrooms"),
         },
         maxBedrooms: {
-            label: t("Maximun Number of Bedrooms"),
+            label: t("Maximum Number of Bedrooms"),
         },
         minFloor: {
             label: t("Minimum Floor"),
         },
         maxFloor: {
-            label: t("Maximun Floor"),
+            label: t("Maximum Floor"),
         },
         minConstructionYear: {
-            label: t("Minimun Constuction Year"),
+            label: t("Minimum Constuction Year"),
         },
         maxConstructionYear: {
-            label: t("Maximun Construction Year"),
+            label: t("Maximum Construction Year"),
         },
         heatingType: {
             label: t("Heating Type"),
@@ -245,8 +245,10 @@ const ChosenFilters = (props: Props) => {
                                         sx={{ textTransform: "lowercase" }}
                                     >
                                         {Array.isArray(valuesToDisplay)
-                                            ? valuesToDisplay.join(", ")
-                                            : valuesToDisplay}
+                                            ? valuesToDisplay
+                                                  .map((value) => t(value))
+                                                  .join(", ")
+                                            : t(valuesToDisplay)}
                                     </Typography>
                                 </Stack>
                             }

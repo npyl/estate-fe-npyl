@@ -74,7 +74,9 @@ const Home: NextPage = () => {
             {optionViewProps.optionView === "grid" ? (
                 <MediaCard sortBy={sortBy} direction={direction} />
             ) : null}
-            {optionViewProps.optionView === "map" ? <MapView /> : null}
+            {optionViewProps.optionView === "map" ? (
+                <MapView sortBy={sortBy} direction={direction} />
+            ) : null}
         </Box>
     );
 };

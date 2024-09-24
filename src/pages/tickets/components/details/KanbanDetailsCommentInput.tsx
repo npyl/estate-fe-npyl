@@ -6,15 +6,18 @@ import { CustomAvatar } from "src/components/custom-avatar";
 import { useTranslation } from "react-i18next";
 import React, { useCallback, useState } from "react";
 import { IKanbanComment, IKanbanCommentPOST } from "@/types/kanban";
+import { useCreateCommentMutation } from "@/services/tickets";
 
 // ----------------------------------------------------------------------
 
 type Props = {
     comments: IKanbanComment[];
     onChange: (comments: IKanbanCommentPOST[]) => void;
+    cardId: number;
 };
 
 export default function KanbanDetailsCommentInput({
+    cardId,
     comments,
     onChange,
 }: Props) {
@@ -22,6 +25,7 @@ export default function KanbanDetailsCommentInput({
     const { t } = useTranslation();
 
     const [currentComment, setCurrentComment] = useState("");
+    const [createComment] = useCreateCommentMutation();
 
     const handleCommentChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -30,28 +34,35 @@ export default function KanbanDetailsCommentInput({
     };
 
     const handleCommentSubmit = useCallback(() => {
-        const newComments: IKanbanCommentPOST[] = [
-            ...comments,
-            {
-                avatar: "",
-                name: "",
-                createdAt: "",
-                messageType: "text",
-                message: currentComment,
-            },
-        ];
+        const newComment: IKanbanCommentPOST = {
+            // id: 0,
+            message: currentComment,
+            messageType: "text",
+        };
 
-        onChange(newComments); // Call the onChange prop with the new comments
-        setCurrentComment(""); // Clear the comment input
-    }, [comments, currentComment]);
+        createComment({ cardId, body: newComment })
+            .unwrap()
+            .then(() => {
+                const newComments: IKanbanCommentPOST[] = [
+                    ...comments,
+                    { messageType: "text", message: currentComment },
+                ];
+
+                onChange(newComments);
+                setCurrentComment("");
+            })
+            .catch((error) => {
+                console.error("Error creating comment: ", error);
+            });
+    }, [comments, currentComment, createComment, onChange]);
 
     return (
         <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
-            <CustomAvatar
+            {/* <CustomAvatar
                 src={user?.profilePhoto}
                 alt={user?.username}
                 name={user?.username}
-            />
+            /> */}
 
             <Box
                 display="flex"

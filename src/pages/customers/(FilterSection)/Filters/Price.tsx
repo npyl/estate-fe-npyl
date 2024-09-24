@@ -127,10 +127,29 @@ const PriceSelect = ({ type }: { type: string }) => {
         >
             <Box>
                 <FilterButton
-                    sx={{ minWidth: "135px", textWrap: "nowrap" }}
+                    sx={{
+                        minWidth: "135px",
+                        maxWidth: "200px",
+                        width: "100%",
+                        textWrap: "nowrap",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        pr: 1.3,
+                        pl: 1.6,
+                    }}
                     open={open}
                     variant="outlined"
-                    endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                    endIcon={
+                        open ? (
+                            <ArrowDropUpIcon
+                                sx={{ fontSize: "24px !important" }}
+                            />
+                        ) : (
+                            <ArrowDropDownIcon
+                                sx={{ fontSize: "24px !important" }}
+                            />
+                        )
+                    }
                     onClick={handleClick}
                 >
                     {renderLabel}

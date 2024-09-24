@@ -30,40 +30,34 @@ import CustomerInfo from "./components/CustomerInfo";
 import PropertyDetails from "./components/PropertyDetails";
 import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriate icon
 import ExpiredIcon from "@mui/icons-material/Error";
+import { el, enUS } from "date-fns/locale";
 
 type TourType = "inPerson" | "askQuestion";
 
-const tourTypeMapper: Record<TourType, string> = {
-    inPerson: "In Person",
-    askQuestion: "Ask Question",
-};
-
-// Function to format the date
-const formatTourDate = (dateString: any) => {
-    return dayjs(dateString).format("D MMMM YYYY");
-};
-
-export const getDate = (s?: string) => {
+export const getDate = (s?: string, language?: string) => {
     if (!s) return "";
     const date = new Date(s);
     const now = new Date();
 
+    // Determine locale based on the language
+    const locale = language === "el" ? el : enUS;
+
     if (isToday(date)) {
-        return "Today";
+        return language === "el" ? "Σήμερα" : "Today";
     }
     if (isYesterday(date)) {
-        return "Yesterday";
+        return language === "el" ? "Χθες" : "Yesterday";
     }
     if (isThisWeek(date, { weekStartsOn: 1 })) {
         // If the date is within this week but not today or yesterday
-        return format(date, "EEEE"); // e.g., Monday, Tuesday
+        return format(date, "EEEE", { locale }); // e.g., Monday, Tuesday in respective language
     }
     if (differenceInDays(now, date) <= 7) {
         // If the date is within the last seven days but not within this week
-        return format(date, "EEEE"); // e.g., Monday, Tuesday
+        return format(date, "EEEE", { locale }); // e.g., Monday, Tuesday
     }
 
-    return format(date, "d MMMM yyyy"); // e.g., 11 July 2024
+    return format(date, "d MMMM yyyy", { locale }); // e.g., 11 July 2024 or 11 Ιουλίου 2024
 };
 
 interface BasicRowProps {
@@ -86,7 +80,7 @@ const BasicRow = ({
     contactDetails,
     workDetails,
 }: BasicRowProps) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const router = useRouter();
     const [toggleNotificationViewedStatus] =
@@ -364,7 +358,7 @@ const BasicRow = ({
                     <MenuItem value="Not Viewed">{t(`Not Viewed`)}</MenuItem>
                 </Select>
                 <Typography variant="body2" color="text.secondary">
-                    {getDate(row.notificationDate)}
+                    {getDate(row.notificationDate, i18n.language)}
                 </Typography>
             </TableCell>
         </TableRow>

@@ -37,6 +37,7 @@ const DataGrid = ({ skeleton, ...props }: CustomerDataGridProps) => {
             {...props}
             rows={skeleton ? skeletonRows : props.rows || []}
             resource="customer"
+            disableColumnMenu
         />
     );
 };

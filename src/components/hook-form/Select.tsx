@@ -23,7 +23,7 @@ const Select = ({ name, label, emptyValue, options }: SelectProps) => {
                 </MenuItem>
                 {options.map(({ key, value }, i) => (
                     <MenuItem key={i} value={key}>
-                        {value}
+                        {t(value)}
                     </MenuItem>
                 ))}
             </RHFSelect>

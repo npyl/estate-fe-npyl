@@ -153,13 +153,13 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                             <ListItem
                                 label={t("Parent Category")}
                                 value={demandFilters?.parentCategories
-                                    ?.map((i) => i.value)
+                                    ?.map((i) => t(i.value)) // Translate each item first and then join with the ,
                                     ?.join(", ")}
                             />
                             <ListItem
                                 label={t("Furnished")}
                                 value={demandFilters?.furnished
-                                    ?.map((i) => i.value)
+                                    ?.map((i) => t(i.value))
                                     ?.join(", ")}
                             />
                             <ListLabelsItem
@@ -206,13 +206,13 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                             <ListItem
                                 label={t("Category")}
                                 value={demandFilters?.categories
-                                    ?.map((i) => i.value)
+                                    ?.map((i) => t(i.value))
                                     ?.join(", ")}
                             />
                             <ListItem
                                 label={t("State")}
                                 value={demandFilters?.states
-                                    ?.map((i) => i.value)
+                                    ?.map((i) => t(i.value))
                                     ?.join(", ")}
                             />
                             <ListItem

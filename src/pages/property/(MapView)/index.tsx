@@ -86,7 +86,14 @@ const PropertiesList = ({
     );
 };
 
-const MapView = () => {
+// ---------------------------------------------------------------------
+
+interface MapViewProps {
+    sortBy: string;
+    direction: string;
+}
+
+const MapView = ({ sortBy, direction }: MapViewProps) => {
     const dispatch = useDispatch();
 
     const [activeMarker, setActiveMarker] = useState<number>();
@@ -109,8 +116,8 @@ const MapView = () => {
         filter: allFilters,
         page: pagination.page,
         pageSize,
-        sortBy: "updatedAt",
-        direction: "DESC",
+        sortBy: sortBy,
+        direction: direction,
     });
 
     // respective markers

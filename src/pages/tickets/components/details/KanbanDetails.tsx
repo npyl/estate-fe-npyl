@@ -69,30 +69,42 @@ export default function KanbanDetails({
     // } = useDateRangePicker(new Date(task.due[0]), new Date(task.due[1]));
 
     const [editCard] = useEditCardMutation();
-
     const handleLiked = useCallback(() => setLiked((old) => !old), []);
     const handleClickAttach = () => fileInputRef.current?.click();
-
+    console.log(task.attachments);
     const handleUpdate = useCallback(
-        (card: Partial<IKanbanCardPOST>) =>
-            editCard({
+        (card: Partial<IKanbanCardPOST>) => {
+            const payload = {
                 id,
-                name,
+                name: name,
                 description,
                 priority,
                 completed,
                 userIds: user.map((u) => u.id),
-                // updated fields from a component:
+                attachments,
                 ...card,
-            }),
-        [id, name, description, priority, completed, user]
+            };
+
+            editCard(payload);
+        },
+        [
+            id,
+            name,
+            description,
+            priority,
+            completed,
+            user,
+            comments,
+            attachments,
+        ]
     );
 
     const toggleCompleted = useCallback(
         () =>
             editCard({
                 id,
-                name,
+                name: name,
+                attachments,
                 description,
                 priority,
                 completed: !completed,
@@ -138,7 +150,7 @@ export default function KanbanDetails({
             editCard({
                 id,
                 attachments: _attachments,
-                comments,
+                // comments,
                 completed,
                 description,
                 due,
@@ -147,15 +159,33 @@ export default function KanbanDetails({
                 userIds: user.map((u) => u.id),
             });
         },
-        [id, user, comments, description, completed, due, name, priority]
+        [
+            id,
+            user,
+            attachments,
+            comments,
+            description,
+            completed,
+            due,
+            name,
+            priority,
+        ]
     );
 
     const handleCommentsChange = useCallback(
         (_comments: IKanbanCommentPOST[]) => {
+            const sanitizedComments = _comments.map((comment) => ({
+                id: +comment.id!,
+                messageType: comment.messageType,
+                message: comment.message,
+                // avatar: comment.avatar ?? "",
+                // createdAt: comment.createdAt ?? new Date().getTime(),
+            }));
+
             editCard({
                 id,
                 attachments,
-                comments: _comments as IKanbanComment[],
+                comments: sanitizedComments,
                 completed,
                 description,
                 due,
@@ -164,9 +194,18 @@ export default function KanbanDetails({
                 userIds: user.map((u) => u.id),
             });
         },
-        [id, user, attachments, completed, description, due, name, priority]
+        [
+            id,
+            user,
+            attachments,
+            completed,
+            comments,
+            description,
+            due,
+            name,
+            priority,
+        ]
     );
-
     const { t } = useTranslation();
 
     return (
@@ -215,14 +254,14 @@ export default function KanbanDetails({
                             flexWrap="wrap"
                             alignItems="center"
                         >
-                            {task.user.map((user) => (
+                            {/* {task.user.map((user) => (
                                 <Avatar
                                     key={user.id}
                                     alt={user.username}
                                     src={user.profilePhoto}
                                     sx={{ m: 0.5 }}
                                 />
-                            ))}
+                            ))} */}
 
                             <KanbanContactsDialog
                                 assignees={task.user}
@@ -319,6 +358,7 @@ export default function KanbanDetails({
             <KanbanDetailsCommentInput
                 comments={comments}
                 onChange={handleCommentsChange}
+                cardId={task.id}
             />
         </Drawer>
     );

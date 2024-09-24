@@ -3,6 +3,7 @@ import {
     IKanbanBoard,
     IKanbanCardPOST,
     IKanbanColumnPOST,
+    IKanbanCommentPOST,
 } from "src/types/kanban";
 
 interface EditColumnProps {
@@ -144,6 +145,19 @@ export const tickets = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
+
+        createComment: builder.mutation<
+            void,
+            { cardId: number; body: IKanbanCommentPOST }
+        >({
+            query: ({ cardId, body }) => ({
+                url: `/comment/${cardId}`, // cardId is now part of the URL
+                method: "POST",
+                body, // body will be of type IKanbanCommentPUT
+            }),
+            invalidatesTags: ["Board"], // Invalidate cache for "Board" after mutation
+        }),
+
         moveCard: builder.mutation<void, MoveCardProps>({
             query: ({ cardId, dstColumnId }: MoveCardProps) => ({
                 url: `/card/${cardId}/move/${dstColumnId}`,
@@ -257,4 +271,7 @@ export const {
     useMoveCardMutation,
     useReorderCardMutation,
     useDeleteCardMutation,
+
+    //Comments
+    useCreateCommentMutation,
 } = tickets;
