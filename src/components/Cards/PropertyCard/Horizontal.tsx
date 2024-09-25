@@ -6,6 +6,7 @@ import CarouselSimple from "@/components/CarouselSimple";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { NormalBadge, PriceBadge, StyledLink } from "./styled";
+import { getPropertyStatusColor } from "@/theme/colors";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
@@ -13,33 +14,6 @@ type PropertyCardProps = {
 };
 
 const defaultImage = "/static/noImage.png";
-
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-
-const STATUS_COLORS: Record<PropertyStatus, Color> = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-type Color = string;
-
-const getStatusColor = (status: string): Color => {
-    const statusUpper = status.toUpperCase() as PropertyStatus;
-    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-};
 
 // -------------------------------------------------------------
 
@@ -103,7 +77,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         }
     }, [isActive]);
 
-    const stateColor = state?.value ? getStatusColor(state.value) : "#537f91";
+    const stateColor = getPropertyStatusColor(state.value);
 
     return (
         <StyledLink isActive={isActive} ref={ref} href={`/property/${id}`}>

@@ -7,6 +7,7 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
+import { getPropertyStatusColor } from "@/theme/colors";
 
 function renderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
@@ -73,31 +74,6 @@ function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
     );
 }
 
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-
-type Color = string;
-
-type StatusColors = Record<PropertyStatus, Color>;
-
-const STATUS_COLORS: StatusColors = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-
 function StatusColor(params: GridCellParams) {
     const { t } = useTranslation();
 
@@ -108,9 +84,7 @@ function StatusColor(params: GridCellParams) {
     if (!value || !status) return <></>;
 
     const statusForColor = (value.key as string)?.trim();
-    const statusUpper = statusForColor?.toUpperCase() as PropertyStatus;
-
-    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+    const color = getPropertyStatusColor(statusForColor);
 
     return (
         <Box
