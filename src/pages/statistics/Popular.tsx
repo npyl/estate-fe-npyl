@@ -10,6 +10,7 @@ import {
     MenuItem,
     Select,
     SelectChangeEvent,
+    Skeleton,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
@@ -34,13 +35,16 @@ export default function StackedAreas() {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
 
-    const { data: properties } = useGetPublicDashboardPopularPropertiesQuery({
-        parentCategory,
-        category,
-        timeframe,
-        startDate: startDate ? format(new Date(startDate), "yyyy-MM-dd") : "",
-        endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
-    });
+    const { data: properties, isFetching } =
+        useGetPublicDashboardPopularPropertiesQuery({
+            parentCategory,
+            category,
+            timeframe,
+            startDate: startDate
+                ? format(new Date(startDate), "yyyy-MM-dd")
+                : "",
+            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
+        });
 
     const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
         setTimeframe(e.target.value as TTimeFrame);
@@ -77,7 +81,7 @@ export default function StackedAreas() {
         if (selectedItem) {
             setCategory(selectedItem.key);
         } else if (parentCategory && selectedKey === "") {
-            setCategory("");  //check
+            setCategory(""); //check
         }
     };
 
@@ -168,55 +172,84 @@ export default function StackedAreas() {
             </Stack>
 
             {belowSm ? (
-                <Stack px={2} direction="row" spacing={2} overflow="auto">
-                    {filteredProperties?.map((property) => (
-                        <Box
-                            flex={1}
-                            key={`${property.id}-${timeframe}`}
-                            sx={{
-                                position: "relative",
-                            }}
-                            width={1}
-                            height={1}
-                        >
-                            <PropertyCard
-                                item={property}
-                                selectedMarker={null}
+                isFetching ? (
+                    <Stack px={2} direction="row" spacing={2} overflow="auto">
+                        {[...Array(1)].map((_, i) => (
+                            <Skeleton
+                                key={i}
+                                variant="rectangular"
+                                animation="wave"
+                                width={300}
+                                height={200}
+                                sx={{ borderRadius: 2 }}
                             />
-                            <Stack
-                                position="absolute"
-                                direction="column"
-                                top={5}
-                                right={2}
+                        ))}
+                    </Stack>
+                ) : (
+                    <Stack px={2} direction="row" spacing={2} overflow="auto">
+                        {filteredProperties?.map((property) => (
+                            <Box
+                                flex={1}
+                                key={`${property.id}-${timeframe}`}
                                 sx={{
-                                    paddingLeft: 1,
-                                    paddingRight: 1,
-                                    borderRadius: 15,
+                                    position: "relative",
                                 }}
+                                width={1}
+                                height={1}
                             >
-                                <LabelComponent
-                                    text={`${t("Total Views")}: ${
-                                        (property as any).visitors ?? 0
-                                    }`}
+                                <PropertyCard
+                                    item={property}
+                                    selectedMarker={null}
                                 />
-                                {timeframe !== "ALL_TIME" && (
+                                <Stack
+                                    position="absolute"
+                                    direction="column"
+                                    top={5}
+                                    right={2}
+                                    sx={{
+                                        paddingLeft: 1,
+                                        paddingRight: 1,
+                                        borderRadius: 15,
+                                    }}
+                                >
                                     <LabelComponent
-                                        text={`${getViewLabel()}: ${
-                                            (property as any).views ?? 0
+                                        text={`${t("Total Views")}: ${
+                                            (property as any).visitors ?? 0
                                         }`}
                                     />
-                                )}
-                            </Stack>
-                        </Box>
+                                    {timeframe !== "ALL_TIME" && (
+                                        <LabelComponent
+                                            text={`${getViewLabel()}: ${
+                                                (property as any).views ?? 0
+                                            }`}
+                                        />
+                                    )}
+                                </Stack>
+                            </Box>
+                        ))}
+                    </Stack>
+                )
+            ) : isFetching ? (
+                <Grid container spacing={2} my={2}>
+                    {[...Array(12)].map((_, i) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                            <Skeleton
+                                variant="rectangular"
+                                width="100%"
+                                animation="wave"
+                                height={330}
+                                sx={{ borderRadius: 2 }}
+                            />
+                        </Grid>
                     ))}
-                </Stack>
+                </Grid>
             ) : (
                 <Grid container spacing={2} my={2}>
                     {filteredProperties?.map((property) => (
                         <Grid
                             item
                             xs={12}
-                            sm={12}
+                            sm={6}
                             md={4}
                             lg={3}
                             key={`${property.id}-${timeframe}`}
