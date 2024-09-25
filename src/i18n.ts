@@ -14,6 +14,7 @@ const resources = {
             ID: "ID",
             Properties: "Properties",
 
+            Dashboard: "Dashboard",
             Notifications: "Notifications",
             Tickets: "Tickets",
             Mail: "Mail",
@@ -948,6 +949,10 @@ const resources = {
             images: "images",
             Autonomous: "Autonomous",
             Greece: "Greece",
+            "Maximum Number of Bedrooms": "Maximum Number of Bedrooms",
+            "Minimum Number of Bedrooms": "Minimum Number of Bedrooms",
+            "Maximum Floor": "Maximum Floor",
+            "Minimum Floor": "Minimum Floor",
             //
             Θάλασσα: "Sea",
             Βουνό: "Mountain",
@@ -1020,6 +1025,7 @@ const resources = {
     },
     el: {
         translation: {
+            Dashboard: "Πίνακας Ελέγχου",
             "Default Value": "Αρχική Τιμή",
             "Bulk Edit": "Επεξεργασία Πολλαπλών",
             "Locked Pin": "Κλειδωμένη Πινέζα",
@@ -1455,6 +1461,10 @@ const resources = {
             ISLAND: "νησί",
             LAND_PLOT: "οικόπεδο",
             OTHER_LAND: "λοιπές κατηγορίες",
+            "Maximum Number of Bedrooms": "Μέγιστος αριθμός υπνοδωματίων",
+            "Minimum Number of Bedrooms": "Ελάχιστος αριθμός υπνοδωματίων",
+            "Maximum Floor": "Μέγιστος όροφος",
+            "Minimum Floor": "Ελάχιστος όροφος",
             // Tickets
             "Add section": "Προσθήκη Τμήματος",
             "Add Task": "Προσθήκη Εργασίας",

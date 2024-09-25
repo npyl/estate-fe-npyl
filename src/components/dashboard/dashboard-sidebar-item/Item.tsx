@@ -97,7 +97,7 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
             sx={{
                 display: "flex",
                 py: 0,
-                px: 2,
+                px: 1.5,
             }}
         >
             <NavigationButton

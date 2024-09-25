@@ -60,6 +60,7 @@ const getSections = (
         items: [
             {
                 title: t("Dashboard"),
+
                 path: "/",
                 icon: <ChartPie fontSize="small" />,
             },
@@ -230,7 +231,10 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 sx={{
                                     height: "100vh",
                                     pt: 2,
+
+                                    width: "100%",
                                     overflowY: "hidden",
+                                    textWrap: "nowrap",
                                 }}
                                 {...section}
                             />
