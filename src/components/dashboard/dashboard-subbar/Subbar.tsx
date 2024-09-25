@@ -173,7 +173,7 @@ const Subbar = () => {
                     sx={{
                         position: isStickyPath ? "sticky" : "relative",
                         top: isStickyPath ? 64 : 0,
-                        zIndex: 1000,
+                        zIndex: 100,
                         backgroundColor: "white",
                         boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
                     }}

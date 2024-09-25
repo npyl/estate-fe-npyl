@@ -107,9 +107,9 @@ const categoryToIcon = (category: string) => {
             return (
                 <HomeOutLinedIcon
                     sx={{
-                        marginRight: 1,
+                        marginRight: 0.5,
                         color: "neutral.600",
-                        fontSize: "21px",
+                        fontSize: "16px",
                     }}
                 />
             );
@@ -117,9 +117,10 @@ const categoryToIcon = (category: string) => {
             return (
                 <BusinessOutlinedIcon
                     sx={{
-                        marginRight: 1,
+                        marginRight: 0.5,
+
                         color: "neutral.600",
-                        fontSize: "21px",
+                        fontSize: "16px",
                     }}
                 />
             );
@@ -127,9 +128,10 @@ const categoryToIcon = (category: string) => {
             return (
                 <LandslideOutlinedIcon
                     sx={{
-                        marginRight: 1,
+                        marginRight: 0.5,
+
                         color: "neutral.600",
-                        fontSize: "21px",
+                        fontSize: "16px",
                     }}
                 />
             );
@@ -235,12 +237,12 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
                             key={index}
                             sx={{ display: "flex", alignItems: "center" }}
                         >
+                            <Typography>{categoryToIcon(category)}</Typography>
                             <Typography
                                 sx={{ marginRight: 1, fontSize: "small" }}
                             >
                                 {t(category)}
                             </Typography>{" "}
-                            {categoryToIcon(category)}{" "}
                         </Box>
                     ))}
                 </Box>

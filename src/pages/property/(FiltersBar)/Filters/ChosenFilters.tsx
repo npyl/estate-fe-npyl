@@ -377,7 +377,7 @@ const ChosenFilters = (props: Props) => {
                                         {Array.isArray(valuesToDisplay)
                                             ? valuesToDisplay
                                                   .map((value) => t(value))
-                                                  .join(",")
+                                                  .join(", ")
                                             : t(valuesToDisplay)}
                                     </Typography>
                                 </Stack>

@@ -446,7 +446,10 @@ const resources = {
             "Date of Entry": "Date of Entry",
 
             //Description
-
+            "You have unsaved changes. Are you sure you want to leave this page? All your progress will be lost.":
+                "You have unsaved changes. Are you sure you want to leave this page? All your progress will be lost.",
+            Confirm: "Confirm",
+            "Unsaved Changes": "Unsaved Changes",
             //Create customer
 
             "Customer Information": "Customer Information",
@@ -1030,7 +1033,10 @@ const resources = {
             "Bulk Edit": "Επεξεργασία Πολλαπλών",
             "Locked Pin": "Κλειδωμένη Πινέζα",
             "Free Pin": "Ελεύθερη Πινέζα",
-
+            "You have unsaved changes. Are you sure you want to leave this page? All your progress will be lost.":
+                "Έχετε αλλαγές που δεν είναι αποθηκευμένες. Είστε σίγουροι ότι θέλετε να φύγετε από αυτή τη σελίδα; Όλες οι αλλαγές σας θα χαθούν.",
+            Confirm: "Επικύρωση",
+            "Unsaved Changes": "Μη αποθηκευμένες αλλαγές",
             "Unable to logout": "Αποτυχία κατά την αποσύνδεση",
             Success: "Επιτυχία",
             _main_: "Κύρια",

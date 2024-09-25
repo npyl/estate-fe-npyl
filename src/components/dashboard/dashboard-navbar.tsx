@@ -49,7 +49,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
           }),
 
     position: "fixed", // Allow things to show on top of the AppBar
-    zIndex: 2,
+    zIndex: 200,
 }));
 
 const AccountButton = () => {
