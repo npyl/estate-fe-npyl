@@ -1,41 +1,50 @@
 // Chip with popover
+// INFO:    This chip is used primarily on the DataGrids that have NextLink for redirect.
+//          The preventDefault() code is required for the chip to handle clicks without
+//          worrying about redirects
 
 import { ChipProps, Grid, Popper, IconButton, Typography } from "@mui/material";
-import { useCallback, useState, MouseEvent } from "react";
+import { useCallback, MouseEvent, FC, useRef } from "react";
 import { ILabel } from "src/types/label";
 import { Label } from "@/components/Label";
 import { Close } from "@mui/icons-material";
 import StyledChip, { StyledPaper } from "./styles";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
+import useDialog from "@/hooks/useDialog";
 
-interface MoreChipProps extends ChipProps {
+const preventDefault = (e: MouseEvent<HTMLDivElement>) => e.preventDefault();
+
+interface MoreChipProps extends Omit<ChipProps, "ref"> {
     labels: ILabel[];
 }
 
-const MoreChip = ({ labels, ...props }: MoreChipProps) => {
+const MoreChip: FC<MoreChipProps> = ({ labels, ...props }) => {
     const { t } = useTranslation();
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const anchorRef = useRef<HTMLDivElement>(null);
 
-    const open = Boolean(anchorEl);
+    const [isOpen, openPopper, closePopper] = useDialog();
 
     const handleOpen = useCallback((e: MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        setAnchorEl(e.currentTarget);
-        props.onClick?.(e);
+        e.preventDefault();
+        openPopper();
     }, []);
     const handleClose = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        setAnchorEl(null);
+        e.preventDefault();
+        closePopper();
     }, []);
 
     return (
         <>
-            <StyledChip {...props} onClick={handleOpen} />
+            <StyledChip {...props} ref={anchorRef} onClick={handleOpen} />
 
-            {open ? (
-                <Popper open={open} anchorEl={anchorEl}>
+            {isOpen ? (
+                <Popper
+                    open
+                    anchorEl={anchorRef.current}
+                    onClick={preventDefault}
+                >
                     <StyledPaper elevation={20}>
                         <SpaceBetween alignItems="center">
                             <Typography variant="h6">

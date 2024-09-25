@@ -1,30 +1,8 @@
-import MuiLink from "@mui/material/Link";
-import { GridRow, GridRowProps } from "@mui/x-data-grid";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
-
-// ------------------------------------------------------------------------
-
-interface CustomRowProps extends GridRowProps {
-    resource: string;
-}
-
-const CustomRow = ({ resource, ...props }: CustomRowProps) => (
-    <MuiLink
-        href={`/${resource}/${props.row?.id}`}
-        onClick={(event) => {
-            // Prevent navigation if clicking on the checkbox
-            event.target &&
-                (event.target as HTMLElement).closest(
-                    ".MuiDataGrid-checkboxInput"
-                );
-        }}
-    >
-        <GridRow {...props} />
-    </MuiLink>
-);
+import CustomRow from "./Row";
 
 // ------------------------------------------------------------------------
 
@@ -46,8 +24,6 @@ const DataGridTable: FC<GridProps> = ({
             }}
             localeText={{
                 toolbarColumns: t("Fields"),
-                columnsPanelTextFieldLabel: "Search Field",
-                columnsPanelTextFieldPlaceholder: "Name of Fields",
                 MuiTablePagination: {
                     labelRowsPerPage: t("Rows per page"),
                 },
