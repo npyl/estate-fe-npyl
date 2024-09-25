@@ -7,6 +7,7 @@ import { FC } from "react";
 import { useFormContext } from "react-hook-form";
 import useAutofill from "./hook";
 import { PopoverSlotProps } from "./styled";
+import NoResultsPlaceholder from "./NoResultsPlaceholder";
 
 interface PopoverProps
     extends Omit<
@@ -46,6 +47,7 @@ const Popover: FC<PopoverProps> = ({ row, ...props }) => {
             <PropertySearch
                 showEmpty
                 customerId={ownerId}
+                NoResultsPlaceholder={NoResultsPlaceholder}
                 onSelectProperty={autofill}
             />
         </MuiPopover>

@@ -6,7 +6,7 @@ import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { MouseEvent } from "react";
+import { ComponentType, MouseEvent } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { SpaceBetween } from "@/components/styled";
@@ -22,6 +22,9 @@ interface ResultsPopperProps {
     content: IPropertyResultResponse[];
     pagination: PaginationHookProps;
     pageSize: number;
+
+    NoResultsPlaceholder?: ComponentType;
+
     onCardClick: (p: IPropertyResultResponse) => void;
     onClose: VoidFunction;
 }
@@ -33,6 +36,7 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     totalElements,
     pagination,
     pageSize,
+    NoResultsPlaceholder,
     onCardClick,
     onClose,
 }) => {
@@ -85,6 +89,10 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
                         spacing: 1,
                     }}
                 >
+                    {content.length === 0 && NoResultsPlaceholder ? (
+                        <NoResultsPlaceholder />
+                    ) : null}
+
                     {content.map((p) => (
                         <Grid
                             item
