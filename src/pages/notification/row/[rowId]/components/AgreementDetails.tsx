@@ -6,9 +6,7 @@ import ExpireIcon from "@mui/icons-material/AccessTime";
 import ExpiredIcon from "@mui/icons-material/Error";
 // Adjust the path as necessary
 import Link from "next/link";
-import { NormalBadge } from "@/components/PropertyCard/styled";
-import router from "next/router";
-import { useGetNotificationByIdQuery } from "@/services/notification";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { ContactNotificationExtended } from "@/types/notification";
 
 interface AgreementDetailsProps {

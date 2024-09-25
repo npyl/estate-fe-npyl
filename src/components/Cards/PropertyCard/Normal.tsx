@@ -1,12 +1,11 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-import { IMapMarker } from "../Map/Map";
-import { Divider, Stack, Typography, alpha } from "@mui/material";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import CarouselSimple from "../CarouselSimple";
-import { useRouter } from "next/router";
+import { IMapMarker } from "@/components/Map/Map";
+import { Divider, Stack, Typography } from "@mui/material";
+import { useEffect, useMemo, useRef } from "react";
+import CarouselSimple from "@/components/CarouselSimple";
 import { useTranslation } from "react-i18next";
-import { SpaceBetween } from "../styled";
-import { NormalBadge, PriceBadge, StyledBox } from "./styled";
+import { SpaceBetween } from "@/components/styled";
+import { NormalBadge, PriceBadge, StyledLink } from "./styled";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
@@ -67,8 +66,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const { lat, lng } = location || {};
 
     const { t, i18n } = useTranslation();
-    const router = useRouter();
-    const ref = useRef<HTMLDivElement>();
+
+    const ref = useRef<HTMLAnchorElement>(null);
 
     const addressParts =
         i18n.language === "en"
@@ -110,12 +109,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         }
     }, [isActive]);
 
-    const handleClick = useCallback(() => router.push(`property/${id}`), []);
-
     const stateColor = state?.value ? getStatusColor(state.value) : "#537f91"; // default color
 
     return (
-        <StyledBox
+        <StyledLink
             borderRadius="12px"
             sx={{
                 cursor: "pointer",
@@ -123,7 +120,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             }}
             isActive={isActive as boolean}
             ref={ref}
-            onClick={handleClick}
+            href={`property/${id}`}
         >
             <CarouselSimple
                 data={
@@ -330,7 +327,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                     <PriceBadge price={price} />
                 </SpaceBetween>
             </Stack>
-        </StyledBox>
+        </StyledLink>
     );
 };
 

@@ -1,3 +1,4 @@
+import Link from "@/components/Link";
 import { Box, BoxProps, Theme, Typography, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -13,7 +14,7 @@ interface StyledBoxProps extends BoxProps {
     isActive: boolean;
 }
 
-export const StyledBox = styled(Box, {
+export const StyledLink = styled(Link, {
     shouldForwardProp: (prop) => prop !== "isActive",
 })<StyledBoxProps>(({ isActive, theme }) => ({
     "&:hover": {

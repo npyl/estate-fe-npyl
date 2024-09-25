@@ -11,7 +11,7 @@ import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
 import { Grid } from "@mui/material";
-import PropertyCard from "@/components/PropertyCard";
+import PropertyCard from "@/components/Cards/PropertyCard";
 import { usePagination } from "@/components/Pagination";
 import Pagination from "@/components/Pagination/client";
 

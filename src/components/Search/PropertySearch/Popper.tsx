@@ -1,6 +1,6 @@
 import Pagination from "@/components/Pagination";
 import { PaginationHookProps } from "@/components/Pagination/types";
-import PropertyCard from "@/components/PropertyCard";
+import PropertyCard from "@/components/Cards/PropertyCard";
 import { IPropertyResultResponse } from "@/types/properties";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";

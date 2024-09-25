@@ -13,8 +13,8 @@ import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
 import { MatchResult } from "./types";
-import { NormalBadge } from "@/components/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 
 type PropertyStatus =
     | "SOLD"

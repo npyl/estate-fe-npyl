@@ -10,7 +10,7 @@ import { useFilterCustomersQuery } from "src/services/customers";
 import { selectAll } from "src/slices/customer/filters";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
-import CustomerCard from "@/components/CustomerCard";
+import CustomerCard from "@/components/Cards/CustomerCard";
 import { useTranslation } from "react-i18next";
 import FilterSection from "./(FilterSection)";
 import { getOptions } from "./(FilterSection)/constants";

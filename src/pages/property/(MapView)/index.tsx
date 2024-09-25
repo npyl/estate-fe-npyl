@@ -5,7 +5,7 @@ import Map, { IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
-import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
+import PropertyCard, { PropertyCardH } from "@/components/Cards/PropertyCard";
 import {
     useFilterPropertiesQuery,
     useGetPropertyLocationMarkersQuery,

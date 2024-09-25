@@ -1,12 +1,11 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-import { IMapMarker } from "../Map/Map";
+import { IMapMarker } from "@/components/Map/Map";
 import { Divider, Grid, Stack, Typography } from "@mui/material";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import CarouselSimple from "../CarouselSimple";
-import { useRouter } from "next/router";
+import { useEffect, useMemo, useRef } from "react";
+import CarouselSimple from "@/components/CarouselSimple";
 import { useTranslation } from "react-i18next";
-import { SpaceBetween } from "../styled";
-import { NormalBadge, PriceBadge, StyledBox } from "./styled";
+import { SpaceBetween } from "@/components/styled";
+import { NormalBadge, PriceBadge, StyledLink } from "./styled";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
@@ -14,6 +13,33 @@ type PropertyCardProps = {
 };
 
 const defaultImage = "/static/noImage.png";
+
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+const STATUS_COLORS: Record<PropertyStatus, Color> = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+type Color = string;
+
+const getStatusColor = (status: string): Color => {
+    const statusUpper = status.toUpperCase() as PropertyStatus;
+    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+};
 
 // -------------------------------------------------------------
 
@@ -31,41 +57,14 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         plotArea,
     } = item || {};
 
-    type PropertyStatus =
-        | "SOLD"
-        | "SALE"
-        | "RENTED"
-        | "UNAVAILABLE"
-        | "RENT"
-        | "TAKEN"
-        | "UNDER_CONSTRUCTION"
-        | "UNDER_MAINTENANCE";
-
-    const STATUS_COLORS: Record<PropertyStatus, Color> = {
-        SOLD: "#79798a",
-        SALE: "#57825e",
-        RENT: "#bd9e39",
-        RENTED: "#3e78c2",
-        UNAVAILABLE: "#c72c2e",
-        TAKEN: "#7d673e",
-        UNDER_CONSTRUCTION: "#A300D8",
-        UNDER_MAINTENANCE: "#E0067C",
-    };
-    type Color = string;
-
-    const getStatusColor = (status: string): Color => {
-        const statusUpper = status.toUpperCase() as PropertyStatus;
-        return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-    };
-
     const { bathrooms, bedrooms } = details || {};
     const { lat, lng } = location || {};
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
         (item as IPropertyResultResponse) || {};
 
     const { t, i18n } = useTranslation();
-    const router = useRouter();
-    const ref = useRef<HTMLDivElement>();
+
+    const ref = useRef<HTMLAnchorElement>(null);
 
     const address =
         i18n.language === "en"
@@ -89,33 +88,31 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         [images]
     );
 
-    const isActive = useMemo(
-        () =>
-            lat &&
-            lat > 0 &&
-            lng &&
-            lng > 0 &&
-            lat === selectedMarker?.lat &&
-            lng === selectedMarker?.lng,
-        [lat, lng, selectedMarker]
-    );
+    const isActive =
+        lat &&
+        lat > 0 &&
+        lng &&
+        lng > 0 &&
+        lat === selectedMarker?.lat &&
+        lng === selectedMarker?.lng;
+
     useEffect(() => {
         if (isActive) {
             ref.current?.scrollIntoView({ behavior: "smooth" });
         }
     }, [isActive]);
 
-    const handleClick = useCallback(() => router.push(`property/${id}`), []);
     const stateColor = state?.value ? getStatusColor(state.value) : "#537f91";
+
     return (
-        <StyledBox
+        <StyledLink
             borderRadius="12px"
             sx={{
                 cursor: "pointer",
             }}
             isActive={isActive as boolean}
             ref={ref}
-            onClick={handleClick}
+            href={`/customer/${id}`}
         >
             <Grid container>
                 <Grid item xs={4} p={1} borderRadius="12px">
@@ -267,7 +264,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                     </Stack>
                 </Grid>
             </Grid>
-        </StyledBox>
+        </StyledLink>
     );
 };
 
