@@ -93,16 +93,15 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         [images]
     );
 
-    const isActive = useMemo(
-        () =>
-            lat &&
+    const isActive = Boolean(
+        lat &&
             lat > 0 &&
             lng &&
             lng > 0 &&
             lat === selectedMarker?.lat &&
-            lng === selectedMarker?.lng,
-        [lat, lng, selectedMarker]
+            lng === selectedMarker?.lng
     );
+
     useEffect(() => {
         if (isActive) {
             ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -113,14 +112,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
     return (
         <StyledLink
-            borderRadius="12px"
-            sx={{
-                cursor: "pointer",
-                mr: 0.8,
-            }}
-            isActive={isActive as boolean}
+            mr={0.8}
+            isActive={isActive}
             ref={ref}
-            href={`property/${id}`}
+            href={`/property/${id}`}
         >
             <CarouselSimple
                 data={

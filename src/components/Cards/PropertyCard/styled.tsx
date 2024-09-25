@@ -22,6 +22,8 @@ export const StyledLink = styled(Link, {
     },
     backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
+    cursor: "pointer",
+    borderRadius: "12px",
 }));
 
 interface PriceBadgeProps extends BoxProps {

@@ -88,13 +88,14 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         [images]
     );
 
-    const isActive =
+    const isActive = Boolean(
         lat &&
-        lat > 0 &&
-        lng &&
-        lng > 0 &&
-        lat === selectedMarker?.lat &&
-        lng === selectedMarker?.lng;
+            lat > 0 &&
+            lng &&
+            lng > 0 &&
+            lat === selectedMarker?.lat &&
+            lng === selectedMarker?.lng
+    );
 
     useEffect(() => {
         if (isActive) {
@@ -105,15 +106,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const stateColor = state?.value ? getStatusColor(state.value) : "#537f91";
 
     return (
-        <StyledLink
-            borderRadius="12px"
-            sx={{
-                cursor: "pointer",
-            }}
-            isActive={isActive as boolean}
-            ref={ref}
-            href={`/customer/${id}`}
-        >
+        <StyledLink isActive={isActive} ref={ref} href={`/property/${id}`}>
             <Grid container>
                 <Grid item xs={4} p={1} borderRadius="12px">
                     <CarouselSimple
