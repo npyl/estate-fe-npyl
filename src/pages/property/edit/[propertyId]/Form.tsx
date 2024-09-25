@@ -72,6 +72,16 @@ export default function Form({
                 justifyContent="flex-end"
                 spacing={1}
                 mt={2}
+                sx={{
+                    backgroundColor: "rgba(128, 128, 128, 0.1)",
+                    width: "100%",
+                    p: 0.5,
+                    alignSelf: "flex-end",
+                    borderRadius: "10px",
+                    position: "sticky",
+                    zIndex: 1000,
+                    bottom: 1,
+                }}
             >
                 <Button
                     variant="outlined"

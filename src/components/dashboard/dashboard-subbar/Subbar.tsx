@@ -155,6 +155,10 @@ const Subbar = () => {
 
     const belowLg = useResponsive("down", "lg");
 
+    //use these two specific paths so the subbar is sticky in edit and create property form
+    const isStickyPath =
+        router.pathname.startsWith("/property/edit") ||
+        router.pathname === "/property/create";
     return (
         <>
             {belowLg ? (
@@ -166,6 +170,13 @@ const Subbar = () => {
                     mb={1}
                     p={1}
                     gap={1}
+                    sx={{
+                        position: isStickyPath ? "sticky" : "relative",
+                        top: isStickyPath ? 64 : 0,
+                        zIndex: 1000,
+                        backgroundColor: "white",
+                        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
+                    }}
                 >
                     <SubbarItems overflow="auto" width="90%" />
 
