@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
-import { useResponsive } from "@/hooks/use-responsive";
+import useResponsive from "@/hooks/useResponsive";
 import { format } from "date-fns";
 import LabelComponent from "../dashboard/LabelComponent";
 import DateRangePicker from "./DateRangePicker";
@@ -77,7 +77,7 @@ export default function StackedAreas() {
         if (selectedItem) {
             setCategory(selectedItem.key);
         } else if (parentCategory && selectedKey === "") {
-            setCategory("");  //check
+            setCategory(""); //check
         }
     };
 
