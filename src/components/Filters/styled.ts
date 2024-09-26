@@ -4,8 +4,6 @@ import {
     ButtonProps,
     ListItem as MuiListItem,
     ListItemProps as MuiListItemProps,
-    DialogContent,
-    DialogContentProps,
     InputLabel,
     Theme,
     Stack,
@@ -94,13 +92,6 @@ export const ListItem = styled(MuiListItem)<ListItemProps>(
             : {}),
     })
 );
-
-export const StyledDialogContent = styled(DialogContent, {
-    shouldForwardProp: (prop) => prop !== "open",
-})<DialogContentProps>({
-    maxHeight: "none",
-    overflow: "visible",
-});
 
 export const StyledInputLabel = styled(InputLabel)({
     textAlign: "center",

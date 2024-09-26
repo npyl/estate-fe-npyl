@@ -1,4 +1,4 @@
-import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
+import { ClearableSection } from "@/components/Filters/ClearableSection";
 import {
     resetConstructionYear,
     selectMaxConstructionYear,
@@ -37,7 +37,7 @@ const ConstructionYear = () => {
     };
 
     return (
-        <ClearableDialogContent
+        <ClearableSection
             title={t("Construction Year")}
             reset={resetConstructionYear}
         >
@@ -49,7 +49,7 @@ const ConstructionYear = () => {
                 marks={MARKS}
                 valueLabelDisplay="auto"
             />
-        </ClearableDialogContent>
+        </ClearableSection>
     );
 };
 

@@ -10,7 +10,7 @@ import {
     setMinBedrooms,
 } from "src/slices/filters";
 
-import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
+import { ClearableSection } from "@/components/Filters/ClearableSection";
 import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------
@@ -36,7 +36,7 @@ const Bedrooms = () => {
     const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
 
     return (
-        <ClearableDialogContent title={t("Bedrooms")} reset={resetBedrooms}>
+        <ClearableSection title={t("Bedrooms")} reset={resetBedrooms}>
             <Stack
                 direction={{
                     xs: "column",
@@ -105,7 +105,7 @@ const Bedrooms = () => {
                     ))}
                 </Select>
             </Stack>
-        </ClearableDialogContent>
+        </ClearableSection>
     );
 };
 

@@ -1,28 +1,42 @@
-import { SpaceBetween } from "@/components/styled";
 import {
-    Badge,
     Button,
-    ButtonProps,
-    Chip,
     Dialog,
     DialogActions,
     DialogProps,
     DialogTitle,
-    Stack,
-    Typography,
+    styled,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { StyledDialogContent } from "../styled";
+import { getBorderColor2 } from "@/theme/borderColor";
+import { StyledDialogContent } from "./styled";
+
+// ----------------------------------------------------------------------
+
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+    borderBottom: "1px solid",
+    borderBottomColor: getBorderColor2(theme),
+}));
+
+const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
+    borderTop: "1px solid",
+    borderTopColor: getBorderColor2(theme),
+    backgroundColor:
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[800],
+
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+}));
 
 // ----------------------------------------------------------------------
 
 type Props = DialogProps & {
-    changedFiltersCount: number;
     onResetFilter: VoidFunction;
 };
 
 export default function FilterMore({
-    changedFiltersCount,
     onResetFilter,
     children,
     ...props
@@ -30,23 +44,18 @@ export default function FilterMore({
     const { t } = useTranslation();
 
     return (
-        <Dialog maxWidth="md" scroll="body" {...props}>
-            <DialogTitle>
-                <SpaceBetween>
-                    <Chip label={changedFiltersCount} color={"error"} />
-                    <Typography variant="subtitle1">{t("Filters")}</Typography>
-                </SpaceBetween>
-            </DialogTitle>
+        <Dialog maxWidth="md" {...props}>
+            <StyledDialogTitle textAlign="center">
+                {t("Filters")}
+            </StyledDialogTitle>
 
-            <StyledDialogContent>
-                <Stack spacing={2}>{children}</Stack>
-            </StyledDialogContent>
+            <StyledDialogContent>{children}</StyledDialogContent>
 
-            <DialogActions sx={{ justifyContent: "space-between" }}>
-                <Button color={"secondary"} onClick={onResetFilter}>
+            <StyledDialogActions>
+                <Button variant="contained" onClick={onResetFilter}>
                     {t("Clear all")}
                 </Button>
-            </DialogActions>
+            </StyledDialogActions>
         </Dialog>
     );
 }

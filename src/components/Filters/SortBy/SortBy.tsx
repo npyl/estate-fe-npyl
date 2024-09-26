@@ -1,10 +1,11 @@
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { ClickAwayListener, Typography } from "@mui/material";
-import { MouseEvent, useCallback, useMemo, useState } from "react";
+import { Typography } from "@mui/material";
+import { FC, MouseEvent, useCallback, useMemo, useRef } from "react";
 import useResponsive from "@/hooks/useResponsive";
 import StyledStack from "./styled";
-import SelectPopper from "./popper";
+import SelectPopover from "./popover";
 import { TSortByOptions } from "./types";
+import useDialog from "@/hooks/useDialog";
 
 interface FilterSortByProps {
     options: TSortByOptions;
@@ -12,18 +13,19 @@ interface FilterSortByProps {
     onSortingChange: (s: string) => void;
 }
 
-const FilterSortBy = ({
+const FilterSortBy: FC<FilterSortByProps> = ({
     options,
     sorting,
     onSortingChange,
-}: FilterSortByProps) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLElement>();
-    const openPopper = useCallback((e: MouseEvent<HTMLElement>) => {
+}) => {
+    const anchorRef = useRef<HTMLDivElement>(null);
+
+    const [isOpen, openPopover, closePopover] = useDialog();
+
+    const handleOpen = useCallback((e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        setAnchorEl(e.currentTarget);
+        openPopover();
     }, []);
-    const closePopper = useCallback(() => setAnchorEl(undefined), []);
-    const isOpen = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
     const belowMd = useResponsive("down", "md");
 
@@ -33,33 +35,29 @@ const FilterSortBy = ({
     );
 
     return (
-        <ClickAwayListener
-            mouseEvent="onMouseDown"
-            touchEvent="onTouchStart"
-            onClickAway={closePopper}
-        >
-            <div>
-                <StyledStack open={isOpen} onClick={openPopper}>
-                    <SwapVertIcon />
+        <>
+            <StyledStack ref={anchorRef} open={isOpen} onClick={handleOpen}>
+                <SwapVertIcon />
 
-                    {belowMd ? null : (
-                        <Typography fontWeight={400} noWrap>
-                            {label}
-                        </Typography>
-                    )}
-                </StyledStack>
+                {belowMd ? null : (
+                    <Typography fontWeight={400} noWrap>
+                        {label}
+                    </Typography>
+                )}
+            </StyledStack>
 
-                {isOpen ? (
-                    <SelectPopper
-                        anchorEl={anchorEl}
-                        // ...
-                        options={options}
-                        sorting={sorting}
-                        onSortingChange={onSortingChange}
-                    />
-                ) : null}
-            </div>
-        </ClickAwayListener>
+            {isOpen ? (
+                <SelectPopover
+                    open
+                    anchorEl={anchorRef.current}
+                    onClose={closePopover}
+                    // ...
+                    options={options}
+                    sorting={sorting}
+                    onSortingChange={onSortingChange}
+                />
+            ) : null}
+        </>
     );
 };
 

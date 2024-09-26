@@ -99,9 +99,7 @@ const FilterBar: FC<Props> = ({
         <>
             <FiltersBar
                 bottomContent={
-                    changedPropertyFilters > 0 ? (
-                        <ChosenFilters px={1} pb={1} />
-                    ) : null
+                    changedPropertyFilters > 0 ? <ChosenFilters mt={1} /> : null
                 }
                 filters={
                     <>

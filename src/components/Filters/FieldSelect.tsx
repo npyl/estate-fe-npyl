@@ -1,11 +1,11 @@
-import { Button, Skeleton, Stack, Typography } from "@mui/material";
+import { Button, Skeleton, Stack } from "@mui/material";
 import { useDispatch } from "src/store";
-import { ClearableDialogContent } from "./ClearableDialogContent";
 import { KeyValue } from "src/types/KeyValue";
 import {
     ActionCreatorWithPayload,
     ActionCreatorWithoutPayload,
 } from "@reduxjs/toolkit";
+import ClearableSection from "./ClearableSection";
 
 interface FieldSelectProps {
     title: string;
@@ -25,7 +25,7 @@ const FieldSelect = ({
     const dispatch = useDispatch();
 
     return (
-        <ClearableDialogContent title={title} reset={onReset}>
+        <ClearableSection title={title} reset={onReset}>
             <Stack direction="row" gap={1} flexWrap="wrap">
                 {options.map((e) => (
                     <Button
@@ -54,7 +54,7 @@ const FieldSelect = ({
                       ))
                     : null}
             </Stack>
-        </ClearableDialogContent>
+        </ClearableSection>
     );
 };
 

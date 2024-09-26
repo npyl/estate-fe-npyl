@@ -7,7 +7,7 @@ import {
     setMaxFloor,
     setMinFloor,
 } from "@/slices/filters";
-import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
+import { ClearableSection } from "@/components/Filters/ClearableSection";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
@@ -33,7 +33,7 @@ const Floors = () => {
         );
 
     return (
-        <ClearableDialogContent title={t("Floors")} reset={resetFloor}>
+        <ClearableSection title={t("Floors")} reset={resetFloor}>
             <Stack
                 direction={{
                     xs: "column",
@@ -65,7 +65,7 @@ const Floors = () => {
                     ))}
                 </Select>
             </Stack>
-        </ClearableDialogContent>
+        </ClearableSection>
     );
 };
 
