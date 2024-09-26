@@ -1,23 +1,4 @@
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import type { FC } from "react";
-import dynamic from "next/dynamic";
-import type { EditorProps } from "react-draft-wysiwyg";
 import { styled } from "@mui/material/styles";
-import type { Theme } from "@mui/material";
-import type { SxProps } from "@mui/material";
-import BlockQuoteIcon from "@mui/icons-material/FormatQuote";
-
-const Editor = dynamic(
-    async () => {
-        const m = await import("react-draft-wysiwyg");
-        return m.Editor;
-    },
-    { ssr: false }
-);
-
-interface DraftEditorProps extends Omit<EditorProps, "toolbar"> {
-    sx?: SxProps<Theme>;
-}
 
 const DraftEditorRoot = styled("div")(({ theme }) => ({
     display: "flex",
@@ -145,30 +126,4 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
     },
 }));
 
-// TODO: types for this??
-const toolbarOptions = {
-    options: [
-        "inline",
-        "blockType",
-        "list",
-        "textAlign",
-        "link",
-        "emoji",
-        "image",
-        "remove",
-        "history",
-    ],
-    blockType: {
-        inDropdown: true,
-        options: ["Normal", "H1", "H2", "H3", "H4", "H5", "H6", "Blockquote"],
-        blockquote: { icon: <BlockQuoteIcon /> },
-    },
-};
-
-const DraftEditor: FC<DraftEditorProps> = ({ sx, ...other }) => (
-    <DraftEditorRoot sx={sx}>
-        <Editor {...other} toolbar={toolbarOptions} />
-    </DraftEditorRoot>
-);
-
-export default DraftEditor;
+export default DraftEditorRoot;
