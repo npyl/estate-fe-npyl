@@ -58,11 +58,11 @@ export default function KanbanDetailsCommentInput({
 
     return (
         <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
-            {/* <CustomAvatar
+            <CustomAvatar
                 src={user?.profilePhoto}
                 alt={user?.username}
                 name={user?.username}
-            /> */}
+            />
 
             <Box
                 display="flex"

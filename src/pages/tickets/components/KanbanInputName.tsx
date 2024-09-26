@@ -15,14 +15,13 @@ export default function KanbanInputName({ sx, ...other }: InputBaseProps) {
                     fontSize: "15px",
                     fontWeight: "bold",
                     textAlign: "center",
-                    border: `solid 1px transparent`,
+                    border: `solid 1px lightgrey`,
                     transition: (theme) =>
                         theme.transitions.create([
                             "padding-left",
                             "border-color",
                         ]),
                     "&:hover, &:focus": {
-                        pl: 1,
                         border: (theme) =>
                             `solid 1px ${theme.palette.text.primary}`,
                     },

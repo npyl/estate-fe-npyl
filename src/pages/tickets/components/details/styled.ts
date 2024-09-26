@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 
 export const StyledLabel = styled("span")(({ theme }) => ({
     ...theme.typography.caption,
-    width: 120,
+    width: 60,
     flexShrink: 0,
     color: theme.palette.text.secondary,
 }));

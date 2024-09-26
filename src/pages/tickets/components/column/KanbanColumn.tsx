@@ -11,7 +11,7 @@ import {
     useAddCardMutation,
     useDeleteCardMutation,
     useDeleteColumnMutation,
-    useEditColumnMutation,
+    // useEditColumnMutation,
     useGetBoardQuery,
 } from "src/services/tickets";
 import KanbanTaskAdd from "../KanbanTaskAdd";
@@ -49,8 +49,7 @@ export default function KanbanColumn({ column }: Props) {
     const cards = useMemo(() => board?.cards || [], [board]);
 
     // Columns
-    const [editColumn] = useEditColumnMutation();
-    const [deleteColumn] = useDeleteColumnMutation();
+    // const [editColumn] = useEditColumnMutation();
 
     // Cards
     const [addCard] = useAddCardMutation();
@@ -58,9 +57,8 @@ export default function KanbanColumn({ column }: Props) {
 
     const [openAddTask, setOpenAddTask] = useState(false);
 
-    const handleUpdateColumn = async (name: string) =>
-        editColumn({ id: column.id, name });
-    const handleDeleteColumn = async () => deleteColumn(column.id);
+    // const handleUpdateColumn = async (name: string) =>
+    //     editColumn({ id: column.id, name });
 
     const handleToggleAddTask = () => setOpenAddTask(!openAddTask);
     const handleCloseAddTask = () => setOpenAddTask(false);
@@ -92,8 +90,7 @@ export default function KanbanColumn({ column }: Props) {
                     >
                         <KanbanColumnToolBar
                             columnName={column.name}
-                            onDelete={handleDeleteColumn}
-                            onUpdate={handleUpdateColumn}
+                            // onUpdate={handleUpdateColumn}
                         />
 
                         {column.cardOrder.map((cardId, index) => {

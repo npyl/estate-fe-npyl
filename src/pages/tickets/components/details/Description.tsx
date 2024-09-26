@@ -59,7 +59,7 @@ const Description = ({
     }, [description]);
 
     return (
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column" spacing={1}>
             <StyledLabel>{t("Description")}</StyledLabel>
 
             <EnterOverlay show={description !== initialState}>
@@ -92,7 +92,7 @@ const Description = ({
                     textTransform: "none",
                 }}
             >
-                {t("Update")}
+                {t("Save Description")}
             </Button>
         </Stack>
     );

@@ -20,18 +20,6 @@ export default function KanbanPage() {
                     mb: 3,
                 }}
             >
-                <Stack direction={"row"} justifyContent={"flex-end"}>
-                    <KanbanColumnAdd
-                        color="info"
-                        sx={{
-                            mb: 2,
-                            width: "35px",
-                            height: "35px",
-                            zIndex: 1,
-                        }}
-                    />
-                </Stack>
-
                 {board ? <Board board={board} /> : null}
 
                 {isLoading ? <SkeletonKanbanColumn /> : null}

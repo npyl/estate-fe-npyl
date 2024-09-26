@@ -1,11 +1,25 @@
 import { useCallback, useRef, useState } from "react";
 // @mui
-import { Avatar, Divider, Drawer, Stack, Button } from "@mui/material";
+import {
+    Avatar,
+    Divider,
+    Drawer,
+    Stack,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Box,
+    Typography,
+    IconButton,
+    useTheme,
+    Tooltip,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 // @types
 import {
     IKanbanCard,
     IKanbanCardPOST,
-    IKanbanComment,
     IKanbanCommentPOST,
 } from "src/types/kanban";
 // components
@@ -51,27 +65,18 @@ export default function KanbanDetails({
     } = task;
 
     const [liked, setLiked] = useState(false);
-
+    const [selectedImage, setSelectedImage] = useState<string | null>(null); // For the clicked image modal
+    const theme = useTheme();
+    const scrollbarColor = theme.palette.mode === "dark" ? "#444" : "#bbb";
+    const scrollbarHoverColor = theme.palette.mode === "dark" ? "#666" : "#888";
+    const scrollbarTrackColor =
+        theme.palette.mode === "dark" ? "#222" : "#f1f1f1";
     const fileInputRef = useRef<HTMLInputElement>(null);
-
-    // TODO:
-    // const {
-    //     startDate,
-    //     endDate,
-    //     onChangeStartDate,
-    //     onChangeEndDate,
-    //     open: openPicker,
-    //     onOpen: onOpenPicker,
-    //     onClose: onClosePicker,
-    //     isSelected: isSelectedValuePicker,
-    //     isError,
-    //     shortLabel,
-    // } = useDateRangePicker(new Date(task.due[0]), new Date(task.due[1]));
 
     const [editCard] = useEditCardMutation();
     const handleLiked = useCallback(() => setLiked((old) => !old), []);
     const handleClickAttach = () => fileInputRef.current?.click();
-    console.log(task.attachments);
+
     const handleUpdate = useCallback(
         (card: Partial<IKanbanCardPOST>) => {
             const payload = {
@@ -110,7 +115,7 @@ export default function KanbanDetails({
                 completed: !completed,
                 userIds: user.map((u) => u.id),
             }),
-        [id, name, description, priority, completed, user]
+        [id, name, attachments, description, priority, completed, user]
     );
 
     const handleChangePriority = useCallback(
@@ -119,11 +124,12 @@ export default function KanbanDetails({
                 id,
                 name,
                 description,
+                attachments,
                 priority: +event.target.value,
                 completed,
                 userIds: user.map((u) => u.id),
             }),
-        [id, name, description, completed, user]
+        [id, name, attachments, description, completed, user]
     );
 
     const handleToggleAssignee = useCallback(
@@ -138,11 +144,12 @@ export default function KanbanDetails({
                 name,
                 description,
                 priority,
+                attachments,
                 completed,
                 userIds: newUserIds,
             });
         },
-        [id, name, description, priority, completed, user]
+        [id, name, attachments, description, priority, completed, user]
     );
 
     const handleAttachmentsChange = useCallback(
@@ -150,7 +157,6 @@ export default function KanbanDetails({
             editCard({
                 id,
                 attachments: _attachments,
-                // comments,
                 completed,
                 description,
                 due,
@@ -178,8 +184,6 @@ export default function KanbanDetails({
                 id: +comment.id!,
                 messageType: comment.messageType,
                 message: comment.message,
-                // avatar: comment.avatar ?? "",
-                // createdAt: comment.createdAt ?? new Date().getTime(),
             }));
 
             editCard({
@@ -206,21 +210,30 @@ export default function KanbanDetails({
             priority,
         ]
     );
+
     const { t } = useTranslation();
 
+    // Handler to open the image modal
+    const handleOpenImageModal = (image: string) => {
+        setSelectedImage(image);
+    };
+
+    // Handler to close the image modal
+    const handleCloseImageModal = () => {
+        setSelectedImage(null);
+    };
+
     return (
-        <Drawer
+        <Dialog
             open={openDetails}
             onClose={onCloseDetails}
-            anchor="right"
+            maxWidth="sm"
+            fullWidth
             PaperProps={{
                 sx: {
-                    height: "calc(100% - 60px)",
-                    top: "60px",
-                    width: {
-                        xs: 1,
-                        sm: 480,
-                    },
+                    minHeight: "80vh", // Adjust the height as needed
+                    borderRadius: 2,
+                    padding: 2,
                 },
             }}
         >
@@ -236,130 +249,179 @@ export default function KanbanDetails({
                 onCloseDetails={onCloseDetails}
             />
             <Divider />
-            <Scrollbar>
-                <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
-                    {/* Task name */}
+            {/* <Scrollbar> */}
+            <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
+                {/* Task name */}
+                <Box>
+                    <StyledLabel sx={{ height: 20, lineHeight: "20px" }}>
+                        {t("Task name")}
+                    </StyledLabel>
                     <Name taskName={name} onUpdate={handleUpdate} />
+                </Box>
 
-                    {/* Assignee */}
-                    <Stack direction="row">
+                {/* Assignee and priority*/}
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
+                    <Stack direction="row" alignItems="center" ml={2}>
                         <StyledLabel
                             sx={{ height: 40, lineHeight: "40px", my: 0.5 }}
                         >
                             {t("Assignee")}
                         </StyledLabel>
 
-                        <Stack
-                            direction="row"
-                            flexWrap="wrap"
-                            alignItems="center"
-                        >
-                            {/* {task.user.map((user) => (
-                                <Avatar
-                                    key={user.id}
-                                    alt={user.username}
-                                    src={user.profilePhoto}
-                                    sx={{ m: 0.5 }}
-                                />
-                            ))} */}
-
-                            <KanbanContactsDialog
-                                assignees={task.user}
-                                toggleAssignee={handleToggleAssignee}
-                            />
-                        </Stack>
+                        <KanbanContactsDialog
+                            assignees={task.user}
+                            toggleAssignee={handleToggleAssignee}
+                        />
                     </Stack>
 
-                    {/* Due date */}
-                    {/* <Stack direction="row" alignItems="center">
-                        <StyledLabel> Due date </StyledLabel>
-                        <>
-                            {isSelectedValuePicker ? (
-                                <Box
-                                    onClick={onOpenPicker}
-                                    sx={{
-                                        typography: "body2",
-                                        cursor: "pointer",
-                                        "&:hover": { opacity: 0.72 },
-                                    }}
-                                >
-                                    {shortLabel}
-                                </Box>
-                            ) : (
-                                <Tooltip title="Add due date">
-                                    <IconButton
-                                        onClick={onOpenPicker}
-                                        sx={{
-                                            p: 1,
-                                            ml: 0.5,
-                                            bgcolor: (theme) =>
-                                                alpha(
-                                                    theme.palette.grey[500],
-                                                    0.08
-                                                ),
-                                            border: (theme) =>
-                                                `dashed 1px ${theme.palette.divider}`,
-                                        }}
-                                    >
-                                        <Iconify icon="eva:plus-fill" />
-                                    </IconButton>
-                                </Tooltip>
-                            )}
-
-                            <DateRangePicker
-                                variant="calendar"
-                                title="Choose due date"
-                                startDate={startDate}
-                                endDate={endDate}
-                                onChangeStartDate={onChangeStartDate}
-                                onChangeEndDate={onChangeEndDate}
-                                open={openPicker}
-                                onClose={onClosePicker}
-                                isSelected={isSelectedValuePicker}
-                                isError={isError}
-                            />
-                        </>
-                    </Stack> */}
-
-                    {/* Priority */}
-                    <Stack direction="row" alignItems="center">
-                        <StyledLabel>{t("Priority")}</StyledLabel>
+                    <Stack direction="row" alignItems="center" mr={2}>
+                        <Typography
+                            fontSize="13px"
+                            color="text.secondary"
+                            sx={{ flexShrink: 0, mr: 1 }}
+                        >
+                            {t("Priority")}
+                        </Typography>
 
                         <KanbanDetailsPrioritizes
                             priority={priority}
                             onChangePrioritize={handleChangePriority}
                         />
                     </Stack>
+                </Stack>
 
-                    {/* Description */}
-                    <Description
-                        taskDescription={description}
-                        onUpdate={handleUpdate}
-                        onClose={onCloseDetails}
-                    />
+                {/* Description */}
+                <Description
+                    taskDescription={description}
+                    onUpdate={handleUpdate}
+                    onClose={onCloseDetails}
+                />
 
-                    {/* Attachments */}
-                    <Stack direction="row">
-                        <StyledLabel sx={{ py: 0.5 }}>
+                {/* Attachments */}
+                <Box>
+                    <Stack direction="row" alignItems="center">
+                        <Typography
+                            fontSize="13px"
+                            color="text.secondary"
+                            sx={{ flexShrink: 0, mr: 2 }}
+                        >
                             {t("Attachments")}
-                        </StyledLabel>
+                        </Typography>
+
                         <KanbanDetailsAttachments
                             attachments={task.attachments}
                             onChange={handleAttachmentsChange}
                         />
                     </Stack>
-                </Stack>
-
-                {!!task.comments.length && (
-                    <KanbanDetailsCommentList comments={task.comments} />
-                )}
-            </Scrollbar>
-            <Divider />
+                    <Divider />
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: "flex",
+                            flexDirection: "row",
+                            flexWrap: "wrap",
+                            gap: 5,
+                            mt: 2, // Space between label and attachment thumbnails
+                            maxHeight: "200px",
+                            overflowY: "auto",
+                            padding: 1,
+                            "&::-webkit-scrollbar": {
+                                height: "2px",
+                                width: "9px",
+                            },
+                            "&::-webkit-scrollbar-thumb": {
+                                backgroundColor: scrollbarColor,
+                                borderRadius: "10px",
+                            },
+                            "&::-webkit-scrollbar-thumb:hover": {
+                                backgroundColor: scrollbarHoverColor,
+                            },
+                            "&::-webkit-scrollbar-track": {
+                                backgroundColor: scrollbarTrackColor,
+                            },
+                        }}
+                    >
+                        {task.attachments.map((attachment, index) => (
+                            <Box
+                                key={index}
+                                sx={{
+                                    position: "relative",
+                                    width: "120px",
+                                    height: "auto",
+                                }}
+                            >
+                                <Typography
+                                    textAlign="center"
+                                    variant="body2"
+                                    fontWeight={500}
+                                    sx={{ mb: 1 }}
+                                >
+                                    {t("attachment")} {index + 1}
+                                </Typography>
+                                <img
+                                    alt={`attachment-${index + 1}`}
+                                    src={attachment}
+                                    style={{
+                                        width: "100%",
+                                        height: "auto",
+                                        objectFit: "contain",
+                                        borderRadius: "8px",
+                                        transition: "opacity 0.3s ease",
+                                        opacity: task.completed ? 0.48 : 1,
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() =>
+                                        handleOpenImageModal(attachment)
+                                    } // Open modal with clicked image
+                                />
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+            </Stack>
+            <Divider sx={{ mb: 1, mt: -3 }} />
+            {/* </Scrollbar> */}
+            {!!task.comments.length && (
+                <KanbanDetailsCommentList comments={task.comments} />
+            )}
             <KanbanDetailsCommentInput
                 comments={comments}
                 onChange={handleCommentsChange}
                 cardId={task.id}
             />
-        </Drawer>
+
+            {/* Image Modal */}
+            <Dialog
+                open={Boolean(selectedImage)}
+                onClose={handleCloseImageModal}
+                maxWidth="md"
+            >
+                <DialogTitle>
+                    <Typography>{t("Attachment Preview")}</Typography>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleCloseImageModal}
+                        sx={{
+                            position: "absolute",
+                            right: 8,
+                            top: 8,
+                            color: theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent dividers>
+                    <img
+                        src={selectedImage || ""}
+                        style={{ width: "100%", height: "auto" }}
+                    />
+                </DialogContent>
+            </Dialog>
+        </Dialog>
     );
 }

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 // @mui
-import { Stack } from "@mui/material";
+import { Stack, Tooltip } from "@mui/material";
 
 // components
 import { UploadBox } from "src/components/upload";
@@ -40,12 +40,16 @@ export default function KanbanDetailsAttachments({
 
     return (
         <Stack direction="row" flexWrap="wrap">
-            <UploadBox onDrop={handleDrop} />
+            <Tooltip placement="top" title="Upload attachments">
+                <div>
+                    <UploadBox onDrop={handleDrop} sx={{ mr: 1 }} />
+                </div>
+            </Tooltip>
             {files.map((file, index) => (
                 <FilePresentOutlinedIcon
                     key={index}
                     color="success"
-                    style={{ marginTop: "10px" }}
+                    style={{ marginTop: "10px", marginLeft: 2 }}
                 />
             ))}
         </Stack>

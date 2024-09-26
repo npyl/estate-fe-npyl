@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 // @mui
 import {
+    Avatar,
     Box,
     Checkbox,
     Dialog,
@@ -50,10 +51,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
             completed: !completed,
             userIds: user.map((u) => u.id),
         });
-    const scrollbarColor = theme.palette.mode === "dark" ? "#444" : "#bbb";
-    const scrollbarHoverColor = theme.palette.mode === "dark" ? "#666" : "#888";
-    const scrollbarTrackColor =
-        theme.palette.mode === "dark" ? "#222" : "#f1f1f1";
 
     const [openModal, setOpenModal] = useState(false);
     const [currentImage, setCurrentImage] = useState("");
@@ -83,36 +80,122 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                         sx={{
-                            width: 1,
-                            borderRadius: 1,
-
+                            width: "100%",
+                            borderRadius: "8.5px",
+                            p: 1.5,
                             boxShadow:
                                 "0px 1px 1px rgba(100, 116, 139, 0.06), 0px 1px 2px rgba(100, 116, 139, 0.1)",
                             "&:hover": {
                                 boxShadow:
                                     "0px 10px 10px rgba(31, 41, 55, 0.04), 0px 20px 25px rgba(31, 41, 55, 0.1)",
+                                backgroundColor: "#d0e7ff", // Hover blue color (adjust as needed)
+                                border: "3px solid #3399ff",
+                                p: 1.2,
                             },
-
+                            // backgroundColor: "#f7f8f9",
                             display: "flex",
                             flexDirection: "row",
-
                             cursor: "pointer",
                         }}
                         onClick={handleOpenDetails}
                     >
-                        <Checkbox
-                            disableRipple
-                            checked={completed}
-                            icon={
-                                <Iconify icon="eva:radio-button-off-outline" />
-                            }
-                            checkedIcon={
-                                <Iconify icon="eva:checkmark-circle-2-outline" />
-                            }
-                            onChange={handleChangeComplete}
-                        />
+                        <Stack spacing={1}>
+                            {/* Task ID and small icon */}
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                {/* Task ID */}
+                                <Stack direction="column" spacing={0}>
+                                    <Box
+                                        display="flex"
+                                        flexDirection="row"
+                                        alignItems="flex-start"
+                                        gap={1}
+                                    >
+                                        <Checkbox
+                                            disableRipple
+                                            checked={completed}
+                                            icon={
+                                                <Iconify icon="eva:radio-button-off-outline" />
+                                            }
+                                            checkedIcon={
+                                                <Iconify icon="eva:checkmark-circle-2-outline" />
+                                            }
+                                            onChange={handleChangeComplete}
+                                        />
+                                        <Typography
+                                            variant="body1"
+                                            sx={{
+                                                minHeight: 37,
+                                                mt: 1,
+                                                lineHeight: "16px",
+                                                fontSize: "13px",
+                                                width: "250px",
+                                                fontWeight: "600",
+                                                overflow: "ellipsis",
+                                                transition: (theme) =>
+                                                    theme.transitions.create(
+                                                        "opacity",
+                                                        {
+                                                            duration:
+                                                                theme
+                                                                    .transitions
+                                                                    .duration
+                                                                    .shortest,
+                                                        }
+                                                    ),
+                                                ...(completed && {
+                                                    opacity: 0.48,
+                                                }),
+                                            }}
+                                        >
+                                            {name}
+                                        </Typography>
+                                    </Box>
 
-                        <Box
+                                    <Stack direction="row" mt={1}>
+                                        <Iconify
+                                            icon="eva:file-text-fill"
+                                            sx={{
+                                                fontSize: "17px",
+                                                color: "green",
+                                                ml: 0,
+                                            }}
+                                        />
+
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                ml: 0.5,
+                                                fontWeight: 500,
+                                                color: "#666",
+                                            }}
+                                        >
+                                            {`ticket-${id}`}{" "}
+                                        </Typography>
+                                    </Stack>
+                                </Stack>
+                                {/* User's initials in Avatar */}
+                                {user?.length > 0 && (
+                                    <Avatar
+                                        sx={{
+                                            mt: 7,
+                                            ml: 2,
+                                            width: 24,
+                                            height: 24,
+                                            fontSize: "12px",
+                                            backgroundColor:
+                                                theme.palette.info.dark,
+                                        }}
+                                    >
+                                        {"N/A"} {/* Initials */}
+                                    </Avatar>
+                                )}
+                            </Stack>
+                        </Stack>
+                        {/* <Box
                             sx={{
                                 flexGrow: 1,
                                 // overflow: "clip",
@@ -135,28 +218,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                 },
                             }}
                         >
-                            <Typography
-                                variant="body1"
-                                sx={{
-                                    height: 72,
-                                    lineHeight: "72px",
-                                    fontSize: "12px",
-                                    width: "200px",
-                                    fontWeight: "600",
-                                    overflow: "ellipsis",
-                                    transition: (theme) =>
-                                        theme.transitions.create("opacity", {
-                                            duration:
-                                                theme.transitions.duration
-                                                    .shortest,
-                                        }),
-                                    ...(completed && {
-                                        opacity: 0.48,
-                                    }),
-                                }}
-                            >
-                                {name}
-                            </Typography>
                             <Box
                                 sx={{
                                     display: "flex",
@@ -210,13 +271,25 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                         </Stack>
                                     ))}
                             </Box>
-                        </Box>
+                        </Box> */}
                     </Paper>
                 )}
             </Draggable>
 
-            <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md">
-                <DialogTitle>
+            <Dialog
+                open={openModal}
+                onClose={handleCloseModal}
+                maxWidth="md"
+                PaperProps={{
+                    sx: {
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                    },
+                }}
+            >
+                {/* <DialogTitle>
                     {t("attachment")}
                     <IconButton
                         aria-label="close"
@@ -235,7 +308,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                             sx={{ backgroundColor: "transparent" }}
                         />
                     </IconButton>
-                </DialogTitle>
+                </DialogTitle> */}
                 <DialogContent dividers>
                     <img
                         src={currentImage}

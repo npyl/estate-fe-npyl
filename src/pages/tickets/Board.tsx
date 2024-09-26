@@ -8,7 +8,6 @@ import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsD
 import {
     useMoveCardMutation,
     useReorderCardMutation,
-    useReorderColumnMutation,
 } from "src/services/tickets";
 import { IKanbanBoard } from "@/types/kanban";
 import useResponsiveColumns from "../property/edit/[propertyId]/forms/_general/Images/SeeMore/Content/useResponsiveColumns";
@@ -17,7 +16,7 @@ const COLUMNS = {
     xs: 1,
     sm: 2,
     md: 3,
-    lg: 4,
+    lg: 3,
 };
 
 // ----------------------------------------------------------------------
@@ -46,7 +45,6 @@ const Board: FC<Props> = ({ board }) => {
 
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
-    const [reorderColumn] = useReorderColumnMutation();
 
     const items = useMemo(
         () =>
@@ -93,10 +91,10 @@ const Board: FC<Props> = ({ board }) => {
             if (oneDimentionArrayDstIndex === itemsLength)
                 oneDimentionArrayDstIndex -= 1;
 
-            reorderColumn({
-                columnId: draggedItemId,
-                position: oneDimentionArrayDstIndex,
-            });
+            // reorderColumn({
+            //     columnId: draggedItemId,
+            //     position: oneDimentionArrayDstIndex,
+            // });
         }
 
         if (type === DroppableTypeTask) {
