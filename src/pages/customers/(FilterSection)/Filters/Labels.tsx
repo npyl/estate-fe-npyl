@@ -13,7 +13,7 @@ import { useGetLabelsQuery } from "src/services/labels";
 import { useDispatch } from "src/store";
 import { StyledInputLabel } from "@/components/Filters";
 import { useSelector } from "react-redux";
-import { selectLabels, setLabels } from "@/slices/filters";
+import { selectLabels, setLabels } from "@/slices/customer/filters";
 
 export default function FilterLabels() {
     const { t } = useTranslation();
@@ -23,10 +23,10 @@ export default function FilterLabels() {
 
     const { data } = useGetLabelsQuery();
 
-    const labelOptions = useMemo(() => data?.propertyLabels, [data]) || [];
+    const labelOptions = useMemo(() => data?.customerLabels, [data]) || [];
 
-    const renderLabelNames = (selectedIds: number[]) =>
-        selectedIds
+    const renderLabelNames = (selectedIds: number[]) => {
+        return selectedIds
             .map((id) => {
                 const labelOption = labelOptions.find(
                     (option) => option.id === id
@@ -34,6 +34,7 @@ export default function FilterLabels() {
                 return labelOption ? labelOption.name : "Unknown";
             })
             .join(", ");
+    };
 
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
@@ -71,18 +72,13 @@ export default function FilterLabels() {
                         label="Ετικέτες"
                     />
                 }
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {labelOptions.map((option) => {
-                    return (
-                        <MenuItem key={option.id} value={option.id}>
-                            <Checkbox
-                                checked={labels.indexOf(option.id!) > -1}
-                            />
-                            <Label color={option.color} name={option.name} />
-                        </MenuItem>
-                    );
-                })}
+                {labelOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        <Checkbox checked={labels.indexOf(option.id!) > -1} />
+                        <Label color={option.color} name={option.name} />
+                    </MenuItem>
+                ))}
             </Select>
         </FormControl>
     );

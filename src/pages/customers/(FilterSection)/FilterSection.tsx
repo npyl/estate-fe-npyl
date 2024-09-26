@@ -16,7 +16,7 @@ import FilterManager from "./Filters/ManagedBy";
 import FilterMore from "@/components/Filters/FilterMore/Dialog";
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
 import FilterSortBy from "@/components/Filters/SortBy";
-import FilterLabels from "@/pages/property/(FiltersBar)/Filters/Labels";
+import FilterLabels from "./Filters/Labels";
 // ok
 import useDialog from "@/hooks/useDialog";
 import { SpaceBetween } from "@/components/styled";
@@ -47,11 +47,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <FilterBuyerLeaserAndMore />
             <FilterParentCategory />
             <FilterCategory />
-            <FilterLabels
-                variant="customer"
-                labels={labels}
-                setLabels={setLabels}
-            />
+            <FilterLabels />
             <PriceSelect type={"price"} />
             <PriceSelect type={"area"} />
             <FilterManager />

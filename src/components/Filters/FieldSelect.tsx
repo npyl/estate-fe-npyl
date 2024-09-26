@@ -25,8 +25,7 @@ const FieldSelect = ({
     const dispatch = useDispatch();
 
     return (
-        <ClearableDialogContent dividers reset={onReset}>
-            <Typography>{title}</Typography>
+        <ClearableDialogContent title={title} reset={onReset}>
             <Stack direction="row" gap={1} flexWrap="wrap">
                 {options.map((e) => (
                     <Button

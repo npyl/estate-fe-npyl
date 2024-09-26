@@ -20,11 +20,12 @@ import { optionType } from "./types";
 import { useCallback, useMemo } from "react";
 
 import useDialog from "@/hooks/useDialog";
-import FilterMore from "./Filters/FilterMore";
+const FilterMore = dynamic(() => import("./FilterMore"));
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
 import FilterSortBy from "@/components/Filters/SortBy";
 import { getOptions } from "./constants";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
 
 type viewOptionsType = {
     id: optionType;
@@ -92,8 +93,6 @@ const FilterBar = ({
         ));
     }, [optionView, belowLg]);
 
-    const handleResetFilter = useCallback(() => dispatch(resetState()), []);
-
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     const options = useMemo(() => getOptions(t), [t]);
@@ -141,14 +140,7 @@ const FilterBar = ({
                 ) : null}
             </Paper>
 
-            {isDialogOpen ? (
-                <FilterMore
-                    open={isDialogOpen}
-                    onOpen={openDialog}
-                    onClose={closeDialog}
-                    onResetFilter={handleResetFilter}
-                />
-            ) : null}
+            {isDialogOpen ? <FilterMore onClose={closeDialog} /> : null}
         </>
     );
 };
