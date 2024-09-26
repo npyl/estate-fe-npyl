@@ -18,7 +18,16 @@ function renderImage(
     const isActive = params.row?.active;
 
     return (
-        <Box sx={{ position: "relative", width: "100%", height: "85%" }}>
+        <Box
+            sx={{
+                position: "relative",
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+            }}
+        >
             <Image
                 src={
                     typeof propertyImage === "string"
@@ -27,7 +36,11 @@ function renderImage(
                 }
                 alt=""
                 ratio="16/9"
-                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                }}
             />
             {!isActive && (
                 <Box

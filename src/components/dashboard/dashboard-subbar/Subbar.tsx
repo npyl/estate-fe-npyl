@@ -175,7 +175,7 @@ const Subbar = () => {
                         top: isStickyPath ? 64 : 0,
                         zIndex: 100,
                         backgroundColor: "white",
-                        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
+                        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
                     }}
                 >
                     <SubbarItems overflow="auto" width="90%" />

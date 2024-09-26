@@ -42,7 +42,7 @@ export default function UnsavedChangesModal({
             <DialogContent>
                 <DialogContentText sx={{ textAlign: "center", mt: 1 }}>
                     {t(
-                        "You have unsaved changes. Are you sure you want to leave this page? All your progress will be lost."
+                        "You have unsaved changes.  All your progress will be lost if you leave without saving. Are you sure you want to leave this page?"
                     )}
                 </DialogContentText>
             </DialogContent>
@@ -56,17 +56,17 @@ export default function UnsavedChangesModal({
                 >
                     <Button
                         onClick={onConfirm}
-                        color="primary"
+                        color="error"
                         variant="outlined"
                     >
-                        {t("Confirm")}
+                        {t("Yes")}
                     </Button>
                     <Button
                         onClick={onCancel}
                         variant="contained"
                         startIcon={<CancelIcon />}
                     >
-                        {t("Cancel")}
+                        {t("No")}
                     </Button>
                 </Stack>
             </DialogActions>
