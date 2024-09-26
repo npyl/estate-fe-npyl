@@ -52,7 +52,7 @@ export default function FilterMore({
             <StyledDialogContent>{children}</StyledDialogContent>
 
             <StyledDialogActions>
-                <Button variant="contained" onClick={onResetFilter}>
+                <Button variant="outlined" onClick={onResetFilter}>
                     {t("Clear all")}
                 </Button>
             </StyledDialogActions>

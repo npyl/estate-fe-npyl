@@ -57,7 +57,9 @@ const ClearableSection: FC<ClearableSectionProps> = ({
     return (
         <Stack spacing={1} pb={2} {...props}>
             <SpaceBetween>
-                <Typography>{title}</Typography>
+                <Typography variant="h6" fontWeight="600">
+                    {title}
+                </Typography>
                 <StyledIconButton size="small" onClick={handleClear}>
                     <CloseIcon />
                 </StyledIconButton>

@@ -8,6 +8,9 @@ import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./Filters/Floors";
 import Fields from "./Filters/Fields";
 import Basic from "./Filters/Basic";
+import Type from "./CompactFilters/Type";
+import Category from "./CompactFilters/Category";
+import ParentCategory from "./CompactFilters/ParentCategory";
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +30,11 @@ export default function FilterMore({ onClose }: Props) {
             {changedPropsCount > 0 ? <ChosenFilters /> : null}
 
             <Basic />
+            <Type />
+
+            <Category />
+            <ParentCategory />
+
             <Bedrooms />
             <Floors />
             <Fields />
