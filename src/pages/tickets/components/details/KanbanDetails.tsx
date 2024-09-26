@@ -250,9 +250,9 @@ export default function KanbanDetails({
             />
             <Divider />
             {/* <Scrollbar> */}
-            <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
+            <Stack spacing={3} sx={{ pt: 3, pb: 5 }}>
                 {/* Task name */}
-                <Box>
+                <Box sx={{ px: 2.5 }}>
                     <StyledLabel sx={{ height: 20, lineHeight: "20px" }}>
                         {t("Task name")}
                     </StyledLabel>
@@ -264,6 +264,7 @@ export default function KanbanDetails({
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
+                    sx={{ px: 2.5 }}
                 >
                     <Stack direction="row" alignItems="center" ml={2}>
                         <StyledLabel
@@ -295,14 +296,16 @@ export default function KanbanDetails({
                 </Stack>
 
                 {/* Description */}
-                <Description
-                    taskDescription={description}
-                    onUpdate={handleUpdate}
-                    onClose={onCloseDetails}
-                />
+                <Box sx={{ px: 2.5 }}>
+                    <Description
+                        taskDescription={description}
+                        onUpdate={handleUpdate}
+                        onClose={onCloseDetails}
+                    />
+                </Box>
 
                 {/* Attachments */}
-                <Box>
+                <Box sx={{ px: 2.5 }}>
                     <Stack direction="row" alignItems="center">
                         <Typography
                             fontSize="13px"
@@ -322,6 +325,7 @@ export default function KanbanDetails({
                         sx={{
                             flexGrow: 1,
                             display: "flex",
+                            px: 2.5,
                             flexDirection: "row",
                             flexWrap: "wrap",
                             gap: 5,
@@ -383,16 +387,18 @@ export default function KanbanDetails({
                     </Box>
                 </Box>
             </Stack>
-            <Divider sx={{ mb: 1, mt: -3 }} />
-            {/* </Scrollbar> */}
-            {!!task.comments.length && (
-                <KanbanDetailsCommentList comments={task.comments} />
-            )}
-            <KanbanDetailsCommentInput
-                comments={comments}
-                onChange={handleCommentsChange}
-                cardId={task.id}
-            />
+            <Box sx={{ px: 2.5 }}>
+                <Divider sx={{ mb: 1, mt: -3 }} />
+                {/* </Scrollbar> */}
+                {!!task.comments.length && (
+                    <KanbanDetailsCommentList comments={task.comments} />
+                )}
+                <KanbanDetailsCommentInput
+                    comments={comments}
+                    onChange={handleCommentsChange}
+                    cardId={task.id}
+                />
+            </Box>
 
             {/* Image Modal */}
             <Dialog

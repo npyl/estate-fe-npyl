@@ -57,11 +57,17 @@ export default function KanbanDetailsCommentInput({
     }, [comments, currentComment, createComment, onChange]);
 
     return (
-        <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
+        <Stack
+            direction="row"
+            spacing={1}
+            sx={{ my: 3 }}
+            alignItems="flex-start"
+        >
             <CustomAvatar
                 src={user?.profilePhoto}
                 alt={user?.username}
                 name={user?.username}
+                sx={{ width: "25px", height: "25px" }}
             />
 
             <Box

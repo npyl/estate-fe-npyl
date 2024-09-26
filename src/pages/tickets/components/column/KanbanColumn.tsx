@@ -50,6 +50,7 @@ export default function KanbanColumn({ column }: Props) {
 
     // Columns
     // const [editColumn] = useEditColumnMutation();
+    const [deleteColumn] = useDeleteColumnMutation();
 
     // Cards
     const [addCard] = useAddCardMutation();
@@ -59,6 +60,7 @@ export default function KanbanColumn({ column }: Props) {
 
     // const handleUpdateColumn = async (name: string) =>
     //     editColumn({ id: column.id, name });
+    const handleDeleteColumn = async () => deleteColumn(column.id);
 
     const handleToggleAddTask = () => setOpenAddTask(!openAddTask);
     const handleCloseAddTask = () => setOpenAddTask(false);

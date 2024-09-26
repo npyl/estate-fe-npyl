@@ -11,6 +11,7 @@ import {
     IconButton,
     Paper,
     Stack,
+    Tooltip,
     Typography,
 } from "@mui/material";
 // @types
@@ -24,6 +25,7 @@ import { useEditCardMutation } from "src/services/tickets";
 import { useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -83,195 +85,168 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                             width: "100%",
                             borderRadius: "8.5px",
                             p: 1.5,
+                            border: "3px solid transparent",
                             boxShadow:
                                 "0px 1px 1px rgba(100, 116, 139, 0.06), 0px 1px 2px rgba(100, 116, 139, 0.1)",
                             "&:hover": {
                                 boxShadow:
                                     "0px 10px 10px rgba(31, 41, 55, 0.04), 0px 20px 25px rgba(31, 41, 55, 0.1)",
-                                backgroundColor: "#d0e7ff", // Hover blue color (adjust as needed)
+                                backgroundColor: "#d0e7ff",
                                 border: "3px solid #3399ff",
-                                p: 1.2,
+                                p: 1.5,
                             },
-                            // backgroundColor: "#f7f8f9",
                             display: "flex",
                             flexDirection: "row",
                             cursor: "pointer",
+                            position: "relative", // Allows absolute positioning of child elements
                         }}
                         onClick={handleOpenDetails}
                     >
-                        <Stack spacing={1}>
-                            {/* Task ID and small icon */}
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                                alignItems="center"
-                            >
-                                {/* Task ID */}
-                                <Stack direction="column" spacing={0}>
-                                    <Box
-                                        display="flex"
-                                        flexDirection="row"
-                                        alignItems="flex-start"
-                                        gap={1}
-                                    >
-                                        <Checkbox
-                                            disableRipple
-                                            checked={completed}
-                                            icon={
-                                                <Iconify icon="eva:radio-button-off-outline" />
-                                            }
-                                            checkedIcon={
-                                                <Iconify icon="eva:checkmark-circle-2-outline" />
-                                            }
-                                            onChange={handleChangeComplete}
-                                        />
-                                        <Typography
-                                            variant="body1"
-                                            sx={{
-                                                minHeight: 37,
-                                                mt: 1,
-                                                lineHeight: "16px",
-                                                fontSize: "13px",
-                                                width: "250px",
-                                                fontWeight: "600",
-                                                overflow: "ellipsis",
-                                                transition: (theme) =>
-                                                    theme.transitions.create(
-                                                        "opacity",
-                                                        {
-                                                            duration:
-                                                                theme
-                                                                    .transitions
-                                                                    .duration
-                                                                    .shortest,
-                                                        }
-                                                    ),
-                                                ...(completed && {
-                                                    opacity: 0.48,
-                                                }),
-                                            }}
-                                        >
-                                            {name}
-                                        </Typography>
-                                    </Box>
-
-                                    <Stack direction="row" mt={1}>
-                                        <Iconify
-                                            icon="eva:file-text-fill"
-                                            sx={{
-                                                fontSize: "17px",
-                                                color: "green",
-                                                ml: 0,
-                                            }}
-                                        />
-
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                ml: 0.5,
-                                                fontWeight: 500,
-                                                color: "#666",
-                                            }}
-                                        >
-                                            {`ticket-${id}`}{" "}
-                                        </Typography>
-                                    </Stack>
-                                </Stack>
-                                {/* User's initials in Avatar */}
-                                {user?.length > 0 && (
-                                    <Avatar
-                                        sx={{
-                                            mt: 7,
-                                            ml: 2,
-                                            width: 24,
-                                            height: 24,
-                                            fontSize: "12px",
-                                            backgroundColor:
-                                                theme.palette.info.dark,
-                                        }}
-                                    >
-                                        {"N/A"} {/* Initials */}
-                                    </Avatar>
-                                )}
-                            </Stack>
-                        </Stack>
-                        {/* <Box
-                            sx={{
-                                flexGrow: 1,
-                                // overflow: "clip",
-                                maxHeight: "170px",
-                                overflowX: "hidden",
-                                overflowY: "auto",
-                                "&::-webkit-scrollbar": {
-                                    height: "2px",
-                                    width: "9px",
-                                },
-                                "&::-webkit-scrollbar-thumb": {
-                                    backgroundColor: scrollbarColor,
-                                    borderRadius: "10px",
-                                },
-                                "&::-webkit-scrollbar-thumb:hover": {
-                                    backgroundColor: scrollbarHoverColor,
-                                },
-                                "&::-webkit-scrollbar-track": {
-                                    backgroundColor: scrollbarTrackColor,
-                                },
-                            }}
-                        >
+                        {/* Priority Icon - Top Right Corner */}
+                        {(priority === 2 || priority === 1) && !completed && (
                             <Box
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    "& > *:not(:last-child)": {
-                                        marginBottom: "-35px", // Adjust space between images, much tighter now
-                                    },
-                                }}
+                                sx={{ position: "absolute", top: 8, right: 8 }}
                             >
-                                {attachments
-                                    .slice(0, attachments.length)
-                                    .map((attachment, index) => (
-                                        <Stack>
-                                            <Typography
-                                                textAlign="center"
-                                                variant="body2"
-                                                fontWeight={500}
-                                            >
-                                                {t("attachment")} {index}
-                                            </Typography>
-                                            <Image
-                                                key={index}
-                                                alt={`attachment-${index + 1}`}
-                                                src={attachment}
-                                                ratio="16/9"
+                                {priority === 2 && (
+                                    <Tooltip
+                                        placement="top"
+                                        title="High priority task"
+                                    >
+                                        <div>
+                                            <Iconify
+                                                icon="eva:alert-circle-outline"
                                                 sx={{
-                                                    height: "70px",
-                                                    width: "14vw",
-                                                    objectFit: "contain",
-                                                    borderRadius: "50%",
-                                                    transition: (theme) =>
-                                                        theme.transitions.create(
-                                                            "opacity",
-                                                            {
-                                                                duration:
-                                                                    theme
-                                                                        .transitions
-                                                                        .duration
-                                                                        .shortest,
-                                                            }
-                                                        ),
-                                                    ...(completed && {
-                                                        opacity: 0.48,
-                                                    }),
-                                                }}
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    handleOpenModal(attachment);
+                                                    color: "red",
+                                                    fontSize: "20px",
                                                 }}
                                             />
-                                        </Stack>
-                                    ))}
+                                        </div>
+                                    </Tooltip>
+                                )}
+                                {priority === 1 && (
+                                    <Tooltip
+                                        placement="top"
+                                        title="Medium priority task"
+                                    >
+                                        <div>
+                                            <Iconify
+                                                icon="eva:alert-triangle-outline"
+                                                sx={{
+                                                    color: "orange",
+                                                    fontSize: "20px",
+                                                }}
+                                            />
+                                        </div>
+                                    </Tooltip>
+                                )}
                             </Box>
-                        </Box> */}
+                        )}
+
+                        <Stack spacing={1}>
+                            {/* Task ID and title */}
+                            <Stack direction="row" alignItems="center">
+                                <Checkbox
+                                    disableRipple
+                                    checked={completed}
+                                    icon={
+                                        <Iconify icon="eva:radio-button-off-outline" />
+                                    }
+                                    checkedIcon={
+                                        <Iconify icon="eva:checkmark-circle-2-outline" />
+                                    }
+                                    onChange={handleChangeComplete}
+                                />
+                                <Typography
+                                    variant="body1"
+                                    sx={{
+                                        minHeight: 37,
+                                        mt: 1,
+                                        lineHeight: "16px",
+                                        fontSize: "13px",
+                                        maxWidth: "400px",
+                                        fontWeight: "600",
+                                        overflow: "auto",
+                                        transition: (theme) =>
+                                            theme.transitions.create(
+                                                "opacity",
+                                                {
+                                                    duration:
+                                                        theme.transitions
+                                                            .duration.shortest,
+                                                }
+                                            ),
+                                        ...(completed && { opacity: 0.48 }),
+                                    }}
+                                >
+                                    {name}
+                                </Typography>
+                            </Stack>
+
+                            <Stack direction="row" alignItems="center" mt={1}>
+                                {/* <Iconify
+                                    icon="eva:file-text-fill"
+                                    sx={{
+                                        fontSize: "17px",
+                                        color: "green",
+                                        ml: 0,
+                                    }}
+                                /> */}
+                                <ConfirmationNumberOutlinedIcon
+                                    sx={{
+                                        fontSize: "16px",
+                                        color: "#4CAF50",
+                                        ml: 0,
+                                    }}
+                                />
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        ml: 0.6,
+                                        fontWeight: 500,
+                                        color: "#666",
+                                    }}
+                                >
+                                    {`ticket-${id}`}{" "}
+                                </Typography>
+                            </Stack>
+
+                            {/* Assigned to emails - Bottom Right Corner */}
+                            <Box
+                                sx={{
+                                    position: "absolute",
+                                    bottom: 8,
+                                    right: 8,
+                                    textAlign: "right",
+                                }}
+                            >
+                                {user?.length > 0 && (
+                                    <Stack
+                                        direction="column"
+                                        alignItems="flex-end"
+                                    >
+                                        <Typography
+                                            fontSize={"10.5px"}
+                                            fontWeight={600}
+                                            color="text.secondary"
+                                            alignSelf="center"
+                                        >
+                                            Assigned to
+                                        </Typography>
+                                        {user?.map((u, index) => (
+                                            <Typography
+                                                key={index}
+                                                fontSize={"10.5px"}
+                                                sx={{
+                                                    wordWrap: "break-word",
+                                                }}
+                                            >
+                                                {u.email}
+                                            </Typography>
+                                        ))}
+                                    </Stack>
+                                )}
+                            </Box>
+                        </Stack>
                     </Paper>
                 )}
             </Draggable>
@@ -289,26 +264,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                     },
                 }}
             >
-                {/* <DialogTitle>
-                    {t("attachment")}
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleCloseModal}
-                        sx={{
-                            position: "absolute",
-                            right: 8,
-                            top: 8,
-                            color: theme.palette.grey[500],
-                            "&:hover": {
-                                backgroundColor: "transparent", // Ensures the background is transparent on hover
-                            },
-                        }}
-                    >
-                        <CloseOutlinedIcon
-                            sx={{ backgroundColor: "transparent" }}
-                        />
-                    </IconButton>
-                </DialogTitle> */}
                 <DialogContent dividers>
                     <img
                         src={currentImage}

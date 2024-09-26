@@ -23,14 +23,18 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
             <Stack
                 spacing={3}
                 sx={{
-                    py: 3,
-                    px: 2.5,
+                    py: 1.5,
+                    px: 1.5,
                     bgcolor: "background.neutral",
+                    borderRadius: "8px",
                 }}
             >
                 {comments.map((comment) => (
                     <Stack key={comment.id} direction="row" spacing={2}>
-                        <Avatar src={comment.avatar} />
+                        <Avatar
+                            src={comment.avatar}
+                            sx={{ width: "25px", height: "25px" }}
+                        />
 
                         <Stack>
                             <Stack
