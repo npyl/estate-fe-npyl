@@ -49,7 +49,7 @@ const getOption = (o: KeyValue) => <Option key={o.key} option={o} />;
 
 // -----------------------------------------------------------------
 
-const Basic = () => {
+const State = () => {
     const { t } = useTranslation();
 
     const data = useGlobals();
@@ -57,10 +57,10 @@ const Basic = () => {
     const stateEnum = data?.property?.state || [];
 
     return (
-        <ClearableSection title={t("Type")} reset={resetStates}>
+        <ClearableSection title={t("State")} reset={resetStates}>
             <Grid container>{stateEnum.map(getOption)}</Grid>
         </ClearableSection>
     );
 };
 
-export default Basic;
+export default State;

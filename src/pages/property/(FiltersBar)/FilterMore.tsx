@@ -1,16 +1,18 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
 import { sumOfChangedProperties, resetState } from "src/slices/filters";
-import ChosenFilters from "./Filters/ChosenFilters";
 import { FilterMoreDialog } from "@/components/Filters/FilterMore";
+
 import Bedrooms from "./Filters/Bedrooms";
 import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./Filters/Floors";
 import Fields from "./Filters/Fields";
 import Basic from "./Filters/Basic";
-import Type from "./CompactFilters/Type";
+import State from "./CompactFilters/State";
 import Category from "./CompactFilters/Category";
 import ParentCategory from "./CompactFilters/ParentCategory";
+import dynamic from "next/dynamic";
+const ChosenFilters = dynamic(() => import("./Filters/ChosenFilters"));
 
 // ----------------------------------------------------------------------
 
@@ -27,13 +29,13 @@ export default function FilterMore({ onClose }: Props) {
 
     return (
         <FilterMoreDialog open onClose={onClose} onResetFilter={clearAll}>
-            {changedPropsCount > 0 ? <ChosenFilters /> : null}
+            {changedPropsCount > 0 ? <ChosenFilters mb={1} /> : null}
 
             <Basic />
-            <Type />
 
-            <Category />
+            <State />
             <ParentCategory />
+            <Category />
 
             <Bedrooms />
             <Floors />
