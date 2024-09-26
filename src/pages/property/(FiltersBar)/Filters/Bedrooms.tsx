@@ -10,7 +10,7 @@ import {
     setMinBedrooms,
 } from "src/slices/filters";
 
-import { ClearableSection } from "@/components/Filters/ClearableSection";
+import ClearableSection from "@/components/Filters/ClearableSection";
 import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------

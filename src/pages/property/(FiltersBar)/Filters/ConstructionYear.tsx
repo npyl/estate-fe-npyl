@@ -1,4 +1,4 @@
-import { ClearableSection } from "@/components/Filters/ClearableSection";
+import ClearableSection from "@/components/Filters/ClearableSection";
 import {
     resetConstructionYear,
     selectMaxConstructionYear,

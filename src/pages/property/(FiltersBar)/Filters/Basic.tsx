@@ -7,7 +7,7 @@ import ManagerSelect from "./Manager";
 import CategorySelect from "./ParentCategory";
 import PriceSelect from "./Price";
 import SaleSelect from "./Sale";
-import { ClearableSection } from "@/components/Filters/ClearableSection";
+import ClearableSection from "@/components/Filters/ClearableSection";
 import Stack from "@mui/material/Stack";
 
 const Basic = () => {

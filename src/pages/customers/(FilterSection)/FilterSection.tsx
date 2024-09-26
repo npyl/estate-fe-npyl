@@ -66,8 +66,8 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                         {belowLg ? null : filterContent}
 
                         <FilterMoreButton
-                            onClick={openDialog}
                             changedFiltersCount={changedCustomerFilters}
+                            onClick={openDialog}
                         />
                     </>
                 }

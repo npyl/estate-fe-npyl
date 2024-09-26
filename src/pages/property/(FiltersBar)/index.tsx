@@ -106,8 +106,8 @@ const FilterBar: FC<Props> = ({
                         {belowLg ? null : <FilterSection />}
 
                         <FilterMoreButton
-                            onClick={openDialog}
                             changedFiltersCount={changedPropertyFilters}
+                            onClick={openDialog}
                         />
                     </>
                 }

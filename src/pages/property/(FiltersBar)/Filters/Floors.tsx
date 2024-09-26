@@ -7,7 +7,7 @@ import {
     setMaxFloor,
     setMinFloor,
 } from "@/slices/filters";
-import { ClearableSection } from "@/components/Filters/ClearableSection";
+import ClearableSection from "@/components/Filters/ClearableSection";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
