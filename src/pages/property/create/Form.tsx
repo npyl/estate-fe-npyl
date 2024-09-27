@@ -19,7 +19,6 @@ import { KeyValue } from "src/types/KeyValue";
 import { useCallback, useMemo, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { PPButton } from "@/components/styled";
-import Img from "./Img";
 
 const icons: Record<string, string> = {
     RESIDENTIAL: "/static/categories/residential.png",
@@ -114,7 +113,7 @@ export default function Form({
                                 clicked={key === parentCategory}
                                 onClick={() => handleParentCategorySelect(key)}
                             >
-                                <Img src={icons[key]} />
+                                <img src={icons[key]} />
                                 <Typography mt={1}>{value}</Typography>
                             </PPButton>
                         </Grid>

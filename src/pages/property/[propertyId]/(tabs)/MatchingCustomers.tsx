@@ -6,7 +6,7 @@ import { useSuggestForPropertyQuery } from "src/services/properties";
 import DataGrid from "@/components/DataGrid/Customer";
 import Panel from "@/components/Panel";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import CustomerCard from "@/components/CustomerCard";
+import CustomerCard from "@/components/Cards/CustomerCard";
 import useResponsive from "@/hooks/useResponsive";
 import { Grid } from "@mui/material";
 import Pagination, { usePagination } from "@/components/Pagination";

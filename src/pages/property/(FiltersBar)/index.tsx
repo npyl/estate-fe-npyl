@@ -1,30 +1,30 @@
 // mui
-import Paper, { PaperProps } from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
+import { PaperProps } from "@mui/material/Paper";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { SvgIconTypeMap, useTheme } from "@mui/material";
+import { Stack, SvgIconTypeMap } from "@mui/material";
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import { sumOfChangedProperties, resetState } from "src/slices/filters";
+import { useSelector } from "react-redux";
+import { sumOfChangedProperties } from "src/slices/filters";
 // icons
 import { Menu } from "src/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import { ViewModeButton } from "./styles";
 import ChosenFilters from "./Filters/ChosenFilters";
-import { SpaceBetween } from "@/components/styled";
 // components
 import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
-import { useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 
 import useDialog from "@/hooks/useDialog";
-import FilterMore from "./Filters/FilterMore";
+const FilterMore = dynamic(() => import("./FilterMore"));
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
 import FilterSortBy from "@/components/Filters/SortBy";
 import { getOptions } from "./constants";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
+import FiltersBar from "@/components/Filters/FiltersBar";
 
 type viewOptionsType = {
     id: optionType;
@@ -62,7 +62,7 @@ interface Props extends PaperProps {
     belowLg: boolean;
 }
 
-const FilterBar = ({
+const FilterBar: FC<Props> = ({
     sorting,
     onSortingChange,
     optionView,
@@ -70,10 +70,8 @@ const FilterBar = ({
 
     belowLg,
     ...props
-}: Props) => {
+}) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const theme = useTheme();
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
@@ -93,53 +91,33 @@ const FilterBar = ({
         ));
     }, [optionView, belowLg]);
 
-    const handleResetFilter = useCallback(() => dispatch(resetState()), []);
-
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     const options = useMemo(() => getOptions(t), [t]);
 
-    const scrollbarColor = theme.palette.mode === "dark" ? "#444" : "#bbb";
-    const scrollbarHoverColor = theme.palette.mode === "dark" ? "#666" : "#888";
-    const scrollbarTrackColor =
-        theme.palette.mode === "dark" ? "#222" : "#f1f1f1";
-
     return (
         <>
-            <Paper {...props}>
-                <SpaceBetween pb={1} pl={1}>
-                    <Stack
-                        direction="row"
-                        spacing={0.8}
-                        overflow="auto hidden"
-                        // INFO: paddings added in this container to allow badge to show up without overflow hacks
-                        pt={1}
-                        pb={0.5}
-                        sx={{
-                            "&::-webkit-scrollbar": {
-                                height: "8px",
-                            },
-                            "&::-webkit-scrollbar-thumb": {
-                                backgroundColor: scrollbarColor,
-                                borderRadius: "10px",
-                            },
-                            "&::-webkit-scrollbar-thumb:hover": {
-                                backgroundColor: scrollbarHoverColor,
-                            },
-                            "&::-webkit-scrollbar-track": {
-                                backgroundColor: scrollbarTrackColor,
-                            },
-                        }}
-                    >
+            <FiltersBar
+                bottomContent={
+                    changedPropertyFilters > 0 ? <ChosenFilters mt={1} /> : null
+                }
+                filters={
+                    <>
                         {belowLg ? null : <FilterSection />}
 
                         <FilterMoreButton
-                            onClick={openDialog}
                             changedFiltersCount={changedPropertyFilters}
+                            onClick={openDialog}
                         />
-                    </Stack>
-
-                    <Stack direction="row" spacing={0.3} p={1} pb={0} pl={0.3}>
+                    </>
+                }
+                controls={
+                    <Stack
+                        direction="row"
+                        spacing={0.3}
+                        alignItems="center"
+                        mt={1}
+                    >
                         <FilterSortBy
                             options={options}
                             sorting={sorting}
@@ -155,21 +133,11 @@ const FilterBar = ({
                             {BUTTONS}
                         </ButtonGroup>
                     </Stack>
-                </SpaceBetween>
+                }
+                {...props}
+            />
 
-                {changedPropertyFilters > 0 ? (
-                    <ChosenFilters px={1} pb={1} />
-                ) : null}
-            </Paper>
-
-            {isDialogOpen ? (
-                <FilterMore
-                    open={isDialogOpen}
-                    onOpen={openDialog}
-                    onClose={closeDialog}
-                    onResetFilter={handleResetFilter}
-                />
-            ) : null}
+            {isDialogOpen ? <FilterMore onClose={closeDialog} /> : null}
         </>
     );
 };

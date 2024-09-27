@@ -8,12 +8,11 @@ import { ICustomerResultResponse } from "src/types/customer";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
-import { NormalBadge } from "@/components/PropertyCard/styled";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Link from "next/link";
 import { TypeLabels } from "@/components/TypeLabels";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;

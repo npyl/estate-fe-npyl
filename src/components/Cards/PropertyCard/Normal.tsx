@@ -1,12 +1,12 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-import { IMapMarker } from "../Map/Map";
-import { Divider, Stack, Typography, alpha } from "@mui/material";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import CarouselSimple from "../CarouselSimple";
-import { useRouter } from "next/router";
+import { IMapMarker } from "@/components/Map/Map";
+import { Divider, Stack, Typography } from "@mui/material";
+import { FC, useEffect, useMemo, useRef } from "react";
+import CarouselSimple from "@/components/CarouselSimple";
 import { useTranslation } from "react-i18next";
-import { SpaceBetween } from "../styled";
-import { NormalBadge, PriceBadge, StyledBox } from "./styled";
+import { SpaceBetween } from "@/components/styled";
+import { NormalBadge, PriceBadge, StyledLink } from "./styled";
+import { getPropertyStatusColor } from "@/theme/colors";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
@@ -15,35 +15,7 @@ type PropertyCardProps = {
 
 const defaultImage = "/static/noImage.png";
 
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-
-const STATUS_COLORS: Record<PropertyStatus, Color> = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-type Color = string;
-
-const getStatusColor = (status: string): Color => {
-    const statusUpper = status.toUpperCase() as PropertyStatus;
-
-    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-};
-
-const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
+const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
     const {
         id,
         images,
@@ -67,8 +39,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const { lat, lng } = location || {};
 
     const { t, i18n } = useTranslation();
-    const router = useRouter();
-    const ref = useRef<HTMLDivElement>();
+
+    const ref = useRef<HTMLAnchorElement>(null);
 
     const addressParts =
         i18n.language === "en"
@@ -94,36 +66,29 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         [images]
     );
 
-    const isActive = useMemo(
-        () =>
-            lat &&
+    const isActive = Boolean(
+        lat &&
             lat > 0 &&
             lng &&
             lng > 0 &&
             lat === selectedMarker?.lat &&
-            lng === selectedMarker?.lng,
-        [lat, lng, selectedMarker]
+            lng === selectedMarker?.lng
     );
+
     useEffect(() => {
         if (isActive) {
             ref.current?.scrollIntoView({ behavior: "smooth" });
         }
     }, [isActive]);
 
-    const handleClick = useCallback(() => router.push(`property/${id}`), []);
-
-    const stateColor = state?.value ? getStatusColor(state.value) : "#537f91"; // default color
+    const stateColor = getPropertyStatusColor(state.value);
 
     return (
-        <StyledBox
-            borderRadius="12px"
-            sx={{
-                cursor: "pointer",
-                mr: 0.8,
-            }}
-            isActive={isActive as boolean}
+        <StyledLink
+            mr={0.8}
+            isActive={isActive}
             ref={ref}
-            onClick={handleClick}
+            href={`/property/${id}`}
         >
             <CarouselSimple
                 data={
@@ -330,7 +295,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                     <PriceBadge price={price} />
                 </SpaceBetween>
             </Stack>
-        </StyledBox>
+        </StyledLink>
     );
 };
 

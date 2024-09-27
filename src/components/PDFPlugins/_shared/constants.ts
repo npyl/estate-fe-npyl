@@ -1,7 +1,6 @@
 import signature from "../signature";
 import errorTooltip from "../errorTooltip";
 import readOnly from "../readOnly";
-import propertySuggest from "../getPropertySuggest";
 import { text } from "@pdfme/schemas";
 import getPropertySuggest from "../getPropertySuggest";
 

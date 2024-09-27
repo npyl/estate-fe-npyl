@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Card, { CardProps } from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -10,12 +9,11 @@ import AvatarShape from "./AvatarShape";
 
 import { ICustomer, ICustomerResultResponse } from "@/types/customer";
 
-import { TypeLabels } from "../TypeLabels";
+import { TypeLabels } from "@/components/TypeLabels";
 
 import { styled } from "@mui/material/styles";
-import { useCallback } from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import Link from "@/components/Link";
 
 // ----------------------------------------------------------------------
 
@@ -36,12 +34,9 @@ export default function UserCard({ c, ...props }: Props) {
     const { id, firstName, lastName, email, mobilePhone } = c || {};
 
     const { t } = useTranslation();
-    const router = useRouter();
 
     const name = `${firstName} ${lastName}`;
     const initials = `${firstName[0]} ${lastName[0]}`;
-
-    const onClick = useCallback(() => router.push(`/customer/${id}`), []);
 
     return (
         <Card
@@ -49,7 +44,8 @@ export default function UserCard({ c, ...props }: Props) {
                 textAlign: "center",
                 minHeight: "320px",
             }}
-            onClick={onClick}
+            component={Link}
+            href={`/customer/${id}`}
             {...props}
         >
             <StyledBackground position="relative" height="100px">

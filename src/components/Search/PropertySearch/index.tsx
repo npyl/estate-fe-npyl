@@ -1,5 +1,5 @@
 import SearchInput from "@/components/Search/SearchInput";
-import { ChangeEvent, useCallback, useRef, useState } from "react";
+import { ChangeEvent, ComponentType, useCallback, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { usePagination } from "@/components/Pagination";
 import { useTranslation } from "react-i18next";
@@ -13,12 +13,14 @@ const ResultsPopper = dynamic(() => import("./Popper"));
 interface PropertySearchProps {
     showEmpty?: boolean;
     customerId?: number;
+    NoResultsPlaceholder?: ComponentType;
     onSelectProperty: (p: IPropertyResultResponse) => void;
 }
 
 const PropertySearch: React.FC<PropertySearchProps> = ({
     showEmpty = false,
     customerId,
+    NoResultsPlaceholder,
     onSelectProperty,
 }) => {
     const { t } = useTranslation();
@@ -66,6 +68,7 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
                     pageSize={pageSize}
                     pagination={pagination}
                     content={content}
+                    NoResultsPlaceholder={NoResultsPlaceholder}
                     // ...
                     onCardClick={handleCardClick}
                     onClose={closeAnyway}

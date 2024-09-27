@@ -1,7 +1,6 @@
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
 import { useAuth } from "../../hooks/use-auth";
 import { useLazyIsAdminQuery } from "src/services/user";
 
@@ -53,8 +52,4 @@ export const AdminGuard: FC<AdminGuardProps> = ({ children }) => {
     // authenticated / authorized.
 
     return <>{children}</>;
-};
-
-AdminGuard.propTypes = {
-    children: PropTypes.node,
 };

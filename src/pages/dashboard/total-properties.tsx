@@ -1,7 +1,6 @@
 import { Card, CardHeader, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import dynamic from "next/dynamic"; // Import 'next/dynamic'
-import PropTypes from "prop-types";
 import useChart from "src/components/chart/use-chart";
 
 // Define the dynamic import for the Chart component
@@ -112,9 +111,3 @@ export default function TotalProperties({
         </Card>
     );
 }
-
-TotalProperties.propTypes = {
-    chart: PropTypes.object,
-    subheader: PropTypes.string,
-    title: PropTypes.string,
-};

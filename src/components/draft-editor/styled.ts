@@ -1,23 +1,4 @@
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import type { FC } from "react";
-import dynamic from "next/dynamic";
-import PropTypes from "prop-types";
-import type { EditorProps } from "react-draft-wysiwyg";
 import { styled } from "@mui/material/styles";
-import type { Theme } from "@mui/material";
-import type { SxProps } from "@mui/material";
-
-const Editor = dynamic(
-    async () => {
-        const m = await import("react-draft-wysiwyg");
-        return m.Editor;
-    },
-    { ssr: false }
-);
-
-interface DraftEditorProps extends EditorProps {
-    sx?: SxProps<Theme>;
-}
 
 const DraftEditorRoot = styled("div")(({ theme }) => ({
     display: "flex",
@@ -36,15 +17,24 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         marginBottom: 0,
     },
     "& .rdw-option-wrapper": {
-        backgroundColor: "transparent",
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? "transparent"
+                : theme.palette.neutral?.[600],
         border: "none",
     },
     "& .rdw-option-wrapper:hover": {
-        backgroundColor: theme.palette.action.hover,
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? theme.palette.action.selected
+                : theme.palette.neutral?.[500],
         boxShadow: "none",
     },
     "& .rdw-option-active": {
-        backgroundColor: theme.palette.action.selected,
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? theme.palette.action.selected
+                : theme.palette.neutral?.[300],
         boxShadow: "none",
     },
     "& .rdw-dropdown-wrapper": {
@@ -61,6 +51,7 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         border: "none",
         boxShadow: theme.shadows[10],
         padding: 0,
+        width: "max-content",
     },
     "& .rdw-dropdown-optionwrapper:hover": {
         backgroundColor: theme.palette.background.paper,
@@ -86,7 +77,6 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
         border: "none",
         boxShadow: theme.shadows[10],
-        //overflowY: "auto",
         width: 260,
     },
     "& .rdw-embedded-modal": {
@@ -130,18 +120,10 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
     "& .public-DraftEditor-content": {
         overflowWrap: "anywhere !important", // Adding this line
     },
+
+    "& .rdw-dropdownoption-default": {
+        padding: theme.spacing(2),
+    },
 }));
 
-export const DraftEditor: FC<DraftEditorProps> = (props) => {
-    const { sx, ...other } = props;
-
-    return (
-        <DraftEditorRoot sx={sx}>
-            <Editor {...other} />
-        </DraftEditorRoot>
-    );
-};
-
-DraftEditor.propTypes = {
-    sx: PropTypes.object,
-};
+export default DraftEditorRoot;

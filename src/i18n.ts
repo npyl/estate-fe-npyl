@@ -1026,6 +1026,9 @@ const resources = {
             "Ατομική Θέρμανση": "Self-use",
             Ελλάδα: "Greece",
             Ελληνικά: "Greek",
+
+            "No results. This customer does not own any property!":
+                "No results. This customer does not own any property!",
         },
     },
     el: {
@@ -1983,6 +1986,8 @@ const resources = {
             "Agent ID": "ID Αντιπροσώπου",
             "Auth Token": "Κωδικός Εξουσιοδότησης",
             "Certified Telephone Number": "Πιστοποιημένος Αριθμός Τηλεφώνου",
+            "No results. This customer does not own any property!":
+                "Δε βρέθηκαν αποτελέσματα. Αυτός ο πελάτης δεν έχει ακίνητα στο όνομά του!",
             Greece: "Ελλάδα",
         },
     },

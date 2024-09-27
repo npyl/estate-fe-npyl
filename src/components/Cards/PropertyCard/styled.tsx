@@ -1,3 +1,4 @@
+import Link from "@/components/Link";
 import { Box, BoxProps, Theme, Typography, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -13,7 +14,7 @@ interface StyledBoxProps extends BoxProps {
     isActive: boolean;
 }
 
-export const StyledBox = styled(Box, {
+export const StyledLink = styled(Link, {
     shouldForwardProp: (prop) => prop !== "isActive",
 })<StyledBoxProps>(({ isActive, theme }) => ({
     "&:hover": {
@@ -21,6 +22,8 @@ export const StyledBox = styled(Box, {
     },
     backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
+    cursor: "pointer",
+    borderRadius: "12px",
 }));
 
 interface PriceBadgeProps extends BoxProps {
@@ -53,33 +56,6 @@ export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
             ? theme.palette.grey?.[600]
             : theme.palette.neutral?.[400],
 }));
-
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-type Color = string;
-
-const STATUS_COLORS: Record<PropertyStatus, Color> = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-
-export const getStatusColor = (status: string): string => {
-    const statusUpper = status.toUpperCase() as PropertyStatus;
-    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-};
 
 interface NormalBadgeProps extends BoxProps {
     name: string;

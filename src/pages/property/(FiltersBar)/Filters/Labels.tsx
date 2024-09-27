@@ -6,38 +6,27 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useDispatch } from "src/store";
 import { StyledInputLabel } from "@/components/Filters";
+import { useSelector } from "react-redux";
+import { selectLabels, setLabels } from "@/slices/filters";
 
-type FilterVariant = "property" | "customer";
-
-interface FilterLabelsProps {
-    variant: FilterVariant;
-    labels: number[];
-    setLabels: ActionCreatorWithPayload<any, string>;
-}
-
-export default function FilterLabels(props: FilterLabelsProps) {
-    const { variant = "property", labels, setLabels } = props;
+export default function FilterLabels() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
+    const labels = useSelector(selectLabels) || [];
+
     const { data } = useGetLabelsQuery();
-    const labelOptions =
-        useMemo(
-            () =>
-                variant === "property"
-                    ? data?.propertyLabels
-                    : data?.customerLabels,
-            [data]
-        ) || [];
-    const renderLabelNames = (selectedIds: number[]) => {
-        return selectedIds
+
+    const labelOptions = useMemo(() => data?.propertyLabels, [data]) || [];
+
+    const renderLabelNames = (selectedIds: number[]) =>
+        selectedIds
             .map((id) => {
                 const labelOption = labelOptions.find(
                     (option) => option.id === id
@@ -45,7 +34,6 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 return labelOption ? labelOption.name : "Unknown";
             })
             .join(", ");
-    };
 
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
@@ -77,9 +65,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 multiple
                 value={labels}
                 onChange={handleChange}
-                renderValue={(selected) =>
-                    renderLabelNames(selected as number[])
-                }
+                renderValue={renderLabelNames}
                 input={
                     <OutlinedInput
                         sx={{ maxHeight: "38px", textAlign: "center" }}

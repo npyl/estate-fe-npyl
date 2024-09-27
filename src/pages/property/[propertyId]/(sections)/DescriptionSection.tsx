@@ -1,8 +1,8 @@
-import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { DraftEditor } from "src/components/draft-editor";
+import DraftEditor from "@/components/draft-editor";
 import { useGetDescription } from "../hooks";
 
 const DescriptionSection = () => {
@@ -30,7 +30,7 @@ const DescriptionSection = () => {
                 <Typography variant="h6">{t("Title")}</Typography>
                 <Typography variant="body1">{title}</Typography>
             </Box>
-            <Divider></Divider>
+            <Divider />
             <Box
                 sx={{
                     px: 3,
@@ -42,27 +42,12 @@ const DescriptionSection = () => {
                 <Typography variant="h6">{t("Description")}</Typography>
             </Box>
 
-            <Grid container>
-                <Grid item xs={12}>
-                    <Box
-                        padding={3}
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "100%",
-                            borderRadius: 10,
-                        }}
-                    >
-                        <DraftEditor
-                            editorState={editorState}
-                            readOnly
-                            toolbarHidden
-                            sx={{ border: "unset" }}
-                        />
-                    </Box>
-                </Grid>
-            </Grid>
+            <DraftEditor
+                editorState={editorState}
+                readOnly
+                toolbarHidden
+                sx={{ border: "unset" }}
+            />
         </Paper>
     );
 };

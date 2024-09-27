@@ -211,10 +211,6 @@ const slice = createSlice({
         resetBasic: (state) => {
             state.filters.code = initialState.filters.code;
             state.filters.managerId = initialState.filters.managerId;
-            state.filters.states = initialState.filters.states;
-            state.filters.parentCategories =
-                initialState.filters.parentCategories;
-            state.filters.categories = initialState.filters.categories;
             state.filters.minPrice = initialState.filters.minPrice;
             state.filters.maxPrice = initialState.filters.maxPrice;
             state.filters.minArea = initialState.filters.minArea;
@@ -224,9 +220,6 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "minArea");
             state.ids = state.ids.filter((id) => id !== "maxPrice");
             state.ids = state.ids.filter((id) => id !== "minPrice");
-            state.ids = state.ids.filter((id) => id !== "categories");
-            state.ids = state.ids.filter((id) => id !== "parentCategory");
-            state.ids = state.ids.filter((id) => id !== "states");
             state.ids = state.ids.filter((id) => id !== "managerId");
             state.ids = state.ids.filter((id) => id !== "code");
             state.ids = state.ids.filter((id) => id !== "labels");
@@ -245,6 +238,16 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "minFloor");
             state.ids = state.ids.filter((id) => id !== "maxFloor");
         },
+
+        resetStates: (state) => {
+            state.filters.states = initialState.filters.states;
+            state.ids = state.ids.filter((id) => id !== "states");
+        },
+        resetCategories: (state) => {
+            state.filters.categories = initialState.filters.categories;
+            state.ids = state.ids.filter((id) => id !== "categories");
+        },
+
         resetFrameType: (state) => {
             state.filters.frameType = initialState.filters.frameType;
             state.ids = state.ids.filter((id) => id !== "frameType");
@@ -324,6 +327,9 @@ export const {
     resetPoints,
     resetState,
     resetActiveState,
+
+    resetStates,
+    resetCategories,
 } = slice.actions;
 
 export const selectCode = ({ filters }: RootState) => filters.filters.code;

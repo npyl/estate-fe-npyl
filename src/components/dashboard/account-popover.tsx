@@ -9,7 +9,6 @@ import {
     Popover,
     Typography,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import type { FC } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/use-auth";
@@ -100,10 +99,4 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             </Box>
         </Popover>
     );
-};
-
-AccountPopover.propTypes = {
-    anchorEl: PropTypes.any,
-    onClose: PropTypes.func,
-    open: PropTypes.bool,
 };

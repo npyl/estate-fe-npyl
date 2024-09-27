@@ -7,11 +7,14 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
+import { getPropertyStatusColor } from "@/theme/colors";
+
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
 import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
 import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
-function renderImage(
+
+function RenderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
 ) {
     const propertyImage = params.row?.propertyImage;
@@ -89,71 +92,6 @@ function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
     );
 }
 
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-
-type Color = string;
-
-type StatusColors = Record<PropertyStatus, Color>;
-
-const STATUS_COLORS: StatusColors = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-
-const categoryToIcon = (category: string) => {
-    switch (category.trim().toLowerCase()) {
-        case "κατοικία":
-            return (
-                <HomeOutLinedIcon
-                    sx={{
-                        marginRight: 0.5,
-                        color: "neutral.600",
-                        fontSize: "16px",
-                    }}
-                />
-            );
-        case "επαγγελματική στέγη":
-            return (
-                <BusinessOutlinedIcon
-                    sx={{
-                        marginRight: 0.5,
-
-                        color: "neutral.600",
-                        fontSize: "16px",
-                    }}
-                />
-            );
-        case "γη":
-            return (
-                <LandslideOutlinedIcon
-                    sx={{
-                        marginRight: 0.5,
-
-                        color: "neutral.600",
-                        fontSize: "16px",
-                    }}
-                />
-            );
-
-        default:
-            return null;
-    }
-};
-
 function StatusColor(params: GridCellParams) {
     const { t } = useTranslation();
 
@@ -164,9 +102,7 @@ function StatusColor(params: GridCellParams) {
     if (!value || !status) return <></>;
 
     const statusForColor = (value.key as string)?.trim();
-    const statusUpper = statusForColor?.toUpperCase() as PropertyStatus;
-
-    const color = STATUS_COLORS[statusUpper] || "#537f91";
+    const color = getPropertyStatusColor(statusForColor);
 
     return (
         <Box
@@ -203,9 +139,8 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "propertyImage",
         headerName: t("Thumbnail") as string,
         align: "center",
-
         headerAlign: "center",
-        renderCell: renderImage,
+        renderCell: RenderImage,
         sortable: false,
         flex: 1.2,
     },
@@ -269,7 +204,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Category") as string,
-        sortable: false,
 
         renderCell: (params) => (
             <div
@@ -289,7 +223,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "price",
         headerAlign: "center",
         align: "center",
-        sortable: false,
         headerName: t("Price") as string,
         renderCell: (params: GridCellParams) => {
             const formattedPrice = formatNumberWithPeriod(params.value);
@@ -303,7 +236,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("State") as string,
-        sortable: false,
         renderCell: StatusColor,
         flex: 1,
     },
@@ -312,8 +244,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Area") as string,
-        sortable: false,
-
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
@@ -326,7 +256,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
-        sortable: false,
+
         flex: 1,
     },
     {
@@ -334,7 +264,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Location") as string,
-        sortable: false,
         renderCell: RenderLocation,
         flex: 1,
     },
@@ -350,7 +279,6 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
-        sortable: false,
         renderCell: renderImage,
     },
     {
@@ -358,7 +286,7 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Reference ID") || "",
         width: 180,
         headerAlign: "center",
-        sortable: false,
+
         align: "center",
     },
     {
@@ -367,7 +295,6 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
-        sortable: false,
         renderCell: (params) => params.value?.key,
     },
     {
@@ -376,8 +303,6 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
-        sortable: false,
-
         renderCell: (params) => params.value?.key,
     },
 ];

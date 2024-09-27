@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { Box } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import useResponsive from "@/hooks/useResponsive";
 import { useTranslation } from "react-i18next";
@@ -51,12 +50,7 @@ const Home: NextPage = () => {
     );
 
     return (
-        <Box
-            sx={{
-                position: "relative",
-                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
-            }}
-        >
+        <>
             <FilterBar
                 sorting={sorting}
                 onSortingChange={setSorting}

@@ -6,7 +6,7 @@ import Link from "next/link";
 import Tooltip from "@mui/material/Tooltip";
 import ExpireIcon from "@mui/icons-material/WarningAmber"; // Use appropriate icon
 import ExpiredIcon from "@mui/icons-material/Cancel"; // Use appropriate icon
-import { NormalBadge } from "@/components/PropertyCard/styled";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 
 // Define the necessary interfaces
 interface OwnerAgreement {
