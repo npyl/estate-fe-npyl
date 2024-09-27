@@ -27,6 +27,7 @@ import { company } from "../services/company";
 import { solar, airQuality } from "@/services/googleapi";
 import { agreements } from "@/services/agreements";
 import { integrations } from "@/services/integrations";
+import { publicApi } from "@/services/public";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -66,6 +67,7 @@ export const createStore = (
                 airQuality.middleware,
                 integrations.middleware,
                 agreements.middleware,
+                publicApi.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,

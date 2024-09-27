@@ -9,6 +9,24 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+import { Chip, ChipProps, Skeleton } from "@mui/material";
+import useFilterCounters from "@/hooks/property/useFilterCounters";
+import { IPropertyFilterCounters } from "@/types/properties";
+
+interface CounterChipProps extends ChipProps {
+    // TODO: IpropertyFilter's keys -> should be the same as IPropertyFilterCounters' keys...
+    filterKey: keyof IPropertyFilterCounters;
+}
+
+const CounterChip: FC<CounterChipProps> = ({ filterKey, ...props }) => {
+    const { counters, isCountersLoading } = useFilterCounters();
+
+    const label = counters?.[filterKey]?.toString() || "0";
+
+    if (isCountersLoading) return <Skeleton />;
+
+    return <Chip label={label} variant="outlined" size="small" {...props} />;
+};
 
 // -----------------------------------------------------------------
 
@@ -31,14 +49,20 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
         dispatch(setStates(newStates));
     };
 
+    const { counters } = useFilterCounters();
+    const isDisabled = counters?.[key as keyof IPropertyFilterCounters] === 0;
+
     return (
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={4} display="flex" alignItems="center" pr={1}>
             <FormControlLabel
                 control={<Checkbox />}
+                disabled={isDisabled}
                 checked={isChecked}
                 label={value}
                 onChange={handleChange}
             />
+
+            <CounterChip filterKey={key as any} disabled={isDisabled} />
         </Grid>
     );
 };
