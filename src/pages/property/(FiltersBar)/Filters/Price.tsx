@@ -150,7 +150,7 @@ const PriceSelect = ({ type }: Props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         label={`${symbol} ${t("from")}`}
-                                        value={valueMin}
+                                        value={valueMin.toLocaleString("el-GR")}
                                         onChange={handleInputChangeMin}
                                     />
 
@@ -200,7 +200,7 @@ const PriceSelect = ({ type }: Props) => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         label={`${symbol} ${t("to")}`}
-                                        value={valueMax}
+                                        value={valueMax.toLocaleString("el-GR")}
                                         onChange={handleInputChangeMax}
                                     />
                                     <List
