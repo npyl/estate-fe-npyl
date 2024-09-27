@@ -1,13 +1,12 @@
 import { useGlobals } from "@/hooks/useGlobals";
-import { Chip, Grid, GridProps, Stack, Typography } from "@mui/material";
-import { useCallback, useMemo } from "react";
+import { TranslationType } from "@/types/translation";
+import { Chip, Stack, StackProps, Typography } from "@mui/material";
+import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetLabelsQuery } from "src/services/labels";
-import { useAllUsersQuery } from "src/services/user";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
 
-interface Props extends GridProps {}
+interface Props extends StackProps {}
 
 const useEnums = () => {
     const enums = useGlobals();
@@ -23,7 +22,107 @@ const useEnums = () => {
     };
 };
 
-const ChosenFilters = (props: Props) => {
+// getting the value and not the key of each enumValue
+const getEnumLabel = (key: any, enumValues: any) => {
+    const foundItem = enumValues.find((item: any) => item.key === key);
+    return foundItem ? foundItem.value : "Unknown";
+};
+
+const getFilterTags = (
+    t: TranslationType
+): Record<string, { label: string }> => ({
+    parentLocation: {
+        label: t("Location"),
+    },
+    subLocation: {
+        label: t("SubLocation"),
+    },
+    filterName: {
+        label: t("Filter Name"),
+    },
+    code: {
+        label: t("Code"),
+    },
+    minPrice: {
+        label: t("Minimum Price"),
+    },
+    maxPrice: {
+        label: t("Maximum Price"),
+    },
+    minArea: {
+        label: t("Minimum Area"),
+    },
+    maxArea: {
+        label: t("Maximum Area"),
+    },
+    minBedrooms: {
+        label: t("Minimum Number of Bedrooms"),
+    },
+    maxBedrooms: {
+        label: t("Maximum Number of Bedrooms"),
+    },
+    minFloor: {
+        label: t("Minimum Floor"),
+    },
+    maxFloor: {
+        label: t("Maximum Floor"),
+    },
+    minConstructionYear: {
+        label: t("Minimum Constuction Year"),
+    },
+    maxConstructionYear: {
+        label: t("Maximum Construction Year"),
+    },
+    heatingType: {
+        label: t("Heating Type"),
+    },
+    frameType: {
+        label: t("Frame Type"),
+    },
+    furnished: {
+        label: t("Furnished"),
+    },
+    managerId: {
+        label: t("Manager"),
+    },
+    states: {
+        label: t("State"),
+    },
+    parentCategories: {
+        label: t("Category"),
+    },
+    categories: {
+        label: t("Subcategory"),
+    },
+    labels: {
+        label: t("Labels"),
+    },
+    active: {
+        label: t("Active"),
+    },
+});
+
+const getPairFilterTags = (
+    t: TranslationType
+): Record<string, { label: string }> => ({
+    minMaxPrice: {
+        label: t("Price (€)"),
+    },
+    minMaxArea: {
+        label: t("Area (m²)"),
+    },
+    minMaxBedrooms: {
+        label: t("Bedrooms"),
+    },
+    minMaxFloor: {
+        label: t("Floor"),
+    },
+    minMaxConstructionYear: {
+        label: t("Construction Year"),
+    },
+});
+
+const ChosenFilters: FC<Props> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -35,107 +134,11 @@ const ChosenFilters = (props: Props) => {
         maxFloorEnum,
     } = useEnums();
 
-    const { data } = useGetLabelsQuery();
-    const { data: managers } = useAllUsersQuery();
-
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
 
-    // getting the value and not the key of each enumValue
-    const getEnumLabel = (key: any, enumValues: any) => {
-        const foundItem = enumValues.find((item: any) => item.key === key);
-        return foundItem ? foundItem.value : "Unknown";
-    };
-
-    const filterTags: Record<string, { label: string }> = {
-        parentLocation: {
-            label: t("Location"),
-        },
-        subLocation: {
-            label: t("SubLocation"),
-        },
-        filterName: {
-            label: t("Filter Name"),
-        },
-        code: {
-            label: t("Code"),
-        },
-        minPrice: {
-            label: t("Minimum Price"),
-        },
-        maxPrice: {
-            label: t("Maximum Price"),
-        },
-        minArea: {
-            label: t("Minimum Area"),
-        },
-        maxArea: {
-            label: t("Maximum Area"),
-        },
-        minBedrooms: {
-            label: t("Minimum Number of Bedrooms"),
-        },
-        maxBedrooms: {
-            label: t("Maximum Number of Bedrooms"),
-        },
-        minFloor: {
-            label: t("Minimum Floor"),
-        },
-        maxFloor: {
-            label: t("Maximum Floor"),
-        },
-        minConstructionYear: {
-            label: t("Minimum Constuction Year"),
-        },
-        maxConstructionYear: {
-            label: t("Maximum Construction Year"),
-        },
-        heatingType: {
-            label: t("Heating Type"),
-        },
-        frameType: {
-            label: t("Frame Type"),
-        },
-        furnished: {
-            label: t("Furnished"),
-        },
-        managerId: {
-            label: t("Manager"),
-        },
-        states: {
-            label: t("State"),
-        },
-        parentCategories: {
-            label: t("Category"),
-        },
-        categories: {
-            label: t("Subcategory"),
-        },
-        labels: {
-            label: t("Labels"),
-        },
-        active: {
-            label: t("Active"),
-        },
-    };
-
-    const pairFilterTags: Record<string, { label: string }> = {
-        minMaxPrice: {
-            label: t("Price (€)"),
-        },
-        minMaxArea: {
-            label: t("Area (m²)"),
-        },
-        minMaxBedrooms: {
-            label: t("Bedrooms"),
-        },
-        minMaxFloor: {
-            label: t("Floor"),
-        },
-        minMaxConstructionYear: {
-            label: t("Construction Year"),
-        },
-    };
+    const filterTags = useMemo(() => getFilterTags(t), [t]);
+    const pairFilterTags = useMemo(() => getPairFilterTags(t), [t]);
 
     const hasMinMaxPair = (suffix: string | null): boolean => {
         if (!suffix) return false;
@@ -149,34 +152,8 @@ const ChosenFilters = (props: Props) => {
         );
     };
 
-    const allLabels = useMemo(
-        () => data?.propertyLabels || [],
-        [data?.propertyLabels]
-    );
-
-    const getLabelNames = useCallback(
-        (labelIds: number[]) =>
-            labelIds
-                .map((id) => {
-                    const label = allLabels.find((label) => label.id === id);
-                    return label ? label.name : "Unknown";
-                })
-                .join(", "),
-        [allLabels]
-    );
-
-    const getManagerName = useCallback(
-        (managerId: number) => {
-            const manager = managers?.find((m) => m.id === managerId);
-            return manager?.firstName && manager.lastName
-                ? `${manager?.firstName} ${manager?.lastName}`
-                : "";
-        },
-        [managers]
-    );
-
     return (
-        <Grid container direction="row" gap={0.3} {...props}>
+        <Stack direction="row" gap={0.3} {...props}>
             {ids.map((key, index) => {
                 const values = changedProps[key];
                 let label = filterTags[key].label;
@@ -387,7 +364,7 @@ const ChosenFilters = (props: Props) => {
                     );
                 }
             })}
-        </Grid>
+        </Stack>
     );
 };
 

@@ -247,6 +247,11 @@ const slice = createSlice({
             state.filters.categories = initialState.filters.categories;
             state.ids = state.ids.filter((id) => id !== "categories");
         },
+        resetParentCategories: (state) => {
+            state.filters.parentCategories =
+                initialState.filters.parentCategories;
+            state.ids = state.ids.filter((id) => id !== "parentCategories");
+        },
 
         resetFrameType: (state) => {
             state.filters.frameType = initialState.filters.frameType;
@@ -330,6 +335,7 @@ export const {
 
     resetStates,
     resetCategories,
+    resetParentCategories,
 } = slice.actions;
 
 export const selectCode = ({ filters }: RootState) => filters.filters.code;

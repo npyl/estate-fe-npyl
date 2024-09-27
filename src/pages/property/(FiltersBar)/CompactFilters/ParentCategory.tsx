@@ -1,4 +1,8 @@
-import { resetCategories } from "@/slices/filters";
+import {
+    resetParentCategories,
+    selectParentCategories,
+    setParentCategories,
+} from "@/slices/filters";
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
@@ -6,10 +10,11 @@ import { useSelector } from "react-redux";
 import { KeyValue } from "@/types/KeyValue";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { selectCategories, setCategories } from "@/slices/customer/filters";
+
 import { PPButton } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
+import Stack from "@mui/material/Stack";
 
 const icons: Record<string, string> = {
     RESIDENTIAL: "/static/categories/commercial.png",
@@ -22,12 +27,6 @@ const icons: Record<string, string> = {
 interface IOption {
     option: KeyValue;
 }
-
-const FlexContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px; // Adjust this value to control the gap between items
-`;
 
 const FlexItem = styled.div`
     flex-basis: 100%;
@@ -43,16 +42,19 @@ const FlexItem = styled.div`
 
 const Option: FC<IOption> = ({ option: { key, value } }) => {
     const dispatch = useDispatch();
-    const states = useSelector(selectCategories) || [];
-    const isChecked = states.includes(key);
+    const parentCategories = useSelector(selectParentCategories) || [];
+    const isChecked = parentCategories.includes(key);
+
     const handleChange = () => {
         // toggle
-        const newStates = states.includes(key)
-            ? states.filter((s) => s !== key)
-            : [...states, key];
+        const calculated = parentCategories.includes(key)
+            ? parentCategories.filter((s) => s !== key)
+            : [...parentCategories, key];
         // update slice
-        dispatch(setCategories(newStates));
+
+        dispatch(setParentCategories(calculated));
     };
+
     return (
         <FlexItem>
             <PPButton clicked={isChecked} onClick={handleChange}>
@@ -74,8 +76,13 @@ const ParentCategory = () => {
     const data = useGlobals();
     const parentCategoryEnum = data?.property?.parentCategory || [];
     return (
-        <ClearableSection title={t("Parent Category")} reset={resetCategories}>
-            <FlexContainer>{parentCategoryEnum.map(getOption)}</FlexContainer>
+        <ClearableSection
+            title={t("Parent Category")}
+            reset={resetParentCategories}
+        >
+            <Stack direction="row" gap={1} flexWrap="wrap" p={4}>
+                {parentCategoryEnum.map(getOption)}
+            </Stack>
         </ClearableSection>
     );
 };
