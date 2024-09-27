@@ -1,6 +1,6 @@
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { Typography } from "@mui/material";
-import { FC, MouseEvent, useCallback, useMemo, useRef } from "react";
+import { FC, useMemo, useRef } from "react";
 import useResponsive from "@/hooks/useResponsive";
 import StyledStack from "./styled";
 import SelectPopover from "./popover";
@@ -22,11 +22,6 @@ const FilterSortBy: FC<FilterSortByProps> = ({
 
     const [isOpen, openPopover, closePopover] = useDialog();
 
-    const handleOpen = useCallback((e: MouseEvent<HTMLElement>) => {
-        e.preventDefault();
-        openPopover();
-    }, []);
-
     const belowMd = useResponsive("down", "md");
 
     const label = useMemo(
@@ -36,7 +31,12 @@ const FilterSortBy: FC<FilterSortByProps> = ({
 
     return (
         <>
-            <StyledStack ref={anchorRef} open={isOpen} onClick={handleOpen}>
+            <StyledStack
+                ref={anchorRef}
+                open={isOpen}
+                onClick={openPopover}
+                mt={1}
+            >
                 <SwapVertIcon />
 
                 {belowMd ? null : (

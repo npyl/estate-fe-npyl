@@ -12,10 +12,10 @@ import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/Cards/CustomerCard";
 import { useTranslation } from "react-i18next";
-import FilterSection from "./(FilterSection)";
 import { getOptions } from "./(FilterSection)/constants";
 import Pagination, { usePagination } from "@/components/Pagination";
 import Toolbar from "@/sections/DataGrids/CustomersToolbar";
+import { FilterSection } from "./(FilterSection)";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
