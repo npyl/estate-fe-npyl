@@ -23,37 +23,29 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
             <Stack
                 spacing={3}
                 sx={{
-                    py: 1.5,
-                    px: 1.5,
+                    py: 1,
+                    px: 1,
                     bgcolor: "background.neutral",
-                    borderRadius: "8px",
+                    borderRadius: "10px",
                 }}
             >
                 {comments.map((comment) => (
-                    <Stack key={comment.id} direction="row" spacing={2}>
+                    <Stack
+                        key={comment.id}
+                        direction="row"
+                        spacing={2}
+                        alignItems="center"
+                    >
                         <Avatar
                             src={comment.avatar}
                             sx={{ width: "25px", height: "25px" }}
                         />
 
                         <Stack>
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={1}
-                            >
-                                {/* <Typography variant="subtitle2">
+                            {/* <Typography variant="subtitle2">
                                     {" "}
                                     {comment.name}
                                 </Typography> */}
-
-                                <Typography
-                                    variant="caption"
-                                    sx={{ color: "text.secondary" }}
-                                >
-                                    {fToNow(comment?.createdAt || "")}
-                                </Typography>
-                            </Stack>
 
                             {comment.messageType === "image" ? (
                                 <Image
@@ -65,9 +57,20 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
                                     }}
                                 />
                             ) : (
-                                <Typography variant="body2" sx={{ mt: 0.5 }}>
-                                    {comment.message}
-                                </Typography>
+                                <Stack>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ mt: 0.5 }}
+                                    >
+                                        {comment.message}
+                                    </Typography>
+                                    <Typography
+                                        variant="caption"
+                                        sx={{ color: "text.secondary" }}
+                                    >
+                                        {fToNow(comment?.createdAt || "")}
+                                    </Typography>
+                                </Stack>
                             )}
                         </Stack>
                     </Stack>
