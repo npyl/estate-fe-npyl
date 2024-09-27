@@ -71,7 +71,7 @@ const Home: NextPage = () => {
             {optionViewProps.optionView === "map" ? (
                 <MapView sortBy={sortBy} direction={direction} />
             ) : null}
-        </Box>
+        </>
     );
 };
 

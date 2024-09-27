@@ -9,10 +9,11 @@ import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 import { getPropertyStatusColor } from "@/theme/colors";
 
-import { NormalBadge } from "@/components/PropertyCard/styled";
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
 import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
 import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
+
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 
 function RenderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
@@ -129,6 +130,46 @@ const formatNumberWithPeriod = (num: any) => {
     }
     const numericValue = num.toString().replace(/[^0-9]/g, "");
     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
+const categoryToIcon = (category: string) => {
+    switch (category.trim().toLowerCase()) {
+        case "κατοικία":
+            return (
+                <HomeOutLinedIcon
+                    sx={{
+                        marginRight: 0.5,
+                        color: "neutral.600",
+                        fontSize: "16px",
+                    }}
+                />
+            );
+        case "επαγγελματική στέγη":
+            return (
+                <BusinessOutlinedIcon
+                    sx={{
+                        marginRight: 0.5,
+
+                        color: "neutral.600",
+                        fontSize: "16px",
+                    }}
+                />
+            );
+        case "γη":
+            return (
+                <LandslideOutlinedIcon
+                    sx={{
+                        marginRight: 0.5,
+
+                        color: "neutral.600",
+                        fontSize: "16px",
+                    }}
+                />
+            );
+
+        default:
+            return null;
+    }
 };
 
 //
@@ -279,7 +320,7 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         width: 180,
         align: "center",
         headerAlign: "center",
-        renderCell: renderImage,
+        renderCell: RenderImage,
     },
     {
         field: "code",
