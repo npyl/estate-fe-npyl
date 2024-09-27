@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 // @mui
 import {
     Avatar,
@@ -31,7 +31,11 @@ import KanbanDetailsCommentInput from "./KanbanDetailsCommentInput";
 import KanbanDetailsCommentList from "./KanbanDetailsCommentList";
 import KanbanDetailsPrioritizes from "./KanbanDetailsPrioritizes";
 import KanbanDetailsToolbar from "./KanbanDetailsToolbar";
-import { useEditCardMutation } from "src/services/tickets";
+import {
+    useEditCardMutation,
+    useMoveCardMutation,
+    useGetBoardQuery,
+} from "src/services/tickets"; // Add useMoveCardMutation and useGetBoardQuery
 import { StyledLabel } from "./styled";
 import Description from "./Description";
 import Name from "./Name";
@@ -74,6 +78,12 @@ export default function KanbanDetails({
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [editCard] = useEditCardMutation();
+    const [moveCard] = useMoveCardMutation();
+    const { data: board } = useGetBoardQuery();
+
+    const [currentColumnId, setCurrentColumnId] = useState(task.id);
+    const previousTaskId = useRef(task.id);
+
     const handleLiked = useCallback(() => setLiked((old) => !old), []);
     const handleClickAttach = () => fileInputRef.current?.click();
 
@@ -104,19 +114,64 @@ export default function KanbanDetails({
         ]
     );
 
-    const toggleCompleted = useCallback(
-        () =>
-            editCard({
-                id,
-                name: name,
-                attachments,
-                description,
-                priority,
-                completed: !completed,
-                userIds: user.map((u) => u.id),
-            }),
-        [id, name, attachments, description, priority, completed, user]
-    );
+    const toggleCompleted = useCallback(async () => {
+        const doneColumn = board?.columns.find((col) => col.name === "DONE");
+        const inProgressColumn = board?.columns.find(
+            (col) => col.name === "IN PROGRESS"
+        );
+
+        if (!doneColumn || !inProgressColumn) return;
+
+        // Mark the card as completed
+        await editCard({
+            id,
+            name,
+            attachments,
+            description,
+            priority,
+            completed: !completed,
+            userIds: user.map((u) => u.id),
+        });
+
+        // Move the card to the DONE column
+        if (!completed) {
+            moveCard({
+                cardId: id,
+                srcColumnId: currentColumnId,
+                dstColumnId: doneColumn.id,
+            });
+            setCurrentColumnId(doneColumn.id);
+        } else {
+            // If it's being unchecked, move it back to the IN PROGRESS column
+            moveCard({
+                cardId: id,
+                srcColumnId: currentColumnId,
+                dstColumnId: inProgressColumn.id,
+            });
+            setCurrentColumnId(inProgressColumn?.id);
+        }
+        console.log(`progress: ${inProgressColumn}`);
+        console.log(`done: ${doneColumn}`);
+    }, [
+        board,
+        id,
+        name,
+        attachments,
+        description,
+        priority,
+        completed,
+        user,
+        currentColumnId,
+        editCard,
+        moveCard,
+    ]);
+
+    useEffect(() => {
+        // Reset the task details if the task id changes
+        if (previousTaskId.current !== task.id) {
+            previousTaskId.current = task.id;
+        }
+    }, [task.id, moveCard, completed]);
 
     const handleChangePriority = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -212,7 +267,6 @@ export default function KanbanDetails({
     );
 
     const { t } = useTranslation();
-
     // Handler to open the image modal
     const handleOpenImageModal = (image: string) => {
         setSelectedImage(image);
@@ -320,7 +374,7 @@ export default function KanbanDetails({
                             onChange={handleAttachmentsChange}
                         />
                     </Stack>
-                    <Divider />
+                    {task.attachments.length > 0 ? <Divider /> : null}
                     <Box
                         sx={{
                             flexGrow: 1,
@@ -380,7 +434,7 @@ export default function KanbanDetails({
                                     }}
                                     onClick={() =>
                                         handleOpenImageModal(attachment)
-                                    } // Open modal with clicked image
+                                    }
                                 />
                             </Box>
                         ))}
@@ -389,7 +443,7 @@ export default function KanbanDetails({
             </Stack>
             <Box sx={{ px: 2.5 }}>
                 <Divider sx={{ mb: 1, mt: -3 }} />
-                {/* </Scrollbar> */}
+
                 {!!task.comments.length && (
                     <KanbanDetailsCommentList comments={task.comments} />
                 )}

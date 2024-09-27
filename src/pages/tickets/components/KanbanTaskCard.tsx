@@ -7,8 +7,6 @@ import {
     Checkbox,
     Dialog,
     DialogContent,
-    DialogTitle,
-    IconButton,
     Paper,
     Stack,
     Tooltip,
@@ -21,11 +19,15 @@ import Iconify from "src/components/iconify";
 import Image from "src/components/image";
 //
 import KanbanDetails from "./details/KanbanDetails";
-import { useEditCardMutation } from "src/services/tickets";
+import {
+    useEditCardMutation,
+    useGetBoardQuery,
+    useMoveCardMutation,
+} from "src/services/tickets";
 import { useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -38,21 +40,60 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
     const { id, name, attachments, completed, priority, user } = card || {};
     const theme = useTheme();
     const [editCard] = useEditCardMutation();
+    const { data: board } = useGetBoardQuery();
+    const [moveCard] = useMoveCardMutation();
     const { t } = useTranslation();
     const [openDetails, setOpenDetails] = useState(false);
-    const handleOpenDetails = () => setOpenDetails(true);
+
+    // Stop event propagation to prevent the task details modal from opening
+    const handleOpenDetails = () => {
+        if (!openDetails) {
+            setOpenDetails(true);
+        }
+    };
+
     const handleCloseDetails = () => setOpenDetails(false);
 
-    const handleChangeComplete = () =>
-        editCard({
-            id,
-            name,
-            attachments,
-            priority,
+    const handleChangeComplete = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        event.stopPropagation(); // checkbox click doesn't trigger modal open
 
-            completed: !completed,
-            userIds: user.map((u) => u.id),
-        });
+        const doneColumn = board?.columns.find((col) => col.name === "DONE");
+        const inProgressColumn = board?.columns.find(
+            (col) => col.name === "IN PROGRESS"
+        );
+
+        if (!doneColumn || !inProgressColumn) return;
+
+        try {
+            await editCard({
+                id,
+                name,
+                attachments,
+                priority,
+                completed: !completed,
+                userIds: user.map((u) => u.id),
+            });
+
+            // Move the card based on the completed state
+            if (!completed) {
+                await moveCard({
+                    cardId: id,
+                    srcColumnId: card.id,
+                    dstColumnId: doneColumn.id,
+                });
+            } else {
+                await moveCard({
+                    cardId: id,
+                    srcColumnId: card.id,
+                    dstColumnId: inProgressColumn.id,
+                });
+            }
+        } catch (error) {
+            console.error("Error moving card:", error);
+        }
+    };
 
     const [openModal, setOpenModal] = useState(false);
     const [currentImage, setCurrentImage] = useState("");
@@ -114,7 +155,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                     >
                                         <div>
                                             <Iconify
-                                                icon="eva:alert-circle-outline"
+                                                icon="eva:alert-triangle-outline"
                                                 sx={{
                                                     color: "red",
                                                     fontSize: "20px",
@@ -143,7 +184,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                         )}
 
                         <Stack spacing={1}>
-                            {/* Task ID and title */}
                             <Stack direction="row" alignItems="center">
                                 <Checkbox
                                     disableRipple
@@ -154,6 +194,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                     checkedIcon={
                                         <Iconify icon="eva:checkmark-circle-2-outline" />
                                     }
+                                    onClick={(event) => event.stopPropagation()} // Prevent modal from opening
                                     onChange={handleChangeComplete}
                                 />
                                 <Typography
@@ -183,14 +224,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                             </Stack>
 
                             <Stack direction="row" alignItems="center" mt={1}>
-                                {/* <Iconify
-                                    icon="eva:file-text-fill"
-                                    sx={{
-                                        fontSize: "17px",
-                                        color: "green",
-                                        ml: 0,
-                                    }}
-                                /> */}
                                 <ConfirmationNumberOutlinedIcon
                                     sx={{
                                         fontSize: "16px",
@@ -230,7 +263,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                             color="text.secondary"
                                             alignSelf="center"
                                         >
-                                            Assigned to
+                                            {t("Assigned to")}
                                         </Typography>
                                         {user?.map((u, index) => (
                                             <Typography
