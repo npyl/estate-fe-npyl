@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 import { getPropertyStatusColor } from "@/theme/colors";
-
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
 import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
 import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
@@ -20,24 +19,19 @@ function RenderImage(
 ) {
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
+    const src =
+        typeof propertyImage === "string" ? propertyImage : propertyImage?.url;
 
     return (
-        <Box
-            sx={{
-                position: "relative",
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-            }}
+        <Stack
+            position="relative"
+            width={1}
+            height={1}
+            alignItems="center"
+            justifyContent="center"
         >
             <Image
-                src={
-                    typeof propertyImage === "string"
-                        ? propertyImage
-                        : propertyImage?.url
-                }
+                src={src}
                 alt=""
                 ratio="16/9"
                 sx={{
@@ -46,18 +40,18 @@ function RenderImage(
                     objectFit: "cover",
                 }}
             />
+
             {!isActive && (
-                <Box
+                <Stack
                     sx={{
                         position: "absolute",
-                        top: -5,
-                        right: -7,
-                        zIndex: 1,
+                        top: 2,
+                        right: -4,
+                        zIndex: 5000,
                         width: 23,
                         height: 23,
                         bgcolor: "grey.400",
                         borderRadius: "50%",
-                        display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                     }}
@@ -65,9 +59,9 @@ function RenderImage(
                     <LinkOffOutlinedIcon
                         sx={{ color: "aliceblue", fontSize: 18 }}
                     />
-                </Box>
+                </Stack>
             )}
-        </Box>
+        </Stack>
     );
 }
 
@@ -85,11 +79,11 @@ function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
     const address = addressParts.filter((part) => part).join(", ");
 
     return (
-        <Typography
-            sx={{ fontSize: "small", textAlign: "center", textWrap: "wrap" }}
-        >
-            {address}
-        </Typography>
+        <Stack width={1} height={1} alignItems="center" justifyContent="center">
+            <Typography fontSize="small" textAlign="center" whiteSpace="wrap">
+                {address}
+            </Typography>
+        </Stack>
     );
 }
 
@@ -106,20 +100,17 @@ function StatusColor(params: GridCellParams) {
     const color = getPropertyStatusColor(statusForColor);
 
     return (
-        <Box
-            sx={{
-                width: 150,
-                height: 30,
-                backgroundColor: color,
-                color: "white",
-                borderRadius: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-        >
-            {t(status)}
-        </Box>
+        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+            <Typography
+                bgcolor={color}
+                color="white"
+                borderRadius="20px"
+                px={1.5}
+                py={1}
+            >
+                {t(status)}
+            </Typography>
+        </Stack>
     );
 }
 
@@ -149,7 +140,6 @@ const categoryToIcon = (category: string) => {
                 <BusinessOutlinedIcon
                     sx={{
                         marginRight: 0.5,
-
                         color: "neutral.600",
                         fontSize: "16px",
                     }}
@@ -160,7 +150,6 @@ const categoryToIcon = (category: string) => {
                 <LandslideOutlinedIcon
                     sx={{
                         marginRight: 0.5,
-
                         color: "neutral.600",
                         fontSize: "16px",
                     }}
@@ -170,6 +159,54 @@ const categoryToIcon = (category: string) => {
         default:
             return null;
     }
+};
+
+const RenderCodeCell = (params: GridCellParams) => {
+    if (!params.value) return null;
+
+    return (
+        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+            <NormalBadge
+                name={`${params.value || ""}`}
+                color={"#ffcc00"}
+                sx={{ color: "#854D0E" }}
+            />
+        </Stack>
+    );
+};
+
+const RenderParentCategoryCell = (params: GridCellParams) => {
+    const { t } = useTranslation();
+
+    const categoryValue = (params.value as KeyValue)?.value;
+
+    if (!categoryValue) return null;
+
+    return (
+        <Stack alignItems="center" justifyContent="center" width={1} height={1}>
+            <Stack direction="row" spacing={1}>
+                <Typography>{categoryToIcon(categoryValue)}</Typography>
+                <Typography mr={1} fontSize="small">
+                    {t(categoryValue)}
+                </Typography>{" "}
+            </Stack>
+        </Stack>
+    );
+};
+
+const RenderCategoryCell = (params: GridCellParams) => {
+    const { t } = useTranslation();
+    return (
+        <div
+            style={{
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+                textAlign: "center",
+            }}
+        >
+            {t((params.value as KeyValue)?.value)}
+        </div>
+    );
 };
 
 //
@@ -182,7 +219,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         renderCell: RenderImage,
-        sortable: false,
         flex: 1.2,
     },
     {
@@ -190,14 +226,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Code") as string,
         headerAlign: "center",
         align: "center",
-        sortable: false,
-        renderCell: (params: GridCellParams) => (
-            <NormalBadge
-                name={`${params.value || ""}`}
-                color={"#ffcc00"}
-                sx={{ color: "#854D0E" }}
-            />
-        ),
+        renderCell: RenderCodeCell,
         flex: 1,
     },
     {
@@ -205,39 +234,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Parent Category") as string,
-        renderCell: (params: GridCellParams) => {
-            const categoryValue = (params.value as KeyValue)?.value;
-
-            if (!categoryValue) return null;
-
-            const categories = Array.isArray(categoryValue)
-                ? categoryValue
-                : categoryValue.split(/,\s*/);
-            return (
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    {categories.map((category: string, index: number) => (
-                        <Box
-                            key={index}
-                            sx={{ display: "flex", alignItems: "center" }}
-                        >
-                            <Typography>{categoryToIcon(category)}</Typography>
-                            <Typography
-                                sx={{ marginRight: 1, fontSize: "small" }}
-                            >
-                                {t(category)}
-                            </Typography>{" "}
-                        </Box>
-                    ))}
-                </Box>
-            );
-        },
-        sortable: false,
+        renderCell: RenderParentCategoryCell,
         flex: 1.4,
     },
     {
@@ -245,19 +242,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Category") as string,
-
-        renderCell: (params) => (
-            <div
-                style={{
-                    whiteSpace: "normal",
-                    wordWrap: "break-word",
-                    textAlign: "center",
-                }}
-            >
-                {t((params.value as KeyValue)?.value)}
-            </div>
-        ),
-
+        renderCell: RenderCategoryCell,
         flex: 1,
     },
     {
@@ -288,7 +273,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
-
         flex: 0.8,
     },
     {
@@ -297,7 +281,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
-
         flex: 1,
     },
     {
@@ -327,7 +310,6 @@ export const getSmallColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Reference ID") || "",
         width: 180,
         headerAlign: "center",
-
         align: "center",
     },
     {

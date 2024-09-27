@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
 import CustomRow from "./Row";
-import CustomCheckbox from "./Checkbox";
 
 // ------------------------------------------------------------------------
 
@@ -22,7 +21,6 @@ const DataGridTable: FC<GridProps> = ({
         <StyledDataGrid
             slots={{
                 row: (props) => <CustomRow {...props} resource={resource} />,
-                baseCheckbox: CustomCheckbox,
             }}
             localeText={{
                 toolbarColumns: t("Fields"),
@@ -36,9 +34,11 @@ const DataGridTable: FC<GridProps> = ({
             paginationModel={{ page, pageSize }}
             // ------------------
             disableColumnFilter
+            disableColumnSorting
             disableDensitySelector
             rowHeight={125}
             getRowId={(e) => e.id as number}
+            onCellClick={(_, e) => e.stopPropagation()}
             onRowClick={(e) => {
                 // Save the current scroll height to local storage
                 localStorage.setItem("scrollHeight", window.scrollY.toString());
@@ -49,6 +49,7 @@ const DataGridTable: FC<GridProps> = ({
             rows={rows}
             columns={columns}
             pageSizeOptions={[25, 50, 100]}
+            // ...
             {...props}
         />
     );
