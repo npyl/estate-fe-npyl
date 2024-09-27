@@ -187,7 +187,6 @@ const Subbar = () => {
                         onClick={showDropdown}
                         sx={{
                             color: "white",
-                            width: "12%",
                             fontSize: "16px",
                             borderRadius: "5px",
                             boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
