@@ -58,7 +58,7 @@ interface ColumnProps {
 }
 
 const Column: FC<ColumnProps> = ({ title, options }) => (
-    <Grid xs={6} sm={4} display="flex" flexDirection="column">
+    <Grid item xs={6} sm={4} display="flex" flexDirection="column">
         <Typography>{title}</Typography>
         {options.map(getOption)}
     </Grid>
