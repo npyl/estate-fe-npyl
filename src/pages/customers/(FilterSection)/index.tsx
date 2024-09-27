@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { PaperProps } from "@mui/material";
+import { PaperProps, Stack } from "@mui/material";
 import { sumOfChangedProperties } from "src/slices/customer/filters";
 // filters
 import FilterStatus from "./Filters/Status";
@@ -49,7 +49,6 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <PriceSelect type={"price"} />
             <PriceSelect type={"area"} />
             <FilterManager />
-            <FilterStatus />
         </>
     );
 
@@ -85,7 +84,10 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 
             {isDialogOpen ? (
                 <FilterMore open onClose={closeDialog} onResetFilter={() => {}}>
-                    {filterContent}
+                    <Stack width={1} spacing={1} px={6}>
+                        {filterContent}
+                        <FilterStatus />
+                    </Stack>
                 </FilterMore>
             ) : null}
         </>
