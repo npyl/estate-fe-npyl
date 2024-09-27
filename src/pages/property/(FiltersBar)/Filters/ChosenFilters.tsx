@@ -247,74 +247,74 @@ const ChosenFilters = (props: Props) => {
                             );
                         }
                         // If only minFloor is selected
-                        if (minValue) {
-                            const minLabel = getEnumLabel(
-                                minValue,
-                                minFloorEnum
-                            );
-                            return (
-                                <Chip
-                                    key={index}
-                                    label={
-                                        <Stack direction="row">
-                                            <Typography
-                                                sx={{
-                                                    fontWeight: "medium",
-                                                    paddingRight: 1,
-                                                }}
-                                            >
-                                                {t("Minimum Floor")}:
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    textTransform: "capitalize",
-                                                }}
-                                            >
-                                                {minLabel}
-                                            </Typography>
-                                        </Stack>
-                                    }
-                                    onDelete={() => {
-                                        dispatch(deleteFilter("minFloor"));
-                                    }}
-                                />
-                            );
-                        }
+                        // if (minValue) {
+                        //     const minLabel = getEnumLabel(
+                        //         minValue,
+                        //         minFloorEnum
+                        //     );
+                        //     return (
+                        //         <Chip
+                        //             key={index}
+                        //             label={
+                        //                 <Stack direction="row">
+                        //                     <Typography
+                        //                         sx={{
+                        //                             fontWeight: "medium",
+                        //                             paddingRight: 1,
+                        //                         }}
+                        //                     >
+                        //                         {t("Minimum Floor")}:
+                        //                     </Typography>
+                        //                     <Typography
+                        //                         sx={{
+                        //                             textTransform: "capitalize",
+                        //                         }}
+                        //                     >
+                        //                         {minLabel}
+                        //                     </Typography>
+                        //                 </Stack>
+                        //             }
+                        //             onDelete={() => {
+                        //                 dispatch(deleteFilter("minFloor"));
+                        //             }}
+                        //         />
+                        //     );
+                        // }
 
-                        // If only maxFloor is selected
-                        if (maxValue) {
-                            const maxLabel = getEnumLabel(
-                                maxValue,
-                                maxFloorEnum
-                            );
-                            return (
-                                <Chip
-                                    key={index}
-                                    label={
-                                        <Stack direction="row">
-                                            <Typography
-                                                sx={{
-                                                    fontWeight: "medium",
-                                                    paddingRight: 1,
-                                                }}
-                                            >
-                                                {t("Maximum Floor")}:
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    textTransform: "capitalize",
-                                                }}
-                                            >
-                                                {maxLabel}
-                                            </Typography>
-                                        </Stack>
-                                    }
-                                    onDelete={() => {
-                                        dispatch(deleteFilter("maxFloor"));
-                                    }}
-                                />
-                            );
-                        }
+                        // // If only maxFloor is selected
+                        // if (maxValue) {
+                        //     const maxLabel = getEnumLabel(
+                        //         maxValue,
+                        //         maxFloorEnum
+                        //     );
+                        //     return (
+                        //         <Chip
+                        //             key={index}
+                        //             label={
+                        //                 <Stack direction="row">
+                        //                     <Typography
+                        //                         sx={{
+                        //                             fontWeight: "medium",
+                        //                             paddingRight: 1,
+                        //                         }}
+                        //                     >
+                        //                         {t("Maximum Floor")}:
+                        //                     </Typography>
+                        //                     <Typography
+                        //                         sx={{
+                        //                             textTransform: "capitalize",
+                        //                         }}
+                        //                     >
+                        //                         {maxLabel}
+                        //                     </Typography>
+                        //                 </Stack>
+                        //             }
+                        //             onDelete={() => {
+                        //                 dispatch(deleteFilter("maxFloor"));
+                        //             }}
+                        //         />
+                        //     );
+                        // }
                     }
                     return (
                         <Chip
@@ -375,6 +375,134 @@ const ChosenFilters = (props: Props) => {
                             }}
                         />
                     );
+                } else if (suffix === "Floor") {
+                    const minValue = changedProps[`minFloor`];
+                    const maxValue = changedProps[`maxFloor`];
+                    // If only minFloor is selected
+                    if (minValue) {
+                        const minLabel = getEnumLabel(minValue, minFloorEnum);
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Minimum Floor")}:
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {minLabel}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("minFloor"));
+                                }}
+                            />
+                        );
+                    }
+
+                    // If only maxFloor is selected
+                    if (maxValue) {
+                        const maxLabel = getEnumLabel(maxValue, maxFloorEnum);
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Maximum Floor")}:
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {maxLabel}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("maxFloor"));
+                                }}
+                            />
+                        );
+                    }
+                } else if (suffix === "Price") {
+                    const minValue = changedProps[`minPrice`];
+                    const maxValue = changedProps[`maxPrice`];
+                    if (minValue) {
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Minimum Price")}
+                                            {" (€):"}
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {minValue.toLocaleString("el-GR")}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("minPrice"));
+                                }}
+                            />
+                        );
+                    } else if (maxValue) {
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Maximum Price")}
+                                            {` (€):`}
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {maxValue.toLocaleString("el-GR")}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("maxPrice"));
+                                }}
+                            />
+                        );
+                    }
                 } else {
                     let valuesToDisplay = values;
 
