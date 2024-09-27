@@ -4,15 +4,18 @@ import { TypeLabels } from "@/components/TypeLabels";
 import RenderLabelsCell from "../shared/RenderLabels";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
+import Stack from "@mui/material/Stack";
 
 const StatusColor = ({ row }: GridCellParams) => (
-    <TypeLabels
-        forceTruncate
-        seller={row.seller}
-        lessor={row.lessor}
-        leaser={row.leaser}
-        buyer={row.buyer}
-    />
+    <Stack width={1} height={1} justifyContent="center" alignItems="center">
+        <TypeLabels
+            forceTruncate
+            seller={row.seller}
+            lessor={row.lessor}
+            leaser={row.leaser}
+            buyer={row.buyer}
+        />
+    </Stack>
 );
 
 const formatPrice = (price: number | string) => {
@@ -30,11 +33,8 @@ const RenderPriceCell = ({ row }: GridCellParams) => {
     if (!row.budget) return null;
 
     const formattedPrice = formatPrice(row.budget);
-    return (
-        <Typography style={{ fontSize: "inherit", fontFamily: "inherit" }}>
-            {formattedPrice}
-        </Typography>
-    );
+
+    return <Typography variant="inherit">{formattedPrice}</Typography>;
 };
 
 const RenderAreaCell = ({ row }: GridCellParams) => {
@@ -48,11 +48,7 @@ const RenderAreaCell = ({ row }: GridCellParams) => {
         )
         .join(", ");
 
-    return (
-        <Typography style={{ fontSize: "inherit", fontFamily: "inherit" }}>
-            {areas}
-        </Typography>
-    );
+    return <Typography variant="inherit">{areas}</Typography>;
 };
 
 const renderDateCell = ({ row }: GridCellParams) => {
@@ -62,9 +58,7 @@ const renderDateCell = ({ row }: GridCellParams) => {
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
     const year = date.getFullYear();
     return (
-        <Typography
-            style={{ fontSize: "inherit", fontFamily: "inherit" }}
-        >{`${day}/${month}/${year}`}</Typography>
+        <Typography variant="inherit">{`${day}/${month}/${year}`}</Typography>
     );
 };
 
