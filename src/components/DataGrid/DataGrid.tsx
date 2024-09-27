@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
 import CustomRow from "./Row";
+import CustomCheckbox from "./Checkbox";
 
 // ------------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ const DataGridTable: FC<GridProps> = ({
         <StyledDataGrid
             slots={{
                 row: (props) => <CustomRow {...props} resource={resource} />,
+                baseCheckbox: CustomCheckbox,
             }}
             localeText={{
                 toolbarColumns: t("Fields"),
