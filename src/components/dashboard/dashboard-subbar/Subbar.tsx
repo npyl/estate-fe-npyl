@@ -159,6 +159,7 @@ const Subbar = () => {
     const isStickyPath =
         router.pathname.startsWith("/property/edit") ||
         router.pathname === "/property/create";
+
     return (
         <>
             {belowLg ? (
@@ -174,7 +175,6 @@ const Subbar = () => {
                         position: isStickyPath ? "sticky" : "relative",
                         top: isStickyPath ? 64 : 0,
                         zIndex: 100,
-                        backgroundColor: "white",
                         boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
                     }}
                 >
@@ -187,7 +187,6 @@ const Subbar = () => {
                         onClick={showDropdown}
                         sx={{
                             color: "white",
-
                             width: "12%",
                             fontSize: "16px",
                             borderRadius: "5px",
