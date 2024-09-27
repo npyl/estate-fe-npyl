@@ -12,7 +12,13 @@ const RenderLabelsCell = (params: GridCellParams) => {
     const more = labels.slice(2).length;
 
     return (
-        <Stack spacing={0.5}>
+        <Stack
+            spacing={0.5}
+            width={1}
+            height={1}
+            alignItems="center"
+            justifyContent="center"
+        >
             {labels.slice(0, 2).map(({ id, color, name }) => (
                 <Label key={id} color={color} name={name} />
             ))}
