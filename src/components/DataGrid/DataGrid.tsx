@@ -22,6 +22,12 @@ const DataGridTable: FC<GridProps> = ({
             slots={{
                 row: (props) => <CustomRow {...props} resource={resource} />,
             }}
+            slotProps={{
+                // NOTE: fixes checkbox click bubbling until caught by row's NextLink
+                baseCheckbox: {
+                    onClick: (e) => e.stopPropagation(),
+                },
+            }}
             localeText={{
                 toolbarColumns: t("Fields"),
                 MuiTablePagination: {
@@ -38,7 +44,6 @@ const DataGridTable: FC<GridProps> = ({
             disableDensitySelector
             rowHeight={125}
             getRowId={(e) => e.id as number}
-            onCellClick={(_, e) => e.stopPropagation()}
             onRowClick={(e) => {
                 // Save the current scroll height to local storage
                 localStorage.setItem("scrollHeight", window.scrollY.toString());
