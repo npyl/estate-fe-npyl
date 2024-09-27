@@ -1,6 +1,9 @@
 import React, { useMemo } from "react";
 import { PaperProps, Stack } from "@mui/material";
-import { sumOfChangedProperties } from "src/slices/customer/filters";
+import {
+    resetState,
+    sumOfChangedProperties,
+} from "src/slices/customer/filters";
 // filters
 import FilterStatus from "./Filters/Status";
 import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
@@ -20,6 +23,7 @@ import useResponsive from "@/hooks/useResponsive";
 import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
 import FilterSortBy from "@/components/Filters/SortBy";
+import { useDispatch } from "react-redux";
 const FilterMore = dynamic(
     () => import("@/components/Filters/FilterMore/Dialog")
 );
@@ -35,6 +39,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
     ...props
 }) => {
     const { t } = useTranslation();
+
+    const dispatch = useDispatch();
+    const handleResetAll = () => dispatch(resetState());
 
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
 
@@ -83,7 +90,11 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             />
 
             {isDialogOpen ? (
-                <FilterMore open onClose={closeDialog} onResetFilter={() => {}}>
+                <FilterMore
+                    open
+                    onClose={closeDialog}
+                    onResetFilter={handleResetAll}
+                >
                     <Stack width={1} spacing={1} px={6}>
                         {filterContent}
                         <FilterStatus />
