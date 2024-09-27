@@ -32,7 +32,7 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
     };
 
     return (
-        <Grid xs={6} sm={4}>
+        <Grid item xs={6} sm={4}>
             <FormControlLabel
                 control={<Checkbox />}
                 checked={isChecked}
