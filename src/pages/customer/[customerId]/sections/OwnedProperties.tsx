@@ -13,11 +13,7 @@ import NoOwnedProperties from "./NoOwnedProperties";
 
 const PAGE_SIZE = 5;
 
-interface Props {
-    variant?: "default" | "small";
-}
-
-const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
+const OwnedCustomerPropertiesSection = () => {
     const { t } = useTranslation();
     const router = useRouter();
     const { customerId } = router.query;
@@ -69,7 +65,6 @@ const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
                 // ...
                 rows={ownedProperties}
                 resource="property"
-                columnVariant={variant}
                 // ...
                 paginationMode="client"
                 page={pagination.page}

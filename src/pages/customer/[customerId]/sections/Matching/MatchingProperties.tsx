@@ -121,7 +121,6 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
                 // ...
                 rows={properties}
                 totalRows={properties.length ?? pageSize}
-                columnVariant={variant}
                 // ...
                 paginationMode="client"
                 page={pagination.page}
