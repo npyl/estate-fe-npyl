@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface Settings {
     direction?: "ltr" | "rtl";
@@ -26,8 +27,7 @@ export const restoreSettings = (): Settings | null => {
     let settings = null;
 
     try {
-        const storedData: string | null =
-            globalThis.localStorage.getItem("settings");
+        const storedData = globalThis.localStorage.getItem("settings");
 
         if (storedData) {
             settings = JSON.parse(storedData);
@@ -59,8 +59,9 @@ export const SettingsContext = createContext<SettingsContextValue>({
     saveSettings: () => {},
 });
 
-export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
-    const { children } = props;
+export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
+    const { i18n } = useTranslation();
+
     const [settings, setSettings] = useState<Settings>(initialSettings);
 
     useEffect(() => {
@@ -69,12 +70,16 @@ export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
         if (restoredSettings) {
             setSettings(restoredSettings);
         }
+
+        // Language (try to read localStorage; default to greek)
+        const stored = localStorage.getItem("language") || "el";
+        i18n.changeLanguage(stored);
     }, []);
 
-    const saveSettings = (updatedSettings: Settings): void => {
+    const saveSettings = useCallback((updatedSettings: Settings) => {
         setSettings(updatedSettings);
         storeSettings(updatedSettings);
-    };
+    }, []);
 
     return (
         <SettingsContext.Provider
