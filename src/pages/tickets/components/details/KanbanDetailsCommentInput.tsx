@@ -60,7 +60,7 @@ export default function KanbanDetailsCommentInput({
         <Stack
             direction="row"
             spacing={1}
-            sx={{ my: 3 }}
+            sx={{ my: 1 }}
             alignItems="flex-start"
         >
             <CustomAvatar

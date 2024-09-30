@@ -169,42 +169,154 @@ const ChosenFilters: FC<Props> = (props) => {
                     key.includes("min") || key.includes("max")
                         ? key.slice(3)
                         : null;
-                // Handle min-max floors specifically
-                if (suffix === "Floor") {
-                    const minValue = changedProps[`minFloor`];
-                    const maxValue = changedProps[`maxFloor`];
 
-                    if (minValue && maxValue) {
-                        const minLabel = getEnumLabel(minValue, minFloorEnum);
-                        const maxLabel = getEnumLabel(maxValue, maxFloorEnum);
+                // If we have min-max pair, make sure we ignore one of them (don't show the same chip twice)
+                if (hasMinMaxPair(suffix) && key === `max${suffix}`)
+                    return <></>;
 
-                        return (
-                            <Chip
-                                key={index}
-                                label={
-                                    <Stack direction="row">
+                if (key === "active") {
+                    const activeLabel = values ? t("Active") : t("Inactive");
+
+                    return (
+                        <Chip
+                            key={index}
+                            label={
+                                <Stack direction="row">
+                                    {/* <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        {label}:
+                                    </Typography> */}
+                                    <Typography
+                                        sx={{
+                                            textTransform: "capitalize",
+                                            fontWeight: "medium",
+                                        }}
+                                    >
+                                        {activeLabel}
+                                    </Typography>
+                                </Stack>
+                            }
+                            onDelete={() => dispatch(deleteFilter(key))}
+                        />
+                    );
+                }
+
+                // If we have min-max pair show chip differently
+                if (hasMinMaxPair(suffix)) {
+                    label = pairFilterTags[`minMax${suffix}`].label;
+                    const minValue = changedProps[`min${suffix}`];
+                    const maxValue = changedProps[`max${suffix}`];
+
+                    if (suffix === "Floor") {
+                        const minValue = changedProps[`minFloor`];
+                        const maxValue = changedProps[`maxFloor`];
+
+                        if (minValue && maxValue) {
+                            const minLabel = getEnumLabel(
+                                minValue,
+                                minFloorEnum
+                            );
+                            const maxLabel = getEnumLabel(
+                                maxValue,
+                                maxFloorEnum
+                            );
+
+                            return (
+                                <Chip
+                                    key={index}
+                                    label={
+                                        <Stack direction="row">
+                                            <Typography
+                                                sx={{
+                                                    fontWeight: "medium",
+                                                    paddingRight: 1,
+                                                }}
+                                            >
+                                                {t("Floor")}:
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    textTransform: "capitalize",
+                                                }}
+                                            >
+                                                {minLabel}-{maxLabel}
+                                            </Typography>
+                                        </Stack>
+                                    }
+                                    onDelete={() => {
+                                        dispatch(deleteFilter("minFloor"));
+                                        dispatch(deleteFilter("maxFloor"));
+                                    }}
+                                />
+                            );
+                        }
+                    }
+                    return (
+                        <Chip
+                            key={index}
+                            label={
+                                <Stack direction="row">
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        {label}:
+                                    </Typography>
+                                    {suffix === "Price" ? (
                                         <Typography
                                             sx={{
-                                                fontWeight: "medium",
-                                                paddingRight: 1,
+                                                textTransform: "capitalize",
                                             }}
                                         >
-                                            {t("Floor")}:
+                                            {minValue.toLocaleString("el-GR")}
                                         </Typography>
+                                    ) : (
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {minValue}
+                                        </Typography>
+                                    )}
+
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                        }}
+                                    >
+                                        -
+                                    </Typography>
+                                    {suffix === "Price" ? (
                                         <Typography
                                             sx={{ textTransform: "capitalize" }}
                                         >
-                                            {minLabel}-{maxLabel}
+                                            {maxValue.toLocaleString("el-GR")}
                                         </Typography>
-                                    </Stack>
-                                }
-                                onDelete={() => {
-                                    dispatch(deleteFilter("minFloor"));
-                                    dispatch(deleteFilter("maxFloor"));
-                                }}
-                            />
-                        );
-                    }
+                                    ) : (
+                                        <Typography
+                                            sx={{ textTransform: "capitalize" }}
+                                        >
+                                            {maxValue}
+                                        </Typography>
+                                    )}
+                                </Stack>
+                            }
+                            onDelete={() => {
+                                dispatch(deleteFilter(`min${suffix}`));
+                                dispatch(deleteFilter(`max${suffix}`));
+                            }}
+                        />
+                    );
+                } else if (suffix === "Floor") {
+                    const minValue = changedProps[`minFloor`];
+                    const maxValue = changedProps[`maxFloor`];
                     // If only minFloor is selected
                     if (minValue) {
                         const minLabel = getEnumLabel(minValue, minFloorEnum);
@@ -222,7 +334,9 @@ const ChosenFilters: FC<Props> = (props) => {
                                             {t("Minimum Floor")}:
                                         </Typography>
                                         <Typography
-                                            sx={{ textTransform: "capitalize" }}
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
                                         >
                                             {minLabel}
                                         </Typography>
@@ -252,7 +366,9 @@ const ChosenFilters: FC<Props> = (props) => {
                                             {t("Maximum Floor")}:
                                         </Typography>
                                         <Typography
-                                            sx={{ textTransform: "capitalize" }}
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
                                         >
                                             {maxLabel}
                                         </Typography>
@@ -264,59 +380,68 @@ const ChosenFilters: FC<Props> = (props) => {
                             />
                         );
                     }
-                }
-                // If we have min-max pair, make sure we ignore one of them (don't show the same chip twice)
-                if (hasMinMaxPair(suffix) && key === `max${suffix}`)
-                    return <></>;
-
-                // If we have min-max pair show chip differently
-                if (hasMinMaxPair(suffix)) {
-                    label = pairFilterTags[`minMax${suffix}`].label;
-                    const minValue = changedProps[`min${suffix}`];
-                    const maxValue = changedProps[`max${suffix}`];
-
-                    return (
-                        <Chip
-                            key={index}
-                            label={
-                                <Stack direction="row">
-                                    <Typography
-                                        sx={{
-                                            fontWeight: "medium",
-                                            paddingRight: 1,
-                                        }}
-                                    >
-                                        {label}:
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            textTransform: "capitalize",
-                                            paddingRight: 1,
-                                        }}
-                                    >
-                                        {minValue}
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            fontWeight: "medium",
-                                            paddingRight: 1,
-                                        }}
-                                    >
-                                        -
-                                    </Typography>
-                                    <Typography
-                                        sx={{ textTransform: "capitalize" }}
-                                    >
-                                        {maxValue}
-                                    </Typography>
-                                </Stack>
-                            }
-                            onDelete={() => {
-                                dispatch(deleteFilter(`min${suffix}`));
-                                dispatch(deleteFilter(`max${suffix}`));
-                            }}
-                        />
-                    );
+                } else if (suffix === "Price") {
+                    const minValue = changedProps[`minPrice`];
+                    const maxValue = changedProps[`maxPrice`];
+                    if (minValue) {
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Minimum Price")}
+                                            {" (€):"}
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {minValue.toLocaleString("el-GR")}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("minPrice"));
+                                }}
+                            />
+                        );
+                    } else if (maxValue) {
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Maximum Price")}
+                                            {` (€):`}
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {maxValue.toLocaleString("el-GR")}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("maxPrice"));
+                                }}
+                            />
+                        );
+                    }
                 } else {
                     let valuesToDisplay = values;
 

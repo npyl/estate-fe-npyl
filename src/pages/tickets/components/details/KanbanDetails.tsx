@@ -443,7 +443,7 @@ export default function KanbanDetails({
             </Stack>
             <Box sx={{ px: 2.5 }}>
                 <Divider sx={{ mb: 1, mt: -3 }} />
-
+                <StyledLabel>{t("Comments inbox")}</StyledLabel>
                 {!!task.comments.length && (
                     <KanbanDetailsCommentList comments={task.comments} />
                 )}
