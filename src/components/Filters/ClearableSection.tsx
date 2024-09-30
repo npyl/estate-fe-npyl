@@ -30,6 +30,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     },
     "&:hover": {
         backgroundColor: alpha(theme.palette.error.main, 0.05),
+        borderColor: alpha(theme.palette.error.main, 0.3),
     },
 }));
 

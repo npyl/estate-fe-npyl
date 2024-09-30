@@ -6,6 +6,7 @@ import ManagerSelect from "./Manager";
 import PriceSelect from "./Price";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import Stack from "@mui/material/Stack";
+import ActiveSelect from "./ActiveSelect";
 
 const Basic = () => {
     const { t } = useTranslation();
@@ -20,6 +21,8 @@ const Basic = () => {
                 <PriceSelect type="area" />
 
                 <FilterLabels />
+
+                <ActiveSelect />
             </Stack>
         </ClearableSection>
     );

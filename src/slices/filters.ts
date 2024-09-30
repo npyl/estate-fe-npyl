@@ -216,6 +216,7 @@ const slice = createSlice({
             state.filters.minArea = initialState.filters.minArea;
             state.filters.maxArea = initialState.filters.maxArea;
             state.filters.labels = initialState.filters.labels;
+            state.filters.active = initialState.filters.active;
 
             state.ids = state.ids.filter((id) => id !== "minArea");
             state.ids = state.ids.filter((id) => id !== "maxPrice");
@@ -223,6 +224,7 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "managerId");
             state.ids = state.ids.filter((id) => id !== "code");
             state.ids = state.ids.filter((id) => id !== "labels");
+            state.ids = state.ids.filter((id) => id !== "active");
         },
         resetBedrooms: (state) => {
             state.filters.minBedrooms = initialState.filters.minBedrooms;
