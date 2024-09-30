@@ -41,4 +41,7 @@ export const PPButton = styled(Button, {
     flexDirection: "column",
     width: "100%",
     height: "100%",
+
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
 }));

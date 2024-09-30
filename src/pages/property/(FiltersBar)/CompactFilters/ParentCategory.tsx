@@ -6,27 +6,29 @@ import {
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
-import { useSelector } from "react-redux";
 import { KeyValue } from "@/types/KeyValue";
-import { FC } from "react";
-import { useDispatch } from "react-redux";
+import { FC, ReactNode } from "react";
 
 import { PPButton } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";
 
-const icons: Record<string, string> = {
-    RESIDENTIAL: "/static/categories/commercial.png",
-    COMMERCIAL: "/static/categories/land.png",
-    LAND: "/static/categories/other.png",
-    OTHER: "/static/categories/residential.png",
+import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
+import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import CounterChip from "./OptionCheckbox/CounterChip";
+import useOption from "./OptionCheckbox/useOption";
+
+const icons: Record<string, ReactNode> = {
+    RESIDENTIAL: <HomeOutLinedIcon />,
+    COMMERCIAL: <BusinessOutlinedIcon />,
+    LAND: <LandslideOutlinedIcon />,
+    OTHER: <MoreHorizIcon />,
 };
 
 // -----------------------------------------------------------------
-interface IOption {
-    option: KeyValue;
-}
 
 const FlexItem = styled.div`
     flex-basis: 100%;
@@ -40,26 +42,25 @@ const FlexItem = styled.div`
     }
 `;
 
+interface IOption {
+    option: KeyValue;
+}
+
 const Option: FC<IOption> = ({ option: { key, value } }) => {
-    const dispatch = useDispatch();
-    const parentCategories = useSelector(selectParentCategories) || [];
-    const isChecked = parentCategories.includes(key);
-
-    const handleChange = () => {
-        // toggle
-        const calculated = parentCategories.includes(key)
-            ? parentCategories.filter((s) => s !== key)
-            : [...parentCategories, key];
-        // update slice
-
-        dispatch(setParentCategories(calculated));
-    };
+    const { isChecked, handleToggle } = useOption(
+        key,
+        selectParentCategories,
+        setParentCategories
+    );
 
     return (
         <FlexItem>
-            <PPButton clicked={isChecked} onClick={handleChange}>
-                <img src={icons[key]} alt={value} />
-                <Typography mt={1}>{value}</Typography>
+            <PPButton clicked={isChecked} onClick={handleToggle}>
+                {icons[key]}
+                <Stack direction="row" spacing={1} mt={1}>
+                    <Typography>{value}</Typography>
+                    <CounterChip filterKey={key as any} />
+                </Stack>
             </PPButton>
         </FlexItem>
     );

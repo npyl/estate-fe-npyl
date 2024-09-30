@@ -6,14 +6,12 @@ import {
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
-import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import { KeyValue } from "@/types/KeyValue";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { FC } from "react";
-import { useDispatch } from "react-redux";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import CounterChip from "./OptionCheckbox/CounterChip";
+import OptionCheckbox from "./OptionCheckbox";
 
 // -----------------------------------------------------------------
 
@@ -21,30 +19,18 @@ interface IOption {
     option: KeyValue;
 }
 
-const Option: FC<IOption> = ({ option: { key, value } }) => {
-    const dispatch = useDispatch();
-
-    const categories = useSelector(selectSubCategories) || [];
-    const isChecked = categories.includes(key);
-
-    const handleChange = () => {
-        // toggle
-        const newCategories = categories.includes(key)
-            ? categories.filter((s) => s !== key)
-            : [...categories, key];
-        // update slice
-        dispatch(setSubCategories(newCategories));
-    };
-
-    return (
-        <FormControlLabel
-            control={<Checkbox />}
-            checked={isChecked}
+const Option: FC<IOption> = ({ option: { key, value } }) => (
+    <Stack direction="row" spacing={1} alignItems="center">
+        <OptionCheckbox
+            filterKey={key as any}
             label={value}
-            onChange={handleChange}
+            selector={selectSubCategories}
+            setter={setSubCategories}
         />
-    );
-};
+
+        <CounterChip filterKey={key as any} />
+    </Stack>
+);
 
 // -----------------------------------------------------------------
 

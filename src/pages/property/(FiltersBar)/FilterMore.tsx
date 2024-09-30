@@ -12,7 +12,7 @@ import State from "./CompactFilters/State";
 import Category from "./CompactFilters/Category";
 import ParentCategory from "./CompactFilters/ParentCategory";
 import dynamic from "next/dynamic";
-const ChosenFilters = dynamic(() => import("./Filters/ChosenFilters"));
+const ChosenFilters = dynamic(() => import("./ChosenFilters"));
 
 // ----------------------------------------------------------------------
 

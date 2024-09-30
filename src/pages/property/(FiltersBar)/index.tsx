@@ -11,7 +11,7 @@ import { Menu } from "src/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import { ViewModeButton } from "./styles";
-import ChosenFilters from "./Filters/ChosenFilters";
+import ChosenFilters from "./ChosenFilters";
 // components
 import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
