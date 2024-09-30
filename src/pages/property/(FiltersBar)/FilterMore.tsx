@@ -6,7 +6,7 @@ import { FilterMoreDialog } from "@/components/Filters/FilterMore";
 import Bedrooms from "./Filters/Bedrooms";
 import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./Filters/Floors";
-import Fields from "./Filters/Fields";
+import Fields from "./CompactFilters/Fields";
 import Basic from "./Filters/Basic";
 import State from "./CompactFilters/State";
 import Category from "./CompactFilters/Category";

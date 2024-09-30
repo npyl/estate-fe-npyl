@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import useEnums from "./useEnums";
+import useEnums from "../useEnums";
 import {
     resetFloor,
     selectMaxFloor,

@@ -39,7 +39,7 @@ interface StyledStackProps extends Omit<StackProps, "divider"> {}
 
 // ---------------------------------------------------------------
 
-interface ClearableSectionProps extends StyledStackProps {
+export interface ClearableSectionProps extends StyledStackProps {
     title: string;
     reset?: ActionCreatorWithPayload<void, string>;
 }
