@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import getBorderColor from "@/theme/borderColor";
 import { SpaceBetween } from "@/components/styled";
 import { useRouter } from "next/router";
-import { LAYOUT } from "@/utils/config";
+import { LAYOUT } from "@/config";
 
 const propertyItemType = "property-menu-item";
 const ownerItemType = "owner-menu-item";
