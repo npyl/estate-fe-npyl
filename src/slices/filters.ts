@@ -400,19 +400,30 @@ export const sumOfChangedProperties = createSelector(
             "points",
         ];
 
-        return propertiesToInclude.reduce(
-            (acc, curr) =>
-                filter.filters[curr] !== initialState.filters[curr] // ignore default filter values (e.g. yearOfConstruction = 1960)
-                    ? Array.isArray(filter.filters[curr])
-                        ? filter.filters[curr].length > 0
-                            ? acc + 1
-                            : acc
-                        : filter.filters[curr]
+        return propertiesToInclude.reduce((acc, curr) => {
+            const currentFilterValue = filter.filters[curr];
+            const initialFilterValue = initialState.filters[curr];
+
+            if (curr === "active") {
+                // Handle the "active" filter explicitly, considering null as "All"
+                if (currentFilterValue !== initialFilterValue) {
+                    return acc + 1; // Add to the count if activeState changes
+                }
+                return acc;
+            }
+
+            if (currentFilterValue !== initialFilterValue) {
+                return Array.isArray(currentFilterValue)
+                    ? currentFilterValue.length > 0
                         ? acc + 1
                         : acc
-                    : acc,
-            0
-        );
+                    : currentFilterValue
+                    ? acc + 1
+                    : acc;
+            }
+
+            return acc;
+        }, 0);
     }
 );
 

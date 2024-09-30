@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -16,7 +16,7 @@ function renderImage(
 ) {
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
-
+    const isLaptopScreen = useMediaQuery("(max-width:1700px)");
     return (
         <Box
             sx={{
@@ -46,9 +46,9 @@ function renderImage(
                 <Box
                     sx={{
                         position: "absolute",
-                        top: -5,
+                        top: isLaptopScreen ? 10 : 0,
                         right: -7,
-                        zIndex: 1,
+                        zIndex: 10000,
                         width: 23,
                         height: 23,
                         bgcolor: "grey.400",

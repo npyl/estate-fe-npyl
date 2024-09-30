@@ -37,10 +37,13 @@ import {
     setMinConstructionYear,
     setMinFloor,
     sumOfChangedProperties,
+    selectActiveState,
     // setters
     toggleFrameType,
     toggleFurnished,
     toggleHeatingType,
+    setActiveState,
+    resetState,
 } from "src/slices/filters";
 
 import ChosenFilters from "./ChosenFilters";
@@ -145,7 +148,12 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
     const minFloors = useSelector(selectMinFloor) || 0;
     const maxFloors = useSelector(selectMaxFloor) || 0;
     const labels = useSelector(selectLabels) || [];
+    const active = useSelector(selectActiveState);
 
+    const clearAllSelectedFilters = () => {
+        dispatch(resetState()); //
+        dispatch(setLabels([]));
+    };
     const fields = useMemo(
         () =>
             getFEILDS(
@@ -177,7 +185,7 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
             open={open}
             onClose={onClose}
             changedFiltersCount={changedPropsCount}
-            onResetFilter={{} as any}
+            onResetFilter={clearAllSelectedFilters}
         >
             {changedPropsCount > 0 ? <ChosenFilters /> : null}
 
@@ -201,6 +209,31 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                         labels={labels}
                         setLabels={setLabels}
                     />
+
+                    <Select
+                        sx={{ width: 130 }}
+                        value={active === null ? 2 : active ? 1 : 0} // 2->"All", 1->"Active", 0->"Inactive"
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === 2) {
+                                dispatch(setActiveState(null)); // "All" is selected
+                            } else if (value === 1) {
+                                dispatch(setActiveState(true));
+                            } else {
+                                dispatch(setActiveState(false));
+                            }
+                        }}
+                    >
+                        <MenuItem value={2}>
+                            <ListItemText primary={t("All")} />{" "}
+                        </MenuItem>
+                        <MenuItem value={1}>
+                            <ListItemText primary={t("Active")} />{" "}
+                        </MenuItem>
+                        <MenuItem value={0}>
+                            <ListItemText primary={t("Inactive")} />{" "}
+                        </MenuItem>
+                    </Select>
                 </Stack>
             </ClearableDialogContent>
             <ClearableDialogContent dividers reset={resetBedrooms}>
