@@ -1,7 +1,7 @@
 // @mui
 import { Avatar, Stack, Typography } from "@mui/material";
 // utils
-import { fToNow } from "@/utils/formatTime";
+import { fToNow } from "@/utils/format-time";
 // @types
 import { IKanbanComment } from "src/types/kanban";
 // components
@@ -14,9 +14,9 @@ type Props = {
 };
 
 export default function KanbanDetailsCommentList({ comments }: Props) {
-    const imagesLightbox = comments
-        .filter((comment) => comment.messageType === "image")
-        .map((item) => item.message);
+    // const imagesLightbox = comments
+    //     .filter((comment) => comment.messageType === "image")
+    //     .map((item) => item.message);
 
     return (
         <>
