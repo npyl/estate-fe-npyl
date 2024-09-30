@@ -1,4 +1,4 @@
-import { PublicSvg } from "@/assets/PublicSvg";
+import { PublicSvg } from "@/assets/integrations/PublicSvg";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { LabeledSwitch } from "./Switch";
