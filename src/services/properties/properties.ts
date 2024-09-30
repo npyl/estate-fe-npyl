@@ -113,6 +113,7 @@ export const properties = createApi({
             query: () => ({
                 url: "all",
             }),
+
             providesTags: ["Properties"],
         }),
 

@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack, SxProps, Theme, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -8,11 +8,14 @@ import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 import { getPropertyStatusColor } from "@/theme/colors";
-import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
-import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
-import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
-
+import getParentCategoriesIcons from "@/assets/icons/parent-categories";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+
+const iconSx: SxProps<Theme> = {
+    marginRight: 0.5,
+    color: "neutral.600",
+    fontSize: "16px",
+};
 
 function RenderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
@@ -123,44 +126,6 @@ const formatNumberWithPeriod = (num: any) => {
     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-const categoryToIcon = (category: string) => {
-    switch (category.trim().toLowerCase()) {
-        case "κατοικία":
-            return (
-                <HomeOutLinedIcon
-                    sx={{
-                        marginRight: 0.5,
-                        color: "neutral.600",
-                        fontSize: "16px",
-                    }}
-                />
-            );
-        case "επαγγελματική στέγη":
-            return (
-                <BusinessOutlinedIcon
-                    sx={{
-                        marginRight: 0.5,
-                        color: "neutral.600",
-                        fontSize: "16px",
-                    }}
-                />
-            );
-        case "γη":
-            return (
-                <LandslideOutlinedIcon
-                    sx={{
-                        marginRight: 0.5,
-                        color: "neutral.600",
-                        fontSize: "16px",
-                    }}
-                />
-            );
-
-        default:
-            return null;
-    }
-};
-
 const RenderCodeCell = (params: GridCellParams) => {
     if (!params.value) return null;
 
@@ -176,38 +141,34 @@ const RenderCodeCell = (params: GridCellParams) => {
 };
 
 const RenderParentCategoryCell = (params: GridCellParams) => {
-    const { t } = useTranslation();
+    const key = (params.value as KeyValue)?.key;
+    const value = (params.value as KeyValue)?.value;
 
-    const categoryValue = (params.value as KeyValue)?.value;
-
-    if (!categoryValue) return null;
+    if (!key || !value) return null;
 
     return (
         <Stack alignItems="center" justifyContent="center" width={1} height={1}>
             <Stack direction="row" spacing={1}>
-                <Typography>{categoryToIcon(categoryValue)}</Typography>
+                {getParentCategoriesIcons(iconSx)[key]}
                 <Typography mr={1} fontSize="small">
-                    {t(categoryValue)}
-                </Typography>{" "}
+                    {value}
+                </Typography>
             </Stack>
         </Stack>
     );
 };
 
-const RenderCategoryCell = (params: GridCellParams) => {
-    const { t } = useTranslation();
-    return (
-        <div
-            style={{
-                whiteSpace: "normal",
-                wordWrap: "break-word",
-                textAlign: "center",
-            }}
-        >
-            {t((params.value as KeyValue)?.value)}
-        </div>
-    );
-};
+const RenderCategoryCell = (params: GridCellParams) => (
+    <div
+        style={{
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            textAlign: "center",
+        }}
+    >
+        {(params.value as KeyValue)?.value}
+    </div>
+);
 
 //
 //  View Properties

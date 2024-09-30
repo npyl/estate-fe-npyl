@@ -7,26 +7,14 @@ import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
 import { KeyValue } from "@/types/KeyValue";
-import { FC, ReactNode } from "react";
-
+import { FC } from "react";
 import { PPButton } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";
-
-import HomeOutLinedIcon from "@mui/icons-material/HomeOutlined";
-import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
-import LandslideOutlinedIcon from "@mui/icons-material/LandslideOutlined";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import useOption from "./OptionCheckbox/useOption";
-
-const icons: Record<string, ReactNode> = {
-    RESIDENTIAL: <HomeOutLinedIcon />,
-    COMMERCIAL: <BusinessOutlinedIcon />,
-    LAND: <LandslideOutlinedIcon />,
-    OTHER: <MoreHorizIcon />,
-};
+import getParentCategoriesIcons from "@/assets/icons/parent-categories";
 
 // -----------------------------------------------------------------
 
@@ -56,7 +44,7 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
     return (
         <FlexItem>
             <PPButton clicked={isChecked} onClick={handleToggle}>
-                {icons[key]}
+                {getParentCategoriesIcons()[key]}
                 <Stack direction="row" spacing={1} mt={1}>
                     <Typography>{value}</Typography>
                     <CounterChip filterKey={key as any} />
