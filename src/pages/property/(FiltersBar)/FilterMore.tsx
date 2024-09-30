@@ -3,7 +3,6 @@ import { useDispatch } from "src/store";
 import { sumOfChangedProperties, resetState } from "src/slices/filters";
 import { FilterMoreDialog } from "@/components/Filters/FilterMore";
 
-import Bedrooms from "./Filters/Bedrooms";
 import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./Filters/Floors";
 import Fields from "./CompactFilters/Fields";
@@ -12,6 +11,7 @@ import State from "./CompactFilters/State";
 import Category from "./CompactFilters/Category";
 import ParentCategory from "./CompactFilters/ParentCategory";
 import dynamic from "next/dynamic";
+import Beds from "./CompactFilters/Beds";
 const ChosenFilters = dynamic(() => import("./ChosenFilters"));
 
 // ----------------------------------------------------------------------
@@ -37,7 +37,7 @@ export default function FilterMore({ onClose }: Props) {
             <ParentCategory />
             <Category />
 
-            <Bedrooms />
+            <Beds />
             <Floors />
             <Fields />
             <ConstructionYear />
