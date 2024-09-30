@@ -44,9 +44,7 @@ const FilterSection = () => {
                     changedFiltersCount={changedPropertyFilters}
                     onResetFilter={clearAllSelectedFilters}
                 >
-                    {/* {filterContent} */}
                     <FilterStatus />{" "}
-                    {/* the status is only visible inside the dialog! */}
                 </FilterMore>
             ) : null}
         </>

@@ -45,6 +45,9 @@ export const ClearableDialogContent = ({
                     position: belowSm ? "absolute" : "initial",
                     top: 2,
                     right: 2,
+                    ":hover": {
+                        backgroundColor: "transparent",
+                    },
                 }}
                 onClick={() => reset && dispatch(reset())}
             >

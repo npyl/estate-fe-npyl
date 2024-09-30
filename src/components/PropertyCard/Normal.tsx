@@ -306,12 +306,13 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Divider />
 
-                <Stack direction="row" spacing={1}>
+                <Stack
+                    direction="row"
+                    alignItems={"center"}
+                    sx={{ flexWrap: "wrap", gap: 1 }}
+                >
                     {state?.value ? (
-                        <NormalBadge
-                            name={t(state.value)} //fa
-                            color={stateColor}
-                        />
+                        <NormalBadge name={t(state.value)} color={stateColor} />
                     ) : null}
                     {category?.value ? (
                         <NormalBadge
