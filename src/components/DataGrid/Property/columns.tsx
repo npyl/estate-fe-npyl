@@ -1,4 +1,10 @@
-import { Stack, SxProps, Theme, Typography } from "@mui/material";
+import {
+    Stack,
+    SxProps,
+    Theme,
+    Typography,
+    useMediaQuery,
+} from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -25,6 +31,8 @@ function RenderImage(
     const src =
         typeof propertyImage === "string" ? propertyImage : propertyImage?.url;
 
+    const isLaptopScreen = useMediaQuery("(max-width:1700px)");
+
     return (
         <Stack
             position="relative"
@@ -48,7 +56,7 @@ function RenderImage(
                 <Stack
                     sx={{
                         position: "absolute",
-                        top: 2,
+                        top: isLaptopScreen ? 10 : 0,
                         right: -4,
                         zIndex: 5000,
                         width: 23,
