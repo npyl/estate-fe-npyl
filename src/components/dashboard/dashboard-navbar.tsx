@@ -13,8 +13,8 @@ import {
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
 import { useRef, useState } from "react";
-import { Menu as MenuIcon } from "../../icons/menu";
-import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
+import { Menu as MenuIcon } from "../../assets/icons/menu";
+import { UserCircle as UserCircleIcon } from "../../assets/icons/user-circle";
 import { AccountPopover } from "./account-popover";
 import { DashboardNavbarSearch } from "./dashboard-navbar-search";
 import { LanguageButton } from "../Language/LanguageButton";

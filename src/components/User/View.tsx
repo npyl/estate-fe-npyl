@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
-import { UserCircle } from "src/icons/user-circle";
+import { UserCircle } from "@/assets/icons/user-circle";
 import { IUser } from "src/types/user";
 import ListLanguageItem from "../List/Items/language";
 import SoftButton from "@/components/SoftButton";

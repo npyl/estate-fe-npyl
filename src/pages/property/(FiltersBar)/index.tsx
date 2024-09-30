@@ -7,7 +7,7 @@ import { Stack, SvgIconTypeMap } from "@mui/material";
 import { useSelector } from "react-redux";
 import { sumOfChangedProperties } from "src/slices/filters";
 // icons
-import { Menu } from "src/icons/menu";
+import { Menu } from "@/assets/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import { ViewModeButton } from "./styles";

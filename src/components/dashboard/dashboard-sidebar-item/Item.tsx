@@ -2,8 +2,8 @@ import type { ListItemProps } from "@mui/material";
 import { Box, Collapse, ListItem } from "@mui/material";
 import type { FC, ReactNode } from "react";
 import { useCallback, useState } from "react";
-import { ChevronDown as ChevronDownIcon } from "../../../icons/chevron-down";
-import { ChevronRight as ChevronRightIcon } from "../../../icons/chevron-right";
+import { ChevronDown as ChevronDownIcon } from "../../../assets/icons/chevron-down";
+import { ChevronRight as ChevronRightIcon } from "../../../assets/icons/chevron-right";
 import NextLink from "next/link";
 import NavigationButton from "./styled";
 

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-import { Users as UsersIcon } from "@/icons/users";
+import { Users as UsersIcon } from "@/assets/icons/users";
 import useResponsive from "@/hooks/useResponsive";
 
 import AddIcon from "@mui/icons-material/Add";
