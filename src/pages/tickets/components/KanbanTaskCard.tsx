@@ -38,6 +38,7 @@ type Props = {
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
     const { id, name, attachments, completed, priority, user } = card || {};
+
     const theme = useTheme();
     const [editCard] = useEditCardMutation();
     const { data: board } = useGetBoardQuery();
@@ -59,10 +60,8 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
     ) => {
         event.stopPropagation(); // checkbox click doesn't trigger modal open
 
-        const doneColumn = board?.columns.find((col) => col.name === "DONE");
-        const inProgressColumn = board?.columns.find(
-            (col) => col.name === "IN PROGRESS"
-        );
+        const doneColumn = board?.columns.find((col) => col.id === 155);
+        const inProgressColumn = board?.columns.find((col) => col.id === 154);
 
         if (!doneColumn || !inProgressColumn) return;
 
@@ -90,6 +89,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                     dstColumnId: inProgressColumn.id,
                 });
             }
+            console.log(`after: ${card.completed}`);
         } catch (error) {
             console.error("Error moving card:", error);
         }

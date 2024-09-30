@@ -30,7 +30,6 @@ export default function KanbanPage() {
 
     const { data: board, isLoading } = useGetBoardQuery();
     const { data: users } = useAllUsersQuery();
-    console.log(users);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null); // State to hold the selected user ID
     const [searchQuery, setSearchQuery] = useState<string>("");
     // Handle user selection from dropdown

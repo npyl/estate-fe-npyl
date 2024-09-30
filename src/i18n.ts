@@ -272,6 +272,8 @@ const resources = {
                 "The price for this property is hidden on the public",
 
             // Tickets
+            "Search Tickets": "Search Tickets",
+            "Assigned to": "Assigned to",
             "Add section": "Add section",
             "Add Task": "Add task",
             "Delete section": "Delete section",
@@ -1456,6 +1458,8 @@ const resources = {
             "Maximum Floor": "Μέγιστος όροφος",
             "Minimum Floor": "Ελάχιστος όροφος",
             // Tickets
+            "Search Tickets": "Αναζήτηση Ticket",
+            "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
             "Add Task": "Προσθήκη Εργασίας",
             "Delete section": "Διαγραφή Τμήματος",
