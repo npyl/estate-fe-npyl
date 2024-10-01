@@ -87,8 +87,6 @@ const CustomButton: FC<CustomButtonProps> = ({ value }) => {
                 MAX_VALUE
             );
 
-            console.log("GOT: ", newMin, newMax);
-
             dispatch(setMinBedrooms(newMin));
             dispatch(setMaxBedrooms(newMax));
         }
