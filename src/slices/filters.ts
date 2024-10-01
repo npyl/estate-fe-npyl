@@ -16,6 +16,7 @@ const initialState: IFilterProps = {
         categories: [],
         labels: [],
         states: [],
+        regions: [],
         cities: [],
         points: [],
         frameType: [],
@@ -96,6 +97,14 @@ const slice = createSlice({
         },
 
         // multiple
+        setRegions(state, { payload }) {
+            state.filters.regions = payload;
+            !state.ids.includes("regions") && state.ids.push("regions");
+        },
+        setCities(state, { payload }) {
+            state.filters.cities = payload;
+            !state.ids.includes("cities") && state.ids.push("cities");
+        },
         setLabels(state, { payload }) {
             state.filters.labels = payload;
             !state.ids.includes("labels") && state.ids.push("labels");
@@ -309,6 +318,7 @@ export const {
     setMinPrice,
     setIds,
     setActiveState,
+
     // multiple
     setLabels,
     setParentLocation,
@@ -317,6 +327,8 @@ export const {
     setSubCategories,
     setParentCategories,
     setPoints,
+    setRegions,
+    setCities,
 
     // delete
     deleteSubCategory,
@@ -371,6 +383,9 @@ export const selectMinPrice = ({ filters }: RootState) =>
     filters.filters.minPrice;
 export const selectParentLocation = ({ filters }: RootState) =>
     filters.filters.parentLocation;
+export const selectRegions = ({ filters }: RootState) =>
+    filters.filters.regions;
+export const selectCities = ({ filters }: RootState) => filters.filters.cities;
 export const selectStates = ({ filters }: RootState) => filters.filters.states;
 export const selectParentCategories = ({ filters }: RootState) =>
     filters.filters.parentCategories;
@@ -403,7 +418,8 @@ export const sumOfChangedProperties = createSelector(
             "active",
 
             // multiple
-
+            "regions",
+            "cities",
             "states",
             "parentCategories",
             "categories",

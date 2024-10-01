@@ -59,6 +59,7 @@ export interface IPropertyFilter {
     active?: boolean | null;
     // multiple
 
+    regions: string[];
     cities: string[];
     states: string[];
     categories: string[];
