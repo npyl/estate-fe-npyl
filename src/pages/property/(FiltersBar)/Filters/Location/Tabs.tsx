@@ -30,7 +30,7 @@ const Tabs = () => {
             >
                 <MuiTab label={t("Regions")} value="REGIONS" />
                 <MuiTab
-                    label={t("Cities")}
+                    label={`${t("Cities")} (${regions.length})`}
                     value="CITIES"
                     disabled={notHaveRegions}
                 />

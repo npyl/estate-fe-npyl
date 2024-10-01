@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 interface CustomMenuItem extends IGeoLocation {
     checked: boolean;
+    onClick: (areaID: number) => void;
 }
 
 const CustomMenuItem: FC<CustomMenuItem> = ({
@@ -13,10 +14,11 @@ const CustomMenuItem: FC<CustomMenuItem> = ({
     nameEN,
     nameGR,
     checked,
+    onClick,
 }) => {
     const { i18n } = useTranslation();
     return (
-        <MenuItem value={areaID.toString()}>
+        <MenuItem value={areaID.toString()} onClick={() => onClick(areaID)}>
             <Checkbox checked={checked} />
             {i18n.language === "en" ? nameEN : nameGR}
         </MenuItem>

@@ -1,12 +1,26 @@
 import { useGetRegionsQuery } from "@/services/location";
 import CustomMenuItem from "./CustomMenuItem";
 import { useSelector } from "react-redux";
-import { selectRegions } from "@/slices/filters";
+import { selectRegions, setCities, setRegions } from "@/slices/filters";
 import Skeleton from "./Skeleton";
+import { useDispatch } from "react-redux";
 
 const RegionsTab = () => {
+    const dispatch = useDispatch();
+
     const { data: regionsOptions, isLoading } = useGetRegionsQuery();
-    const regions = useSelector(selectRegions);
+    const regions = useSelector(selectRegions) || [];
+
+    const handleClick = (areaID: number) => {
+        const newValues = regions.includes(areaID.toString())
+            ? regions.filter((id) => id !== areaID.toString())
+            : [...regions, areaID.toString()];
+
+        // Also clear cities
+        if (newValues.length === 0) dispatch(setCities([]));
+
+        dispatch(setRegions(newValues));
+    };
 
     return (
         <>
@@ -14,6 +28,7 @@ const RegionsTab = () => {
                 <CustomMenuItem
                     key={o.areaID}
                     checked={regions.indexOf(o.areaID.toString()) > -1}
+                    onClick={handleClick}
                     {...o}
                 />
             ))}

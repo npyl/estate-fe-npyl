@@ -3,22 +3,34 @@ import {
     useGetRegionsQuery,
 } from "@/services/location";
 import { useSelector } from "react-redux";
-import { selectCities, selectRegions } from "@/slices/filters";
+import { selectCities, selectRegions, setCities } from "@/slices/filters";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
 import { IGeoLocation } from "@/types/geolocation";
 import CustomMenuItem from "./CustomMenuItem";
 import Skeleton from "./Skeleton";
+import { useDispatch } from "react-redux";
 
 // --------------------------------------------------------------------
 
 const MunicipOption: FC<IGeoLocation> = (o) => {
+    const dispatch = useDispatch();
+
     const cities = useSelector(selectCities);
+
+    const handleClick = (areaID: number) => {
+        const newValues = cities.includes(areaID.toString())
+            ? cities.filter((id) => id !== areaID.toString())
+            : [...cities, areaID.toString()];
+        dispatch(setCities(newValues));
+    };
+
     return (
         <CustomMenuItem
             key={o.areaID}
             checked={cities.indexOf(o.areaID.toString()) > -1}
+            onClick={handleClick}
             {...o}
         />
     );
@@ -47,7 +59,9 @@ const MunicipalitiesSection: FC<SectionProps> = ({ parentID }) => {
 
     return (
         <>
-            <Typography>{title}</Typography>
+            <Typography px={3} color="textSecondary">
+                {title}
+            </Typography>
             {municipsOptions?.map(getMunicipOption)}
 
             {/* Skeletons */}

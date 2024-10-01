@@ -1000,6 +1000,8 @@ const resources = {
                 "No results. This customer does not own any property!",
 
             Any: "Any",
+            Regions: "Regions",
+            Cities: "Cities",
         },
     },
     el: {
@@ -1962,6 +1964,8 @@ const resources = {
             Greece: "Ελλάδα",
 
             Any: "Κάθε",
+            Regions: "Περιοχές",
+            Cities: "Πόλεις",
         },
     },
 };
