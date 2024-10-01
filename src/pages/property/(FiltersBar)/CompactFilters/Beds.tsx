@@ -29,24 +29,35 @@ const calculateNewSelection = (
     const currentMin = minBeds ?? -1;
     const currentMax = maxBeds ?? -1;
 
+    let newMin = undefined;
+    let newMax = undefined;
+
     if (currentMin === -1 && currentMax === -1) {
-        return [value, undefined];
+        newMin = value;
     } else if (value < currentMin) {
-        return [value, currentMax === MAX_VALUE ? undefined : currentMax];
+        newMin = value;
+        newMax = currentMax === MAX_VALUE ? undefined : currentMax;
     } else if (value > currentMax) {
-        return [currentMin, value < MAX_VALUE ? value : undefined];
+        newMin = currentMin;
+        newMax = value < MAX_VALUE ? value : undefined;
     } else if (Math.abs(value - currentMin) < Math.abs(value - currentMax)) {
-        return [value, currentMax === MAX_VALUE ? undefined : currentMax];
+        newMin = value;
+        newMax = currentMax === MAX_VALUE ? undefined : currentMax;
     } else if (value === currentMin) {
-        return [
-            value + 1 <= currentMax ? value + 1 : value,
-            currentMax === MAX_VALUE ? undefined : currentMax,
-        ];
+        newMin = value + 1 <= currentMax ? value + 1 : value;
+        newMax = currentMax === MAX_VALUE ? undefined : currentMax;
     } else if (value === currentMax) {
-        return [currentMin, value - 1 >= currentMin ? value - 1 : value];
+        newMin = currentMin;
+        newMax = value - 1 >= currentMin ? value - 1 : value;
     } else {
-        return [currentMin, value < MAX_VALUE ? value : undefined];
+        newMin = currentMin;
+        newMax = value < MAX_VALUE ? value : undefined;
     }
+
+    return [
+        newMin === -1 ? undefined : newMin, // normalise
+        newMax === -1 ? undefined : newMax, // normalise
+    ];
 };
 
 interface CustomButtonProps {
