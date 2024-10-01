@@ -10,93 +10,124 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const MAX_VALUE = 5;
 
-const count = Array.from({ length: MAX_VALUE }, (_, i) => i);
+const BUTTONS = [
+    "Any",
+    ...Array.from({ length: MAX_VALUE - 1 }, (_, i) => String(i + 1)),
+    "5+",
+];
 
-// -----------------------------------------------------------------
+const calculateNewSelection = (
+    value: number,
+    minBeds: number | undefined,
+    maxBeds: number | undefined,
+    MAX_VALUE: number
+): [number | undefined, number | undefined] => {
+    const currentMin = minBeds ?? -1;
+    const currentMax = maxBeds ?? -1;
 
-const getLabel = (i: number) => (i === MAX_VALUE ? "5+" : i);
-
-interface CustomButtonProps {
-    i: number;
-    onClick: (i: number) => void;
-}
-
-const CustomButton: FC<CustomButtonProps> = ({ i, onClick }) => {
-    const minBeds = useSelector(selectMinBedrooms);
-    const maxBeds = useSelector(selectMaxBedrooms);
-
-    const haveMin = Boolean(minBeds);
-    const haveMax = Boolean(maxBeds);
-
-    const case0 = haveMin && !haveMax && i < minBeds!;
-    const case1 = haveMin && haveMax && i >= minBeds! && i <= maxBeds!;
-    const case2 = haveMax && i >= maxBeds!;
-
-    const variant = case0 || case1 || case2 ? "contained" : "outlined";
-
-    return (
-        <Button onClick={() => onClick(i)} variant={variant}>
-            {getLabel(i)}
-        </Button>
-    );
+    if (currentMin === -1 && currentMax === -1) {
+        return [value, undefined];
+    } else if (value < currentMin) {
+        return [value, currentMax === MAX_VALUE ? undefined : currentMax];
+    } else if (value > currentMax) {
+        return [currentMin, value < MAX_VALUE ? value : undefined];
+    } else if (Math.abs(value - currentMin) < Math.abs(value - currentMax)) {
+        return [value, currentMax === MAX_VALUE ? undefined : currentMax];
+    } else if (value === currentMin) {
+        return [
+            value + 1 <= currentMax ? value + 1 : value,
+            currentMax === MAX_VALUE ? undefined : currentMax,
+        ];
+    } else if (value === currentMax) {
+        return [currentMin, value - 1 >= currentMin ? value - 1 : value];
+    } else {
+        return [currentMin, value < MAX_VALUE ? value : undefined];
+    }
 };
 
-const getButton = (onClick: (i: number) => void) => (i: number) =>
-    <CustomButton key={i} i={i} onClick={onClick} />;
+interface CustomButtonProps {
+    value: string;
+}
 
-// -----------------------------------------------------------------
-
-const Beds = () => {
+const CustomButton: FC<CustomButtonProps> = ({ value }) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const minBeds = useSelector(selectMinBedrooms);
     const maxBeds = useSelector(selectMaxBedrooms);
 
-    const haveMin = Boolean(minBeds);
-    const haveMax = Boolean(maxBeds);
+    const handleClick = (value: string) => {
+        if (value === "Any") {
+            dispatch(resetBedrooms());
+        } else if (value === "5+") {
+            dispatch(setMinBedrooms(5));
+            dispatch(setMaxBedrooms(undefined));
+        } else {
+            const numValue = parseInt(value, 10);
 
-    const handleReset = () => dispatch(resetBedrooms());
+            const [newMin, newMax] = calculateNewSelection(
+                numValue,
+                minBeds,
+                maxBeds,
+                MAX_VALUE
+            );
 
-    const handleClick = (i: number) => {
-        // MAX_VALUE
-        if (i === MAX_VALUE) {
-            dispatch(setMinBedrooms(undefined));
-            dispatch(setMaxBedrooms(MAX_VALUE));
-        }
+            console.log("GOT: ", newMin, newMax);
 
-        // (a.k.a. First time)
-        if (!haveMin && !haveMax) {
-            dispatch(setMinBedrooms(1));
-            dispatch(setMaxBedrooms(i));
-        }
-
-        // < min
-        if (haveMin && i < minBeds!) {
-            dispatch(setMinBedrooms(i));
-        }
-
-        // > min,  < max
-        if (haveMin && haveMax && i > minBeds! && i < maxBeds!) {
-            dispatch(setMinBedrooms(i));
-        }
-
-        // > max
-        if (haveMin && haveMax && i > maxBeds!) {
-            dispatch(setMaxBedrooms(i));
+            dispatch(setMinBedrooms(newMin));
+            dispatch(setMaxBedrooms(newMax));
         }
     };
 
+    const getButtonVariant = () => {
+        if (value === "Any" && minBeds === undefined && maxBeds === undefined) {
+            return "contained";
+        }
+        if (value === "5+" && minBeds === 5 && maxBeds === undefined) {
+            return "contained";
+        }
+
+        const numValue = parseInt(value, 10);
+
+        if (!isNaN(numValue)) {
+            if (minBeds !== undefined && maxBeds !== undefined) {
+                return numValue >= minBeds && numValue <= maxBeds
+                    ? "contained"
+                    : "outlined";
+            } else if (minBeds !== undefined) {
+                return numValue >= minBeds ? "contained" : "outlined";
+            }
+        }
+        return "outlined";
+    };
+
     return (
-        <ClearableSection title={t("Bedrooms")} reset={resetBedrooms}>
-            <ButtonGroup variant="outlined">
-                <Button onClick={handleReset}>{t("Any")}</Button>
-                {count.map(getButton(handleClick))}
+        <Button
+            key={value}
+            onClick={() => handleClick(value)}
+            variant={getButtonVariant()}
+        >
+            {t(value)}
+        </Button>
+    );
+};
+
+const Beds: FC = () => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    const handleReset = () => dispatch(resetBedrooms());
+
+    return (
+        <ClearableSection title={t("Bedrooms")} onReset={handleReset}>
+            <ButtonGroup>
+                {BUTTONS.map((value) => (
+                    <CustomButton key={value} value={value} />
+                ))}
             </ButtonGroup>
         </ClearableSection>
     );

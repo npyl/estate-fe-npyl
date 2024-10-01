@@ -998,6 +998,8 @@ const resources = {
 
             "No results. This customer does not own any property!":
                 "No results. This customer does not own any property!",
+
+            Any: "Any",
         },
     },
     el: {
@@ -1958,6 +1960,8 @@ const resources = {
             "No results. This customer does not own any property!":
                 "Δε βρέθηκαν αποτελέσματα. Αυτός ο πελάτης δεν έχει ακίνητα στο όνομά του!",
             Greece: "Ελλάδα",
+
+            Any: "Κάθε",
         },
     },
 };
