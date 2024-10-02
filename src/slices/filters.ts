@@ -103,7 +103,7 @@ const slice = createSlice({
 
             // INFO: having [] for payload means we cleared all regions; Therefore, there is no reason to have cities selected
             if (Array.isArray(payload) && payload.length === 0) {
-                state.filters.cities = payload;
+                state.filters.cities = initialState.filters.cities;
                 state.ids = state.ids.filter((id) => id !== "cities");
             }
         },
@@ -296,6 +296,14 @@ const slice = createSlice({
             state.filters.points = initialState.filters.points;
         },
 
+        resetRegions: (state) => {
+            state.filters.regions = initialState.filters.regions;
+            state.filters.cities = initialState.filters.cities;
+
+            state.ids = state.ids.filter((id) => id !== "regions");
+            state.ids = state.ids.filter((id) => id !== "cities");
+        },
+
         resetState: () => {
             return initialState;
         },
@@ -356,6 +364,8 @@ export const {
     resetStates,
     resetCategories,
     resetParentCategories,
+
+    resetRegions,
 } = slice.actions;
 
 export const selectCode = ({ filters }: RootState) => filters.filters.code;

@@ -1,5 +1,5 @@
 import { useGetRegionsQuery } from "@/services/location";
-import { deleteFilter, selectRegions } from "@/slices/filters";
+import { resetRegions, selectRegions } from "@/slices/filters";
 import { IGeoLocation } from "@/types/geolocation";
 import Chip from "@mui/material/Chip";
 import { useMemo } from "react";
@@ -25,7 +25,7 @@ const Regions = () => {
         [i18n.language, areaIDs, regions]
     );
 
-    const handleClear = () => dispatch(deleteFilter("regions"));
+    const handleClear = () => dispatch(resetRegions());
 
     return (
         <Chip
