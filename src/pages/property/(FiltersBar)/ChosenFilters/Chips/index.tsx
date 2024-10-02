@@ -1,22 +1,25 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import useEnums from "../../useEnums";
-import MinMaxChip from "./MinMax";
-import MinFloorChip from "./MinFloor";
-import MaxFloorChip from "./MaxFloor";
-import ActiveChip from "./Active";
-import MinPriceChip from "./MinPrice";
-import MaxPriceChip from "./MaxPrice";
 import Chip from "@mui/material/Chip";
 import { deleteFilter } from "@/slices/filters";
 import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
 import { TTags } from "../types";
-import LabelsChip from "./Labels";
-import ManagerChip from "./Manager";
-import Regions from "./Regions";
-import Cities from "./Cities";
+import dynamic from "next/dynamic";
+
+// Chips
+const MinMaxChip = dynamic(() => import("./MinMax"));
+const MinFloorChip = dynamic(() => import("./MinFloor"));
+const MaxFloorChip = dynamic(() => import("./MaxFloor"));
+const ActiveChip = dynamic(() => import("./Active"));
+const MinPriceChip = dynamic(() => import("./MinPrice"));
+const MaxPriceChip = dynamic(() => import("./MaxPrice"));
+const LabelsChip = dynamic(() => import("./Labels"));
+const ManagerChip = dynamic(() => import("./Manager"));
+const Regions = dynamic(() => import("./Regions"));
+const Cities = dynamic(() => import("./Cities"));
 
 // --------------------------------------------------------------------------------
 
