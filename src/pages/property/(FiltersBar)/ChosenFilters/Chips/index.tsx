@@ -15,6 +15,7 @@ import getEnumLabel from "./util";
 import { TTags } from "../types";
 import LabelsChip from "./Labels";
 import ManagerChip from "./Manager";
+import Regions from "./Regions";
 
 // --------------------------------------------------------------------------------
 
@@ -124,6 +125,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
 
     if (filterKey === "managerId") {
         return <ManagerChip />;
+    }
+
+    if (filterKey === "regions") {
+        return <Regions />;
     }
 
     let valuesToDisplay = values;

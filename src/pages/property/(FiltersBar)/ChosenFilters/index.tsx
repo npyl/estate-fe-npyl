@@ -6,9 +6,7 @@ import { getChangedFields, selectIds } from "src/slices/filters";
 import { getFilterTags, getPairFilterTags } from "./tags";
 import GeneralChip from "./Chips";
 
-interface Props extends StackProps {}
-
-const ChosenFilters: FC<Props> = (props) => {
+const ChosenFilters: FC<StackProps> = (props) => {
     const { t } = useTranslation();
 
     const changedProps = useSelector(getChangedFields);
