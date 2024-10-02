@@ -71,7 +71,15 @@ export const DashboardNavbarSearch: FC = () => {
 
     const handleInputChange = (event: any) => {
         setSearchText(event.target.value);
-        setAnchorEl(event.currentTarget);
+        // Set anchorEl to the parent container of the input same as the anchor element of the search history
+        if (inputRef.current) {
+            const closestEl = inputRef.current.closest(
+                ".MuiInputBase-root"
+            ) as HTMLElement | null;
+            if (closestEl) {
+                setAnchorEl(closestEl); // Only set if closestEl is found
+            }
+        }
     };
 
     const handleChangeCategory = (event: any) => {
@@ -92,7 +100,14 @@ export const DashboardNavbarSearch: FC = () => {
     };
 
     const handleFocus = (event: any) => {
-        setAnchorEl(event.currentTarget);
+        if (inputRef.current) {
+            const closestEl = inputRef.current.closest(
+                ".MuiInputBase-root"
+            ) as HTMLElement | null;
+            if (closestEl) {
+                setAnchorEl(closestEl); // Only set if closestEl is found
+            }
+        }
     };
 
     const handleDeleteHistoryItem = (searchTerm: string, event: any) => {
@@ -103,6 +118,7 @@ export const DashboardNavbarSearch: FC = () => {
 
     const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
+    console.log(anchorEl);
     return (
         <>
             <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
@@ -124,20 +140,21 @@ export const DashboardNavbarSearch: FC = () => {
                             width: { xs: "65vw", sm: "40vw" },
                         }}
                         startAdornment={
-                            <IconButton
-                                disabled
-                                sx={{
-                                    borderRight: "1px solid",
-                                    borderColor: "divider",
-                                    borderRadius: 0,
-                                    marginLeft: "-10px",
-                                }}
-                                color={"primary"}
-                                disableFocusRipple
-                                disableRipple
-                            >
-                                <SearchIcon />
-                            </IconButton>
+                            <InputAdornment position="start">
+                                <IconButton
+                                    disabled
+                                    sx={{
+                                        borderRight: "1px solid",
+                                        borderColor: "divider",
+                                        borderRadius: 0,
+                                    }}
+                                    color={"primary"}
+                                    disableFocusRipple
+                                    disableRipple
+                                >
+                                    <SearchIcon />
+                                </IconButton>
+                            </InputAdornment>
                         }
                         endAdornment={
                             <InputAdornment
