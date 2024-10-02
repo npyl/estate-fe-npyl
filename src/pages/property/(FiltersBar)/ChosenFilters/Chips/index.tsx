@@ -13,6 +13,7 @@ import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
 import { TTags } from "../types";
+import LabelsChip from "./Labels";
 
 // --------------------------------------------------------------------------------
 
@@ -114,6 +115,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
 
     if (filterKey === "active") {
         return <ActiveChip />;
+    }
+
+    if (filterKey === "labels") {
+        return <LabelsChip />;
     }
 
     let valuesToDisplay = values;
