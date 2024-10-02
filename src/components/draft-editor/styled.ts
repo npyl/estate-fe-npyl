@@ -124,6 +124,41 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
     "& .rdw-dropdownoption-default": {
         padding: theme.spacing(2),
     },
+
+    // Indent Buttons
+    "& .indent-20": {
+        paddingLeft: "20px",
+    },
+    "& .indent-40": {
+        paddingLeft: "40px",
+    },
+    "& .indent-60": {
+        paddingLeft: "60px",
+    },
+    "& .indent-80": {
+        paddingLeft: "80px",
+    },
+    "& .indent-100": {
+        paddingLeft: "100px",
+    },
+    "& .indent-120": {
+        paddingLeft: "120px",
+    },
+    "& .indent-140": {
+        paddingLeft: "140px",
+    },
+    "& .indent-160": {
+        paddingLeft: "160px",
+    },
+    "& .indent-180": {
+        paddingLeft: "180px",
+    },
+    "& .indent-200": {
+        paddingLeft: "200px",
+    },
+    "& .indent-220": {
+        paddingLeft: "200px",
+    },
 }));
 
 export default DraftEditorRoot;

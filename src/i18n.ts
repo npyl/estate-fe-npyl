@@ -1002,6 +1002,9 @@ const resources = {
             Any: "Any",
             Regions: "Regions",
             Cities: "Cities",
+
+            Indent: "Indent",
+            Outdent: "Outdent",
         },
     },
     el: {
@@ -1966,6 +1969,9 @@ const resources = {
             Any: "Κάθε",
             Regions: "Περιοχές",
             Cities: "Πόλεις",
+
+            Indent: "Εσοχή",
+            Outdent: "Αναίρεση Εσοχής",
         },
     },
 };
