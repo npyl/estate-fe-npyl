@@ -16,6 +16,7 @@ import { TTags } from "../types";
 import LabelsChip from "./Labels";
 import ManagerChip from "./Manager";
 import Regions from "./Regions";
+import Cities from "./Cities";
 
 // --------------------------------------------------------------------------------
 
@@ -129,6 +130,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
 
     if (filterKey === "regions") {
         return <Regions />;
+    }
+
+    if (filterKey === "cities") {
+        return <Cities />;
     }
 
     let valuesToDisplay = values;
