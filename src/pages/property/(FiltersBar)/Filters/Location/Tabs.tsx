@@ -6,6 +6,7 @@ import RegionsTab from "./Regions";
 import { useSelector } from "react-redux";
 import { selectRegions } from "@/slices/filters";
 import dynamic from "next/dynamic";
+import Box from "@mui/material/Box";
 const CitiesTab = dynamic(() => import("./Cities"));
 
 type TTab = "REGIONS" | "CITIES";
@@ -36,8 +37,10 @@ const Tabs = () => {
                 />
             </MuiTabs>
 
-            {tab === "REGIONS" ? <RegionsTab /> : null}
-            {tab === "CITIES" ? <CitiesTab /> : null}
+            <Box maxHeight="30vh" overflow="hidden auto">
+                {tab === "REGIONS" ? <RegionsTab /> : null}
+                {tab === "CITIES" ? <CitiesTab /> : null}
+            </Box>
         </>
     );
 };
