@@ -100,6 +100,12 @@ const slice = createSlice({
         setRegions(state, { payload }) {
             state.filters.regions = payload;
             !state.ids.includes("regions") && state.ids.push("regions");
+
+            // INFO: having [] for payload means we cleared all regions; Therefore, there is no reason to have cities selected
+            if (Array.isArray(payload) && payload.length === 0) {
+                state.filters.cities = payload;
+                state.ids = state.ids.filter((id) => id !== "cities");
+            }
         },
         setCities(state, { payload }) {
             state.filters.cities = payload;

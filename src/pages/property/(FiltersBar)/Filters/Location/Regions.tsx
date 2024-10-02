@@ -1,7 +1,7 @@
 import { useGetRegionsQuery } from "@/services/location";
 import CustomMenuItem from "./CustomMenuItem";
 import { useSelector } from "react-redux";
-import { selectRegions, setCities, setRegions } from "@/slices/filters";
+import { selectRegions, setRegions } from "@/slices/filters";
 import Skeleton from "./Skeleton";
 import { useDispatch } from "react-redux";
 
@@ -15,9 +15,6 @@ const RegionsTab = () => {
         const newValues = regions.includes(areaID.toString())
             ? regions.filter((id) => id !== areaID.toString())
             : [...regions, areaID.toString()];
-
-        // Also clear cities
-        if (newValues.length === 0) dispatch(setCities([]));
 
         dispatch(setRegions(newValues));
     };

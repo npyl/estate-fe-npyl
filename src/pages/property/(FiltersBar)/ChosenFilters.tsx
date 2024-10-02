@@ -31,11 +31,11 @@ const getEnumLabel = (key: any, enumValues: any) => {
 const getFilterTags = (
     t: TranslationType
 ): Record<string, { label: string }> => ({
-    parentLocation: {
-        label: t("Location"),
+    regions: {
+        label: t("Regions"),
     },
-    subLocation: {
-        label: t("SubLocation"),
+    cities: {
+        label: t("Cities"),
     },
     filterName: {
         label: t("Filter Name"),

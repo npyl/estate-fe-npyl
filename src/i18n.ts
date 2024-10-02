@@ -1005,6 +1005,7 @@ const resources = {
 
             Indent: "Indent",
             Outdent: "Outdent",
+            choices: "choices",
         },
     },
     el: {
@@ -1972,6 +1973,7 @@ const resources = {
 
             Indent: "Εσοχή",
             Outdent: "Αναίρεση Εσοχής",
+            choices: "επιλογές",
         },
     },
 };
