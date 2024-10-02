@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
 import { TTags } from "../types";
 import LabelsChip from "./Labels";
+import ManagerChip from "./Manager";
 
 // --------------------------------------------------------------------------------
 
@@ -119,6 +120,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
 
     if (filterKey === "labels") {
         return <LabelsChip />;
+    }
+
+    if (filterKey === "managerId") {
+        return <ManagerChip />;
     }
 
     let valuesToDisplay = values;
