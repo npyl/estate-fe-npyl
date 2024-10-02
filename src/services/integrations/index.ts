@@ -27,9 +27,10 @@ export const integrations = createApi({
             GetImagesOrderReq
         >({
             query: ({ propertyId, integrationSite }) => ({
-                url: `image-order/${propertyId}`,
+                url: `/`,
                 params: {
                     integrationSite,
+                    propertyId,
                 },
             }),
             providesTags: ["IntegrationOrderedImages"],
@@ -40,10 +41,11 @@ export const integrations = createApi({
             UpdateImagesOrderReq
         >({
             query: ({ integrationSite, propertyId, propertyImages }) => ({
-                url: `image-order/${propertyId}`,
+                url: `/`,
                 body: propertyImages,
                 params: {
                     integrationSite,
+                    propertyId,
                 },
                 method: "POST",
             }),
