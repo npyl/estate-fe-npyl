@@ -131,7 +131,6 @@ export const CustomerSearchItem = ({
                 >
                     <LocationOnOutlinedIcon
                         sx={{
-                            color: "black",
                             width: "18px",
                             height: "18px",
                         }}
@@ -151,7 +150,6 @@ export const CustomerSearchItem = ({
                             >
                                 <HomeOutlinedIcon
                                     sx={{
-                                        color: "black",
                                         width: "18px",
                                         height: "18px",
                                     }}
@@ -173,7 +171,15 @@ export const CustomerSearchItem = ({
                                                     textDecoration: "none",
                                                     color: "text.secondary",
                                                     "&:hover": {
-                                                        color: "black",
+                                                        color: (theme) =>
+                                                            theme.palette
+                                                                .mode ===
+                                                            "light"
+                                                                ? theme.palette
+                                                                      .neutral?.[700] ||
+                                                                  theme.palette
+                                                                      .grey[700] // Fallback to grey if neutral is undefined
+                                                                : "white",
                                                     },
                                                 }}
                                             >
@@ -199,7 +205,7 @@ export const CustomerSearchItem = ({
                     >
                         <EmailOutlinedIcon
                             sx={{
-                                color: "black",
+                                // color: "black",
                                 width: "18px",
                                 height: "18px",
                             }}
@@ -221,7 +227,7 @@ export const CustomerSearchItem = ({
                                 >
                                     <SellOutlinedIcon
                                         sx={{
-                                            color: "black",
+                                            // color: "black",
                                             width: "18px",
                                             height: "18px",
                                         }}
@@ -247,7 +253,7 @@ export const CustomerSearchItem = ({
                     >
                         <PhoneOutlinedIcon
                             sx={{
-                                color: "black",
+                                // color: "black",
                                 width: "18px",
                                 height: "18px",
                             }}

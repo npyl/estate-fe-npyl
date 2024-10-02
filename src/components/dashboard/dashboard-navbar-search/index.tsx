@@ -118,7 +118,6 @@ export const DashboardNavbarSearch: FC = () => {
 
     const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
-    console.log(anchorEl);
     return (
         <>
             <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
@@ -263,7 +262,10 @@ export const DashboardNavbarSearch: FC = () => {
                         <List
                             sx={{
                                 position: "absolute",
-                                backgroundColor: "white",
+                                backgroundColor: (theme) =>
+                                    theme.palette.mode === "light"
+                                        ? "white"
+                                        : "#001830",
                                 boxShadow: 1,
                                 width: { xs: "65vw", sm: "40vw" },
                                 zIndex: 1500, // Ensure it appears above other elements
@@ -293,13 +295,31 @@ export const DashboardNavbarSearch: FC = () => {
                                             >
                                                 <HistoryOutlinedIcon
                                                     sx={{
-                                                        color: "neutral.700",
+                                                        color: (theme) =>
+                                                            theme.palette
+                                                                .mode ===
+                                                            "light"
+                                                                ? theme.palette
+                                                                      .neutral?.[700] ||
+                                                                  theme.palette
+                                                                      .grey[700] // Fallback to grey if neutral is undefined
+                                                                : "white",
                                                         width: "16px",
                                                     }}
                                                 />
                                                 <ListItemText
                                                     primary={historyItem}
-                                                    sx={{ color: "black" }}
+                                                    sx={{
+                                                        color: (theme) =>
+                                                            theme.palette
+                                                                .mode ===
+                                                            "light"
+                                                                ? theme.palette
+                                                                      .neutral?.[700] ||
+                                                                  theme.palette
+                                                                      .grey[700] // Fallback to grey if neutral is undefined
+                                                                : "white",
+                                                    }}
                                                 />
                                             </Stack>
                                             <IconButton
@@ -327,7 +347,7 @@ export const DashboardNavbarSearch: FC = () => {
                                             >
                                                 <ClearOutlinedIcon
                                                     sx={{
-                                                        color: "neutral.700",
+                                                        // color: "neutral.700",
                                                         width: "16px",
                                                     }}
                                                 />

@@ -142,7 +142,12 @@ const RenderCodeCell = (params: GridCellParams) => {
             <NormalBadge
                 name={`${params.value || ""}`}
                 color={"#ffcc00"}
-                sx={{ color: "#854D0E" }}
+                sx={{
+                    color: (theme) =>
+                        theme.palette.mode === "light"
+                            ? "#854D0E" || theme.palette.grey[700] // Fallback to grey if neutral is undefined
+                            : "null",
+                }}
             />
         </Stack>
     );
