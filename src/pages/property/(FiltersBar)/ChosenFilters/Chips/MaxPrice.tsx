@@ -8,14 +8,13 @@ import { useSelector } from "react-redux";
 const MaxPriceChip = () => {
     const { t } = useTranslation();
     const maxValue = useSelector(selectMaxPrice);
-
     const handleClear = () => dispatch(deleteFilter("maxPrice"));
 
     return (
         <Chip
             label={
                 <ChipLabel
-                    title={`${t("Maximum Price")} (€):`}
+                    title={`${t("Maximum Price")} (€)`}
                     value={maxValue?.toLocaleString("el-GR") || ""}
                 />
             }

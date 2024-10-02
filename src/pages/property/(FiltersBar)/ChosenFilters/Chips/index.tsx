@@ -12,6 +12,7 @@ import { deleteFilter } from "@/slices/filters";
 import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
+import { TTags } from "../types";
 
 // --------------------------------------------------------------------------------
 
@@ -44,8 +45,8 @@ const SimpleChip: FC<SimpleChipProps> = ({ values, title, filterKey }) => {
 interface GeneralChipProps {
     filterKey: string;
     changedProps: any;
-    filterTags: any;
-    pairFilterTags: any;
+    filterTags: TTags;
+    pairFilterTags: TTags;
 }
 
 const GeneralChip: FC<GeneralChipProps> = ({
@@ -71,9 +72,6 @@ const GeneralChip: FC<GeneralChipProps> = ({
             ? filterKey.slice(3)
             : null;
 
-    // INFO: this should not happen
-    if (!suffix) return null;
-
     const hasMinMaxPair = (suffix: string | null): boolean => {
         if (!suffix) return false;
 
@@ -91,7 +89,7 @@ const GeneralChip: FC<GeneralChipProps> = ({
 
     // If we have min-max pair show chip differently
     if (hasMinMaxPair(suffix)) {
-        return <MinMaxChip suffix={suffix} pairFilterTags={pairFilterTags} />;
+        return <MinMaxChip suffix={suffix!} pairFilterTags={pairFilterTags} />;
     }
 
     //
