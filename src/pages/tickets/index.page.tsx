@@ -45,9 +45,7 @@ export default function KanbanPage() {
 
     // function to convert image
     const getProfileImageSrc = (base64String: string | null) => {
-        return base64String
-            ? `data:image/jpeg;base64,${base64String}`
-            : "/static/images/avatar_default.jpg";
+        return base64String ? `data:image/jpeg;base64,${base64String}` : "";
     };
 
     return (

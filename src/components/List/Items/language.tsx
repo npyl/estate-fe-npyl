@@ -4,8 +4,8 @@ import Image from "next/image";
 import ListItem from "../item";
 import ListItemProps from "../types";
 
-const EnglishFlagIcon = "/static/icons/uk_flag.svg";
-const GreekFlagIcon = "/static/icons/gr_flag.svg";
+const EnglishFlagIcon = "/static/flags/uk_flag.svg";
+const GreekFlagIcon = "/static/flags/gr_flag.svg";
 
 interface LanguageListItemProps extends Omit<ListItemProps, "value"> {
     value: PreferredLanguageType;

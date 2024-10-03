@@ -212,7 +212,7 @@ const Map = ({
                         key={JSON.stringify({ lat, lng })}
                         position={{ lat, lng }}
                         onMouseUp={() => setActiveMarker?.(ind)}
-                        icon={"/static/icons/mapIcon.svg"}
+                        icon={"/static/map/mapIcon.svg"}
                         animation={
                             marker !== mainMarker && activeMarker === ind
                                 ? google.maps.Animation.BOUNCE

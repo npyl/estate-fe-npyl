@@ -6,7 +6,7 @@ import { forwardRef, useCallback } from "react";
 
 // ----------------------------------------------------------------------
 
-const defaultImage = "/static/img/previewImage.png";
+const defaultImage = "/static/preview/previewImage.png";
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(
     (

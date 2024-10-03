@@ -34,7 +34,7 @@ const ProgressLabel = ({ progress }: ProgressLabelProps) => {
 };
 
 // Default image
-const defaultImage = "/static/img/previewImage.png";
+const defaultImage = "/static/preview/previewImage.png";
 
 const UploadImage = ({
     animate = false,
