@@ -1,12 +1,12 @@
 import { Stack, Typography } from "@mui/material";
 import { IntegrationSite } from "src/types/listings";
 import { LabeledSwitch } from "./Switch";
-import SpitogatosSvg from "src/assets/SpitogatosSvg";
-import RightMoveIcon from "src/assets/RightMoveIcon";
-import FerimmoIcon from "@/assets/ferimmo";
-import PlotGRIcon from "src/assets/plotgr";
-import XEIcon from "src/assets/xrysh_eukairia";
-import JamesEditionIcon from "@/assets/james_edition";
+import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
+import RightMoveIcon from "@/assets/integrations/RightMoveIcon";
+import FerimmoIcon from "@/assets/integrations/ferimmo";
+import PlotGRIcon from "@/assets/integrations/plotgr";
+import XEIcon from "@/assets/integrations/xrysh_eukairia";
+import JamesEditionIcon from "@/assets/integrations/james_edition";
 import { spitogatosListing } from "@/services/listings";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";

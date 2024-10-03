@@ -16,15 +16,15 @@ import {
 import { TFunction } from "i18next";
 import { FC, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Home as HomeIcon } from "../../icons/home";
-import { Users as UsersIcon } from "../../icons/users";
+import { Home as HomeIcon } from "../../assets/icons/home";
+import { Users as UsersIcon } from "../../assets/icons/users";
 import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
 import { useProfileQuery } from "src/services/user";
-import { ChartPie } from "src/icons/chart-pie";
-import { ChartLine as ChartLineIcon } from "src/icons/chart-line";
+import { ChartPie } from "@/assets/icons/chart-pie";
+import { ChartLine as ChartLineIcon } from "@/assets/icons/chart-line";
 import { useRouter } from "next/router";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
@@ -60,6 +60,7 @@ const getSections = (
         items: [
             {
                 title: t("Dashboard"),
+
                 path: "/",
                 icon: <ChartPie fontSize="small" />,
             },
@@ -230,7 +231,10 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 sx={{
                                     height: "100vh",
                                     pt: 2,
+
+                                    width: "100%",
                                     overflowY: "hidden",
+                                    textWrap: "nowrap",
                                 }}
                                 {...section}
                             />

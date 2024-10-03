@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-    GetImagesOrderReq,
-    ImagesOrderRes,
-    UpdateImagesOrderReq,
-} from "./types";
+import { GetImagesOrderReq, UpdateImagesOrderReq } from "./types";
+import { ImagesOrderRes } from "@/types/integrations";
 // import { optimisticSetOrderedImages } from "./optimistic";
 
 export const integrations = createApi({
@@ -27,9 +24,10 @@ export const integrations = createApi({
             GetImagesOrderReq
         >({
             query: ({ propertyId, integrationSite }) => ({
-                url: `image-order/${propertyId}`,
+                url: `/`,
                 params: {
                     integrationSite,
+                    propertyId,
                 },
             }),
             providesTags: ["IntegrationOrderedImages"],
@@ -40,10 +38,11 @@ export const integrations = createApi({
             UpdateImagesOrderReq
         >({
             query: ({ integrationSite, propertyId, propertyImages }) => ({
-                url: `image-order/${propertyId}`,
+                url: `/`,
                 body: propertyImages,
                 params: {
                     integrationSite,
+                    propertyId,
                 },
                 method: "POST",
             }),

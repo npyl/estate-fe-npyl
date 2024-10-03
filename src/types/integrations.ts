@@ -1,4 +1,13 @@
+import { IPropertyImage } from "./file";
 import { IntegrationSite } from "./listings";
+
+interface ImagesOrderRes {
+    publicImages: IPropertyImage[];
+    privateImages: IPropertyImage[];
+
+    publicKeys: string[];
+    privateKeys: string[];
+}
 
 export interface IIntegration {
     apiKey: string;
@@ -9,3 +18,5 @@ export interface IIntegration {
 }
 
 export interface IIntegrationPOST extends IIntegration {}
+
+export type { ImagesOrderRes };

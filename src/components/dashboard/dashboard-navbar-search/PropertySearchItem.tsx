@@ -13,35 +13,9 @@ import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
 import { MatchResult } from "./types";
-import { NormalBadge } from "@/components/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
-
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-type Color = string;
-
-const STATUS_COLORS: Record<PropertyStatus, Color> = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-
-const getStatusColor = (status: string): string => {
-    const statusUpper = status.toUpperCase() as PropertyStatus;
-    return STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-};
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import { getPropertyStatusColor } from "@/theme/colors";
 
 interface SearchItemProps {
     searchText: string;
@@ -89,7 +63,7 @@ export const PropertySearchItem = ({
 
     const address = addressParts.filter((part) => part).join(", ");
 
-    const stateColor = _state?.value ? getStatusColor(_state.value) : "#537f91";
+    const stateColor = getPropertyStatusColor(_state.value);
 
     const code = useMemo(
         () => ({
@@ -420,7 +394,12 @@ export const PropertySearchItem = ({
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
                             color={"#ffcc00"}
-                            sx={{ color: "#854D0E" }}
+                            sx={{
+                                color: (theme) =>
+                                    theme.palette.mode === "light"
+                                        ? "#854D0E"
+                                        : theme.palette.grey[700], // Fallback to grey if neutral is undefined
+                            }}
                         />
                     </Grid>
                 </Grid>

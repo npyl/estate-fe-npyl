@@ -17,7 +17,7 @@ const COLUMNS = {
     xs: 1,
     sm: 2,
     md: 3,
-    lg: 4,
+    lg: 3,
 };
 
 // ----------------------------------------------------------------------
@@ -46,6 +46,7 @@ const Board: FC<Props> = ({ board }) => {
 
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
+    //
     const [reorderColumn] = useReorderColumnMutation();
 
     const items = useMemo(
@@ -74,30 +75,31 @@ const Board: FC<Props> = ({ board }) => {
         type,
         draggableId,
     }: DropResult) => {
-        if (type === DroppableTypeItem) {
-            const { itemId: draggedItemId } = parseItemId(draggableId);
-            const { rowId: dstRow } = parseRowId(destination?.droppableId);
-            const dstCol = destination?.index;
+        // if (type === DroppableTypeItem) {
+        //     const { itemId: draggedItemId } = parseItemId(draggableId);
+        //     const { rowId: dstRow } = parseRowId(destination?.droppableId);
+        //     const dstCol = destination?.index;
 
-            if (
-                draggedItemId === -1 ||
-                dstRow === -1 ||
-                dstCol === null ||
-                dstCol === undefined
-            )
-                return;
+        //     if (
+        //         draggedItemId === -1 ||
+        //         dstRow === -1 ||
+        //         dstCol === null ||
+        //         dstCol === undefined
+        //     )
+        //         return;
 
-            let oneDimentionArrayDstIndex = dstRow * responsiveColumns + dstCol;
+        //     let oneDimentionArrayDstIndex = dstRow * responsiveColumns + dstCol;
 
-            /* NOTE: compensate for when user moves a section at the end of the board */
-            if (oneDimentionArrayDstIndex === itemsLength)
-                oneDimentionArrayDstIndex -= 1;
+        //     /* NOTE: compensate for when user moves a section at the end of the board */
+        //     if (oneDimentionArrayDstIndex === itemsLength)
+        //         oneDimentionArrayDstIndex -= 1;
 
-            reorderColumn({
-                columnId: draggedItemId,
-                position: oneDimentionArrayDstIndex,
-            });
-        }
+        //Code for colum reordering
+        // reorderColumn({
+        //     columnId: draggedItemId,
+        //     position: oneDimentionArrayDstIndex,
+        // });
+        // }
 
         if (type === DroppableTypeTask) {
             const sourceCardId = cardId(draggableId);

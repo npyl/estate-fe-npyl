@@ -59,6 +59,7 @@ export interface IPropertyFilter {
     active?: boolean | null;
     // multiple
 
+    regions: string[];
     cities: string[];
     states: string[];
     categories: string[];
@@ -68,6 +69,78 @@ export interface IPropertyFilter {
     heatingType: string[];
     frameType: string[];
     furnished: string[];
+}
+
+export interface IPropertyFilterCounters {
+    air: number;
+    apartment: number;
+    apartmentComplex: number;
+    building: number;
+    bungalow: number;
+    business: number;
+    businessBuilding: number;
+    commercial: number;
+    craftSpace: number;
+    detachable: number;
+    detachedHouse: number;
+    farm: number;
+    fully: number;
+    goldenVisa: number;
+    hall: number;
+    histograms: {
+        additionalProp1: [
+            {
+                count: number;
+                lowerBound: number;
+            }
+        ];
+        additionalProp2: [
+            {
+                count: number;
+                lowerBound: number;
+            }
+        ];
+        additionalProp3: [
+            {
+                count: number;
+                lowerBound: number;
+            }
+        ];
+    };
+    historicNeoclassical: number;
+    hotel: number;
+    houseboat: number;
+    industrialSpace: number;
+    investment: number;
+    island: number;
+    land: number;
+    loft: number;
+    luxuryHomes: number;
+    maisonette: number;
+    mountainView: number;
+    none: number;
+    office: number;
+    other: number;
+    otherCommercial: number;
+    otherLand: number;
+    otherOther: number;
+    otherResidential: number;
+    parcel: number;
+    parkingSpot: number;
+    partial: number;
+    plot: number;
+    prefabricated: number;
+    rent: number;
+    residential: number;
+    sale: number;
+    seafront: number;
+    showroom: number;
+    sold: number;
+    store: number;
+    student: number;
+    studio: number;
+    villa: number;
+    warehouse: number;
 }
 
 export interface IPropertySuitableFor {
@@ -380,3 +453,13 @@ export interface IPropertyMarker {
 }
 
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";
+
+export type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";

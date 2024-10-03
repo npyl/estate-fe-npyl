@@ -1,15 +1,16 @@
-import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Button, Stack } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
+import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
 import { Residential, Commercial, Land, Other } from "./forms";
-import { useCallback, useMemo } from "react";
-import { IProperties, IPropertiesPOST } from "src/types/properties";
-
-// Form
 import FormProvider from "src/components/hook-form";
-import { LoadingButton } from "@mui/lab";
 import usePropertyForm, { fixDropdowns } from "./hook";
+import { IProperties, IPropertiesPOST } from "src/types/properties";
+import UnsavedChangesModal from "./UnsavedChangesModal";
 
 interface IFormProps {
     property?: IProperties;
@@ -29,14 +30,14 @@ export default function Form({
     onCancel,
 }: IFormProps) {
     const { t } = useTranslation();
+    const router = useRouter();
 
     const { methods, handleSubmit, reset } = usePropertyForm(property);
+    const { isDirty } = methods.formState; //it is set to true after the user modifies any of the inputs inside the form.
 
-    // enums
-    const parentCategory = useMemo(
-        () => property?.parentCategory?.key,
-        [property?.parentCategory]
-    );
+    const [openModal, setOpenModal] = useState(false);
+    const [nextRoute, setNextRoute] = useState<string | null>(null);
+    const [isNavigating, setIsNavigating] = useState(false);
 
     const onSubmit = handleSubmit((data) => {
         try {
@@ -44,25 +45,83 @@ export default function Form({
                 ...(data as IPropertiesPOST),
                 ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
             });
+
+            methods.reset(data); // Reset the form so it's not dirty anymore
+            setIsNavigating(true); // Allow navigation without triggering the modal
         } catch (error) {
             console.error(error);
             reset();
         }
     });
 
-    const handleClear = useCallback(() => {
+    const handleClear = () => {
         reset();
         onClear();
-    }, []);
+    };
+
+    // Handle browser refresh/close with default prompt
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                const confirmationMessage = t(
+                    "You have unsaved changes. All changes will be lost. Are you sure?"
+                );
+                e.preventDefault();
+                // e.returnValue = confirmationMessage; //Deprecated
+                return confirmationMessage;
+            }
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [isDirty, t]);
+
+    // Handle in-app navigation
+    useEffect(() => {
+        const handleRouteChangeStart = (url: string) => {
+            if (isDirty && !isNavigating && url !== router.asPath) {
+                setNextRoute(url); // Store the next route
+                setOpenModal(true);
+                router.events.emit("routeChangeError"); // Cancel the route change
+                throw "Abort route change"; // Prevent navigation
+            }
+        };
+        router.events.on("routeChangeStart", handleRouteChangeStart);
+
+        return () => {
+            router.events.off("routeChangeStart", handleRouteChangeStart);
+        };
+    }, [isDirty, router.asPath, isNavigating, router.events]);
+
+    const handleConfirmLeave = () => {
+        setOpenModal(false);
+        setIsNavigating(true); // Allow routing to proceed
+        if (nextRoute) {
+            router.push(nextRoute);
+        }
+    };
+
+    const handleCancelLeave = () => {
+        setOpenModal(false);
+        setNextRoute(null);
+        setIsNavigating(false);
+    };
 
     return (
         <FormProvider methods={methods} onSubmit={onSubmit}>
             {!!property ? (
                 <>
-                    {parentCategory === "RESIDENTIAL" && <Residential />}
-                    {parentCategory === "COMMERCIAL" && <Commercial />}
-                    {parentCategory === "LAND" && <Land />}
-                    {parentCategory === "OTHER" && <Other />}
+                    {property.parentCategory?.key === "RESIDENTIAL" && (
+                        <Residential />
+                    )}
+                    {property.parentCategory?.key === "COMMERCIAL" && (
+                        <Commercial />
+                    )}
+                    {property.parentCategory?.key === "LAND" && <Land />}
+                    {property.parentCategory?.key === "OTHER" && <Other />}
                 </>
             ) : null}
 
@@ -72,6 +131,16 @@ export default function Form({
                 justifyContent="flex-end"
                 spacing={1}
                 mt={2}
+                sx={{
+                    backgroundColor: "rgba(128, 128, 128, 0.1)",
+                    width: "100%",
+                    p: 0.5,
+                    alignSelf: "flex-end",
+                    borderRadius: "10px",
+                    position: "sticky",
+                    zIndex: 1000,
+                    bottom: 1,
+                }}
             >
                 <Button
                     variant="outlined"
@@ -97,6 +166,13 @@ export default function Form({
                     {t("Save")}
                 </LoadingButton>
             </Stack>
+
+            {/* Unsaved Changes Modal */}
+            <UnsavedChangesModal
+                open={openModal}
+                onConfirm={handleConfirmLeave}
+                onCancel={handleCancelLeave}
+            />
         </FormProvider>
     );
 }

@@ -7,6 +7,7 @@ import {
     Theme,
     Typography,
     useMediaQuery,
+    useTheme,
 } from "@mui/material";
 import { StyledPopper } from "../styles";
 import { useEffect, useMemo, useRef } from "react";
@@ -24,6 +25,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import AgreementItems from "./AgreementItems";
 import useScreenWidth from "./hook";
 import { addSearchHistory, getSearchHistory } from ".";
+// import { useTheme } from "@emotion/react";
 
 const PAGE_SIZE = 20;
 
@@ -93,7 +95,6 @@ const PropertiesSubList = ({
                         >
                             <HomeOutlinedIcon
                                 sx={{
-                                    color: "black",
                                     width: "22px",
                                     height: "22px",
                                 }}
@@ -253,7 +254,6 @@ export const SearchList = ({
                                                 >
                                                     <PersonOutlineOutlinedIcon
                                                         sx={{
-                                                            color: "black",
                                                             width: "22px",
                                                             height: "22px",
                                                         }}
@@ -296,7 +296,6 @@ export const SearchList = ({
                                                 >
                                                     <PersonOutlineOutlinedIcon
                                                         sx={{
-                                                            color: "black",
                                                             width: "22px",
                                                             height: "22px",
                                                         }}
@@ -353,7 +352,7 @@ export const SearchList = ({
                                         >
                                             <PersonOutlineOutlinedIcon
                                                 sx={{
-                                                    color: "black",
+                                                    // color: "black",
                                                     width: "22px",
                                                     height: "22px",
                                                 }}

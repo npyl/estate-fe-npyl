@@ -6,8 +6,6 @@ import { styled } from "@mui/material/styles";
 import getBorderColor, { getBorderColor2 } from "@/theme/borderColor";
 
 const StyledChip = styled(Chip)(({ theme }) => ({
-    width: "min-content",
-    height: "min-content",
     paddingTop: theme.spacing(0.4),
     paddingBottom: theme.spacing(0.4),
 

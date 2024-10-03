@@ -1,7 +1,7 @@
 // @mui
 import { Avatar, Stack, Typography } from "@mui/material";
 // utils
-import { fToNow } from "@/utils/formatTime";
+import { fToNow } from "@/utils/format-time";
 // @types
 import { IKanbanComment } from "src/types/kanban";
 // components
@@ -14,42 +14,38 @@ type Props = {
 };
 
 export default function KanbanDetailsCommentList({ comments }: Props) {
-    const imagesLightbox = comments
-        .filter((comment) => comment.messageType === "image")
-        .map((item) => item.message);
+    // const imagesLightbox = comments
+    //     .filter((comment) => comment.messageType === "image")
+    //     .map((item) => item.message);
 
     return (
         <>
             <Stack
                 spacing={3}
                 sx={{
-                    py: 3,
-                    px: 2.5,
+                    py: 1,
+                    px: 1,
                     bgcolor: "background.neutral",
+                    borderRadius: "10px",
                 }}
             >
                 {comments.map((comment) => (
-                    <Stack key={comment.id} direction="row" spacing={2}>
-                        {/* <Avatar src={comment.avatar} /> */}
+                    <Stack
+                        key={comment.id}
+                        direction="row"
+                        spacing={2}
+                        alignItems="center"
+                    >
+                        <Avatar
+                            src={comment.avatar}
+                            sx={{ width: "25px", height: "25px" }}
+                        />
 
                         <Stack>
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={1}
-                            >
-                                {/* <Typography variant="subtitle2">
+                            {/* <Typography variant="subtitle2">
                                     {" "}
                                     {comment.name}
                                 </Typography> */}
-
-                                <Typography
-                                    variant="caption"
-                                    sx={{ color: "text.secondary" }}
-                                >
-                                    {fToNow(comment?.createdAt || "")}
-                                </Typography>
-                            </Stack>
 
                             {comment.messageType === "image" ? (
                                 <Image
@@ -61,9 +57,20 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
                                     }}
                                 />
                             ) : (
-                                <Typography variant="body2" sx={{ mt: 0.5 }}>
-                                    {comment.message}
-                                </Typography>
+                                <Stack>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ mt: 0.5 }}
+                                    >
+                                        {comment.message}
+                                    </Typography>
+                                    <Typography
+                                        variant="caption"
+                                        sx={{ color: "text.secondary" }}
+                                    >
+                                        {fToNow(comment?.createdAt || "")}
+                                    </Typography>
+                                </Stack>
                             )}
                         </Stack>
                     </Stack>

@@ -1,17 +1,7 @@
-import {
-    Box,
-    ListItemText,
-    MenuItem,
-    Popover,
-    Typography,
-    List,
-    Divider,
-} from "@mui/material";
-import PropTypes from "prop-types";
+import { MenuItem, Popover, Typography, List } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
-import { VerticalAlignBottom } from "@mui/icons-material";
 
 interface LanguagePopoverProps {
     updatesGlobalLanguage: boolean;
@@ -123,10 +113,4 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
             </List>
         </Popover>
     );
-};
-
-LanguagePopover.propTypes = {
-    anchorEl: PropTypes.any,
-    onClose: PropTypes.func,
-    open: PropTypes.bool,
 };

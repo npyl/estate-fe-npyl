@@ -14,6 +14,7 @@ const resources = {
             ID: "ID",
             Properties: "Properties",
 
+            Dashboard: "Dashboard",
             Notifications: "Notifications",
             Tickets: "Tickets",
             Mail: "Mail",
@@ -271,6 +272,8 @@ const resources = {
                 "The price for this property is hidden on the public",
 
             // Tickets
+            "Search Tickets": "Search Tickets",
+            "Assigned to": "Assigned to",
             "Add section": "Add section",
             "Add Task": "Add task",
             "Delete section": "Delete section",
@@ -445,7 +448,12 @@ const resources = {
             "Date of Entry": "Date of Entry",
 
             //Description
-
+            "You have unsaved changes.  All your progress will be lost if you leave without saving. Are you sure you want to leave this page?":
+                "You have unsaved changes.  All your progress will be lost if you leave without saving. Are you sure you want to leave this page?",
+            Confirm: "Confirm",
+            Yes: "Yes",
+            No: "No",
+            "Unsaved Changes": "Unsaved Changes",
             //Create customer
 
             "Customer Information": "Customer Information",
@@ -865,37 +873,6 @@ const resources = {
             "Tour request details": "Tour request details",
             "Listing details": "Listing details",
             "Work application details": "Work application details",
-            //
-            Διαμέρισμα: "Apartment",
-            // Λυόμενο: "Detached",
-            Γραφείο: "Office",
-            Κατάστημα: "Store",
-            Ξενοδοχείο: "Hotel",
-            Αποθήκη: "Warehouse",
-
-            "Βιομηχανικός χώρος": "Industrial space",
-            "Βιοτεχνικός χώρος": "Craft space",
-            Αίθουσα: "Hall",
-            "Εκθεσειακός χώρος": "Showroom",
-            "Κτίριο επιχειρηματικών χώρων": "Business building",
-            Μονοκατοικία: "Detached",
-            Επιχείρηση: "Business building",
-            Άλλο: "Other",
-            Βίλα: "Villa",
-            Μεζονέτα: "Maisonette",
-            "Πλωτό σπίτι": "Houseboat",
-            Πωλείται: "Sale",
-            Ενοικιάζεται: "Rent",
-            Πωλήθηκε: "Sold",
-            Ενοικιάστηκε: "Rented",
-            Άμεσα: "Instantly",
-            "Μη διαθέσιμο": "Unavailable",
-            Οικόπεδο: "Land",
-            Νησί: "Island",
-            Αγροτεμάχιο: "Parcel",
-            "Επαγγελματική Στέγη": "Commercial",
-            Κατοικία: "Residential",
-            Γη: "Land",
 
             // CHOSEN FILTERS
             SALE: "sale",
@@ -948,6 +925,10 @@ const resources = {
             images: "images",
             Autonomous: "Autonomous",
             Greece: "Greece",
+            "Maximum Number of Bedrooms": "Maximum Number of Bedrooms",
+            "Minimum Number of Bedrooms": "Minimum Number of Bedrooms",
+            "Maximum Floor": "Maximum Floor",
+            "Minimum Floor": "Minimum Floor",
             //
             Θάλασσα: "Sea",
             Βουνό: "Mountain",
@@ -1016,15 +997,32 @@ const resources = {
             "Ατομική Θέρμανση": "Self-use",
             Ελλάδα: "Greece",
             Ελληνικά: "Greek",
+
+            "No results. This customer does not own any property!":
+                "No results. This customer does not own any property!",
+
+            Any: "Any",
+            Regions: "Regions",
+            Cities: "Cities",
+
+            Indent: "Indent",
+            Outdent: "Outdent",
+            choices: "choices",
         },
     },
     el: {
         translation: {
+            Dashboard: "Πίνακας Ελέγχου",
             "Default Value": "Αρχική Τιμή",
             "Bulk Edit": "Επεξεργασία Πολλαπλών",
             "Locked Pin": "Κλειδωμένη Πινέζα",
             "Free Pin": "Ελεύθερη Πινέζα",
-
+            "You have unsaved changes.  All your progress will be lost if you leave without saving. Are you sure you want to leave this page?":
+                "Έχετε αλλαγές που δεν είναι αποθηκευμένες. Όλες οι αλλαγές σας θα χαθούν αν αφήσετε τη σελίδα χωρίς αποθήκευση. Είστε σίγουροι ότι θέλετε να φύγετε από αυτή τη σελίδα; ",
+            Confirm: "Επικύρωση",
+            Yes: "Ναι",
+            No: "Όχι",
+            "Unsaved Changes": "Μη αποθηκευμένες αλλαγές",
             "Unable to logout": "Αποτυχία κατά την αποσύνδεση",
             Success: "Επιτυχία",
             _main_: "Κύρια",
@@ -1455,7 +1453,13 @@ const resources = {
             ISLAND: "νησί",
             LAND_PLOT: "οικόπεδο",
             OTHER_LAND: "λοιπές κατηγορίες",
+            "Maximum Number of Bedrooms": "Μέγιστος αριθμός υπνοδωματίων",
+            "Minimum Number of Bedrooms": "Ελάχιστος αριθμός υπνοδωματίων",
+            "Maximum Floor": "Μέγιστος όροφος",
+            "Minimum Floor": "Ελάχιστος όροφος",
             // Tickets
+            "Search Tickets": "Αναζήτηση Ticket",
+            "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
             "Add Task": "Προσθήκη Εργασίας",
             "Delete section": "Διαγραφή Τμήματος",
@@ -1758,6 +1762,7 @@ const resources = {
             Seller: "Πωλητής",
             Lessor: "Εκμισθωτής",
             Leaser: "Ενοικιαστής",
+
             Buyer: "Αγοραστής",
             "Address Details": "Λεπτομέρειες Διεύθυνσης",
             Features: "Χαρακτηριστικά",
@@ -1962,7 +1967,17 @@ const resources = {
             "Agent ID": "ID Αντιπροσώπου",
             "Auth Token": "Κωδικός Εξουσιοδότησης",
             "Certified Telephone Number": "Πιστοποιημένος Αριθμός Τηλεφώνου",
+            "No results. This customer does not own any property!":
+                "Δε βρέθηκαν αποτελέσματα. Αυτός ο πελάτης δεν έχει ακίνητα στο όνομά του!",
             Greece: "Ελλάδα",
+
+            Any: "Κάθε",
+            Regions: "Περιοχές",
+            Cities: "Πόλεις",
+
+            Indent: "Εσοχή",
+            Outdent: "Αναίρεση Εσοχής",
+            choices: "επιλογές",
         },
     },
 };

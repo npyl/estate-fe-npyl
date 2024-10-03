@@ -21,7 +21,7 @@ import {
     differenceInDays,
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
-import { NormalBadge } from "@/components/PropertyCard/styled";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import dayjs from "dayjs";

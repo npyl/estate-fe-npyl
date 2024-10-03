@@ -11,7 +11,9 @@ interface PPButtonProps extends ButtonProps {
     clicked?: boolean;
 }
 
-export const PPButton = styled(Button)<PPButtonProps>(({ theme, clicked }) => ({
+export const PPButton = styled(Button, {
+    shouldForwardProp: (prop) => prop !== "clicked",
+})<PPButtonProps>(({ theme, clicked }) => ({
     backgroundColor: theme.palette.background.paper,
     fontWeight: 400,
     color:
@@ -39,4 +41,7 @@ export const PPButton = styled(Button)<PPButtonProps>(({ theme, clicked }) => ({
     flexDirection: "column",
     width: "100%",
     height: "100%",
+
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
 }));

@@ -163,24 +163,22 @@ const ChosenFilters = (props: GridProps) => {
                                     </Typography> */}
                                     <Typography
                                         sx={{
-                                            textTransform: "lowercase",
-                                            paddingRight: 1,
+                                            textTransform: "capitalize",
                                         }}
                                     >
-                                        {minValue}
+                                        {minValue.toLocaleString("el-GR")}
                                     </Typography>
                                     <Typography
                                         sx={{
                                             fontWeight: "medium",
-                                            paddingRight: 1,
                                         }}
                                     >
                                         -
                                     </Typography>
                                     <Typography
-                                        sx={{ textTransform: "lowercase" }}
+                                        sx={{ textTransform: "capitalize" }}
                                     >
-                                        {maxValue}
+                                        {maxValue.toLocaleString("el-GR")}
                                     </Typography>
                                 </Stack>
                             }
@@ -191,6 +189,68 @@ const ChosenFilters = (props: GridProps) => {
                             sx={{ m: 0.5 }}
                         />
                     );
+                } else if (suffix === "Price") {
+                    const minValue = changedProps[`minPrice`];
+                    const maxValue = changedProps[`maxPrice`];
+                    if (minValue) {
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Minimum Price")}
+                                            {" (€):"}
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {minValue.toLocaleString("el-GR")}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("minPrice"));
+                                }}
+                            />
+                        );
+                    } else if (maxValue) {
+                        return (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Stack direction="row">
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "medium",
+                                                paddingRight: 1,
+                                            }}
+                                        >
+                                            {t("Maximum Price")}
+                                            {` (€):`}
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {maxValue.toLocaleString("el-GR")}
+                                        </Typography>
+                                    </Stack>
+                                }
+                                onDelete={() => {
+                                    dispatch(deleteFilter("maxPrice"));
+                                }}
+                            />
+                        );
+                    }
                 } else {
                     return (
                         <Chip
@@ -206,7 +266,7 @@ const ChosenFilters = (props: GridProps) => {
                                         {label}:{/* {isRole ? "" : ":"} */}
                                     </Typography>
                                     <Typography
-                                        sx={{ textTransform: "lowercase" }}
+                                        sx={{ textTransform: "capitalize" }}
                                     >
                                         {Array.isArray(valuesToDisplay)
                                             ? valuesToDisplay

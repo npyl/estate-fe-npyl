@@ -16,6 +16,7 @@ const initialState: IFilterProps = {
         categories: [],
         labels: [],
         states: [],
+        regions: [],
         cities: [],
         points: [],
         frameType: [],
@@ -96,6 +97,20 @@ const slice = createSlice({
         },
 
         // multiple
+        setRegions(state, { payload }) {
+            state.filters.regions = payload;
+            !state.ids.includes("regions") && state.ids.push("regions");
+
+            // INFO: having [] for payload means we cleared all regions; Therefore, there is no reason to have cities selected
+            if (Array.isArray(payload) && payload.length === 0) {
+                state.filters.cities = initialState.filters.cities;
+                state.ids = state.ids.filter((id) => id !== "cities");
+            }
+        },
+        setCities(state, { payload }) {
+            state.filters.cities = payload;
+            !state.ids.includes("cities") && state.ids.push("cities");
+        },
         setLabels(state, { payload }) {
             state.filters.labels = payload;
             !state.ids.includes("labels") && state.ids.push("labels");
@@ -211,25 +226,20 @@ const slice = createSlice({
         resetBasic: (state) => {
             state.filters.code = initialState.filters.code;
             state.filters.managerId = initialState.filters.managerId;
-            state.filters.states = initialState.filters.states;
-            state.filters.parentCategories =
-                initialState.filters.parentCategories;
-            state.filters.categories = initialState.filters.categories;
             state.filters.minPrice = initialState.filters.minPrice;
             state.filters.maxPrice = initialState.filters.maxPrice;
             state.filters.minArea = initialState.filters.minArea;
             state.filters.maxArea = initialState.filters.maxArea;
             state.filters.labels = initialState.filters.labels;
+            state.filters.active = initialState.filters.active;
 
             state.ids = state.ids.filter((id) => id !== "minArea");
             state.ids = state.ids.filter((id) => id !== "maxPrice");
             state.ids = state.ids.filter((id) => id !== "minPrice");
-            state.ids = state.ids.filter((id) => id !== "categories");
-            state.ids = state.ids.filter((id) => id !== "parentCategory");
-            state.ids = state.ids.filter((id) => id !== "states");
             state.ids = state.ids.filter((id) => id !== "managerId");
             state.ids = state.ids.filter((id) => id !== "code");
             state.ids = state.ids.filter((id) => id !== "labels");
+            state.ids = state.ids.filter((id) => id !== "active");
         },
         resetBedrooms: (state) => {
             state.filters.minBedrooms = initialState.filters.minBedrooms;
@@ -245,6 +255,21 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "minFloor");
             state.ids = state.ids.filter((id) => id !== "maxFloor");
         },
+
+        resetStates: (state) => {
+            state.filters.states = initialState.filters.states;
+            state.ids = state.ids.filter((id) => id !== "states");
+        },
+        resetCategories: (state) => {
+            state.filters.categories = initialState.filters.categories;
+            state.ids = state.ids.filter((id) => id !== "categories");
+        },
+        resetParentCategories: (state) => {
+            state.filters.parentCategories =
+                initialState.filters.parentCategories;
+            state.ids = state.ids.filter((id) => id !== "parentCategories");
+        },
+
         resetFrameType: (state) => {
             state.filters.frameType = initialState.filters.frameType;
             state.ids = state.ids.filter((id) => id !== "frameType");
@@ -269,6 +294,14 @@ const slice = createSlice({
 
         resetPoints: (state) => {
             state.filters.points = initialState.filters.points;
+        },
+
+        resetRegions: (state) => {
+            state.filters.regions = initialState.filters.regions;
+            state.filters.cities = initialState.filters.cities;
+
+            state.ids = state.ids.filter((id) => id !== "regions");
+            state.ids = state.ids.filter((id) => id !== "cities");
         },
 
         resetState: () => {
@@ -299,6 +332,7 @@ export const {
     setMinPrice,
     setIds,
     setActiveState,
+
     // multiple
     setLabels,
     setParentLocation,
@@ -307,6 +341,8 @@ export const {
     setSubCategories,
     setParentCategories,
     setPoints,
+    setRegions,
+    setCities,
 
     // delete
     deleteSubCategory,
@@ -324,6 +360,12 @@ export const {
     resetPoints,
     resetState,
     resetActiveState,
+
+    resetStates,
+    resetCategories,
+    resetParentCategories,
+
+    resetRegions,
 } = slice.actions;
 
 export const selectCode = ({ filters }: RootState) => filters.filters.code;
@@ -357,6 +399,9 @@ export const selectMinPrice = ({ filters }: RootState) =>
     filters.filters.minPrice;
 export const selectParentLocation = ({ filters }: RootState) =>
     filters.filters.parentLocation;
+export const selectRegions = ({ filters }: RootState) =>
+    filters.filters.regions;
+export const selectCities = ({ filters }: RootState) => filters.filters.cities;
 export const selectStates = ({ filters }: RootState) => filters.filters.states;
 export const selectParentCategories = ({ filters }: RootState) =>
     filters.filters.parentCategories;
@@ -389,7 +434,8 @@ export const sumOfChangedProperties = createSelector(
             "active",
 
             // multiple
-
+            "regions",
+            "cities",
             "states",
             "parentCategories",
             "categories",
@@ -400,19 +446,30 @@ export const sumOfChangedProperties = createSelector(
             "points",
         ];
 
-        return propertiesToInclude.reduce(
-            (acc, curr) =>
-                filter.filters[curr] !== initialState.filters[curr] // ignore default filter values (e.g. yearOfConstruction = 1960)
-                    ? Array.isArray(filter.filters[curr])
-                        ? filter.filters[curr].length > 0
-                            ? acc + 1
-                            : acc
-                        : filter.filters[curr]
+        return propertiesToInclude.reduce((acc, curr) => {
+            const currentFilterValue = filter.filters[curr];
+            const initialFilterValue = initialState.filters[curr];
+
+            if (curr === "active") {
+                // Handle the "active" filter explicitly, considering null as "All"
+                if (currentFilterValue !== initialFilterValue) {
+                    return acc + 1; // Add to the count if activeState changes
+                }
+                return acc;
+            }
+
+            if (currentFilterValue !== initialFilterValue) {
+                return Array.isArray(currentFilterValue)
+                    ? currentFilterValue.length > 0
                         ? acc + 1
                         : acc
-                    : acc,
-            0
-        );
+                    : currentFilterValue
+                    ? acc + 1
+                    : acc;
+            }
+
+            return acc;
+        }, 0);
     }
 );
 

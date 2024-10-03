@@ -1,7 +1,1 @@
-export {
-    StyledBox,
-    ListItem,
-    FilterButton,
-    StyledDialogContent,
-    StyledInputLabel,
-} from "./styled";
+export { StyledBox, ListItem, FilterButton, StyledInputLabel } from "./styled";

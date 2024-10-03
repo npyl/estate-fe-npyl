@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 // @mui
 import {
+    Avatar,
     Box,
     Checkbox,
     Dialog,
     DialogContent,
-    DialogTitle,
-    IconButton,
     Paper,
     Stack,
+    Tooltip,
     Typography,
 } from "@mui/material";
 // @types
@@ -19,10 +19,15 @@ import Iconify from "src/components/iconify";
 import Image from "src/components/image";
 //
 import KanbanDetails from "./details/KanbanDetails";
-import { useEditCardMutation } from "src/services/tickets";
+import {
+    useEditCardMutation,
+    useGetBoardQuery,
+    useMoveCardMutation,
+} from "src/services/tickets";
 import { useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -33,27 +38,62 @@ type Props = {
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
     const { id, name, attachments, completed, priority, user } = card || {};
+
     const theme = useTheme();
     const [editCard] = useEditCardMutation();
+    const { data: board } = useGetBoardQuery();
+    const [moveCard] = useMoveCardMutation();
     const { t } = useTranslation();
     const [openDetails, setOpenDetails] = useState(false);
-    const handleOpenDetails = () => setOpenDetails(true);
+
+    // Stop event propagation to prevent the task details modal from opening
+    const handleOpenDetails = () => {
+        if (!openDetails) {
+            setOpenDetails(true);
+        }
+    };
+
     const handleCloseDetails = () => setOpenDetails(false);
 
-    const handleChangeComplete = () =>
-        editCard({
-            id,
-            name,
-            attachments,
-            priority,
+    const handleChangeComplete = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        event.stopPropagation(); // checkbox click doesn't trigger modal open
 
-            completed: !completed,
-            userIds: user.map((u) => u.id),
-        });
-    const scrollbarColor = theme.palette.mode === "dark" ? "#444" : "#bbb";
-    const scrollbarHoverColor = theme.palette.mode === "dark" ? "#666" : "#888";
-    const scrollbarTrackColor =
-        theme.palette.mode === "dark" ? "#222" : "#f1f1f1";
+        const doneColumn = board?.columns.find((col) => col.id === 155);
+        const inProgressColumn = board?.columns.find((col) => col.id === 154);
+
+        if (!doneColumn || !inProgressColumn) return;
+
+        try {
+            await editCard({
+                id,
+                name,
+                attachments,
+                priority,
+                completed: !completed,
+                userIds: user.map((u) => u.id),
+            });
+
+            // Move the card based on the completed state
+            if (!completed) {
+                await moveCard({
+                    cardId: id,
+                    srcColumnId: card.id,
+                    dstColumnId: doneColumn.id,
+                });
+            } else {
+                await moveCard({
+                    cardId: id,
+                    srcColumnId: card.id,
+                    dstColumnId: inProgressColumn.id,
+                });
+            }
+            console.log(`after: ${card.completed}`);
+        } catch (error) {
+            console.error("Error moving card:", error);
+        }
+    };
 
     const [openModal, setOpenModal] = useState(false);
     const [currentImage, setCurrentImage] = useState("");
@@ -83,159 +123,180 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                         sx={{
-                            width: 1,
-                            borderRadius: 1,
-
+                            width: "100%",
+                            borderRadius: "8.5px",
+                            p: 1.5,
+                            border: "3px solid transparent",
                             boxShadow:
                                 "0px 1px 1px rgba(100, 116, 139, 0.06), 0px 1px 2px rgba(100, 116, 139, 0.1)",
                             "&:hover": {
                                 boxShadow:
                                     "0px 10px 10px rgba(31, 41, 55, 0.04), 0px 20px 25px rgba(31, 41, 55, 0.1)",
+                                backgroundColor: "#d0e7ff",
+                                border: "3px solid #3399ff",
+                                p: 1.5,
                             },
-
                             display: "flex",
                             flexDirection: "row",
-
                             cursor: "pointer",
+                            position: "relative", // Allows absolute positioning of child elements
                         }}
                         onClick={handleOpenDetails}
                     >
-                        <Checkbox
-                            disableRipple
-                            checked={completed}
-                            icon={
-                                <Iconify icon="eva:radio-button-off-outline" />
-                            }
-                            checkedIcon={
-                                <Iconify icon="eva:checkmark-circle-2-outline" />
-                            }
-                            onChange={handleChangeComplete}
-                        />
-
-                        <Box
-                            sx={{
-                                flexGrow: 1,
-                                // overflow: "clip",
-                                maxHeight: "170px",
-                                overflowX: "hidden",
-                                overflowY: "auto",
-                                "&::-webkit-scrollbar": {
-                                    height: "2px",
-                                    width: "9px",
-                                },
-                                "&::-webkit-scrollbar-thumb": {
-                                    backgroundColor: scrollbarColor,
-                                    borderRadius: "10px",
-                                },
-                                "&::-webkit-scrollbar-thumb:hover": {
-                                    backgroundColor: scrollbarHoverColor,
-                                },
-                                "&::-webkit-scrollbar-track": {
-                                    backgroundColor: scrollbarTrackColor,
-                                },
-                            }}
-                        >
-                            <Typography
-                                variant="body1"
-                                sx={{
-                                    height: 72,
-                                    lineHeight: "72px",
-                                    fontSize: "12px",
-                                    width: "200px",
-                                    fontWeight: "600",
-                                    overflow: "ellipsis",
-                                    transition: (theme) =>
-                                        theme.transitions.create("opacity", {
-                                            duration:
-                                                theme.transitions.duration
-                                                    .shortest,
-                                        }),
-                                    ...(completed && {
-                                        opacity: 0.48,
-                                    }),
-                                }}
-                            >
-                                {name}
-                            </Typography>
+                        {/* Priority Icon - Top Right Corner */}
+                        {(priority === 2 || priority === 1) && !completed && (
                             <Box
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    "& > *:not(:last-child)": {
-                                        marginBottom: "-35px", // Adjust space between images, much tighter now
-                                    },
-                                }}
+                                sx={{ position: "absolute", top: 8, right: 8 }}
                             >
-                                {attachments
-                                    .slice(0, attachments.length)
-                                    .map((attachment, index) => (
-                                        <Stack>
-                                            <Typography
-                                                textAlign="center"
-                                                variant="body2"
-                                                fontWeight={500}
-                                            >
-                                                {t("attachment")} {index}
-                                            </Typography>
-                                            <Image
-                                                key={index}
-                                                alt={`attachment-${index + 1}`}
-                                                src={attachment}
-                                                ratio="16/9"
+                                {priority === 2 && (
+                                    <Tooltip
+                                        placement="top"
+                                        title="High priority task"
+                                    >
+                                        <div>
+                                            <Iconify
+                                                icon="eva:alert-triangle-outline"
                                                 sx={{
-                                                    height: "70px",
-                                                    width: "14vw",
-                                                    objectFit: "contain",
-                                                    borderRadius: "50%",
-                                                    transition: (theme) =>
-                                                        theme.transitions.create(
-                                                            "opacity",
-                                                            {
-                                                                duration:
-                                                                    theme
-                                                                        .transitions
-                                                                        .duration
-                                                                        .shortest,
-                                                            }
-                                                        ),
-                                                    ...(completed && {
-                                                        opacity: 0.48,
-                                                    }),
-                                                }}
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    handleOpenModal(attachment);
+                                                    color: "red",
+                                                    fontSize: "20px",
                                                 }}
                                             />
-                                        </Stack>
-                                    ))}
+                                        </div>
+                                    </Tooltip>
+                                )}
+                                {priority === 1 && (
+                                    <Tooltip
+                                        placement="top"
+                                        title="Medium priority task"
+                                    >
+                                        <div>
+                                            <Iconify
+                                                icon="eva:alert-triangle-outline"
+                                                sx={{
+                                                    color: "orange",
+                                                    fontSize: "20px",
+                                                }}
+                                            />
+                                        </div>
+                                    </Tooltip>
+                                )}
                             </Box>
-                        </Box>
+                        )}
+
+                        <Stack spacing={1}>
+                            <Stack direction="row" alignItems="center">
+                                <Checkbox
+                                    disableRipple
+                                    checked={completed}
+                                    icon={
+                                        <Iconify icon="eva:radio-button-off-outline" />
+                                    }
+                                    checkedIcon={
+                                        <Iconify icon="eva:checkmark-circle-2-outline" />
+                                    }
+                                    onClick={(event) => event.stopPropagation()} // Prevent modal from opening
+                                    onChange={handleChangeComplete}
+                                />
+                                <Typography
+                                    variant="body1"
+                                    sx={{
+                                        minHeight: 37,
+                                        mt: 1,
+                                        lineHeight: "16px",
+                                        fontSize: "13px",
+                                        maxWidth: "400px",
+                                        fontWeight: "600",
+                                        overflow: "auto",
+                                        transition: (theme) =>
+                                            theme.transitions.create(
+                                                "opacity",
+                                                {
+                                                    duration:
+                                                        theme.transitions
+                                                            .duration.shortest,
+                                                }
+                                            ),
+                                        ...(completed && { opacity: 0.48 }),
+                                    }}
+                                >
+                                    {name}
+                                </Typography>
+                            </Stack>
+
+                            <Stack direction="row" alignItems="center" mt={1}>
+                                <ConfirmationNumberOutlinedIcon
+                                    sx={{
+                                        fontSize: "16px",
+                                        color: "#4CAF50",
+                                        ml: 0,
+                                    }}
+                                />
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        ml: 0.6,
+                                        fontWeight: 500,
+                                        color: "#666",
+                                    }}
+                                >
+                                    {`ticket-${id}`}{" "}
+                                </Typography>
+                            </Stack>
+
+                            {/* Assigned to emails - Bottom Right Corner */}
+                            <Box
+                                sx={{
+                                    position: "absolute",
+                                    bottom: 8,
+                                    right: 8,
+                                    textAlign: "right",
+                                }}
+                            >
+                                {user?.length > 0 && (
+                                    <Stack
+                                        direction="column"
+                                        alignItems="flex-end"
+                                    >
+                                        <Typography
+                                            fontSize={"10.5px"}
+                                            fontWeight={600}
+                                            color="text.secondary"
+                                            alignSelf="center"
+                                        >
+                                            {t("Assigned to")}
+                                        </Typography>
+                                        {user?.map((u, index) => (
+                                            <Typography
+                                                key={index}
+                                                fontSize={"10.5px"}
+                                                sx={{
+                                                    wordWrap: "break-word",
+                                                }}
+                                            >
+                                                {u.email}
+                                            </Typography>
+                                        ))}
+                                    </Stack>
+                                )}
+                            </Box>
+                        </Stack>
                     </Paper>
                 )}
             </Draggable>
 
-            <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md">
-                <DialogTitle>
-                    {t("attachment")}
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleCloseModal}
-                        sx={{
-                            position: "absolute",
-                            right: 8,
-                            top: 8,
-                            color: theme.palette.grey[500],
-                            "&:hover": {
-                                backgroundColor: "transparent", // Ensures the background is transparent on hover
-                            },
-                        }}
-                    >
-                        <CloseOutlinedIcon
-                            sx={{ backgroundColor: "transparent" }}
-                        />
-                    </IconButton>
-                </DialogTitle>
+            <Dialog
+                open={openModal}
+                onClose={handleCloseModal}
+                maxWidth="md"
+                PaperProps={{
+                    sx: {
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                    },
+                }}
+            >
                 <DialogContent dividers>
                     <img
                         src={currentImage}

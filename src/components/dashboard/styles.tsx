@@ -44,6 +44,7 @@ export const StyledPopper = styled((props: StyledPopperProps) => (
             lineHeight: "48px",
         },
     },
+
     "& .MuiAutocomplete-listbox": {
         "& .MuiAutocomplete-option": {
             padding: theme.spacing(0.5, 2),

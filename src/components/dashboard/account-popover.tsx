@@ -9,11 +9,10 @@ import {
     Popover,
     Typography,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import type { FC } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/use-auth";
-import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
+import { UserCircle as UserCircleIcon } from "../../assets/icons/user-circle";
 import { useTranslation } from "react-i18next";
 
 interface AccountPopoverProps {
@@ -100,10 +99,4 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             </Box>
         </Popover>
     );
-};
-
-AccountPopover.propTypes = {
-    anchorEl: PropTypes.any,
-    onClose: PropTypes.func,
-    open: PropTypes.bool,
 };

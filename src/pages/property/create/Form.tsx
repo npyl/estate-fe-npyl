@@ -7,26 +7,16 @@ import {
     Container,
     Grid,
 } from "@mui/material";
-
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
-
 import { IGlobalProperty } from "src/types/global";
-
 import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
 import { useCallback, useMemo, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { PPButton } from "@/components/styled";
-import Img from "./Img";
-
-const icons: Record<string, string> = {
-    RESIDENTIAL: "/static/categories/residential.png",
-    COMMERCIAL: "/static/categories/commercial.png",
-    LAND: "/static/categories/other.png",
-    OTHER: "/static/categories/other.svg",
-};
+import getParentCategoriesIcons from "@/assets/icons/parent-categories";
 
 interface IFormProps {
     isLoading: boolean;
@@ -114,7 +104,7 @@ export default function Form({
                                 clicked={key === parentCategory}
                                 onClick={() => handleParentCategorySelect(key)}
                             >
-                                <Img src={icons[key]} />
+                                {getParentCategoriesIcons()[key]}
                                 <Typography mt={1}>{value}</Typography>
                             </PPButton>
                         </Grid>

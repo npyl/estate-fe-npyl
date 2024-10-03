@@ -1,4 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import {
+    Stack,
+    SxProps,
+    Theme,
+    Typography,
+    useMediaQuery,
+} from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -7,37 +13,56 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
+import { getPropertyStatusColor } from "@/theme/colors";
+import getParentCategoriesIcons from "@/assets/icons/parent-categories";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 
-function renderImage(
+const iconSx: SxProps<Theme> = {
+    marginRight: 0.5,
+    color: "neutral.600",
+    fontSize: "16px",
+};
+
+function RenderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
 ) {
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
+    const src =
+        typeof propertyImage === "string" ? propertyImage : propertyImage?.url;
+
+    const isLaptopScreen = useMediaQuery("(max-width:1700px)");
 
     return (
-        <Box sx={{ position: "relative", width: "100%", height: "85%" }}>
+        <Stack
+            position="relative"
+            width={1}
+            height={1}
+            alignItems="center"
+            justifyContent="center"
+        >
             <Image
-                src={
-                    typeof propertyImage === "string"
-                        ? propertyImage
-                        : propertyImage?.url
-                }
+                src={src}
                 alt=""
                 ratio="16/9"
-                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                }}
             />
+
             {!isActive && (
-                <Box
+                <Stack
                     sx={{
                         position: "absolute",
-                        top: -5,
-                        right: -7,
-                        zIndex: 1,
+                        top: isLaptopScreen ? 10 : 0,
+                        right: -4,
+                        zIndex: 5000,
                         width: 23,
                         height: 23,
                         bgcolor: "grey.400",
                         borderRadius: "50%",
-                        display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                     }}
@@ -45,9 +70,9 @@ function renderImage(
                     <LinkOffOutlinedIcon
                         sx={{ color: "aliceblue", fontSize: 18 }}
                     />
-                </Box>
+                </Stack>
             )}
-        </Box>
+        </Stack>
     );
 }
 
@@ -65,38 +90,13 @@ function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
     const address = addressParts.filter((part) => part).join(", ");
 
     return (
-        <Typography
-            sx={{ fontSize: "small", textAlign: "center", textWrap: "wrap" }}
-        >
-            {address}
-        </Typography>
+        <Stack width={1} height={1} alignItems="center" justifyContent="center">
+            <Typography fontSize="small" textAlign="center" whiteSpace="wrap">
+                {address}
+            </Typography>
+        </Stack>
     );
 }
-
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-
-type Color = string;
-
-type StatusColors = Record<PropertyStatus, Color>;
-
-const STATUS_COLORS: StatusColors = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
 
 function StatusColor(params: GridCellParams) {
     const { t } = useTranslation();
@@ -108,25 +108,20 @@ function StatusColor(params: GridCellParams) {
     if (!value || !status) return <></>;
 
     const statusForColor = (value.key as string)?.trim();
-    const statusUpper = statusForColor?.toUpperCase() as PropertyStatus;
-
-    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+    const color = getPropertyStatusColor(statusForColor);
 
     return (
-        <Box
-            sx={{
-                width: 150,
-                height: 30,
-                backgroundColor: color,
-                color: "white",
-                borderRadius: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-        >
-            {t(status)}
-        </Box>
+        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+            <Typography
+                bgcolor={color}
+                color="white"
+                borderRadius="20px"
+                px={1.5}
+                py={1}
+            >
+                {t(status)}
+            </Typography>
+        </Stack>
     );
 }
 
@@ -139,6 +134,55 @@ const formatNumberWithPeriod = (num: any) => {
     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
+const RenderCodeCell = (params: GridCellParams) => {
+    if (!params.value) return null;
+
+    return (
+        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+            <NormalBadge
+                name={`${params.value || ""}`}
+                color={"#ffcc00"}
+                sx={{
+                    color: (theme) =>
+                        theme.palette.mode === "light"
+                            ? "#854D0E"
+                            : theme.palette.grey[700], // Fallback to grey if neutral is undefined
+                }}
+            />
+        </Stack>
+    );
+};
+
+const RenderParentCategoryCell = (params: GridCellParams) => {
+    const key = (params.value as KeyValue)?.key;
+    const value = (params.value as KeyValue)?.value;
+
+    if (!key || !value) return null;
+
+    return (
+        <Stack alignItems="center" justifyContent="center" width={1} height={1}>
+            <Stack direction="row" spacing={1}>
+                {getParentCategoriesIcons(iconSx)[key]}
+                <Typography mr={1} fontSize="small">
+                    {value}
+                </Typography>
+            </Stack>
+        </Stack>
+    );
+};
+
+const RenderCategoryCell = (params: GridCellParams) => (
+    <div
+        style={{
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            textAlign: "center",
+        }}
+    >
+        {(params.value as KeyValue)?.value}
+    </div>
+);
+
 //
 //  View Properties
 //
@@ -147,10 +191,8 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "propertyImage",
         headerName: t("Thumbnail") as string,
         align: "center",
-
         headerAlign: "center",
-        renderCell: renderImage,
-        sortable: false,
+        renderCell: RenderImage,
         flex: 1.2,
     },
     {
@@ -158,7 +200,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerName: t("Code") as string,
         headerAlign: "center",
         align: "center",
-        sortable: false,
+        renderCell: RenderCodeCell,
         flex: 1,
     },
     {
@@ -166,50 +208,34 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerAlign: "center",
         headerName: t("Parent Category") as string,
-        renderCell: (params) => t((params.value as KeyValue)?.value),
-        sortable: false,
-        flex: 1,
+        renderCell: RenderParentCategoryCell,
+        flex: 1.4,
     },
     {
         field: "category",
         align: "center",
         headerAlign: "center",
         headerName: t("Category") as string,
-        sortable: false,
-
-        renderCell: (params) => (
-            <div
-                style={{
-                    whiteSpace: "normal",
-                    wordWrap: "break-word",
-                    textAlign: "center",
-                }}
-            >
-                {t((params.value as KeyValue)?.value)}
-            </div>
-        ),
-
+        renderCell: RenderCategoryCell,
         flex: 1,
     },
     {
         field: "price",
         headerAlign: "center",
         align: "center",
-        sortable: false,
         headerName: t("Price") as string,
         renderCell: (params: GridCellParams) => {
             const formattedPrice = formatNumberWithPeriod(params.value);
             return formattedPrice ? `${formattedPrice} €` : "";
         },
 
-        flex: 1,
+        flex: 0.8,
     },
     {
         field: "state",
         headerAlign: "center",
         align: "center",
         headerName: t("State") as string,
-        sortable: false,
         renderCell: StatusColor,
         flex: 1,
     },
@@ -218,13 +244,10 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Area") as string,
-        sortable: false,
-
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
-
-        flex: 1,
+        flex: 0.8,
     },
     {
         field: "labels",
@@ -232,7 +255,6 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
-        sortable: false,
         flex: 1,
     },
     {
@@ -240,50 +262,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "center",
         align: "center",
         headerName: t("Location") as string,
-        sortable: false,
         renderCell: RenderLocation,
         flex: 1,
-    },
-];
-
-//
-//  Matching Properties
-//
-export const getSmallColumns = (t: TranslationType): GridColDef[] => [
-    {
-        field: "propertyImage",
-        headerName: t("Thumbnail") || "",
-        width: 180,
-        align: "center",
-        headerAlign: "center",
-        sortable: false,
-        renderCell: renderImage,
-    },
-    {
-        field: "code",
-        headerName: t("Reference ID") || "",
-        width: 180,
-        headerAlign: "center",
-        sortable: false,
-        align: "center",
-    },
-    {
-        field: "parentCategory",
-        headerName: t("Category") || "",
-        width: 180,
-        align: "center",
-        headerAlign: "center",
-        sortable: false,
-        renderCell: (params) => params.value?.key,
-    },
-    {
-        field: "category",
-        headerName: t("Subcategory") || "",
-        width: 180,
-        align: "center",
-        headerAlign: "center",
-        sortable: false,
-
-        renderCell: (params) => params.value?.key,
     },
 ];

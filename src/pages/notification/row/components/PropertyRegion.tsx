@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import { NormalBadge } from "@/components/PropertyCard/styled";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import "dayjs/locale/en"; // English locale

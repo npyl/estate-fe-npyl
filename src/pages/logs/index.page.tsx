@@ -81,7 +81,6 @@ const Logs: NextPage = () => {
                 <FilterMore
                     open={isDialogOpen}
                     onClose={closeDialog}
-                    changedFiltersCount={checkFields(allFilters) ? 1 : 0}
                     onResetFilter={() => {}}
                 >
                     <FilterLogSection />

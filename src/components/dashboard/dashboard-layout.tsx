@@ -1,5 +1,4 @@
 import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
 import { FC, ReactNode } from "react";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
@@ -39,8 +38,4 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
             <DashboardSidebar onClose={closeSidebar} open={isSidebarOpen} />
         </>
     );
-};
-
-DashboardLayout.propTypes = {
-    children: PropTypes.node,
 };

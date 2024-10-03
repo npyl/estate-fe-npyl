@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
-import { ClickAwayListener, Paper, PaperProps, Stack } from "@mui/material";
+import { Paper, PaperProps, Stack } from "@mui/material";
 import {
     selectLabels,
-    setLabels,
     sumOfChangedProperties,
-    resetState,
 } from "src/slices/customer/filters";
 // filters
 import FilterStatus from "./Filters/Status";
@@ -17,13 +15,13 @@ import FilterManager from "./Filters/ManagedBy";
 import FilterMore from "@/components/Filters/FilterMore/Dialog";
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
 import FilterSortBy from "@/components/Filters/SortBy";
-import FilterLabels from "@/pages/property/(FiltersBar)/Filters/Labels";
+import FilterLabels from "./Filters/Labels";
 // ok
 import useDialog from "@/hooks/useDialog";
 import { SpaceBetween } from "@/components/styled";
 import { getOptions } from "./constants";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "src/store";
+import { useSelector } from "src/store";
 import useResponsive from "@/hooks/useResponsive";
 
 interface FilterSectionProps extends PaperProps {
@@ -37,7 +35,6 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
     ...props
 }) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
     const labels = useSelector(selectLabels) || [];
@@ -49,27 +46,17 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <FilterBuyerLeaserAndMore />
             <FilterParentCategory />
             <FilterCategory />
-            <FilterLabels
-                variant="customer"
-                labels={labels}
-                setLabels={setLabels}
-            />
-
+            <FilterLabels />
             <PriceSelect type={"price"} />
             <PriceSelect type={"area"} />
-
             <FilterManager />
+            <FilterStatus />
         </>
     );
 
     const belowLg = useResponsive("down", "lg");
 
     const options = useMemo(() => getOptions(t), [t]);
-
-    const clearAllSelectedFilters = () => {
-        dispatch(resetState()); // Dispatch reset action to clear the filters
-        dispatch(setLabels([]));
-    };
 
     return (
         <>
@@ -109,12 +96,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                 <FilterMore
                     open={isDialogOpen}
                     onClose={closeDialog}
-                    changedFiltersCount={changedCustomerFilters}
-                    onResetFilter={clearAllSelectedFilters}
+                    onResetFilter={() => {}}
                 >
                     {filterContent}
-                    <FilterStatus />{" "}
-                    {/* the status is only visible inside the dialog! */}
                 </FilterMore>
             ) : null}
         </>

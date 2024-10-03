@@ -1,8 +1,8 @@
 "use client";
 
 import { Grid, GridProps } from "@mui/material";
-import PropertyCard from "@/components/PropertyCard";
-import { useEffect, useMemo } from "react";
+import PropertyCard from "@/components/Cards/PropertyCard";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useFilterPropertiesQuery } from "src/services/properties";
 import { selectAll } from "src/slices/filters";

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-import { Users as UsersIcon } from "@/icons/users";
+import { Users as UsersIcon } from "@/assets/icons/users";
 import useResponsive from "@/hooks/useResponsive";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import getBorderColor from "@/theme/borderColor";
 import { SpaceBetween } from "@/components/styled";
 import { useRouter } from "next/router";
-import { LAYOUT } from "@/utils/config";
+import { LAYOUT } from "@/config";
 
 const propertyItemType = "property-menu-item";
 const ownerItemType = "owner-menu-item";
@@ -155,6 +155,11 @@ const Subbar = () => {
 
     const belowLg = useResponsive("down", "lg");
 
+    //use these two specific paths so the subbar is sticky in edit and create property form
+    const isStickyPath =
+        router.pathname.startsWith("/property/edit") ||
+        router.pathname === "/property/create";
+
     return (
         <>
             {belowLg ? (
@@ -166,6 +171,12 @@ const Subbar = () => {
                     mb={1}
                     p={1}
                     gap={1}
+                    sx={{
+                        position: isStickyPath ? "sticky" : "relative",
+                        top: isStickyPath ? 64 : 0,
+                        zIndex: 100,
+                        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+                    }}
                 >
                     <SubbarItems overflow="auto" width="90%" />
 
@@ -176,8 +187,6 @@ const Subbar = () => {
                         onClick={showDropdown}
                         sx={{
                             color: "white",
-
-                            width: "12%",
                             fontSize: "16px",
                             borderRadius: "5px",
                             boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",

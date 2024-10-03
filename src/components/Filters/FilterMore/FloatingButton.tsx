@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Badge, Button } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import { useTranslation } from "react-i18next";
-import { LAYOUT } from "@/utils/config";
+import { LAYOUT } from "@/config";
 
 interface FloatingButtonProps {
     badgeContent: number;

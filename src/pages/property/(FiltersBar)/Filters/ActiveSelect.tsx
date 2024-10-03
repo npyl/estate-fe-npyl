@@ -28,17 +28,17 @@ export default function ActiveSelect() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "165px", maxWidth: "250px" }}>
-            <StyledInputLabel>{t("Active Property")}</StyledInputLabel>
+        <FormControl sx={{ minWidth: "135px", maxWidth: "250px" }}>
+            <StyledInputLabel>{t("Active")}</StyledInputLabel>
             <Select
                 value={activeState === null ? "" : activeState?.toString()}
                 onChange={handleChange}
                 renderValue={(selected: string) => {
-                    if (selected === "true") return "Active";
-                    if (selected === "false") return "Inactive";
+                    if (selected === "true") return t("Active");
+                    if (selected === "false") return t("Inactive");
                     return "";
                 }}
-                input={<OutlinedInput label={t("Active Property")} />}
+                input={<OutlinedInput label={t("Active")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 <MenuItem value="">

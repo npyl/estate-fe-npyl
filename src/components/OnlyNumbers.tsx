@@ -1,6 +1,6 @@
 import { InputAdornment, TextFieldProps } from "@mui/material";
 import { TextField } from "@mui/material";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, forwardRef } from "react";
 
 const BEtoVisible = (v: string | number): string => {
     if (!v) return "";
@@ -62,25 +62,25 @@ export interface OnlyNumbersInputProps
     onChange: (s: string) => void;
 }
 
-const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
-    adornment = "",
-    acceptsDecimal = false,
-    value,
-    onChange,
-    ...other
-}) => (
-    <TextField
-        value={BEtoVisible(value)}
-        onChange={(e) => visibleToBE(e, onChange, acceptsDecimal)}
-        {...other}
-        InputProps={{
-            ...other.InputProps,
-            // Adornment
-            endAdornment: adornment ? (
-                <InputAdornment position="end">{adornment}</InputAdornment>
-            ) : null,
-        }}
-    />
+const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
+    (
+        { adornment = "", acceptsDecimal = false, value, onChange, ...other },
+        ref
+    ) => (
+        <TextField
+            ref={ref}
+            value={BEtoVisible(value)}
+            onChange={(e) => visibleToBE(e, onChange, acceptsDecimal)}
+            {...other}
+            InputProps={{
+                ...other.InputProps,
+                // Adornment
+                endAdornment: adornment ? (
+                    <InputAdornment position="end">{adornment}</InputAdornment>
+                ) : null,
+            }}
+        />
+    )
 );
 
 export default React.memo(OnlyNumbersInput);

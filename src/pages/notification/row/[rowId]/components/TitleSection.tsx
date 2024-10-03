@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { NormalBadge } from "@/components/PropertyCard/styled";
+import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { ContactNotificationExtended } from "@/types/notification";
 
 interface TitleSectionProps {

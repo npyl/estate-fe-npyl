@@ -19,56 +19,56 @@ interface Props {
     onClose: () => void;
 }
 
-const AddColumnDialog = ({ onClose }: Props) => {
-    const { t } = useTranslation();
+// const AddColumnDialog = ({ onClose }: Props) => {
+//     const { t } = useTranslation();
 
-    const [name, setName] = useState("");
+//     const [name, setName] = useState("");
 
-    const [addColumn] = useAddColumnMutation();
+//     const [addColumn] = useAddColumnMutation();
 
-    const handleAdd = useCallback(() => {
-        addColumn({ name });
-        onClose();
-    }, [name]);
+//     const handleAdd = useCallback(() => {
+//         addColumn({ name });
+//         onClose();
+//     }, [name]);
 
-    return (
-        <Dialog open onClose={onClose}>
-            <DialogTitle
-                sx={{
-                    position: "relative",
-                    p: 2,
-                }}
-            >
-                {t("Add Task")}
+//     return (
+//         <Dialog open onClose={onClose}>
+//             <DialogTitle
+//                 sx={{
+//                     position: "relative",
+//                     p: 2,
+//                 }}
+//             >
+//                 {t("Add Task")}
 
-                <IconButton
-                    sx={{
-                        position: "absolute",
-                        top: 7,
-                        right: 7,
-                    }}
-                    onClick={onClose}
-                >
-                    <CloseIcon />
-                </IconButton>
-            </DialogTitle>
-            <DialogContent
-                sx={{
-                    p: 2,
-                }}
-            >
-                <TextField
-                    placeholder={t("Name").toString()}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleAdd}>{t("Add")}</Button>
-            </DialogActions>
-        </Dialog>
-    );
-};
+//                 <IconButton
+//                     sx={{
+//                         position: "absolute",
+//                         top: 7,
+//                         right: 7,
+//                     }}
+//                     onClick={onClose}
+//                 >
+//                     <CloseIcon />
+//                 </IconButton>
+//             </DialogTitle>
+//             <DialogContent
+//                 sx={{
+//                     p: 2,
+//                 }}
+//             >
+//                 <TextField
+//                     placeholder={t("Name").toString()}
+//                     value={name}
+//                     onChange={(e) => setName(e.target.value)}
+//                 />
+//             </DialogContent>
+//             <DialogActions>
+//                 <Button onClick={handleAdd}>{t("Add")}</Button>
+//             </DialogActions>
+//         </Dialog>
+//     );
+// };
 
 const KanbanColumnAdd = (props: FabProps) => {
     const [isOpen, openDialog, closeDialog] = useDialog();
@@ -79,7 +79,7 @@ const KanbanColumnAdd = (props: FabProps) => {
                 <AddIcon />
             </Fab>
 
-            {isOpen ? <AddColumnDialog onClose={closeDialog} /> : null}
+            {/* {isOpen ? <AddColumnDialog onClose={closeDialog} /> : null} */}
         </>
     );
 };

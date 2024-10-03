@@ -9,8 +9,8 @@ import { UploadProps } from "./types";
 // ----------------------------------------------------------------------
 
 const StyledDropZone = styled("div")(({ theme }) => ({
-    width: 64,
-    height: 64,
+    width: 35,
+    height: 33,
     fontSize: 24,
     display: "flex",
     flexShrink: 0,
@@ -18,6 +18,7 @@ const StyledDropZone = styled("div")(({ theme }) => ({
     alignItems: "center",
     justifyContent: "center",
     margin: theme.spacing(0.5),
+
     color: theme.palette.text.disabled,
     borderRadius: theme.shape.borderRadius,
     border: `dashed 1px ${theme.palette.divider}`,
@@ -65,7 +66,7 @@ export default function UploadBox({
         >
             <input {...getInputProps()} />
 
-            {placeholder || <Iconify icon="eva:cloud-upload-fill" width={28} />}
+            {placeholder || <Iconify icon="eva:cloud-upload-fill" width={25} />}
         </StyledDropZone>
     );
 }

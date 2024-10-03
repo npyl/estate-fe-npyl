@@ -11,9 +11,9 @@ import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Language } from "src/components/Language/types";
-import { DraftEditor } from "src/components/draft-editor";
-import { RHFTextField } from "src/components/hook-form";
+import { Language } from "@/components/Language/types";
+import DraftEditor from "@/components/draft-editor";
+import { RHFTextField } from "@/components/hook-form";
 import {
     useGenerateDescriptionMutation,
     useLazyGetPropertyByIdQuery,

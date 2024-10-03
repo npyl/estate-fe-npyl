@@ -1,30 +1,8 @@
-import MuiLink from "@mui/material/Link";
-import { GridRow, GridRowProps } from "@mui/x-data-grid";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
-
-// ------------------------------------------------------------------------
-
-interface CustomRowProps extends GridRowProps {
-    resource: string;
-}
-
-const CustomRow = ({ resource, ...props }: CustomRowProps) => (
-    <MuiLink
-        href={`/${resource}/${props.row?.id}`}
-        onClick={(event) => {
-            // Prevent navigation if clicking on the checkbox
-            event.target &&
-                (event.target as HTMLElement).closest(
-                    ".MuiDataGrid-checkboxInput"
-                );
-        }}
-    >
-        <GridRow {...props} />
-    </MuiLink>
-);
+import CustomRow from "./Row";
 
 // ------------------------------------------------------------------------
 
@@ -44,10 +22,14 @@ const DataGridTable: FC<GridProps> = ({
             slots={{
                 row: (props) => <CustomRow {...props} resource={resource} />,
             }}
+            slotProps={{
+                // NOTE: fixes checkbox click bubbling until caught by row's NextLink
+                baseCheckbox: {
+                    onClick: (e) => e.stopPropagation(),
+                },
+            }}
             localeText={{
                 toolbarColumns: t("Fields"),
-                columnsPanelTextFieldLabel: "Search Field",
-                columnsPanelTextFieldPlaceholder: "Name of Fields",
                 MuiTablePagination: {
                     labelRowsPerPage: t("Rows per page"),
                 },
@@ -58,6 +40,7 @@ const DataGridTable: FC<GridProps> = ({
             paginationModel={{ page, pageSize }}
             // ------------------
             disableColumnFilter
+            disableColumnSorting
             disableDensitySelector
             rowHeight={125}
             getRowId={(e) => e.id as number}
@@ -71,6 +54,7 @@ const DataGridTable: FC<GridProps> = ({
             rows={rows}
             columns={columns}
             pageSizeOptions={[25, 50, 100]}
+            // ...
             {...props}
         />
     );

@@ -13,15 +13,14 @@ import {
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
 import { useRef, useState } from "react";
-import { Menu as MenuIcon } from "../../icons/menu";
-import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
+import { Menu as MenuIcon } from "../../assets/icons/menu";
+import { UserCircle as UserCircleIcon } from "../../assets/icons/user-circle";
 import { AccountPopover } from "./account-popover";
 import { DashboardNavbarSearch } from "./dashboard-navbar-search";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import { Logo } from "../logo";
 import useResponsive from "@/hooks/useResponsive";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -49,7 +48,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
           }),
 
     position: "fixed", // Allow things to show on top of the AppBar
-    zIndex: 2,
+    zIndex: 200,
 }));
 
 const AccountButton = () => {
@@ -136,7 +135,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             {/* <Tooltip title="Alex Gamiesai file">
                             </Tooltip> */}
                             <StyledTypography variant="h5">
-                                PropertyPro v0.90
+                                PropertyPro v0.93
                             </StyledTypography>
                         </Link>
                     </Box>

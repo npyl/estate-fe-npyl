@@ -1,56 +1,55 @@
-import { Autocomplete, FormControl, TextField } from "@mui/material";
+import { Autocomplete, FormControl, MenuItem, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setManagerId } from "src/slices/filters";
 import { useAllUsersQuery } from "src/services/user";
-import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IUser } from "@/types/user";
+
+interface IOption {
+    id: number;
+    label: string;
+}
+
+const getOption = ({ id, firstName, lastName }: IUser): IOption => ({
+    id,
+    label: `${firstName} ${lastName}`,
+});
+
+const RenderOption = (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: IOption
+) => (
+    <li {...props} key={option.id}>
+        {option.label}
+    </li>
+);
 
 export default function ManagerSelect() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [autocompleteValue, setAutocompleteValue] = useState("");
-
-    const { data: managerIdsValues } = useAllUsersQuery(undefined, {
+    const { data: options } = useAllUsersQuery(undefined, {
         selectFromResult: ({ data }) => ({
-            data:
-                data?.map((user) => ({
-                    id: user.id,
-                    value: `${user.firstName} ${user.lastName}`,
-                })) || [],
+            data: data?.map(getOption) || [],
         }),
     });
 
-    const managerValues = useMemo(
-        () => managerIdsValues.map((pair) => pair.value),
-        [managerIdsValues]
-    );
-
-    const autocompleteChange = (_event: any, value: string | null) => {
-        setAutocompleteValue(value || "");
-
-        if (!value) {
+    const handleChange = (_event: any, v: IOption | null) => {
+        if (!v) {
             dispatch(setManagerId(undefined));
             return;
         }
 
-        const idForValue = managerIdsValues.find(
-            (manager) => manager.value === value
-        )?.id;
-
-        if (!idForValue) return;
-
-        dispatch(setManagerId(idForValue));
+        dispatch(setManagerId(v.id));
     };
 
     return (
         <FormControl sx={{ width: 180 }}>
             <Autocomplete
-                disablePortal
-                clearIcon={<></>}
-                value={autocompleteValue}
-                onChange={autocompleteChange}
-                options={managerValues}
+                disableClearable
+                onChange={handleChange}
+                options={options}
+                renderOption={RenderOption}
                 renderInput={(params) => (
                     <TextField
                         {...params}

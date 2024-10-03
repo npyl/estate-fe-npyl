@@ -8,12 +8,11 @@ import { ICustomerResultResponse } from "src/types/customer";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
-import { NormalBadge } from "@/components/PropertyCard/styled";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Link from "next/link";
 import { TypeLabels } from "@/components/TypeLabels";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
@@ -132,7 +131,6 @@ export const CustomerSearchItem = ({
                 >
                     <LocationOnOutlinedIcon
                         sx={{
-                            color: "black",
                             width: "18px",
                             height: "18px",
                         }}
@@ -152,7 +150,6 @@ export const CustomerSearchItem = ({
                             >
                                 <HomeOutlinedIcon
                                     sx={{
-                                        color: "black",
                                         width: "18px",
                                         height: "18px",
                                     }}
@@ -174,7 +171,15 @@ export const CustomerSearchItem = ({
                                                     textDecoration: "none",
                                                     color: "text.secondary",
                                                     "&:hover": {
-                                                        color: "black",
+                                                        color: (theme) =>
+                                                            theme.palette
+                                                                .mode ===
+                                                            "light"
+                                                                ? theme.palette
+                                                                      .neutral?.[700] ||
+                                                                  theme.palette
+                                                                      .grey[700] // Fallback to grey if neutral is undefined
+                                                                : "white",
                                                     },
                                                 }}
                                             >
@@ -200,7 +205,7 @@ export const CustomerSearchItem = ({
                     >
                         <EmailOutlinedIcon
                             sx={{
-                                color: "black",
+                                // color: "black",
                                 width: "18px",
                                 height: "18px",
                             }}
@@ -222,7 +227,7 @@ export const CustomerSearchItem = ({
                                 >
                                     <SellOutlinedIcon
                                         sx={{
-                                            color: "black",
+                                            // color: "black",
                                             width: "18px",
                                             height: "18px",
                                         }}
@@ -248,7 +253,7 @@ export const CustomerSearchItem = ({
                     >
                         <PhoneOutlinedIcon
                             sx={{
-                                color: "black",
+                                // color: "black",
                                 width: "18px",
                                 height: "18px",
                             }}
