@@ -110,8 +110,6 @@ export default async function handler(req: NextRequest) {
         if (req.method === "POST") {
             const body = (await req.json()) || [];
 
-            console.log("BODY: ", body, propertyId, integrationSite);
-
             const res = await fetch(
                 `${baseUrl}/image-order/${propertyId}?integrationSite=${integrationSite}`,
                 {

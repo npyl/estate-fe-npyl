@@ -9,7 +9,7 @@ build_image:
         - free -m
         - cd /var/www/estate-fe
         - git pull origin main
-        - docker build -t estate-fe .
+        - docker build --memory=4g -t estate-fe .
 
     only:
         - main

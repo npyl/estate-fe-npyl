@@ -21,7 +21,6 @@ import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import { Logo } from "../logo";
 import useResponsive from "@/hooks/useResponsive";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -136,7 +135,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             {/* <Tooltip title="Alex Gamiesai file">
                             </Tooltip> */}
                             <StyledTypography variant="h5">
-                                PropertyPro v0.92
+                                PropertyPro v0.93
                             </StyledTypography>
                         </Link>
                     </Box>
