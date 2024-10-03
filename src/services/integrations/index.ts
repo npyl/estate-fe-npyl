@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-    GetImagesOrderReq,
-    ImagesOrderRes,
-    UpdateImagesOrderReq,
-} from "./types";
+import { GetImagesOrderReq, UpdateImagesOrderReq } from "./types";
+import { ImagesOrderRes } from "@/types/integrations";
 // import { optimisticSetOrderedImages } from "./optimistic";
 
 export const integrations = createApi({
