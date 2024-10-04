@@ -13,8 +13,6 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
 import ViewHeader from "@/sections/ViewHeader";
 
-import "photoswipe/dist/photoswipe.css";
-
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
