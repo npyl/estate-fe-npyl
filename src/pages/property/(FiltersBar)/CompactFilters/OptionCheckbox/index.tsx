@@ -2,12 +2,11 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import useOption from "./useOption";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
-import { IPropertyFilterCounters } from "@/types/properties";
 import { FC } from "react";
 import { SelectorType, SetterType } from "./types";
 
 interface OptionCheckboxProps {
-    filterKey: keyof IPropertyFilterCounters;
+    optionKey: string;
     label: string;
 
     selector: SelectorType;
@@ -15,14 +14,14 @@ interface OptionCheckboxProps {
 }
 
 const OptionCheckbox: FC<OptionCheckboxProps> = ({
-    filterKey,
+    optionKey,
     label,
     selector,
     setter,
 }) => {
-    const { isChecked, handleToggle } = useOption(filterKey, selector, setter);
+    const { isChecked, handleToggle } = useOption(optionKey, selector, setter);
     const { counters } = useFilterCounters();
-    const isDisabled = counters?.[filterKey] === 0;
+    const isDisabled = counters?.[optionKey] === 0;
 
     return (
         <FormControlLabel

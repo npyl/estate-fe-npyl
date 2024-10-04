@@ -3,6 +3,7 @@ import {
     IProperties,
     IPropertiesPOST,
     IPropertyFilter,
+    IPropertyFilterCounters,
     IPropertyMarker,
     IPropertyResultResponse,
 } from "src/types/properties";
@@ -98,6 +99,7 @@ export const properties = createApi({
         "PropertyById",
         "PropertyByIdListings",
         "FilterProperties",
+        "FilterCounters",
         "SuggestedProperties",
         "SuggestedCustomers",
 
@@ -205,6 +207,18 @@ export const properties = createApi({
             providesTags: ["Properties"],
         }),
 
+        getFilterCounters: builder.query<
+            IPropertyFilterCounters,
+            IPropertyFilter
+        >({
+            query: (body) => ({
+                url: "/filter-numbering",
+                body,
+                method: "POST",
+            }),
+            providesTags: ["FilterCounters"],
+        }),
+
         suggestForCustomer: builder.query<
             IProperties[],
             ISuggestForCustomerParams
@@ -281,6 +295,7 @@ export const {
     // get
     useSearchPropertyQuery,
     useFilterPropertiesQuery,
+    useGetFilterCountersQuery,
     useAllPropertiesQuery,
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,

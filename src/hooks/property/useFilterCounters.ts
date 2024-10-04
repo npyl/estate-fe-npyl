@@ -1,4 +1,4 @@
-import { useGetFilterCountersQuery } from "@/services/public";
+import { useGetFilterCountersQuery } from "@/services/properties";
 import { selectAll } from "@/slices/filters";
 import { useSelector } from "react-redux";
 

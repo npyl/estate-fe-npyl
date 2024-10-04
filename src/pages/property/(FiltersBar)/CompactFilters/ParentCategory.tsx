@@ -47,7 +47,7 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
                 {getParentCategoriesIcons()[key]}
                 <Stack direction="row" spacing={1} mt={1}>
                     <Typography>{value}</Typography>
-                    <CounterChip filterKey={key as any} />
+                    <CounterChip optionKey={key} />
                 </Stack>
             </PPButton>
         </FlexItem>

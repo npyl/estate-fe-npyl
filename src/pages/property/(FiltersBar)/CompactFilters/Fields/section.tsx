@@ -2,7 +2,6 @@ import ClearableSection, {
     ClearableSectionProps,
 } from "@/components/Filters/ClearableSection";
 import { KeyValue } from "@/types/KeyValue";
-import Stack from "@mui/material/Stack";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { FC } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -56,7 +55,7 @@ const Option: FC<OptionProps> = ({ o: { key, value }, selector, toggle }) => {
                 onChange={handleToggle}
             />
 
-            <CounterChip filterKey={key as any} />
+            <CounterChip optionKey={key} />
         </Grid>
     );
 };

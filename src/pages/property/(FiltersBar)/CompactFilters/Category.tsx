@@ -22,13 +22,13 @@ interface IOption {
 const Option: FC<IOption> = ({ option: { key, value } }) => (
     <Stack direction="row" spacing={1} alignItems="center">
         <OptionCheckbox
-            filterKey={key as any}
+            optionKey={key}
             label={value}
             selector={selectSubCategories}
             setter={setSubCategories}
         />
 
-        <CounterChip filterKey={key as any} />
+        <CounterChip optionKey={key} />
     </Stack>
 );
 

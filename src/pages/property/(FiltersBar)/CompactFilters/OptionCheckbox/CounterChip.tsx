@@ -5,15 +5,14 @@ import Skeleton from "@mui/material/Skeleton";
 import { FC } from "react";
 
 interface CounterChipProps extends Omit<ChipProps, "disabled"> {
-    // TODO: IpropertyFilter's keys -> should be the same as IPropertyFilterCounters' keys...
-    filterKey: keyof IPropertyFilterCounters;
+    optionKey: string;
 }
 
-const CounterChip: FC<CounterChipProps> = ({ filterKey, ...props }) => {
+const CounterChip: FC<CounterChipProps> = ({ optionKey, ...props }) => {
     const { counters, isCountersLoading } = useFilterCounters();
 
-    const label = counters?.[filterKey]?.toString() || "0";
-    const isDisabled = counters?.[filterKey] === 0;
+    const label = counters?.[optionKey]?.toString() || "0";
+    const isDisabled = counters?.[optionKey] === 0;
 
     if (isCountersLoading)
         return (

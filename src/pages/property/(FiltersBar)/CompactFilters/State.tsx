@@ -17,13 +17,13 @@ interface IOption {
 const Option: FC<IOption> = ({ option: { key, value } }) => (
     <Grid item xs={6} sm={4} display="flex" alignItems="center" pr={1}>
         <OptionCheckbox
-            filterKey={key as any}
+            optionKey={key}
             label={value}
             selector={selectStates}
             setter={setStates}
         />
 
-        <CounterChip filterKey={key as any} />
+        <CounterChip optionKey={key} />
     </Grid>
 );
 
