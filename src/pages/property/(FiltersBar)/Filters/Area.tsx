@@ -7,14 +7,20 @@ import {
 
 import RangeSelect from "@/sections/Filters/Range";
 
-const AreaSelect = () => (
-    <RangeSelect
-        type="area"
-        selectMin={selectMinArea}
-        selectMax={selectMaxArea}
-        setMin={setMinArea}
-        setMax={setMaxArea}
-    />
-);
+import useRangeGenerator from "./useRangeGenerator";
+
+const AreaSelect = () => {
+    const { generateNumbers } = useRangeGenerator();
+    return (
+        <RangeSelect
+            type="area"
+            selectMin={selectMinArea}
+            selectMax={selectMaxArea}
+            setMin={setMinArea}
+            setMax={setMaxArea}
+            generateNumbers={generateNumbers}
+        />
+    );
+};
 
 export default AreaSelect;

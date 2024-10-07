@@ -1,7 +1,6 @@
 import { FormControl, InputLabel, Select } from "@mui/material";
 import { Grid, List, ListItemText, TextField } from "@mui/material";
 import { FC, useMemo } from "react";
-import { selectStates } from "src/slices/filters";
 import { RootState, useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
@@ -14,9 +13,18 @@ interface Props {
     selectMax: (s: RootState) => number | undefined;
     setMin: ActionCreatorWithPayload<any, any>;
     setMax: ActionCreatorWithPayload<any, any>;
+
+    generateNumbers: (type: "price" | "area") => number[];
 }
 
-const Content: FC<Props> = ({ type, selectMin, selectMax, setMin, setMax }) => {
+const Content: FC<Props> = ({
+    type,
+    selectMin,
+    selectMax,
+    setMin,
+    setMax,
+    generateNumbers,
+}) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -24,7 +32,6 @@ const Content: FC<Props> = ({ type, selectMin, selectMax, setMin, setMax }) => {
 
     const valueMin = useSelector(selectMin) || 0;
     const valueMax = useSelector(selectMax) || 0;
-    const states = useSelector(selectStates);
 
     //Code for deleting the '0' in minValue textField when a number is typed
     const handleInputChangeMin = (event: any) => {
@@ -52,10 +59,7 @@ const Content: FC<Props> = ({ type, selectMin, selectMax, setMin, setMax }) => {
         }
     };
 
-    const options = useMemo(
-        () => generateNumbers(states, type),
-        [states, type]
-    );
+    const options = useMemo(() => generateNumbers(type), [type]);
 
     return (
         <Grid container p={1} spacing={3} sx={{ textWrap: "nowrap" }}>
@@ -123,8 +127,6 @@ const Content: FC<Props> = ({ type, selectMin, selectMax, setMin, setMax }) => {
     );
 };
 
-// TODO: different selectors/setters for customer/property!
-
 const PriceSelect: FC<Props> = (props) => {
     const { type, selectMin, selectMax, setMin, setMax } = props;
 
@@ -178,30 +180,5 @@ const PriceSelect: FC<Props> = (props) => {
 function formatNumber(num: number) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
-function generateNumbers(states: string[], type: string) {
-    const numbers = [];
 
-    const FIVE_K = 5000;
-    const TEN_M = 10 * 1000 * 1000;
-    const FIFTY = 50;
-    const HUNDRED_K = 100 * 1000;
-
-    if (type === "price") {
-        if (states.includes("RENT") || states.includes("RENTED")) {
-            for (let i = 0; i <= FIVE_K; i += FIFTY) {
-                numbers.push(i);
-            }
-        } else {
-            for (let i = 0; i <= TEN_M; i += HUNDRED_K) {
-                numbers.push(i);
-            }
-        }
-    } else {
-        for (let i = 10; i <= 1000; i += 10) {
-            numbers.push(i);
-        }
-    }
-
-    return numbers;
-}
 export default PriceSelect;
