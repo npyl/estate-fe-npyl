@@ -150,6 +150,8 @@ interface Props {
     type: "price" | "area";
 }
 
+// TODO: different selectors/setters for customer/property!
+
 const PriceSelect = ({ type }: Props) => {
     const { t } = useTranslation();
 

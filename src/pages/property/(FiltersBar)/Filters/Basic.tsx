@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import CodeSelect from "./Code";
 import FilterLabels from "./Labels";
 import ManagerSelect from "./Manager";
-import RangeSelect from "./Range";
+import RangeSelect from "@/sections/Filters/Range";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import Stack from "@mui/material/Stack";
 import ActiveSelect from "./ActiveSelect";

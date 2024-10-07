@@ -10,7 +10,7 @@ import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
 import FilterCategory from "./Filters/Category";
 import FilterParentCategory from "./Filters/ParentCategory";
 import ChosenFilters from "./Filters/ChosenFilters";
-import PriceSelect from "./Filters/Price";
+import RangeSelect from "@/sections/Filters/Range";
 import FilterManager from "./Filters/ManagedBy";
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
 import FilterLabels from "./Filters/Labels";
@@ -53,8 +53,8 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <FilterParentCategory />
             <FilterCategory />
             <FilterLabels />
-            <PriceSelect type={"price"} />
-            <PriceSelect type={"area"} />
+            <RangeSelect type="price" />
+            <RangeSelect type="area" />
             <FilterManager />
         </>
     );
