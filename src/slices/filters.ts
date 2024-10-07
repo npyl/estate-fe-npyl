@@ -232,6 +232,8 @@ const slice = createSlice({
             state.filters.maxArea = initialState.filters.maxArea;
             state.filters.labels = initialState.filters.labels;
             state.filters.active = initialState.filters.active;
+            state.filters.regions = initialState.filters.regions;
+            state.filters.cities = initialState.filters.cities;
 
             state.ids = state.ids.filter((id) => id !== "minArea");
             state.ids = state.ids.filter((id) => id !== "maxPrice");
@@ -240,6 +242,8 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "code");
             state.ids = state.ids.filter((id) => id !== "labels");
             state.ids = state.ids.filter((id) => id !== "active");
+            state.ids = state.ids.filter((id) => id !== "regions");
+            state.ids = state.ids.filter((id) => id !== "cities");
         },
         resetBedrooms: (state) => {
             state.filters.minBedrooms = initialState.filters.minBedrooms;

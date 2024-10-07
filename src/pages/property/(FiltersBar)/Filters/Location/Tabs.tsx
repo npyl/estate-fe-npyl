@@ -37,7 +37,7 @@ const Tabs = () => {
                 />
             </MuiTabs>
 
-            <Box maxHeight="30vh" overflow="hidden auto">
+            <Box maxHeight="60vh" overflow="hidden auto">
                 {tab === "REGIONS" ? <RegionsTab /> : null}
                 {tab === "CITIES" ? <CitiesTab /> : null}
             </Box>

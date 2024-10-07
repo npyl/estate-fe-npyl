@@ -1,4 +1,4 @@
-import { Autocomplete, FormControl, MenuItem, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setManagerId } from "src/slices/filters";
 import { useAllUsersQuery } from "src/services/user";
@@ -44,19 +44,20 @@ export default function ManagerSelect() {
     };
 
     return (
-        <FormControl sx={{ width: 180 }}>
-            <Autocomplete
-                disableClearable
-                onChange={handleChange}
-                options={options}
-                renderOption={RenderOption}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder={t("Manager") as string}
-                    />
-                )}
-            />
-        </FormControl>
+        <Autocomplete
+            disableClearable
+            onChange={handleChange}
+            options={options}
+            renderOption={RenderOption}
+            renderInput={(params) => (
+                <TextField
+                    label={t("Manager")}
+                    sx={{
+                        width: 180,
+                    }}
+                    {...params}
+                />
+            )}
+        />
     );
 }

@@ -7,6 +7,7 @@ import PriceSelect from "./Price";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import Stack from "@mui/material/Stack";
 import ActiveSelect from "./ActiveSelect";
+import Location from "./Location";
 
 const Basic = () => {
     const { t } = useTranslation();
@@ -23,6 +24,8 @@ const Basic = () => {
                 <FilterLabels />
 
                 <ActiveSelect />
+
+                <Location />
             </Stack>
         </ClearableSection>
     );
