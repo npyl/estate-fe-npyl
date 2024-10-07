@@ -1768,6 +1768,7 @@ const resources = {
             Leaser: "Ενοικιαστής",
 
             Buyer: "Αγοραστής",
+
             "Address Details": "Λεπτομέρειες Διεύθυνσης",
             Features: "Χαρακτηριστικά",
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",

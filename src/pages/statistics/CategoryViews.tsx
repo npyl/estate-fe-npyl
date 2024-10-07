@@ -235,8 +235,9 @@ export default function ViewsOfPropertiesChart() {
                 <Stack direction="row" gap={1} flexWrap="wrap">
                     <Select value={timeframe} onChange={handleTimeframeSelect}>
                         <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
-                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
                         <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
                         <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                         <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                     </Select>
