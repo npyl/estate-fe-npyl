@@ -1,6 +1,6 @@
 // PropertyDataGrid
 
-import { Skeleton } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import { GridValidRowModel } from "@mui/x-data-grid";
 import DataGridTable from "../DataGrid";
 import { FC, useMemo } from "react";
@@ -14,7 +14,12 @@ interface PropertyDataGridProps extends Omit<GridProps, "rows" | "columns"> {
 }
 
 // Skeleton
-const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
+const renderSkeletonCell = () => (
+    <Stack justifyContent="center" alignItems="center" width={1} height={1}>
+        <Skeleton width="50%" height={30} animation="wave" />
+    </Stack>
+);
+
 const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
     id: index + 1,
 }));
