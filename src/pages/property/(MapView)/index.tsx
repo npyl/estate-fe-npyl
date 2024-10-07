@@ -200,7 +200,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                 right="0px"
             >
                 <Map
-                    search
                     mainMarker={mainMarker}
                     activeMarker={activeMarker}
                     setActiveMarker={setActiveMarker}
