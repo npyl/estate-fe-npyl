@@ -4,11 +4,23 @@ import { useSelector } from "react-redux";
 import { selectRegions, setRegions } from "@/slices/filters";
 import Skeleton from "./Skeleton";
 import { useDispatch } from "react-redux";
+import React, { FC, useMemo } from "react";
+import withSearch from "./withSearch";
 
-const RegionsTab = () => {
+interface Props {
+    search: string;
+}
+
+const RegionsTab: FC<Props> = ({ search }) => {
     const dispatch = useDispatch();
 
-    const { data: regionsOptions, isLoading } = useGetRegionsQuery();
+    const { data, isLoading } = useGetRegionsQuery();
+
+    const regionsOptions = useMemo(
+        () => data?.filter(withSearch(search)),
+        [data, search]
+    );
+
     const regions = useSelector(selectRegions) || [];
 
     const handleClick = (areaID: number) => {
@@ -36,4 +48,4 @@ const RegionsTab = () => {
     );
 };
 
-export default RegionsTab;
+export default React.memo(RegionsTab);

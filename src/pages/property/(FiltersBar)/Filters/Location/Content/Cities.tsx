@@ -11,6 +11,8 @@ import { IGeoLocation } from "@/types/geolocation";
 import CustomMenuItem from "./CustomMenuItem";
 import Skeleton from "./Skeleton";
 import { useDispatch } from "react-redux";
+import React from "react";
+import withSearch from "./withSearch";
 
 // --------------------------------------------------------------------
 
@@ -44,13 +46,18 @@ const getMunicipOption = (g: IGeoLocation) => (
 
 interface SectionProps {
     parentID: number;
+    search: string;
 }
 
-const MunicipalitiesSection: FC<SectionProps> = ({ parentID }) => {
+const MunicipalitiesSection: FC<SectionProps> = ({ parentID, search }) => {
     const { i18n } = useTranslation();
     const { data: regionsOptions } = useGetRegionsQuery();
-    const { data: municipsOptions, isLoading } =
-        useGetMunicipalitiesQuery(parentID);
+    const { data, isLoading } = useGetMunicipalitiesQuery(parentID);
+
+    const municipsOptions = useMemo(
+        () => data?.filter(withSearch(search)),
+        [data, search]
+    );
 
     const title = useMemo(() => {
         const o = regionsOptions?.find(({ areaID }) => areaID === parentID);
@@ -70,15 +77,18 @@ const MunicipalitiesSection: FC<SectionProps> = ({ parentID }) => {
     );
 };
 
-const getMunicipalitiesSection = (areaID: string) => (
-    <MunicipalitiesSection key={areaID} parentID={+areaID} />
-);
+const getMunicipalitiesSection = (search: string) => (areaID: string) =>
+    <MunicipalitiesSection key={areaID} parentID={+areaID} search={search} />;
 
 // --------------------------------------------------------------------
 
-const CitiesTab = () => {
+interface Props {
+    search: string;
+}
+
+const CitiesTab: FC<Props> = ({ search }) => {
     const regions = useSelector(selectRegions) || [];
-    return regions?.map(getMunicipalitiesSection);
+    return regions?.map(getMunicipalitiesSection(search));
 };
 
-export default CitiesTab;
+export default React.memo(CitiesTab);

@@ -1,30 +1,38 @@
 import MuiTabs from "@mui/material/Tabs";
 import MuiTab from "@mui/material/Tab";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import RegionsTab from "./Regions";
+import { ChangeEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectRegions } from "@/slices/filters";
-import dynamic from "next/dynamic";
-import Box from "@mui/material/Box";
-const CitiesTab = dynamic(() => import("./Cities"));
-
-type TTab = "REGIONS" | "CITIES";
+import Content from "./Content";
+import { TTab } from "./types";
+import TextField from "@mui/material/TextField";
+import { useDebounce } from "use-debounce";
 
 const Tabs = () => {
     const { t } = useTranslation();
 
     const [tab, setTab] = useState<TTab>("REGIONS");
-    const handleChange = (_: any, t: TTab) => setTab(t);
 
     const regions = useSelector(selectRegions) || [];
     const notHaveRegions = regions.length === 0;
+
+    const [search, setSearch] = useState("");
+    const [debounced] = useDebounce(search, 500);
+
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
+        setSearch(e.target.value.toLowerCase());
+
+    const handleTabChange = (_: any, t: TTab) => {
+        setSearch("");
+        setTab(t);
+    };
 
     return (
         <>
             <MuiTabs
                 value={tab}
-                onChange={handleChange}
+                onChange={handleTabChange}
                 sx={{
                     px: 3,
                 }}
@@ -37,10 +45,17 @@ const Tabs = () => {
                 />
             </MuiTabs>
 
-            <Box maxHeight="60vh" overflow="hidden auto">
-                {tab === "REGIONS" ? <RegionsTab /> : null}
-                {tab === "CITIES" ? <CitiesTab /> : null}
-            </Box>
+            <TextField
+                fullWidth
+                value={search}
+                onChange={handleSearch}
+                sx={{
+                    px: 3,
+                    mt: 1,
+                }}
+            />
+
+            <Content tab={tab} debounced={debounced} />
         </>
     );
 };
