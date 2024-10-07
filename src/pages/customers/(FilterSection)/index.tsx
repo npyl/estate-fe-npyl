@@ -10,11 +10,9 @@ import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
 import FilterCategory from "./Filters/Category";
 import FilterParentCategory from "./Filters/ParentCategory";
 import ChosenFilters from "./Filters/ChosenFilters";
-import RangeSelect from "@/sections/Filters/Range";
 import FilterManager from "./Filters/ManagedBy";
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
 import FilterLabels from "./Filters/Labels";
-// ok
 import useDialog from "@/hooks/useDialog";
 import { getOptions } from "./constants";
 import { useTranslation } from "react-i18next";
@@ -24,6 +22,8 @@ import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
 import FilterSortBy from "@/components/Filters/SortBy";
 import { useDispatch } from "react-redux";
+import PriceSelect from "./Filters/Price";
+import AreaSelect from "./Filters/Area";
 const FilterMore = dynamic(
     () => import("@/components/Filters/FilterMore/Dialog")
 );
@@ -53,8 +53,8 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <FilterParentCategory />
             <FilterCategory />
             <FilterLabels />
-            <RangeSelect type="price" />
-            <RangeSelect type="area" />
+            <PriceSelect />
+            <AreaSelect />
             <FilterManager />
         </>
     );

@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import CodeSelect from "./Code";
 import FilterLabels from "./Labels";
 import ManagerSelect from "./Manager";
-import RangeSelect from "@/sections/Filters/Range";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import Stack from "@mui/material/Stack";
 import ActiveSelect from "./ActiveSelect";
 import Location from "./Location";
+import PriceSelect from "./Price";
+import AreaSelect from "./Area";
 
 const Basic = () => {
     const { t } = useTranslation();
@@ -18,8 +19,8 @@ const Basic = () => {
                 <CodeSelect />
                 <ManagerSelect />
 
-                <RangeSelect type="price" />
-                <RangeSelect type="area" />
+                <PriceSelect />
+                <AreaSelect />
 
                 <FilterLabels />
 

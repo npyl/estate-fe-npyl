@@ -1,64 +1,41 @@
 import { FormControl, InputLabel, Select } from "@mui/material";
 import { Grid, List, ListItemText, TextField } from "@mui/material";
 import { FC, useMemo } from "react";
-import {
-    selectMaxArea,
-    selectMaxPrice,
-    selectMinArea,
-    selectMinPrice,
-    selectStates,
-    setMaxArea,
-    setMaxPrice,
-    setMinArea,
-    setMinPrice,
-} from "src/slices/filters";
-import { useDispatch, useSelector } from "src/store";
+import { selectStates } from "src/slices/filters";
+import { RootState, useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-interface ContentProps {
+interface Props {
     type: "price" | "area";
+
+    selectMin: (s: RootState) => number | undefined;
+    selectMax: (s: RootState) => number | undefined;
+    setMin: ActionCreatorWithPayload<any, any>;
+    setMax: ActionCreatorWithPayload<any, any>;
 }
 
-const Content: FC<ContentProps> = ({ type }) => {
+const Content: FC<Props> = ({ type, selectMin, selectMax, setMin, setMax }) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { setMinValue, setMaxValue, selectMinValue, selectMaxValue, symbol } =
-        useMemo(
-            () =>
-                type === "price"
-                    ? {
-                          setMinValue: setMinPrice,
-                          setMaxValue: setMaxPrice,
-                          selectMinValue: selectMinPrice,
-                          selectMaxValue: selectMaxPrice,
-                          symbol: "€",
-                      }
-                    : {
-                          setMinValue: setMinArea,
-                          setMaxValue: setMaxArea,
-                          selectMinValue: selectMinArea,
-                          selectMaxValue: selectMaxArea,
-                          symbol: "m²",
-                      },
-            [type]
-        );
+    const symbol = type === "price" ? "€" : "m²";
 
-    const valueMin = useSelector(selectMinValue) || 0;
-    const valueMax = useSelector(selectMaxValue) || 0;
+    const valueMin = useSelector(selectMin) || 0;
+    const valueMax = useSelector(selectMax) || 0;
     const states = useSelector(selectStates);
 
     //Code for deleting the '0' in minValue textField when a number is typed
     const handleInputChangeMin = (event: any) => {
         let newValue = event.target.value;
         if (newValue === "" || isNaN(newValue)) {
-            dispatch(setMinValue(""));
+            dispatch(setMin(""));
         } else {
             if (valueMin === 0) {
                 newValue = newValue.slice(-1);
             }
-            dispatch(setMinValue(newValue));
+            dispatch(setMin(newValue));
         }
     };
 
@@ -66,12 +43,12 @@ const Content: FC<ContentProps> = ({ type }) => {
     const handleInputChangeMax = (event: any) => {
         let newValue = event.target.value;
         if (newValue === "" || isNaN(newValue)) {
-            dispatch(setMaxValue(""));
+            dispatch(setMax(""));
         } else {
             if (valueMax === 0) {
                 newValue = newValue.slice(-1);
             }
-            dispatch(setMaxValue(newValue));
+            dispatch(setMax(newValue));
         }
     };
 
@@ -95,7 +72,7 @@ const Content: FC<ContentProps> = ({ type }) => {
                         overflowY: "scroll",
                     }}
                 >
-                    <ListItem onClick={() => dispatch(setMinValue(undefined))}>
+                    <ListItem onClick={() => dispatch(setMin(undefined))}>
                         <ListItemText primary={t("Indifferent")} />
                     </ListItem>
                     {options.map((option) => (
@@ -103,8 +80,8 @@ const Content: FC<ContentProps> = ({ type }) => {
                             key={option}
                             onClick={() =>
                                 option > valueMax && valueMax !== 0
-                                    ? dispatch(setMaxValue(option))
-                                    : dispatch(setMinValue(option))
+                                    ? dispatch(setMax(option))
+                                    : dispatch(setMin(option))
                             }
                         >
                             <ListItemText primary={formatNumber(option)} />
@@ -125,7 +102,7 @@ const Content: FC<ContentProps> = ({ type }) => {
                         overflowY: "scroll",
                     }}
                 >
-                    <ListItem onClick={() => dispatch(setMaxValue(undefined))}>
+                    <ListItem onClick={() => dispatch(setMax(undefined))}>
                         <ListItemText primary={t("Indifferent")} />
                     </ListItem>
                     {options.map((option) => (
@@ -133,8 +110,8 @@ const Content: FC<ContentProps> = ({ type }) => {
                             key={option}
                             onClick={() =>
                                 option < valueMin
-                                    ? dispatch(setMinValue(option))
-                                    : dispatch(setMaxValue(option))
+                                    ? dispatch(setMin(option))
+                                    : dispatch(setMax(option))
                             }
                         >
                             <ListItemText primary={formatNumber(option)} />
@@ -146,35 +123,29 @@ const Content: FC<ContentProps> = ({ type }) => {
     );
 };
 
-interface Props {
-    type: "price" | "area";
-}
-
 // TODO: different selectors/setters for customer/property!
 
-const PriceSelect = ({ type }: Props) => {
+const PriceSelect: FC<Props> = (props) => {
+    const { type, selectMin, selectMax, setMin, setMax } = props;
+
     const { t } = useTranslation();
 
-    const { selectMinValue, selectMaxValue, symbol, label } = useMemo(
+    const { symbol, label } = useMemo(
         () =>
             type === "price"
                 ? {
-                      selectMinValue: selectMinPrice,
-                      selectMaxValue: selectMaxPrice,
                       symbol: "€",
                       label: "Price",
                   }
                 : {
-                      selectMinValue: selectMinArea,
-                      selectMaxValue: selectMaxArea,
                       symbol: "m²",
                       label: "Area",
                   },
         [type]
     );
 
-    const valueMin = useSelector(selectMinValue) || 0;
-    const valueMax = useSelector(selectMaxValue) || 0;
+    const valueMin = useSelector(selectMin) || 0;
+    const valueMax = useSelector(selectMax) || 0;
 
     const value = useMemo(() => {
         if (valueMin === 0 && valueMax === 0) {
@@ -198,7 +169,7 @@ const PriceSelect = ({ type }: Props) => {
                 value={value}
                 renderValue={(selected) => selected as string}
             >
-                <Content type={type} />
+                <Content {...props} />
             </Select>
         </FormControl>
     );
