@@ -37,7 +37,7 @@ const Option: FC<OptionProps> = ({ o: { key, value }, selector, toggle }) => {
     const isChecked = values.includes(key);
     const isDisabled = mapper(key, counters) === 0;
 
-    const handleToggle = () => dispatch(toggle({}));
+    const handleToggle = () => dispatch(toggle(key));
 
     return (
         <Grid
