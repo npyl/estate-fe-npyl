@@ -16,6 +16,7 @@ import DraftEditor from "@/components/draft-editor";
 import { RHFTextField } from "@/components/hook-form";
 import {
     useGenerateDescriptionMutation,
+    useImproveDescriptionMutation,
     useLazyGetPropertyByIdQuery,
 } from "src/services/properties";
 import { IOpenAIDetailsPOST } from "src/types/openai";
@@ -77,12 +78,14 @@ interface UpperRightOptionsProps {
     lang: Language;
     isLoading: boolean;
     onGenerate: (d: IOpenAIDetailsPOST) => Promise<string>;
+    onImprove: (d: IOpenAIDetailsPOST) => Promise<string>;
     onChatTextChange: (s: string) => void;
     onClickTranslate: () => void;
 }
 
 const UpperRightOptions = ({
     onGenerate,
+    onImprove,
     onChatTextChange,
     onClickTranslate,
     isLoading,
@@ -101,6 +104,16 @@ const UpperRightOptions = ({
             onGenerate({
                 ...openAIDetails,
                 ...fixDropdowns(openAIDetails),
+            }).then(onChatTextChange),
+        [openAIDetails]
+    );
+
+    const handleImprove = useCallback(
+        () =>
+            onImprove({
+                ...openAIDetails, // passing the existing details
+                improveOption: "CONCISE", // or whichever option the user selects
+                oldDescription: openAIDetails.oldDescription, // make sure the oldDescription is passed
             }).then(onChatTextChange),
         [openAIDetails]
     );
@@ -124,6 +137,25 @@ const UpperRightOptions = ({
         [isLoading, handleGenerate, belowMd]
     );
 
+    const improveButton = useMemo(
+        () => (
+            <LoadingButton
+                loading={isLoading}
+                loadingPosition="start"
+                startIcon={<ChatGPTIcon />}
+                variant="outlined"
+                onClick={handleImprove}
+            >
+                {isLoading
+                    ? t("Improving...")
+                    : belowMd
+                    ? t("Improve")
+                    : t("Improve Description")}
+            </LoadingButton>
+        ),
+        [isLoading, handleImprove, belowMd]
+    );
+
     return (
         <Box display="flex" flexDirection="row" gap={1}>
             {canTranslate ? (
@@ -132,6 +164,7 @@ const UpperRightOptions = ({
                 </Button>
             ) : null}
             {chatGPTButton}
+            {improveButton}
         </Box>
     );
 };
@@ -179,19 +212,44 @@ const ChatGPTResult = ({
         </>
     ) : null;
 };
-
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
     const { setValue, watch } = useFormContext();
 
     const [chatTextEN, setChatTextEN] = useState("");
     const [chatTextGR, setChatTextGR] = useState("");
-    const [generateDescription, { isLoading }] =
+    const [generateDescription, { isLoading: isGenerating }] =
         useGenerateDescriptionMutation();
 
+    const [improveDescription, { isLoading: isImproving }] =
+        useImproveDescriptionMutation();
+    const [generatedDescription, setGeneratedDescription] = useState("");
+
     const generateCallback = useCallback(
-        async (d: IOpenAIDetailsPOST) => generateDescription(d).unwrap(),
-        []
+        async (d: IOpenAIDetailsPOST) => {
+            const description = await generateDescription(d).unwrap();
+            setGeneratedDescription(description); // Store it for later use as `oldDescription`
+            return description;
+        },
+        [setGeneratedDescription]
+    );
+
+    const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
+        return Object.fromEntries(
+            Object.entries(payload).filter(([_, value]) => value !== "")
+        );
+    };
+
+    const improveCallback = useCallback(
+        async (d: IOpenAIDetailsPOST) => {
+            const sanitizedPayload = sanitizePayload({
+                ...d,
+                oldDescription: generatedDescription, // Use the generated description as oldDescription
+            });
+
+            return await improveDescription(sanitizedPayload).unwrap();
+        },
+        [generatedDescription]
     );
 
     const [editorState, setEditorState] = useState<EditorState>(
@@ -219,7 +277,6 @@ const DescriptionSection: React.FC = () => {
 
     const debouncedValuesChange = useCallback(
         async (newEditorState: EditorState) => {
-            // NOTE: useDebouncedCallback has memoization errors => use a custom debounce
             await sleep(100);
 
             const contentState = newEditorState.getCurrentContent();
@@ -251,7 +308,6 @@ const DescriptionSection: React.FC = () => {
             return;
         }
 
-        // convert description (string representing JSON) to JSON and set state
         const contentState = convertFromRaw(JSON.parse(description));
         setEditorState(EditorState.createWithContent(contentState));
     }, []);
@@ -261,33 +317,21 @@ const DescriptionSection: React.FC = () => {
         [lang]
     );
 
-    // ------------------------------------------------------------------------
-
     const [translate] = useTranslateMutation();
 
     const handleTranslate = useCallback(async () => {
-        // Fetching the texts to be translated
         const titleToTranslate = watch("descriptions[0].title");
         const descriptionToTranslate = watch("descriptions[0].description");
 
-        console.log("Title to Translate:", titleToTranslate);
-        console.log("Description to Translate:", descriptionToTranslate);
+        if (!titleToTranslate && !descriptionToTranslate) return;
 
-        // Ensure both texts are available
-        if (!titleToTranslate && !descriptionToTranslate) {
-            console.log("No text provided for translation.");
-            return;
-        }
-
-        // Combine texts into an array, assuming the API can handle multiple texts
         const textsToTranslate = [];
         if (titleToTranslate) textsToTranslate.push(titleToTranslate);
         if (descriptionToTranslate)
             textsToTranslate.push(descriptionToTranslate);
 
-        // Setting up the parameters for the API call
         const params = {
-            source_lang: "EL", // Assuming Greek to English translation
+            source_lang: "EL",
             target_lang: "EN",
             text: textsToTranslate,
         };
@@ -296,13 +340,9 @@ const DescriptionSection: React.FC = () => {
             const res = await translate(params).unwrap();
             const translatedTexts = res.translations.map(({ text }) => text);
 
-            console.log("Translated Texts:", translatedTexts);
-
             setValue("descriptions[1].title", translatedTexts[0]);
             const contentState = convertFromRaw(JSON.parse(translatedTexts[1]));
             onEditorStateChange(EditorState.createWithContent(contentState));
-
-            // Optionally, navigate to another page or update UI to reflect changes
         } catch (error) {
             console.error("Translation error:", error);
         }
@@ -315,19 +355,19 @@ const DescriptionSection: React.FC = () => {
             endNode={
                 <UpperRightOptions
                     onGenerate={generateCallback}
+                    onImprove={improveCallback}
                     onChatTextChange={onChatTextChange}
-                    isLoading={isLoading}
+                    isLoading={isGenerating || isImproving}
                     lang={lang}
                     onClickTranslate={handleTranslate}
                 />
             }
             onSelect={handleTabChange}
-            disabled={isLoading}
+            disabled={isGenerating || isImproving}
         >
             <Typography variant="h6" flex={1}>
                 {`${t("Title")} (${lang})`}
             </Typography>
-            {/* NOTE: RHF does not support dynamic name by default; use key to alleviate this */}
             <RHFTextField fullWidth key={title} name={title} />
             <Typography variant="h6" flex={1}>
                 {`${t("Description")} (${lang})`}
@@ -339,7 +379,6 @@ const DescriptionSection: React.FC = () => {
                 editorState={editorState}
                 onEditorStateChange={onEditorStateChange}
             />
-
             <ChatGPTResult
                 lang={lang}
                 chatTextEN={chatTextEN}

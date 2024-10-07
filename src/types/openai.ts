@@ -30,4 +30,7 @@ export interface IOpenAIDetails {
     distanceFromSupermarket: number;
 
     language: string;
+
+    improveOption?: string;
+    oldDescription?: string;
 }

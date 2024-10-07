@@ -294,6 +294,21 @@ export const properties = createApi({
                 responseHandler: "text",
             }),
         }),
+
+        improveDescription: builder.mutation<string, IOpenAIDetailsPOST>({
+            query: (body) => {
+                return {
+                    url: `/description/improve`,
+                    method: "POST",
+                    body: {
+                        ...body,
+                        oldDescription: body.oldDescription || "",
+                        improveOption: body.improveOption || "CONCISE", // ensure improveOption is passed
+                    },
+                    responseHandler: "text",
+                };
+            },
+        }),
     }),
 });
 
@@ -327,7 +342,7 @@ export const {
     useLazyCheckKeyCodeExistsQuery,
 
     useGenerateDescriptionMutation,
-
+    useImproveDescriptionMutation,
     // attributes
     useGetPropertyLabelsQuery,
 } = properties;
