@@ -2,7 +2,7 @@
 import FilterParentCategory from "./Filters/ParentCategory";
 import FilterCategory from "./Filters/Category";
 import FilterLabels from "./Filters/Labels";
-import PriceSelect from "./Filters/Price";
+import RangeSelect from "./Filters/Range";
 import SaleSelect from "./Filters/Sale";
 import ActiveSelect from "./Filters/ActiveSelect";
 import Location from "./Filters/Location";
@@ -12,8 +12,8 @@ const FilterSection = () => (
         <SaleSelect />
         <FilterParentCategory />
         <FilterCategory />
-        <PriceSelect type={"price"} />
-        <PriceSelect type={"area"} />
+        <RangeSelect type="price" />
+        <RangeSelect type="area" />
         <FilterLabels />
         <ActiveSelect />
         <Location />
