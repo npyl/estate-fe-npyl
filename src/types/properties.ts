@@ -76,6 +76,8 @@ interface ParentCategoriesCounters {
     land: number;
     other: number;
     residential: number;
+
+    [key: string]: number;
 }
 
 export interface IPropertyFilterCounters {

@@ -1,18 +1,19 @@
 import useFilterCounters from "@/hooks/property/useFilterCounters";
-import { IPropertyFilterCounters } from "@/types/properties";
 import Chip, { ChipProps } from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import { FC } from "react";
+import { TOptionMapper } from "./types";
 
 interface CounterChipProps extends Omit<ChipProps, "disabled"> {
     optionKey: string;
+    mapper: TOptionMapper; // map optionKey to counterKey
 }
 
-const CounterChip: FC<CounterChipProps> = ({ optionKey, ...props }) => {
+const CounterChip: FC<CounterChipProps> = ({ optionKey, mapper, ...props }) => {
     const { counters, isCountersLoading } = useFilterCounters();
 
-    const label = counters?.[optionKey]?.toString() || "0";
-    const isDisabled = counters?.[optionKey] === 0;
+    const label = mapper(optionKey, counters);
+    const isDisabled = mapper(optionKey, counters) === 0;
 
     if (isCountersLoading)
         return (
@@ -25,6 +26,10 @@ const CounterChip: FC<CounterChipProps> = ({ optionKey, ...props }) => {
             variant="outlined"
             size="small"
             disabled={isDisabled}
+            sx={{
+                borderTop: "none",
+                borderBottom: "none",
+            }}
             {...props}
         />
     );

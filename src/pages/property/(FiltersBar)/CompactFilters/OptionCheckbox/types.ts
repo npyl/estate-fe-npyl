@@ -1,4 +1,5 @@
 import { RootState } from "@/store";
+import { IPropertyFilterCounters } from "@/types/properties";
 
 type SelectorType = ({ filters }: RootState) => string[];
 type SetterType = (payload: any) => {
@@ -6,4 +7,9 @@ type SetterType = (payload: any) => {
     type: any;
 };
 
-export type { SelectorType, SetterType };
+type TOptionMapper = (
+    optionKey: string,
+    counters?: IPropertyFilterCounters
+) => number;
+
+export type { SelectorType, SetterType, TOptionMapper };

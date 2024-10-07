@@ -15,6 +15,8 @@ import Stack from "@mui/material/Stack";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import useOption from "./OptionCheckbox/useOption";
 import getParentCategoriesIcons from "@/assets/icons/parent-categories";
+import { TOptionMapper } from "./OptionCheckbox/types";
+import useFilterCounters from "@/hooks/property/useFilterCounters";
 
 // -----------------------------------------------------------------
 
@@ -30,6 +32,9 @@ const FlexItem = styled.div`
     }
 `;
 
+const mapper: TOptionMapper = (optionKey, counters) =>
+    counters?.parent_categories[optionKey.toLowerCase()] || 0;
+
 interface IOption {
     option: KeyValue;
 }
@@ -41,13 +46,20 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
         setParentCategories
     );
 
+    const { counters } = useFilterCounters();
+    const isDisabled = mapper(key, counters) === 0;
+
     return (
         <FlexItem>
-            <PPButton clicked={isChecked} onClick={handleToggle}>
+            <PPButton
+                clicked={isChecked}
+                disabled={isDisabled}
+                onClick={handleToggle}
+            >
                 {getParentCategoriesIcons()[key]}
                 <Stack direction="row" spacing={1} mt={1}>
                     <Typography>{value}</Typography>
-                    <CounterChip optionKey={key} />
+                    <CounterChip optionKey={key} mapper={mapper} />
                 </Stack>
             </PPButton>
         </FlexItem>

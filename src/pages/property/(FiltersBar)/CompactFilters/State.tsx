@@ -7,8 +7,12 @@ import { KeyValue } from "@/types/KeyValue";
 import { FC } from "react";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import OptionCheckbox from "./OptionCheckbox";
+import { TOptionMapper } from "./OptionCheckbox/types";
 
 // -----------------------------------------------------------------
+
+const mapper: TOptionMapper = (optionKey, counters) =>
+    (counters?.[optionKey.toLowerCase()] as number) || 0;
 
 interface IOption {
     option: KeyValue;
@@ -21,9 +25,10 @@ const Option: FC<IOption> = ({ option: { key, value } }) => (
             label={value}
             selector={selectStates}
             setter={setStates}
+            mapper={mapper}
         />
 
-        <CounterChip optionKey={key} />
+        <CounterChip optionKey={key} mapper={mapper} />
     </Grid>
 );
 
