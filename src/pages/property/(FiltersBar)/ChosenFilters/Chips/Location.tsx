@@ -16,12 +16,7 @@ const LocationChip = () => {
 
     const handleDelete = () => dispatch(deleteFilter("locationSearch"));
 
-    return (
-        <Chip
-            label={<Typography fontWeight={500}>{location}</Typography>}
-            onDelete={handleDelete}
-        />
-    );
+    return <Chip label={location} onDelete={handleDelete} />;
 };
 
 export default LocationChip;

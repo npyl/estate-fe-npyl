@@ -130,6 +130,18 @@ const ChosenFilters = (props: GridProps) => {
                         ? key.slice(3)
                         : null;
 
+                if (isRole && values === true) {
+                    // For role filters, just show the role name
+                    return (
+                        <Chip
+                            key={index}
+                            label={label}
+                            onDelete={() => dispatch(deleteFilter(key))}
+                            sx={{ m: 0.5 }}
+                        />
+                    );
+                }
+
                 if (hasMinMaxPair(suffix) && key === `max${suffix}`)
                     return <></>;
 

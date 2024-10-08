@@ -112,12 +112,7 @@ const FilterBar: FC<Props> = ({
                     </>
                 }
                 controls={
-                    <Stack
-                        direction="row"
-                        spacing={0.3}
-                        alignItems="center"
-                        mt={1}
-                    >
+                    <Stack direction="row" spacing={0.3} alignItems="center">
                         <FilterSortBy
                             options={options}
                             sorting={sorting}

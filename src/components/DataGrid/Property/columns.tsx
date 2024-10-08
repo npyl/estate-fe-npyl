@@ -117,8 +117,8 @@ function StatusColor(params: GridCellParams) {
                 bgcolor={color}
                 color="white"
                 borderRadius="20px"
-                px={1.5}
-                py={0.8}
+                px={2.5}
+                py={0.6}
                 fontSize="small"
             >
                 {t(status)}
