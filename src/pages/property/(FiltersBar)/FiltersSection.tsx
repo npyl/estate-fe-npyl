@@ -8,8 +8,11 @@ import Location from "./Filters/Location";
 import PriceSelect from "./Filters/Price";
 import AreaSelect from "./Filters/Area";
 
+import LocationSelect from "./Filters/LocationSelect";
+
 const FilterSection = () => (
     <>
+        <LocationSelect />
         <SaleSelect />
         <FilterParentCategory />
         <FilterCategory />

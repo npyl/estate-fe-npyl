@@ -12,6 +12,7 @@ interface IFilterProps {
 
 const initialState: IFilterProps = {
     filters: {
+        // location: "",
         parentCategories: [],
         categories: [],
         labels: [],
@@ -31,6 +32,10 @@ const slice = createSlice({
     name: "filters",
     initialState,
     reducers: {
+        setLocation(state, { payload }) {
+            state.filters.location = payload;
+            !state.ids.includes("location") && state.ids.push("location");
+        },
         setCode(state, { payload }) {
             state.filters.code = payload;
             !state.ids.includes("code") && state.ids.push("code");
@@ -224,6 +229,7 @@ const slice = createSlice({
         },
 
         resetBasic: (state) => {
+            state.filters.location = initialState.filters.location;
             state.filters.code = initialState.filters.code;
             state.filters.managerId = initialState.filters.managerId;
             state.filters.minPrice = initialState.filters.minPrice;
@@ -235,6 +241,7 @@ const slice = createSlice({
             state.filters.regions = initialState.filters.regions;
             state.filters.cities = initialState.filters.cities;
 
+            state.ids = state.ids.filter((id) => id !== "location");
             state.ids = state.ids.filter((id) => id !== "minArea");
             state.ids = state.ids.filter((id) => id !== "maxPrice");
             state.ids = state.ids.filter((id) => id !== "minPrice");
@@ -311,6 +318,10 @@ const slice = createSlice({
         resetState: () => {
             return initialState;
         },
+        resetLocation: (state) => {
+            state.filters.location = initialState.filters.location;
+        },
+
         resetActiveState(state) {
             state.filters.active = initialState.filters.active;
             state.ids = state.ids.filter((id) => id !== "active");
@@ -319,6 +330,7 @@ const slice = createSlice({
 });
 
 export const {
+    setLocation,
     setCode,
     toggleFrameType,
     toggleFurnished,
@@ -350,10 +362,12 @@ export const {
 
     // delete
     deleteSubCategory,
+
     deleteState,
     deleteFilter,
 
     // reset
+    resetLocation,
     resetBasic,
     resetBedrooms,
     resetFloor,
@@ -372,6 +386,8 @@ export const {
     resetRegions,
 } = slice.actions;
 
+export const selectLocation = ({ filters }: RootState) =>
+    filters.filters.location;
 export const selectCode = ({ filters }: RootState) => filters.filters.code;
 export const selectFrameType = ({ filters }: RootState) =>
     filters.filters.frameType;
