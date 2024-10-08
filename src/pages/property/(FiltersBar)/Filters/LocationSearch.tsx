@@ -70,7 +70,7 @@ const LocationSearch = () => {
                     value={inputValue}
                     onChange={handleLocationChange}
                     sx={{
-                        width: showSearch ? "160px" : "50px",
+                        width: showSearch ? "200px" : "40px",
                         transition: "width 0.3s",
                         "& .MuiOutlinedInput-root": {
                             padding: "0px 4px",
@@ -100,7 +100,7 @@ const LocationSearch = () => {
                                 <IconButton
                                     onClick={handleSearchToggle}
                                     sx={{
-                                        padding: "4px",
+                                        paddingLeft: "2px",
                                         ":hover": {
                                             backgroundColor: showSearch
                                                 ? "transparent"
@@ -125,7 +125,7 @@ const LocationSearch = () => {
                                 <IconButton
                                     onClick={handleClearLocation}
                                     sx={{
-                                        padding: "4px",
+                                        padding: "2px",
                                         ":hover": {
                                             backgroundColor: "transparent",
                                         },

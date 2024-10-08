@@ -95,7 +95,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     onClose={closeDialog}
                     onResetFilter={handleResetAll}
                 >
-                    <Stack width={1} spacing={1} px={6}>
+                    <Stack width={1} spacing={1} px={6} mt={1}>
                         {filterContent}
                         <FilterStatus />
                     </Stack>

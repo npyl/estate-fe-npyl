@@ -146,9 +146,7 @@ const RenderCodeCell = (params: GridCellParams) => {
                 color={"#ffcc00"}
                 sx={{
                     color: (theme) =>
-                        theme.palette.mode === "light"
-                            ? "#854D0E"
-                            : theme.palette.grey[700], // Fallback to grey if neutral is undefined
+                        theme.palette.mode === "light" ? "#854D0E" : "null",
                 }}
             />
         </Stack>
