@@ -61,6 +61,7 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
     handlePropertyCodeClick,
 }) => {
     const { i18n, t } = useTranslation();
+
     const isEnglish = i18n.language === "en";
 
     const complex = isEnglish
@@ -91,9 +92,17 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
                                 }`}
                                 color={"#ffcc00"}
                                 sx={{
-                                    color: "#854D0E",
+                                    color: (theme) =>
+                                        theme.palette.mode === "light"
+                                            ? "#854D0E" ||
+                                              theme.palette.grey[700] // Fallback to grey if neutral is undefined
+                                            : "null",
+
                                     "&:hover": {
-                                        backgroundColor: "#e6b800",
+                                        backgroundColor: (theme) =>
+                                            theme.palette.mode === "light"
+                                                ? "#d4a500" // Subdued color for hover in light mode
+                                                : "#b38f00", // Subdued color for hover in dark mode
                                     },
                                 }}
                                 onClick={handlePropertyCodeClick}

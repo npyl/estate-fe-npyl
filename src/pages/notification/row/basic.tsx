@@ -8,6 +8,7 @@ import {
     TableRow,
     Tooltip,
     Typography,
+    useTheme,
 } from "@mui/material";
 import { ContactNotification, IWorkForUs } from "src/types/notification";
 import { useToggleNotificationViewedStatusMutation } from "@/services/notification";
@@ -83,6 +84,7 @@ const BasicRow = ({
     const { t, i18n } = useTranslation();
 
     const router = useRouter();
+    const theme = useTheme();
     const [toggleNotificationViewedStatus] =
         useToggleNotificationViewedStatusMutation();
 
@@ -125,7 +127,11 @@ const BasicRow = ({
                     boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
                     cursor: "pointer",
                 },
-                backgroundColor: !row.viewed ? "neutral.100" : "transparent",
+                backgroundColor: !row.viewed
+                    ? theme.palette.mode === "dark"
+                        ? "neutral.800"
+                        : "neutral.100"
+                    : "transparent",
                 border: "1px solid lightgray",
             }}
             onClick={handleRowClick}
@@ -336,7 +342,6 @@ const BasicRow = ({
                     displayEmpty
                     onClick={(e) => e.stopPropagation()}
                     sx={{
-                        color: "black",
                         fontWeight: row.viewed ? "normal" : "bold",
                         "& .MuiSelect-select": {
                             padding: 0,
