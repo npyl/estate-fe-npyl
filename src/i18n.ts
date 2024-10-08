@@ -647,7 +647,17 @@ const resources = {
             Generate: "Generate",
             "Generate Description": "Generate Description",
             "Generating...": "Generating...",
-
+            Improve: "Improve",
+            "Improve Description": "Improve Description",
+            "Improving...": "Improving...",
+            "Improving the description to be more:":
+                "Improving the description to be more:",
+            Professional: "Professional",
+            Friendly: "Friendly",
+            Precise: "Precise",
+            Concise: "Concise",
+            "Detailed/Descriptive": "Detailed/Descriptive",
+            Engaging: "Engaging",
             Demand: "Demand",
             Demands: "Demands",
 
@@ -1744,7 +1754,17 @@ const resources = {
             Generate: "Δημιουργία",
             "Generate Description": "Δημιουργία Περιγραφής",
             "Generating...": "Δημιουργία...",
-
+            Improve: "Βελτίωση",
+            "Improve Description": "Βελτίωση Περιγραφής",
+            "Improving...": "Βελτίωση...",
+            "Improving the description to be more:":
+                "Βελτιώση της περιγραφής ώστε να είναι πιο:",
+            Professional: "Επαγγελματική",
+            Friendly: "Φιλική",
+            Precise: "Ακριβής",
+            Concise: "Συνοπτική",
+            "Detailed/Descriptive": "Αναλυτική/Περιγραφική",
+            Engaging: "Ελκυστική",
             //create customer
 
             "Customer Information": "Πληροφορίες Πελάτη",

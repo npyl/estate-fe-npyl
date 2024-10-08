@@ -1,5 +1,17 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
 import {
     ContentState,
     EditorState,
@@ -27,6 +39,7 @@ import { useOpenAIDetails } from "./hooks";
 import fixDropdowns from "./stupid";
 import useResponsive from "@/hooks/useResponsive";
 import { useTranslateMutation } from "@/services/translate";
+import { useGlobals } from "@/hooks/useGlobals";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -78,14 +91,14 @@ interface UpperRightOptionsProps {
     lang: Language;
     isLoading: boolean;
     onGenerate: (d: IOpenAIDetailsPOST) => Promise<string>;
-    onImprove: (d: IOpenAIDetailsPOST) => Promise<string>;
+    // onImprove: (d: IOpenAIDetailsPOST) => Promise<string>;
     onChatTextChange: (s: string) => void;
     onClickTranslate: () => void;
 }
 
 const UpperRightOptions = ({
     onGenerate,
-    onImprove,
+    // onImprove,
     onChatTextChange,
     onClickTranslate,
     isLoading,
@@ -104,16 +117,6 @@ const UpperRightOptions = ({
             onGenerate({
                 ...openAIDetails,
                 ...fixDropdowns(openAIDetails),
-            }).then(onChatTextChange),
-        [openAIDetails]
-    );
-
-    const handleImprove = useCallback(
-        () =>
-            onImprove({
-                ...openAIDetails,
-                improveOption: "PROFESSIONAL",
-                oldDescription: openAIDetails.oldDescription, // make sure the oldDescription is passed
             }).then(onChatTextChange),
         [openAIDetails]
     );
@@ -154,7 +157,7 @@ interface ChatGPTResultProps {
     chatTextEN: string;
     chatTextGR: string;
     isImproving: boolean;
-    onImprove: () => void;
+    onImprove: (selectedOption: string) => void;
 }
 
 const ChatGPTResult = ({
@@ -166,6 +169,19 @@ const ChatGPTResult = ({
 }: ChatGPTResultProps) => {
     const { t } = useTranslation();
 
+    const options = useGlobals();
+    const improvementOptions = options?.property?.descriptionImprovementOptions;
+
+    const [selectedOption, setSelectedOption] = useState<string>("PRECISE");
+
+    const handleSelectChange = (event: any) => {
+        setSelectedOption(event.target.value);
+    };
+
+    const handleImproveClick = () => {
+        onImprove(selectedOption);
+    };
+
     const text = useMemo(
         () => (lang === "en" ? chatTextEN : chatTextGR),
         [lang, chatTextEN, chatTextGR]
@@ -176,26 +192,54 @@ const ChatGPTResult = ({
 
     return show ? (
         <>
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-            >
-                <Typography variant="h6" flex={1}>
+            <Box display="flex" flexDirection="column" alignItems="flex-start">
+                <Typography variant="h6">
                     {`${t("ChatGPT Result")} (${lang})`}
                 </Typography>
-                {/* Improve Button Inside ChatGPTResult Section */}
-                <LoadingButton
-                    loading={isImproving}
-                    loadingPosition="start"
-                    startIcon={<ChatGPTIcon />}
-                    variant="outlined"
-                    onClick={onImprove}
-                    sx={{ cursor: "pointer !important" }}
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    mb={1}
                 >
-                    {isImproving ? t("Improving...") : t("Improve Description")}
-                </LoadingButton>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        gap={1}
+                    >
+                        <Typography variant="body2" color="textSecondary">
+                            {t("Improving the description to be more:")}
+                        </Typography>
+                        <Select
+                            value={selectedOption}
+                            onChange={handleSelectChange}
+                            displayEmpty
+                            variant="outlined"
+                            sx={{ minWidth: "100px" }}
+                        >
+                            {improvementOptions?.map((option) => (
+                                <MenuItem key={option.key} value={option.key}>
+                                    {t(option.value)}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <LoadingButton
+                            loading={isImproving}
+                            loadingPosition="start"
+                            startIcon={<ChatGPTIcon />}
+                            variant="outlined"
+                            onClick={handleImproveClick}
+                            sx={{ mt: 0, alignSelf: "flex-end" }}
+                        >
+                            {isImproving
+                                ? t("Improving...")
+                                : t("Improve Description")}
+                        </LoadingButton>
+                    </Stack>
+                </Box>
             </Box>
+
             <TextField
                 value={text}
                 multiline
@@ -245,10 +289,11 @@ const DescriptionSection: React.FC = () => {
     };
 
     const improveCallback = useCallback(
-        async (d: IOpenAIDetailsPOST) => {
+        async (selectedOption: string) => {
             const sanitizedPayload = sanitizePayload({
-                ...d,
+                ...openAIDetails,
                 oldDescription: generatedDescription, // Use the generated description as oldDescription
+                improveOption: selectedOption, // Pass the selected improvement option
             });
 
             const improvedDescription = await improveDescription(
@@ -262,7 +307,7 @@ const DescriptionSection: React.FC = () => {
 
             return improvedDescription;
         },
-        [generatedDescription, lang, setChatTextEN, setChatTextGR]
+        [generatedDescription, lang, openAIDetails, improveDescription]
     );
 
     const [editorState, setEditorState] = useState<EditorState>(
@@ -367,7 +412,7 @@ const DescriptionSection: React.FC = () => {
             endNode={
                 <UpperRightOptions
                     onGenerate={generateCallback}
-                    onImprove={improveCallback}
+                    // onImprove={improveCallback}
                     onChatTextChange={onChatTextChange}
                     isLoading={isGenerating || isImproving}
                     lang={lang}
@@ -397,13 +442,7 @@ const DescriptionSection: React.FC = () => {
                 chatTextEN={chatTextEN}
                 chatTextGR={chatTextGR}
                 isImproving={isImproving}
-                onImprove={() =>
-                    improveCallback({
-                        ...openAIDetails,
-                        improveOption: "FRIENDLY",
-                        oldDescription: generatedDescription,
-                    })
-                }
+                onImprove={improveCallback}
             />
         </TabbedBox>
     );

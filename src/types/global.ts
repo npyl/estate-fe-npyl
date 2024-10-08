@@ -32,6 +32,10 @@ export interface IGlobalPropertyDetails {
     zoneType: KeyValue[];
 }
 
+export interface IDescriptionImprovement {
+    key: string;
+    value: string;
+}
 export interface IGlobalProperty {
     parentCategory: KeyValue[];
     category: KeyValue[];
@@ -45,6 +49,7 @@ export interface IGlobalProperty {
     otherFeatures: KeyValue[];
     state: KeyValue[];
     details: IGlobalPropertyDetails;
+    descriptionImprovementOptions: IDescriptionImprovement[];
 }
 
 export interface IGlobalCustomer {
