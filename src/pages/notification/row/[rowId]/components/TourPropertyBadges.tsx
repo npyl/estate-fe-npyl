@@ -33,9 +33,7 @@ const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
                     textWrap: "nowrap",
                     width: "100%",
                     color: (theme) =>
-                        theme.palette.mode === "light"
-                            ? "#854D0E" || theme.palette.grey[700] // Fallback to grey if neutral is undefined
-                            : "null",
+                        theme.palette.mode === "light" ? "#854D0E" : "null",
 
                     "&:hover": {
                         backgroundColor: (theme) =>
