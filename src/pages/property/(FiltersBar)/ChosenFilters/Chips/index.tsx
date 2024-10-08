@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
 import { TTags } from "../types";
 import dynamic from "next/dynamic";
+import { Stack, Typography } from "@mui/material";
 
 // Chips
 const MinMaxChip = dynamic(() => import("./MinMax"));
@@ -20,7 +21,7 @@ const LabelsChip = dynamic(() => import("./Labels"));
 const ManagerChip = dynamic(() => import("./Manager"));
 const Regions = dynamic(() => import("./Regions"));
 const Cities = dynamic(() => import("./Cities"));
-
+const LocationChip = dynamic(() => import("./Location"));
 // --------------------------------------------------------------------------------
 
 interface SimpleChipProps {
@@ -100,8 +101,13 @@ const GeneralChip: FC<GeneralChipProps> = ({
     }
 
     //
+
     //  Single Chips
     //
+    if (filterKey === "locationSearch") {
+        return <LocationChip />;
+    }
+
     if (filterKey === "minFloor") {
         return <MinFloorChip />;
     }

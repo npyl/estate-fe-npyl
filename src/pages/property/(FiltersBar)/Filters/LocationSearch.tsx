@@ -119,8 +119,8 @@ const LocationSearch = () => {
                                 </IconButton>
                             </InputAdornment>
                         ),
-                        // Show the clear icon when there is input text
-                        endAdornment: inputValue && (
+                        // Show the clear icon when there is input text and showSearch is true
+                        endAdornment: inputValue && showSearch && (
                             <InputAdornment position="end">
                                 <IconButton
                                     onClick={handleClearLocation}

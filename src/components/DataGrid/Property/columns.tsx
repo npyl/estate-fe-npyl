@@ -1,4 +1,5 @@
 import {
+    Box,
     Stack,
     SxProps,
     Theme,
@@ -117,7 +118,8 @@ function StatusColor(params: GridCellParams) {
                 color="white"
                 borderRadius="20px"
                 px={1.5}
-                py={1}
+                py={0.8}
+                fontSize="small"
             >
                 {t(status)}
             </Typography>
@@ -171,17 +173,27 @@ const RenderParentCategoryCell = (params: GridCellParams) => {
     );
 };
 
-const RenderCategoryCell = (params: GridCellParams) => (
-    <div
-        style={{
-            whiteSpace: "normal",
-            wordWrap: "break-word",
-            textAlign: "center",
-        }}
-    >
-        {(params.value as KeyValue)?.value}
-    </div>
-);
+const RenderCategoryCell = (params: GridCellParams) => {
+    const value = (params.value as KeyValue)?.value;
+
+    if (!value) return null;
+
+    return (
+        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+            <Typography
+                textAlign="center"
+                whiteSpace="normal"
+                fontSize="small"
+                sx={{
+                    wordBreak: "break-word",
+                    maxWidth: "100%",
+                }}
+            >
+                {value}
+            </Typography>
+        </Stack>
+    );
+};
 
 //
 //  View Properties
