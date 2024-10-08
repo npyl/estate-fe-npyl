@@ -111,8 +111,8 @@ const UpperRightOptions = ({
     const handleImprove = useCallback(
         () =>
             onImprove({
-                ...openAIDetails, // passing the existing details
-                improveOption: "CONCISE", // or whichever option the user selects
+                ...openAIDetails,
+                improveOption: "PROFESSIONAL",
                 oldDescription: openAIDetails.oldDescription, // make sure the oldDescription is passed
             }).then(onChatTextChange),
         [openAIDetails]
@@ -137,25 +137,6 @@ const UpperRightOptions = ({
         [isLoading, handleGenerate, belowMd]
     );
 
-    const improveButton = useMemo(
-        () => (
-            <LoadingButton
-                loading={isLoading}
-                loadingPosition="start"
-                startIcon={<ChatGPTIcon />}
-                variant="outlined"
-                onClick={handleImprove}
-            >
-                {isLoading
-                    ? t("Improving...")
-                    : belowMd
-                    ? t("Improve")
-                    : t("Improve Description")}
-            </LoadingButton>
-        ),
-        [isLoading, handleImprove, belowMd]
-    );
-
     return (
         <Box display="flex" flexDirection="row" gap={1}>
             {canTranslate ? (
@@ -164,7 +145,6 @@ const UpperRightOptions = ({
                 </Button>
             ) : null}
             {chatGPTButton}
-            {improveButton}
         </Box>
     );
 };
@@ -173,12 +153,16 @@ interface ChatGPTResultProps {
     lang: Language;
     chatTextEN: string;
     chatTextGR: string;
+    isImproving: boolean;
+    onImprove: () => void;
 }
 
 const ChatGPTResult = ({
     lang,
     chatTextEN,
     chatTextGR,
+    isImproving,
+    onImprove,
 }: ChatGPTResultProps) => {
     const { t } = useTranslation();
 
@@ -192,9 +176,26 @@ const ChatGPTResult = ({
 
     return show ? (
         <>
-            <Typography variant="h6" flex={1}>
-                {`${t("ChatGPT Result")} (${lang})`}
-            </Typography>
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <Typography variant="h6" flex={1}>
+                    {`${t("ChatGPT Result")} (${lang})`}
+                </Typography>
+                {/* Improve Button Inside ChatGPTResult Section */}
+                <LoadingButton
+                    loading={isImproving}
+                    loadingPosition="start"
+                    startIcon={<ChatGPTIcon />}
+                    variant="outlined"
+                    onClick={onImprove}
+                    sx={{ cursor: "pointer !important" }}
+                >
+                    {isImproving ? t("Improving...") : t("Improve Description")}
+                </LoadingButton>
+            </Box>
             <TextField
                 value={text}
                 multiline
@@ -225,6 +226,9 @@ const DescriptionSection: React.FC = () => {
         useImproveDescriptionMutation();
     const [generatedDescription, setGeneratedDescription] = useState("");
 
+    const [lang, setLang] = useState<Language>("el");
+    const { openAIDetails } = useOpenAIDetails(lang);
+
     const generateCallback = useCallback(
         async (d: IOpenAIDetailsPOST) => {
             const description = await generateDescription(d).unwrap();
@@ -247,9 +251,18 @@ const DescriptionSection: React.FC = () => {
                 oldDescription: generatedDescription, // Use the generated description as oldDescription
             });
 
-            return await improveDescription(sanitizedPayload).unwrap();
+            const improvedDescription = await improveDescription(
+                sanitizedPayload
+            ).unwrap();
+            if (lang === "en") {
+                setChatTextEN(improvedDescription);
+            } else {
+                setChatTextGR(improvedDescription);
+            }
+
+            return improvedDescription;
         },
-        [generatedDescription]
+        [generatedDescription, lang, setChatTextEN, setChatTextGR]
     );
 
     const [editorState, setEditorState] = useState<EditorState>(
@@ -260,7 +273,6 @@ const DescriptionSection: React.FC = () => {
     useInitialDescriptionState(setEditorState);
 
     // ---
-    const [lang, setLang] = useState<Language>("el");
 
     const index = useMemo(
         () => TABS.findIndex(({ value }) => lang === value),
@@ -375,6 +387,7 @@ const DescriptionSection: React.FC = () => {
             <DraftEditor
                 sx={{
                     minHeight: "200px",
+                    height: "auto",
                 }}
                 editorState={editorState}
                 onEditorStateChange={onEditorStateChange}
@@ -383,6 +396,14 @@ const DescriptionSection: React.FC = () => {
                 lang={lang}
                 chatTextEN={chatTextEN}
                 chatTextGR={chatTextGR}
+                isImproving={isImproving}
+                onImprove={() =>
+                    improveCallback({
+                        ...openAIDetails,
+                        improveOption: "FRIENDLY",
+                        oldDescription: generatedDescription,
+                    })
+                }
             />
         </TabbedBox>
     );
