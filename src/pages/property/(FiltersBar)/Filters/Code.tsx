@@ -1,25 +1,15 @@
-import { Autocomplete, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCode } from "src/slices/filters";
-import { useSelector } from "react-redux";
-import { useAllPropertiesQuery } from "src/services/properties";
 import { selectCode } from "src/slices/filters";
 import { useTranslation } from "react-i18next";
+import CodeSelect from "@/sections/CodeSelect";
+import TextField from "@mui/material/TextField";
 
-export default function CodeSelect() {
+export default function CodeFilter() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const propertyCode = useSelector(selectCode);
-
-    const propertyCodes: string[] =
-        useAllPropertiesQuery(undefined, {
-            selectFromResult: ({ data }) => ({
-                data: data
-                    ?.filter(({ code }) => Boolean(code))
-                    .map(({ code }) => code),
-            }),
-        }).data || [];
+    const propertyCode = useSelector(selectCode) || "";
 
     const handleChange = (_event: any, value: string | null) => {
         dispatch(
@@ -31,11 +21,9 @@ export default function CodeSelect() {
     };
 
     return (
-        <Autocomplete
-            disableClearable
+        <CodeSelect
             value={propertyCode}
             onChange={handleChange}
-            options={propertyCodes}
             renderInput={(params) => (
                 <TextField
                     sx={{

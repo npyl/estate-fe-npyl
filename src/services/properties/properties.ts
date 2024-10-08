@@ -119,6 +119,12 @@ export const properties = createApi({
             providesTags: ["Properties"],
         }),
 
+        allPropertyCodes: builder.query<string[], void>({
+            query: () => ({
+                url: "/codes",
+            }),
+        }),
+
         getPropertyLocationMarkers: builder.query<IPropertyMarker[], void>({
             query: () => ({
                 url: "location-markers",
@@ -297,6 +303,7 @@ export const {
     useFilterPropertiesQuery,
     useGetFilterCountersQuery,
     useAllPropertiesQuery,
+    useAllPropertyCodesQuery,
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
