@@ -192,20 +192,21 @@ const ChatGPTResult = ({
 
     return show ? (
         <>
-            <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Box display="flex" flexDirection="column">
                 <Typography variant="h6">
                     {`${t("ChatGPT Result")} (${lang})`}
                 </Typography>
-                <Box
-                    display="flex"
-                    flexDirection="column"
+
+                <Stack
+                    direction="row"
                     alignItems="center"
+                    justifyContent="space-between"
                     mb={1}
                 >
                     <Stack
                         direction="row"
+                        justifyContent="flex-start"
                         alignItems="center"
-                        justifyContent="space-between"
                         gap={1}
                     >
                         <Typography variant="body2" color="textSecondary">
@@ -224,20 +225,21 @@ const ChatGPTResult = ({
                                 </MenuItem>
                             ))}
                         </Select>
-                        <LoadingButton
-                            loading={isImproving}
-                            loadingPosition="start"
-                            startIcon={<ChatGPTIcon />}
-                            variant="outlined"
-                            onClick={handleImproveClick}
-                            sx={{ mt: 0, alignSelf: "flex-end" }}
-                        >
-                            {isImproving
-                                ? t("Improving...")
-                                : t("Improve Description")}
-                        </LoadingButton>
                     </Stack>
-                </Box>
+
+                    <LoadingButton
+                        loading={isImproving}
+                        loadingPosition="start"
+                        startIcon={<ChatGPTIcon />}
+                        variant="outlined"
+                        onClick={handleImproveClick}
+                        sx={{ mt: 0, justifySelf: "flex-end" }}
+                    >
+                        {isImproving
+                            ? t("Improving...")
+                            : t("Improve Description")}
+                    </LoadingButton>
+                </Stack>
             </Box>
 
             <TextField
