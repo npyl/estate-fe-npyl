@@ -44,7 +44,7 @@ export interface IPropertyResultResponse {
 
 export interface IPropertyFilter {
     filterName?: string;
-    location?: string; // might be a whole type like ILocation
+    location?: ILocation;
     code?: string;
     minPrice?: number;
     maxPrice?: number;
