@@ -17,13 +17,7 @@ import {
     selectLocationSearch,
 } from "@/slices/filters";
 
-interface LocationSelectProps {
-    onLocationChange: (location: string) => void;
-}
-
-const LocationSelect: React.FC<LocationSelectProps> = ({
-    onLocationChange,
-}) => {
+const LocationSearch = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const selectedLocation = useSelector(selectLocationSearch);
@@ -155,4 +149,4 @@ const LocationSelect: React.FC<LocationSelectProps> = ({
     );
 };
 
-export default LocationSelect;
+export default LocationSearch;
