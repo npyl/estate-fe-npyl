@@ -65,7 +65,7 @@ const GeneralChip: FC<GeneralChipProps> = ({
     const { frameTypeEnum, furnishedEnum, heatingTypeEnum } = useEnums();
 
     const values = changedProps[filterKey];
-    const label = filterTags[filterKey].label;
+    const label = filterTags[filterKey]?.label;
 
     if (
         values === 0 ||

@@ -240,9 +240,7 @@ const BasicRow = ({
                                                             theme.palette
                                                                 .mode ===
                                                             "light"
-                                                                ? "#854D0E" ||
-                                                                  theme.palette
-                                                                      .grey[700] // Fallback to grey if neutral is undefined
+                                                                ? "#854D0E" // Fallback to grey if neutral is undefined
                                                                 : "null",
 
                                                         "&:hover": {

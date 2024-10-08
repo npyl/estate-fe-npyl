@@ -94,15 +94,14 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
                                 sx={{
                                     color: (theme) =>
                                         theme.palette.mode === "light"
-                                            ? "#854D0E" ||
-                                              theme.palette.grey[700] // Fallback to grey if neutral is undefined
+                                            ? "#854D0E"
                                             : "null",
 
                                     "&:hover": {
                                         backgroundColor: (theme) =>
                                             theme.palette.mode === "light"
-                                                ? "#d4a500" // Subdued color for hover in light mode
-                                                : "#b38f00", // Subdued color for hover in dark mode
+                                                ? "#d4a500"
+                                                : "#b38f00",
                                     },
                                 }}
                                 onClick={handlePropertyCodeClick}
