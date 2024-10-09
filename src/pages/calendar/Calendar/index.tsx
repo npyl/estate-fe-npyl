@@ -1,40 +1,26 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { TCalendarView } from "./types";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
 
-import TodayIcon from "@mui/icons-material/Today";
-import DateRangeIcon from "@mui/icons-material/DateRange";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import YearIcon from "./YearIcon";
 import View from "./View";
 
-const Calendar = () => {
-    const [view, setView] = useState<TCalendarView>("month");
+import { TODAY } from "./constants";
+import Header from "./Header";
 
-    const handleChange = useCallback(
-        (_: any, v: TCalendarView) => setView(v),
-        []
-    );
+const Calendar = () => {
+    const [date, setDate] = useState(TODAY);
+    const [view, setView] = useState<TCalendarView>("month");
 
     return (
         <>
-            <ToggleButtonGroup exclusive value={view} onChange={handleChange}>
-                <ToggleButton value="day">
-                    <TodayIcon />
-                </ToggleButton>
-                <ToggleButton value="week">
-                    <DateRangeIcon />
-                </ToggleButton>
-                <ToggleButton value="month">
-                    <CalendarMonthIcon />
-                </ToggleButton>
-                <ToggleButton value="year">
-                    <YearIcon />
-                </ToggleButton>
-            </ToggleButtonGroup>
+            <Header
+                date={date}
+                view={view}
+                // ...
+                onDateChange={setDate}
+                onViewChange={setView}
+            />
 
-            <View view={view} />
+            <View view={view} date={date} />
         </>
     );
 };

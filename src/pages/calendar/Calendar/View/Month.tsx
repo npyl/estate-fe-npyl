@@ -1,67 +1,51 @@
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { WEEKDAYS } from "../constants";
+import Grid from "@mui/material/Grid";
+import ViewProps from "./types";
 
-const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
-const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
+const daysInMonth = (year: number, month: number) =>
+    new Date(year, month + 1, 0).getDate();
 
-const MonthView = ({ date }: any) => {
+const firstDayOfMonth = (year: number, month: number) =>
+    new Date(year, month, 1).getDay();
+
+const PlaceholderCell = () => <Grid item xs={12 / 7} bgcolor="grey.100" />;
+
+const MonthView: FC<ViewProps> = ({ date }) => {
     const year = date.getFullYear();
     const month = date.getMonth();
-    const daysCount = daysInMonth(year, month);
-    const firstDay = firstDayOfMonth(year, month);
 
-    const days = useMemo(() => {
-        let res = [];
+    const daysBefore = useMemo(
+        () => Array.from({ length: firstDayOfMonth(year, month) - 1 }),
+        [year, month]
+    );
 
-        // Add empty cells for days before the first day of the month
-        for (let i = 0; i < firstDay; i++) {
-            res.push(
-                <div
-                    key={`empty-${i}`}
-                    style={{ border: "1px solid black", padding: "5px" }}
-                />
-            );
-        }
-
-        // Add cells for each day of the month
-        for (let i = 1; i <= daysCount; i++) {
-            res.push(
-                <div
-                    key={i}
-                    style={{ border: "1px solid black", padding: "5px" }}
-                >
-                    {i}
-                </div>
-            );
-        }
-
-        return res;
-    }, []);
+    const actualDays = useMemo(
+        () => Array.from({ length: daysInMonth(year, month) - 1 }),
+        [year, month]
+    );
 
     return (
-        <div
-            style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(7, 1fr)",
-                gap: "1px",
-            }}
-        >
+        <Grid container>
             {/* Headers */}
             {WEEKDAYS.map((day) => (
-                <div
-                    key={day}
-                    style={{
-                        fontWeight: "bold",
-                        border: "1px solid black",
-                        padding: "5px",
-                    }}
-                >
+                <Grid key={day} xs={12 / 7} p={1} textAlign="center">
                     {day}
-                </div>
+                </Grid>
             ))}
 
-            {days}
-        </div>
+            {/* Cells before start of month */}
+            {daysBefore.map((_, i) => (
+                <PlaceholderCell key={`empty-${i}`} />
+            ))}
+
+            {/* Actual days */}
+            {actualDays.map((_, i) => (
+                <Grid key={i} xs={12 / 7} height="200px">
+                    {i}
+                </Grid>
+            ))}
+        </Grid>
     );
 };
 

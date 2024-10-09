@@ -1,27 +1,27 @@
-const YearView = ({ date }: any) => {
-    const year = date.getFullYear();
-    const months = [];
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { FC } from "react";
+import ViewProps from "./types";
 
-    for (let i = 0; i < 12; i++) {
-        months.push(
-            <div key={i} style={{ border: "1px solid black", padding: "5px" }}>
-                {new Date(year, i, 1).toLocaleString("default", {
-                    month: "long",
-                })}
-            </div>
-        );
-    }
+const months = Array.from({ length: 12 });
+
+const YearView: FC<ViewProps> = ({ date }) => {
+    const year = date.getFullYear();
 
     return (
-        <div
-            style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "5px",
-            }}
-        >
-            {months}
-        </div>
+        <Grid container>
+            {months.map((_, i) => (
+                <Grid key={i} item xs={3}>
+                    <Typography textAlign="center" p={1}>
+                        {new Date(year, i, 1).toLocaleString("default", {
+                            month: "long",
+                        })}
+                    </Typography>
+                    <Box height="200px">...</Box>
+                </Grid>
+            ))}
+        </Grid>
     );
 };
 
