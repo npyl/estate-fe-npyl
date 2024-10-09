@@ -1,6 +1,6 @@
 import FlipIcon from "@mui/icons-material/Flip";
 import { Button, Grid, Stack } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Map, { IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
@@ -8,6 +8,7 @@ import { useDebouncedCallback } from "use-debounce";
 import PropertyCard, { PropertyCardH } from "@/components/Cards/PropertyCard";
 import {
     useFilterPropertiesQuery,
+    useGetPropertyCardByIdQuery,
     useGetPropertyLocationMarkersQuery,
 } from "src/services/properties";
 import { selectAll, setPoints, resetPoints } from "src/slices/filters";
@@ -18,6 +19,8 @@ import Placeholder from "./Placeholder";
 import useResponsiveOrientation from "./hook";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useDispatch } from "react-redux";
+import { InfoWindowF, MarkerF } from "@react-google-maps/api";
+import PropertyInfoWindow from "./PropertyInfoWindow";
 
 interface Props {
     toggleOrientation: VoidFunction;
@@ -93,7 +96,9 @@ interface MapViewProps {
 const MapView = ({ sortBy, direction }: MapViewProps) => {
     const dispatch = useDispatch();
 
-    const [activeMarker, setActiveMarker] = useState<number>();
+    const [activeMarker, setActiveMarker] = useState<number | undefined>(
+        undefined
+    );
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: 38.246639,
         lng: 21.734573,
@@ -101,6 +106,7 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
     const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
         null
     );
+
     const pagination = usePagination();
     const belowSm = useResponsive("down", "sm");
     const belowLg = useResponsive("down", "lg");
@@ -117,8 +123,24 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
         direction: direction,
     });
 
-    // respective markers
     const { data: markers } = useGetPropertyLocationMarkersQuery();
+    // const {data: cards} = useGetPropertyCardByIdQuery(propertyId);
+
+    const handleMarkerHover = useCallback((index: number) => {
+        setActiveMarker(index);
+    }, []);
+
+    const handleMarkerLeave = useCallback(() => {
+        setActiveMarker(undefined);
+    }, []);
+
+    const handleMarkerClick = useCallback(
+        (marker: IMapMarker, index: number) => {
+            setActiveMarker(index);
+            setSelectedMarker(marker);
+        },
+        []
+    );
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
         dispatch(
@@ -134,10 +156,7 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
     );
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
-        let newMarker = mainMarker;
-        newMarker.lat = lat;
-        newMarker.lng = lng;
-        setMainMarker(newMarker);
+        setMainMarker({ lat, lng });
     };
 
     const handleSearchSelect = (_: any, lat: number, lng: number) => {
@@ -192,7 +211,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                     xs: "inherit",
                     lg: "sticky",
                 }}
-                // For sticky:
                 top="120px"
                 right="0px"
             >
@@ -200,12 +218,44 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                     mainMarker={mainMarker}
                     activeMarker={activeMarker}
                     setActiveMarker={setActiveMarker}
-                    onMarkerClick={setSelectedMarker}
+                    onMarkerClick={(marker) => {
+                        setSelectedMarker(marker); // Set the clicked marker as the selected marker
+                        const index = markers?.findIndex(
+                            (m) => m.lat === marker.lat && m.lng === marker.lng
+                        );
+                        setActiveMarker(index); // Update the active marker state
+                    }}
                     markers={markers}
                     onDraw={handleDraw}
                     onShapeChange={handleChange}
                     onSearchSelect={handleSearchSelect}
-                />
+                >
+                    {markers?.map((marker, index) => (
+                        <MarkerF
+                            key={`${marker.lat}-${marker.lng}-${index}`}
+                            position={{ lat: marker.lat, lng: marker.lng }}
+                            onMouseOver={() => handleMarkerHover(index)}
+                            onMouseOut={handleMarkerLeave}
+                            onClick={() => {
+                                setActiveMarker(index);
+                                setSelectedMarker(marker);
+                                console.log(
+                                    `Selected marker: ${marker.propertyId}`
+                                );
+                            }}
+                            icon="/static/map/mapIcon.svg"
+                        >
+                            {(activeMarker === index ||
+                                selectedMarker === marker) && (
+                                <PropertyInfoWindow
+                                    marker={marker}
+                                    properties={properties?.content || []}
+                                    setActiveMarker={setActiveMarker}
+                                />
+                            )}
+                        </MarkerF>
+                    ))}
+                </Map>
             </Grid>
         </Grid>
     );

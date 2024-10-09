@@ -144,6 +144,10 @@ export const properties = createApi({
             query: (id) => `${id}/listings`,
             providesTags: ["PropertyByIdListings"],
         }),
+        getPropertyCardById: builder.query<IPropertyResultResponse, number>({
+            query: (propertyId) => `card/${propertyId}`,
+            providesTags: ["Properties"],
+        }),
 
         // Attributes
         getPropertyLabels: builder.query<ILabel[], number>({
@@ -325,6 +329,7 @@ export const {
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
     useGetPropertyLocationMarkersQuery,
+    useGetPropertyCardByIdQuery,
 
     // mutations
     useEditPropertyMutation,

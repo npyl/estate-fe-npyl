@@ -66,7 +66,7 @@ const LocationSearch = () => {
             <Grid item xs={12}>
                 <TextField
                     label={showSearch ? t("Search Location") : ""}
-                    placeholder={t("Search") || ""}
+                    // placeholder={t("") || ""}
                     value={inputValue}
                     onChange={handleLocationChange}
                     sx={{

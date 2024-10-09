@@ -243,6 +243,8 @@ const Map = ({
             options={{
                 gestureHandling: "auto",
                 scrollwheel: true,
+                disableDefaultUI: true, // Disable all default UI elements
+                zoomControl: true,
             }}
         >
             {map ? (

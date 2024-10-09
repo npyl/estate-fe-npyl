@@ -57,7 +57,7 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
                 onClick={handleToggle}
             >
                 {getParentCategoriesIcons()[key]}
-                <Stack direction="row" spacing={1} mt={1}>
+                <Stack alignItems={"center"} mt={1}>
                     <Typography>{value}</Typography>
                     <CounterChip optionKey={key} mapper={mapper} />
                 </Stack>

@@ -1,6 +1,7 @@
 export interface IMapCoordinates {
     lat: number;
     lng: number;
+    propertyId?: number;
 }
 
 export type DrawShape =
