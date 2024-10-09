@@ -85,12 +85,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
     const categoryColor = theme.palette.mode === "dark" ? "#b39ddb" : "#3730a3";
 
     return (
-        <StyledLink
-            mr={0.8}
-            isActive={isActive}
-            ref={ref}
-            href={`/property/${id}`}
-        >
+        <StyledLink isActive={isActive} ref={ref} href={`/property/${id}`}>
             <CarouselSimple
                 data={
                     convertedImages.length > 0

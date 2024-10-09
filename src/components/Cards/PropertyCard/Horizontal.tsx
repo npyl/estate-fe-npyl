@@ -227,7 +227,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     color: (theme) =>
                                         theme.palette.mode === "light"
                                             ? "#854D0E"
-                                            : theme.palette.grey[700], // Fallback to grey if neutral is undefined
+                                            : null,
                                 }}
                             />
 

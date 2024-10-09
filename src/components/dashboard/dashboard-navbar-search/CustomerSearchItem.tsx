@@ -99,7 +99,7 @@ export const CustomerSearchItem = ({
             direction={"row"}
             alignItems={"center"}
             onClick={handleClick}
-            sx={{ height: "195px", width: "auto" }}
+            sx={{ height: "195px", width: "auto", overflowX: "hidden" }}
         >
             <Stack direction={"column"} flex={1} gap={2}>
                 <Stack direction={"row"} flex={1} gap={1} alignItems="center">

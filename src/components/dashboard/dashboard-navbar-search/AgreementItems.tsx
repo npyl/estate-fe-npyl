@@ -25,7 +25,8 @@ const AgreementItems: React.FC<Props> = ({ search }) => {
     );
 
     return (
-        <Pagination
+        <>
+            {/* <Pagination
             {...pagination}
             totalItems={data?.totalElements || 5}
             pageSize={PAGE_SIZE}
@@ -35,13 +36,14 @@ const AgreementItems: React.FC<Props> = ({ search }) => {
                 container: true,
                 spacing: 1,
             }}
-        >
+        > */}
             {agreements.map((a) => (
                 <Grid key={a.id}>
                     <AgreementCard a={a} />
                 </Grid>
             ))}
-        </Pagination>
+            {/* </Pagination> */}
+        </>
     );
 };
 

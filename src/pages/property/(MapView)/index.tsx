@@ -64,9 +64,6 @@ const PropertiesList = ({
                         item
                         xs={12}
                         sm={orientation ? 12 : 6}
-                        sx={{
-                            backgroundColor: "background.default",
-                        }}
                     >
                         {orientation ? (
                             <PropertyCardH

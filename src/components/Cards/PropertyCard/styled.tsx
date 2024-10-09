@@ -5,25 +5,26 @@ import { styled } from "@mui/material/styles";
 const getCss = (theme: Theme) => ({
     boxShadow:
         theme.palette.mode === "light"
-            ? "rgba(0, 0, 0, 0.6) 0px 5px 8px"
-            : "rgba(255, 255, 255, 0.6) 0px 5px 8px",
-    transition: "all 0.2s ease-in-out",
+            ? "rgba(0, 0, 0, 0.6) 0px 5px 8px !important"
+            : "rgba(255, 255, 255, 0.6) 0px 5px 8px !important",
+    transition: "all 0.2s ease-in-out !important",
 });
 
 interface StyledBoxProps extends BoxProps {
     isActive: boolean;
 }
-
 export const StyledLink = styled(Link, {
     shouldForwardProp: (prop) => prop !== "isActive",
 })<StyledBoxProps>(({ isActive, theme }) => ({
+    display: "block", //without it the onHover css is not applied
+    borderRadius: "12px",
+    cursor: "pointer",
+    transition: "all 0.2s ease-in-out",
     "&:hover": {
         ...getCss(theme),
     },
     backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
-    cursor: "pointer",
-    borderRadius: "12px",
 }));
 
 interface PriceBadgeProps extends BoxProps {
@@ -73,10 +74,8 @@ export const NormalBadge = styled(
     paddingRight: theme.spacing(1.8),
     paddingTop: theme.spacing(0.4),
     paddingBottom: theme.spacing(0.4),
-
     textAlign: "center",
     borderRadius: "25px",
     color: alpha(color, 1),
-
     backgroundColor: alpha(color, 0.25),
 }));
