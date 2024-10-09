@@ -1246,7 +1246,7 @@ const resources = {
             "Create Property": "Δημιουργία Ακινήτου",
             "Parent Category": "Γενική κατηγορία",
             Residential: "Κατοικία",
-            Commercial: "Επαγγελματική Στέγη",
+            Commercial: "Επαγγελματικά",
             Land: "Γη",
             Other: "Άλλο",
             Category: "Κατηγορία",
@@ -1435,7 +1435,7 @@ const resources = {
             UNDER_CONSTRUCTION: "υπό κατασκευή",
             UNDER_MAINTENANCE: "υπό συντήρηση",
             RESIDENTIAL: "κατοικία",
-            COMMERCIAL: "επαγγελματική στέγη",
+            COMMERCIAL: "επαγγελματικά",
             LAND: "γη",
             OTHER: "άλλο",
             APARTMENT: "διαμέρισμα",
@@ -1746,7 +1746,7 @@ const resources = {
             "Features for Land Category": "Χαρακτηριστικά για Γη",
             "Features for Residential Category": "Χαρακτηριστικά για Κατοικία",
             "Features for Commercial Category":
-                "Χαρακτηριστικά για Επαγγελματική στέγη",
+                "Χαρακτηριστικά για Επαγγελματικά",
             "Features for Other Category": "Χαρακτηριστικά για κατηγορία Άλλο",
 
             //Description
