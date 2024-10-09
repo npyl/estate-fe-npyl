@@ -31,44 +31,40 @@ const PropertyInfoWindow = ({
     const propertyToShow = property || fetchedProperty;
     if (!propertyToShow && !isLoading) return null;
 
+    //mount and unmount styles for the popup window
     useEffect(() => {
         const styleElement = document.createElement("style");
         styleElement.innerHTML = `
             .gm-style-iw {
                 background: transparent !important;
                 box-shadow: none !important;
-                padding: 0 !important;
+                padding:1 !important;
                 border-radius: 0 !important;
                 border: none !important;
                 overflow: hidden !important;
             }
             .gm-style-iw-c {
-    background: transparent !important;
-    box-shadow: none !important;
-}   
-            
+                background: transparent !important;
+                box-shadow: none !important;
+            }   
             .gm-style-iw-t::after, .gm-style-iw-t::before {
                 display: none !important;
-                
             }
-                
             .gm-ui-hover-effect {
-            display: none !important;
+                display: none !important;
             }
-
-/* Remove the white background from the InfoWindow */
+            /* Remove the white background from the InfoWindow */
             .gm-style-iw-d {
                 background: transparent !important;
                 box-shadow: none !important;
                 padding: 0 !important;
                 overflow: hidden !important;
                 border-radius: 12px !important;
-            }    
-                .gm-style .gm-style-iw-tc::after {
-    // background: none !important;
-    height:8px !important;
-    width:25px !important;
-    }
+            }
+            .gm-style .gm-style-iw-tc::after {
+                height: 12px !important;
+                width: 25px !important;
+            }
         `;
         document.head.appendChild(styleElement);
 
@@ -76,6 +72,14 @@ const PropertyInfoWindow = ({
             document.head.removeChild(styleElement);
         };
     }, []);
+
+    // Function to handle the click on the close button
+    const handleCloseClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent any other click events from firing
+        e.preventDefault(); // Prevent the default action
+        setActiveMarker(undefined); // Close the InfoWindow
+        console.log("Close clicked");
+    };
 
     return (
         <InfoWindowF
@@ -92,8 +96,31 @@ const PropertyInfoWindow = ({
                     p: -1,
                     backgroundColor: "transparent",
                     overflowX: "hidden",
+                    position: "relative",
                 }}
             >
+                <button
+                    onClick={handleCloseClick}
+                    style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        width: "20px",
+                        height: "20px",
+                        background: "rgba(0, 0, 0, 0.6)",
+                        borderRadius: "50%",
+                        border: "none",
+                        color: "white",
+                        fontSize: "12px",
+                        cursor: "pointer",
+                        display: "flex",
+                        zIndex: 9999,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    X
+                </button>
                 {propertyToShow && (
                     <PropertyCard
                         item={propertyToShow}

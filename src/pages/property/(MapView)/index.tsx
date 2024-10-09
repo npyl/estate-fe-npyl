@@ -126,9 +126,9 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
     const { data: markers } = useGetPropertyLocationMarkersQuery();
     // const {data: cards} = useGetPropertyCardByIdQuery(propertyId);
 
-    const handleMarkerHover = useCallback((index: number) => {
-        setActiveMarker(index);
-    }, []);
+    // const handleMarkerHover = useCallback((index: number) => {
+    //     setActiveMarker(index);
+    // }, []);
 
     const handleMarkerLeave = useCallback(() => {
         setActiveMarker(undefined);
@@ -164,7 +164,7 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
 
         updateMainMarkerCoordinates(lat, lng);
     };
-
+    console.log(`active marker: ${activeMarker}`);
     return (
         <Grid container mt={1} spacing={1} order="revert">
             <Grid
@@ -234,7 +234,7 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                         <MarkerF
                             key={`${marker.lat}-${marker.lng}-${index}`}
                             position={{ lat: marker.lat, lng: marker.lng }}
-                            onMouseOver={() => handleMarkerHover(index)}
+                            // onMouseOver={() => handleMarkerHover(index)}
                             onMouseOut={handleMarkerLeave}
                             onClick={() => {
                                 setActiveMarker(index);
@@ -245,8 +245,9 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                             }}
                             icon="/static/map/mapIcon.svg"
                         >
-                            {(activeMarker === index ||
-                                selectedMarker === marker) && (
+                            {/* {(activeMarker === index ||
+                                selectedMarker === marker) && ( */}
+                            {activeMarker === index && (
                                 <PropertyInfoWindow
                                     marker={marker}
                                     properties={properties?.content || []}
