@@ -12,7 +12,8 @@ import SeoIllustration from "./dashboard/SeoIllustration";
 import AppConversionRates from "./dashboard/app-conversion-rates";
 import AppWelcome from "./dashboard/app-welcome";
 import TotalProperties from "./dashboard/total-properties";
-import Calendar from "./dashboard/Calendar";
+import dynamic from "next/dynamic";
+const Calendar = dynamic(() => import("./dashboard/Calendar"));
 
 const Dashboard: NextPage = () => {
     const { t } = useTranslation();

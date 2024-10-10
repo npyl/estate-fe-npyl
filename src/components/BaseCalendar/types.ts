@@ -1,4 +1,10 @@
-import { ButtonHTMLAttributes, HTMLAttributes, ComponentType } from "react";
+import {
+    ButtonHTMLAttributes,
+    HTMLAttributes,
+    ComponentType,
+    ReactNode,
+    PropsWithChildren,
+} from "react";
 
 type TCalendarView = "day" | "week" | "month" | "year";
 
@@ -8,13 +14,19 @@ type ButtonProps = {
     onClick: ButtonHTMLAttributes<HTMLButtonElement>["onClick"];
 };
 
+interface ViewButtonGroupProps {
+    view: TCalendarView;
+    onViewChange: (v: TCalendarView) => void;
+}
+
 interface BaseCalendarHeaderSlots {
     PreviousButton: ComponentType<ButtonProps>;
     TodayButton: ComponentType<ButtonProps>;
     NextButton: ComponentType<ButtonProps>;
+    ViewButtonGroup: ComponentType<ViewButtonGroupProps>;
 }
 
-interface BaseCalendarHeaderProps {
+interface BaseCalendarHeaderProps extends HTMLAttributes<HTMLDivElement> {
     date: Date;
     onDateChange: (d: Date) => void;
 
@@ -82,6 +94,7 @@ export type {
     BaseCalendarMonthViewProps,
     BaseCalendarYearViewProps,
     // ...
+    ViewButtonGroupProps,
     BaseCalendarHeaderProps,
     BaseCalendarHeaderSlots,
     // ...
