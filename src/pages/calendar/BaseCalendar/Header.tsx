@@ -1,7 +1,5 @@
-import { SpaceBetween } from "@/components/styled";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import { FC, useCallback } from "react";
+import { ButtonHTMLAttributes, CSSProperties, FC, useCallback } from "react";
 import { TODAY } from "./constants";
 import Stack from "@mui/material/Stack";
 
@@ -13,27 +11,35 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import YearIcon from "./YearIcon";
 
-import { TCalendarView } from "./types";
+import { BaseCalendarHeaderProps, TCalendarView } from "./types";
 
-const IconButtonSx = {
-    borderRadius: "20px",
+const HeaderStyle: CSSProperties = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
 };
 
-interface HeaderProps {
-    date: Date;
-    onDateChange: (d: Date) => void;
+// INFO: Wrapper for html element
+const Button: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
+    <button {...props} />
+);
 
-    view: TCalendarView;
-    onViewChange: (v: TCalendarView) => void;
-}
-
-const Header: FC<HeaderProps> = ({
+const BaseHeader: FC<BaseCalendarHeaderProps> = ({
     date,
     onDateChange,
     // ...
     view,
     onViewChange,
+    // ...
+    slots,
 }) => {
+    const {
+        PreviousButton = Button,
+        TodayButton = Button,
+        NextButton = Button,
+    } = slots || {};
+
     const gotoPrev = useCallback(
         () => onDateChange(new Date(date.setMonth(date.getMonth() - 1))),
         []
@@ -50,12 +56,14 @@ const Header: FC<HeaderProps> = ({
     );
 
     return (
-        <SpaceBetween>
-            <IconButton onClick={gotoPrev} sx={IconButtonSx}>
+        <div style={HeaderStyle}>
+            <PreviousButton onClick={gotoPrev}>
                 <ChevronLeft />
-            </IconButton>
-            <button onClick={gotoToday}>Today</button>
+            </PreviousButton>
 
+            <TodayButton onClick={gotoToday}>Today</TodayButton>
+
+            {/* TODO: convert this aswell! */}
             <Stack direction="row">
                 <ToggleButtonGroup
                     exclusive
@@ -76,12 +84,12 @@ const Header: FC<HeaderProps> = ({
                     </ToggleButton>
                 </ToggleButtonGroup>
 
-                <IconButton onClick={gotoNext} sx={IconButtonSx}>
+                <NextButton onClick={gotoNext}>
                     <ChevronRight />
-                </IconButton>
+                </NextButton>
             </Stack>
-        </SpaceBetween>
+        </div>
     );
 };
 
-export default Header;
+export default BaseHeader;

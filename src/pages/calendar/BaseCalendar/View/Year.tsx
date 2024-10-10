@@ -2,11 +2,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
-import ViewProps from "./types";
+import { BaseCalendarYearViewProps } from "../types";
 
 const months = Array.from({ length: 12 });
 
-const YearView: FC<ViewProps> = ({ date }) => {
+const YearView: FC<BaseCalendarYearViewProps> = ({ date }) => {
     const year = date.getFullYear();
 
     return (

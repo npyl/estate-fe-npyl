@@ -2,7 +2,7 @@ import getBorderColor from "@/theme/borderColor";
 import { SxProps, Theme, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
-import ViewProps from "./types";
+import { BaseCalendarDayViewProps } from "../types";
 
 const HeaderSx: SxProps<Theme> = {
     borderBottom: "1px solid",
@@ -11,7 +11,7 @@ const HeaderSx: SxProps<Theme> = {
     textAlign: "center",
 };
 
-const DayView: FC<ViewProps> = ({ date }) => (
+const DayView: FC<BaseCalendarDayViewProps> = ({ date }) => (
     <Stack>
         <Typography sx={HeaderSx}>{date.toDateString()}</Typography>
         <Stack p={1} height="200px">

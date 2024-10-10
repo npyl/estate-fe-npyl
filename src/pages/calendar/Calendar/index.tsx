@@ -1,27 +1,24 @@
-import { useState } from "react";
-import { TCalendarView } from "./types";
+import { Button, IconButton, IconButtonProps } from "@mui/material";
+import BaseCalendar from "../BaseCalendar";
+import { FC } from "react";
 
-import View from "./View";
+const IconButtonSx = {
+    borderRadius: "20px",
+};
 
-import { TODAY } from "./constants";
-import Header from "./Header";
+const CalendarIconButton: FC<IconButtonProps> = (props) => (
+    <IconButton sx={IconButtonSx} {...props} />
+);
 
 const Calendar = () => {
-    const [date, setDate] = useState(TODAY);
-    const [view, setView] = useState<TCalendarView>("month");
-
     return (
-        <>
-            <Header
-                date={date}
-                view={view}
-                // ...
-                onDateChange={setDate}
-                onViewChange={setView}
-            />
-
-            <View view={view} date={date} />
-        </>
+        <BaseCalendar
+            HeaderSlots={{
+                PreviousButton: CalendarIconButton,
+                NextButton: CalendarIconButton,
+                TodayButton: Button,
+            }}
+        />
     );
 };
 

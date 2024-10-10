@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { WEEKDAYS } from "../constants";
 import Grid from "@mui/material/Grid";
-import ViewProps from "./types";
+import { BaseCalendarMonthViewProps } from "../types";
 
 const daysInMonth = (year: number, month: number) =>
     new Date(year, month + 1, 0).getDate();
@@ -11,7 +11,7 @@ const firstDayOfMonth = (year: number, month: number) =>
 
 const PlaceholderCell = () => <Grid item xs={12 / 7} bgcolor="grey.100" />;
 
-const MonthView: FC<ViewProps> = ({ date }) => {
+const MonthView: FC<BaseCalendarMonthViewProps> = ({ date }) => {
     const year = date.getFullYear();
     const month = date.getMonth();
 

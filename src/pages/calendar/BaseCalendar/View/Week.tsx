@@ -2,6 +2,8 @@ import getBorderColor from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material/styles";
 import { WEEKDAYS } from "../constants";
 import Grid from "@mui/material/Grid";
+import { FC } from "react";
+import { BaseCalendarWeekViewProps } from "../types";
 
 const ColumnSx: SxProps<Theme> = {
     padding: (theme) => theme.spacing(1),
@@ -15,7 +17,7 @@ const ColumnSx: SxProps<Theme> = {
     textAlign: "center",
 };
 
-const WeekView = ({ date }: any) => {
+const WeekView: FC<BaseCalendarWeekViewProps> = ({ date }) => {
     const startOfWeek = new Date(date);
     startOfWeek.setDate(date.getDate() - date.getDay());
 
