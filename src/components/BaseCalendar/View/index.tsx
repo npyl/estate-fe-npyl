@@ -7,7 +7,12 @@ const BaseWeekView = dynamic(() => import("./Week"));
 const BaseYearView = dynamic(() => import("./Year"));
 import BaseMonthView from "./Month";
 
-const BaseView: FC<BaseCalendarViewProps> = ({ view, date, slots }) => {
+const BaseView: FC<BaseCalendarViewProps> = ({
+    view,
+    date,
+    slots,
+    ...props
+}) => {
     const {
         DayView = BaseDayView,
         WeekView = BaseWeekView,
@@ -16,7 +21,7 @@ const BaseView: FC<BaseCalendarViewProps> = ({ view, date, slots }) => {
     } = slots || {};
 
     return (
-        <div>
+        <div {...props}>
             {view === "day" ? <DayView date={date} /> : null}
             {view === "week" ? <WeekView date={date} /> : null}
             {view === "month" ? <MonthView date={date} /> : null}

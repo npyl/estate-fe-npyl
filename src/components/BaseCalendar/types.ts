@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ComponentType } from "react";
+import { ButtonHTMLAttributes, HTMLAttributes, ComponentType } from "react";
 
 type TCalendarView = "day" | "week" | "month" | "year";
 
@@ -46,7 +46,7 @@ interface BaseCalendarViewSlots {
     Cell: ComponentType<BaseCalendarCellProps>;
 }
 
-interface BaseCalendarViewProps {
+interface BaseCalendarViewProps extends HTMLAttributes<HTMLDivElement> {
     view: TCalendarView;
     date: Date;
 
@@ -61,6 +61,11 @@ interface BaseCalendarSlots {
 }
 
 interface BaseCalendarProps {
+    date: Date;
+    onDateChange: (d: Date) => void;
+    view: TCalendarView;
+    onViewChange: (v: TCalendarView) => void;
+    // ...
     slots?: Partial<BaseCalendarSlots>;
     // ...
     HeaderSlots?: Partial<BaseCalendarHeaderSlots>;

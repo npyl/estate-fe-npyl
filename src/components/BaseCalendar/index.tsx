@@ -1,10 +1,15 @@
-import { FC, useState } from "react";
-import { BaseCalendarProps, TCalendarView } from "./types";
+import { FC } from "react";
+import { BaseCalendarProps } from "./types";
 import { TODAY } from "./constants";
 import BaseHeader from "./Header";
 import BaseView from "./View";
 
 const BaseCalendar: FC<BaseCalendarProps> = ({
+    date = TODAY,
+    onDateChange,
+    view = "month",
+    onViewChange,
+    // ...
     slots,
     // ...
     HeaderSlots,
@@ -12,17 +17,14 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
 }) => {
     const { Header = BaseHeader, View = BaseView } = slots || {};
 
-    const [date, setDate] = useState(TODAY);
-    const [view, setView] = useState<TCalendarView>("month");
-
     return (
         <>
             <Header
                 date={date}
                 view={view}
                 // ...
-                onDateChange={setDate}
-                onViewChange={setView}
+                onDateChange={onDateChange}
+                onViewChange={onViewChange}
                 // ...
                 slots={HeaderSlots}
             />
