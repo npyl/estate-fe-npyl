@@ -1,20 +1,21 @@
+import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
-import EditDialog from "./EditDialog";
 import { IIntegration } from "src/types/integrations";
 import IntegrationItem from "./Item";
 import { IntegrationSite } from "@/types/listings";
 import Stack from "@mui/material/Stack";
+import RightMoveItem from "./RightMoveItem";
+const EditDialog = dynamic(() => import("./EditDialog"));
 
 const INTEGRATION_SITES: IntegrationSite[] = [
     "SPITOGATOS",
     "PLOT_GR",
     "JAMES_EDITION",
-    "XE",
-    "RIGHT_MOVE",
-    "FERIMMO",
 ];
 
-const Integrations: React.FC = () => {
+// const DISABLED: IntegrationSite[] = ["XE", "FERIMMO"];
+
+const StandardItems = () => {
     const [selectedIntegration, setSelectedIntegration] =
         useState<IIntegration>();
 
@@ -25,16 +26,14 @@ const Integrations: React.FC = () => {
 
     return (
         <>
-            <Stack spacing={1}>
-                {INTEGRATION_SITES.map((t, i) => (
-                    <IntegrationItem
-                        key={t}
-                        type={t}
-                        expandedInitialy={i === 0}
-                        onEdit={setSelectedIntegration}
-                    />
-                ))}
-            </Stack>
+            {INTEGRATION_SITES.map((t, i) => (
+                <IntegrationItem
+                    key={t}
+                    type={t}
+                    expandedInitialy={i === 0}
+                    onEdit={setSelectedIntegration}
+                />
+            ))}
 
             {selectedIntegration ? (
                 <EditDialog
@@ -46,5 +45,12 @@ const Integrations: React.FC = () => {
         </>
     );
 };
+
+const Integrations: React.FC = () => (
+    <Stack spacing={1}>
+        <StandardItems />
+        <RightMoveItem />
+    </Stack>
+);
 
 export default Integrations;

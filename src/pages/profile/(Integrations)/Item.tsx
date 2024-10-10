@@ -16,6 +16,7 @@ import { IntegrationSite } from "@/types/listings";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegration } from "@/types/integrations";
+import ItemSkeleton from "./Skeleton";
 
 interface Props {
     type: IntegrationSite;
@@ -26,38 +27,38 @@ interface Props {
 const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
     const { t } = useTranslation();
 
-    const { data: integration, isLoading } = useGetIntegrationsQuery(type);
-
     const [expanded, toggleExpanded] = useToggle(expandedInitialy);
 
-    // if (isLoading) {
-    //     return <Typography>{t("Loading...")}</Typography>;
-    // }
+    const { data: integration, isLoading } = useGetIntegrationsQuery(type, {
+        skip: !expanded,
+    });
+
+    if (isLoading) {
+        return <ItemSkeleton />;
+    }
 
     return (
         <Paper elevation={10}>
             <SpaceBetween
-                sx={{
-                    px: 2,
-                    py: 1.5,
-                    alignItems: "center",
-                }}
+                px={2}
+                py={1.5}
+                alignItems="center"
                 gap={1}
-                direction={{
-                    xs: "column",
-                    lg: "row",
-                }}
+                direction="row"
             >
-                <Typography variant="h6">{integration?.site}</Typography>
+                <Typography variant="h6">{type}</Typography>
 
                 <Stack direction="row" spacing={1}>
-                    <SoftButton
-                        variant="contained"
-                        disabled={!integration}
-                        onClick={() => onEdit(integration!)}
-                    >
-                        {t("Edit")}
-                    </SoftButton>
+                    {expanded ? (
+                        <SoftButton
+                            variant="contained"
+                            size="small"
+                            onClick={() => onEdit(integration!)}
+                        >
+                            {t("Edit")}
+                        </SoftButton>
+                    ) : null}
+
                     <IconButton
                         onClick={toggleExpanded}
                         sx={{
@@ -71,8 +72,8 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                     </IconButton>
                 </Stack>
             </SpaceBetween>
-            <Divider />
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse in={expanded} timeout="auto" mountOnEnter unmountOnExit>
+                <Divider />
                 <Grid container>
                     <Grid item xs={12} sm={6}>
                         <List>

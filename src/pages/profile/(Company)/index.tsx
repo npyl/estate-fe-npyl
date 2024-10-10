@@ -13,13 +13,9 @@ import UploadImage from "./UploadImage";
 const CompanyInformation: React.FC = () => {
     const { t } = useTranslation();
 
-    const { data: companyDetails, isLoading } = useGetCompanyDetailsQuery();
+    const { data: companyDetails } = useGetCompanyDetailsQuery();
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
-
-    if (isLoading) {
-        return <Typography>{t("Loading...")}</Typography>;
-    }
 
     return (
         <Paper elevation={10}>
