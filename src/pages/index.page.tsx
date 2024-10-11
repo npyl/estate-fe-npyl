@@ -13,7 +13,7 @@ import AppConversionRates from "./dashboard/app-conversion-rates";
 import AppWelcome from "./dashboard/app-welcome";
 import TotalProperties from "./dashboard/total-properties";
 import dynamic from "next/dynamic";
-const Calendar = dynamic(() => import("./dashboard/Calendar"));
+const SimpleCalendar = dynamic(() => import("./dashboard/SimpleCalendar"));
 
 const Dashboard: NextPage = () => {
     const { t } = useTranslation();
@@ -41,7 +41,7 @@ const Dashboard: NextPage = () => {
                     />
                 </Grid>
                 <Grid item xs={12} md={5}>
-                    <Calendar />
+                    <SimpleCalendar />
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
