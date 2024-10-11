@@ -28,7 +28,6 @@ const getEvent =
 
 const ViewStyle: CSSProperties = {
     position: "relative",
-    height: "300px",
     overflow: "hidden auto",
     overscrollBehavior: "contain",
 
@@ -38,7 +37,11 @@ const ViewStyle: CSSProperties = {
 
 // ------------------------------------------------------------------
 
-const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ date }) => {
+const CalendarDayView: FC<BaseCalendarDayViewProps> = ({
+    date,
+    style,
+    ...props
+}) => {
     const ref = useRef<HTMLDivElement>(null);
 
     // INFO: filter today's events
@@ -57,7 +60,7 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ date }) => {
     );
 
     return (
-        <div ref={ref} style={ViewStyle}>
+        <div ref={ref} {...props} style={{ ...ViewStyle, ...style }}>
             {/* Rows */}
             {hours.map(getRow)}
             {/* Events */}

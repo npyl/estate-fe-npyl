@@ -2,7 +2,10 @@ import { IconButton, IconButtonProps, Paper } from "@mui/material";
 import BaseCalendar from "@/components/BaseCalendar";
 import { FC, useState } from "react";
 import React from "react";
-import { TCalendarView } from "@/components/BaseCalendar/types";
+import {
+    BaseCalendarDayViewProps,
+    TCalendarView,
+} from "@/components/BaseCalendar/types";
 import { TODAY } from "@/components/BaseCalendar/constants";
 
 import CalendarHeader from "@/components/Calendar/Header";
@@ -10,6 +13,15 @@ import CalendarView from "@/components/Calendar/View";
 import CalendarDayView from "@/components/Calendar/Views/Day";
 
 const NullButtonGroup = ({}: any) => null;
+
+const MiniDayView: FC<BaseCalendarDayViewProps> = (props) => (
+    <CalendarDayView
+        {...props}
+        style={{
+            height: "300px",
+        }}
+    />
+);
 
 const IconButtonSx = {
     borderRadius: "20px",
@@ -36,7 +48,7 @@ const SimpleCalendar = () => {
                     Header: CalendarHeader,
                 }}
                 ViewSlots={{
-                    DayView: CalendarDayView,
+                    DayView: MiniDayView,
                 }}
                 HeaderSlots={{
                     PreviousButton: CalendarIconButton,

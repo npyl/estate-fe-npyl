@@ -14,7 +14,7 @@ const Row: FC<RowProps> = ({ hour }) => (
         minHeight={DAY_CELL_HEIGHT}
         direction="row"
         alignItems="center"
-        bgcolor="neutral.100"
+        bgcolor="transparent"
     >
         <Typography
             variant="caption"

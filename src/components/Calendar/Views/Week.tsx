@@ -9,7 +9,7 @@ import WeekView from "@/components/BaseCalendar/View/Week";
 
 const gridStyle: CSSProperties = {
     display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
+    gridTemplateColumns: "repeat(7, 1fr)",
     gap: "8px",
 };
 

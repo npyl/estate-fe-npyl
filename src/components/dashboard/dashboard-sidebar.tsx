@@ -31,6 +31,7 @@ import { SettingsButton } from "../settings-button";
 import useResponsive from "@/hooks/useResponsive";
 import CircleUnReadNotifications from "@/pages/notification/components/CircleUnReadNotifications";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -122,17 +123,16 @@ const getSections = (
                 adminOnly: true,
             },
             {
+                title: t("Calendar"),
+                path: "/calendar",
+                icon: <CalendarTodayIcon fontSize="small" />,
+            },
+            {
                 title: t("Security"),
                 path: "/security",
                 icon: <UsersIcon fontSize="small" />,
                 adminOnly: true,
             },
-
-            // {
-            //     title: t("Calendar"),
-            //     path: "/calendar",
-            //     icon: <EditCalendarIcon fontSize="small" />,
-            // },
         ],
     },
 ];
