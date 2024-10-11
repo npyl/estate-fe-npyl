@@ -14,7 +14,6 @@ const Row: FC<RowProps> = ({ hour }) => (
         pr={1}
         color="text.secondary"
         minHeight={DAY_CELL_HEIGHT}
-        bgcolor="background.paper"
         borderBottom="1px solid"
         borderColor="divider"
     >

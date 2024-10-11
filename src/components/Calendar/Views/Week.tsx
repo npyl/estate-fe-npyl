@@ -18,12 +18,7 @@ const Cell: FC<BaseCalendarCellProps> = ({ date }) => (
         }
         width={1}
     >
-        <Typography
-            textAlign="center"
-            variant="h6"
-            bgcolor="background.paper"
-            width={1}
-        >
+        <Typography textAlign="center" variant="h6" width={1}>
             {WEEKDAYS[date.getDay()]}
         </Typography>
     </Stack>

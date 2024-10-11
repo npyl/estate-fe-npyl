@@ -1,4 +1,4 @@
-import { IconButton, IconButtonProps, Paper } from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
 import BaseCalendar from "@/components/BaseCalendar";
 import { FC, useState } from "react";
 import React from "react";
@@ -20,28 +20,26 @@ const Calendar = () => {
     const [view, setView] = useState<TCalendarView>("day");
 
     return (
-        <Paper>
-            <BaseCalendar
-                date={date}
-                view={view}
-                onDateChange={setDate}
-                onViewChange={setView}
-                // ...
-                slots={{
-                    View: CalendarView,
-                    Header: CalendarHeader,
-                }}
-                ViewSlots={{
-                    DayView: CalendarDayView,
-                    WeekView: CalendarWeekView,
-                }}
-                HeaderSlots={{
-                    PreviousButton: CalendarIconButton,
-                    NextButton: CalendarIconButton,
-                    ViewButtonGroup: CalendarButtonGroup,
-                }}
-            />
-        </Paper>
+        <BaseCalendar
+            date={date}
+            view={view}
+            onDateChange={setDate}
+            onViewChange={setView}
+            // ...
+            slots={{
+                View: CalendarView,
+                Header: CalendarHeader,
+            }}
+            ViewSlots={{
+                DayView: CalendarDayView,
+                WeekView: CalendarWeekView,
+            }}
+            HeaderSlots={{
+                PreviousButton: CalendarIconButton,
+                NextButton: CalendarIconButton,
+                ViewButtonGroup: CalendarButtonGroup,
+            }}
+        />
     );
 };
 
