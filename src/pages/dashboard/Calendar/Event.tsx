@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Box, Typography } from "@mui/material";
 import { TCalendarEvent } from "./Views/types";
 import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
@@ -22,13 +22,21 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 
 interface CalendarEventProps {
     event: TCalendarEvent;
+    onLoad?: (top: number) => void;
 }
 
-const CalendarEvent: React.FC<CalendarEventProps> = ({ event }) => {
+const CalendarEvent: React.FC<CalendarEventProps> = ({ event, onLoad }) => {
     const { top, height } = calculateEventPosition(event);
+
+    // onLoad() support on mount; null happens on unmount
+    const handleRef = useCallback((node: HTMLDivElement | null) => {
+        if (!node) return;
+        onLoad?.(node.offsetTop);
+    }, []);
 
     return (
         <Box
+            ref={handleRef}
             position="absolute"
             left={50}
             right={0}

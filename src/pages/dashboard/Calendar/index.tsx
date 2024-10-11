@@ -1,11 +1,8 @@
-import { Button, IconButton, IconButtonProps, Stack } from "@mui/material";
+import { Button, IconButton, IconButtonProps } from "@mui/material";
 import BaseCalendar from "@/components/BaseCalendar";
 import { FC, useState } from "react";
 import React from "react";
-import {
-    BaseCalendarDayViewProps,
-    TCalendarView,
-} from "@/components/BaseCalendar/types";
+import { TCalendarView } from "@/components/BaseCalendar/types";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import CalendarButtonGroup from "./ButtonGroup";
 import { IconButtonSx } from "./styles";

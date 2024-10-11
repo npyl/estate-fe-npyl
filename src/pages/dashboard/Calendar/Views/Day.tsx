@@ -1,96 +1,61 @@
 import { BaseCalendarDayViewProps } from "@/components/BaseCalendar/types";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, useCallback, useRef } from "react";
 import { TCalendarEvent } from "./types";
-import CalendarEvent from "../Event";
-import { DAY_CELL_HEIGHT, START_HOUR, TOTAL_HOURS } from "./constant";
+import { START_HOUR, TOTAL_HOURS } from "./constant";
+import dynamic from "next/dynamic";
+const CalendarEvent = dynamic(() => import("../Event"));
+
+import fakeEvents from "./fakeEvents";
+import Row from "./Row";
 
 const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
 // ------------------------------------------------------------------
 
-interface RowProps {
-    hour: number;
-}
-
-const Row: FC<RowProps> = ({ hour }) => (
-    <Stack
-        borderBottom="1px solid"
-        borderColor="divider"
-        minHeight={DAY_CELL_HEIGHT}
-        direction="row"
-        alignItems="center"
-    >
-        <Typography
-            variant="caption"
-            width={50}
-            textAlign="right"
-            pr={1}
-            color="text.secondary"
-        >
-            {`${hour % 12 === 0 ? 12 : hour % 12} ${hour < 12 ? "AM" : "PM"}`}
-        </Typography>
-
-        <Box flexGrow={1} height="100%" />
-    </Stack>
-);
-
-// ------------------------------------------------------------------
-
 const getRow = (hour: number) => <Row key={hour} hour={hour} />;
-const getEvent = (e: TCalendarEvent) => <CalendarEvent key={e.id} event={e} />;
+
+const getEvent =
+    (onFirstLoad: (top: number) => void) => (ce: TCalendarEvent, i: number) =>
+        (
+            <CalendarEvent
+                key={ce.id}
+                event={ce}
+                onLoad={i === 0 ? onFirstLoad : undefined}
+            />
+        );
 
 // ------------------------------------------------------------------
-
-const fakeEvents: TCalendarEvent[] = [
-    {
-        id: 1,
-        title: "Team Meeting",
-        location: "Conference Room A",
-        startDate: new Date(2024, 9, 11, 9, 0), // 9:00 AM
-        endDate: new Date(2024, 9, 11, 10, 30), // 10:30 AM
-        withIds: [1, 2, 3],
-    },
-    {
-        id: 2,
-        title: "Lunch with Client",
-        location: "Cafe Mocha",
-        startDate: new Date(2024, 9, 11, 12, 0), // 12:00 PM
-        endDate: new Date(2024, 9, 11, 13, 30), // 1:30 PM
-        withIds: [4],
-    },
-    {
-        id: 3,
-        title: "Project Review",
-        location: "Virtual Meeting",
-        startDate: new Date(2024, 9, 11, 14, 0), // 2:00 PM
-        endDate: new Date(2024, 9, 11, 15, 0), // 3:00 PM
-        withIds: [2, 5, 6],
-    },
-    {
-        id: 4,
-        title: "Gym",
-        location: "Fitness Center",
-        startDate: new Date(2024, 9, 11, 18, 0), // 6:00 PM
-        endDate: new Date(2024, 9, 11, 19, 30), // 7:30 PM
-        withIds: [],
-    },
-];
 
 const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ date }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
     // INFO: filter today's events
     const events = fakeEvents.filter(
         (event) => event.startDate.toDateString() === date.toDateString()
     );
 
+    // Scroll to first event on load
+    const handleFirstLoad = useCallback(
+        (top: number) =>
+            ref.current?.scrollTo({
+                top,
+                behavior: "smooth",
+            }),
+        []
+    );
+
     return (
-        <Stack position="relative" height="300px" overflow="hidden auto">
+        <Stack
+            ref={ref}
+            position="relative"
+            height="300px"
+            overflow="hidden auto"
+        >
             {/* Rows */}
             {hours.map(getRow)}
             {/* Events */}
-            {events.map(getEvent)}
+            {events.map(getEvent(handleFirstLoad))}
         </Stack>
     );
 };
