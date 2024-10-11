@@ -19,6 +19,8 @@ const MiniDayView: FC<BaseCalendarDayViewProps> = (props) => (
         {...props}
         style={{
             height: "300px",
+            borderBottomLeftRadius: "20px",
+            borderBottomRightRadius: "20px",
         }}
     />
 );

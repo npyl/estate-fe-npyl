@@ -1,18 +1,18 @@
-import { BaseCalendarDayViewProps } from "@/components/BaseCalendar/types";
+import {
+    BaseCalendarCellProps,
+    BaseCalendarDayViewProps,
+} from "@/components/BaseCalendar/types";
 import { CSSProperties, FC, useCallback, useRef } from "react";
 import { TCalendarEvent } from "../types";
-import { START_HOUR, TOTAL_HOURS } from "./constant";
 import dynamic from "next/dynamic";
 const CalendarEvent = dynamic(() => import("../Event"));
 
 import fakeEvents from "./fakeEvents";
-import Row from "./Row";
-
-const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
+import Rows from "./Rows";
+import DayView from "@/components/BaseCalendar/View/Day";
+import Stack from "@mui/material/Stack";
 
 // ------------------------------------------------------------------
-
-const getRow = (hour: number) => <Row key={hour} hour={hour} />;
 
 const getEvent =
     (onFirstLoad: (top: number) => void) => (ce: TCalendarEvent, i: number) =>
@@ -32,21 +32,34 @@ const ViewStyle: CSSProperties = {
     overscrollBehavior: "contain",
 
     scrollbarWidth: "none",
+
     WebkitOverflowScrolling: "touch", // smooth scrolling
 };
 
 // ------------------------------------------------------------------
 
-const CalendarDayView: FC<BaseCalendarDayViewProps> = ({
-    date,
-    style,
-    ...props
-}) => {
+interface DayCell extends BaseCalendarCellProps {
+    events: TCalendarEvent[];
+    onFirstEventLoad: (top: number) => void;
+}
+
+const Cell: FC<DayCell> = ({ events, onFirstEventLoad }) => (
+    <Stack
+        bgcolor={(theme) =>
+            theme.palette.mode === "light" ? "grey.100" : "neutral.800"
+        }
+    >
+        {/* Events */}
+        {events.map(getEvent(onFirstEventLoad))}
+    </Stack>
+);
+
+const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     // INFO: filter today's events
     const events = fakeEvents.filter(
-        (event) => event.startDate.toDateString() === date.toDateString()
+        (event) => event.startDate.toDateString() === props.date.toDateString()
     );
 
     // Scroll to first event on load
@@ -60,12 +73,19 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({
     );
 
     return (
-        <div ref={ref} {...props} style={{ ...ViewStyle, ...style }}>
-            {/* Rows */}
-            {hours.map(getRow)}
-            {/* Events */}
-            {events.map(getEvent(handleFirstLoad))}
-        </div>
+        <DayView
+            ref={ref}
+            {...props}
+            style={{ ...ViewStyle, ...style }}
+            Cell={(props) => (
+                <Cell
+                    {...props}
+                    events={events}
+                    onFirstEventLoad={handleFirstLoad}
+                />
+            )}
+            Numbering={Rows}
+        />
     );
 };
 
