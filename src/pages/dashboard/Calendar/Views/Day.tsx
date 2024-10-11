@@ -1,7 +1,6 @@
 import { BaseCalendarDayViewProps } from "@/components/BaseCalendar/types";
-import Stack from "@mui/material/Stack";
-import { FC, useCallback, useRef } from "react";
-import { TCalendarEvent } from "./types";
+import { CSSProperties, FC, useCallback, useRef } from "react";
+import { TCalendarEvent } from "../types";
 import { START_HOUR, TOTAL_HOURS } from "./constant";
 import dynamic from "next/dynamic";
 const CalendarEvent = dynamic(() => import("../Event"));
@@ -27,6 +26,15 @@ const getEvent =
 
 // ------------------------------------------------------------------
 
+const ViewStyle: CSSProperties = {
+    position: "relative",
+    height: "300px",
+    overflow: "hidden auto",
+    overscrollBehavior: "contain",
+};
+
+// ------------------------------------------------------------------
+
 const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ date }) => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -39,24 +47,19 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ date }) => {
     const handleFirstLoad = useCallback(
         (top: number) =>
             ref.current?.scrollTo({
-                top,
+                top: top - 7,
                 behavior: "smooth",
             }),
         []
     );
 
     return (
-        <Stack
-            ref={ref}
-            position="relative"
-            height="300px"
-            overflow="hidden auto"
-        >
+        <div ref={ref} style={ViewStyle}>
             {/* Rows */}
             {hours.map(getRow)}
             {/* Events */}
             {events.map(getEvent(handleFirstLoad))}
-        </Stack>
+        </div>
     );
 };
 

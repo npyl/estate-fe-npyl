@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
 import { Box, Typography } from "@mui/material";
-import { TCalendarEvent } from "./Views/types";
+import { TCalendarEvent } from "./types";
 import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
+
+// ------------------------------------------------------------------------------------
 
 const calculateEventPosition = (event: TCalendarEvent) => {
     const startHour = event.startDate.getHours();
@@ -19,6 +21,8 @@ const calculateEventPosition = (event: TCalendarEvent) => {
         height,
     };
 };
+
+// ------------------------------------------------------------------------------------
 
 interface CalendarEventProps {
     event: TCalendarEvent;
@@ -42,10 +46,11 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({ event, onLoad }) => {
             right={0}
             top={top}
             height={height}
-            bgcolor="primary.light"
-            borderRadius={1}
+            bgcolor={event.type.color}
             p={1}
+            mr={1}
             overflow="hidden"
+            boxShadow={10}
         >
             <Typography variant="subtitle2" noWrap>
                 {event.title}
