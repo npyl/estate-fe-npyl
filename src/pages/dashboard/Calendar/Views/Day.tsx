@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { TCalendarEvent } from "./types";
 import CalendarEvent from "../Event";
-import { DAY_CELL_HEIGHT } from "./constant";
+import { DAY_CELL_HEIGHT, START_HOUR, TOTAL_HOURS } from "./constant";
 
-const hours = Array.from({ length: 24 }, (_, i) => i);
+const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
 // ------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ const Row: FC<RowProps> = ({ hour }) => (
             pr={1}
             color="text.secondary"
         >
-            {`${hour.toString().padStart(2, "0")}:00`}
+            {`${hour % 12 === 0 ? 12 : hour % 12} ${hour < 12 ? "AM" : "PM"}`}
         </Typography>
 
         <Box flexGrow={1} height="100%" />

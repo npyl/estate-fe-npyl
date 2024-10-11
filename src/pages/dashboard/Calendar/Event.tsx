@@ -1,18 +1,23 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { TCalendarEvent } from "./Views/types";
-import { DAY_CELL_HEIGHT } from "./Views/constant";
+import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
 
 const calculateEventPosition = (event: TCalendarEvent) => {
     const startHour = event.startDate.getHours();
-    const startMinute = event.startDate.getMinutes();
+    const startMinutes = event.startDate.getMinutes();
     const endHour = event.endDate.getHours();
-    const endMinute = event.endDate.getMinutes();
+    const endMinutes = event.endDate.getMinutes();
 
-    const top = startHour * DAY_CELL_HEIGHT + startMinute;
-    const height = endHour * DAY_CELL_HEIGHT + endMinute - top;
+    const top = (startHour - START_HOUR + startMinutes / 60) * DAY_CELL_HEIGHT;
+    const height =
+        (endHour - startHour + (endMinutes - startMinutes) / 60) *
+        DAY_CELL_HEIGHT;
 
-    return { top, height };
+    return {
+        top,
+        height,
+    };
 };
 
 interface CalendarEventProps {
@@ -26,8 +31,8 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({ event }) => {
         <Box
             position="absolute"
             left={50}
-            top={top}
             right={0}
+            top={top}
             height={height}
             bgcolor="primary.light"
             borderRadius={1}
