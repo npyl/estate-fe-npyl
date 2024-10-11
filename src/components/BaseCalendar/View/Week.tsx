@@ -1,9 +1,26 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { BaseCalendarWeekViewProps } from "../types";
+
+// ------------------------------------------------------------
+
+const defaultStyle: CSSProperties = {
+    display: "flex",
+    flexDirection: "row",
+};
+
+const gridStyle: CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    width: "100%",
+};
+
+// ------------------------------------------------------------
 
 const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
     date,
     Cell,
+    Numbering,
+    style,
     ...props
 }) => {
     const startOfWeek = new Date(date);
@@ -17,10 +34,20 @@ const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
     });
 
     return (
-        <div {...props}>
-            {weekDays.map((day) => (
-                <Cell key={day.toISOString()} date={day} />
-            ))}
+        <div
+            {...props}
+            style={{
+                ...defaultStyle,
+                ...style,
+            }}
+        >
+            <Numbering />
+
+            <div style={gridStyle}>
+                {weekDays.map((day) => (
+                    <Cell key={day.toISOString()} date={day} />
+                ))}
+            </div>
         </div>
     );
 };

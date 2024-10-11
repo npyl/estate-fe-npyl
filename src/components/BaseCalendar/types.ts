@@ -22,7 +22,6 @@ interface BaseCalendarHeaderSlots {
 interface BaseCalendarHeaderProps extends HTMLAttributes<HTMLDivElement> {
     date: Date;
     onDateChange: (d: Date) => void;
-
     view: TCalendarView;
     onViewChange: (v: TCalendarView) => void;
 
@@ -30,6 +29,8 @@ interface BaseCalendarHeaderProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 // -------------------------------------------------------------
+
+interface BaseCalendarNumberingProps {}
 
 interface BaseCalendarCellProps {
     /* 
@@ -42,6 +43,7 @@ interface BaseCalendarCellProps {
 interface ViewProps extends HTMLAttributes<HTMLDivElement> {
     date: Date;
     Cell: ComponentType<BaseCalendarCellProps>;
+    Numbering: ComponentType<BaseCalendarNumberingProps>;
 }
 
 interface BaseCalendarDayViewProps extends ViewProps {}

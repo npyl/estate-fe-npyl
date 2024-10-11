@@ -1,4 +1,5 @@
 const TODAY = new Date();
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 export { TODAY, WEEKDAYS };

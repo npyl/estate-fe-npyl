@@ -8,6 +8,7 @@ const BaseYearView = dynamic(() => import("./Year"));
 import BaseMonthView from "./Month";
 
 const EmptyCell: FC<BaseCalendarCellProps> = () => null;
+const NoNumbering = () => null;
 
 const BaseView: FC<BaseCalendarViewProps> = ({
     view,
@@ -24,12 +25,30 @@ const BaseView: FC<BaseCalendarViewProps> = ({
 
     return (
         <div {...props}>
-            {view === "day" ? <DayView date={date} Cell={EmptyCell} /> : null}
-            {view === "week" ? <WeekView date={date} Cell={EmptyCell} /> : null}
-            {view === "month" ? (
-                <MonthView date={date} Cell={EmptyCell} />
+            {view === "day" ? (
+                <DayView date={date} Cell={EmptyCell} Numbering={NoNumbering} />
             ) : null}
-            {view === "year" ? <YearView date={date} Cell={EmptyCell} /> : null}
+            {view === "week" ? (
+                <WeekView
+                    date={date}
+                    Cell={EmptyCell}
+                    Numbering={NoNumbering}
+                />
+            ) : null}
+            {view === "month" ? (
+                <MonthView
+                    date={date}
+                    Cell={EmptyCell}
+                    Numbering={NoNumbering}
+                />
+            ) : null}
+            {view === "year" ? (
+                <YearView
+                    date={date}
+                    Cell={EmptyCell}
+                    Numbering={NoNumbering}
+                />
+            ) : null}
         </div>
     );
 };
