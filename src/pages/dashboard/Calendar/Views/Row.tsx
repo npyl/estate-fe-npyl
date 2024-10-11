@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
@@ -15,6 +14,7 @@ const Row: FC<RowProps> = ({ hour }) => (
         minHeight={DAY_CELL_HEIGHT}
         direction="row"
         alignItems="center"
+        bgcolor="neutral.100"
     >
         <Typography
             variant="caption"
@@ -22,11 +22,11 @@ const Row: FC<RowProps> = ({ hour }) => (
             textAlign="right"
             pr={1}
             color="text.secondary"
+            height={DAY_CELL_HEIGHT}
+            bgcolor="background.paper"
         >
             {`${hour % 12 === 0 ? 12 : hour % 12} ${hour < 12 ? "AM" : "PM"}`}
         </Typography>
-
-        <Box flexGrow={1} height="100%" />
     </Stack>
 );
 

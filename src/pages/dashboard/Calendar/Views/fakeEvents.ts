@@ -9,12 +9,12 @@ const fakeTypes: TCalendarEventType[] = [
     {
         id: 2,
         name: "tour-online",
-        color: "#C7C9CB",
+        color: "#bcdfd4",
     },
     {
         id: 3,
         name: "tour-in-person",
-        color: "primary.light",
+        color: "#cad8f3",
     },
 ];
 

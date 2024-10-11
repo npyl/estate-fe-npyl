@@ -31,6 +31,9 @@ const ViewStyle: CSSProperties = {
     height: "300px",
     overflow: "hidden auto",
     overscrollBehavior: "contain",
+
+    scrollbarWidth: "none",
+    WebkitOverflowScrolling: "touch", // smooth scrolling
 };
 
 // ------------------------------------------------------------------

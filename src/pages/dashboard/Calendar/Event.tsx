@@ -48,7 +48,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({ event, onLoad }) => {
             height={height}
             bgcolor={event.type.color}
             p={1}
-            mr={1}
+            mx={1}
             overflow="hidden"
             boxShadow={10}
         >
