@@ -2,7 +2,11 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { ButtonHTMLAttributes, CSSProperties, FC, useCallback } from "react";
 import { TODAY } from "./constants";
 
-import { BaseCalendarHeaderProps, ViewButtonGroupProps } from "./types";
+import {
+    BaseCalendarHeaderProps,
+    TCalendarView,
+    ViewButtonGroupProps,
+} from "./types";
 
 const HeaderStyle: CSSProperties = {
     display: "flex",
@@ -24,6 +28,32 @@ const Button: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
 );
 
 const BaseButtonGroup: FC<ViewButtonGroupProps> = () => null;
+
+/* 
+    amount: +1 or -1 (next/previous)
+    date: current date
+    view: current calendar mode
+*/
+const getDate = (amount: number, date: Date, view: TCalendarView) => {
+    const newDate = new Date(date);
+
+    switch (view) {
+        case "day":
+            newDate.setDate(date.getDate() + amount);
+            break;
+        case "week":
+            newDate.setDate(date.getDate() + amount * 7);
+            break;
+        case "month":
+            newDate.setMonth(date.getMonth() + amount);
+            break;
+        case "year":
+            newDate.setFullYear(date.getFullYear() + amount);
+            break;
+    }
+
+    return newDate;
+};
 
 const BaseHeader: FC<BaseCalendarHeaderProps> = ({
     date,
@@ -48,14 +78,15 @@ const BaseHeader: FC<BaseCalendarHeaderProps> = ({
     } = slots || {};
 
     const gotoPrev = useCallback(
-        () => onDateChange(new Date(date.setMonth(date.getMonth() - 1))),
-        []
+        () => onDateChange(getDate(-1, date, view)),
+        [date, view, onDateChange]
     );
     const gotoNext = useCallback(
-        () => onDateChange(new Date(date.setMonth(date.getMonth() + 1))),
-        []
+        () => onDateChange(getDate(1, date, view)),
+        [date, view, onDateChange]
     );
-    const gotoToday = useCallback(() => onDateChange(TODAY), []);
+
+    const gotoToday = useCallback(() => onDateChange(TODAY), [onDateChange]);
 
     return (
         <div
