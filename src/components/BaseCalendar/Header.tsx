@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { ButtonHTMLAttributes, CSSProperties, FC, useCallback } from "react";
-import { TODAY } from "./constants";
 
 import {
     BaseCalendarHeaderProps,
@@ -72,7 +71,6 @@ const BaseHeader: FC<BaseCalendarHeaderProps> = ({
 }) => {
     const {
         PreviousButton = Button,
-        TodayButton = Button,
         NextButton = Button,
         ViewButtonGroup = BaseButtonGroup,
     } = slots || {};
@@ -86,8 +84,6 @@ const BaseHeader: FC<BaseCalendarHeaderProps> = ({
         [date, view, onDateChange]
     );
 
-    const gotoToday = useCallback(() => onDateChange(TODAY), [onDateChange]);
-
     return (
         <div
             {...props}
@@ -99,13 +95,6 @@ const BaseHeader: FC<BaseCalendarHeaderProps> = ({
             <PreviousButton onClick={gotoPrev}>
                 <ChevronLeft />
             </PreviousButton>
-
-            <TodayButton
-                className="pp-calendar-header-today-button"
-                onClick={gotoToday}
-            >
-                Today
-            </TodayButton>
 
             <div style={ContentRightStyle}>
                 <ViewButtonGroup view={view} onViewChange={onViewChange} />

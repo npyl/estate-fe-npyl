@@ -9,7 +9,6 @@ import CalendarHeader from "@/components/Calendar/Header";
 import CalendarView from "@/components/Calendar/View";
 import CalendarDayView from "@/components/Calendar/Views/Day";
 
-const NullButton = ({}: any) => null;
 const NullButtonGroup = ({}: any) => null;
 
 const IconButtonSx = {
@@ -42,7 +41,6 @@ const SimpleCalendar = () => {
                 HeaderSlots={{
                     PreviousButton: CalendarIconButton,
                     NextButton: CalendarIconButton,
-                    TodayButton: NullButton,
                     ViewButtonGroup: NullButtonGroup,
                 }}
             />

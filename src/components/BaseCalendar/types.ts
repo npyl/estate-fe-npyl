@@ -15,7 +15,6 @@ interface ViewButtonGroupProps {
 
 interface BaseCalendarHeaderSlots {
     PreviousButton: ComponentType<ButtonProps>;
-    TodayButton: ComponentType<ButtonProps>;
     NextButton: ComponentType<ButtonProps>;
     ViewButtonGroup: ComponentType<ViewButtonGroupProps>;
 }

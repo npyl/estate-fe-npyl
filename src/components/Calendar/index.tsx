@@ -1,4 +1,4 @@
-import { Button, IconButton, IconButtonProps, Paper } from "@mui/material";
+import { IconButton, IconButtonProps, Paper } from "@mui/material";
 import BaseCalendar from "@/components/BaseCalendar";
 import { FC, useState } from "react";
 import React from "react";
@@ -10,8 +10,6 @@ import CalendarHeader from "./Header";
 import CalendarView from "./View";
 import CalendarDayView from "./Views/Day";
 import CalendarWeekView from "./Views/Week";
-
-const NullButton = ({}: any) => null;
 
 const CalendarIconButton: FC<IconButtonProps> = (props) => (
     <IconButton sx={IconButtonSx} {...props} />
@@ -40,7 +38,6 @@ const Calendar = () => {
                 HeaderSlots={{
                     PreviousButton: CalendarIconButton,
                     NextButton: CalendarIconButton,
-                    TodayButton: NullButton,
                     ViewButtonGroup: CalendarButtonGroup,
                 }}
             />
