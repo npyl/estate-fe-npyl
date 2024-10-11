@@ -3,64 +3,85 @@ import {
     BaseCalendarHeaderProps,
     TCalendarView,
 } from "@/components/BaseCalendar/types";
-import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import { CSSProperties, FC } from "react";
 
 const Style: CSSProperties = {
     position: "relative",
+    padding: "10px",
 };
 
-const renderValue = (view: TCalendarView, date: Date): string => {
-    const options: Intl.DateTimeFormatOptions = { timeZone: "UTC" };
-
+const renderValue = (
+    view: TCalendarView,
+    date: Date
+): { main: string; sub: string } => {
     switch (view) {
         case "day":
-            options.weekday = "long";
-            options.year = "numeric";
-            options.month = "long";
-            options.day = "numeric";
-            break;
+            return {
+                main: date.getDate().toString(),
+                sub: date.toLocaleDateString("en-US", { weekday: "short" }),
+            };
         case "week":
             const startOfWeek = new Date(date);
             startOfWeek.setDate(date.getDate() - date.getDay());
             const endOfWeek = new Date(startOfWeek);
             endOfWeek.setDate(startOfWeek.getDate() + 6);
-            return `${startOfWeek.toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-            })} - ${endOfWeek.toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-            })}`;
+            return {
+                main: `${startOfWeek.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                })} - ${endOfWeek.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                })}`,
+                sub: endOfWeek.getFullYear().toString(),
+            };
         case "month":
-            options.year = "numeric";
-            options.month = "long";
-            break;
+            return {
+                main: date.toLocaleDateString("en-US", { month: "long" }),
+                sub: date.getFullYear().toString(),
+            };
         case "year":
-            options.year = "numeric";
-            break;
+            return {
+                main: date.getFullYear().toString(),
+                sub: "",
+            };
     }
-
-    return date.toLocaleDateString("en-US", options);
 };
 
 const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
     children,
     ...props
-}) => (
-    <BaseHeader {...props} style={Style}>
-        <Typography
-            position="absolute"
-            top="50%"
-            left="50%"
-            sx={{
-                transform: "translate(-50%, -50%)",
-            }}
-        >
-            {renderValue(props.view, props.date)}
-        </Typography>
-    </BaseHeader>
-);
+}) => {
+    const value = renderValue(props.view, props.date);
+
+    return (
+        <BaseHeader {...props} style={Style}>
+            <Stack
+                position="absolute"
+                top="50%"
+                left="50%"
+                direction="row"
+                alignItems="center"
+                sx={{
+                    transform: "translate(-50%, -50%)",
+                    gap: "8px",
+                }}
+            >
+                <span
+                    style={{
+                        fontSize: props.view === "day" ? "2.5rem" : "1.5rem",
+                        fontWeight: "bold",
+                    }}
+                >
+                    {value.main}
+                </span>
+                {value.sub && (
+                    <span style={{ fontSize: "1rem" }}>{value.sub}</span>
+                )}
+            </Stack>
+        </BaseHeader>
+    );
+};
 
 export default CalendarHeader;
