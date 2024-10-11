@@ -2,36 +2,22 @@ import { Button, IconButton, IconButtonProps, Stack } from "@mui/material";
 import BaseCalendar from "@/components/BaseCalendar";
 import { FC, useState } from "react";
 import React from "react";
-import BaseView from "@/components/BaseCalendar/View";
 import {
     BaseCalendarDayViewProps,
-    BaseCalendarViewProps,
     TCalendarView,
 } from "@/components/BaseCalendar/types";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import CalendarButtonGroup from "./ButtonGroup";
 import { IconButtonSx } from "./styles";
 import CalendarHeader from "./Header";
+import CalendarView from "./View";
+import CalendarDayView from "./Views/Day";
 
 const NullButton = ({}: any) => null;
 
 const CalendarIconButton: FC<IconButtonProps> = (props) => (
     <IconButton sx={IconButtonSx} {...props} />
 );
-
-const CalendarView: FC<BaseCalendarViewProps> = (props) => (
-    <BaseView
-        {...props}
-        style={{
-            width: "100%",
-            backgroundColor: "",
-        }}
-    />
-);
-
-const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ date }) => {
-    return <Stack>...</Stack>;
-};
 
 const Calendar = () => {
     const [date, setDate] = useState(TODAY);
