@@ -32,24 +32,29 @@ interface BaseCalendarHeaderProps extends HTMLAttributes<HTMLDivElement> {
 
 // -------------------------------------------------------------
 
-interface ViewProps {
+interface BaseCalendarCellProps {
+    /* 
+        INFO: represents a date not particularly today; tied to the cell content
+            This is different than the date passed from top (BaseCalendar) until bottom (___View, e.g. DayView, etc.)  
+    */
     date: Date;
+}
+
+interface ViewProps extends HTMLAttributes<HTMLDivElement> {
+    date: Date;
+    Cell: ComponentType<BaseCalendarCellProps>;
 }
 
 interface BaseCalendarDayViewProps extends ViewProps {}
 interface BaseCalendarWeekViewProps extends ViewProps {}
 interface BaseCalendarMonthViewProps extends ViewProps {}
 interface BaseCalendarYearViewProps extends ViewProps {}
-// ...
-interface BaseCalendarCellProps {}
 
 interface BaseCalendarViewSlots {
     DayView: ComponentType<BaseCalendarDayViewProps>;
     WeekView: ComponentType<BaseCalendarWeekViewProps>;
     MonthView: ComponentType<BaseCalendarMonthViewProps>;
     YearView: ComponentType<BaseCalendarYearViewProps>;
-    // ...
-    Cell: ComponentType<BaseCalendarCellProps>;
 }
 
 interface BaseCalendarViewProps extends HTMLAttributes<HTMLDivElement> {
@@ -82,6 +87,8 @@ interface BaseCalendarProps {
 
 export type {
     TCalendarView,
+    // ...
+    BaseCalendarCellProps,
     // ...
     BaseCalendarDayViewProps,
     BaseCalendarWeekViewProps,

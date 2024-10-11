@@ -9,6 +9,7 @@ import { IconButtonSx } from "./styles";
 import CalendarHeader from "./Header";
 import CalendarView from "./View";
 import CalendarDayView from "./Views/Day";
+import CalendarWeekView from "./Views/Week";
 
 const NullButton = ({}: any) => null;
 
@@ -34,11 +35,12 @@ const Calendar = () => {
                 }}
                 ViewSlots={{
                     DayView: CalendarDayView,
+                    WeekView: CalendarWeekView,
                 }}
                 HeaderSlots={{
                     PreviousButton: CalendarIconButton,
                     NextButton: CalendarIconButton,
-                    TodayButton: view === "day" ? NullButton : Button,
+                    TodayButton: NullButton,
                     ViewButtonGroup: CalendarButtonGroup,
                 }}
             />

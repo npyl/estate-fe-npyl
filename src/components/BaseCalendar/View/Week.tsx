@@ -1,52 +1,27 @@
-import getBorderColor from "@/theme/borderColor";
-import { SxProps, Theme } from "@mui/material/styles";
-import { WEEKDAYS } from "../constants";
-import Grid from "@mui/material/Grid";
-import { FC } from "react";
+import React from "react";
 import { BaseCalendarWeekViewProps } from "../types";
 
-const ColumnSx: SxProps<Theme> = {
-    padding: (theme) => theme.spacing(1),
-
-    borderRight: "1px solid",
-    borderColor: (theme) => getBorderColor(theme),
-    "&:nth-of-type(7n)": {
-        borderRight: "none",
-    },
-
-    textAlign: "center",
-};
-
-const WeekView: FC<BaseCalendarWeekViewProps> = ({ date }) => {
+const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
+    date,
+    Cell,
+    ...props
+}) => {
     const startOfWeek = new Date(date);
+
     startOfWeek.setDate(date.getDate() - date.getDay());
 
+    const weekDays = Array.from({ length: 7 }, (_, i) => {
+        const day = new Date(startOfWeek);
+        day.setDate(startOfWeek.getDate() + i);
+        return day;
+    });
+
     return (
-        <Grid container>
-            {/* Headers */}
-            {WEEKDAYS.map((day, i) => {
-                const dayDate = new Date(startOfWeek);
-                dayDate.setDate(startOfWeek.getDate() + i);
-
-                return (
-                    <Grid key={day} item xs={12 / 7} sx={ColumnSx}>
-                        {day} {dayDate.getDate()}
-                    </Grid>
-                );
-            })}
-
-            {/* Days */}
-            {[...Array(7)].map((_, i) => {
-                const day = new Date(startOfWeek);
-                day.setDate(startOfWeek.getDate() + i);
-
-                return (
-                    <Grid key={i} item xs={12 / 7} height="200px">
-                        ...
-                    </Grid>
-                );
-            })}
-        </Grid>
+        <div {...props}>
+            {weekDays.map((day) => (
+                <Cell key={day.toISOString()} date={day} />
+            ))}
+        </div>
     );
 };
 
