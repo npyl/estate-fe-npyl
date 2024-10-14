@@ -14,9 +14,14 @@ const CalendarYearView = dynamic(() => import("./Views/Year"));
 import CalendarIconButton from "./Controls";
 import CalendarButtonGroup from "./ButtonGroup";
 
-const Calendar: FC<CalendarProps> = ({ slots, HeaderSlots, ViewSlots }) => {
+const Calendar: FC<CalendarProps> = ({
+    initialView = "week",
+    slots,
+    HeaderSlots,
+    ViewSlots,
+}) => {
     const [date, setDate] = useState(TODAY);
-    const [view, setView] = useState<TCalendarView>("week");
+    const [view, setView] = useState<TCalendarView>(initialView);
 
     return (
         <BaseCalendar

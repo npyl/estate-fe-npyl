@@ -36,6 +36,7 @@ const getRow = (hour: number) => <NumberItem key={hour} hour={hour} />;
 const columnStyle: CSSProperties = {
     display: "flex",
     flexDirection: "column",
+    height: "max-content", // INFO: this is important!
 };
 
 const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (

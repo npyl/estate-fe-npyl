@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, BoxProps, Typography } from "@mui/material";
 import { TCalendarEvent } from "./types";
 import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
 
@@ -24,12 +24,16 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 
 // ------------------------------------------------------------------------------------
 
-interface CalendarEventProps {
+interface CalendarEventProps extends Omit<BoxProps, "onLoad"> {
     event: TCalendarEvent;
     onLoad?: (top: number) => void;
 }
 
-const CalendarEvent: React.FC<CalendarEventProps> = ({ event, onLoad }) => {
+const CalendarEvent: React.FC<CalendarEventProps> = ({
+    event,
+    onLoad,
+    ...props
+}) => {
     const { top, height } = calculateEventPosition(event);
 
     // onLoad() support on mount; null happens on unmount
@@ -51,6 +55,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({ event, onLoad }) => {
             mx={1}
             overflow="hidden"
             boxShadow={10}
+            {...props}
         >
             <Typography variant="subtitle2" noWrap>
                 {event.title}

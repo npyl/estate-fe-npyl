@@ -18,7 +18,7 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
     const { Header = BaseHeader, View = BaseView } = slots || {};
 
     return (
-        <>
+        <div>
             <Header
                 date={date}
                 view={view}
@@ -30,7 +30,7 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
             />
 
             <View view={view} date={date} slots={ViewSlots} />
-        </>
+        </div>
     );
 };
 
