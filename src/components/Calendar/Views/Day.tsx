@@ -2,15 +2,14 @@ import {
     BaseCalendarCellProps,
     BaseCalendarDayViewProps,
 } from "@/components/BaseCalendar/types";
-import { CSSProperties, FC, useCallback, useRef } from "react";
+import { CSSProperties, FC, forwardRef, useCallback, useRef } from "react";
 import { TCalendarEvent } from "../types";
 import dynamic from "next/dynamic";
-const CalendarEvent = dynamic(() => import("../Event"));
-
 import fakeEvents from "./fakeEvents";
-import Rows from "./Rows";
+import Numbering from "./Numbering";
 import DayView from "@/components/BaseCalendar/View/Day";
-import Stack from "@mui/material/Stack";
+import { useTheme } from "@mui/material";
+const CalendarEvent = dynamic(() => import("../Event"));
 
 // ------------------------------------------------------------------
 
@@ -38,21 +37,43 @@ const ViewStyle: CSSProperties = {
 
 // ------------------------------------------------------------------
 
+const ThemedDayView = forwardRef<HTMLDivElement, BaseCalendarDayViewProps>(
+    ({ style, ...props }, ref) => {
+        const theme = useTheme();
+
+        return (
+            <DayView
+                ref={ref}
+                {...props}
+                style={{
+                    backgroundColor:
+                        theme.palette.mode === "light"
+                            ? theme.palette.grey[100]
+                            : theme.palette.neutral?.[800],
+                    ...style,
+                }}
+            />
+        );
+    }
+);
+
+ThemedDayView.displayName = "ThemedDayView";
+
+// ------------------------------------------------------------------
+
 interface DayCell extends BaseCalendarCellProps {
     events: TCalendarEvent[];
     onFirstEventLoad: (top: number) => void;
 }
 
 const Cell: FC<DayCell> = ({ events, onFirstEventLoad }) => (
-    <Stack
-        bgcolor={(theme) =>
-            theme.palette.mode === "light" ? "grey.100" : "neutral.800"
-        }
-    >
+    <>
         {/* Events */}
         {events.map(getEvent(onFirstEventLoad))}
-    </Stack>
+    </>
 );
+
+// ------------------------------------------------------------------
 
 const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
     const ref = useRef<HTMLDivElement>(null);
@@ -73,7 +94,7 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
     );
 
     return (
-        <DayView
+        <ThemedDayView
             ref={ref}
             {...props}
             style={{ ...ViewStyle, ...style }}
@@ -84,7 +105,7 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
                     onFirstEventLoad={handleFirstLoad}
                 />
             )}
-            Numbering={Rows}
+            Numbering={Numbering}
         />
     );
 };

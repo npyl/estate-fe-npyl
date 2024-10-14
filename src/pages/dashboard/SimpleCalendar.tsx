@@ -19,14 +19,18 @@ const MiniDayView: FC<BaseCalendarDayViewProps> = (props) => (
         {...props}
         style={{
             height: "300px",
-            borderBottomLeftRadius: "20px",
-            borderBottomRightRadius: "20px",
+            borderBottomLeftRadius: "15px",
+            borderBottomRightRadius: "15px",
         }}
     />
 );
 
 const IconButtonSx = {
     borderRadius: "20px",
+};
+
+const PaperSx = {
+    borderRadius: "15px",
 };
 
 const CalendarIconButton: FC<IconButtonProps> = (props) => (
@@ -38,7 +42,7 @@ const SimpleCalendar = () => {
     const [view, setView] = useState<TCalendarView>("day");
 
     return (
-        <Paper>
+        <Paper sx={PaperSx}>
             <BaseCalendar
                 date={date}
                 view={view}

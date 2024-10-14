@@ -2,10 +2,10 @@ import { BaseCalendarCellProps, BaseCalendarViewProps } from "../types";
 import { FC } from "react";
 import dynamic from "next/dynamic";
 
-const BaseDayView = dynamic(() => import("./Day"));
+import BaseDayView from "./Day";
 const BaseWeekView = dynamic(() => import("./Week"));
 const BaseYearView = dynamic(() => import("./Year"));
-import BaseMonthView from "./Month";
+const BaseMonthView = dynamic(() => import("./Month"));
 
 const EmptyCell: FC<BaseCalendarCellProps> = () => null;
 const NoNumbering = () => null;
@@ -19,8 +19,8 @@ const BaseView: FC<BaseCalendarViewProps> = ({
     const {
         DayView = BaseDayView,
         WeekView = BaseWeekView,
-        MonthView = BaseYearView,
-        YearView = BaseMonthView,
+        MonthView = BaseMonthView,
+        YearView = BaseYearView,
     } = slots || {};
 
     return (

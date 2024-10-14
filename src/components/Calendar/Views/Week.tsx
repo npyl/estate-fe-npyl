@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 import {
     BaseCalendarCellProps,
     BaseCalendarWeekViewProps,
@@ -7,7 +7,7 @@ import WeekView from "@/components/BaseCalendar/View/Week";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
-import Rows from "./Rows";
+import Rows from "./Numbering";
 
 // ----------------------------------------------------------------------
 
