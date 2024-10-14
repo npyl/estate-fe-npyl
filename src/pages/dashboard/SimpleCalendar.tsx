@@ -1,69 +1,60 @@
-import { IconButton, IconButtonProps, Paper } from "@mui/material";
-import BaseCalendar from "@/components/BaseCalendar";
-import { FC, useState } from "react";
+import { Paper, styled, useTheme } from "@mui/material";
+import { FC } from "react";
 import React from "react";
-import {
-    BaseCalendarDayViewProps,
-    TCalendarView,
-} from "@/components/BaseCalendar/types";
-import { TODAY } from "@/components/BaseCalendar/constants";
-
-import CalendarHeader from "@/components/Calendar/Header";
-import CalendarView from "@/components/Calendar/View";
+import { BaseCalendarDayViewProps } from "@/components/BaseCalendar/types";
+import Calendar from "@/components/Calendar";
 import CalendarDayView from "@/components/Calendar/Views/Day";
+import Numbering from "@/components/Calendar/Views/Numbering";
 
 const NullButtonGroup = ({}: any) => null;
-
-const MiniDayView: FC<BaseCalendarDayViewProps> = (props) => (
-    <CalendarDayView
-        {...props}
-        style={{
-            height: "300px",
-            borderBottomLeftRadius: "15px",
-            borderBottomRightRadius: "15px",
-        }}
-    />
-);
-
-const IconButtonSx = {
-    borderRadius: "20px",
-};
 
 const PaperSx = {
     borderRadius: "15px",
 };
 
-const CalendarIconButton: FC<IconButtonProps> = (props) => (
-    <IconButton sx={IconButtonSx} {...props} />
-);
+// ------------------------------------------------------------------------
 
-const SimpleCalendar = () => {
-    const [date, setDate] = useState(TODAY);
-    const [view, setView] = useState<TCalendarView>("day");
+const ThemedNumbering = styled(Numbering)(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+}));
+
+const ThemedDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
+    const theme = useTheme();
 
     return (
-        <Paper sx={PaperSx}>
-            <BaseCalendar
-                date={date}
-                view={view}
-                onDateChange={setDate}
-                onViewChange={setView}
-                // ...
-                slots={{
-                    View: CalendarView,
-                    Header: CalendarHeader,
-                }}
-                ViewSlots={{
-                    DayView: MiniDayView,
-                }}
-                HeaderSlots={{
-                    PreviousButton: CalendarIconButton,
-                    NextButton: CalendarIconButton,
-                    ViewButtonGroup: NullButtonGroup,
-                }}
-            />
-        </Paper>
+        <CalendarDayView
+            {...props}
+            Numbering={ThemedNumbering}
+            style={{
+                backgroundColor:
+                    theme.palette.mode === "light"
+                        ? theme.palette.grey[100]
+                        : theme.palette.neutral?.[800],
+
+                height: "300px",
+                borderBottomLeftRadius: "15px",
+                borderBottomRightRadius: "15px",
+
+                ...style,
+            }}
+        />
     );
 };
+
+// ------------------------------------------------------------------------
+
+const SimpleCalendar = () => (
+    <Paper sx={PaperSx}>
+        <Calendar
+            initialView="day"
+            ViewSlots={{
+                DayView: ThemedDayView,
+            }}
+            HeaderSlots={{
+                ViewButtonGroup: NullButtonGroup,
+            }}
+        />
+    </Paper>
+);
 
 export default React.memo(SimpleCalendar);

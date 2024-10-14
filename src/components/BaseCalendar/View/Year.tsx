@@ -3,10 +3,16 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { BaseCalendarYearViewProps } from "../types";
+import { EmptyCell, NoNumbering } from "./Empty";
 
 const months = Array.from({ length: 12 });
 
-const YearView: FC<BaseCalendarYearViewProps> = ({ date }) => {
+const YearView: FC<BaseCalendarYearViewProps> = ({
+    date,
+    // ... TODO: ...
+    Cell = EmptyCell,
+    Numbering = NoNumbering,
+}) => {
     const year = date.getFullYear();
 
     return (

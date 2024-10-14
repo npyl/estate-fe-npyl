@@ -1,5 +1,6 @@
 import React, { CSSProperties } from "react";
 import { BaseCalendarWeekViewProps } from "../types";
+import { EmptyCell, NoNumbering } from "./Empty";
 
 // ------------------------------------------------------------
 
@@ -18,8 +19,8 @@ const gridStyle: CSSProperties = {
 
 const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
     date,
-    Cell,
-    Numbering,
+    Cell = EmptyCell,
+    Numbering = NoNumbering,
     style,
     ...props
 }) => {

@@ -1,3 +1,9 @@
+import {
+    BaseCalendarProps,
+    TCalendarView,
+} from "@/components/BaseCalendar/types";
+import { HTMLAttributes } from "react";
+
 type TCalendarEventType = {
     id: number;
     name: string;
@@ -14,4 +20,21 @@ type TCalendarEvent = {
     withIds: number[];
 };
 
-export type { TCalendarEvent, TCalendarEventType };
+interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
+
+interface CalendarProps
+    extends Omit<
+        BaseCalendarProps,
+        "date" | "view" | "onDateChange" | "onViewChange"
+    > {
+    initialView?: TCalendarView;
+}
+
+export type {
+    TCalendarEvent,
+    TCalendarEventType,
+    // ...
+    CalendarNumberingProps,
+    // ...
+    CalendarProps,
+};

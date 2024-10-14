@@ -2,13 +2,12 @@ import {
     BaseCalendarCellProps,
     BaseCalendarDayViewProps,
 } from "@/components/BaseCalendar/types";
-import { CSSProperties, FC, forwardRef, useCallback, useRef } from "react";
+import { CSSProperties, FC, useCallback, useRef } from "react";
 import { TCalendarEvent } from "../types";
 import dynamic from "next/dynamic";
 import fakeEvents from "./fakeEvents";
-import Numbering from "./Numbering";
 import DayView from "@/components/BaseCalendar/View/Day";
-import { useTheme } from "@mui/material";
+import Numbering from "./Numbering";
 const CalendarEvent = dynamic(() => import("../Event"));
 
 // ------------------------------------------------------------------
@@ -34,30 +33,6 @@ const ViewStyle: CSSProperties = {
 
     WebkitOverflowScrolling: "touch", // smooth scrolling
 };
-
-// ------------------------------------------------------------------
-
-const ThemedDayView = forwardRef<HTMLDivElement, BaseCalendarDayViewProps>(
-    ({ style, ...props }, ref) => {
-        const theme = useTheme();
-
-        return (
-            <DayView
-                ref={ref}
-                {...props}
-                style={{
-                    backgroundColor:
-                        theme.palette.mode === "light"
-                            ? theme.palette.grey[100]
-                            : theme.palette.neutral?.[800],
-                    ...style,
-                }}
-            />
-        );
-    }
-);
-
-ThemedDayView.displayName = "ThemedDayView";
 
 // ------------------------------------------------------------------
 
@@ -94,9 +69,8 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
     );
 
     return (
-        <ThemedDayView
+        <DayView
             ref={ref}
-            {...props}
             style={{ ...ViewStyle, ...style }}
             Cell={(props) => (
                 <Cell
@@ -106,6 +80,7 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
                 />
             )}
             Numbering={Numbering}
+            {...props}
         />
     );
 };

@@ -1,7 +1,8 @@
-import { CSSProperties, FC, HTMLAttributes } from "react";
+import { CSSProperties, FC } from "react";
 import { START_HOUR, TOTAL_HOURS } from "./constant";
 import Typography from "@mui/material/Typography";
 import { DAY_CELL_HEIGHT } from "./constant";
+import { CalendarNumberingProps } from "../types";
 
 const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
@@ -15,10 +16,10 @@ const NumberItem: FC<NumberItemProps> = ({ hour }) => (
     <Typography
         variant="caption"
         width={50}
+        minHeight={DAY_CELL_HEIGHT}
         textAlign="right"
         pr={1}
         color="text.secondary"
-        minHeight={DAY_CELL_HEIGHT}
         borderBottom="1px solid"
         borderColor="divider"
     >
@@ -37,7 +38,7 @@ const columnStyle: CSSProperties = {
     flexDirection: "column",
 };
 
-const Numbering: FC<HTMLAttributes<HTMLDivElement>> = ({ style, ...props }) => (
+const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (
     <div style={{ ...columnStyle, ...style }} {...props}>
         {/* Rows */}
         {hours.map(getRow)}

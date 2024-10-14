@@ -1,5 +1,6 @@
 import React, { CSSProperties, forwardRef } from "react";
 import { BaseCalendarDayViewProps } from "../types";
+import { EmptyCell, NoNumbering } from "./Empty";
 
 // INFO: Here, Cell is responsible for rendering the whole content below BaseHeader
 
@@ -9,7 +10,10 @@ const defaultStyle: CSSProperties = {
 };
 
 const DayView = forwardRef<HTMLDivElement, BaseCalendarDayViewProps>(
-    ({ date, Cell, Numbering, style, ...props }, ref) => (
+    (
+        { date, Cell = EmptyCell, Numbering = NoNumbering, style, ...props },
+        ref
+    ) => (
         <div
             {...props}
             ref={ref}

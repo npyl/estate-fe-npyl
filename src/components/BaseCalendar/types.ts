@@ -42,8 +42,9 @@ interface BaseCalendarCellProps {
 
 interface ViewProps extends HTMLAttributes<HTMLDivElement> {
     date: Date;
-    Cell: ComponentType<BaseCalendarCellProps>;
-    Numbering: ComponentType<BaseCalendarNumberingProps>;
+
+    Cell?: ComponentType<BaseCalendarCellProps>;
+    Numbering?: ComponentType<BaseCalendarNumberingProps>;
 }
 
 interface BaseCalendarDayViewProps extends ViewProps {}

@@ -1,23 +1,22 @@
-import { IconButton, IconButtonProps } from "@mui/material";
 import BaseCalendar from "@/components/BaseCalendar";
 import { FC, useState } from "react";
 import React from "react";
+import dynamic from "next/dynamic";
 import { TCalendarView } from "@/components/BaseCalendar/types";
 import { TODAY } from "@/components/BaseCalendar/constants";
-import CalendarButtonGroup from "./ButtonGroup";
-import { IconButtonSx } from "./styles";
+import { CalendarProps } from "./types";
+// Slots
 import CalendarHeader from "./Header";
-import CalendarView from "./View";
-import CalendarDayView from "./Views/Day";
+const CalendarDayView = dynamic(() => import("./Views/Day"));
 import CalendarWeekView from "./Views/Week";
+const CalendarMonthView = dynamic(() => import("./Views/Month"));
+const CalendarYearView = dynamic(() => import("./Views/Year"));
+import CalendarIconButton from "./Controls";
+import CalendarButtonGroup from "./ButtonGroup";
 
-const CalendarIconButton: FC<IconButtonProps> = (props) => (
-    <IconButton sx={IconButtonSx} {...props} />
-);
-
-const Calendar = () => {
+const Calendar: FC<CalendarProps> = ({ slots, HeaderSlots, ViewSlots }) => {
     const [date, setDate] = useState(TODAY);
-    const [view, setView] = useState<TCalendarView>("day");
+    const [view, setView] = useState<TCalendarView>("week");
 
     return (
         <BaseCalendar
@@ -27,17 +26,21 @@ const Calendar = () => {
             onViewChange={setView}
             // ...
             slots={{
-                View: CalendarView,
                 Header: CalendarHeader,
+                ...slots,
             }}
             ViewSlots={{
                 DayView: CalendarDayView,
                 WeekView: CalendarWeekView,
+                MonthView: CalendarMonthView,
+                YearView: CalendarYearView,
+                ...ViewSlots,
             }}
             HeaderSlots={{
                 PreviousButton: CalendarIconButton,
                 NextButton: CalendarIconButton,
                 ViewButtonGroup: CalendarButtonGroup,
+                ...HeaderSlots,
             }}
         />
     );
