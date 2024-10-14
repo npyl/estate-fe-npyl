@@ -1,57 +1,72 @@
-import { FC, useMemo } from "react";
-import { WEEKDAYS } from "../constants";
-import Grid from "@mui/material/Grid";
+import { CSSProperties, FC } from "react";
 import { BaseCalendarMonthViewProps } from "../types";
-import { EmptyCell, NoNumbering } from "./Empty";
+import { EmptyCell } from "./Empty";
 
-const daysInMonth = (year: number, month: number) =>
-    new Date(year, month + 1, 0).getDate();
+const gridStyle: CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    width: "100%",
+};
 
-const firstDayOfMonth = (year: number, month: number) =>
-    new Date(year, month, 1).getDay();
+const DAYS_IN_WEEK = 7;
 
-const PlaceholderCell = () => <Grid item xs={12 / 7} bgcolor="grey.100" />;
+const getDays = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    const daysInMonth = lastDay.getDate();
+    const startOffset = firstDay.getDay();
+
+    const totalDays = startOffset + daysInMonth;
+    const totalCells = Math.ceil(totalDays / DAYS_IN_WEEK) * DAYS_IN_WEEK;
+
+    // Generate week days
+    const weekStart = new Date(year, month, 1 - firstDay.getDay());
+    const weekDays = Array.from({ length: DAYS_IN_WEEK }, (_, i) => {
+        const day = new Date(weekStart);
+        day.setDate(weekStart.getDate() + i);
+        return day;
+    });
+
+    // Generate calendar days
+    const calendarDays = Array.from({ length: totalCells }, (_, index) => {
+        const dayOffset = index - startOffset + 1;
+        const currentDate = new Date(year, month, dayOffset);
+        return {
+            date: currentDate,
+            isCurrentMonth: dayOffset > 0 && dayOffset <= daysInMonth,
+        };
+    });
+
+    return { weekDays, calendarDays };
+};
 
 const MonthView: FC<BaseCalendarMonthViewProps> = ({
     date,
-    // ... TODO: ...
+    HeadCell = EmptyCell,
+    PlaceholderCell = EmptyCell,
     Cell = EmptyCell,
-    Numbering = NoNumbering,
 }) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-
-    const daysBefore = useMemo(
-        () => Array.from({ length: firstDayOfMonth(year, month) - 1 }),
-        [year, month]
-    );
-
-    const actualDays = useMemo(
-        () => Array.from({ length: daysInMonth(year, month) - 1 }),
-        [year, month]
-    );
+    const { weekDays, calendarDays } = getDays(date);
 
     return (
-        <Grid container>
-            {/* Headers */}
-            {WEEKDAYS.map((day) => (
-                <Grid key={day} xs={12 / 7} p={1} textAlign="center">
-                    {day}
-                </Grid>
+        <div style={gridStyle}>
+            {/* Heads */}
+            {weekDays.map((day) => (
+                <HeadCell key={day.toISOString()} date={day} />
             ))}
 
-            {/* Cells before start of month */}
-            {daysBefore.map((_, i) => (
-                <PlaceholderCell key={`empty-${i}`} />
-            ))}
-
-            {/* Actual days */}
-            {actualDays.map((_, i) => (
-                <Grid key={i} xs={12 / 7} height="200px">
-                    {i}
-                </Grid>
-            ))}
-        </Grid>
+            {/* Actual Cells */}
+            {calendarDays.map(({ date, isCurrentMonth }, index) =>
+                isCurrentMonth ? (
+                    <Cell key={`cell-${index}`} date={date} />
+                ) : (
+                    <PlaceholderCell key={`empty-${index}`} date={date} />
+                )
+            )}
+        </div>
     );
 };
 

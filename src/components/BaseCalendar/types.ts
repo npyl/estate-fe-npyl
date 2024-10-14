@@ -49,7 +49,10 @@ interface ViewProps extends HTMLAttributes<HTMLDivElement> {
 
 interface BaseCalendarDayViewProps extends ViewProps {}
 interface BaseCalendarWeekViewProps extends ViewProps {}
-interface BaseCalendarMonthViewProps extends ViewProps {}
+interface BaseCalendarMonthViewProps extends ViewProps {
+    HeadCell?: ComponentType<BaseCalendarCellProps>;
+    PlaceholderCell?: ComponentType<BaseCalendarCellProps>;
+}
 interface BaseCalendarYearViewProps extends ViewProps {}
 
 interface BaseCalendarViewSlots {
