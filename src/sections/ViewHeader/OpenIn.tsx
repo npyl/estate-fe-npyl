@@ -16,9 +16,12 @@ const CustomStack = styled(Stack)(({ theme }) => ({
     paddingRight: theme.spacing(1),
 }));
 
+const publicLogo = "/static/PublicLogo.png";
+
 const OpenIn = () => {
-    const { t } = useTranslation();
-    const publicLogo = "/static/PublicLogo.png";
+    const { t, i18n } = useTranslation();
+
+    const lang = i18n.language === "en" ? "en" : "gr";
 
     const { property } = useGetProperty();
     const { publicListings, restListings } = usePropertyListings();
@@ -42,7 +45,7 @@ const OpenIn = () => {
     const openPublic = useCallback(
         () =>
             window.open(
-                `https://www.luxuryhomes.gr/property-detail/${property?.id}`,
+                `https://www.luxuryhomes.gr/${lang}/property-detail/${property?.id}`,
                 "_blank"
             ),
         [property?.id]
@@ -64,7 +67,7 @@ const OpenIn = () => {
             sx={{
                 width: "100%",
                 borderRadius: "10px",
-            }} //Code to make the entire customStack clickable
+            }}
         >
             <CustomStack
                 flexDirection="row"
@@ -88,8 +91,6 @@ const OpenIn = () => {
                             alt="Public Logo"
                             style={{ width: "20px", height: "20px" }}
                         />
-
-                        {/* <Typography>Luxury Homes</Typography> */}
                     </IconButton>
                 )}
                 {hasSpitogato && (

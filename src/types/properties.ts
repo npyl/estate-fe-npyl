@@ -44,6 +44,7 @@ export interface IPropertyResultResponse {
 
 export interface IPropertyFilter {
     filterName?: string;
+    location?: ILocation;
     code?: string;
     minPrice?: number;
     maxPrice?: number;
@@ -71,76 +72,81 @@ export interface IPropertyFilter {
     furnished: string[];
 }
 
+interface ParentCategoriesCounters {
+    commercial: number;
+    land: number;
+    other: number;
+    residential: number;
+
+    [key: string]: number;
+}
+
 export interface IPropertyFilterCounters {
+    active: number;
     air: number;
+    all: number;
+    aluminium: number;
     apartment: number;
-    apartmentComplex: number;
+    apartment_complex: number;
+    autonomous: number;
     building: number;
     bungalow: number;
     business: number;
-    businessBuilding: number;
-    commercial: number;
-    craftSpace: number;
+    business_building: number;
+    central: number;
+    craft_space: number;
     detachable: number;
-    detachedHouse: number;
+    detached_house: number;
     farm: number;
     fully: number;
-    goldenVisa: number;
     hall: number;
-    histograms: {
-        additionalProp1: [
-            {
-                count: number;
-                lowerBound: number;
-            }
-        ];
-        additionalProp2: [
-            {
-                count: number;
-                lowerBound: number;
-            }
-        ];
-        additionalProp3: [
-            {
-                count: number;
-                lowerBound: number;
-            }
-        ];
-    };
-    historicNeoclassical: number;
     hotel: number;
     houseboat: number;
-    industrialSpace: number;
-    investment: number;
+    inactive: number;
+    industrial_space: number;
     island: number;
-    land: number;
+    land_plot: number;
     loft: number;
-    luxuryHomes: number;
     maisonette: number;
-    mountainView: number;
+    no_heating: number;
     none: number;
     office: number;
+
+    // ...
     other: number;
-    otherCommercial: number;
-    otherLand: number;
-    otherOther: number;
-    otherResidential: number;
-    parcel: number;
-    parkingSpot: number;
+    other_commercial: number;
+    other_land: number;
+    other_residential: number;
+
+    parcels: number;
+
+    // ...
+    parent_categories: ParentCategoriesCounters;
+
+    parking: number;
     partial: number;
-    plot: number;
     prefabricated: number;
     rent: number;
-    residential: number;
+    rented: number;
     sale: number;
-    seafront: number;
+    self_use: number;
     showroom: number;
     sold: number;
     store: number;
-    student: number;
     studio: number;
+    synthetic: number;
+    taken: number;
+    unavailable: number;
+    under_construction: number;
+    under_maintenance: number;
+    unknown: number;
     villa: number;
     warehouse: number;
+    wood_aluminium: number;
+    wood_synthetic: number;
+    wooden: number;
+
+    [key: string]: number | ParentCategoriesCounters;
 }
 
 export interface IPropertySuitableFor {

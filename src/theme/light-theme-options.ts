@@ -72,33 +72,23 @@ const text = {
     disabled: "rgba(55, 65, 81, 0.48)",
 };
 
-const scrollbarColor = "#bbb";
-const scrollbarHoverColor = "#888";
-const scrollbarTrackColor = "#f1f1f1";
-
 export const lightThemeOptions: ThemeOptions = {
     components: {
         MuiCssBaseline: {
             styleOverrides: {
-                body: {
-                    scrollbarColor: `${scrollbarColor} ${scrollbarTrackColor}`,
-                    "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
-                        width: "8px",
-                        height: "8px",
-                    },
-                    "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb":
-                        {
-                            backgroundColor: scrollbarColor,
-                            borderRadius: "10px",
-                        },
-                    "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
-                        {
-                            backgroundColor: scrollbarHoverColor,
-                        },
-                    "&::-webkit-scrollbar-track, & *::-webkit-scrollbar-track":
-                        {
-                            backgroundColor: scrollbarTrackColor,
-                        },
+                "&::-webkit-scrollbar": {
+                    height: "8px",
+                    width: "8px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                    backgroundColor: "#bbb",
+                    borderRadius: "10px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                    backgroundColor: "#888",
+                },
+                "&::-webkit-scrollbar-track": {
+                    backgroundColor: "#f1f1f1",
                 },
             },
         },

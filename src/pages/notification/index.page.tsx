@@ -75,6 +75,7 @@ const NotificationPage: NextPage = () => {
                                     alignItems="center"
                                     position="relative"
                                     gap={1}
+                                    pr={1}
                                 >
                                     {t("Tours")}
                                     <UnReadBadge
@@ -91,6 +92,7 @@ const NotificationPage: NextPage = () => {
                                     alignItems="center"
                                     position="relative"
                                     gap={1}
+                                    pr={0.5}
                                 >
                                     {t("Listings")}
                                     <UnReadBadge
@@ -107,6 +109,7 @@ const NotificationPage: NextPage = () => {
                                     alignItems="center"
                                     position="relative"
                                     gap={1}
+                                    pr={0.5}
                                 >
                                     {t("Work Applications")}
                                     <UnReadBadge
@@ -123,6 +126,7 @@ const NotificationPage: NextPage = () => {
                                     alignItems="center"
                                     position="relative"
                                     gap={1}
+                                    pr={0.5}
                                 >
                                     {t("Reviews")}
                                     <UnReadBadge
@@ -139,6 +143,7 @@ const NotificationPage: NextPage = () => {
                                     alignItems="center"
                                     position="relative"
                                     gap={1}
+                                    pr={0.5}
                                 >
                                     {t("Agreements")}
                                     <UnReadBadge

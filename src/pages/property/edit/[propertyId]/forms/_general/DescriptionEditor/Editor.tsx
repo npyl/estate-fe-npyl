@@ -1,5 +1,17 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
 import {
     ContentState,
     EditorState,
@@ -16,6 +28,7 @@ import DraftEditor from "@/components/draft-editor";
 import { RHFTextField } from "@/components/hook-form";
 import {
     useGenerateDescriptionMutation,
+    useImproveDescriptionMutation,
     useLazyGetPropertyByIdQuery,
 } from "src/services/properties";
 import { IOpenAIDetailsPOST } from "src/types/openai";
@@ -26,6 +39,7 @@ import { useOpenAIDetails } from "./hooks";
 import fixDropdowns from "./stupid";
 import useResponsive from "@/hooks/useResponsive";
 import { useTranslateMutation } from "@/services/translate";
+import { useGlobals } from "@/hooks/useGlobals";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -77,12 +91,14 @@ interface UpperRightOptionsProps {
     lang: Language;
     isLoading: boolean;
     onGenerate: (d: IOpenAIDetailsPOST) => Promise<string>;
+    // onImprove: (d: IOpenAIDetailsPOST) => Promise<string>;
     onChatTextChange: (s: string) => void;
     onClickTranslate: () => void;
 }
 
 const UpperRightOptions = ({
     onGenerate,
+    // onImprove,
     onChatTextChange,
     onClickTranslate,
     isLoading,
@@ -140,14 +156,31 @@ interface ChatGPTResultProps {
     lang: Language;
     chatTextEN: string;
     chatTextGR: string;
+    isImproving: boolean;
+    onImprove: (selectedOption: string) => void;
 }
 
 const ChatGPTResult = ({
     lang,
     chatTextEN,
     chatTextGR,
+    isImproving,
+    onImprove,
 }: ChatGPTResultProps) => {
     const { t } = useTranslation();
+
+    const options = useGlobals();
+    const improvementOptions = options?.property?.descriptionImprovementOptions;
+
+    const [selectedOption, setSelectedOption] = useState<string>("PRECISE");
+
+    const handleSelectChange = (event: any) => {
+        setSelectedOption(event.target.value);
+    };
+
+    const handleImproveClick = () => {
+        onImprove(selectedOption);
+    };
 
     const text = useMemo(
         () => (lang === "en" ? chatTextEN : chatTextGR),
@@ -159,9 +192,56 @@ const ChatGPTResult = ({
 
     return show ? (
         <>
-            <Typography variant="h6" flex={1}>
-                {`${t("ChatGPT Result")} (${lang})`}
-            </Typography>
+            <Box display="flex" flexDirection="column">
+                <Typography variant="h6">
+                    {`${t("ChatGPT Result")} (${lang})`}
+                </Typography>
+
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mb={1}
+                >
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        gap={1}
+                    >
+                        <Typography variant="body2" color="textSecondary">
+                            {t("Improving the description to be more:")}
+                        </Typography>
+                        <Select
+                            value={selectedOption}
+                            onChange={handleSelectChange}
+                            displayEmpty
+                            variant="outlined"
+                            sx={{ minWidth: "100px" }}
+                        >
+                            {improvementOptions?.map((option) => (
+                                <MenuItem key={option.key} value={option.key}>
+                                    {t(option.value)}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Stack>
+
+                    <LoadingButton
+                        loading={isImproving}
+                        loadingPosition="start"
+                        startIcon={<ChatGPTIcon />}
+                        variant="outlined"
+                        onClick={handleImproveClick}
+                        sx={{ mt: 0, justifySelf: "flex-end" }}
+                    >
+                        {isImproving
+                            ? t("Improving...")
+                            : t("Improve Description")}
+                    </LoadingButton>
+                </Stack>
+            </Box>
+
             <TextField
                 value={text}
                 multiline
@@ -179,19 +259,57 @@ const ChatGPTResult = ({
         </>
     ) : null;
 };
-
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
     const { setValue, watch } = useFormContext();
 
     const [chatTextEN, setChatTextEN] = useState("");
     const [chatTextGR, setChatTextGR] = useState("");
-    const [generateDescription, { isLoading }] =
+    const [generateDescription, { isLoading: isGenerating }] =
         useGenerateDescriptionMutation();
 
+    const [improveDescription, { isLoading: isImproving }] =
+        useImproveDescriptionMutation();
+    const [generatedDescription, setGeneratedDescription] = useState("");
+
+    const [lang, setLang] = useState<Language>("el");
+    const { openAIDetails } = useOpenAIDetails(lang);
+
     const generateCallback = useCallback(
-        async (d: IOpenAIDetailsPOST) => generateDescription(d).unwrap(),
-        []
+        async (d: IOpenAIDetailsPOST) => {
+            const description = await generateDescription(d).unwrap();
+            setGeneratedDescription(description); // Store it for later use as `oldDescription`
+            return description;
+        },
+        [setGeneratedDescription]
+    );
+
+    const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
+        return Object.fromEntries(
+            Object.entries(payload).filter(([_, value]) => value !== "")
+        );
+    };
+
+    const improveCallback = useCallback(
+        async (selectedOption: string) => {
+            const sanitizedPayload = sanitizePayload({
+                ...openAIDetails,
+                oldDescription: generatedDescription, // Use the generated description as oldDescription
+                improveOption: selectedOption, // Pass the selected improvement option
+            });
+
+            const improvedDescription = await improveDescription(
+                sanitizedPayload
+            ).unwrap();
+            if (lang === "en") {
+                setChatTextEN(improvedDescription);
+            } else {
+                setChatTextGR(improvedDescription);
+            }
+
+            return improvedDescription;
+        },
+        [generatedDescription, lang, openAIDetails, improveDescription]
     );
 
     const [editorState, setEditorState] = useState<EditorState>(
@@ -202,7 +320,6 @@ const DescriptionSection: React.FC = () => {
     useInitialDescriptionState(setEditorState);
 
     // ---
-    const [lang, setLang] = useState<Language>("el");
 
     const index = useMemo(
         () => TABS.findIndex(({ value }) => lang === value),
@@ -219,7 +336,6 @@ const DescriptionSection: React.FC = () => {
 
     const debouncedValuesChange = useCallback(
         async (newEditorState: EditorState) => {
-            // NOTE: useDebouncedCallback has memoization errors => use a custom debounce
             await sleep(100);
 
             const contentState = newEditorState.getCurrentContent();
@@ -251,7 +367,6 @@ const DescriptionSection: React.FC = () => {
             return;
         }
 
-        // convert description (string representing JSON) to JSON and set state
         const contentState = convertFromRaw(JSON.parse(description));
         setEditorState(EditorState.createWithContent(contentState));
     }, []);
@@ -261,33 +376,21 @@ const DescriptionSection: React.FC = () => {
         [lang]
     );
 
-    // ------------------------------------------------------------------------
-
     const [translate] = useTranslateMutation();
 
     const handleTranslate = useCallback(async () => {
-        // Fetching the texts to be translated
         const titleToTranslate = watch("descriptions[0].title");
         const descriptionToTranslate = watch("descriptions[0].description");
 
-        console.log("Title to Translate:", titleToTranslate);
-        console.log("Description to Translate:", descriptionToTranslate);
+        if (!titleToTranslate && !descriptionToTranslate) return;
 
-        // Ensure both texts are available
-        if (!titleToTranslate && !descriptionToTranslate) {
-            console.log("No text provided for translation.");
-            return;
-        }
-
-        // Combine texts into an array, assuming the API can handle multiple texts
         const textsToTranslate = [];
         if (titleToTranslate) textsToTranslate.push(titleToTranslate);
         if (descriptionToTranslate)
             textsToTranslate.push(descriptionToTranslate);
 
-        // Setting up the parameters for the API call
         const params = {
-            source_lang: "EL", // Assuming Greek to English translation
+            source_lang: "EL",
             target_lang: "EN",
             text: textsToTranslate,
         };
@@ -296,13 +399,9 @@ const DescriptionSection: React.FC = () => {
             const res = await translate(params).unwrap();
             const translatedTexts = res.translations.map(({ text }) => text);
 
-            console.log("Translated Texts:", translatedTexts);
-
             setValue("descriptions[1].title", translatedTexts[0]);
             const contentState = convertFromRaw(JSON.parse(translatedTexts[1]));
             onEditorStateChange(EditorState.createWithContent(contentState));
-
-            // Optionally, navigate to another page or update UI to reflect changes
         } catch (error) {
             console.error("Translation error:", error);
         }
@@ -315,19 +414,19 @@ const DescriptionSection: React.FC = () => {
             endNode={
                 <UpperRightOptions
                     onGenerate={generateCallback}
+                    // onImprove={improveCallback}
                     onChatTextChange={onChatTextChange}
-                    isLoading={isLoading}
+                    isLoading={isGenerating || isImproving}
                     lang={lang}
                     onClickTranslate={handleTranslate}
                 />
             }
             onSelect={handleTabChange}
-            disabled={isLoading}
+            disabled={isGenerating || isImproving}
         >
             <Typography variant="h6" flex={1}>
                 {`${t("Title")} (${lang})`}
             </Typography>
-            {/* NOTE: RHF does not support dynamic name by default; use key to alleviate this */}
             <RHFTextField fullWidth key={title} name={title} />
             <Typography variant="h6" flex={1}>
                 {`${t("Description")} (${lang})`}
@@ -335,15 +434,17 @@ const DescriptionSection: React.FC = () => {
             <DraftEditor
                 sx={{
                     minHeight: "200px",
+                    height: "auto",
                 }}
                 editorState={editorState}
                 onEditorStateChange={onEditorStateChange}
             />
-
             <ChatGPTResult
                 lang={lang}
                 chatTextEN={chatTextEN}
                 chatTextGR={chatTextGR}
+                isImproving={isImproving}
+                onImprove={improveCallback}
             />
         </TabbedBox>
     );

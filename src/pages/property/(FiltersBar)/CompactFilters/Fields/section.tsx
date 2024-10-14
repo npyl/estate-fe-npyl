@@ -2,7 +2,6 @@ import ClearableSection, {
     ClearableSectionProps,
 } from "@/components/Filters/ClearableSection";
 import { KeyValue } from "@/types/KeyValue";
-import Stack from "@mui/material/Stack";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { FC } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -11,12 +10,15 @@ import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import CounterChip from "../OptionCheckbox/CounterChip";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
-import { IPropertyFilterCounters } from "@/types/properties";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
+import { TOptionMapper } from "../OptionCheckbox/types";
 
 type ToggleType = ActionCreatorWithPayload<any, string>;
 type SelectorType = ({ filters }: RootState) => string[];
+
+const mapper: TOptionMapper = (optionKey, counters) =>
+    (counters?.[optionKey.toLowerCase()] as number) || 0;
 
 // -----------------------------------------------------------------------------
 
@@ -33,9 +35,9 @@ const Option: FC<OptionProps> = ({ o: { key, value }, selector, toggle }) => {
 
     const values = useSelector(selector) || [];
     const isChecked = values.includes(key);
-    const isDisabled = counters?.[key as keyof IPropertyFilterCounters] === 0;
+    const isDisabled = mapper(key, counters) === 0;
 
-    const handleToggle = () => dispatch(toggle({}));
+    const handleToggle = () => dispatch(toggle(key));
 
     return (
         <Grid
@@ -56,7 +58,7 @@ const Option: FC<OptionProps> = ({ o: { key, value }, selector, toggle }) => {
                 onChange={handleToggle}
             />
 
-            <CounterChip filterKey={key as any} />
+            <CounterChip optionKey={key} mapper={mapper} />
         </Grid>
     );
 };

@@ -12,8 +12,12 @@ import { FC } from "react";
 import { Stack, Typography } from "@mui/material";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import OptionCheckbox from "./OptionCheckbox";
+import { TOptionMapper } from "./OptionCheckbox/types";
 
 // -----------------------------------------------------------------
+
+const mapper: TOptionMapper = (optionKey, counters) =>
+    (counters?.[optionKey.toLowerCase()] as number) || 0;
 
 interface IOption {
     option: KeyValue;
@@ -22,13 +26,14 @@ interface IOption {
 const Option: FC<IOption> = ({ option: { key, value } }) => (
     <Stack direction="row" spacing={1} alignItems="center">
         <OptionCheckbox
-            filterKey={key as any}
+            optionKey={key}
             label={value}
             selector={selectSubCategories}
             setter={setSubCategories}
+            mapper={mapper}
         />
 
-        <CounterChip filterKey={key as any} />
+        <CounterChip optionKey={key} mapper={mapper} />
     </Stack>
 );
 

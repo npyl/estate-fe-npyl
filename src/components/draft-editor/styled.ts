@@ -8,6 +8,9 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         fontFamily: theme.typography.fontFamily,
         flexGrow: 1,
     },
+    "& .DraftEditor-editorContainer, & .DraftEditor-root": {
+        height: "auto", // Override 'inherit' with 'auto'
+    },
     "& .rdw-editor-toolbar": {
         backgroundColor: "transparent",
         borderBottom: `1px solid ${theme.palette.divider}`,

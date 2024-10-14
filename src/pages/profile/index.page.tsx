@@ -1,17 +1,20 @@
-import { Container, Box, Tabs, Tab } from "@mui/material";
+import { Container, Tabs, Tab } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ViewUser from "src/components/User/View";
-import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useTabsContext } from "src/contexts/tabs";
 import { useProfileQuery } from "src/services/user";
 import TabPanel from "@/components/Tabs";
 // ...
-import CompanyInformation from "./(Company)";
-import Integrations from "./(Integrations)";
+const CompanyInformation = dynamic(() => import("./(Company)"));
+const Integrations = dynamic(() => import("./(Integrations)"));
+
+import { AuthGuard } from "@/components/authentication/auth-guard";
+
+import dynamic from "next/dynamic";
 
 const Profile: NextPage = () => {
     const { t } = useTranslation();
@@ -31,25 +34,15 @@ const Profile: NextPage = () => {
         }
     }, [profile, t, pushTab]);
 
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-        setTab(newValue);
-    };
+    const handleTabChange = (_: any, v: number) => setTab(v);
 
     return (
         <Container maxWidth="md">
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                    value={tab}
-                    onChange={handleTabChange}
-                    aria-label="admin profile tabs"
-                >
-                    <Tab label={t("User Profile")} value={0} />
-                    {isAdmin && (
-                        <Tab label={t("Company Information")} value={1} />
-                    )}
-                    {isAdmin && <Tab label={t("Integrations")} value={2} />}
-                </Tabs>
-            </Box>
+            <Tabs value={tab} onChange={handleTabChange}>
+                <Tab label={t("User Profile")} value={0} />
+                {isAdmin && <Tab label={t("Company Information")} value={1} />}
+                {isAdmin && <Tab label={t("Integrations")} value={2} />}
+            </Tabs>
             <TabPanel value={tab} index={0}>
                 {profile ? <ViewUser user={profile} /> : null}
             </TabPanel>

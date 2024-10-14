@@ -53,7 +53,13 @@ export default function FilterBuyerLeaserAndMore() {
                 multiple
                 value={selectedRoles}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected) =>
+                    selected
+                        .map((role) =>
+                            t(role.charAt(0).toUpperCase() + role.slice(1))
+                        )
+                        .join(", ")
+                }
                 input={
                     <OutlinedInput
                         sx={{ maxHeight: "38px", textAlign: "center" }}

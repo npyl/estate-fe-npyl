@@ -230,6 +230,12 @@ export const baseThemeOptions: ThemeOptions = {
                 color: "primary",
             },
         },
+        MuiTabs: {
+            defaultProps: {
+                // INFO: this should always be ON for compatibility with mobile
+                variant: "scrollable",
+            },
+        },
         MuiTab: {
             styleOverrides: {
                 root: {

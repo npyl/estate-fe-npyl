@@ -1,19 +1,18 @@
 import useFilterCounters from "@/hooks/property/useFilterCounters";
-import { IPropertyFilterCounters } from "@/types/properties";
-import Chip, { ChipProps } from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import { FC } from "react";
+import { TOptionMapper } from "./types";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 
-interface CounterChipProps extends Omit<ChipProps, "disabled"> {
-    // TODO: IpropertyFilter's keys -> should be the same as IPropertyFilterCounters' keys...
-    filterKey: keyof IPropertyFilterCounters;
+interface CounterChipProps extends Omit<TypographyProps, "disabled"> {
+    optionKey: string;
+    mapper: TOptionMapper; // map optionKey to counterKey
 }
 
-const CounterChip: FC<CounterChipProps> = ({ filterKey, ...props }) => {
+const CounterChip: FC<CounterChipProps> = ({ optionKey, mapper, ...props }) => {
     const { counters, isCountersLoading } = useFilterCounters();
 
-    const label = counters?.[filterKey]?.toString() || "0";
-    const isDisabled = counters?.[filterKey] === 0;
+    const label = mapper(optionKey, counters);
 
     if (isCountersLoading)
         return (
@@ -21,13 +20,9 @@ const CounterChip: FC<CounterChipProps> = ({ filterKey, ...props }) => {
         );
 
     return (
-        <Chip
-            label={label}
-            variant="outlined"
-            size="small"
-            disabled={isDisabled}
-            {...props}
-        />
+        <Typography variant="body2" color="textSecondary" {...props}>
+            ({label})
+        </Typography>
     );
 };
 

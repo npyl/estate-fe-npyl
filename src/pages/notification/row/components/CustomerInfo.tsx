@@ -28,7 +28,6 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({
             <Typography variant="body2" display="flex" alignItems="center">
                 <LocalPhone
                     sx={{
-                        color: "black",
                         fontSize: "medium",
                         mr: 1,
                     }}
@@ -38,7 +37,6 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({
             <Typography variant="body2" display="flex" alignItems="center">
                 <EmailIcon
                     sx={{
-                        color: "black",
                         fontSize: "medium",
                         mr: 1,
                     }}

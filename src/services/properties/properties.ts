@@ -3,6 +3,7 @@ import {
     IProperties,
     IPropertiesPOST,
     IPropertyFilter,
+    IPropertyFilterCounters,
     IPropertyMarker,
     IPropertyResultResponse,
 } from "src/types/properties";
@@ -98,6 +99,7 @@ export const properties = createApi({
         "PropertyById",
         "PropertyByIdListings",
         "FilterProperties",
+        "FilterCounters",
         "SuggestedProperties",
         "SuggestedCustomers",
 
@@ -115,6 +117,12 @@ export const properties = createApi({
             }),
 
             providesTags: ["Properties"],
+        }),
+
+        allPropertyCodes: builder.query<string[], void>({
+            query: () => ({
+                url: "/codes",
+            }),
         }),
 
         getPropertyLocationMarkers: builder.query<IPropertyMarker[], void>({
@@ -205,6 +213,18 @@ export const properties = createApi({
             providesTags: ["Properties"],
         }),
 
+        getFilterCounters: builder.query<
+            IPropertyFilterCounters,
+            IPropertyFilter
+        >({
+            query: (body) => ({
+                url: "/filter-numbering",
+                body,
+                method: "POST",
+            }),
+            providesTags: ["FilterCounters"],
+        }),
+
         suggestForCustomer: builder.query<
             IProperties[],
             ISuggestForCustomerParams
@@ -274,6 +294,21 @@ export const properties = createApi({
                 responseHandler: "text",
             }),
         }),
+
+        improveDescription: builder.mutation<string, IOpenAIDetailsPOST>({
+            query: (body) => {
+                return {
+                    url: `/description/improve`,
+                    method: "POST",
+                    body: {
+                        ...body,
+                        oldDescription: body.oldDescription || "",
+                        improveOption: body.improveOption || "CONCISE", // ensure improveOption is passed
+                    },
+                    responseHandler: "text",
+                };
+            },
+        }),
     }),
 });
 
@@ -281,7 +316,9 @@ export const {
     // get
     useSearchPropertyQuery,
     useFilterPropertiesQuery,
+    useGetFilterCountersQuery,
     useAllPropertiesQuery,
+    useAllPropertyCodesQuery,
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
@@ -305,7 +342,7 @@ export const {
     useLazyCheckKeyCodeExistsQuery,
 
     useGenerateDescriptionMutation,
-
+    useImproveDescriptionMutation,
     // attributes
     useGetPropertyLabelsQuery,
 } = properties;

@@ -527,6 +527,7 @@ const resources = {
             Floors: "Floors",
             "Manager ID": "Manager ID",
             Filters: "Filters",
+            "Search Location": "Search Location",
             "Hide all": "Hide all",
             "Show all": "Show all",
             "Name of Fields": "Name of Fields",
@@ -646,7 +647,17 @@ const resources = {
             Generate: "Generate",
             "Generate Description": "Generate Description",
             "Generating...": "Generating...",
-
+            Improve: "Improve",
+            "Improve Description": "Improve Description",
+            "Improving...": "Improving...",
+            "Improving the description to be more:":
+                "Improving the description to be more:",
+            Professional: "Professional",
+            Friendly: "Friendly",
+            Precise: "Precise",
+            Concise: "Concise",
+            "Detailed/Descriptive": "Detailed/Descriptive",
+            Engaging: "Engaging",
             Demand: "Demand",
             Demands: "Demands",
 
@@ -1008,6 +1019,9 @@ const resources = {
             Indent: "Indent",
             Outdent: "Outdent",
             choices: "choices",
+
+            From: "From",
+            Until: "Until",
         },
     },
     el: {
@@ -1232,7 +1246,7 @@ const resources = {
             "Create Property": "Δημιουργία Ακινήτου",
             "Parent Category": "Γενική κατηγορία",
             Residential: "Κατοικία",
-            Commercial: "Επαγγελματική Στέγη",
+            Commercial: "Επαγγελματικά",
             Land: "Γη",
             Other: "Άλλο",
             Category: "Κατηγορία",
@@ -1421,7 +1435,7 @@ const resources = {
             UNDER_CONSTRUCTION: "υπό κατασκευή",
             UNDER_MAINTENANCE: "υπό συντήρηση",
             RESIDENTIAL: "κατοικία",
-            COMMERCIAL: "επαγγελματική στέγη",
+            COMMERCIAL: "επαγγελματικά",
             LAND: "γη",
             OTHER: "άλλο",
             APARTMENT: "διαμέρισμα",
@@ -1732,7 +1746,7 @@ const resources = {
             "Features for Land Category": "Χαρακτηριστικά για Γη",
             "Features for Residential Category": "Χαρακτηριστικά για Κατοικία",
             "Features for Commercial Category":
-                "Χαρακτηριστικά για Επαγγελματική στέγη",
+                "Χαρακτηριστικά για Επαγγελματικά",
             "Features for Other Category": "Χαρακτηριστικά για κατηγορία Άλλο",
 
             //Description
@@ -1740,7 +1754,17 @@ const resources = {
             Generate: "Δημιουργία",
             "Generate Description": "Δημιουργία Περιγραφής",
             "Generating...": "Δημιουργία...",
-
+            Improve: "Βελτίωση",
+            "Improve Description": "Βελτίωση Περιγραφής",
+            "Improving...": "Βελτίωση...",
+            "Improving the description to be more:":
+                "Βελτιώση της περιγραφής ώστε να είναι πιο:",
+            Professional: "Επαγγελματική",
+            Friendly: "Φιλική",
+            Precise: "Ακριβής",
+            Concise: "Συνοπτική",
+            "Detailed/Descriptive": "Αναλυτική/Περιγραφική",
+            Engaging: "Ελκυστική",
             //create customer
 
             "Customer Information": "Πληροφορίες Πελάτη",
@@ -1764,6 +1788,7 @@ const resources = {
             Leaser: "Ενοικιαστής",
 
             Buyer: "Αγοραστής",
+
             "Address Details": "Λεπτομέρειες Διεύθυνσης",
             Features: "Χαρακτηριστικά",
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
@@ -1806,6 +1831,7 @@ const resources = {
             Floors: "Ορόφοι",
             "Manager ID": "ID Διαχειριστή",
             Filters: "Φίλτρα",
+            "Search Location": "Αναζήτηση τοποθεσίας",
             "Hide all": "Απόκρυψη όλων",
             "Show all": "Εμφάνιση όλων",
             "Name of Fields": "Όνομα Πεδίων",
@@ -1978,6 +2004,9 @@ const resources = {
             Indent: "Εσοχή",
             Outdent: "Αναίρεση Εσοχής",
             choices: "επιλογές",
+
+            From: "Από",
+            Until: "Έως",
         },
     },
 };

@@ -1,26 +1,26 @@
 import {
-    selectMaxPrice,
-    selectMinPrice,
-    setMaxPrice,
-    setMinPrice,
+    selectMaxArea,
+    selectMinArea,
+    setMaxArea,
+    setMinArea,
 } from "@/slices/filters";
 
 import RangeSelect from "@/sections/Filters/Range";
 
 import useRangeGenerator from "./useRangeGenerator";
 
-const PriceSelect = () => {
+const AreaSelect = () => {
     const { generateNumbers } = useRangeGenerator();
     return (
         <RangeSelect
-            type="price"
-            selectMin={selectMinPrice}
-            selectMax={selectMaxPrice}
-            setMin={setMinPrice}
-            setMax={setMaxPrice}
+            type="area"
+            selectMin={selectMinArea}
+            selectMax={selectMaxArea}
+            setMin={setMinArea}
+            setMax={setMaxArea}
             generateNumbers={generateNumbers}
         />
     );
 };
 
-export default PriceSelect;
+export default AreaSelect;

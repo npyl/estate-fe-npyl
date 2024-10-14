@@ -12,6 +12,7 @@ interface IFilterProps {
 
 const initialState: IFilterProps = {
     filters: {
+        locationSearch: undefined,
         parentCategories: [],
         categories: [],
         labels: [],
@@ -31,6 +32,11 @@ const slice = createSlice({
     name: "filters",
     initialState,
     reducers: {
+        setLocationSearch(state, { payload }) {
+            state.filters.locationSearch = payload;
+            !state.ids.includes("locationSearch") &&
+                state.ids.push("locationSearch");
+        },
         setCode(state, { payload }) {
             state.filters.code = payload;
             !state.ids.includes("code") && state.ids.push("code");
@@ -224,6 +230,7 @@ const slice = createSlice({
         },
 
         resetBasic: (state) => {
+            state.filters.locationSearch = initialState.filters.locationSearch;
             state.filters.code = initialState.filters.code;
             state.filters.managerId = initialState.filters.managerId;
             state.filters.minPrice = initialState.filters.minPrice;
@@ -232,7 +239,10 @@ const slice = createSlice({
             state.filters.maxArea = initialState.filters.maxArea;
             state.filters.labels = initialState.filters.labels;
             state.filters.active = initialState.filters.active;
+            state.filters.regions = initialState.filters.regions;
+            state.filters.cities = initialState.filters.cities;
 
+            state.ids = state.ids.filter((id) => id !== "locationSearch");
             state.ids = state.ids.filter((id) => id !== "minArea");
             state.ids = state.ids.filter((id) => id !== "maxPrice");
             state.ids = state.ids.filter((id) => id !== "minPrice");
@@ -240,6 +250,8 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "code");
             state.ids = state.ids.filter((id) => id !== "labels");
             state.ids = state.ids.filter((id) => id !== "active");
+            state.ids = state.ids.filter((id) => id !== "regions");
+            state.ids = state.ids.filter((id) => id !== "cities");
         },
         resetBedrooms: (state) => {
             state.filters.minBedrooms = initialState.filters.minBedrooms;
@@ -307,6 +319,11 @@ const slice = createSlice({
         resetState: () => {
             return initialState;
         },
+        resetLocationSearch: (state) => {
+            state.filters.locationSearch = initialState.filters.locationSearch;
+            state.ids = state.ids.filter((id) => id !== "locationSearch");
+        },
+
         resetActiveState(state) {
             state.filters.active = initialState.filters.active;
             state.ids = state.ids.filter((id) => id !== "active");
@@ -315,6 +332,7 @@ const slice = createSlice({
 });
 
 export const {
+    setLocationSearch,
     setCode,
     toggleFrameType,
     toggleFurnished,
@@ -346,10 +364,12 @@ export const {
 
     // delete
     deleteSubCategory,
+
     deleteState,
     deleteFilter,
 
     // reset
+    resetLocationSearch,
     resetBasic,
     resetBedrooms,
     resetFloor,
@@ -368,6 +388,8 @@ export const {
     resetRegions,
 } = slice.actions;
 
+export const selectLocationSearch = ({ filters }: RootState) =>
+    filters.filters.locationSearch;
 export const selectCode = ({ filters }: RootState) => filters.filters.code;
 export const selectFrameType = ({ filters }: RootState) =>
     filters.filters.frameType;

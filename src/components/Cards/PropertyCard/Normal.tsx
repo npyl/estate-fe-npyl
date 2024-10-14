@@ -1,6 +1,6 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { IMapMarker } from "@/components/Map/Map";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography, useTheme } from "@mui/material";
 import { FC, useEffect, useMemo, useRef } from "react";
 import CarouselSimple from "@/components/CarouselSimple";
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
     const { lat, lng } = location || {};
 
     const { t, i18n } = useTranslation();
-
+    const theme = useTheme();
     const ref = useRef<HTMLAnchorElement>(null);
 
     const addressParts =
@@ -82,6 +82,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
     }, [isActive]);
 
     const stateColor = getPropertyStatusColor(state.value);
+    const categoryColor = theme.palette.mode === "dark" ? "#b39ddb" : "#3730a3";
 
     return (
         <StyledLink
@@ -277,14 +278,9 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                     sx={{ flexWrap: "wrap", gap: 1 }}
                 >
                     {state?.value ? (
-                        <NormalBadge name={t(state.value)} color={stateColor} />
+                        <NormalBadge name={state.value} color={stateColor} />
                     ) : null}
-                    {category?.value ? (
-                        <NormalBadge
-                            name={t(category.value)}
-                            color={"#3730a3"}
-                        />
-                    ) : null}
+                    <NormalBadge name={category.value} color={categoryColor} />
                 </Stack>
                 <SpaceBetween alignItems="center">
                     <NormalBadge
@@ -293,8 +289,8 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                         sx={{
                             color: (theme) =>
                                 theme.palette.mode === "light"
-                                    ? "#854D0E"
-                                    : theme.palette.grey[700], // Fallback to grey if neutral is undefined
+                                    ? "#854D0E" // Fallback to grey if neutral is undefined
+                                    : "null",
                         }}
                     />
 
