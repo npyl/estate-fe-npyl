@@ -1,3 +1,4 @@
+import { TCalendarEvent } from "@/components/Calendar/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface IsAuthenticatedRes {
@@ -12,7 +13,7 @@ export const calendar = createApi({
         baseUrl: `/api/calendar`,
     }),
 
-    tagTypes: ["IsAuthenticated"],
+    tagTypes: ["IsAuthenticated", "Events"],
 
     endpoints: (builder) => ({
         isAuthenticated: builder.query<IsAuthenticatedRes, UserId>({
@@ -30,7 +31,21 @@ export const calendar = createApi({
 
             invalidatesTags: ["IsAuthenticated"],
         }),
+
+        // ------------------------- EVENTS ---------------------------
+
+        getAllEvents: builder.query<TCalendarEvent[], UserId>({
+            query: (userId) => ({
+                url: `/${userId}/events/all`,
+            }),
+            providesTags: ["Events"],
+        }),
     }),
 });
 
-export const { useIsAuthenticatedQuery, useAuthenticateMutation } = calendar;
+export const {
+    useIsAuthenticatedQuery,
+    useAuthenticateMutation,
+    // ...
+    useGetAllEventsQuery,
+} = calendar;

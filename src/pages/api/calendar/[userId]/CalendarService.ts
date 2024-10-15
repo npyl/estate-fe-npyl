@@ -16,16 +16,14 @@ class CalendarService {
         this.calendar = calendar({ version: "v3" });
     }
 
-    async getEvents(auth: OAuth2Client) {
-        const events = await this.calendar.events.list({
+    async getAllEvents(auth: OAuth2Client) {
+        return await this.calendar.events.list({
             calendarId: "primary",
             timeMin: new Date().toISOString(),
             singleEvents: true,
             orderBy: "startTime",
             auth,
         });
-
-        return events;
     }
 
     // ------------------------------ Auth -----------------------------------
