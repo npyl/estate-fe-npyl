@@ -28,6 +28,11 @@ export default async function handler(
         if (req.method === "GET") {
             res.status(200).json(isAuthenticatedRes);
         }
+
+        if (req.method === "DELETE") {
+            calendarService.revokeAuthentication(iUserId);
+            res.status(200).json({});
+        }
     } catch (error) {
         console.error("Error:", error);
         res.status(404).json({});

@@ -29,6 +29,15 @@ export const calendar = createApi({
             invalidatesTags: ["IsAuthenticated"],
         }),
 
+        logout: builder.mutation<void, UserId>({
+            query: (userId) => ({
+                url: `/${userId}/auth`,
+                method: "DELETE",
+            }),
+
+            invalidatesTags: ["IsAuthenticated"],
+        }),
+
         // ------------------------- EVENTS ---------------------------
 
         getAllEvents: builder.query<TCalendarEvent[], UserId>({
@@ -43,6 +52,7 @@ export const calendar = createApi({
 export const {
     useIsAuthenticatedQuery,
     useAuthenticateMutation,
+    useLogoutMutation,
     // ...
     useGetAllEventsQuery,
 } = calendar;
