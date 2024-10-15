@@ -19,13 +19,14 @@ import { publicDashboard } from "../services/publicDashboard";
 import { company } from "../services/company";
 import { solar, airQuality } from "@/services/googleapi";
 import { integrations } from "@/services/integrations";
+import { agreements } from "@/services/agreements";
+import { calendar } from "@/services/calendar";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as filtersReducer } from "../slices/filters";
 import { reducer as logReducer } from "../slices/log";
 import { reducer as securityReducer } from "../slices/security";
-import { agreements } from "@/services/agreements";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -53,6 +54,7 @@ export const rootReducer = combineReducers({
     [airQuality.reducerPath]: airQuality.reducer,
     // ...
     [integrations.reducerPath]: integrations.reducer,
+    [calendar.reducerPath]: calendar.reducer,
 
     // property
     filters: filtersReducer,
