@@ -3,8 +3,38 @@ import { authenticate } from "@google-cloud/local-auth";
 import { calendar_v3 } from "@googleapis/calendar";
 import { OAuth2Client } from "google-auth-library";
 import { calendar } from "@googleapis/calendar";
+import { IsAuthenticatedRes } from "@/types/calendar/google";
 
-const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
+/**
+ * Receive profile of an authenticated user
+ */
+async function getUserInfo(auth: OAuth2Client) {
+    try {
+        const token = (await auth.getAccessToken()).token;
+
+        const res = await fetch(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "GET",
+            }
+        );
+
+        if (!res.ok) return null;
+
+        return await res.json();
+    } catch (error) {
+        console.log("Error: ", error);
+        return null;
+    }
+}
+
+const SCOPES = [
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/userinfo.profile",
+];
 
 const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
 
@@ -51,8 +81,19 @@ class CalendarService {
         return auth;
     }
 
-    isAuthenticated(userId: number) {
-        return this.userTokens.has(userId);
+    async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
+        const auth = this.userTokens.get(userId);
+        if (!auth)
+            return {
+                isAuthenticated: false,
+            };
+
+        const userInfo = await getUserInfo(auth);
+
+        return {
+            isAuthenticated: true,
+            userInfo,
+        };
     }
 
     revokeAuthentication(userId: number) {

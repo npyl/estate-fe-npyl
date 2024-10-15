@@ -1,9 +1,6 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
+import { IsAuthenticatedRes } from "@/types/calendar/google";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-interface IsAuthenticatedRes {
-    isAuthenticated: boolean;
-}
 
 type UserId = number;
 

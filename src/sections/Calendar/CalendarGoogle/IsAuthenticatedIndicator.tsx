@@ -3,6 +3,7 @@ import {
     useAuthenticateMutation,
     useIsAuthenticatedQuery,
 } from "@/services/calendar";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 
@@ -20,20 +21,26 @@ const useCalendarAuth = () => {
     const isAuthenticated = data?.isAuthenticated;
     const authenticate = () => authenticateCb(user!.id);
 
-    return { isAuthenticated, authenticate, isLoading };
+    return {
+        isAuthenticated,
+        userInfo: data?.userInfo,
+        authenticate,
+        isLoading,
+    };
 };
 
 // -------------------------------------------------------------------------
 
 const IsAuthenticatedIndicator = () => {
-    const { isAuthenticated, isLoading, authenticate } = useCalendarAuth();
+    const { isAuthenticated, userInfo, isLoading, authenticate } =
+        useCalendarAuth();
 
     if (isLoading) {
         return <Skeleton width="150px" height={58} />;
     }
 
     if (isAuthenticated) {
-        return "AUTH!";
+        return <Avatar src={userInfo?.picture} />;
     }
 
     return <Button onClick={authenticate}>Authenticate!</Button>;

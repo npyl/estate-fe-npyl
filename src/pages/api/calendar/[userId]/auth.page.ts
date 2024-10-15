@@ -20,11 +20,13 @@ export default async function handler(
             res.status(200).json({});
         }
 
+        const isAuthenticatedRes = await calendarService.isAuthenticated(
+            iUserId
+        );
+
         // GET: check if user with id `userId` is authenticated
         if (req.method === "GET") {
-            res.status(200).json({
-                isAuthenticated: calendarService.isAuthenticated(iUserId),
-            });
+            res.status(200).json(isAuthenticatedRes);
         }
     } catch (error) {
         console.error("Error:", error);
