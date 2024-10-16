@@ -40,6 +40,8 @@ interface BaseCalendarCellProps {
     date: Date;
 }
 
+// --------------------------------------------------------------
+
 interface ViewProps extends HTMLAttributes<HTMLDivElement> {
     date: Date;
 
@@ -54,6 +56,8 @@ interface BaseCalendarMonthViewProps extends Omit<ViewProps, "Numbering"> {
     PlaceholderCell?: ComponentType<BaseCalendarCellProps>;
 }
 interface BaseCalendarYearViewProps extends Omit<ViewProps, "Numbering"> {}
+
+// --------------------------------------------------------------
 
 interface BaseCalendarViewSlots {
     DayView: ComponentType<BaseCalendarDayViewProps>;

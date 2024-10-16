@@ -1,11 +1,16 @@
 import { Paper, styled } from "@mui/material";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import React from "react";
-import { BaseCalendarDayViewProps } from "@/components/BaseCalendar/types";
 import Numbering from "@/components/Calendar/Views/Numbering";
 import CalendarGoogle from "@/components/CalendarGoogle";
 import IsAuthenticatedIndicator from "@/components/CalendarGoogle/ButtonGroup/IsAuthenticatedIndicator";
 import CalendarGoogleDayView from "@/components/CalendarGoogle/Views/Day";
+import {
+    CalendarCellProps,
+    CalendarDayViewProps,
+    TCalendarEvent,
+} from "@/components/Calendar/types";
+import CalendarEvent, { CalendarEventProps } from "@/components/Calendar/Event";
 
 const PaperSx = {
     borderRadius: "15px",
@@ -30,10 +35,86 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
     height: "300px",
     borderBottomLeftRadius: "15px",
     borderBottomRightRadius: "15px",
+
+    // Scrolling behavior
+    overflow: "hidden auto",
+    overscrollBehavior: "contain",
+    scrollbarWidth: "none",
+    WebkitOverflowScrolling: "touch", // smooth scrolling
 }));
 
-const ThemedDayView: FC<BaseCalendarDayViewProps> = (props) => {
-    return <StyledDayView {...props} Numbering={StyledNumbering} />;
+// ------------------------------------------------------------------------------------
+
+interface CustomCalendarEventProps extends Omit<CalendarEventProps, "onLoad"> {
+    event: TCalendarEvent;
+    onLoad?: (top: number) => void;
+}
+
+const CustomCalendarEvent: React.FC<CustomCalendarEventProps> = ({
+    onLoad,
+    ...props
+}) => {
+    // onLoad() support on mount; null happens on unmount
+    const handleRef = useCallback((node: HTMLDivElement | null) => {
+        if (!node) return;
+        onLoad?.(node.offsetTop);
+    }, []);
+
+    return <CalendarEvent {...props} ref={handleRef} />;
+};
+
+// -----------------------------------------------------------------------------------
+
+const getEvent =
+    (onFirstLoad: (top: number) => void) => (ce: TCalendarEvent, i: number) =>
+        (
+            <CustomCalendarEvent
+                key={ce.id}
+                event={ce}
+                onLoad={i === 0 ? onFirstLoad : undefined}
+            />
+        );
+
+// -----------------------------------------------------------------------------------
+
+interface DayCell extends CalendarCellProps {
+    onFirstEventLoad: (top: number) => void;
+}
+
+const Cell: FC<DayCell> = ({ events, onFirstEventLoad }) => (
+    <>
+        {/* Events */}
+        {events.map(getEvent(onFirstEventLoad))}
+    </>
+);
+
+// -----------------------------------------------------------------------------------
+
+const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
+    // Scroll to first event on load
+    const handleFirstLoad = useCallback((top: number) => {
+        const element = document.getElementById("simple-calendar-day-view");
+        if (!element) return;
+        element.scrollTo({
+            top: top - 7,
+            behavior: "smooth",
+        });
+    }, []);
+
+    return (
+        <StyledDayView
+            id="simple-calendar-day-view"
+            Numbering={StyledNumbering}
+            Cell={(props) => (
+                <Cell
+                    events={[]}
+                    {...props}
+                    onFirstEventLoad={handleFirstLoad}
+                />
+            )}
+            {...props}
+        />
+    );
 };
 
 // ------------------------------------------------------------------------
@@ -43,7 +124,7 @@ const SimpleCalendar = () => (
         <CalendarGoogle
             initialView="day"
             ViewSlots={{
-                DayView: ThemedDayView,
+                DayView: CustomDayView,
             }}
             HeaderSlots={{
                 ViewButtonGroup: CustomButtonGroup,

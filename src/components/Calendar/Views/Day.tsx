@@ -32,15 +32,20 @@ const ViewStyle: CSSProperties = {
 
 const CalendarDayView: FC<CalendarDayViewProps> = ({
     style,
+    events = [],
     Cell: PassedCell,
     ...props
 }) => {
     const Cell = PassedCell || CalendarDayViewCell;
 
+    const todaysEvents = events.filter(
+        (event) => event.startDate.toDateString() === props.date.toDateString()
+    );
+
     return (
         <DayView
             style={{ ...ViewStyle, ...style }}
-            Cell={(props) => <Cell {...props} events={[]} />}
+            Cell={(props) => <Cell {...props} events={todaysEvents} />}
             Numbering={Numbering}
             {...props}
         />
