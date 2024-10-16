@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef } from "react";
+import { CSSProperties, FC } from "react";
 import { BaseCalendarDayViewProps } from "../types";
 import { EmptyCell, NoNumbering } from "./Empty";
 
@@ -9,25 +9,23 @@ const defaultStyle: CSSProperties = {
     flexDirection: "row",
 };
 
-const DayView = forwardRef<HTMLDivElement, BaseCalendarDayViewProps>(
-    (
-        { date, Cell = EmptyCell, Numbering = NoNumbering, style, ...props },
-        ref
-    ) => (
-        <div
-            {...props}
-            ref={ref}
-            style={{
-                ...defaultStyle,
-                ...style,
-            }}
-        >
-            <Numbering />
-            <Cell date={date} />
-        </div>
-    )
+const DayView: FC<BaseCalendarDayViewProps> = ({
+    date,
+    Cell = EmptyCell,
+    Numbering = NoNumbering,
+    style,
+    ...props
+}) => (
+    <div
+        {...props}
+        style={{
+            ...defaultStyle,
+            ...style,
+        }}
+    >
+        <Numbering />
+        <Cell date={date} />
+    </div>
 );
-
-DayView.displayName = "BaseCalendarDayView";
 
 export default DayView;

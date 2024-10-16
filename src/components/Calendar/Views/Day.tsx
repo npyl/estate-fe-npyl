@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useCallback, useRef } from "react";
+import { CSSProperties, FC } from "react";
 import {
     CalendarCellProps,
     CalendarDayViewProps,
@@ -11,75 +11,36 @@ const CalendarEvent = dynamic(() => import("../Event"));
 
 // ------------------------------------------------------------------
 
-const getEvent =
-    (onFirstLoad: (top: number) => void) => (ce: TCalendarEvent, i: number) =>
-        (
-            <CalendarEvent
-                key={ce.id}
-                event={ce}
-                onLoad={i === 0 ? onFirstLoad : undefined}
-            />
-        );
+const getEvent = (ce: TCalendarEvent) => (
+    <CalendarEvent key={ce.id} event={ce} />
+);
 
 // ------------------------------------------------------------------
 
-const ViewStyle: CSSProperties = {
-    position: "relative",
-    overflow: "hidden auto",
-    overscrollBehavior: "contain",
-
-    scrollbarWidth: "none",
-
-    WebkitOverflowScrolling: "touch", // smooth scrolling
-};
-
-// ------------------------------------------------------------------
-
-interface DayCell extends CalendarCellProps {
-    onFirstEventLoad: (top: number) => void;
-}
-
-const Cell: FC<DayCell> = ({ events, onFirstEventLoad }) => (
+const CalendarDayViewCell: FC<CalendarCellProps> = ({ events }) => (
     <>
         {/* Events */}
-        {events.map(getEvent(onFirstEventLoad))}
+        {events.map(getEvent)}
     </>
 );
 
 // ------------------------------------------------------------------
 
+const ViewStyle: CSSProperties = {
+    position: "relative",
+};
+
 const CalendarDayView: FC<CalendarDayViewProps> = ({
     style,
-    events = [],
+    Cell: PassedCell,
     ...props
 }) => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    const todaysEvents = events.filter(
-        (event) => event.startDate.toDateString() === props.date.toDateString()
-    );
-
-    // Scroll to first event on load
-    const handleFirstLoad = useCallback(
-        (top: number) =>
-            ref.current?.scrollTo({
-                top: top - 7,
-                behavior: "smooth",
-            }),
-        []
-    );
+    const Cell = PassedCell || CalendarDayViewCell;
 
     return (
         <DayView
-            ref={ref}
             style={{ ...ViewStyle, ...style }}
-            Cell={(props) => (
-                <Cell
-                    {...props}
-                    events={todaysEvents}
-                    onFirstEventLoad={handleFirstLoad}
-                />
-            )}
+            Cell={(props) => <Cell {...props} events={[]} />}
             Numbering={Numbering}
             {...props}
         />

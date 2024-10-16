@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { forwardRef } from "react";
 import { Box, BoxProps, Typography } from "@mui/material";
 import { TCalendarEvent } from "./types";
 import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
@@ -24,49 +24,40 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 
 // ------------------------------------------------------------------------------------
 
-interface CalendarEventProps extends Omit<BoxProps, "onLoad"> {
+export interface CalendarEventProps extends Omit<BoxProps, "ref"> {
     event: TCalendarEvent;
-    onLoad?: (top: number) => void;
 }
 
-const CalendarEvent: React.FC<CalendarEventProps> = ({
-    event,
-    onLoad,
-    ...props
-}) => {
-    const { top, height } = calculateEventPosition(event);
+const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
+    ({ event, ...props }, ref) => {
+        const { top, height } = calculateEventPosition(event);
 
-    // onLoad() support on mount; null happens on unmount
-    const handleRef = useCallback((node: HTMLDivElement | null) => {
-        if (!node) return;
-        onLoad?.(node.offsetTop);
-    }, []);
-
-    return (
-        <Box
-            ref={handleRef}
-            position="absolute"
-            left={50}
-            right={0}
-            top={top}
-            height={height}
-            bgcolor={event.type.color}
-            p={1}
-            mx={1}
-            overflow="hidden"
-            boxShadow={10}
-            {...props}
-        >
-            <Typography variant="subtitle2" noWrap>
-                {event.title}
-            </Typography>
-            {event.location && (
-                <Typography variant="caption" color="text.secondary" noWrap>
-                    {event.location}
+        return (
+            <Box
+                ref={ref}
+                position="absolute"
+                left={50}
+                right={0}
+                top={top}
+                height={height}
+                bgcolor={event.type.color}
+                p={1}
+                mx={1}
+                overflow="hidden"
+                boxShadow={10}
+                {...props}
+            >
+                <Typography variant="subtitle2" noWrap>
+                    {event.title}
                 </Typography>
-            )}
-        </Box>
-    );
-};
+                {event.location && (
+                    <Typography variant="caption" color="text.secondary" noWrap>
+                        {event.location}
+                    </Typography>
+                )}
+            </Box>
+        );
+    }
+);
 
 export default CalendarEvent;
