@@ -4,6 +4,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type UserId = number;
 
+interface GetEventsReq {
+    userId: number;
+    startDate: string;
+    endDate: string;
+}
+
 export const calendar = createApi({
     reducerPath: "calendar",
     baseQuery: fetchBaseQuery({
@@ -40,9 +46,13 @@ export const calendar = createApi({
 
         // ------------------------- EVENTS ---------------------------
 
-        getAllEvents: builder.query<TCalendarEvent[], UserId>({
-            query: (userId) => ({
-                url: `/${userId}/events/all`,
+        getEvents: builder.query<TCalendarEvent[], GetEventsReq>({
+            query: ({ userId, startDate, endDate }) => ({
+                url: `/${userId}/events/get`,
+                params: {
+                    startDate,
+                    endDate,
+                },
             }),
             providesTags: ["Events"],
         }),
@@ -54,5 +64,5 @@ export const {
     useAuthenticateMutation,
     useLogoutMutation,
     // ...
-    useGetAllEventsQuery,
+    useGetEventsQuery,
 } = calendar;

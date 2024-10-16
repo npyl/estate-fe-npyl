@@ -46,12 +46,11 @@ class CalendarService {
         this.calendar = calendar({ version: "v3" });
     }
 
-    async getAllEvents(auth: OAuth2Client) {
+    async getEvents(auth: OAuth2Client, startDate: string, endDate: string) {
         return await this.calendar.events.list({
             calendarId: "primary",
-            timeMin: new Date().toISOString(),
-            singleEvents: true,
-            orderBy: "startTime",
+            timeMin: startDate,
+            timeMax: endDate,
             auth,
         });
     }

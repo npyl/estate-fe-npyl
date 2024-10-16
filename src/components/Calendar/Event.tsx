@@ -6,10 +6,10 @@ import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
 // ------------------------------------------------------------------------------------
 
 const calculateEventPosition = (event: TCalendarEvent) => {
-    const startHour = event.startDate.getHours();
-    const startMinutes = event.startDate.getMinutes();
-    const endHour = event.endDate.getHours();
-    const endMinutes = event.endDate.getMinutes();
+    const startHour = new Date(event.startDate).getHours();
+    const startMinutes = new Date(event.startDate).getMinutes();
+    const endHour = new Date(event.endDate).getHours();
+    const endMinutes = new Date(event.endDate).getMinutes();
 
     const top = (startHour - START_HOUR + startMinutes / 60) * DAY_CELL_HEIGHT;
     const height =

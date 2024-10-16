@@ -1,11 +1,14 @@
 import { CalendarDayViewProps } from "@/components/Calendar/types";
 import CalendarWeekView from "@/components/Calendar/Views/Week";
 import { FC } from "react";
-import fakeEvents from "./fakeEvents";
+import useMonthEvents from "./useMonthEvents";
 
 const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
     events = [],
     ...props
-}) => <CalendarWeekView {...props} events={fakeEvents} />;
+}) => {
+    const { data } = useMonthEvents(props.date);
+    return <CalendarWeekView {...props} events={data || []} />;
+};
 
 export default CalendarGoogleWeekView;

@@ -12,6 +12,7 @@ import {
     TCalendarEvent,
 } from "../types";
 import CalendarEvent from "../Event";
+import isSameDay from "./util";
 
 // ----------------------------------------------------------------------
 
@@ -29,8 +30,8 @@ const StyledNumbering = styled(Numbering)({
 
 const Cell: FC<CalendarCellProps> = ({ events, date }) => {
     // INFO: filter today's events
-    const todaysEvents = events.filter(
-        (event) => event.startDate.toDateString() === date.toDateString()
+    const todaysEvents = events.filter((event) =>
+        isSameDay(new Date(event.startDate), date)
     );
 
     return (

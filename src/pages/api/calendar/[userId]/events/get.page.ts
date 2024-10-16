@@ -9,6 +9,11 @@ export default async function handler(
     try {
         const { userId } = req.query;
 
+        const url = new URL(req.url!, `http://${req.headers.host}`);
+        const startDate = url.searchParams.get("startDate");
+        const endDate = url.searchParams.get("endDate");
+        if (!startDate || !endDate) throw new Error("error!");
+
         if (typeof userId !== "string")
             return res.status(400).json({ error: "Invalid userId" });
         const iUserId = parseInt(userId, 10);
@@ -16,7 +21,8 @@ export default async function handler(
             return res.status(400).json({ error: "Invalid userId" });
 
         const auth = await calendarService.authenticateForUser(iUserId);
-        const { data } = (await calendarService.getAllEvents(auth)) || {};
+        const { data } =
+            (await calendarService.getEvents(auth, startDate, endDate)) || {};
 
         const events = data.items?.map(GCalendarToTCalendarEvent) || [];
 

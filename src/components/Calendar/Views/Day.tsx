@@ -7,6 +7,7 @@ import {
 import dynamic from "next/dynamic";
 import DayView from "@/components/BaseCalendar/View/Day";
 import Numbering from "./Numbering";
+import isSameDay from "./util";
 const CalendarEvent = dynamic(() => import("../Event"));
 
 // ------------------------------------------------------------------
@@ -38,8 +39,8 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
 }) => {
     const Cell = PassedCell || CalendarDayViewCell;
 
-    const todaysEvents = events.filter(
-        (event) => event.startDate.toDateString() === props.date.toDateString()
+    const todaysEvents = events.filter((event) =>
+        isSameDay(new Date(event.startDate), props.date)
     );
 
     return (

@@ -10,8 +10,8 @@ const GCalendarToTCalendarEvent = ({
     id: iCalUID!,
     title: summary || "",
     location: "",
-    startDate: start?.date ? new Date(start.date) : new Date(),
-    endDate: end?.date ? new Date(end.date) : new Date(),
+    startDate: start?.dateTime || "",
+    endDate: end?.dateTime || "",
     type: {
         id: 1,
         color: "red",

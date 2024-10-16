@@ -23,8 +23,8 @@ type TCalendarEvent = {
     title: string;
     type: TCalendarEventType;
     location: string; // ?
-    startDate: Date; // day-time
-    endDate: Date; // day-time
+    startDate: string; // day-time
+    endDate: string; // day-time
     withIds: number[];
 };
 
