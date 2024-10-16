@@ -35,7 +35,7 @@ const IsAuthenticatedIndicator = () => {
     const { isAuthenticated, userInfo, isLoading, authenticate } =
         useCalendarAuth();
 
-    if (true) {
+    if (isLoading) {
         return <Skeleton variant="circular" width="46px" height="46px" />;
     }
 

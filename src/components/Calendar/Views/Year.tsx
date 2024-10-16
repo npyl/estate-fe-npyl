@@ -1,14 +1,11 @@
-import {
-    BaseCalendarCellProps,
-    BaseCalendarYearViewProps,
-} from "@/components/BaseCalendar/types";
 import YearView from "@/components/BaseCalendar/View/Year";
 import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
+import { CalendarCellProps, CalendarYearViewProps } from "../types";
 
 // ------------------------------------------------------------
 
-const Cell: FC<BaseCalendarCellProps> = ({ date }) => (
+const Cell: FC<CalendarCellProps> = ({ date }) => (
     <Stack>
         <Typography textAlign="center" variant="h6" color="text.secondary">
             {date.toLocaleString("default", {
@@ -21,8 +18,11 @@ const Cell: FC<BaseCalendarCellProps> = ({ date }) => (
 
 // ------------------------------------------------------------
 
-const Year: FC<BaseCalendarYearViewProps> = ({ date }) => (
-    <YearView date={date} Cell={Cell} />
+const Year: FC<CalendarYearViewProps> = ({ events = [], date }) => (
+    <YearView
+        date={date}
+        Cell={(props) => <Cell {...props} events={events} />}
+    />
 );
 
 export default Year;

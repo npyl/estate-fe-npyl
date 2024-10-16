@@ -1,11 +1,10 @@
-import {
-    BaseCalendarCellProps,
-    BaseCalendarDayViewProps,
-} from "@/components/BaseCalendar/types";
 import { CSSProperties, FC, useCallback, useRef } from "react";
-import { TCalendarEvent } from "../types";
+import {
+    CalendarCellProps,
+    CalendarDayViewProps,
+    TCalendarEvent,
+} from "../types";
 import dynamic from "next/dynamic";
-import fakeEvents from "./fakeEvents";
 import DayView from "@/components/BaseCalendar/View/Day";
 import Numbering from "./Numbering";
 const CalendarEvent = dynamic(() => import("../Event"));
@@ -36,8 +35,7 @@ const ViewStyle: CSSProperties = {
 
 // ------------------------------------------------------------------
 
-interface DayCell extends BaseCalendarCellProps {
-    events: TCalendarEvent[];
+interface DayCell extends CalendarCellProps {
     onFirstEventLoad: (top: number) => void;
 }
 
@@ -50,11 +48,14 @@ const Cell: FC<DayCell> = ({ events, onFirstEventLoad }) => (
 
 // ------------------------------------------------------------------
 
-const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
+const CalendarDayView: FC<CalendarDayViewProps> = ({
+    style,
+    events = [],
+    ...props
+}) => {
     const ref = useRef<HTMLDivElement>(null);
 
-    // INFO: filter today's events
-    const events = fakeEvents.filter(
+    const todaysEvents = events.filter(
         (event) => event.startDate.toDateString() === props.date.toDateString()
     );
 
@@ -75,7 +76,7 @@ const CalendarDayView: FC<BaseCalendarDayViewProps> = ({ style, ...props }) => {
             Cell={(props) => (
                 <Cell
                     {...props}
-                    events={events}
+                    events={todaysEvents}
                     onFirstEventLoad={handleFirstLoad}
                 />
             )}

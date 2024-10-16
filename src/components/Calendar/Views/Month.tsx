@@ -7,6 +7,7 @@ import {
 import MonthView from "@/components/BaseCalendar/View/Month";
 import { Stack, Typography } from "@mui/material";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
+import { CalendarCellProps, CalendarMonthViewProps } from "../types";
 
 const PlaceholderCell = () => <Grid item xs={12 / 7} bgcolor="grey.100" />;
 
@@ -16,19 +17,20 @@ const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => (
     </Typography>
 );
 
-const Cell: FC<BaseCalendarCellProps> = ({ date }) => {
+const Cell: FC<CalendarCellProps> = ({ events, date }) => {
     return <Stack height="300px">...</Stack>;
 };
 
-const CalendarMonthView: FC<BaseCalendarMonthViewProps> = ({ date }) => {
-    return (
-        <MonthView
-            date={date}
-            HeadCell={HeadCell}
-            Cell={Cell}
-            PlaceholderCell={PlaceholderCell}
-        />
-    );
-};
+const CalendarMonthView: FC<CalendarMonthViewProps> = ({
+    events = [],
+    date,
+}) => (
+    <MonthView
+        date={date}
+        HeadCell={HeadCell}
+        Cell={(props) => <Cell {...props} events={events} />}
+        PlaceholderCell={PlaceholderCell}
+    />
+);
 
 export default CalendarMonthView;

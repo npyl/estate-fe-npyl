@@ -1,8 +1,4 @@
 import { FC } from "react";
-import {
-    BaseCalendarCellProps,
-    BaseCalendarWeekViewProps,
-} from "@/components/BaseCalendar/types";
 import WeekView from "@/components/BaseCalendar/View/Week";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -10,9 +6,12 @@ import { WEEKDAYS } from "@/components/BaseCalendar/constants";
 import Numbering from "./Numbering";
 import { styled } from "@mui/material";
 import { DAY_CELL_HEIGHT } from "./constant";
-import { TCalendarEvent } from "../types";
+import {
+    CalendarCellProps,
+    CalendarWeekViewProps,
+    TCalendarEvent,
+} from "../types";
 import CalendarEvent from "../Event";
-import fakeEvents from "./fakeEvents";
 
 // ----------------------------------------------------------------------
 
@@ -28,9 +27,9 @@ const StyledNumbering = styled(Numbering)({
 
 // ----------------------------------------------------------------------
 
-const Cell: FC<BaseCalendarCellProps> = ({ date }) => {
+const Cell: FC<CalendarCellProps> = ({ events, date }) => {
     // INFO: filter today's events
-    const events = fakeEvents.filter(
+    const todaysEvents = events.filter(
         (event) => event.startDate.toDateString() === date.toDateString()
     );
 
@@ -47,14 +46,18 @@ const Cell: FC<BaseCalendarCellProps> = ({ date }) => {
             </Typography>
             <Stack position="relative">
                 {/* Events */}
-                {events.map(getEvent)}
+                {todaysEvents.map(getEvent)}
             </Stack>
         </Stack>
     );
 };
 
-const CalendarWeekView: FC<BaseCalendarWeekViewProps> = ({ date }) => (
-    <WeekView date={date} Cell={Cell} Numbering={StyledNumbering} />
+const CalendarWeekView: FC<CalendarWeekViewProps> = ({ events = [], date }) => (
+    <WeekView
+        date={date}
+        Cell={(props) => <Cell {...props} events={events} />}
+        Numbering={StyledNumbering}
+    />
 );
 
 export default CalendarWeekView;

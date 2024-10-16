@@ -1,4 +1,7 @@
-import { TCalendarEvent, TCalendarEventType } from "../types";
+import {
+    TCalendarEvent,
+    TCalendarEventType,
+} from "@/components/Calendar/types";
 
 const fakeTypes: TCalendarEventType[] = [
     { id: 1, name: "meeting", color: "#ddcdc2" },
@@ -11,7 +14,7 @@ const fakeTypes: TCalendarEventType[] = [
 const fakeEvents: TCalendarEvent[] = [
     // September
     {
-        id: 1,
+        id: "1",
         title: "Team Standup",
         location: "Conference Room A",
         type: fakeTypes[0],
@@ -20,7 +23,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4],
     },
     {
-        id: 2,
+        id: "2",
         title: "Lunch with Client",
         location: "Bistro Downtown",
         type: fakeTypes[2],
@@ -29,7 +32,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 5],
     },
     {
-        id: 3,
+        id: "3",
         title: "Project Kickoff",
         location: "Meeting Room B",
         type: fakeTypes[0],
@@ -38,7 +41,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 3, 6],
     },
     {
-        id: 4,
+        id: "4",
         title: "Virtual Coffee Break",
         location: "Zoom",
         type: fakeTypes[1],
@@ -47,7 +50,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 5],
     },
     {
-        id: 5,
+        id: "5",
         title: "Dentist Appointment",
         location: "Downtown Dental",
         type: fakeTypes[3],
@@ -56,7 +59,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [],
     },
     {
-        id: 6,
+        id: "6",
         title: "Team Building Workshop",
         location: "Community Center",
         type: fakeTypes[2],
@@ -65,7 +68,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 7,
+        id: "7",
         title: "Client Presentation Prep",
         location: "Conference Room C",
         type: fakeTypes[0],
@@ -74,7 +77,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 3, 5],
     },
     {
-        id: 8,
+        id: "8",
         title: "Virtual Networking Event",
         location: "Online Platform",
         type: fakeTypes[1],
@@ -83,7 +86,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 4, 6],
     },
     {
-        id: 9,
+        id: "9",
         title: "Project Status Update",
         location: "Meeting Room A",
         type: fakeTypes[0],
@@ -92,7 +95,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4],
     },
     {
-        id: 10,
+        id: "10",
         title: "Lunch and Learn: New Tech Stack",
         location: "Cafeteria",
         type: fakeTypes[1],
@@ -101,7 +104,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 3, 4, 5, 6],
     },
     {
-        id: 11,
+        id: "11",
         title: "Code Review Session",
         location: "Dev Team Area",
         type: fakeTypes[0],
@@ -110,7 +113,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 3, 5],
     },
     {
-        id: 12,
+        id: "12",
         title: "Team Happy Hour",
         location: "Local Pub",
         type: fakeTypes[3],
@@ -119,7 +122,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 13,
+        id: "13",
         title: "Quarterly Planning Session",
         location: "Board Room",
         type: fakeTypes[0],
@@ -128,7 +131,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5],
     },
     {
-        id: 14,
+        id: "14",
         title: "Product Demo to Stakeholders",
         location: "Demo Room",
         type: fakeTypes[2],
@@ -137,7 +140,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 6],
     },
     {
-        id: 15,
+        id: "15",
         title: "1-on-1 with Manager",
         location: "Manager's Office",
         type: fakeTypes[0],
@@ -146,7 +149,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 4],
     },
     {
-        id: 16,
+        id: "16",
         title: "Team Lunch",
         location: "Nearby Restaurant",
         type: fakeTypes[3],
@@ -155,7 +158,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 17,
+        id: "17",
         title: "Client Onboarding Call",
         location: "Zoom Meeting",
         type: fakeTypes[1],
@@ -164,7 +167,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 5],
     },
     {
-        id: 18,
+        id: "18",
         title: "Project Deadline",
         location: "Office",
         type: fakeTypes[4],
@@ -173,7 +176,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 19,
+        id: "19",
         title: "Month-End Review",
         location: "Conference Room B",
         type: fakeTypes[0],
@@ -182,7 +185,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4],
     },
     {
-        id: 20,
+        id: "20",
         title: "Team Dinner",
         location: "Italian Restaurant",
         type: fakeTypes[3],
@@ -193,7 +196,7 @@ const fakeEvents: TCalendarEvent[] = [
 
     // October
     {
-        id: 21,
+        id: "21",
         title: "Quarterly Review",
         location: "Board Room",
         type: fakeTypes[0],
@@ -202,7 +205,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5],
     },
     {
-        id: 22,
+        id: "22",
         title: "Team Lunch",
         location: "Pizzeria",
         type: fakeTypes[3],
@@ -211,7 +214,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 23,
+        id: "23",
         title: "Client Presentation",
         location: "Client Office",
         type: fakeTypes[2],
@@ -220,7 +223,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 6],
     },
     {
-        id: 24,
+        id: "24",
         title: "Project Deadline",
         location: "Office",
         type: fakeTypes[4],
@@ -229,7 +232,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4],
     },
     {
-        id: 25,
+        id: "25",
         title: "Team Brainstorming Session",
         location: "Creative Space",
         type: fakeTypes[0],
@@ -238,7 +241,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 26,
+        id: "26",
         title: "Virtual Coffee Chat",
         location: "Zoom",
         type: fakeTypes[1],
@@ -247,7 +250,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [3, 5],
     },
     {
-        id: 27,
+        id: "27",
         title: "Product Roadmap Planning",
         location: "Meeting Room A",
         type: fakeTypes[0],
@@ -256,7 +259,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 4, 6],
     },
     {
-        id: 28,
+        id: "28",
         title: "Lunch and Learn: AI in Business",
         location: "Auditorium",
         type: fakeTypes[1],
@@ -265,7 +268,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 29,
+        id: "29",
         title: "Client Feedback Session",
         location: "Conference Call",
         type: fakeTypes[1],
@@ -274,7 +277,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 5],
     },
     {
-        id: 30,
+        id: "30",
         title: "Team Building: Escape Room",
         location: "Downtown Escape Room",
         type: fakeTypes[3],
@@ -283,7 +286,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 31,
+        id: "31",
         title: "Project Status Update",
         location: "Meeting Room B",
         type: fakeTypes[0],
@@ -292,7 +295,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 3, 5],
     },
     {
-        id: 32,
+        id: "32",
         title: "Virtual Team Lunch",
         location: "Zoom",
         type: fakeTypes[1],
@@ -301,7 +304,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 33,
+        id: "33",
         title: "Code Review",
         location: "Dev Team Area",
         type: fakeTypes[0],
@@ -310,7 +313,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 3, 5],
     },
     {
-        id: 34,
+        id: "34",
         title: "Happy Hour",
         location: "Rooftop Bar",
         type: fakeTypes[3],
@@ -319,7 +322,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 35,
+        id: "35",
         title: "Quarterly Business Review",
         location: "Board Room",
         type: fakeTypes[0],
@@ -328,7 +331,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5],
     },
     {
-        id: 36,
+        id: "36",
         title: "Team Lunch",
         location: "Sushi Restaurant",
         type: fakeTypes[3],
@@ -337,7 +340,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 37,
+        id: "37",
         title: "Client Onboarding",
         location: "Conference Room C",
         type: fakeTypes[2],
@@ -346,7 +349,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 6],
     },
     {
-        id: 38,
+        id: "38",
         title: "Team Training: New Software",
         location: "Training Room",
         type: fakeTypes[1],
@@ -355,7 +358,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 39,
+        id: "39",
         title: "Halloween Party",
         location: "Office Lounge",
         type: fakeTypes[3],
@@ -364,7 +367,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 40,
+        id: "40",
         title: "Project Deadline: Q4 Goals",
         location: "Office",
         type: fakeTypes[4],
@@ -375,7 +378,7 @@ const fakeEvents: TCalendarEvent[] = [
 
     // November
     {
-        id: 41,
+        id: "41",
         title: "Monthly All-Hands",
         location: "Auditorium",
         type: fakeTypes[0],
@@ -384,7 +387,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 42,
+        id: "42",
         title: "Training Session: Cybersecurity",
         location: "Training Room A",
         type: fakeTypes[1],
@@ -393,7 +396,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 3, 5],
     },
     {
-        id: 43,
+        id: "43",
         title: "Product Launch Prep",
         location: "Conference Room C",
         type: fakeTypes[0],
@@ -402,7 +405,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 4, 6],
     },
     {
-        id: 44,
+        id: "44",
         title: "Charity Run",
         location: "City Park",
         type: fakeTypes[3],
@@ -411,7 +414,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [3, 5],
     },
     {
-        id: 45,
+        id: "45",
         title: "Client Meeting",
         location: "Client's Office",
         type: fakeTypes[2],
@@ -420,7 +423,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4],
     },
     {
-        id: 46,
+        id: "46",
         title: "Team Retrospective",
         location: "Meeting Room B",
         type: fakeTypes[0],
@@ -429,7 +432,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 47,
+        id: "47",
         title: "Virtual Coffee Chat",
         location: "Zoom",
         type: fakeTypes[1],
@@ -438,7 +441,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 3, 5],
     },
     {
-        id: 48,
+        id: "48",
         title: "Project Kickoff",
         location: "Conference Room A",
         type: fakeTypes[0],
@@ -447,7 +450,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 4, 6],
     },
     {
-        id: 49,
+        id: "49",
         title: "Lunch and Learn: AI Ethics",
         location: "Cafeteria",
         type: fakeTypes[1],
@@ -456,7 +459,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 50,
+        id: "50",
         title: "1-on-1 with Manager",
         location: "Manager's Office",
         type: fakeTypes[0],
@@ -465,7 +468,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 4],
     },
     {
-        id: 51,
+        id: "51",
         title: "Product Demo",
         location: "Demo Room",
         type: fakeTypes[2],
@@ -474,7 +477,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 6],
     },
     {
-        id: 52,
+        id: "52",
         title: "Team Lunch",
         location: "Mexican Restaurant",
         type: fakeTypes[3],
@@ -483,7 +486,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 53,
+        id: "53",
         title: "Code Review",
         location: "Dev Team Area",
         type: fakeTypes[0],
@@ -492,7 +495,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 3, 5],
     },
     {
-        id: 54,
+        id: "54",
         title: "Happy Hour",
         location: "Downtown Pub",
         type: fakeTypes[3],
@@ -501,7 +504,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 55,
+        id: "55",
         title: "Quarterly Planning Session",
         location: "Board Room",
         type: fakeTypes[0],
@@ -510,7 +513,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5],
     },
     {
-        id: 56,
+        id: "56",
         title: "Virtual Team Building",
         location: "Zoom",
         type: fakeTypes[1],
@@ -519,7 +522,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 57,
+        id: "57",
         title: "Client Presentation",
         location: "Client's Office",
         type: fakeTypes[2],
@@ -528,7 +531,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [2, 4, 6],
     },
     {
-        id: 58,
+        id: "58",
         title: "Team Sync",
         location: "Meeting Room A",
         type: fakeTypes[0],
@@ -537,7 +540,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [1, 2, 3, 4, 5, 6],
     },
     {
-        id: 59,
+        id: "59",
         title: "Thanksgiving Holiday",
         location: "Out of Office",
         type: fakeTypes[3],
@@ -546,7 +549,7 @@ const fakeEvents: TCalendarEvent[] = [
         withIds: [],
     },
     {
-        id: 60,
+        id: "60",
         title: "Month-End Review",
         location: "Conference Room B",
         type: fakeTypes[0],
