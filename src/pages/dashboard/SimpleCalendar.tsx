@@ -107,7 +107,7 @@ const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
             Numbering={StyledNumbering}
             Cell={(props) => (
                 <Cell
-                    // TODO: ... fix this??
+                    // TODO: ...
                     events={[]}
                     {...props}
                     onFirstEventLoad={handleFirstLoad}
