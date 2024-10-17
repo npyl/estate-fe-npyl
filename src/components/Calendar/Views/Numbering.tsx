@@ -12,7 +12,6 @@ const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
 const DividerSx: CSSProperties = {
     display: "inline-block",
-    // marginTop: "9px",
     position: "absolute",
     width: "100%",
     zIndex: 1,
@@ -24,7 +23,7 @@ interface NumberItemProps {
 }
 
 const NumberItem: FC<NumberItemProps> = ({ hour }) => (
-    <Box width={50} minHeight={DAY_CELL_HEIGHT}>
+    <Box width={50} height={DAY_CELL_HEIGHT}>
         <Typography
             variant="caption"
             textAlign="right"
