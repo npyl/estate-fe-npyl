@@ -51,6 +51,11 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({ events, date }) => (
             height={HEADER_HEIGHT}
             justifyContent="center"
             alignItems="center"
+            top="75px"
+            // ...
+            position="sticky"
+            zIndex={3}
+            bgcolor="background.default"
         >
             <Typography
                 textAlign="center"
