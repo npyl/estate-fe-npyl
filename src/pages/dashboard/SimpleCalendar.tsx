@@ -24,6 +24,9 @@ const CustomButtonGroup = ({}: any) => <IsAuthenticatedIndicator />;
 
 const StyledNumbering = styled(Numbering)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
+    paddingTop: theme.spacing(1.5),
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
 }));
 
 const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({

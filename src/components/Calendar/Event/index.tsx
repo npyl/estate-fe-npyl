@@ -45,6 +45,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
                 mx={1}
                 overflow="hidden"
                 boxShadow={10}
+                zIndex={3}
                 {...props}
             >
                 <Typography variant="subtitle2" noWrap>

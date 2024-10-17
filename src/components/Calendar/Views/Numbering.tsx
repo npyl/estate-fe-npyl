@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { DAY_CELL_HEIGHT } from "../constant";
 import { CalendarNumberingProps } from "../types";
 import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 
 const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
@@ -11,8 +12,10 @@ const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
 const DividerSx: CSSProperties = {
     display: "inline-block",
+    // marginTop: "9px",
     position: "absolute",
     width: "100%",
+    zIndex: 1,
     left: 0,
 };
 
@@ -21,21 +24,26 @@ interface NumberItemProps {
 }
 
 const NumberItem: FC<NumberItemProps> = ({ hour }) => (
-    <>
+    <Box width={50} minHeight={DAY_CELL_HEIGHT}>
         <Typography
             variant="caption"
-            width={50}
-            minHeight={DAY_CELL_HEIGHT}
             textAlign="right"
-            pr={1}
+            px={1}
             color="text.secondary"
+            bgcolor={(theme) =>
+                theme.palette.mode === "light" ? "neutral.300" : "neutral.700"
+            }
+            position="absolute"
+            mt={-1}
+            zIndex={2}
+            borderRadius="20px"
         >
             {`${hour % 12 === 0 ? 12 : hour % 12} ${hour < 12 ? "AM" : "PM"}`}
-
-            {/* Row divider */}
-            <Divider sx={DividerSx} />
         </Typography>
-    </>
+
+        {/* Row divider */}
+        <Divider sx={DividerSx} />
+    </Box>
 );
 
 // ------------------------------------------------------------------------------------------

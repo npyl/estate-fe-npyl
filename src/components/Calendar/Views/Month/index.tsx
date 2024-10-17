@@ -11,12 +11,42 @@ const CalendarMonthViewCell = dynamic(() => import("./Cell"));
 
 // --------------------------------------------------------------------------
 
-const PlaceholderCell = () => <Grid item xs={12 / 7} bgcolor="grey.100" />;
+const PlaceholderCell = () => (
+    <Grid
+        item
+        xs={12 / 7}
+        bgcolor="neutral.200"
+        border="1px solid"
+        borderColor="divider"
+        borderTop="none"
+        borderRight="none"
+        sx={{
+            "&:nth-of-type(7n)": {
+                borderRight: "1px solid",
+                borderColor: "divider",
+            },
+        }}
+    />
+);
 
 // --------------------------------------------------------------------------
 
 const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => (
-    <Typography textAlign="center" variant="h6" color="text.secondary">
+    <Typography
+        textAlign="center"
+        variant="h6"
+        color="text.secondary"
+        border="1px solid"
+        borderColor="divider"
+        borderBottom="none"
+        borderRight="none"
+        sx={{
+            "&:nth-of-type(7n)": {
+                borderRight: "1px solid",
+                borderColor: "divider",
+            },
+        }}
+    >
         {WEEKDAYS[date.getDay()]}
     </Typography>
 );

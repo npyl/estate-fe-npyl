@@ -2,7 +2,7 @@ import { FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
 import Numbering from "../Numbering";
 import { styled } from "@mui/material";
-import { DAY_CELL_HEIGHT } from "../../constant";
+import { HEADER_HEIGHT } from "./constant";
 import { CalendarWeekViewProps } from "../../types";
 import { _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
@@ -11,7 +11,7 @@ const CalendarWeekViewCell = dynamic(() => import("./Cell"));
 // ----------------------------------------------------------------------
 
 const StyledNumbering = styled(Numbering)({
-    marginTop: DAY_CELL_HEIGHT,
+    marginTop: HEADER_HEIGHT,
 });
 
 // -----------------------------------------------------------------------

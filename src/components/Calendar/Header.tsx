@@ -26,13 +26,23 @@ const renderValue = (
             startOfWeek.setDate(date.getDate() - date.getDay());
             const endOfWeek = new Date(startOfWeek);
             endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+            // If we are on the same month, show only that month
+            if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+                return {
+                    main: `${startOfWeek.toLocaleDateString("en-US", {
+                        month: "short",
+                    })}`,
+                    sub: endOfWeek.getFullYear().toString(),
+                };
+            }
+
+            // Otherwise show range in the form Oct - Nov
             return {
                 main: `${startOfWeek.toLocaleDateString("en-US", {
                     month: "short",
-                    day: "numeric",
                 })} - ${endOfWeek.toLocaleDateString("en-US", {
                     month: "short",
-                    day: "numeric",
                 })}`,
                 sub: endOfWeek.getFullYear().toString(),
             };

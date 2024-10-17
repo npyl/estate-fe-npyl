@@ -8,7 +8,20 @@ const getEvent = (e: TCalendarEvent) => (
 );
 
 const CalendarMonthViewCell: FC<CalendarCellProps> = ({ events }) => (
-    <Stack height="300px" position="relative">
+    <Stack
+        height="300px"
+        position="relative"
+        border="1px solid"
+        borderColor="divider"
+        borderTop="none"
+        borderRight="none"
+        sx={{
+            "&:nth-of-type(7n)": {
+                borderRight: "1px solid",
+                borderColor: "divider",
+            },
+        }}
+    >
         {events.map(getEvent)}
     </Stack>
 );

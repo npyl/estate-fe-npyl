@@ -2,25 +2,68 @@ import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
-import { DAY_CELL_HEIGHT } from "../../constant";
+import { HEADER_HEIGHT } from "./constant";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
 import CalendarEvent from "../../Event";
+
+// -------------------------------------------------------------------------
 
 const getEvent = (ce: TCalendarEvent) => (
     <CalendarEvent key={ce.id} event={ce} />
 );
 
-const CalendarWeekViewCell: FC<CalendarCellProps> = ({ events, date }) => (
-    <Stack width={1}>
+// -------------------------------------------------------------------------
+
+interface DayTypographyProps {
+    date: Date;
+}
+
+const DayTypography: FC<DayTypographyProps> = ({ date }) => {
+    const day = date.toLocaleDateString("en-US", {
+        day: "2-digit",
+    });
+
+    const isToday = date.toDateString() === new Date().toDateString();
+    const bgColor = isToday ? "primary.main" : "transparent";
+    const color = isToday ? "background.paper" : "text.secondary";
+
+    return (
         <Typography
             textAlign="center"
-            variant="h6"
-            width={1}
-            minHeight={DAY_CELL_HEIGHT}
-            color="text.secondary"
+            variant="h3"
+            width="fit-content"
+            borderRadius="100%"
+            bgcolor={bgColor}
+            color={color}
+            px={1.5}
+            py={0.5}
         >
-            {WEEKDAYS[date.getDay()]}
+            {day}
         </Typography>
+    );
+};
+
+// -------------------------------------------------------------------------
+
+const CalendarWeekViewCell: FC<CalendarCellProps> = ({ events, date }) => (
+    <Stack width={1}>
+        <Stack
+            height={HEADER_HEIGHT}
+            justifyContent="center"
+            alignItems="center"
+        >
+            <Typography
+                textAlign="center"
+                variant="h6"
+                width={1}
+                color="text.secondary"
+            >
+                {WEEKDAYS[date.getDay()]}
+            </Typography>
+            <Stack width={1} justifyContent="center" alignItems="center">
+                <DayTypography date={date} />
+            </Stack>
+        </Stack>
         <Stack position="relative">
             {/* Events */}
             {events.map(getEvent)}
