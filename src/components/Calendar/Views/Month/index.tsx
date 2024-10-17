@@ -2,15 +2,12 @@ import { FC } from "react";
 import Grid from "@mui/material/Grid";
 import { BaseCalendarCellProps } from "@/components/BaseCalendar/types";
 import MonthView from "@/components/BaseCalendar/View/Month";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
-import {
-    CalendarCellProps,
-    CalendarMonthViewProps,
-    TCalendarEvent,
-} from "../types";
-import { _getTodaysEvents } from "./util";
-import CompactCalendarEvent from "../Event/Compact";
+import { CalendarMonthViewProps } from "../../types";
+import { _getTodaysEvents } from "../util";
+import dynamic from "next/dynamic";
+const CalendarMonthViewCell = dynamic(() => import("./Cell"));
 
 // --------------------------------------------------------------------------
 
@@ -25,18 +22,6 @@ const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => (
 );
 
 // --------------------------------------------------------------------------
-
-const getEvent = (e: TCalendarEvent) => (
-    <CompactCalendarEvent key={e.id} event={e} />
-);
-
-// --------------------------------------------------------------------------
-
-const CalendarMonthViewCell: FC<CalendarCellProps> = ({ events }) => (
-    <Stack height="300px" position="relative">
-        {events.map(getEvent)}
-    </Stack>
-);
 
 // --------------------------------------------------------------------------
 

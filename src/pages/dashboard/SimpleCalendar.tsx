@@ -32,7 +32,7 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
             ? theme.palette.grey[100]
             : theme.palette.neutral?.[800],
 
-    height: "300px",
+    height: "500px",
     borderBottomLeftRadius: "15px",
     borderBottomRightRadius: "15px",
 

@@ -25,7 +25,7 @@ const Dashboard: NextPage = () => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12} md={7}>
+            <Grid item xs={12} md={5}>
                 <AppWelcome
                     title={`${t("Welcome back")} \n ${name}!`}
                     img={
@@ -39,7 +39,7 @@ const Dashboard: NextPage = () => {
                     }
                 />
             </Grid>
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12} md={7}>
                 <SimpleCalendar />
             </Grid>
 

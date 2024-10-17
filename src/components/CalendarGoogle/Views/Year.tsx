@@ -3,10 +3,9 @@ import {
     CalendarDayViewProps,
 } from "@/components/Calendar/types";
 import { FC } from "react";
-import CalendarYearView, {
-    CalendarYearViewCell,
-} from "@/components/Calendar/Views/Year";
+import CalendarYearView from "@/components/Calendar/Views/Year";
 import useMonthEvents from "./useMonthEvents";
+import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
 
 // --------------------------------------------------------------------
 

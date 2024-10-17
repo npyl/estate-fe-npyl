@@ -1,31 +1,10 @@
 import { CSSProperties, FC } from "react";
-import {
-    CalendarCellProps,
-    CalendarDayViewProps,
-    TCalendarEvent,
-} from "../types";
+import { CalendarDayViewProps } from "../../types";
 import dynamic from "next/dynamic";
 import DayView from "@/components/BaseCalendar/View/Day";
-import Numbering from "./Numbering";
-import { _getTodaysEvents } from "./util";
-const CalendarEvent = dynamic(() => import("../Event"));
-
-// ------------------------------------------------------------------
-
-const getEvent = (ce: TCalendarEvent) => (
-    <CalendarEvent key={ce.id} event={ce} />
-);
-
-// ------------------------------------------------------------------
-
-export const CalendarDayViewCell: FC<CalendarCellProps> = ({ events }) => (
-    <>
-        {/* Events */}
-        {events.map(getEvent)}
-    </>
-);
-
-// ------------------------------------------------------------------
+import Numbering from "../Numbering";
+import { _getTodaysEvents } from "../util";
+const CalendarDayViewCell = dynamic(() => import("./Cell"));
 
 const ViewStyle: CSSProperties = {
     position: "relative",
