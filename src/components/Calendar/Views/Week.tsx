@@ -12,7 +12,7 @@ import {
     TCalendarEvent,
 } from "../types";
 import CalendarEvent from "../Event";
-import isSameDay from "./util";
+import { _getTodaysEvents } from "./util";
 
 // ----------------------------------------------------------------------
 
@@ -28,37 +28,45 @@ const StyledNumbering = styled(Numbering)({
 
 // ----------------------------------------------------------------------
 
-const Cell: FC<CalendarCellProps> = ({ events, date }) => {
-    // INFO: filter today's events
-    const todaysEvents = events.filter((event) =>
-        isSameDay(new Date(event.startDate), date)
-    );
+const CalendarWeekViewCell: FC<CalendarCellProps> = ({ events, date }) => (
+    <Stack width={1}>
+        <Typography
+            textAlign="center"
+            variant="h6"
+            width={1}
+            minHeight={DAY_CELL_HEIGHT}
+            color="text.secondary"
+        >
+            {WEEKDAYS[date.getDay()]}
+        </Typography>
+        <Stack position="relative">
+            {/* Events */}
+            {events.map(getEvent)}
+        </Stack>
+    </Stack>
+);
+
+// -----------------------------------------------------------------------
+
+const CalendarWeekView: FC<CalendarWeekViewProps> = ({
+    events = [],
+    getCellEvents = _getTodaysEvents,
+    Cell: PassedCell,
+    date,
+    ...props
+}) => {
+    const Cell = PassedCell || CalendarWeekViewCell;
 
     return (
-        <Stack width={1}>
-            <Typography
-                textAlign="center"
-                variant="h6"
-                width={1}
-                minHeight={DAY_CELL_HEIGHT}
-                color="text.secondary"
-            >
-                {WEEKDAYS[date.getDay()]}
-            </Typography>
-            <Stack position="relative">
-                {/* Events */}
-                {todaysEvents.map(getEvent)}
-            </Stack>
-        </Stack>
+        <WeekView
+            date={date}
+            Cell={(props) => (
+                <Cell {...props} events={getCellEvents(events, props.date)} />
+            )}
+            Numbering={StyledNumbering}
+            {...props}
+        />
     );
 };
-
-const CalendarWeekView: FC<CalendarWeekViewProps> = ({ events = [], date }) => (
-    <WeekView
-        date={date}
-        Cell={(props) => <Cell {...props} events={events} />}
-        Numbering={StyledNumbering}
-    />
-);
 
 export default CalendarWeekView;

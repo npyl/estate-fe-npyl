@@ -47,6 +47,7 @@ interface CalendarHeaderSlots extends BaseCalendarHeaderSlots {}
 
 interface ViewEvents {
     events?: TCalendarEvent[];
+    getCellEvents?: (events: TCalendarEvent[], date: Date) => TCalendarEvent[];
 }
 
 type CalendarDayViewProps = BaseCalendarDayViewProps & ViewEvents;
