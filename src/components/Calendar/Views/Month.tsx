@@ -2,7 +2,7 @@ import { FC } from "react";
 import Grid from "@mui/material/Grid";
 import { BaseCalendarCellProps } from "@/components/BaseCalendar/types";
 import MonthView from "@/components/BaseCalendar/View/Month";
-import { Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
 import {
     CalendarCellProps,
