@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../CalendarService";
 import { GCalendarToTCalendarEvent } from "@/types/calendar/mapper";
 
+// TODO: for now...
+import fakeEvents from "./fakeEvents";
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
@@ -28,7 +31,7 @@ export default async function handler(
 
         // GET: check if user with id `userId` is authenticated
         if (req.method === "GET") {
-            res.status(200).json(events);
+            res.status(200).json([...events, ...fakeEvents]);
         }
     } catch (error) {
         console.error("Error:", error);

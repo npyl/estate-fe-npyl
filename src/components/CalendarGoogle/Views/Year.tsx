@@ -6,7 +6,6 @@ import { FC } from "react";
 import CalendarYearView, {
     CalendarYearViewCell,
 } from "@/components/Calendar/Views/Year";
-import fakeEvents from "./fakeEvents";
 import useMonthEvents from "./useMonthEvents";
 
 // --------------------------------------------------------------------
@@ -24,7 +23,6 @@ const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
 }) => (
     <CalendarYearView
         {...props}
-        events={fakeEvents}
         Cell={(props) => (
             <Cell
                 // TODO: this is not needed; the type does not support it but events are passed actually; must update the Cell props
