@@ -4,12 +4,16 @@ import {
     TCalendarView,
 } from "@/components/BaseCalendar/types";
 import Stack from "@mui/material/Stack";
-import { CSSProperties, FC } from "react";
+import { styled } from "@mui/material/styles";
+import { FC } from "react";
 
-const Style: CSSProperties = {
-    position: "relative",
+const StyledBaseHeader = styled(BaseHeader)(({ theme }) => ({
+    position: "sticky",
     padding: "10px",
-};
+    top: "50px",
+    zIndex: 4,
+    backgroundColor: theme.palette.background.default,
+}));
 
 const renderValue = (
     view: TCalendarView,
@@ -66,7 +70,7 @@ const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
     const value = renderValue(props.view, props.date);
 
     return (
-        <BaseHeader {...props} style={Style}>
+        <StyledBaseHeader {...props}>
             <Stack
                 position="absolute"
                 top="50%"
@@ -90,7 +94,7 @@ const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
                     <span style={{ fontSize: "1rem" }}>{value.sub}</span>
                 )}
             </Stack>
-        </BaseHeader>
+        </StyledBaseHeader>
     );
 };
 

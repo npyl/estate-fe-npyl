@@ -11,10 +11,20 @@ import {
     TCalendarEvent,
 } from "@/components/Calendar/types";
 import CalendarEvent, { CalendarEventProps } from "@/components/Calendar/Event";
+import CalendarHeader from "@/components/Calendar/Header";
+
+// ------------------------------------------------------------------------
 
 const PaperSx = {
     borderRadius: "15px",
 };
+
+// ------------------------------------------------------------------------
+
+const StyledHeader = styled(CalendarHeader)({
+    position: "unset",
+    backgroundColor: "transparent",
+});
 
 // ------------------------------------------------------------------------
 
@@ -127,6 +137,9 @@ const SimpleCalendar = () => (
     <Paper sx={PaperSx}>
         <CalendarGoogle
             initialView="day"
+            slots={{
+                Header: StyledHeader,
+            }}
             ViewSlots={{
                 DayView: CustomDayView,
             }}

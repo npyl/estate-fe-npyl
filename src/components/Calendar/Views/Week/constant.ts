@@ -1,5 +1,3 @@
-import { DAY_CELL_HEIGHT } from "../../constant";
+const MARGIN_TOP = 10;
 
-const HEADER_HEIGHT = DAY_CELL_HEIGHT + 30;
-
-export { HEADER_HEIGHT };
+export { MARGIN_TOP };
