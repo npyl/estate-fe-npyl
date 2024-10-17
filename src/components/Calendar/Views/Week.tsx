@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
 import Numbering from "./Numbering";
 import { styled } from "@mui/material";
-import { DAY_CELL_HEIGHT } from "./constant";
+import { DAY_CELL_HEIGHT } from "../constant";
 import {
     CalendarCellProps,
     CalendarWeekViewProps,

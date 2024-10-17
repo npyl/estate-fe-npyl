@@ -4,8 +4,13 @@ import { BaseCalendarCellProps } from "@/components/BaseCalendar/types";
 import MonthView from "@/components/BaseCalendar/View/Month";
 import { Stack, Typography } from "@mui/material";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
-import { CalendarCellProps, CalendarMonthViewProps } from "../types";
+import {
+    CalendarCellProps,
+    CalendarMonthViewProps,
+    TCalendarEvent,
+} from "../types";
 import { _getTodaysEvents } from "./util";
+import CompactCalendarEvent from "../Event/Compact";
 
 // --------------------------------------------------------------------------
 
@@ -21,9 +26,17 @@ const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => (
 
 // --------------------------------------------------------------------------
 
-const CalendarMonthViewCell: FC<CalendarCellProps> = ({ events, date }) => {
-    return <Stack height="300px">...</Stack>;
-};
+const getEvent = (e: TCalendarEvent) => (
+    <CompactCalendarEvent key={e.id} event={e} />
+);
+
+// --------------------------------------------------------------------------
+
+const CalendarMonthViewCell: FC<CalendarCellProps> = ({ events }) => (
+    <Stack height="300px" position="relative">
+        {events.map(getEvent)}
+    </Stack>
+);
 
 // --------------------------------------------------------------------------
 

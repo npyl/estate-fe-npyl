@@ -7,14 +7,13 @@ import {
     TCalendarEvent,
 } from "../types";
 import { _getTodaysEvents } from "./util";
-
-const YearEvent: FC<TCalendarEvent> = ({ title }) => {
-    return <>{title}</>;
-};
+import CompactCalendarEvent from "../Event/Compact";
 
 // ------------------------------------------------------------
 
-const getEvent = (e: TCalendarEvent) => <YearEvent key={e.id} {...e} />;
+const getEvent = (e: TCalendarEvent) => (
+    <CompactCalendarEvent key={e.id} event={e} />
+);
 
 // ------------------------------------------------------------
 
@@ -28,7 +27,9 @@ export const CalendarYearViewCell: FC<CalendarCellProps> = ({
                 month: "long",
             })}
         </Typography>
-        <Stack height="200px">{events.map(getEvent)}</Stack>
+        <Stack height="200px" position="relative">
+            {events.map(getEvent)}
+        </Stack>
     </Stack>
 );
 

@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { Box, BoxProps, Typography } from "@mui/material";
-import { TCalendarEvent } from "./types";
-import { DAY_CELL_HEIGHT, START_HOUR } from "./Views/constant";
+import { TCalendarEvent } from "../types";
+import { DAY_CELL_HEIGHT, START_HOUR } from "../constant";
 
 // ------------------------------------------------------------------------------------
 

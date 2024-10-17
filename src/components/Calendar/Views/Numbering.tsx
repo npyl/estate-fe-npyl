@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from "react";
-import { START_HOUR, TOTAL_HOURS } from "./constant";
+import { START_HOUR, TOTAL_HOURS } from "../constant";
 import Typography from "@mui/material/Typography";
-import { DAY_CELL_HEIGHT } from "./constant";
+import { DAY_CELL_HEIGHT } from "../constant";
 import { CalendarNumberingProps } from "../types";
 
 const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
