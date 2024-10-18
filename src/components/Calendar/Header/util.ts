@@ -1,20 +1,4 @@
-import BaseHeader from "@/components/BaseCalendar/Header";
-import {
-    BaseCalendarHeaderProps,
-    TCalendarView,
-} from "@/components/BaseCalendar/types";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import { FC } from "react";
-import { Z_INDEX } from "./constant";
-
-const StyledBaseHeader = styled(BaseHeader)(({ theme }) => ({
-    position: "relative",
-    padding: theme.spacing(1),
-    zIndex: Z_INDEX.HEADER,
-    backgroundColor: theme.palette.background.default,
-    boxShadow: `0 4px 6px -1px ${theme.palette.action.hover}`, // Added box shadow
-}));
+import { TCalendarView } from "@/components/BaseCalendar/types";
 
 const renderValue = (
     view: TCalendarView,
@@ -64,39 +48,4 @@ const renderValue = (
     }
 };
 
-const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
-    children,
-    ...props
-}) => {
-    const value = renderValue(props.view, props.date);
-
-    return (
-        <StyledBaseHeader {...props}>
-            <Stack
-                position="absolute"
-                top="50%"
-                left="50%"
-                direction="row"
-                alignItems="center"
-                spacing={1}
-                sx={{
-                    transform: "translate(-50%, -50%)",
-                }}
-            >
-                <span
-                    style={{
-                        fontSize: props.view === "day" ? "2.5rem" : "1.5rem",
-                        fontWeight: "bold",
-                    }}
-                >
-                    {value.main}
-                </span>
-                {value.sub && (
-                    <span style={{ fontSize: "1rem" }}>{value.sub}</span>
-                )}
-            </Stack>
-        </StyledBaseHeader>
-    );
-};
-
-export default CalendarHeader;
+export { renderValue };
