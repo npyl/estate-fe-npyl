@@ -22,17 +22,16 @@ export default async function handler(
             });
         }
 
-        const isAuthenticatedRes = await calendarService.isAuthenticated(
-            iUserId
-        );
-
         // GET: check if user with id `userId` is authenticated
         if (req.method === "GET") {
+            const isAuthenticatedRes = await calendarService.isAuthenticated(
+                iUserId
+            );
             res.status(200).json(isAuthenticatedRes);
         }
 
         if (req.method === "DELETE") {
-            calendarService.revokeAuthentication(iUserId);
+            await calendarService.revokeAuthentication(iUserId);
             res.status(200).json({});
         }
     } catch (error) {

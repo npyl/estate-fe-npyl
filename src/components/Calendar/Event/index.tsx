@@ -1,8 +1,7 @@
-import { forwardRef, useCallback } from "react";
+import { forwardRef } from "react";
 import {
     Box,
     BoxProps,
-    IconButton,
     Stack,
     SxProps,
     Theme,
@@ -13,8 +12,6 @@ import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "../constant";
 import dynamic from "next/dynamic";
 import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
-import Edit from "@mui/icons-material/Edit";
-import { Delete } from "@mui/icons-material";
 import Actions from "./_shared/Actions";
 const Members = dynamic(() => import("./_shared/Members"));
 
@@ -113,8 +110,8 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
                 <Actions
                     eventId={event.id}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
                 />
             </Stack>
         );

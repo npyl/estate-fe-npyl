@@ -130,7 +130,8 @@ class CalendarService {
         }
     }
 
-    revokeAuthentication(userId: number) {
+    async revokeAuthentication(userId: number) {
+        await this.oauth2Client.revokeCredentials();
         this.userTokens.delete(userId);
     }
 }
