@@ -22,7 +22,6 @@ const PaperSx = {
 // ------------------------------------------------------------------------
 
 const StyledHeader = styled(CalendarHeader)({
-    position: "unset",
     backgroundColor: "transparent",
 });
 

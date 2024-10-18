@@ -1,3 +1,12 @@
 import CalendarGoogle from "@/components/CalendarGoogle";
-const CalendarSection = () => <CalendarGoogle />;
+import StyledHeader from "./Header";
+
+const CalendarSection = () => (
+    <CalendarGoogle
+        slots={{
+            Header: StyledHeader,
+        }}
+    />
+);
+
 export default CalendarSection;

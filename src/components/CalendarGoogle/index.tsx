@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Calendar from "@/components/Calendar";
 import CalendarGoogleButtonGroup from "./ButtonGroup";
 // views
@@ -7,8 +8,6 @@ const CalendarGoogleMonthView = dynamic(() => import("./Views/Month"));
 const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
 
 import { CalendarGoogleProps } from "./types";
-
-import dynamic from "next/dynamic";
 import { FC } from "react";
 
 const CalendarGoogle: FC<CalendarGoogleProps> = ({
