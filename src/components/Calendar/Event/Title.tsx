@@ -35,8 +35,12 @@ const Title: FC<TitleProps> = ({ title, mini, color, startDate, endDate }) => (
                 start={startDate}
                 end={endDate}
                 position="absolute"
-                top={-10}
-                right={-15}
+                top={-8}
+                noWrap
+                right="50%"
+                sx={{
+                    transform: "translateX(50%)",
+                }}
             />
         ) : null}
     </ForceVisible>

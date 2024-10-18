@@ -6,11 +6,14 @@ import {
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import { FC } from "react";
+import { HEADER_HEIGHT } from "./constant";
 
 const StyledBaseHeader = styled(BaseHeader)(({ theme }) => ({
     position: "sticky",
-    padding: "10px",
-    top: "50px",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    top: `${HEADER_HEIGHT}px`,
+    marginBottom: theme.spacing(2),
     zIndex: 4,
     backgroundColor: theme.palette.background.default,
 }));
