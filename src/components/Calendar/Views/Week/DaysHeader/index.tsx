@@ -3,6 +3,7 @@ import { Box, Divider, Stack } from "@mui/material";
 import { getStartOfWeek } from "@/components/BaseCalendar/util";
 import { gridStyle, StyledStack } from "./styled";
 import Day from "./Day";
+import { Z_INDEX } from "@/components/Calendar/constant";
 
 const getDay = (date: Date) => (
     <Box>
@@ -13,7 +14,7 @@ const getDay = (date: Date) => (
             sx={{
                 position: "absolute",
                 height: "100vh",
-                zIndex: 1,
+                zIndex: Z_INDEX.DIVIDER,
             }}
         />
     </Box>

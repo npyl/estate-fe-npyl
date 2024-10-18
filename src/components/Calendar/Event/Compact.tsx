@@ -2,6 +2,7 @@ import { FC } from "react";
 import { TCalendarEvent } from "../types";
 import Typography from "@mui/material/Typography";
 import Box, { BoxProps } from "@mui/material/Box";
+import { Z_INDEX } from "../constant";
 
 interface CompactCalendarEventProps extends BoxProps {
     event: TCalendarEvent;
@@ -22,7 +23,7 @@ const CompactCalendarEvent: FC<CompactCalendarEventProps> = ({
         mx={1}
         overflow="hidden"
         boxShadow={10}
-        zIndex={3}
+        zIndex={Z_INDEX.EVENT}
         {...props}
     >
         <Typography variant="subtitle2" noWrap>

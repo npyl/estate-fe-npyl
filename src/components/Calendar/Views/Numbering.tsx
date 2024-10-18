@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { START_HOUR, TOTAL_HOURS } from "../constant";
+import { START_HOUR, TOTAL_HOURS, Z_INDEX } from "../constant";
 import Typography from "@mui/material/Typography";
 import { DAY_CELL_HEIGHT } from "../constant";
 import { CalendarNumberingProps } from "../types";
@@ -14,7 +14,7 @@ const DividerSx: CSSProperties = {
     display: "inline-block",
     position: "absolute",
     width: "100%",
-    zIndex: 1,
+    zIndex: Z_INDEX.DIVIDER,
     left: 0,
 };
 
@@ -34,7 +34,7 @@ const NumberItem: FC<NumberItemProps> = ({ hour }) => (
             }
             position="absolute"
             mt={-1}
-            zIndex={2}
+            zIndex={Z_INDEX.NUMBERING}
             borderRadius="20px"
         >
             {`${hour % 12 === 0 ? 12 : hour % 12} ${hour < 12 ? "AM" : "PM"}`}

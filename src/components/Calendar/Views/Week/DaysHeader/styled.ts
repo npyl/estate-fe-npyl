@@ -1,5 +1,5 @@
 import { Stack, styled } from "@mui/material";
-import { HEADER_HEIGHT } from "../../../constant";
+import { HEADER_HEIGHT, Z_INDEX } from "../../../constant";
 import { CSSProperties } from "react";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -8,7 +8,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     width: "100%",
     top: `${HEADER_HEIGHT * 2}px`,
     position: "sticky",
-    zIndex: 4,
+    zIndex: Z_INDEX.HEADER,
 
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),

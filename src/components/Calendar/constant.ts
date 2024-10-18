@@ -6,7 +6,16 @@ const START_HOUR = 7;
 const END_HOUR = 22;
 const TOTAL_HOURS = END_HOUR - START_HOUR + 1;
 
+const Z_INDEX = {
+    DIVIDER: 1,
+    NUMBERING: 2,
+    EVENT: 3,
+    HEADER: 4,
+};
+
 export {
+    Z_INDEX,
+    // ...
     HEADER_HEIGHT,
     DAY_CELL_HEIGHT,
     // ...

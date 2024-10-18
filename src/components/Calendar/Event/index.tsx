@@ -8,7 +8,7 @@ import {
     Typography,
 } from "@mui/material";
 import { TCalendarEvent } from "../types";
-import { DAY_CELL_HEIGHT, START_HOUR } from "../constant";
+import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "../constant";
 import dynamic from "next/dynamic";
 import Duration from "./Duration";
 import Title from "./Title";
@@ -44,7 +44,7 @@ const EventSx: SxProps<Theme> = {
     marginLeft: (theme) => theme.spacing(1),
     marginRight: (theme) => theme.spacing(1),
     boxShadow: (theme) => theme.shadows[20],
-    zIndex: 3,
+    zIndex: Z_INDEX.EVENT,
 };
 
 // --------------------------------------------------------------------------
