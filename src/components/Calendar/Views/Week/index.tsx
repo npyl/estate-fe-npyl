@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { CSSProperties, FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
 const DefaultNumbering = dynamic(() => import("../Numbering"));
 import { Stack, styled } from "@mui/material";
@@ -17,12 +17,17 @@ const StyledNumbering = styled(DefaultNumbering)({
 
 // -----------------------------------------------------------------------
 
+const ViewStyle: CSSProperties = {
+    position: "relative", // INFO: for Numbering
+};
+
 const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     events = [],
     getCellEvents = _getTodaysEvents,
     Cell: PassedCell,
     Numbering: PassedNumbering,
     date,
+    style,
     ...props
 }) => {
     const Cell = PassedCell || CalendarWeekViewCell;
@@ -41,6 +46,7 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
                     />
                 )}
                 Numbering={Numbering}
+                style={{ ...ViewStyle, ...style }}
                 {...props}
             />
         </Stack>

@@ -11,11 +11,11 @@ const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 // ------------------------------------------------------------------------------------------
 
 const DividerSx: CSSProperties = {
-    display: "inline-block",
     position: "absolute",
     width: "100%",
     zIndex: Z_INDEX.DIVIDER,
     left: 0,
+    right: 0,
 };
 
 interface NumberItemProps {

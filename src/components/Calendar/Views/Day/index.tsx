@@ -11,11 +11,11 @@ const ViewStyle: CSSProperties = {
 };
 
 const CalendarDayView: FC<CalendarDayViewProps> = ({
-    style,
     events = [],
     Cell: PassedCell,
     Numbering: PassedNumbering,
     getCellEvents = _getTodaysEvents,
+    style,
     ...props
 }) => {
     const Cell = PassedCell || CalendarDayViewCell;
@@ -23,11 +23,11 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
 
     return (
         <DayView
-            style={{ ...ViewStyle, ...style }}
             Cell={(props) => (
                 <Cell {...props} events={getCellEvents(events, props.date)} />
             )}
             Numbering={Numbering}
+            style={{ ...ViewStyle, ...style }}
             {...props}
         />
     );
