@@ -37,7 +37,7 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 
 const EventSx: SxProps<Theme> = {
     position: "absolute",
-    left: 50,
+    left: 0,
     right: 0,
     backgroundColor: ({ palette }) => palette.background.paper,
     borderRadius: "10px",

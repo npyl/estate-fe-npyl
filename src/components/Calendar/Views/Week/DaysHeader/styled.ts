@@ -6,7 +6,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     flexDirection: "row",
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    top: `${HEADER_HEIGHT + 67}px`,
+    top: `${HEADER_HEIGHT + 66}px`,
     position: "sticky",
     zIndex: 4,
 

@@ -9,6 +9,11 @@ const defaultStyle: CSSProperties = {
     flexDirection: "row",
 };
 
+const contentStyle: CSSProperties = {
+    position: "relative",
+    width: "100%",
+};
+
 const DayView: FC<BaseCalendarDayViewProps> = ({
     date,
     Cell = EmptyCell,
@@ -24,7 +29,10 @@ const DayView: FC<BaseCalendarDayViewProps> = ({
         }}
     >
         <Numbering />
-        <Cell date={date} />
+
+        <div style={contentStyle}>
+            <Cell date={date} />
+        </div>
     </div>
 );
 

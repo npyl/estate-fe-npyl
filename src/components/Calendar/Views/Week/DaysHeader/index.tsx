@@ -1,10 +1,23 @@
 import { FC } from "react";
-import { Stack } from "@mui/material";
+import { Box, Divider, Stack } from "@mui/material";
 import { getStartOfWeek } from "@/components/BaseCalendar/util";
 import { gridStyle, StyledStack } from "./styled";
 import Day from "./Day";
 
-const getDay = (date: Date) => <Day key={date.toISOString()} date={date} />;
+const getDay = (date: Date) => (
+    <Box>
+        <Day key={date.toISOString()} date={date} />
+
+        <Divider
+            orientation="vertical"
+            sx={{
+                position: "absolute",
+                height: "100vh",
+                zIndex: 1,
+            }}
+        />
+    </Box>
+);
 
 interface DaysHeaderProps {
     date: Date;
@@ -21,7 +34,7 @@ const DaysHeader: FC<DaysHeaderProps> = ({ date }) => {
 
     return (
         <StyledStack>
-            <Stack width="50px" bgcolor="black" />
+            <Stack width="50px" />
             <div style={gridStyle}>{weekDays.map(getDay)}</div>
         </StyledStack>
     );
