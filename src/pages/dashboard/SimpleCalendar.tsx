@@ -53,6 +53,11 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
     overscrollBehavior: "contain",
     scrollbarWidth: "none",
     WebkitOverflowScrolling: "touch", // smooth scrolling
+
+    // INFO: disable event actions in this view
+    "& .Calendar-Event-Action-Buttons": {
+        display: "none",
+    },
 }));
 
 // ------------------------------------------------------------------------------------
