@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "../CalendarService";
 
 export default async function handler(
     req: NextApiRequest,
@@ -14,7 +13,7 @@ export default async function handler(
         if (isNaN(iUserId))
             return res.status(400).json({ error: "Invalid userId" });
 
-        const auth = await calendarService.authenticateForUser(iUserId);
+        // const auth = await calendarService.authenticateForUser(iUserId);
 
         // POST: create new event
         if (req.method === "POST") {

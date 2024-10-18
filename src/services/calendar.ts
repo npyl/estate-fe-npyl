@@ -10,6 +10,10 @@ interface GetEventsReq {
     endDate: string;
 }
 
+interface IAuthenticateRes {
+    authUrl: string;
+}
+
 export const calendar = createApi({
     reducerPath: "calendar",
     baseQuery: fetchBaseQuery({
@@ -26,7 +30,7 @@ export const calendar = createApi({
             providesTags: ["IsAuthenticated"],
         }),
 
-        authenticate: builder.mutation<void, UserId>({
+        authenticate: builder.mutation<IAuthenticateRes, UserId>({
             query: (userId) => ({
                 url: `/${userId}/auth`,
                 method: "POST",
@@ -41,7 +45,7 @@ export const calendar = createApi({
                 method: "DELETE",
             }),
 
-            invalidatesTags: ["IsAuthenticated"],
+            invalidatesTags: ["IsAuthenticated", "Events"],
         }),
 
         // ------------------------- EVENTS ---------------------------

@@ -1,15 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "../CalendarService";
+import calendarService from "../../CalendarService";
 import { GCalendarToTCalendarEvent } from "@/types/calendar/mapper";
-
-// TODO: for now...
-import fakeEvents from "./fakeEvents";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     try {
+        if (req.method !== "GET") {
+            res.status(404).json({});
+            return;
+        }
+
         const { userId } = req.query;
 
         const url = new URL(req.url!, `http://${req.headers.host}`);
@@ -23,16 +25,16 @@ export default async function handler(
         if (isNaN(iUserId))
             return res.status(400).json({ error: "Invalid userId" });
 
-        const auth = await calendarService.authenticateForUser(iUserId);
-        const { data } =
-            (await calendarService.getEvents(auth, startDate, endDate)) || {};
+        const { data } = await calendarService.getEvents(
+            +userId,
+            startDate,
+            endDate
+        );
 
         const events = data.items?.map(GCalendarToTCalendarEvent) || [];
 
         // GET: check if user with id `userId` is authenticated
-        if (req.method === "GET") {
-            res.status(200).json([...events, ...fakeEvents]);
-        }
+        res.status(200).json(events);
     } catch (error) {
         console.error("Error:", error);
         res.status(404).json({});

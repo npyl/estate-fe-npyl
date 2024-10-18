@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "./CalendarService";
+import calendarService from "../CalendarService";
 
 export default async function handler(
     req: NextApiRequest,
@@ -16,8 +16,10 @@ export default async function handler(
 
         // POST: authenticate user with id `userId`
         if (req.method === "POST") {
-            await calendarService.authenticateForUser(iUserId);
-            res.status(200).json({});
+            const authUrl = await calendarService.getAuthUrl(iUserId);
+            res.status(200).json({
+                authUrl,
+            });
         }
 
         const isAuthenticatedRes = await calendarService.isAuthenticated(

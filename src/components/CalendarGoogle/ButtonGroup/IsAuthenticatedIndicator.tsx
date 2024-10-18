@@ -6,10 +6,12 @@ import {
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import AvatarButton from "./AvatarButton";
+import { useRouter } from "next/router";
 
 // -------------------------------------------------------------------------
 
 const useCalendarAuth = () => {
+    const router = useRouter();
     const { user } = useAuth();
 
     const { data, isLoading } = useIsAuthenticatedQuery(user?.id!, {
@@ -19,7 +21,13 @@ const useCalendarAuth = () => {
     const [authenticateCb] = useAuthenticateMutation();
 
     const isAuthenticated = data?.isAuthenticated;
-    const authenticate = () => authenticateCb(user!.id);
+
+    const authenticate = async () => {
+        const { authUrl } = (await authenticateCb(user!.id).unwrap()) || {};
+        if (!authUrl) return;
+
+        router.push(authUrl);
+    };
 
     return {
         isAuthenticated,
