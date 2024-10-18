@@ -12,6 +12,7 @@ const StyledBaseHeader = styled(BaseHeader)(({ theme }) => ({
     padding: theme.spacing(1),
     zIndex: 4,
     backgroundColor: theme.palette.background.default,
+    boxShadow: `0 4px 6px -1px ${theme.palette.action.hover}`, // Added box shadow
 }));
 
 const renderValue = (
@@ -76,9 +77,9 @@ const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
                 left="50%"
                 direction="row"
                 alignItems="center"
+                spacing={1}
                 sx={{
                     transform: "translate(-50%, -50%)",
-                    gap: "8px",
                 }}
             >
                 <span

@@ -53,8 +53,6 @@ const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => (
 
 // --------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------
-
 const CalendarMonthView: FC<CalendarMonthViewProps> = ({
     events = [],
     Cell: PassedCell,

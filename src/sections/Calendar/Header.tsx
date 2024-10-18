@@ -7,7 +7,6 @@ const StyledHeader = styled(CalendarHeader)(({ theme }) => ({
     paddingTop: "10px",
     paddingBottom: "10px",
     top: `${HEADER_HEIGHT}px`,
-    marginBottom: theme.spacing(2),
     zIndex: 4,
     backgroundColor: theme.palette.background.default,
 }));

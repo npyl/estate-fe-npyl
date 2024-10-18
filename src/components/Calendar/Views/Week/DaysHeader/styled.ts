@@ -6,7 +6,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     flexDirection: "row",
     backgroundColor: theme.palette.background.default,
     width: "100%",
-    top: `${HEADER_HEIGHT + 66}px`,
+    top: `${HEADER_HEIGHT * 2}px`,
     position: "sticky",
     zIndex: 4,
 
@@ -15,6 +15,8 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 
     borderTop: "1px solid",
     borderColor: theme.palette.divider,
+
+    boxShadow: `0 4px 6px -1px ${theme.palette.action.hover}`, // Added box shadow
 }));
 
 const gridStyle: CSSProperties = {
