@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { SxProps, Theme } from "@mui/material/styles";
 import { FC, useCallback } from "react";
+import { TCalendarEvent } from "../../types";
 
 const HoverButtonsSx: SxProps<Theme> = {
     position: "absolute",
@@ -27,12 +28,12 @@ const HoverButtonsSx: SxProps<Theme> = {
 
 interface ActionsProps {
     eventId: string;
-    onEdit?: (id: string) => void;
+    onEdit?: () => void;
     onDelete?: (id: string) => void;
 }
 
 const Actions: FC<ActionsProps> = ({ eventId, onEdit, onDelete }) => {
-    const handleEdit = useCallback(() => onEdit?.(eventId), [onEdit]);
+    const handleEdit = useCallback(() => onEdit?.(), [onEdit]);
     const handleDelete = useCallback(() => onDelete?.(eventId), [onDelete]);
 
     return (

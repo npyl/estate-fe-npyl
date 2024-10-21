@@ -4,7 +4,7 @@ import { CalendarCellProps, TCalendarEvent } from "../../types";
 import CompactCalendarEvent from "../../Event/Compact";
 
 const getEvent =
-    (onEdit?: (id: string) => void, onDelete?: (id: string) => void) =>
+    (onEdit?: (e: TCalendarEvent) => void, onDelete?: (id: string) => void) =>
     (e: TCalendarEvent) =>
         (
             <CompactCalendarEvent

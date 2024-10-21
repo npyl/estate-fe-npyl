@@ -6,7 +6,7 @@ import { Z_INDEX } from "../constant";
 
 interface CompactCalendarEventProps extends BoxProps {
     event: TCalendarEvent;
-    onEdit?: (id: string) => void;
+    onEdit?: (e: TCalendarEvent) => void;
     onDelete?: (id: string) => void;
 }
 

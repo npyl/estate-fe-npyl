@@ -6,7 +6,7 @@ import CalendarEvent from "../../Event";
 // -------------------------------------------------------------------------
 
 const getEvent =
-    (onEdit?: (id: string) => void, onDelete?: (id: string) => void) =>
+    (onEdit?: (e: TCalendarEvent) => void, onDelete?: (id: string) => void) =>
     (ce: TCalendarEvent) =>
         (
             <CalendarEvent

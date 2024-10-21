@@ -58,7 +58,7 @@ const EventSx: SxProps<Theme> = {
 
 export interface CalendarEventProps extends Omit<BoxProps, "ref"> {
     event: TCalendarEvent;
-    onEdit?: (id: string) => void;
+    onEdit?: (e: TCalendarEvent) => void;
     onDelete?: (id: string) => void;
 }
 
@@ -68,6 +68,8 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
+
+        const handleEdit = () => onEdit?.(event);
 
         return (
             <Stack
@@ -110,7 +112,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
                 <Actions
                     eventId={event.id}
-                    onEdit={onEdit}
+                    onEdit={handleEdit}
                     onDelete={onDelete}
                 />
             </Stack>

@@ -2,19 +2,23 @@ import { useAuth } from "@/hooks/use-auth";
 import useDialog from "@/hooks/useDialog";
 import { useLogoutMutation } from "@/services/calendar";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
-import { Menu, MenuItem } from "@mui/material";
+import { Divider, Menu, MenuItem, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import { FC, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 // ---------------------------------------------------------
 
 interface PopoverProps {
     anchorEl: HTMLElement;
+    name: string;
     onClose: VoidFunction;
 }
 
-const Popover: FC<PopoverProps> = ({ anchorEl, onClose }) => {
+const Popover: FC<PopoverProps> = ({ anchorEl, name, onClose }) => {
+    const { t } = useTranslation();
+
     const { user } = useAuth();
     const [logout] = useLogoutMutation();
 
@@ -22,7 +26,11 @@ const Popover: FC<PopoverProps> = ({ anchorEl, onClose }) => {
 
     return (
         <Menu open anchorEl={anchorEl} onClose={onClose}>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <Typography px={1} mb={1} fontWeight="bold">
+                {name}
+            </Typography>
+            <Divider />
+            <MenuItem onClick={handleLogout}>{t("Logout")}</MenuItem>
         </Menu>
     );
 };
@@ -49,7 +57,11 @@ const AvatarButton: FC<Props> = ({ userInfo }) => {
             </IconButton>
 
             {isOpen && ref.current ? (
-                <Popover anchorEl={ref.current} onClose={closePopover} />
+                <Popover
+                    anchorEl={ref.current}
+                    name={userInfo?.name || "-"}
+                    onClose={closePopover}
+                />
             ) : null}
         </>
     );

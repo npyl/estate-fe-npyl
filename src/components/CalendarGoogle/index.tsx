@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import Calendar from "@/components/Calendar";
 import CalendarGoogleButtonGroup from "./ButtonGroup";
-import WithDeleteConfirmation from "./WithDeleteConfirmation";
 // views
 const CalendarGoogleDayView = dynamic(() => import("./Views/Day"));
 import CalendarGoogleWeekView from "./Views/Week";
@@ -18,10 +17,10 @@ const CalendarGoogle: FC<CalendarGoogleProps> = ({
 }) => (
     <Calendar
         ViewSlots={{
-            DayView: WithDeleteConfirmation(CalendarGoogleDayView),
-            WeekView: WithDeleteConfirmation(CalendarGoogleWeekView),
-            MonthView: WithDeleteConfirmation(CalendarGoogleMonthView),
-            YearView: WithDeleteConfirmation(CalendarGoogleYearView),
+            DayView: CalendarGoogleDayView,
+            WeekView: CalendarGoogleWeekView,
+            MonthView: CalendarGoogleMonthView,
+            YearView: CalendarGoogleYearView,
             ...ViewSlots,
         }}
         HeaderSlots={{

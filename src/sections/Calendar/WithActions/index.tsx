@@ -3,12 +3,15 @@ import {
     CalendarMonthViewProps,
     CalendarWeekViewProps,
     CalendarYearViewProps,
+    TCalendarEvent,
 } from "@/components/Calendar/types";
 import useEventMutations from "./useEventMutations";
 import { Button, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { ComponentType, useState } from "react";
 import { useTranslation } from "react-i18next";
+// ...
+const EditEventDialog = dynamic(() => import("./EditEvent"));
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
 
 type AnyCalendarViewProps =
@@ -19,24 +22,33 @@ type AnyCalendarViewProps =
 
 type AnyCalendarView = ComponentType<AnyCalendarViewProps>;
 
-const WithDeleteConfirmation = (View: AnyCalendarView) => {
+const WithActions = (View: AnyCalendarView) => {
     const { t } = useTranslation();
 
     const { deleteEvent } = useEventMutations();
 
-    const [eventId, setEventId] = useState("");
-    const closeConfirm = () => setEventId("");
+    const [deleteEventId, setDeleteEventId] = useState("");
+    const closeConfirm = () => setDeleteEventId("");
+
+    const [editEvent, setEditEvent] = useState<TCalendarEvent>();
+    const closeEdit = () => setEditEvent(undefined);
 
     const handleDelete = () => {
-        deleteEvent(eventId);
+        deleteEvent(deleteEventId);
         closeConfirm();
     };
 
     return (props: AnyCalendarViewProps) => (
         <>
-            <View {...props} onEventDelete={setEventId} />
+            <View
+                {...props}
+                onEventDelete={setDeleteEventId}
+                onEventEdit={setEditEvent}
+            />
 
-            {eventId ? (
+            {editEvent ? <EditEventDialog onClose={closeEdit} /> : null}
+
+            {deleteEventId ? (
                 <ConfirmDialog
                     open
                     title={t("Delete Event")}
@@ -61,4 +73,4 @@ const WithDeleteConfirmation = (View: AnyCalendarView) => {
     );
 };
 
-export default WithDeleteConfirmation;
+export default WithActions;

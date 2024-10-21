@@ -33,7 +33,7 @@ type TCalendarEvent = {
 
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
-    onEventEdit?: (id: string) => void;
+    onEventEdit?: (e: TCalendarEvent) => void;
     onEventDelete?: (id: string) => void;
 }
 
@@ -54,7 +54,7 @@ interface ViewEvents {
 
     getCellEvents?: (events: TCalendarEvent[], date: Date) => TCalendarEvent[];
 
-    onEventEdit?: (id: string) => void;
+    onEventEdit?: (e: TCalendarEvent) => void;
     onEventDelete?: (id: string) => void;
 }
 
@@ -68,11 +68,6 @@ interface CalendarViewSlots {
     WeekView: ComponentType<CalendarWeekViewProps>;
     MonthView: ComponentType<CalendarMonthViewProps>;
     YearView: ComponentType<CalendarYearViewProps>;
-}
-
-interface CalendarViewProps extends BaseCalendarViewProps {
-    onEventEdit?: (id: string) => void;
-    onEventDelete?: (id: string) => void;
 }
 
 // ------------------------------------------------------------------------
