@@ -1,23 +1,65 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
+import { START_HOUR, END_HOUR } from "@/constants/calendar";
+
+/**
+    From Google Docs: 
+    (https://developers.google.com/calendar/api/v3/reference/events)
+
+    start.date:
+        The date, in the format "yyyy-mm-dd", if this is an all-day event.
+    start.dateTime:
+        The time, as a combined date-time value (formatted according to RFC3339).
+        A time zone offset is required unless a time zone is explicitly specified in timeZone.
+
+    INFO: Basically, we always look at `dateTime` field, unless we realise that we have an "all-day" event.
+            In case of "all-day" event, google populates *only* the `date` field
+*/
 
 const GCalendarToTCalendarEvent = ({
     id,
     summary,
     start,
     end,
-}: calendar_v3.Schema$Event): TCalendarEvent => ({
-    id: id!,
-    title: summary || "",
-    location: "",
-    startDate: start?.dateTime || "",
-    endDate: end?.dateTime || "",
-    type: {
-        id: 1,
-        color: "red",
-        name: "test",
-    },
-    withIds: [],
-});
+    description,
+}: calendar_v3.Schema$Event): TCalendarEvent => {
+    const isAllDay =
+        !start?.dateTime &&
+        !end?.dateTime &&
+        Boolean(start?.date) &&
+        Boolean(end?.date);
 
-export { GCalendarToTCalendarEvent };
+    let startDate: string;
+    let endDate: string;
+
+    if (isAllDay) {
+        // For all-day events, we keep the date but set the time to START_HOUR and END_HOUR
+        const startDateTime = new Date(start?.date!);
+        startDateTime.setHours(START_HOUR, 0, 0, 0);
+        startDate = startDateTime.toISOString();
+
+        const endDateTime = new Date(start?.date!);
+        endDateTime.setHours(END_HOUR, 0, 0, 0);
+        endDate = endDateTime.toISOString();
+    } else {
+        startDate = start?.dateTime || "";
+        endDate = end?.dateTime || "";
+    }
+
+    return {
+        id: id!,
+        title: summary || "",
+        location: "",
+        description: description || "",
+        startDate,
+        endDate,
+        type: {
+            id: 1,
+            color: "red",
+            name: "test",
+        },
+        withIds: [],
+    };
+};
+
+export default GCalendarToTCalendarEvent;
