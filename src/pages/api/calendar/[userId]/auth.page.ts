@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../CalendarService";
+import { toNumber } from "../../util";
 
 export default async function handler(
     req: NextApiRequest,
@@ -8,11 +9,7 @@ export default async function handler(
     try {
         const { userId } = req.query;
 
-        if (typeof userId !== "string")
-            return res.status(400).json({ error: "Invalid userId" });
-        const iUserId = parseInt(userId, 10);
-        if (isNaN(iUserId))
-            return res.status(400).json({ error: "Invalid userId" });
+        const iUserId = toNumber(userId);
 
         // POST: authenticate user with id `userId`
         if (req.method === "POST") {

@@ -18,6 +18,10 @@ const Cell: FC<CalendarCellProps> = ({ events = [], ...props }) => {
 
 const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
     events = [],
+    // ...
+    onEventEdit,
+    onEventDelete,
+    // ...
     ...props
 }) => (
     <CalendarYearView
@@ -27,6 +31,8 @@ const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
                 // TODO: this is not needed; the type does not support it but events are passed actually; must update the Cell props
                 events={[]}
                 {...props}
+                onEventEdit={onEventEdit}
+                onEventDelete={onEventDelete}
             />
         )}
     />

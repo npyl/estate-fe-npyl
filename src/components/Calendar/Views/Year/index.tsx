@@ -11,7 +11,11 @@ const Year: FC<CalendarYearViewProps> = ({
     events = [],
     Cell: PassedCell,
     date,
+    // ...
     getCellEvents = _getTodaysEvents,
+    onEventEdit,
+    onEventDelete,
+    // ...
     ...props
 }) => {
     const Cell = PassedCell || CalendarYearViewCell;
@@ -20,7 +24,12 @@ const Year: FC<CalendarYearViewProps> = ({
         <YearView
             date={date}
             Cell={(props) => (
-                <Cell {...props} events={getCellEvents(events, props.date)} />
+                <Cell
+                    {...props}
+                    events={getCellEvents(events, props.date)}
+                    onEventEdit={onEventEdit}
+                    onEventDelete={onEventDelete}
+                />
             )}
             {...props}
         />

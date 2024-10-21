@@ -5,15 +5,25 @@ import CompactCalendarEvent from "../../Event/Compact";
 
 // ------------------------------------------------------------
 
-const getEvent = (e: TCalendarEvent) => (
-    <CompactCalendarEvent key={e.id} event={e} />
-);
+const getEvent =
+    (onEdit?: (id: string) => void, onDelete?: (id: string) => void) =>
+    (e: TCalendarEvent) =>
+        (
+            <CompactCalendarEvent
+                key={e.id}
+                event={e}
+                onEdit={onEdit}
+                onDelete={onDelete}
+            />
+        );
 
 // ------------------------------------------------------------
 
 export const CalendarYearViewCell: FC<CalendarCellProps> = ({
     date,
     events,
+    onEventEdit,
+    onEventDelete,
 }) => (
     <Stack>
         <Typography textAlign="center" variant="h6" color="text.secondary">
@@ -22,7 +32,7 @@ export const CalendarYearViewCell: FC<CalendarCellProps> = ({
             })}
         </Typography>
         <Stack height="200px" position="relative">
-            {events.map(getEvent)}
+            {events.map(getEvent(onEventEdit, onEventDelete))}
         </Stack>
     </Stack>
 );

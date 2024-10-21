@@ -4,10 +4,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type UserId = number;
 
-interface GetEventsReq {
+interface BasicEventReq {
     userId: number;
+}
+
+interface GetEventsReq extends BasicEventReq {
     startDate: string;
     endDate: string;
+}
+
+interface DeleteEventReq extends BasicEventReq {
+    eventId: string;
 }
 
 interface IAuthenticateRes {
@@ -60,6 +67,14 @@ export const calendar = createApi({
             }),
             providesTags: ["Events"],
         }),
+
+        deleteEvent: builder.mutation<TCalendarEvent[], DeleteEventReq>({
+            query: ({ userId, eventId }) => ({
+                url: `/${userId}/events/${eventId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Events"],
+        }),
     }),
 });
 
@@ -69,4 +84,5 @@ export const {
     useLogoutMutation,
     // ...
     useGetEventsQuery,
+    useDeleteEventMutation,
 } = calendar;

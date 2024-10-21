@@ -22,11 +22,15 @@ const ViewStyle: CSSProperties = {
 };
 
 const CalendarWeekView: FC<CalendarWeekViewProps> = ({
+    date,
     events = [],
-    getCellEvents = _getTodaysEvents,
     Cell: PassedCell,
     Numbering: PassedNumbering,
-    date,
+    // ...
+    getCellEvents = _getTodaysEvents,
+    onEventEdit,
+    onEventDelete,
+    // ...
     style,
     ...props
 }) => {
@@ -43,6 +47,8 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
                     <Cell
                         {...props}
                         events={getCellEvents(events, props.date)}
+                        onEventEdit={onEventEdit}
+                        onEventDelete={onEventDelete}
                     />
                 )}
                 Numbering={Numbering}

@@ -65,6 +65,18 @@ class CalendarService {
             auth,
         });
     }
+
+    async deleteEvent(userId: number, eventId: string) {
+        const auth = await this.getAuthForUser(userId);
+        if (!auth) throw new Error("Auth Error!");
+
+        return await this.calendar.events.delete({
+            calendarId: "primary",
+            eventId,
+            auth,
+        });
+    }
+
     // ------------------------------ Auth -----------------------------------
 
     async getAuthUrl(userId: number): Promise<string> {

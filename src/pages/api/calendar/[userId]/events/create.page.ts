@@ -1,3 +1,4 @@
+import { toNumber } from "@/pages/api/util";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 
 export default async function handler(
@@ -7,13 +8,7 @@ export default async function handler(
     try {
         const { userId } = req.query;
 
-        if (typeof userId !== "string")
-            return res.status(400).json({ error: "Invalid userId" });
-        const iUserId = parseInt(userId, 10);
-        if (isNaN(iUserId))
-            return res.status(400).json({ error: "Invalid userId" });
-
-        // const auth = await calendarService.authenticateForUser(iUserId);
+        const iUserId = toNumber(userId);
 
         // POST: create new event
         if (req.method === "POST") {

@@ -5,6 +5,7 @@ import {
     BaseCalendarMonthViewProps,
     BaseCalendarProps,
     BaseCalendarSlots,
+    BaseCalendarViewProps,
     BaseCalendarViewSlots,
     BaseCalendarWeekViewProps,
     BaseCalendarYearViewProps,
@@ -32,7 +33,10 @@ type TCalendarEvent = {
 
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
+    onEventEdit?: (id: string) => void;
+    onEventDelete?: (id: string) => void;
 }
+
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
 
 // ------------------------------------------------------------------------
@@ -47,7 +51,11 @@ interface CalendarHeaderSlots extends BaseCalendarHeaderSlots {}
 
 interface ViewEvents {
     events?: TCalendarEvent[];
+
     getCellEvents?: (events: TCalendarEvent[], date: Date) => TCalendarEvent[];
+
+    onEventEdit?: (id: string) => void;
+    onEventDelete?: (id: string) => void;
 }
 
 type CalendarDayViewProps = BaseCalendarDayViewProps & ViewEvents;
@@ -60,6 +68,11 @@ interface CalendarViewSlots {
     WeekView: ComponentType<CalendarWeekViewProps>;
     MonthView: ComponentType<CalendarMonthViewProps>;
     YearView: ComponentType<CalendarYearViewProps>;
+}
+
+interface CalendarViewProps extends BaseCalendarViewProps {
+    onEventEdit?: (id: string) => void;
+    onEventDelete?: (id: string) => void;
 }
 
 // ------------------------------------------------------------------------

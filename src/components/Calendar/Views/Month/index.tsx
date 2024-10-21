@@ -57,7 +57,11 @@ const CalendarMonthView: FC<CalendarMonthViewProps> = ({
     events = [],
     Cell: PassedCell,
     date,
+    // ...
     getCellEvents = _getTodaysEvents,
+    onEventEdit,
+    onEventDelete,
+    // ...
     ...props
 }) => {
     const Cell = PassedCell || CalendarMonthViewCell;
@@ -67,7 +71,12 @@ const CalendarMonthView: FC<CalendarMonthViewProps> = ({
             date={date}
             HeadCell={HeadCell}
             Cell={(props) => (
-                <Cell {...props} events={getCellEvents(events, props.date)} />
+                <Cell
+                    {...props}
+                    events={getCellEvents(events, props.date)}
+                    onEventEdit={onEventEdit}
+                    onEventDelete={onEventDelete}
+                />
             )}
             PlaceholderCell={PlaceholderCell}
             {...props}

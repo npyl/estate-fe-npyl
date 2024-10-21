@@ -5,16 +5,28 @@ const CalendarEvent = dynamic(() => import("../../Event"));
 
 // ------------------------------------------------------------------
 
-const getEvent = (ce: TCalendarEvent) => (
-    <CalendarEvent key={ce.id} event={ce} />
-);
+const getEvent =
+    (onEdit?: (id: string) => void, onDelete?: (id: string) => void) =>
+    (ce: TCalendarEvent) =>
+        (
+            <CalendarEvent
+                key={ce.id}
+                event={ce}
+                onEdit={onEdit}
+                onDelete={onDelete}
+            />
+        );
 
 // ------------------------------------------------------------------
 
-const CalendarDayViewCell: FC<CalendarCellProps> = ({ events }) => (
+const CalendarDayViewCell: FC<CalendarCellProps> = ({
+    events,
+    onEventEdit,
+    onEventDelete,
+}) => (
     <>
         {/* Events */}
-        {events.map(getEvent)}
+        {events.map(getEvent(onEventEdit, onEventDelete))}
     </>
 );
 
