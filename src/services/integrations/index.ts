@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { GetImagesOrderReq, UpdateImagesOrderReq } from "./types";
 import { ImagesOrderRes } from "@/types/integrations";
+import Cookies from "js-cookie";
 // import { optimisticSetOrderedImages } from "./optimistic";
 
 export const integrations = createApi({
@@ -10,7 +11,7 @@ export const integrations = createApi({
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
+                `Bearer ${Cookies.get("accessToken")}`
             );
             return headers;
         },

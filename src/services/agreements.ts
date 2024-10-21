@@ -6,6 +6,7 @@ import {
 } from "@/types/agreements";
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 
 interface IAgreementSearchParams {
     search: string;
@@ -20,7 +21,7 @@ export const agreements = createApi({
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
+                `Bearer ${Cookies.get("accessToken")}`
             );
 
             headers.set(
