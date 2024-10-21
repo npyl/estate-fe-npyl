@@ -8,7 +8,7 @@ import {
     Typography,
 } from "@mui/material";
 import { TCalendarEvent } from "../types";
-import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "../constant";
+import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";

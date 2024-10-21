@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 import CalendarHeader from "@/components/Calendar/Header";
-import { HEADER_HEIGHT, Z_INDEX } from "@/components/Calendar/constant";
+import { HEADER_HEIGHT, Z_INDEX } from "@/constants/calendar";
 import { BaseCalendarHeaderProps } from "@/components/BaseCalendar/types";
 
 const StyledHeader = styled(CalendarHeader)<BaseCalendarHeaderProps>(

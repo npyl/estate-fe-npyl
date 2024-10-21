@@ -1,7 +1,11 @@
 import { CSSProperties, FC } from "react";
-import { START_HOUR, TOTAL_HOURS, Z_INDEX } from "../constant";
+import {
+    START_HOUR,
+    TOTAL_HOURS,
+    Z_INDEX,
+    DAY_CELL_HEIGHT,
+} from "@/constants/calendar";
 import Typography from "@mui/material/Typography";
-import { DAY_CELL_HEIGHT } from "../constant";
 import { CalendarNumberingProps } from "../types";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";

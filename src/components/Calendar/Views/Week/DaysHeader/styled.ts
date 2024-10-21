@@ -1,5 +1,5 @@
 import { Stack, styled } from "@mui/material";
-import { HEADER_HEIGHT, Z_INDEX } from "../../../constant";
+import { HEADER_HEIGHT, Z_INDEX } from "@/constants/calendar";
 import { CSSProperties } from "react";
 
 const StyledStack = styled(Stack)(({ theme }) => ({

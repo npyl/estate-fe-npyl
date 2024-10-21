@@ -26,7 +26,7 @@ const Popover: FC<PopoverProps> = ({ anchorEl, name, onClose }) => {
 
     return (
         <Menu open anchorEl={anchorEl} onClose={onClose}>
-            <Typography px={1} mb={1} fontWeight="bold">
+            <Typography px={1} mb={1} fontWeight="bold" textAlign="center">
                 {name}
             </Typography>
             <Divider />

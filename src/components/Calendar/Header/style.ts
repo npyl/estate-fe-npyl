@@ -1,6 +1,6 @@
 import BaseHeader from "@/components/BaseCalendar/Header";
 import { styled } from "@mui/material/styles";
-import { Z_INDEX } from "../constant";
+import { Z_INDEX } from "@/constants/calendar";
 
 const StyledBaseHeader = styled(BaseHeader)(({ theme }) => ({
     position: "relative",

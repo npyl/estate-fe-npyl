@@ -2,7 +2,7 @@ import { FC } from "react";
 import { TCalendarEvent } from "../types";
 import Typography from "@mui/material/Typography";
 import Box, { BoxProps } from "@mui/material/Box";
-import { Z_INDEX } from "../constant";
+import { Z_INDEX } from "@/constants/calendar";
 
 interface CompactCalendarEventProps extends BoxProps {
     event: TCalendarEvent;

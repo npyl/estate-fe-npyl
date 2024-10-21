@@ -3,7 +3,7 @@ import { Box, Divider, Stack } from "@mui/material";
 import { getStartOfWeek } from "@/components/BaseCalendar/util";
 import { gridStyle, StyledStack } from "./styled";
 import Day from "./Day";
-import { Z_INDEX } from "@/components/Calendar/constant";
+import { Z_INDEX } from "@/constants/calendar";
 
 const getDay = (date: Date) => (
     <Box>
