@@ -3,10 +3,7 @@ import {
     BaseCalendarDayViewProps,
     BaseCalendarHeaderSlots,
     BaseCalendarMonthViewProps,
-    BaseCalendarProps,
     BaseCalendarSlots,
-    BaseCalendarViewProps,
-    BaseCalendarViewSlots,
     BaseCalendarWeekViewProps,
     BaseCalendarYearViewProps,
     TCalendarView,
@@ -22,6 +19,7 @@ type TCalendarEventType = {
 type TCalendarEvent = {
     id: string;
     title: string;
+    description: string;
     type: TCalendarEventType;
     location: string; // ?
     startDate: string; // day-time
