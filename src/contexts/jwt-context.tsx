@@ -165,7 +165,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             password,
         }).unwrap();
 
-        Cookies.set("accessToken", loginRes.token);
+        Cookies.set("accessToken", loginRes.token, {
+            sameSite: "None",
+            secure: true,
+        });
 
         const user = await getProfile().unwrap();
         if (!user) {
