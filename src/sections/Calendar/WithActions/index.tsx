@@ -46,7 +46,9 @@ const WithActions = (View: AnyCalendarView) => {
                 onEventEdit={setEditEvent}
             />
 
-            {editEvent ? <EditEventDialog onClose={closeEdit} /> : null}
+            {editEvent ? (
+                <EditEventDialog event={editEvent} onClose={closeEdit} />
+            ) : null}
 
             {deleteEventId ? (
                 <ConfirmDialog
