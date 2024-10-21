@@ -6,7 +6,7 @@ import { IsAuthenticatedRes } from "@/types/calendar/google";
 interface UserToken {
     accessToken: string;
     refreshToken: string;
-    expiryDate: Date;
+    expiryDate: number;
 }
 
 /**
@@ -79,17 +79,33 @@ class CalendarService {
 
     async handleAuthCallback(code: string, state: string): Promise<void> {
         const userId = parseInt(state, 10);
-        const { tokens } = await this.oauth2Client.getToken(code);
+        const { tokens, res } = await this.oauth2Client.getToken(code);
 
+        // Case #1: Brand new login
         if (tokens.access_token && tokens.refresh_token && tokens.expiry_date) {
             this.userTokens.set(userId, {
                 accessToken: tokens.access_token,
                 refreshToken: tokens.refresh_token,
-                expiryDate: new Date(tokens.expiry_date),
+                expiryDate: tokens.expiry_date,
             });
-        } else {
-            throw new Error("Invalid token response");
+
+            return;
         }
+
+        // TODO: check what about this refreshToken???
+
+        // Case #2: Oauth login has happened before but nextjs server was restarted => tokens were lost from memory
+        if (res?.data?.access_token && res?.data?.expiry_date) {
+            this.userTokens.set(userId, {
+                accessToken: res.data.access_token,
+                refreshToken: "",
+                expiryDate: res.data.expiry_date,
+            });
+
+            return;
+        }
+
+        throw new Error("Invalid token response");
     }
 
     private async getAuthForUser(userId: number): Promise<OAuth2Client | null> {
@@ -99,7 +115,7 @@ class CalendarService {
         this.oauth2Client.setCredentials({
             access_token: userToken.accessToken,
             refresh_token: userToken.refreshToken,
-            expiry_date: userToken.expiryDate.getTime(),
+            expiry_date: userToken.expiryDate,
         });
 
         // if (this.oauth2Client.isTokenExpiring()) {
