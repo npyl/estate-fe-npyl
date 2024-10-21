@@ -2,12 +2,12 @@ import { TCalendarEvent } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 
 const GCalendarToTCalendarEvent = ({
-    iCalUID,
+    id,
     summary,
     start,
     end,
 }: calendar_v3.Schema$Event): TCalendarEvent => ({
-    id: iCalUID!,
+    id: id!,
     title: summary || "",
     location: "",
     startDate: start?.dateTime || "",

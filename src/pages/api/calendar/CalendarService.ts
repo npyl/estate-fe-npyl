@@ -37,6 +37,7 @@ async function getUserInfo(auth: OAuth2Client) {
 
 const SCOPES = [
     "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/calendar.events",
     "https://www.googleapis.com/auth/userinfo.profile",
 ];
 

@@ -1022,10 +1022,18 @@ const resources = {
 
             From: "From",
             Until: "Until",
+
+            "Delete Event": "Delete Event",
+            "Are you sure you want to delete this event?":
+                "Are you sure you want to delete this event?",
         },
     },
     el: {
         translation: {
+            "Delete Event": "Διαγραφή Γεγονότος",
+            "Are you sure you want to delete this event?":
+                "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το γεγονός?",
+
             Dashboard: "Πίνακας Ελέγχου",
             "Default Value": "Αρχική Τιμή",
             "Bulk Edit": "Επεξεργασία Πολλαπλών",
