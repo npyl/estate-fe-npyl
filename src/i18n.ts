@@ -1028,10 +1028,12 @@ const resources = {
                 "Are you sure you want to delete this event?",
 
             Reset: "Reset",
+            "All day": "All day",
         },
     },
     el: {
         translation: {
+            "All day": "Όλη μέρα",
             Reset: "Επαναφορά",
 
             "Delete Event": "Διαγραφή Γεγονότος",

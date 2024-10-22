@@ -46,6 +46,8 @@ const GCalendarToTCalendarEvent = ({
         endDate = end?.dateTime || "";
     }
 
+    console.log("startDate: ", startDate, " endDate: ", endDate);
+
     return {
         id: id!,
         title: summary || "",

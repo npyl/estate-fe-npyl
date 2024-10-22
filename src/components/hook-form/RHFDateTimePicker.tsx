@@ -3,8 +3,7 @@ import {
     DateTimePickerProps,
     DateTimePicker as MuiDateTimePicker,
 } from "@mui/x-date-pickers";
-import Stack from "@mui/material/Stack";
-import { FormHelperText, Typography } from "@mui/material";
+import { FormHelperText } from "@mui/material";
 import dayjs from "dayjs";
 import { useCallback } from "react";
 import toLocalDate from "@/utils/toLocalDate";
@@ -19,7 +18,7 @@ interface Props extends Omit<DateTimePickerProps<dayjs.Dayjs>, "onChange"> {
 
 // INFO: value prop must be an LocalDate (YYYY-MM-DD)
 
-const DatePicker = ({ name, label, onChange, ...others }: Props) => {
+const DatePicker = ({ name, onChange, ...others }: Props) => {
     const { control, setValue } = useFormContext();
 
     const handleChange = useCallback(
@@ -40,11 +39,7 @@ const DatePicker = ({ name, label, onChange, ...others }: Props) => {
                 field: { value, onChange: _, ...field },
                 fieldState: { error },
             }) => (
-                <Stack spacing={1}>
-                    {label ? (
-                        <Typography variant="subtitle1">{label}</Typography>
-                    ) : null}
-
+                <>
                     <MuiDateTimePicker
                         {...field}
                         {...others}
@@ -52,10 +47,11 @@ const DatePicker = ({ name, label, onChange, ...others }: Props) => {
                         format={EUROPEAN_DATE_FORMAT}
                         onChange={handleChange}
                     />
+
                     {error ? (
                         <FormHelperText error>{error?.message}</FormHelperText>
                     ) : null}
-                </Stack>
+                </>
             )}
         />
     );

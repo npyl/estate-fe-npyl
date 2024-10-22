@@ -1,5 +1,5 @@
 import { Button, Checkbox, FormControlLabel, Stack } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
@@ -8,20 +8,7 @@ import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
 import { LoadingButton } from "@mui/lab";
-import { isSameDay } from "@/components/Calendar/Views/util";
-import { END_HOUR, START_HOUR } from "@/constants/calendar";
-
-// TODO: Fix this and return to isAllDay logic + reset support (something wrong with UTC)
-const getIsAllDay = (startDate: string, endDate: string): boolean => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    const isSameDate = isSameDay(start, end);
-    const isSTART_HOUR = start.getHours() === START_HOUR;
-    const isEND_HOUR = end.getHours() === END_HOUR;
-
-    return isSameDate && isSTART_HOUR && isEND_HOUR;
-};
+import { isAllDay as getIsAllDay } from "@/components/Calendar/util";
 
 const CheckboxSx = {
     width: "fit-content",
@@ -36,7 +23,7 @@ const EditForm: FC<EditFormProps> = ({ event, onClose }) => {
     const { t } = useTranslation();
 
     // initial value
-    const _isAllDay = getIsAllDay(event?.startDate, event?.startDate);
+    const _isAllDay = getIsAllDay(event?.startDate, event?.endDate);
 
     const [isAllDay, setAllDay] = useState(_isAllDay);
 
@@ -44,7 +31,7 @@ const EditForm: FC<EditFormProps> = ({ event, onClose }) => {
         values: event,
     });
 
-    const isDirty = isAllDay || methods.formState.isDirty;
+    const isDirty = _isAllDay !== isAllDay || methods.formState.isDirty;
     const isSubmitting = methods.formState.isSubmitting;
 
     const handleAllDay = (_: any, b: boolean) => setAllDay(b);

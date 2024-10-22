@@ -1,5 +1,7 @@
 import {
     Button,
+    DialogActions,
+    DialogContent,
     DialogTitle,
     IconButton,
     Stack,
@@ -25,6 +27,14 @@ const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
 const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
     padding: theme.spacing(1),
     position: "relative",
+}));
+
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+    padding: theme.spacing(1),
+}));
+
+const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
+    padding: theme.spacing(0),
 }));
 
 // -----------------------------------------------------------
@@ -64,6 +74,8 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                 open
                 sx={getDialogSx(isEdit)}
                 DialogTitleComponent={StyledDialogTitle}
+                DialogContentComponent={StyledDialogContent}
+                DialogActionsComponent={StyledDialogActions}
                 title={
                     <>
                         <Typography>{title}</Typography>

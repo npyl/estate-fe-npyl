@@ -34,9 +34,16 @@ const EventSx: SxProps<Theme> = {
     borderRadius: "10px",
     marginLeft: (theme) => theme.spacing(1),
     marginRight: (theme) => theme.spacing(1),
-    boxShadow: (theme) => theme.shadows[20],
+    boxShadow: 10,
     zIndex: Z_INDEX.EVENT,
+
     transition: "all 0.3s ease",
+
+    cursor: "pointer",
+
+    "&:hover": {
+        boxShadow: 20,
+    },
 };
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
