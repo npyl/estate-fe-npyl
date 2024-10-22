@@ -1026,10 +1026,14 @@ const resources = {
             "Delete Event": "Delete Event",
             "Are you sure you want to delete this event?":
                 "Are you sure you want to delete this event?",
+
+            Reset: "Reset",
         },
     },
     el: {
         translation: {
+            Reset: "Επαναφορά",
+
             "Delete Event": "Διαγραφή Γεγονότος",
             "Are you sure you want to delete this event?":
                 "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το γεγονός?",

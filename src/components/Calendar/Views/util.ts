@@ -8,4 +8,4 @@ const isSameDay = (date1: Date, date2: Date) =>
 const _getTodaysEvents = (events: TCalendarEvent[], date: Date) =>
     events.filter((event) => isSameDay(new Date(event.startDate), date));
 
-export { _getTodaysEvents };
+export { isSameDay, _getTodaysEvents };

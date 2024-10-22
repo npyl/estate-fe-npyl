@@ -24,7 +24,9 @@ const DatePicker = ({ name, label, onChange, ...others }: Props) => {
 
     const handleChange = useCallback(
         (v: dayjs.Dayjs | null) => {
-            setValue(name, toLocalDate(v?.toISOString() || ""));
+            setValue(name, toLocalDate(v?.toISOString() || ""), {
+                shouldDirty: true,
+            });
             onChange?.(v?.toISOString() || "");
         },
         [onChange]
