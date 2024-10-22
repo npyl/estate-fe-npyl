@@ -107,6 +107,7 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
         null
     );
 
+    console.log(selectedMarker);
     const pagination = usePagination();
     const belowSm = useResponsive("down", "sm");
     const belowLg = useResponsive("down", "lg");
@@ -164,7 +165,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
 
         updateMainMarkerCoordinates(lat, lng);
     };
-    console.log(`active marker: ${activeMarker}`);
     return (
         <Grid container mt={1} spacing={1} order="revert">
             <Grid
@@ -232,16 +232,11 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                 >
                     {markers?.map((marker, index) => (
                         <MarkerF
-                            key={`${marker.lat}-${marker.lng}-${index}`}
+                            key={`${marker.lat}-${marker.lng}-${marker.propertyId}`}
                             position={{ lat: marker.lat, lng: marker.lng }}
-                            // onMouseOver={() => handleMarkerHover(index)}
-                            onMouseOut={handleMarkerLeave}
                             onClick={() => {
                                 setActiveMarker(index);
                                 setSelectedMarker(marker);
-                                console.log(
-                                    `Selected marker: ${marker.propertyId}`
-                                );
                             }}
                             icon="/static/map/mapIcon.svg"
                         >

@@ -3,7 +3,7 @@ import { IMapMarker } from "@/components/Map/Map";
 import { IPropertyResultResponse } from "@/types/properties";
 import { useGetPropertyCardByIdQuery } from "@/services/properties";
 import { InfoWindowF } from "@react-google-maps/api";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 
 interface PropertyInfoWindowProps {
@@ -17,6 +17,7 @@ const PropertyInfoWindow = ({
     properties,
     setActiveMarker,
 }: PropertyInfoWindowProps) => {
+    const infoWindowRef = useRef<HTMLDivElement | null>(null);
     // Check if the property is in the current filtered properties
     const property = properties?.find((item) => item.id === marker.propertyId);
 
@@ -75,25 +76,42 @@ const PropertyInfoWindow = ({
 
     // Function to handle the click on the close button
     const handleCloseClick = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent any other click events from firing
-        e.preventDefault(); // Prevent the default action
+        e.stopPropagation();
+        e.preventDefault();
         setActiveMarker(undefined); // Close the InfoWindow
         console.log("Close clicked");
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                infoWindowRef.current &&
+                !infoWindowRef.current.contains(event.target as Node)
+            ) {
+                // If click outside the InfoWindow, close
+                setActiveMarker(undefined);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [setActiveMarker]);
+
     return (
         <InfoWindowF
             position={{ lat: marker.lat, lng: marker.lng }}
-            onCloseClick={() => setActiveMarker(undefined)} // Close the InfoWindow when clicked
+            onCloseClick={() => setActiveMarker(undefined)}
             options={{
                 maxWidth: 290,
                 pixelOffset: new google.maps.Size(0, -30),
             }}
         >
             <Box
+                ref={infoWindowRef}
                 sx={{
                     width: "100%",
-                    p: -1,
                     backgroundColor: "transparent",
                     overflowX: "hidden",
                     position: "relative",
