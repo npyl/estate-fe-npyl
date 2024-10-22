@@ -6,8 +6,8 @@ import Day from "./Day";
 import { Z_INDEX } from "@/constants/calendar";
 
 const getDay = (date: Date) => (
-    <Box>
-        <Day key={date.toISOString()} date={date} />
+    <Box key={date.toDateString()}>
+        <Day date={date} />
 
         <Divider
             orientation="vertical"
