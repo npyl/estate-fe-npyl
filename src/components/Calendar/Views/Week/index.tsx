@@ -28,8 +28,7 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     Numbering: PassedNumbering,
     // ...
     getCellEvents = _getTodaysEvents,
-    onEventEdit,
-    onEventDelete,
+    onEventClick,
     // ...
     style,
     ...props
@@ -47,8 +46,7 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
                     <Cell
                         {...props}
                         events={getCellEvents(events, props.date)}
-                        onEventEdit={onEventEdit}
-                        onEventDelete={onEventDelete}
+                        onEventClick={onEventClick}
                     />
                 )}
                 Numbering={Numbering}

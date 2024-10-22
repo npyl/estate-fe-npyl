@@ -16,8 +16,7 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
     Numbering: PassedNumbering,
     // ...
     getCellEvents = _getTodaysEvents,
-    onEventEdit,
-    onEventDelete,
+    onEventClick,
     // ...
     style,
     ...props
@@ -31,8 +30,7 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
                 <Cell
                     {...props}
                     events={getCellEvents(events, props.date)}
-                    onEventEdit={onEventEdit}
-                    onEventDelete={onEventDelete}
+                    onEventClick={onEventClick}
                 />
             )}
             Numbering={Numbering}

@@ -6,27 +6,18 @@ import CalendarEvent from "../../Event";
 // -------------------------------------------------------------------------
 
 const getEvent =
-    (onEdit?: (e: TCalendarEvent) => void, onDelete?: (id: string) => void) =>
-    (ce: TCalendarEvent) =>
-        (
-            <CalendarEvent
-                key={ce.id}
-                event={ce}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
-        );
+    (onClick?: (e: TCalendarEvent) => void) => (ce: TCalendarEvent) =>
+        <CalendarEvent key={ce.id} event={ce} onClick={onClick} />;
 
 // -------------------------------------------------------------------------
 
 const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     events,
-    onEventEdit,
-    onEventDelete,
+    onEventClick,
 }) => (
     <Stack position="relative">
         {/* Events */}
-        {events.map(getEvent(onEventEdit, onEventDelete))}
+        {events.map(getEvent(onEventClick))}
     </Stack>
 );
 

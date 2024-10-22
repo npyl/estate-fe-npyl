@@ -6,27 +6,18 @@ const CalendarEvent = dynamic(() => import("../../Event"));
 // ------------------------------------------------------------------
 
 const getEvent =
-    (onEdit?: (e: TCalendarEvent) => void, onDelete?: (id: string) => void) =>
-    (ce: TCalendarEvent) =>
-        (
-            <CalendarEvent
-                key={ce.id}
-                event={ce}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
-        );
+    (onClick?: (e: TCalendarEvent) => void) => (ce: TCalendarEvent) =>
+        <CalendarEvent key={ce.id} event={ce} onClick={onClick} />;
 
 // ------------------------------------------------------------------
 
 const CalendarDayViewCell: FC<CalendarCellProps> = ({
     events,
-    onEventEdit,
-    onEventDelete,
+    onEventClick,
 }) => (
     <>
         {/* Events */}
-        {events.map(getEvent(onEventEdit, onEventDelete))}
+        {events.map(getEvent(onEventClick))}
     </>
 );
 

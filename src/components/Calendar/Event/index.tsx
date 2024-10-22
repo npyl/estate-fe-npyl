@@ -1,18 +1,11 @@
-import { forwardRef } from "react";
-import {
-    Box,
-    BoxProps,
-    Stack,
-    SxProps,
-    Theme,
-    Typography,
-} from "@mui/material";
+import { forwardRef, useCallback } from "react";
+import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
-import Actions from "./_shared/Actions";
+import { EventProps } from "./types";
 const Members = dynamic(() => import("./_shared/Members"));
 
 // ------------------------------------------------------------------------------------
@@ -44,32 +37,16 @@ const EventSx: SxProps<Theme> = {
     boxShadow: (theme) => theme.shadows[20],
     zIndex: Z_INDEX.EVENT,
     transition: "all 0.3s ease",
-
-    //
-    // Action Buttons support
-    //
-    position: "relative",
-
-    "&:hover .Calendar-Event-Action-Buttons": {
-        opacity: 1,
-        pointerEvents: "auto",
-    },
 };
 
-export interface CalendarEventProps extends Omit<BoxProps, "ref"> {
-    event: TCalendarEvent;
-    onEdit?: (e: TCalendarEvent) => void;
-    onDelete?: (id: string) => void;
-}
-
-const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
-    ({ event, onEdit, onDelete, ...props }, ref) => {
+const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
+    ({ event, onClick, ...props }, ref) => {
         const { top, height } = calculateEventPosition(event);
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
 
-        const handleEdit = () => onEdit?.(event);
+        const handleClick = useCallback(() => onClick?.(event), [onClick]);
 
         return (
             <Stack
@@ -77,6 +54,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
                 sx={EventSx}
                 top={top}
                 height={maxHeight}
+                onClick={handleClick}
                 {...props}
             >
                 <Title
@@ -109,12 +87,6 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
                         </Stack>
                     </>
                 ) : null}
-
-                <Actions
-                    eventId={event.id}
-                    onEdit={handleEdit}
-                    onDelete={onDelete}
-                />
             </Stack>
         );
     }

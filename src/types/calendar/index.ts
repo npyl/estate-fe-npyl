@@ -1,34 +1,7 @@
-// ----------------------------------------------------------------------
+import { TCalendarEvent } from "@/components/Calendar/types";
 
-export type ICalendarFilterValue = string[] | Date | null;
+interface CalendarEventReq extends Omit<TCalendarEvent, "id"> {
+    id?: string;
+}
 
-export type ICalendarFilters = {
-    colors: string[];
-    startDate: Date | null;
-    endDate: Date | null;
-};
-
-// ----------------------------------------------------------------------
-
-export type ICalendarDate = string | number;
-
-export type ICalendarView =
-    | "dayGridMonth"
-    | "timeGridWeek"
-    | "timeGridDay"
-    | "listWeek";
-
-export type ICalendarRange = {
-    start: ICalendarDate;
-    end: ICalendarDate;
-} | null;
-
-export type ICalendarEvent = {
-    id: string;
-    color: string;
-    title: string;
-    allDay: boolean;
-    description: string;
-    end: ICalendarDate;
-    start: ICalendarDate;
-};
+export type { CalendarEventReq };

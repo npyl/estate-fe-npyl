@@ -10,7 +10,8 @@ import {
     CalendarDayViewProps,
     TCalendarEvent,
 } from "@/components/Calendar/types";
-import CalendarEvent, { CalendarEventProps } from "@/components/Calendar/Event";
+import CalendarEvent from "@/components/Calendar/Event";
+import { EventProps } from "@/components/Calendar/Event/types";
 import CalendarHeader from "@/components/Calendar/Header";
 
 // ------------------------------------------------------------------------
@@ -62,8 +63,7 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
 
 // ------------------------------------------------------------------------------------
 
-interface CustomCalendarEventProps extends Omit<CalendarEventProps, "onLoad"> {
-    event: TCalendarEvent;
+interface CustomCalendarEventProps extends Omit<EventProps, "onLoad"> {
     onLoad?: (top: number) => void;
 }
 

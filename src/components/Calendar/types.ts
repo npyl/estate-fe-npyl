@@ -31,8 +31,7 @@ type TCalendarEvent = {
 
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
-    onEventEdit?: (e: TCalendarEvent) => void;
-    onEventDelete?: (id: string) => void;
+    onEventClick?: (e: TCalendarEvent) => void;
 }
 
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
@@ -52,8 +51,7 @@ interface ViewEvents {
 
     getCellEvents?: (events: TCalendarEvent[], date: Date) => TCalendarEvent[];
 
-    onEventEdit?: (e: TCalendarEvent) => void;
-    onEventDelete?: (id: string) => void;
+    onEventClick?: (e: TCalendarEvent) => void;
 }
 
 type CalendarDayViewProps = BaseCalendarDayViewProps & ViewEvents;

@@ -1,24 +1,15 @@
 import { FC } from "react";
 import { Stack } from "@mui/material";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
-import CompactCalendarEvent from "../../Event/Compact";
+import MonthCalendarEvent from "../../Event/Month";
 
 const getEvent =
-    (onEdit?: (e: TCalendarEvent) => void, onDelete?: (id: string) => void) =>
-    (e: TCalendarEvent) =>
-        (
-            <CompactCalendarEvent
-                key={e.id}
-                event={e}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
-        );
+    (onClick?: (e: TCalendarEvent) => void) => (e: TCalendarEvent) =>
+        <MonthCalendarEvent key={e.id} event={e} onClick={onClick} />;
 
 const CalendarMonthViewCell: FC<CalendarCellProps> = ({
     events,
-    onEventEdit,
-    onEventDelete,
+    onEventClick,
 }) => (
     <Stack
         height="300px"
@@ -34,7 +25,7 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
             },
         }}
     >
-        {events.map(getEvent(onEventEdit, onEventDelete))}
+        {events.map(getEvent(onEventClick))}
     </Stack>
 );
 
