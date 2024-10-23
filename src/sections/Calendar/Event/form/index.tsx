@@ -50,7 +50,9 @@ const CreateUpdateForm: FC<Props> = ({
             title: "",
             description: "",
             startDate: startDate || "",
-            endDate: "",
+            endDate: startDate
+                ? dayjs(startDate).add(1, "hour").toISOString()
+                : "",
             location: "",
             type: { id: 1, color: "black", name: "" },
             withIds: [],

@@ -2,7 +2,7 @@ import { Checkbox, FormControlLabel, Stack } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
+import RHFDateTimePicker from "./RHFDateTimePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { END_HOUR, START_HOUR } from "@/constants/calendar";
