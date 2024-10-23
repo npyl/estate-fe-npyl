@@ -5,7 +5,8 @@ import dynamic from "next/dynamic";
 import StyledBaseHeader from "./style";
 import { renderValue } from "./util";
 import { TODAY } from "@/components/BaseCalendar/constants";
-import { Divider } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import HighlightTypography from "../HighlightTypography";
 const TodayButton = dynamic(() => import("./TodayButton"));
 
 const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
@@ -13,7 +14,10 @@ const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
     ...props
 }) => {
     const value = renderValue(props.view, props.date);
-    const isOtherDay = TODAY.toDateString() !== props.date.toDateString();
+
+    const isToday = TODAY.toDateString() === props.date.toDateString();
+
+    const shouldHighlight = props.view === "day" && isToday;
 
     return (
         <StyledBaseHeader {...props}>
@@ -28,19 +32,21 @@ const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
                     transform: "translate(-50%, -50%)",
                 }}
             >
-                <span
-                    style={{
-                        fontSize: props.view === "day" ? "2.5rem" : "1.5rem",
-                        fontWeight: "bold",
-                    }}
+                <HighlightTypography
+                    highlight={shouldHighlight}
+                    fontSize="2rem"
+                    fontWeight="bold"
+                    width="fit-content"
+                    borderRadius="100%"
+                    px={1}
+                    py={0.1}
                 >
                     {value.main}
-                </span>
-                {value.sub && (
-                    <span style={{ fontSize: "1rem" }}>{value.sub}</span>
-                )}
+                </HighlightTypography>
 
-                {isOtherDay ? (
+                <span style={{ fontSize: "1rem" }}>{value.sub}</span>
+
+                {!isToday ? (
                     <Stack direction="row">
                         <Divider
                             orientation="vertical"

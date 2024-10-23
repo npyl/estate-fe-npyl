@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Stack, Typography } from "@mui/material";
-import { WEEKDAYS } from "@/components/BaseCalendar/constants";
+import { TODAY, WEEKDAYS } from "@/components/BaseCalendar/constants";
+import HighlightTypography from "@/components/Calendar/HighlightTypography";
 
 interface DayTypographyProps {
     date: Date;
@@ -11,23 +12,20 @@ const DayTypography: FC<DayTypographyProps> = ({ date }) => {
         day: "2-digit",
     });
 
-    const isToday = date.toDateString() === new Date().toDateString();
-    const bgColor = isToday ? "primary.main" : "transparent";
-    const color = isToday ? "background.paper" : "text.secondary";
+    const isToday = date.toDateString() === TODAY.toDateString();
 
     return (
-        <Typography
+        <HighlightTypography
+            highlight={isToday}
             textAlign="center"
             variant="h3"
             width="fit-content"
             borderRadius="100%"
-            bgcolor={bgColor}
-            color={color}
             px={1.5}
             py={0.5}
         >
             {day}
-        </Typography>
+        </HighlightTypography>
     );
 };
 

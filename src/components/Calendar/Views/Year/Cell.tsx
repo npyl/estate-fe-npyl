@@ -1,7 +1,9 @@
-import { Stack, SxProps, Theme, Typography } from "@mui/material";
+import { Stack, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
 import CompactCalendarEvent from "../../Event/Month";
+import { TODAY } from "@/components/BaseCalendar/constants";
+import HighlightTypography from "../../HighlightTypography";
 
 const CellSx: SxProps<Theme> = {
     position: "relative",
@@ -27,17 +29,37 @@ const getEvent =
 
 // ------------------------------------------------------------
 
+interface CurrentMonthProps {
+    date: Date;
+}
+
+const CurrentMonth: FC<CurrentMonthProps> = ({ date }) => {
+    const isCurrentMonth = date.getMonth() === TODAY.getMonth();
+
+    return (
+        <HighlightTypography
+            highlight={isCurrentMonth}
+            textAlign="center"
+            variant="h6"
+            px={1.5}
+            py={0.5}
+            m={0.3}
+            borderRadius="5px"
+        >
+            {date.toLocaleString("default", {
+                month: "long",
+            })}
+        </HighlightTypography>
+    );
+};
+
 export const CalendarYearViewCell: FC<CalendarCellProps> = ({
     date,
     events,
     onEventClick,
 }) => (
     <Stack sx={CellSx}>
-        <Typography textAlign="center" variant="h6" color="text.secondary">
-            {date.toLocaleString("default", {
-                month: "long",
-            })}
-        </Typography>
+        <CurrentMonth date={date} />
         <Stack height="200px" position="relative">
             {events.map(getEvent(onEventClick))}
         </Stack>
