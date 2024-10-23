@@ -73,7 +73,7 @@ export default function FilterCategory() {
                                     parentCategory
                                 ].find((item) => item.key === key);
                                 if (found) {
-                                    return found.value;
+                                    return t(found.value);
                                 }
                             }
                             return null;
