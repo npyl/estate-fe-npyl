@@ -1032,10 +1032,12 @@ const resources = {
             Start: "Start",
             End: "End",
             Day: "Day",
+            Login: "Login",
         },
     },
     el: {
         translation: {
+            Login: "Είσοδος",
             "All day": "Όλη μέρα",
             Reset: "Επαναφορά",
             Start: "Έναρξη",

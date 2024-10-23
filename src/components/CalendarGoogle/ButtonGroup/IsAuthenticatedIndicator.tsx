@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import AvatarButton from "./AvatarButton";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 // -------------------------------------------------------------------------
 
@@ -40,6 +41,8 @@ const useCalendarAuth = () => {
 // -------------------------------------------------------------------------
 
 const IsAuthenticatedIndicator = () => {
+    const { t } = useTranslation();
+
     const { isAuthenticated, userInfo, isLoading, authenticate } =
         useCalendarAuth();
 
@@ -51,7 +54,7 @@ const IsAuthenticatedIndicator = () => {
         return <AvatarButton userInfo={userInfo} />;
     }
 
-    return <Button onClick={authenticate}>Authenticate!</Button>;
+    return <Button onClick={authenticate}>{t("Login")}</Button>;
 };
 
 export default IsAuthenticatedIndicator;
