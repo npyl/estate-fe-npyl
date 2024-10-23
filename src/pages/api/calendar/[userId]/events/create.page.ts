@@ -19,12 +19,11 @@ export default async function handler(
 
         const body = TCalendarEventToGCalendarEvent(event);
 
-        const ret = await calendarService.createEvent(iUserId, body);
-        if (!ret) throw new Error("Create failed!");
+        await calendarService.createEvent(iUserId, body);
 
         res.status(200).json({});
-    } catch (error) {
-        console.error("Error:", error);
+    } catch (ex) {
+        console.error(ex);
         res.status(404).json({});
     }
 }

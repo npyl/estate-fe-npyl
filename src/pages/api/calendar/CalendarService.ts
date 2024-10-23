@@ -69,7 +69,7 @@ class CalendarService {
 
     async createEvent(userId: number, body: calendar_v3.Schema$Event) {
         const auth = await this.getAuthForUser(userId);
-        if (!auth) return null;
+        if (!auth) throw new Error("Could not find user!");
 
         return await this.calendar.events.insert({
             auth,
@@ -78,9 +78,23 @@ class CalendarService {
         });
     }
 
+    async updateEvent(userId: number, body: calendar_v3.Schema$Event) {
+        if (!body.id) throw new Error("Event ID is required!");
+
+        const auth = await this.getAuthForUser(userId);
+        if (!auth) throw new Error("Could not find user!");
+
+        return await this.calendar.events.update({
+            auth,
+            calendarId: "primary",
+            eventId: body.id,
+            requestBody: body,
+        });
+    }
+
     async deleteEvent(userId: number, eventId: string) {
         const auth = await this.getAuthForUser(userId);
-        if (!auth) throw new Error("Auth Error!");
+        if (!auth) throw new Error("Could not find user!");
 
         return await this.calendar.events.delete({
             calendarId: "primary",
@@ -153,9 +167,7 @@ class CalendarService {
 
     async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
         const userToken = this.userTokens.get(userId);
-        if (!userToken) {
-            return { isAuthenticated: false };
-        }
+        if (!userToken) return { isAuthenticated: false };
 
         try {
             const auth = await this.getAuthForUser(userId);

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../../CalendarService";
 import { toNumber } from "@/pages/api/util";
+import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
 
 export default async function handler(
     req: NextApiRequest,
@@ -20,7 +21,8 @@ export default async function handler(
 
         // UPDATE
         if (req.method === "PUT") {
-            const body = req.body;
+            const event = req.body;
+            const body = TCalendarEventToGCalendarEvent(event);
             await calendarService.updateEvent(iUserId, body);
         }
 
