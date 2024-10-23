@@ -14,6 +14,10 @@ import {
 import EventDates from "./EventDates";
 import dayjs from "dayjs";
 
+const TextFieldSx = {
+    px: 0.5,
+};
+
 interface Props {
     event?: TCalendarEvent;
     onSubmit: (e: CalendarEventReq) => Promise<any>;
@@ -74,6 +78,7 @@ const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
                         variant="standard"
                         name="title"
                         placeholder={t<string>("Title")}
+                        sx={TextFieldSx}
                     />
 
                     <EventDates

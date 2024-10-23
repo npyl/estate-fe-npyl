@@ -3,6 +3,7 @@ import { StackProps, SxProps, Theme, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { SpaceBetween } from "@/components/styled";
 import Duration from "./Duration";
+import { Z_INDEX } from "@/constants/calendar";
 
 const ForceVisible: FC<StackProps> = (props) => (
     <SpaceBetween overflow="visible" {...props} />
@@ -38,6 +39,7 @@ const Title: FC<TitleProps> = ({ title, mini, color, startDate, endDate }) => (
                 top={-8}
                 noWrap
                 right="50%"
+                zIndex={Z_INDEX.EVENT}
                 sx={{
                     transform: "translateX(50%)",
                 }}

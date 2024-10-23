@@ -1,19 +1,12 @@
 import { CSSProperties, FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
 const DefaultNumbering = dynamic(() => import("../Numbering"));
-import { Stack, styled } from "@mui/material";
-import { MARGIN_TOP } from "./constant";
+import { Stack } from "@mui/material";
 import { CalendarWeekViewProps } from "../../types";
 import { _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
 import DaysHeader from "./DaysHeader";
 const CalendarWeekViewCell = dynamic(() => import("./Cell"));
-
-// ----------------------------------------------------------------------
-
-const StyledNumbering = styled(DefaultNumbering)({
-    marginTop: MARGIN_TOP,
-});
 
 // -----------------------------------------------------------------------
 
@@ -34,10 +27,10 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     ...props
 }) => {
     const Cell = PassedCell || CalendarWeekViewCell;
-    const Numbering = PassedNumbering || StyledNumbering;
+    const Numbering = PassedNumbering || DefaultNumbering;
 
     return (
-        <Stack spacing={1}>
+        <Stack spacing={2}>
             <DaysHeader date={date} />
 
             <WeekView

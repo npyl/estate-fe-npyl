@@ -1,11 +1,8 @@
 import {
     Button,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     IconButton,
+    InputBase,
     Stack,
-    styled,
     SxProps,
     Theme,
     Typography,
@@ -25,6 +22,7 @@ import {
     StyledDialogContent,
     StyledDialogTitle,
 } from "../styled";
+import { CalendarEventReq } from "@/types/calendar";
 // ...
 const EditForm = dynamic(() => import("../form"));
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
@@ -35,9 +33,23 @@ const getDialogSx = (isEdit: boolean): SxProps<Theme> => ({
     "& .MuiDialogTitle-root": {
         display: isEdit ? "none" : "block",
     },
+
+    "& .MuiPaper-root": {
+        minHeight: "300px",
+    },
 });
 
 // -----------------------------------------------------------
+
+const DescriptionSx: SxProps<Theme> = {
+    px: 1,
+    height: "100%",
+    bgcolor: (theme) =>
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[700],
+    borderRadius: "5px",
+};
 
 interface Props {
     event: TCalendarEvent;
@@ -53,6 +65,11 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
     const [isDelete, openDelete, closeDelete] = useDialog();
 
     const title = isEdit ? t("Edit") + " " + event.title : event.title;
+
+    const handleEdit = async (e: CalendarEventReq) => {
+        await editEvent(e);
+        onClose();
+    };
 
     const handleDelete = () => {
         if (!event?.id) return;
@@ -70,7 +87,14 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                 DialogActionsComponent={StyledDialogActions}
                 title={
                     <>
-                        <Typography>{title}</Typography>
+                        <Typography
+                            variant="h6"
+                            textAlign="left"
+                            width={1}
+                            px={1}
+                        >
+                            {title}
+                        </Typography>
 
                         {!isEdit ? (
                             <Stack
@@ -95,16 +119,23 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                     isEdit ? (
                         <EditForm
                             event={event}
-                            onSubmit={editEvent}
+                            onSubmit={handleEdit}
                             onClose={closeEdit}
                         />
                     ) : (
-                        <>
+                        <Stack spacing={1} px={1}>
                             <Duration
                                 start={event.startDate}
                                 end={event.endDate}
                             />
-                        </>
+
+                            <InputBase
+                                value={event?.description}
+                                sx={DescriptionSx}
+                                multiline
+                                rows={5}
+                            />
+                        </Stack>
                     )
                 }
                 onClose={onClose}
