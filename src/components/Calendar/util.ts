@@ -52,9 +52,8 @@ const isAllDay = (startDate: string, endDate: string): boolean => {
 };
 
 const getAllDayStartEnd = (start: string) => {
-    const initialDate = new Date(start);
-    const startDateTime = initialDate;
-    const endDateTime = initialDate;
+    const startDateTime = new Date(start);
+    const endDateTime = new Date(start);
 
     startDateTime.setHours(START_HOUR, 0, 0, 0);
     endDateTime.setHours(END_HOUR, 0, 0, 0);

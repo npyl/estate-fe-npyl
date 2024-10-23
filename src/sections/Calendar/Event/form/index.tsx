@@ -23,31 +23,39 @@ interface Props {
 const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
     const { t } = useTranslation();
 
-    // INFO: initial value
+    // INFO: is all day checkbox
     const _isAllDay = event
         ? getIsAllDay(event.startDate, event.endDate)
         : false;
-    // INFO: all day checkbox
     const [isAllDay, setAllDay] = useState(_isAllDay);
+
     // INFO: date for when checked
-    const [allDayDate, setAllDayDate] = useState(
-        event?.startDate || dayjs().toISOString()
-    );
+    const [_allDayDate] = useState(event?.startDate || dayjs().toISOString());
+    const [allDayDate, setAllDayDate] = useState(_allDayDate);
 
     const methods = useForm<CalendarEventReq>({
         values: event,
     });
 
-    const isDirty = _isAllDay !== isAllDay || methods.formState.isDirty;
+    const isDirty =
+        _isAllDay !== isAllDay ||
+        _allDayDate !== allDayDate ||
+        methods.formState.isDirty;
+
     const isSubmitting = methods.formState.isSubmitting;
 
     const handleAllDay = (_: any, b: boolean) => setAllDay(b);
 
-    // INFO: normalise dates if isAllDay
     const handleSubmit = async (e: CalendarEventReq) => {
+        // INFO: normalise dates if isAllDay
+        const [startDate, endDate] = isAllDay
+            ? getAllDayStartEnd(allDayDate)
+            : [e.startDate, e.endDate];
+
         await onSubmit({
             ...e,
-            ...(isAllDay ? getAllDayStartEnd(allDayDate) : {}),
+            startDate,
+            endDate,
         });
 
         onClose();
