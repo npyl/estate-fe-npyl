@@ -56,10 +56,6 @@ const getCHECKBOXES = (t: TranslationType) => [
         name: "details.hasBuilding",
         label: t("Contains Building"),
     },
-    {
-        name: "details.electricitySupply",
-        label: t("Electricity Supply"),
-    },
 ];
 
 const useEnums = () => {

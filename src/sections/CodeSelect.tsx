@@ -29,7 +29,12 @@ const RenderOption = (
     option: string
 ) => (
     <MenuItem key={option} sx={OptionSx} {...props}>
-        <HomeIcon fontSize="small" />
+        <img
+            src={"/static/categoryPhotos/home.webp"}
+            alt="Home"
+            style={{ width: 30, height: 30 }}
+        />
+        {/*  HOME HERE */}
         {option}
     </MenuItem>
 );

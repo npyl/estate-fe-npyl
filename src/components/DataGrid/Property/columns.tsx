@@ -154,6 +154,8 @@ const RenderCodeCell = (params: GridCellParams) => {
 };
 
 const RenderParentCategoryCell = (params: GridCellParams) => {
+    const { t } = useTranslation();
+
     const key = (params.value as KeyValue)?.key;
     const value = (params.value as KeyValue)?.value;
 
@@ -161,17 +163,22 @@ const RenderParentCategoryCell = (params: GridCellParams) => {
 
     return (
         <Stack alignItems="center" justifyContent="center" width={1} height={1}>
-            <Stack direction="row" spacing={1}>
+            <Stack
+                direction="row"
+                spacing={0.8}
+                alignSelf="flex-start"
+                alignItems={"center"}
+            >
                 {getParentCategoriesIcons(iconSx)[key]}
-                <Typography mr={1} fontSize="small">
-                    {value}
-                </Typography>
+                <Typography fontSize="small">{t(value)}</Typography>
             </Stack>
         </Stack>
     );
 };
 
 const RenderCategoryCell = (params: GridCellParams) => {
+    const { t } = useTranslation();
+
     const value = (params.value as KeyValue)?.value;
 
     if (!value) return null;
@@ -187,7 +194,7 @@ const RenderCategoryCell = (params: GridCellParams) => {
                     maxWidth: "100%",
                 }}
             >
-                {value}
+                {t(value)}
             </Typography>
         </Stack>
     );
@@ -216,10 +223,10 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
     {
         field: "parentCategory",
         align: "center",
-        headerAlign: "center",
+        headerAlign: "left",
         headerName: t("Parent Category") as string,
         renderCell: RenderParentCategoryCell,
-        flex: 1.4,
+        flex: 1,
     },
     {
         field: "category",

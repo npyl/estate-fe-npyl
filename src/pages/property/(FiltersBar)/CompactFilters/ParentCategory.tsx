@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
 import { KeyValue } from "@/types/KeyValue";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { PPButton } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
@@ -17,7 +17,39 @@ import useOption from "./OptionCheckbox/useOption";
 import getParentCategoriesIcons from "@/assets/icons/parent-categories";
 import { TOptionMapper } from "./OptionCheckbox/types";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
+import { SxProps, Theme } from "@mui/material";
 
+//Here i use the images with width and height set to 45 for the Parent category inside the Filters
+const getIcons = (sx?: SxProps<Theme>): Record<string, ReactNode> => ({
+    RESIDENTIAL: (
+        <img
+            src={"/static/categoryPhotos/home.webp"}
+            alt="Home"
+            style={{ width: 45, height: 45 }}
+        />
+    ),
+    COMMERCIAL: (
+        <img
+            src={"/static/categoryPhotos/commercial.webp"}
+            alt="Home"
+            style={{ width: 45, height: 45 }}
+        />
+    ),
+    LAND: (
+        <img
+            src={"/static/categoryPhotos/land.webp"}
+            alt="Home"
+            style={{ width: 45, height: 45 }}
+        />
+    ),
+    OTHER: (
+        <img
+            src={"/static/categoryPhotos/more.webp"}
+            alt="Home"
+            style={{ width: 45, height: 45 }}
+        />
+    ),
+});
 // -----------------------------------------------------------------
 
 const FlexItem = styled.div`
@@ -56,7 +88,7 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
                 disabled={isDisabled}
                 onClick={handleToggle}
             >
-                {getParentCategoriesIcons()[key]}
+                {getIcons()[key]}
                 <Stack alignItems={"center"} mt={1}>
                     <Typography>{value}</Typography>
                     <CounterChip optionKey={key} mapper={mapper} />

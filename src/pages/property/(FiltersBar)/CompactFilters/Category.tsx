@@ -24,7 +24,7 @@ interface IOption {
 }
 
 const Option: FC<IOption> = ({ option: { key, value } }) => (
-    <Stack direction="row" spacing={1} alignItems="center">
+    <Stack direction="row" alignItems="center">
         <OptionCheckbox
             optionKey={key}
             label={value}
@@ -59,9 +59,7 @@ const Column: FC<ColumnProps> = ({ title, options }) => (
 
 const Category = () => {
     const { t } = useTranslation();
-
     const data = useGlobals();
-
     const residentialEnum = data?.property?.residentialCategory || [];
     const commercialEnum = data?.property?.commercialCategory || [];
     const landEnum = data?.property?.landCategory || [];
