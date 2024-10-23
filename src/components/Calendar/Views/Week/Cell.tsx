@@ -1,5 +1,4 @@
-import { FC } from "react";
-import Stack from "@mui/material/Stack";
+import { CSSProperties, FC } from "react";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
 import CalendarEvent from "../../Event";
 
@@ -11,14 +10,18 @@ const getEvent =
 
 // -------------------------------------------------------------------------
 
+const CellStyle: CSSProperties = { position: "relative" };
+
 const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     events,
     onEventClick,
+    style,
+    ...props
 }) => (
-    <Stack position="relative">
+    <div style={{ ...CellStyle, ...style }} {...props}>
         {/* Events */}
         {events.map(getEvent(onEventClick))}
-    </Stack>
+    </div>
 );
 
 export default CalendarWeekViewCell;

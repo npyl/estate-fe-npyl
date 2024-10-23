@@ -19,12 +19,18 @@ const TextFieldSx = {
 };
 
 interface Props {
-    event?: TCalendarEvent;
+    startDate?: string; // INFO: on Create mode, this dialog always needs a startDate!
+    event?: TCalendarEvent; // INFO: on Edit mode, we use this
     onSubmit: (e: CalendarEventReq) => Promise<any>;
     onClose: VoidFunction;
 }
 
-const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
+const CreateUpdateForm: FC<Props> = ({
+    startDate,
+    event,
+    onSubmit,
+    onClose,
+}) => {
     const { t } = useTranslation();
 
     // INFO: is all day checkbox
@@ -34,11 +40,21 @@ const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
     const [isAllDay, setAllDay] = useState(_isAllDay);
 
     // INFO: date for when checked
-    const [_allDayDate] = useState(event?.startDate || dayjs().toISOString());
+    const [_allDayDate] = useState(
+        event?.startDate || startDate || dayjs().toISOString()
+    );
     const [allDayDate, setAllDayDate] = useState(_allDayDate);
 
     const methods = useForm<CalendarEventReq>({
-        values: event,
+        values: event || {
+            title: "",
+            description: "",
+            startDate: startDate || "",
+            endDate: "",
+            location: "",
+            type: { id: 1, color: "black", name: "" },
+            withIds: [],
+        },
     });
 
     const isDirty =

@@ -32,7 +32,7 @@ interface BaseCalendarHeaderProps extends HTMLAttributes<HTMLDivElement> {
 
 interface BaseCalendarNumberingProps {}
 
-interface BaseCalendarCellProps {
+interface BaseCalendarCellProps extends HTMLAttributes<HTMLDivElement> {
     /* 
         INFO: represents a date not particularly today; tied to the cell content
             This is different than the date passed from top (BaseCalendar) until bottom (___View, e.g. DayView, etc.)  

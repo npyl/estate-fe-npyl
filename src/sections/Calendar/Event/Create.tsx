@@ -21,9 +21,10 @@ const DialogSx: SxProps<Theme> = {
 
 interface Props {
     onClose: VoidFunction;
+    startDate: string;
 }
 
-const CreateEventDialog: FC<Props> = ({ onClose }) => {
+const CreateEventDialog: FC<Props> = ({ startDate, onClose }) => {
     const { createEvent } = useEventMutations();
 
     return (
@@ -33,7 +34,13 @@ const CreateEventDialog: FC<Props> = ({ onClose }) => {
             DialogTitleComponent={StyledDialogTitle}
             DialogContentComponent={StyledDialogContent}
             DialogActionsComponent={StyledDialogActions}
-            content={<Form onSubmit={createEvent} onClose={onClose} />}
+            content={
+                <Form
+                    startDate={startDate}
+                    onSubmit={createEvent}
+                    onClose={onClose}
+                />
+            }
         />
     );
 };

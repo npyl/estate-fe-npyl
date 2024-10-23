@@ -7,8 +7,9 @@ const END_HOUR = 22;
 const TOTAL_HOURS = END_HOUR - START_HOUR + 1;
 
 const Z_INDEX = {
-    DIVIDER: 1,
-    NUMBERING: 2,
+    DIVIDER: 0,
+    NUMBERING: 1,
+    NEW_EVENT_DIVIDER: 2,
     EVENT: 3,
     HEADER: 4,
 };
