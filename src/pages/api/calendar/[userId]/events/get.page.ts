@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../CalendarService";
-import GCalendarToTCalendarEvent from "@/types/calendar/mapper";
+import { GCalendarToTCalendarEvent } from "@/types/calendar/mapper";
 import { toNumber } from "@/pages/api/util";
 
 export default async function handler(

@@ -7,17 +7,21 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
-        const { userId, eventId } = req.query;
+        const { userId } = req.query;
+        const eventId = req.query.eventId as string;
 
         const iUserId = toNumber(userId);
+        if (!eventId) throw new Error("Undefined eventId");
 
         // DELETE
         if (req.method === "DELETE") {
-            await calendarService.deleteEvent(iUserId, eventId as string);
+            await calendarService.deleteEvent(iUserId, eventId);
         }
 
         // UPDATE
         if (req.method === "PUT") {
+            const body = req.body;
+            await calendarService.updateEvent(iUserId, body);
         }
 
         res.status(200).json({});

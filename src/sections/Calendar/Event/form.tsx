@@ -1,29 +1,33 @@
 import { Button, Checkbox, FormControlLabel, Stack } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
 import { LoadingButton } from "@mui/lab";
 import { isAllDay as getIsAllDay } from "@/components/Calendar/util";
+import dayjs from "dayjs";
 
 const CheckboxSx = {
     width: "fit-content",
 };
 
-interface EditFormProps {
-    event: TCalendarEvent;
+interface Props {
+    event?: TCalendarEvent;
+    onSubmit: (e: CalendarEventReq) => void;
     onClose: VoidFunction;
 }
 
-const EditForm: FC<EditFormProps> = ({ event, onClose }) => {
+const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
     const { t } = useTranslation();
 
     // initial value
-    const _isAllDay = getIsAllDay(event?.startDate, event?.endDate);
+    const _isAllDay = event
+        ? getIsAllDay(event.startDate, event.endDate)
+        : false;
 
     const [isAllDay, setAllDay] = useState(_isAllDay);
 
@@ -36,15 +40,22 @@ const EditForm: FC<EditFormProps> = ({ event, onClose }) => {
 
     const handleAllDay = (_: any, b: boolean) => setAllDay(b);
 
+    const handleStartDate = useCallback((v: dayjs.Dayjs | null) => {
+        if (!v) return;
+        methods.setValue("startDate", v.toISOString(), { shouldDirty: true });
+    }, []);
+    const handleEndDate = useCallback((v: dayjs.Dayjs | null) => {
+        if (!v) return;
+        methods.setValue("endDate", v.toISOString(), { shouldDirty: true });
+    }, []);
+
     const handleReset = () => {
         setAllDay(_isAllDay);
         methods.reset();
     };
 
-    const handleSubmit = async () => {};
-
     return (
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
             <FormProvider {...methods}>
                 <Stack spacing={1} mt={1}>
                     <RHFTextField variant="standard" name="title" />
@@ -62,10 +73,12 @@ const EditForm: FC<EditFormProps> = ({ event, onClose }) => {
                             <RHFDateTimePicker
                                 label={t("Start")}
                                 name="startDate"
+                                onChange={handleStartDate}
                             />
                             <RHFDateTimePicker
                                 label={t("End")}
                                 name="endDate"
+                                onChange={handleEndDate}
                             />
                         </Stack>
                     ) : null}
@@ -105,4 +118,4 @@ const EditForm: FC<EditFormProps> = ({ event, onClose }) => {
     );
 };
 
-export default EditForm;
+export default CreateUpdateForm;

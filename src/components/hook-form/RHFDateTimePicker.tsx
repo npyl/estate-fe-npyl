@@ -11,9 +11,8 @@ import toLocalDate from "@/utils/toLocalDate";
 const LOCAL_DATE_FORMAT = "YYYY-MM-DD";
 const EUROPEAN_DATE_FORMAT = "DD/MM/YYYY";
 
-interface Props extends Omit<DateTimePickerProps<dayjs.Dayjs>, "onChange"> {
+interface Props extends DateTimePickerProps<dayjs.Dayjs> {
     name: string;
-    onChange?: (v: string) => void;
 }
 
 // INFO: value prop must be an LocalDate (YYYY-MM-DD)
@@ -22,13 +21,11 @@ const DatePicker = ({ name, onChange, ...others }: Props) => {
     const { control, setValue } = useFormContext();
 
     const handleChange = useCallback(
-        (v: dayjs.Dayjs | null) => {
+        (v: dayjs.Dayjs | null) =>
             setValue(name, toLocalDate(v?.toISOString() || ""), {
                 shouldDirty: true,
-            });
-            onChange?.(v?.toISOString() || "");
-        },
-        [onChange]
+            }),
+        []
     );
 
     return (
@@ -45,7 +42,7 @@ const DatePicker = ({ name, onChange, ...others }: Props) => {
                         {...others}
                         value={value ? dayjs(value, LOCAL_DATE_FORMAT) : null}
                         format={EUROPEAN_DATE_FORMAT}
-                        onChange={handleChange}
+                        onChange={onChange || handleChange}
                     />
 
                     {error ? (

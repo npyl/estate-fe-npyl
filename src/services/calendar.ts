@@ -1,4 +1,5 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
+import { CalendarEventReq } from "@/types/calendar";
 import { IsAuthenticatedRes } from "@/types/calendar/google";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -15,6 +16,10 @@ interface GetEventsReq extends BasicEventReq {
 
 interface DeleteEventReq extends BasicEventReq {
     eventId: string;
+}
+
+interface CreateUpdateEventReq extends BasicEventReq {
+    body: CalendarEventReq;
 }
 
 interface IAuthenticateRes {
@@ -68,6 +73,23 @@ export const calendar = createApi({
             providesTags: ["Events"],
         }),
 
+        createEvent: builder.mutation<void, CreateUpdateEventReq>({
+            query: ({ userId, body }) => ({
+                url: `/${userId}/events/create`,
+                body,
+                method: "POST",
+            }),
+            invalidatesTags: ["Events"],
+        }),
+        updateEvent: builder.mutation<void, CreateUpdateEventReq>({
+            query: ({ userId, body }) => ({
+                url: `/${userId}/events/update`,
+                body,
+                method: "PUT",
+            }),
+            invalidatesTags: ["Events"],
+        }),
+
         deleteEvent: builder.mutation<TCalendarEvent[], DeleteEventReq>({
             query: ({ userId, eventId }) => ({
                 url: `/${userId}/events/${eventId}`,
@@ -84,5 +106,7 @@ export const {
     useLogoutMutation,
     // ...
     useGetEventsQuery,
+    useCreateEventMutation,
+    useUpdateEventMutation,
     useDeleteEventMutation,
 } = calendar;

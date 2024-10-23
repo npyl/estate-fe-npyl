@@ -20,22 +20,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
+import {
+    StyledDialogActions,
+    StyledDialogContent,
+    StyledDialogTitle,
+} from "../styled";
 // ...
-const EditForm = dynamic(() => import("./EditForm"));
+const EditForm = dynamic(() => import("../form"));
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
-
-const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
-    padding: theme.spacing(1),
-    position: "relative",
-}));
-
-const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
-    padding: theme.spacing(1),
-}));
-
-const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
-    padding: theme.spacing(0),
-}));
 
 // -----------------------------------------------------------
 
@@ -55,7 +47,7 @@ interface Props {
 const EventDialog: FC<Props> = ({ event, onClose }) => {
     const { t } = useTranslation();
 
-    const { deleteEvent } = useEventMutations();
+    const { deleteEvent, editEvent } = useEventMutations();
 
     const [isEdit, openEdit, closeEdit] = useDialog();
     const [isDelete, openDelete, closeDelete] = useDialog();
@@ -101,7 +93,11 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                 }
                 content={
                     isEdit ? (
-                        <EditForm event={event} onClose={closeEdit} />
+                        <EditForm
+                            event={event}
+                            onSubmit={editEvent}
+                            onClose={closeEdit}
+                        />
                     ) : (
                         <>
                             <Duration

@@ -46,8 +46,6 @@ const GCalendarToTCalendarEvent = ({
         endDate = end?.dateTime || "";
     }
 
-    console.log("startDate: ", startDate, " endDate: ", endDate);
-
     return {
         id: id!,
         title: summary || "",
@@ -64,4 +62,32 @@ const GCalendarToTCalendarEvent = ({
     };
 };
 
-export default GCalendarToTCalendarEvent;
+const TCalendarEventToGCalendarEvent = ({
+    id,
+    title,
+    description,
+    startDate,
+    endDate,
+    location,
+    type,
+    withIds,
+}: TCalendarEvent): calendar_v3.Schema$Event => {
+    console.log("start: ", startDate, " end: ", endDate);
+
+    return {
+        id,
+        summary: title,
+        description,
+        start: {
+            dateTime: startDate,
+            timeZone: "UTC",
+        },
+        end: {
+            dateTime: endDate,
+            timeZone: "UTC",
+        },
+        location,
+    };
+};
+
+export { TCalendarEventToGCalendarEvent, GCalendarToTCalendarEvent };

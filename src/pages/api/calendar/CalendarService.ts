@@ -67,6 +67,17 @@ class CalendarService {
         });
     }
 
+    async createEvent(userId: number, body: calendar_v3.Schema$Event) {
+        const auth = await this.getAuthForUser(userId);
+        if (!auth) return null;
+
+        return await this.calendar.events.insert({
+            auth,
+            calendarId: "primary",
+            requestBody: body,
+        });
+    }
+
     async deleteEvent(userId: number, eventId: string) {
         const auth = await this.getAuthForUser(userId);
         if (!auth) throw new Error("Auth Error!");
