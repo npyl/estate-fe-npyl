@@ -7,9 +7,7 @@ import { FormHelperText } from "@mui/material";
 import dayjs from "dayjs";
 import { useCallback } from "react";
 import toLocalDate from "@/utils/toLocalDate";
-
-const LOCAL_DATE_FORMAT = "YYYY-MM-DD";
-const EUROPEAN_DATE_FORMAT = "DD/MM/YYYY";
+import { LOCAL_DATE_FORMAT } from "@/constants/datepicker";
 
 interface Props extends DateTimePickerProps<dayjs.Dayjs> {
     name: string;
@@ -41,7 +39,6 @@ const DatePicker = ({ name, onChange, ...others }: Props) => {
                         {...field}
                         {...others}
                         value={value ? dayjs(value, LOCAL_DATE_FORMAT) : null}
-                        format={EUROPEAN_DATE_FORMAT}
                         onChange={onChange || handleChange}
                     />
 
