@@ -84,7 +84,7 @@ const Popover = ({
 
                         width: "max-content",
                         height: "max-content",
-
+                        overflowY: "hidden",
                         display: "flex",
                         flexDirection: "column",
                         gap: 0.5,

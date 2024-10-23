@@ -3,6 +3,7 @@ import React, {
     CSSProperties,
     ReactNode,
     useCallback,
+    useEffect,
     useMemo,
     useRef,
     useState,
@@ -11,6 +12,7 @@ import { DrawShape, IMapCoordinates, ShapeData, StopDraw } from "./types";
 import useLoadApi from "./hook";
 import dynamic from "next/dynamic";
 import getAddressComponent from "./util/getAddressComponent";
+import MapControl from "./MapControl";
 
 // plugins
 const Draw = dynamic(() => import("./plugins/Draw"));
@@ -21,6 +23,13 @@ const containerStyle: CSSProperties = {
     width: "100%",
     height: "100%",
     position: "relative",
+};
+
+const drawingToolsStyle: CSSProperties = {
+    position: "fixed", // Ensure it's fixed to the screen
+    top: "20px", // Adjust according to your layout
+    left: "20px", // Adjust according to your layout
+    zIndex: 1000, // Make sure it is above the map
 };
 
 export type IMapMarker = IMapCoordinates;
@@ -106,6 +115,28 @@ const Map = ({
 
     const [map, setMap] = useState<google.maps.Map>();
     const geocoderRef = useRef<google.maps.Geocoder>();
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    console.log("fullScreen:", isFullscreen);
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+
+        document.addEventListener("fullscreenchange", handleFullscreenChange);
+        return () => {
+            document.removeEventListener(
+                "fullscreenchange",
+                handleFullscreenChange
+            );
+        };
+    }, []);
+
+    const containerStyle: CSSProperties = {
+        width: "100%",
+        height: isFullscreen ? "100vh" : "100%", // Handle fullscreen
+        position: "relative",
+    };
 
     console.log("RE_RENDER");
 
@@ -243,13 +274,18 @@ const Map = ({
             options={{
                 gestureHandling: "auto",
                 scrollwheel: true,
-                disableDefaultUI: true, // Disable all default UI elements
+                disableDefaultUI: false,
                 zoomControl: true,
+
+                fullscreenControl: true, // Enable the built-in fullscreen control
             }}
         >
             {map ? (
-                <>
-                    {/* Draw One */}
+                // MapControl used so drawings are rendered within the Google Map and remain visible when  map enters fullscreen.
+                <MapControl
+                    position={window.google.maps.ControlPosition.LEFT_TOP}
+                    map={map}
+                >
                     {!multipleShapes ? (
                         <Draw
                             map={map}
@@ -261,10 +297,7 @@ const Map = ({
                                 onShapeChange("", newEncodedShape)
                             }
                         />
-                    ) : null}
-
-                    {/* Draw Multiple */}
-                    {multipleShapes ? (
+                    ) : (
                         <DrawMultiple
                             map={map}
                             drawing={drawing}
@@ -275,16 +308,15 @@ const Map = ({
                                 onShapeChange(oldShape, newShape)
                             }
                         />
-                    ) : null}
+                    )}
 
-                    {/* Search */}
-                    {search ? <Search onSearchSelect={onSearchSelect} /> : null}
+                    {search && <Search onSearchSelect={onSearchSelect} />}
 
                     {/* Markers */}
                     {MARKERS}
 
                     {children}
-                </>
+                </MapControl>
             ) : null}
         </GoogleMap>
     );
