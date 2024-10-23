@@ -49,6 +49,16 @@ const EventSx: SxProps<Theme> = {
     },
 };
 
+const DescriptionSx: SxProps<Theme> = {
+    px: 1,
+    height: "100%",
+    bgcolor: (theme) =>
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[700],
+    borderRadius: "5px",
+};
+
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
     ({ event, onClick, ...props }, ref) => {
         const { top, height } = calculateEventPosition(event);
@@ -78,15 +88,18 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                 {!isMinimumHeight ? (
                     <>
                         <Stack p={1} spacing={1}>
-                            <Stack direction="row" justifyContent="flex-end">
-                                <Duration
-                                    start={event.startDate}
-                                    end={event.endDate}
-                                />
-                            </Stack>
+                            <Duration
+                                start={event.startDate}
+                                end={event.endDate}
+                                width={1}
+                            />
 
-                            <Typography variant="subtitle2" noWrap>
-                                A minor description
+                            <Typography
+                                variant="subtitle2"
+                                noWrap
+                                sx={DescriptionSx}
+                            >
+                                {event.description}
                             </Typography>
                         </Stack>
 
