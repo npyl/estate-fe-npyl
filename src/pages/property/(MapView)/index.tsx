@@ -107,7 +107,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
         null
     );
 
-    console.log(selectedMarker);
     const pagination = usePagination();
     const belowSm = useResponsive("down", "sm");
     const belowLg = useResponsive("down", "lg");
@@ -240,8 +239,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                             }}
                             icon="/static/map/mapIcon.svg"
                         >
-                            {/* {(activeMarker === index ||
-                                selectedMarker === marker) && ( */}
                             {activeMarker === index && (
                                 <PropertyInfoWindow
                                     marker={marker}

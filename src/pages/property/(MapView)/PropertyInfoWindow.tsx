@@ -3,7 +3,7 @@ import { IMapMarker } from "@/components/Map/Map";
 import { IPropertyResultResponse } from "@/types/properties";
 import { useGetPropertyCardByIdQuery } from "@/services/properties";
 import { InfoWindowF } from "@react-google-maps/api";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
 
 interface PropertyInfoWindowProps {
@@ -17,7 +17,12 @@ const PropertyInfoWindow = ({
     properties,
     setActiveMarker,
 }: PropertyInfoWindowProps) => {
+    //useRef for closing the infoWindow
     const infoWindowRef = useRef<HTMLDivElement | null>(null);
+    const [isDraggingMap, setIsDraggingMap] = useState(false); //keep state for dragging the map
+    const [lastClickedMarker, setLastClickedMarker] = useState<
+        number | undefined
+    >(undefined);
     // Check if the property is in the current filtered properties
     const property = properties?.find((item) => item.id === marker.propertyId);
 
@@ -62,10 +67,11 @@ const PropertyInfoWindow = ({
                 overflow: hidden !important;
                 border-radius: 12px !important;
             }
-            .gm-style .gm-style-iw-tc::after {
+           .gm-style .gm-style-iw-tc::after {
                 height: 12px !important;
-                width: 25px !important;
-            }
+                width: 25px !important;  
+}
+
         `;
         document.head.appendChild(styleElement);
 
@@ -74,30 +80,62 @@ const PropertyInfoWindow = ({
         };
     }, []);
 
-    // Function to handle the click on the close button
     const handleCloseClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
-        setActiveMarker(undefined); // Close the InfoWindow
+        setActiveMarker(undefined);
         console.log("Close clicked");
     };
-
+    //controls the info window behavior depending on mouse clicks or drag on the map
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
+        // Mouse event to detect dragging
+        const handleMouseDown = () => {
+            setIsDraggingMap(false); // Reset drag state on mouse down
+        };
+
+        const handleMouseMove = () => {
+            setIsDraggingMap(true); // Set dragging state on mouse move
+        };
+
+        const handleMouseUp = (event: MouseEvent) => {
+            if (isDraggingMap) {
+                return; //do not close
+            }
+            // close only if it's a simple click
             if (
                 infoWindowRef.current &&
                 !infoWindowRef.current.contains(event.target as Node)
             ) {
-                // If click outside the InfoWindow, close
                 setActiveMarker(undefined);
             }
         };
-        document.addEventListener("mousedown", handleClickOutside);
+
+        document.addEventListener("mousedown", handleMouseDown);
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
 
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("mousedown", handleMouseDown);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
         };
-    }, [setActiveMarker]);
+    }, [setActiveMarker, isDraggingMap]);
+
+    // used for not scrolling the page when the InfoWindow is opened
+    useEffect(() => {
+        if (
+            propertyToShow &&
+            (marker.propertyId === lastClickedMarker ||
+                lastClickedMarker === undefined)
+        ) {
+            // Save the current scroll position
+            const scrollY = window.scrollY;
+            // Reset the scroll position to the saved position
+            window.scrollTo(0, scrollY);
+
+            setLastClickedMarker(marker.propertyId);
+        }
+    }, [propertyToShow, marker.propertyId, lastClickedMarker]);
 
     return (
         <InfoWindowF
