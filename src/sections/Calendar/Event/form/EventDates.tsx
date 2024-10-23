@@ -3,8 +3,10 @@ import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
+import { END_HOUR, START_HOUR } from "@/constants/calendar";
+import { DatePickerProps } from "@mui/lab";
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +33,30 @@ const AllDayPicker: FC<AllDayPickerProps> = ({ date, onChange }) => {
 };
 
 // ----------------------------------------------------------------------
+
+const shouldDisableTime = (
+    time: Dayjs,
+    type: "hours" | "minutes" | "seconds"
+) => {
+    if (type === "hours") {
+        const hour = time.hour();
+        return hour < START_HOUR || hour > END_HOUR;
+    }
+
+    return false;
+};
+
+const TODAY = dayjs();
+const MIN_TIME = TODAY.hour(START_HOUR);
+const MAX_TIME = TODAY.hour(END_HOUR);
+
+const DatePickerConstraints: DatePickerProps<Dayjs> = {
+    ampm: false,
+    skipDisabled: true,
+    minTime: MIN_TIME,
+    maxTime: MAX_TIME,
+    shouldDisableTime,
+};
 
 const CheckboxSx = {
     width: "fit-content",
@@ -85,14 +111,20 @@ const EventDates: FC<EventDatesProps> = ({
             {!allDay ? (
                 <Stack direction="row" spacing={1}>
                     <RHFDateTimePicker
+                        defaultValue={MIN_TIME}
                         label={t("Start")}
                         name="startDate"
                         onChange={handleStartDate}
+                        // ...
+                        {...DatePickerConstraints}
                     />
                     <RHFDateTimePicker
+                        defaultValue={TODAY.hour(START_HOUR + 1)}
                         label={t("End")}
                         name="endDate"
                         onChange={handleEndDate}
+                        //  ...
+                        {...DatePickerConstraints}
                     />
                 </Stack>
             ) : null}
