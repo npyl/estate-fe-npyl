@@ -32,9 +32,12 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 const EventSx: SxProps<Theme> = {
     backgroundColor: ({ palette }) => palette.background.paper,
     borderRadius: "10px",
-    marginLeft: (theme) => theme.spacing(1),
-    marginRight: (theme) => theme.spacing(1),
     boxShadow: 10,
+
+    marginLeft: 1,
+    width: (theme) => `calc(100% - ${theme.spacing(2)})`,
+
+    position: "absolute",
     zIndex: Z_INDEX.EVENT,
 
     transition: "all 0.3s ease",

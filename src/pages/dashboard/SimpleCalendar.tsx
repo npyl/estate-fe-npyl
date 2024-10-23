@@ -12,7 +12,6 @@ import {
 } from "@/components/Calendar/types";
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
-import CalendarHeader from "@/components/Calendar/Header";
 
 // ------------------------------------------------------------------------
 
@@ -22,19 +21,12 @@ const PaperSx = {
 
 // ------------------------------------------------------------------------
 
-const StyledHeader = styled(CalendarHeader)({
-    backgroundColor: "transparent",
-});
-
-// ------------------------------------------------------------------------
-
 const CustomButtonGroup = ({}: any) => <IsAuthenticatedIndicator />;
 
 // ------------------------------------------------------------------------
 
 const StyledNumbering = styled(Numbering)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
-    paddingTop: theme.spacing(1.5),
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
 }));
@@ -54,11 +46,6 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
     overscrollBehavior: "contain",
     scrollbarWidth: "none",
     WebkitOverflowScrolling: "touch", // smooth scrolling
-
-    // INFO: disable event actions in this view
-    "& .Calendar-Event-Action-Buttons": {
-        display: "none",
-    },
 }));
 
 // ------------------------------------------------------------------------------------
@@ -141,9 +128,6 @@ const SimpleCalendar = () => (
     <Paper sx={PaperSx}>
         <CalendarGoogle
             initialView="day"
-            slots={{
-                Header: StyledHeader,
-            }}
             ViewSlots={{
                 DayView: CustomDayView,
             }}

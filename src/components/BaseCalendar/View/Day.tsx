@@ -7,11 +7,12 @@ import { EmptyCell, NoNumbering } from "./Empty";
 const defaultStyle: CSSProperties = {
     display: "flex",
     flexDirection: "row",
+    position: "relative",
 };
 
 const contentStyle: CSSProperties = {
-    position: "relative",
     width: "100%",
+    position: "relative",
 };
 
 const DayView: FC<BaseCalendarDayViewProps> = ({

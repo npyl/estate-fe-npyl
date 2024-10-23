@@ -1,14 +1,10 @@
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 import { CalendarDayViewProps } from "../../types";
 import dynamic from "next/dynamic";
 import DayView from "@/components/BaseCalendar/View/Day";
 import { _getTodaysEvents } from "../util";
 const DefaultNumbering = dynamic(() => import("../Numbering"));
 const CalendarDayViewCell = dynamic(() => import("./Cell"));
-
-const ViewStyle: CSSProperties = {
-    position: "relative",
-};
 
 const CalendarDayView: FC<CalendarDayViewProps> = ({
     events = [],
@@ -34,7 +30,6 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
                 />
             )}
             Numbering={Numbering}
-            style={{ ...ViewStyle, ...style }}
             {...props}
         />
     );
