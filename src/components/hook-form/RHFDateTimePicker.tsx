@@ -40,6 +40,11 @@ const DatePicker = ({ name, onChange, ...others }: Props) => {
                         {...others}
                         value={value ? dayjs(value, LOCAL_DATE_FORMAT) : null}
                         onChange={onChange || handleChange}
+                        slotProps={{
+                            textField: {
+                                fullWidth: true,
+                            },
+                        }}
                     />
 
                     {error ? (

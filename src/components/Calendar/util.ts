@@ -51,4 +51,15 @@ const isAllDay = (startDate: string, endDate: string): boolean => {
     return isSameDate && isSTART_HOUR && isEND_HOUR;
 };
 
-export { isSameDay, isAllDay, toGreekTime };
+const getAllDayStartEnd = (start: string) => {
+    const initialDate = new Date(start);
+    const startDateTime = initialDate;
+    const endDateTime = initialDate;
+
+    startDateTime.setHours(START_HOUR, 0, 0, 0);
+    endDateTime.setHours(END_HOUR, 0, 0, 0);
+
+    return [startDateTime.toISOString(), endDateTime.toISOString()] as const;
+};
+
+export { isSameDay, isAllDay, toGreekTime, getAllDayStartEnd };

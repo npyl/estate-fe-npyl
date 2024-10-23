@@ -1,6 +1,6 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
-import { START_HOUR, END_HOUR } from "@/constants/calendar";
+import { getAllDayStartEnd } from "@/components/Calendar/util";
 
 /**
     From Google Docs: 
@@ -33,14 +33,7 @@ const GCalendarToTCalendarEvent = ({
     let endDate: string;
 
     if (isAllDay) {
-        // For all-day events, we keep the date but set the time to START_HOUR and END_HOUR
-        const startDateTime = new Date(start?.date!);
-        startDateTime.setHours(START_HOUR, 0, 0, 0);
-        startDate = startDateTime.toISOString();
-
-        const endDateTime = new Date(start?.date!);
-        endDateTime.setHours(END_HOUR, 0, 0, 0);
-        endDate = endDateTime.toISOString();
+        [startDate, endDate] = getAllDayStartEnd(start?.date!);
     } else {
         startDate = start?.dateTime || "";
         endDate = end?.dateTime || "";

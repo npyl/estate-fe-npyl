@@ -1,7 +1,10 @@
 import Dialog from "@/components/Dialog";
 import Form from "./form";
-import { StyledDialogActions, StyledDialogTitle } from "./styled";
-import { StyledDialogContent } from "@/components/Filters/FilterMore/styled";
+import {
+    StyledDialogActions,
+    StyledDialogContent,
+    StyledDialogTitle,
+} from "./styled";
 import { FC } from "react";
 import { SxProps, Theme } from "@mui/material/styles";
 import useEventMutations from "./View/useEventMutations";

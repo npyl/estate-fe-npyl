@@ -1,35 +1,38 @@
-import { Button, Checkbox, FormControlLabel, Stack } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { Button, Stack } from "@mui/material";
+import { FC, useState } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
-import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
 import { LoadingButton } from "@mui/lab";
-import { isAllDay as getIsAllDay } from "@/components/Calendar/util";
+import {
+    getAllDayStartEnd,
+    isAllDay as getIsAllDay,
+} from "@/components/Calendar/util";
+import EventDates from "./EventDates";
 import dayjs from "dayjs";
-
-const CheckboxSx = {
-    width: "fit-content",
-};
 
 interface Props {
     event?: TCalendarEvent;
-    onSubmit: (e: CalendarEventReq) => void;
+    onSubmit: (e: CalendarEventReq) => Promise<any>;
     onClose: VoidFunction;
 }
 
 const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
     const { t } = useTranslation();
 
-    // initial value
+    // INFO: initial value
     const _isAllDay = event
         ? getIsAllDay(event.startDate, event.endDate)
         : false;
-
+    // INFO: all day checkbox
     const [isAllDay, setAllDay] = useState(_isAllDay);
+    // INFO: date for when checked
+    const [allDayDate, setAllDayDate] = useState(
+        event?.startDate || dayjs().toISOString()
+    );
 
     const methods = useForm<CalendarEventReq>({
         values: event,
@@ -40,14 +43,15 @@ const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
 
     const handleAllDay = (_: any, b: boolean) => setAllDay(b);
 
-    const handleStartDate = useCallback((v: dayjs.Dayjs | null) => {
-        if (!v) return;
-        methods.setValue("startDate", v.toISOString(), { shouldDirty: true });
-    }, []);
-    const handleEndDate = useCallback((v: dayjs.Dayjs | null) => {
-        if (!v) return;
-        methods.setValue("endDate", v.toISOString(), { shouldDirty: true });
-    }, []);
+    // INFO: normalise dates if isAllDay
+    const handleSubmit = async (e: CalendarEventReq) => {
+        await onSubmit({
+            ...e,
+            ...(isAllDay ? getAllDayStartEnd(allDayDate) : {}),
+        });
+
+        onClose();
+    };
 
     const handleReset = () => {
         setAllDay(_isAllDay);
@@ -55,33 +59,21 @@ const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
     };
 
     return (
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <FormProvider {...methods}>
-                <Stack spacing={1} mt={1}>
-                    <RHFTextField variant="standard" name="title" />
-
-                    <FormControlLabel
-                        label={t("All day")}
-                        control={<Checkbox />}
-                        checked={isAllDay}
-                        onChange={handleAllDay}
-                        sx={CheckboxSx}
+                <Stack spacing={2} mt={1}>
+                    <RHFTextField
+                        variant="standard"
+                        name="title"
+                        placeholder={t<string>("Title")}
                     />
 
-                    {!isAllDay ? (
-                        <Stack direction="row" spacing={1}>
-                            <RHFDateTimePicker
-                                label={t("Start")}
-                                name="startDate"
-                                onChange={handleStartDate}
-                            />
-                            <RHFDateTimePicker
-                                label={t("End")}
-                                name="endDate"
-                                onChange={handleEndDate}
-                            />
-                        </Stack>
-                    ) : null}
+                    <EventDates
+                        allDay={isAllDay}
+                        onAllDayChange={handleAllDay}
+                        allDayDate={allDayDate}
+                        onAllDayDateChange={setAllDayDate}
+                    />
 
                     <RHFMultilineTextField
                         label={t("Description")}
@@ -108,7 +100,7 @@ const CreateUpdateForm: FC<Props> = ({ event, onSubmit, onClose }) => {
                                 variant="contained"
                                 loading={isSubmitting}
                             >
-                                {t("Update")}
+                                {t(event ? "Update" : "Create")}
                             </LoadingButton>
                         ) : null}
                     </Stack>
