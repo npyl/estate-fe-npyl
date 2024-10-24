@@ -3,9 +3,9 @@ import { IsAuthenticatedRes } from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
 
 interface UserToken {
-    accessToken: string;
-    refreshToken: string;
-    expiryDate: number;
+    access_token: string;
+    refresh_token: string;
+    expiry_date: number;
 }
 
 const SCOPES = [
@@ -38,6 +38,17 @@ async function getUserInfo(auth: OAuth2Client) {
         console.log("Error: ", error);
         return null;
     }
+}
+
+/**
+ * Check if the current access token is expired
+ * @param expiryDate Token expiry timestamp
+ * @returns boolean indicating if token is expired
+ */
+function isTokenExpired(expiryDate: number): boolean {
+    // Add a 5-minute buffer to ensure we refresh slightly before expiration
+    const bufferTime = 5 * 60 * 1000; // 5 minutes in milliseconds
+    return Date.now() >= expiryDate - bufferTime;
 }
 
 export class AuthService {
@@ -101,17 +112,69 @@ export class AuthService {
         throw new Error("Invalid token response");
     }
 
+    /**
+     * Refresh the access token using the refresh token
+     * @param userId User ID
+     * @param refreshToken Refresh token
+     * @returns Updated UserToken object
+     */
+    private async refreshAccessToken(
+        userId: number,
+        refreshToken: string
+    ): Promise<UserToken> {
+        try {
+            const { credentials } =
+                await this.oauth2Client.refreshAccessToken();
+
+            if (!credentials.access_token || !credentials.expiry_date) {
+                throw new Error("Failed to refresh access token");
+            }
+
+            const updatedToken: UserToken = {
+                accessToken: credentials.access_token,
+                refreshToken: refreshToken, // Keep the existing refresh token
+                expiryDate: credentials.expiry_date,
+            };
+
+            // Update the tokens in memory
+            this.userTokens.set(userId, updatedToken);
+
+            return updatedToken;
+        } catch (error) {
+            console.error("Error refreshing access token:", error);
+            throw error;
+        }
+    }
+
     protected async getAuthForUser(
         userId: number
     ): Promise<OAuth2Client | null> {
-        const userToken = this.userTokens.get(userId);
-        if (!userToken) return null;
+        let userTokens = this.userTokens.get(userId);
+        if (!userTokens) return null;
 
-        this.oauth2Client.setCredentials({
-            access_token: userToken.accessToken,
-            refresh_token: userToken.refreshToken,
-            expiry_date: userToken.expiryDate,
-        });
+        // Check if the current token is expired
+        if (isTokenExpired(userTokens.expiryDate)) {
+            try {
+                // Refresh the token
+                const updatedTokens = await this.refreshAccessToken(
+                    userId,
+                    userTokens.refreshToken
+                );
+            } catch (error) {
+                console.error("Token refresh failed:", error);
+
+                // If refresh fails, delete the tokens and return null
+                await this.revokeAuthentication(userId);
+                return null;
+            }
+        } else {
+            // Set credentials
+            this.oauth2Client.setCredentials({
+                access_token: userTokens.accessToken,
+                refresh_token: userTokens.refreshToken,
+                expiry_date: userTokens.expiryDate,
+            });
+        }
 
         return this.oauth2Client;
     }
