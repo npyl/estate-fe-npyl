@@ -23,6 +23,9 @@ import {
     StyledDialogTitle,
 } from "../styled";
 import { CalendarEventReq } from "@/types/calendar";
+import { LocationSearching } from "@mui/icons-material";
+import { SpaceBetween } from "@/components/styled";
+import DateInfo from "@/components/Calendar/Event/_shared/DateInfo";
 // ...
 const EditForm = dynamic(() => import("../form"));
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
@@ -124,10 +127,24 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                         />
                     ) : (
                         <Stack spacing={1} px={1}>
-                            <Duration
-                                start={event.startDate}
-                                end={event.endDate}
-                            />
+                            <SpaceBetween alignItems="center">
+                                <DateInfo
+                                    date={event.startDate}
+                                    width="fit-content"
+                                    px={1}
+                                    py={0.5}
+                                />
+
+                                <Duration
+                                    start={event.startDate}
+                                    end={event.endDate}
+                                />
+
+                                <Stack direction="row" spacing={1}>
+                                    <LocationSearching />
+                                    <Typography>{event?.location}</Typography>
+                                </Stack>
+                            </SpaceBetween>
 
                             <InputBase
                                 value={event?.description}

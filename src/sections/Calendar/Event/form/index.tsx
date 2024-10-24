@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material";
+import { Button, InputAdornment, Stack } from "@mui/material";
 import { FC, useState } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ import {
 } from "@/components/Calendar/util";
 import EventDates from "./EventDates";
 import dayjs from "dayjs";
+import { LocationSearching } from "@mui/icons-material";
 
 const TextFieldSx = {
     px: 0.5,
@@ -104,6 +105,18 @@ const CreateUpdateForm: FC<Props> = ({
                         onAllDayChange={handleAllDay}
                         allDayDate={allDayDate}
                         onAllDayDateChange={setAllDayDate}
+                    />
+
+                    <RHFTextField
+                        name="location"
+                        label={t("Location")}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <LocationSearching />
+                                </InputAdornment>
+                            ),
+                        }}
                     />
 
                     <RHFMultilineTextField

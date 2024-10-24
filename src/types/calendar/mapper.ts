@@ -22,6 +22,7 @@ const GCalendarToTCalendarEvent = ({
     start,
     end,
     description,
+    location,
 }: calendar_v3.Schema$Event): TCalendarEvent => {
     const isAllDay =
         !start?.dateTime &&
@@ -42,7 +43,7 @@ const GCalendarToTCalendarEvent = ({
     return {
         id: id!,
         title: summary || "",
-        location: "",
+        location: location || "",
         description: description || "",
         startDate,
         endDate,
