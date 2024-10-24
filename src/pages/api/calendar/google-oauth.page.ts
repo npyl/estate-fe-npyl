@@ -6,11 +6,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method !== "GET") {
-        res.redirect(308, "/calendar"); // TODO: Redirect to an error page
+        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
         return;
     }
     if (!req.url) {
-        res.redirect(308, "/calendar"); // TODO: Redirect to an error page
+        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
         return;
     }
 
@@ -19,11 +19,11 @@ export default async function handler(
     const state = url.searchParams.get("state");
 
     if (!code || !state) {
-        res.redirect(308, "/calendar"); // TODO: Redirect to an error page
+        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
         return;
     }
     if (typeof code !== "string" || typeof state !== "string") {
-        res.redirect(308, "/calendar"); // TODO: Redirect to an error page
+        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
         return;
     }
 
@@ -31,11 +31,11 @@ export default async function handler(
         await calendarService.handleAuthCallback(code!, state!);
 
         // INFO: here we are sending a redirect status (308 a.k.a. permanent to keep our credentials in crm) and the redirect happens thanks to google
-        res.redirect(308, "/calendar");
+        res.redirect(302, "/calendar");
     } catch (ex) {
         console.error(ex);
 
         // INFO: here we are sending a redirect status (308 a.k.a. permanent to keep our credentials in crm) and the redirect happens thanks to google
-        res.redirect(308, "/calendar"); // TODO: Redirect to an error page
+        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
     }
 }

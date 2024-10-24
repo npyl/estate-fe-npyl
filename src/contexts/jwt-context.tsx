@@ -166,7 +166,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         }).unwrap();
 
         Cookies.set("accessToken", loginRes.token, {
-            sameSite: "None",
+            sameSite: "Lax", // INFO: this is important as it works with google's oauth flow!
             secure: true,
         });
 
