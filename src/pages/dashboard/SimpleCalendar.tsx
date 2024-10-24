@@ -1,5 +1,5 @@
 import { Paper, styled } from "@mui/material";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useState } from "react";
 import React from "react";
 import Numbering from "@/components/Calendar/Views/Numbering";
 import CalendarGoogle from "@/components/CalendarGoogle";
@@ -12,6 +12,7 @@ import {
 } from "@/components/Calendar/types";
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
+import EventDialog from "@/sections/Calendar/Event/View";
 
 // ------------------------------------------------------------------------
 
@@ -70,12 +71,17 @@ const CustomCalendarEvent: React.FC<CustomCalendarEventProps> = ({
 // -----------------------------------------------------------------------------------
 
 const getEvent =
-    (onFirstLoad: (top: number) => void) => (ce: TCalendarEvent, i: number) =>
+    (
+        onClick: ((e: TCalendarEvent) => void) | undefined,
+        onFirstLoad: (top: number) => void
+    ) =>
+    (ce: TCalendarEvent, i: number) =>
         (
             <CustomCalendarEvent
                 key={ce.id}
                 event={ce}
                 onLoad={i === 0 ? onFirstLoad : undefined}
+                onClick={onClick}
             />
         );
 
@@ -85,16 +91,19 @@ interface DayCell extends CalendarCellProps {
     onFirstEventLoad: (top: number) => void;
 }
 
-const Cell: FC<DayCell> = ({ events, onFirstEventLoad }) => (
+const Cell: FC<DayCell> = ({ events, onEventClick, onFirstEventLoad }) => (
     <>
         {/* Events */}
-        {events.map(getEvent(onFirstEventLoad))}
+        {events.map(getEvent(onEventClick, onFirstEventLoad))}
     </>
 );
 
 // -----------------------------------------------------------------------------------
 
 const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
+    const [event, setEvent] = useState<TCalendarEvent>();
+    const closeDialog = () => setEvent(undefined);
+
     // Scroll to first event on load
     const handleFirstLoad = useCallback((top: number) => {
         const element = document.getElementById("simple-calendar-day-view");
@@ -106,19 +115,24 @@ const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
     }, []);
 
     return (
-        <StyledDayView
-            id="simple-calendar-day-view"
-            Numbering={StyledNumbering}
-            Cell={(props) => (
-                <Cell
-                    // TODO: ...
-                    events={[]}
-                    {...props}
-                    onFirstEventLoad={handleFirstLoad}
-                />
-            )}
-            {...props}
-        />
+        <>
+            <StyledDayView
+                id="simple-calendar-day-view"
+                Numbering={StyledNumbering}
+                Cell={(props) => (
+                    <Cell
+                        // TODO: ...
+                        events={[]}
+                        {...props}
+                        onEventClick={setEvent}
+                        onFirstEventLoad={handleFirstLoad}
+                    />
+                )}
+                {...props}
+            />
+
+            {event ? <EventDialog event={event} onClose={closeDialog} /> : null}
+        </>
     );
 };
 

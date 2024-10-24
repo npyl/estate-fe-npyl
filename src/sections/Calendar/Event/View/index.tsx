@@ -127,7 +127,7 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                         />
                     ) : (
                         <Stack spacing={1} px={1}>
-                            <SpaceBetween alignItems="center">
+                            <SpaceBetween alignItems="center" px={1}>
                                 <DateInfo
                                     date={event.startDate}
                                     width="fit-content"
@@ -142,7 +142,9 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
 
                                 <Stack direction="row" spacing={1}>
                                     <LocationSearching />
-                                    <Typography>{event?.location}</Typography>
+                                    <Typography color="text.secondary">
+                                        {event?.location || "-"}
+                                    </Typography>
                                 </Stack>
                             </SpaceBetween>
 
