@@ -19,19 +19,6 @@ const Draw = dynamic(() => import("./plugins/Draw"));
 const Search = dynamic(() => import("./plugins/Search"));
 const DrawMultiple = dynamic(() => import("./plugins/DrawMultiple"));
 
-const containerStyle: CSSProperties = {
-    width: "100%",
-    height: "100%",
-    position: "relative",
-};
-
-const drawingToolsStyle: CSSProperties = {
-    position: "fixed", // Ensure it's fixed to the screen
-    top: "20px", // Adjust according to your layout
-    left: "20px", // Adjust according to your layout
-    zIndex: 1000, // Make sure it is above the map
-};
-
 export type IMapMarker = IMapCoordinates;
 
 export interface IMapAddress {
