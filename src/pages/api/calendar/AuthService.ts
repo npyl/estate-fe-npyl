@@ -1,5 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
 import { IsAuthenticatedRes } from "@/types/calendar/google";
+import { TokenStorage } from "./TokenStorage";
 
 interface UserToken {
     accessToken: string;
@@ -42,6 +43,7 @@ async function getUserInfo(auth: OAuth2Client) {
 export class AuthService {
     protected userTokens: Map<number, UserToken> = new Map();
     protected oauth2Client: OAuth2Client;
+    private tokenStorage: TokenStorage;
 
     constructor() {
         this.oauth2Client = new OAuth2Client(
@@ -49,6 +51,9 @@ export class AuthService {
             process.env.GOOGLE_CLIENT_SECRET,
             process.env.GOOGLE_REDIRECT_URI
         );
+
+        this.tokenStorage = new TokenStorage();
+        this.tokenStorage.initialize();
     }
 
     async getAuthUrl(userId: number): Promise<string> {
@@ -57,7 +62,6 @@ export class AuthService {
             scope: SCOPES,
             state: userId.toString(),
         });
-
         return authUrl;
     }
 
@@ -71,15 +75,26 @@ export class AuthService {
                 refreshToken: tokens.refresh_token,
                 expiryDate: tokens.expiry_date,
             });
+
+            // Store refresh token using TokenStorage
+            await this.tokenStorage.saveToken(userId, tokens.refresh_token);
+
             return;
         }
 
         if (res?.data?.access_token && res?.data?.expiry_date) {
+            // INFO: fetch refreshToken from our persistent storage so that we have up to date memory
+            const refreshToken =
+                (await this.tokenStorage.getToken(userId)) || "";
+
+            console.log("recovered refreshToken: ", refreshToken);
+
             this.userTokens.set(userId, {
                 accessToken: res.data.access_token,
-                refreshToken: "",
+                refreshToken,
                 expiryDate: res.data.expiry_date,
             });
+
             return;
         }
 
@@ -98,25 +113,15 @@ export class AuthService {
             expiry_date: userToken.expiryDate,
         });
 
-        // Uncomment if you want to handle token refresh
-        // if (this.oauth2Client.isTokenExpiring()) {
-        //     const { credentials } = await this.oauth2Client.refreshAccessToken();
-        //     this.updateUserToken(userId, credentials);
-        // }
-
         return this.oauth2Client;
     }
 
     async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
-        const userToken = this.userTokens.get(userId);
-        if (!userToken) return { isAuthenticated: false };
-
         try {
             const auth = await this.getAuthForUser(userId);
-            if (!auth) throw new Error("User is not authenticated!");
+            if (!auth) return { isAuthenticated: false };
 
             const userInfo = await getUserInfo(auth);
-
             return { isAuthenticated: true, userInfo };
         } catch (ex) {
             console.error(ex);
@@ -127,6 +132,7 @@ export class AuthService {
     async revokeAuthentication(userId: number) {
         try {
             await this.oauth2Client.revokeCredentials();
+            await this.tokenStorage.deleteToken(userId);
             this.userTokens.delete(userId);
         } catch (ex) {
             console.error(ex);
