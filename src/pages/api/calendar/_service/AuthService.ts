@@ -3,9 +3,9 @@ import { IsAuthenticatedRes } from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
 
 interface UserToken {
-    access_token: string;
-    refresh_token: string;
-    expiry_date: number;
+    accessToken: string;
+    refreshToken: string;
+    expiryDate: number;
 }
 
 const SCOPES = [
@@ -98,6 +98,8 @@ export class AuthService {
             const refreshToken =
                 (await this.tokenStorage.getToken(userId)) || "";
 
+            // TODO: what should we do when we don't have refresh token but the user has an active oauth in his computer ??
+
             console.log("recovered refreshToken: ", refreshToken);
 
             this.userTokens.set(userId, {
@@ -135,6 +137,8 @@ export class AuthService {
                 refreshToken: refreshToken, // Keep the existing refresh token
                 expiryDate: credentials.expiry_date,
             };
+
+            console.log("Expired! Got new: ", updatedToken);
 
             // Update the tokens in memory
             this.userTokens.set(userId, updatedToken);

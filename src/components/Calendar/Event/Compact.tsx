@@ -6,6 +6,7 @@ import { styled } from "@mui/material";
 import Duration from "./_shared/Duration";
 import { EventProps } from "./types";
 import DateInfo from "./_shared/DateInfo";
+import getTypeColor from "./_shared/getTypeColor";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
     alignItems: "center",
@@ -64,7 +65,7 @@ const CompactCalendarEvent: FC<CompactEventProps> = ({
                 width="5px"
                 height="5px"
                 borderRadius="100%"
-                bgcolor={event.type.color}
+                bgcolor={getTypeColor(event.type)}
                 p={1}
             />
 

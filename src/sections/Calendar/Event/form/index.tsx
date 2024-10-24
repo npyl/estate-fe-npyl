@@ -14,6 +14,7 @@ import {
 import EventDates from "./EventDates";
 import dayjs from "dayjs";
 import { LocationSearching } from "@mui/icons-material";
+import RHFTypeSelect from "./RHFTypeSelect";
 
 const TextFieldSx = {
     px: 0.5,
@@ -55,7 +56,7 @@ const CreateUpdateForm: FC<Props> = ({
                 ? dayjs(startDate).add(1, "hour").toISOString()
                 : "",
             location: "",
-            type: { id: 1, color: "black", name: "" },
+            type: "TASK",
             withIds: [],
         },
     });
@@ -118,6 +119,8 @@ const CreateUpdateForm: FC<Props> = ({
                             ),
                         }}
                     />
+
+                    <RHFTypeSelect />
 
                     <RHFMultilineTextField
                         label={t("Description")}

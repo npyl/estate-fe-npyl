@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
+import getTypeColor from "./_shared/getTypeColor";
 const Members = dynamic(() => import("./_shared/Members"));
 
 // ------------------------------------------------------------------------------------
@@ -80,7 +81,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                 <Title
                     title={event.title}
                     mini={isMinimumHeight}
-                    color={event.type.color}
+                    color={getTypeColor(event.type)}
                     startDate={event.startDate}
                     endDate={event.endDate}
                 />

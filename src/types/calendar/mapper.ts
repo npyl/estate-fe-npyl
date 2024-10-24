@@ -47,11 +47,8 @@ const GCalendarToTCalendarEvent = ({
         description: description || "",
         startDate,
         endDate,
-        type: {
-            id: 1,
-            color: "red",
-            name: "test",
-        },
+        // TODO: ... get this from private!
+        type: "TASK",
         withIds: [],
     };
 };

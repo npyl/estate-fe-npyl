@@ -10,11 +10,9 @@ import {
 } from "@/components/BaseCalendar/types";
 import { ComponentType, HTMLAttributes } from "react";
 
-type TCalendarEventType = {
-    id: number;
-    name: string;
-    color: string; // hex (with #) or mui pallete supported (e.g. primary.light)
-};
+type TCalendarEventType = "TASK" | "MEETING" | "TOUR_ONLINE" | "TOUR_INPERSON";
+
+// color: string; // hex (with #) or mui pallete supported (e.g. primary.light)
 
 type TCalendarEvent = {
     id: string;
