@@ -17,20 +17,17 @@ export interface IOpenAIDetails {
     floorType: string;
     energyClass: string;
     balconies: number;
-
     attic: boolean;
     storeroom: boolean;
     safetyDoor: boolean;
     fireplace: boolean;
     suitableForStudent: boolean;
     pool: boolean;
-
     distanceFromPublicTransportation: number;
     distanceFromSea: number;
     distanceFromSupermarket: number;
-
     language: string;
-
     improveOption?: string;
     oldDescription?: string;
+    styling?: boolean;
 }

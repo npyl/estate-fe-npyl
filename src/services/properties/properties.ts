@@ -294,7 +294,10 @@ export const properties = createApi({
             query: (body) => ({
                 url: `/description/generate`,
                 method: "POST",
-                body,
+                body: {
+                    ...body,
+                    styling: body.styling || false,
+                },
                 responseHandler: "text",
             }),
         }),
@@ -308,6 +311,7 @@ export const properties = createApi({
                         ...body,
                         oldDescription: body.oldDescription || "",
                         improveOption: body.improveOption || "CONCISE", // ensure improveOption is passed
+                        styling: body.styling || false,
                     },
                     responseHandler: "text",
                 };

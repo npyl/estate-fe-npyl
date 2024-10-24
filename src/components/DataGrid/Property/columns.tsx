@@ -226,7 +226,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         headerAlign: "left",
         headerName: t("Parent Category") as string,
         renderCell: RenderParentCategoryCell,
-        flex: 1,
+        flex: 1.2,
     },
     {
         field: "category",

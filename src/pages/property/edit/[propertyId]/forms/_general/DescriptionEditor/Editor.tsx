@@ -5,7 +5,6 @@ import {
     Checkbox,
     FormControl,
     FormControlLabel,
-    FormGroup,
     MenuItem,
     Select,
     Stack,
@@ -90,7 +89,7 @@ const useInitialDescriptionState = (
 interface UpperRightOptionsProps {
     lang: Language;
     isLoading: boolean;
-    onGenerate: (d: IOpenAIDetailsPOST) => Promise<string>;
+    onGenerate: (d: IOpenAIDetailsPOST, styling: boolean) => Promise<string>;
     // onImprove: (d: IOpenAIDetailsPOST) => Promise<string>;
     onChatTextChange: (s: string) => void;
     onClickTranslate: () => void;
@@ -105,6 +104,7 @@ const UpperRightOptions = ({
     lang,
 }: UpperRightOptionsProps) => {
     const { t } = useTranslation();
+    const [styling, setStyling] = useState(false);
 
     const belowMd = useResponsive("down", "md");
 
@@ -114,11 +114,15 @@ const UpperRightOptions = ({
 
     const handleGenerate = useCallback(
         () =>
-            onGenerate({
-                ...openAIDetails,
-                ...fixDropdowns(openAIDetails),
-            }).then(onChatTextChange),
-        [openAIDetails]
+            onGenerate(
+                {
+                    ...openAIDetails,
+                    styling,
+                    ...fixDropdowns(openAIDetails),
+                },
+                styling
+            ).then(onChatTextChange),
+        [openAIDetails, styling]
     );
 
     const chatGPTButton = useMemo(
@@ -140,8 +144,23 @@ const UpperRightOptions = ({
         [isLoading, handleGenerate, belowMd]
     );
 
+    const handleStylingChange = (event: any) => {
+        setStyling(event.target.checked);
+    };
+
     return (
         <Box display="flex" flexDirection="row" gap={1}>
+            {/* Checkbox for styling */}
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={styling}
+                        onChange={handleStylingChange}
+                        color="primary"
+                    />
+                }
+                label={t("Opt for styled text")}
+            />
             {canTranslate ? (
                 <Button onClick={onClickTranslate}>
                     {t("Translate from greek")}
@@ -157,7 +176,7 @@ interface ChatGPTResultProps {
     chatTextEN: string;
     chatTextGR: string;
     isImproving: boolean;
-    onImprove: (selectedOption: string) => void;
+    onImprove: (selectedOption: string, styling: boolean) => void;
 }
 
 const ChatGPTResult = ({
@@ -173,13 +192,31 @@ const ChatGPTResult = ({
     const improvementOptions = options?.property?.descriptionImprovementOptions;
 
     const [selectedOption, setSelectedOption] = useState<string>("PRECISE");
+    const [styling, setStyling] = useState(false);
+    const [textFieldValue, setTextFieldValue] = useState<string>( // New state for editable text
+        lang === "en" ? chatTextEN : chatTextGR
+    );
+
+    const [editorState, setEditorState] = useState<EditorState>(() =>
+        EditorState.createEmpty()
+    );
 
     const handleSelectChange = (event: any) => {
         setSelectedOption(event.target.value);
     };
 
+    const handleStylingChange = (event: any) => {
+        setStyling(event.target.checked);
+    };
+
     const handleImproveClick = () => {
-        onImprove(selectedOption);
+        onImprove(selectedOption, styling);
+    };
+    // let user change the textField value
+    const handleTextFieldChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setTextFieldValue(event.target.value);
     };
 
     const text = useMemo(
@@ -187,12 +224,34 @@ const ChatGPTResult = ({
         [lang, chatTextEN, chatTextGR]
     );
 
+    // // Set the initial textFieldValue when the lang or text changes
+    // useEffect(() => {
+    //     setTextFieldValue(lang === "en" ? chatTextEN : chatTextGR);
+    // }, [lang, chatTextEN, chatTextGR]);
+    useEffect(() => {
+        if (text) {
+            try {
+                const content = JSON.parse(text); // Parse as JSON assuming the content is in Raw DraftJS format
+                const newContentState = convertFromRaw(content);
+                setEditorState(EditorState.createWithContent(newContentState));
+            } catch (error) {
+                // If text isn't valid JSON, treat it as plain text
+                const contentState = ContentState.createFromText(text);
+                setEditorState(EditorState.createWithContent(contentState));
+            }
+        }
+    }, [text]);
+
+    const handleEditorStateChange = (newEditorState: EditorState) => {
+        setEditorState(newEditorState);
+    };
+
     // Show only if we have something to show
     const show = useMemo(() => !!text, [text]);
 
     return show ? (
         <>
-            <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" mt={1}>
                 <Typography variant="h6">
                     {`${t("ChatGPT Result")} (${lang})`}
                 </Typography>
@@ -209,7 +268,11 @@ const ChatGPTResult = ({
                         alignItems="center"
                         gap={1}
                     >
-                        <Typography variant="body2" color="textSecondary">
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            maxWidth={"170px"}
+                        >
                             {t("Improving the description to be more:")}
                         </Typography>
                         <Select
@@ -225,6 +288,17 @@ const ChatGPTResult = ({
                                 </MenuItem>
                             ))}
                         </Select>
+                        {/* Checkbox for styling */}
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={styling}
+                                    onChange={handleStylingChange}
+                                    color="primary"
+                                />
+                            }
+                            label={t("Opt for styled text")}
+                        />
                     </Stack>
 
                     <LoadingButton
@@ -242,18 +316,12 @@ const ChatGPTResult = ({
                 </Stack>
             </Box>
 
-            <TextField
-                value={text}
-                multiline
-                rows={30}
+            <DraftEditor
+                editorState={editorState}
+                onEditorStateChange={handleEditorStateChange}
                 sx={{
-                    "& .MuiInputBase-root": {
-                        height: "auto!important",
-                    },
-                    "& .MuiInputBase-input.MuiOutlinedInput-input": {
-                        padding: 1,
-                    },
                     minHeight: "700px",
+                    height: "auto",
                 }}
             />
         </>
@@ -291,11 +359,12 @@ const DescriptionSection: React.FC = () => {
     };
 
     const improveCallback = useCallback(
-        async (selectedOption: string) => {
+        async (selectedOption: string, styling: boolean) => {
             const sanitizedPayload = sanitizePayload({
                 ...openAIDetails,
                 oldDescription: generatedDescription, // Use the generated description as oldDescription
-                improveOption: selectedOption, // Pass the selected improvement option
+                improveOption: selectedOption,
+                styling, // Pass the selected improvement option
             });
 
             const improvedDescription = await improveDescription(
