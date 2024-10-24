@@ -25,7 +25,14 @@ const CellSx: SxProps<Theme> = {
 
 const getEvent =
     (onClick?: (e: TCalendarEvent) => void) => (e: TCalendarEvent) =>
-        <CompactCalendarEvent key={e.id} event={e} onClick={onClick} />;
+        (
+            <CompactCalendarEvent
+                key={e.id}
+                event={e}
+                withDate
+                onClick={onClick}
+            />
+        );
 
 // ------------------------------------------------------------
 
@@ -61,7 +68,12 @@ export const CalendarYearViewCell: FC<CalendarCellProps> = ({
 }) => (
     <Stack sx={CellSx} {...props}>
         <CurrentMonth date={date} />
-        <Stack height="200px" position="relative" overflow="hidden auto">
+        <Stack
+            height="200px"
+            position="relative"
+            overflow="hidden auto"
+            spacing={1}
+        >
             {events.map(getEvent(onEventClick))}
         </Stack>
     </Stack>

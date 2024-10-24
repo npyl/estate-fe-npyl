@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material";
 import Duration from "./_shared/Duration";
 import { EventProps } from "./types";
+import DateInfo from "./_shared/DateInfo";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
     alignItems: "center",
@@ -27,7 +28,16 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     },
 }));
 
-const CompactCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
+interface CompactEventProps extends EventProps {
+    withDate?: boolean;
+}
+
+const CompactCalendarEvent: FC<CompactEventProps> = ({
+    event,
+    withDate = false,
+    onClick,
+    ...props
+}) => {
     const handleClick = (e: MouseEvent) => {
         e.stopPropagation();
         onClick?.(event);
@@ -40,13 +50,17 @@ const CompactCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
             onClick={handleClick}
             {...props}
         >
-            <Duration
-                start={event.startDate}
-                end={event.endDate}
-                fontSize="12px"
-                overflow="visible"
-                noWrap
-            />
+            <Stack spacing={0.3}>
+                <Duration
+                    start={event.startDate}
+                    end={event.endDate}
+                    fontSize="12px"
+                    overflow="visible"
+                    noWrap
+                />
+
+                {withDate ? <DateInfo date={event.startDate} /> : null}
+            </Stack>
 
             <Box
                 width="5px"
