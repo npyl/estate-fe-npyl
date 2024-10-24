@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Box, Stack, SxProps, Theme } from "@mui/material";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
-import MonthCalendarEvent from "../../Event/Month";
+import CompactCalendarEvent from "../../Event/Compact";
 import HighlightTypography from "../../HighlightTypography";
 import { TODAY } from "@/components/BaseCalendar/constants";
 
@@ -9,7 +9,7 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 
 const getEvent =
     (onClick?: (e: TCalendarEvent) => void) => (e: TCalendarEvent) =>
-        <MonthCalendarEvent key={e.id} event={e} onClick={onClick} />;
+        <CompactCalendarEvent key={e.id} event={e} onClick={onClick} />;
 
 // ------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 import { Stack, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
-import CompactCalendarEvent from "../../Event/Month";
+import CompactCalendarEvent from "../../Event/Compact";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import HighlightTypography from "../../HighlightTypography";
 

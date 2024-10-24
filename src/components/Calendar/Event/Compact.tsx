@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -27,8 +27,11 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     },
 }));
 
-const MonthCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
-    const handleClick = () => onClick?.(event);
+const CompactCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
+    const handleClick = (e: MouseEvent) => {
+        e.stopPropagation();
+        onClick?.(event);
+    };
 
     return (
         <StyledStack
@@ -58,4 +61,4 @@ const MonthCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
     );
 };
 
-export default MonthCalendarEvent;
+export default CompactCalendarEvent;
