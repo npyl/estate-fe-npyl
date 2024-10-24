@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Stack, SxProps, Theme } from "@mui/material";
+import { Box, Stack, SxProps, Theme } from "@mui/material";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
 import MonthCalendarEvent from "../../Event/Month";
 import HighlightTypography from "../../HighlightTypography";
@@ -50,7 +50,9 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
                 {date.getDate()}
             </HighlightTypography>
 
-            {events.map(getEvent(onEventClick))}
+            <Box overflow="hidden auto">
+                {events.map(getEvent(onEventClick))}
+            </Box>
         </Stack>
     );
 };

@@ -41,6 +41,7 @@ const MonthCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
                 start={event.startDate}
                 end={event.endDate}
                 fontSize="12px"
+                overflow="visible"
                 noWrap
             />
 
@@ -52,9 +53,7 @@ const MonthCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
                 p={1}
             />
 
-            <Typography variant="subtitle2" noWrap>
-                {event.title}
-            </Typography>
+            <Typography variant="subtitle2">{event.title}</Typography>
         </StyledStack>
     );
 };
