@@ -19,7 +19,7 @@ import {
 } from "draft-js";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
@@ -176,6 +176,7 @@ interface ChatGPTResultProps {
     chatTextEN: string;
     chatTextGR: string;
     isImproving: boolean;
+    scrollRef: React.RefObject<HTMLDivElement>;
     onImprove: (selectedOption: string, styling: boolean) => void;
 }
 
@@ -184,6 +185,7 @@ const ChatGPTResult = ({
     chatTextEN,
     chatTextGR,
     isImproving,
+    scrollRef,
     onImprove,
 }: ChatGPTResultProps) => {
     const { t } = useTranslation();
@@ -212,22 +214,12 @@ const ChatGPTResult = ({
     const handleImproveClick = () => {
         onImprove(selectedOption, styling);
     };
-    // let user change the textField value
-    const handleTextFieldChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setTextFieldValue(event.target.value);
-    };
 
     const text = useMemo(
         () => (lang === "en" ? chatTextEN : chatTextGR),
         [lang, chatTextEN, chatTextGR]
     );
 
-    // // Set the initial textFieldValue when the lang or text changes
-    // useEffect(() => {
-    //     setTextFieldValue(lang === "en" ? chatTextEN : chatTextGR);
-    // }, [lang, chatTextEN, chatTextGR]);
     useEffect(() => {
         if (text) {
             try {
@@ -250,7 +242,7 @@ const ChatGPTResult = ({
     const show = useMemo(() => !!text, [text]);
 
     return show ? (
-        <>
+        <div ref={scrollRef}>
             <Box display="flex" flexDirection="column" mt={1}>
                 <Typography variant="h6">
                     {`${t("ChatGPT Result")} (${lang})`}
@@ -266,12 +258,11 @@ const ChatGPTResult = ({
                         direction="row"
                         justifyContent="flex-start"
                         alignItems="center"
-                        gap={1}
                     >
                         <Typography
                             variant="body2"
                             color="textSecondary"
-                            maxWidth={"170px"}
+                            maxWidth={"160px"}
                         >
                             {t("Improving the description to be more:")}
                         </Typography>
@@ -280,7 +271,7 @@ const ChatGPTResult = ({
                             onChange={handleSelectChange}
                             displayEmpty
                             variant="outlined"
-                            sx={{ minWidth: "100px" }}
+                            sx={{ minWidth: "100px", mr: 1 }}
                         >
                             {improvementOptions?.map((option) => (
                                 <MenuItem key={option.key} value={option.key}>
@@ -324,7 +315,7 @@ const ChatGPTResult = ({
                     height: "auto",
                 }}
             />
-        </>
+        </div>
     ) : null;
 };
 const DescriptionSection: React.FC = () => {
@@ -343,10 +334,17 @@ const DescriptionSection: React.FC = () => {
     const [lang, setLang] = useState<Language>("el");
     const { openAIDetails } = useOpenAIDetails(lang);
 
+    const resultSectionRef = useRef<HTMLDivElement>(null);
+
     const generateCallback = useCallback(
         async (d: IOpenAIDetailsPOST) => {
             const description = await generateDescription(d).unwrap();
-            setGeneratedDescription(description); // Store it for later use as `oldDescription`
+            setGeneratedDescription(description); // Store it for later use as oldDescription
+            // Scroll to the ChatGPT Result section after generation
+            if (resultSectionRef.current) {
+                resultSectionRef.current.scrollIntoView({ behavior: "smooth" });
+            }
+
             return description;
         },
         [setGeneratedDescription]
@@ -514,6 +512,7 @@ const DescriptionSection: React.FC = () => {
                 chatTextGR={chatTextGR}
                 isImproving={isImproving}
                 onImprove={improveCallback}
+                scrollRef={resultSectionRef}
             />
         </TabbedBox>
     );
