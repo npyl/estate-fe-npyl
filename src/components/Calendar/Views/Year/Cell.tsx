@@ -57,8 +57,9 @@ export const CalendarYearViewCell: FC<CalendarCellProps> = ({
     date,
     events,
     onEventClick,
+    ...props
 }) => (
-    <Stack sx={CellSx}>
+    <Stack sx={CellSx} {...props}>
         <CurrentMonth date={date} />
         <Stack height="200px" position="relative">
             {events.map(getEvent(onEventClick))}

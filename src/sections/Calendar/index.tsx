@@ -6,12 +6,8 @@ import dynamic from "next/dynamic";
 
 const CalendarGoogleDayView = dynamic(() => import("./Views/Day"));
 import CalendarGoogleWeekView from "./Views/Week";
-const CalendarGoogleMonthView = dynamic(
-    () => import("@/components/CalendarGoogle/Views/Month")
-);
-const CalendarGoogleYearView = dynamic(
-    () => import("@/components/CalendarGoogle/Views/Year")
-);
+const CalendarGoogleMonthView = dynamic(() => import("./Views/Month"));
+const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
 
 const CalendarSection = () => (
     <CalendarGoogle

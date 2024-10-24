@@ -15,12 +15,13 @@ const PlaceholderCell = () => (
     <Grid
         item
         xs={12 / 7}
-        bgcolor="neutral.200"
         border="1px solid"
         borderColor="divider"
         borderTop="none"
         borderRight="none"
         sx={{
+            backgroundColor: ({ palette: { mode } }) =>
+                mode === "light" ? "neutral.200" : "neutral.800",
             "&:nth-of-type(7n)": {
                 borderRight: "1px solid",
                 borderColor: "divider",

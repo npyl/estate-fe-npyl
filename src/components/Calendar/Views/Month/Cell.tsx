@@ -26,6 +26,7 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
     date,
     events,
     onEventClick,
+    ...props
 }) => {
     const isToday = TODAY.toDateString() === date.toDateString();
 
@@ -38,6 +39,7 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
             borderTop="none"
             borderRight="none"
             sx={CellSx}
+            {...props}
         >
             <HighlightTypography
                 highlight={isToday}

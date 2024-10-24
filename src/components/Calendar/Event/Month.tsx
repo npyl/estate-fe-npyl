@@ -27,27 +27,36 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     },
 }));
 
-const MonthCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => (
-    <StyledStack spacing={1} direction="row" {...props}>
-        <Duration
-            start={event.startDate}
-            end={event.endDate}
-            fontSize="12px"
-            noWrap
-        />
+const MonthCalendarEvent: FC<EventProps> = ({ event, onClick, ...props }) => {
+    const handleClick = () => onClick?.(event);
 
-        <Box
-            width="5px"
-            height="5px"
-            borderRadius="100%"
-            bgcolor={event.type.color}
-            p={1}
-        />
+    return (
+        <StyledStack
+            spacing={1}
+            direction="row"
+            onClick={handleClick}
+            {...props}
+        >
+            <Duration
+                start={event.startDate}
+                end={event.endDate}
+                fontSize="12px"
+                noWrap
+            />
 
-        <Typography variant="subtitle2" noWrap>
-            {event.title}
-        </Typography>
-    </StyledStack>
-);
+            <Box
+                width="5px"
+                height="5px"
+                borderRadius="100%"
+                bgcolor={event.type.color}
+                p={1}
+            />
+
+            <Typography variant="subtitle2" noWrap>
+                {event.title}
+            </Typography>
+        </StyledStack>
+    );
+};
 
 export default MonthCalendarEvent;
