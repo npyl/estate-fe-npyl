@@ -21,10 +21,8 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     cursor: "pointer",
 
     "&:hover": {
-        backgroundColor:
-            theme.palette.mode === "light"
-                ? theme.palette.neutral?.[300]
-                : theme.palette.neutral?.[800],
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[10],
     },
 }));
 

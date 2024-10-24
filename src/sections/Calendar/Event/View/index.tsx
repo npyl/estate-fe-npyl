@@ -89,12 +89,13 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                 DialogContentComponent={StyledDialogContent}
                 DialogActionsComponent={StyledDialogActions}
                 title={
-                    <>
+                    <Stack direction="row" width={1} alignItems="center">
                         <Typography
                             variant="h6"
                             textAlign="left"
-                            width={1}
                             px={1}
+                            noWrap
+                            width="calc(100% - 150px)"
                         >
                             {title}
                         </Typography>
@@ -116,7 +117,7 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                                 </IconButton>
                             </Stack>
                         ) : null}
-                    </>
+                    </Stack>
                 }
                 content={
                     isEdit ? (
