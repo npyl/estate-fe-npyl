@@ -8,7 +8,7 @@ const CreateEventDialog = dynamic(() => import("../Event/Create"));
 
 // --------------------------------------------------------------------------
 
-const YearView: FC<CalendarYearViewProps> = (props) => {
+const YearView: FC<CalendarYearViewProps> = ({ onEventClick, ...props }) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
@@ -21,6 +21,7 @@ const YearView: FC<CalendarYearViewProps> = (props) => {
                         // TODO: fix this (actually passed but types do not reflect that!)
                         events={[]}
                         {...other}
+                        onEventClick={onEventClick}
                         onClick={() => setStartDate(other.date.toISOString())}
                     />
                 )}
