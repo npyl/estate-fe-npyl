@@ -281,42 +281,43 @@ const Map = ({
             }}
         >
             {map ? (
-                // MapControl used so drawings are rendered within the Google Map and remain visible when  map enters fullscreen.
-                <MapControl
-                    position={window.google.maps.ControlPosition.LEFT_TOP}
-                    map={map}
-                >
-                    {!multipleShapes ? (
-                        <Draw
-                            map={map}
-                            drawing={drawing}
-                            shape={shape}
-                            onDraw={(shape) => onDraw && onDraw(shape)}
-                            onShapeChange={(newEncodedShape) =>
-                                onShapeChange &&
-                                onShapeChange("", newEncodedShape)
-                            }
-                        />
-                    ) : (
-                        <DrawMultiple
-                            map={map}
-                            drawing={drawing}
-                            shapes={shapes}
-                            onDraw={(shape) => onDraw && onDraw(shape)}
-                            onShapeChange={(oldShape, newShape) =>
-                                onShapeChange &&
-                                onShapeChange(oldShape, newShape)
-                            }
-                        />
-                    )}
-
+                <>
+                    {/* // MapControl used so drawings are rendered within the Google Map and remain visible when  map enters fullscreen. */}
+                    <MapControl
+                        position={window.google.maps.ControlPosition.LEFT_TOP}
+                        map={map}
+                    >
+                        {!multipleShapes ? (
+                            <Draw
+                                map={map}
+                                drawing={drawing}
+                                shape={shape}
+                                onDraw={(shape) => onDraw && onDraw(shape)}
+                                onShapeChange={(newEncodedShape) =>
+                                    onShapeChange &&
+                                    onShapeChange("", newEncodedShape)
+                                }
+                            />
+                        ) : (
+                            <DrawMultiple
+                                map={map}
+                                drawing={drawing}
+                                shapes={shapes}
+                                onDraw={(shape) => onDraw && onDraw(shape)}
+                                onShapeChange={(oldShape, newShape) =>
+                                    onShapeChange &&
+                                    onShapeChange(oldShape, newShape)
+                                }
+                            />
+                        )}
+                    </MapControl>
                     {search && <Search onSearchSelect={onSearchSelect} />}
 
                     {/* Markers */}
                     {MARKERS}
 
                     {children}
-                </MapControl>
+                </>
             ) : null}
         </GoogleMap>
     );

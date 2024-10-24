@@ -224,6 +224,8 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                         );
                         setActiveMarker(index); // Update the active marker state
                     }}
+                    search
+                    drawing={true}
                     markers={markers}
                     onDraw={handleDraw}
                     onShapeChange={handleChange}
