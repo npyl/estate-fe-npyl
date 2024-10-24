@@ -350,6 +350,13 @@ const DescriptionSection: React.FC = () => {
         [setGeneratedDescription]
     );
 
+    // Effect for scrolling after the chatGPT generation
+    useEffect(() => {
+        if (generatedDescription && resultSectionRef.current) {
+            resultSectionRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [generatedDescription]);
+
     const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
         return Object.fromEntries(
             Object.entries(payload).filter(([_, value]) => value !== "")
