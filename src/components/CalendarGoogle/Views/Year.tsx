@@ -9,7 +9,10 @@ import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
 
 // --------------------------------------------------------------------
 
-const Cell: FC<CalendarCellProps> = ({ events = [], ...props }) => {
+export const CalendarGoogleYearViewCell: FC<CalendarCellProps> = ({
+    events = [],
+    ...props
+}) => {
     const { data } = useMonthEvents(props.date);
     return <CalendarYearViewCell {...props} events={data || []} />;
 };
@@ -24,15 +27,15 @@ const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
     ...props
 }) => (
     <CalendarYearView
-        {...props}
         Cell={(props) => (
-            <Cell
+            <CalendarGoogleYearViewCell
                 // TODO: this is not needed; the type does not support it but events are passed actually; must update the Cell props
                 events={[]}
                 {...props}
                 onEventClick={onEventClick}
             />
         )}
+        {...props}
     />
 );
 

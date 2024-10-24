@@ -1,8 +1,9 @@
 import { CalendarYearViewProps } from "@/components/Calendar/types";
 import { FC, useState } from "react";
 import dynamic from "next/dynamic";
-import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
-import CalendarGoogleYearView from "@/components/CalendarGoogle/Views/Year";
+import CalendarGoogleYearView, {
+    CalendarGoogleYearViewCell,
+} from "@/components/CalendarGoogle/Views/Year";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 
 // --------------------------------------------------------------------------
@@ -15,12 +16,12 @@ const YearView: FC<CalendarYearViewProps> = (props) => {
         <>
             <CalendarGoogleYearView
                 {...props}
-                Cell={(props) => (
-                    <CalendarYearViewCell
+                Cell={(other) => (
+                    <CalendarGoogleYearViewCell
                         // TODO: fix this (actually passed but types do not reflect that!)
                         events={[]}
-                        {...props}
-                        onClick={() => setStartDate(props.date.toISOString())}
+                        {...other}
+                        onClick={() => setStartDate(other.date.toISOString())}
                     />
                 )}
             />
