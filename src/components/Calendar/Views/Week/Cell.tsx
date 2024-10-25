@@ -13,6 +13,7 @@ const getEvent =
 const CellStyle: CSSProperties = { position: "relative" };
 
 const CalendarWeekViewCell: FC<CalendarCellProps> = ({
+    date: _,
     events,
     onEventClick,
     style,

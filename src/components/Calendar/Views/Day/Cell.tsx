@@ -18,6 +18,7 @@ const ViewStyle: CSSProperties = {
 };
 
 const CalendarDayViewCell: FC<CalendarCellProps> = ({
+    date: _,
     events,
     onEventClick,
     style,
