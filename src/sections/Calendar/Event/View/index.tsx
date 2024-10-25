@@ -129,17 +129,27 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                     ) : (
                         <Stack spacing={1} px={1}>
                             <SpaceBetween alignItems="center" px={1}>
-                                <DateInfo
-                                    date={event.startDate}
-                                    width="fit-content"
-                                    px={1}
-                                    py={0.5}
-                                />
+                                <Stack direction="row" alignItems="center">
+                                    <DateInfo
+                                        date={event.startDate}
+                                        width="fit-content"
+                                        px={1}
+                                        py={0.5}
+                                        bgcolor="transparent"
+                                        color="text.secondary"
+                                        fontSize="14px"
+                                    />
 
-                                <Duration
-                                    start={event.startDate}
-                                    end={event.endDate}
-                                />
+                                    <Duration
+                                        start={event.startDate}
+                                        end={event.endDate}
+                                        sx={{
+                                            bgcolor: "transparent",
+                                            color: "text.secondary",
+                                        }}
+                                        fontSize="14px"
+                                    />
+                                </Stack>
 
                                 <Stack direction="row" spacing={1}>
                                     <LocationSearching />

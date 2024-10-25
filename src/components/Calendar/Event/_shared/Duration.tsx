@@ -19,7 +19,7 @@ const DurationSx: SxProps<Theme> = {
     borderRadius: "15px",
     backgroundColor: (theme) =>
         theme.palette.mode === "light" ? "success.light" : "success.dark",
-    color: (theme) => (theme.palette.mode === "light" ? "white" : "white"),
+    color: "white",
     paddingLeft: (theme) => theme.spacing(1),
     paddingRight: (theme) => theme.spacing(1),
 };

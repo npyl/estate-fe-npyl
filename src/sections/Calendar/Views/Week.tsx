@@ -8,6 +8,7 @@ import useTimeFromOffset from "./useTimeFromOffset";
 import CalendarWeekViewCell from "@/components/Calendar/Views/Week/Cell";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 import dynamic from "next/dynamic";
+import useFilteredEvents from "./useFilteredEvents";
 
 // --------------------------------------------------------------------------
 
@@ -26,10 +27,13 @@ const WeekView: FC<CalendarWeekViewProps> = (props) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
+    const { getCellEvents } = useFilteredEvents();
+
     return (
         <>
             <CalendarGoogleWeekView
                 {...props}
+                getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CellWithTimeOffset
                         // TODO: fix this (actually passed but types do not reflect that!)

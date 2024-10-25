@@ -7,6 +7,7 @@ import { FC, useState } from "react";
 import useTimeFromOffset from "./useTimeFromOffset";
 import dynamic from "next/dynamic";
 import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
+import useFilteredEvents from "./useFilteredEvents";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 
 // --------------------------------------------------------------------------
@@ -26,10 +27,13 @@ const DayView: FC<CalendarDayViewProps> = (props) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
+    const { getCellEvents } = useFilteredEvents();
+
     return (
         <>
             <CalendarGoogleDayView
                 {...props}
+                getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CellWithTimeOffset
                         // TODO: fix this (actually passed but types do not reflect that!)

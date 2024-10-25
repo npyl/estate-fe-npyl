@@ -68,10 +68,15 @@ interface CalendarHeaderSlots extends BaseCalendarHeaderSlots {}
 
 // ------------------------------------------------------------------------
 
+type TGetCellEventsCb = (
+    events: TCalendarEvent[],
+    date: Date
+) => TCalendarEvent[];
+
 interface ViewEvents {
     events?: TCalendarEvent[];
 
-    getCellEvents?: (events: TCalendarEvent[], date: Date) => TCalendarEvent[];
+    getCellEvents?: TGetCellEventsCb;
 
     onEventClick?: (e: TCalendarEvent) => void;
 }
@@ -106,6 +111,7 @@ export type {
     TCalendarEventType,
 
     // ...
+    TGetCellEventsCb,
     CalendarCellProps,
     CalendarNumberingProps,
     // ...
