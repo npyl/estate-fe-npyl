@@ -224,12 +224,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                             backgroundColor: "background.default",
                         }}
                     >
-                        {sections.map((section, index) => (
+                        {sections.map((section) => (
                             <DashboardSidebarSection
                                 key={section.title}
                                 path={router.asPath}
                                 sx={{
-                                    height: "100vh",
                                     pt: 2,
 
                                     width: "100%",
@@ -239,6 +238,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 {...section}
                             />
                         ))}
+
                         {belowMd ? (
                             <Stack direction="row" justifyContent="center">
                                 <LanguageButton />
