@@ -5,10 +5,10 @@ import { BaseCalendarHeaderProps } from "@/components/BaseCalendar/types";
 
 const StyledHeader = styled(CalendarHeader)<BaseCalendarHeaderProps>(
     ({ theme, view }) => ({
-        position: "sticky",
+        // position: "sticky",
         paddingTop: "10px",
         paddingBottom: "10px",
-        top: `${HEADER_HEIGHT}px`,
+        // top: `${HEADER_HEIGHT}px`,
         zIndex: Z_INDEX.HEADER,
         backgroundColor: theme.palette.background.default,
         // ...
