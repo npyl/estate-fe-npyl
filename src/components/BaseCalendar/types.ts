@@ -80,7 +80,7 @@ interface BaseCalendarSlots {
     View: ComponentType<BaseCalendarViewProps>;
 }
 
-interface BaseCalendarProps {
+interface BaseCalendarProps extends HTMLAttributes<HTMLDivElement> {
     date: Date;
     onDateChange: (d: Date) => void;
     view: TCalendarView;

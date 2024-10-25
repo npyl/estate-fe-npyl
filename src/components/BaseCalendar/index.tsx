@@ -14,11 +14,12 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
     // ...
     HeaderSlots,
     ViewSlots,
+    ...props
 }) => {
     const { Header = BaseHeader, View = BaseView } = slots || {};
 
     return (
-        <div>
+        <div {...props}>
             <Header
                 date={date}
                 view={view}

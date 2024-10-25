@@ -97,6 +97,11 @@ interface CalendarViewSlots {
 
 interface CalendarProps {
     initialView?: TCalendarView;
+
+    date?: Date;
+    onDateChange?: (d: Date) => void;
+    view?: TCalendarView;
+    onViewChange?: (v: TCalendarView) => void;
     // ...
     slots?: Partial<CalendarSlots>;
     // ...

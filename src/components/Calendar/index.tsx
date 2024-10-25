@@ -1,5 +1,5 @@
 import BaseCalendar from "@/components/BaseCalendar";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import React from "react";
 import dynamic from "next/dynamic";
 import { TCalendarView } from "@/components/BaseCalendar/types";
@@ -16,19 +16,42 @@ import CalendarButtonGroup from "./ButtonGroup";
 
 const Calendar: FC<CalendarProps> = ({
     initialView = "week",
+
+    date,
+    onDateChange,
+    view,
+    onViewChange,
+    // ...
     slots,
     HeaderSlots,
     ViewSlots,
 }) => {
-    const [date, setDate] = useState(TODAY);
-    const [view, setView] = useState<TCalendarView>(initialView);
+    // internal state (for uncontrolled use)
+    const [_date, _setDate] = useState(TODAY);
+    const [_view, _setView] = useState<TCalendarView>(initialView);
+
+    const handleViewChange = useCallback(
+        (v: TCalendarView) => {
+            _setView(v);
+            onViewChange?.(v);
+        },
+        [onViewChange]
+    );
+
+    const handleDateChange = useCallback(
+        (d: Date) => {
+            _setDate(d);
+            onDateChange?.(d);
+        },
+        [onDateChange]
+    );
 
     return (
         <BaseCalendar
-            date={date}
-            view={view}
-            onDateChange={setDate}
-            onViewChange={setView}
+            date={date || _date}
+            view={view || _view}
+            onDateChange={handleDateChange}
+            onViewChange={handleViewChange}
             // ...
             slots={{
                 Header: CalendarHeader,

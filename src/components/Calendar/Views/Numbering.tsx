@@ -34,7 +34,7 @@ const NumberItem: FC<NumberItemProps> = ({ hour }) => (
             px={1}
             color="text.secondary"
             bgcolor={(theme) =>
-                theme.palette.mode === "light" ? "neutral.300" : "neutral.700"
+                theme.palette.mode === "light" ? "grey.200" : "neutral.700"
             }
             position="absolute"
             mt={-1}
