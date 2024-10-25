@@ -1,4 +1,7 @@
-import { TCalendarEvent } from "@/components/Calendar/types";
+import {
+    isTCalendarEventType,
+    TCalendarEvent,
+} from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
 
@@ -43,6 +46,8 @@ const GCalendarToTCalendarEvent = ({
         endDate = end?.dateTime || "";
     }
 
+    const type = extendedProperties?.private?.[PP_EVENT_TYPE_KEY];
+
     return {
         id: id!,
         title: summary || "",
@@ -50,8 +55,7 @@ const GCalendarToTCalendarEvent = ({
         description: description || "",
         startDate,
         endDate,
-        // TODO: check if is good!
-        type: extendedProperties?.private?.[PP_EVENT_TYPE_KEY] || "TASK",
+        type: isTCalendarEventType(type) ? type : "TASK",
         withIds: [],
 
         extendedProperties,

@@ -10,7 +10,19 @@ import {
 } from "@/components/BaseCalendar/types";
 import { ComponentType, HTMLAttributes } from "react";
 
-type TCalendarEventType = "TASK" | "MEETING" | "TOUR_ONLINE" | "TOUR_INPERSON";
+const CALENDAR_EVENT_TYPES = [
+    "TASK",
+    "MEETING",
+    "TOUR_ONLINE",
+    "TOUR_INPERSON",
+] as const;
+
+type TCalendarEventType = (typeof CALENDAR_EVENT_TYPES)[number];
+
+// INFO: type guard
+const isTCalendarEventType = (value: unknown): value is TCalendarEventType =>
+    typeof value === "string" &&
+    CALENDAR_EVENT_TYPES.includes(value as TCalendarEventType);
 
 type TCalendarEvent = {
     id: string;
@@ -87,9 +99,12 @@ interface CalendarProps {
     ViewSlots?: Partial<CalendarViewSlots>;
 }
 
+export { isTCalendarEventType };
+
 export type {
     TCalendarEvent,
     TCalendarEventType,
+
     // ...
     CalendarCellProps,
     CalendarNumberingProps,

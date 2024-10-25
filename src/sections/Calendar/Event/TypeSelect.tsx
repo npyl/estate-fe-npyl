@@ -15,14 +15,7 @@ interface BulletProps extends BoxProps {
 }
 
 const Bullet: FC<BulletProps> = ({ type, ...props }) => (
-    <Box
-        width={10}
-        height={10}
-        bgcolor={getTypeColor(type)}
-        borderRadius="100%"
-        p={1}
-        {...props}
-    />
+    <Box bgcolor={getTypeColor(type)} borderRadius="100%" p={0.7} {...props} />
 );
 
 // ------------------------------------------------------------------
