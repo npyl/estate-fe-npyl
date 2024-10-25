@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 const CalendarGoogleDayView = dynamic(() => import("./Views/Day"));
 import CalendarGoogleWeekView from "./Views/Week";
 import { Skeleton } from "@mui/material";
+import { FiltersProvider } from "./Filters/context";
 const CalendarGoogleMonthView = dynamic(() => import("./Views/Month"));
 const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
 
@@ -15,7 +16,7 @@ const Filters = dynamic(() => import("./Filters"), {
 });
 
 const CalendarSection = () => (
-    <>
+    <FiltersProvider>
         <Filters />
 
         <CalendarGoogle
@@ -29,7 +30,7 @@ const CalendarSection = () => (
                 Header: StyledHeader,
             }}
         />
-    </>
+    </FiltersProvider>
 );
 
 export default CalendarSection;
