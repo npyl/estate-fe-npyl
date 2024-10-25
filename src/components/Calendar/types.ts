@@ -12,8 +12,6 @@ import { ComponentType, HTMLAttributes } from "react";
 
 type TCalendarEventType = "TASK" | "MEETING" | "TOUR_ONLINE" | "TOUR_INPERSON";
 
-// color: string; // hex (with #) or mui pallete supported (e.g. primary.light)
-
 type TCalendarEvent = {
     id: string;
     title: string;
@@ -23,6 +21,20 @@ type TCalendarEvent = {
     startDate: string; // day-time
     endDate: string; // day-time
     withIds: number[];
+
+    /**
+     * INFO: see https://developers.google.com/calendar/api/v3/reference/events
+     * This field is an 1-1 copy of google's respective field.
+     * We have this copy so that when we make changes to it, we don't overwrite other potential applications' data
+     */
+    extendedProperties?: {
+        private?: {
+            [key: string]: string;
+        };
+        shared?: {
+            [key: string]: string;
+        };
+    } | null;
 };
 
 // ------------------------------------------------------------------------

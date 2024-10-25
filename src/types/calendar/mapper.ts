@@ -16,6 +16,8 @@ import { getAllDayStartEnd } from "@/components/Calendar/util";
             In case of "all-day" event, google populates *only* the `date` field
 */
 
+const PP_EVENT_TYPE_KEY = "pp-event-type";
+
 const GCalendarToTCalendarEvent = ({
     id,
     summary,
@@ -23,6 +25,7 @@ const GCalendarToTCalendarEvent = ({
     end,
     description,
     location,
+    extendedProperties,
 }: calendar_v3.Schema$Event): TCalendarEvent => {
     const isAllDay =
         !start?.dateTime &&
@@ -47,9 +50,11 @@ const GCalendarToTCalendarEvent = ({
         description: description || "",
         startDate,
         endDate,
-        // TODO: ... get this from private!
-        type: "TASK",
+        // TODO: check if is good!
+        type: extendedProperties?.private?.[PP_EVENT_TYPE_KEY] || "TASK",
         withIds: [],
+
+        extendedProperties,
     };
 };
 
@@ -60,6 +65,7 @@ const TCalendarEventToGCalendarEvent = ({
     startDate,
     endDate,
     location,
+    extendedProperties,
     type,
     withIds,
 }: TCalendarEvent): calendar_v3.Schema$Event => {
@@ -78,6 +84,14 @@ const TCalendarEventToGCalendarEvent = ({
             timeZone: "UTC",
         },
         location,
+
+        extendedProperties: {
+            shared: extendedProperties?.shared,
+            private: {
+                ...extendedProperties?.private,
+                [PP_EVENT_TYPE_KEY]: type,
+            },
+        },
     };
 };
 

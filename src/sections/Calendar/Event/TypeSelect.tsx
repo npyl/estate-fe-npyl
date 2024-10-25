@@ -1,4 +1,6 @@
+import getTypeColor from "@/components/Calendar/Event/_shared/getTypeColor";
 import { TCalendarEventType } from "@/components/Calendar/types";
+import { TranslationType } from "@/types/translation";
 import Box, { BoxProps } from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -6,9 +8,48 @@ import Typography from "@mui/material/Typography";
 import { FC, PropsWithChildren, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-const Bullet: FC<BoxProps> = (props) => (
-    <Box width={10} height={10} borderRadius="100%" p={1} {...props} />
+// ------------------------------------------------------------------
+
+interface BulletProps extends BoxProps {
+    type: TCalendarEventType;
+}
+
+const Bullet: FC<BulletProps> = ({ type, ...props }) => (
+    <Box
+        width={10}
+        height={10}
+        bgcolor={getTypeColor(type)}
+        borderRadius="100%"
+        p={1}
+        {...props}
+    />
 );
+
+// ------------------------------------------------------------------
+
+interface Option {
+    type: TCalendarEventType;
+    label: string;
+}
+
+const OPTIONS: Option[] = [
+    { type: "TASK", label: "Task" },
+    { type: "MEETING", label: "Meeting" },
+    { type: "TOUR_INPERSON", label: "Tour online" },
+    { type: "TOUR_ONLINE", label: "Tour in person" },
+];
+
+const getOption =
+    (t: TranslationType) =>
+    ({ type, label }: Option) =>
+        (
+            <ToggleButton key={type} value={type}>
+                <Bullet type={type} />
+                <Typography ml={1}>{t(label)}</Typography>
+            </ToggleButton>
+        );
+
+// ------------------------------------------------------------------
 
 interface Props<T extends string = TCalendarEventType>
     extends PropsWithChildren {
@@ -36,22 +77,7 @@ const TypeSelect = <T extends string>({
             onChange={handleChange}
         >
             {children}
-            <ToggleButton value="TASK">
-                <Bullet bgcolor="red" />
-                <Typography ml={1}>{t("Task")}</Typography>
-            </ToggleButton>
-            <ToggleButton value="MEETING">
-                <Bullet bgcolor="green" />
-                <Typography ml={1}>{t("Meeting")}</Typography>
-            </ToggleButton>
-            <ToggleButton value="TOUR_ONLINE">
-                <Bullet bgcolor="cyan" />
-                <Typography ml={1}>{t("Tour online")}</Typography>
-            </ToggleButton>
-            <ToggleButton value="TOUR_INPERSON">
-                <Bullet bgcolor="blue" />
-                <Typography ml={1}>{t("Tour in person")}</Typography>
-            </ToggleButton>
+            {OPTIONS.map(getOption(t))}
         </ToggleButtonGroup>
     );
 };
