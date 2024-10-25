@@ -12,7 +12,13 @@ const Filters = () => {
     const { type, setType } = useFiltersContext();
 
     return (
-        <Stack direction="row" spacing={1} overflow="auto hidden">
+        <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            width={1}
+            overflow="auto hidden"
+        >
             <Search />
 
             <TypeSelect<TTypeFilter> type={type} onChange={setType}>

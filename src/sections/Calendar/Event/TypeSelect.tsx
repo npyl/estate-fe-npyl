@@ -45,7 +45,7 @@ const getOption =
 // ------------------------------------------------------------------
 
 const SelectSx = {
-    width: "max-content",
+    textWrap: "nowrap",
 };
 
 interface Props<T extends string = TCalendarEventType>
