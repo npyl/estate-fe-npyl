@@ -44,6 +44,10 @@ const getOption =
 
 // ------------------------------------------------------------------
 
+const SelectSx = {
+    width: "max-content",
+};
+
 interface Props<T extends string = TCalendarEventType>
     extends PropsWithChildren {
     type: T;
@@ -58,7 +62,10 @@ const TypeSelect = <T extends string>({
     const { t } = useTranslation();
 
     const handleChange = useCallback(
-        (_: any, value: T) => onChange(value),
+        (_: any, value: T | null) => {
+            if (!value) return;
+            onChange(value);
+        },
         [onChange]
     );
 
@@ -68,6 +75,7 @@ const TypeSelect = <T extends string>({
             size="small"
             value={type}
             onChange={handleChange}
+            sx={SelectSx}
         >
             {children}
             {OPTIONS.map(getOption(t))}

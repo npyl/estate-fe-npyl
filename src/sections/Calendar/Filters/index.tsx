@@ -3,6 +3,7 @@ import TypeSelect from "../Event/TypeSelect";
 import Typography from "@mui/material/Typography";
 import ToggleButton from "@mui/material/ToggleButton";
 import { useFiltersContext } from "./context";
+import Stack from "@mui/material/Stack";
 import { TTypeFilter } from "./types";
 
 const Filters = () => {
@@ -10,11 +11,13 @@ const Filters = () => {
     const { type, setType } = useFiltersContext();
 
     return (
-        <TypeSelect<TTypeFilter> type={type} onChange={setType}>
-            <ToggleButton value="ANY">
-                <Typography ml={1}>{t("All")}</Typography>
-            </ToggleButton>
-        </TypeSelect>
+        <Stack overflow="auto hidden">
+            <TypeSelect<TTypeFilter> type={type} onChange={setType}>
+                <ToggleButton value="ANY">
+                    <Typography ml={1}>{t("All")}</Typography>
+                </ToggleButton>
+            </TypeSelect>
+        </Stack>
     );
 };
 
