@@ -22,6 +22,24 @@ export class CalendarService extends AuthService {
         });
     }
 
+    async searchEvents(
+        userId: number,
+        query: string,
+        startDate: string | undefined,
+        endDate: string | undefined
+    ) {
+        const auth = await this.getAuthForUser(userId);
+        if (!auth) return { data: { items: [] } };
+
+        return await this.calendar.events.list({
+            calendarId: "primary",
+            timeMin: startDate,
+            timeMax: endDate,
+            q: query,
+            auth,
+        });
+    }
+
     async createEvent(userId: number, body: calendar_v3.Schema$Event) {
         const auth = await this.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");

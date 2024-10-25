@@ -14,6 +14,12 @@ interface GetEventsReq extends BasicEventReq {
     endDate: string;
 }
 
+interface SearchEventsReq extends BasicEventReq {
+    query: string;
+    startDate?: string;
+    endDate?: string;
+}
+
 interface DeleteEventReq extends BasicEventReq {
     eventId: string;
 }
@@ -73,6 +79,18 @@ export const calendar = createApi({
             providesTags: ["Events"],
         }),
 
+        searchEvents: builder.query<TCalendarEvent[], SearchEventsReq>({
+            query: ({ userId, query, startDate, endDate }) => ({
+                url: `/${userId}/events/search`,
+                params: {
+                    startDate,
+                    endDate,
+                    query,
+                },
+            }),
+            providesTags: ["Events"],
+        }),
+
         createEvent: builder.mutation<void, CreateUpdateEventReq>({
             query: ({ userId, body }) => ({
                 url: `/${userId}/events/create`,
@@ -106,6 +124,7 @@ export const {
     useLogoutMutation,
     // ...
     useGetEventsQuery,
+    useSearchEventsQuery,
     useCreateEventMutation,
     useUpdateEventMutation,
     useDeleteEventMutation,
