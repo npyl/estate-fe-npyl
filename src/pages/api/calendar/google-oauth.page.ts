@@ -6,11 +6,12 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method !== "GET") {
-        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
+        sendCloseWindowResponse(res);
         return;
     }
+
     if (!req.url) {
-        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
+        sendCloseWindowResponse(res);
         return;
     }
 
@@ -19,23 +20,40 @@ export default async function handler(
     const state = url.searchParams.get("state");
 
     if (!code || !state) {
-        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
-        return;
-    }
-    if (typeof code !== "string" || typeof state !== "string") {
-        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
+        sendCloseWindowResponse(res);
         return;
     }
 
     try {
-        await calendarService.handleAuthCallback(code!, state!);
+        await calendarService.handleAuthCallback(code, state);
 
-        // INFO: here we are sending a redirect status (308 a.k.a. permanent to keep our credentials in crm) and the redirect happens thanks to google
-        res.redirect(302, "/calendar");
+        sendCloseWindowResponse(res, true);
     } catch (ex) {
         console.error(ex);
-
-        // INFO: here we are sending a redirect status (308 a.k.a. permanent to keep our credentials in crm) and the redirect happens thanks to google
-        res.redirect(302, "/calendar"); // TODO: Redirect to an error page
+        sendCloseWindowResponse(res, false);
     }
+}
+
+/**
+ * Sends a message to all(?) windows that we succeeded or failed with our oauth login process;
+ * Used by initial browser window to determine whether login succeeded.
+ */
+function sendCloseWindowResponse(
+    res: NextApiResponse,
+    success: boolean = false
+) {
+    const type = success ? "GOOGLE_AUTH_SUCCESS" : "GOOGLE_AUTH_ERROR";
+
+    res.setHeader("Content-Type", "text/html");
+    res.status(200).send(`
+        <!DOCTYPE html>
+        <html>
+            <body>
+                <script>
+                    window.opener.postMessage({ type: "${type}" }, "*");                    
+                    window.close();
+                </script>
+            </body>
+        </html>
+    `);
 }

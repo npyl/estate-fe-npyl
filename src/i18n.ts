@@ -1033,10 +1033,12 @@ const resources = {
             End: "End",
             Day: "Day",
             Login: "Login",
+            GOOGLE_OATH_FAIL: "Failed to login",
         },
     },
     el: {
         translation: {
+            GOOGLE_OATH_FAIL: "Αποτυχία σύνδεσης",
             Login: "Είσοδος",
             "All day": "Όλη μέρα",
             Reset: "Επαναφορά",

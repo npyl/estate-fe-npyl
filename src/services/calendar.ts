@@ -48,13 +48,50 @@ export const calendar = createApi({
             providesTags: ["IsAuthenticated"],
         }),
 
-        authenticate: builder.mutation<IAuthenticateRes, UserId>({
+        authenticate: builder.mutation<boolean, number>({
             query: (userId) => ({
                 url: `/${userId}/auth`,
                 method: "POST",
             }),
+            async transformResponse(response: { authUrl: string }) {
+                if (!response.authUrl) return false;
 
-            invalidatesTags: ["IsAuthenticated"],
+                const width = 600;
+                const height = 600;
+                const left = (window.innerWidth - width) / 2 + window.screenX;
+                const top = (window.innerHeight - height) / 2 + window.screenY;
+
+                // Open popup with google's oauth
+                window.open(
+                    response.authUrl,
+                    "Google Auth",
+                    `width=${width},height=${height},left=${left},top=${top},popup=1`
+                );
+
+                // Wait for popup to post a message to our initial window
+                try {
+                    const success = await new Promise<boolean>(
+                        (resolve, reject) => {
+                            window.onmessage = (event: MessageEvent) => {
+                                if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+                                    window.onmessage = null;
+                                    resolve(true);
+                                }
+                                if (event.data.type === "GOOGLE_AUTH_ERROR") {
+                                    window.onmessage = null;
+                                    reject(new Error("Authentication failed"));
+                                }
+                            };
+                        }
+                    );
+
+                    return success;
+                } catch (error) {
+                    return false;
+                }
+            },
+            invalidatesTags: (result) =>
+                result ? ["IsAuthenticated", "Events"] : [],
         }),
 
         logout: builder.mutation<void, UserId>({

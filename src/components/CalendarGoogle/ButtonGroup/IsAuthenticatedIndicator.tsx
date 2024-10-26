@@ -6,13 +6,14 @@ import {
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import AvatarButton from "./AvatarButton";
-import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 // -------------------------------------------------------------------------
 
 const useCalendarAuth = () => {
-    const router = useRouter();
+    const { t } = useTranslation();
+
     const { user } = useAuth();
 
     const { data, isLoading } = useIsAuthenticatedQuery(user?.id!, {
@@ -24,10 +25,8 @@ const useCalendarAuth = () => {
     const isAuthenticated = data?.isAuthenticated;
 
     const authenticate = async () => {
-        const { authUrl } = (await authenticateCb(user!.id).unwrap()) || {};
-        if (!authUrl) return;
-
-        router.push(authUrl);
+        const res = await authenticateCb(user!.id).unwrap();
+        if (!res) toast.error(t("GOOGLE_OATH_FAIL"));
     };
 
     return {
