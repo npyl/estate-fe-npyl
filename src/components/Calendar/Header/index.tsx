@@ -19,73 +19,43 @@ const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
 
     const shouldHighlight = props.view === "day" && isToday;
 
-    const content = (
-        <>
-            <HighlightTypography
-                highlight={shouldHighlight}
-                fontSize="2rem"
-                fontWeight="bold"
-                width="fit-content"
-                borderRadius="100%"
-                px={1}
-                py={0.1}
-            >
-                {value.main}
-            </HighlightTypography>
-
-            <span style={{ fontSize: "1rem" }}>{value.sub}</span>
-
-            {!isToday ? (
-                <Stack direction="row">
-                    <Divider
-                        orientation="vertical"
-                        sx={{ height: "inherit", mx: 1 }}
-                    />
-
-                    <TodayButton onClick={props.onDateChange} />
-                </Stack>
-            ) : null}
-        </>
-    );
-
     return (
-        <>
-            {/* Small displays */}
+        <StyledBaseHeader {...props}>
             <Stack
-                display={{
-                    xs: "flex",
-                    sm: "none",
-                }}
+                position="absolute"
+                top="50%"
+                left="50%"
                 direction="row"
                 alignItems="center"
-                justifyContent="center"
                 spacing={1}
-                my={1}
+                sx={{
+                    transform: "translate(-50%, -50%)",
+                }}
             >
-                {content}
-            </Stack>
-
-            <StyledBaseHeader {...props}>
-                {/* Large displays */}
-                <Stack
-                    display={{
-                        xs: "none",
-                        sm: "flex",
-                    }}
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    direction="row"
-                    alignItems="center"
-                    spacing={1}
-                    sx={{
-                        transform: "translate(-50%, -50%)",
-                    }}
+                <HighlightTypography
+                    highlight={shouldHighlight}
+                    fontSize="2rem"
+                    fontWeight="bold"
+                    width="fit-content"
+                    borderRadius="100%"
+                    px={1}
+                    py={0.1}
                 >
-                    {content}
-                </Stack>
-            </StyledBaseHeader>
-        </>
+                    {value.main}
+                </HighlightTypography>
+                <span style={{ fontSize: "1rem" }}>{value.sub}</span>
+                {!isToday ? (
+                    <Stack direction="row">
+                        <Divider
+                            orientation="vertical"
+                            sx={{ height: "inherit", mx: 1 }}
+                        />
+
+                        <TodayButton onClick={props.onDateChange} />
+                    </Stack>
+                ) : null}
+            </Stack>
+        </StyledBaseHeader>
     );
 };
 

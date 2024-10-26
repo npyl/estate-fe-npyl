@@ -17,6 +17,14 @@ const getTitleSx = (color: string): SxProps<Theme> => ({
     backgroundColor: color[0] === "#" ? alpha(color, 0.3) : "transparent",
 });
 
+const DurationSx: SxProps<Theme> = {
+    transform: "translateX(50%)",
+    bgcolor: ({ palette: { mode } }) =>
+        mode === "light" ? "success.light" : "success.dark",
+    color: ({ palette: { mode } }) =>
+        mode === "light" ? "neutral.200" : "neutral.300",
+};
+
 interface TitleProps {
     mini: boolean;
     title: string;
@@ -40,9 +48,7 @@ const Title: FC<TitleProps> = ({ title, mini, color, startDate, endDate }) => (
                 noWrap
                 right="50%"
                 zIndex={Z_INDEX.EVENT}
-                sx={{
-                    transform: "translateX(50%)",
-                }}
+                sx={DurationSx}
             />
         ) : null}
     </ForceVisible>

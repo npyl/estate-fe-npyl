@@ -130,8 +130,8 @@ const CreateUpdateForm: FC<Props> = ({
                     />
 
                     <Stack
-                        direction="row"
-                        spacing={1}
+                        flexDirection={{ xs: "column-reverse", sm: "row" }}
+                        gap={1}
                         justifyContent="flex-end"
                         alignItems="center"
                     >

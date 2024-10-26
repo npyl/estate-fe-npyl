@@ -13,16 +13,30 @@ const CalendarGoogleMonthView = dynamic(() => import("./Views/Month"));
 const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
 
 import useResponsive from "@/hooks/useResponsive";
+import { useState } from "react";
+import { TODAY } from "@/components/BaseCalendar/constants";
+
+const MobileControls = dynamic(() => import("./MobileControls"));
 
 const CalendarSection = () => {
     const belowSm = useResponsive("down", "sm");
+
+    const [date, setDate] = useState(TODAY);
 
     return (
         <FiltersProvider>
             <Filters />
 
+            {/* Account + date controls */}
+            {belowSm ? (
+                <MobileControls date={date} onDateChange={setDate} />
+            ) : null}
+
             <CalendarGoogle
+                date={date}
+                onDateChange={setDate}
                 view={belowSm ? "day" : undefined}
+                // ...
                 ViewSlots={{
                     DayView: WithActions(CalendarGoogleDayView),
                     WeekView: WithActions(CalendarGoogleWeekView),
@@ -31,6 +45,10 @@ const CalendarSection = () => {
                 }}
                 slots={{
                     Header: StyledHeader,
+                }}
+                HeaderSlots={{
+                    // disable on mobile
+                    ...(belowSm ? { ViewButtonGroup: undefined } : {}),
                 }}
             />
         </FiltersProvider>

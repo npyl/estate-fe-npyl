@@ -109,7 +109,14 @@ const EventDates: FC<EventDatesProps> = ({
             </Stack>
 
             {!allDay ? (
-                <Stack direction="row" spacing={1}>
+                <Stack
+                    direction="row"
+                    gap={1}
+                    flexDirection={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                >
                     <RHFDateTimePicker
                         defaultValue={MIN_TIME}
                         label={t("Start")}
