@@ -13,8 +13,7 @@ const DateInfo: FC<DateInfoProps> = ({ date, ...props }) => {
 
     return (
         <Typography
-            bgcolor="primary.light"
-            borderRadius="20px"
+            color="text.secondary"
             fontSize="11px"
             textAlign="center"
             {...props}

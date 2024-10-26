@@ -50,7 +50,7 @@ interface StyledSearchProps extends TextFieldProps<"outlined"> {
 
 // Use forwardRef with the styled component
 const StyledTextField = styled(TextField)<StyledSearchProps>(({ open }) => ({
-    minWidth: "50px",
+    minWidth: open ? "160px" : "50px",
     width: open ? "160px" : "50px",
     transition: "width 0.3s",
 }));

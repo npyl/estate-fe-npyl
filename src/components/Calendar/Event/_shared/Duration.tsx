@@ -17,9 +17,7 @@ const formatTime = (dateString: string) => {
 const DurationSx: SxProps<Theme> = {
     width: "fit-content",
     borderRadius: "15px",
-    backgroundColor: (theme) =>
-        theme.palette.mode === "light" ? "success.light" : "success.dark",
-    color: "white",
+    color: "text.secondary",
     paddingLeft: (theme) => theme.spacing(1),
     paddingRight: (theme) => theme.spacing(1),
 };

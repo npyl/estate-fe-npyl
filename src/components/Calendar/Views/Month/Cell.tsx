@@ -50,9 +50,9 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
                 {date.getDate()}
             </HighlightTypography>
 
-            <Box overflow="hidden auto">
+            <Stack overflow="hidden auto" spacing={1}>
                 {events.map(getEvent(onEventClick))}
-            </Box>
+            </Stack>
         </Stack>
     );
 };
