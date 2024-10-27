@@ -1,6 +1,7 @@
 import getTypeColor from "@/components/Calendar/Event/_shared/getTypeColor";
 import { TCalendarEventType } from "@/components/Calendar/types";
 import { TranslationType } from "@/types/translation";
+import { SxProps, Theme } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -44,8 +45,11 @@ const getOption =
 
 // ------------------------------------------------------------------
 
-const SelectSx = {
+const SelectSx: SxProps<Theme> = {
     textWrap: "nowrap",
+    "& .MuiToggleButton-root": {
+        textTransform: "unset",
+    },
 };
 
 interface Props<T extends string = TCalendarEventType>

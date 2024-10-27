@@ -1,4 +1,4 @@
-import { Popover as MuiPopover } from "@mui/material";
+import { Popover as MuiPopover, SxProps, Theme } from "@mui/material";
 
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -7,16 +7,46 @@ import TodayIcon from "@mui/icons-material/Today";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import YearIcon from "./YearIcon";
-import { FC, useCallback } from "react";
+import { ComponentType, FC, useCallback, useMemo } from "react";
 import { TCalendarView } from "@/components/BaseCalendar/types";
+import { TranslationType } from "@/types/translation";
+import { useTranslation } from "react-i18next";
 
 // -----------------------------------------------------------------------
 
-const ToggleButtonSx = {
+const ToggleButtonSx: SxProps<Theme> = {
     border: 0,
+    display: "flex",
+    flexDirection: "row",
+    gap: (theme) => theme.spacing(1),
+    justifyContent: "unset",
+    textTransform: "unset",
 };
 
 // -----------------------------------------------------------------------
+
+interface Option {
+    key: string;
+    label: string;
+    Icon: ComponentType;
+}
+
+const getOPTIONS = (t: TranslationType): Option[] => [
+    { key: "day", label: t("Day"), Icon: TodayIcon },
+    { key: "week", label: t("Week"), Icon: DateRangeIcon },
+    { key: "month", label: t("Month"), Icon: CalendarMonthIcon },
+    { key: "year", label: t("Year"), Icon: YearIcon },
+];
+
+// -------------------------------------------------------------
+
+const getOption = ({ key, label, Icon }: Option) => (
+    <ToggleButton key={key} value={key} sx={ToggleButtonSx}>
+        <Icon /> {label}
+    </ToggleButton>
+);
+
+// -------------------------------------------------------------
 
 interface PopoverProps {
     anchorEl: HTMLElement;
@@ -31,6 +61,10 @@ const Popover: FC<PopoverProps> = ({
     onViewChange,
     onClose,
 }) => {
+    const { t } = useTranslation();
+
+    const OPTIONS = useMemo(() => getOPTIONS(t), [t]);
+
     const handleViewChange = useCallback(
         (_: any, v: TCalendarView) => v && onViewChange(v),
         [onViewChange]
@@ -44,18 +78,7 @@ const Popover: FC<PopoverProps> = ({
                 value={view}
                 onChange={handleViewChange}
             >
-                <ToggleButton value="day" sx={ToggleButtonSx}>
-                    <TodayIcon />
-                </ToggleButton>
-                <ToggleButton value="week" sx={ToggleButtonSx}>
-                    <DateRangeIcon />
-                </ToggleButton>
-                <ToggleButton value="month" sx={ToggleButtonSx}>
-                    <CalendarMonthIcon />
-                </ToggleButton>
-                <ToggleButton value="year" sx={ToggleButtonSx}>
-                    <YearIcon />
-                </ToggleButton>
+                {OPTIONS.map(getOption)}
             </ToggleButtonGroup>
         </MuiPopover>
     );

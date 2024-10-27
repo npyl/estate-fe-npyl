@@ -1034,10 +1034,22 @@ const resources = {
             Day: "Day",
             Login: "Login",
             GOOGLE_OATH_FAIL: "Failed to login",
+
+            Today: "Today",
+
+            Week: "Week",
+            Month: "Month",
+            Year: "Year",
         },
     },
     el: {
         translation: {
+            Today: "Σήμερα",
+
+            Week: "Εβδομάδα",
+            Month: "Μήνας",
+            Year: "Χρόνος",
+
             GOOGLE_OATH_FAIL: "Αποτυχία σύνδεσης",
             Login: "Είσοδος",
             "All day": "Όλη μέρα",
