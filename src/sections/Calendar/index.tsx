@@ -19,7 +19,7 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 const MobileControls = dynamic(() => import("./MobileControls"));
 
 const CalendarSection = () => {
-    const belowSm = useResponsive("down", "sm");
+    const belowMd = useResponsive("down", "md");
 
     const [date, setDate] = useState(TODAY);
 
@@ -28,14 +28,14 @@ const CalendarSection = () => {
             <Filters />
 
             {/* Account + date controls */}
-            {belowSm ? (
+            {belowMd ? (
                 <MobileControls date={date} onDateChange={setDate} />
             ) : null}
 
             <CalendarGoogle
                 date={date}
                 onDateChange={setDate}
-                view={belowSm ? "day" : undefined}
+                view={belowMd ? "day" : undefined}
                 // ...
                 ViewSlots={{
                     DayView: WithActions(CalendarGoogleDayView),
@@ -48,7 +48,7 @@ const CalendarSection = () => {
                 }}
                 HeaderSlots={{
                     // disable on mobile
-                    ...(belowSm ? { ViewButtonGroup: undefined } : {}),
+                    ...(belowMd ? { ViewButtonGroup: undefined } : {}),
                 }}
             />
         </FiltersProvider>

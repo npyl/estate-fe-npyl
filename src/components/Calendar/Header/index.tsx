@@ -7,13 +7,15 @@ import { renderValue } from "./util";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import Divider from "@mui/material/Divider";
 import HighlightTypography from "../HighlightTypography";
+import useCalendarLocale from "../useCalendarLocale";
 const TodayButton = dynamic(() => import("./TodayButton"));
 
 const CalendarHeader: FC<BaseCalendarHeaderProps> = ({
     children,
     ...props
 }) => {
-    const value = renderValue(props.view, props.date);
+    const locale = useCalendarLocale();
+    const value = renderValue(props.view, props.date, locale);
 
     const isToday = TODAY.toDateString() === props.date.toDateString();
 

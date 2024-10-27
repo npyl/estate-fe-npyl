@@ -4,6 +4,7 @@ import { CalendarCellProps, TCalendarEvent } from "../../types";
 import CompactCalendarEvent from "../../Event/Compact";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import HighlightTypography from "../../HighlightTypography";
+import useCalendarLocale from "../../useCalendarLocale";
 
 const CellSx: SxProps<Theme> = {
     position: "relative",
@@ -42,6 +43,10 @@ interface CurrentMonthProps {
 
 const CurrentMonth: FC<CurrentMonthProps> = ({ date }) => {
     const isCurrentMonth = date.getMonth() === TODAY.getMonth();
+    const locale = useCalendarLocale();
+    const month = date.toLocaleString(locale, {
+        month: "long",
+    });
 
     return (
         <HighlightTypography
@@ -53,9 +58,7 @@ const CurrentMonth: FC<CurrentMonthProps> = ({ date }) => {
             m={0.3}
             borderRadius="5px"
         >
-            {date.toLocaleString("default", {
-                month: "long",
-            })}
+            {month}
         </HighlightTypography>
     );
 };

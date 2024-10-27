@@ -1,14 +1,21 @@
 import { TCalendarView } from "@/components/BaseCalendar/types";
+import { TCalendarLocale } from "../types";
+
+interface RenderValue {
+    main: string;
+    sub: string;
+}
 
 const renderValue = (
     view: TCalendarView,
-    date: Date
-): { main: string; sub: string } => {
+    date: Date,
+    loc: TCalendarLocale
+): RenderValue => {
     switch (view) {
         case "day":
             return {
                 main: date.getDate().toString(),
-                sub: date.toLocaleDateString("en-US", { weekday: "short" }),
+                sub: date.toLocaleDateString(loc, { weekday: "short" }),
             };
         case "week":
             const startOfWeek = new Date(date);
@@ -19,7 +26,7 @@ const renderValue = (
             // If we are on the same month, show only that month
             if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
                 return {
-                    main: `${startOfWeek.toLocaleDateString("en-US", {
+                    main: `${startOfWeek.toLocaleDateString(loc, {
                         month: "short",
                     })}`,
                     sub: endOfWeek.getFullYear().toString(),
@@ -28,16 +35,16 @@ const renderValue = (
 
             // Otherwise show range in the form Oct - Nov
             return {
-                main: `${startOfWeek.toLocaleDateString("en-US", {
+                main: `${startOfWeek.toLocaleDateString(loc, {
                     month: "short",
-                })} - ${endOfWeek.toLocaleDateString("en-US", {
+                })} - ${endOfWeek.toLocaleDateString(loc, {
                     month: "short",
                 })}`,
                 sub: endOfWeek.getFullYear().toString(),
             };
         case "month":
             return {
-                main: date.toLocaleDateString("en-US", { month: "long" }),
+                main: date.toLocaleDateString(loc, { month: "long" }),
                 sub: date.getFullYear().toString(),
             };
         case "year":

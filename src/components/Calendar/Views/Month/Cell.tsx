@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Box, Stack, SxProps, Theme } from "@mui/material";
+import { Stack, SxProps, Theme } from "@mui/material";
 import { CalendarCellProps, TCalendarEvent } from "../../types";
 import CompactCalendarEvent from "../../Event/Compact";
 import HighlightTypography from "../../HighlightTypography";

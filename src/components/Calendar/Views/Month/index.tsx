@@ -2,11 +2,12 @@ import { FC } from "react";
 import Grid from "@mui/material/Grid";
 import { BaseCalendarCellProps } from "@/components/BaseCalendar/types";
 import MonthView from "@/components/BaseCalendar/View/Month";
-import { Typography } from "@mui/material";
+import { SxProps, Theme, Typography } from "@mui/material";
 import { WEEKDAYS } from "@/components/BaseCalendar/constants";
 import { CalendarMonthViewProps } from "../../types";
 import { _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
+import useCalendarLocale from "../../useCalendarLocale";
 const CalendarMonthViewCell = dynamic(() => import("./Cell"));
 
 // --------------------------------------------------------------------------
@@ -32,25 +33,31 @@ const PlaceholderCell = () => (
 
 // --------------------------------------------------------------------------
 
-const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => (
-    <Typography
-        textAlign="center"
-        variant="h6"
-        color="text.secondary"
-        border="1px solid"
-        borderColor="divider"
-        borderBottom="none"
-        borderRight="none"
-        sx={{
-            "&:nth-of-type(7n)": {
-                borderRight: "1px solid",
-                borderColor: "divider",
-            },
-        }}
-    >
-        {WEEKDAYS[date.getDay()]}
-    </Typography>
-);
+const HeadSx: SxProps<Theme> = {
+    "&:nth-of-type(7n)": {
+        borderRight: "1px solid",
+        borderColor: "divider",
+    },
+};
+
+const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => {
+    const locale = useCalendarLocale();
+    const weekday = date.toLocaleDateString(locale, { weekday: "short" });
+    return (
+        <Typography
+            textAlign="center"
+            variant="h6"
+            color="text.secondary"
+            border="1px solid"
+            borderColor="divider"
+            borderBottom="none"
+            borderRight="none"
+            sx={HeadSx}
+        >
+            {weekday}
+        </Typography>
+    );
+};
 
 // --------------------------------------------------------------------------
 

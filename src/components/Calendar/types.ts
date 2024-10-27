@@ -10,6 +10,8 @@ import {
 } from "@/components/BaseCalendar/types";
 import { ComponentType, HTMLAttributes } from "react";
 
+type TCalendarLocale = "en-US" | "el-GR";
+
 const CALENDAR_EVENT_TYPES = [
     "TASK",
     "MEETING",
@@ -112,6 +114,9 @@ interface CalendarProps {
 export { isTCalendarEventType };
 
 export type {
+    TCalendarLocale,
+
+    // ...
     TCalendarEvent,
     TCalendarEventType,
 
