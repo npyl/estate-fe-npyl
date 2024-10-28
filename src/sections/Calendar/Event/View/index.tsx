@@ -56,10 +56,11 @@ const DescriptionSx: SxProps<Theme> = {
 
 interface Props {
     event: TCalendarEvent;
+    actions?: boolean;
     onClose: VoidFunction;
 }
 
-const EventDialog: FC<Props> = ({ event, onClose }) => {
+const EventDialog: FC<Props> = ({ event, actions = true, onClose }) => {
     const { t } = useTranslation();
 
     const { deleteEvent, editEvent } = useEventMutations();
@@ -100,7 +101,7 @@ const EventDialog: FC<Props> = ({ event, onClose }) => {
                             {title}
                         </Typography>
 
-                        {!isEdit ? (
+                        {actions && !isEdit ? (
                             <Stack
                                 direction="row"
                                 spacing={1}

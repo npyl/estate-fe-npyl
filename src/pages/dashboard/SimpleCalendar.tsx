@@ -12,7 +12,8 @@ import {
 } from "@/components/Calendar/types";
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
-import EventDialog from "@/sections/Calendar/Event/View";
+import dynamic from "next/dynamic";
+const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
 
 // ------------------------------------------------------------------------
 
@@ -129,7 +130,13 @@ const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
                 {...props}
             />
 
-            {event ? <EventDialog event={event} onClose={closeDialog} /> : null}
+            {event ? (
+                <EventDialog
+                    actions={false}
+                    event={event}
+                    onClose={closeDialog}
+                />
+            ) : null}
         </>
     );
 };
