@@ -21,8 +21,6 @@ const MonthView: FC<CalendarMonthViewProps> = (props) => {
                 getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CalendarMonthViewCell
-                        // TODO: fix this (actually passed but types do not reflect that!)
-                        events={[]}
                         {...props}
                         onClick={() => setStartDate(props.date.toISOString())}
                     />

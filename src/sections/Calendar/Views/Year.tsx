@@ -39,8 +39,6 @@ const YearView: FC<CalendarYearViewProps> = ({ onEventClick, ...props }) => {
                 {...props}
                 Cell={(other) => (
                     <CalendarGoogleYearViewCell
-                        // TODO: fix this (actually passed but types do not reflect that!)
-                        events={[]}
                         {...other}
                         onEventClick={onEventClick}
                         onClick={() => setStartDate(other.date.toISOString())}

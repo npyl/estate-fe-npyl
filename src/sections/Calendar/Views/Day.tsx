@@ -36,8 +36,6 @@ const DayView: FC<CalendarDayViewProps> = (props) => {
                 getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CellWithTimeOffset
-                        // TODO: fix this (actually passed but types do not reflect that!)
-                        events={[]}
                         {...props}
                         onClickWithOffset={setStartDate}
                     />

@@ -77,13 +77,12 @@ type TGetCellEventsCb = (
 
 interface ViewEvents {
     events?: TCalendarEvent[];
-
     getCellEvents?: TGetCellEventsCb;
-
     onEventClick?: (e: TCalendarEvent) => void;
 }
 
-type CalendarDayViewProps = BaseCalendarDayViewProps & ViewEvents;
+type CalendarDayViewProps = BaseCalendarDayViewProps<CalendarCellProps> &
+    ViewEvents;
 type CalendarWeekViewProps = BaseCalendarWeekViewProps & ViewEvents;
 type CalendarMonthViewProps = BaseCalendarMonthViewProps & ViewEvents;
 type CalendarYearViewProps = BaseCalendarYearViewProps & ViewEvents;
