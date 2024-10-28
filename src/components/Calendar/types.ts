@@ -81,10 +81,18 @@ interface ViewEvents {
     onEventClick?: (e: TCalendarEvent) => void;
 }
 
-type CalendarDayViewProps = BaseCalendarDayViewProps & ViewEvents;
-type CalendarWeekViewProps = BaseCalendarWeekViewProps & ViewEvents;
-type CalendarMonthViewProps = BaseCalendarMonthViewProps & ViewEvents;
-type CalendarYearViewProps = BaseCalendarYearViewProps & ViewEvents;
+type CalendarDayViewProps<
+    CellProps extends CalendarCellProps = CalendarCellProps
+> = BaseCalendarDayViewProps<CellProps> & ViewEvents;
+type CalendarWeekViewProps<
+    CellProps extends CalendarCellProps = CalendarCellProps
+> = BaseCalendarWeekViewProps<CellProps> & ViewEvents;
+type CalendarMonthViewProps<
+    CellProps extends CalendarCellProps = CalendarCellProps
+> = BaseCalendarMonthViewProps<CellProps> & ViewEvents;
+type CalendarYearViewProps<
+    CellProps extends CalendarCellProps = CalendarCellProps
+> = BaseCalendarYearViewProps<CellProps> & ViewEvents;
 
 interface CalendarViewSlots {
     DayView: ComponentType<CalendarDayViewProps>;

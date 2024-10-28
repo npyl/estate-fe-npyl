@@ -29,8 +29,6 @@ const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
     <CalendarYearView
         Cell={(props) => (
             <CalendarGoogleYearViewCell
-                // TODO: this is not needed; the type does not support it but events are passed actually; must update the Cell props
-                events={[]}
                 {...props}
                 onEventClick={onEventClick}
             />

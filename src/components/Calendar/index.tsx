@@ -58,10 +58,10 @@ const Calendar: FC<CalendarProps> = ({
                 ...slots,
             }}
             ViewSlots={{
-                DayView: CalendarDayView,
-                WeekView: CalendarWeekView,
-                MonthView: CalendarMonthView,
-                YearView: CalendarYearView,
+                DayView: CalendarDayView as any,
+                WeekView: CalendarWeekView as any,
+                MonthView: CalendarMonthView as any,
+                YearView: CalendarYearView as any,
                 ...ViewSlots,
             }}
             HeaderSlots={{
