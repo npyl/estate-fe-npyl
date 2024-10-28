@@ -81,8 +81,7 @@ interface ViewEvents {
     onEventClick?: (e: TCalendarEvent) => void;
 }
 
-type CalendarDayViewProps = BaseCalendarDayViewProps<CalendarCellProps> &
-    ViewEvents;
+type CalendarDayViewProps = BaseCalendarDayViewProps & ViewEvents;
 type CalendarWeekViewProps = BaseCalendarWeekViewProps & ViewEvents;
 type CalendarMonthViewProps = BaseCalendarMonthViewProps & ViewEvents;
 type CalendarYearViewProps = BaseCalendarYearViewProps & ViewEvents;
