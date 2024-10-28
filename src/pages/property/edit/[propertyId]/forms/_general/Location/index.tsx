@@ -115,7 +115,7 @@ const LocationSection = () => {
                     <Box height="50vh" width="100%">
                         <Map
                             onReady={setMap}
-                            search
+                            search={!isPinLocked}
                             zoom={10}
                             drawing={false}
                             markers={[mainMarker]}
