@@ -6,7 +6,15 @@ import { DataProps } from "./types";
 import { Paper } from "@mui/material";
 
 const Popover: FC<DataProps> = ({ data, anchorEl, onSelect }) => (
-    <Popper open disablePortal anchorEl={anchorEl} placement="bottom-start">
+    <Popper
+        open
+        disablePortal
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        sx={{
+            zIndex: 2000,
+        }}
+    >
         <Paper>
             <Stack direction="column">
                 {data.map((o) => (
