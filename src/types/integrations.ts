@@ -15,8 +15,11 @@ export interface IIntegration {
     password: string;
     site: IntegrationSite;
     username: string;
+
+    // INFO: only for RightMove
+    branchId: number;
 }
 
-export interface IIntegrationPOST extends IIntegration {}
+export interface IIntegrationPOST extends Partial<IIntegration> {}
 
 export type { ImagesOrderRes };

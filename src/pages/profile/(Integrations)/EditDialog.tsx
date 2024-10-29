@@ -12,7 +12,9 @@ import { TranslationType } from "@/types/translation";
 import Dialog from "@/components/Dialog";
 import { IntegrationSite } from "@/types/listings";
 
-const getSchema = (t: TranslationType, type?: IntegrationSite) =>
+interface IntegrationExceptRightMove extends Omit<IIntegration, "branchId"> {}
+
+const getSchema = (t: TranslationType) =>
     Yup.object().shape({
         apiKey: Yup.string().required(t<string>("API Key is required")),
         appKey: Yup.string().required(t<string>("App Key is required")),
@@ -39,13 +41,9 @@ interface FormProps {
 const EditDialog: React.FC<FormProps> = ({ open, initialValues, onClose }) => {
     const { t } = useTranslation();
 
-    // Define Yup validation schema with type casting
-    const validationSchema = useMemo(
-        () => getSchema(t, initialValues?.site),
-        [t, initialValues?.site]
-    );
+    const validationSchema = useMemo(() => getSchema(t), [t]);
 
-    const methods = useForm<IIntegrationPOST>({
+    const methods = useForm<IntegrationExceptRightMove>({
         values: initialValues,
         resolver: yupResolver(validationSchema),
     });

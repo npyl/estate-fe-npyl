@@ -10,11 +10,11 @@ import * as Yup from "yup";
 import Dialog from "@/components/Dialog";
 
 interface IRightMovePOST {
-    branchId: string;
+    branchId: number;
 }
 
 const Schema = Yup.object().shape({
-    branchId: Yup.string().required(),
+    branchId: Yup.number().min(0).required(),
 });
 
 interface FormProps {
@@ -26,7 +26,7 @@ const EditDialog: React.FC<FormProps> = ({ onClose }) => {
 
     const methods = useForm<IRightMovePOST>({
         values: {
-            branchId: "",
+            branchId: -1,
         },
         resolver: yupResolver(Schema),
     });
