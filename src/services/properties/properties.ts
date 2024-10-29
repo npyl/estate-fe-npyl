@@ -15,6 +15,7 @@ import { ICustomer } from "src/types/customer";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
+import { useState } from "react";
 
 interface JustData<T> {
     data: T;
@@ -301,24 +302,45 @@ export const properties = createApi({
                 responseHandler: "text",
             }),
         }),
-
-        improveDescription: builder.mutation<string, IOpenAIDetailsPOST>({
-            query: (body) => {
-                return {
-                    url: `/description/improve`,
-                    method: "POST",
-                    body: {
-                        ...body,
-                        oldDescription: body.oldDescription || "",
-                        improveOption: body.improveOption || "CONCISE", // ensure improveOption is passed
-                        styling: body.styling || false,
-                    },
-                    responseHandler: "text",
-                };
-            },
-        }),
     }),
 });
+
+export const useImproveDescriptionMutation = () => {
+    const [isLoading, setLoading] = useState(false);
+
+    const cb = async (body: IOpenAIDetailsPOST) => {
+        setLoading(true);
+
+        alert(
+            `${process.env.NEXT_PUBLIC_FRONTENT_URL}/api/description/improve`
+        );
+
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_FRONTENT_URL}/api/description/improve`,
+            {
+                headers: {
+                    Authorization: `Bearer  ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                    "Content-Type": "text/plain",
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    ...body,
+                    oldDescription: body.oldDescription || "",
+                    improveOption: body.improveOption || "CONCISE", // ensure improveOption is passed
+                    styling: body.styling || false,
+                }),
+            }
+        );
+
+        setLoading(false);
+
+        return res;
+    };
+
+    return [cb, { isLoading }] as const;
+};
 
 export const {
     // get
@@ -351,7 +373,6 @@ export const {
     useLazyCheckKeyCodeExistsQuery,
 
     useGenerateDescriptionMutation,
-    useImproveDescriptionMutation,
     // attributes
     useGetPropertyLabelsQuery,
 } = properties;
