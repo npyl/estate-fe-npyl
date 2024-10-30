@@ -1040,10 +1040,14 @@ const resources = {
             Week: "Week",
             Month: "Month",
             Year: "Year",
+
+            Tasks: "Tasks",
         },
     },
     el: {
         translation: {
+            Tasks: "Εργασίες",
+
             Today: "Σήμερα",
 
             Week: "Εβδομάδα",

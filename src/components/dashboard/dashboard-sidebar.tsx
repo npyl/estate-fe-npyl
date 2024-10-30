@@ -106,8 +106,8 @@ const getSections = (
             },
 
             {
-                title: t("Tickets"),
-                path: "/tickets",
+                title: t("Tasks"),
+                path: "/tasks",
                 icon: <ConfirmationNumber fontSize="small" />,
             },
             {
