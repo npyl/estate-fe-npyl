@@ -5,6 +5,7 @@ import {
 } from "@/types/notification/notification";
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 import {
     ContactNotification,
     ContactNotificationExtended,
@@ -27,7 +28,7 @@ export const notification = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer  ${Cookies.get("accessToken")}`
             );
             headers.set(
                 "Accept-Language",

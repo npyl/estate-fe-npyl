@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IView } from "@/types/publicDashboard";
 import { IProperties } from "@/types/properties";
+import Cookies from "js-cookie";
 
 type TTimeFrame = "ALL_TIME" | "CUSTOM" | "DAY" | "MONTH" | "WEEK" | "YEAR";
 
@@ -35,7 +36,7 @@ export const publicDashboard = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
+                `Bearer ${Cookies.get("accessToken")}`
             );
             headers.set(
                 "Accept-Language",

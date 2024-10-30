@@ -24,8 +24,8 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import { TabsProvider } from "src/contexts/tabs";
 
 // DatePicker
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import DatePickerProvider from "@/providers/DatePicker";
+
 import { Toaster } from "react-hot-toast";
 
 type EnhancedAppProps = AppProps & {
@@ -80,18 +80,13 @@ const App: FC<EnhancedAppProps> = (props) => {
                                                 !auth.isInitialized ? (
                                                     <SplashScreen />
                                                 ) : (
-                                                    // DatePicker
-                                                    <LocalizationProvider
-                                                        dateAdapter={
-                                                            AdapterDayjs
-                                                        }
-                                                    >
+                                                    <DatePickerProvider>
                                                         {getLayout(
                                                             <Component
                                                                 {...pageProps}
                                                             />
                                                         )}
-                                                    </LocalizationProvider>
+                                                    </DatePickerProvider>
                                                 )
                                             }
                                         </AuthConsumer>

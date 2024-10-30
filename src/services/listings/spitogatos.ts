@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 
 export const spitogatosListing = createApi({
     reducerPath: "spitogatosListing",
@@ -9,7 +10,7 @@ export const spitogatosListing = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer  ${Cookies.get("accessToken")}`
             );
 
             headers.set(

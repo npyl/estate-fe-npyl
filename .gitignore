@@ -2,6 +2,7 @@
 
 .idea
 
+.pp-persistent
 
 # dependencies
 /node_modules

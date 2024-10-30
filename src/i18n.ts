@@ -1022,10 +1022,46 @@ const resources = {
 
             From: "From",
             Until: "Until",
+
+            "Delete Event": "Delete Event",
+            "Are you sure you want to delete this event?":
+                "Are you sure you want to delete this event?",
+
+            Reset: "Reset",
+            "All day": "All day",
+            Start: "Start",
+            End: "End",
+            Day: "Day",
+            Login: "Login",
+            GOOGLE_OATH_FAIL: "Failed to login",
+
+            Today: "Today",
+
+            Week: "Week",
+            Month: "Month",
+            Year: "Year",
         },
     },
     el: {
         translation: {
+            Today: "Σήμερα",
+
+            Week: "Εβδομάδα",
+            Month: "Μήνας",
+            Year: "Χρόνος",
+
+            GOOGLE_OATH_FAIL: "Αποτυχία σύνδεσης",
+            Login: "Είσοδος",
+            "All day": "Όλη μέρα",
+            Reset: "Επαναφορά",
+            Start: "Έναρξη",
+            End: "Λήξη",
+            Day: "Ημέρα",
+
+            "Delete Event": "Διαγραφή Γεγονότος",
+            "Are you sure you want to delete this event?":
+                "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το γεγονός?",
+
             Dashboard: "Πίνακας Ελέγχου",
             "Default Value": "Αρχική Τιμή",
             "Bulk Edit": "Επεξεργασία Πολλαπλών",

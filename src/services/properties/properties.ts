@@ -15,6 +15,7 @@ import { ICustomer } from "src/types/customer";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
+import Cookies from "js-cookie";
 
 interface JustData<T> {
     data: T;
@@ -83,7 +84,7 @@ export const properties = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer  ${Cookies.get("accessToken")}`
             );
 
             headers.set(

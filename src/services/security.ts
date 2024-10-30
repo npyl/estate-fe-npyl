@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IPreset, IPresetReq, IRolesReq } from "../interfaces/roles";
+import Cookies from "js-cookie";
 
 export const security = createApi({
     reducerPath: "security",
@@ -10,7 +11,7 @@ export const security = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer  ${Cookies.get("accessToken")}`
             );
 
             return headers;

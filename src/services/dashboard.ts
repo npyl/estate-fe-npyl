@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 import { IDashboard } from "src/types/dashboard";
 
 export const dashboard = createApi({
@@ -8,7 +9,7 @@ export const dashboard = createApi({
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer  ${Cookies.get("accessToken")}`
             );
             headers.set(
                 "Accept-Language",

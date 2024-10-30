@@ -15,19 +15,11 @@ export default function ConfirmDialog({
     title,
     content,
     action,
-    open,
-    onClose,
     ...other
 }: ConfirmDialogProps) {
     const { t } = useTranslation();
     return (
-        <Dialog
-            fullWidth
-            maxWidth="xs"
-            open={open}
-            onClose={onClose}
-            {...other}
-        >
+        <Dialog fullWidth maxWidth="xs" {...other}>
             <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
 
             {content && (
@@ -40,7 +32,11 @@ export default function ConfirmDialog({
             <DialogActions>
                 {action}
 
-                <Button variant="outlined" color="inherit" onClick={onClose}>
+                <Button
+                    variant="outlined"
+                    color="inherit"
+                    onClick={other.onClose}
+                >
                     {t("Close")}
                 </Button>
             </DialogActions>
