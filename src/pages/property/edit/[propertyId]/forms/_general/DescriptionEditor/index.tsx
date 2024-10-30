@@ -361,18 +361,19 @@ const DescriptionSection: React.FC = () => {
 
     const resultSectionRef = useRef<HTMLDivElement>(null);
 
-    const generateCallback = useCallback(
-        async (d: IOpenAIDetailsPOST) => {
-            const description = await generateDescription(d).unwrap();
-            setGeneratedDescription(description); // Store it for later use as oldDescription
+    const generateCallback = useCallback(async (d: IOpenAIDetailsPOST) => {
+        const res = await generateDescription(d);
+        if (!res.ok) return "";
 
-            // Scroll to the ChatGPT Result section after generation
-            resultSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+        const description = await res.json();
 
-            return description;
-        },
-        [setGeneratedDescription]
-    );
+        setGeneratedDescription(description); // Store it for later use as oldDescription
+
+        // Scroll to the ChatGPT Result section after generation
+        resultSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+
+        return description;
+    }, []);
 
     const improveCallback = useCallback(
         async (selectedOption: string, styling: boolean) => {

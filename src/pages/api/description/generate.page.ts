@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import rtfToHtml from "@iarna/rtf-to-html";
 import { extractRTFContent } from "./_util";
 
-const baseUrl = `${process.env.BACKEND_API_URL}/property/description/improve`;
+const baseUrl = `${process.env.BACKEND_API_URL}/property/description/generate`;
 
 export default async function handler(
     req: NextApiRequest,
@@ -16,10 +16,12 @@ export default async function handler(
 
         const Authorization = req.headers.authorization || "";
 
-        const body = req.body as IOpenAIDetails;
+        console.log("received: ", req.body);
+
+        const body = req.body as string;
         if (!body) throw new Error("Bad body");
 
-        const isStyled = Boolean(body.styling);
+        const isStyled = Boolean(JSON.parse(body).styling);
 
         const promise = await fetch(baseUrl, {
             headers: {
@@ -27,7 +29,7 @@ export default async function handler(
                 "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify(body),
+            body,
         });
 
         if (!promise.ok) throw await promise.json();
@@ -56,7 +58,6 @@ export default async function handler(
         res.status(200).json(data);
     } catch (error) {
         console.error(error);
-
         return res.status(500).json({});
     }
 }

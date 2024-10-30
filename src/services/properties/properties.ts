@@ -290,30 +290,46 @@ export const properties = createApi({
                 params: { code },
             }),
         }),
-
-        generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
-            query: (body) => ({
-                url: `/description/generate`,
-                method: "POST",
-                body: {
-                    ...body,
-                    styling: body.styling || false,
-                },
-                responseHandler: "text",
-            }),
-        }),
     }),
 });
+
+export const useGenerateDescriptionMutation = () => {
+    const [isLoading, setLoading] = useState(false);
+
+    const cb = async (body: IOpenAIDetailsPOST) => {
+        setLoading(true);
+
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_FRONTENT_URL}/api/description/generate`,
+            {
+                headers: {
+                    Authorization: `Bearer  ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                    "Content-Type": "plain/text",
+                },
+                method: "POST",
+
+                body: JSON.stringify({
+                    ...body,
+                    styling: body.styling || false,
+                }),
+            }
+        );
+
+        setLoading(false);
+
+        return res;
+    };
+
+    return [cb, { isLoading }] as const;
+};
 
 export const useImproveDescriptionMutation = () => {
     const [isLoading, setLoading] = useState(false);
 
     const cb = async (body: IOpenAIDetailsPOST) => {
         setLoading(true);
-
-        alert(
-            `${process.env.NEXT_PUBLIC_FRONTENT_URL}/api/description/improve`
-        );
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_FRONTENT_URL}/api/description/improve`,
@@ -372,7 +388,6 @@ export const {
     useLazyCheckCodeExistsQuery,
     useLazyCheckKeyCodeExistsQuery,
 
-    useGenerateDescriptionMutation,
     // attributes
     useGetPropertyLabelsQuery,
 } = properties;
