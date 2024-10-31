@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import {
     ICustomer,
     ICustomerFilter,
@@ -35,7 +34,7 @@ export const customers = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${Cookies.get("accessToken")}`
+                `Bearer  ${localStorage.getItem("accessToken")}`
             );
 
             return headers;

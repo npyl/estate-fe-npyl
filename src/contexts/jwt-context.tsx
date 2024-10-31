@@ -3,7 +3,6 @@ import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation, useRegisterMutation } from "../services/auth";
 import { IUser } from "src/types/user";
 import { useLazyProfileQuery } from "src/services/user";
-import Cookies from "js-cookie";
 
 interface State {
     platform: "JWT";
@@ -126,7 +125,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const initialize = async (): Promise<void> => {
         try {
-            if (Cookies.get("accessToken")) {
+            if (globalThis?.localStorage?.getItem("accessToken")) {
                 const user = await getProfile().unwrap();
                 if (!user) {
                     throw "Failed to get profile!";
@@ -144,7 +143,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             }
         } catch (error) {
             // INFO: prevent infinite loop where user refreshes upon getProfile with unsuccessfully existing token
-            Cookies.remove("accessToken");
+            globalThis?.localStorage?.removeItem("accessToken");
 
             dispatch({
                 type: ActionType.INITIALIZE,
@@ -165,14 +164,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             password,
         }).unwrap();
 
-        Cookies.set("accessToken", loginRes.token);
+        localStorage.setItem("accessToken", loginRes.token);
 
         const user = await getProfile().unwrap();
         if (!user) {
             throw "Failed getting profile!";
         }
 
-        dispatch({
+        await dispatch({
             type: ActionType.LOGIN,
             payload: {
                 user,
@@ -181,7 +180,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     };
 
     const logout = async (): Promise<void> => {
-        Cookies.remove("accessToken");
+        localStorage.removeItem("accessToken");
         dispatch({ type: ActionType.LOGOUT });
     };
 

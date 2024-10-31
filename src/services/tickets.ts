@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import {
     IKanbanBoard,
     IKanbanCardPOST,
@@ -58,7 +57,7 @@ export const tickets = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${Cookies.get("accessToken")}`
+                `Bearer  ${localStorage.getItem("accessToken")}`
             );
 
             return headers;

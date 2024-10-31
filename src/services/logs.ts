@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import { ILog, ILogFilterPOST } from "src/types/logs";
 import IPage from "src/types/page";
 
@@ -19,7 +18,7 @@ export const logs = createApi({
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",
-                `Bearer  ${Cookies.get("accessToken")}`
+                `Bearer  ${localStorage.getItem("accessToken")}`
             );
             headers.set(
                 "Accept-Language",

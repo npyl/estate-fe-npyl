@@ -2,7 +2,6 @@ import { IPropertyFileRes } from "@/types/file";
 import { IIntegration, IIntegrationPOST } from "@/types/integrations";
 import { IntegrationSite } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import { CompanyImageType, ICompany, ICompanyPOST } from "src/types/company";
 
 interface IUploadCompanyImage {
@@ -19,7 +18,7 @@ export const company = createApi({
         prepareHeaders: (headers) => {
             headers.set(
                 "Authorization",
-                `Bearer ${Cookies.get("accessToken")}`
+                `Bearer ${localStorage.getItem("accessToken")}`
             );
             return headers;
         },

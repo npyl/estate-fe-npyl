@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from "js-cookie";
 import { IGlobal } from "src/types/global";
 
 export const global = createApi({
@@ -11,7 +10,7 @@ export const global = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${Cookies.get("accessToken")}`
+                `Bearer  ${localStorage.getItem("accessToken")}`
             );
             headers.set(
                 "Accept-Language",

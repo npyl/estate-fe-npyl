@@ -11,7 +11,6 @@ import { customers } from "./customers";
 
 import type { AnyAction } from "redux";
 import type { ThunkDispatch } from "redux-thunk";
-import Cookies from "js-cookie";
 
 interface LabelForResourceProps {
     resourceId: number;
@@ -121,7 +120,7 @@ export const labels = createApi({
 
             headers.set(
                 "Authorization",
-                `Bearer  ${Cookies.get("accessToken")}`
+                `Bearer  ${localStorage.getItem("accessToken")}`
             );
 
             return headers;
