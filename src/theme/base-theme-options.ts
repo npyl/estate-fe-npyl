@@ -115,6 +115,14 @@ export const baseThemeOptions: ThemeOptions = {
         },
         MuiCssBaseline: {
             styleOverrides: {
+                "input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active":
+                    {
+                        WebkitBackgroundClip: "text",
+                        backgroundColor: "transparent !important", // Force background to stay transparent
+                        WebkitTextFillColor: "black !important", // Set text color to white
+                        transition: "background-color 5000s ease-in-out 0s",
+                        boxShadow: "inset 0 0 20px 20px transparent !important", // Custom shadow color and size
+                    },
                 "*": {
                     boxSizing: "border-box",
                 },
@@ -202,6 +210,11 @@ export const baseThemeOptions: ThemeOptions = {
             styleOverrides: {
                 input: {
                     fontWeight: 500,
+                    // "&:-webkit-autofill": {
+                    //     WebkitBoxShadow: "0 0 0px 1000px white inset",
+                    //     WebkitTextFillColor: "#000", // Set the text color if needed
+                    //     transition: "background-color 5000s ease-in-out 0s",
+                    // },
                 },
             },
         },
