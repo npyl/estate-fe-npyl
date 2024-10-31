@@ -5,10 +5,10 @@ import {
     Box,
     ButtonBase,
     IconButton,
-    Link,
     Stack,
     Toolbar,
     Typography,
+    useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
@@ -19,7 +19,8 @@ import { AccountPopover } from "./account-popover";
 import { DashboardNavbarSearch } from "./dashboard-navbar-search";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
-import { Logo } from "../logo";
+import LogoHorizontalLight from "@/assets/logo/horizontal/light";
+import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import useResponsive from "@/hooks/useResponsive";
 
 const StyledTypography = styled(Typography)`
@@ -28,6 +29,15 @@ const StyledTypography = styled(Typography)`
             ? theme.palette.neutral![900]
             : theme.palette.grey[100]};
 `;
+
+const Logo = () => {
+    const theme = useTheme();
+    const Comp =
+        theme.palette.mode === "light"
+            ? LogoHorizontalLight
+            : LogoHorizontalDark;
+    return <Comp width="fit-content" height={64} />;
+};
 
 interface DashboardNavbarProps extends AppBarProps {
     onOpenSidebar?: () => void;
@@ -111,34 +121,23 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Box
-                        p={3}
+                    <Stack
                         sx={{
                             display: {
                                 xs: "none",
                                 md: "inherit",
                             },
                         }}
+                        direction="row"
+                        alignItems="center"
                     >
-                        <Link
-                            href="/"
-                            sx={{ display: "flex", alignItems: "center" }}
-                        >
-                            <Logo
-                                sx={{
-                                    height: 40,
-                                    width: 40,
-                                    marginRight: 2, // Adds some spacing between the logo and the text
-                                }}
-                            />
-                            {/* nick ama to svhseis se gamhsa */}
-                            {/* <Tooltip title="Alex Gamiesai file">
+                        <Logo />
+
+                        {/* nick ama to svhseis se gamhsa */}
+                        {/* <Tooltip title="Alex Gamiesai file">
                             </Tooltip> */}
-                            <StyledTypography variant="h5">
-                                PropertyPro v0.93
-                            </StyledTypography>
-                        </Link>
-                    </Box>
+                        <StyledTypography variant="h6">v0.93</StyledTypography>
+                    </Stack>
 
                     <IconButton
                         onClick={onOpenSidebar}
