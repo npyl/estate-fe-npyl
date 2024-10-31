@@ -1,14 +1,11 @@
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
-import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
-import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 import { DropResult } from "react-beautiful-dnd";
 import { KanbanColumn } from "./components";
-import { Children, FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import {
     useMoveCardMutation,
     useReorderCardMutation,
-    useReorderColumnMutation,
 } from "src/services/tickets";
 import { IKanbanBoard } from "@/types/kanban";
 import useResponsiveColumns from "../property/edit/[propertyId]/forms/_general/Images/SeeMore/Content/useResponsiveColumns";
@@ -46,8 +43,6 @@ const Board: FC<Props> = ({ board }) => {
 
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
-    //
-    const [reorderColumn] = useReorderColumnMutation();
 
     const items = useMemo(
         () =>
@@ -66,8 +61,6 @@ const Board: FC<Props> = ({ board }) => {
             }),
         [board?.columnOrder, board?.columns]
     );
-
-    const itemsLength = useMemo(() => Children.count(items), [items]);
 
     const handleDragEnd = ({
         source,
