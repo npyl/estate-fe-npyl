@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { useDeleteCardMutation, useGetBoardQuery } from "src/services/tickets";
-import Card from "../card";
+import Card from "./card";
 import { Stack, StackProps } from "@mui/material";
 
 interface CardsProps extends StackProps {

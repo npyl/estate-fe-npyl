@@ -1,4 +1,4 @@
-import Column, { DroppableTypeTask } from "./components/column";
+import Column, { DroppableTypeTask } from "./column";
 import { DropResult } from "react-beautiful-dnd";
 
 import { FC, useMemo } from "react";
