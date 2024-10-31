@@ -11,11 +11,12 @@ import {
     useAddCardMutation,
     useDeleteColumnMutation,
 } from "src/services/tickets";
-import KanbanTaskAdd from "../KanbanTaskAdd";
+const KanbanTaskAdd = dynamic(() => import("./KanbanTaskAdd"));
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
 import Cards from "./Cards";
 import { StyledPaper } from "./styled";
+import dynamic from "next/dynamic";
 
 // useEditColumnMutation,
 

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 // @mui
 import {
-    Avatar,
     Box,
     Checkbox,
     Dialog,
@@ -16,7 +15,6 @@ import {
 import { IKanbanCard } from "src/types/kanban";
 // components
 import Iconify from "src/components/iconify";
-import Image from "src/components/image";
 //
 import KanbanDetails from "./details/KanbanDetails";
 import {
@@ -24,9 +22,10 @@ import {
     useGetBoardQuery,
     useMoveCardMutation,
 } from "src/services/tickets";
-import { useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+import { StyledPaper } from "./styled";
+import Header from "./Header";
 
 // ----------------------------------------------------------------------
 
@@ -36,10 +35,9 @@ type Props = {
     onDeleteTask: (id: number) => void;
 };
 
-export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
+export default function TaskCard({ card, onDeleteTask, index }: Props) {
     const { id, name, attachments, completed, priority, user } = card || {};
 
-    const theme = useTheme();
     const [editCard] = useEditCardMutation();
     const { data: board } = useGetBoardQuery();
     const [moveCard] = useMoveCardMutation();
@@ -98,11 +96,6 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
     const [openModal, setOpenModal] = useState(false);
     const [currentImage, setCurrentImage] = useState("");
 
-    const handleOpenModal = (image: string) => {
-        setCurrentImage(image);
-        setOpenModal(true);
-    };
-
     const handleCloseModal = () => {
         setOpenModal(false);
         setCurrentImage("");
@@ -118,31 +111,15 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                 index={index}
             >
                 {(provided) => (
-                    <Paper
+                    <StyledPaper
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
-                        sx={{
-                            width: "100%",
-                            borderRadius: "8.5px",
-                            p: 1.5,
-                            border: "3px solid transparent",
-                            boxShadow:
-                                "0px 1px 1px rgba(100, 116, 139, 0.06), 0px 1px 2px rgba(100, 116, 139, 0.1)",
-                            "&:hover": {
-                                boxShadow:
-                                    "0px 10px 10px rgba(31, 41, 55, 0.04), 0px 20px 25px rgba(31, 41, 55, 0.1)",
-                                backgroundColor: "#d0e7ff",
-                                border: "3px solid #3399ff",
-                                p: 1.5,
-                            },
-                            display: "flex",
-                            flexDirection: "row",
-                            cursor: "pointer",
-                            position: "relative", // Allows absolute positioning of child elements
-                        }}
+                        priority={priority}
                         onClick={handleOpenDetails}
                     >
+                        <Header assignees={user} />
+
                         {/* Priority Icon - Top Right Corner */}
                         {(priority === 2 || priority === 1) && !completed && (
                             <Box
@@ -280,7 +257,7 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
                                 )}
                             </Box>
                         </Stack>
-                    </Paper>
+                    </StyledPaper>
                 )}
             </Draggable>
 

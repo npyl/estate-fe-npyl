@@ -12,7 +12,7 @@ import {
 import { IKanbanCardPOST } from "src/types/kanban";
 import Iconify from "@/components/iconify";
 //
-import KanbanContactsDialog from "./column/card/details/KanbanContactsDialog";
+import KanbanContactsDialog from "./card/details/KanbanContactsDialog";
 import { EnterOverlay } from "./EnterOverlay";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";

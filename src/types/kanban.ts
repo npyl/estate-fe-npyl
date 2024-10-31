@@ -26,6 +26,7 @@ export type IKanbanCard = {
     comments: IKanbanComment[];
     completed: boolean;
 };
+
 export type IKanbanCardPOST = Partial<Omit<IKanbanCard, "user">> & {
     columnId?: number;
     userIds?: number[];

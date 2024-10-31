@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IKanbanCardPOST } from "src/types/kanban";
 // kanban
 import KanbanInputName from "./KanbanInputName";
-import { EnterOverlay } from "../../../EnterOverlay";
+import { EnterOverlay } from "../../EnterOverlay";
 import { useTranslation } from "react-i18next";
 
 interface NameProps {
