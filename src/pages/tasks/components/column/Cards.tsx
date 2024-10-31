@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { useDeleteCardMutation, useGetBoardQuery } from "src/services/tickets";
-import KanbanTaskCard from "../KanbanTaskCard";
+import Card from "../card";
 import { Stack, StackProps } from "@mui/material";
 
 interface CardsProps extends StackProps {
@@ -15,17 +15,18 @@ const Cards: FC<CardsProps> = ({ ids, ...props }) => {
 
     return (
         <Stack {...props}>
-            {ids.map((cardId, index) => {
-                const card = cards?.find((c) => c.id === cardId);
+            {ids.map((id, i) => {
+                const card = cards?.find((c) => c.id === id);
+                if (!card) return null;
 
-                return card ? (
-                    <KanbanTaskCard
-                        key={index}
-                        index={index}
+                return (
+                    <Card
+                        key={id}
+                        index={i}
                         onDeleteTask={deleteCard}
                         card={card}
                     />
-                ) : null;
+                );
             })}
         </Stack>
     );

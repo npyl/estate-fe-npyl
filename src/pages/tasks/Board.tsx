@@ -1,6 +1,6 @@
-import { DroppableTypeTask } from "./components/column/KanbanColumn";
+import Column, { DroppableTypeTask } from "./components/column";
 import { DropResult } from "react-beautiful-dnd";
-import { KanbanColumn } from "./components";
+
 import { FC, useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import {
@@ -8,7 +8,7 @@ import {
     useReorderCardMutation,
 } from "src/services/tickets";
 import { IKanbanBoard } from "@/types/kanban";
-import useResponsiveColumns from "../property/edit/[propertyId]/forms/_general/Images/SeeMore/Content/useResponsiveColumns";
+import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveColumns";
 
 const COLUMNS = {
     xs: 1,
@@ -51,13 +51,7 @@ const Board: FC<Props> = ({ board }) => {
                 const column = board.columns?.find((c) => c.id === columnId);
                 if (!column) return null;
 
-                return (
-                    <KanbanColumn
-                        id={columnId}
-                        key={columnId}
-                        column={column}
-                    />
-                );
+                return <Column id={columnId} key={columnId} column={column} />;
             }),
         [board?.columnOrder, board?.columns]
     );

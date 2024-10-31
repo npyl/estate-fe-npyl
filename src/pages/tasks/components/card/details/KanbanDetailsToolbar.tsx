@@ -2,10 +2,10 @@ import { useState } from "react";
 // @mui
 import { Button, IconButton, Stack, Tooltip } from "@mui/material";
 // hooks
-import useResponsive from "../../../../hooks/useResponsive";
+import useResponsive from "@/hooks/useResponsive";
 // components
-import ConfirmDialog from "../../../../components/confirm-dialog";
-import Iconify from "../../../../components/iconify";
+import ConfirmDialog from "@/components/confirm-dialog";
+import Iconify from "@/components/iconify";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 // ----------------------------------------------------------------------

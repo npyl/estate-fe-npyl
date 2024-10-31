@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // types
 import { IKanbanCardPOST } from "src/types/kanban";
 // kanban
-import KanbanInputName from "../KanbanInputName";
-import { EnterOverlay } from "../EnterOverlay";
+import KanbanInputName from "./KanbanInputName";
+import { EnterOverlay } from "../../EnterOverlay";
 import { useTranslation } from "react-i18next";
 
 interface NameProps {

@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IKanbanCardPOST } from "src/types/kanban";
 // styled
 import { StyledLabel, StyledTextField } from "./styled";
-import { EnterOverlay } from "../EnterOverlay";
+import { EnterOverlay } from "../../EnterOverlay";
 
 // ----------------------------------------------------------------------
 

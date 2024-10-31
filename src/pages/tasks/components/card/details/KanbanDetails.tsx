@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 // @mui
 import {
-    Avatar,
     Divider,
-    Drawer,
     Stack,
-    Button,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -13,7 +10,6 @@ import {
     Typography,
     IconButton,
     useTheme,
-    Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 // @types
@@ -22,10 +18,8 @@ import {
     IKanbanCardPOST,
     IKanbanCommentPOST,
 } from "src/types/kanban";
-// components
-import { Scrollbar } from "src/components/scrollbar";
 // Kanban
-import KanbanContactsDialog from "../KanbanContactsDialog";
+import KanbanContactsDialog from "./KanbanContactsDialog";
 import KanbanDetailsAttachments from "./KanbanDetailsAttachments";
 import KanbanDetailsCommentInput from "./KanbanDetailsCommentInput";
 import KanbanDetailsCommentList from "./KanbanDetailsCommentList";
@@ -303,7 +297,7 @@ export default function KanbanDetails({
                 onCloseDetails={onCloseDetails}
             />
             <Divider />
-            {/* <Scrollbar> */}
+
             <Stack spacing={3} sx={{ pt: 3, pb: 5 }}>
                 {/* Task name */}
                 <Box sx={{ px: 2.5 }}>
