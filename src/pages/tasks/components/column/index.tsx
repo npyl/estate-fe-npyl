@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 // @mui
-import { Button, Paper, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 // @types
 import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
@@ -9,29 +9,15 @@ import Iconify from "src/components/iconify";
 //
 import {
     useAddCardMutation,
-    useDeleteCardMutation,
     useDeleteColumnMutation,
-    // useEditColumnMutation,
-    useGetBoardQuery,
 } from "src/services/tickets";
 import KanbanTaskAdd from "../KanbanTaskAdd";
-import KanbanTaskCard from "../KanbanTaskCard";
-import KanbanColumnToolBar from "./KanbanColumnToolBar";
+import Header from "./Header";
 import { useTranslation } from "react-i18next";
-import { styled } from "@mui/material/styles";
+import Cards from "./Cards";
+import { StyledPaper } from "./styled";
 
-// ----------------------------------------------------------------------
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(2),
-
-    borderRadius: theme.spacing(1),
-    borderStyle: "dashed",
-    backgroundColor:
-        theme.palette.mode === "light"
-            ? "#F7F8F9"
-            : theme.palette.background.default,
-}));
+// useEditColumnMutation,
 
 // ----------------------------------------------------------------------
 
@@ -42,11 +28,8 @@ type Props = {
 
 export const DroppableTypeTask = "TASK";
 
-export default function KanbanColumn({ column }: Props) {
+export default function Column({ column }: Props) {
     const { t } = useTranslation();
-
-    const { data: board } = useGetBoardQuery();
-    const cards = useMemo(() => board?.cards || [], [board]);
 
     // Columns
     // const [editColumn] = useEditColumnMutation();
@@ -54,7 +37,6 @@ export default function KanbanColumn({ column }: Props) {
 
     // Cards
     const [addCard] = useAddCardMutation();
-    const [deleteCard] = useDeleteCardMutation();
 
     const [openAddTask, setOpenAddTask] = useState(false);
 
@@ -64,7 +46,6 @@ export default function KanbanColumn({ column }: Props) {
 
     const handleToggleAddTask = () => setOpenAddTask(!openAddTask);
     const handleCloseAddTask = () => setOpenAddTask(false);
-    const handleDeleteTask = (cardId: number) => deleteCard(cardId);
     const handleAddTask = (task: IKanbanCardPOST) =>
         addCard({ ...task, columnId: column.id }).then(() =>
             handleCloseAddTask()
@@ -84,40 +65,19 @@ export default function KanbanColumn({ column }: Props) {
                     ref={provided.innerRef}
                     variant="outlined"
                 >
-                    <Stack
-                        spacing={1}
-                        // NOTE: a minimum height helps a dropped card not fall on the column name glitch
-                        minHeight={100}
-                        width={1}
-                    >
-                        <KanbanColumnToolBar
-                            columnName={column.name}
-                            // onUpdate={handleUpdateColumn}
+                    <Header name={column.name} count={column.cardIds.length} />
+
+                    <Cards mt={2} spacing={2} ids={column.cardOrder} />
+
+                    {provided.placeholder}
+
+                    {/* Add Task button */}
+                    {openAddTask ? (
+                        <KanbanTaskAdd
+                            onAddTask={handleAddTask}
+                            onCloseAddTask={handleCloseAddTask}
                         />
-
-                        {column.cardOrder.map((cardId, index) => {
-                            const card = cards?.find((c) => c.id === cardId);
-
-                            return card ? (
-                                <KanbanTaskCard
-                                    key={index}
-                                    index={index}
-                                    onDeleteTask={handleDeleteTask}
-                                    card={card}
-                                />
-                            ) : null;
-                        })}
-
-                        {provided.placeholder}
-
-                        {/* Add Task button */}
-                        {openAddTask ? (
-                            <KanbanTaskAdd
-                                onAddTask={handleAddTask}
-                                onCloseAddTask={handleCloseAddTask}
-                            />
-                        ) : null}
-                    </Stack>
+                    ) : null}
 
                     {!openAddTask ? (
                         <Button
