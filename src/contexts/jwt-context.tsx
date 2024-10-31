@@ -165,10 +165,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             password,
         }).unwrap();
 
-        Cookies.set("accessToken", loginRes.token, {
-            sameSite: "Lax", // INFO: this is important as it works with google's oauth flow!
-            secure: true,
-        });
+        Cookies.set("accessToken", loginRes.token);
 
         const user = await getProfile().unwrap();
         if (!user) {
