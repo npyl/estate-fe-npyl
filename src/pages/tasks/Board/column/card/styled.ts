@@ -22,6 +22,9 @@ interface TaskCardProps extends PaperProps {
 const StyledPaper = styled(Paper)<TaskCardProps>(({ theme, priority }) => ({
     padding: theme.spacing(1),
 
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+
     borderRadius: "12px",
     borderLeft: "14px solid",
     borderLeftColor: getColor(priority)(theme),
@@ -30,6 +33,7 @@ const StyledPaper = styled(Paper)<TaskCardProps>(({ theme, priority }) => ({
 
     display: "flex",
     flexDirection: "column",
+    gap: theme.spacing(1),
 }));
 
 export { getColor, getBgcolor, StyledPaper };

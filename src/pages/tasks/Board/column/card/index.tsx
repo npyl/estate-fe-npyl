@@ -38,7 +38,7 @@ export default function TaskCard({ card, onDeleteTask, index }: Props) {
                         priority={priority}
                         onClick={openDetails}
                     >
-                        <Header assignees={user} />
+                        <Header assignees={user} completed={completed} />
 
                         <Content
                             name={name}
@@ -51,7 +51,6 @@ export default function TaskCard({ card, onDeleteTask, index }: Props) {
                         <Footer
                             commentsCount={card.comments.length}
                             createdAt={card.createdAt}
-                            px={1}
                         />
                     </StyledPaper>
                 )}
