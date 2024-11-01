@@ -25,6 +25,7 @@ export type IKanbanCard = {
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
+    createdAt: string;
 };
 
 export type IKanbanCardPOST = Partial<Omit<IKanbanCard, "user">> & {

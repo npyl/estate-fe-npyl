@@ -39,17 +39,11 @@ import { useTranslation } from "react-i18next";
 
 type Props = {
     task: IKanbanCard;
-    openDetails: boolean;
-    onCloseDetails: VoidFunction;
+    onClose: VoidFunction;
     onDeleteTask: VoidFunction;
 };
 
-export default function KanbanDetails({
-    task,
-    openDetails,
-    onCloseDetails,
-    onDeleteTask,
-}: Props) {
+export default function KanbanDetails({ task, onClose, onDeleteTask }: Props) {
     const {
         id,
         completed,
@@ -273,8 +267,8 @@ export default function KanbanDetails({
 
     return (
         <Dialog
-            open={openDetails}
-            onClose={onCloseDetails}
+            open
+            onClose={onClose}
             maxWidth="sm"
             fullWidth
             PaperProps={{
@@ -294,7 +288,7 @@ export default function KanbanDetails({
                 onAttach={handleClickAttach}
                 onDelete={onDeleteTask}
                 onCompleted={toggleCompleted}
-                onCloseDetails={onCloseDetails}
+                onCloseDetails={onClose}
             />
             <Divider />
 
@@ -348,7 +342,7 @@ export default function KanbanDetails({
                     <Description
                         taskDescription={description}
                         onUpdate={handleUpdate}
-                        onClose={onCloseDetails}
+                        onClose={onClose}
                     />
                 </Box>
 
