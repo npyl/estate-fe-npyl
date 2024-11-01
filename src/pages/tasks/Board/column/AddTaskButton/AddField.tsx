@@ -8,14 +8,13 @@ import {
     Tooltip,
 } from "@mui/material";
 
-// @types
-import { IKanbanCardPOST } from "src/types/kanban";
 import Iconify from "@/components/iconify";
 //
-import KanbanContactsDialog from "./card/details/KanbanContactsDialog";
-import { EnterOverlay } from "./EnterOverlay";
+import KanbanContactsDialog from "../card/details/KanbanContactsDialog";
+import { EnterOverlay } from "../EnterOverlay";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
+import { useAddCardMutation } from "@/services/tickets";
 
 // ----------------------------------------------------------------------
 
@@ -25,42 +24,27 @@ const defaultTask = {
 };
 
 type Props = {
-    onAddTask: (task: IKanbanCardPOST) => void;
-    onCloseAddTask: VoidFunction;
+    columnId: number;
+    onClose: VoidFunction;
 };
 
-export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
+export default function AddTaskField({ columnId, onClose }: Props) {
     const { t } = useTranslation();
 
     const [name, setName] = useState("");
 
     const [completed, setCompleted] = useState(false);
 
-    // const {
-    //     startDate,
-    //     endDate,
-    //     onChangeStartDate,
-    //     onChangeEndDate,
-    //     open: openPicker,
-    //     onOpen: onOpenPicker,
-    //     onClose: onClosePicker,
-    //     isSelected: isSelectedValuePicker,
-    //     isError,
-    //     shortLabel,
-    // } = useDateRangePicker(new Date(), new Date());
+    const [addCard] = useAddCardMutation();
 
     const handleAddTask = () =>
-        onAddTask({
+        addCard({
             ...defaultTask,
             name,
-            due: [
-                // startDate?.toDateString() || "",
-                // endDate?.toDateString() || "",
-                "",
-                "",
-            ],
+            due: ["", ""],
             completed,
-        });
+            columnId,
+        }).then(onClose);
 
     const handleKeyUpAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter" && name.trim() !== "") handleAddTask();
@@ -68,7 +52,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
 
     const handleClickAddTask = () => {
         if (!name) handleAddTask();
-        else onCloseAddTask();
+        else onClose();
     };
 
     const handleChangeCompleted = (event: ChangeEvent<HTMLInputElement>) =>
@@ -108,19 +92,6 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                         </Tooltip>
                     </SpaceBetween>
                 </Paper>
-
-                {/* <DateRangePicker
-                    variant="calendar"
-                    title="Choose due date"
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChangeStartDate={onChangeStartDate}
-                    onChangeEndDate={onChangeEndDate}
-                    open={openPicker}
-                    onClose={onClosePicker}
-                    isSelected={isSelectedValuePicker}
-                    isError={isError}
-                /> */}
             </div>
         </ClickAwayListener>
     );
