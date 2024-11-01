@@ -17,6 +17,7 @@ const getSx = (p: number): SxProps<Theme> => ({
     px: 1,
     whiteSpace: "nowrap",
     width: "fit-content",
+    height: "fit-content",
 });
 
 interface PriorityLabelProps extends TypographyProps {

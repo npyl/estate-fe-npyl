@@ -10,11 +10,11 @@ import {
 
 import Iconify from "@/components/iconify";
 //
-import KanbanContactsDialog from "../card/details/KanbanContactsDialog";
 import { EnterOverlay } from "../EnterOverlay";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { useAddCardMutation } from "@/services/tickets";
+import KanbanContactsDialog from "../card/Details/KanbanContactsDialog";
 
 // ----------------------------------------------------------------------
 

@@ -2,7 +2,7 @@ import { Draggable } from "react-beautiful-dnd";
 // @types
 import { IKanbanCard } from "src/types/kanban";
 //
-import CardDetails from "./details";
+import CardDetails from "./Details";
 import { StyledPaper } from "./styled";
 import Header from "./Header";
 import useDialog from "@/hooks/useDialog";
@@ -15,10 +15,9 @@ import Content from "./Content";
 type Props = {
     index: number;
     card: IKanbanCard;
-    onDeleteTask: (id: number) => void;
 };
 
-export default function TaskCard({ card, onDeleteTask, index }: Props) {
+export default function TaskCard({ card, index }: Props) {
     const { name, attachments, completed, priority, user } = card || {};
 
     const [isDetailsOpen, openDetails, closeDetails] = useDialog();
@@ -57,11 +56,7 @@ export default function TaskCard({ card, onDeleteTask, index }: Props) {
             </Draggable>
 
             {isDetailsOpen ? (
-                <CardDetails
-                    task={card}
-                    onClose={closeDetails}
-                    onDeleteTask={() => onDeleteTask(card.id)}
-                />
+                <CardDetails task={card} onClose={closeDetails} />
             ) : null}
         </>
     );
