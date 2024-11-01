@@ -7,6 +7,10 @@ import { FC } from "react";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MultilineTextField from "@/components/MultilineTextField";
 import { useTranslation } from "react-i18next";
+import Reporter from "./Reporter";
+import PropertySelect from "./PropertySelect";
+import CustomerSelect from "./CustomerSelect";
+import AssigneeSelect from "./AssigneeSelect";
 
 // -----------------------------------------------------------------
 
@@ -52,6 +56,13 @@ const Content: FC<ContentProps> = ({ task }) => {
                     rows={5}
                     label={t("Description")}
                 />
+
+                <PropertySelect />
+                <CustomerSelect />
+
+                <AssigneeSelect />
+
+                <Reporter />
             </Stack>
         </>
     );
