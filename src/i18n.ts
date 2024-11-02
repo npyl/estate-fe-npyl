@@ -1625,7 +1625,7 @@ const resources = {
 
             //Location
             Prefecture: "Νομός",
-            "Search on map...": "Αναζήτηση στον χάρτη...",
+            "Search on map...": "Αναζήτηση στο χάρτη...",
             Map: "Χάρτης",
             Satellite: "Δορυφορικό",
             Location: "Τοποθεσία",
