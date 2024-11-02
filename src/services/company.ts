@@ -1,6 +1,7 @@
 import { IPropertyFileRes } from "@/types/file";
 import { IIntegration, IIntegrationPOST } from "@/types/integrations";
 import { IntegrationSite } from "@/types/listings";
+import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 import { CompanyImageType, ICompany, ICompanyPOST } from "src/types/company";
@@ -50,6 +51,15 @@ export const company = createApi({
             }),
             providesTags: ["CompanyIntegrations"],
         }),
+
+        getMembers: builder.query<IUserMini[], number>({
+            query: (companyId) => ({
+                url: `${companyId}/members`,
+            }),
+        }),
+
+        // -------------------------------------------------------------
+
         updateIntegrations: builder.mutation<void, IIntegrationPOST>({
             query: (body) => ({
                 url: "/integration-credentials",
@@ -93,4 +103,6 @@ export const {
     useUpdateIntegrationsMutation,
     useUploadCompanyImageMutation,
     useRemoveCompanyImageMutation,
+
+    useGetMembersQuery,
 } = company;

@@ -48,7 +48,7 @@ const Content: FC<ContentProps> = ({ task }) => {
                 {name}
             </Typography>
 
-            <Stack spacing={1}>
+            <Stack spacing={2}>
                 <Buttons />
 
                 <MultilineTextField
