@@ -8,9 +8,10 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MultilineTextField from "@/components/MultilineTextField";
 import { useTranslation } from "react-i18next";
 import Reporter from "./Reporter";
-import PropertySelect from "./PropertySelect";
-import CustomerSelect from "./CustomerSelect";
-import AssigneeSelect from "./AssigneeSelect";
+import PropertySelect from "./Property";
+import CustomerSelect from "./Customer";
+import AssigneeSelect from "./Assignee";
+import PriorityButtonGroup from "./Priority";
 
 // -----------------------------------------------------------------
 
@@ -59,8 +60,11 @@ const Content: FC<ContentProps> = ({ task }) => {
 
                 <PropertySelect />
                 <CustomerSelect />
-
                 <AssigneeSelect />
+
+                <Stack alignItems="center">
+                    <PriorityButtonGroup />
+                </Stack>
 
                 <Reporter />
             </Stack>
