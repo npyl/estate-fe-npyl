@@ -18,11 +18,6 @@ import KanbanContactsDialog from "../card/Details/KanbanContactsDialog";
 
 // ----------------------------------------------------------------------
 
-const defaultTask = {
-    description: "",
-    due: [],
-};
-
 type Props = {
     columnId: number;
     onClose: VoidFunction;
@@ -39,11 +34,18 @@ export default function AddTaskField({ columnId, onClose }: Props) {
 
     const handleAddTask = () =>
         addCard({
-            ...defaultTask,
             name,
+            description: "",
             due: ["", ""],
             completed,
             columnId,
+            createdAt: "",
+            priority: 0,
+            attachments: [],
+            comments: [],
+            assignees: [],
+            property: 0,
+            customer: 0,
         }).then(onClose);
 
     const handleKeyUpAddTask = (event: KeyboardEvent<HTMLInputElement>) => {

@@ -20,17 +20,20 @@ export type IKanbanCard = {
     priority: number;
     name: string;
     description: string;
-    user: IUser[]; // assignees
     due: string[];
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
     createdAt: string;
+
+    assignees: IUser[];
+    property: number;
+    customer: number;
 };
 
-export type IKanbanCardPOST = Partial<Omit<IKanbanCard, "user">> & {
-    columnId?: number;
-    userIds?: number[];
+export type IKanbanCardPOST = Omit<IKanbanCard, "id"> & {
+    id?: number;
+    columnId: number;
 };
 
 export type IKanbanColumn = {

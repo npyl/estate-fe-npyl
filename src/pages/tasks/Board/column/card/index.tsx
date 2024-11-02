@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function TaskCard({ card, index }: Props) {
-    const { name, attachments, completed, priority, user } = card || {};
+    const { name, attachments, completed, priority, assignees } = card || {};
 
     const [isDetailsOpen, openDetails, closeDetails] = useDialog();
 
@@ -37,7 +37,7 @@ export default function TaskCard({ card, index }: Props) {
                         priority={priority}
                         onClick={openDetails}
                     >
-                        <Header assignees={user} completed={completed} />
+                        <Header assignees={assignees} completed={completed} />
 
                         <Content
                             name={name}
