@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/material";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
 import { SkeletonKanbanColumn } from "src/components/skeleton";
-import { useGetBoardQuery } from "src/services/tickets";
+import { useGetBoardQuery } from "@/services/tasks";
 import dynamic from "next/dynamic";
 const Board = dynamic(() => import("./Board"));
 import Bar from "./Bar";

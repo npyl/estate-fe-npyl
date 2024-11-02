@@ -12,7 +12,7 @@ import { publicListing, spitogatosListing } from "src/services/listings";
 import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
-import { tickets } from "src/services/tickets";
+import { tasks } from "@/services/tasks";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
 import { dashboard } from "../services/dashboard";
@@ -53,7 +53,7 @@ export const createStore = (
                 location.middleware,
                 notification.middleware,
                 security.middleware,
-                tickets.middleware,
+                tasks.middleware,
                 logs.middleware,
                 dashboard.middleware,
                 publicDashboard.middleware,

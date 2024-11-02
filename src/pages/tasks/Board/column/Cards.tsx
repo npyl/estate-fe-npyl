@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { useGetBoardQuery } from "src/services/tickets";
+import { useGetBoardQuery } from "@/services/tasks";
 import Card from "./card";
 import { Stack, StackProps } from "@mui/material";
 

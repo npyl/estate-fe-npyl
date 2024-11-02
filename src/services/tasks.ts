@@ -49,8 +49,8 @@ function removeItem(arr: number[], numberToRemove: number): number[] {
     return arr.filter((item) => item !== numberToRemove);
 }
 
-export const tickets = createApi({
-    reducerPath: "tickets",
+export const tasks = createApi({
+    reducerPath: "tasks",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/kanban`,
         prepareHeaders: (headers) => {
@@ -101,7 +101,7 @@ export const tickets = createApi({
                 { dispatch, queryFulfilled }
             ) => {
                 const patchResult = dispatch(
-                    tickets.util.updateQueryData(
+                    tasks.util.updateQueryData(
                         "getBoard",
                         undefined,
                         (draft) => {
@@ -169,7 +169,7 @@ export const tickets = createApi({
                 { dispatch, queryFulfilled }
             ) => {
                 const patchResult = dispatch(
-                    tickets.util.updateQueryData(
+                    tasks.util.updateQueryData(
                         "getBoard",
                         undefined,
                         (draft) => {
@@ -221,7 +221,7 @@ export const tickets = createApi({
                 { dispatch, queryFulfilled }
             ) => {
                 const patchResult = dispatch(
-                    tickets.util.updateQueryData(
+                    tasks.util.updateQueryData(
                         "getBoard",
                         undefined,
                         (draft) => {
@@ -275,4 +275,4 @@ export const {
 
     //Comments
     useCreateCommentMutation,
-} = tickets;
+} = tasks;

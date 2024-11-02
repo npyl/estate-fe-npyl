@@ -13,7 +13,7 @@ import Iconify from "@/components/iconify";
 import { EnterOverlay } from "../EnterOverlay";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
-import { useAddCardMutation } from "@/services/tickets";
+import { useAddCardMutation } from "@/services/tasks";
 import KanbanContactsDialog from "../card/Details/KanbanContactsDialog";
 
 // ----------------------------------------------------------------------

@@ -3,7 +3,7 @@ import { SpaceBetween } from "@/components/styled";
 import {
     useDeleteColumnMutation,
     useEditColumnMutation,
-} from "@/services/tickets";
+} from "@/services/tasks";
 import { Typography } from "@mui/material";
 
 // ----------------------------------------------------------------------

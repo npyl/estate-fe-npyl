@@ -10,7 +10,7 @@ import {
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Close as CloseIcon } from "@mui/icons-material";
-import { useAddColumnMutation } from "@/services/tickets";
+import { useAddColumnMutation } from "@/services/tasks";
 
 interface Props {
     onClose: () => void;
