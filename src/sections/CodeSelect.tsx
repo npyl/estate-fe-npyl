@@ -21,7 +21,7 @@ const RenderOption = (
     props: React.HTMLAttributes<HTMLLIElement>,
     option: string
 ) => (
-    <MenuItem key={option} sx={OptionSx} {...props}>
+    <MenuItem sx={OptionSx} {...props} key={option}>
         <img
             src="/static/categoryPhotos/home.webp"
             alt="Home"
