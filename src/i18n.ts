@@ -16,7 +16,6 @@ const resources = {
 
             Dashboard: "Dashboard",
             Notifications: "Notifications",
-            Tickets: "Tickets",
             Mail: "Mail",
             "Edit Property": "Edit Property",
             Thumbnail: "Thumbnail",
@@ -271,8 +270,6 @@ const resources = {
             "The price for this property is hidden on the public site":
                 "The price for this property is hidden on the public",
 
-            // Tickets
-            "Search Tickets": "Search Tickets",
             "Assigned to": "Assigned to",
             "Add section": "Add section",
             "Add Task": "Add task",
@@ -1266,7 +1263,6 @@ const resources = {
             ID: "Κωδικός Ακινήτου",
             Properties: "Ακίνητα",
             Notifications: "Ενημερώσεις",
-            Tickets: "Tickets",
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",
             "Newly Built": "Νεόδμητο",
@@ -1512,8 +1508,7 @@ const resources = {
             "Minimum Number of Bedrooms": "Ελάχιστος αριθμός υπνοδωματίων",
             "Maximum Floor": "Μέγιστος όροφος",
             "Minimum Floor": "Ελάχιστος όροφος",
-            "Opt for styled text": "Επιλογή εμπλουτισμένου κειμένου", // Tickets
-            "Search Tickets": "Αναζήτηση Ticket",
+            "Opt for styled text": "Επιλογή εμπλουτισμένου κειμένου",
             "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
             "Add Task": "Προσθήκη Εργασίας",

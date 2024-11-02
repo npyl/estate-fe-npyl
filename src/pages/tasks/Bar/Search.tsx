@@ -14,7 +14,7 @@ const Search = () => {
 
     return (
         <TextField
-            placeholder={t("Search Tickets") || ""}
+            placeholder={t("Search Tasks") || ""}
             variant="outlined"
             value={searchQuery}
             onChange={handleSearchChange}
