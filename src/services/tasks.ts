@@ -5,7 +5,7 @@ import {
     IKanbanCardPOST,
     IKanbanColumnPOST,
     IKanbanCommentPOST,
-} from "src/types/kanban";
+} from "@/types/tasks";
 
 interface EditColumnProps {
     id: number;

@@ -1,5 +1,5 @@
 import { Droppable } from "react-beautiful-dnd";
-import { IKanbanColumn } from "src/types/kanban";
+import { IKanbanColumn } from "@/types/tasks";
 import Header from "./Header";
 import Cards from "./Cards";
 import { StyledPaper } from "./styled";

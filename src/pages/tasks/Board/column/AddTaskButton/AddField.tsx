@@ -43,7 +43,7 @@ export default function AddTaskField({ columnId, onClose }: Props) {
             priority: 0,
             attachments: [],
             comments: [],
-            assignees: [],
+            assigneeId: 1,
             property: 0,
             customer: 0,
         }).then(onClose);

@@ -1,6 +1,6 @@
 import { Draggable } from "react-beautiful-dnd";
 // @types
-import { IKanbanCard } from "src/types/kanban";
+import { IKanbanCard } from "@/types/tasks";
 //
 import CardDetails from "./Details";
 import { StyledPaper } from "./styled";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function TaskCard({ card, index }: Props) {
-    const { name, attachments, completed, priority, assignees } = card || {};
+    const { name, attachments, completed, priority, assignee } = card || {};
 
     const [isDetailsOpen, openDetails, closeDetails] = useDialog();
 
@@ -37,7 +37,7 @@ export default function TaskCard({ card, index }: Props) {
                         priority={priority}
                         onClick={openDetails}
                     >
-                        <Header assignees={assignees} completed={completed} />
+                        <Header assignee={assignee} completed={completed} />
 
                         <Content
                             name={name}

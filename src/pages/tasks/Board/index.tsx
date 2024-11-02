@@ -4,7 +4,7 @@ import { DropResult } from "react-beautiful-dnd";
 import { FC, useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { useMoveCardMutation, useReorderCardMutation } from "@/services/tasks";
-import { IKanbanBoard } from "@/types/kanban";
+import { IKanbanBoard } from "@/types/tasks";
 import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveColumns";
 
 const COLUMNS = {

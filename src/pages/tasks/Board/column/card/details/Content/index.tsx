@@ -1,4 +1,4 @@
-import { IKanbanCard } from "@/types/kanban";
+import { IKanbanCard } from "@/types/tasks";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";

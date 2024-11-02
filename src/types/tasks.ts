@@ -26,14 +26,15 @@ export type IKanbanCard = {
     completed: boolean;
     createdAt: string;
 
-    assignees: IUser[];
+    assignee: IUser;
     property: number;
     customer: number;
 };
 
-export type IKanbanCardPOST = Omit<IKanbanCard, "id"> & {
+export type IKanbanCardPOST = Omit<IKanbanCard, "id" | "assignee"> & {
     id?: number;
     columnId: number;
+    assigneeId: number;
 };
 
 export type IKanbanColumn = {

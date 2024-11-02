@@ -1,13 +1,13 @@
 import { SpaceBetween } from "@/components/styled";
-import Assignees from "./Assignees";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { FC, MouseEvent, useCallback, useMemo, useRef } from "react";
+import { FC, MouseEvent, useCallback, useRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { IUser } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
+import Avatar from "@mui/material/Avatar";
 const Menu = dynamic(() => import("./Menu"));
 
 const MenuButton = () => {
@@ -32,20 +32,22 @@ const MenuButton = () => {
     );
 };
 
-const getName = ({ firstName, lastName }: IUser) =>
-    `${firstName?.[0]}${lastName?.[0]}`;
+const AvatarSx = {
+    height: "35px",
+    width: "35px",
+};
 
 interface HeaderProps {
-    assignees: IUser[];
+    assignee: IUser;
     completed: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ assignees, completed }) => {
-    const names = useMemo(() => assignees?.map(getName), [assignees]);
+const Header: FC<HeaderProps> = ({ assignee, completed }) => {
+    const name = `${assignee.firstName[0]}${assignee.lastName[0]}`;
 
     return (
         <SpaceBetween alignItems="center">
-            <Assignees names={names} />
+            <Avatar sx={AvatarSx}>{name}</Avatar>{" "}
             <Stack spacing={1} direction="row" alignItems="center">
                 {completed ? <CheckIcon color="success" /> : null}
                 <MenuButton />

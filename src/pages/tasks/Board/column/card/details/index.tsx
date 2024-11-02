@@ -1,5 +1,5 @@
 import Dialog from "@/components/Dialog";
-import { IKanbanCard } from "@/types/kanban";
+import { IKanbanCard } from "@/types/tasks";
 import { FC } from "react";
 import {
     DialogSx,
