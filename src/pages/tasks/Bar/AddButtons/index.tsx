@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
-const AddColumnDialog = dynamic(() => import("./Dialog"));
-const Menu = dynamic(() => import("./Menu"));
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRef } from "react";
+const CardDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
+const Menu = dynamic(() => import("./Menu"));
 
 const AddButtons = () => {
     const { t } = useTranslation();
@@ -35,7 +35,8 @@ const AddButtons = () => {
             {isMenuOpen && anchorRef.current ? (
                 <Menu anchorEl={anchorRef.current} onClose={closeMenu} />
             ) : null}
-            {isDialogOpen ? <AddColumnDialog onClose={closeDialog} /> : null}
+
+            {isDialogOpen ? <CardDialog onClose={closeDialog} /> : null}
         </Stack>
     );
 };

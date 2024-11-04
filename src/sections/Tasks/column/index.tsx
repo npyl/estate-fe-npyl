@@ -3,7 +3,6 @@ import { IKanbanColumn } from "@/types/tasks";
 import Header from "./Header";
 import Cards from "./Cards";
 import { StyledPaper } from "./styled";
-import AddTaskButton from "./AddTaskButton";
 
 // ----------------------------------------------------------------------
 
@@ -28,11 +27,14 @@ export default function Column({ column }: Props) {
                 >
                     <Header name={column.name} count={column.cardIds.length} />
 
-                    <Cards mt={2} spacing={2} ids={column.cardOrder} />
+                    <Cards
+                        mt={2}
+                        spacing={2}
+                        ids={column.cardOrder}
+                        columnId={column.id}
+                    />
 
                     {provided.placeholder}
-
-                    <AddTaskButton columnId={column.id} />
                 </StyledPaper>
             )}
         </Droppable>

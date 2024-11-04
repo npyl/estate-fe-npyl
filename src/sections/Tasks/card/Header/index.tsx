@@ -43,7 +43,7 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ assignee, completed }) => {
-    const name = `${assignee.firstName[0]}${assignee.lastName[0]}`;
+    const name = `${assignee?.firstName[0]}${assignee?.lastName[0]}`;
 
     return (
         <SpaceBetween alignItems="center">

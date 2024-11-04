@@ -1,23 +1,23 @@
 import { Draggable } from "react-beautiful-dnd";
-// @types
 import { IKanbanCard } from "@/types/tasks";
-//
-import CardDetails from "./Details";
 import { StyledPaper } from "./styled";
+import dynamic from "next/dynamic";
 import Header from "./Header";
 import useDialog from "@/hooks/useDialog";
 import Box from "@mui/material/Box";
 import Footer from "./Footer";
 import Content from "./Content";
+const CardDetails = dynamic(() => import("./CardDialog"));
 
 // ----------------------------------------------------------------------
 
 type Props = {
     index: number;
+    columnId: number;
     card: IKanbanCard;
 };
 
-export default function TaskCard({ card, index }: Props) {
+export default function TaskCard({ card, index, columnId }: Props) {
     const { name, attachments, completed, priority, assignee } = card || {};
 
     const [isDetailsOpen, openDetails, closeDetails] = useDialog();
@@ -56,7 +56,11 @@ export default function TaskCard({ card, index }: Props) {
             </Draggable>
 
             {isDetailsOpen ? (
-                <CardDetails task={card} onClose={closeDetails} />
+                <CardDetails
+                    task={card}
+                    columnId={columnId}
+                    onClose={closeDetails}
+                />
             ) : null}
         </>
     );

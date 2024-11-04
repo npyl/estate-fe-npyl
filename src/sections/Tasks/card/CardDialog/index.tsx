@@ -12,11 +12,12 @@ import Content from "./Content";
 import Actions from "./Actions";
 
 interface DetailsProps {
-    task: IKanbanCard;
+    task?: IKanbanCard;
+    columnId?: number;
     onClose: VoidFunction;
 }
 
-const Details: FC<DetailsProps> = ({ task, onClose }) => (
+const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => (
     <Dialog
         open
         // ...
@@ -25,8 +26,8 @@ const Details: FC<DetailsProps> = ({ task, onClose }) => (
         DialogContentComponent={StyledDialogContent}
         DialogActionsComponent={StyledDialogActions}
         // ...
-        title={<TaskLabel taskId={task.id} />}
-        content={<Content task={task} />}
+        title={<TaskLabel name={task?.name} taskId={task?.id} />}
+        content={<Content columnId={columnId} />}
         actions={<Actions onClose={onClose} />}
     />
 );

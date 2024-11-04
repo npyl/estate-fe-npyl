@@ -1,6 +1,5 @@
 import Column, { DroppableTypeTask } from "./column";
 import { DropResult } from "react-beautiful-dnd";
-
 import { FC, useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { useMoveCardMutation, useReorderCardMutation } from "@/services/tasks";

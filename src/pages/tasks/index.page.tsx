@@ -6,7 +6,7 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useGetBoardQuery } from "@/services/tasks";
 import dynamic from "next/dynamic";
-const Board = dynamic(() => import("./Board"));
+const Board = dynamic(() => import("@/sections/Tasks/Board"));
 import Bar from "./Bar";
 
 export default function KanbanPage() {
