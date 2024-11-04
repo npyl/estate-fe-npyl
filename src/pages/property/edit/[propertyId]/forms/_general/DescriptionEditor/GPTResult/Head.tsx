@@ -12,13 +12,15 @@ import { Language } from "@/components/Language/types";
 import { useGlobals } from "@/hooks/useGlobals";
 import { SpaceBetween } from "@/components/styled";
 import ImproveButton from "./ImproveButton";
+import { EditorState } from "draft-js";
 
 interface HeadProps {
     lang: Language;
+    editorState: EditorState;
     onImprove: (s: string, styling: boolean) => void;
 }
 
-const Head: FC<HeadProps> = ({ lang, onImprove }) => {
+const Head: FC<HeadProps> = ({ lang, editorState, onImprove }) => {
     const { t } = useTranslation();
 
     const options = useGlobals();
@@ -35,7 +37,7 @@ const Head: FC<HeadProps> = ({ lang, onImprove }) => {
 
     return (
         <>
-            <Typography variant="h6">
+            <Typography variant="h6" mt={1}>
                 {`${t("ChatGPT Result")} (${lang})`}
             </Typography>
 
@@ -74,11 +76,12 @@ const Head: FC<HeadProps> = ({ lang, onImprove }) => {
                                 onChange={handleStylingChange}
                             />
                         }
-                        label={t("Opt for styled text")}
+                        label={t("RTF")}
                     />
                 </Stack>
 
                 <ImproveButton
+                    editorState={editorState}
                     lang={lang}
                     styling={styling}
                     improveOption={selectedOption}

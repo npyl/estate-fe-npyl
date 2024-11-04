@@ -1,11 +1,13 @@
 import { LoadingButton } from "@mui/lab";
-import { FC } from "react";
+import { FC, ForwardedRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import { useImproveDescriptionMutation } from "@/services/properties";
 import { useOpenAIDetails } from "../hooks";
 import { IOpenAIDetailsPOST } from "@/types/openai";
+import { GPTResultRef } from ".";
+import { convertToRaw, EditorState } from "draft-js";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(
@@ -16,11 +18,13 @@ const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
 interface ImproveButtonProps {
     styling: boolean;
     lang: Language;
+    editorState: EditorState;
     improveOption: string;
     onImprove: (s: string, styling: boolean) => void;
 }
 
 const ImproveButton: FC<ImproveButtonProps> = ({
+    editorState,
     styling,
     lang,
     improveOption,
@@ -34,8 +38,10 @@ const ImproveButton: FC<ImproveButtonProps> = ({
         useImproveDescriptionMutation();
 
     const handleImprove = async () => {
-        // TODO: take raw.
-        const oldDescription = "";
+        const contentState = editorState.getCurrentContent();
+        const oldDescription = JSON.stringify(convertToRaw(contentState)) || "";
+
+        console.log("will improve: ", oldDescription);
 
         const sanitizedPayload = sanitizePayload({
             ...openAIDetails,
@@ -58,7 +64,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
             onClick={handleImprove}
             sx={{ mt: 0, justifySelf: "flex-end" }}
         >
-            {isImproving ? t("Improving...") : t("Improve Description")}
+            {isImproving ? t("Improving...") : t("Improve")}
         </LoadingButton>
     );
 };

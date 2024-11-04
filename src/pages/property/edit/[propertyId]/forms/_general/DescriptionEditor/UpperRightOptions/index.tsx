@@ -35,7 +35,7 @@ const UpperRightOptions = ({
                         onChange={handleStylingChange}
                     />
                 }
-                label={t("Opt for styled text")}
+                label={t("RTF")}
             />
 
             {canTranslate ? (

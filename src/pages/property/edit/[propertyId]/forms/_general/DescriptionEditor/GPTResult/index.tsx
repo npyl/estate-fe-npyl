@@ -46,7 +46,11 @@ const GPTResult = forwardRef<GPTResultRef, GPTResultProps>(({ lang }, ref) => {
 
     return (
         <div ref={containerRef} style={{ display: "none" }}>
-            <Head lang={lang} onImprove={handleImprove} />
+            <Head
+                editorState={editorState}
+                lang={lang}
+                onImprove={handleImprove}
+            />
 
             <DraftEditor
                 editorState={editorState}

@@ -648,7 +648,6 @@ const resources = {
             "Generate Description": "Generate Description",
             "Generating...": "Generating...",
             Improve: "Improve",
-            "Improve Description": "Improve Description",
             "Improving...": "Improving...",
             "Improving the description to be more:":
                 "Improving the description to be more:",
@@ -688,7 +687,6 @@ const resources = {
             Profile: "Profile",
             Settings: "Settings",
             Logout: "Logout",
-            "Opt for styled text": "Opt for styled text",
             "Welcome back": "Welcome back",
             "Create a new property": "Create a new property",
             "Choose a parent category and category for your property":
@@ -1472,7 +1470,6 @@ const resources = {
             "Minimum Number of Bedrooms": "Ελάχιστος αριθμός υπνοδωματίων",
             "Maximum Floor": "Μέγιστος όροφος",
             "Minimum Floor": "Ελάχιστος όροφος",
-            "Opt for styled text": "Επιλογή εμπλουτισμένου κειμένου", // Tickets
             "Search Tickets": "Αναζήτηση Ticket",
             "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
@@ -1753,10 +1750,10 @@ const resources = {
             //Description
             Description: "Περιγραφή",
             Generate: "Δημιουργία",
+
             "Generate Description": "Δημιουργία Περιγραφής",
             "Generating...": "Δημιουργία...",
             Improve: "Βελτίωση",
-            "Improve Description": "Βελτίωση Περιγραφής",
             "Improving...": "Βελτίωση...",
             "Improving the description to be more:":
                 "Βελτιώση της περιγραφής ώστε να είναι πιο:",
