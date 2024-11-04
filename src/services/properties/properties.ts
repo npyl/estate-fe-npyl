@@ -15,6 +15,7 @@ import { ICustomer } from "src/types/customer";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
+import { useState } from "react";
 
 interface JustData<T> {
     data: T;
@@ -350,8 +351,10 @@ export const {
     useLazyCheckCodeExistsQuery,
     useLazyCheckKeyCodeExistsQuery,
 
-    useGenerateDescriptionMutation,
-    useImproveDescriptionMutation,
     // attributes
     useGetPropertyLabelsQuery,
+
+    // description editor
+    useGenerateDescriptionMutation,
+    useImproveDescriptionMutation,
 } = properties;
