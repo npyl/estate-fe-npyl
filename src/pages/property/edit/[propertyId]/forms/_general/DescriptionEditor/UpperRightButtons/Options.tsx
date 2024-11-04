@@ -35,18 +35,18 @@ const Options: FC<OptionsProps> = ({
         onImproveOptionChange(e.target.value);
 
     return (
-        <Stack direction="row" alignItems="center">
-            <Typography variant="body2" color="textSecondary" maxWidth="160px">
+        <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            p={1}
+            width="fit-content"
+        >
+            <Typography variant="body2" color="textSecondary" maxWidth="200px">
                 {t("Improving the description to be more:")}
             </Typography>
 
-            <Select
-                value={improveOption}
-                onChange={handleImproveOptionChange}
-                displayEmpty
-                variant="outlined"
-                sx={{ minWidth: "100px", mr: 1 }}
-            >
+            <Select value={improveOption} onChange={handleImproveOptionChange}>
                 {improvementOptions?.map((option) => (
                     <MenuItem key={option.key} value={option.key}>
                         {t(option.value)}

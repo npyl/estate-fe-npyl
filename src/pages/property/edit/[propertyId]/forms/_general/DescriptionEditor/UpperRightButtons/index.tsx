@@ -54,6 +54,7 @@ const UpperRightOptions = ({
                     editorState={editorState}
                     lang={lang}
                     onImprove={handleResult}
+                    onRevert={onContentChange}
                 />
             ) : null}
         </Stack>

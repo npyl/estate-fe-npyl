@@ -15,10 +15,10 @@ const OptionButton: FC<OptionButtonProps> = ({ children, options }) => {
 
     return (
         <>
-            <ButtonGroup variant="contained" ref={anchorRef}>
+            <ButtonGroup>
                 {children}
 
-                <Button size="small" onClick={openPopper}>
+                <Button ref={anchorRef} size="small" onClick={openPopper}>
                     <ArrowDropDownIcon />
                 </Button>
             </ButtonGroup>
@@ -28,7 +28,10 @@ const OptionButton: FC<OptionButtonProps> = ({ children, options }) => {
                     open
                     anchorEl={anchorRef.current}
                     disablePortal
-                    onClick={closePopper}
+                    anchorOrigin={{
+                        horizontal: "center",
+                        vertical: "bottom",
+                    }}
                     onClose={closePopper}
                 >
                     {options}

@@ -39,8 +39,10 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
         <OptionButton
             options={
                 <>
-                    <MenuItem onClick={setStylingOff}>Generate</MenuItem>
-                    <MenuItem onClick={setStylingOn}>Generate (RTF)</MenuItem>
+                    <MenuItem onClick={setStylingOff}>{t("Generate")}</MenuItem>
+                    <MenuItem onClick={setStylingOn}>
+                        {t("Generate (RTF)")}
+                    </MenuItem>
                 </>
             }
         >
