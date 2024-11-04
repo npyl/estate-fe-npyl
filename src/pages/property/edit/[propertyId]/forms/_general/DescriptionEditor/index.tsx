@@ -1,11 +1,5 @@
 import Typography from "@mui/material/Typography";
-import {
-    ContentState,
-    EditorState,
-    convertFromHTML,
-    convertFromRaw,
-    convertToRaw,
-} from "draft-js";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import * as React from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -18,6 +12,7 @@ import { TABS } from "./constants";
 import useInitialDescriptionState from "./useInitialState";
 import UpperRightOptions from "./UpperRightOptions";
 import GPTResult, { GPTResultRef } from "./GPTResult";
+import { textToEditorState } from "./util";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -30,23 +25,8 @@ const DescriptionSection: React.FC = () => {
     const resultSectionRef = useRef<GPTResultRef>(null);
 
     const handleGenerate = useCallback(async (s: string, styling: boolean) => {
-        let contentState: ContentState | null;
-
-        if (styling) {
-            // We received HTML string, convert it to ContentState
-            const blocks = convertFromHTML(s);
-
-            if (!blocks) return;
-
-            contentState = ContentState.createFromBlockArray(
-                blocks.contentBlocks,
-                blocks.entityMap
-            );
-        } else {
-            contentState = ContentState.createFromText(s);
-        }
-
-        const newEditorState = EditorState.createWithContent(contentState);
+        const newEditorState = textToEditorState(s, styling);
+        if (!newEditorState) return;
 
         resultSectionRef.current?.setEditorState(newEditorState);
 

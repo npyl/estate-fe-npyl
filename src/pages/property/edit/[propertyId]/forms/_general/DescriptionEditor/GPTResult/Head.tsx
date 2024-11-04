@@ -81,6 +81,7 @@ const Head: FC<HeadProps> = ({ lang, onImprove }) => {
                 <ImproveButton
                     lang={lang}
                     styling={styling}
+                    improveOption={selectedOption}
                     onImprove={onImprove}
                 />
             </SpaceBetween>
