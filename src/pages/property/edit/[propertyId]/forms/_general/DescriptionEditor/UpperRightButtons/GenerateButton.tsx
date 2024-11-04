@@ -26,13 +26,15 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
         useGenerateDescriptionMutation();
 
     const handleGenerate = async () => {
-        const res = await generateDescription({
-            ...openAIDetails,
-            styling,
-            ...fixDropdowns(openAIDetails),
-        }).unwrap();
+        try {
+            const res = await generateDescription({
+                ...openAIDetails,
+                styling,
+                ...fixDropdowns(openAIDetails),
+            }).unwrap();
 
-        onGenerate(res, styling);
+            onGenerate(res, styling);
+        } catch (ex) {}
     };
 
     return (

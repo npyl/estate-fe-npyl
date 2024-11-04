@@ -6,7 +6,7 @@ import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import { useImproveDescriptionMutation } from "@/services/properties";
 import { useOpenAIDetails } from "../hooks";
 import { IOpenAIDetailsPOST } from "@/types/openai";
-import { convertToRaw, EditorState } from "draft-js";
+import { EditorState } from "draft-js";
 import OptionButton from "@/components/OptionButton";
 import Options from "./Options";
 import HistoryIcon from "@mui/icons-material/History";
@@ -40,14 +40,6 @@ const RevertButton: FC<RevertButtonProps> = ({ revertContent, onClick }) => {
 
 // -----------------------------------------------------------------------------
 
-const getPlainText = (editorState: EditorState) => {
-    const contentState = editorState.getCurrentContent();
-    const rawContent = convertToRaw(contentState);
-
-    // Join all blocks with newlines between them
-    return rawContent.blocks.map((block) => block.text).join("\n");
-};
-
 interface ImproveButtonProps {
     lang: Language;
     editorState: EditorState;
@@ -74,20 +66,25 @@ const ImproveButton: FC<ImproveButtonProps> = ({
         useImproveDescriptionMutation();
 
     const handleImprove = async () => {
-        const oldDescription = getPlainText(editorState);
+        try {
+            const oldDescription = editorState
+                .getCurrentContent()
+                .getPlainText();
+            if (!oldDescription) return;
 
-        const sanitizedPayload = sanitizePayload({
-            ...openAIDetails,
-            oldDescription,
-            improveOption,
-            styling,
-        });
+            const sanitizedPayload = sanitizePayload({
+                ...openAIDetails,
+                oldDescription,
+                improveOption,
+                styling,
+            });
 
-        const text = await improveDescription(sanitizedPayload).unwrap();
+            const text = await improveDescription(sanitizedPayload).unwrap();
 
-        onImprove(text, styling);
+            onImprove(text, styling);
 
-        setRevertContent(editorState);
+            setRevertContent(editorState);
+        } catch (ex) {}
     };
 
     const handleRevert = useCallback((e: EditorState) => {

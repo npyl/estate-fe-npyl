@@ -12,6 +12,7 @@ import { TABS } from "./constants";
 import useInitialDescriptionState from "./useInitialState";
 import UpperRightButtons from "./UpperRightButtons";
 import { SxProps, Theme } from "@mui/material";
+import { textToEditorState } from "./util";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -87,9 +88,14 @@ const DescriptionSection: React.FC = () => {
 
     const handleTranslate = useCallback(
         async (translatedTexts: string[]) => {
-            setValue("descriptions[1].title", translatedTexts[0]);
-            const contentState = convertFromRaw(JSON.parse(translatedTexts[1]));
-            onEditorStateChange(EditorState.createWithContent(contentState));
+            try {
+                setValue("descriptions[1].title", translatedTexts[0]);
+
+                const ns = textToEditorState(translatedTexts[1], false);
+                if (!ns) return;
+
+                onEditorStateChange(ns);
+            } catch (ex) {}
         },
         [onEditorStateChange]
     );
@@ -104,7 +110,7 @@ const DescriptionSection: React.FC = () => {
                     editorState={editorState}
                     // ...
                     onTranslate={handleTranslate}
-                    onContentChange={setEditorState}
+                    onContentChange={onEditorStateChange}
                 />
             }
             onSelect={handleTabChange}

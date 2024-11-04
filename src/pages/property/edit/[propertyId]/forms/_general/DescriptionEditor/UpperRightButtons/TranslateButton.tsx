@@ -16,23 +16,18 @@ const TranslateButton: FC<TranslateButtonProps> = ({ onTranslate }) => {
     const [translate] = useTranslateMutation();
 
     const handleClick = async () => {
-        const titleToTranslate = watch("descriptions[0].title");
-        const descriptionToTranslate = watch("descriptions[0].description");
+        const title = watch("descriptions[0].title");
+        const description = watch("descriptions[0].descriptionText");
 
-        if (!titleToTranslate && !descriptionToTranslate) return;
+        if (!title && !description) return;
 
-        const textsToTranslate = [];
-        if (titleToTranslate) textsToTranslate.push(titleToTranslate);
-        if (descriptionToTranslate)
-            textsToTranslate.push(descriptionToTranslate);
-
-        const params = {
+        const body = {
             source_lang: "EL",
             target_lang: "EN",
-            text: textsToTranslate,
+            text: [title, description],
         };
 
-        const res = await translate(params).unwrap();
+        const res = await translate(body).unwrap();
         const translatedTexts = res.translations.map(({ text }) => text);
 
         onTranslate(translatedTexts);
