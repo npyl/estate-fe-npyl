@@ -7,80 +7,29 @@ import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
 import DraftEditor from "@/components/draft-editor";
 import { RHFTextField } from "@/components/hook-form";
-import {
-    useGenerateDescriptionMutation,
-    useImproveDescriptionMutation,
-} from "src/services/properties";
-import { IOpenAIDetailsPOST } from "src/types/openai";
 import TabbedBox from "./TabbedBox";
-import { useOpenAIDetails } from "./hooks";
-import { useTranslateMutation } from "@/services/translate";
 import { TABS } from "./constants";
 import useInitialDescriptionState from "./useInitialState";
 import UpperRightOptions from "./UpperRightOptions";
-import ChatGPTResult from "./ChatGPTResult";
+import GPTResult from "./GPTResult";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
-    return Object.fromEntries(
-        Object.entries(payload).filter(([_, value]) => value !== "")
-    );
-};
 
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
     const { setValue, watch } = useFormContext();
 
-    const [chatTextEN, setChatTextEN] = useState("");
-    const [chatTextGR, setChatTextGR] = useState("");
-    const [generateDescription, { isLoading: isGenerating }] =
-        useGenerateDescriptionMutation();
-
-    const [improveDescription, { isLoading: isImproving }] =
-        useImproveDescriptionMutation();
-
-    const [generatedDescription, setGeneratedDescription] = useState("");
-
     const [lang, setLang] = useState<Language>("el");
-    const { openAIDetails } = useOpenAIDetails(lang);
 
     const resultSectionRef = useRef<HTMLDivElement>(null);
 
-    const generateCallback = useCallback(async (d: IOpenAIDetailsPOST) => {
-        const description = await generateDescription(d).unwrap();
-
-        setGeneratedDescription(description); // Store it for later use as oldDescription
+    const handleGenerate = useCallback(async (s: string) => {
+        // TODO: ...
+        // gptResultRef
 
         // Scroll to the ChatGPT Result section after generation
         resultSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-
-        return description;
     }, []);
-
-    const improveCallback = useCallback(
-        async (selectedOption: string, styling: boolean) => {
-            const sanitizedPayload = sanitizePayload({
-                ...openAIDetails,
-                oldDescription: generatedDescription, // Use the generated description as oldDescription
-                improveOption: selectedOption,
-                styling, // Pass the selected improvement option
-            });
-
-            const text = await improveDescription(sanitizedPayload).unwrap();
-
-            console.log("TEXT: ", text);
-
-            if (lang === "en") {
-                setChatTextEN(text);
-            } else {
-                setChatTextGR(text);
-            }
-
-            return text;
-        },
-        [generatedDescription, lang, openAIDetails, improveDescription]
-    );
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -141,41 +90,14 @@ const DescriptionSection: React.FC = () => {
         setEditorState(EditorState.createWithContent(contentState));
     }, []);
 
-    const onChatTextChange = useCallback(
-        (s: string) => (lang === "en" ? setChatTextEN(s) : setChatTextGR(s)),
-        [lang]
-    );
-
-    const [translate] = useTranslateMutation();
-
-    const handleTranslate = useCallback(async () => {
-        const titleToTranslate = watch("descriptions[0].title");
-        const descriptionToTranslate = watch("descriptions[0].description");
-
-        if (!titleToTranslate && !descriptionToTranslate) return;
-
-        const textsToTranslate = [];
-        if (titleToTranslate) textsToTranslate.push(titleToTranslate);
-        if (descriptionToTranslate)
-            textsToTranslate.push(descriptionToTranslate);
-
-        const params = {
-            source_lang: "EL",
-            target_lang: "EN",
-            text: textsToTranslate,
-        };
-
-        try {
-            const res = await translate(params).unwrap();
-            const translatedTexts = res.translations.map(({ text }) => text);
-
+    const handleTranslate = useCallback(
+        async (translatedTexts: string[]) => {
             setValue("descriptions[1].title", translatedTexts[0]);
             const contentState = convertFromRaw(JSON.parse(translatedTexts[1]));
             onEditorStateChange(EditorState.createWithContent(contentState));
-        } catch (error) {
-            console.error("Translation error:", error);
-        }
-    }, [onEditorStateChange]);
+        },
+        [onEditorStateChange]
+    );
 
     return (
         <TabbedBox<Language>
@@ -183,15 +105,15 @@ const DescriptionSection: React.FC = () => {
             selected={lang}
             endNode={
                 <UpperRightOptions
-                    onGenerate={generateCallback}
-                    onChatTextChange={onChatTextChange}
-                    isLoading={isGenerating || isImproving}
+                    onGenerate={handleGenerate}
+                    isLoading={false}
                     lang={lang}
-                    onClickTranslate={handleTranslate}
+                    onTranslate={handleTranslate}
                 />
             }
             onSelect={handleTabChange}
-            disabled={isGenerating || isImproving}
+
+            // disabled={isGenerating || isImproving}
         >
             <Typography variant="h6" flex={1}>
                 {`${t("Title")} (${lang})`}
@@ -200,6 +122,7 @@ const DescriptionSection: React.FC = () => {
             <Typography variant="h6" flex={1}>
                 {`${t("Description")} (${lang})`}
             </Typography>
+
             <DraftEditor
                 sx={{
                     minHeight: "200px",
@@ -208,14 +131,8 @@ const DescriptionSection: React.FC = () => {
                 editorState={editorState}
                 onEditorStateChange={onEditorStateChange}
             />
-            <ChatGPTResult
-                lang={lang}
-                chatTextEN={chatTextEN}
-                chatTextGR={chatTextGR}
-                isImproving={isImproving}
-                onImprove={improveCallback}
-                scrollRef={resultSectionRef}
-            />
+
+            <GPTResult ref={resultSectionRef} lang={lang} />
         </TabbedBox>
     );
 };
