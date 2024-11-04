@@ -2,8 +2,8 @@ import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Autocomplete from "@/components/Autocomplete";
-import { useGetMembersQuery } from "@/services/company";
 import { IUserMini } from "@/types/user";
+import { useAllUsersQuery } from "@/services/user";
 
 const getOptionLabel = ({ firstName, lastName }: IUserMini) =>
     `${firstName} ${lastName}`;
@@ -29,7 +29,8 @@ const RenderOption = (
 const AssigneeSelect = () => {
     const { t } = useTranslation();
 
-    const { data, isLoading } = useGetMembersQuery(1);
+    // TODO: check inside company ??
+    const { data, isLoading } = useAllUsersQuery();
 
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
