@@ -3,6 +3,8 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { useTranslateMutation } from "@/services/translate";
+import TranslateIcon from "@mui/icons-material/Translate";
+import { HideText } from "./style";
 
 interface TranslateButtonProps {
     onTranslate: (translatedTexts: string[]) => void;
@@ -33,7 +35,15 @@ const TranslateButton: FC<TranslateButtonProps> = ({ onTranslate }) => {
         onTranslate(translatedTexts);
     };
 
-    return <Button onClick={handleClick}>{t("Translate from greek")}</Button>;
+    return (
+        <Button
+            onClick={handleClick}
+            startIcon={<TranslateIcon />}
+            sx={HideText}
+        >
+            {t("Translate from greek")}
+        </Button>
+    );
 };
 
 export default TranslateButton;

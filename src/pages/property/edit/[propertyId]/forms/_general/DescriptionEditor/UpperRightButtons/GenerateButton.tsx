@@ -9,6 +9,7 @@ import { MenuItem } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import OptionButton from "@/components/OptionButton";
+import { HideText } from "./style";
 
 interface GenerateButtonProps {
     lang: Language;
@@ -54,6 +55,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
                 startIcon={<ChatGPTIcon />}
                 variant="outlined"
                 onClick={handleGenerate}
+                sx={HideText}
             >
                 {isLoading
                     ? t("Generating...")

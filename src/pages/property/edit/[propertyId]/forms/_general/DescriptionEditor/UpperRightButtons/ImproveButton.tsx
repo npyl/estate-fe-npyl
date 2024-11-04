@@ -11,6 +11,7 @@ import OptionButton from "@/components/OptionButton";
 import Options from "./Options";
 import HistoryIcon from "@mui/icons-material/History";
 import Button from "@mui/material/Button";
+import { HideText } from "./style";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(
@@ -116,7 +117,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
                 startIcon={<ChatGPTIcon />}
                 variant="outlined"
                 onClick={handleImprove}
-                sx={{ mt: 0, justifySelf: "flex-end" }}
+                sx={{ mt: 0, justifySelf: "flex-end", ...HideText }}
             >
                 {isImproving ? t("Improving...") : t("Improve")}
             </LoadingButton>
