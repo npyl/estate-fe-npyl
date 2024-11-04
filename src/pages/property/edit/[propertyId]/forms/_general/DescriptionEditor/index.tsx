@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import * as React from "react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
@@ -10,32 +10,21 @@ import { RHFTextField } from "@/components/hook-form";
 import TabbedBox from "./TabbedBox";
 import { TABS } from "./constants";
 import useInitialDescriptionState from "./useInitialState";
-import UpperRightOptions from "./UpperRightOptions";
-import GPTResult, { GPTResultRef } from "./GPTResult";
-import { textToEditorState } from "./util";
+import UpperRightButtons from "./UpperRightButtons";
+import { SxProps, Theme } from "@mui/material";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const EditorSx: SxProps<Theme> = {
+    minHeight: "200px",
+    height: "auto",
+};
 
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
     const { setValue, watch } = useFormContext();
 
     const [lang, setLang] = useState<Language>("el");
-
-    const resultSectionRef = useRef<GPTResultRef>(null);
-
-    const handleGenerate = useCallback(async (s: string, styling: boolean) => {
-        const newEditorState = textToEditorState(s, styling);
-        if (!newEditorState) return;
-
-        resultSectionRef.current?.setEditorState(newEditorState);
-
-        // Visible & scroll
-        if (resultSectionRef.current && resultSectionRef.current?.div) {
-            resultSectionRef.current.div.style.display = "block";
-            resultSectionRef.current.div.scrollIntoView({ behavior: "smooth" });
-        }
-    }, []);
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -110,11 +99,12 @@ const DescriptionSection: React.FC = () => {
             tabs={TABS}
             selected={lang}
             endNode={
-                <UpperRightOptions
-                    onGenerate={handleGenerate}
-                    isLoading={false}
+                <UpperRightButtons
                     lang={lang}
+                    editorState={editorState}
+                    // ...
                     onTranslate={handleTranslate}
+                    onContentChange={setEditorState}
                 />
             }
             onSelect={handleTabChange}
@@ -130,15 +120,10 @@ const DescriptionSection: React.FC = () => {
             </Typography>
 
             <DraftEditor
-                sx={{
-                    minHeight: "200px",
-                    height: "auto",
-                }}
+                sx={EditorSx}
                 editorState={editorState}
                 onEditorStateChange={onEditorStateChange}
             />
-
-            <GPTResult ref={resultSectionRef} lang={lang} />
         </TabbedBox>
     );
 };

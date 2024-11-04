@@ -645,7 +645,7 @@ const resources = {
             "Calculate (within": "Calculate (within",
 
             Generate: "Generate",
-            "Generate Description": "Generate Description",
+            "Generate (RTF)": "Generate (RTF)",
             "Generating...": "Generating...",
             Improve: "Improve",
             "Improving...": "Improving...",
@@ -1749,10 +1749,9 @@ const resources = {
 
             //Description
             Description: "Περιγραφή",
-            Generate: "Δημιουργία",
-
-            "Generate Description": "Δημιουργία Περιγραφής",
-            "Generating...": "Δημιουργία...",
+            Generate: "Παραγωγή",
+            "Generate (RTF)": "Παραγωγή (RTF)",
+            "Generating...": "Παραγωγή...",
             Improve: "Βελτίωση",
             "Improving...": "Βελτίωση...",
             "Improving the description to be more:":
