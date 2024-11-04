@@ -9,7 +9,7 @@ const TranslateButton = dynamic(() => import("./TranslateButton"));
 interface UpperRightOptionsProps {
     lang: Language;
     isLoading: boolean;
-    onGenerate: (s: string) => void;
+    onGenerate: (s: string, styling: boolean) => void;
     onTranslate: (translatedTexts: string[]) => void;
 }
 

@@ -11,7 +11,7 @@ import { useGenerateDescriptionMutation } from "@/services/properties";
 interface GenerateButtonProps {
     lang: Language;
     styling: boolean;
-    onGenerate: (s: string) => void;
+    onGenerate: (s: string, styling: boolean) => void;
 }
 
 const GenerateButton: FC<GenerateButtonProps> = ({
@@ -34,7 +34,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({
             ...fixDropdowns(openAIDetails),
         }).unwrap();
 
-        onGenerate(res);
+        onGenerate(res, styling);
     };
 
     return (

@@ -1,5 +1,11 @@
 import Typography from "@mui/material/Typography";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+    ContentState,
+    EditorState,
+    convertFromHTML,
+    convertFromRaw,
+    convertToRaw,
+} from "draft-js";
 import * as React from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -11,7 +17,7 @@ import TabbedBox from "./TabbedBox";
 import { TABS } from "./constants";
 import useInitialDescriptionState from "./useInitialState";
 import UpperRightOptions from "./UpperRightOptions";
-import GPTResult from "./GPTResult";
+import GPTResult, { GPTResultRef } from "./GPTResult";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -21,14 +27,34 @@ const DescriptionSection: React.FC = () => {
 
     const [lang, setLang] = useState<Language>("el");
 
-    const resultSectionRef = useRef<HTMLDivElement>(null);
+    const resultSectionRef = useRef<GPTResultRef>(null);
 
-    const handleGenerate = useCallback(async (s: string) => {
-        // TODO: ...
-        // gptResultRef
+    const handleGenerate = useCallback(async (s: string, styling: boolean) => {
+        let contentState: ContentState | null;
 
-        // Scroll to the ChatGPT Result section after generation
-        resultSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (styling) {
+            // We received HTML string, convert it to ContentState
+            const blocks = convertFromHTML(s);
+
+            if (!blocks) return;
+
+            contentState = ContentState.createFromBlockArray(
+                blocks.contentBlocks,
+                blocks.entityMap
+            );
+        } else {
+            contentState = ContentState.createFromText(s);
+        }
+
+        const newEditorState = EditorState.createWithContent(contentState);
+
+        resultSectionRef.current?.setEditorState(newEditorState);
+
+        // Visible & scroll
+        if (resultSectionRef.current && resultSectionRef.current?.div) {
+            resultSectionRef.current.div.style.display = "block";
+            resultSectionRef.current.div.scrollIntoView({ behavior: "smooth" });
+        }
     }, []);
 
     const [editorState, setEditorState] = useState<EditorState>(
@@ -112,7 +138,7 @@ const DescriptionSection: React.FC = () => {
                 />
             }
             onSelect={handleTabChange}
-
+            // TODO:
             // disabled={isGenerating || isImproving}
         >
             <Typography variant="h6" flex={1}>
