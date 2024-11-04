@@ -7,10 +7,6 @@ import {
     IKanbanCommentPOST,
 } from "@/types/tasks";
 
-interface EditColumnProps {
-    id: number;
-    name: string;
-}
 interface ReorderColumnProps {
     columnId: number;
     position: number;
@@ -82,8 +78,8 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
-        editColumn: builder.mutation<void, EditColumnProps>({
-            query: (body: EditColumnProps) => ({
+        editColumn: builder.mutation<void, IKanbanColumnPOST>({
+            query: (body) => ({
                 url: "/column",
                 method: "PUT",
                 body,

@@ -1,30 +1,45 @@
 import Dialog from "@mui/material/Dialog";
+
 import {
-    Button,
     DialogActions,
     DialogContent,
     DialogTitle,
     IconButton,
     TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { Close as CloseIcon } from "@mui/icons-material";
-import { useAddColumnMutation } from "@/services/tasks";
+import { useAddColumnMutation, useEditColumnMutation } from "@/services/tasks";
+import { LoadingButton } from "@mui/lab";
 
 interface Props {
+    columnId?: number;
     onClose: () => void;
 }
 
-const AddColumnDialog = ({ onClose }: Props) => {
+const AddOrEditDialog = ({ columnId, onClose }: Props) => {
     const { t } = useTranslation();
 
     const [name, setName] = useState("");
 
     const [addColumn] = useAddColumnMutation();
+    const [editColumn] = useEditColumnMutation();
 
-    const handleAdd = () => {
-        addColumn({ name });
+    const [isPending, startTransition] = useTransition();
+
+    const title = columnId ? t("Edit column") : t("Add column");
+
+    const handleSubmit = async () => {
+        if (!name) return;
+
+        const action = columnId ? editColumn : addColumn;
+        const body = columnId ? { id: columnId!, name } : { name };
+
+        startTransition(async () => {
+            await action(body);
+        });
+
         onClose();
     };
 
@@ -36,7 +51,7 @@ const AddColumnDialog = ({ onClose }: Props) => {
                     p: 2,
                 }}
             >
-                {t("Add column")}
+                {title}
 
                 <IconButton
                     sx={{
@@ -61,10 +76,16 @@ const AddColumnDialog = ({ onClose }: Props) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleAdd}>{t("Add")}</Button>
+                <LoadingButton
+                    loading={isPending}
+                    disabled={isPending}
+                    onClick={handleSubmit}
+                >
+                    {columnId ? t("Edit") : t("Add")}
+                </LoadingButton>
             </DialogActions>
         </Dialog>
     );
 };
 
-export default AddColumnDialog;
+export default AddOrEditDialog;

@@ -3,7 +3,9 @@ import MuiMenu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
-const AddColumnDialog = dynamic(() => import("./Dialog"));
+const AddColumnDialog = dynamic(
+    () => import("@/sections/Tasks/column/AddDialog")
+);
 
 interface Props {
     anchorEl: HTMLElement;

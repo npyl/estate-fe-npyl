@@ -1,12 +1,6 @@
 import MuiMenu from "@mui/material/Menu";
 import DeleteColumnItem from "./DeleteColumnItem";
-import { useTranslation } from "react-i18next";
-import MenuItem from "@mui/material/MenuItem";
-
-const EditColumnItem = () => {
-    const { t } = useTranslation();
-    return <MenuItem>{t("Edit")}</MenuItem>;
-};
+import EditColumnItem from "./EditColumnItem";
 
 interface Props {
     anchorEl: HTMLElement;
@@ -16,7 +10,7 @@ interface Props {
 
 const Menu = ({ anchorEl, columnId, onClose }: Props) => (
     <MuiMenu open anchorEl={anchorEl} onClose={onClose}>
-        <EditColumnItem />
+        <EditColumnItem columnId={columnId} />
         <DeleteColumnItem columnId={columnId} />
     </MuiMenu>
 );
