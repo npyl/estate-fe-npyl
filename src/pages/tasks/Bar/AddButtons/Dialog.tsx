@@ -7,7 +7,7 @@ import {
     IconButton,
     TextField,
 } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { useAddColumnMutation } from "@/services/tasks";
@@ -23,10 +23,10 @@ const AddColumnDialog = ({ onClose }: Props) => {
 
     const [addColumn] = useAddColumnMutation();
 
-    const handleAdd = useCallback(() => {
+    const handleAdd = () => {
         addColumn({ name });
         onClose();
-    }, [name]);
+    };
 
     return (
         <Dialog open onClose={onClose}>
@@ -36,7 +36,7 @@ const AddColumnDialog = ({ onClose }: Props) => {
                     p: 2,
                 }}
             >
-                {t("Add Task")}
+                {t("Add column")}
 
                 <IconButton
                     sx={{
@@ -55,7 +55,7 @@ const AddColumnDialog = ({ onClose }: Props) => {
                 }}
             >
                 <TextField
-                    placeholder={t("Name").toString()}
+                    placeholder={t<string>("Name")}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />

@@ -271,6 +271,7 @@ const resources = {
 
             "Assigned to": "Assigned to",
             "Add section": "Add section",
+            "Add column": "Add column",
             "Add Task": "Add task",
             "Delete section": "Delete section",
             "Rename section": "Rename section",
@@ -1510,6 +1511,7 @@ const resources = {
             "Opt for styled text": "Επιλογή εμπλουτισμένου κειμένου",
             "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
+            "Add column": "Προσθήκη Στήλης",
             "Add Task": "Προσθήκη Εργασίας",
             "Delete section": "Διαγραφή Τμήματος",
             "Rename section": "Μετονομασία Τμήματος",

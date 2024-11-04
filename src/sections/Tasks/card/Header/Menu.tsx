@@ -1,22 +1,32 @@
 import MuiMenu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
+
+interface CopyLinkItemProps {
+    taskId: number;
+}
+
+const CopyLinkItem: FC<CopyLinkItemProps> = ({ taskId }) => {
+    const { t } = useTranslation();
+    return <MenuItem>{t("Copy Link")}</MenuItem>;
+};
+const DeleteItem = () => {
+    const { t } = useTranslation();
+    return <MenuItem>{t("Delete")}</MenuItem>;
+};
 
 interface Props {
     anchorEl: HTMLElement;
+    taskId: number;
     onClose: VoidFunction;
 }
 
-const Menu = ({ anchorEl, onClose }: Props) => {
-    const { t } = useTranslation();
-    return (
-        <MuiMenu open anchorEl={anchorEl} onClose={onClose}>
-            <MenuList>
-                {/* <MenuItem>{t("Create column")}</MenuItem> */}
-            </MenuList>
-        </MuiMenu>
-    );
-};
+const Menu: FC<Props> = ({ anchorEl, taskId, onClose }) => (
+    <MuiMenu open anchorEl={anchorEl} onClose={onClose}>
+        <CopyLinkItem taskId={taskId} />
+        <DeleteItem />
+    </MuiMenu>
+);
 
 export default Menu;

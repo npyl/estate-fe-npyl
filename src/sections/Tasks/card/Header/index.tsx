@@ -10,7 +10,11 @@ import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@mui/material/Avatar";
 const Menu = dynamic(() => import("./Menu"));
 
-const MenuButton = () => {
+interface Props {
+    taskId: number;
+}
+
+const MenuButton: FC<Props> = ({ taskId }) => {
     const anchorRef = useRef(null);
     const [isOpen, openMenu, closeMenu] = useDialog();
 
@@ -26,7 +30,11 @@ const MenuButton = () => {
             </IconButton>
 
             {isOpen && anchorRef.current ? (
-                <Menu anchorEl={anchorRef.current} onClose={closeMenu} />
+                <Menu
+                    taskId={taskId}
+                    anchorEl={anchorRef.current}
+                    onClose={closeMenu}
+                />
             ) : null}
         </>
     );
@@ -38,11 +46,12 @@ const AvatarSx = {
 };
 
 interface HeaderProps {
+    taskId: number;
     assignee: IUser;
     completed: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ assignee, completed }) => {
+const Header: FC<HeaderProps> = ({ taskId, assignee, completed }) => {
     const name = `${assignee?.firstName[0]}${assignee?.lastName[0]}`;
 
     return (
@@ -50,7 +59,7 @@ const Header: FC<HeaderProps> = ({ assignee, completed }) => {
             <Avatar sx={AvatarSx}>{name}</Avatar>{" "}
             <Stack spacing={1} direction="row" alignItems="center">
                 {completed ? <CheckIcon color="success" /> : null}
-                <MenuButton />
+                <MenuButton taskId={taskId} />
             </Stack>
         </SpaceBetween>
     );

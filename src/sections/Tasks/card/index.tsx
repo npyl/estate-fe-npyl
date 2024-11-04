@@ -37,7 +37,11 @@ export default function TaskCard({ card, index, columnId }: Props) {
                         priority={priority}
                         onClick={openDetails}
                     >
-                        <Header assignee={assignee} completed={completed} />
+                        <Header
+                            taskId={card.id}
+                            assignee={assignee}
+                            completed={completed}
+                        />
 
                         <Content
                             name={name}

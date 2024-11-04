@@ -25,7 +25,11 @@ export default function Column({ column }: Props) {
                     ref={provided.innerRef}
                     variant="outlined"
                 >
-                    <Header name={column.name} count={column.cardIds.length} />
+                    <Header
+                        name={column.name}
+                        count={column.cardIds.length}
+                        columnId={column.id}
+                    />
 
                     <Cards
                         mt={2}

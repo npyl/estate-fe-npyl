@@ -2,10 +2,14 @@ import useDialog from "@/hooks/useDialog";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 const Menu = dynamic(() => import("./Menu"));
 
-const Controls = () => {
+interface Props {
+    columnId: number;
+}
+
+const Controls: FC<Props> = ({ columnId }) => {
     const anchorRef = useRef(null);
     const [isOpen, openMenu, closeMenu] = useDialog();
 
@@ -21,7 +25,11 @@ const Controls = () => {
             </IconButton>
 
             {isOpen && anchorRef.current ? (
-                <Menu anchorEl={anchorRef.current} onClose={closeMenu} />
+                <Menu
+                    columnId={columnId}
+                    anchorEl={anchorRef.current}
+                    onClose={closeMenu}
+                />
             ) : null}
         </>
     );
