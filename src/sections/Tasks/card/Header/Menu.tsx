@@ -1,6 +1,6 @@
 import MuiMenu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 interface CopyLinkItemProps {
@@ -16,6 +16,8 @@ const DeleteItem = () => {
     return <MenuItem>{t("Delete")}</MenuItem>;
 };
 
+const stopPropagation = (e: MouseEvent) => e.stopPropagation();
+
 interface Props {
     anchorEl: HTMLElement;
     taskId: number;
@@ -23,7 +25,12 @@ interface Props {
 }
 
 const Menu: FC<Props> = ({ anchorEl, taskId, onClose }) => (
-    <MuiMenu open anchorEl={anchorEl} onClose={onClose}>
+    <MuiMenu
+        open
+        anchorEl={anchorEl}
+        onClick={stopPropagation}
+        onClose={onClose}
+    >
         <CopyLinkItem taskId={taskId} />
         <DeleteItem />
     </MuiMenu>

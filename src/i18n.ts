@@ -273,6 +273,9 @@ const resources = {
             "Add section": "Add section",
             "Edit column": "Edit column",
             "Add column": "Add column",
+            "Delete column?": "Delete column?",
+            "Deleting a column will also delete the tasks":
+                "Deleting a column will also delete the tasks",
             "Add Task": "Add task",
             "Delete section": "Delete section",
             "Rename section": "Rename section",
@@ -295,8 +298,6 @@ const resources = {
             Priority: "Priority",
             "All tasks related to this category will also be deleted.":
                 "All tasks related to this category will also be deleted.",
-            "Are you sure want to delete column? ":
-                "Are you sure want to delete column? ",
 
             //Notes
             NOTE: "NOTE",
@@ -1513,6 +1514,9 @@ const resources = {
             "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
             "Add column": "Προσθήκη Στήλης",
+            "Delete column?": "Διαγραφή στήλης?",
+            "Deleting a column will also delete the tasks":
+                "Η διαγραφή μιας στήλης θα οδηγήσει σε διαγραφή των αντίστοιχων εργασιών",
             "Edit column": "Επεξεργασία στήλης",
             "Add Task": "Προσθήκη Εργασίας",
             "Delete section": "Διαγραφή Τμήματος",
@@ -1537,8 +1541,6 @@ const resources = {
             High: "Υψηλή",
             "All tasks related to this category will also be deleted.":
                 "Όλες οι εργασίες που σχετίζονται με αυτή την κατηγορία θα διαγραφούν.",
-            "Are you sure want to delete column?":
-                "Είστε σίγουροι ότι θέλετε να διαγράψετε την στήλη;",
 
             //Areas
 
