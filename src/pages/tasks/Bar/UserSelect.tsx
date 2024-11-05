@@ -1,65 +1,56 @@
-import {
-    Avatar,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Stack,
-    Typography,
-} from "@mui/material";
 import { useAllUsersQuery } from "@/services/user";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { IUser } from "@/types/user";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
+import { FC, useCallback } from "react";
+import { SxProps, Theme } from "@mui/material";
 
-const getProfileImageSrc = (base64String: string | null) => {
-    return base64String ? `data:image/jpeg;base64,${base64String}` : "";
+// -------------------------------------------------------------------
+
+const AvatarSx: SxProps<Theme> = {
+    border: "2px solid",
+    borderColor: "transparent",
+    cursor: "pointer",
+    "&:hover": {
+        borderColor: "info.main",
+        zIndex: 1000,
+        boxShadow: 15,
+    },
 };
 
-const UserSelect = () => {
-    const { t } = useTranslation();
-    const { data: users } = useAllUsersQuery();
-    const [selectedUserId, setSelectedUserId] = useState<number>();
+interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
+    u: IUser;
+    onClick: (id: number) => void;
+}
 
-    const handleUserChange = (event: SelectChangeEvent<number>) => {
-        setSelectedUserId(
-            event.target.value
-                ? parseInt(event.target.value as string)
-                : undefined
-        );
-    };
+const Avatar: FC<AvatarProps> = ({ u, onClick, ...props }) => {
+    const handleClick = useCallback(() => onClick(u.id), []);
+    return (
+        <MuiAvatar
+            src={u.profilePhoto}
+            onClick={handleClick}
+            sx={AvatarSx}
+            {...props}
+        />
+    );
+};
+
+// -------------------------------------------------------------------
+
+const getAvatar = (onClick: (id: number) => void) => (u: IUser) =>
+    <Avatar key={u.id} u={u} onClick={onClick} />;
+
+// -------------------------------------------------------------------
+
+const UserSelect = () => {
+    const { data } = useAllUsersQuery();
+
+    const handleClick = (id: number) => {};
 
     return (
-        <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel id="user-select-label">{t("Assigned to")}</InputLabel>
-            <Select
-                labelId="user-select-label"
-                value={selectedUserId || ""}
-                label="Filter by User"
-                onChange={handleUserChange}
-            >
-                <MenuItem value="">
-                    <Typography>{t("All Users")}</Typography>
-                </MenuItem>
-                {users?.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                        <Stack
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                            gap={1}
-                        >
-                            <Avatar
-                                src={getProfileImageSrc(user.profilePhoto)}
-                                alt={user.firstName}
-                                sx={{ width: 22, height: 22 }}
-                            />
-                            {user.firstName} {user.lastName}
-                        </Stack>
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <AvatarGroup max={data?.length || 4}>
+            {data?.map(getAvatar(handleClick))}
+        </AvatarGroup>
     );
 };
 
