@@ -1,5 +1,5 @@
 import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
-import { FC, useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { IUserMini } from "@/types/user";
 import { useAllUsersQuery } from "@/services/user";
@@ -32,18 +32,16 @@ interface AssigneeAutocompleteProps
     helperText?: string;
 }
 
-const AssigneeAutocomplete: FC<AssigneeAutocompleteProps> = ({
-    label,
-    error,
-    helperText,
-    ...props
-}) => {
+const AssigneeAutocomplete = forwardRef<
+    HTMLDivElement,
+    AssigneeAutocompleteProps
+>(({ label, error, helperText, ...props }, ref) => {
     const { data, isLoading } = useAllUsersQuery();
-
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
     return (
-        <Autocomplete<IUserMini>
+        <Autocomplete
+            ref={ref}
             loading={isLoading}
             renderOption={RenderOption}
             options={options}
@@ -59,6 +57,8 @@ const AssigneeAutocomplete: FC<AssigneeAutocompleteProps> = ({
             {...props}
         />
     );
-};
+});
+
+AssigneeAutocomplete.displayName = "AssigneeAutocomplete";
 
 export default AssigneeAutocomplete;

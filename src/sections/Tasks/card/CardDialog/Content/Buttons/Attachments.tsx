@@ -45,7 +45,9 @@ const Attachments = () => {
             // existing attachments
             const attachments = (watch(attachmentsKey) as string[]) || [];
 
-            setValue(attachmentsKey, [...attachments, ...base64strs]);
+            setValue(attachmentsKey, [...attachments, ...base64strs], {
+                shouldDirty: true,
+            });
         },
         []
     );

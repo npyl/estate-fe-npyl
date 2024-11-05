@@ -1,5 +1,5 @@
 import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
-import { FC, useMemo } from "react";
+import { FC, forwardRef, useMemo } from "react";
 import { useAllCustomersQuery } from "@/services/customers";
 import { ICustomer } from "@/types/customer";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
@@ -43,15 +43,11 @@ interface CustomerAutocompleteProps
     error: boolean;
     helperText?: string;
 }
-
-const CustomerAutocomplete: FC<CustomerAutocompleteProps> = ({
-    label,
-    error,
-    helperText,
-    ...props
-}) => {
+const CustomerAutocomplete = forwardRef<
+    HTMLDivElement,
+    CustomerAutocompleteProps
+>(({ label, error, helperText, ...props }, ref) => {
     const { data, isLoading } = useAllCustomersQuery();
-
     const options = useMemo(
         () => (Array.isArray(data) ? data?.map(getCustomerMini) : []),
         [data]
@@ -59,6 +55,7 @@ const CustomerAutocomplete: FC<CustomerAutocompleteProps> = ({
 
     return (
         <Autocomplete<ICustomerMini>
+            ref={ref}
             loading={isLoading}
             renderOption={RenderOption}
             options={options}
@@ -74,6 +71,8 @@ const CustomerAutocomplete: FC<CustomerAutocompleteProps> = ({
             {...props}
         />
     );
-};
+});
+
+CustomerAutocomplete.displayName = "CustomerAutocomplete";
 
 export default CustomerAutocomplete;

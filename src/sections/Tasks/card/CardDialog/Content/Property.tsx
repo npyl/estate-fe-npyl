@@ -14,12 +14,12 @@ const PropertySelect = () => {
             control={control}
             render={({ field, fieldState: { error } }) => (
                 <CodeSelect
+                    {...field}
                     renderInput={(props) => (
                         <TextField
                             label={t("Property")}
                             error={Boolean(error)}
                             helperText={error?.message}
-                            {...field}
                             {...props}
                         />
                     )}

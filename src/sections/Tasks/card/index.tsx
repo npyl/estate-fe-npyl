@@ -35,6 +35,7 @@ export default function TaskCard({ card, index, columnId }: Props) {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                         priority={priority}
+                        elevation={8}
                         onClick={openDetails}
                     >
                         <Header

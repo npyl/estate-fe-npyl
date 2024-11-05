@@ -28,7 +28,7 @@ const ImageSx: SxProps<Theme> = {
     borderRadius: "18px",
     borderColor: "neutral.300",
     width: "180px",
-    height: "auto",
+    height: "150px",
 };
 
 interface AttachmentProps {
@@ -80,11 +80,11 @@ const Attachments = () => {
     const handleClear = useCallback((idx: number) => {
         const current = (watch(attachmentsKey) as string[]) || [];
         const filtered = current.filter((_, i) => i !== idx);
-        setValue(attachmentsKey, filtered);
+        setValue(attachmentsKey, filtered, { shouldDirty: true });
     }, []);
 
     return (
-        <Stack direction="row" spacing={1} flexWrap="wrap">
+        <Stack direction="row" gap={1} flexWrap="wrap">
             {attachments.map(getAttachment(handleClear))}
         </Stack>
     );

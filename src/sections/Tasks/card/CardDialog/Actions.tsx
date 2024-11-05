@@ -1,6 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import Button from "@mui/material/Button";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -11,21 +11,30 @@ interface ActionsProps {
 const Actions: FC<ActionsProps> = ({ onClose }) => {
     const { t } = useTranslation();
 
-    const { formState } = useFormContext();
+    const { formState, reset } = useFormContext();
 
+    const isDirty = formState.isDirty;
     const isSubmitting = formState.isSubmitting;
+
+    const handleReset = useCallback(() => reset(), []);
 
     return (
         <>
+            {isDirty ? (
+                <Button onClick={handleReset}>{t("Reset")}</Button>
+            ) : null}
             <Button onClick={onClose}>{t("Close")}</Button>
-            <LoadingButton
-                loading={isSubmitting}
-                disabled={isSubmitting}
-                variant="contained"
-                type="submit"
-            >
-                {t("Save")}
-            </LoadingButton>
+
+            {isDirty ? (
+                <LoadingButton
+                    loading={isSubmitting}
+                    disabled={isSubmitting}
+                    variant="contained"
+                    type="submit"
+                >
+                    {t("Save")}
+                </LoadingButton>
+            ) : null}
         </>
     );
 };

@@ -20,7 +20,7 @@ const Content: FC<ContentProps> = ({ columnId }) => {
     const { t } = useTranslation();
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
             <Buttons columnId={columnId} />
             <Attachments />

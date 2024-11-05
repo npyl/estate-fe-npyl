@@ -6,7 +6,7 @@
 import MuiAutocomplete, {
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
-import { useCallback } from "react";
+import { forwardRef, Ref, useCallback } from "react";
 
 interface ObjectWithId {
     id: number;
@@ -22,11 +22,12 @@ export interface AutocompleteProps<T extends ObjectWithId = ObjectWithId>
     onChange?: (id: number) => void;
 }
 
-function Autocomplete<T extends ObjectWithId = ObjectWithId>({
-    value,
-    onChange,
-    ...props
-}: AutocompleteProps<T>) {
+const Autocomplete = <T extends ObjectWithId>(
+    props: AutocompleteProps<T>,
+    ref: Ref<HTMLDivElement>
+) => {
+    const { value, onChange, ...rest } = props;
+
     const isOptionEqualToValue = useCallback(
         ({ id }: ObjectWithId) => id === value,
         [value]
@@ -42,11 +43,16 @@ function Autocomplete<T extends ObjectWithId = ObjectWithId>({
 
     return (
         <MuiAutocomplete
+            ref={ref}
             isOptionEqualToValue={isOptionEqualToValue}
             onChange={handleChange}
-            {...props}
+            {...rest}
         />
     );
-}
+};
 
-export default Autocomplete;
+const WithRef = forwardRef(Autocomplete) as <T extends ObjectWithId>(
+    props: AutocompleteProps<T> & { ref?: Ref<unknown> }
+) => JSX.Element;
+
+export default WithRef;
