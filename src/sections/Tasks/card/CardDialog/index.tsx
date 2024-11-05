@@ -51,9 +51,7 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
         // INFO: normalise dates if isAllDay
         const due = isAllDay
             ? getAllDayStartEnd(allDayDate)
-            : [task?.due[0], task?.due[1]];
-
-        alert("EDW!");
+            : [d?.due[0], d?.due[1]];
     };
 
     return (
