@@ -17,7 +17,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
@@ -39,7 +39,7 @@ interface UserFormProps {
     onClose: () => void;
 }
 
-export const UserForm = ({ open, onClose }: UserFormProps) => {
+const UserForm = ({ open, onClose }: UserFormProps) => {
     const { data: users, isLoading } = useAllUsersQuery();
     const [newPassword, setNewPassword] = useState("");
     const { selectedUser } = useSecurityContext();
@@ -48,13 +48,13 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
     const { data: profile } = useProfileQuery();
     const [transferId, setTransferId] = useState<number | null>(null);
     const { t } = useTranslation();
-    const user: IUser | null = useMemo(() => {
-        if (!users || selectedUser === -1) return null;
 
+    const user = useMemo(() => {
+        if (!users || selectedUser === -1) return null;
         return users.find((u) => u.id === selectedUser) || null;
     }, [users, selectedUser]);
 
-    const defaultValues = useMemo(
+    const values = useMemo(
         () => ({
             id: selectedUser !== -1 ? selectedUser : null,
             firstName: user?.firstName || "",
@@ -83,14 +83,9 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
 
     const methods = useForm<IUserPOST>({
         resolver: yupResolver(Schema),
-        defaultValues,
+        values,
         mode: "onChange",
     });
-
-    useEffect(() => {
-        if (isLoading) return;
-        methods.reset({ ...defaultValues });
-    }, [isLoading, defaultValues]);
 
     // Delete Dialog
     const [openDelete, setOpenDelete] = useState(false);
@@ -328,6 +323,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                     </form>
                 </FormProvider>
             </Dialog>
+
             {/* Delete Dialog */}
             {openDelete && (
                 <Dialog open={openDelete} onClose={handleCloseDelete}>
@@ -399,6 +395,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                     </DialogActions>
                 </Dialog>
             )}
+
             {openReset && (
                 <Dialog open={openReset} onClose={() => setOpenReset(false)}>
                     <DialogTitle>{t("Reset Password")}</DialogTitle>
@@ -429,3 +426,5 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
         </>
     );
 };
+
+export default UserForm;

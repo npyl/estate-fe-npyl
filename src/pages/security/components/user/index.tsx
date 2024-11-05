@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
-import { UserForm } from "src/components/User/Form";
+const UserForm = dynamic(() => import("@/sections/User/Form"));
 import { IOSSwitch } from "src/components/iOSSwitch";
 import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
@@ -26,6 +26,7 @@ import {
     useToggleActiveNotificationMutation,
     useToggleActiveUserMutation,
 } from "src/services/user";
+import dynamic from "next/dynamic";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;

@@ -2,7 +2,7 @@ import { Container, Tabs, Tab } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ViewUser from "src/components/User/View";
+import ViewUser from "@/sections/User/View";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useTabsContext } from "src/contexts/tabs";

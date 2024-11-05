@@ -97,6 +97,10 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                                 label={t("App Key")}
                                 value={integration?.appKey || ""}
                             />
+                            <ListItem
+                                label={t("BranchId")}
+                                value={integration?.branchId || ""}
+                            />
                         </List>
                     </Grid>
                 </Grid>

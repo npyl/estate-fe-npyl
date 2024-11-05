@@ -15,10 +15,11 @@ import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import { UserCircle } from "@/assets/icons/user-circle";
 import { IUser } from "src/types/user";
-import ListLanguageItem from "../List/Items/language";
+import ListLanguageItem from "@/components/List/Items/language";
 import SoftButton from "@/components/SoftButton";
-import { UserForm } from "./Form";
-import { SpaceBetween } from "../styled";
+const UserForm = dynamic(() => import("./Form"));
+import { SpaceBetween } from "@/components/styled";
+import dynamic from "next/dynamic";
 
 interface ViewUserProps {
     user?: IUser;
