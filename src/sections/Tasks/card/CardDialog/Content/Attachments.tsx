@@ -25,11 +25,8 @@ const IconButtonSx: SxProps<Theme> = {
 
 const ImageSx: SxProps<Theme> = {
     border: "3px solid",
-    borderColor: "transparent",
     borderRadius: "18px",
-    "&:hover": {
-        borderColor: "neutral.300",
-    },
+    borderColor: "neutral.300",
     width: "180px",
     height: "auto",
 };
