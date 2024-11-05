@@ -29,26 +29,32 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
  * against the defined START_HOUR and END_HOUR in Greek time
  */
 const isAllDay = (startDate: string, endDate: string): boolean => {
-    console.log("RECEIVED: ", startDate, endDate);
+    try {
+        console.log("RECEIVED: ", startDate, endDate);
 
-    // Convert UTC ISO strings to Greek time
-    const start = toGreekTime(startDate);
-    const end = toGreekTime(endDate);
+        // Convert UTC ISO strings to Greek time
+        const start = toGreekTime(startDate);
+        const end = toGreekTime(endDate);
 
-    const isSameDate = isSameDay(start, end);
-    const isSTART_HOUR = start.getHours() === START_HOUR;
-    const isEND_HOUR = end.getHours() === END_HOUR;
+        const isSameDate = isSameDay(start, end);
+        const isSTART_HOUR = start.getHours() === START_HOUR;
+        const isEND_HOUR = end.getHours() === END_HOUR;
 
-    console.log(
-        "isSameDAy: ",
-        isSameDate,
-        " START: ",
-        isSTART_HOUR,
-        " END: ",
-        isEND_HOUR
-    );
+        console.log(
+            "isSameDAy: ",
+            isSameDate,
+            " START: ",
+            isSTART_HOUR,
+            " END: ",
+            isEND_HOUR
+        );
 
-    return isSameDate && isSTART_HOUR && isEND_HOUR;
+        return isSameDate && isSTART_HOUR && isEND_HOUR;
+    } catch (ex) {
+        alert("(npyl): EDW!");
+        console.error(ex);
+        return false;
+    }
 };
 
 const getAllDayStartEnd = (start: string) => {

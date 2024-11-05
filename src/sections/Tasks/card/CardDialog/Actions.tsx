@@ -5,27 +5,25 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 interface ActionsProps {
+    dirty: boolean;
     onClose: VoidFunction;
 }
 
-const Actions: FC<ActionsProps> = ({ onClose }) => {
+const Actions: FC<ActionsProps> = ({ dirty, onClose }) => {
     const { t } = useTranslation();
 
     const { formState, reset } = useFormContext();
 
-    const isDirty = formState.isDirty;
     const isSubmitting = formState.isSubmitting;
 
     const handleReset = useCallback(() => reset(), []);
 
     return (
         <>
-            {isDirty ? (
-                <Button onClick={handleReset}>{t("Reset")}</Button>
-            ) : null}
+            {dirty ? <Button onClick={handleReset}>{t("Reset")}</Button> : null}
             <Button onClick={onClose}>{t("Close")}</Button>
 
-            {isDirty ? (
+            {dirty ? (
                 <LoadingButton
                     loading={isSubmitting}
                     disabled={isSubmitting}
