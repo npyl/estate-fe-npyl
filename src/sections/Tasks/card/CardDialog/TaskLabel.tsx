@@ -21,6 +21,7 @@ const TaskLabel: FC<TaskLabelProps> = ({ name, taskId }) => {
                 borderRadius="16px"
                 px={1}
                 py={0.5}
+                width="fit-content"
             >
                 <BookmarkBorderIcon color="action" />
                 <Typography variant="body2">

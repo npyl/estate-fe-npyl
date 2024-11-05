@@ -17,13 +17,18 @@ const Menu = ({ anchorEl, onClose }: Props) => {
 
     const [isOpen, openDialog, closeDialog] = useDialog();
 
+    const handleClose = () => {
+        closeDialog();
+        onClose();
+    };
+
     return (
         <>
             <MuiMenu open anchorEl={anchorEl} onClose={onClose}>
                 <MenuItem onClick={openDialog}>{t("Add column")}</MenuItem>
             </MuiMenu>
 
-            {isOpen ? <AddColumnDialog onClose={closeDialog} /> : null}
+            {isOpen ? <AddColumnDialog onClose={handleClose} /> : null}
         </>
     );
 };
