@@ -6,7 +6,7 @@ import {
     Theme,
 } from "@mui/material";
 import { useAllPropertyCodesQuery } from "src/services/properties";
-import { FC, useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 
 // ------------------------------------------------------------------------
 
@@ -38,12 +38,13 @@ type CodeSelectProps = Omit<
     "options"
 >;
 
-const CodeSelect: FC<CodeSelectProps> = (props) => {
+const CodeSelect = forwardRef<HTMLElement, CodeSelectProps>((props, ref) => {
     const { data, isLoading } = useAllPropertyCodesQuery();
     const codes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
     return (
         <Autocomplete
+            ref={ref}
             loading={isLoading}
             disableClearable
             renderOption={RenderOption}
@@ -58,6 +59,6 @@ const CodeSelect: FC<CodeSelectProps> = (props) => {
             {...props}
         />
     );
-};
+});
 
 export default CodeSelect;
