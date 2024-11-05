@@ -1,45 +1,22 @@
-import {
-    Avatar,
-    Box,
-    Divider,
-    Grid,
-    Paper,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
-import { UserCircle } from "@/assets/icons/user-circle";
 import { IUser } from "src/types/user";
 import ListLanguageItem from "@/components/List/Items/language";
 import SoftButton from "@/components/SoftButton";
 const UserForm = dynamic(() => import("./Form"));
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
+import AvatarPicker from "./AvatarPicker";
 
 interface ViewUserProps {
     user?: IUser;
 }
 
-const RenderUser = ({ user }: ViewUserProps) => {
-    const firstName = user?.firstName;
-    const lastName = user?.lastName;
-
-    return (firstName && lastName) || firstName || lastName ? (
-        <Avatar sx={{ height: 60, width: 60 }}>
-            {firstName![0]}
-            {lastName![0]}
-        </Avatar>
-    ) : (
-        <Avatar>
-            <UserCircle />
-        </Avatar>
-    );
-};
 const RenderUsername = ({ username }: { username?: string }) => {
     return username ? (
         <Box
@@ -87,7 +64,10 @@ const ViewUser = ({ user }: ViewUserProps) => {
             </SpaceBetween>
             <Divider />
             <Stack p={3} justifyContent="center" alignItems="center">
-                <RenderUser user={user} />
+                <AvatarPicker
+                    profilePhoto={user?.profilePhoto}
+                    initials={`${user?.firstName[0]}${user?.lastName[0]}`}
+                />
                 <RenderUsername username={user?.username} />
                 <RenderIsAdmin isAdmin={user?.isAdmin} />
             </Stack>
