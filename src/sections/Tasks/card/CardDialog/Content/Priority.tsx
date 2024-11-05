@@ -1,12 +1,10 @@
 import { SxProps, Theme } from "@mui/material";
-
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
-
 import { useMemo } from "react";
 import { TranslationType } from "@/types/translation";
 import { useTranslation } from "react-i18next";
 import { getBgcolor, getColor } from "../../styled";
+import RHFToggleButtonGroup from "@/components/hook-form/RHFToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
 
 // -----------------------------------------------------------------------
 
@@ -45,9 +43,9 @@ const Priority = () => {
     const OPTIONS = useMemo(() => getOPTIONS(t), [t]);
 
     return (
-        <ToggleButtonGroup exclusive size="small">
+        <RHFToggleButtonGroup name="priority" exclusive size="small">
             {OPTIONS.map(getOption)}
-        </ToggleButtonGroup>
+        </RHFToggleButtonGroup>
     );
 };
 
