@@ -12,6 +12,7 @@ const DialogSx: SxProps<Theme> = {
 
 const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
     padding: theme.spacing(3),
+    paddingBottom: 0,
     position: "relative",
     display: "flex",
 }));

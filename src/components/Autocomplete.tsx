@@ -1,3 +1,8 @@
+/**
+ * Autocomplete component with the ability to pass any `options` you like,
+ * but still keep the value as number corresponding to an option's `id`
+ */
+
 import MuiAutocomplete, {
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
@@ -7,7 +12,7 @@ interface ObjectWithId {
     id: number;
 }
 
-interface AutocompleteProps<T extends ObjectWithId = ObjectWithId>
+export interface AutocompleteProps<T extends ObjectWithId = ObjectWithId>
     extends Omit<
         MuiAutocompleteProps<T, false, false, false>,
         "value" | "onChange" | "options"

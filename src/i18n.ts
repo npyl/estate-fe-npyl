@@ -1041,10 +1041,16 @@ const resources = {
             Year: "Year",
 
             Tasks: "Tasks",
+            Attach: "Attach",
+            "New Task": "New Task",
+            _Column_: "Column",
         },
     },
     el: {
         translation: {
+            _Column_: "Στήλη",
+            "New Task": "Νέα Εργασία",
+            Attach: "Επισύναψη",
             Tasks: "Εργασίες",
 
             Today: "Σήμερα",

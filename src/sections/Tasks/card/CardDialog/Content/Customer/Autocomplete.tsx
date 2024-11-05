@@ -1,9 +1,8 @@
 import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
-import { useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { useAllCustomersQuery } from "@/services/customers";
 import { ICustomer } from "@/types/customer";
-import { useTranslation } from "react-i18next";
-import Autocomplete from "@/components/Autocomplete";
+import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 
 interface ICustomerMini {
     id: number;
@@ -38,9 +37,19 @@ const RenderOption = (
     </MenuItem>
 );
 
-const CustomerSelect = () => {
-    const { t } = useTranslation();
+interface CustomerAutocompleteProps
+    extends Omit<AutocompleteProps<ICustomerMini>, "options" | "renderInput"> {
+    label: string;
+    error: boolean;
+    helperText?: string;
+}
 
+const CustomerAutocomplete: FC<CustomerAutocompleteProps> = ({
+    label,
+    error,
+    helperText,
+    ...props
+}) => {
     const { data, isLoading } = useAllCustomersQuery();
 
     const options = useMemo(
@@ -48,21 +57,23 @@ const CustomerSelect = () => {
         [data]
     );
 
-    const [value, setValue] = useState<number>();
-
     return (
         <Autocomplete<ICustomerMini>
             loading={isLoading}
-            value={value}
-            onChange={setValue}
             renderOption={RenderOption}
             options={options}
             getOptionLabel={getOptionLabel}
             renderInput={(props) => (
-                <TextField label={t("Customer")} {...props} />
+                <TextField
+                    label={label}
+                    {...props}
+                    error={error}
+                    helperText={helperText}
+                />
             )}
+            {...props}
         />
     );
 };
 
-export default CustomerSelect;
+export default CustomerAutocomplete;

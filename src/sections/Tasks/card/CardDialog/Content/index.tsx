@@ -1,8 +1,7 @@
 import Button from "@mui/material/Button";
-import Select, { SelectProps } from "@mui/material/Select";
+import { SelectProps } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import MultilineTextField from "@/components/MultilineTextField";
 import { useTranslation } from "react-i18next";
 import Reporter from "./Reporter";
 import PropertySelect from "./Property";
@@ -13,6 +12,9 @@ import { FC } from "react";
 import { useGetBoardQuery } from "@/services/tasks";
 import { IKanbanColumn } from "@/types/tasks";
 import MenuItem from "@mui/material/MenuItem";
+import { FormControl, InputLabel } from "@mui/material";
+import { RHFSelect } from "@/components/hook-form";
+import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 
 // -----------------------------------------------------------------
 
@@ -31,10 +33,13 @@ const ColumnSelect: FC<SelectProps> = (props) => {
     const { t } = useTranslation();
     const columns = useBoardColumns();
     return (
-        <Select {...props}>
-            <MenuItem>{t("Not selected")}</MenuItem>
-            {columns?.map(getOption)}
-        </Select>
+        <FormControl>
+            <InputLabel>{props.label}</InputLabel>
+            <RHFSelect name="columnId" {...props}>
+                <MenuItem>{t("No option")}</MenuItem>
+                {columns?.map(getOption)}
+            </RHFSelect>
+        </FormControl>
     );
 };
 
@@ -43,6 +48,8 @@ interface ButtonsProps {
 }
 
 const Buttons: FC<ButtonsProps> = ({ columnId }) => {
+    const { t } = useTranslation();
+
     return (
         <Stack direction="row" spacing={1}>
             <Button
@@ -52,10 +59,16 @@ const Buttons: FC<ButtonsProps> = ({ columnId }) => {
                 }}
                 startIcon={<AttachFileIcon />}
             >
-                Attach
+                {t("Attach")}
             </Button>
 
-            <ColumnSelect defaultValue={columnId} />
+            <ColumnSelect
+                label={t("_Column_")}
+                defaultValue={columnId}
+                sx={{
+                    minWidth: "150px",
+                }}
+            />
         </Stack>
     );
 };
@@ -73,7 +86,14 @@ const Content: FC<ContentProps> = ({ columnId }) => {
         <Stack spacing={2}>
             <Buttons columnId={columnId} />
 
-            <MultilineTextField multiline rows={5} label={t("Description")} />
+            {/* <DatePickets /> */}
+
+            <RHFMultilineTextField
+                name="description"
+                label={t("Description")}
+                multiline
+                rows={5}
+            />
 
             <PropertySelect />
             <CustomerSelect />

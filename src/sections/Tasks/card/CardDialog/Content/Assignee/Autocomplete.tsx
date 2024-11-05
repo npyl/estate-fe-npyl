@@ -1,7 +1,6 @@
 import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
-import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import Autocomplete from "@/components/Autocomplete";
+import { FC, useMemo } from "react";
+import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { IUserMini } from "@/types/user";
 import { useAllUsersQuery } from "@/services/user";
 
@@ -26,29 +25,40 @@ const RenderOption = (
     </MenuItem>
 );
 
-const AssigneeSelect = () => {
-    const { t } = useTranslation();
+interface AssigneeAutocompleteProps
+    extends Omit<AutocompleteProps<IUserMini>, "options" | "renderInput"> {
+    label: string;
+    error: boolean;
+    helperText?: string;
+}
 
-    // TODO: check inside company ??
+const AssigneeAutocomplete: FC<AssigneeAutocompleteProps> = ({
+    label,
+    error,
+    helperText,
+    ...props
+}) => {
     const { data, isLoading } = useAllUsersQuery();
 
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
-    const [value, setValue] = useState<number>();
-
     return (
         <Autocomplete<IUserMini>
             loading={isLoading}
-            value={value}
-            onChange={setValue}
             renderOption={RenderOption}
             options={options}
             getOptionLabel={getOptionLabel}
             renderInput={(props) => (
-                <TextField label={t("Assignee")} {...props} />
+                <TextField
+                    label={label}
+                    {...props}
+                    error={error}
+                    helperText={helperText}
+                />
             )}
+            {...props}
         />
     );
 };
 
-export default AssigneeSelect;
+export default AssigneeAutocomplete;

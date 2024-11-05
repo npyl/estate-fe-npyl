@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 import { IUser } from "./user";
 
 export type IKanbanComment = {
@@ -27,8 +25,8 @@ export type IKanbanCard = {
     createdAt: string;
 
     assignee: IUser;
-    property: number;
-    customer: number;
+    propertyId: number;
+    customerId: number;
 };
 
 export type IKanbanCardPOST = Omit<IKanbanCard, "id" | "assignee"> & {
@@ -51,20 +49,37 @@ export type IKanbanBoard = {
     columnOrder: number[];
 };
 
-// ----------------------------------------------------------------------
+const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
+    const {
+        id,
+        priority,
+        name,
+        description,
+        due,
+        attachments,
+        comments,
+        completed,
+        createdAt,
+        propertyId,
+        customerId,
+        assignee,
+    } = task || { assignee: {} };
 
-export type IKanbanState = {
-    isLoading: boolean;
-    error: Error | string | null;
-    board: {
-        cards: Record<string, IKanbanCard>;
-        columns: Record<string, IKanbanColumn>;
-        columnOrder: number[];
+    return {
+        id: id || -1,
+        priority: priority || 0,
+        name: name || "",
+        description: description || "",
+        due: due || ["", ""],
+        attachments: attachments || [],
+        comments: comments || [],
+        completed: completed || false,
+        createdAt: createdAt || "",
+        propertyId: propertyId || -1,
+        customerId: customerId || -1,
+        assigneeId: assignee?.id || -1,
+        columnId: -1,
     };
 };
 
-// export type IKanbanCommentPOST = {
-//     id?: number;
-//     message: string;
-//     messageType: string;
-// };
+export { IKanbanCardRes2Req };
