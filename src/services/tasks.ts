@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 import {
     IKanbanBoard,
+    IKanbanCard,
     IKanbanCardPOST,
     IKanbanColumnPOST,
     IKanbanCommentPOST,
@@ -61,7 +62,7 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: ["Board"],
+    tagTypes: ["Board", "Card"],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, void>({
@@ -126,6 +127,12 @@ export const tasks = createApi({
         }),
 
         // Cards
+        getCard: builder.query<IKanbanCard, number>({
+            query: (taskId) => ({
+                url: `/card/${taskId}`,
+            }),
+            providesTags: ["Card"],
+        }),
         addCard: builder.mutation<void, IKanbanCardPOST>({
             query: (body: IKanbanCardPOST) => ({
                 url: "/card",
@@ -140,7 +147,7 @@ export const tasks = createApi({
                 method: "PUT",
                 body,
             }),
-            invalidatesTags: ["Board"],
+            invalidatesTags: ["Board", "Card"],
         }),
 
         createComment: builder.mutation<
@@ -152,7 +159,7 @@ export const tasks = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Board"],
+            invalidatesTags: ["Board", "Card"],
         }),
 
         moveCard: builder.mutation<void, MoveCardProps>({
@@ -204,7 +211,7 @@ export const tasks = createApi({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ["Board"],
+            invalidatesTags: ["Board", "Card"],
         }),
         reorderCard: builder.mutation<void, ReorderCardProps>({
             query: ({ cardId, position, columnId }: ReorderCardProps) => ({
@@ -240,7 +247,7 @@ export const tasks = createApi({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ["Board"],
+            invalidatesTags: ["Board", "Card"],
         }),
         deleteCard: builder.mutation<void, number>({
             query: (cardId: number) => ({
@@ -263,6 +270,7 @@ export const {
     useDeleteColumnMutation,
 
     // Cards
+    useLazyGetCardQuery,
     useAddCardMutation,
     useEditCardMutation,
     useMoveCardMutation,

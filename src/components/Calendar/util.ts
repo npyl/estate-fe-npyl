@@ -51,7 +51,7 @@ const isAllDay = (startDate: string, endDate: string): boolean => {
 
         return isSameDate && isSTART_HOUR && isEND_HOUR;
     } catch (ex) {
-        alert("(npyl): EDW!");
+        // alert("(npyl): EDW!");
         console.error(ex);
         return false;
     }

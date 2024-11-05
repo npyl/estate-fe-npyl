@@ -788,6 +788,7 @@ const resources = {
             "Daily Views": "Daily Views",
 
             "Copy Link": "Copy Link",
+            "Copied to clipboard": "Copied to clipboard",
             "Social Networks": "Social Networks",
             "Short Version": "Short Version",
             "Long Version": "Long Version",
@@ -1164,6 +1165,7 @@ const resources = {
             "Property Rating": "Αξιολόγηση ακινήτου",
             "Property Presentation": "Παρουσίαση ακινήτου",
             "Copy Link": "Αντιγραφή Συνδέσμου",
+            "Copied to clipboard": "Αντιγράφηκε στο πρόχειρο",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",
             "Short Version: Includes basic photos":

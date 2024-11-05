@@ -8,6 +8,7 @@ import { useGetBoardQuery } from "@/services/tasks";
 import dynamic from "next/dynamic";
 const Board = dynamic(() => import("@/sections/Tasks/Board"));
 import Bar from "./Bar";
+import ParamLooker from "./ParamLooker";
 
 export default function KanbanPage() {
     const { data: board, isLoading } = useGetBoardQuery();
@@ -27,6 +28,9 @@ export default function KanbanPage() {
 
                 {isLoading ? <SkeletonKanbanColumn /> : null}
             </Container>
+
+            {/* Handle search params */}
+            <ParamLooker />
         </Box>
     );
 }
