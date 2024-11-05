@@ -35,14 +35,8 @@ const PriorityLabel: FC<PriorityLabelProps> = ({ priority, ...props }) => {
 
 // ------------------------------------------------------------------------
 
-// Validate if string is base64
-const isValidBase64 = (str: string) => {
-    try {
-        return str.startsWith("data:image") || btoa(atob(str)) === str;
-    } catch (err) {
-        return false;
-    }
-};
+// INFO: we allow only strings with the prefix data:image
+const isValidBase64 = (s: string) => s.startsWith("data:image");
 
 interface Base64ImageProps {
     src: string;

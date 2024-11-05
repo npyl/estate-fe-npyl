@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ChangeEvent, FC, useCallback } from "react";
 import FileInput, { OpenerBaseProps } from "@/components/FileInput";
 import { useFormContext } from "react-hook-form";
+import fileToBase64 from "@/utils/file-to-base64";
 
 // ------------------------------------------------------------------
 
@@ -35,11 +36,16 @@ const Attachments = () => {
             const files = event.target.files;
             if (!files) return;
 
-            const attachments = watch(attachmentsKey);
+            // TODO: check sizes !!! VERY IMPORTANT !!!
 
-            // TODO: ... convert filelist to files[] or base64!
+            // convert files to base64 strings
+            const filesArray = Array.from(files);
+            const base64strs = await Promise.all(filesArray.map(fileToBase64));
 
-            setValue(attachmentsKey, [...attachments, ...files]);
+            // existing attachments
+            const attachments = (watch(attachmentsKey) as string[]) || [];
+
+            setValue(attachmentsKey, [...attachments, ...base64strs]);
         },
         []
     );

@@ -5,13 +5,33 @@ import { useFormContext } from "react-hook-form";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
+import { SxProps, Theme } from "@mui/material";
 
 // --------------------------------------------------------------
 
-const IconButtonSx = {
+const IconButtonSx: SxProps<Theme> = {
     position: "absolute",
-    top: -2,
-    right: -2,
+    top: -8,
+    right: -8,
+    backgroundColor: "background.paper",
+    border: "1px solid",
+    borderColor: "divider",
+    "&:hover": {
+        backgroundColor: "background.paper",
+    },
+    borderRadius: "16px",
+    p: 0.5,
+};
+
+const ImageSx: SxProps<Theme> = {
+    border: "3px solid",
+    borderColor: "transparent",
+    borderRadius: "18px",
+    "&:hover": {
+        borderColor: "neutral.300",
+    },
+    width: "180px",
+    height: "auto",
 };
 
 interface AttachmentProps {
@@ -24,9 +44,9 @@ const Attachment: FC<AttachmentProps> = ({ src, index, onClear }) => {
     const handleClear = useCallback(() => onClear(index), []);
 
     return (
-        <Box position="relative">
+        <Box position="relative" sx={ImageSx}>
             <IconButton onClick={handleClear} sx={IconButtonSx}>
-                <ClearIcon />
+                <ClearIcon sx={{ fontSize: "15px" }} />
             </IconButton>
 
             <Image
@@ -34,10 +54,11 @@ const Attachment: FC<AttachmentProps> = ({ src, index, onClear }) => {
                 alt=""
                 width={0}
                 height={0}
+                objectFit="contain"
                 style={{
-                    width: "150px",
-                    height: "auto",
-                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "16px",
                 }}
             />
         </Box>
