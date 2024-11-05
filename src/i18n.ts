@@ -1045,10 +1045,12 @@ const resources = {
             Attach: "Attach",
             "New Task": "New Task",
             _Column_: "Column",
+            "Delete task?": "Delete task?",
         },
     },
     el: {
         translation: {
+            "Delete task?": "Διαγραφή εργασίας?",
             _Column_: "Στήλη",
             "New Task": "Νέα Εργασία",
             Attach: "Επισύναψη",
