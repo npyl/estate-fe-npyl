@@ -3,8 +3,8 @@ import { IUser } from "@/types/user";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
 import { FC, useCallback } from "react";
-import { SxProps, Theme } from "@mui/material";
-import { useFiltersContext } from "../../../sections/Tasks/filters";
+import { SxProps, Theme, Tooltip } from "@mui/material";
+import { useFiltersContext } from "@/sections/Tasks/filters";
 
 // -------------------------------------------------------------------
 
@@ -31,13 +31,19 @@ interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
 const Avatar: FC<AvatarProps> = ({ u, selected, onClick, sx, ...props }) => {
     const handleClick = useCallback(() => onClick(u.id), [u.id, onClick]);
 
+    const initials = u?.firstName[0] + u?.lastName[0];
+
     return (
-        <MuiAvatar
-            src={u.avatar}
-            onClick={handleClick}
-            sx={getAvatarSx(selected)}
-            {...props}
-        />
+        <Tooltip title={`${u?.firstName} ${u?.lastName}`}>
+            <MuiAvatar
+                src={u.avatar}
+                onClick={handleClick}
+                sx={getAvatarSx(selected)}
+                {...props}
+            >
+                {initials}
+            </MuiAvatar>
+        </Tooltip>
     );
 };
 
