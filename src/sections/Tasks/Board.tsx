@@ -5,6 +5,7 @@ import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsD
 import { useMoveCardMutation, useReorderCardMutation } from "@/services/tasks";
 import { IKanbanBoard } from "@/types/tasks";
 import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveColumns";
+import React from "react";
 
 const COLUMNS = {
     xs: 1,
@@ -124,4 +125,4 @@ const Board: FC<Props> = ({ board }) => {
     );
 };
 
-export default Board;
+export default React.memo(Board);

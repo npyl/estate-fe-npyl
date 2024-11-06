@@ -10,7 +10,7 @@ import { RHFSelect } from "@/components/hook-form";
 // -----------------------------------------------------------------
 
 const useBoardColumns = () => {
-    const { data } = useGetBoardQuery();
+    const { data } = useGetBoardQuery({});
     return data?.columns;
 };
 

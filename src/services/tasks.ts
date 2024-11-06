@@ -8,6 +8,10 @@ import {
     IKanbanCommentPOST,
 } from "@/types/tasks";
 
+interface BoardFiltersReq {
+    search?: string;
+    assigneeId?: number;
+}
 interface ReorderColumnProps {
     columnId: number;
     position: number;
@@ -65,8 +69,8 @@ export const tasks = createApi({
     tagTypes: ["Board", "Card"],
 
     endpoints: (builder) => ({
-        getBoard: builder.query<IKanbanBoard, void>({
-            query: () => "",
+        getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
+            query: (params) => ({ url: "", params }),
             providesTags: ["Board"],
         }),
 
@@ -98,17 +102,13 @@ export const tasks = createApi({
                 { dispatch, queryFulfilled }
             ) => {
                 const patchResult = dispatch(
-                    tasks.util.updateQueryData(
-                        "getBoard",
-                        undefined,
-                        (draft) => {
-                            draft.columnOrder = moveItem(
-                                draft.columnOrder,
-                                columnId,
-                                position
-                            );
-                        }
-                    )
+                    tasks.util.updateQueryData("getBoard", {}, (draft) => {
+                        draft.columnOrder = moveItem(
+                            draft.columnOrder,
+                            columnId,
+                            position
+                        );
+                    })
                 );
                 try {
                     await queryFulfilled;
@@ -172,38 +172,31 @@ export const tasks = createApi({
                 { dispatch, queryFulfilled }
             ) => {
                 const patchResult = dispatch(
-                    tasks.util.updateQueryData(
-                        "getBoard",
-                        undefined,
-                        (draft) => {
-                            const srcColumnIndex = draft.columns.findIndex(
-                                (c) => c.id === srcColumnId
-                            );
-                            if (srcColumnIndex < 0) return;
+                    tasks.util.updateQueryData("getBoard", {}, (draft) => {
+                        const srcColumnIndex = draft.columns.findIndex(
+                            (c) => c.id === srcColumnId
+                        );
+                        if (srcColumnIndex < 0) return;
 
-                            const dstColumnIndex = draft.columns.findIndex(
-                                (c) => c.id === dstColumnId
-                            );
-                            if (dstColumnIndex < 0) return;
+                        const dstColumnIndex = draft.columns.findIndex(
+                            (c) => c.id === dstColumnId
+                        );
+                        if (dstColumnIndex < 0) return;
 
-                            // remove from old column
-                            draft.columns[srcColumnIndex].cardIds = removeItem(
-                                draft.columns[srcColumnIndex].cardIds,
-                                cardId
-                            );
-                            draft.columns[srcColumnIndex].cardOrder =
-                                removeItem(
-                                    draft.columns[srcColumnIndex].cardOrder,
-                                    cardId
-                                );
+                        // remove from old column
+                        draft.columns[srcColumnIndex].cardIds = removeItem(
+                            draft.columns[srcColumnIndex].cardIds,
+                            cardId
+                        );
+                        draft.columns[srcColumnIndex].cardOrder = removeItem(
+                            draft.columns[srcColumnIndex].cardOrder,
+                            cardId
+                        );
 
-                            // add to new column
-                            draft.columns[dstColumnIndex].cardIds.push(cardId);
-                            draft.columns[dstColumnIndex].cardOrder.push(
-                                cardId
-                            );
-                        }
-                    )
+                        // add to new column
+                        draft.columns[dstColumnIndex].cardIds.push(cardId);
+                        draft.columns[dstColumnIndex].cardOrder.push(cardId);
+                    })
                 );
                 try {
                     await queryFulfilled;
@@ -224,22 +217,18 @@ export const tasks = createApi({
                 { dispatch, queryFulfilled }
             ) => {
                 const patchResult = dispatch(
-                    tasks.util.updateQueryData(
-                        "getBoard",
-                        undefined,
-                        (draft) => {
-                            const columnIndex = draft.columns.findIndex(
-                                (c) => c.id === columnId
-                            );
-                            if (columnIndex < 0) return;
+                    tasks.util.updateQueryData("getBoard", {}, (draft) => {
+                        const columnIndex = draft.columns.findIndex(
+                            (c) => c.id === columnId
+                        );
+                        if (columnIndex < 0) return;
 
-                            draft.columns[columnIndex].cardOrder = moveItem(
-                                draft.columns[columnIndex].cardOrder,
-                                cardId,
-                                position
-                            );
-                        }
-                    )
+                        draft.columns[columnIndex].cardOrder = moveItem(
+                            draft.columns[columnIndex].cardOrder,
+                            cardId,
+                            position
+                        );
+                    })
                 );
                 try {
                     await queryFulfilled;

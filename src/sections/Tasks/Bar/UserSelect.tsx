@@ -2,8 +2,9 @@ import { useAllUsersQuery } from "@/services/user";
 import { IUser } from "@/types/user";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback } from "react";
 import { SxProps, Theme } from "@mui/material";
+import { useFiltersContext } from "../../../sections/Tasks/filters";
 
 // -------------------------------------------------------------------
 
@@ -59,11 +60,11 @@ const getAvatar =
 const UserSelect = () => {
     const { data } = useAllUsersQuery();
 
-    const [clickedId, setClickedId] = useState<number>();
+    const { assigneeId, setAssigneeId } = useFiltersContext();
 
     return (
         <AvatarGroup max={data?.length || 4}>
-            {data?.map(getAvatar(clickedId, setClickedId))}
+            {data?.map(getAvatar(assigneeId, setAssigneeId))}
         </AvatarGroup>
     );
 };

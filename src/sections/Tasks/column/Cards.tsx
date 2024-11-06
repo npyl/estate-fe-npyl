@@ -9,7 +9,7 @@ interface CardsProps extends StackProps {
 }
 
 const Cards: FC<CardsProps> = ({ columnId, ids, ...props }) => {
-    const { data: board } = useGetBoardQuery();
+    const { data: board } = useGetBoardQuery({});
     const cards = useMemo(() => board?.cards || [], [board]);
 
     return (
