@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRef } from "react";
+import IsAuthenticatedIndicator from "./IsAuthenticatedIndicator";
 const CardDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
 const Menu = dynamic(() => import("./Menu"));
 
@@ -19,14 +20,19 @@ const AddButtons = () => {
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     return (
-        <Stack direction="row" spacing={1}>
-            <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={openDialog}
-            >
-                {t("Add Task")}
-            </Button>
+        <Stack direction="row" spacing={1} pl={1}>
+            <IsAuthenticatedIndicator>
+                <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={openDialog}
+                    sx={{
+                        textWrap: "nowrap",
+                    }}
+                >
+                    {t("Add Task")}
+                </Button>
+            </IsAuthenticatedIndicator>
 
             <IconButton ref={anchorRef} onClick={openMenu}>
                 <MenuIcon />

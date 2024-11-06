@@ -1,7 +1,10 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
+import { useAuth } from "@/hooks/use-auth";
 import { CalendarEventReq } from "@/types/calendar";
 import { IsAuthenticatedRes } from "@/types/calendar/google";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 type UserId = number;
 
@@ -154,6 +157,34 @@ export const calendar = createApi({
         }),
     }),
 });
+
+const useCalendarAuth = () => {
+    const { t } = useTranslation();
+
+    const { user } = useAuth();
+
+    const { data, isLoading } = useIsAuthenticatedQuery(user?.id!, {
+        skip: !user?.id,
+    });
+
+    const [authenticateCb] = useAuthenticateMutation();
+
+    const isAuthenticated = data?.isAuthenticated;
+
+    const authenticate = async () => {
+        const res = await authenticateCb(user!.id).unwrap();
+        if (!res) toast.error(t("GOOGLE_OATH_FAIL"));
+    };
+
+    return {
+        isAuthenticated,
+        userInfo: data?.userInfo,
+        authenticate,
+        isLoading,
+    };
+};
+
+export { useCalendarAuth };
 
 export const {
     useIsAuthenticatedQuery,

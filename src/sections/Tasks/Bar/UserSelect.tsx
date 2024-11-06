@@ -31,7 +31,7 @@ interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
 const Avatar: FC<AvatarProps> = ({ u, selected, onClick, sx, ...props }) => {
     const handleClick = useCallback(() => onClick(u.id), [u.id, onClick]);
 
-    const initials = u?.firstName[0] + u?.lastName[0];
+    const initials = u?.firstName[0] || "" + u?.lastName[0] || "";
 
     return (
         <Tooltip title={`${u?.firstName} ${u?.lastName}`}>
