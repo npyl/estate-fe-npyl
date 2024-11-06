@@ -31,6 +31,7 @@ const RenderUsername = ({ username }: { username?: string }) => {
         </Box>
     ) : null;
 };
+
 const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
     const { t } = useTranslation();
     return isAdmin ? <Label color="warning" opaque name={t("Admin")} /> : null;
@@ -65,7 +66,8 @@ const ViewUser = ({ user }: ViewUserProps) => {
             <Divider />
             <Stack p={3} justifyContent="center" alignItems="center">
                 <AvatarPicker
-                    profilePhoto={user?.profilePhoto}
+                    avatar={user?.avatar}
+                    userId={user?.id || -1}
                     initials={`${user?.firstName[0]}${user?.lastName[0]}`}
                 />
                 <RenderUsername username={user?.username} />

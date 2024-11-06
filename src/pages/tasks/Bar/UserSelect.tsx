@@ -32,7 +32,7 @@ const Avatar: FC<AvatarProps> = ({ u, selected, onClick, sx, ...props }) => {
 
     return (
         <MuiAvatar
-            src={u.profilePhoto}
+            src={u.avatar}
             onClick={handleClick}
             sx={getAvatarSx(selected)}
             {...props}

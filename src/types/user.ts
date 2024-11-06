@@ -21,9 +21,8 @@ interface IUser {
     afm: string;
     doy: string;
     gemh: string;
-    profilePhoto: string;
+    avatar: string;
     properties: IProperties[];
-    // propertyFilters: IPropertyFilter[];
     isAdmin: boolean;
     isActive: boolean;
     joinedIn: string;

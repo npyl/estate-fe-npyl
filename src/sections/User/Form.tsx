@@ -40,7 +40,7 @@ interface UserFormProps {
 }
 
 const UserForm = ({ open, onClose }: UserFormProps) => {
-    const { data: users, isLoading } = useAllUsersQuery();
+    const { data: users } = useAllUsersQuery();
     const [newPassword, setNewPassword] = useState("");
     const { selectedUser } = useSecurityContext();
     const [resetPassword, { isLoading: isResetLoading }] =
@@ -114,7 +114,7 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
     };
 
     const onSubmit = ({ status, ...user }: IUserPOST) => {
-        addUser({ user, profilePhoto: undefined });
+        addUser(user);
         onClose();
     };
 

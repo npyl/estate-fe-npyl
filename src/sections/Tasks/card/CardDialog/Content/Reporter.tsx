@@ -26,7 +26,7 @@ const Reporter = () => {
                 readOnly: true,
                 startAdornment: (
                     <InputAdornment position="start">
-                        <Avatar src={user?.profilePhoto} />
+                        <Avatar src={user?.avatar} />
                     </InputAdornment>
                 ),
             }}

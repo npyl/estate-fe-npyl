@@ -2,6 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 import { IUser, IUserPOST } from "src/types/user";
 
+interface UploadAvatarReq {
+    userId: number;
+    file: File;
+}
+
 export const user = createApi({
     reducerPath: "user",
     baseQuery: fetchBaseQuery({
@@ -25,14 +30,33 @@ export const user = createApi({
             }),
             providesTags: ["Profile"],
         }),
-        addUser: builder.mutation<
-            void,
-            { user: IUserPOST; profilePhoto?: File }
-        >({
-            query: ({ user, profilePhoto }) => ({
+        uploadAvatar: builder.mutation<string, UploadAvatarReq>({
+            query: ({ file, userId }) => {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                return {
+                    url: `${userId}/avatar`,
+                    method: "POST",
+                    body: formData,
+                    responseHandler: "text",
+                };
+            },
+            invalidatesTags: ["Profile"],
+        }),
+        removeAvatar: builder.mutation<void, number>({
+            query: (userId) => ({
+                url: `${userId}/avatar`,
+                method: "DELETE",
+                responseHandler: "text",
+            }),
+            invalidatesTags: ["Profile"],
+        }),
+        addUser: builder.mutation<void, IUserPOST>({
+            query: (body) => ({
                 url: "/add",
                 method: "POST",
-                body: user,
+                body,
             }),
             invalidatesTags: ["Users"],
         }),
@@ -95,6 +119,8 @@ export const user = createApi({
 
 export const {
     useProfileQuery,
+    useUploadAvatarMutation,
+    useRemoveAvatarMutation,
     useAddUserMutation,
     useAllUsersQuery,
     useToggleActiveUserMutation,

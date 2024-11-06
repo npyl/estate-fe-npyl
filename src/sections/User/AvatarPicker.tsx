@@ -1,8 +1,40 @@
 import FileInput from "@/components/FileInput";
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, useCallback } from "react";
 import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
-import { Box, IconButton, SxProps, Theme } from "@mui/material";
+import {
+    alpha,
+    Box,
+    CircularProgress,
+    IconButton,
+    Stack,
+    SxProps,
+    Theme,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+    useRemoveAvatarMutation,
+    useUploadAvatarMutation,
+} from "@/services/user";
+
+// ----------------------------------------------------------------------------
+
+const AVATAR_H = "130px";
+const AVATAR_W = AVATAR_H;
+
+const LoadingOverlay = () => (
+    <Stack
+        alignItems="center"
+        justifyContent="center"
+        width={AVATAR_W}
+        height={AVATAR_H}
+        bgcolor={({ palette: { neutral } }) => alpha(neutral?.[300]!, 0.3)}
+        position="absolute"
+        zIndex={11}
+        borderRadius="100%"
+    >
+        <CircularProgress />
+    </Stack>
+);
 
 // ----------------------------------------------------------------------------
 
@@ -12,8 +44,8 @@ const AvatarSx: SxProps<Theme> = {
     "&:hover": {
         borderColor: "info.main",
     },
-    height: "100px",
-    width: "100px",
+    height: AVATAR_H,
+    width: AVATAR_W,
     cursor: "pointer",
 };
 
@@ -33,6 +65,7 @@ const DeleteButtonSx: SxProps<Theme> = {
 
 interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
     initials: string;
+    loading?: boolean;
     onClick: VoidFunction;
     onDelete: VoidFunction;
 }
@@ -40,13 +73,16 @@ interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
 const Avatar: FC<AvatarProps> = ({
     src,
     initials,
+    loading,
     sx,
     onClick,
     onDelete,
     ...props
 }) => (
     <Box position="relative">
-        {src ? (
+        {loading ? <LoadingOverlay /> : null}
+
+        {src && !loading ? (
             <IconButton onClick={onDelete} sx={DeleteButtonSx}>
                 <DeleteIcon />
             </IconButton>
@@ -66,24 +102,37 @@ const Avatar: FC<AvatarProps> = ({
 // ----------------------------------------------------------------------------
 
 interface AvatarPickerProps {
-    profilePhoto?: string;
+    avatar?: string;
     initials: string;
+    userId: number;
 }
 
-const AvatarPicker: FC<AvatarPickerProps> = ({ profilePhoto, initials }) => {
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-    };
+const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, userId, initials }) => {
+    const [uploadAvatar, { isLoading: isUploading }] =
+        useUploadAvatarMutation();
+    const [removeAvatar, { isLoading: isRemoving }] = useRemoveAvatarMutation();
 
-    const handleDelete = () => {};
+    const isLoading = isUploading || isRemoving;
+
+    const handleChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            uploadAvatar({ file, userId });
+        },
+        [userId]
+    );
+
+    const handleDelete = useCallback(() => removeAvatar(userId), [userId]);
 
     return (
         <FileInput
-            // disabled=
+            disabled={isLoading}
             Opener={(props) => (
                 <Avatar
-                    src={profilePhoto}
+                    loading={isLoading}
+                    src={avatar}
                     initials={initials}
                     {...props}
                     onDelete={handleDelete}
