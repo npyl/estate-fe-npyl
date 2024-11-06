@@ -8,7 +8,9 @@ const Priority = () => {
         <Controller
             name="priority"
             control={control}
-            render={({ field }) => <PriorityGroup {...field} />}
+            render={({ field: { onChange, ...field } }) => (
+                <PriorityGroup onChange={(_, v) => onChange(v)} {...field} />
+            )}
         />
     );
 };

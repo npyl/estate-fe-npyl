@@ -16,8 +16,8 @@ const getCustomerMini = ({
     lastName,
 }: ICustomer): ICustomerMini => ({ id, firstName, lastName });
 
-const getOptionLabel = ({ firstName, lastName }: ICustomerMini) =>
-    `${firstName} ${lastName}`;
+const getOptionLabel = (o: ICustomerMini | number) =>
+    typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 // ------------------------------------------------------------------
 

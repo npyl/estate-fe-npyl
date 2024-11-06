@@ -4,10 +4,10 @@ import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { IUserMini } from "@/types/user";
 import { useAllUsersQuery } from "@/services/user";
 
-const getOptionLabel = ({ firstName, lastName }: IUserMini) =>
-    `${firstName} ${lastName}`;
-
 // ------------------------------------------------------------------
+
+const getOptionLabel = (o: IUserMini | number) =>
+    typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 const OptionSx: SxProps<Theme> = {
     display: "flex",
