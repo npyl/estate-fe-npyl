@@ -1,19 +1,6 @@
 import Paper, { PaperProps } from "@mui/material/Paper";
-import { alpha, styled, Theme } from "@mui/material/styles";
-
-// ------------------- Priority ---------------------
-
-const getBgcolor =
-    (p: number) =>
-    ({ palette: { warning, info, error } }: Theme) =>
-        alpha(p === 0 ? info.main : p === 1 ? warning.main : error.main, 0.1);
-
-const getColor =
-    (p: number) =>
-    ({ palette: { warning, info, error } }: Theme) =>
-        p === 0 ? info.main : p === 1 ? warning.main : error.main;
-
-// --------------------------------------------------
+import { styled } from "@mui/material/styles";
+import { getTaskColor } from "../styled";
 
 interface TaskCardProps extends PaperProps {
     priority: number;
@@ -27,7 +14,7 @@ const StyledPaper = styled(Paper)<TaskCardProps>(({ theme, priority }) => ({
 
     borderRadius: "12px",
     borderLeft: "14px solid",
-    borderLeftColor: getColor(priority)(theme),
+    borderLeftColor: getTaskColor(priority)(theme),
 
     minHeight: "148px",
 
@@ -36,4 +23,4 @@ const StyledPaper = styled(Paper)<TaskCardProps>(({ theme, priority }) => ({
     gap: theme.spacing(1),
 }));
 
-export { getColor, getBgcolor, StyledPaper };
+export { StyledPaper };

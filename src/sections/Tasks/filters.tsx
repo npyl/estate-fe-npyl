@@ -9,15 +9,18 @@ import {
 type FiltersState = {
     search: string;
     assigneeId?: number;
+    priority?: number;
 
     setSearch: Dispatch<SetStateAction<string>>;
     setAssigneeId: Dispatch<SetStateAction<number | undefined>>;
+    setPriority: Dispatch<SetStateAction<number | undefined>>;
 };
 
 const FiltersContext = createContext<FiltersState>({
     search: "",
     setSearch: () => {},
     setAssigneeId: () => {},
+    setPriority: () => {},
 });
 
 export const useFiltersContext = () => {
@@ -35,15 +38,18 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
 ) => {
     const [search, setSearch] = useState("");
     const [assigneeId, setAssigneeId] = useState<number>();
+    const [priority, setPriority] = useState<number>();
 
     return (
         <FiltersContext.Provider
             value={{
                 search,
                 assigneeId,
+                priority,
                 // ...
                 setSearch,
                 setAssigneeId,
+                setPriority,
             }}
             {...props}
         />

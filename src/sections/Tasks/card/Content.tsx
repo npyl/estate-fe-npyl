@@ -3,16 +3,16 @@ import Stack from "@mui/material/Stack";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { getBgcolor, getColor } from "./styled";
 import Image from "next/image";
+import { getTaskBgcolor, getTaskColor } from "@/sections/Tasks/styled";
 
 // ------------------------------------------------------------------
 
 const getLabel = (p: number) => (p === 0 ? "low" : p === 1 ? "medium" : "high");
 
 const getSx = (p: number): SxProps<Theme> => ({
-    backgroundColor: getBgcolor(p),
-    color: getColor(p),
+    backgroundColor: getTaskBgcolor(p),
+    color: getTaskColor(p),
     borderRadius: "16px",
     px: 1,
     whiteSpace: "nowrap",
