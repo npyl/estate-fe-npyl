@@ -1,7 +1,6 @@
 import {
     ComponentType,
     FC,
-    HTMLAttributes,
     InputHTMLAttributes,
     useCallback,
     useRef,

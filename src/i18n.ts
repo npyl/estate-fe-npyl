@@ -1046,10 +1046,14 @@ const resources = {
             "New Task": "New Task",
             _Column_: "Column",
             "Delete task?": "Delete task?",
+            "Please upload a file of size <3MB":
+                "Please upload a file of size <3MB",
         },
     },
     el: {
         translation: {
+            "Please upload a file of size <3MB":
+                "Παρακαλώ ανεβάστε αρχείο μεγέθους <3MB",
             "Delete task?": "Διαγραφή εργασίας?",
             _Column_: "Στήλη",
             "New Task": "Νέα Εργασία",

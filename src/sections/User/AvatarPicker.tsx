@@ -15,6 +15,8 @@ import {
     useRemoveAvatarMutation,
     useUploadAvatarMutation,
 } from "@/services/user";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------
 
@@ -101,6 +103,9 @@ const Avatar: FC<AvatarProps> = ({
 
 // ----------------------------------------------------------------------------
 
+const ACCEPTED_FILE_TYPES = ".jpg,.jpeg,.png,.webp,.gif,.jfif";
+const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
+
 interface AvatarPickerProps {
     avatar?: string;
     initials: string;
@@ -108,6 +113,8 @@ interface AvatarPickerProps {
 }
 
 const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, userId, initials }) => {
+    const { t } = useTranslation();
+
     const [uploadAvatar, { isLoading: isUploading }] =
         useUploadAvatarMutation();
     const [removeAvatar, { isLoading: isRemoving }] = useRemoveAvatarMutation();
@@ -119,6 +126,11 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, userId, initials }) => {
             const file = e.target.files?.[0];
             if (!file) return;
 
+            if (file.size > MAX_FILE_SIZE) {
+                toast.error(t("Please upload a file of size <3MB"));
+                return;
+            }
+
             uploadAvatar({ file, userId });
         },
         [userId]
@@ -129,6 +141,7 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, userId, initials }) => {
     return (
         <FileInput
             disabled={isLoading}
+            accept={ACCEPTED_FILE_TYPES}
             Opener={(props) => (
                 <Avatar
                     loading={isLoading}
