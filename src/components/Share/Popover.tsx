@@ -36,14 +36,14 @@ interface SharePopoverProps extends Omit<PopoverProps, "onClose"> {
 const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
     const { t } = useTranslation();
 
-    const handleCopyShareUrl = useCallback(
-        () =>
-            navigator.clipboard
-                .writeText(shareUrl)
-                .then(() => toast.success(t("Copied to clipboard")))
-                .catch(() => {}),
-        [shareUrl, t]
-    );
+    const handleCopyShareUrl = useCallback(async () => {
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            toast.success(t("Copied to clipboard"));
+        } catch (ex) {
+            console.error(ex);
+        }
+    }, [shareUrl, t]);
 
     return (
         <Popover

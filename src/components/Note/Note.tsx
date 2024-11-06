@@ -44,7 +44,7 @@ const Note: React.FC<NoteProps> = (props) => {
             ) : (
                 <CustomAvatar
                     alt={username}
-                    src={note.creator.profilePhoto || ""}
+                    src={note?.creator?.avatar || ""}
                 />
             )}
 

@@ -2,7 +2,7 @@ import type { FC, ReactNode } from "react";
 import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation, useRegisterMutation } from "../services/auth";
 import { IUser } from "src/types/user";
-import { useLazyProfileQuery } from "src/services/user";
+import { useLazyGetProfileQuery } from "src/services/user";
 
 interface State {
     platform: "JWT";
@@ -117,7 +117,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const [login, { isSuccess }] = useLoginMutation();
     const [register] = useRegisterMutation();
-    const [getProfile] = useLazyProfileQuery();
+    const [getProfile] = useLazyGetProfileQuery();
 
     useEffect(() => {
         initialize();
@@ -171,7 +171,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             throw "Failed getting profile!";
         }
 
-        await dispatch({
+        dispatch({
             type: ActionType.LOGIN,
             payload: {
                 user,

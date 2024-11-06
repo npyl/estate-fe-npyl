@@ -1,4 +1,3 @@
-import { secondsInDay } from "date-fns";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -16,7 +15,6 @@ const resources = {
 
             Dashboard: "Dashboard",
             Notifications: "Notifications",
-            Tickets: "Tickets",
             Mail: "Mail",
             "Edit Property": "Edit Property",
             Thumbnail: "Thumbnail",
@@ -271,10 +269,13 @@ const resources = {
             "The price for this property is hidden on the public site":
                 "The price for this property is hidden on the public",
 
-            // Tickets
-            "Search Tickets": "Search Tickets",
             "Assigned to": "Assigned to",
             "Add section": "Add section",
+            "Edit column": "Edit column",
+            "Add column": "Add column",
+            "Delete column?": "Delete column?",
+            "Deleting a column will also delete the tasks":
+                "Deleting a column will also delete the tasks",
             "Add Task": "Add task",
             "Delete section": "Delete section",
             "Rename section": "Rename section",
@@ -297,8 +298,6 @@ const resources = {
             Priority: "Priority",
             "All tasks related to this category will also be deleted.":
                 "All tasks related to this category will also be deleted.",
-            "Are you sure want to delete column? ":
-                "Are you sure want to delete column? ",
 
             //Notes
             NOTE: "NOTE",
@@ -787,6 +786,7 @@ const resources = {
             "Daily Views": "Daily Views",
 
             "Copy Link": "Copy Link",
+            "Copied to clipboard": "Copied to clipboard",
             "Social Networks": "Social Networks",
             "Short Version": "Short Version",
             "Long Version": "Long Version",
@@ -1038,10 +1038,26 @@ const resources = {
             Week: "Week",
             Month: "Month",
             Year: "Year",
+
+            Tasks: "Tasks",
+            Attach: "Attach",
+            "New Task": "New Task",
+            _Column_: "Column",
+            "Delete task?": "Delete task?",
+            "Please upload a file of size <3MB":
+                "Please upload a file of size <3MB",
         },
     },
     el: {
         translation: {
+            "Please upload a file of size <3MB":
+                "Παρακαλώ ανεβάστε αρχείο μεγέθους <3MB",
+            "Delete task?": "Διαγραφή εργασίας?",
+            _Column_: "Στήλη",
+            "New Task": "Νέα Εργασία",
+            Attach: "Επισύναψη",
+            Tasks: "Εργασίες",
+
             Today: "Σήμερα",
 
             Week: "Εβδομάδα",
@@ -1153,6 +1169,7 @@ const resources = {
             "Property Rating": "Αξιολόγηση ακινήτου",
             "Property Presentation": "Παρουσίαση ακινήτου",
             "Copy Link": "Αντιγραφή Συνδέσμου",
+            "Copied to clipboard": "Αντιγράφηκε στο πρόχειρο",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",
             "Short Version: Includes basic photos":
@@ -1260,7 +1277,6 @@ const resources = {
             ID: "Κωδικός Ακινήτου",
             Properties: "Ακίνητα",
             Notifications: "Ενημερώσεις",
-            Tickets: "Tickets",
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",
             "Newly Built": "Νεόδμητο",
@@ -1506,9 +1522,13 @@ const resources = {
             "Minimum Number of Bedrooms": "Ελάχιστος αριθμός υπνοδωματίων",
             "Maximum Floor": "Μέγιστος όροφος",
             "Minimum Floor": "Ελάχιστος όροφος",
-            "Search Tickets": "Αναζήτηση Ticket",
             "Assigned to": "Ανάθεση στον/ην",
             "Add section": "Προσθήκη Τμήματος",
+            "Add column": "Προσθήκη Στήλης",
+            "Delete column?": "Διαγραφή στήλης?",
+            "Deleting a column will also delete the tasks":
+                "Η διαγραφή μιας στήλης θα οδηγήσει σε διαγραφή των αντίστοιχων εργασιών",
+            "Edit column": "Επεξεργασία στήλης",
             "Add Task": "Προσθήκη Εργασίας",
             "Delete section": "Διαγραφή Τμήματος",
             "Rename section": "Μετονομασία Τμήματος",
@@ -1532,8 +1552,6 @@ const resources = {
             High: "Υψηλή",
             "All tasks related to this category will also be deleted.":
                 "Όλες οι εργασίες που σχετίζονται με αυτή την κατηγορία θα διαγραφούν.",
-            "Are you sure want to delete column?":
-                "Είστε σίγουροι ότι θέλετε να διαγράψετε την στήλη;",
 
             //Areas
 
@@ -1618,7 +1636,7 @@ const resources = {
 
             //Location
             Prefecture: "Νομός",
-            "Search on map...": "Αναζήτηση στον χάρτη...",
+            "Search on map...": "Αναζήτηση στο χάρτη...",
             Map: "Χάρτης",
             Satellite: "Δορυφορικό",
             Location: "Τοποθεσία",

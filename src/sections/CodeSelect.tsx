@@ -3,17 +3,10 @@ import {
     AutocompleteProps,
     MenuItem,
     SxProps,
-    TextField,
     Theme,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { setCode } from "src/slices/filters";
-import { useSelector } from "react-redux";
 import { useAllPropertyCodesQuery } from "src/services/properties";
-import { selectCode } from "src/slices/filters";
-import { useTranslation } from "react-i18next";
-import { FC, useMemo } from "react";
-import HomeIcon from "@mui/icons-material/Home";
+import { forwardRef, useMemo } from "react";
 
 // ------------------------------------------------------------------------
 
@@ -28,13 +21,12 @@ const RenderOption = (
     props: React.HTMLAttributes<HTMLLIElement>,
     option: string
 ) => (
-    <MenuItem key={option} sx={OptionSx} {...props}>
+    <MenuItem sx={OptionSx} {...props} key={option}>
         <img
-            src={"/static/categoryPhotos/home.webp"}
+            src="/static/categoryPhotos/home.webp"
             alt="Home"
             style={{ width: 30, height: 30 }}
         />
-        {/*  HOME HERE */}
         {option}
     </MenuItem>
 );
@@ -46,14 +38,13 @@ type CodeSelectProps = Omit<
     "options"
 >;
 
-const CodeSelect: FC<CodeSelectProps> = (props) => {
-    const { t } = useTranslation();
-
+const CodeSelect = forwardRef<HTMLElement, CodeSelectProps>((props, ref) => {
     const { data, isLoading } = useAllPropertyCodesQuery();
     const codes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
     return (
         <Autocomplete
+            ref={ref}
             loading={isLoading}
             disableClearable
             renderOption={RenderOption}
@@ -68,6 +59,6 @@ const CodeSelect: FC<CodeSelectProps> = (props) => {
             {...props}
         />
     );
-};
+});
 
 export default CodeSelect;

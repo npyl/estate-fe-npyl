@@ -68,6 +68,10 @@ interface EventDatesProps {
 
     allDayDate: string;
     onAllDayDateChange: (s: string) => void;
+
+    // INFO: make this component reusable in many hook-form setups
+    startDateKey?: string;
+    endDateKey?: string;
 }
 
 const EventDates: FC<EventDatesProps> = ({
@@ -76,17 +80,20 @@ const EventDates: FC<EventDatesProps> = ({
     // ...
     allDayDate,
     onAllDayDateChange,
+
+    startDateKey = "startDate",
+    endDateKey = "endDate",
 }) => {
     const { t } = useTranslation();
     const { setValue } = useFormContext();
 
     const handleStartDate = useCallback((v: dayjs.Dayjs | null) => {
         if (!v) return;
-        setValue("startDate", v.toISOString(), { shouldDirty: true });
+        setValue(startDateKey, v.toISOString(), { shouldDirty: true });
     }, []);
     const handleEndDate = useCallback((v: dayjs.Dayjs | null) => {
         if (!v) return;
-        setValue("endDate", v.toISOString(), { shouldDirty: true });
+        setValue(endDateKey, v.toISOString(), { shouldDirty: true });
     }, []);
 
     return (
@@ -120,7 +127,7 @@ const EventDates: FC<EventDatesProps> = ({
                     <RHFDateTimePicker
                         defaultValue={MIN_TIME}
                         label={t("Start")}
-                        name="startDate"
+                        name={startDateKey}
                         onChange={handleStartDate}
                         // ...
                         {...DatePickerConstraints}
@@ -128,7 +135,7 @@ const EventDates: FC<EventDatesProps> = ({
                     <RHFDateTimePicker
                         defaultValue={TODAY.hour(START_HOUR + 1)}
                         label={t("End")}
-                        name="endDate"
+                        name={endDateKey}
                         onChange={handleEndDate}
                         //  ...
                         {...DatePickerConstraints}

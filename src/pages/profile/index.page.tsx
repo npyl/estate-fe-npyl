@@ -2,11 +2,11 @@ import { Container, Tabs, Tab } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ViewUser from "src/components/User/View";
+import ViewUser from "@/sections/User/View";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useTabsContext } from "src/contexts/tabs";
-import { useProfileQuery } from "src/services/user";
+import { useGetUserQuery } from "src/services/user";
 import TabPanel from "@/components/Tabs";
 // ...
 const CompanyInformation = dynamic(() => import("./(Company)"));
@@ -15,10 +15,12 @@ const Integrations = dynamic(() => import("./(Integrations)"));
 import { AuthGuard } from "@/components/authentication/auth-guard";
 
 import dynamic from "next/dynamic";
+import { useAuth } from "@/hooks/use-auth";
 
 const Profile: NextPage = () => {
     const { t } = useTranslation();
-    const { data: profile } = useProfileQuery();
+    const { user } = useAuth();
+    const { data: profile } = useGetUserQuery(+user?.id!);
     const { pushTab } = useTabsContext();
     const [tab, setTab] = useState(0);
 

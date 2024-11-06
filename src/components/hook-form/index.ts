@@ -1,5 +1,4 @@
 export * from "./RHFCheckbox";
-export * from "./RHFUpload";
 
 export { default } from "./FormProvider";
 
