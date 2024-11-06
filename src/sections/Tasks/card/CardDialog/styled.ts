@@ -12,9 +12,9 @@ const DialogSx: SxProps<Theme> = {
 
 const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
     padding: theme.spacing(3),
-    paddingBottom: 0,
     position: "relative",
     display: "flex",
+    boxShadow: theme.shadows[5],
 }));
 
 const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
@@ -24,6 +24,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
     padding: theme.spacing(3),
+    boxShadow: theme.shadows[5],
 }));
 
 export {

@@ -1,3 +1,4 @@
+import { CalendarEventReq } from "./calendar";
 import { IUser } from "./user";
 
 export type IKanbanComment = {
@@ -89,4 +90,18 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
     };
 };
 
-export { IKanbanCardRes2Req };
+const KanbanTaskToCalendarEvent = ({
+    name,
+    description,
+    due,
+}: IKanbanCardPOST): CalendarEventReq => ({
+    title: name,
+    description,
+    type: "TASK",
+    startDate: due[0],
+    endDate: due[1],
+    location: "",
+    withIds: [],
+});
+
+export { IKanbanCardRes2Req, KanbanTaskToCalendarEvent };

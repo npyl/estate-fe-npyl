@@ -3,6 +3,7 @@ import {
     IKanbanCard,
     IKanbanCardPOST,
     IKanbanCardRes2Req,
+    KanbanTaskToCalendarEvent,
 } from "@/types/tasks";
 import { FC, useCallback, useState } from "react";
 import {
@@ -25,22 +26,7 @@ import {
     useCreateEventMutation,
     useUpdateEventMutation,
 } from "@/services/calendar";
-import { CalendarEventReq } from "@/types/calendar";
 import { useAuth } from "@/hooks/use-auth";
-
-const KanbanTaskToCalendarEvent = ({
-    name,
-    description,
-    due,
-}: IKanbanCardPOST): CalendarEventReq => ({
-    title: name,
-    description,
-    type: "TASK",
-    startDate: due[0],
-    endDate: due[1],
-    location: "",
-    withIds: [],
-});
 
 interface DetailsProps {
     task?: IKanbanCard;
