@@ -1,4 +1,4 @@
-import { Button, TextField as MuiTextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { useMemo, type FC } from "react";
@@ -15,10 +15,6 @@ const Form = styled("form")(({ theme }) => ({
     flexDirection: "column",
     rowGap: theme.spacing(2),
 }));
-
-const TextField = styled(MuiTextField)({
-    margin: 0,
-});
 
 const getSchema = (t: TranslationType) =>
     Yup.object({

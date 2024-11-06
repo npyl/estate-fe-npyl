@@ -27,6 +27,8 @@ import {
     useUpdateEventMutation,
 } from "@/services/calendar";
 import { useAuth } from "@/hooks/use-auth";
+import { yupResolver } from "@hookform/resolvers/yup";
+import schema from "./schema";
 
 interface DetailsProps {
     task?: IKanbanCard;
@@ -50,8 +52,8 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
         values: {
             ...IKanbanCardRes2Req(task),
             columnId: columnId || -1,
-            reporterId: user?.id || -1,
         },
+        resolver: yupResolver(schema),
     });
 
     const isDirty =
@@ -59,21 +61,27 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
         _allDayDate !== allDayDate ||
         methods.formState.isDirty;
 
+    const [withCalendarEvent, setWithCalendarEvent] = useState(false);
+
     const [createEvent] = useCreateEventMutation();
     const [updateEvent] = useUpdateEventMutation();
 
     const handleSubmit = async (d: IKanbanCardPOST) => {
-        // INFO: normalise dates if isAllDay
-        const due = (
-            isAllDay ? getAllDayStartEnd(allDayDate) : [d?.due[0], d?.due[1]]
-        ) as [string, string];
+        let due: [string, string] | undefined = undefined;
+
+        if (withCalendarEvent && d?.due) {
+            // INFO: normalise dates if isAllDay
+            due = (
+                isAllDay ? getAllDayStartEnd(allDayDate) : [d.due[0], d.due[1]]
+            ) as [string, string];
+        }
 
         const isEdit = d.id;
 
         const calendarAction = isEdit ? updateEvent : createEvent;
 
         await calendarAction({
-            userId: d.reporterId,
+            userId: user?.id!,
             body: KanbanTaskToCalendarEvent({ ...d, due }),
         });
     };

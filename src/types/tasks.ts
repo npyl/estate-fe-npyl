@@ -19,7 +19,7 @@ export type IKanbanCard = {
     priority: number;
     name: string;
     description: string;
-    due: string[];
+    due: [string, string];
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
@@ -33,10 +33,22 @@ export type IKanbanCard = {
     eventId: string; // INFO: Calendar Event Id -> Google Calendar Event Id
 };
 
-export type IKanbanCardPOST = Omit<IKanbanCard, "id" | "assignee"> & {
+export type IKanbanCardPOST = Omit<
+    IKanbanCard,
+    | "id"
+    | "assignee"
+    | "createdAt"
+    | "reporterId"
+    | "description"
+    | "due"
+    | "comments"
+> & {
     id?: number;
+    description?: string;
     columnId: number;
     assigneeId: number;
+    due?: [string, string]; // INFO: optional because a task may not be published to the calendar!
+    comments: IKanbanCommentPOST[];
 };
 
 export type IKanbanColumn = {
@@ -63,11 +75,9 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
         attachments,
         comments,
         completed,
-        createdAt,
         propertyId,
         customerId,
         eventId,
-        reporterId,
         assignee,
     } = task || { assignee: {} };
 
@@ -80,12 +90,10 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
         attachments: attachments || [],
         comments: comments || [],
         completed: completed || false,
-        createdAt: createdAt || "",
         propertyId: propertyId || -1,
         customerId: customerId || -1,
         assigneeId: assignee?.id || -1,
         eventId: eventId || "",
-        reporterId: reporterId || -1,
         columnId: -1,
     };
 };
@@ -96,10 +104,10 @@ const KanbanTaskToCalendarEvent = ({
     due,
 }: IKanbanCardPOST): CalendarEventReq => ({
     title: name,
-    description,
+    description: description || "",
     type: "TASK",
-    startDate: due[0],
-    endDate: due[1],
+    startDate: due![0],
+    endDate: due![1],
     location: "",
     withIds: [],
 });
