@@ -22,14 +22,20 @@ export const user = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Users", "Profile", "UserActive"],
+    tagTypes: ["Users", "User", "UserActive"],
     endpoints: (builder) => ({
-        profile: builder.query<IUser, void>({
+        getProfile: builder.query<IUser, void>({
             query: () => ({
                 url: "profile/",
             }),
-            providesTags: ["Profile"],
         }),
+        getUser: builder.query<IUser, number>({
+            query: (userId) => ({
+                url: `/${userId}`,
+            }),
+            providesTags: ["User"],
+        }),
+        // ---------------------------------------------------------
         uploadAvatar: builder.mutation<string, UploadAvatarReq>({
             query: ({ file, userId }) => {
                 const formData = new FormData();
@@ -42,7 +48,7 @@ export const user = createApi({
                     responseHandler: "text",
                 };
             },
-            invalidatesTags: ["Profile"],
+            invalidatesTags: ["User"],
         }),
         removeAvatar: builder.mutation<void, number>({
             query: (userId) => ({
@@ -50,8 +56,9 @@ export const user = createApi({
                 method: "DELETE",
                 responseHandler: "text",
             }),
-            invalidatesTags: ["Profile"],
+            invalidatesTags: ["User"],
         }),
+        // ---------------------------------------------------------
         addUser: builder.mutation<void, IUserPOST>({
             query: (body) => ({
                 url: "/add",
@@ -118,15 +125,18 @@ export const user = createApi({
 });
 
 export const {
-    useProfileQuery,
+    useGetProfileQuery,
+    useGetUserQuery,
+    useAllUsersQuery,
+    // ...
     useUploadAvatarMutation,
     useRemoveAvatarMutation,
+    // ...
     useAddUserMutation,
-    useAllUsersQuery,
     useToggleActiveUserMutation,
     useToggleActiveNotificationMutation,
     useLazyIsAdminQuery,
-    useLazyProfileQuery,
+    useLazyGetProfileQuery,
     useDeleteUserMutation,
     useResetPasswordMutation,
 } = user;

@@ -1,8 +1,8 @@
-import { Container, Grid } from "@mui/material";
+import { Container } from "@mui/material";
 import type { NextPage } from "next";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAllUsersQuery } from "src/services/user";
+import { useGetUserQuery } from "src/services/user";
 import { useTabsContext } from "src/contexts/tabs";
 import ViewUser from "@/sections/User/View";
 import { useRouter } from "next/router";
@@ -12,14 +12,8 @@ import { AdminGuard } from "src/components/authentication/admin-guard";
 const User: NextPage = () => {
     const router = useRouter();
     const { userId } = router.query;
-    const { data: users } = useAllUsersQuery();
+    const { data: user } = useGetUserQuery(+userId!);
     const { pushTab } = useTabsContext();
-
-    // TODO: remove
-    const user = useMemo(
-        () => users?.find((u) => u.id === +userId!) || null,
-        [users, userId]
-    );
 
     useEffect(() => {
         if (user) {

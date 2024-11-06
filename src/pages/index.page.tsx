@@ -6,7 +6,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useGetDashboardQuery } from "src/services/dashboard";
-import { useProfileQuery } from "src/services/user";
+import { useGetProfileQuery } from "src/services/user";
 import CardWithIcon from "./dashboard/CardWithIcon";
 import SeoIllustration from "./dashboard/SeoIllustration";
 import AppConversionRates from "./dashboard/app-conversion-rates";
@@ -17,7 +17,7 @@ const SimpleCalendar = dynamic(() => import("./dashboard/SimpleCalendar"));
 
 const Dashboard: NextPage = () => {
     const { t } = useTranslation();
-    const { firstName, lastName } = useProfileQuery().data ?? {};
+    const { firstName, lastName } = useGetProfileQuery().data ?? {};
 
     const name = `${lastName} ${firstName}`;
 

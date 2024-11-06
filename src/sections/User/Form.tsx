@@ -28,7 +28,7 @@ import {
     useAddUserMutation,
     useAllUsersQuery,
     useDeleteUserMutation,
-    useProfileQuery,
+    useGetProfileQuery,
     useResetPasswordMutation,
 } from "src/services/user";
 import { IUser, IUserPOST } from "src/types/user";
@@ -45,7 +45,7 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
     const { selectedUser } = useSecurityContext();
     const [resetPassword, { isLoading: isResetLoading }] =
         useResetPasswordMutation();
-    const { data: profile } = useProfileQuery();
+    const { data: profile } = useGetProfileQuery();
     const [transferId, setTransferId] = useState<number | null>(null);
     const { t } = useTranslation();
 
