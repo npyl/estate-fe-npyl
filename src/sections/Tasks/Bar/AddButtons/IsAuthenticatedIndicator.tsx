@@ -4,6 +4,7 @@ import { Skeleton } from "@mui/material";
 import { FC } from "react";
 import { useCalendarAuth } from "@/services/calendar";
 import React from "react";
+import GoogleIcon from "@mui/icons-material/Google";
 
 interface IsAuthenticatedIndicatorProps {
     children: React.ReactElement;
@@ -23,7 +24,9 @@ const IsAuthenticatedIndicator: FC<IsAuthenticatedIndicatorProps> = ({
     return (
         <>
             {!isAuthenticated ? (
-                <Button onClick={authenticate}>{t("Login")}</Button>
+                <Button onClick={authenticate} startIcon={<GoogleIcon />}>
+                    {t("Login")}
+                </Button>
             ) : null}
 
             {React.cloneElement(children, { disabled: !isAuthenticated })}

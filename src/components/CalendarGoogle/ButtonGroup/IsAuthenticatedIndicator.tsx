@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import AvatarButton from "./AvatarButton";
 import { useTranslation } from "react-i18next";
+import GoogleIcon from "@mui/icons-material/Google";
 
 const IsAuthenticatedIndicator = () => {
     const { t } = useTranslation();
@@ -18,7 +19,11 @@ const IsAuthenticatedIndicator = () => {
         return <AvatarButton userInfo={userInfo} />;
     }
 
-    return <Button onClick={authenticate}>{t("Login")}</Button>;
+    return (
+        <Button onClick={authenticate} startIcon={<GoogleIcon />}>
+            {t("Login")}
+        </Button>
+    );
 };
 
 export default IsAuthenticatedIndicator;
