@@ -21,6 +21,26 @@ import {
     getAllDayStartEnd,
     isAllDay as getIsAllDay,
 } from "@/components/Calendar/util";
+import {
+    useCreateEventMutation,
+    useUpdateEventMutation,
+} from "@/services/calendar";
+import { CalendarEventReq } from "@/types/calendar";
+import { useAuth } from "@/hooks/use-auth";
+
+const KanbanTaskToCalendarEvent = ({
+    name,
+    description,
+    due,
+}: IKanbanCardPOST): CalendarEventReq => ({
+    title: name,
+    description,
+    type: "TASK",
+    startDate: due[0],
+    endDate: due[1],
+    location: "",
+    withIds: [],
+});
 
 interface DetailsProps {
     task?: IKanbanCard;
@@ -29,6 +49,8 @@ interface DetailsProps {
 }
 
 const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
+    const { user } = useAuth();
+
     // INFO: is all day checkbox
     const _isAllDay = task ? getIsAllDay(task.due[0], task.due[1]) : false;
     const [isAllDay, setAllDay] = useState(_isAllDay);
@@ -39,7 +61,11 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
     const [allDayDate, setAllDayDate] = useState(_allDayDate);
 
     const methods = useForm<IKanbanCardPOST>({
-        values: { ...IKanbanCardRes2Req(task), columnId: columnId || -1 },
+        values: {
+            ...IKanbanCardRes2Req(task),
+            columnId: columnId || -1,
+            reporterId: user?.id || -1,
+        },
     });
 
     const isDirty =
@@ -47,11 +73,23 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
         _allDayDate !== allDayDate ||
         methods.formState.isDirty;
 
-    const handleSubmit = (d: IKanbanCardPOST) => {
+    const [createEvent] = useCreateEventMutation();
+    const [updateEvent] = useUpdateEventMutation();
+
+    const handleSubmit = async (d: IKanbanCardPOST) => {
         // INFO: normalise dates if isAllDay
-        const due = isAllDay
-            ? getAllDayStartEnd(allDayDate)
-            : [d?.due[0], d?.due[1]];
+        const due = (
+            isAllDay ? getAllDayStartEnd(allDayDate) : [d?.due[0], d?.due[1]]
+        ) as [string, string];
+
+        const isEdit = d.id;
+
+        const calendarAction = isEdit ? updateEvent : createEvent;
+
+        await calendarAction({
+            userId: d.reporterId,
+            body: KanbanTaskToCalendarEvent({ ...d, due }),
+        });
     };
 
     return (

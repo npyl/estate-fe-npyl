@@ -27,6 +27,7 @@ export type IKanbanCard = {
     assignee: IUser;
     propertyId: number;
     customerId: number;
+    reporterId: number;
 
     eventId: string; // INFO: Calendar Event Id -> Google Calendar Event Id
 };
@@ -65,6 +66,7 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
         propertyId,
         customerId,
         eventId,
+        reporterId,
         assignee,
     } = task || { assignee: {} };
 
@@ -82,6 +84,7 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
         customerId: customerId || -1,
         assigneeId: assignee?.id || -1,
         eventId: eventId || "",
+        reporterId: reporterId || -1,
         columnId: -1,
     };
 };

@@ -1,5 +1,5 @@
 // @mui
-import { Box, Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import Bar from "@/sections/Tasks/Bar";
@@ -11,13 +11,13 @@ export default function KanbanPage() {
     return (
         <>
             <FiltersProvider>
-                <Box position="relative" mt={2}>
+                <Stack position="relative" spacing={1}>
                     <Bar />
 
                     <Container maxWidth="xl">
                         <Content />
                     </Container>
-                </Box>
+                </Stack>
             </FiltersProvider>
 
             {/* Handle search params */}
