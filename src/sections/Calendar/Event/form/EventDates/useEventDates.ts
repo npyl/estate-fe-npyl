@@ -8,7 +8,10 @@ import { useFormContext } from "react-hook-form";
 
 /**
  * Hook that encapsulates control logic of EventDates component
- * @param initial Passed in "edit" cases
+ *
+ * @param initial       Passed in "edit" cases
+ * @param startDateKey  since we are using this hook in multiple react-hook-form contexts we need to make sure keys are correct
+ * @param endDateKey    -||-
  */
 const useEventDates = (
     startDateKey: string,

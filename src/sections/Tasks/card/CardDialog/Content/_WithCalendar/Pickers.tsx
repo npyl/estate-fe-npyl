@@ -15,8 +15,8 @@ const Pickers = () => {
         onAllDayChange,
         onAllDayDateChange,
     } = useEventDates(startDateKey, endDateKey, {
-        startDate: due[0]!,
-        endDate: due[1]!,
+        startDate: due?.[0],
+        endDate: due?.[1],
     });
 
     return (
