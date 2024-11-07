@@ -43,18 +43,19 @@ export type IKanbanCardPOST = Omit<
     | "description"
     | "due"
     | "comments"
+    | "eventId"
 > & {
     id?: number;
     description?: string;
     columnId: number;
     assigneeId: number;
+    eventId?: string;
     due?: [string, string];
     comments: IKanbanCommentPOST[];
 };
 
 // INFO: used in form
-export interface ICreateOrUpdateTaskReq
-    extends Omit<IKanbanCardPOST, "eventId"> {
+export interface ICreateOrUpdateTaskReq extends IKanbanCardPOST {
     reporterId: number;
     withCalendar: boolean;
 }
@@ -105,6 +106,7 @@ const IKanbanCardRes2Req = (
         assigneeId: assignee?.id || -1,
         columnId: -1,
         reporterId: -1,
+        eventId: eventId || "",
         withCalendar: Boolean(eventId),
     };
 };

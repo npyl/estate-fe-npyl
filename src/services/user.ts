@@ -47,7 +47,7 @@ export const user = createApi({
                     responseHandler: "text",
                 };
             },
-            invalidatesTags: ["User"],
+            invalidatesTags: ["User", "Users"],
         }),
         removeAvatar: builder.mutation<void, number>({
             query: (userId) => ({
@@ -55,7 +55,7 @@ export const user = createApi({
                 method: "DELETE",
                 responseHandler: "text",
             }),
-            invalidatesTags: ["User"],
+            invalidatesTags: ["User", "Users"],
         }),
         // ---------------------------------------------------------
         addUser: builder.mutation<void, IUserPOST>({

@@ -37,6 +37,7 @@ const schema = yup.object<IKanbanCardPOST>().shape({
 
     reporterId: yup.number().min(0).required(),
 
+    eventId: yup.string().optional(),
     withCalendar: yup.boolean().required(),
 });
 
