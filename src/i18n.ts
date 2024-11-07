@@ -1046,10 +1046,14 @@ const resources = {
             "Delete task?": "Delete task?",
             "Please upload a file of size <3MB":
                 "Please upload a file of size <3MB",
+
+            "Connect with Calendar": "Connect with Calendar",
         },
     },
     el: {
         translation: {
+            "Connect with Calendar": "Σύνδεση με Ημερολόγιο",
+
             "Please upload a file of size <3MB":
                 "Παρακαλώ ανεβάστε αρχείο μεγέθους <3MB",
             "Delete task?": "Διαγραφή εργασίας?",

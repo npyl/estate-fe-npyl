@@ -1,11 +1,10 @@
 import Dialog from "@/components/Dialog";
 import {
+    ICreateOrUpdateTaskReq,
     IKanbanCard,
-    IKanbanCardPOST,
     IKanbanCardRes2Req,
-    KanbanTaskToCalendarEvent,
 } from "@/types/tasks";
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
     DialogSx,
     StyledDialogActions,
@@ -17,15 +16,11 @@ import Content from "./Content";
 import Actions from "./Actions";
 import { FormProvider, useForm } from "react-hook-form";
 import EventDates from "@/sections/Calendar/Event/form/EventDates";
-import { getAllDayStartEnd } from "@/components/Calendar/util";
-import {
-    useCreateEventMutation,
-    useUpdateEventMutation,
-} from "@/services/calendar";
 import { useAuth } from "@/hooks/use-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
 import useEventDates from "@/sections/Calendar/Event/form/EventDates/useEventDates";
+import { useCreateOrUpdateTaskMutation } from "@/services/tasks";
 
 interface DetailsProps {
     task?: IKanbanCard;
@@ -50,42 +45,26 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
         endDate: task?.due[1]!,
     });
 
-    const methods = useForm<IKanbanCardPOST>({
+    const methods = useForm<ICreateOrUpdateTaskReq>({
         values: {
             ...IKanbanCardRes2Req(task),
             columnId: columnId || -1,
+            reporterId: user?.id!,
         },
         resolver: yupResolver(schema),
     });
+
+    console.log("errors: ", methods.formState.errors);
 
     const isDirty =
         _isAllDay !== isAllDay ||
         _allDayDate !== allDayDate ||
         methods.formState.isDirty;
 
-    const [withCalendarEvent, setWithCalendarEvent] = useState(false);
+    const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
-    const [createEvent] = useCreateEventMutation();
-    const [updateEvent] = useUpdateEventMutation();
-
-    const handleSubmit = async (d: IKanbanCardPOST) => {
-        let due: [string, string] | undefined = undefined;
-
-        if (withCalendarEvent && d?.due) {
-            // INFO: normalise dates if isAllDay
-            due = (
-                isAllDay ? getAllDayStartEnd(allDayDate) : [d.due[0], d.due[1]]
-            ) as [string, string];
-        }
-
-        const isEdit = d.id;
-
-        const calendarAction = isEdit ? updateEvent : createEvent;
-
-        await calendarAction({
-            userId: user?.id!,
-            body: KanbanTaskToCalendarEvent({ ...d, due }),
-        });
+    const handleSubmit = async (d: ICreateOrUpdateTaskReq) => {
+        await createOrUpdate(d);
     };
 
     return (
@@ -114,6 +93,7 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
                                 // ...
                                 startDateKey="due.0"
                                 endDateKey="due.1"
+                                mt={2}
                             />
                         }
                     />

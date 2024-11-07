@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Stack } from "@mui/material";
+import { Checkbox, FormControlLabel, Stack, StackProps } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
@@ -62,7 +62,7 @@ const CheckboxSx = {
     width: "fit-content",
 };
 
-interface EventDatesProps {
+interface EventDatesProps extends StackProps {
     allDay: boolean;
     onAllDayChange: (_: any, b: boolean) => void;
 
@@ -83,6 +83,8 @@ const EventDates: FC<EventDatesProps> = ({
 
     startDateKey = "startDate",
     endDateKey = "endDate",
+
+    ...props
 }) => {
     const { t } = useTranslation();
     const { setValue } = useFormContext();
@@ -98,7 +100,7 @@ const EventDates: FC<EventDatesProps> = ({
 
     return (
         <>
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={1} alignItems="center" {...props}>
                 <FormControlLabel
                     label={t("All day")}
                     control={<Checkbox />}

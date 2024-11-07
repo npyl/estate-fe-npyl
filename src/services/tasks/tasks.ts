@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IKanbanBoard,
     IKanbanCard,
-    IKanbanCardPOST,
     IKanbanColumnPOST,
     IKanbanCommentPOST,
 } from "@/types/tasks";
@@ -132,22 +131,6 @@ export const tasks = createApi({
             }),
             providesTags: ["Card"],
         }),
-        addCard: builder.mutation<void, IKanbanCardPOST>({
-            query: (body: IKanbanCardPOST) => ({
-                url: "/card",
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Board"],
-        }),
-        editCard: builder.mutation<void, IKanbanCardPOST>({
-            query: (body: IKanbanCardPOST) => ({
-                url: "/card",
-                method: "PUT",
-                body,
-            }),
-            invalidatesTags: ["Board", "Card"],
-        }),
 
         createComment: builder.mutation<
             void,
@@ -259,8 +242,6 @@ export const {
 
     // Cards
     useLazyGetCardQuery,
-    useAddCardMutation,
-    useEditCardMutation,
     useMoveCardMutation,
     useReorderCardMutation,
     useDeleteCardMutation,

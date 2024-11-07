@@ -33,23 +33,24 @@ export type IKanbanCard = {
     eventId: string; // INFO: Calendar Event Id -> Google Calendar Event Id
 };
 
+// INFO: sent to Backend directly
 export type IKanbanCardPOST = Omit<
     IKanbanCard,
-    | "id"
-    | "assignee"
-    | "createdAt"
-    | "reporterId"
-    | "description"
-    | "due"
-    | "comments"
+    "id" | "assignee" | "createdAt" | "reporterId" | "description" | "comments"
 > & {
     id?: number;
     description?: string;
     columnId: number;
     assigneeId: number;
-    due?: [string, string]; // INFO: optional because a task may not be published to the calendar!
     comments: IKanbanCommentPOST[];
 };
+
+// INFO: used in form
+export interface ICreateOrUpdateTaskReq
+    extends Omit<IKanbanCardPOST, "eventId"> {
+    reporterId: number;
+    withCalendar: boolean;
+}
 
 export type IKanbanColumn = {
     id: number;
@@ -65,7 +66,9 @@ export type IKanbanBoard = {
     columnOrder: number[];
 };
 
-const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
+const IKanbanCardRes2Req = (
+    task: IKanbanCard | undefined
+): ICreateOrUpdateTaskReq => {
     const {
         id,
         priority,
@@ -77,7 +80,6 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
         completed,
         propertyId,
         customerId,
-        eventId,
         assignee,
     } = task || { assignee: {} };
 
@@ -93,8 +95,9 @@ const IKanbanCardRes2Req = (task: IKanbanCard | undefined): IKanbanCardPOST => {
         propertyId: propertyId || -1,
         customerId: customerId || -1,
         assigneeId: assignee?.id || -1,
-        eventId: eventId || "",
         columnId: -1,
+        reporterId: -1,
+        withCalendar: false,
     };
 };
 
