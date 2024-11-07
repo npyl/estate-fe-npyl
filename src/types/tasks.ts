@@ -36,12 +36,19 @@ export type IKanbanCard = {
 // INFO: sent to Backend directly
 export type IKanbanCardPOST = Omit<
     IKanbanCard,
-    "id" | "assignee" | "createdAt" | "reporterId" | "description" | "comments"
+    | "id"
+    | "assignee"
+    | "createdAt"
+    | "reporterId"
+    | "description"
+    | "due"
+    | "comments"
 > & {
     id?: number;
     description?: string;
     columnId: number;
     assigneeId: number;
+    due?: [string, string];
     comments: IKanbanCommentPOST[];
 };
 
@@ -81,6 +88,7 @@ const IKanbanCardRes2Req = (
         propertyId,
         customerId,
         assignee,
+        eventId,
     } = task || { assignee: {} };
 
     return {
@@ -88,7 +96,7 @@ const IKanbanCardRes2Req = (
         priority: priority || 0,
         name: name || "",
         description: description || "",
-        due: due || ["", ""],
+        due: due,
         attachments: attachments || [],
         comments: comments || [],
         completed: completed || false,
@@ -97,7 +105,7 @@ const IKanbanCardRes2Req = (
         assigneeId: assignee?.id || -1,
         columnId: -1,
         reporterId: -1,
-        withCalendar: false,
+        withCalendar: Boolean(eventId),
     };
 };
 

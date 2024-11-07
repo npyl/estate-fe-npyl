@@ -8,7 +8,11 @@ const schema = yup.object<IKanbanCardPOST>().shape({
     description: yup.string().optional(),
     due: yup
         .tuple([yup.string().required(), yup.string().required()])
-        .required(),
+        .when("withCalendar", {
+            is: true,
+            then: (schema) => schema.required(),
+            otherwise: (schema) => schema.transform(() => undefined),
+        }),
     attachments: yup.array(yup.string().required()).required(),
     completed: yup.boolean().required(),
 

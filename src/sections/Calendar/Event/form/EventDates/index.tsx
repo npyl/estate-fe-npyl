@@ -99,8 +99,8 @@ const EventDates: FC<EventDatesProps> = ({
     }, []);
 
     return (
-        <>
-            <Stack direction="row" spacing={1} alignItems="center" {...props}>
+        <Stack {...props}>
+            <Stack direction="row" spacing={1} alignItems="center">
                 <FormControlLabel
                     label={t("All day")}
                     control={<Checkbox />}
@@ -144,7 +144,7 @@ const EventDates: FC<EventDatesProps> = ({
                     />
                 </Stack>
             ) : null}
-        </>
+        </Stack>
     );
 };
 

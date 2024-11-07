@@ -7,12 +7,12 @@ import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import { LoadingButton } from "@mui/lab";
-import { getAllDayStartEnd } from "@/components/Calendar/util";
 import EventDates from "./EventDates";
 import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import RHFLocation from "./RHFLocation";
 import useEventDates from "./EventDates/useEventDates";
+import { endDateKey, startDateKey } from "./EventDates/constants";
 
 const TextFieldSx = {
     px: 0.5,
@@ -42,7 +42,7 @@ const CreateUpdateForm: FC<Props> = ({
         // ...
         onAllDayChange,
         onAllDayDateChange,
-    } = useEventDates({
+    } = useEventDates(startDateKey, endDateKey, {
         startDate: event?.startDate!,
         endDate: event?.endDate!,
     });
@@ -69,17 +69,7 @@ const CreateUpdateForm: FC<Props> = ({
     const isSubmitting = methods.formState.isSubmitting;
 
     const handleSubmit = async (e: CalendarEventReq) => {
-        // INFO: normalise dates if isAllDay
-        const [startDate, endDate] = isAllDay
-            ? getAllDayStartEnd(allDayDate)
-            : [e.startDate, e.endDate];
-
-        await onSubmit({
-            ...e,
-            startDate,
-            endDate,
-        });
-
+        await onSubmit(e);
         onClose();
     };
 
