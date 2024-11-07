@@ -5,7 +5,7 @@ import {
     IKanbanCardRes2Req,
     KanbanTaskToCalendarEvent,
 } from "@/types/tasks";
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import {
     DialogSx,
     StyledDialogActions,
@@ -17,11 +17,7 @@ import Content from "./Content";
 import Actions from "./Actions";
 import { FormProvider, useForm } from "react-hook-form";
 import EventDates from "@/sections/Calendar/Event/form/EventDates";
-import dayjs from "dayjs";
-import {
-    getAllDayStartEnd,
-    isAllDay as getIsAllDay,
-} from "@/components/Calendar/util";
+import { getAllDayStartEnd } from "@/components/Calendar/util";
 import {
     useCreateEventMutation,
     useUpdateEventMutation,
@@ -29,6 +25,7 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
+import useEventDates from "@/sections/Calendar/Event/form/EventDates/useEventDates";
 
 interface DetailsProps {
     task?: IKanbanCard;
@@ -39,14 +36,19 @@ interface DetailsProps {
 const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
     const { user } = useAuth();
 
-    // INFO: is all day checkbox
-    const _isAllDay = task ? getIsAllDay(task.due[0], task.due[1]) : false;
-    const [isAllDay, setAllDay] = useState(_isAllDay);
-    const handleAllDay = useCallback((_: any, b: boolean) => setAllDay(b), []);
-
-    // INFO: date for when checked
-    const [_allDayDate] = useState(task?.due[0] || dayjs().toISOString());
-    const [allDayDate, setAllDayDate] = useState(_allDayDate);
+    const {
+        _isAllDay,
+        _allDayDate,
+        // ...
+        isAllDay,
+        allDayDate,
+        // ...
+        onAllDayChange,
+        onAllDayDateChange,
+    } = useEventDates({
+        startDate: task?.due[0]!,
+        endDate: task?.due[1]!,
+    });
 
     const methods = useForm<IKanbanCardPOST>({
         values: {
@@ -105,9 +107,10 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
                         DatePicker={
                             <EventDates
                                 allDay={isAllDay}
-                                onAllDayChange={handleAllDay}
                                 allDayDate={allDayDate}
-                                onAllDayDateChange={setAllDayDate}
+                                // ...
+                                onAllDayChange={onAllDayChange}
+                                onAllDayDateChange={onAllDayDateChange}
                                 // ...
                                 startDateKey="due.0"
                                 endDateKey="due.1"

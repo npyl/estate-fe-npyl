@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
@@ -7,14 +7,12 @@ import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import { LoadingButton } from "@mui/lab";
-import {
-    getAllDayStartEnd,
-    isAllDay as getIsAllDay,
-} from "@/components/Calendar/util";
+import { getAllDayStartEnd } from "@/components/Calendar/util";
 import EventDates from "./EventDates";
 import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import RHFLocation from "./RHFLocation";
+import useEventDates from "./EventDates/useEventDates";
 
 const TextFieldSx = {
     px: 0.5,
@@ -35,17 +33,19 @@ const CreateUpdateForm: FC<Props> = ({
 }) => {
     const { t } = useTranslation();
 
-    // INFO: is all day checkbox
-    const _isAllDay = event
-        ? getIsAllDay(event.startDate, event.endDate)
-        : false;
-    const [isAllDay, setAllDay] = useState(_isAllDay);
-
-    // INFO: date for when checked
-    const [_allDayDate] = useState(
-        event?.startDate || startDate || dayjs().toISOString()
-    );
-    const [allDayDate, setAllDayDate] = useState(_allDayDate);
+    const {
+        _isAllDay,
+        _allDayDate,
+        // ..
+        isAllDay,
+        allDayDate,
+        // ...
+        onAllDayChange,
+        onAllDayDateChange,
+    } = useEventDates({
+        startDate: event?.startDate!,
+        endDate: event?.endDate!,
+    });
 
     const methods = useForm<CalendarEventReq>({
         values: event || {
@@ -68,8 +68,6 @@ const CreateUpdateForm: FC<Props> = ({
 
     const isSubmitting = methods.formState.isSubmitting;
 
-    const handleAllDay = (_: any, b: boolean) => setAllDay(b);
-
     const handleSubmit = async (e: CalendarEventReq) => {
         // INFO: normalise dates if isAllDay
         const [startDate, endDate] = isAllDay
@@ -86,7 +84,8 @@ const CreateUpdateForm: FC<Props> = ({
     };
 
     const handleReset = () => {
-        setAllDay(_isAllDay);
+        onAllDayChange({}, _isAllDay);
+        onAllDayDateChange(_allDayDate);
         methods.reset();
     };
 
@@ -103,9 +102,9 @@ const CreateUpdateForm: FC<Props> = ({
 
                     <EventDates
                         allDay={isAllDay}
-                        onAllDayChange={handleAllDay}
+                        onAllDayChange={onAllDayChange}
                         allDayDate={allDayDate}
-                        onAllDayDateChange={setAllDayDate}
+                        onAllDayDateChange={onAllDayDateChange}
                     />
 
                     <RHFLocation />
