@@ -1,6 +1,6 @@
 import FileInput from "@/components/FileInput";
 import { ChangeEvent, FC, useCallback } from "react";
-import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
+import Avatar, { AvatarProps } from "@/components/Avatar";
 import {
     alpha,
     Box,
@@ -65,16 +65,14 @@ const DeleteButtonSx: SxProps<Theme> = {
     zIndex: 10,
 };
 
-interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
-    initials: string;
+interface OverlayAvatarProps extends Omit<AvatarProps, "onClick"> {
     loading?: boolean;
     onClick: VoidFunction;
     onDelete: VoidFunction;
 }
 
-const Avatar: FC<AvatarProps> = ({
+const OverlayAvatar: FC<OverlayAvatarProps> = ({
     src,
-    initials,
     loading,
     sx,
     onClick,
@@ -90,14 +88,12 @@ const Avatar: FC<AvatarProps> = ({
             </IconButton>
         ) : null}
 
-        <MuiAvatar
+        <Avatar
             sx={{ ...AvatarSx, ...sx }}
             src={src}
             onClick={onClick}
             {...props}
-        >
-            {initials}
-        </MuiAvatar>
+        />
     </Box>
 );
 
@@ -106,13 +102,12 @@ const Avatar: FC<AvatarProps> = ({
 const ACCEPTED_FILE_TYPES = ".jpg,.jpeg,.png,.webp,.gif,.jfif";
 const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
 
-interface AvatarPickerProps {
-    avatar?: string;
-    initials: string;
+interface AvatarPickerProps
+    extends Omit<OverlayAvatarProps, "onClick" | "onDelete"> {
     userId: number;
 }
 
-const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, userId, initials }) => {
+const AvatarPicker: FC<AvatarPickerProps> = ({ userId, ...props }) => {
     const { t } = useTranslation();
 
     const [uploadAvatar, { isLoading: isUploading }] =
@@ -142,13 +137,12 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, userId, initials }) => {
         <FileInput
             disabled={isLoading}
             accept={ACCEPTED_FILE_TYPES}
-            Opener={(props) => (
-                <Avatar
+            Opener={(openerProps) => (
+                <OverlayAvatar
                     loading={isLoading}
-                    src={avatar}
-                    initials={initials}
-                    {...props}
                     onDelete={handleDelete}
+                    {...openerProps}
+                    {...props}
                 />
             )}
             onChange={handleChange}

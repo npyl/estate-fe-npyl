@@ -4,11 +4,33 @@ import {
     ToggleButtonGroup,
     ToggleButtonGroupProps,
 } from "@mui/material";
-import { forwardRef, useCallback, useMemo } from "react";
+import { FC, forwardRef, useCallback, useMemo, MouseEvent } from "react";
 import { TranslationType } from "@/types/translation";
 import { useTranslation } from "react-i18next";
 import { getTaskBgcolor, getTaskColor } from "./styled";
-import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButton, { ToggleButtonProps } from "@mui/material/ToggleButton";
+import ClearIcon from "@mui/icons-material/Clear";
+
+// -----------------------------------------------------------------------
+
+const ClearButton: FC<Omit<ToggleButtonProps, "value">> = ({
+    onClick,
+    ...props
+}) => {
+    // INFO: prevent onChange because we do not want this -1 value written to our state
+    const handleClear = useCallback(
+        (e: MouseEvent<HTMLElement>, v: any) => {
+            e.preventDefault();
+            onClick?.(e, v);
+        },
+        [onClick]
+    );
+    return (
+        <ToggleButton value={-1} onClick={handleClear} {...props}>
+            <ClearIcon />
+        </ToggleButton>
+    );
+};
 
 // -----------------------------------------------------------------------
 
@@ -47,8 +69,12 @@ const getOption = ({ key, label }: Option) => (
 
 // -------------------------------------------------------------
 
-const PriorityGroup = forwardRef<HTMLDivElement, ToggleButtonGroupProps>(
-    ({ onChange, ...props }, ref) => {
+interface PriorityGroupProps extends ToggleButtonGroupProps {
+    onClear?: VoidFunction;
+}
+
+const PriorityGroup = forwardRef<HTMLDivElement, PriorityGroupProps>(
+    ({ onClear, onChange, ...props }, ref) => {
         const { t } = useTranslation();
 
         const OPTIONS = useMemo(() => getOPTIONS(t), [t]);
@@ -70,6 +96,11 @@ const PriorityGroup = forwardRef<HTMLDivElement, ToggleButtonGroupProps>(
                 {...props}
             >
                 {OPTIONS.map(getOption)}
+
+                {/* Clear */}
+                {onClear && props.value !== undefined ? (
+                    <ClearButton onClick={onClear} />
+                ) : null}
             </ToggleButtonGroup>
         );
     }

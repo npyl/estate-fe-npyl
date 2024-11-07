@@ -1,5 +1,4 @@
 import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
@@ -66,9 +65,10 @@ const ViewUser = ({ user }: ViewUserProps) => {
             <Divider />
             <Stack p={3} justifyContent="center" alignItems="center">
                 <AvatarPicker
-                    avatar={user?.avatar}
+                    src={user?.avatar}
                     userId={user?.id || -1}
-                    initials={`${user?.firstName[0]}${user?.lastName[0]}`}
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
                 />
                 <RenderUsername username={user?.username} />
                 <RenderIsAdmin isAdmin={user?.isAdmin} />

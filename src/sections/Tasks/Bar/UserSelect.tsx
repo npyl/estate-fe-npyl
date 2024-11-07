@@ -1,7 +1,7 @@
 import { useAllUsersQuery } from "@/services/user";
 import { IUser } from "@/types/user";
 import AvatarGroup from "@mui/material/AvatarGroup";
-import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
+import Avatar, { AvatarProps } from "@/components/Avatar";
 import { FC, useCallback } from "react";
 import { SxProps, Theme, Tooltip } from "@mui/material";
 import { useFiltersContext } from "@/sections/Tasks/filters";
@@ -22,27 +22,31 @@ const getAvatarSx = (selected: boolean): SxProps<Theme> => ({
     ...(selected ? SelectedSx : {}),
 });
 
-interface AvatarProps extends Omit<MuiAvatarProps, "onClick"> {
+interface TooltipAvatarProps extends Omit<AvatarProps, "onClick"> {
     u: IUser;
     selected: boolean;
     onClick: (id: number) => void;
 }
 
-const Avatar: FC<AvatarProps> = ({ u, selected, onClick, sx, ...props }) => {
+const TooltipAvatar: FC<TooltipAvatarProps> = ({
+    u,
+    selected,
+    onClick,
+    sx,
+    ...props
+}) => {
     const handleClick = useCallback(() => onClick(u.id), [u.id, onClick]);
 
-    const initials = u?.firstName[0] || "" + u?.lastName[0] || "";
-
     return (
-        <Tooltip title={`${u?.firstName} ${u?.lastName}`}>
-            <MuiAvatar
+        <Tooltip title={`${u?.firstName || "-"} ${u?.lastName || "-"}`}>
+            <Avatar
                 src={u.avatar}
+                firstName={u?.firstName}
+                lastName={u?.lastName}
                 onClick={handleClick}
                 sx={getAvatarSx(selected)}
                 {...props}
-            >
-                {initials}
-            </MuiAvatar>
+            />
         </Tooltip>
     );
 };
@@ -53,7 +57,7 @@ const getAvatar =
     (clickedId: number | undefined, onClick: (id: number) => void) =>
     (u: IUser) =>
         (
-            <Avatar
+            <TooltipAvatar
                 key={u.id}
                 u={u}
                 selected={u.id === clickedId}

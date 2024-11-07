@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { IUser } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/components/Avatar";
 const Menu = dynamic(() => import("./Menu"));
 
 interface Props {
@@ -51,18 +51,19 @@ interface HeaderProps {
     completed: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ taskId, assignee, completed }) => {
-    const name = `${assignee?.firstName[0]}${assignee?.lastName[0]}`;
-
-    return (
-        <SpaceBetween alignItems="center">
-            <Avatar sx={AvatarSx}>{name}</Avatar>{" "}
-            <Stack spacing={1} direction="row" alignItems="center">
-                {completed ? <CheckIcon color="success" /> : null}
-                <MenuButton taskId={taskId} />
-            </Stack>
-        </SpaceBetween>
-    );
-};
+const Header: FC<HeaderProps> = ({ taskId, assignee, completed }) => (
+    <SpaceBetween alignItems="center">
+        <Avatar
+            firstName={assignee?.firstName}
+            lastName={assignee?.lastName}
+            src={assignee?.avatar}
+            sx={AvatarSx}
+        />
+        <Stack spacing={1} direction="row" alignItems="center">
+            {completed ? <CheckIcon color="success" /> : null}
+            <MenuButton taskId={taskId} />
+        </Stack>
+    </SpaceBetween>
+);
 
 export default Header;
