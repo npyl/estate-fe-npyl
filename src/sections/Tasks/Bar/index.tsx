@@ -20,7 +20,7 @@ const Bar = () => (
     <SpaceBetween alignItems="center" sx={BarSx}>
         <Stack
             direction="row"
-            spacing={1}
+            spacing={3}
             alignItems="center"
             overflow="auto hidden"
         >
