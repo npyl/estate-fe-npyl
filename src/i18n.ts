@@ -1048,10 +1048,12 @@ const resources = {
                 "Please upload a file of size <3MB",
 
             "Connect with Calendar": "Connect with Calendar",
+            _Task_: "Task",
         },
     },
     el: {
         translation: {
+            _Task_: "Εργασία",
             "Connect with Calendar": "Σύνδεση με Ημερολόγιο",
 
             "Please upload a file of size <3MB":

@@ -7,20 +7,22 @@
  */
 
 import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
-import { FC } from "react";
+import { forwardRef } from "react";
 
 export interface AvatarProps extends MuiAvatarProps {
     firstName?: string;
     lastName?: string;
 }
 
-const Avatar: FC<AvatarProps> = ({ firstName, lastName, src, ...props }) => {
-    const initials = (firstName?.[0] || "") + (lastName?.[0] || "");
-    return (
-        <MuiAvatar src={src} {...props}>
-            {initials}
-        </MuiAvatar>
-    );
-};
+const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
+    ({ firstName, lastName, src, ...props }, ref) => {
+        const initials = (firstName?.[0] || "") + (lastName?.[0] || "");
+        return (
+            <MuiAvatar ref={ref} src={src} {...props}>
+                {initials}
+            </MuiAvatar>
+        );
+    }
+);
 
 export default Avatar;

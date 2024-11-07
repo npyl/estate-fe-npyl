@@ -34,16 +34,15 @@ const TooltipAvatar = forwardRef<HTMLDivElement, TooltipAvatarProps>(
 
         return (
             <Tooltip title={`${u?.firstName || "-"} ${u?.lastName || "-"}`}>
-                <div ref={ref}>
-                    <Avatar
-                        src={u.avatar}
-                        firstName={u?.firstName}
-                        lastName={u?.lastName}
-                        onClick={handleClick}
-                        sx={getAvatarSx(selected)}
-                        {...props}
-                    />
-                </div>
+                <Avatar
+                    ref={ref}
+                    src={u.avatar}
+                    firstName={u?.firstName}
+                    lastName={u?.lastName}
+                    onClick={handleClick}
+                    sx={getAvatarSx(selected)}
+                    {...props}
+                />
             </Tooltip>
         );
     }

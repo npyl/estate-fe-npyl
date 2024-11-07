@@ -27,7 +27,7 @@ const TaskLabel: FC<TaskLabelProps> = ({ name, taskId }) => {
             >
                 <BookmarkBorderIcon color="action" />
                 <Typography variant="body2" pr={0.5}>
-                    {taskId ? `${t("Task")}-${taskId}` : t("New Task")}
+                    {taskId ? `${t("_Task_")}-${taskId}` : t("New Task")}
                 </Typography>
             </Stack>
 

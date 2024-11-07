@@ -20,7 +20,7 @@ const AddButtons = () => {
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     return (
-        <Stack direction="row" spacing={1} pl={1}>
+        <Stack direction="row" alignItems="center" spacing={1} mt={1}>
             <IsAuthenticatedIndicator>
                 <Button
                     variant="contained"
