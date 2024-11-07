@@ -23,6 +23,7 @@ export default function Header({ name, count, columnId }: Props) {
                     overflow="hidden"
                     textOverflow="ellipsis"
                     maxWidth="80%"
+                    noWrap
                 >
                     {name}
                 </Typography>
