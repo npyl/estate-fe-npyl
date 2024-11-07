@@ -19,7 +19,11 @@ const getAvatarSx = (selected: boolean): SxProps<Theme> => ({
     borderColor: "transparent",
     cursor: "pointer",
     "&:hover": SelectedSx,
-    ...(selected ? SelectedSx : {}),
+
+    "&.MuiAvatarGroup-avatar": {
+        borderWidth: "3px",
+        ...(selected ? SelectedSx : {}),
+    },
 });
 
 interface TooltipAvatarProps extends Omit<AvatarProps, "onClick"> {
