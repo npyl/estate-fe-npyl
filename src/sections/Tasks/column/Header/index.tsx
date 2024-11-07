@@ -17,6 +17,7 @@ export default function Header({ name, count, columnId }: Props) {
                 spacing={1}
                 alignItems="center"
                 overflow="hidden"
+                width={1}
             >
                 <Typography
                     variant="h6"
