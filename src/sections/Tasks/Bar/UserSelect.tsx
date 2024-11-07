@@ -2,7 +2,7 @@ import { useAllUsersQuery } from "@/services/user";
 import { IUser } from "@/types/user";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar, { AvatarProps } from "@/components/Avatar";
-import { FC, useCallback } from "react";
+import { forwardRef, useCallback } from "react";
 import { SxProps, Theme, Tooltip } from "@mui/material";
 import { useFiltersContext } from "@/sections/Tasks/filters";
 
@@ -28,28 +28,28 @@ interface TooltipAvatarProps extends Omit<AvatarProps, "onClick"> {
     onClick: (id: number) => void;
 }
 
-const TooltipAvatar: FC<TooltipAvatarProps> = ({
-    u,
-    selected,
-    onClick,
-    sx,
-    ...props
-}) => {
-    const handleClick = useCallback(() => onClick(u.id), [u.id, onClick]);
+const TooltipAvatar = forwardRef<HTMLDivElement, TooltipAvatarProps>(
+    ({ u, selected, onClick, sx, ...props }, ref) => {
+        const handleClick = useCallback(() => onClick(u.id), [u.id, onClick]);
 
-    return (
-        <Tooltip title={`${u?.firstName || "-"} ${u?.lastName || "-"}`}>
-            <Avatar
-                src={u.avatar}
-                firstName={u?.firstName}
-                lastName={u?.lastName}
-                onClick={handleClick}
-                sx={getAvatarSx(selected)}
-                {...props}
-            />
-        </Tooltip>
-    );
-};
+        return (
+            <Tooltip title={`${u?.firstName || "-"} ${u?.lastName || "-"}`}>
+                <div ref={ref}>
+                    <Avatar
+                        src={u.avatar}
+                        firstName={u?.firstName}
+                        lastName={u?.lastName}
+                        onClick={handleClick}
+                        sx={getAvatarSx(selected)}
+                        {...props}
+                    />
+                </div>
+            </Tooltip>
+        );
+    }
+);
+
+TooltipAvatar.displayName = "TooltipAvatar"; // Add display name for React DevTools
 
 // -------------------------------------------------------------------
 
@@ -69,7 +69,6 @@ const getAvatar =
 
 const UserSelect = () => {
     const { data } = useAllUsersQuery();
-
     const { assigneeId, setAssigneeId } = useFiltersContext();
 
     return (
