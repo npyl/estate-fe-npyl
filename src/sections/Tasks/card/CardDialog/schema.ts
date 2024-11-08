@@ -16,8 +16,8 @@ const schema = yup.object<IKanbanCardPOST>().shape({
     attachments: yup.array(yup.string().required()).required(),
     completed: yup.boolean().required(),
 
-    propertyId: yup.number().min(0).required(),
-    customerId: yup.number().min(0).required(),
+    propertyId: yup.number().min(0).optional(),
+    customerId: yup.number().min(0).optional(),
     assigneeId: yup.number().min(0).required(),
 
     columnId: yup.number().min(0).required(),
@@ -31,8 +31,6 @@ const schema = yup.object<IKanbanCardPOST>().shape({
             })
         )
         .required(),
-
-    reporterId: yup.number().min(0).required(),
 
     eventId: yup.string().optional(),
     withCalendar: yup.boolean().required(),

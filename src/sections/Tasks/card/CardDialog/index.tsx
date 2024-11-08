@@ -11,7 +11,6 @@ import TaskLabel from "./TaskLabel";
 import Content from "./Content";
 import Actions from "./Actions";
 import { FormProvider, useForm } from "react-hook-form";
-import { useAuth } from "@/hooks/use-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
 import { useCreateOrUpdateTaskMutation } from "@/services/tasks";
@@ -24,13 +23,10 @@ interface DetailsProps {
 }
 
 const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
-    const { user } = useAuth();
-
     const methods = useForm<ICreateOrUpdateTaskReq>({
         values: {
             ...IKanbanCardRes2Req(task),
             columnId: columnId || -1,
-            reporterId: user?.id!,
         },
         resolver: yupResolver(schema),
     });

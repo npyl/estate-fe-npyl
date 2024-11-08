@@ -48,30 +48,26 @@ export type IKanbanCard = {
 };
 
 // INFO: sent to Backend directly
-export type IKanbanCardPOST = Omit<
-    IKanbanCard,
-    | "id"
-    | "assignee"
-    | "reporterId"
-    | "description"
-    | "due"
-    | "comments"
-    | "eventId"
-    | "createdAt"
-    | "updatedAt"
-> & {
+export type IKanbanCardPOST = {
     id?: number;
+    priority: number;
+    name: string;
     description?: string;
-    columnId: number;
-    assigneeId: number;
-    eventId?: string;
     due?: [string, string];
+    attachments: string[];
     comments: IKanbanCommentPOST[];
+    completed: boolean;
+
+    columnId: number;
+
+    propertyId?: number;
+    customerId?: number;
+    eventId?: string;
+    assigneeId: number;
 };
 
 // INFO: used in form
 export interface ICreateOrUpdateTaskReq extends IKanbanCardPOST {
-    reporterId: number;
     withCalendar: boolean;
 }
 
