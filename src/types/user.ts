@@ -36,6 +36,7 @@ interface IUserMini {
     id: number;
     firstName: string;
     lastName: string;
+    avatar: string;
 }
 
 interface IUserPOST {

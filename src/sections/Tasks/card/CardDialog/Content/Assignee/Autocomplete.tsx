@@ -1,8 +1,9 @@
-import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
+import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
 import { forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { IUserMini } from "@/types/user";
 import { useAllUsersQuery } from "@/services/user";
+import Avatar from "@/components/Avatar";
 
 // ------------------------------------------------------------------
 
@@ -21,7 +22,14 @@ const RenderOption = (
     option: IUserMini
 ) => (
     <MenuItem sx={OptionSx} {...props} key={option.id}>
-        {option.firstName} {option.lastName}
+        <Avatar
+            src={option?.avatar}
+            firstName={option?.firstName}
+            lastName={option?.lastName}
+        />
+        <Typography>
+            {option?.firstName || ""} {option?.lastName || ""}
+        </Typography>
     </MenuItem>
 );
 
