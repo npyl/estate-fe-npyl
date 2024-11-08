@@ -56,7 +56,14 @@ const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
                 DialogActionsComponent={StyledDialogActions}
                 // ...
                 title={<TaskLabel name={task?.name} taskId={task?.id} />}
-                content={<Content columnId={columnId} />}
+                content={
+                    <Content
+                        columnId={columnId}
+                        // ...
+                        createdAt={task?.createdAt}
+                        updatedAt={task?.updatedAt}
+                    />
+                }
                 actions={<Actions onClose={onClose} />}
             />
         </FormProvider>

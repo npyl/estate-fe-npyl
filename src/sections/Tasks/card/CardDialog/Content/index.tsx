@@ -12,14 +12,18 @@ import Attachments from "./Attachments";
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
+import Comments from "./Comments";
+import MiscInfo from "./MiscInfo";
 
 // -----------------------------------------------------------------
 
 interface ContentProps {
     columnId?: number;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
-const Content: FC<ContentProps> = ({ columnId }) => {
+const Content: FC<ContentProps> = ({ columnId, createdAt, updatedAt }) => {
     const { t } = useTranslation();
 
     return (
@@ -46,7 +50,15 @@ const Content: FC<ContentProps> = ({ columnId }) => {
             <Stack alignItems="center">
                 <PriorityButtonGroup />
             </Stack>
+            <Comments />
             <Reporter />
+
+            {createdAt || updatedAt ? (
+                <>
+                    <Divider />
+                    <MiscInfo createdAt={createdAt} updatedAt={updatedAt} />
+                </>
+            ) : null}
         </Stack>
     );
 };

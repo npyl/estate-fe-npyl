@@ -1049,10 +1049,14 @@ const resources = {
 
             "Connect with Calendar": "Connect with Calendar",
             _Task_: "Task",
+            Created: "Created",
+            Updated: "Updated",
         },
     },
     el: {
         translation: {
+            Created: "Δημιουργήθηκε",
+            Updated: "Ενημερώθηκε",
             _Task_: "Εργασία",
             "Connect with Calendar": "Σύνδεση με Ημερολόγιο",
 

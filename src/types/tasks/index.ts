@@ -28,7 +28,6 @@ export type IKanbanCard = {
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
-    createdAt: string;
 
     assignee: IUser;
     propertyId: number;
@@ -36,6 +35,9 @@ export type IKanbanCard = {
     reporterId: number;
 
     eventId: string; // INFO: Calendar Event Id -> Google Calendar Event Id
+
+    createdAt: string;
+    updatedAt: string;
 };
 
 // INFO: sent to Backend directly
@@ -43,12 +45,13 @@ export type IKanbanCardPOST = Omit<
     IKanbanCard,
     | "id"
     | "assignee"
-    | "createdAt"
     | "reporterId"
     | "description"
     | "due"
     | "comments"
     | "eventId"
+    | "createdAt"
+    | "updatedAt"
 > & {
     id?: number;
     description?: string;
