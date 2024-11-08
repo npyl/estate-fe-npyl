@@ -1,15 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+    BoardFiltersReq,
     IKanbanBoard,
     IKanbanCard,
     IKanbanColumnPOST,
     IKanbanCommentPOST,
 } from "@/types/tasks";
 
-interface BoardFiltersReq {
-    search?: string;
-    assigneeId?: number;
-}
 interface ReorderColumnProps {
     columnId: number;
     position: number;

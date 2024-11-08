@@ -1,3 +1,4 @@
+import { BoardFiltersReq } from "@/types/tasks";
 import {
     createContext,
     Dispatch,
@@ -6,11 +7,8 @@ import {
     useState,
 } from "react";
 
-type FiltersState = {
-    search: string;
-    assigneeId?: number;
-    priority?: number;
-
+type FiltersState = Omit<BoardFiltersReq, "search"> & {
+    search: string; // INFO: required to avoid undefined as initial value
     setSearch: Dispatch<SetStateAction<string>>;
     setAssigneeId: Dispatch<SetStateAction<number | undefined>>;
     setPriority: Dispatch<SetStateAction<number | undefined>>;

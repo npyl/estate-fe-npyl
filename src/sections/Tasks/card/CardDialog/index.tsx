@@ -1,9 +1,5 @@
 import Dialog from "@/components/Dialog";
-import {
-    ICreateOrUpdateTaskReq,
-    IKanbanCard,
-    IKanbanCardRes2Req,
-} from "@/types/tasks";
+import { ICreateOrUpdateTaskReq, IKanbanCard } from "@/types/tasks";
 import { FC } from "react";
 import {
     DialogSx,
@@ -19,6 +15,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
 import { useCreateOrUpdateTaskMutation } from "@/services/tasks";
+import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 
 interface DetailsProps {
     task?: IKanbanCard;
