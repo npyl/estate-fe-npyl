@@ -48,7 +48,6 @@ const IKanbanCardRes2Req = (
         customerId: customerId || -1,
         assigneeId: assignee?.id || -1,
         columnId: -1,
-        reporterId: -1,
         eventId: eventId || "",
         withCalendar: Boolean(eventId),
     };
