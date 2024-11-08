@@ -62,7 +62,7 @@ const CheckboxSx = {
     width: "fit-content",
 };
 
-interface EventDatesProps extends StackProps {
+export interface EventDatesProps extends StackProps {
     allDay: boolean;
     onAllDayChange: (_: any, b: boolean) => void;
 

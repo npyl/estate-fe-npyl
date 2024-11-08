@@ -1,3 +1,4 @@
+import { getAllDayStartEnd } from "@/components/Calendar/util";
 import {
     ICreateOrUpdateTaskReq,
     IKanbanCard,
@@ -6,6 +7,7 @@ import {
     IKanbanCommentPOST,
 } from ".";
 import { CalendarEventReq } from "@/types/calendar";
+import dayjs from "dayjs";
 
 const IKanbanCommentResToReq = ({
     id,
@@ -25,7 +27,7 @@ const IKanbanCardRes2Req = (
         priority,
         name,
         description,
-        due,
+        due, // INFO: we are ok with undefined when `withCalendar` is false
         attachments,
         comments,
         completed,
@@ -40,7 +42,7 @@ const IKanbanCardRes2Req = (
         priority: priority || 0,
         name: name || "",
         description: description || "",
-        due: due,
+        due,
         attachments: attachments || [],
         comments: comments?.map(IKanbanCommentResToReq) || [],
         completed: completed || false,

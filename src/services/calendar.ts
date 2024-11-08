@@ -174,6 +174,7 @@ const useCalendarAuth = () => {
     const authenticate = async () => {
         const res = await authenticateCb(user!.id).unwrap();
         if (!res) toast.error(t("GOOGLE_OATH_FAIL"));
+        return res;
     };
 
     return {

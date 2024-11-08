@@ -22,11 +22,11 @@ interface DetailsProps {
     onClose: VoidFunction;
 }
 
-const Details: FC<DetailsProps> = ({ task, columnId, onClose }) => {
+const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     const methods = useForm<ICreateOrUpdateTaskReq>({
         values: {
             ...IKanbanCardRes2Req(task),
-            columnId: columnId || -1,
+            columnId,
         },
         resolver: yupResolver(schema),
     });

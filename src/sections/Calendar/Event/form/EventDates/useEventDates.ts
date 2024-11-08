@@ -5,6 +5,7 @@ import {
     isAllDay as getIsAllDay,
 } from "@/components/Calendar/util";
 import { useFormContext } from "react-hook-form";
+import { TODAY } from "@/components/BaseCalendar/constants";
 
 /**
  * Hook that encapsulates control logic of EventDates component
@@ -25,16 +26,22 @@ const useEventDates = (
         ? getIsAllDay(initial.startDate, initial.endDate)
         : false;
     const [isAllDay, setAllDay] = useState(_isAllDay);
-    const onAllDayChange = useCallback(
-        (_: any, b: boolean) => setAllDay(b),
-        []
-    );
+    const onAllDayChange = useCallback((_: any, b: boolean) => {
+        // INFO: when user checks all day make sure to initialise hook-form with values
+        if (b) {
+            const [start, end] = getAllDayStartEnd(TODAY.toISOString());
+            setValue(startDateKey, start, { shouldDirty: true });
+            setValue(endDateKey, end, { shouldDirty: true });
+        }
+
+        setAllDay(b);
+    }, []);
 
     // INFO: date for when checked
     const [_allDayDate] = useState(initial?.startDate || dayjs().toISOString());
     const allDayDate = watch(startDateKey) || _allDayDate;
     const onAllDayDateChange = useCallback((s: string) => {
-        // INFO: normalise dates if isAllDay
+        // INFO: normalise dates
         const [start, end] = getAllDayStartEnd(s);
 
         setValue(startDateKey, start, { shouldDirty: true });

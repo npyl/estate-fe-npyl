@@ -31,7 +31,7 @@ const Pickers = () => {
             endDateKey={endDateKey}
             // ...
             mt={2}
-            bgcolor={({ palette: { mode, neutral } }) =>
+            bgcolor={({ palette: { mode } }) =>
                 mode === "light" ? "neutral.200" : "neutral.800"
             }
             py={2}

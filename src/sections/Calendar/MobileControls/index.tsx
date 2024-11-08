@@ -1,4 +1,4 @@
-import IsAuthenticatedIndicator from "@/components/CalendarGoogle/ButtonGroup/IsAuthenticatedIndicator";
+import IsAuthenticatedIndicator from "@/sections/Calendar/IsAuthenticatedIndicator";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import MonthSelect from "./MonthSelect";
