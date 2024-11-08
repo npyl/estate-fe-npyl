@@ -1,8 +1,8 @@
 import { calendar_v3 } from "@googleapis/calendar";
 import { calendar } from "@googleapis/calendar";
-import { AuthService } from "./AuthService";
+import AuthService from "./AuthService";
 
-export class CalendarService extends AuthService {
+class CalendarService extends AuthService {
     private calendar: calendar_v3.Calendar;
 
     constructor() {
@@ -44,11 +44,16 @@ export class CalendarService extends AuthService {
         const auth = await this.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
-        return await this.calendar.events.insert({
+        const res = await this.calendar.events.insert({
             auth,
             calendarId: "primary",
             requestBody: body,
         });
+
+        if (res.status !== 200) throw new Error("Failed to create event");
+
+        // return id
+        return res.data.id;
     }
 
     async updateEvent(userId: number, body: calendar_v3.Schema$Event) {

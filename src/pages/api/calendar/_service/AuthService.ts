@@ -51,7 +51,7 @@ function isTokenExpired(expiryDate: number): boolean {
     return Date.now() >= expiryDate - bufferTime;
 }
 
-export class AuthService {
+class AuthService {
     protected userTokens: Map<number, UserToken> = new Map();
     protected oauth2Client: OAuth2Client;
     private tokenStorage: TokenStorage;
@@ -206,3 +206,5 @@ export class AuthService {
         }
     }
 }
+
+export default AuthService;
