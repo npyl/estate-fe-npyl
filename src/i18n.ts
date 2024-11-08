@@ -1051,10 +1051,12 @@ const resources = {
             _Task_: "Task",
             Created: "Created",
             Updated: "Updated",
+            Activity: "Activity",
         },
     },
     el: {
         translation: {
+            Activity: "Δραστηριότητα",
             Created: "Δημιουργήθηκε",
             Updated: "Ενημερώθηκε",
             _Task_: "Εργασία",
