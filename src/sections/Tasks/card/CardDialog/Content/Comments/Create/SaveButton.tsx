@@ -14,9 +14,10 @@ const SaveButtonSx: SxProps<Theme> = {
 
 interface SaveButtonProps {
     message?: string;
+    onCreate: VoidFunction;
 }
 
-const SaveButton: FC<SaveButtonProps> = ({ message }) => {
+const SaveButton: FC<SaveButtonProps> = ({ message, onCreate }) => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
 
@@ -31,6 +32,8 @@ const SaveButton: FC<SaveButtonProps> = ({ message }) => {
         const comment: IKanbanCommentPOST = { message, creatorId };
 
         setValue(commentsKey, [...old, comment], { shouldDirty: true });
+
+        onCreate();
     }, [message, user?.id]);
 
     return (

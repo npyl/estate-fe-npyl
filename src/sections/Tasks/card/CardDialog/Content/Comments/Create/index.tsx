@@ -26,6 +26,7 @@ const Create = () => {
         (e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value),
         []
     );
+    const handleClear = useCallback(() => setMessage(""), []);
 
     return (
         <TextField
@@ -35,7 +36,9 @@ const Create = () => {
             sx={TextFieldSx}
             InputProps={{
                 startAdornment: <ReporterAvatar />,
-                endAdornment: <SaveButton message={message} />,
+                endAdornment: (
+                    <SaveButton message={message} onCreate={handleClear} />
+                ),
             }}
         />
     );
