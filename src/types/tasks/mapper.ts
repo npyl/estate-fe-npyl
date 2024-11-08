@@ -1,5 +1,21 @@
-import { ICreateOrUpdateTaskReq, IKanbanCard, IKanbanCardPOST } from ".";
+import {
+    ICreateOrUpdateTaskReq,
+    IKanbanCard,
+    IKanbanCardPOST,
+    IKanbanComment,
+    IKanbanCommentPOST,
+} from ".";
 import { CalendarEventReq } from "@/types/calendar";
+
+const IKanbanCommentResToReq = ({
+    id,
+    creator,
+    message,
+}: IKanbanComment): IKanbanCommentPOST => ({
+    id,
+    creatorId: creator?.id,
+    message,
+});
 
 const IKanbanCardRes2Req = (
     task: IKanbanCard | undefined
@@ -26,7 +42,7 @@ const IKanbanCardRes2Req = (
         description: description || "",
         due: due,
         attachments: attachments || [],
-        comments: comments || [],
+        comments: comments?.map(IKanbanCommentResToReq) || [],
         completed: completed || false,
         propertyId: propertyId || -1,
         customerId: customerId || -1,

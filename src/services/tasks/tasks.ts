@@ -4,6 +4,7 @@ import {
     IKanbanBoard,
     IKanbanCard,
     IKanbanColumnPOST,
+    IKanbanComment,
     IKanbanCommentPOST,
 } from "@/types/tasks";
 
@@ -142,6 +143,12 @@ export const tasks = createApi({
             invalidatesTags: ["Board", "Card"],
         }),
 
+        getCommentById: builder.query<IKanbanComment, number>({
+            query: (commentId) => ({
+                url: `/comment/${commentId}`,
+            }),
+        }),
+
         moveCard: builder.mutation<void, MoveCardProps>({
             query: ({ cardId, dstColumnId }: MoveCardProps) => ({
                 url: `/card/${cardId}/move/${dstColumnId}`,
@@ -245,5 +252,6 @@ export const {
     useDeleteCardMutation,
 
     //Comments
+    useGetCommentByIdQuery,
     useCreateCommentMutation,
 } = tasks;

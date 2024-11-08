@@ -8,15 +8,22 @@ export interface BoardFiltersReq {
 
 export type IKanbanComment = {
     id: number;
-    avatar?: string;
-    name?: string;
-    createdAt?: string;
-    messageType: "image" | "text";
     message: string;
+    creator: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        avatar: string;
+    };
+    createdAt: string;
 };
 
-export type IKanbanCommentPOST = Omit<IKanbanComment, "id"> & {
+export type IKanbanCommentPOST = Omit<
+    IKanbanComment,
+    "id" | "creator" | "createdAt"
+> & {
     id?: number;
+    creatorId: number;
 };
 
 export type IKanbanCard = {

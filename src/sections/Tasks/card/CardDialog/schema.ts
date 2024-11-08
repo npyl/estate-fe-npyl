@@ -26,10 +26,7 @@ const schema = yup.object<IKanbanCardPOST>().shape({
         .array(
             yup.object().shape({
                 id: yup.number().optional(),
-                avatar: yup.string().optional(),
-                name: yup.string().optional(),
-                createdAt: yup.string().optional(),
-                messageType: yup.string().oneOf(["image", "text"]).required(),
+                creatorId: yup.number().min(0).required(),
                 message: yup.string().required(),
             })
         )

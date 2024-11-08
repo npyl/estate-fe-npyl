@@ -8,7 +8,7 @@ const Comments = () => {
     const { t } = useTranslation();
 
     return (
-        <Stack spacing={1}>
+        <Stack spacing={1} width={1}>
             <Typography fontWeight="bold">{t("Activity")}</Typography>
             <List />
             <Create />

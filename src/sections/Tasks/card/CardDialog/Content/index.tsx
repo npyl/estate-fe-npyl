@@ -12,8 +12,9 @@ import Attachments from "./Attachments";
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
-import Comments from "./Comments";
+const Comments = dynamic(() => import("./Comments"));
 import MiscInfo from "./MiscInfo";
+import dynamic from "next/dynamic";
 
 // -----------------------------------------------------------------
 

@@ -21,21 +21,21 @@ const TextFieldSx: SxProps<Theme> = {
 const Create = () => {
     const { t } = useTranslation();
 
-    const [text, setText] = useState("");
+    const [message, setMessage] = useState("");
     const handleChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setText(e.target.value),
+        (e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value),
         []
     );
 
     return (
         <TextField
-            value={text}
+            value={message}
             onChange={handleChange}
             placeholder={t<string>("Comment") + "..."}
             sx={TextFieldSx}
             InputProps={{
                 startAdornment: <ReporterAvatar />,
-                endAdornment: <SaveButton value={text} />,
+                endAdornment: <SaveButton message={message} />,
             }}
         />
     );
