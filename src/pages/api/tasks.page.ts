@@ -39,11 +39,11 @@ export default async function handler(
 
         const {
             withCalendar,
-            reporterId,
             eventId: _eventId,
             ...task
         } = JSON.parse(req.body) as ICreateOrUpdateTaskReq;
 
+        const assigneeId = task.assigneeId;
         const isEdit = Boolean(_eventId);
         let taskBody = { ...task } as IKanbanCardPOST;
 
@@ -57,10 +57,10 @@ export default async function handler(
             // console.log("[WITH_CALENDAR]: isEdit: ", isEdit, " body: ", event);
 
             if (isEdit) {
-                await calendarService.updateEvent(reporterId, gEvent);
+                await calendarService.updateEvent(assigneeId, gEvent);
             } else {
                 const eventId = await calendarService.createEvent(
-                    reporterId,
+                    assigneeId,
                     gEvent
                 );
                 if (!eventId) throw new Error("Some bad event id");
