@@ -14,18 +14,22 @@ const PropertySelect = () => {
         <Controller
             name="propertyId"
             control={control}
-            render={({ field, fieldState: { error } }) => (
+            render={({
+                field: { onChange, ...field },
+                fieldState: { error },
+            }) => (
                 <CodeSelect
-                    {...field}
                     getOptionLabel={getOptionLabel}
                     renderInput={(props) => (
                         <TextField
                             label={t("Property")}
+                            {...props}
                             error={Boolean(error)}
                             helperText={error?.message}
-                            {...props}
                         />
                     )}
+                    {...field}
+                    onChange={(_, v) => onChange(v)}
                 />
             )}
         />

@@ -23,7 +23,8 @@ const SwitchSx: SxProps<Theme> = {
 const OAuthButtonSx: SxProps<Theme> = {
     position: "absolute",
     right: 0,
-    top: 0,
+    top: "50%",
+    transform: "translateY(-50%)",
 };
 
 const WithCalendar = () => {
