@@ -39,15 +39,18 @@ const IKanbanCardRes2Req = (
 };
 
 const KanbanTaskToCalendarEvent = ({
+    id,
     name,
     description,
     due,
+    eventId,
 }: IKanbanCardPOST): CalendarEventReq => ({
+    id: eventId,
     title: name,
     description: description || "",
     type: "TASK",
-    startDate: due![0],
-    endDate: due![1],
+    startDate: due?.[0] || "",
+    endDate: due?.[1] || "",
     location: "",
     withIds: [],
 });

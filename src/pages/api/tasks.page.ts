@@ -1,9 +1,12 @@
 import { ICreateOrUpdateTaskReq, IKanbanCardPOST } from "@/types/tasks";
 import type { NextApiRequest, NextApiResponse } from "next/types";
+import calendarService from "./calendar/_service/CalendarService";
+import { KanbanTaskToCalendarEvent } from "@/types/tasks/mapper";
+import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
 
 // -----------------------------------------------------------------------
 
-const baseUrl = `${process.env.BACKEND_URL}/kanban/card`;
+const baseUrl = `${process.env.BACKEND_API_URL}/kanban/card`;
 
 const createOrUpdateTask = async (
     Authorization: string,
@@ -39,22 +42,38 @@ export default async function handler(
             reporterId,
             eventId: _eventId,
             ...task
-        } = req.body as ICreateOrUpdateTaskReq;
+        } = JSON.parse(req.body) as ICreateOrUpdateTaskReq;
+
+        const isEdit = Boolean(_eventId);
+        let taskBody = { ...task } as IKanbanCardPOST;
 
         // ------------------------------------------------
-        //              edit calendar event
+        //       0: (with create/edit calendar event)
         // ------------------------------------------------
-        if (withCalendar && _eventId) {
-            createOrUpdateTask(Authorization, task);
+        if (withCalendar) {
+            const event = KanbanTaskToCalendarEvent(task);
+            const gEvent = TCalendarEventToGCalendarEvent(event);
+
+            // console.log("[WITH_CALENDAR]: isEdit: ", isEdit, " body: ", event);
+
+            if (isEdit) {
+                await calendarService.updateEvent(reporterId, gEvent);
+            } else {
+                const eventId = await calendarService.createEvent(
+                    reporterId,
+                    gEvent
+                );
+                if (!eventId) throw new Error("Some bad event id");
+
+                taskBody = { ...taskBody, eventId };
+            }
         }
-        // ------------------------------------------------
-        //              create calendar event
-        // ------------------------------------------------
-        else if (withCalendar) {
-            let eventId: string | undefined = undefined;
-            // TODO: ... set eventId ...
-            createOrUpdateTask(Authorization, { ...task, eventId });
-        }
+
+        // -------------------------------------------------
+        //        1:     Create/Update Task
+        // -------------------------------------------------
+
+        await createOrUpdateTask(Authorization, taskBody);
 
         res.status(200).json({});
     } catch (ex) {
