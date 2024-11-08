@@ -3,7 +3,6 @@ import { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
-import { useImproveDescriptionMutation } from "@/services/properties";
 import { useOpenAIDetails } from "../hooks";
 import { IOpenAIDetailsPOST } from "@/types/openai";
 import { EditorState } from "draft-js";
@@ -12,6 +11,7 @@ import Options from "./Options";
 import HistoryIcon from "@mui/icons-material/History";
 import Button from "@mui/material/Button";
 import { HideText } from "./style";
+import { useOperationsContext } from "../context";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(
@@ -63,8 +63,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
 
     const [revertContent, setRevertContent] = useState<EditorState>();
 
-    const [improveDescription, { isLoading: isImproving }] =
-        useImproveDescriptionMutation();
+    const { improveDescription, isLoading } = useOperationsContext();
 
     const handleImprove = async () => {
         try {
@@ -95,6 +94,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
 
     return (
         <OptionButton
+            disabled={isLoading}
             options={
                 <Options
                     styling={styling}
@@ -112,14 +112,15 @@ const ImproveButton: FC<ImproveButtonProps> = ({
             ) : null}
 
             <LoadingButton
-                loading={isImproving}
+                disabled={isLoading}
+                loading={isLoading}
                 loadingPosition="start"
                 startIcon={<ChatGPTIcon />}
                 variant="outlined"
                 onClick={handleImprove}
                 sx={{ mt: 0, justifySelf: "flex-end", ...HideText }}
             >
-                {isImproving ? t("Improving...") : t("Improve")}
+                {isLoading ? t("Improving...") : t("Improve")}
             </LoadingButton>
         </OptionButton>
     );

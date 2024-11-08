@@ -9,13 +9,17 @@ interface OptionButtonProps extends ButtonGroupProps {
     options: ReactNode;
 }
 
-const OptionButton: FC<OptionButtonProps> = ({ children, options }) => {
+const OptionButton: FC<OptionButtonProps> = ({
+    children,
+    options,
+    ...props
+}) => {
     const [isOpen, openPopper, closePopper] = useDialog();
     const anchorRef = useRef(null);
 
     return (
         <>
-            <ButtonGroup>
+            <ButtonGroup {...props}>
                 {children}
 
                 <Button ref={anchorRef} size="small" onClick={openPopper}>

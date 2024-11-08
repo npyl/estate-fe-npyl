@@ -13,6 +13,7 @@ import useInitialDescriptionState from "./useInitialState";
 import UpperRightButtons from "./UpperRightButtons";
 import { SxProps, Theme } from "@mui/material";
 import { textToEditorState } from "./util";
+import { OperationsProvider, useOperationsContext } from "./context";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -48,6 +49,8 @@ const DescriptionSection: React.FC = () => {
 
     const title = useMemo(() => name("title"), [name]);
     // ---
+
+    const { isLoading } = useOperationsContext();
 
     const debouncedValuesChange = useCallback(
         async (newEditorState: EditorState) => {
@@ -104,6 +107,7 @@ const DescriptionSection: React.FC = () => {
         <TabbedBox<Language>
             tabs={TABS}
             selected={lang}
+            disabled={isLoading}
             endNode={
                 <UpperRightButtons
                     lang={lang}
@@ -114,8 +118,6 @@ const DescriptionSection: React.FC = () => {
                 />
             }
             onSelect={handleTabChange}
-            // TODO:
-            // disabled={isGenerating || isImproving}
         >
             <Typography variant="h6" flex={1}>
                 {`${t("Title")} (${lang})`}
@@ -134,4 +136,10 @@ const DescriptionSection: React.FC = () => {
     );
 };
 
-export default DescriptionSection;
+const WithProvider = () => (
+    <OperationsProvider>
+        <DescriptionSection />
+    </OperationsProvider>
+);
+
+export default WithProvider;
