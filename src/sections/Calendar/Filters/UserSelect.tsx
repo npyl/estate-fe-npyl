@@ -23,11 +23,18 @@ const useIsOfficeAdmin = () => {
         skip: user?.id === undefined,
     });
 
-    return { isAdmin: data?.isAdmin, isChecking: isLoading, userId: user?.id };
+    return {
+        // ... (google workspace)
+        isAdmin: data?.isAdmin,
+        admin: data?.user,
+        isChecking: isLoading,
+        // ... (property pro)
+        userId: user?.id,
+    };
 };
 
 const UserSelect = () => {
-    const { isAdmin, isChecking, userId } = useIsOfficeAdmin();
+    const { isAdmin, admin, isChecking, userId } = useIsOfficeAdmin();
 
     const { data: officeUsers, isLoading } = useGetUsersQuery(userId!, {
         skip: !isAdmin,
@@ -41,11 +48,13 @@ const UserSelect = () => {
     // Not-admin
     if (!isAdmin) return null;
 
+    const defaultValue = admin?.id;
+
     // Admin-only
     return (
         <AvatarSelectGroup
             users={officeUsers}
-            value={user}
+            value={user || defaultValue}
             onChange={setUser as any}
         />
     );

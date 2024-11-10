@@ -2,6 +2,11 @@ import { calendar, calendar_v3 } from "@googleapis/calendar";
 import { admin, admin_directory_v1 } from "@googleapis/admin";
 import AuthService from "./AuthService";
 
+interface CalendarService$IsAdminRes {
+    isAdmin: boolean;
+    user?: admin_directory_v1.Schema$User;
+}
+
 // e.g. npylarinos@digipath.gr -> digipath.gr
 const WORKSPACE_DOMAIN = process.env.GOOGLE_WORKSPACE_DOMAIN;
 
@@ -15,23 +20,26 @@ class CalendarService extends AuthService {
         this.directory = admin({ version: "directory_v1" });
     }
 
-    async isAdmin(userId: number) {
+    async isAdmin(userId: number): Promise<CalendarService$IsAdminRes> {
         try {
             const auth = await this.getAuthForUser(userId);
-            if (!auth) return false;
+            if (!auth) return { isAdmin: false };
 
             const userInfo = await this.getUserInfo(auth);
-            if (!userInfo) return false;
+            if (!userInfo) return { isAdmin: false };
 
             const res = await this.directory.users.get({
                 userKey: userInfo.email,
                 auth,
             });
 
-            return res?.data?.isAdmin ?? false;
+            const isAdmin = res?.data?.isAdmin ?? false;
+            const retUser = isAdmin ? res?.data : undefined;
+
+            return { isAdmin, user: retUser };
         } catch (ex) {
             console.error("Error checking admin status:", ex);
-            return false;
+            return { isAdmin: false };
         }
     }
 

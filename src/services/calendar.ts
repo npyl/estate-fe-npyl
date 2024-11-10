@@ -34,6 +34,7 @@ interface CreateUpdateEventReq extends BasicEventReq {
 
 interface IsAdminRes {
     isAdmin: boolean;
+    user?: GUserMini;
 }
 
 export const calendar = createApi({

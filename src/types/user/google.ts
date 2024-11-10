@@ -1,7 +1,7 @@
 import { admin_directory_v1 } from "@googleapis/admin";
 import { GUserMini } from ".";
 
-const GUserToIUserMini = ({
+const GUserToGUserMini = ({
     id,
     name,
     thumbnailPhotoUrl,
@@ -16,4 +16,4 @@ const GUserToIUserMini = ({
     };
 };
 
-export { GUserToIUserMini };
+export { GUserToGUserMini };
