@@ -4,8 +4,9 @@ import Typography from "@mui/material/Typography";
 import ToggleButton from "@mui/material/ToggleButton";
 import { useFiltersContext } from "./context";
 import Stack from "@mui/material/Stack";
-import { TTypeFilter } from "./types";
 import Search from "./Search";
+import UserSelect from "./UserSelect";
+import { TTypeFilter } from "./types";
 
 const Filters = () => {
     const { t } = useTranslation();
@@ -15,7 +16,7 @@ const Filters = () => {
         <Stack
             direction="row"
             alignItems="center"
-            spacing={1}
+            spacing={3}
             width={1}
             overflow="auto hidden"
         >
@@ -26,6 +27,8 @@ const Filters = () => {
                     <Typography ml={1}>{t("All")}</Typography>
                 </ToggleButton>
             </TypeSelect>
+
+            <UserSelect />
         </Stack>
     );
 };

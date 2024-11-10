@@ -2,8 +2,7 @@ import { TCalendarEvent } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { CalendarEventReq } from "@/types/calendar";
 import { IsAuthenticatedRes } from "@/types/calendar/google";
-import { IUser } from "@/types/user";
-import { admin_directory_v1 } from "@googleapis/admin";
+import { GUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -117,8 +116,7 @@ export const calendar = createApi({
             providesTags: ["IsAdmin"],
         }),
 
-        // TODO: convert!
-        getUsers: builder.query<IUser[], number>({
+        getUsers: builder.query<GUserMini[], number>({
             query: (userId) => ({
                 url: `/${userId}/office/users`,
             }),

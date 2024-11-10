@@ -1,6 +1,6 @@
-import { KeyValue } from "./KeyValue";
-import { PreferredLanguageType } from "./enums";
-import { IProperties } from "./properties";
+import { KeyValue } from "../KeyValue";
+import { PreferredLanguageType } from "../enums";
+import { IProperties } from "../properties";
 
 interface IUser {
     id: number;
@@ -39,6 +39,9 @@ interface IUserMini {
     avatar: string;
 }
 
+// INFO: google returns users with ids as string
+type GUserMini = Omit<IUserMini, "id"> & { id: string };
+
 interface IUserPOST {
     firstName: string;
     lastName: string;
@@ -60,4 +63,4 @@ interface IUserPOST {
     preferredLanguage?: string; // TODO: yup validator doesn't accept custom string type but should be PreferredLanguageType
 }
 
-export type { IUser, IUserMini, IUserPOST };
+export type { IUser, IUserMini, GUserMini, IUserPOST };
