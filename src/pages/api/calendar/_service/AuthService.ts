@@ -12,37 +12,12 @@ const SCOPES = [
     // calendar
     "https://www.googleapis.com/auth/calendar.readonly",
     "https://www.googleapis.com/auth/calendar.events",
-    // profile
+    // profile (w/ email)
     "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
     // office users list
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ];
-
-/**
- * Receive profile of an authenticated user
- */
-async function getUserInfo(auth: OAuth2Client) {
-    try {
-        const token = (await auth.getAccessToken()).token;
-
-        const res = await fetch(
-            "https://www.googleapis.com/oauth2/v3/userinfo",
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                method: "GET",
-            }
-        );
-
-        if (!res.ok) return null;
-
-        return await res.json();
-    } catch (error) {
-        console.log("Error: ", error);
-        return null;
-    }
-}
 
 /**
  * Check if the current access token is expired
@@ -187,12 +162,38 @@ class AuthService {
         return this.oauth2Client;
     }
 
+    /**
+     * Receive profile of an authenticated user
+     */
+    protected async getUserInfo(auth: OAuth2Client) {
+        try {
+            const token = (await auth.getAccessToken()).token;
+
+            const res = await fetch(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    method: "GET",
+                }
+            );
+
+            if (!res.ok) return null;
+
+            return await res.json();
+        } catch (error) {
+            console.log("Error: ", error);
+            return null;
+        }
+    }
+
     async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
         try {
             const auth = await this.getAuthForUser(userId);
             if (!auth) return { isAuthenticated: false };
 
-            const userInfo = await getUserInfo(auth);
+            const userInfo = await this.getUserInfo(auth);
             return { isAuthenticated: true, userInfo };
         } catch (ex) {
             console.error(ex);

@@ -15,9 +15,29 @@ class CalendarService extends AuthService {
         this.directory = admin({ version: "directory_v1" });
     }
 
+    async isAdmin(userId: number) {
+        try {
+            const auth = await this.getAuthForUser(userId);
+            if (!auth) return false;
+
+            const userInfo = await this.getUserInfo(auth);
+            if (!userInfo) return false;
+
+            const res = await this.directory.users.get({
+                userKey: userInfo.email,
+                auth,
+            });
+
+            return res?.data?.isAdmin ?? false;
+        } catch (ex) {
+            console.error("Error checking admin status:", ex);
+            return false;
+        }
+    }
+
     async getUsers(userId: number) {
         const auth = await this.getAuthForUser(userId);
-        if (!auth) return { data: { items: [] } };
+        if (!auth) return [];
 
         const response = await this.directory.users.list({
             domain: WORKSPACE_DOMAIN,

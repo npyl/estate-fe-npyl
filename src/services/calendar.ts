@@ -2,6 +2,8 @@ import { TCalendarEvent } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { CalendarEventReq } from "@/types/calendar";
 import { IsAuthenticatedRes } from "@/types/calendar/google";
+import { IUser } from "@/types/user";
+import { admin_directory_v1 } from "@googleapis/admin";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -31,8 +33,8 @@ interface CreateUpdateEventReq extends BasicEventReq {
     body: CalendarEventReq;
 }
 
-interface IAuthenticateRes {
-    authUrl: string;
+interface IsAdminRes {
+    isAdmin: boolean;
 }
 
 export const calendar = createApi({
@@ -41,7 +43,7 @@ export const calendar = createApi({
         baseUrl: `/api/calendar`,
     }),
 
-    tagTypes: ["IsAuthenticated", "Events"],
+    tagTypes: ["IsAuthenticated", "IsAdmin", "Events", "Users"],
 
     endpoints: (builder) => ({
         isAuthenticated: builder.query<IsAuthenticatedRes, UserId>({
@@ -94,7 +96,7 @@ export const calendar = createApi({
                 }
             },
             invalidatesTags: (result) =>
-                result ? ["IsAuthenticated", "Events"] : [],
+                result ? ["IsAuthenticated", "IsAdmin", "Events", "Users"] : [],
         }),
 
         logout: builder.mutation<void, UserId>({
@@ -104,6 +106,23 @@ export const calendar = createApi({
             }),
 
             invalidatesTags: ["IsAuthenticated", "Events"],
+        }),
+
+        // ------------------------- OFFICE ---------------------------
+
+        isAdmin: builder.query<IsAdminRes, number>({
+            query: (userId) => ({
+                url: `/${userId}/office/isAdmin`,
+            }),
+            providesTags: ["IsAdmin"],
+        }),
+
+        // TODO: convert!
+        getUsers: builder.query<IUser[], number>({
+            query: (userId) => ({
+                url: `/${userId}/office/users`,
+            }),
+            providesTags: ["Users"],
         }),
 
         // ------------------------- EVENTS ---------------------------
@@ -191,6 +210,9 @@ export const {
     useIsAuthenticatedQuery,
     useAuthenticateMutation,
     useLogoutMutation,
+    // ...
+    useIsAdminQuery,
+    useGetUsersQuery,
     // ...
     useGetEventsQuery,
     useSearchEventsQuery,
