@@ -9,9 +9,13 @@ interface UserToken {
 }
 
 const SCOPES = [
+    // calendar
     "https://www.googleapis.com/auth/calendar.readonly",
     "https://www.googleapis.com/auth/calendar.events",
+    // profile
     "https://www.googleapis.com/auth/userinfo.profile",
+    // office users list
+    "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ];
 
 /**

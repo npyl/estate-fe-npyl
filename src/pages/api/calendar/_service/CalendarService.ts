@@ -1,14 +1,33 @@
-import { calendar_v3 } from "@googleapis/calendar";
-import { calendar } from "@googleapis/calendar";
+import { calendar, calendar_v3 } from "@googleapis/calendar";
+import { admin, admin_directory_v1 } from "@googleapis/admin";
 import AuthService from "./AuthService";
+
+// e.g. npylarinos@digipath.gr -> digipath.gr
+const WORKSPACE_DOMAIN = process.env.GOOGLE_WORKSPACE_DOMAIN;
 
 class CalendarService extends AuthService {
     private calendar: calendar_v3.Calendar;
+    private directory: admin_directory_v1.Admin;
 
     constructor() {
         super();
         this.calendar = calendar({ version: "v3" });
+        this.directory = admin({ version: "directory_v1" });
     }
+
+    async getUsers(userId: number) {
+        const auth = await this.getAuthForUser(userId);
+        if (!auth) return { data: { items: [] } };
+
+        const response = await this.directory.users.list({
+            domain: WORKSPACE_DOMAIN,
+            auth,
+        });
+
+        return response?.data?.users;
+    }
+
+    // --------------------------------------------------------------------
 
     async getEvents(userId: number, startDate: string, endDate: string) {
         const auth = await this.getAuthForUser(userId);
