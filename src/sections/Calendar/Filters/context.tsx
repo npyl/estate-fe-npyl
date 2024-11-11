@@ -10,14 +10,14 @@ import { TTypeFilter } from "./types";
 type FiltersState = {
     type: TTypeFilter;
     setType: Dispatch<SetStateAction<TTypeFilter>>;
-    user?: string;
-    setUser: (v: string) => void;
+    userKey?: string;
+    setUserKey: (v: string) => void;
 };
 
 const FiltersContext = createContext<FiltersState>({
     type: "ANY",
     setType() {},
-    setUser() {},
+    setUserKey() {},
 });
 
 export const useFiltersContext = () => {
@@ -34,15 +34,15 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
     const [type, setType] = useState<TTypeFilter>("ANY");
-    const [user, setUser] = useState<string>();
+    const [userKey, setUserKey] = useState<string>();
 
     return (
         <FiltersContext.Provider
             value={{
                 type,
                 setType,
-                user,
-                setUser,
+                userKey,
+                setUserKey,
             }}
             {...props}
         />

@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
 const IsAuthenticatedIndicator = dynamic(
-    () => import("@/sections/Calendar/IsAuthenticatedIndicator")
+    () => import("@/sections/Google/IsAuthenticatedIndicator")
 );
 const Assignee = dynamic(() => import("./Assignee"));
 const Pickers = dynamic(() => import("./Pickers"));

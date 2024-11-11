@@ -17,13 +17,13 @@ const AvatarSelectGroup = dynamic(
  * UserSelect makes sence only if the user is a Google Workspace admin!
  */
 const UserSelect = () => {
-    const { gwIsAdmin, gwUser, isChecking, userId } = useIsOfficeAdmin();
+    const { gwIsAdmin, isChecking, userId } = useIsOfficeAdmin();
 
     const { data: officeUsers, isLoading } = useGetUsersQuery(userId!, {
         skip: !gwIsAdmin,
     });
 
-    const { user, setUser } = useFiltersContext();
+    const { userKey, setUserKey } = useFiltersContext();
 
     // Loading
     if (isChecking || isLoading) return <Loader />;
@@ -31,14 +31,12 @@ const UserSelect = () => {
     // Not-admin
     if (!gwIsAdmin) return null;
 
-    const defaultValue = gwUser?.id;
-
     // Admin-only
     return (
         <AvatarSelectGroup
             users={officeUsers}
-            value={user || defaultValue}
-            onChange={setUser as any}
+            value={userKey}
+            onChange={setUserKey as any}
         />
     );
 };

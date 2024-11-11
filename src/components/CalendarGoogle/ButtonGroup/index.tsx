@@ -2,7 +2,7 @@ import CalendarButtonGroup from "@/components/Calendar/ButtonGroup";
 import Stack from "@mui/material/Stack";
 import { ViewButtonGroupProps } from "@/components/BaseCalendar/types";
 import { FC } from "react";
-import IsAuthenticatedIndicator from "../../../sections/Calendar/IsAuthenticatedIndicator";
+import IsAuthenticatedIndicator from "../../../sections/Google/IsAuthenticatedIndicator";
 
 const CalendarGoogleButtonGroup: FC<ViewButtonGroupProps> = (props) => (
     <Stack direction="row" spacing={1}>
