@@ -7,12 +7,10 @@ import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import { LoadingButton } from "@mui/lab";
-import EventDates from "./EventDates";
 import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import RHFLocation from "./RHFLocation";
-import useEventDates from "./EventDates/useEventDates";
-import { endDateKey, startDateKey } from "./EventDates/constants";
+import Pickers from "./Pickers";
 
 const TextFieldSx = {
     px: 0.5,
@@ -33,20 +31,6 @@ const CreateUpdateForm: FC<Props> = ({
 }) => {
     const { t } = useTranslation();
 
-    const {
-        _isAllDay,
-        _allDayDate,
-        // ..
-        isAllDay,
-        allDayDate,
-        // ...
-        onAllDayChange,
-        onAllDayDateChange,
-    } = useEventDates(startDateKey, endDateKey, {
-        startDate: event?.startDate!,
-        endDate: event?.endDate!,
-    });
-
     const methods = useForm<CalendarEventReq>({
         values: event || {
             title: "",
@@ -62,8 +46,8 @@ const CreateUpdateForm: FC<Props> = ({
     });
 
     const isDirty =
-        _isAllDay !== isAllDay ||
-        _allDayDate !== allDayDate ||
+        // _isAllDay !== isAllDay ||
+        // _allDayDate !== allDayDate ||
         methods.formState.isDirty;
 
     const isSubmitting = methods.formState.isSubmitting;
@@ -74,8 +58,8 @@ const CreateUpdateForm: FC<Props> = ({
     };
 
     const handleReset = () => {
-        onAllDayChange({}, _isAllDay);
-        onAllDayDateChange(_allDayDate);
+        // onAllDayChange({}, _isAllDay);
+        // onAllDayDateChange(_allDayDate);
         methods.reset();
     };
 
@@ -90,11 +74,9 @@ const CreateUpdateForm: FC<Props> = ({
                         sx={TextFieldSx}
                     />
 
-                    <EventDates
-                        allDay={isAllDay}
-                        onAllDayChange={onAllDayChange}
-                        allDayDate={allDayDate}
-                        onAllDayDateChange={onAllDayDateChange}
+                    <Pickers
+                        startDate={event?.startDate!}
+                        endDate={event?.endDate!}
                     />
 
                     <RHFLocation />
