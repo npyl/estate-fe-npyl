@@ -2,6 +2,7 @@ import { calendar, calendar_v3 } from "@googleapis/calendar";
 import { admin, admin_directory_v1 } from "@googleapis/admin";
 import AuthService from "./AuthService";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
+import { OAuth2Client } from "google-auth-library";
 
 interface CalendarService$IsAdminRes {
     isAdmin: boolean;
@@ -66,16 +67,95 @@ class CalendarService extends AuthService {
 
     // --------------------------------------------------------------------
 
-    async getEvents(userId: number, startDate: string, endDate: string) {
-        const auth = await this.getAuthForUser(userId);
-        if (!auth) return { data: { items: [] } };
+    /**
+     * INFO: this is a promise generator
+     */
+    private getEventsFromCalendarPromise =
+        (startDate: string, endDate: string, auth: OAuth2Client) =>
+        (e: calendar_v3.Schema$CalendarListEntry) => {
+            if (!e.id) throw new Error("Does not contain a valid id!");
+            return this.getCalendarEvents(e.id, startDate, endDate, auth);
+        };
 
-        return await this.calendar.events.list({
-            calendarId: "primary",
-            timeMin: startDate,
-            timeMax: endDate,
+    /**
+     * Helper
+     * @param calendarId google calendar id (a respective google workspace user's primaryEmail)
+     * @param timeMin (start)
+     * @param timeMax (end)
+     * @param auth (oauth object)
+     */
+    private async getCalendarEvents(
+        calendarId: string,
+        timeMin: string,
+        timeMax: string,
+        auth: OAuth2Client
+    ) {
+        const res = await this.calendar.events.list({
+            calendarId,
+            timeMin,
+            timeMax,
             auth,
         });
+
+        console.log("GOT: ", res.data?.items);
+
+        return res.data?.items || [];
+    }
+
+    /**
+     * getEvents
+     * (This is the public method for getting events to the frontend client)
+     * @param userId property-pro user id
+     * @param startDate (start)
+     * @param endDate (end)
+     * @param calendarId
+     */
+    async getEvents(
+        userId: number,
+        startDate: string,
+        endDate: string,
+        calendarId?: string | "ADMIN_ALL"
+    ) {
+        try {
+            const auth = await this.getAuthForUser(userId);
+            if (!auth) return [];
+
+            if (calendarId !== "ADMIN_ALL") {
+                return await this.getCalendarEvents(
+                    calendarId || "primary",
+                    startDate,
+                    endDate,
+                    auth
+                );
+            }
+
+            if (calendarId === "ADMIN_ALL") {
+                console.log("Admin_ALL");
+
+                const res = await this.calendar.calendarList.list({
+                    showDeleted: false,
+                    showHidden: false,
+                    auth,
+                });
+                if (res.status !== 200) return [];
+
+                const calendars = res?.data?.items;
+
+                const promises = calendars?.map(
+                    this.getEventsFromCalendarPromise(startDate, endDate, auth)
+                );
+                if (!promises) return [];
+
+                const eventsList = await Promise.all(promises);
+
+                console.log("AdminEvents: ", eventsList?.flat());
+
+                return eventsList?.flat() || [];
+            }
+        } catch (ex) {
+            console.error(ex);
+            return [];
+        }
     }
 
     async searchEvents(

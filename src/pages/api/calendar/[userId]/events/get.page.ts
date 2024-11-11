@@ -22,13 +22,14 @@ export default async function handler(
 
         const iUserId = toNumber(userId);
 
-        const { data } = await calendarService.getEvents(
+        const data = await calendarService.getEvents(
             iUserId,
             startDate,
-            endDate
+            endDate,
+            "ADMIN_ALL"
         );
 
-        const events = data.items?.map(GCalendarToTCalendarEvent) || [];
+        const events = data?.map(GCalendarToTCalendarEvent) || [];
 
         // GET: check if user with id `userId` is authenticated
         res.status(200).json(events);
