@@ -24,6 +24,7 @@ const schema = yup.object<IKanbanCardPOST>().shape({
                 message: yup.string().required(),
             })
         )
+        .min(0)
         .required(),
 
     eventId: yup.string().optional(),

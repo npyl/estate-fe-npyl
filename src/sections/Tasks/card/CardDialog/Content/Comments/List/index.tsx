@@ -11,6 +11,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { useGetCommentByIdQuery } from "@/services/tasks";
 import { Button, SxProps, Theme } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import uuidv4 from "@/utils/uuidv4";
 
 // ----------------------------------------------------------------------
 interface UsernameProps {
@@ -109,7 +110,12 @@ const Comment: FC<CommentProps> = ({ c }) => (
 );
 
 // ----------------------------------------------------------------------
-const getComment = (c: IKanbanCommentPOST) => <Comment key={c.id} c={c} />;
+
+const getKey = (id?: number) => id || uuidv4();
+
+const getComment = (c: IKanbanCommentPOST) => (
+    <Comment key={getKey(c.id)} c={c} />
+);
 
 // ----------------------------------------------------------------------
 const List = () => {
