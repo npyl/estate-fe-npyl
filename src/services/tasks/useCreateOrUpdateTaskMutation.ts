@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import { tasks } from "./tasks";
 import { useAuth } from "@/hooks/use-auth";
+import { calendar } from "@/services/calendar";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 
@@ -34,6 +35,10 @@ const useCreateOrUpdateTaskMutation = () => {
             if (!res.ok) return null;
 
             dispatch(tasks.util.invalidateTags(["Board"]));
+
+            // INFO: make sure we also update events
+            if (b.withCalendar)
+                dispatch(calendar.util.invalidateTags(["Events"]));
         },
         [userId]
     );
