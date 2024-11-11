@@ -13,9 +13,9 @@ const CreateEventDialog = dynamic(() => import("../Event/Create"));
 // --------------------------------------------------------------------------
 
 export const CalendarGoogleYearViewCell: FC<CalendarCellProps> = (props) => {
-    const { data } = useMonthEvents(props.date);
+    const { calendarId, type } = useFiltersContext();
 
-    const { type } = useFiltersContext();
+    const { data } = useMonthEvents(props.date, { calendarId });
 
     // INFO: minor filtering
     const events = useMemo(() => {

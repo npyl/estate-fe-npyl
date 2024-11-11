@@ -9,6 +9,7 @@ import CalendarWeekViewCell from "@/components/Calendar/Views/Week/Cell";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 import dynamic from "next/dynamic";
 import useFilteredEvents from "./useFilteredEvents";
+import { useFiltersContext } from "../Filters/context";
 
 // --------------------------------------------------------------------------
 
@@ -27,12 +28,14 @@ const WeekView: FC<CalendarWeekViewProps> = (props) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
+    const { calendarId } = useFiltersContext();
     const { getCellEvents } = useFilteredEvents();
 
     return (
         <>
             <CalendarGoogleWeekView
                 {...props}
+                filters={{ calendarId }}
                 getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CellWithTimeOffset

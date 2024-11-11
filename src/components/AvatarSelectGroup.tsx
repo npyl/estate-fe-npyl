@@ -93,10 +93,12 @@ const AvatarSelectGroup: FC<AvatarSelectGroupProps> = ({
     users,
     value,
     onChange,
+    children,
     ...props
 }) => (
     <AvatarGroup {...props}>
         {users?.map(getAvatar(value, onChange))}
+        {children}
     </AvatarGroup>
 );
 

@@ -9,6 +9,10 @@ import { useTranslation } from "react-i18next";
 
 type UserId = number;
 
+interface EventFilters {
+    calendarId?: string;
+}
+
 interface BasicEventReq {
     userId: number;
 }
@@ -16,6 +20,7 @@ interface BasicEventReq {
 interface GetEventsReq extends BasicEventReq {
     startDate: string;
     endDate: string;
+    filters?: Partial<EventFilters>;
 }
 
 interface SearchEventsReq extends BasicEventReq {
@@ -127,11 +132,12 @@ export const calendar = createApi({
         // ------------------------- EVENTS ---------------------------
 
         getEvents: builder.query<TCalendarEvent[], GetEventsReq>({
-            query: ({ userId, startDate, endDate }) => ({
+            query: ({ userId, startDate, endDate, filters }) => ({
                 url: `/${userId}/events/get`,
                 params: {
                     startDate,
                     endDate,
+                    calendarId: filters?.calendarId,
                 },
             }),
             providesTags: ["Events"],

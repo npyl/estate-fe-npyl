@@ -8,6 +8,7 @@ import useTimeFromOffset from "./useTimeFromOffset";
 import dynamic from "next/dynamic";
 import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
 import useFilteredEvents from "./useFilteredEvents";
+import { useFiltersContext } from "../Filters/context";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 
 // --------------------------------------------------------------------------
@@ -27,12 +28,14 @@ const DayView: FC<CalendarDayViewProps> = (props) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
+    const { calendarId } = useFiltersContext();
     const { getCellEvents } = useFilteredEvents();
 
     return (
         <>
             <CalendarGoogleDayView
                 {...props}
+                filters={{ calendarId }}
                 getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CellWithTimeOffset

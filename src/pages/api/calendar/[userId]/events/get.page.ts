@@ -18,7 +18,10 @@ export default async function handler(
         const url = new URL(req.url!, `http://${req.headers.host}`);
         const startDate = url.searchParams.get("startDate");
         const endDate = url.searchParams.get("endDate");
+        const calendarId = url.searchParams.get("calendarId");
         if (!startDate || !endDate) throw new Error("error!");
+
+        console.log("calendarId: ", calendarId);
 
         const iUserId = toNumber(userId);
 
@@ -26,7 +29,7 @@ export default async function handler(
             iUserId,
             startDate,
             endDate,
-            "ADMIN_ALL"
+            calendarId
         );
 
         const events = data?.map(GCalendarToTCalendarEvent) || [];

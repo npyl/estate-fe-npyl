@@ -77,6 +77,7 @@ type TGetCellEventsCb = (
 
 interface ViewEvents {
     events?: TCalendarEvent[];
+    filters?: object;
     getCellEvents?: TGetCellEventsCb;
     onEventClick?: (e: TCalendarEvent) => void;
 }

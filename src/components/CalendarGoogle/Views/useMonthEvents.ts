@@ -22,7 +22,7 @@ const getMonthStartEndDates = (date: Date) => {
     };
 };
 
-const useMonthEvents = (date: Date) => {
+const useMonthEvents = (date: Date, filters?: object) => {
     const { user } = useAuth();
 
     const { startDate, endDate } = getMonthStartEndDates(date);
@@ -31,6 +31,7 @@ const useMonthEvents = (date: Date) => {
         userId: user?.id!,
         startDate,
         endDate,
+        filters,
     });
 
     return { data, isLoading };

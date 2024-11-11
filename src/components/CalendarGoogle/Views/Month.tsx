@@ -5,9 +5,10 @@ import useMonthEvents from "./useMonthEvents";
 
 const CalendarGoogleMonthView: FC<CalendarDayViewProps> = ({
     events = [],
+    filters,
     ...props
 }) => {
-    const { data } = useMonthEvents(props.date);
+    const { data } = useMonthEvents(props.date, filters);
     return <CalendarMonthView {...props} events={data || []} />;
 };
 

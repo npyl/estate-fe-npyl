@@ -97,8 +97,6 @@ class CalendarService extends AuthService {
             auth,
         });
 
-        console.log("GOT: ", res.data?.items);
-
         return res.data?.items || [];
     }
 
@@ -114,7 +112,7 @@ class CalendarService extends AuthService {
         userId: number,
         startDate: string,
         endDate: string,
-        calendarId?: string | "ADMIN_ALL"
+        calendarId?: string | "ADMIN_ALL" | null
     ) {
         try {
             const auth = await this.getAuthForUser(userId);
@@ -130,8 +128,6 @@ class CalendarService extends AuthService {
             }
 
             if (calendarId === "ADMIN_ALL") {
-                console.log("Admin_ALL");
-
                 const res = await this.calendar.calendarList.list({
                     showDeleted: false,
                     showHidden: false,
@@ -147,8 +143,6 @@ class CalendarService extends AuthService {
                 if (!promises) return [];
 
                 const eventsList = await Promise.all(promises);
-
-                console.log("AdminEvents: ", eventsList?.flat());
 
                 return eventsList?.flat() || [];
             }
