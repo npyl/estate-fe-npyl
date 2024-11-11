@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../_service/CalendarService";
 import { GCalendarToTCalendarEvent } from "@/types/calendar/mapper";
 import { toNumber } from "@/pages/api/util";
+import { TCalendarIdFilter } from "@/types/calendar";
 
 export default async function handler(
     req: NextApiRequest,
@@ -29,7 +30,7 @@ export default async function handler(
             iUserId,
             startDate,
             endDate,
-            calendarId
+            (calendarId as TCalendarIdFilter) || ""
         );
 
         const events = data?.map(GCalendarToTCalendarEvent) || [];

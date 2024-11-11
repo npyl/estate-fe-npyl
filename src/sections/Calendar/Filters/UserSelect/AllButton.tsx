@@ -1,3 +1,4 @@
+import { SelectedSx } from "@/components/AvatarSelectGroup";
 import { useFiltersContext } from "../context";
 import ToggleButton from "@mui/material/ToggleButton";
 import { MouseEvent, useCallback } from "react";
@@ -20,6 +21,10 @@ const AllButton = () => {
             size="small"
             sx={{
                 borderRadius: "100%",
+                "&.Mui-selected": {
+                    borderWidth: "3px",
+                    ...(SelectedSx as any),
+                },
             }}
         >
             {t("All")}

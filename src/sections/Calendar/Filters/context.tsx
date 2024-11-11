@@ -6,13 +6,13 @@ import {
     useState,
 } from "react";
 import { TTypeFilter } from "./types";
-import useIsOfficeAdmin from "@/sections/Google/useIsOfficeAdmin";
+import { TCalendarIdFilter } from "@/types/calendar";
 
 type FiltersState = {
     type: TTypeFilter;
     setType: Dispatch<SetStateAction<TTypeFilter>>;
-    calendarId?: string;
-    setCalendarId: (v: string) => void;
+    calendarId?: TCalendarIdFilter;
+    setCalendarId: (v: TCalendarIdFilter) => void;
 };
 
 const FiltersContext = createContext<FiltersState>({
@@ -35,7 +35,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
     const [type, setType] = useState<TTypeFilter>("ANY");
-    const [calendarId, setCalendarId] = useState<string>("");
+    const [calendarId, setCalendarId] = useState<TCalendarIdFilter>("");
 
     return (
         <FiltersContext.Provider

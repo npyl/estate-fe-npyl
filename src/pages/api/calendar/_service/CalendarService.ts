@@ -3,6 +3,7 @@ import { admin, admin_directory_v1 } from "@googleapis/admin";
 import AuthService from "./AuthService";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 import { OAuth2Client } from "google-auth-library";
+import { TCalendarIdFilter } from "@/types/calendar";
 
 interface CalendarService$IsAdminRes {
     isAdmin: boolean;
@@ -107,12 +108,15 @@ class CalendarService extends AuthService {
      * @param startDate (start)
      * @param endDate (end)
      * @param calendarId
+     *          (falsy) primary calendar is selected (useful for non-admin user);
+     *          (ADMIN_ALL) bring every calendar's events;
+     *          (some valid value) bring selected calendar's (a.k.a. selected user's) events
      */
     async getEvents(
         userId: number,
         startDate: string,
         endDate: string,
-        calendarId?: string | "ADMIN_ALL" | null
+        calendarId?: TCalendarIdFilter
     ) {
         try {
             const auth = await this.getAuthForUser(userId);

@@ -16,7 +16,7 @@ type TUser = ObjectWithId & {
 
 // -------------------------------------------------------------------
 
-const SelectedSx: SxProps<Theme> = {
+export const SelectedSx: SxProps<Theme> = {
     borderColor: "info.main",
     zIndex: 1000,
     boxShadow: 15,
