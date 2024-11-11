@@ -1,5 +1,8 @@
 import { OAuth2Client } from "google-auth-library";
-import { IsAuthenticatedRes } from "@/types/calendar/google";
+import {
+    GoogleCalendarUserInfo,
+    IsAuthenticatedRes,
+} from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
 
 interface UserToken {
@@ -165,7 +168,9 @@ class AuthService {
     /**
      * Receive profile of an authenticated user
      */
-    protected async getUserInfo(auth: OAuth2Client) {
+    protected async getUserInfo(
+        auth: OAuth2Client
+    ): Promise<GoogleCalendarUserInfo | null> {
         try {
             const token = (await auth.getAccessToken()).token;
 
@@ -194,6 +199,8 @@ class AuthService {
             if (!auth) return { isAuthenticated: false };
 
             const userInfo = await this.getUserInfo(auth);
+            if (!userInfo) return { isAuthenticated: false };
+
             return { isAuthenticated: true, userInfo };
         } catch (ex) {
             console.error(ex);

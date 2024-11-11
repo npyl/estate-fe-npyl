@@ -1,10 +1,12 @@
 import { calendar, calendar_v3 } from "@googleapis/calendar";
 import { admin, admin_directory_v1 } from "@googleapis/admin";
 import AuthService from "./AuthService";
+import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 
 interface CalendarService$IsAdminRes {
     isAdmin: boolean;
     user?: admin_directory_v1.Schema$User;
+    userInfo?: GoogleCalendarUserInfo;
 }
 
 // e.g. npylarinos@digipath.gr -> digipath.gr
@@ -22,26 +24,30 @@ class CalendarService extends AuthService {
 
     // ------------------------------------------------------------------
 
+    /**
+     * isAdmin
+     * @param userId propertypro user id
+     * @returns whether the property-pro user happens to be the google workspace's admin + returns the google workspace user anyway to support ui functions
+     */
     async isAdmin(userId: number): Promise<CalendarService$IsAdminRes> {
+        const auth = await this.getAuthForUser(userId);
+        if (!auth) return { isAdmin: false };
+
+        const userInfo = await this.getUserInfo(auth);
+        if (!userInfo) return { isAdmin: false };
+
         try {
-            const auth = await this.getAuthForUser(userId);
-            if (!auth) return { isAdmin: false };
-
-            const userInfo = await this.getUserInfo(auth);
-            if (!userInfo) return { isAdmin: false };
-
             const res = await this.directory.users.get({
                 userKey: userInfo.email,
                 auth,
             });
 
             const isAdmin = res?.data?.isAdmin ?? false;
-            const retUser = isAdmin ? res?.data : undefined;
 
-            return { isAdmin, user: retUser };
+            return { isAdmin, user: res?.data };
         } catch (ex) {
             console.error("Error checking admin status:", ex);
-            return { isAdmin: false };
+            return { isAdmin: false, userInfo };
         }
     }
 

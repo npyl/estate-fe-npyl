@@ -1,5 +1,6 @@
 import { admin_directory_v1 } from "@googleapis/admin";
 import { GUserMini } from ".";
+import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 
 const GUserToGUserMini = ({
     name,
@@ -16,4 +17,19 @@ const GUserToGUserMini = ({
     };
 };
 
-export { GUserToGUserMini };
+const UserInfoToGUserMini = ({
+    email,
+    name,
+    picture,
+}: GoogleCalendarUserInfo): GUserMini => {
+    const [firstName, lastName] = name?.split(" ") || ["", ""];
+
+    return {
+        id: email,
+        firstName,
+        lastName,
+        avatar: picture,
+    };
+};
+
+export { GUserToGUserMini, UserInfoToGUserMini };
