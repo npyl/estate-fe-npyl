@@ -69,6 +69,7 @@ export type IKanbanCardPOST = {
 // INFO: used in form
 export interface ICreateOrUpdateTaskReq extends IKanbanCardPOST {
     withCalendar: boolean;
+    googleUserKey?: string; // INFO: google's worskpace user's primaryEmail used as a handle for creating a calendar event to him
 }
 
 export type IKanbanColumn = {

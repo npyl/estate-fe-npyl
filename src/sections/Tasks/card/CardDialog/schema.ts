@@ -6,13 +6,7 @@ const schema = yup.object<IKanbanCardPOST>().shape({
     priority: yup.number().min(0).max(2).required(),
     name: yup.string().required(),
     description: yup.string().optional(),
-    due: yup
-        .tuple([yup.string().required(), yup.string().required()])
-        .when("withCalendar", {
-            is: true,
-            then: (schema) => schema.required(),
-            otherwise: (schema) => schema.transform(() => undefined),
-        }),
+
     attachments: yup.array(yup.string().required()).required(),
     completed: yup.boolean().required(),
 
@@ -34,6 +28,22 @@ const schema = yup.object<IKanbanCardPOST>().shape({
 
     eventId: yup.string().optional(),
     withCalendar: yup.boolean().required(),
+
+    // ------------------ Calendar Event Logic ----------------------------
+
+    due: yup
+        .tuple([yup.string().required(), yup.string().required()])
+        .when("withCalendar", {
+            is: true,
+            then: (schema) => schema.required(),
+            otherwise: (schema) => schema.transform(() => undefined),
+        }),
+
+    googleUserKey: yup.string().when("withCalendar", {
+        is: true,
+        then: (schema) => schema.required(),
+        otherwise: (schema) => schema.transform(() => undefined),
+    }),
 });
 
 export default schema;

@@ -30,13 +30,6 @@ const Pickers = () => {
             startDateKey={startDateKey}
             endDateKey={endDateKey}
             // ...
-            mt={2}
-            bgcolor={({ palette: { mode } }) =>
-                mode === "light" ? "neutral.200" : "neutral.800"
-            }
-            py={2}
-            px={1}
-            borderRadius="10px"
             direction="column"
         />
     );

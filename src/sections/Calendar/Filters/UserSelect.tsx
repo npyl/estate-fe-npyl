@@ -1,12 +1,8 @@
-/**
- * This component makes sence only if the user is a Google Workspace admin!
- */
-
-import { useAuth } from "@/hooks/use-auth";
-import { useGetUsersQuery, useIsAdminQuery } from "@/services/calendar";
+import { useGetUsersQuery } from "@/services/calendar";
 import { useFiltersContext } from "./context";
 import Skeleton from "@mui/material/Skeleton";
 import dynamic from "next/dynamic";
+import useIsOfficeAdmin from "@/sections/Google/useIsOfficeAdmin";
 
 const Loader = () => <Skeleton width="100px" height="58px" />;
 
@@ -17,27 +13,14 @@ const AvatarSelectGroup = dynamic(
     }
 );
 
-const useIsOfficeAdmin = () => {
-    const { user } = useAuth();
-    const { data, isLoading } = useIsAdminQuery(user?.id!, {
-        skip: user?.id === undefined,
-    });
-
-    return {
-        // ... (google workspace)
-        isAdmin: data?.isAdmin,
-        admin: data?.user,
-        isChecking: isLoading,
-        // ... (property pro)
-        userId: user?.id,
-    };
-};
-
+/**
+ * UserSelect makes sence only if the user is a Google Workspace admin!
+ */
 const UserSelect = () => {
-    const { isAdmin, admin, isChecking, userId } = useIsOfficeAdmin();
+    const { gwIsAdmin, gwUser, isChecking, userId } = useIsOfficeAdmin();
 
     const { data: officeUsers, isLoading } = useGetUsersQuery(userId!, {
-        skip: !isAdmin,
+        skip: !gwIsAdmin,
     });
 
     const { user, setUser } = useFiltersContext();
@@ -46,9 +29,9 @@ const UserSelect = () => {
     if (isChecking || isLoading) return <Loader />;
 
     // Not-admin
-    if (!isAdmin) return null;
+    if (!gwIsAdmin) return null;
 
-    const defaultValue = admin?.id;
+    const defaultValue = gwUser?.id;
 
     // Admin-only
     return (

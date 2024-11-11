@@ -50,7 +50,7 @@ class CalendarService extends AuthService {
         const response = await this.directory.users.list({
             domain: WORKSPACE_DOMAIN,
             auth,
-            fields: "users(id,name,thumbnailPhotoUrl)",
+            fields: "users(id,name,primaryEmail,thumbnailPhotoUrl)",
         });
 
         return response?.data?.users;

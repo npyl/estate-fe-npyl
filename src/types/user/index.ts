@@ -40,7 +40,7 @@ interface IUserMini {
 }
 
 // INFO: google returns users with ids as string
-type GUserMini = Omit<IUserMini, "id"> & { id: string };
+type GUserMini = Omit<IUserMini, "id"> & { id: string; email: string };
 
 interface IUserPOST {
     firstName: string;
