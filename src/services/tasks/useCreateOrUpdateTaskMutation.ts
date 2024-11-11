@@ -3,31 +3,40 @@ import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import { tasks } from "./tasks";
+import { useAuth } from "@/hooks/use-auth";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/tasks`;
+const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 
 const useCreateOrUpdateTaskMutation = () => {
+    const { user } = useAuth();
+    const userId = user?.id;
+
     const [isLoading, startLoading, stopLoading] = useDialog();
 
     const dispatch = useDispatch();
 
-    const cb = useCallback(async (b: ICreateOrUpdateTaskReq) => {
-        startLoading();
+    const cb = useCallback(
+        async (b: ICreateOrUpdateTaskReq) => {
+            startLoading();
 
-        const res = await fetch(baseUrl, {
-            headers: {
-                Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify(b),
-            method: "POST",
-        });
+            const res = await fetch(`${baseUrl}/${userId}/tasks`, {
+                headers: {
+                    Authorization: `Bearer  ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+                body: JSON.stringify(b),
+                method: "POST",
+            });
 
-        stopLoading();
+            stopLoading();
 
-        if (!res.ok) return null;
+            if (!res.ok) return null;
 
-        dispatch(tasks.util.invalidateTags(["Board"]));
-    }, []);
+            dispatch(tasks.util.invalidateTags(["Board"]));
+        },
+        [userId]
+    );
 
     return [cb, { isLoading }] as const;
 };

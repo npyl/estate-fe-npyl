@@ -30,9 +30,7 @@ const RenderOption = (
         <Typography>
             {option?.firstName || ""} {option?.lastName || ""}
         </Typography>
-        <Typography fontWeight="bold">
-            {option?.email ? `(${option?.email})` : ""}
-        </Typography>
+        <Typography fontWeight="bold">({`${option?.id || ""}`})</Typography>
     </MenuItem>
 );
 

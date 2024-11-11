@@ -1,8 +1,9 @@
 import { ICreateOrUpdateTaskReq, IKanbanCardPOST } from "@/types/tasks";
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "./calendar/_service/CalendarService";
+import calendarService from "../../calendar/_service/CalendarService";
 import { KanbanTaskToCalendarEvent } from "@/types/tasks/mapper";
 import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
+import { toNumber } from "../../util";
 
 // -----------------------------------------------------------------------
 
@@ -32,6 +33,10 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
+        const { userId } = req.query;
+
+        const iUserId = toNumber(userId);
+
         if (req.method !== "POST") throw new Error("Bad method");
 
         const Authorization = req.headers.authorization;
@@ -40,10 +45,10 @@ export default async function handler(
         const {
             withCalendar,
             eventId: _eventId,
+            googleUserKey,
             ...task
         } = JSON.parse(req.body) as ICreateOrUpdateTaskReq;
 
-        const assigneeId = task.assigneeId;
         const isEdit = Boolean(_eventId);
         let taskBody = { ...task } as IKanbanCardPOST;
 
@@ -54,14 +59,21 @@ export default async function handler(
             const event = KanbanTaskToCalendarEvent(task);
             const gEvent = TCalendarEventToGCalendarEvent(event);
 
-            // console.log("[WITH_CALENDAR]: isEdit: ", isEdit, " body: ", event);
+            console.log(
+                "[WITH_CALENDAR]: ppUser: ",
+                userId,
+                " gwUser: ",
+                googleUserKey
+            );
+            console.log("[WITH_CALENDAR]: isEdit: ", isEdit, " body: ", event);
 
             if (isEdit) {
-                await calendarService.updateEvent(assigneeId, gEvent);
+                await calendarService.updateEvent(iUserId, gEvent);
             } else {
                 const eventId = await calendarService.createEvent(
-                    assigneeId,
-                    gEvent
+                    iUserId,
+                    gEvent,
+                    googleUserKey
                 );
                 if (!eventId) throw new Error("Some bad event id");
 

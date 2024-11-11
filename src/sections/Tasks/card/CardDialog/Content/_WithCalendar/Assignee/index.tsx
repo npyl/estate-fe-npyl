@@ -8,7 +8,7 @@ const Assignee = () => {
     const { gwIsAdmin, gwUser, isChecking, userId } = useIsOfficeAdmin();
 
     if (isChecking) return <Loader />;
-    if (!gwIsAdmin) return <SelfAssign userKey={gwUser?.email} />;
+    if (!gwIsAdmin) return <SelfAssign userKey={gwUser?.id} />;
 
     return <AdminOnly adminId={userId} />;
 };

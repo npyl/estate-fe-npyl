@@ -20,6 +20,8 @@ class CalendarService extends AuthService {
         this.directory = admin({ version: "directory_v1" });
     }
 
+    // ------------------------------------------------------------------
+
     async isAdmin(userId: number): Promise<CalendarService$IsAdminRes> {
         try {
             const auth = await this.getAuthForUser(userId);
@@ -88,13 +90,24 @@ class CalendarService extends AuthService {
         });
     }
 
-    async createEvent(userId: number, body: calendar_v3.Schema$Event) {
+    /**
+     * createEvent
+     * @param userId propertypro user id
+     * @param body google calendar event
+     * @param userKey google workspace user's email (used to denote a calendar). Leave undefined if you want to create an event for your own calendar
+     * @returns created event's id
+     */
+    async createEvent(
+        userId: number,
+        body: calendar_v3.Schema$Event,
+        userKey?: string
+    ) {
         const auth = await this.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
         const res = await this.calendar.events.insert({
             auth,
-            calendarId: "primary",
+            calendarId: userKey || "primary",
             requestBody: body,
         });
 

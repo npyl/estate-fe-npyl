@@ -2,7 +2,6 @@ import { admin_directory_v1 } from "@googleapis/admin";
 import { GUserMini } from ".";
 
 const GUserToGUserMini = ({
-    id,
     name,
     primaryEmail,
     thumbnailPhotoUrl,
@@ -10,11 +9,10 @@ const GUserToGUserMini = ({
     const [firstName, lastName] = name?.fullName?.split(" ") || ["", ""];
 
     return {
-        id: id || "",
+        id: primaryEmail!,
         firstName,
         lastName,
         avatar: thumbnailPhotoUrl || "",
-        email: primaryEmail || "",
     };
 };
 

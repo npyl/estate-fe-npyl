@@ -1,4 +1,3 @@
-import { getAllDayStartEnd } from "@/components/Calendar/util";
 import {
     ICreateOrUpdateTaskReq,
     IKanbanCard,
@@ -7,7 +6,6 @@ import {
     IKanbanCommentPOST,
 } from ".";
 import { CalendarEventReq } from "@/types/calendar";
-import dayjs from "dayjs";
 
 const IKanbanCommentResToReq = ({
     id,
@@ -56,7 +54,6 @@ const IKanbanCardRes2Req = (
 };
 
 const KanbanTaskToCalendarEvent = ({
-    id,
     name,
     description,
     due,
