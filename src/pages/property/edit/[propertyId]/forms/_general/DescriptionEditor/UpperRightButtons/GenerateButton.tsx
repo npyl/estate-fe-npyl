@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
 import { useOpenAIDetails } from "../hooks";
 import fixDropdowns from "./stupid";
-import { useGenerateDescriptionMutation } from "@/services/properties";
 import useDialog from "@/hooks/useDialog";
 import { MenuItem } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import OptionButton from "@/components/OptionButton";
-import { HideText } from "./style";
+import { HideText, PopoverProps } from "./style";
+import { useOperationsContext } from "../context";
 
 interface GenerateButtonProps {
     lang: Language;
@@ -23,8 +23,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
 
     const { openAIDetails } = useOpenAIDetails(lang);
 
-    const [generateDescription, { isLoading }] =
-        useGenerateDescriptionMutation();
+    const { generateDescription, isLoading } = useOperationsContext();
 
     const handleGenerate = async () => {
         try {
@@ -40,6 +39,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
 
     return (
         <OptionButton
+            disabled={isLoading}
             options={
                 <>
                     <MenuItem onClick={setStylingOff}>{t("Generate")}</MenuItem>
@@ -48,8 +48,10 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
                     </MenuItem>
                 </>
             }
+            popoverProps={PopoverProps}
         >
             <LoadingButton
+                disabled={isLoading}
                 loading={isLoading}
                 loadingPosition="start"
                 startIcon={<ChatGPTIcon />}
