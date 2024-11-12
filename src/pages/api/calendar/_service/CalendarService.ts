@@ -53,29 +53,41 @@ class CalendarService extends AuthService {
         }
     }
 
+    /**
+     * Helper
+     */
+    private async getWorkspaceUsers(auth: OAuth2Client) {
+        try {
+            const response = await this.directory.users.list({
+                domain: WORKSPACE_DOMAIN,
+                auth,
+                fields: "users(id,name,primaryEmail,thumbnailPhotoUrl)",
+            });
+
+            return response?.data?.users;
+        } catch (ex) {
+            console.error(ex);
+            return [];
+        }
+    }
+
     async getUsers(userId: number) {
         const auth = await this.getAuthForUser(userId);
         if (!auth) return [];
 
-        const response = await this.directory.users.list({
-            domain: WORKSPACE_DOMAIN,
-            auth,
-            fields: "users(id,name,primaryEmail,thumbnailPhotoUrl)",
-        });
-
-        return response?.data?.users;
+        return await this.getWorkspaceUsers(auth);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * INFO: this is a promise generator
+     * this is a promise generator
      */
     private getEventsFromCalendarPromise =
         (startDate: string, endDate: string, auth: OAuth2Client) =>
-        (e: calendar_v3.Schema$CalendarListEntry) => {
-            if (!e.id) throw new Error("Does not contain a valid id!");
-            return this.getCalendarEvents(e.id, startDate, endDate, auth);
+        (calendarId: string) => {
+            if (!calendarId) throw new Error("Does not contain a valid id!");
+            return this.getCalendarEvents(calendarId, startDate, endDate, auth);
         };
 
     /**
@@ -132,16 +144,16 @@ class CalendarService extends AuthService {
             }
 
             if (calendarId === "ADMIN_ALL") {
-                const res = await this.calendar.calendarList.list({
-                    showDeleted: false,
-                    showHidden: false,
-                    auth,
-                });
-                if (res.status !== 200) return [];
+                // get all users in the workspace
+                const users = await this.getWorkspaceUsers(auth);
 
-                const calendars = res?.data?.items;
+                // INFO: users' primaryEmails are the respective calendarIds
+                const calendarIds =
+                    users?.map(({ primaryEmail }) => primaryEmail || "") || [];
 
-                const promises = calendars?.map(
+                if (!calendarIds) throw new Error("Failed to get emails");
+
+                const promises = calendarIds.map(
                     this.getEventsFromCalendarPromise(startDate, endDate, auth)
                 );
                 if (!promises) return [];
