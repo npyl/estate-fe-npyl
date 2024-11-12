@@ -4,7 +4,6 @@ import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
 import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
-import IGoogleEarth from "./googleEarth";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
@@ -444,8 +443,6 @@ export interface IProperties {
     documents: IPropertyDocument[];
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
-
-    googleEarth: IGoogleEarth;
 
     visitors: number;
     bedrooms: number;
