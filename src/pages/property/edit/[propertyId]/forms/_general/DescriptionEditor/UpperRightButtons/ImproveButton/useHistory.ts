@@ -1,25 +1,58 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { RefObject, useCallback, useRef } from "react";
 
 type TValue = object;
 
-const useHistory = <T extends TValue>() => {
+const useHistory = <T extends TValue>(
+    buttonUndoRef: RefObject<HTMLButtonElement>,
+    buttonRedoRef: RefObject<HTMLButtonElement>
+) => {
     const rootRef = useRef<T[]>([]);
+    const index = useRef(-1);
 
-    const [size, setSize] = useState(0);
-    const [index, setIndex] = useState(-1);
+    // ------------------------------------------------------------------------
+
+    const getSize = useCallback(() => rootRef.current.length, []);
+    const getIndexedSize = useCallback(() => getSize() - 1, []);
+
+    const calculateVisibility = useCallback(() => {
+        if (!buttonUndoRef.current || !buttonRedoRef.current) return;
+
+        buttonUndoRef.current.style.display =
+            getIndexedSize() - index.current >= 0 && index.current !== 0
+                ? "block"
+                : "none";
+
+        buttonRedoRef.current.style.display =
+            index.current === getIndexedSize() ? "none" : "block";
+    }, []);
+
+    const getCurrent = useCallback(() => rootRef.current.at(index.current), []);
+
+    // ------------------------------------------------------------------------
+
+    const initialise = useCallback((v: T) => {
+        rootRef.current.push(v);
+        index.current = 0;
+    }, []);
 
     const push = useCallback((v: T) => {
         rootRef.current.push(v);
-        setSize((old) => old + 1);
-        setIndex((old) => old + 1);
+        index.current = getIndexedSize();
+        calculateVisibility();
     }, []);
 
-    const next = useCallback(() => setIndex((old) => old + 1), []);
-    const previous = useCallback(() => setIndex((old) => old - 1), []);
+    const previous = useCallback(() => {
+        index.current = Math.max(index.current - 1, 0);
+        calculateVisibility();
+        return getCurrent();
+    }, []);
+    const next = useCallback(() => {
+        index.current = Math.min(index.current + 1, getIndexedSize());
+        calculateVisibility();
+        return getCurrent();
+    }, []);
 
-    const current = useMemo(() => rootRef.current?.at(index), [index]);
-
-    return { current, size, push, next, previous };
+    return { initialise, push, previous, next, getSize };
 };
 
 export default useHistory;

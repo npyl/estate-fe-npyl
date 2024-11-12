@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
@@ -10,8 +10,7 @@ import OptionButton from "@/components/OptionButton";
 import Options from "../Options";
 import { HideText } from "../style";
 import { useOperationsContext } from "../../context";
-import useHistory from "./useHistory";
-import RevertButton from "./HistoryButtons";
+import { HistoryButtonRef } from "./HistoryButtons";
 import HistoryButtons from "./HistoryButtons";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
@@ -25,8 +24,8 @@ const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
 interface ImproveButtonProps {
     lang: Language;
     editorState: EditorState;
-    onImprove: (s: string, styling: boolean) => void;
-    onRevert: (e: EditorState) => void;
+    onImprove: (s: string, styling: boolean) => EditorState | undefined;
+    onRevert: (e: EditorState) => void; // INFO: revert back & forth
 }
 
 const ImproveButton: FC<ImproveButtonProps> = ({
@@ -42,12 +41,17 @@ const ImproveButton: FC<ImproveButtonProps> = ({
     const [improveOption, setImproveOption] = useState("PRECISE");
     const [styling, setStyling] = useState(false);
 
-    const { size, push } = useHistory<EditorState>();
+    const historyRef = useRef<HistoryButtonRef>(null);
 
     const { improveDescription, isLoading } = useOperationsContext();
 
     const handleImprove = async () => {
         try {
+            // INFO: we need an initial state
+            if (historyRef.current?.getSize() === 0) {
+                historyRef.current.initialise(editorState);
+            }
+
             const oldDescription = editorState
                 .getCurrentContent()
                 .getPlainText();
@@ -62,40 +66,41 @@ const ImproveButton: FC<ImproveButtonProps> = ({
 
             const text = await improveDescription(sanitizedPayload).unwrap();
 
-            onImprove(text, styling);
+            const newEditorState = onImprove(text, styling);
+            if (!newEditorState) return;
 
-            push(editorState);
+            historyRef.current?.push(newEditorState);
         } catch (ex) {}
     };
 
-    const historyRef = useRef();
-
     return (
-        <OptionButton
-            disabled={isLoading}
-            options={
-                <Options
-                    styling={styling}
-                    onStylingChange={setStyling}
-                    improveOption={improveOption}
-                    onImproveOptionChange={setImproveOption}
-                />
-            }
-        >
-            <HistoryButtons ref={historyRef} />
+        <>
+            <HistoryButtons ref={historyRef} onRevert={onRevert} />
 
-            <LoadingButton
+            <OptionButton
                 disabled={isLoading}
-                loading={isLoading}
-                loadingPosition="start"
-                startIcon={<ChatGPTIcon />}
-                variant="outlined"
-                onClick={handleImprove}
-                sx={{ mt: 0, justifySelf: "flex-end", ...HideText }}
+                options={
+                    <Options
+                        styling={styling}
+                        onStylingChange={setStyling}
+                        improveOption={improveOption}
+                        onImproveOptionChange={setImproveOption}
+                    />
+                }
             >
-                {isLoading ? t("Improving...") : t("Improve")}
-            </LoadingButton>
-        </OptionButton>
+                <LoadingButton
+                    disabled={isLoading}
+                    loading={isLoading}
+                    loadingPosition="start"
+                    startIcon={<ChatGPTIcon />}
+                    variant="outlined"
+                    onClick={handleImprove}
+                    sx={{ mt: 0, justifySelf: "flex-end", ...HideText }}
+                >
+                    {isLoading ? t("Improving...") : t("Improve")}
+                </LoadingButton>
+            </OptionButton>
+        </>
     );
 };
 
