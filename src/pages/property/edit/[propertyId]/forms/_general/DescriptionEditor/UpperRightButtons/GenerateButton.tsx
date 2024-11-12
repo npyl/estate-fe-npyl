@@ -8,7 +8,7 @@ import { MenuItem } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import OptionButton from "@/components/OptionButton";
-import { HideText } from "./style";
+import { HideText, PopoverProps } from "./style";
 import { useOperationsContext } from "../context";
 
 interface GenerateButtonProps {
@@ -48,6 +48,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
                     </MenuItem>
                 </>
             }
+            popoverProps={PopoverProps}
         >
             <LoadingButton
                 disabled={isLoading}

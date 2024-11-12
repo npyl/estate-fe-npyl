@@ -7,8 +7,8 @@ import { useOpenAIDetails } from "../../hooks";
 import { IOpenAIDetailsPOST } from "@/types/openai";
 import { EditorState } from "draft-js";
 import OptionButton from "@/components/OptionButton";
-import Options from "../Options";
-import { HideText } from "../style";
+import Options from "./Options";
+import { HideText, PopoverProps } from "../style";
 import { useOperationsContext } from "../../context";
 import HistoryButtons, { HistoryButtonRef } from "./HistoryButton";
 
@@ -91,6 +91,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
                         onImproveOptionChange={setImproveOption}
                     />
                 }
+                popoverProps={PopoverProps}
             >
                 <LoadingButton
                     disabled={isLoading}

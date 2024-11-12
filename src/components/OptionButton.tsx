@@ -3,15 +3,17 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ButtonGroup, { ButtonGroupProps } from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import useDialog from "@/hooks/useDialog";
-import { Popover } from "@mui/material";
+import { Popover, PopoverProps } from "@mui/material";
 
 interface OptionButtonProps extends ButtonGroupProps {
     options: ReactNode;
+    popoverProps?: Omit<PopoverProps, "open">;
 }
 
 const OptionButton: FC<OptionButtonProps> = ({
     children,
     options,
+    popoverProps,
     ...props
 }) => {
     const [isOpen, openPopper, closePopper] = useDialog();
@@ -32,11 +34,8 @@ const OptionButton: FC<OptionButtonProps> = ({
                     open
                     anchorEl={anchorRef.current}
                     disablePortal
-                    anchorOrigin={{
-                        horizontal: "center",
-                        vertical: "bottom",
-                    }}
                     onClose={closePopper}
+                    {...popoverProps}
                 >
                     {options}
                 </Popover>

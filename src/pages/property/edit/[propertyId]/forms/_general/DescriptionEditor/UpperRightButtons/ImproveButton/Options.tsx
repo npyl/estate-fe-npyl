@@ -42,7 +42,7 @@ const Options: FC<OptionsProps> = ({
             p={1}
             width="fit-content"
         >
-            <Typography variant="body2" color="textSecondary" maxWidth="200px">
+            <Typography variant="body2" color="textSecondary" maxWidth="300px">
                 {t("Improving the description to be more:")}
             </Typography>
 
