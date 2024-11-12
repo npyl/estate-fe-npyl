@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/Language/types";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
@@ -11,7 +11,8 @@ import Options from "../Options";
 import { HideText } from "../style";
 import { useOperationsContext } from "../../context";
 import useHistory from "./useHistory";
-import RevertButton from "./RevertButton";
+import RevertButton from "./HistoryButtons";
+import HistoryButtons from "./HistoryButtons";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(
@@ -67,6 +68,8 @@ const ImproveButton: FC<ImproveButtonProps> = ({
         } catch (ex) {}
     };
 
+    const historyRef = useRef();
+
     return (
         <OptionButton
             disabled={isLoading}
@@ -79,12 +82,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
                 />
             }
         >
-            {size > 0 ? (
-                <RevertButton
-                    revertContent={revertContent}
-                    onClick={handleRevert}
-                />
-            ) : null}
+            <HistoryButtons ref={historyRef} />
 
             <LoadingButton
                 disabled={isLoading}
