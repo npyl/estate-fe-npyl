@@ -5,6 +5,7 @@ import useHistory from "./useHistory";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { SxProps, Theme } from "@mui/material";
+import React from "react";
 
 const ButtonSx: SxProps<Theme> = {
     display: "none",
@@ -21,10 +22,11 @@ export interface HistoryButtonRef {
  */
 interface HistoryButtonProps extends Omit<ButtonProps, "onClick"> {
     onRevert: (s: EditorState) => void;
+    onPastChange: (b: boolean) => void;
 }
 
 const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
-    ({ onRevert, sx, ...props }, ref) => {
+    ({ onPastChange, onRevert, sx, ...props }, ref) => {
         const buttonUndoRef = useRef<HTMLButtonElement>(null);
         const buttonRedoRef = useRef<HTMLButtonElement>(null);
 
@@ -42,12 +44,12 @@ const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
         );
 
         const handlePrevious = useCallback(() => {
-            const current = previous();
+            const current = previous(onPastChange);
             if (!current) return;
             onRevert(current);
         }, [onRevert]);
         const handleNext = useCallback(() => {
-            const current = next();
+            const current = next(onPastChange);
             if (!current) return;
             onRevert(current);
         }, [onRevert]);
@@ -58,6 +60,8 @@ const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
                     ref={buttonUndoRef}
                     onClick={handlePrevious}
                     sx={{ ...ButtonSx, ...sx }}
+                    color="info"
+                    variant="contained"
                     {...props}
                 >
                     <UndoIcon />
@@ -67,6 +71,8 @@ const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
                     ref={buttonRedoRef}
                     onClick={handleNext}
                     sx={{ ...ButtonSx, ...sx }}
+                    color="info"
+                    variant="contained"
                     {...props}
                 >
                     <RedoIcon />
@@ -76,4 +82,4 @@ const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
     }
 );
 
-export default HistoryButton;
+export default React.memo(HistoryButton);

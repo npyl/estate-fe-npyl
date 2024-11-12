@@ -1,6 +1,7 @@
 import { RefObject, useCallback, useRef } from "react";
 
 type TValue = object;
+type TPastCb = (b: boolean) => void;
 
 const useHistory = <T extends TValue>(
     buttonUndoRef: RefObject<HTMLButtonElement>,
@@ -14,16 +15,20 @@ const useHistory = <T extends TValue>(
     const getSize = useCallback(() => rootRef.current.length, []);
     const getIndexedSize = useCallback(() => getSize() - 1, []);
 
-    const calculateVisibility = useCallback(() => {
+    const calculateVisibility = useCallback((onPast?: TPastCb) => {
         if (!buttonUndoRef.current || !buttonRedoRef.current) return;
 
+        const indexedSize = getIndexedSize();
+
         buttonUndoRef.current.style.display =
-            getIndexedSize() - index.current >= 0 && index.current !== 0
+            indexedSize - index.current >= 0 && index.current !== 0
                 ? "block"
                 : "none";
 
         buttonRedoRef.current.style.display =
-            index.current === getIndexedSize() ? "none" : "block";
+            index.current === indexedSize ? "none" : "block";
+
+        onPast?.(indexedSize !== index.current);
     }, []);
 
     const getCurrent = useCallback(() => rootRef.current.at(index.current), []);
@@ -41,14 +46,14 @@ const useHistory = <T extends TValue>(
         calculateVisibility();
     }, []);
 
-    const previous = useCallback(() => {
+    const previous = useCallback((onPast: TPastCb) => {
         index.current = Math.max(index.current - 1, 0);
-        calculateVisibility();
+        calculateVisibility(onPast);
         return getCurrent();
     }, []);
-    const next = useCallback(() => {
+    const next = useCallback((onPast: TPastCb) => {
         index.current = Math.min(index.current + 1, getIndexedSize());
-        calculateVisibility();
+        calculateVisibility(onPast);
         return getCurrent();
     }, []);
 

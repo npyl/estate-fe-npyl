@@ -10,8 +10,7 @@ import OptionButton from "@/components/OptionButton";
 import Options from "../Options";
 import { HideText } from "../style";
 import { useOperationsContext } from "../../context";
-import { HistoryButtonRef } from "./HistoryButtons";
-import HistoryButtons from "./HistoryButtons";
+import HistoryButtons, { HistoryButtonRef } from "./HistoryButton";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(
@@ -42,6 +41,7 @@ const ImproveButton: FC<ImproveButtonProps> = ({
     const [styling, setStyling] = useState(false);
 
     const historyRef = useRef<HistoryButtonRef>(null);
+    const [isPast, setPast] = useState(false); // INFO: this guard makes sure every push() happens when the user is looking at the latest improvement; avoid confusion
 
     const { improveDescription, isLoading } = useOperationsContext();
 
@@ -75,10 +75,14 @@ const ImproveButton: FC<ImproveButtonProps> = ({
 
     return (
         <>
-            <HistoryButtons ref={historyRef} onRevert={onRevert} />
+            <HistoryButtons
+                ref={historyRef}
+                onPastChange={setPast}
+                onRevert={onRevert}
+            />
 
             <OptionButton
-                disabled={isLoading}
+                disabled={isLoading || isPast}
                 options={
                     <Options
                         styling={styling}
