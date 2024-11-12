@@ -71,6 +71,16 @@ class CalendarService extends AuthService {
         }
     }
 
+    /**
+     * getWorkspaceCalendars
+     * (Helper)
+     * (users' primaryEmails are the respective calendarIds)
+     */
+    private async getWorkspaceCalendars(auth: OAuth2Client) {
+        const users = await this.getWorkspaceUsers(auth);
+        return users?.map(({ primaryEmail }) => primaryEmail || "") || [];
+    }
+
     async getUsers(userId: number) {
         const auth = await this.getAuthForUser(userId);
         if (!auth) return [];
@@ -144,14 +154,8 @@ class CalendarService extends AuthService {
             }
 
             if (calendarId === "ADMIN_ALL") {
-                // get all users in the workspace
-                const users = await this.getWorkspaceUsers(auth);
-
-                // INFO: users' primaryEmails are the respective calendarIds
-                const calendarIds =
-                    users?.map(({ primaryEmail }) => primaryEmail || "") || [];
-
-                if (!calendarIds) throw new Error("Failed to get emails");
+                const calendarIds = await this.getWorkspaceCalendars(auth);
+                if (!calendarIds) return [];
 
                 const promises = calendarIds.map(
                     this.getEventsFromCalendarPromise(startDate, endDate, auth)
@@ -168,22 +172,91 @@ class CalendarService extends AuthService {
         }
     }
 
+    /**
+     * Helper
+     * @returns a search promise for any calendarId
+     */
+    private getSearchPromise =
+        (
+            q: string,
+            timeMin: string | undefined,
+            timeMax: string | undefined,
+            auth: OAuth2Client
+        ) =>
+        (calendarId: string) => {
+            if (!calendarId) throw new Error("Got an invalid calendarId");
+            return this.searchCalendarEvents(
+                calendarId,
+                q,
+                timeMin,
+                timeMax,
+                auth
+            );
+        };
+
+    /**
+     * Helper
+     * @param calendarId google calendar id (a respective google workspace user's primaryEmail)
+     * @param q the search query
+     * @param timeMin (start)
+     * @param timeMax (end)
+     * @param auth (oauth object)
+     */
+    private async searchCalendarEvents(
+        calendarId: string,
+        q: string,
+        timeMin: string | undefined,
+        timeMax: string | undefined,
+        auth: OAuth2Client
+    ) {
+        const res = await this.calendar.events.list({
+            calendarId: calendarId || "primary",
+            timeMin,
+            timeMax,
+            q,
+            auth,
+        });
+
+        return res?.data?.items || [];
+    }
+
     async searchEvents(
         userId: number,
         query: string,
         startDate: string | undefined,
-        endDate: string | undefined
+        endDate: string | undefined,
+        calendarId?: TCalendarIdFilter
     ) {
-        const auth = await this.getAuthForUser(userId);
-        if (!auth) return { data: { items: [] } };
+        try {
+            const auth = await this.getAuthForUser(userId);
+            if (!auth) return [];
 
-        return await this.calendar.events.list({
-            calendarId: "primary",
-            timeMin: startDate,
-            timeMax: endDate,
-            q: query,
-            auth,
-        });
+            console.log("SEARCH: ", calendarId);
+
+            if (calendarId !== "ADMIN_ALL") {
+                return await this.searchCalendarEvents(
+                    calendarId || "primary",
+                    query,
+                    startDate,
+                    endDate,
+                    auth
+                );
+            }
+
+            if (calendarId === "ADMIN_ALL") {
+                const calendarIds = await this.getWorkspaceCalendars(auth);
+                if (!calendarIds) throw new Error("Failed to get emails");
+
+                const promises = calendarIds.map(
+                    this.getSearchPromise(query, startDate, endDate, auth)
+                );
+
+                return (await Promise.all(promises))?.flat() || [];
+            }
+        } catch (ex) {
+            console.error(ex);
+            return [];
+        }
     }
 
     /**

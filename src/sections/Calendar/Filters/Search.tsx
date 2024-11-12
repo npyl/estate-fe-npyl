@@ -4,6 +4,7 @@ import { useSearchEventsQuery } from "@/services/calendar";
 import { useAuth } from "@/hooks/use-auth";
 import PoppingSearch from "@/components/PoppingSearch";
 import dynamic from "next/dynamic";
+import { useFiltersContext } from "./context";
 const Popover = dynamic(() => import("./Popover"));
 
 // --------------------------------------------------------------------------
@@ -15,8 +16,9 @@ const Search = () => {
     const [query] = useDebounce(search, 500);
 
     const { user } = useAuth();
+    const { calendarId } = useFiltersContext();
     const { data } = useSearchEventsQuery(
-        { userId: user?.id!, query },
+        { userId: user?.id!, query, filters: { calendarId } },
         { skip: !query }
     );
 

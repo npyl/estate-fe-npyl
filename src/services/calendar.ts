@@ -27,6 +27,7 @@ interface SearchEventsReq extends BasicEventReq {
     query: string;
     startDate?: string;
     endDate?: string;
+    filters?: Partial<EventFilters>;
 }
 
 interface DeleteEventReq extends BasicEventReq {
@@ -144,12 +145,13 @@ export const calendar = createApi({
         }),
 
         searchEvents: builder.query<TCalendarEvent[], SearchEventsReq>({
-            query: ({ userId, query, startDate, endDate }) => ({
+            query: ({ userId, query, startDate, endDate, filters }) => ({
                 url: `/${userId}/events/search`,
                 params: {
                     startDate,
                     endDate,
                     query,
+                    calendarId: filters?.calendarId,
                 },
             }),
             providesTags: ["Events"],
