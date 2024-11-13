@@ -1,19 +1,17 @@
 import dynamic from "next/dynamic";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { IIntegration } from "src/types/integrations";
-import IntegrationItem from "./Item";
+import IntegrationItem from "../Item";
 import { IntegrationSite } from "@/types/listings";
-import Stack from "@mui/material/Stack";
-import RightMoveItem from "./RightMoveItem";
 const EditDialog = dynamic(() => import("./EditDialog"));
+
+// const DISABLED: IntegrationSite[] = ["XE", "FERIMMO"];
 
 const INTEGRATION_SITES: IntegrationSite[] = [
     "SPITOGATOS",
     "PLOT_GR",
     "JAMES_EDITION",
 ];
-
-// const DISABLED: IntegrationSite[] = ["XE", "FERIMMO"];
 
 const StandardItems = () => {
     const [selectedIntegration, setSelectedIntegration] =
@@ -46,11 +44,4 @@ const StandardItems = () => {
     );
 };
 
-const Integrations: React.FC = () => (
-    <Stack spacing={1}>
-        <StandardItems />
-        <RightMoveItem />
-    </Stack>
-);
-
-export default Integrations;
+export default StandardItems;

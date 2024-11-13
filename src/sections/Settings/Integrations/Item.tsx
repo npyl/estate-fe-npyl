@@ -7,7 +7,7 @@ import {
     IconButton,
     Stack,
 } from "@mui/material";
-import { List, ListItem } from "src/components/List";
+import { List, ListItem } from "@/components/List";
 import SoftButton from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
 import { useGetIntegrationsQuery } from "@/services/company";
@@ -16,7 +16,7 @@ import { IntegrationSite } from "@/types/listings";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegration } from "@/types/integrations";
-import ItemSkeleton from "./Skeleton";
+import ItemSkeleton from "./StandardItems/Skeleton";
 
 interface Props {
     type: IntegrationSite;

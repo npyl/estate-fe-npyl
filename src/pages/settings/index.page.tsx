@@ -12,10 +12,10 @@ import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { AdminGuard } from "@/components/authentication/admin-guard";
 import dynamic from "next/dynamic";
 // ...
-import CompanyInformation from "./(Company)";
-const Integrations = dynamic(() => import("./(Integrations)"));
-const UserPage = dynamic(() => import("./components/user"));
-const PermissionPage = dynamic(() => import("./components/permission"));
+import CompanyInformation from "@/sections/Settings/Company";
+const Integrations = dynamic(() => import("@/sections/Settings/Integrations"));
+const UserPage = dynamic(() => import("@/sections/Settings/user"));
+const PermissionPage = dynamic(() => import("@/sections/Settings/permission"));
 
 const SettingsPage: NextPage = () => {
     const { t } = useTranslation();

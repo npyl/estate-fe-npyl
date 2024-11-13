@@ -23,19 +23,22 @@ import {
     useSavePresetMutation,
     useSaveRelationshipMutation,
 } from "src/services/security";
-import { useAllUsersQuery, useDeleteUserMutation } from "src/services/user";
-import SavePresetDialog from "../PresetModal";
+import { useAllUsersQuery } from "src/services/user";
+import SavePresetDialog from "./PresetModal";
 import PermissionsTable from "./PermissionsTable";
 
 const PermissionPage: FC = () => {
     const [openPresetModal, setOpenPresetModal] = useState<boolean>(false);
     const { data: presets } = useGetPresetsQuery();
     const { t } = useTranslation();
-    // const [savePreset] = useSavePresetMutation();
+
     const [saveRelationship, { isLoading }] = useSaveRelationshipMutation();
     const [savePreset] = useSavePresetMutation();
     const [deletePreset] = useDeletePresetMutation();
-    const [deleteUser] = useDeleteUserMutation();
+
+    // const [savePreset] = useSavePresetMutation();
+    // const [deleteUser] = useDeleteUserMutation();
+
     const { data: users } = useAllUsersQuery();
     const {
         data,
