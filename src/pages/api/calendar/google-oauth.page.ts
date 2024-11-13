@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "./_service/CalendarService";
+import authService from "./_service/AuthService";
 
 export default async function handler(
     req: NextApiRequest,
@@ -25,7 +25,7 @@ export default async function handler(
     }
 
     try {
-        await calendarService.handleAuthCallback(code, state);
+        await authService.handleAuthCallback(code, state);
 
         sendCloseWindowResponse(res, true);
     } catch (ex) {

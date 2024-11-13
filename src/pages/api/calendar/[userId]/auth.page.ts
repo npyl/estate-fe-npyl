@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "../_service/CalendarService";
 import { toNumber } from "../../util";
+import authService from "../_service/AuthService";
 
 export default async function handler(
     req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler(
 
         // POST: authenticate user with id `userId`
         if (req.method === "POST") {
-            const authUrl = await calendarService.getAuthUrl(iUserId);
+            const authUrl = await authService.getAuthUrl(iUserId);
             res.status(200).json({
                 authUrl,
             });
@@ -21,14 +21,14 @@ export default async function handler(
 
         // GET: check if user with id `userId` is authenticated
         if (req.method === "GET") {
-            const isAuthenticatedRes = await calendarService.isAuthenticated(
+            const isAuthenticatedRes = await authService.isAuthenticated(
                 iUserId
             );
             res.status(200).json(isAuthenticatedRes);
         }
 
         if (req.method === "DELETE") {
-            await calendarService.revokeAuthentication(iUserId);
+            await authService.revokeAuthentication(iUserId);
             res.status(200).json({});
         }
     } catch (error) {

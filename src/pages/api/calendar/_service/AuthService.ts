@@ -132,9 +132,7 @@ class AuthService {
         }
     }
 
-    protected async getAuthForUser(
-        userId: number
-    ): Promise<OAuth2Client | null> {
+    async getAuthForUser(userId: number): Promise<OAuth2Client | null> {
         let userTokens = this.userTokens.get(userId);
         if (!userTokens) return null;
 
@@ -168,7 +166,7 @@ class AuthService {
     /**
      * Receive profile of an authenticated user
      */
-    protected async getUserInfo(
+    async getUserInfo(
         auth: OAuth2Client
     ): Promise<GoogleCalendarUserInfo | null> {
         try {
@@ -219,4 +217,22 @@ class AuthService {
     }
 }
 
-export default AuthService;
+// ---------------------------------------------------------------------
+
+// singleton.ts
+const AuthServiceSingleton = () => {
+    return new AuthService();
+};
+
+declare global {
+    // eslint-disable-next-line no-var
+    var authGlobal: undefined | ReturnType<typeof AuthServiceSingleton>;
+}
+
+const authService = globalThis.authGlobal ?? AuthServiceSingleton();
+
+if (process.env.NODE_ENV !== "production") globalThis.authGlobal = authService;
+
+// ------------------------------------------------------------------------------
+
+export default authService;

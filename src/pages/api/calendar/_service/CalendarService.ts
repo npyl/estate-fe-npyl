@@ -1,9 +1,9 @@
 import { calendar, calendar_v3 } from "@googleapis/calendar";
 import { admin, admin_directory_v1 } from "@googleapis/admin";
-import AuthService from "./AuthService";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 import { OAuth2Client } from "google-auth-library";
 import { TCalendarIdFilter } from "@/types/calendar";
+import authService from "./AuthService";
 
 interface CalendarService$IsAdminRes {
     isAdmin: boolean;
@@ -14,12 +14,11 @@ interface CalendarService$IsAdminRes {
 // e.g. npylarinos@digipath.gr -> digipath.gr
 const WORKSPACE_DOMAIN = process.env.GOOGLE_WORKSPACE_DOMAIN;
 
-class CalendarService extends AuthService {
+class CalendarService {
     private calendar: calendar_v3.Calendar;
     private directory: admin_directory_v1.Admin;
 
     constructor() {
-        super();
         this.calendar = calendar({ version: "v3" });
         this.directory = admin({ version: "directory_v1" });
     }
@@ -32,10 +31,10 @@ class CalendarService extends AuthService {
      * @returns whether the property-pro user happens to be the google workspace's admin + returns the google workspace user anyway to support ui functions
      */
     async isAdmin(userId: number): Promise<CalendarService$IsAdminRes> {
-        const auth = await this.getAuthForUser(userId);
+        const auth = await authService.getAuthForUser(userId);
         if (!auth) return { isAdmin: false };
 
-        const userInfo = await this.getUserInfo(auth);
+        const userInfo = await authService.getUserInfo(auth);
         if (!userInfo) return { isAdmin: false };
 
         try {
@@ -82,7 +81,7 @@ class CalendarService extends AuthService {
     }
 
     async getUsers(userId: number) {
-        const auth = await this.getAuthForUser(userId);
+        const auth = await authService.getAuthForUser(userId);
         if (!auth) return [];
 
         return await this.getWorkspaceUsers(auth);
@@ -141,7 +140,7 @@ class CalendarService extends AuthService {
         calendarId?: TCalendarIdFilter
     ) {
         try {
-            const auth = await this.getAuthForUser(userId);
+            const auth = await authService.getAuthForUser(userId);
             if (!auth) return [];
 
             if (calendarId !== "ADMIN_ALL") {
@@ -228,7 +227,7 @@ class CalendarService extends AuthService {
         calendarId?: TCalendarIdFilter
     ) {
         try {
-            const auth = await this.getAuthForUser(userId);
+            const auth = await authService.getAuthForUser(userId);
             if (!auth) return [];
 
             console.log("SEARCH: ", calendarId);
@@ -271,7 +270,7 @@ class CalendarService extends AuthService {
         body: calendar_v3.Schema$Event,
         userKey?: string
     ) {
-        const auth = await this.getAuthForUser(userId);
+        const auth = await authService.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
         const res = await this.calendar.events.insert({
@@ -289,7 +288,7 @@ class CalendarService extends AuthService {
     async updateEvent(userId: number, body: calendar_v3.Schema$Event) {
         if (!body.id) throw new Error("Event ID is required!");
 
-        const auth = await this.getAuthForUser(userId);
+        const auth = await authService.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
         return await this.calendar.events.update({
@@ -301,7 +300,7 @@ class CalendarService extends AuthService {
     }
 
     async deleteEvent(userId: number, eventId: string) {
-        const auth = await this.getAuthForUser(userId);
+        const auth = await authService.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
         return await this.calendar.events.delete({
