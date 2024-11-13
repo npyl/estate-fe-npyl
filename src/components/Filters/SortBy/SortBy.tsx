@@ -31,12 +31,7 @@ const FilterSortBy: FC<FilterSortByProps> = ({
 
     return (
         <>
-            <StyledStack
-                ref={anchorRef}
-                open={isOpen}
-                onClick={openPopover}
-                mt={1}
-            >
+            <StyledStack ref={anchorRef} open={isOpen} onClick={openPopover}>
                 <SwapVertIcon />
 
                 {belowMd ? null : (

@@ -1,4 +1,5 @@
 import { SpaceBetween } from "@/components/styled";
+import Box from "@mui/material/Box";
 import Paper, { PaperProps } from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { ReactNode } from "react";
@@ -26,7 +27,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
             <Stack direction="row" spacing={0.3} pt={1} overflow="auto hidden">
                 {filters}
             </Stack>
-            {controls}
+            <Box mt={1}>{controls}</Box>
         </SpaceBetween>
 
         {bottomContent}

@@ -33,13 +33,7 @@ const AgreementsFiltersBar: React.FC<Props> = ({ customer, onClickNew }) => {
                 </>
             }
             controls={
-                <FilterButton
-                    sx={{
-                        mt: 1,
-                    }}
-                    endIcon={<AddIcon />}
-                    onClick={onClickNew}
-                >
+                <FilterButton endIcon={<AddIcon />} onClick={onClickNew}>
                     {t("New")}
                 </FilterButton>
             }
