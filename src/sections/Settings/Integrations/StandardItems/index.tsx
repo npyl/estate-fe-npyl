@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
 import { IIntegration } from "src/types/integrations";
-import IntegrationItem from "../Item";
+import IntegrationItem from "./Item";
 import { IntegrationSite } from "@/types/listings";
 const EditDialog = dynamic(() => import("./EditDialog"));
 

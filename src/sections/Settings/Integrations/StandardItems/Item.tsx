@@ -16,7 +16,7 @@ import { IntegrationSite } from "@/types/listings";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegration } from "@/types/integrations";
-import ItemSkeleton from "./StandardItems/Skeleton";
+import ItemSkeleton from "../Skeleton";
 
 interface Props {
     type: IntegrationSite;
@@ -96,10 +96,6 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                             <ListItem
                                 label={t("App Key")}
                                 value={integration?.appKey || ""}
-                            />
-                            <ListItem
-                                label={t("BranchId")}
-                                value={integration?.branchId || ""}
                             />
                         </List>
                     </Grid>
