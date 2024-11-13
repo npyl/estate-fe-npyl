@@ -13,6 +13,7 @@ import {
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
 import dynamic from "next/dynamic";
+import { DAY_CELL_HEIGHT } from "@/constants/calendar";
 const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
 
 // ------------------------------------------------------------------------
@@ -39,7 +40,7 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
             ? theme.palette.grey[100]
             : theme.palette.neutral?.[800],
 
-    height: "500px",
+    height: `${10 * DAY_CELL_HEIGHT + 10}px`, // 7am - 5pm
     borderBottomLeftRadius: "15px",
     borderBottomRightRadius: "15px",
 
