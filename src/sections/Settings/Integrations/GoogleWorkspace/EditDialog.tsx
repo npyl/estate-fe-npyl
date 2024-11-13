@@ -1,3 +1,4 @@
+import { useUpdateGoogleWorkspaceIntegration } from "@/services/company";
 import { FC } from "react";
 
 interface Props {
@@ -5,6 +6,8 @@ interface Props {
 }
 
 const EditDialog: FC<Props> = ({ onClose }) => {
+    const [update, { isLoading }] = useUpdateGoogleWorkspaceIntegration();
+
     return null;
 };
 

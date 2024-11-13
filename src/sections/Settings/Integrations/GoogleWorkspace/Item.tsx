@@ -1,8 +1,8 @@
-import { useAuth } from "@/hooks/use-auth";
 import { FC } from "react";
 import BaseItem from "../BaseItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
+import { useIsGoogleWorkspaceIntegrated } from "@/services/company";
 
 interface PlaceholderProps extends TypographyProps {
     integrated: boolean;
@@ -31,8 +31,7 @@ interface ItemProps {
 }
 
 const Item: FC<ItemProps> = ({ onEdit }) => {
-    const { user } = useAuth();
-    const isIntegrated = true;
+    const { isIntegrated } = useIsGoogleWorkspaceIntegrated();
 
     return (
         <BaseItem type="Google Workspace" onEdit={onEdit}>
