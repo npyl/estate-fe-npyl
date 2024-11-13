@@ -34,9 +34,9 @@ function isTokenExpired(expiryDate: number): boolean {
 }
 
 class AuthService {
-    protected userTokens: Map<number, UserToken> = new Map();
-    protected oauth2Client: OAuth2Client;
-    private tokenStorage: TokenStorage;
+    userTokens: Map<number, UserToken> = new Map();
+    oauth2Client: OAuth2Client;
+    tokenStorage: TokenStorage;
 
     constructor() {
         this.oauth2Client = new OAuth2Client(
