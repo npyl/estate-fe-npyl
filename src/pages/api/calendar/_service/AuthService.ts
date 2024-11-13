@@ -22,6 +22,13 @@ const SCOPES = [
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ];
 
+const COMPANY_ID = process.env.COMPANY_ID;
+const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+
+const baseUrl = `${process.env.BACKEND_URL}/company/google-workspace-credentials`;
+
+type TBackendHeaders = HeadersInit & { "Company-Id"?: string };
+
 /**
  * Check if the current access token is expired
  * @param expiryDate Token expiry timestamp
@@ -33,23 +40,50 @@ function isTokenExpired(expiryDate: number): boolean {
     return Date.now() >= expiryDate - bufferTime;
 }
 
+/**
+ * getOauth2ClientForCompanyId
+ * @param Authorization `Bearer ${...}`
+ * @param companyId
+ * @returns Receive google workspace credentials from backend
+ */
+const getOauth2ClientForCompanyId = async (
+    Authorization: string,
+    companyId: number
+) => {
+    const headers = {
+        Authorization,
+        "Company-Id": companyId,
+    } as unknown as TBackendHeaders;
+
+    // const res = await fetch(baseUrl, {
+    //     headers,
+    // });
+    // if (!res.ok) return null;
+
+    const credentials = {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        // TODO: domain???
+    };
+
+    return new OAuth2Client(
+        credentials.clientId,
+        credentials.clientSecret,
+        REDIRECT_URI
+    );
+};
+
 class AuthService {
     userTokens: Map<number, UserToken> = new Map();
-    oauth2Client: OAuth2Client;
+    oauth2Client!: OAuth2Client;
     tokenStorage: TokenStorage;
 
     constructor() {
-        this.oauth2Client = new OAuth2Client(
-            process.env.GOOGLE_CLIENT_ID,
-            process.env.GOOGLE_CLIENT_SECRET,
-            process.env.GOOGLE_REDIRECT_URI
-        );
-
         this.tokenStorage = new TokenStorage();
         this.tokenStorage.initialize();
     }
 
-    async getAuthUrl(userId: number): Promise<string> {
+    async getAuthUrl(userId: number) {
         const authUrl = this.oauth2Client.generateAuthUrl({
             access_type: "offline",
             scope: SCOPES,
@@ -58,7 +92,7 @@ class AuthService {
         return authUrl;
     }
 
-    async handleAuthCallback(code: string, state: string): Promise<void> {
+    async handleAuthCallback(code: string, state: string) {
         const userId = parseInt(state, 10);
         const { tokens, res } = await this.oauth2Client.getToken(code);
 
@@ -214,6 +248,14 @@ class AuthService {
         } catch (ex) {
             console.error(ex);
         }
+    }
+
+    async initialise(Authorization: string) {
+        console.log(
+            "[AuthService]: Initialising oauth client for companyId: ",
+            COMPANY_ID
+        );
+        await getOauth2ClientForCompanyId(Authorization, +COMPANY_ID!);
     }
 }
 

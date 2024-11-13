@@ -7,7 +7,7 @@ interface IIsIntegratedRes {
     isIntegrated: boolean;
 }
 
-interface IGoogleWorkspaceIntegrationReq {
+export interface IGoogleWorkspaceIntegrationReq {
     clientId: string;
     clientSecret: string;
     domain: string;
