@@ -5,11 +5,11 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useTranslation } from "react-i18next";
 
 interface TaskLabelProps {
-    taskId?: number;
+    taskCode?: string;
     name?: string;
 }
 
-const TaskLabel: FC<TaskLabelProps> = ({ name, taskId }) => {
+const TaskLabel: FC<TaskLabelProps> = ({ name, taskCode }) => {
     const { t } = useTranslation();
     return (
         <Stack spacing={1}>
@@ -27,7 +27,7 @@ const TaskLabel: FC<TaskLabelProps> = ({ name, taskId }) => {
             >
                 <BookmarkBorderIcon color="action" />
                 <Typography variant="body2" pr={0.5}>
-                    {taskId ? `${t("_Task_")}-${taskId}` : t("New Task")}
+                    {taskCode ? `${t("_Task_")}-${taskCode}` : t("New Task")}
                 </Typography>
             </Stack>
 

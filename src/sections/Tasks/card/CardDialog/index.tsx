@@ -51,7 +51,7 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                 DialogContentComponent={StyledDialogContent}
                 DialogActionsComponent={StyledDialogActions}
                 // ...
-                title={<TaskLabel name={task?.name} taskId={task?.id} />}
+                title={<TaskLabel name={task?.name} taskCode={task?.code} />}
                 content={
                     <Content
                         columnId={columnId}
