@@ -51,12 +51,12 @@ const CurrentMonth: FC<CurrentMonthProps> = ({ date }) => {
     return (
         <HighlightTypography
             highlight={isCurrentMonth}
-            textAlign="center"
             variant="h6"
             px={1.5}
             py={0.5}
             m={0.3}
             borderRadius="5px"
+            shape="horizontal"
         >
             {month}
         </HighlightTypography>
