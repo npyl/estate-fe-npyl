@@ -2,7 +2,6 @@ import { FormControl } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { StyledInputLabel } from "@/components/Filters";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import { useAgreementsFiltersContext } from "../FiltersContext";
 import { IAgreementType } from "@/types/agreements";
@@ -33,10 +32,10 @@ export default function FilterType() {
         <FormControl sx={{ minWidth: "130px" }}>
             <StyledInputLabel>{t("Type")}</StyledInputLabel>
             <Select
+                label={t("Type")}
                 multiple
                 value={filters[key] || []}
                 onChange={handleChange}
-                input={<OutlinedInput />}
             >
                 <MenuItem value="">{t("Not selected")}</MenuItem>
                 {OPTIONS.map(({ key, label }) => (
