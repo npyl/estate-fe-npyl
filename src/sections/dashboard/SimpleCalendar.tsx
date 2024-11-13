@@ -32,6 +32,8 @@ const StyledNumbering = styled(Numbering)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
+
+    paddingTop: theme.spacing(1.5),
 }));
 
 const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
@@ -40,7 +42,7 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
             ? theme.palette.grey[100]
             : theme.palette.neutral?.[800],
 
-    height: `${10 * DAY_CELL_HEIGHT + 10}px`, // 7am - 5pm
+    height: `${11 * DAY_CELL_HEIGHT}px`, // 7am - 5pm
     borderBottomLeftRadius: "15px",
     borderBottomRightRadius: "15px",
 
