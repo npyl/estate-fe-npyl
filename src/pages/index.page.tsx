@@ -7,13 +7,15 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useGetDashboardQuery } from "src/services/dashboard";
 import { useGetProfileQuery } from "src/services/user";
-import CardWithIcon from "./dashboard/CardWithIcon";
-import SeoIllustration from "./dashboard/SeoIllustration";
-import AppConversionRates from "./dashboard/app-conversion-rates";
-import AppWelcome from "./dashboard/app-welcome";
-import TotalProperties from "./dashboard/total-properties";
+import CardWithIcon from "../sections/dashboard/CardWithIcon";
+import SeoIllustration from "../sections/dashboard/SeoIllustration";
+import AppConversionRates from "../sections/dashboard/app-conversion-rates";
+import AppWelcome from "../sections/dashboard/app-welcome";
+import TotalProperties from "../sections/dashboard/total-properties";
 import dynamic from "next/dynamic";
-const SimpleCalendar = dynamic(() => import("./dashboard/SimpleCalendar"));
+const SimpleCalendar = dynamic(
+    () => import("../sections/dashboard/SimpleCalendar")
+);
 
 const Dashboard: NextPage = () => {
     const { t } = useTranslation();
