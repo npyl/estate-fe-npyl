@@ -1052,10 +1052,20 @@ const resources = {
             Created: "Created",
             Updated: "Updated",
             Activity: "Activity",
+            // ...
+            "=Task=": "Task",
+            "=Meeting=": "Meeting",
+            "=Tour_in_person=": "Tour in-person",
+            "=Tour_on_line=": "Tour on-line",
         },
     },
     el: {
         translation: {
+            "=Task=": "Εργασία",
+            "=Meeting=": "Συνάντηση",
+            "=Tour_in_person=": "Περιήγηση από κοντά",
+            "=Tour_on_line=": "Περιήγηση online",
+
             Activity: "Δραστηριότητα",
             Created: "Δημιουργήθηκε",
             Updated: "Ενημερώθηκε",
