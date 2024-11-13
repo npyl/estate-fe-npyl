@@ -46,7 +46,7 @@ interface IsAdminRes {
 export const calendar = createApi({
     reducerPath: "calendar",
     baseQuery: fetchBaseQuery({
-        baseUrl: `/api/calendar`,
+        baseUrl: `${process.env.NEXT_PUBLIC_PROXY_API}/calendar`,
     }),
 
     tagTypes: ["IsAuthenticated", "IsAdmin", "Events", "Users"],
@@ -55,6 +55,11 @@ export const calendar = createApi({
         isAuthenticated: builder.query<IsAuthenticatedRes, UserId>({
             query: (userId) => ({
                 url: `/${userId}/auth`,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
             }),
             providesTags: ["IsAuthenticated"],
         }),

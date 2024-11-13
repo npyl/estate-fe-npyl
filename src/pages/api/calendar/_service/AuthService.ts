@@ -251,11 +251,14 @@ class AuthService {
     }
 
     async initialise(Authorization: string) {
-        console.log(
-            "[AuthService]: Initialising oauth client for companyId: ",
-            COMPANY_ID
+        if (this.oauth2Client) return;
+
+        console.log("[AuthService]: getting oauth for companyId: ", COMPANY_ID);
+
+        this.oauth2Client = await getOauth2ClientForCompanyId(
+            Authorization,
+            +COMPANY_ID!
         );
-        await getOauth2ClientForCompanyId(Authorization, +COMPANY_ID!);
     }
 }
 

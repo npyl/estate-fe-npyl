@@ -8,7 +8,6 @@ export default async function handler(
 ) {
     try {
         const { userId } = req.query;
-
         const iUserId = toNumber(userId);
 
         // POST: authenticate user with id `userId`
@@ -21,6 +20,10 @@ export default async function handler(
 
         // GET: check if user with id `userId` is authenticated
         if (req.method === "GET") {
+            const Authorization = req.headers.authorization;
+            if (!Authorization) throw new Error("Invalid headers");
+            authService.initialise(Authorization);
+
             const isAuthenticatedRes = await authService.isAuthenticated(
                 iUserId
             );
