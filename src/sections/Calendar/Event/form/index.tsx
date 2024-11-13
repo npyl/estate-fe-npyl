@@ -9,8 +9,9 @@ import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline"
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
-import RHFLocation from "./RHFLocation";
 import Pickers from "./Pickers";
+import dynamic from "next/dynamic";
+const RHFLocation = dynamic(() => import("./RHFLocation"));
 
 const TextFieldSx = {
     px: 0.5,
