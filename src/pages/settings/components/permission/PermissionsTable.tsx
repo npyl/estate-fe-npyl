@@ -11,7 +11,7 @@ import { FC } from "react";
 
 import { useTranslation } from "react-i18next";
 import NestedTable from "./NestedTable";
-import { StateTypes, categories } from "./constants";
+import { StateTypes, categories } from "../../../../constants/security";
 
 interface PermissionsTableProps {}
 

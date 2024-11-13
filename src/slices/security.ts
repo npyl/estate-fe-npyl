@@ -2,7 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { IRoles } from "src/interfaces/roles";
-import { initRoles } from "src/pages/security/components/permission/constants";
+import { initRoles } from "@/constants/security";
 import type { RootState } from "src/store";
 
 interface notesState {

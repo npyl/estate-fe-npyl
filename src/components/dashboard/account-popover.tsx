@@ -1,19 +1,20 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
-    Box,
     Divider,
     Link,
     ListItemIcon,
     ListItemText,
     MenuItem,
     Popover,
+    Stack,
     Typography,
 } from "@mui/material";
-import type { FC } from "react";
+import { useCallback, type FC } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/use-auth";
 import { UserCircle as UserCircleIcon } from "../../assets/icons/user-circle";
 import { useTranslation } from "react-i18next";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 interface AccountPopoverProps {
     anchorEl: null | Element;
@@ -27,7 +28,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
     const { t } = useTranslation();
     const { logout } = useAuth();
 
-    const handleLogout = async (): Promise<void> => {
+    const handleLogout = useCallback(async () => {
         try {
             onClose?.();
             await logout();
@@ -36,7 +37,8 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             console.error(err);
             toast.error(t("Unable to logout"));
         }
-    };
+    }, []);
+
     return (
         <Popover
             anchorEl={anchorEl}
@@ -47,28 +49,25 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             disableScrollLock={true}
             keepMounted
             onClose={onClose}
-            open={!!open}
-            PaperProps={{ sx: { width: 300 } }}
+            open={Boolean(open)}
             transitionDuration={0}
+            slotProps={{
+                paper: {
+                    sx: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        py: 1,
+                    },
+                },
+            }}
             {...other}
         >
-            <Box
-                sx={{
-                    alignItems: "center",
-                    p: 2,
-                    display: "flex",
-                }}
-            >
-                <Box
-                    sx={{
-                        ml: 1,
-                    }}
-                >
-                    <Typography variant="body1">{user?.username}</Typography>
-                </Box>
-            </Box>
+            <Typography variant="body1" py={1} px={1.5} textAlign="center">
+                {user?.username}
+            </Typography>
             <Divider />
-            <Box sx={{ my: 1 }}>
+            <Stack spacing={1}>
                 <Link href="/profile">
                     <MenuItem>
                         <ListItemIcon>
@@ -78,6 +77,20 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
                             primary={
                                 <Typography variant="body1">
                                     {t("Profile")}
+                                </Typography>
+                            }
+                        />
+                    </MenuItem>
+                </Link>
+                <Link href="/settings">
+                    <MenuItem>
+                        <ListItemIcon>
+                            <SettingsIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={
+                                <Typography variant="body1">
+                                    {t("Settings")}
                                 </Typography>
                             }
                         />
@@ -96,7 +109,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
                         }
                     />
                 </MenuItem>
-            </Box>
+            </Stack>
         </Popover>
     );
 };

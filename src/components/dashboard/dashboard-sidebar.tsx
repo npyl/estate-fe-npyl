@@ -127,12 +127,6 @@ const getSections = (
                 path: "/calendar",
                 icon: <CalendarTodayIcon fontSize="small" />,
             },
-            {
-                title: t("Security"),
-                path: "/security",
-                icon: <UsersIcon fontSize="small" />,
-                adminOnly: true,
-            },
         ],
     },
 ];

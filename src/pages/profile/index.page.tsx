@@ -8,13 +8,9 @@ import { SecurityProvider } from "src/contexts/security";
 import { useTabsContext } from "src/contexts/tabs";
 import { useGetUserQuery } from "src/services/user";
 import TabPanel from "@/components/Tabs";
-// ...
-const CompanyInformation = dynamic(() => import("./(Company)"));
-const Integrations = dynamic(() => import("./(Integrations)"));
 
 import { AuthGuard } from "@/components/authentication/auth-guard";
 
-import dynamic from "next/dynamic";
 import { useAuth } from "@/hooks/use-auth";
 
 const Profile: NextPage = () => {
@@ -23,8 +19,6 @@ const Profile: NextPage = () => {
     const { data: profile } = useGetUserQuery(+user?.id!);
     const { pushTab } = useTabsContext();
     const [tab, setTab] = useState(0);
-
-    const isAdmin = profile?.isAdmin;
 
     useEffect(() => {
         if (profile) {
@@ -42,22 +36,10 @@ const Profile: NextPage = () => {
         <Container maxWidth="md">
             <Tabs value={tab} onChange={handleTabChange}>
                 <Tab label={t("User Profile")} value={0} />
-                {isAdmin && <Tab label={t("Company Information")} value={1} />}
-                {isAdmin && <Tab label={t("Integrations")} value={2} />}
             </Tabs>
             <TabPanel value={tab} index={0}>
                 {profile ? <ViewUser user={profile} /> : null}
             </TabPanel>
-            {isAdmin && (
-                <>
-                    <TabPanel value={tab} index={1}>
-                        <CompanyInformation />
-                    </TabPanel>
-                    <TabPanel value={tab} index={2}>
-                        <Integrations />
-                    </TabPanel>
-                </>
-            )}
         </Container>
     );
 };

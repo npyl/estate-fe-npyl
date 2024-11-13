@@ -8,7 +8,7 @@ import {
     useState,
 } from "react";
 import { IPreset, IRolesReq, ITargets } from "src/interfaces/roles";
-import { initRoles } from "src/pages/security/components/permission/constants";
+import { initRoles } from "@/constants/security";
 import {
     useGetPresetByIdQuery,
     useGetRelationshipQuery,

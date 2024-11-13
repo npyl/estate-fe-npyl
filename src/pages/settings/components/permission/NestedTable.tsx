@@ -23,7 +23,7 @@ import {
     subcategories2,
     subcategories3,
     subcategories4,
-} from "./constants";
+} from "../../../../constants/security";
 import { resolveCategory } from "./utils";
 
 type Props = {
