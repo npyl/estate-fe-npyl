@@ -1,8 +1,22 @@
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
-import { getOverlapCount, getTimeFromISO } from "./util";
 import { TCalendarEvent } from "../types";
 const CalendarEvent = dynamic(() => import("../Event"));
+
+// ------------------------------------------------------------------
+
+// INFO: lexicographically compare strings
+const getOverlapCount = (date: string, events: TCalendarEvent[]) => {
+    let count = 0;
+
+    events.forEach(({ startDate, endDate }) => {
+        if (date >= startDate && date <= endDate) {
+            count++;
+        }
+    });
+
+    return count;
+};
 
 // ------------------------------------------------------------------
 
@@ -10,29 +24,26 @@ const useTimemappedEvents = (
     events: TCalendarEvent[],
     onEventClick?: (e: TCalendarEvent) => void
 ) => {
-    const EVENTS = useMemo(() => {
-        // Fill in startDate-endDate map
-        const map = new Map<string, string>();
+    return useMemo(() => {
+        const all: TCalendarEvent[] = [];
 
         return events.map((e) => {
-            map.set(getTimeFromISO(e.startDate), getTimeFromISO(e.endDate));
+            const c = getOverlapCount(e.startDate, all);
 
-            console.log("Checking for: ", map);
-
-            const overlapCount = getOverlapCount(e.startDate, map);
-
-            return (
+            const res = (
                 <CalendarEvent
                     key={e.id}
                     event={e}
-                    overlapCount={overlapCount}
+                    overlapCount={c}
                     onClick={onEventClick}
                 />
             );
+
+            all.push(e);
+
+            return res;
         });
     }, [events, onEventClick]);
-
-    return EVENTS;
 };
 
 export default useTimemappedEvents;

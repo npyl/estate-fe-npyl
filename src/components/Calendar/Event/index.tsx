@@ -31,7 +31,7 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 // ------------------------------------------------------------------------------------
 
 // left-factor
-const LF = 2;
+const LF = 10;
 
 const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
