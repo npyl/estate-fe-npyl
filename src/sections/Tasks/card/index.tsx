@@ -1,5 +1,5 @@
 import { Draggable } from "react-beautiful-dnd";
-import { IKanbanCard } from "@/types/tasks";
+import { IKanbanCardShort } from "@/types/tasks";
 import { StyledPaper } from "./styled";
 import dynamic from "next/dynamic";
 import Header from "./Header";
@@ -14,11 +14,11 @@ const CardDetails = dynamic(() => import("./CardDialog"));
 type Props = {
     index: number;
     columnId: number;
-    card: IKanbanCard;
+    card: IKanbanCardShort;
 };
 
 export default function TaskCard({ card, index, columnId }: Props) {
-    const { name, attachments, completed, priority, assignee } = card || {};
+    const { name, completed, priority, assignees } = card || {};
 
     const [isDetailsOpen, openDetails, closeDetails] = useDialog();
 
@@ -40,20 +40,16 @@ export default function TaskCard({ card, index, columnId }: Props) {
                     >
                         <Header
                             taskId={card.id}
-                            assignee={assignee}
+                            assignee={assignees[0]}
                             completed={completed}
                         />
 
-                        <Content
-                            name={name}
-                            priority={priority}
-                            attachments={attachments}
-                        />
+                        <Content name={name} priority={priority} />
 
                         <Box flexGrow={2} />
 
                         <Footer
-                            commentsCount={card.comments.length}
+                            commentsCount={card.commentsCount}
                             createdAt={card.createdAt}
                         />
                     </StyledPaper>
@@ -62,7 +58,7 @@ export default function TaskCard({ card, index, columnId }: Props) {
 
             {isDetailsOpen ? (
                 <CardDetails
-                    task={card}
+                    taskId={card.id}
                     columnId={columnId}
                     onClose={closeDetails}
                 />

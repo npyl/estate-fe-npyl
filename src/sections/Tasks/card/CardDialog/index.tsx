@@ -13,7 +13,10 @@ import Actions from "./Actions";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
-import { useCreateOrUpdateTaskMutation } from "@/services/tasks";
+import {
+    useCreateOrUpdateTaskMutation,
+    useGetCardQuery,
+} from "@/services/tasks";
 import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 
 interface DetailsProps {
@@ -66,4 +69,20 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     );
 };
 
-export default Details;
+// ------------------------------------------------------------------
+
+interface WrapperProps extends Omit<DetailsProps, "task"> {
+    taskId?: number;
+}
+
+const Wrapper: FC<WrapperProps> = ({ taskId, ...props }) => {
+    const { data: task } = useGetCardQuery(taskId!, {
+        skip: taskId === undefined,
+    });
+
+    if (taskId && task) return <Details task={task} {...props} />;
+
+    return <Details {...props} />;
+};
+
+export default Wrapper;

@@ -4,7 +4,7 @@ import { FC, MouseEvent, useCallback, useRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-import { IUser } from "@/types/user";
+import { IUserMini } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@/components/Avatar";
@@ -47,7 +47,7 @@ const AvatarSx = {
 
 interface HeaderProps {
     taskId: number;
-    assignee: IUser;
+    assignee: IUserMini;
     completed: boolean;
 }
 

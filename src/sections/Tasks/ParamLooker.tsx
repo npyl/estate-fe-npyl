@@ -1,20 +1,23 @@
 import TaskDialog from "@/sections/Tasks/card/CardDialog";
-import { useLazyGetCardQuery } from "@/services/tasks";
-import { IKanbanCard } from "@/types/tasks";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
-const isValidTaskId = (taskId?: string | null) => {
-    if (!taskId) return false;
+const getValidTaskId = (taskId?: string | null) => {
     try {
+        if (!taskId) return -1;
+
         const parsed = parseInt(taskId, 10);
-        return (
-            !isNaN(parsed) && parsed > 0 && taskId.trim() === parsed.toString()
-        );
+
+        const isValid =
+            !isNaN(parsed) && parsed > 0 && taskId.trim() === parsed.toString();
+
+        if (!isValid) return -1;
+
+        return parsed;
     } catch (ex) {
         console.error(ex);
-        return false;
+        return -1;
     }
 };
 
@@ -23,22 +26,16 @@ const ParamLooker = () => {
 
     const searchParams = useSearchParams();
     const taskId = searchParams.get("taskId");
+    const iTaskId = getValidTaskId(taskId);
 
-    const [getTask] = useLazyGetCardQuery();
-
-    const [task, setTask] = useState<IKanbanCard>();
-    const handleClose = useCallback(() => {
-        setTask(undefined);
-        router.replace("/tasks");
-    }, []);
-
-    useEffect(() => {
-        if (!isValidTaskId(taskId)) return;
-        getTask(+taskId!).unwrap().then(setTask);
-    }, [taskId]);
+    const handleClose = useCallback(() => router.replace("/tasks"), []);
 
     return (
-        <>{task ? <TaskDialog task={task} onClose={handleClose} /> : null}</>
+        <>
+            {iTaskId !== -1 ? (
+                <TaskDialog taskId={iTaskId} onClose={handleClose} />
+            ) : null}
+        </>
     );
 };
 

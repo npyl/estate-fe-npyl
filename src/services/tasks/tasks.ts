@@ -66,7 +66,7 @@ export const tasks = createApi({
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
-            query: (params) => ({ url: "", params }),
+            query: (params) => ({ url: "" /* params */ }),
             serializeQueryArgs: () => "", // INFO: make sure we ignore filter `params` for optimistic updates to take place!
             providesTags: ["Board"],
         }),
@@ -246,6 +246,7 @@ export const {
     useDeleteColumnMutation,
 
     // Cards
+    useGetCardQuery,
     useLazyGetCardQuery,
     useMoveCardMutation,
     useReorderCardMutation,

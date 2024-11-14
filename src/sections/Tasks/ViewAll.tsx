@@ -17,7 +17,7 @@ const Content = () => {
 
     return (
         <>
-            {board ? <Board board={board} /> : null}
+            {board ? <Board columns={board?.columns} /> : null}
 
             {isLoading ? <SkeletonKanbanColumn /> : null}
         </>

@@ -1,11 +1,19 @@
 import Column, { DroppableTypeTask } from "./column";
 import { DropResult } from "react-beautiful-dnd";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { useMoveCardMutation, useReorderCardMutation } from "@/services/tasks";
-import { IKanbanBoard } from "@/types/tasks";
+import { IKanbanColumn } from "@/types/tasks";
 import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveColumns";
 import React from "react";
+
+// --------------------------------------------------------------------
+
+const getColumn = (c: IKanbanColumn) => (
+    <Column key={c.id} id={c.id} column={c} />
+);
+
+// --------------------------------------------------------------------
 
 const COLUMNS = {
     xs: 1,
@@ -32,26 +40,14 @@ const columnId = (str?: string) => {
 };
 
 interface Props {
-    board: IKanbanBoard;
+    columns: IKanbanColumn[];
 }
 
-const Board: FC<Props> = ({ board }) => {
+const Board: FC<Props> = ({ columns }) => {
     const responsiveColumns = useResponsiveColumns(COLUMNS);
 
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
-
-    const items = useMemo(
-        () =>
-            board?.columnOrder.map((columnId) => {
-                // get column for id
-                const column = board.columns?.find((c) => c.id === columnId);
-                if (!column) return null;
-
-                return <Column id={columnId} key={columnId} column={column} />;
-            }),
-        [board?.columnOrder, board?.columns]
-    );
 
     const handleDragEnd = ({
         source,
@@ -120,7 +116,7 @@ const Board: FC<Props> = ({ board }) => {
             onDragEnd={handleDragEnd}
             draggableSx={{ justifyContent: "flex-start" }}
         >
-            {items}
+            {columns?.map(getColumn)}
         </TwoDimentionsDnd>
     );
 };

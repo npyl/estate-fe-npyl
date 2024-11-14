@@ -1,4 +1,4 @@
-import { IUser } from "@/types/user";
+import { IUser, IUserMini } from "@/types/user";
 
 export interface BoardFiltersReq {
     search?: string;
@@ -48,6 +48,18 @@ export type IKanbanCard = {
     updatedAt: string;
 };
 
+interface IKanbanCardShort {
+    id: number;
+    name: string;
+    uniqueCode: string;
+    priority: number;
+    attachmentsCount: number;
+    commentsCount: number;
+    completed: boolean;
+    assignees: IUserMini[];
+    createdAt: string;
+}
+
 // INFO: sent to Backend directly
 export type IKanbanCardPOST = {
     id?: number;
@@ -79,10 +91,12 @@ export type IKanbanColumn = {
     cardIds: number[];
     cardOrder: number[];
 };
-export type IKanbanColumnPOST = Partial<IKanbanColumn>;
+type IKanbanColumnPOST = Partial<IKanbanColumn>;
 
-export type IKanbanBoard = {
-    cards: IKanbanCard[];
+type IKanbanBoard = {
+    cards: IKanbanCardShort[];
     columns: IKanbanColumn[];
     columnOrder: number[];
 };
+
+export type { IKanbanColumnPOST, IKanbanCardShort, IKanbanBoard };
