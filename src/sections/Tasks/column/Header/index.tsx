@@ -2,14 +2,18 @@ import { SpaceBetween } from "@/components/styled";
 import { Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 const Controls = dynamic(() => import("./Controls"));
+const DoneIndicator = dynamic(() => import("./DoneIndicator"));
 
 type Props = {
     columnId: number;
     name: string;
     count: number;
+    done: boolean;
 };
 
-export default function Header({ name, count, columnId }: Props) {
+export default function Header({ name, count, done, columnId }: Props) {
+    const isDoneSupported = !done && count === 0;
+
     return (
         <SpaceBetween alignItems="center" spacing={1}>
             <Stack
@@ -31,9 +35,10 @@ export default function Header({ name, count, columnId }: Props) {
                 <Typography variant="h6" noWrap>
                     ({count})
                 </Typography>
+                {done ? <DoneIndicator /> : null}
             </Stack>
 
-            <Controls columnId={columnId} />
+            <Controls columnId={columnId} makeDone={isDoneSupported} />
         </SpaceBetween>
     );
 }

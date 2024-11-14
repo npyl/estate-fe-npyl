@@ -67,7 +67,7 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: ["Board", "Card"],
+    tagTypes: ["Board", "Card", "Comments"],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
@@ -90,6 +90,13 @@ export const tasks = createApi({
                 url: "/column",
                 method: "PUT",
                 body,
+            }),
+            invalidatesTags: ["Board"],
+        }),
+        setColumnDone: builder.mutation<void, number>({
+            query: (columnId) => ({
+                url: `/column/${columnId}/set-done`,
+                method: "PATCH",
             }),
             invalidatesTags: ["Board"],
         }),
@@ -145,6 +152,7 @@ export const tasks = createApi({
             query: (cardId) => ({
                 url: `/card/${cardId}/comments`,
             }),
+            providesTags: ["Comments"],
         }),
         createComment: builder.mutation<void, ICreateCommentReq>({
             query: ({ cardId, body }) => ({
@@ -152,12 +160,7 @@ export const tasks = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Board", "Card"],
-        }),
-        getCommentById: builder.query<IKanbanComment, number>({
-            query: (commentId) => ({
-                url: `/comment/${commentId}`,
-            }),
+            invalidatesTags: ["Comments"],
         }),
     }),
 });
@@ -169,6 +172,7 @@ export const {
     // Columns
     useAddColumnMutation,
     useEditColumnMutation,
+    useSetColumnDoneMutation,
     useReorderColumnMutation,
     useDeleteColumnMutation,
 
@@ -180,6 +184,5 @@ export const {
 
     //Comments
     useGetCommentsForCardQuery,
-    useGetCommentByIdQuery,
     useCreateCommentMutation,
 } = tasks;

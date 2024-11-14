@@ -28,6 +28,7 @@ export default function Column({ column }: Props) {
                     <Header
                         name={column.name}
                         count={column.numberOfTasks}
+                        done={column.done}
                         columnId={column.id}
                     />
 
