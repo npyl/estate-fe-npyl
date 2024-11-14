@@ -94,25 +94,6 @@ export const tasks = createApi({
                 method: "POST",
                 params: { column: columnId, position },
             }),
-            onQueryStarted: async (
-                { columnId, position },
-                { dispatch, queryFulfilled }
-            ) => {
-                const patchResult = dispatch(
-                    tasks.util.updateQueryData("getBoard", {}, (draft) => {
-                        draft.columnOrder = moveItem(
-                            draft.columnOrder,
-                            columnId,
-                            position
-                        );
-                    })
-                );
-                try {
-                    await queryFulfilled;
-                } catch {
-                    patchResult.undo();
-                }
-            },
             invalidatesTags: ["Board"],
         }),
         deleteColumn: builder.mutation<void, number>({
@@ -154,43 +135,6 @@ export const tasks = createApi({
                 url: `/card/${cardId}/move/${dstColumnId}`,
                 method: "POST",
             }),
-            onQueryStarted: async (
-                { cardId, srcColumnId, dstColumnId },
-                { dispatch, queryFulfilled }
-            ) => {
-                const patchResult = dispatch(
-                    tasks.util.updateQueryData("getBoard", {}, (draft) => {
-                        const srcColumnIndex = draft.columns.findIndex(
-                            (c) => c.id === srcColumnId
-                        );
-                        if (srcColumnIndex < 0) return;
-
-                        const dstColumnIndex = draft.columns.findIndex(
-                            (c) => c.id === dstColumnId
-                        );
-                        if (dstColumnIndex < 0) return;
-
-                        // remove from old column
-                        draft.columns[srcColumnIndex].cardIds = removeItem(
-                            draft.columns[srcColumnIndex].cardIds,
-                            cardId
-                        );
-                        draft.columns[srcColumnIndex].cardOrder = removeItem(
-                            draft.columns[srcColumnIndex].cardOrder,
-                            cardId
-                        );
-
-                        // add to new column
-                        draft.columns[dstColumnIndex].cardIds.push(cardId);
-                        draft.columns[dstColumnIndex].cardOrder.push(cardId);
-                    })
-                );
-                try {
-                    await queryFulfilled;
-                } catch {
-                    patchResult.undo();
-                }
-            },
             invalidatesTags: ["Board", "Card"],
         }),
         reorderCard: builder.mutation<void, ReorderCardProps>({
@@ -199,30 +143,6 @@ export const tasks = createApi({
                 method: "POST",
                 params: { card: cardId, position: position },
             }),
-            onQueryStarted: async (
-                { cardId, columnId, position },
-                { dispatch, queryFulfilled }
-            ) => {
-                const patchResult = dispatch(
-                    tasks.util.updateQueryData("getBoard", {}, (draft) => {
-                        const columnIndex = draft.columns.findIndex(
-                            (c) => c.id === columnId
-                        );
-                        if (columnIndex < 0) return;
-
-                        draft.columns[columnIndex].cardOrder = moveItem(
-                            draft.columns[columnIndex].cardOrder,
-                            cardId,
-                            position
-                        );
-                    })
-                );
-                try {
-                    await queryFulfilled;
-                } catch {
-                    patchResult.undo();
-                }
-            },
             invalidatesTags: ["Board", "Card"],
         }),
         deleteCard: builder.mutation<void, number>({
@@ -247,7 +167,6 @@ export const {
 
     // Cards
     useGetCardQuery,
-    useLazyGetCardQuery,
     useMoveCardMutation,
     useReorderCardMutation,
     useDeleteCardMutation,
