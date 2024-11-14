@@ -19,12 +19,18 @@ import dynamic from "next/dynamic";
 // -----------------------------------------------------------------
 
 interface ContentProps {
+    cardId?: number;
     columnId?: number;
     createdAt?: string;
     updatedAt?: string;
 }
 
-const Content: FC<ContentProps> = ({ columnId, createdAt, updatedAt }) => {
+const Content: FC<ContentProps> = ({
+    cardId,
+    columnId,
+    createdAt,
+    updatedAt,
+}) => {
     const { t } = useTranslation();
 
     return (
@@ -51,7 +57,7 @@ const Content: FC<ContentProps> = ({ columnId, createdAt, updatedAt }) => {
             <Stack alignItems="center">
                 <PriorityButtonGroup />
             </Stack>
-            <Comments />
+            <Comments cardId={cardId} />
             <Reporter />
 
             {createdAt || updatedAt ? (

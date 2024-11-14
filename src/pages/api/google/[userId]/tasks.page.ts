@@ -44,7 +44,7 @@ export default async function handler(
 
         const {
             withCalendar,
-            eventId: _eventId,
+            event: _eventId,
             googleUserKey,
             ...task
         } = JSON.parse(req.body) as ICreateOrUpdateTaskReq;
@@ -70,14 +70,14 @@ export default async function handler(
             if (isEdit) {
                 await calendarService.updateEvent(iUserId, gEvent);
             } else {
-                const eventId = await calendarService.createEvent(
+                const event = await calendarService.createEvent(
                     iUserId,
                     gEvent,
                     googleUserKey
                 );
-                if (!eventId) throw new Error("Some bad event id");
+                if (!event) throw new Error("Some bad event id");
 
-                taskBody = { ...taskBody, eventId };
+                taskBody = { ...taskBody, event };
             }
         }
 

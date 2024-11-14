@@ -1,21 +1,9 @@
-import {
-    ICreateOrUpdateTaskReq,
-    IKanbanCard,
-    IKanbanCardPOST,
-    IKanbanComment,
-    IKanbanCommentPOST,
-} from ".";
+import { ICreateOrUpdateTaskReq, IKanbanCard, IKanbanCardPOST } from ".";
 import { CalendarEventReq } from "@/types/calendar";
 
-const IKanbanCommentResToReq = ({
-    id,
-    creator,
-    message,
-}: IKanbanComment): IKanbanCommentPOST => ({
-    id,
-    creatorId: creator?.id,
-    message,
-});
+type ObjectWithId = { id: number };
+
+const getId = ({ id }: ObjectWithId) => id;
 
 const IKanbanCardRes2Req = (
     task: IKanbanCard | undefined
@@ -27,12 +15,10 @@ const IKanbanCardRes2Req = (
         description,
         due, // INFO: we are ok with undefined when `withCalendar` is false
         attachments,
-        comments,
-        completed,
-        propertyId,
-        customerId,
-        assignee,
-        eventId,
+        properties,
+        customers,
+        assignees,
+        event,
     } = task || { assignee: {} };
 
     return {
@@ -42,14 +28,12 @@ const IKanbanCardRes2Req = (
         description: description || "",
         due,
         attachments: attachments || [],
-        comments: comments?.map(IKanbanCommentResToReq) || [],
-        completed: completed || false,
-        propertyId: propertyId || -1,
-        customerId: customerId || -1,
-        assigneeId: assignee?.id || -1,
+        properties: properties?.map(getId) || [],
+        customers: customers?.map(getId) || [],
+        userIds: assignees?.map(getId) || [],
         columnId: -1,
-        eventId: eventId || "",
-        withCalendar: Boolean(eventId),
+        event: event || "",
+        withCalendar: Boolean(event),
     };
 };
 
@@ -57,9 +41,9 @@ const KanbanTaskToCalendarEvent = ({
     name,
     description,
     due,
-    eventId,
+    event,
 }: IKanbanCardPOST): CalendarEventReq => ({
-    id: eventId,
+    id: event,
     title: name,
     description: description || "",
     type: "TASK",

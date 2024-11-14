@@ -1,6 +1,6 @@
 import { SxProps, Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, FC, useCallback, useState } from "react";
 import SaveButton from "./SaveButton";
 import ReporterAvatar from "./ReporterAvatar";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,13 @@ const TextFieldSx: SxProps<Theme> = {
     },
 };
 
-const Create = () => {
+// -------------------------------------------------------------------------
+
+interface CreateProps {
+    cardId: number;
+}
+
+const Create: FC<CreateProps> = ({ cardId }) => {
     const { t } = useTranslation();
 
     const [message, setMessage] = useState("");
@@ -37,7 +43,11 @@ const Create = () => {
             InputProps={{
                 startAdornment: <ReporterAvatar />,
                 endAdornment: (
-                    <SaveButton message={message} onCreate={handleClear} />
+                    <SaveButton
+                        cardId={cardId}
+                        message={message}
+                        onCreate={handleClear}
+                    />
                 ),
             }}
         />

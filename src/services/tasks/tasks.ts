@@ -24,6 +24,11 @@ interface ReorderCardProps {
     position: number;
 }
 
+interface ICreateCommentReq {
+    cardId: number;
+    body: IKanbanCommentPOST;
+}
+
 // array is columnOrder or cardOrder
 // id refers to column or card id
 // position is the new position that a column / card is to be moved
@@ -112,24 +117,6 @@ export const tasks = createApi({
             providesTags: ["Card"],
         }),
 
-        createComment: builder.mutation<
-            void,
-            { cardId: number; body: IKanbanCommentPOST }
-        >({
-            query: ({ cardId, body }) => ({
-                url: `/comment/${cardId}`,
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Board", "Card"],
-        }),
-
-        getCommentById: builder.query<IKanbanComment, number>({
-            query: (commentId) => ({
-                url: `/comment/${commentId}`,
-            }),
-        }),
-
         moveCard: builder.mutation<void, MoveCardProps>({
             query: ({ cardId, dstColumnId }: MoveCardProps) => ({
                 url: `/card/${cardId}/move/${dstColumnId}`,
@@ -152,6 +139,26 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
+
+        // Comments
+        getCommentsForCard: builder.query<IKanbanComment[], number>({
+            query: (cardId) => ({
+                url: `/card/${cardId}/comments`,
+            }),
+        }),
+        createComment: builder.mutation<void, ICreateCommentReq>({
+            query: ({ cardId, body }) => ({
+                url: `/comment/${cardId}`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Board", "Card"],
+        }),
+        getCommentById: builder.query<IKanbanComment, number>({
+            query: (commentId) => ({
+                url: `/comment/${commentId}`,
+            }),
+        }),
     }),
 });
 
@@ -172,6 +179,7 @@ export const {
     useDeleteCardMutation,
 
     //Comments
+    useGetCommentsForCardQuery,
     useGetCommentByIdQuery,
     useCreateCommentMutation,
 } = tasks;

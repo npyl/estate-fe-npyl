@@ -27,14 +27,14 @@ export default function Column({ column }: Props) {
                 >
                     <Header
                         name={column.name}
-                        count={column.cardIds.length}
+                        count={column.numberOfTasks}
                         columnId={column.id}
                     />
 
                     <Cards
                         mt={2}
                         spacing={2}
-                        ids={column.cardOrder}
+                        ids={column.cardIds}
                         columnId={column.id}
                     />
 

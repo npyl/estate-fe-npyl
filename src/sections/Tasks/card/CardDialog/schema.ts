@@ -8,26 +8,15 @@ const schema = yup.object<IKanbanCardPOST>().shape({
     description: yup.string().optional(),
 
     attachments: yup.array(yup.string().required()).required(),
-    completed: yup.boolean().required(),
 
-    propertyId: yup.number().optional(),
-    customerId: yup.number().optional(),
-    assigneeId: yup.number().min(0).required(),
+    properties: yup.array(yup.number().min(0).required()).optional(),
+    customers: yup.array(yup.number().min(0).required()).optional(),
+    userIds: yup.array(yup.number().min(0).required()).min(1).required(),
 
     columnId: yup.number().min(0).required(),
 
-    comments: yup
-        .array(
-            yup.object().shape({
-                id: yup.number().optional(),
-                creatorId: yup.number().min(0).required(),
-                message: yup.string().required(),
-            })
-        )
-        .min(0)
-        .required(),
-
-    eventId: yup.string().optional(),
+    // TODO: supported by backend, but theoretically I should never update it!
+    event: yup.string().optional(),
     withCalendar: yup.boolean().required(),
 
     // ------------------ Calendar Event Logic ----------------------------

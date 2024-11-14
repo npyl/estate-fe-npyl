@@ -26,6 +26,8 @@ interface DetailsProps {
 }
 
 const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
+    const { name, uniqueCode } = task || {};
+
     const methods = useForm<ICreateOrUpdateTaskReq>({
         values: {
             ...IKanbanCardRes2Req(task),
@@ -38,25 +40,22 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
 
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
-    const handleSubmit = async (d: ICreateOrUpdateTaskReq) => {
-        await createOrUpdate(d);
-    };
-
     return (
         <FormProvider {...methods}>
             <Dialog
                 open
                 submit
-                onSubmit={methods.handleSubmit(handleSubmit)}
+                onSubmit={methods.handleSubmit(createOrUpdate)}
                 // ...
                 sx={DialogSx}
                 DialogTitleComponent={StyledDialogTitle}
                 DialogContentComponent={StyledDialogContent}
                 DialogActionsComponent={StyledDialogActions}
                 // ...
-                title={<TaskLabel name={task?.name} taskCode={task?.code} />}
+                title={<TaskLabel name={name} taskCode={uniqueCode} />}
                 content={
                     <Content
+                        cardId={task?.id}
                         columnId={columnId}
                         // ...
                         createdAt={task?.createdAt}

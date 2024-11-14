@@ -2,39 +2,30 @@ import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import { SxProps, Theme } from "@mui/material/styles";
 import { FC, useCallback } from "react";
-import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { commentsKey } from "../contants";
-import { IKanbanCommentPOST } from "@/types/tasks";
-import { useAuth } from "@/hooks/use-auth";
+import { useCreateCommentMutation } from "@/services/tasks";
 
 const SaveButtonSx: SxProps<Theme> = {
     borderRadius: "12px",
 };
 
 interface SaveButtonProps {
+    cardId: number;
     message?: string;
     onCreate: VoidFunction;
 }
 
-const SaveButton: FC<SaveButtonProps> = ({ message, onCreate }) => {
+const SaveButton: FC<SaveButtonProps> = ({ cardId, message, onCreate }) => {
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
+    const [create] = useCreateCommentMutation();
 
-    const { user } = useAuth();
+    const handleSave = useCallback(async () => {
+        if (!message) return;
 
-    const handleSave = useCallback(() => {
-        const creatorId = user?.id;
-        if (!message || creatorId === undefined) return;
-
-        const old = (watch(commentsKey) as IKanbanCommentPOST[]) || [];
-
-        const comment: IKanbanCommentPOST = { message, creatorId };
-
-        setValue(commentsKey, [...old, comment], { shouldDirty: true });
+        await create({ cardId, body: { message } });
 
         onCreate();
-    }, [message, user?.id]);
+    }, [message]);
 
     return (
         <InputAdornment position="end">
