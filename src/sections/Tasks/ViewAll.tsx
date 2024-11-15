@@ -6,13 +6,14 @@ import { useDebounce } from "use-debounce";
 const Board = dynamic(() => import("@/sections/Tasks/Board"));
 
 const Content = () => {
-    const { search, assigneeId } = useFiltersContext();
+    const { search, assigneeId, priority } = useFiltersContext();
 
     const [debounced] = useDebounce(search, 300);
 
     const { data: board, isLoading } = useGetBoardQuery({
         search: debounced,
         assigneeId,
+        priority,
     });
 
     return (
