@@ -23,7 +23,7 @@ const Localized: FC<LocalizedProps> = ({ prefix, date, ...props }) => {
     const { t, i18n } = useTranslation();
     const loc = i18n.language === "en" ? "en-US" : "el-GR";
     return (
-        <Typography {...props}>
+        <Typography variant="body2" color="text.secondary" {...props}>
             {t(prefix)} {new Date(date).toLocaleDateString(loc, OPTIONS)}
         </Typography>
     );
