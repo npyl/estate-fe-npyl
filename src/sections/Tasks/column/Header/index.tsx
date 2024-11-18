@@ -12,8 +12,6 @@ type Props = {
 };
 
 export default function Header({ name, count, done, columnId }: Props) {
-    const isDoneSupported = !done && count === 0;
-
     return (
         <SpaceBetween alignItems="center" spacing={1}>
             <Stack
@@ -38,7 +36,7 @@ export default function Header({ name, count, done, columnId }: Props) {
                 {done ? <DoneIndicator /> : null}
             </Stack>
 
-            <Controls columnId={columnId} makeDone={isDoneSupported} />
+            <Controls columnId={columnId} makeDone={!done} />
         </SpaceBetween>
     );
 }

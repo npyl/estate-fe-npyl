@@ -21,6 +21,7 @@ const MakeDoneButton: FC<Props> = ({ columnId }) => {
     }, []);
 
     const [setDone] = useSetColumnDoneMutation();
+
     const handleClick = useCallback(() => setDone(columnId), []);
 
     return (

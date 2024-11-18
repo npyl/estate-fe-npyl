@@ -7,6 +7,10 @@ import {
     IKanbanComment,
     IKanbanCommentPOST,
 } from "@/types/tasks";
+import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 interface ReorderColumnProps {
     columnId: number;
@@ -92,13 +96,6 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
-        setColumnDone: builder.mutation<void, number>({
-            query: (columnId) => ({
-                url: `/column/${columnId}/set-done`,
-                method: "PATCH",
-            }),
-            invalidatesTags: ["Board"],
-        }),
         reorderColumn: builder.mutation<void, ReorderColumnProps>({
             query: ({ columnId, position }: ReorderColumnProps) => ({
                 url: "/column/reorder",
@@ -164,6 +161,54 @@ export const tasks = createApi({
     }),
 });
 
+// --------------------------------------------------------------------------
+
+const url = `${process.env.NEXT_PUBLIC_API_URL}/kanban/column`;
+
+const ERROR_MESSAGE =
+    "Cannot mark column as done when another non-empty done column exists";
+
+const useSetColumnDoneMutation = () => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+
+    const cb = useCallback(
+        async (columnId: number) => {
+            const res = await fetch(`${url}/${columnId}/set-done`, {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            });
+
+            if (res.status === 400) {
+                const data = await res.json();
+                if (data.errorMessage === ERROR_MESSAGE) {
+                    toast.error(t("_COLUMN_DONE_"));
+                }
+                return;
+            }
+
+            // ...Otherwise
+            if (!res.ok) {
+                toast.error("Error (Σφάλμα)");
+                return;
+            }
+
+            dispatch(tasks.util.invalidateTags(["Board"]));
+        },
+        [t]
+    );
+
+    return [cb] as const;
+};
+
+// --------------------------------------------------------------------------
+
+export { useSetColumnDoneMutation };
+
 export const {
     // Board
     useGetBoardQuery,
@@ -171,7 +216,6 @@ export const {
     // Columns
     useAddColumnMutation,
     useEditColumnMutation,
-    useSetColumnDoneMutation,
     useReorderColumnMutation,
     useDeleteColumnMutation,
 

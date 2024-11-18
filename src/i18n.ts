@@ -1064,10 +1064,16 @@ const resources = {
             low: "low",
             medium: "medium",
             high: "high",
+
+            _COLUMN_DONE_:
+                "There is already a DONE column containing tasks. Move the tasks and retry.",
         },
     },
     el: {
         translation: {
+            _COLUMN_DONE_:
+                "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες. Μεταφέρετε τις εργασίες και δοκιμάστε ξανά.",
+
             low: "χαμηλή",
             medium: "μεσαία",
             high: "υψηλή",
