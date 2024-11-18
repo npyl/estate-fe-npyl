@@ -10,6 +10,8 @@ import { useGetUsersQuery } from "@/services/calendar";
 const getOptionLabel = (o: GUserMini | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
+// ------------------------------------------------------------------
+
 const OptionSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
@@ -18,21 +20,26 @@ const OptionSx: SxProps<Theme> = {
 };
 
 const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
+    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
     option: GUserMini
-) => (
-    <MenuItem sx={OptionSx} {...props} key={option.id}>
-        <Avatar
-            src={option?.avatar}
-            firstName={option?.firstName}
-            lastName={option?.lastName}
-        />
-        <Typography>
-            {option?.firstName || ""} {option?.lastName || ""}
-        </Typography>
-        <Typography fontWeight="bold">({`${option?.id || ""}`})</Typography>
-    </MenuItem>
-);
+) => {
+    const { key, ...otherProps } = props;
+    return (
+        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+            <Avatar
+                src={option?.avatar}
+                firstName={option?.firstName}
+                lastName={option?.lastName}
+            />
+            <Typography>
+                {option?.firstName || ""} {option?.lastName || ""}
+            </Typography>
+            <Typography fontWeight="bold">({`${option?.id || ""}`})</Typography>
+        </MenuItem>
+    );
+};
+
+// ------------------------------------------------------------------
 
 // TODO: I have a stupid any here!
 interface AssigneeAutocompleteProps
