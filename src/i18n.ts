@@ -1059,10 +1059,20 @@ const resources = {
             "=Tour_on_line=": "Tour on-line",
 
             Managers: "Managers",
+            Comments: "Comments",
+            today: "today",
+            low: "low",
+            medium: "medium",
+            high: "high",
         },
     },
     el: {
         translation: {
+            low: "χαμηλή",
+            medium: "μεσαία",
+            high: "υψηλή",
+            today: "σήμερα",
+            Comments: "Σχόλια",
             Managers: "Διαχειριστές",
 
             "=Task=": "Εργασία",

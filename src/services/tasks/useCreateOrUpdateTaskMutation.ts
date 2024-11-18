@@ -5,7 +5,8 @@ import useDialog from "@/hooks/useDialog";
 import { tasks } from "./tasks";
 import { useAuth } from "@/hooks/use-auth";
 import { calendar } from "@/services/calendar";
-import { properties } from "../properties";
+import { properties } from "@/services/properties";
+import { customers } from "@/services/customers";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 
@@ -39,6 +40,9 @@ const useCreateOrUpdateTaskMutation = () => {
 
             if (b.properties?.length && b.properties.length > 0)
                 dispatch(properties.util.invalidateTags(["Tasks"]));
+
+            if (b.customers?.length && b.customers.length > 0)
+                dispatch(customers.util.invalidateTags(["Tasks"]));
 
             // INFO: make sure we also update events
             if (b.withCalendar)
