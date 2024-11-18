@@ -10,6 +10,8 @@ import Avatar from "@/components/Avatar";
 const getOptionLabel = (o: IUserMini | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
+// -------------------------------------------------------------------------
+
 const OptionSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
@@ -17,7 +19,8 @@ const OptionSx: SxProps<Theme> = {
     width: "100%",
 };
 
-const RenderOption = (
+// TODO: fix key not being passed for some weird reason!
+const renderOption = (
     props: React.HTMLAttributes<HTMLLIElement>,
     option: IUserMini
 ) => (
@@ -32,6 +35,8 @@ const RenderOption = (
         </Typography>
     </MenuItem>
 );
+
+// -------------------------------------------------------------------------
 
 interface AssigneeAutocompleteProps
     extends Omit<AutocompleteProps<IUserMini>, "options" | "renderInput"> {
@@ -51,7 +56,7 @@ const AssigneeAutocomplete = forwardRef<
         <Autocomplete
             ref={ref}
             loading={isLoading}
-            renderOption={RenderOption}
+            renderOption={renderOption}
             options={options}
             getOptionLabel={getOptionLabel}
             renderInput={(props) => (

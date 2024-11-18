@@ -1,10 +1,3 @@
-/**
- * Autocomplete component with the ability to pass any `options` you like,
- * but still keep the value as number corresponding to an option's `id`
- *
- * 11/18 - update to support multiple
- */
-
 import MuiAutocomplete, {
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
@@ -14,32 +7,40 @@ interface ObjectWithId {
     id: number;
 }
 
-export interface AutocompleteProps<T extends ObjectWithId = ObjectWithId>
-    extends Omit<
-        MuiAutocompleteProps<T, true | false, false, false>,
+type TMultiple = boolean;
+
+export interface AutocompleteProps<
+    T extends ObjectWithId,
+    Multiple extends TMultiple = false
+> extends Omit<
+        MuiAutocompleteProps<T, Multiple, false, false>,
         "value" | "onChange" | "options"
     > {
-    value?: number | number[]; // id
+    value?: Multiple extends true ? number[] : number; // id
     options: T[];
-    onChange?: (id: number | number[]) => void;
+    onChange?: (value: Multiple extends true ? number[] : number) => void;
 }
 
-const Autocomplete = <T extends ObjectWithId>(
-    props: AutocompleteProps<T>,
+const Autocomplete = <
+    T extends ObjectWithId,
+    Multiple extends TMultiple = false
+>(
+    props: AutocompleteProps<T, Multiple>,
     ref: Ref<HTMLDivElement>
 ) => {
     const { value, onChange, ...rest } = props;
 
     const isOptionEqualToValue = useCallback(
-        ({ id }: ObjectWithId) => id === value,
+        ({ id }: ObjectWithId) =>
+            Array.isArray(value) ? value.includes(id) : id === value,
         [value]
     );
 
     const handleChange = useCallback(
-        (_: any, v: (T | T[]) | null) => {
+        (_: any, v: T | T[] | null) => {
             if (!v) return;
             const ids = Array.isArray(v) ? v.map(({ id }) => id) : v.id;
-            onChange?.(ids);
+            onChange?.(ids as any);
         },
         [onChange]
     );
@@ -54,8 +55,11 @@ const Autocomplete = <T extends ObjectWithId>(
     );
 };
 
-const WithRef = forwardRef(Autocomplete) as <T extends ObjectWithId>(
-    props: AutocompleteProps<T> & { ref?: Ref<unknown> }
+const WithRef = forwardRef(Autocomplete) as <
+    T extends ObjectWithId,
+    Multiple extends TMultiple = false
+>(
+    props: AutocompleteProps<T, Multiple> & { ref?: Ref<unknown> }
 ) => JSX.Element;
 
 export default WithRef;

@@ -3,6 +3,7 @@ import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { ICustomerMini } from "./types";
+import renderUserTags from "./renderUserTags";
 
 // ------------------------------------------------------------------
 
@@ -30,7 +31,10 @@ const RenderOption = (
 // -------------------------------------------------------------------
 
 interface CustomerAutocompleteProps
-    extends Omit<AutocompleteProps<ICustomerMini>, "options" | "renderInput"> {
+    extends Omit<
+        AutocompleteProps<ICustomerMini, true>,
+        "options" | "renderInput"
+    > {
     label: string;
     error: boolean;
     helperText?: string;
@@ -43,12 +47,13 @@ const CustomerAutocomplete = forwardRef<
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
     return (
-        <Autocomplete<ICustomerMini>
+        <Autocomplete
             ref={ref}
             loading={isLoading}
             renderOption={RenderOption}
             options={options}
             getOptionLabel={getOptionLabel}
+            renderTags={renderUserTags}
             renderInput={(props) => (
                 <TextField
                     label={label}
