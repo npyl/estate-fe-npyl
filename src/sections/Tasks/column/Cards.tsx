@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { useGetBoardQuery } from "@/services/tasks";
-import Card from "@/sections/Tasks/card";
 import { Stack, StackProps } from "@mui/material";
+import DraggableCard from "@/sections/Tasks/DraggableCard";
 
 interface CardsProps extends StackProps {
     columnId: number;
@@ -19,7 +19,12 @@ const Cards: FC<CardsProps> = ({ columnId, ids, ...props }) => {
                 if (!card) return null;
 
                 return (
-                    <Card key={id} index={i} columnId={columnId} card={card} />
+                    <DraggableCard
+                        key={id}
+                        index={i}
+                        columnId={columnId}
+                        card={card}
+                    />
                 );
             })}
         </Stack>

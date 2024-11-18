@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import Iconify from "@/components/iconify";
+import dynamic from "next/dynamic";
 
 // Tabs
 const MainContainer = dynamic(() => import("./(tabs)/MainContainer"));
@@ -31,10 +32,9 @@ const PhotosOnly = dynamic(() => import("./(tabs)/PhotosOnly"));
 const PropertyLogs = dynamic(() => import("./(sections)/Logs"));
 const GreenMap = dynamic(() => import("./(tabs)/Green"));
 const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
+const Tasks = dynamic(() => import("./(tabs)/Tasks"));
 
 import { styled } from "@mui/material/styles";
-
-import dynamic from "next/dynamic";
 
 const StyledTab = styled(Tab)(({ theme }) => ({
     marginLeft: theme.spacing(3),
@@ -140,7 +140,9 @@ const SingleProperty: NextPage = () => {
             </TabPanel>
             <Suspense>
                 <TabPanel value={value} index={1}></TabPanel>
-                <TabPanel value={value} index={2}></TabPanel>
+                <TabPanel value={value} index={2}>
+                    <Tasks />
+                </TabPanel>
                 <TabPanel value={value} index={3}>
                     <MatchingCustomersSection />
                 </TabPanel>

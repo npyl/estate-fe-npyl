@@ -25,7 +25,11 @@ const MenuButton: FC<Props> = ({ taskId }) => {
 
     return (
         <>
-            <IconButton ref={anchorRef} onClick={handleClick}>
+            <IconButton
+                className="TaskCard-HeaderControls"
+                ref={anchorRef}
+                onClick={handleClick}
+            >
                 <MoreHorizIcon />
             </IconButton>
 

@@ -16,6 +16,7 @@ import { ICustomer } from "src/types/customer";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
+import { IKanbanCardShort } from "@/types/tasks";
 
 interface JustData<T> {
     data: T;
@@ -106,6 +107,9 @@ export const properties = createApi({
         "PropertyByIdDocuments",
         "PropertyByIdBlueprints",
         "PropertyByIdZip",
+
+        // ...
+        "Tasks",
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
@@ -314,6 +318,15 @@ export const properties = createApi({
                 };
             },
         }),
+
+        // -------------------------------------------------------------------------
+
+        getTasks: builder.query<IKanbanCardShort[], number>({
+            query: (id) => ({
+                url: `/${id}/tickets`,
+            }),
+            providesTags: ["Tasks"],
+        }),
     }),
 });
 
@@ -353,4 +366,7 @@ export const {
     // description editor
     useGenerateDescriptionMutation,
     useImproveDescriptionMutation,
+
+    // ...
+    useGetTasksQuery,
 } = properties;

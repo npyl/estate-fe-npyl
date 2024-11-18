@@ -21,6 +21,8 @@ const IKanbanCardRes2Req = (
         event,
     } = task || { assignee: {} };
 
+    console.log("EVENT: ", event);
+
     return {
         id: id || -1,
         priority: priority || 0,
