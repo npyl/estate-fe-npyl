@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useLazyGetPropertyByCodeQuery } from "src/services/properties";
 import { useTranslation } from "react-i18next";
 import { IDemandFiltersPOST } from "src/types/demand";

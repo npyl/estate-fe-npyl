@@ -1,6 +1,8 @@
 /**
  * Autocomplete component with the ability to pass any `options` you like,
  * but still keep the value as number corresponding to an option's `id`
+ *
+ * 11/18 - update to support multiple
  */
 
 import MuiAutocomplete, {
@@ -14,12 +16,12 @@ interface ObjectWithId {
 
 export interface AutocompleteProps<T extends ObjectWithId = ObjectWithId>
     extends Omit<
-        MuiAutocompleteProps<T, false, false, false>,
+        MuiAutocompleteProps<T, true | false, false, false>,
         "value" | "onChange" | "options"
     > {
-    value?: number; // id
+    value?: number | number[]; // id
     options: T[];
-    onChange?: (id: number) => void;
+    onChange?: (id: number | number[]) => void;
 }
 
 const Autocomplete = <T extends ObjectWithId>(
@@ -34,9 +36,10 @@ const Autocomplete = <T extends ObjectWithId>(
     );
 
     const handleChange = useCallback(
-        (_: any, v: T | null) => {
+        (_: any, v: (T | T[]) | null) => {
             if (!v) return;
-            onChange?.(v.id);
+            const ids = Array.isArray(v) ? v.map(({ id }) => id) : v.id;
+            onChange?.(ids);
         },
         [onChange]
     );

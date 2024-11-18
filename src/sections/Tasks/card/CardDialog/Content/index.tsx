@@ -1,9 +1,6 @@
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import Reporter from "./Reporter";
-import PropertySelect from "./Property";
-import CustomerSelect from "./Customer";
-import AssigneeSelect from "./Assignee";
 import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
@@ -12,9 +9,12 @@ import Attachments from "./Attachments";
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
-const Comments = dynamic(() => import("./Comments"));
 import MiscInfo from "./MiscInfo";
 import dynamic from "next/dynamic";
+import PropertiesAutocomplete from "./Autocompletes/Properties";
+import CustomerSelect from "./Autocompletes/Customer";
+import AssigneeSelect from "./Autocompletes/Assignee";
+const Comments = dynamic(() => import("./Comments"));
 
 // -----------------------------------------------------------------
 
@@ -51,13 +51,17 @@ const Content: FC<ContentProps> = ({
                 multiline
                 rows={5}
             />
-            <PropertySelect />
+
+            <PropertiesAutocomplete />
             <CustomerSelect />
             <AssigneeSelect />
+
             <Stack alignItems="center">
                 <PriorityButtonGroup />
             </Stack>
+
             <Comments cardId={cardId} />
+
             <Reporter />
 
             {createdAt || updatedAt ? (

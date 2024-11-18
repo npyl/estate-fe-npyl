@@ -9,11 +9,18 @@ const RHFAssignee = () => {
 
     return (
         <Controller
-            name="assigneeId"
+            name="assignees"
             control={control}
-            render={({ field, fieldState: { error } }) => (
+            render={({
+                field: { value, onChange, ...field },
+                fieldState: { error },
+            }) => (
                 <AssigneeAutocomplete
                     label={t("Assignee")}
+                    // INFO: make sure we store in array format
+                    value={value?.[0] ?? -1}
+                    onChange={(ids) => onChange((ids as number[])?.[0] ?? -1)}
+                    // ...
                     {...field}
                     error={Boolean(error)}
                     helperText={error?.message}

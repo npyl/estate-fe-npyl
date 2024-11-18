@@ -1,20 +1,10 @@
 import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
-import { FC, forwardRef, useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import { useAllCustomersQuery } from "@/services/customers";
-import { ICustomer } from "@/types/customer";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
+import { ICustomerMini } from "./types";
 
-interface ICustomerMini {
-    id: number;
-    firstName: string;
-    lastName: string;
-}
-
-const getCustomerMini = ({
-    id,
-    firstName,
-    lastName,
-}: ICustomer): ICustomerMini => ({ id, firstName, lastName });
+// ------------------------------------------------------------------
 
 const getOptionLabel = (o: ICustomerMini | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
@@ -37,6 +27,8 @@ const RenderOption = (
     </MenuItem>
 );
 
+// -------------------------------------------------------------------
+
 interface CustomerAutocompleteProps
     extends Omit<AutocompleteProps<ICustomerMini>, "options" | "renderInput"> {
     label: string;
@@ -48,10 +40,7 @@ const CustomerAutocomplete = forwardRef<
     CustomerAutocompleteProps
 >(({ label, error, helperText, ...props }, ref) => {
     const { data, isLoading } = useAllCustomersQuery();
-    const options = useMemo(
-        () => (Array.isArray(data) ? data?.map(getCustomerMini) : []),
-        [data]
-    );
+    const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
     return (
         <Autocomplete<ICustomerMini>

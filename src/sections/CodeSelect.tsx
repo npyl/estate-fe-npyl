@@ -6,7 +6,7 @@ import {
     Theme,
 } from "@mui/material";
 import { useAllPropertyCodesQuery } from "src/services/properties";
-import { forwardRef, useMemo } from "react";
+import { forwardRef, ForwardedRef, useMemo } from "react";
 
 // ------------------------------------------------------------------------
 
@@ -33,12 +33,17 @@ const RenderOption = (
 
 // ------------------------------------------------------------------------
 
-type CodeSelectProps = Omit<
-    AutocompleteProps<string, false, true, false>,
+type TMultiple = true | false;
+
+type CodeSelectProps<Multiple extends TMultiple = false> = Omit<
+    AutocompleteProps<string, Multiple, true, false>,
     "options"
 >;
 
-const CodeSelect = forwardRef<HTMLElement, CodeSelectProps>((props, ref) => {
+function CodeSelect<Multiple extends TMultiple = false>(
+    props: CodeSelectProps<Multiple>,
+    ref: ForwardedRef<HTMLElement>
+) {
     const { data, isLoading } = useAllPropertyCodesQuery();
     const codes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
@@ -59,6 +64,14 @@ const CodeSelect = forwardRef<HTMLElement, CodeSelectProps>((props, ref) => {
             {...props}
         />
     );
-});
+}
 
-export default CodeSelect;
+const ForwardedCodeSelect = forwardRef(CodeSelect) as <
+    Multiple extends TMultiple = false
+>(
+    props: CodeSelectProps<Multiple> & { ref?: ForwardedRef<HTMLElement> }
+) => JSX.Element;
+
+CodeSelect.displayName = "CodeSelect";
+
+export default ForwardedCodeSelect;
