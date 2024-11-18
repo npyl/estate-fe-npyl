@@ -20,13 +20,16 @@ const OptionSx: SxProps<Theme> = {
 };
 
 const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
+    props: React.HTMLAttributes<HTMLLIElement> & { key: string },
     option: ICustomerMini
-) => (
-    <MenuItem sx={OptionSx} {...props} key={option.id}>
-        {option.firstName} {option.lastName}
-    </MenuItem>
-);
+) => {
+    const { key: _, ...otherProps } = props;
+    return (
+        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+            {option.firstName} {option.lastName}
+        </MenuItem>
+    );
+};
 
 // -------------------------------------------------------------------
 

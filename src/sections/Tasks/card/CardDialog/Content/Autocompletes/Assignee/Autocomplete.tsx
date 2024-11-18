@@ -19,22 +19,24 @@ const OptionSx: SxProps<Theme> = {
     width: "100%",
 };
 
-// TODO: fix key not being passed for some weird reason!
 const renderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
+    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
     option: IUserMini
-) => (
-    <MenuItem sx={OptionSx} {...props} key={option.id}>
-        <Avatar
-            src={option?.avatar}
-            firstName={option?.firstName}
-            lastName={option?.lastName}
-        />
-        <Typography>
-            {option?.firstName || ""} {option?.lastName || ""}
-        </Typography>
-    </MenuItem>
-);
+) => {
+    const { key, ...otherProps } = props;
+    return (
+        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+            <Avatar
+                src={option?.avatar}
+                firstName={option?.firstName}
+                lastName={option?.lastName}
+            />
+            <Typography>
+                {option?.firstName || ""} {option?.lastName || ""}
+            </Typography>
+        </MenuItem>
+    );
+};
 
 // -------------------------------------------------------------------------
 

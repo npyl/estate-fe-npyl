@@ -30,18 +30,21 @@ const OptionSx: SxProps<Theme> = {
 };
 
 const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
+    props: React.HTMLAttributes<HTMLLIElement> & { key: string },
     option: IPropertyCodeRes
-) => (
-    <MenuItem sx={OptionSx} {...props} key={option.id}>
-        <img
-            src="/static/categoryPhotos/home.webp"
-            alt="Home"
-            style={{ width: 30, height: 30 }}
-        />
-        {option.code}
-    </MenuItem>
-);
+) => {
+    const { key: _, ...otherProps } = props;
+    return (
+        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+            <img
+                src="/static/categoryPhotos/home.webp"
+                alt="Home"
+                style={{ width: 30, height: 30 }}
+            />
+            {option.code}
+        </MenuItem>
+    );
+};
 
 // ------------------------------------------------------------------------
 
