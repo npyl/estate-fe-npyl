@@ -13,17 +13,20 @@ const createOrUpdateTask = async (
     Authorization: string,
     body: IKanbanCardPOST
 ) => {
-    const method = body.id ? "PUT" : "POST";
+    const method = body.id && body.id > -1 ? "PUT" : "POST";
+
+    console.log("METHOD: ", method, baseUrl);
 
     const response = await fetch(baseUrl, {
         headers: {
             Authorization,
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
         method,
     });
 
-    if (!response.ok) throw new Error("Task: fail");
+    if (!response.ok) throw await response.json();
 };
 
 // -----------------------------------------------------------------------

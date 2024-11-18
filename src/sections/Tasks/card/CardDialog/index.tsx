@@ -1,6 +1,6 @@
 import Dialog from "@/components/Dialog";
 import { ICreateOrUpdateTaskReq, IKanbanCard } from "@/types/tasks";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import {
     DialogSx,
     StyledDialogActions,
@@ -41,12 +41,17 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
 
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
+    const handleSubmit = useCallback(async (d: ICreateOrUpdateTaskReq) => {
+        await createOrUpdate(d);
+        onClose();
+    }, []);
+
     return (
         <FormProvider {...methods}>
             <Dialog
                 open
                 submit
-                onSubmit={methods.handleSubmit(createOrUpdate)}
+                onSubmit={methods.handleSubmit(handleSubmit)}
                 // ...
                 sx={DialogSx}
                 DialogTitleComponent={StyledDialogTitle}
