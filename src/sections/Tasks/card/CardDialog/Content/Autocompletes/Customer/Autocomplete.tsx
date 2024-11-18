@@ -1,6 +1,6 @@
 import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
 import { forwardRef, useMemo } from "react";
-import { useAllCustomersQuery } from "@/services/customers";
+import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { ICustomerMini } from "./types";
 
@@ -39,8 +39,7 @@ const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteProps
 >(({ label, error, helperText, ...props }, ref) => {
-    // TODO: endpoint for mini?
-    const { data, isLoading } = useAllCustomersQuery();
+    const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
     return (

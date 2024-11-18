@@ -1,3 +1,4 @@
+import { ICustomerMini } from "@/sections/Tasks/card/CardDialog/Content/Autocompletes/Customer/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ICustomer,
@@ -46,6 +47,13 @@ export const customers = createApi({
         allCustomers: builder.query<ICustomer[], void>({
             query: () => ({
                 url: "all",
+            }),
+            providesTags: ["Customers"],
+        }),
+
+        getNames: builder.query<ICustomerMini[], void>({
+            query: () => ({
+                url: "names",
             }),
             providesTags: ["Customers"],
         }),
@@ -126,6 +134,7 @@ export const customers = createApi({
 
 export const {
     useAllCustomersQuery,
+    useGetNamesQuery,
     useGetCustomerByIdQuery,
     useFilterCustomersQuery,
     useSearchCustomerQuery,
