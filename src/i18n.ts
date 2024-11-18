@@ -1057,10 +1057,14 @@ const resources = {
             "=Meeting=": "Meeting",
             "=Tour_in_person=": "Tour in-person",
             "=Tour_on_line=": "Tour on-line",
+
+            Managers: "Managers",
         },
     },
     el: {
         translation: {
+            Managers: "Διαχειριστές",
+
             "=Task=": "Εργασία",
             "=Meeting=": "Συνάντηση",
             "=Tour_in_person=": "Περιήγηση από κοντά",
