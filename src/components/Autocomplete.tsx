@@ -1,7 +1,11 @@
+/**
+ * Autocomplete that supports passing any kind of object value that has an id: number inside
+ */
+
 import MuiAutocomplete, {
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
-import { forwardRef, Ref, useCallback } from "react";
+import { forwardRef, Ref, useCallback, useMemo } from "react";
 
 interface ObjectWithId {
     id: number;
@@ -45,9 +49,20 @@ const Autocomplete = <
         [onChange]
     );
 
+    const calculated = useMemo(() => {
+        if (Array.isArray(value)) {
+            return props.options?.filter(({ id }) =>
+                (value as number[]).includes(id)
+            );
+        }
+
+        return props.options?.find(({ id }) => value === id) || null!;
+    }, [props.options, value]);
+
     return (
         <MuiAutocomplete
             ref={ref}
+            value={calculated as any} // TODO: fix this!
             isOptionEqualToValue={isOptionEqualToValue}
             onChange={handleChange}
             {...rest}

@@ -5,6 +5,35 @@ import Avatar, { AvatarProps } from "@/components/Avatar";
 import { forwardRef, useCallback } from "react";
 import { SxProps, Theme, Tooltip } from "@mui/material";
 import { useFiltersContext } from "@/sections/Tasks/filters";
+import ToggleButton from "@mui/material/ToggleButton";
+import ClearIcon from "@mui/icons-material/Clear";
+import { MouseEvent } from "react";
+
+// -------------------------------------------------------------------
+
+const ClearButton = () => {
+    const { setAssigneeId } = useFiltersContext();
+
+    const handleClear = useCallback((e: MouseEvent) => {
+        e.preventDefault();
+        setAssigneeId(undefined);
+    }, []);
+
+    return (
+        <ToggleButton
+            value=""
+            onClick={handleClear}
+            size="small"
+            sx={{
+                ml: 1,
+                px: 1.3,
+                borderRadius: "100%",
+            }}
+        >
+            <ClearIcon />
+        </ToggleButton>
+    );
+};
 
 // -------------------------------------------------------------------
 
@@ -74,9 +103,12 @@ const UserSelect = () => {
     const { data } = useAllUsersQuery();
     const { assigneeId, setAssigneeId } = useFiltersContext();
 
+    const max = (data?.length && data.length + 1) ?? 4;
+
     return (
-        <AvatarGroup max={data?.length || 4}>
+        <AvatarGroup max={max}>
             {data?.map(getAvatar(assigneeId, setAssigneeId))}
+            {assigneeId !== undefined ? <ClearButton /> : null}
         </AvatarGroup>
     );
 };

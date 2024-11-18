@@ -71,7 +71,7 @@ export const tasks = createApi({
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
-            query: (params) => ({ url: "", method: "POST", params }),
+            query: (body) => ({ url: "", method: "POST", body }),
             providesTags: ["Board"],
         }),
 

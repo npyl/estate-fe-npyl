@@ -34,7 +34,7 @@ const useCreateOrUpdateTaskMutation = () => {
 
             if (!res.ok) return null;
 
-            dispatch(tasks.util.invalidateTags(["Board"]));
+            dispatch(tasks.util.invalidateTags(["Board", "Card"]));
 
             // INFO: make sure we also update events
             if (b.withCalendar)
