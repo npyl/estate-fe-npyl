@@ -1,20 +1,22 @@
 import CodeSelect from "@/sections/CodeSelect";
+import { IPropertyCodeRes } from "@/types/properties";
 import { AutocompleteRenderGetTagProps, Chip } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-const getOptionLabel = (o: string | number) => (typeof o === "number" ? "" : o);
+const getOptionLabel = (o: IPropertyCodeRes | number) =>
+    typeof o === "number" ? "" : o.code;
 
 // ---------------------------------------------------------------------------
 
 const renderTags = (
-    tagValue: string[],
+    tagValue: IPropertyCodeRes[],
     getTagProps: AutocompleteRenderGetTagProps
 ) =>
     tagValue.map((option, index) => {
         const { key, ...tagProps } = getTagProps({ index });
-        return <Chip key={key} label={option} {...tagProps} />;
+        return <Chip key={key} label={option.code} {...tagProps} />;
     });
 
 // ---------------------------------------------------------------------------
@@ -29,7 +31,7 @@ const PropertiesAutocomplete = () => {
             name="properties"
             control={control}
             render={({
-                field: { onChange, ...field },
+                field: { value, onChange, ...field },
                 fieldState: { error },
             }) => (
                 <CodeSelect<true>
@@ -45,7 +47,8 @@ const PropertiesAutocomplete = () => {
                         />
                     )}
                     {...field}
-                    onChange={(_, v) => onChange(v)}
+                    idValue={value}
+                    onChange={(_, ids) => onChange(ids)}
                 />
             )}
         />

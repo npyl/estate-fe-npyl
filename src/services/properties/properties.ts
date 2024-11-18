@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
     IPropertiesPOST,
+    IPropertyCodeRes,
     IPropertyFilter,
     IPropertyFilterCounters,
     IPropertyMarker,
@@ -15,7 +16,6 @@ import { ICustomer } from "src/types/customer";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
-import { useState } from "react";
 
 interface JustData<T> {
     data: T;
@@ -71,10 +71,6 @@ interface EditLocationDisplayProps {
     display: LocationDisplay;
 }
 
-interface IContent<T> {
-    content: T[];
-}
-
 export const properties = createApi({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
@@ -120,7 +116,7 @@ export const properties = createApi({
             providesTags: ["Properties"],
         }),
 
-        allPropertyCodes: builder.query<string[], void>({
+        allPropertyCodes: builder.query<IPropertyCodeRes[], void>({
             query: () => ({
                 url: "/codes",
             }),

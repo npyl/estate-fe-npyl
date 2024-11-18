@@ -47,9 +47,8 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
     );
 
     const autocompleteChange = useCallback(
-        (_: any, value: string | null) => {
-            if (!value) return;
-            getPropertyByCode(value).unwrap().then(fillFromPropertyForCode);
+        (_: any, _id: any, code: string) => {
+            getPropertyByCode(code).unwrap().then(fillFromPropertyForCode);
         },
         [index]
     );

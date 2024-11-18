@@ -6,7 +6,14 @@ import {
     Theme,
 } from "@mui/material";
 import { useAllPropertyCodesQuery } from "src/services/properties";
-import { forwardRef, ForwardedRef, useMemo } from "react";
+import {
+    forwardRef,
+    ForwardedRef,
+    useMemo,
+    useCallback,
+    SyntheticEvent,
+} from "react";
+import { IPropertyCodeRes } from "@/types/properties";
 
 // ------------------------------------------------------------------------
 
@@ -19,33 +26,70 @@ const OptionSx: SxProps<Theme> = {
 
 const RenderOption = (
     props: React.HTMLAttributes<HTMLLIElement>,
-    option: string
+    option: IPropertyCodeRes
 ) => (
-    <MenuItem sx={OptionSx} {...props} key={option}>
+    <MenuItem sx={OptionSx} {...props} key={option.id}>
         <img
             src="/static/categoryPhotos/home.webp"
             alt="Home"
             style={{ width: 30, height: 30 }}
         />
-        {option}
+        {option.code}
     </MenuItem>
 );
 
 // ------------------------------------------------------------------------
 
-type TMultiple = true | false;
+type TMultiple = boolean;
 
-type CodeSelectProps<Multiple extends TMultiple = false> = Omit<
-    AutocompleteProps<string, Multiple, true, false>,
-    "options"
->;
+interface CodeSelectProps<Multiple extends TMultiple = false>
+    extends Omit<
+        AutocompleteProps<IPropertyCodeRes, Multiple, true, false>,
+        "options" | "value" | "onChange"
+    > {
+    idValue?: Multiple extends true ? number[] : number;
+    codeValue?: Multiple extends true ? string[] : string;
+
+    onChange?: (
+        event: SyntheticEvent,
+        ids: Multiple extends true ? number[] : number,
+        codes: Multiple extends true ? string[] : string
+    ) => void;
+}
 
 function CodeSelect<Multiple extends TMultiple = false>(
-    props: CodeSelectProps<Multiple>,
+    { idValue, codeValue, onChange, ...props }: CodeSelectProps<Multiple>,
     ref: ForwardedRef<HTMLElement>
 ) {
     const { data, isLoading } = useAllPropertyCodesQuery();
     const codes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+
+    const value = useMemo((): any => {
+        if (idValue !== undefined) {
+            return Array.isArray(idValue)
+                ? codes?.filter(({ id }) => idValue.includes(id))
+                : codes?.find(({ id }) => id === idValue);
+        }
+
+        if (codeValue !== undefined) {
+            return Array.isArray(codeValue)
+                ? codes?.filter(({ code }) => codeValue.includes(code))
+                : codes?.find(({ code }) => code === codeValue);
+        }
+        return null;
+    }, [codes, idValue, codeValue]);
+
+    const handleChange = useCallback(
+        (e: any, v: any) => {
+            if (!v) return;
+
+            const ids = Array.isArray(v) ? v.map(({ id }) => id) : v.id;
+            const codes = Array.isArray(v) ? v.map(({ code }) => code) : v.code;
+
+            onChange?.(e, ids, codes);
+        },
+        [onChange]
+    );
 
     return (
         <Autocomplete
@@ -54,6 +98,9 @@ function CodeSelect<Multiple extends TMultiple = false>(
             disableClearable
             renderOption={RenderOption}
             options={codes}
+            value={value}
+            onChange={handleChange}
+            multiple={props.multiple}
             slotProps={{
                 paper: {
                     sx: {

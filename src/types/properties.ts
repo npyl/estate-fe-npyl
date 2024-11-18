@@ -466,3 +466,10 @@ export type PropertyStatus =
     | "TAKEN"
     | "UNDER_CONSTRUCTION"
     | "UNDER_MAINTENANCE";
+
+interface IPropertyCodeRes {
+    id: number;
+    code: string;
+}
+
+export type { IPropertyCodeRes };
