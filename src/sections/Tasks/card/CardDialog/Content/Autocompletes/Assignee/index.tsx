@@ -9,7 +9,7 @@ const RHFAssignee = () => {
 
     return (
         <Controller
-            name="assignees"
+            name="userIds"
             control={control}
             render={({
                 field: { value, onChange, ...field },
@@ -19,7 +19,7 @@ const RHFAssignee = () => {
                     label={t("Assignee")}
                     // INFO: make sure we store in array format
                     value={value?.[0] ?? -1}
-                    onChange={(ids) => onChange((ids as number[])?.[0] ?? -1)}
+                    onChange={(ids) => onChange([ids ?? -1])}
                     // ...
                     {...field}
                     error={Boolean(error)}

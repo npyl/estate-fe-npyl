@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useLazyGetPropertyByCodeQuery } from "src/services/properties";
 import { useTranslation } from "react-i18next";
 import { IDemandFiltersPOST } from "src/types/demand";
@@ -15,6 +15,7 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
     const { setValue } = useFormContext();
     const { t } = useTranslation();
 
+    const [code, setCode] = useState("");
     const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
 
     const fillFromPropertyForCode = useCallback(
@@ -48,6 +49,7 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
 
     const autocompleteChange = useCallback(
         (_: any, _id: any, code: string) => {
+            setCode(code);
             getPropertyByCode(code).unwrap().then(fillFromPropertyForCode);
         },
         [index]
@@ -55,6 +57,7 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
 
     return (
         <CodeSelect
+            codeValue={code}
             onChange={autocompleteChange}
             renderInput={(params) => (
                 <TextField {...params} label={t("Property Code")} />

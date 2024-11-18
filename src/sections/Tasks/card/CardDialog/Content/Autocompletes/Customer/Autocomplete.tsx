@@ -39,6 +39,7 @@ const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteProps
 >(({ label, error, helperText, ...props }, ref) => {
+    // TODO: endpoint for mini?
     const { data, isLoading } = useAllCustomersQuery();
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 

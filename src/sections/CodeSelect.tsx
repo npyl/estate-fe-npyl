@@ -17,6 +17,11 @@ import { IPropertyCodeRes } from "@/types/properties";
 
 // ------------------------------------------------------------------------
 
+const getOptionLabel = (o: (IPropertyCodeRes | IPropertyCodeRes[]) | number) =>
+    typeof o === "number" ? "" : Array.isArray(o) ? `(${o.length})` : o.code;
+
+// ------------------------------------------------------------------------
+
 const OptionSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
@@ -76,6 +81,7 @@ function CodeSelect<Multiple extends TMultiple = false>(
                 ? codes?.filter(({ code }) => codeValue.includes(code))
                 : codes?.find(({ code }) => code === codeValue);
         }
+
         return null;
     }, [codes, idValue, codeValue]);
 
@@ -97,10 +103,10 @@ function CodeSelect<Multiple extends TMultiple = false>(
             loading={isLoading}
             disableClearable
             renderOption={RenderOption}
+            getOptionLabel={getOptionLabel}
             options={codes}
             value={value}
             onChange={handleChange}
-            multiple={props.multiple}
             slotProps={{
                 paper: {
                     sx: {

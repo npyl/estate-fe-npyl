@@ -36,6 +36,7 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
         resolver: yupResolver(schema),
     });
 
+    console.log("values: ", methods.watch());
     console.log("errors: ", methods.formState.errors);
 
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
