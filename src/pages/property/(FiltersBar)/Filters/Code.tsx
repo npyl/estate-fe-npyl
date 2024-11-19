@@ -10,7 +10,7 @@ export default function CodeFilter() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const code = useSelector(selectCode) || "";
+    const code = useSelector(selectCode);
 
     const handleChange = useCallback(
         (_: any, _id: any, code: string) =>
