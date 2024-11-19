@@ -4,10 +4,11 @@ import {
     IsAuthenticatedRes,
 } from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
+import getCredentialsForUser from "@/pages/api/google/getCredentialsForUser";
 
 // ------------------------------------------------------------------------
 
-const serviceLog = (...s: any) => console.log(`[AuthService]: `, s);
+const serviceLog = (...s: any) => console.log(`[AuthService]: `, ...s);
 
 // ------------------------------------------------------------------------
 
@@ -28,10 +29,7 @@ const SCOPES = [
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ];
 
-const COMPANY_ID = process.env.COMPANY_ID;
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
-
-const baseUrl = `${process.env.BACKEND_API_URL}/company/socials/google-workspace`;
 
 /**
  * Check if the current access token is expired
@@ -44,58 +42,13 @@ function isTokenExpired(expiryDate: number): boolean {
     return Date.now() >= expiryDate - bufferTime;
 }
 
-interface GoogleWorkspaceKeys {
-    clientId: string;
-    clientSecret: string;
-    domain: string;
-}
-
-/**
- * getCredentialsForUser
- * @param Authorization `Bearer ${...}`
- * @returns Receive google workspace credentials from backend
- */
-export const getCredentialsForUser = async (
-    Authorization: string
-): Promise<GoogleWorkspaceKeys | null> => {
-    const headers = {
-        Authorization,
-    } as HeadersInit;
-
-    const res = await fetch(baseUrl, {
-        headers,
-    });
-
-    if (!res.ok) return null;
-
-    try {
-        // INFO: this returns null when we have not setup credentials (=> use try to avoid unexpected end of JSON)
-        return await res.json();
-    } catch (ex) {
-        return null;
-    }
-};
-
-/**
- * getOauth2ClientForUser
- * @param Authorization `Bearer ${...}`
- * @returns Receive google workspace credentials from backend
- */
-const getOauth2ClientForUser = async (Authorization: string) => {
-    const data = await getCredentialsForUser(Authorization);
-    if (!data) return null;
-
-    serviceLog(data);
-
-    // TODO: we also get the domain so store it somehow!
-
-    return new OAuth2Client(data.clientId, data.clientSecret, REDIRECT_URI);
-};
-
 class AuthService {
-    userTokens: Map<number, UserToken> = new Map();
-    oauth2Client!: OAuth2Client;
-    tokenStorage: TokenStorage;
+    private userTokens: Map<number, UserToken> = new Map();
+    private oauth2Client!: OAuth2Client;
+    private tokenStorage: TokenStorage;
+
+    // e.g. npylarinos@digipath.gr -> digipath.gr
+    WORKSPACE_DOMAIN: string | undefined;
 
     constructor() {
         this.tokenStorage = new TokenStorage();
@@ -269,12 +222,28 @@ class AuthService {
         }
     }
 
+    /**
+     * getOauth2ClientForUser
+     * @param Authorization `Bearer ${...}`
+     * @returns Receive google workspace credentials from backend
+     */
+    private getOauth2ClientForUser = async (Authorization: string) => {
+        const data = await getCredentialsForUser(Authorization);
+        if (!data) return null;
+
+        serviceLog(data);
+
+        // INFO: keep this for workspace-related higher-level apis (like calendar)
+        this.WORKSPACE_DOMAIN = data.domain;
+        return new OAuth2Client(data.clientId, data.clientSecret, REDIRECT_URI);
+    };
+
     async initialise(Authorization: string) {
         if (this.oauth2Client) return;
 
-        serviceLog("getting oauth for companyId: ", COMPANY_ID);
+        serviceLog("getting oauth for logged-in pp user");
 
-        const res = await getOauth2ClientForUser(Authorization);
+        const res = await this.getOauth2ClientForUser(Authorization);
         if (!res) return;
 
         this.oauth2Client = res;

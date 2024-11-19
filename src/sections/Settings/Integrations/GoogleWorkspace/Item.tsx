@@ -1,8 +1,29 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import BaseItem from "../BaseItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import { useIsGoogleWorkspaceIntegratedQuery } from "@/services/company";
+import {
+    useDeleteGoogleWorkspaceMutation,
+    useIsGoogleWorkspaceIntegratedQuery,
+} from "@/services/company";
+import { LoadingButton } from "@mui/lab";
+import { alpha } from "@mui/material";
+
+const RemoveButton = () => {
+    const { t } = useTranslation();
+    const [deleteWorkspace, { isLoading }] = useDeleteGoogleWorkspaceMutation();
+    const handleDelete = useCallback(() => deleteWorkspace(), []);
+    return (
+        <LoadingButton
+            color="error"
+            loading={isLoading}
+            disabled={isLoading}
+            onClick={handleDelete}
+        >
+            {t("Delete")}
+        </LoadingButton>
+    );
+};
 
 // -----------------------------------------------------------------------------
 
@@ -39,7 +60,11 @@ const Item: FC<ItemProps> = ({ onEdit }) => {
     const { data: isIntegrated } = useIsGoogleWorkspaceIntegratedQuery();
 
     return (
-        <BaseItem type="Google Workspace" onEdit={onEdit}>
+        <BaseItem
+            type="Google Workspace"
+            topRightContent={isIntegrated ? <RemoveButton /> : undefined}
+            onEdit={onEdit}
+        >
             <Placeholder
                 integrated={Boolean(isIntegrated)}
                 p={2}

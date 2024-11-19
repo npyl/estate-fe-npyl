@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import { getCredentialsForUser } from "../calendar/_service/AuthService";
+import getCredentialsForUser from "./getCredentialsForUser";
+
+// -----------------------------------------------------------------------
 
 const baseUrl = `${process.env.BACKEND_API_URL}/company/socials/google-workspace`;
 
@@ -10,7 +12,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
-        if (req.method !== "GET" && req.method !== "PUT")
+        if (
+            req.method !== "GET" &&
+            req.method !== "PUT" &&
+            req.method !== "DELETE"
+        )
             throw new Error("Bad method");
 
         const Authorization = req.headers.authorization;
@@ -33,7 +39,24 @@ export default async function handler(
 
             const response = await fetch(baseUrl, {
                 method: "PUT",
-                body,
+                body: JSON.stringify(body),
+                headers: {
+                    Authorization,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) throw await response.json();
+
+            res.status(200).json({});
+        }
+
+        /**
+         * Remove
+         */
+        if (req.method === "DELETE") {
+            const response = await fetch(baseUrl, {
+                method: "DELETE",
                 headers: {
                     Authorization,
                     "Content-Type": "application/json",

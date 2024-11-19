@@ -1067,10 +1067,22 @@ const resources = {
 
             _COLUMN_DONE_:
                 "There is already a DONE column containing tasks. Move the tasks and retry.",
+
+            "Integrated. You can change workspace if you'd like.":
+                "Integrated. You can change workspace if you'd like.",
+
+            "Not integrated. Please edit to support features like Calendar.":
+                "Not integrated. Please edit to support features like Calendar.",
         },
     },
     el: {
         translation: {
+            "Integrated. You can change workspace if you'd like.":
+                "Συνδέθηκε. Μπορείτε να αλλάξετε το workspace αν επιθυμείτε.",
+
+            "Not integrated. Please edit to support features like Calendar.":
+                "Μη συνδεδεμένο. Παρακαλώ επεξεργαστείτε για να υποστηρίζονται λειτουργίες όπως Ημερολόγιο.",
+
             _COLUMN_DONE_:
                 "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες. Μεταφέρετε τις εργασίες και δοκιμάστε ξανά.",
 
