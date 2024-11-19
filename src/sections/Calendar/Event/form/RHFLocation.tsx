@@ -16,7 +16,7 @@ const nameKey = "location";
 
 const RHFLocation = () => {
     const { t } = useTranslation();
-    const { setValue, control, watch } = useFormContext();
+    const { setValue, control } = useFormContext();
 
     const inputRef = useRef<PlacesAutocompleteRef>(null);
 
@@ -29,7 +29,9 @@ const RHFLocation = () => {
             const mainText = o.structured_formatting.main_text;
             const secondaryText = o.structured_formatting.secondary_text;
 
-            setValue(nameKey, `${mainText}, ${secondaryText}`);
+            setValue(nameKey, `${mainText}, ${secondaryText}`, {
+                shouldDirty: true,
+            });
 
             // close popover
             inputRef.current?.clearSuggestions();
