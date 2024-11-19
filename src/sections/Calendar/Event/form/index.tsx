@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
@@ -53,10 +53,13 @@ const CreateUpdateForm: FC<Props> = ({
 
     const isSubmitting = methods.formState.isSubmitting;
 
-    const handleSubmit = async (e: CalendarEventReq) => {
-        await onSubmit(e);
-        onClose();
-    };
+    const handleSubmit = useCallback(
+        async (e: CalendarEventReq) => {
+            await onSubmit(e);
+            onClose();
+        },
+        [onClose]
+    );
 
     const handleReset = () => {
         // onAllDayChange({}, _isAllDay);

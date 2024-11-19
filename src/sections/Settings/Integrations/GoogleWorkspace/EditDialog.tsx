@@ -1,5 +1,5 @@
 import Dialog from "@/components/Dialog";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { RHFTextField } from "@/components/hook-form";
 import { FormProvider, useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
@@ -25,11 +25,19 @@ const EditDialog: FC<Props> = ({ onClose }) => {
 
     const isDirty = methods.formState.isDirty;
 
+    const handleSubmit = useCallback(
+        async (d: IGoogleWorkspaceIntegrationReq) => {
+            await update(d);
+            onClose();
+        },
+        [onClose]
+    );
+
     return (
         <Dialog
             open
             submit
-            onSubmit={methods.handleSubmit(update)}
+            onSubmit={methods.handleSubmit(handleSubmit)}
             // ...
             title={<Typography>Google Workspace</Typography>}
             content={

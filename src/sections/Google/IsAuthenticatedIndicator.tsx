@@ -1,6 +1,6 @@
 import { useCalendarAuth } from "@/services/calendar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip, { TooltipProps } from "@mui/material/Tooltip";
 import Skeleton, { SkeletonProps } from "@mui/material/Skeleton";
 import AvatarButton from "@/components/CalendarGoogle/ButtonGroup/AvatarButton";
 import { useTranslation } from "react-i18next";
@@ -69,7 +69,9 @@ const CrossedGoogleIcon = () => (
     </SvgIcon>
 );
 
-const DisabledIndicator = () => {
+const DisabledIndicator: FC<Omit<TooltipProps, "title" | "children">> = (
+    props
+) => {
     const { t } = useTranslation();
     return (
         <Tooltip
@@ -78,6 +80,7 @@ const DisabledIndicator = () => {
                     {t("Not integrated. Please go to Settings -> Integrations")}
                 </Typography>
             }
+            {...props}
         >
             <IconButton>
                 <CrossedGoogleIcon />
@@ -99,9 +102,9 @@ const WorkspaceIndicator: FC<WorkspaceIndicatorProps> = (props) => {
     const { data: isIntegrated, isLoading } =
         useIsGoogleWorkspaceIntegratedQuery();
 
-    if (isLoading) return <AvatarSkeleton />;
+    if (isLoading) return <AvatarSkeleton sx={props.sx} />;
 
-    if (!isIntegrated) return <DisabledIndicator />;
+    if (!isIntegrated) return <DisabledIndicator sx={props.sx} />;
 
     return <IsAuthenticatedIndicator {...props} />;
 };

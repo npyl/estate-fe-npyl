@@ -41,10 +41,13 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
 
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
-    const handleSubmit = useCallback(async (d: ICreateOrUpdateTaskReq) => {
-        await createOrUpdate(d);
-        onClose();
-    }, []);
+    const handleSubmit = useCallback(
+        async (d: ICreateOrUpdateTaskReq) => {
+            await createOrUpdate(d);
+            onClose();
+        },
+        [onClose]
+    );
 
     return (
         <FormProvider {...methods}>

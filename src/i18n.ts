@@ -1076,10 +1076,14 @@ const resources = {
 
             "Not integrated. Please go to Settings -> Integrations":
                 "Not integrated. Please go to Settings -> Integrations",
+
+            Reporter: "Reporter",
         },
     },
     el: {
         translation: {
+            Reporter: "Αναθέτης",
+
             "Not integrated. Please go to Settings -> Integrations":
                 "Μη συνδεδεμένο. Παρακαλώ κατευθυνθείτε στις Ρυθμίσεις -> Διασυνδέσεις",
 
