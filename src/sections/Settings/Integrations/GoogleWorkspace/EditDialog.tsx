@@ -1,9 +1,5 @@
-import {
-    IGoogleWorkspaceIntegrationReq,
-    useUpdateGoogleWorkspaceIntegration,
-} from "@/services/company";
 import Dialog from "@/components/Dialog";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { RHFTextField } from "@/components/hook-form";
 import { FormProvider, useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
@@ -11,6 +7,10 @@ import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import {
+    IGoogleWorkspaceIntegrationReq,
+    useUpdateGoogleWorkspaceMutation,
+} from "@/services/company/google-workspace";
 
 interface Props {
     onClose: VoidFunction;
@@ -19,20 +19,17 @@ interface Props {
 const EditDialog: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
-    const [update, { isLoading }] = useUpdateGoogleWorkspaceIntegration();
+    const [update, { isLoading }] = useUpdateGoogleWorkspaceMutation();
 
     const methods = useForm<IGoogleWorkspaceIntegrationReq>({});
 
-    const handleSubmit = useCallback(
-        (d: IGoogleWorkspaceIntegrationReq) => update(d),
-        []
-    );
+    const isDirty = methods.formState.isDirty;
 
     return (
         <Dialog
             open
             submit
-            onSubmit={methods.handleSubmit(handleSubmit)}
+            onSubmit={methods.handleSubmit(update)}
             // ...
             title={<Typography>Google Workspace</Typography>}
             content={
@@ -48,14 +45,16 @@ const EditDialog: FC<Props> = ({ onClose }) => {
                 <>
                     <Button onClick={onClose}>{t("Cancel")}</Button>
 
-                    <LoadingButton
-                        type="submit"
-                        variant="contained"
-                        loading={isLoading}
-                        disabled={isLoading}
-                    >
-                        {t("Save")}
-                    </LoadingButton>
+                    {isDirty ? (
+                        <LoadingButton
+                            type="submit"
+                            variant="contained"
+                            loading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {t("Save")}
+                        </LoadingButton>
+                    ) : null}
                 </>
             }
         />

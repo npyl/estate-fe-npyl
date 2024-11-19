@@ -5,6 +5,12 @@ import {
 } from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
 
+// ------------------------------------------------------------------------
+
+const serviceLog = (...s: any) => console.log(`[AuthService]: `, s);
+
+// ------------------------------------------------------------------------
+
 interface UserToken {
     accessToken: string;
     refreshToken: string;
@@ -25,9 +31,7 @@ const SCOPES = [
 const COMPANY_ID = process.env.COMPANY_ID;
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
-const baseUrl = `${process.env.BACKEND_URL}/company/google-workspace-credentials`;
-
-type TBackendHeaders = HeadersInit & { "Company-Id"?: string };
+const baseUrl = `${process.env.BACKEND_API_URL}/company/socials/google-workspace`;
 
 /**
  * Check if the current access token is expired
@@ -40,37 +44,52 @@ function isTokenExpired(expiryDate: number): boolean {
     return Date.now() >= expiryDate - bufferTime;
 }
 
+interface GoogleWorkspaceKeys {
+    clientId: string;
+    clientSecret: string;
+    domain: string;
+}
+
 /**
- * getOauth2ClientForCompanyId
+ * getCredentialsForUser
  * @param Authorization `Bearer ${...}`
- * @param companyId
  * @returns Receive google workspace credentials from backend
  */
-const getOauth2ClientForCompanyId = async (
-    Authorization: string,
-    companyId: number
-) => {
+export const getCredentialsForUser = async (
+    Authorization: string
+): Promise<GoogleWorkspaceKeys | null> => {
     const headers = {
         Authorization,
-        "Company-Id": companyId,
-    } as unknown as TBackendHeaders;
+    } as HeadersInit;
 
-    // const res = await fetch(baseUrl, {
-    //     headers,
-    // });
-    // if (!res.ok) return null;
+    const res = await fetch(baseUrl, {
+        headers,
+    });
 
-    const credentials = {
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // TODO: domain???
-    };
+    if (!res.ok) return null;
 
-    return new OAuth2Client(
-        credentials.clientId,
-        credentials.clientSecret,
-        REDIRECT_URI
-    );
+    try {
+        // INFO: this returns null when we have not setup credentials (=> use try to avoid unexpected end of JSON)
+        return await res.json();
+    } catch (ex) {
+        return null;
+    }
+};
+
+/**
+ * getOauth2ClientForUser
+ * @param Authorization `Bearer ${...}`
+ * @returns Receive google workspace credentials from backend
+ */
+const getOauth2ClientForUser = async (Authorization: string) => {
+    const data = await getCredentialsForUser(Authorization);
+    if (!data) return null;
+
+    serviceLog(data);
+
+    // TODO: we also get the domain so store it somehow!
+
+    return new OAuth2Client(data.clientId, data.clientSecret, REDIRECT_URI);
 };
 
 class AuthService {
@@ -116,7 +135,7 @@ class AuthService {
 
             // TODO: what should we do when we don't have refresh token but the user has an active oauth in his computer ??
 
-            console.log("recovered refreshToken: ", refreshToken);
+            serviceLog("recovered refreshToken: ", refreshToken);
 
             this.userTokens.set(userId, {
                 accessToken: res.data.access_token,
@@ -253,12 +272,12 @@ class AuthService {
     async initialise(Authorization: string) {
         if (this.oauth2Client) return;
 
-        console.log("[AuthService]: getting oauth for companyId: ", COMPANY_ID);
+        serviceLog("getting oauth for companyId: ", COMPANY_ID);
 
-        this.oauth2Client = await getOauth2ClientForCompanyId(
-            Authorization,
-            +COMPANY_ID!
-        );
+        const res = await getOauth2ClientForUser(Authorization);
+        if (!res) return;
+
+        this.oauth2Client = res;
     }
 }
 

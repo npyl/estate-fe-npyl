@@ -2,11 +2,14 @@ import { FC } from "react";
 import BaseItem from "../BaseItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import { useIsGoogleWorkspaceIntegrated } from "@/services/company";
+import { useIsGoogleWorkspaceIntegratedQuery } from "@/services/company";
+
+// -----------------------------------------------------------------------------
 
 interface PlaceholderProps extends TypographyProps {
     integrated: boolean;
 }
+
 const Placeholder: FC<PlaceholderProps> = ({ integrated, ...props }) => {
     const { t } = useTranslation();
 
@@ -26,17 +29,19 @@ const Placeholder: FC<PlaceholderProps> = ({ integrated, ...props }) => {
     );
 };
 
+// -----------------------------------------------------------------------------
+
 interface ItemProps {
     onEdit: VoidFunction;
 }
 
 const Item: FC<ItemProps> = ({ onEdit }) => {
-    const { isIntegrated } = useIsGoogleWorkspaceIntegrated();
+    const { data: isIntegrated } = useIsGoogleWorkspaceIntegratedQuery();
 
     return (
         <BaseItem type="Google Workspace" onEdit={onEdit}>
             <Placeholder
-                integrated={isIntegrated}
+                integrated={Boolean(isIntegrated)}
                 p={2}
                 variant="body1"
                 color="text.secondary"

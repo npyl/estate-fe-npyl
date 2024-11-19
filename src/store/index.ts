@@ -23,7 +23,7 @@ import { security } from "../services/security";
 import { user } from "../services/user";
 import { publicDashboard } from "@/services/publicDashboard";
 import { translation } from "@/services/translate";
-import { company } from "../services/company";
+import { company, googleWorkspaceApi } from "../services/company";
 import { solar, airQuality } from "@/services/googleapi";
 import { agreements } from "@/services/agreements";
 import { integrations } from "@/services/integrations";
@@ -68,6 +68,7 @@ export const createStore = (
                 integrations.middleware,
                 agreements.middleware,
                 calendar.middleware,
+                googleWorkspaceApi.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,
