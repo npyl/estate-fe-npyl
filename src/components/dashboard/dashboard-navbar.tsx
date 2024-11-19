@@ -1,7 +1,6 @@
 import {
     AppBar,
     AppBarProps,
-    Avatar,
     Box,
     ButtonBase,
     IconButton,
@@ -22,6 +21,8 @@ import { SettingsButton } from "../settings-button";
 import LogoHorizontalLight from "@/assets/logo/horizontal/light";
 import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import useResponsive from "@/hooks/useResponsive";
+import Avatar from "@/components/Avatar";
+import { useAuth } from "@/hooks/use-auth";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -62,6 +63,8 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 }));
 
 const AccountButton = () => {
+    const { user } = useAuth();
+
     const anchorRef = useRef<HTMLButtonElement | null>(null);
     const [openPopover, setOpenPopover] = useState<boolean>(false);
 
@@ -81,13 +84,14 @@ const AccountButton = () => {
                 }}
             >
                 <Avatar
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
+                    src={user?.avatar}
                     sx={{
                         height: 40,
                         width: 40,
                     }}
-                >
-                    <UserCircleIcon fontSize="small" />
-                </Avatar>
+                />
             </Box>
             <AccountPopover
                 anchorEl={anchorRef.current}
