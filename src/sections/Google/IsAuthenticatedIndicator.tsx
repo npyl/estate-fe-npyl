@@ -1,12 +1,18 @@
 import { useCalendarAuth } from "@/services/calendar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import Skeleton from "@mui/material/Skeleton";
+import Skeleton, { SkeletonProps } from "@mui/material/Skeleton";
 import AvatarButton from "@/components/CalendarGoogle/ButtonGroup/AvatarButton";
 import { useTranslation } from "react-i18next";
 import { FC, PropsWithChildren } from "react";
 import { IconButton, SxProps, Theme, Typography } from "@mui/material";
 import { useIsGoogleWorkspaceIntegratedQuery } from "@/services/company";
+
+// ------------------------------------------------------------------------
+
+const AvatarSkeleton: FC<SkeletonProps> = (props) => (
+    <Skeleton variant="circular" width="46px" height="46px" {...props} />
+);
 
 // ------------------------------------------------------------------------
 
@@ -23,10 +29,7 @@ const IsAuthenticatedIndicator: FC<IsAuthenticatedIndicatorProps> = ({
     const { isAuthenticated, userInfo, isLoading, authenticate } =
         useCalendarAuth();
 
-    if (isLoading)
-        return (
-            <Skeleton variant="circular" width="46px" height="46px" sx={sx} />
-        );
+    if (isLoading) return <AvatarSkeleton sx={sx} />;
 
     if (!isAuthenticated)
         return (
@@ -93,7 +96,10 @@ const DisabledIndicator = () => {
 interface WorkspaceIndicatorProps extends IsAuthenticatedIndicatorProps {}
 
 const WorkspaceIndicator: FC<WorkspaceIndicatorProps> = (props) => {
-    const { data: isIntegrated } = useIsGoogleWorkspaceIntegratedQuery();
+    const { data: isIntegrated, isLoading } =
+        useIsGoogleWorkspaceIntegratedQuery();
+
+    if (isLoading) return <AvatarSkeleton />;
 
     if (!isIntegrated) return <DisabledIndicator />;
 
