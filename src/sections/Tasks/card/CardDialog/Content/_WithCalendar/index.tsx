@@ -8,6 +8,7 @@ import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
+import { FC } from "react";
 const IsAuthenticatedIndicator = dynamic(
     () => import("@/sections/Google/IsAuthenticatedIndicator")
 );
@@ -38,7 +39,11 @@ const EventOptionsSx: SxProps<Theme> = {
     px: 1,
 };
 
-const WithCalendar = () => {
+interface WithCalendarProps {
+    edit: boolean;
+}
+
+const WithCalendar: FC<WithCalendarProps> = ({ edit }) => {
     const { t } = useTranslation();
 
     const { watch } = useFormContext();
@@ -58,7 +63,7 @@ const WithCalendar = () => {
                 <IsAuthenticatedIndicator sx={OAuthButtonSx}>
                     <Stack spacing={1} sx={EventOptionsSx}>
                         <Pickers />
-                        <Assignee />
+                        {!edit ? <Assignee /> : null}
                     </Stack>
                 </IsAuthenticatedIndicator>
             ) : null}

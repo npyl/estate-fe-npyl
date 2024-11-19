@@ -62,16 +62,9 @@ export default async function handler(
             const event = KanbanTaskToCalendarEvent(task);
             const gEvent = TCalendarEventToGCalendarEvent(event);
 
-            console.log(
-                "[WITH_CALENDAR]: ppUser: ",
-                userId,
-                " gwUser: ",
-                googleUserKey
-            );
-            console.log("[WITH_CALENDAR]: isEdit: ", isEdit, " body: ", event);
-
             if (isEdit) {
-                await calendarService.updateEvent(iUserId, gEvent);
+                const updatableEvent = { ...gEvent, id: _eventId };
+                await calendarService.updateEvent(iUserId, updatableEvent);
             } else {
                 const event = await calendarService.createEvent(
                     iUserId,

@@ -23,6 +23,7 @@ interface ContentProps {
     columnId?: number;
     createdAt?: string;
     updatedAt?: string;
+    haveEvent: boolean;
 }
 
 const Content: FC<ContentProps> = ({
@@ -30,6 +31,8 @@ const Content: FC<ContentProps> = ({
     columnId,
     createdAt,
     updatedAt,
+    // ...
+    haveEvent,
 }) => {
     const { t } = useTranslation();
 
@@ -41,7 +44,7 @@ const Content: FC<ContentProps> = ({
             {/* ------------------------ */}
 
             <Divider />
-            <WithCalendar />
+            <WithCalendar edit={haveEvent} />
             <Divider />
 
             <RHFTextField name="name" label={t("Title")} />

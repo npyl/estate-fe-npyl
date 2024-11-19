@@ -39,6 +39,10 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     console.log("values: ", methods.watch());
     console.log("errors: ", methods.formState.errors);
 
+    // INFO: flag to know whether we are editing (w/ calendar);
+    // Here, it is important to differenciate between a normal edit and an edit w/ calendar
+    const haveEvent = Boolean(task?.event);
+
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
     const handleSubmit = useCallback(
@@ -69,6 +73,8 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                         // ...
                         createdAt={task?.createdAt}
                         updatedAt={task?.updatedAt}
+                        // ...
+                        haveEvent={haveEvent}
                     />
                 }
                 actions={<Actions onClose={onClose} />}
