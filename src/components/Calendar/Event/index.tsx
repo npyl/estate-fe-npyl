@@ -30,24 +30,35 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 
 // ------------------------------------------------------------------------------------
 
-const EventSx: SxProps<Theme> = {
-    backgroundColor: ({ palette }) => palette.background.paper,
-    borderRadius: "10px",
-    boxShadow: 10,
+// left-factor
+const LF = 10;
 
-    marginLeft: 1,
-    width: (theme) => `calc(100% - ${theme.spacing(2)})`,
+const getEventSx = (overlapCount?: number): SxProps<Theme> => {
+    const c = overlapCount ?? 0;
 
-    position: "absolute",
-    zIndex: Z_INDEX.EVENT,
+    const marginLeft = 1 + c * LF;
+    const width = ({ spacing }: Theme) => `calc(100% - ${spacing(2 + c * LF)})`;
+    const zIndex = Z_INDEX.EVENT + c;
 
-    transition: "all 0.3s ease",
+    return {
+        backgroundColor: ({ palette }) => palette.background.paper,
+        borderRadius: "10px",
+        boxShadow: 10,
 
-    cursor: "pointer",
+        marginLeft,
+        width,
 
-    "&:hover": {
-        boxShadow: 20,
-    },
+        position: "absolute",
+        zIndex,
+
+        transition: "all 0.3s ease",
+
+        cursor: "pointer",
+
+        "&:hover": {
+            boxShadow: 20,
+        },
+    };
 };
 
 const DescriptionSx: SxProps<Theme> = {
@@ -61,8 +72,10 @@ const DescriptionSx: SxProps<Theme> = {
 };
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
-    ({ event, onClick, ...props }, ref) => {
+    ({ event, overlapCount, onClick, ...props }, ref) => {
         const { top, height } = calculateEventPosition(event);
+
+        console.log("overlayCount: ", overlapCount);
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
@@ -72,7 +85,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         return (
             <Stack
                 ref={ref}
-                sx={EventSx}
+                sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
                 onClick={handleClick}

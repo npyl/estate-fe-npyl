@@ -4,7 +4,6 @@ import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
 import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
-import IGoogleEarth from "./googleEarth";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
@@ -445,8 +444,6 @@ export interface IProperties {
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
 
-    googleEarth: IGoogleEarth;
-
     visitors: number;
     bedrooms: number;
     bathrooms: number;
@@ -469,3 +466,10 @@ export type PropertyStatus =
     | "TAKEN"
     | "UNDER_CONSTRUCTION"
     | "UNDER_MAINTENANCE";
+
+interface IPropertyCodeRes {
+    id: number;
+    code: string;
+}
+
+export type { IPropertyCodeRes };

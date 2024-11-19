@@ -6,7 +6,7 @@ import { publicListing, spitogatosListing } from "src/services/listings";
 import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
-import { tickets } from "src/services/tickets"; // a.k.a. kanban
+import { tasks } from "@/services/tasks"; // a.k.a. kanban
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
 import { global } from "../services/global";
@@ -39,7 +39,7 @@ export const rootReducer = combineReducers({
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
     [security.reducerPath]: security.reducer,
-    [tickets.reducerPath]: tickets.reducer,
+    [tasks.reducerPath]: tasks.reducer,
     [logs.reducerPath]: logs.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
     [publicDashboard.reducerPath]: publicDashboard.reducer,

@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from "react";
 import { createContext, useEffect, useReducer } from "react";
-import { useLoginMutation, useRegisterMutation } from "../services/auth";
+import { useLoginMutation } from "../services/auth";
 import { IUser } from "src/types/user";
-import { useLazyProfileQuery } from "src/services/user";
+import { useLazyGetProfileQuery } from "src/services/user";
 
 interface State {
     platform: "JWT";
@@ -14,7 +14,6 @@ interface State {
 export interface AuthContextValue extends State {
     signin: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
-    signup: (username: string, password: string) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -25,7 +24,6 @@ enum ActionType {
     INITIALIZE = "INITIALIZE",
     LOGIN = "LOGIN",
     LOGOUT = "LOGOUT",
-    REGISTER = "REGISTER",
 }
 
 type InitializeAction = {
@@ -47,14 +45,7 @@ type LogoutAction = {
     type: ActionType.LOGOUT;
 };
 
-type RegisterAction = {
-    type: ActionType.REGISTER;
-    payload: {
-        user: IUser;
-    };
-};
-
-type Action = InitializeAction | LoginAction | LogoutAction | RegisterAction;
+type Action = InitializeAction | LoginAction | LogoutAction;
 
 type Handler = (state: State, action: any) => State;
 
@@ -91,15 +82,6 @@ const handlers: Record<ActionType, Handler> = {
         isAuthenticated: false,
         user: null,
     }),
-    REGISTER: (state: State, action: RegisterAction): State => {
-        const { user } = action.payload;
-
-        return {
-            ...state,
-            isAuthenticated: true,
-            user,
-        };
-    },
 };
 
 const reducer = (state: State, action: Action): State =>
@@ -109,15 +91,13 @@ export const AuthContext = createContext<AuthContextValue>({
     ...initialState,
     signin: () => Promise.resolve(),
     logout: () => Promise.resolve(),
-    signup: () => Promise.resolve(),
 });
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const [login, { isSuccess }] = useLoginMutation();
-    const [register] = useRegisterMutation();
-    const [getProfile] = useLazyProfileQuery();
+    const [getProfile] = useLazyGetProfileQuery();
 
     useEffect(() => {
         initialize();
@@ -171,7 +151,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             throw "Failed getting profile!";
         }
 
-        await dispatch({
+        dispatch({
             type: ActionType.LOGIN,
             payload: {
                 user,
@@ -184,12 +164,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         dispatch({ type: ActionType.LOGOUT });
     };
 
-    const signup = async (username: string, password: string): Promise<void> =>
-        await register({
-            username,
-            password,
-        }).unwrap();
-
     return (
         <AuthContext.Provider
             value={{
@@ -197,7 +171,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                 platform: "JWT",
                 signin,
                 logout,
-                signup,
             }}
         >
             {children}

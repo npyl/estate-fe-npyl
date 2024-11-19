@@ -27,10 +27,10 @@ interface Option {
 }
 
 const OPTIONS: Option[] = [
-    { type: "TASK", label: "Task" },
-    { type: "MEETING", label: "Meeting" },
-    { type: "TOUR_INPERSON", label: "Tour online" },
-    { type: "TOUR_ONLINE", label: "Tour in person" },
+    { type: "TASK", label: "=Task=" },
+    { type: "MEETING", label: "=Meeting=" },
+    { type: "TOUR_INPERSON", label: "=Tour_in_person=" },
+    { type: "TOUR_ONLINE", label: "=Tour_on_line=" },
 ];
 
 const getOption =

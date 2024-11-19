@@ -68,8 +68,8 @@ const PropertyInfoWindow = ({
                 border-radius: 12px !important;
             }
            .gm-style .gm-style-iw-tc::after {
-                height: 12px !important;
-                width: 25px !important;  
+                height: 0px !important;
+                width: 0px !important;  
 }
 
         `;
@@ -143,7 +143,7 @@ const PropertyInfoWindow = ({
             onCloseClick={() => setActiveMarker(undefined)}
             options={{
                 maxWidth: 290,
-                pixelOffset: new google.maps.Size(0, -30),
+                pixelOffset: new google.maps.Size(0, -25),
             }}
         >
             <Box

@@ -7,7 +7,7 @@ import TwoDimentionsDndNoContext from "@/components/TwoDimentionsDnd/TwoDimentio
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
 import useResponsiveColumns, {
     ResponsiveColumns,
-} from "./useResponsiveColumns";
+} from "@/components/TwoDimentionsDnd/useResponsiveColumns";
 import { useCallback } from "react";
 import { ExtendedDropResult } from "./hook/type";
 import Separator from "./Separator";

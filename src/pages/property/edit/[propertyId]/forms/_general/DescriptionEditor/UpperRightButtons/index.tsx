@@ -35,6 +35,9 @@ const UpperRightOptions = ({
             const editorState = textToEditorState(s, styling);
             if (!editorState) return;
             onContentChange(editorState);
+
+            // INFO: make sure we return the new state for history component
+            return editorState;
         },
         [onContentChange]
     );

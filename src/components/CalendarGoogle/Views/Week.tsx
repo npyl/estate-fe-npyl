@@ -7,6 +7,7 @@ import { useGetEventsQuery } from "@/services/calendar";
 
 const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
     events = [],
+    filters,
     ...props
 }) => {
     const { user } = useAuth();
@@ -18,6 +19,7 @@ const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
         userId: user?.id!,
         startDate,
         endDate,
+        filters,
     });
 
     return <CalendarWeekView {...props} events={data || []} />;

@@ -1,12 +1,12 @@
-import { Fade, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback } from "react";
 import { IUser } from "src/types/user";
 import ListItem from "../item";
-import { useProfileQuery } from "src/services/user";
 import { useTranslation } from "react-i18next";
 import ListItemProps from "../types";
 import { CustomAvatar, CustomButton } from "./styled";
+import { useGetProfileQuery } from "@/services/user";
 
 // -----------------------------------------------------------
 
@@ -23,7 +23,7 @@ const ListManagerItem: FC<ListManagerItemProps> = ({
     const { t } = useTranslation();
     const router = useRouter();
 
-    const { data } = useProfileQuery();
+    const { data } = useGetProfileQuery();
 
     const handleClick = useCallback(
         () => manager?.id && router.push(`/user/${manager?.id}`),

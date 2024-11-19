@@ -1,11 +1,4 @@
-import {
-    Box,
-    Stack,
-    SxProps,
-    Theme,
-    Typography,
-    useMediaQuery,
-} from "@mui/material";
+import { Stack, Typography, useMediaQuery } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
@@ -17,12 +10,6 @@ import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 import { getPropertyStatusColor } from "@/theme/colors";
 import getParentCategoriesIcons from "@/assets/icons/parent-categories";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
-
-const iconSx: SxProps<Theme> = {
-    marginRight: 0.5,
-    color: "neutral.600",
-    fontSize: "16px",
-};
 
 function RenderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
@@ -169,7 +156,7 @@ const RenderParentCategoryCell = (params: GridCellParams) => {
                 alignSelf="flex-start"
                 alignItems={"center"}
             >
-                {getParentCategoriesIcons(iconSx)[key]}
+                {getParentCategoriesIcons()[key]}
                 <Typography fontSize="small">{t(value)}</Typography>
             </Stack>
         </Stack>

@@ -1,28 +1,22 @@
-import { Container, Tabs, Tab } from "@mui/material";
+import { Container } from "@mui/material";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import ViewUser from "src/components/User/View";
+import ViewUser from "@/sections/User/View";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useTabsContext } from "src/contexts/tabs";
-import { useProfileQuery } from "src/services/user";
-import TabPanel from "@/components/Tabs";
-// ...
-const CompanyInformation = dynamic(() => import("./(Company)"));
-const Integrations = dynamic(() => import("./(Integrations)"));
+import { useGetUserQuery } from "src/services/user";
 
 import { AuthGuard } from "@/components/authentication/auth-guard";
 
-import dynamic from "next/dynamic";
+import { useAuth } from "@/hooks/use-auth";
 
 const Profile: NextPage = () => {
     const { t } = useTranslation();
-    const { data: profile } = useProfileQuery();
+    const { user } = useAuth();
+    const { data: profile } = useGetUserQuery(+user?.id!);
     const { pushTab } = useTabsContext();
-    const [tab, setTab] = useState(0);
-
-    const isAdmin = profile?.isAdmin;
 
     useEffect(() => {
         if (profile) {
@@ -34,28 +28,11 @@ const Profile: NextPage = () => {
         }
     }, [profile, t, pushTab]);
 
-    const handleTabChange = (_: any, v: number) => setTab(v);
+    if (!profile) return null;
 
     return (
         <Container maxWidth="md">
-            <Tabs value={tab} onChange={handleTabChange}>
-                <Tab label={t("User Profile")} value={0} />
-                {isAdmin && <Tab label={t("Company Information")} value={1} />}
-                {isAdmin && <Tab label={t("Integrations")} value={2} />}
-            </Tabs>
-            <TabPanel value={tab} index={0}>
-                {profile ? <ViewUser user={profile} /> : null}
-            </TabPanel>
-            {isAdmin && (
-                <>
-                    <TabPanel value={tab} index={1}>
-                        <CompanyInformation />
-                    </TabPanel>
-                    <TabPanel value={tab} index={2}>
-                        <Integrations />
-                    </TabPanel>
-                </>
-            )}
+            <ViewUser user={profile} />
         </Container>
     );
 };

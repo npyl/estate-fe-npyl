@@ -43,7 +43,7 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
         >
             <HighlightTypography
                 highlight={isToday}
-                textAlign="center"
+                shape="horizontal"
                 borderRadius="5px"
                 m={0.3}
             >

@@ -24,6 +24,8 @@ import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import React from "react";
 import Agreements from "@/sections/agreements";
+import dynamic from "next/dynamic";
+const Tasks = dynamic(() => import("./sections/Tasks"));
 
 type TabConfig = {
     label: string;
@@ -87,6 +89,11 @@ const CustomerView: NextPage = () => {
                     </Grid>
                 </Grid>
             ),
+        },
+
+        {
+            label: t("Tasks"),
+            content: <Tasks />,
         },
 
         // Add this new tab configuration for DemandSection

@@ -9,11 +9,16 @@ import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
 
 // --------------------------------------------------------------------
 
-export const CalendarGoogleYearViewCell: FC<CalendarCellProps> = ({
+interface YearCellProps extends CalendarCellProps {
+    filters?: object;
+}
+
+export const CalendarGoogleYearViewCell: FC<YearCellProps> = ({
     events = [],
+    filters,
     ...props
 }) => {
-    const { data } = useMonthEvents(props.date);
+    const { data } = useMonthEvents(props.date, filters);
     return <CalendarYearViewCell {...props} events={data || []} />;
 };
 
@@ -21,6 +26,7 @@ export const CalendarGoogleYearViewCell: FC<CalendarCellProps> = ({
 
 const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
     events = [],
+    filters,
     // ...
     onEventClick,
     // ...
@@ -30,6 +36,7 @@ const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
         Cell={(props) => (
             <CalendarGoogleYearViewCell
                 {...props}
+                filters={filters}
                 onEventClick={onEventClick}
             />
         )}

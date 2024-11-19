@@ -22,7 +22,7 @@ import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
-import { useProfileQuery } from "src/services/user";
+import { useGetProfileQuery } from "src/services/user";
 import { ChartPie } from "@/assets/icons/chart-pie";
 import { ChartLine as ChartLineIcon } from "@/assets/icons/chart-line";
 import { useRouter } from "next/router";
@@ -106,8 +106,8 @@ const getSections = (
             },
 
             {
-                title: t("Tickets"),
-                path: "/tickets",
+                title: t("Tasks"),
+                path: "/tasks",
                 icon: <ConfirmationNumber fontSize="small" />,
             },
             {
@@ -127,12 +127,6 @@ const getSections = (
                 path: "/calendar",
                 icon: <CalendarTodayIcon fontSize="small" />,
             },
-            {
-                title: t("Security"),
-                path: "/security",
-                icon: <UsersIcon fontSize="small" />,
-                adminOnly: true,
-            },
         ],
     },
 ];
@@ -145,7 +139,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         noSsr: true,
     });
 
-    const isAdmin = useProfileQuery().data?.isAdmin ?? false;
+    const isAdmin = useGetProfileQuery().data?.isAdmin ?? false;
 
     const { data: nonViewedNotificationsCount } =
         useGetNonViewedNotificationsCountQuery();

@@ -9,6 +9,8 @@ import CalendarWeekViewCell from "@/components/Calendar/Views/Week/Cell";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 import dynamic from "next/dynamic";
 import useFilteredEvents from "./useFilteredEvents";
+import { useFiltersContext } from "../Filters/context";
+import useAuthenticatedClick from "./useAuthenticatedClick";
 
 // --------------------------------------------------------------------------
 
@@ -18,7 +20,8 @@ interface CellProps extends CalendarCellProps {
 
 const CellWithTimeOffset: FC<CellProps> = ({ onClickWithOffset, ...props }) => {
     const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);
-    return <CalendarWeekViewCell {...props} onClick={onClick} />;
+    const { onAuthenticatedClick } = useAuthenticatedClick(onClick);
+    return <CalendarWeekViewCell {...props} onClick={onAuthenticatedClick} />;
 };
 
 // --------------------------------------------------------------------------
@@ -27,12 +30,14 @@ const WeekView: FC<CalendarWeekViewProps> = (props) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
+    const { calendarId } = useFiltersContext();
     const { getCellEvents } = useFilteredEvents();
 
     return (
         <>
             <CalendarGoogleWeekView
                 {...props}
+                filters={{ calendarId }}
                 getCellEvents={getCellEvents}
                 Cell={(props) => (
                     <CellWithTimeOffset

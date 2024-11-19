@@ -4,7 +4,7 @@ import { useLogoutMutation } from "@/services/calendar";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 import { Divider, Menu, MenuItem, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -42,17 +42,17 @@ const AvatarSx = {
     width: "30px",
 };
 
-interface Props {
+interface Props extends IconButtonProps {
     userInfo?: GoogleCalendarUserInfo;
 }
 
-const AvatarButton: FC<Props> = ({ userInfo }) => {
+const AvatarButton: FC<Props> = ({ userInfo, ...props }) => {
     const ref = useRef<HTMLButtonElement>(null);
     const [isOpen, openPopover, closePopover] = useDialog();
 
     return (
         <>
-            <IconButton ref={ref} onClick={openPopover}>
+            <IconButton ref={ref} onClick={openPopover} {...props}>
                 <Avatar src={userInfo?.picture} sx={AvatarSx} />
             </IconButton>
 

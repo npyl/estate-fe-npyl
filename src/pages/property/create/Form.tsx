@@ -6,8 +6,6 @@ import {
     Typography,
     Container,
     Grid,
-    SxProps,
-    Theme,
 } from "@mui/material";
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -15,41 +13,10 @@ import { IGlobalProperty } from "src/types/global";
 import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
-import { ReactNode, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { PPButton } from "@/components/styled";
-
-//Here i use the images with width and height set to 80 for the create property form
-const getIcons = (sx?: SxProps<Theme>): Record<string, ReactNode> => ({
-    RESIDENTIAL: (
-        <img
-            src={"/static/categoryPhotos/home.webp"}
-            alt="Home"
-            style={{ width: 80, height: 80 }}
-        />
-    ),
-    COMMERCIAL: (
-        <img
-            src={"/static/categoryPhotos/commercial.webp"}
-            alt="Home"
-            style={{ width: 80, height: 80 }}
-        />
-    ),
-    LAND: (
-        <img
-            src={"/static/categoryPhotos/land.webp"}
-            alt="Home"
-            style={{ width: 80, height: 80 }}
-        />
-    ),
-    OTHER: (
-        <img
-            src={"/static/categoryPhotos/more.webp"}
-            alt="Home"
-            style={{ width: 80, height: 80 }}
-        />
-    ),
-});
+import getIcons from "@/assets/icons/parent-categories";
 
 interface IFormProps {
     isLoading: boolean;
@@ -137,7 +104,7 @@ export default function Form({
                                 clicked={key === parentCategory}
                                 onClick={() => handleParentCategorySelect(key)}
                             >
-                                {getIcons()[key]}
+                                {getIcons({ width: 80, height: 80 })[key]}
                                 <Typography mt={1}>{value}</Typography>
                             </PPButton>
                         </Grid>

@@ -62,6 +62,8 @@ const GCalendarToTCalendarEvent = ({
     };
 };
 
+type TCalendarEventReq = Omit<TCalendarEvent, "id"> & { id?: string };
+
 const TCalendarEventToGCalendarEvent = ({
     id,
     title,
@@ -72,7 +74,7 @@ const TCalendarEventToGCalendarEvent = ({
     extendedProperties,
     type,
     withIds,
-}: TCalendarEvent): calendar_v3.Schema$Event => {
+}: TCalendarEventReq): calendar_v3.Schema$Event => {
     console.log("start: ", startDate, " end: ", endDate);
 
     return {

@@ -74,7 +74,7 @@ const App: FC<EnhancedAppProps> = (props) => {
                                 >
                                     <CssBaseline />
                                     <TabsProvider>
-                                        <Toaster />
+                                        <Toaster position="top-right" />
                                         <AuthConsumer>
                                             {(auth) =>
                                                 !auth.isInitialized ? (

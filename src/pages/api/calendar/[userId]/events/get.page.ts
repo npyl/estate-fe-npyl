@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../_service/CalendarService";
 import { GCalendarToTCalendarEvent } from "@/types/calendar/mapper";
 import { toNumber } from "@/pages/api/util";
+import { TCalendarIdFilter } from "@/types/calendar";
 
 export default async function handler(
     req: NextApiRequest,
@@ -18,17 +19,21 @@ export default async function handler(
         const url = new URL(req.url!, `http://${req.headers.host}`);
         const startDate = url.searchParams.get("startDate");
         const endDate = url.searchParams.get("endDate");
+        const calendarId = url.searchParams.get("calendarId");
         if (!startDate || !endDate) throw new Error("error!");
+
+        console.log("calendarId: ", calendarId);
 
         const iUserId = toNumber(userId);
 
-        const { data } = await calendarService.getEvents(
+        const data = await calendarService.getEvents(
             iUserId,
             startDate,
-            endDate
+            endDate,
+            (calendarId as TCalendarIdFilter) || ""
         );
 
-        const events = data.items?.map(GCalendarToTCalendarEvent) || [];
+        const events = data?.map(GCalendarToTCalendarEvent) || [];
 
         // GET: check if user with id `userId` is authenticated
         res.status(200).json(events);

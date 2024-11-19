@@ -4,25 +4,23 @@ import { selectCode } from "src/slices/filters";
 import { useTranslation } from "react-i18next";
 import CodeSelect from "@/sections/CodeSelect";
 import TextField from "@mui/material/TextField";
+import { useCallback } from "react";
 
 export default function CodeFilter() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const propertyCode = useSelector(selectCode) || "";
+    const code = useSelector(selectCode) || "";
 
-    const handleChange = (_event: any, value: string | null) => {
-        dispatch(
-            setCode(
-                // On autofill we get a stringified value.
-                value ? value : undefined
-            )
-        );
-    };
+    const handleChange = useCallback(
+        (_: any, _id: any, code: string) =>
+            dispatch(setCode(code ? code : undefined)),
+        []
+    );
 
     return (
         <CodeSelect
-            value={propertyCode}
+            codeValue={code}
             onChange={handleChange}
             renderInput={(params) => (
                 <TextField

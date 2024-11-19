@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, IUserPOST } from "src/types/user";
 
+interface UploadAvatarReq {
+    userId: number;
+    file: File;
+}
+
 export const user = createApi({
     reducerPath: "user",
     baseQuery: fetchBaseQuery({
@@ -16,22 +21,48 @@ export const user = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Users", "Profile", "UserActive"],
+    tagTypes: ["Users", "User", "UserActive"],
     endpoints: (builder) => ({
-        profile: builder.query<IUser, void>({
+        getProfile: builder.query<IUser, void>({
             query: () => ({
                 url: "profile/",
             }),
-            providesTags: ["Profile"],
         }),
-        addUser: builder.mutation<
-            void,
-            { user: IUserPOST; profilePhoto?: File }
-        >({
-            query: ({ user, profilePhoto }) => ({
+        getUser: builder.query<IUser, number>({
+            query: (userId) => ({
+                url: `/${userId}`,
+            }),
+            providesTags: ["User"],
+        }),
+        // ---------------------------------------------------------
+        uploadAvatar: builder.mutation<string, UploadAvatarReq>({
+            query: ({ file, userId }) => {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                return {
+                    url: `${userId}/avatar`,
+                    method: "POST",
+                    body: formData,
+                    responseHandler: "text",
+                };
+            },
+            invalidatesTags: ["User", "Users"],
+        }),
+        removeAvatar: builder.mutation<void, number>({
+            query: (userId) => ({
+                url: `${userId}/avatar`,
+                method: "DELETE",
+                responseHandler: "text",
+            }),
+            invalidatesTags: ["User", "Users"],
+        }),
+        // ---------------------------------------------------------
+        addUser: builder.mutation<void, IUserPOST>({
+            query: (body) => ({
                 url: "/add",
                 method: "POST",
-                body: user,
+                body,
             }),
             invalidatesTags: ["Users"],
         }),
@@ -93,13 +124,18 @@ export const user = createApi({
 });
 
 export const {
-    useProfileQuery,
-    useAddUserMutation,
+    useGetProfileQuery,
+    useGetUserQuery,
     useAllUsersQuery,
+    // ...
+    useUploadAvatarMutation,
+    useRemoveAvatarMutation,
+    // ...
+    useAddUserMutation,
     useToggleActiveUserMutation,
     useToggleActiveNotificationMutation,
     useLazyIsAdminQuery,
-    useLazyProfileQuery,
+    useLazyGetProfileQuery,
     useDeleteUserMutation,
     useResetPasswordMutation,
 } = user;

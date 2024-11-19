@@ -4,6 +4,8 @@ import {
     forwardRef,
     ComponentType,
     useImperativeHandle,
+    useCallback,
+    useState,
 } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import usePlacesAutocomplete from "use-places-autocomplete";
@@ -22,25 +24,39 @@ const PlacesAutocomplete = forwardRef<
     PlacesAutocompleteProps
 >(({ DataView, disabled, onSelect, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
+    const [text, setText] = useState("");
 
     const {
         ready,
-        value,
         setValue,
         suggestions: { data },
         clearSuggestions,
     } = usePlacesAutocomplete();
 
-    useImperativeHandle(ref, () => ({
-        ...inputRef.current!,
-        clearSuggestions,
-    }));
+    useImperativeHandle(
+        ref,
+        () => ({
+            ...inputRef.current!,
+            clearSuggestions,
+        }),
+        [inputRef.current]
+    );
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    const handleSelect = useCallback(
+        (o: google.maps.places.AutocompletePrediction) => {
+            const mainText = o.structured_formatting.main_text;
+            const secondaryText = o.structured_formatting.secondary_text;
+            setText(`${mainText} ${secondaryText}`);
+
+            onSelect(o);
+        },
+        [onSelect]
+    );
+
+    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
-
-    const isDataVisible =
-        DataView && inputRef.current && value.length > 3 && data.length > 0;
+        setText(e.target.value);
+    }, []);
 
     return (
         <>
@@ -48,15 +64,15 @@ const PlacesAutocomplete = forwardRef<
                 ref={inputRef}
                 disabled={!ready || disabled}
                 {...props}
-                value={value}
+                value={text}
                 onChange={handleChange}
             />
 
-            {isDataVisible ? (
+            {DataView && data.length > 0 && inputRef.current ? (
                 <DataView
                     anchorEl={inputRef.current}
                     data={data}
-                    onSelect={onSelect}
+                    onSelect={handleSelect}
                 />
             ) : null}
         </>

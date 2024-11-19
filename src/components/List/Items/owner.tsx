@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ListItem from "../item";
-import { useProfileQuery } from "src/services/user";
+import { useGetProfileQuery } from "src/services/user";
 import { ICustomer } from "src/types/customer";
 import ListItemProps from "../types";
 import { CustomAvatar, CustomButton } from "./styled";
@@ -19,7 +19,7 @@ const ListOwnerItem: FC<ListOwnerItemProps> = ({ owner, label, ...other }) => {
     const { t } = useTranslation();
 
     const router = useRouter();
-    const { data } = useProfileQuery();
+    const { data } = useGetProfileQuery();
     const [showOwner, setShowOwner] = useState(false);
 
     const handleClick = useCallback(

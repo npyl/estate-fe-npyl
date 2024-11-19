@@ -2,20 +2,21 @@ import {
     CalendarCellProps,
     CalendarYearViewProps,
 } from "@/components/Calendar/types";
-import { FC, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import CalendarGoogleYearView from "@/components/CalendarGoogle/Views/Year";
 import useMonthEvents from "@/components/CalendarGoogle/Views/useMonthEvents";
 import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
 import { useFiltersContext } from "../Filters/context";
+import useAuthenticatedClick from "./useAuthenticatedClick";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
 
 // --------------------------------------------------------------------------
 
 export const CalendarGoogleYearViewCell: FC<CalendarCellProps> = (props) => {
-    const { data } = useMonthEvents(props.date);
+    const { calendarId, type } = useFiltersContext();
 
-    const { type } = useFiltersContext();
+    const { data } = useMonthEvents(props.date, { calendarId });
 
     // INFO: minor filtering
     const events = useMemo(() => {
@@ -33,6 +34,9 @@ const YearView: FC<CalendarYearViewProps> = ({ onEventClick, ...props }) => {
     const [startDate, setStartDate] = useState("");
     const closeDialog = () => setStartDate("");
 
+    const handleClick = useCallback((s: string) => () => setStartDate(s), []);
+    const { onAuthenticatedClick } = useAuthenticatedClick(handleClick);
+
     return (
         <>
             <CalendarGoogleYearView
@@ -41,7 +45,9 @@ const YearView: FC<CalendarYearViewProps> = ({ onEventClick, ...props }) => {
                     <CalendarGoogleYearViewCell
                         {...other}
                         onEventClick={onEventClick}
-                        onClick={() => setStartDate(other.date.toISOString())}
+                        onClick={onAuthenticatedClick?.(
+                            other.date.toISOString()
+                        )}
                     />
                 )}
             />

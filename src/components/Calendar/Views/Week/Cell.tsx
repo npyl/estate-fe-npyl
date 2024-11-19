@@ -1,16 +1,12 @@
 import { CSSProperties, FC } from "react";
-import { CalendarCellProps, TCalendarEvent } from "../../types";
-import CalendarEvent from "../../Event";
-
-// -------------------------------------------------------------------------
-
-const getEvent =
-    (onClick?: (e: TCalendarEvent) => void) => (ce: TCalendarEvent) =>
-        <CalendarEvent key={ce.id} event={ce} onClick={onClick} />;
+import { CalendarCellProps } from "../../types";
+import useTimemappedEvents from "../useTimemappedEvents";
 
 // -------------------------------------------------------------------------
 
 const CellStyle: CSSProperties = { position: "relative" };
+
+// -------------------------------------------------------------------------
 
 const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     date: _,
@@ -18,11 +14,14 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     onEventClick,
     style,
     ...props
-}) => (
-    <div style={{ ...CellStyle, ...style }} {...props}>
-        {/* Events */}
-        {events.map(getEvent(onEventClick))}
-    </div>
-);
+}) => {
+    const EVENTS = useTimemappedEvents(events, onEventClick);
+    return (
+        <div style={{ ...CellStyle, ...style }} {...props}>
+            {/* Events */}
+            {EVENTS}
+        </div>
+    );
+};
 
 export default CalendarWeekViewCell;

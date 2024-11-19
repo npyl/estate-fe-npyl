@@ -1,3 +1,5 @@
+import { ICustomerMini } from "@/sections/Tasks/card/CardDialog/Content/Autocompletes/Customer/types";
+import { IKanbanCardShort } from "@/types/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ICustomer,
@@ -40,12 +42,19 @@ export const customers = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels"],
+    tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels", "Tasks"],
 
     endpoints: (builder) => ({
         allCustomers: builder.query<ICustomer[], void>({
             query: () => ({
                 url: "all",
+            }),
+            providesTags: ["Customers"],
+        }),
+
+        getNames: builder.query<ICustomerMini[], void>({
+            query: () => ({
+                url: "names",
             }),
             providesTags: ["Customers"],
         }),
@@ -121,11 +130,21 @@ export const customers = createApi({
             }),
             invalidatesTags: ["Customers"],
         }),
+
+        // ---------------------------------------------------
+
+        getTasks: builder.query<IKanbanCardShort[], number>({
+            query: (id) => ({
+                url: `/${id}/tickets`,
+            }),
+            providesTags: ["Tasks"],
+        }),
     }),
 });
 
 export const {
     useAllCustomersQuery,
+    useGetNamesQuery,
     useGetCustomerByIdQuery,
     useFilterCustomersQuery,
     useSearchCustomerQuery,
@@ -135,4 +154,8 @@ export const {
     useBulkDeleteCustomersMutation,
     useGetCustomerLabelsQuery,
     useLazyGetCustomerByIdQuery,
+
+    // ...
+
+    useGetTasksQuery,
 } = customers;

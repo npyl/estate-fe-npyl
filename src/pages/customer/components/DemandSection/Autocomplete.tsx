@@ -15,6 +15,7 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
     const { setValue } = useFormContext();
     const { t } = useTranslation();
 
+    const [code, setCode] = useState("");
     const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
 
     const fillFromPropertyForCode = useCallback(
@@ -47,15 +48,16 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
     );
 
     const autocompleteChange = useCallback(
-        (_: any, value: string | null) => {
-            if (!value) return;
-            getPropertyByCode(value).unwrap().then(fillFromPropertyForCode);
+        (_: any, _id: any, code: string) => {
+            setCode(code);
+            getPropertyByCode(code).unwrap().then(fillFromPropertyForCode);
         },
         [index]
     );
 
     return (
         <CodeSelect
+            codeValue={code}
             onChange={autocompleteChange}
             renderInput={(params) => (
                 <TextField {...params} label={t("Property Code")} />

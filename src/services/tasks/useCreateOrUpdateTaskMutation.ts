@@ -1,0 +1,57 @@
+import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import { useDispatch } from "react-redux";
+import { useCallback } from "react";
+import useDialog from "@/hooks/useDialog";
+import { tasks } from "./tasks";
+import { useAuth } from "@/hooks/use-auth";
+import { calendar } from "@/services/calendar";
+import { properties } from "@/services/properties";
+import { customers } from "@/services/customers";
+
+const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
+
+const useCreateOrUpdateTaskMutation = () => {
+    const { user } = useAuth();
+    const userId = user?.id;
+
+    const [isLoading, startLoading, stopLoading] = useDialog();
+
+    const dispatch = useDispatch();
+
+    const cb = useCallback(
+        async (b: ICreateOrUpdateTaskReq) => {
+            startLoading();
+
+            const res = await fetch(`${baseUrl}/${userId}/tasks`, {
+                headers: {
+                    Authorization: `Bearer  ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+                body: JSON.stringify(b),
+                method: "POST",
+            });
+
+            stopLoading();
+
+            if (!res.ok) return null;
+
+            dispatch(tasks.util.invalidateTags(["Board", "Card"]));
+
+            if (b.properties?.length && b.properties.length > 0)
+                dispatch(properties.util.invalidateTags(["Tasks"]));
+
+            if (b.customers?.length && b.customers.length > 0)
+                dispatch(customers.util.invalidateTags(["Tasks"]));
+
+            // INFO: make sure we also update events
+            if (b.withCalendar)
+                dispatch(calendar.util.invalidateTags(["Events"]));
+        },
+        [userId]
+    );
+
+    return [cb, { isLoading }] as const;
+};
+
+export { useCreateOrUpdateTaskMutation };

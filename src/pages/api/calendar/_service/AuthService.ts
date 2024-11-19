@@ -1,5 +1,8 @@
 import { OAuth2Client } from "google-auth-library";
-import { IsAuthenticatedRes } from "@/types/calendar/google";
+import {
+    GoogleCalendarUserInfo,
+    IsAuthenticatedRes,
+} from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
 
 interface UserToken {
@@ -9,36 +12,22 @@ interface UserToken {
 }
 
 const SCOPES = [
+    // calendar
     "https://www.googleapis.com/auth/calendar.readonly",
     "https://www.googleapis.com/auth/calendar.events",
+    // profile (w/ email)
     "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
+    // office users list
+    "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ];
 
-/**
- * Receive profile of an authenticated user
- */
-async function getUserInfo(auth: OAuth2Client) {
-    try {
-        const token = (await auth.getAccessToken()).token;
+const COMPANY_ID = process.env.COMPANY_ID;
+const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
-        const res = await fetch(
-            "https://www.googleapis.com/oauth2/v3/userinfo",
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                method: "GET",
-            }
-        );
+const baseUrl = `${process.env.BACKEND_URL}/company/google-workspace-credentials`;
 
-        if (!res.ok) return null;
-
-        return await res.json();
-    } catch (error) {
-        console.log("Error: ", error);
-        return null;
-    }
-}
+type TBackendHeaders = HeadersInit & { "Company-Id"?: string };
 
 /**
  * Check if the current access token is expired
@@ -51,23 +40,50 @@ function isTokenExpired(expiryDate: number): boolean {
     return Date.now() >= expiryDate - bufferTime;
 }
 
-export class AuthService {
-    protected userTokens: Map<number, UserToken> = new Map();
-    protected oauth2Client: OAuth2Client;
-    private tokenStorage: TokenStorage;
+/**
+ * getOauth2ClientForCompanyId
+ * @param Authorization `Bearer ${...}`
+ * @param companyId
+ * @returns Receive google workspace credentials from backend
+ */
+const getOauth2ClientForCompanyId = async (
+    Authorization: string,
+    companyId: number
+) => {
+    const headers = {
+        Authorization,
+        "Company-Id": companyId,
+    } as unknown as TBackendHeaders;
+
+    // const res = await fetch(baseUrl, {
+    //     headers,
+    // });
+    // if (!res.ok) return null;
+
+    const credentials = {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        // TODO: domain???
+    };
+
+    return new OAuth2Client(
+        credentials.clientId,
+        credentials.clientSecret,
+        REDIRECT_URI
+    );
+};
+
+class AuthService {
+    userTokens: Map<number, UserToken> = new Map();
+    oauth2Client!: OAuth2Client;
+    tokenStorage: TokenStorage;
 
     constructor() {
-        this.oauth2Client = new OAuth2Client(
-            process.env.GOOGLE_CLIENT_ID,
-            process.env.GOOGLE_CLIENT_SECRET,
-            process.env.GOOGLE_REDIRECT_URI
-        );
-
         this.tokenStorage = new TokenStorage();
         this.tokenStorage.initialize();
     }
 
-    async getAuthUrl(userId: number): Promise<string> {
+    async getAuthUrl(userId: number) {
         const authUrl = this.oauth2Client.generateAuthUrl({
             access_type: "offline",
             scope: SCOPES,
@@ -76,7 +92,7 @@ export class AuthService {
         return authUrl;
     }
 
-    async handleAuthCallback(code: string, state: string): Promise<void> {
+    async handleAuthCallback(code: string, state: string) {
         const userId = parseInt(state, 10);
         const { tokens, res } = await this.oauth2Client.getToken(code);
 
@@ -150,9 +166,7 @@ export class AuthService {
         }
     }
 
-    protected async getAuthForUser(
-        userId: number
-    ): Promise<OAuth2Client | null> {
+    async getAuthForUser(userId: number): Promise<OAuth2Client | null> {
         let userTokens = this.userTokens.get(userId);
         if (!userTokens) return null;
 
@@ -183,12 +197,42 @@ export class AuthService {
         return this.oauth2Client;
     }
 
+    /**
+     * Receive profile of an authenticated user
+     */
+    async getUserInfo(
+        auth: OAuth2Client
+    ): Promise<GoogleCalendarUserInfo | null> {
+        try {
+            const token = (await auth.getAccessToken()).token;
+
+            const res = await fetch(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    method: "GET",
+                }
+            );
+
+            if (!res.ok) return null;
+
+            return await res.json();
+        } catch (error) {
+            console.log("Error: ", error);
+            return null;
+        }
+    }
+
     async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
         try {
             const auth = await this.getAuthForUser(userId);
             if (!auth) return { isAuthenticated: false };
 
-            const userInfo = await getUserInfo(auth);
+            const userInfo = await this.getUserInfo(auth);
+            if (!userInfo) return { isAuthenticated: false };
+
             return { isAuthenticated: true, userInfo };
         } catch (ex) {
             console.error(ex);
@@ -205,4 +249,35 @@ export class AuthService {
             console.error(ex);
         }
     }
+
+    async initialise(Authorization: string) {
+        if (this.oauth2Client) return;
+
+        console.log("[AuthService]: getting oauth for companyId: ", COMPANY_ID);
+
+        this.oauth2Client = await getOauth2ClientForCompanyId(
+            Authorization,
+            +COMPANY_ID!
+        );
+    }
 }
+
+// ---------------------------------------------------------------------
+
+// singleton.ts
+const AuthServiceSingleton = () => {
+    return new AuthService();
+};
+
+declare global {
+    // eslint-disable-next-line no-var
+    var authGlobal: undefined | ReturnType<typeof AuthServiceSingleton>;
+}
+
+const authService = globalThis.authGlobal ?? AuthServiceSingleton();
+
+if (process.env.NODE_ENV !== "production") globalThis.authGlobal = authService;
+
+// ------------------------------------------------------------------------------
+
+export default authService;

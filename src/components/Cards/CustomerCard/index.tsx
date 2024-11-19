@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Card, { CardProps } from "@mui/material/Card";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/components/Avatar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
@@ -11,7 +11,7 @@ import { ICustomer, ICustomerResultResponse } from "@/types/customer";
 
 import { TypeLabels } from "@/components/TypeLabels";
 
-import { styled } from "@mui/material/styles";
+import { styled, SxProps, Theme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import Link from "@/components/Link";
 
@@ -23,6 +23,26 @@ const StyledBackground = styled(Box)(({ theme }) => ({
             ? theme.palette.neutral?.[200]
             : theme.palette.neutral?.[700],
 }));
+
+const AvatarSx: SxProps<Theme> = {
+    width: 64,
+    height: 64,
+    zIndex: 1,
+    left: 0,
+    right: 0,
+    bottom: -32,
+    mx: "auto",
+    position: "absolute",
+};
+
+const AvatarShapeSx: SxProps<Theme> = {
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    mx: "auto",
+    bottom: -26,
+    position: "absolute",
+};
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +56,6 @@ export default function UserCard({ c, ...props }: Props) {
     const { t } = useTranslation();
 
     const name = `${firstName} ${lastName}`;
-    const initials = `${firstName[0]} ${lastName[0]}`;
 
     return (
         <Card
@@ -49,31 +68,13 @@ export default function UserCard({ c, ...props }: Props) {
             {...props}
         >
             <StyledBackground position="relative" height="100px">
-                <AvatarShape
-                    sx={{
-                        left: 0,
-                        right: 0,
-                        zIndex: 1,
-                        mx: "auto",
-                        bottom: -26,
-                        position: "absolute",
-                    }}
-                />
+                <AvatarShape sx={AvatarShapeSx} />
 
                 <Avatar
-                    sx={{
-                        width: 64,
-                        height: 64,
-                        zIndex: 1,
-                        left: 0,
-                        right: 0,
-                        bottom: -32,
-                        mx: "auto",
-                        position: "absolute",
-                    }}
-                >
-                    {initials}
-                </Avatar>
+                    firstName={firstName}
+                    lastName={lastName}
+                    sx={AvatarSx}
+                />
 
                 <TypeLabels
                     buyer={c.buyer}

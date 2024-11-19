@@ -1,13 +1,6 @@
 import { CSSProperties, FC } from "react";
-import { CalendarCellProps, TCalendarEvent } from "../../types";
-import dynamic from "next/dynamic";
-const CalendarEvent = dynamic(() => import("../../Event"));
-
-// ------------------------------------------------------------------
-
-const getEvent =
-    (onClick?: (e: TCalendarEvent) => void) => (ce: TCalendarEvent) =>
-        <CalendarEvent key={ce.id} event={ce} onClick={onClick} />;
+import { CalendarCellProps } from "../../types";
+import useTimemappedEvents from "../useTimemappedEvents";
 
 // ------------------------------------------------------------------
 
@@ -23,11 +16,14 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
     onEventClick,
     style,
     ...props
-}) => (
-    <div style={{ ...ViewStyle, ...style }} {...props}>
-        {/* Events */}
-        {events.map(getEvent(onEventClick))}
-    </div>
-);
+}) => {
+    const EVENTS = useTimemappedEvents(events, onEventClick);
+    return (
+        <div style={{ ...ViewStyle, ...style }} {...props}>
+            {/* Events */}
+            {EVENTS}
+        </div>
+    );
+};
 
 export default CalendarDayViewCell;
