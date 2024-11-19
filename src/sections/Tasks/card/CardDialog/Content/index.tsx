@@ -44,7 +44,7 @@ const Content: FC<ContentProps> = ({
             <WithCalendar />
             <Divider />
 
-            <RHFTextField name="name" label={t("Name")} />
+            <RHFTextField name="name" label={t("Title")} />
             <RHFMultilineTextField
                 name="description"
                 label={t("Description")}
