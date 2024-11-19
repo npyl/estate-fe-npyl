@@ -1073,10 +1073,16 @@ const resources = {
 
             "Not integrated. Please edit to support features like Calendar.":
                 "Not integrated. Please edit to support features like Calendar.",
+
+            "Not integrated. Please go to Settings -> Integrations":
+                "Not integrated. Please go to Settings -> Integrations",
         },
     },
     el: {
         translation: {
+            "Not integrated. Please go to Settings -> Integrations":
+                "Μη συνδεδεμένο. Παρακαλώ κατευθυνθείτε στις Ρυθμίσεις -> Διασυνδέσεις",
+
             "Integrated. You can change workspace if you'd like.":
                 "Συνδέθηκε. Μπορείτε να αλλάξετε το workspace αν επιθυμείτε.",
 
