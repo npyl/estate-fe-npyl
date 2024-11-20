@@ -45,8 +45,9 @@ const RHFLocation = () => {
         <Controller
             name={nameKey}
             control={control}
-            render={({ field }) => (
+            render={({ field: { value, ...field } }) => (
                 <PlacesAutocomplete
+                    text={value}
                     {...field}
                     ref={inputRef}
                     label={t("Location")}
