@@ -1,13 +1,14 @@
 import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
-import { forwardRef, useMemo } from "react";
-import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
-import { GUserMini } from "@/types/user";
+import { forwardRef, useCallback, useMemo } from "react";
+import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
+import { IUser } from "@/types/user";
 import Avatar from "@/components/Avatar";
-import { useGetUsersQuery } from "@/services/calendar";
+import { useAllUsersQuery } from "@/services/user";
+import { useTranslation } from "react-i18next";
 
 // ------------------------------------------------------------------
 
-const getOptionLabel = (o: GUserMini | number) =>
+const getOptionLabel = (o: IUser | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 // ------------------------------------------------------------------
@@ -21,7 +22,7 @@ const OptionSx: SxProps<Theme> = {
 
 const RenderOption = (
     props: React.HTMLAttributes<HTMLLIElement> & { key: any },
-    option: GUserMini
+    option: IUser
 ) => {
     const { key, ...otherProps } = props;
     return (
@@ -34,31 +35,56 @@ const RenderOption = (
             <Typography>
                 {option?.firstName || ""} {option?.lastName || ""}
             </Typography>
-            <Typography fontWeight="bold">({`${option?.id || ""}`})</Typography>
+            {option?.workspaceEmail ? (
+                <Typography fontWeight="bold">
+                    ({option.workspaceEmail || ""})
+                </Typography>
+            ) : null}
         </MenuItem>
     );
 };
 
 // ------------------------------------------------------------------
 
-// TODO: I have a stupid any here!
+const getOptionDisabled = ({ workspaceEmail }: IUser) => !workspaceEmail;
+
+// ------------------------------------------------------------------
+
 interface AssigneeAutocompleteProps
-    extends Omit<AutocompleteProps<any>, "options" | "renderInput"> {
+    extends Omit<
+        AutocompleteProps<IUser, false, false, false>,
+        "options" | "renderInput"
+    > {
     label: string;
     error: boolean;
     helperText?: string;
-
-    adminId?: number;
 }
 
 const AssigneeAutocomplete = forwardRef<
     HTMLDivElement,
     AssigneeAutocompleteProps
->(({ label, adminId = -1, error, helperText, ...props }, ref) => {
-    const { data, isLoading } = useGetUsersQuery(adminId, {
-        skip: adminId === -1,
-    });
-    const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+>(({ label, error, helperText, ...props }, ref) => {
+    const { t } = useTranslation();
+
+    const { data, isLoading } = useAllUsersQuery();
+
+    // INFO: options sorted first by whether they have workspaceEmail.
+    const options = useMemo(() => {
+        if (!Array.isArray(data)) return [];
+
+        return [...data].sort((a, b) => {
+            if (a.workspaceEmail && !b.workspaceEmail) return -1;
+            if (!a.workspaceEmail && b.workspaceEmail) return 1;
+            // If both have or don't have workspaceEmail, return the first
+            return -1;
+        });
+    }, [data]);
+
+    const groupBy = useCallback(
+        ({ workspaceEmail }: IUser) =>
+            workspaceEmail ? t("with google email") : t("without google email"),
+        [t]
+    );
 
     return (
         <Autocomplete
@@ -66,8 +92,10 @@ const AssigneeAutocomplete = forwardRef<
             clearIcon={null}
             loading={isLoading}
             renderOption={RenderOption}
+            getOptionDisabled={getOptionDisabled}
             options={options}
             getOptionLabel={getOptionLabel}
+            groupBy={groupBy}
             renderInput={(props) => (
                 <TextField
                     label={label}

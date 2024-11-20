@@ -5,12 +5,12 @@ const SelfAssign = dynamic(() => import("./SelfAssign"));
 const AdminOnly = dynamic(() => import("./AdminOnly"));
 
 const Assignee = () => {
-    const { gwIsAdmin, gwUser, isChecking, userId } = useIsOfficeAdmin();
+    const { gwIsAdmin, gwUser, isChecking } = useIsOfficeAdmin();
 
     if (isChecking) return <Loader />;
     if (!gwIsAdmin) return <SelfAssign userKey={gwUser?.id} />;
 
-    return <AdminOnly adminId={userId} />;
+    return <AdminOnly />;
 };
 
 export default Assignee;
