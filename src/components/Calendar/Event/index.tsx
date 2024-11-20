@@ -7,7 +7,7 @@ import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
-const Members = dynamic(() => import("./_shared/Members"));
+const People = dynamic(() => import("./_shared/People"));
 
 // ------------------------------------------------------------------------------------
 
@@ -120,7 +120,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                         <Box flexGrow={1} />
 
                         <Stack p={1}>
-                            <Members ids={[1, 2, 3, 4, 5]} />
+                            <People type={event.type} p={event.people} />
                         </Stack>
                     </>
                 ) : null}
