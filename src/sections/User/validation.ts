@@ -12,6 +12,7 @@ export const Schema = object().shape({
     email: string()
         .email("Email must be a valid email address")
         .required("Email is required"),
+    workspaceEmail: string().email().optional(),
 
     password: string()
         .required("Password is required")

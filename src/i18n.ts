@@ -1078,11 +1078,17 @@ const resources = {
                 "Not integrated. Please go to Settings -> Integrations",
 
             Reporter: "Reporter",
+
+            "with google email": "with google email",
+            "without google email": "without google email",
         },
     },
     el: {
         translation: {
             Reporter: "Αναθέτης",
+
+            "with google email": "με google email",
+            "without google email": "χωρίς google email",
 
             "Not integrated. Please go to Settings -> Integrations":
                 "Μη συνδεδεμένο. Παρακαλώ κατευθυνθείτε στις Ρυθμίσεις -> Διασυνδέσεις",

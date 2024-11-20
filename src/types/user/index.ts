@@ -8,6 +8,7 @@ interface IUser {
     firstName: string;
     lastName: string;
     email: string;
+    workspaceEmail: string;
     password: string;
     mobilePhone: string;
     homePhone: string;
@@ -46,6 +47,7 @@ interface IUserPOST {
     firstName: string;
     lastName: string;
     email: string;
+    workspaceEmail?: string; // INFO: Google Workspace email (for pairing a gw-user with a pp-user)
     password: string;
     mobilePhone: string;
     homePhone?: string;
