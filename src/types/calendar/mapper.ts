@@ -1,6 +1,8 @@
 import {
     isTCalendarEventType,
     TCalendarEvent,
+    TCalendarEventExtendedProperties,
+    TCalendarEventPerson,
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
@@ -20,6 +22,23 @@ import { getAllDayStartEnd } from "@/components/Calendar/util";
 */
 
 const PP_EVENT_TYPE_KEY = "pp-event-type";
+const PP_EVENT_PEOPLE_KEY = "pp-event-people";
+
+const extractPeople = (
+    extendedProperties?: TCalendarEventExtendedProperties | null
+) => {
+    try {
+        const field = extendedProperties?.private?.[PP_EVENT_PEOPLE_KEY];
+        if (!field) return [];
+
+        const people =
+            (JSON.parse(field) as unknown as TCalendarEventPerson[]) || [];
+
+        return people;
+    } catch (ex) {
+        return [];
+    }
+};
 
 const GCalendarToTCalendarEvent = ({
     id,
@@ -47,6 +66,7 @@ const GCalendarToTCalendarEvent = ({
     }
 
     const type = extendedProperties?.private?.[PP_EVENT_TYPE_KEY];
+    const people = extractPeople(extendedProperties);
 
     return {
         id: id!,
@@ -56,8 +76,7 @@ const GCalendarToTCalendarEvent = ({
         startDate,
         endDate,
         type: isTCalendarEventType(type) ? type : "TASK",
-        withIds: [],
-
+        people,
         extendedProperties,
     };
 };
@@ -73,7 +92,7 @@ const TCalendarEventToGCalendarEvent = ({
     location,
     extendedProperties,
     type,
-    withIds,
+    people,
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
     console.log("start: ", startDate, " end: ", endDate);
 
@@ -96,6 +115,7 @@ const TCalendarEventToGCalendarEvent = ({
             private: {
                 ...extendedProperties?.private,
                 [PP_EVENT_TYPE_KEY]: type,
+                [PP_EVENT_PEOPLE_KEY]: JSON.stringify(people),
             },
         },
     };

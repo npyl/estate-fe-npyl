@@ -11,7 +11,22 @@ import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import Pickers from "./Pickers";
 import dynamic from "next/dynamic";
+const People = dynamic(() => import("./People"));
 const RHFLocation = dynamic(() => import("./RHFLocation"));
+
+// ------------------------------------------------------------------------
+
+const getDefault = (startDate?: string): CalendarEventReq => ({
+    title: "",
+    description: "",
+    startDate: startDate || "",
+    endDate: startDate ? dayjs(startDate).add(1, "hour").toISOString() : "",
+    location: "",
+    people: [],
+    type: "TASK",
+});
+
+// ------------------------------------------------------------------------
 
 const TextFieldSx = {
     px: 0.5,
@@ -33,18 +48,10 @@ const CreateUpdateForm: FC<Props> = ({
     const { t } = useTranslation();
 
     const methods = useForm<CalendarEventReq>({
-        values: event || {
-            title: "",
-            description: "",
-            startDate: startDate || "",
-            endDate: startDate
-                ? dayjs(startDate).add(1, "hour").toISOString()
-                : "",
-            location: "",
-            type: "TASK",
-            withIds: [],
-        },
+        values: event || getDefault(startDate),
     });
+
+    const isNotTask = methods.watch("type") !== "TASK";
 
     const isDirty =
         // _isAllDay !== isAllDay ||
@@ -86,6 +93,8 @@ const CreateUpdateForm: FC<Props> = ({
                     <RHFLocation />
 
                     <RHFTypeSelect />
+
+                    {isNotTask ? <People /> : null}
 
                     <RHFMultilineTextField
                         label={t("Description")}

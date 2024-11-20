@@ -51,7 +51,7 @@ const KanbanTaskToCalendarEvent = ({
     startDate: due?.[0] || "",
     endDate: due?.[1] || "",
     location: "",
-    withIds: [],
+    people: [],
 });
 
 export { IKanbanCardRes2Req, KanbanTaskToCalendarEvent };
