@@ -3,6 +3,7 @@ import {
     TCalendarEvent,
     TCalendarEventExtendedProperties,
     TCalendarEventPerson,
+    TCalendarEventType,
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
@@ -83,6 +84,31 @@ const GCalendarToTCalendarEvent = ({
 
 type TCalendarEventReq = Omit<TCalendarEvent, "id"> & { id?: string };
 
+const withGwEmail = ({ gwEmail }: TCalendarEventPerson) => Boolean(gwEmail);
+const withoutGwEmail = ({ gwEmail }: TCalendarEventPerson) => !Boolean(gwEmail);
+
+/**
+ * Convert `people` field of TCalendarEvent to an entry valid for google calendar event's extendedProperties.
+ * Depending on the type we have to select *only* the entries that correspond. This is very important and must be
+ *  enforced for cases where a user changes the calendar's event type from e.g. MEETING to TOUR_XX
+ * Specifically,
+ *  - for MEETING, we need all entries *WITH* gwEmail
+ *  - for TOUR_XX, we need all entries *WITHOUT* gwEmail
+ */
+const preparePeople = (
+    people: TCalendarEventPerson[],
+    type: TCalendarEventType
+) => {
+    if (type === "TASK") return JSON.stringify([]);
+
+    const filtered =
+        type === "MEETING"
+            ? people?.filter(withGwEmail)
+            : people?.filter(withoutGwEmail);
+
+    return JSON.stringify(filtered);
+};
+
 const TCalendarEventToGCalendarEvent = ({
     id,
     title,
@@ -95,6 +121,10 @@ const TCalendarEventToGCalendarEvent = ({
     people,
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
     console.log("start: ", startDate, " end: ", endDate);
+
+    console.log("allPeople: ", people);
+    const preparedPeople = preparePeople(people, type);
+    console.log("prepared: ", preparedPeople);
 
     return {
         id,
@@ -115,10 +145,16 @@ const TCalendarEventToGCalendarEvent = ({
             private: {
                 ...extendedProperties?.private,
                 [PP_EVENT_TYPE_KEY]: type,
-                [PP_EVENT_PEOPLE_KEY]: JSON.stringify(people),
+                [PP_EVENT_PEOPLE_KEY]: preparePeople(people, type),
             },
         },
     };
 };
 
-export { TCalendarEventToGCalendarEvent, GCalendarToTCalendarEvent };
+export {
+    TCalendarEventToGCalendarEvent,
+    GCalendarToTCalendarEvent,
+    // ...
+    withGwEmail,
+    withoutGwEmail,
+};
