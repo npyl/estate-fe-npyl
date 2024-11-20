@@ -8,6 +8,7 @@ import { IUserMini } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@/components/Avatar";
+import Tooltip from "@mui/material/Tooltip";
 const Menu = dynamic(() => import("./Menu"));
 
 interface Props {
@@ -55,19 +56,24 @@ interface HeaderProps {
     completed: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ taskId, assignee, completed }) => (
-    <SpaceBetween alignItems="center">
-        <Avatar
-            firstName={assignee?.firstName}
-            lastName={assignee?.lastName}
-            src={assignee?.avatar}
-            sx={AvatarSx}
-        />
-        <Stack spacing={1} direction="row" alignItems="center">
-            {completed ? <CheckIcon color="success" /> : null}
-            <MenuButton taskId={taskId} />
-        </Stack>
-    </SpaceBetween>
-);
+const Header: FC<HeaderProps> = ({ taskId, assignee, completed }) => {
+    const fullname = `${assignee?.firstName || ""} ${assignee?.lastName || ""}`;
+    return (
+        <SpaceBetween alignItems="center">
+            <Tooltip title={fullname}>
+                <Avatar
+                    firstName={assignee?.firstName}
+                    lastName={assignee?.lastName}
+                    src={assignee?.avatar}
+                    sx={AvatarSx}
+                />
+            </Tooltip>
+            <Stack spacing={1} direction="row" alignItems="center">
+                {completed ? <CheckIcon color="success" /> : null}
+                <MenuButton taskId={taskId} />
+            </Stack>
+        </SpaceBetween>
+    );
+};
 
 export default Header;
