@@ -28,6 +28,7 @@ import { solar, airQuality } from "@/services/googleapi";
 import { agreements } from "@/services/agreements";
 import { integrations } from "@/services/integrations";
 import { calendar } from "@/services/calendar";
+import { googleOAuth } from "@/services/google-oauth";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -69,6 +70,7 @@ export const createStore = (
                 agreements.middleware,
                 calendar.middleware,
                 googleWorkspaceApi.middleware,
+                googleOAuth.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,

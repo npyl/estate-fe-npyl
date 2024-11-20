@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import { toNumber } from "../../util";
-import authService from "../_service/AuthService";
+import authService from "../../calendar/_service/AuthService";
 
 export default async function handler(
     req: NextApiRequest,

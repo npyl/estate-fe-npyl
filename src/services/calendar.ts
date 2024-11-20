@@ -1,13 +1,13 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { CalendarEventReq } from "@/types/calendar";
-import { IsAuthenticatedRes } from "@/types/calendar/google";
 import { GUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-
-type UserId = number;
+import {
+    useAuthenticateMutation,
+    useIsAuthenticatedQuery,
+} from "./google-oauth";
 
 interface EventFilters {
     calendarId?: string;
@@ -49,76 +49,9 @@ export const calendar = createApi({
         baseUrl: `${process.env.NEXT_PUBLIC_PROXY_API}/calendar`,
     }),
 
-    tagTypes: ["IsAuthenticated", "IsAdmin", "Events", "Users"],
+    tagTypes: ["IsAdmin", "Events", "Users"],
 
     endpoints: (builder) => ({
-        isAuthenticated: builder.query<IsAuthenticatedRes, UserId>({
-            query: (userId) => ({
-                url: `/${userId}/auth`,
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
-                },
-            }),
-            providesTags: ["IsAuthenticated"],
-        }),
-
-        authenticate: builder.mutation<boolean, number>({
-            query: (userId) => ({
-                url: `/${userId}/auth`,
-                method: "POST",
-            }),
-            async transformResponse(response: { authUrl: string }) {
-                if (!response.authUrl) return false;
-
-                const width = 600;
-                const height = 600;
-                const left = (window.innerWidth - width) / 2 + window.screenX;
-                const top = (window.innerHeight - height) / 2 + window.screenY;
-
-                // Open popup with google's oauth
-                window.open(
-                    response.authUrl,
-                    "Google Auth",
-                    `width=${width},height=${height},left=${left},top=${top},popup=1`
-                );
-
-                // Wait for popup to post a message to our initial window
-                try {
-                    const success = await new Promise<boolean>(
-                        (resolve, reject) => {
-                            window.onmessage = (event: MessageEvent) => {
-                                if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
-                                    window.onmessage = null;
-                                    resolve(true);
-                                }
-                                if (event.data.type === "GOOGLE_AUTH_ERROR") {
-                                    window.onmessage = null;
-                                    reject(new Error("Authentication failed"));
-                                }
-                            };
-                        }
-                    );
-
-                    return success;
-                } catch (error) {
-                    return false;
-                }
-            },
-            invalidatesTags: (result) =>
-                result ? ["IsAuthenticated", "IsAdmin", "Events", "Users"] : [],
-        }),
-
-        logout: builder.mutation<void, UserId>({
-            query: (userId) => ({
-                url: `/${userId}/auth`,
-                method: "DELETE",
-            }),
-
-            invalidatesTags: ["IsAuthenticated", "Events"],
-        }),
-
         // ------------------------- OFFICE ---------------------------
 
         isAdmin: builder.query<IsAdminRes, number>({
@@ -203,9 +136,7 @@ const useCalendarAuth = () => {
     const isAuthenticated = data?.isAuthenticated;
 
     const authenticate = async () => {
-        const res = await authenticateCb(user!.id).unwrap();
-        if (!res) toast.error(t("GOOGLE_OATH_FAIL"));
-        return res;
+        await authenticateCb(user!.id);
     };
 
     return {
@@ -219,9 +150,6 @@ const useCalendarAuth = () => {
 export { useCalendarAuth };
 
 export const {
-    useIsAuthenticatedQuery,
-    useAuthenticateMutation,
-    useLogoutMutation,
     // ...
     useIsAdminQuery,
     useGetUsersQuery,
