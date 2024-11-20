@@ -1081,10 +1081,13 @@ const resources = {
 
             "with google email": "with google email",
             "without google email": "without google email",
+            "Meeting with": "Meeting with",
         },
     },
     el: {
         translation: {
+            "Meeting with": "Συνάντηση με",
+
             Reporter: "Αναθέτης",
 
             "with google email": "με google email",
