@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     BoardFiltersReq,
+    IKanbanAttachment,
     IKanbanBoard,
     IKanbanCard,
     IKanbanColumnPOST,
@@ -55,6 +56,20 @@ function removeItem(arr: number[], numberToRemove: number): number[] {
     return arr.filter((item) => item !== numberToRemove);
 }
 
+interface IAddAttachmentReq {
+    contentType: string;
+    filename: string;
+    size: number;
+}
+
+interface IAddAttachmentRes {
+    cdnUrl: string;
+    contentType: string;
+    filename: string;
+    id: number;
+    url: string;
+}
+
 export const tasks = createApi({
     reducerPath: "tasks",
     baseQuery: fetchBaseQuery({
@@ -71,7 +86,7 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: ["Board", "Card", "Comments"],
+    tagTypes: ["Board", "Card", "Comments", "Attachments"],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
@@ -158,6 +173,29 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Comments"],
         }),
+
+        // Attachments
+        getAttachments: builder.query<IKanbanAttachment[], number>({
+            query: (cardId) => ({
+                url: `/card/${cardId}/attachments`,
+            }),
+            providesTags: ["Attachments"],
+        }),
+        addAttachment: builder.mutation<IAddAttachmentRes, IAddAttachmentReq>({
+            query: (body) => ({
+                url: `/attachments`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Attachments"],
+        }),
+        deleteAttachment: builder.mutation<void, number>({
+            query: (attachmentId) => ({
+                url: `/attachments/${attachmentId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Attachments"],
+        }),
     }),
 });
 
@@ -228,4 +266,9 @@ export const {
     //Comments
     useGetCommentsForCardQuery,
     useCreateCommentMutation,
+
+    // Attachmetns
+    useGetAttachmentsQuery,
+    useAddAttachmentMutation,
+    useDeleteAttachmentMutation,
 } = tasks;

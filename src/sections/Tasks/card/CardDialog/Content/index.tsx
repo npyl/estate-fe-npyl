@@ -5,7 +5,7 @@ import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import Buttons from "./Buttons";
-import Attachments from "./Attachments";
+const Attachments = dynamic(() => import("./Attachments"));
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
@@ -23,6 +23,7 @@ interface ContentProps {
     columnId?: number;
     createdAt?: string;
     updatedAt?: string;
+    // ...
     haveEvent: boolean;
 }
 
@@ -40,7 +41,7 @@ const Content: FC<ContentProps> = ({
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
             <Buttons columnId={columnId} />
-            <Attachments />
+            <Attachments cardId={cardId} />
             {/* ------------------------ */}
 
             <Divider />

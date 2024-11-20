@@ -14,7 +14,6 @@ const IKanbanCardRes2Req = (
         name,
         description,
         due, // INFO: we are ok with undefined when `withCalendar` is false
-        attachments,
         properties,
         customers,
         assignees,
@@ -29,7 +28,7 @@ const IKanbanCardRes2Req = (
         name: name || "",
         description: description || "",
         due,
-        attachments: attachments || [],
+        attachments: [],
         properties: properties?.map(getId) || [],
         customers: customers?.map(getId) || [],
         userIds: assignees?.map(getId) || [],

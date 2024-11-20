@@ -5,7 +5,13 @@ import { useFormContext } from "react-hook-form";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { SxProps, Theme } from "@mui/material";
+import { Skeleton, SxProps, Theme } from "@mui/material";
+import {
+    useDeleteAttachmentMutation,
+    useGetAttachmentsQuery,
+} from "@/services/tasks";
+import { IKanbanAttachment } from "@/types/tasks";
+import { attachmentsKey } from "./_constants";
 
 // --------------------------------------------------------------
 
@@ -31,61 +37,83 @@ const ImageSx: SxProps<Theme> = {
     height: "150px",
 };
 
-interface AttachmentProps {
-    src: string;
-    index: number;
-    onClear: (i: number) => void;
+interface DeleteButtonProps {
+    attachmentId: number;
 }
 
-const Attachment: FC<AttachmentProps> = ({ src, index, onClear }) => {
-    const handleClear = useCallback(() => onClear(index), []);
+const DeleteButton: FC<DeleteButtonProps> = ({ attachmentId }) => {
+    const { watch, setValue } = useFormContext();
+
+    const [deleteAttachment] = useDeleteAttachmentMutation();
+
+    const handleClear = useCallback(async () => {
+        try {
+            await deleteAttachment(attachmentId);
+
+            const attachments = (watch(attachmentsKey) as number[]) || [];
+
+            setValue(
+                attachmentsKey,
+                attachments?.filter((id) => id !== attachmentId),
+                { shouldDirty: true }
+            );
+        } catch (ex) {}
+    }, []);
 
     return (
-        <Box position="relative" sx={ImageSx}>
-            <IconButton onClick={handleClear} sx={IconButtonSx}>
-                <ClearIcon sx={{ fontSize: "15px" }} />
-            </IconButton>
-
-            <Image
-                src={src}
-                alt=""
-                width={0}
-                height={0}
-                objectFit="contain"
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "16px",
-                }}
-            />
-        </Box>
+        <IconButton onClick={handleClear} sx={IconButtonSx}>
+            <ClearIcon sx={{ fontSize: "15px" }} />
+        </IconButton>
     );
 };
 
 // --------------------------------------------------------------
 
-const getAttachment =
-    (onClear: (idx: number) => void) => (s: string, idx: number) =>
-        <Attachment key={idx} index={idx} src={s} onClear={onClear} />;
+interface AttachmentProps {
+    a: IKanbanAttachment;
+}
+
+const Attachment: FC<AttachmentProps> = ({ a }) => (
+    <Box position="relative" sx={ImageSx}>
+        <DeleteButton attachmentId={a.id} />
+
+        <Image
+            src={a.cdnUrl}
+            alt=""
+            width={0}
+            height={0}
+            objectFit="contain"
+            style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "16px",
+            }}
+        />
+    </Box>
+);
 
 // --------------------------------------------------------------
 
-const attachmentsKey = "attachments";
+const getAttachment = (a: IKanbanAttachment) => <Attachment key={a.id} a={a} />;
 
-const Attachments = () => {
-    const { watch, setValue } = useFormContext();
+// --------------------------------------------------------------
 
-    const attachments = (watch(attachmentsKey) as string[]) || [];
+interface AttachmentsProps {
+    cardId?: number;
+}
 
-    const handleClear = useCallback((idx: number) => {
-        const current = (watch(attachmentsKey) as string[]) || [];
-        const filtered = current.filter((_, i) => i !== idx);
-        setValue(attachmentsKey, filtered, { shouldDirty: true });
-    }, []);
+const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
+    const { data: attachments, isLoading } = useGetAttachmentsQuery(cardId!, {
+        skip: cardId === undefined,
+    });
+
+    if (isLoading) return <Skeleton width="150px" height="58px" />;
+
+    // TODO: no attachments message ?
 
     return (
         <Stack direction="row" gap={1} flexWrap="wrap">
-            {attachments.map(getAttachment(handleClear))}
+            {attachments?.map(getAttachment)}
         </Stack>
     );
 };
