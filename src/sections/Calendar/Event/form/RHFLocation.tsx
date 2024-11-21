@@ -48,6 +48,7 @@ const RHFLocation = () => {
             render={({ field: { value, ...field } }) => (
                 <PlacesAutocomplete
                     text={value}
+                    onTextChange={field.onChange}
                     {...field}
                     ref={inputRef}
                     label={t("Location")}
