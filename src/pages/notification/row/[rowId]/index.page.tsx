@@ -49,9 +49,8 @@ const NotificationDetailPage: NextPage = () => {
         }),
     });
 
-    if (error || !data) {
-        return <Typography>Error loading notification</Typography>;
-    }
+    if (error || !data) return null;
+
     const property = data?.property;
     const type = data?.type?.key;
     const reviewDetails = data?.reviewDetails;
@@ -78,8 +77,6 @@ const NotificationDetailPage: NextPage = () => {
         customerMobile,
         message,
         notificationDate,
-
-        viewed,
     } = data;
 
     type Positions = {
@@ -109,6 +106,7 @@ const NotificationDetailPage: NextPage = () => {
                         type={type}
                         agreementVariant={data?.agreement?.variant?.value}
                         isAgreementActive={data?.agreement?.active}
+                        data={data}
                     />
 
                     {type !== "AGREEMENT" ? (

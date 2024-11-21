@@ -3,19 +3,23 @@ import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { ContactNotificationExtended } from "@/types/notification";
+import { SpaceBetween } from "@/components/styled";
+import dynamic from "next/dynamic";
+const CreateTaskButton = dynamic(() => import("./CreateTaskButton"));
 
 interface TitleSectionProps {
     type: string;
     variant?: string;
     agreementVariant?: string;
     isAgreementActive?: boolean;
-    data?: ContactNotificationExtended;
+    data: ContactNotificationExtended;
 }
 
 const TitleSection: React.FC<TitleSectionProps> = ({
     type,
     agreementVariant,
     isAgreementActive,
+    data,
 }) => {
     const { t } = useTranslation();
 
@@ -85,14 +89,18 @@ const TitleSection: React.FC<TitleSectionProps> = ({
                     </Stack>
                 </Stack>
             ) : (
-                <Typography
-                    variant="h5"
-                    gutterBottom
+                <SpaceBetween
                     borderBottom="1px solid lightgray"
                     pb={1}
+                    mb={1}
+                    alignItems="center"
                 >
-                    {getTitle()}
-                </Typography>
+                    <Typography variant="h5" width={1} gutterBottom>
+                        {getTitle()}
+                    </Typography>
+
+                    <CreateTaskButton data={data} />
+                </SpaceBetween>
             )}
         </>
     );

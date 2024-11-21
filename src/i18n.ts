@@ -1085,10 +1085,18 @@ const resources = {
             People: "People",
             "out of": "out of",
             attachments: "attachments",
+            "Tour request for": "Tour request for",
+            "Contact Details": "Contact Details",
+            "Full Name": "Full Name",
+            Mobile: "Mobile",
         },
     },
     el: {
         translation: {
+            Mobile: "Κινητό",
+            "Full Name": "Ον/μο",
+            "Contact Details": "Στοιχεία Επικοινωνίας",
+            "Tour request for": "Αίτημα ξενάγησης για",
             attachments: "συνημμένα",
             "out of": "από",
             People: "Άτομα",

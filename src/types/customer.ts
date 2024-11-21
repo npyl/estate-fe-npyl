@@ -78,6 +78,12 @@ export interface ICustomer {
     updatedAt: string;
 }
 
+interface ICustomerMini {
+    id: number;
+    firstName: string;
+    lastName: string;
+}
+
 export interface ICustomerPOST {
     id?: number;
     firstName: string;
@@ -106,4 +112,4 @@ export interface ICustomerPOST {
     notes: string[];
 }
 
-export type { IDemand };
+export type { IDemand, ICustomerMini };

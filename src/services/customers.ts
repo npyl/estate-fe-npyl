@@ -87,6 +87,16 @@ export const customers = createApi({
             providesTags: ["Customers"],
         }),
 
+        findByEmail: builder.query<ICustomerMini, string>({
+            query: (email) => ({
+                url: "/find-by-email",
+                params: {
+                    email,
+                },
+            }),
+            providesTags: ["Customers"],
+        }),
+
         createOrUpdateCustomer: builder.mutation<number, ICustomerPOST>({
             query: (body) => ({
                 url: "",
@@ -147,6 +157,7 @@ export const {
     useGetNamesQuery,
     useGetCustomerByIdQuery,
     useFilterCustomersQuery,
+    useLazyFindByEmailQuery,
     useSearchCustomerQuery,
     useCreateOrUpdateCustomerMutation,
     useDeleteCustomerMutation,

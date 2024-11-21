@@ -25,7 +25,7 @@ interface DetailsProps {
     onClose: VoidFunction;
 }
 
-const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
+export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     const { name, uniqueCode } = task || {};
 
     const methods = useForm<ICreateOrUpdateTaskReq>({
