@@ -1,20 +1,25 @@
 import Stack from "@mui/material/Stack";
-import { useFormContext } from "react-hook-form";
-import { attachmentsKey } from "../_constants";
 import { useTranslation } from "react-i18next";
+import { useAttachmentsContext } from "../AttachmentsContext";
+import { IKanbanAttachment } from "@/types/tasks";
+import Attachment from "./Attachment";
+
+// --------------------------------------------------------------
+
+const getAttachment = (a: IKanbanAttachment) => <Attachment key={a.id} a={a} />;
+
+// --------------------------------------------------------------
 
 const Attachments = () => {
     const { t } = useTranslation();
 
-    const { watch } = useFormContext();
-
-    const attachments = (watch(attachmentsKey) as number[]) || [];
+    const { attachments } = useAttachmentsContext();
 
     if (attachments.length === 0) return null;
 
     return (
         <Stack direction="row" gap={1} flexWrap="wrap">
-            {attachments?.length} {t("attachments")}
+            {attachments?.map(getAttachment)}
         </Stack>
     );
 };

@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import PropertiesAutocomplete from "./Autocompletes/Properties";
 import CustomerSelect from "./Autocompletes/Customer";
 import AssigneeSelect from "./Autocompletes/Assignee";
+import { AttachmentsProvider } from "./AttachmentsContext";
 const Comments = dynamic(() => import("./Comments"));
 
 // -----------------------------------------------------------------
@@ -40,8 +41,10 @@ const Content: FC<ContentProps> = ({
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
-            <Buttons columnId={columnId} cardId={cardId} />
-            <Attachments cardId={cardId} />
+            <AttachmentsProvider>
+                <Buttons columnId={columnId} cardId={cardId} />
+                <Attachments cardId={cardId} />
+            </AttachmentsProvider>
             {/* ------------------------ */}
 
             <Divider />

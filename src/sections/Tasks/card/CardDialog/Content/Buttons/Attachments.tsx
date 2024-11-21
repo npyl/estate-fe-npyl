@@ -6,6 +6,9 @@ import { LoadingButton } from "@mui/lab";
 import useUploadAttachment from "./useUploadAttachment";
 import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
+import { useAttachmentsContext } from "../AttachmentsContext";
+import { IKanbanAttachment } from "@/types/tasks";
+import { IAddAttachmentRes } from "@/services/tasks/types";
 
 // ------------------------------------------------------------------
 
@@ -34,7 +37,13 @@ interface AttachmentsProps {
 }
 
 const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
-    const { upload, isUploading } = useUploadAttachment(cardId);
+    const { setAttachments } = useAttachmentsContext();
+
+    const handleAdd = useCallback((res: IAddAttachmentRes[]) => {
+        setAttachments((old) => [...old, ...res]);
+    }, []);
+
+    const { upload, isUploading } = useUploadAttachment(cardId, handleAdd);
 
     const { setValue, watch } = useFormContext();
 

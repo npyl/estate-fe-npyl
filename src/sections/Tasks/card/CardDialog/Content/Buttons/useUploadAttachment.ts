@@ -12,7 +12,10 @@ import useDialog from "@/hooks/useDialog";
 
 type Step0Res = IAddAttachmentRes & { f: File };
 
-const useUploadAttachment = (cardId?: number) => {
+const useUploadAttachment = (
+    cardId: number | undefined,
+    onAddDone?: (res: IAddAttachmentRes[]) => void
+) => {
     const dispatch = useDispatch();
 
     const [addAttachment] = useAddAttachmentMutation(); // BE
@@ -49,6 +52,8 @@ const useUploadAttachment = (cardId?: number) => {
 
             const fileResponses = await Promise.all(files.map(step0));
 
+            onAddDone?.(fileResponses);
+
             /* Upload Sequentially */
             const uploadPromises = fileResponses.map(step1);
 
@@ -60,7 +65,7 @@ const useUploadAttachment = (cardId?: number) => {
 
             return ids;
         },
-        [step0, step1]
+        [step0, step1, onAddDone]
     );
 
     return { upload, isUploading };
