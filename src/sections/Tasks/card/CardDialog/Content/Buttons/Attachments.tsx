@@ -7,7 +7,6 @@ import useUploadAttachment from "./useUploadAttachment";
 import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
 import { useAttachmentsContext } from "../AttachmentsContext";
-import { IKanbanAttachment } from "@/types/tasks";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 
 // ------------------------------------------------------------------
@@ -72,6 +71,7 @@ const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
             loading={isUploading}
             Opener={OpenerButton}
             multiple
+            accept="image/*,application/pdf"
             onChange={handleChange}
         />
     );
