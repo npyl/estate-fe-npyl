@@ -470,6 +470,7 @@ export type PropertyStatus =
 interface IPropertyCodeRes {
     id: number;
     code: string;
+    parentCategory: ParentCategory;
 }
 
 export type { IPropertyCodeRes };
