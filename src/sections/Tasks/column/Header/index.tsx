@@ -1,17 +1,17 @@
 import { SpaceBetween } from "@/components/styled";
 import { Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
+import TasksCount from "./TasksCount";
 const Controls = dynamic(() => import("./Controls"));
 const DoneIndicator = dynamic(() => import("./DoneIndicator"));
 
 type Props = {
     columnId: number;
     name: string;
-    count: number;
     done: boolean;
 };
 
-export default function Header({ name, count, done, columnId }: Props) {
+export default function Header({ name, done, columnId }: Props) {
     return (
         <SpaceBetween alignItems="center" spacing={1}>
             <Stack
@@ -30,9 +30,9 @@ export default function Header({ name, count, done, columnId }: Props) {
                 >
                     {name}
                 </Typography>
-                <Typography variant="h6" noWrap>
-                    ({count})
-                </Typography>
+
+                <TasksCount columnId={columnId} />
+
                 {done ? <DoneIndicator /> : null}
             </Stack>
 
