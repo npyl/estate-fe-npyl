@@ -32,8 +32,12 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
                     title={t("Delete column?")}
                     content={t("Deleting a column will also delete the tasks")}
                     action={
-                        <Button variant="contained" onClick={handleDelete}>
-                            {t("Confirm")}
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleDelete}
+                        >
+                            {t("Delete")}
                         </Button>
                     }
                 />

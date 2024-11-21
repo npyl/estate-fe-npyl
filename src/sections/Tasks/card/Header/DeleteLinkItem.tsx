@@ -31,8 +31,12 @@ const DeleteItem: FC<DeleteItemProps> = ({ taskId }) => {
                     // ...
                     title={t("Delete task?")}
                     action={
-                        <Button variant="contained" onClick={handleDelete}>
-                            {t("Confirm")}
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleDelete}
+                        >
+                            {t("Delete")}
                         </Button>
                     }
                 />
