@@ -163,6 +163,7 @@ const LocationSection = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <RHFOnlyNumbers
+                            separateThousands={false}
                             label={t("Zip Code")}
                             name="location.zipCode"
                         />
