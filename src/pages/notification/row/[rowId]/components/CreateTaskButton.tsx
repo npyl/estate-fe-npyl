@@ -3,12 +3,14 @@ import { useTranslation } from "react-i18next";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-import { FC, useLayoutEffect, useMemo, useState } from "react";
+import { FC, useLayoutEffect, useState } from "react";
 import { ContactNotificationExtended } from "@/types/notification";
 import { IKanbanCard } from "@/types/tasks";
 import { TranslationType } from "@/types/translation";
 import { useLazyFindByEmailQuery } from "@/services/customers";
 import { ICustomerMini } from "@/types/customer";
+import { IProperties } from "@/types/properties";
+import { IPropertyForNotification } from "@/types/notification/notification";
 
 const TaskDialog = dynamic(() =>
     import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
@@ -16,9 +18,22 @@ const TaskDialog = dynamic(() =>
 
 // ------------------------------------------------------------------------
 
+interface IPropertyMini {
+    id: number;
+    code: string;
+    image: string;
+}
+
+const IPropertiesToPropertyMini = ({ id, code }: IPropertyForNotification) => ({
+    id,
+    code,
+    image: "",
+});
+
 const getTaskForNotification = (
     t: TranslationType,
     propertyTile: string | undefined,
+    property: IPropertyMini | undefined,
     {
         customerEmail,
         customerMobile,
@@ -26,7 +41,7 @@ const getTaskForNotification = (
         // ...
         message,
     }: ContactNotificationExtended,
-    customer?: ICustomerMini
+    customer: ICustomerMini | undefined
 ): Partial<IKanbanCard> => {
     const NAME = t("Tour request for");
     const CONTACT_DETAILS = t("Contact Details");
@@ -43,6 +58,7 @@ const getTaskForNotification = (
         name,
         description,
         customers: customer ? [customer] : [],
+        properties: property ? [property] : [],
         priority: 1,
     };
 };
@@ -64,13 +80,19 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
         const propertyTitle = data?.property?.descriptions?.[lang].title;
 
         const getTask = async () => {
-            const { customerEmail } = data;
+            const { customerEmail, property } = data;
 
             let customer: ICustomerMini | undefined = undefined;
 
-            // INFO: attempt to find customer with this email!
+            const propertyMini = property
+                ? IPropertiesToPropertyMini(property)
+                : undefined;
+
             try {
-                customer = await findByEmail(customerEmail).unwrap();
+                // INFO: attempt to find customer with this email!
+                if (customerEmail) {
+                    customer = await findByEmail(customerEmail).unwrap();
+                }
             } catch (ex) {
                 // ...
             }
@@ -78,7 +100,10 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
             // TODO: this is supported by our Dialog; Probably find a better way though...
             return getTaskForNotification(
                 t,
+                // ...
                 propertyTitle,
+                propertyMini,
+                // ...
                 data,
                 customer
             ) as IKanbanCard;
