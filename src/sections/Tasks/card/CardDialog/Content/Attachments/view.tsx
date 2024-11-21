@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { FC, useCallback } from "react";
-import { useFormContext } from "react-hook-form";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -11,7 +10,7 @@ import {
     useGetAttachmentsQuery,
 } from "@/services/tasks";
 import { IKanbanAttachment } from "@/types/tasks";
-import { attachmentsKey } from "./_constants";
+import PreviewImage from "@/components/image/PreviewImage";
 
 // --------------------------------------------------------------
 
@@ -42,23 +41,9 @@ interface DeleteButtonProps {
 }
 
 const DeleteButton: FC<DeleteButtonProps> = ({ attachmentId }) => {
-    const { watch, setValue } = useFormContext();
-
     const [deleteAttachment] = useDeleteAttachmentMutation();
 
-    const handleClear = useCallback(async () => {
-        try {
-            await deleteAttachment(attachmentId);
-
-            const attachments = (watch(attachmentsKey) as number[]) || [];
-
-            setValue(
-                attachmentsKey,
-                attachments?.filter((id) => id !== attachmentId),
-                { shouldDirty: true }
-            );
-        } catch (ex) {}
-    }, []);
+    const handleClear = useCallback(() => deleteAttachment(attachmentId), []);
 
     return (
         <IconButton onClick={handleClear} sx={IconButtonSx}>
@@ -73,24 +58,32 @@ interface AttachmentProps {
     a: IKanbanAttachment;
 }
 
-const Attachment: FC<AttachmentProps> = ({ a }) => (
-    <Box position="relative" sx={ImageSx}>
-        <DeleteButton attachmentId={a.id} />
+const Attachment: FC<AttachmentProps> = ({ a }) => {
+    console.log("a.id: ", a.id, " ", a.cdnUrl);
 
-        <Image
-            src={a.cdnUrl}
-            alt=""
-            width={0}
-            height={0}
-            objectFit="contain"
-            style={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "16px",
-            }}
-        />
-    </Box>
-);
+    return (
+        <Box position="relative" sx={ImageSx}>
+            <DeleteButton attachmentId={a.id} />
+
+            {a.cdnUrl ? (
+                <Image
+                    src={`https://${a.cdnUrl}`}
+                    alt=""
+                    width={0}
+                    height={0}
+                    objectFit="contain"
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "16px",
+                    }}
+                />
+            ) : (
+                <PreviewImage width={30} height={30} />
+            )}
+        </Box>
+    );
+};
 
 // --------------------------------------------------------------
 
@@ -98,18 +91,14 @@ const getAttachment = (a: IKanbanAttachment) => <Attachment key={a.id} a={a} />;
 
 // --------------------------------------------------------------
 
-interface AttachmentsProps {
-    cardId?: number;
+interface ViewProps {
+    cardId: number;
 }
 
-const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
-    const { data: attachments, isLoading } = useGetAttachmentsQuery(cardId!, {
-        skip: cardId === undefined,
-    });
+const View: FC<ViewProps> = ({ cardId }) => {
+    const { data: attachments, isLoading } = useGetAttachmentsQuery(cardId);
 
     if (isLoading) return <Skeleton width="150px" height="58px" />;
-
-    // TODO: no attachments message ?
 
     return (
         <Stack direction="row" gap={1} flexWrap="wrap">
@@ -118,4 +107,4 @@ const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
     );
 };
 
-export default Attachments;
+export default View;

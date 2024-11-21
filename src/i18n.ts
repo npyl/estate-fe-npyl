@@ -1084,10 +1084,12 @@ const resources = {
             "Meeting with": "Meeting with",
             People: "People",
             "out of": "out of",
+            attachments: "attachments",
         },
     },
     el: {
         translation: {
+            attachments: "συνημμένα",
             "out of": "από",
             People: "Άτομα",
             "Meeting with": "Συνάντηση με",

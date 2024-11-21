@@ -20,7 +20,7 @@ const IKanbanCardRes2Req = (
         event,
     } = task || { assignee: {} };
 
-    console.log("EVENT: ", event);
+    // console.log("EVENT: ", event);
 
     return {
         id: id || -1,

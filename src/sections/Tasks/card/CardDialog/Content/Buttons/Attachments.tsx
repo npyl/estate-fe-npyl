@@ -1,86 +1,42 @@
-import Button from "@mui/material/Button";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useTranslation } from "react-i18next";
-import { ChangeEvent, FC, useCallback, useMemo } from "react";
+import { ChangeEvent, FC, useCallback } from "react";
 import FileInput, { OpenerBaseProps } from "@/components/FileInput";
+import { LoadingButton } from "@mui/lab";
+import useUploadAttachment from "./useUploadAttachment";
+import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
-import {
-    useAddAttachmentMutation,
-    useGetAttachmentsQuery,
-} from "@/services/tasks";
-import useDialog from "@/hooks/useDialog";
-import executeSequentially from "@/utils/executeSequentially";
-import { uploadWithProgress } from "@/services/file";
 
 // ------------------------------------------------------------------
 
 const ButtonSx = { bgcolor: "info.dark" };
 
-const OpenerButton: FC<OpenerBaseProps> = ({ onClick }) => {
+const OpenerButton: FC<OpenerBaseProps> = ({ loading, onClick }) => {
     const { t } = useTranslation();
     return (
-        <Button
+        <LoadingButton
             variant="contained"
+            loading={loading}
+            disabled={loading}
             sx={ButtonSx}
             startIcon={<AttachFileIcon />}
             onClick={onClick}
         >
             {t("Attach")}
-        </Button>
+        </LoadingButton>
     );
 };
 
 // ------------------------------------------------------------------
 
-const useUploadAttachment = (cardId?: number) => {
-    const { data } = useGetAttachmentsQuery(cardId!, {
-        skip: cardId === undefined,
-    });
+interface AttachmentsProps {
+    cardId?: number;
+}
 
-    const attachmentIds = useMemo(
-        () => (Array.isArray(data) ? data : []),
-        [data]
-    );
+const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
+    const { upload, isUploading } = useUploadAttachment(cardId);
 
-    const { setValue } = useFormContext();
-
-    const [addAttachment] = useAddAttachmentMutation(); // BE
-
-    const upload = useCallback(
-        async (files: File[]) => {
-            const promises = files.map((f) => async () => {
-                try {
-                    const body = {
-                        contentType: f.type,
-                        filename: f.name,
-                        size: f.size,
-                    };
-
-                    const { id, url } = await addAttachment(body).unwrap();
-
-                    await uploadWithProgress(url, f);
-
-                    // Add id
-                    setValue(attachmentsKey, [...attachmentIds, id], {
-                        shouldDirty: true,
-                    });
-                } catch (ex) {}
-            });
-
-            await executeSequentially(promises);
-        },
-        [attachmentIds]
-    );
-
-    return { upload };
-};
-
-// ------------------------------------------------------------------
-
-const attachmentsKey = "attachments";
-
-const Attachments = () => {
-    const { upload } = useUploadAttachment();
+    const { setValue, watch } = useFormContext();
 
     const handleChange = useCallback(
         async (event: ChangeEvent<HTMLInputElement>) => {
@@ -88,12 +44,28 @@ const Attachments = () => {
             if (!fileList) return;
 
             const files = Array.from(fileList);
-            await upload(files);
+            const ids = await upload(files);
+
+            const attachmentIds = watch(attachmentsKey);
+
+            // Create mode: Add id
+            if (cardId === undefined) {
+                setValue(attachmentsKey, [...attachmentIds, ...ids], {
+                    shouldDirty: true,
+                });
+            }
         },
-        []
+        [cardId]
     );
 
-    return <FileInput Opener={OpenerButton} multiple onChange={handleChange} />;
+    return (
+        <FileInput
+            loading={isUploading}
+            Opener={OpenerButton}
+            multiple
+            onChange={handleChange}
+        />
+    );
 };
 
 export default Attachments;

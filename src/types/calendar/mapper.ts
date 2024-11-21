@@ -120,11 +120,11 @@ const TCalendarEventToGCalendarEvent = ({
     type,
     people,
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
-    console.log("start: ", startDate, " end: ", endDate);
+    // console.log("start: ", startDate, " end: ", endDate);
 
-    console.log("allPeople: ", people);
+    // console.log("allPeople: ", people);
     const preparedPeople = preparePeople(people, type);
-    console.log("prepared: ", preparedPeople);
+    // console.log("prepared: ", preparedPeople);
 
     return {
         id,

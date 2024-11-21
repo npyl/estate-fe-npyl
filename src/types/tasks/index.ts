@@ -1,4 +1,3 @@
-import { IPropertyFile } from "@/components/upload";
 import { IUserMini } from "@/types/user";
 
 export interface BoardFiltersReq {

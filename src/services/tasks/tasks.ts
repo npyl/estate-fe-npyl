@@ -12,6 +12,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { IAddAttachmentReq, IAddAttachmentRes } from "./types";
 
 interface ReorderColumnProps {
     columnId: number;
@@ -54,20 +55,6 @@ function moveItem(arr: number[], id: number, position: number): number[] {
 }
 function removeItem(arr: number[], numberToRemove: number): number[] {
     return arr.filter((item) => item !== numberToRemove);
-}
-
-interface IAddAttachmentReq {
-    contentType: string;
-    filename: string;
-    size: number;
-}
-
-interface IAddAttachmentRes {
-    cdnUrl: string;
-    contentType: string;
-    filename: string;
-    id: number;
-    url: string;
 }
 
 export const tasks = createApi({
@@ -187,7 +174,8 @@ export const tasks = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Attachments"],
+            // INFO: invalidate tags only *AFTER* upload to s3
+            // invalidatesTags: ["Attachments"],
         }),
         deleteAttachment: builder.mutation<void, number>({
             query: (attachmentId) => ({

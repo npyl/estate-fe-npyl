@@ -40,7 +40,7 @@ const Content: FC<ContentProps> = ({
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
-            <Buttons columnId={columnId} />
+            <Buttons columnId={columnId} cardId={cardId} />
             <Attachments cardId={cardId} />
             {/* ------------------------ */}
 
