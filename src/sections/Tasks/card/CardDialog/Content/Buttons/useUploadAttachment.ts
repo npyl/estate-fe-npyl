@@ -1,8 +1,8 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import {
     tasks,
     useAddAttachmentMutation,
-    useGetAttachmentsQuery,
+    useDeleteAttachmentMutation,
 } from "@/services/tasks";
 import executeSequentially from "@/utils/executeSequentially";
 import { uploadWithProgress } from "@/services/file";
@@ -19,6 +19,7 @@ const useUploadAttachment = (
     const dispatch = useDispatch();
 
     const [addAttachment] = useAddAttachmentMutation(); // BE
+    const [deleteAttachment] = useDeleteAttachmentMutation();
 
     const [isUploading, startUploading, stopUploading] = useDialog();
 
@@ -39,7 +40,13 @@ const useUploadAttachment = (
     const step1 = useCallback(
         ({ id, url, f }: Step0Res) =>
             async () => {
-                await uploadWithProgress(url, f);
+                const res = await uploadWithProgress(url, f);
+
+                // INFO: delete from BE if upload was not successful
+                if (!res.ok) {
+                    await deleteAttachment(id);
+                    return;
+                }
 
                 return id;
             },
@@ -52,12 +59,13 @@ const useUploadAttachment = (
 
             const fileResponses = await Promise.all(files.map(step0));
 
-            onAddDone?.(fileResponses);
-
             /* Upload Sequentially */
             const uploadPromises = fileResponses.map(step1);
 
             const ids = await executeSequentially(uploadPromises);
+
+            // INFO: make sure we call this here (a.k.a. after upload) because directly after fileResponses means the cdnUrl is not valid yet.
+            onAddDone?.(fileResponses);
 
             stopUploading();
 

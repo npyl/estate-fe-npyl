@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import { FC, useCallback } from "react";
-import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Stack, SxProps, Theme, Typography } from "@mui/material";
@@ -29,8 +28,6 @@ const ImageSx: SxProps<Theme> = {
     border: "3px solid",
     borderRadius: "18px",
     borderColor: "neutral.300",
-    width: "180px",
-    height: "150px",
 };
 
 interface DeleteButtonProps {
@@ -63,16 +60,18 @@ interface ViewProps {
 }
 
 const View: FC<ViewProps> = ({ url, filename, contentType }) => {
+    console.log("view: ", contentType);
+
     if (contentType === "application/pdf") {
         return (
             <Stack
-                width={1}
-                height={1}
                 gap={1}
                 alignItems="center"
                 justifyContent="center"
                 bgcolor="background.paper"
                 borderRadius="16px"
+                width={180}
+                height={150}
                 sx={{
                     cursor: "pointer",
                 }}
@@ -93,15 +92,12 @@ const View: FC<ViewProps> = ({ url, filename, contentType }) => {
     }
 
     return (
-        <Image
+        <img
             src={`https://${url}`}
             alt=""
-            width={0}
-            height={0}
-            objectFit="contain"
+            width={180}
+            height={150}
             style={{
-                width: "100%",
-                height: "100%",
                 borderRadius: "16px",
             }}
         />
