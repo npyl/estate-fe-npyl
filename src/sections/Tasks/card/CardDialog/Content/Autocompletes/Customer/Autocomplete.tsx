@@ -2,8 +2,8 @@ import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
-import { ICustomerMini } from "./types";
 import renderUserTags from "./renderUserTags";
+import { ICustomerMini } from "@/types/customer";
 
 // ------------------------------------------------------------------
 

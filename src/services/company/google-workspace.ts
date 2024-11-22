@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface IIsIntegratedRes {
     isIntegrated: boolean;
+    domain: string;
 }
 
 export interface IGoogleWorkspaceIntegrationReq {
@@ -26,12 +27,10 @@ export const googleWorkspaceApi = createApi({
     }),
     tagTypes: ["GoogleWorkspace"],
     endpoints: (builder) => ({
-        isGoogleWorkspaceIntegrated: builder.query<boolean, void>({
+        isGoogleWorkspaceIntegrated: builder.query<IIsIntegratedRes, void>({
             query: () => ({
                 url: "",
             }),
-            transformResponse: (response: IIsIntegratedRes) =>
-                response.isIntegrated,
             providesTags: ["GoogleWorkspace"],
         }),
 

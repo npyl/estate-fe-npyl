@@ -39,7 +39,7 @@ const BaseItem: FC<BaseItemProps> = ({
             >
                 <Typography variant="h6">{type}</Typography>
 
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" spacing={1} alignItems="center">
                     {isExpanded ? (
                         <>
                             {topRightContent}

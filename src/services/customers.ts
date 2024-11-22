@@ -1,9 +1,9 @@
-import { ICustomerMini } from "@/sections/Tasks/card/CardDialog/Content/Autocompletes/Customer/types";
 import { IKanbanCardShort } from "@/types/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ICustomer,
     ICustomerFilter,
+    ICustomerMini,
     ICustomerPOST,
     ICustomerResultResponse,
 } from "src/types/customer";

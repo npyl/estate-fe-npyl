@@ -99,12 +99,11 @@ const DisabledIndicator: FC<Omit<TooltipProps, "title" | "children">> = (
 interface WorkspaceIndicatorProps extends IsAuthenticatedIndicatorProps {}
 
 const WorkspaceIndicator: FC<WorkspaceIndicatorProps> = (props) => {
-    const { data: isIntegrated, isLoading } =
-        useIsGoogleWorkspaceIntegratedQuery();
+    const { data, isLoading } = useIsGoogleWorkspaceIntegratedQuery();
 
     if (isLoading) return <AvatarSkeleton sx={props.sx} />;
 
-    if (!isIntegrated) return <DisabledIndicator sx={props.sx} />;
+    if (!data?.isIntegrated) return <DisabledIndicator sx={props.sx} />;
 
     return <IsAuthenticatedIndicator {...props} />;
 };

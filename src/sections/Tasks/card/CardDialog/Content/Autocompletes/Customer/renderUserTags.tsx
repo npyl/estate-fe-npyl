@@ -1,5 +1,5 @@
+import { ICustomerMini } from "@/types/customer";
 import { AutocompleteRenderGetTagProps, Chip } from "@mui/material";
-import { ICustomerMini } from "./types";
 
 const renderUserTags = (
     tagValue: ICustomerMini[],

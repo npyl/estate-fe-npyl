@@ -27,7 +27,10 @@ export default async function handler(
          */
         if (req.method === "GET") {
             const creds = await getCredentialsForUser(Authorization);
-            res.status(200).json({ isIntegrated: Boolean(creds) });
+            res.status(200).json({
+                isIntegrated: Boolean(creds),
+                domain: creds?.domain,
+            });
         }
 
         /**
