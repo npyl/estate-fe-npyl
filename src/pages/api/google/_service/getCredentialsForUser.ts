@@ -1,4 +1,4 @@
-interface GoogleWorkspaceKeys {
+export interface GoogleWorkspaceKeys {
     clientId: string;
     clientSecret: string;
     domain: string;

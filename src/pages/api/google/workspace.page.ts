@@ -1,11 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import getCredentialsForUser from "./getCredentialsForUser";
-
-// -----------------------------------------------------------------------
-
-const baseUrl = `${process.env.BACKEND_API_URL}/company/socials/google-workspace`;
-
-// -----------------------------------------------------------------------
+import workspaceService from "./_service/WorkspaceService";
 
 export default async function handler(
     req: NextApiRequest,
@@ -26,7 +20,7 @@ export default async function handler(
          * isIntegrated
          */
         if (req.method === "GET") {
-            const creds = await getCredentialsForUser(Authorization);
+            const creds = await workspaceService.isIntegrated(Authorization);
             res.status(200).json({
                 isIntegrated: Boolean(creds),
                 domain: creds?.domain,
@@ -40,16 +34,7 @@ export default async function handler(
             const body = await req.body;
             if (!body) throw new Error("Bad body");
 
-            const response = await fetch(baseUrl, {
-                method: "PUT",
-                body: JSON.stringify(body),
-                headers: {
-                    Authorization,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) throw await response.json();
+            await workspaceService.updateIntegration(Authorization, body);
 
             res.status(200).json({});
         }
@@ -58,16 +43,7 @@ export default async function handler(
          * Remove
          */
         if (req.method === "DELETE") {
-            const response = await fetch(baseUrl, {
-                method: "DELETE",
-                headers: {
-                    Authorization,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) throw await response.json();
-
+            await workspaceService.deleteIntegration(Authorization);
             res.status(200).json({});
         }
     } catch (ex) {

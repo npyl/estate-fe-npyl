@@ -53,11 +53,7 @@ const CreateUpdateForm: FC<Props> = ({
 
     const isNotTask = methods.watch("type") !== "TASK";
 
-    const isDirty =
-        // _isAllDay !== isAllDay ||
-        // _allDayDate !== allDayDate ||
-        methods.formState.isDirty;
-
+    const isDirty = methods.formState.isDirty;
     const isSubmitting = methods.formState.isSubmitting;
 
     const handleSubmit = useCallback(
@@ -68,11 +64,7 @@ const CreateUpdateForm: FC<Props> = ({
         [onClose]
     );
 
-    const handleReset = () => {
-        // onAllDayChange({}, _isAllDay);
-        // onAllDayDateChange(_allDayDate);
-        methods.reset();
-    };
+    const handleReset = useCallback(() => methods.reset(), []);
 
     return (
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
