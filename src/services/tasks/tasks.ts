@@ -6,56 +6,21 @@ import {
     IKanbanCard,
     IKanbanColumnPOST,
     IKanbanComment,
-    IKanbanCommentPOST,
 } from "@/types/tasks";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { IAddAttachmentReq, IAddAttachmentRes } from "./types";
-
-interface ReorderColumnProps {
-    columnId: number;
-    position: number;
-}
-
-interface MoveCardProps {
-    cardId: number;
-    srcColumnId: number;
-    dstColumnId: number;
-}
-interface ReorderCardProps {
-    cardId: number;
-    columnId: number;
-    position: number;
-}
-
-interface ICreateCommentReq {
-    cardId: number;
-    body: IKanbanCommentPOST;
-}
-
-// array is columnOrder or cardOrder
-// id refers to column or card id
-// position is the new position that a column / card is to be moved
-function moveItem(arr: number[], id: number, position: number): number[] {
-    // Find the current index of the id
-    const index = arr?.indexOf(id) ?? -1;
-
-    // If id is not in the array, just return the original array
-    if (index === -1) return arr;
-
-    // Remove the id from its current position
-    arr.splice(index, 1);
-
-    // Insert the id at the desired position
-    arr.splice(position, 0, id);
-
-    return arr;
-}
-function removeItem(arr: number[], numberToRemove: number): number[] {
-    return arr.filter((item) => item !== numberToRemove);
-}
+import {
+    DeleteCardReq,
+    IAddAttachmentReq,
+    IAddAttachmentRes,
+    ICreateCommentReq,
+    MoveCardProps,
+    ReorderCardProps,
+    ReorderColumnProps,
+} from "./types";
+import { optimisticDeleteCard, optimisticReorderColumn } from "./optimistic";
 
 export const tasks = createApi({
     reducerPath: "tasks",
@@ -99,11 +64,12 @@ export const tasks = createApi({
             invalidatesTags: ["Board"],
         }),
         reorderColumn: builder.mutation<void, ReorderColumnProps>({
-            query: ({ columnId, position }: ReorderColumnProps) => ({
+            query: ({ columnId, position }) => ({
                 url: "/column/reorder",
                 method: "POST",
                 params: { column: columnId, position },
             }),
+            onQueryStarted: optimisticReorderColumn,
             invalidatesTags: ["Board"],
         }),
         deleteColumn: builder.mutation<void, number>({
@@ -123,9 +89,12 @@ export const tasks = createApi({
         }),
 
         moveCard: builder.mutation<void, MoveCardProps>({
-            query: ({ cardId, dstColumnId }: MoveCardProps) => ({
+            query: ({ cardId, dstColumnId, position }: MoveCardProps) => ({
                 url: `/card/${cardId}/move/${dstColumnId}`,
                 method: "POST",
+                params: {
+                    position,
+                },
             }),
             invalidatesTags: ["Board", "Card"],
         }),
@@ -133,15 +102,16 @@ export const tasks = createApi({
             query: ({ cardId, position, columnId }: ReorderCardProps) => ({
                 url: `/card/reorder/column/${columnId}`,
                 method: "POST",
-                params: { card: cardId, position: position },
+                params: { card: cardId, position },
             }),
             invalidatesTags: ["Board", "Card"],
         }),
-        deleteCard: builder.mutation<void, number>({
-            query: (cardId: number) => ({
+        deleteCard: builder.mutation<void, DeleteCardReq>({
+            query: ({ cardId }) => ({
                 url: `/card/${cardId}`,
                 method: "DELETE",
             }),
+            onQueryStarted: optimisticDeleteCard,
             invalidatesTags: ["Board"],
         }),
 

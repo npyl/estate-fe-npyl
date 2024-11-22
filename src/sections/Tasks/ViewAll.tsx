@@ -13,21 +13,14 @@ const useSortedColumns = (board?: IKanbanBoard) => {
     return useMemo(() => {
         if (!board?.columns || !board.columnOrder || !board.cards) return [];
 
-        const cardMap = new Map(board.cards.map((card) => [card.id, card]));
         const columnMap = new Map(board.columns.map((col) => [col.id, col]));
-        const result: (IKanbanColumn & { cards: IKanbanCardShort[] })[] = [];
+        const result: IKanbanColumn[] = [];
 
         for (const id of board.columnOrder) {
             const column = columnMap.get(id);
             if (!column) continue;
 
-            const cards: IKanbanCardShort[] = [];
-            for (const cardId of column.cardOrder) {
-                const card = cardMap.get(cardId);
-                if (card) cards.push(card);
-            }
-
-            result.push({ ...column, cards });
+            result.push({ ...column, cardIds: column.cardOrder });
         }
 
         return result;

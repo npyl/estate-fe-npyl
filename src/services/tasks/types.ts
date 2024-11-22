@@ -1,3 +1,35 @@
+import { BoardFiltersReq, IKanbanCommentPOST } from "@/types/tasks";
+
+interface WithFilters {
+    filters?: BoardFiltersReq;
+}
+
+interface ReorderColumnProps extends WithFilters {
+    columnId: number;
+    position: number;
+}
+
+interface MoveCardProps extends WithFilters {
+    cardId: number;
+    srcColumnId: number;
+    dstColumnId: number;
+    position: number; // INFO: inside dst column
+}
+interface ReorderCardProps extends WithFilters {
+    cardId: number;
+    columnId: number;
+    position: number;
+}
+
+interface ICreateCommentReq {
+    cardId: number;
+    body: IKanbanCommentPOST;
+}
+
+interface DeleteCardReq extends WithFilters {
+    cardId: number;
+}
+
 interface IAddAttachmentReq {
     card?: number;
     contentType: string;
@@ -13,4 +45,13 @@ interface IAddAttachmentRes {
     url: string;
 }
 
-export type { IAddAttachmentReq, IAddAttachmentRes };
+export type {
+    ReorderColumnProps,
+    MoveCardProps,
+    ReorderCardProps,
+    ICreateCommentReq,
+    DeleteCardReq,
+    // ...
+    IAddAttachmentReq,
+    IAddAttachmentRes,
+};

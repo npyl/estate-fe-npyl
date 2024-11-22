@@ -12,6 +12,7 @@ import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveCol
 import React from "react";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
+import { useFiltersContext } from "./filters";
 
 // --------------------------------------------------------------------
 
@@ -52,6 +53,9 @@ interface Props {
 const Board: FC<Props> = ({ columns }) => {
     const responsiveColumns = useResponsiveColumns(COLUMNS);
 
+    const { search, priority, assigneeId } = useFiltersContext();
+    const filters = { search, priority, assigneeId };
+
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
 
@@ -75,16 +79,11 @@ const Board: FC<Props> = ({ columns }) => {
                 let oneDimentionArrayDstIndex =
                     dstRow * responsiveColumns + dstCol;
 
-                /* NOTE: compensate for when user moves a section at the end of the board */
-                // if (oneDimentionArrayDstIndex === itemsLength)
-                //     oneDimentionArrayDstIndex -= 1;
-
-                console.log("GOT: ", oneDimentionArrayDstIndex);
-
                 // Code for colum reordering
                 reorderColumn({
                     columnId: draggedItemId,
                     position: oneDimentionArrayDstIndex,
+                    filters,
                 });
             }
 
@@ -100,15 +99,17 @@ const Board: FC<Props> = ({ columns }) => {
                 )
                     return;
 
-                if (srcColumnId === dstColumnId) {
-                    const newIndex = destination?.index;
-                    if (newIndex === null || newIndex === undefined) return;
+                const position = destination?.index ?? 0;
 
+                console.log("position: ", position);
+
+                if (srcColumnId === dstColumnId) {
                     // reorder inside same column
                     reorderCard({
                         cardId: sourceCardId,
-                        position: newIndex,
                         columnId: dstColumnId,
+                        position,
+                        filters,
                     });
                 } else {
                     // move to different column
@@ -116,11 +117,13 @@ const Board: FC<Props> = ({ columns }) => {
                         cardId: sourceCardId,
                         srcColumnId,
                         dstColumnId,
+                        position,
+                        filters,
                     });
                 }
             }
         },
-        [responsiveColumns]
+        [filters, responsiveColumns]
     );
 
     return (
