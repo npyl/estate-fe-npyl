@@ -1,8 +1,4 @@
-import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import useDialog from "@/hooks/useDialog";
-import dynamic from "next/dynamic";
 import { FC, useLayoutEffect, useState } from "react";
 import { ContactNotificationExtended } from "@/types/notification";
 import { IKanbanCard } from "@/types/tasks";
@@ -10,6 +6,12 @@ import { TranslationType } from "@/types/translation";
 import { useLazyFindByEmailQuery } from "@/services/customers";
 import { ICustomerMini } from "@/types/customer";
 import { IPropertyForNotification } from "@/types/notification/notification";
+import dynamic from "next/dynamic";
+import { IUser } from "@/types/user";
+import {
+    useGetPropertyByCodeQuery,
+    useLazyGetPropertyByCodeQuery,
+} from "@/services/properties";
 
 const TaskDialog = dynamic(() =>
     import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
@@ -73,7 +75,8 @@ const getTaskForNotification = (
         // ...
         type,
     }: ContactNotificationExtended,
-    customer: ICustomerMini | undefined
+    customer: ICustomerMini | undefined,
+    manager: IUser | undefined
 ): Partial<IKanbanCard> => {
     const NAME_0 = t(getName0(type.key));
     const NAME_1 = getName1(
@@ -96,6 +99,7 @@ const getTaskForNotification = (
         description,
         customers: customer ? [customer] : [],
         properties: property ? [property] : [],
+        assignees: manager ? [manager] : [],
         priority: 1,
     };
 };
@@ -109,6 +113,7 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
     const { t, i18n } = useTranslation();
 
     const [findByEmail] = useLazyFindByEmailQuery();
+    const [propertyByCode] = useLazyGetPropertyByCodeQuery();
 
     const [task, setTask] = useState<IKanbanCard>();
 
@@ -117,9 +122,10 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
         const propertyTitle = data?.property?.descriptions?.[lang].title;
 
         const getTask = async () => {
-            const { customerEmail, property } = data;
+            const { customerEmail, property, propertyCode } = data;
 
             let customer: ICustomerMini | undefined = undefined;
+            let manager: IUser | undefined = undefined;
 
             const propertyMini = property
                 ? IPropertiesToPropertyMini(property)
@@ -129,6 +135,15 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
                 // INFO: attempt to find customer with this email!
                 if (customerEmail) {
                     customer = await findByEmail(customerEmail).unwrap();
+                }
+
+                // INFO: attempt to get property by code, then find manager
+                if (propertyCode) {
+                    const property = await propertyByCode(
+                        propertyCode
+                    ).unwrap();
+
+                    manager = property?.manager;
                 }
             } catch (ex) {
                 // ...
@@ -142,7 +157,8 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
                 propertyMini,
                 // ...
                 data,
-                customer
+                customer,
+                manager
             ) as IKanbanCard;
         };
 
@@ -156,34 +172,4 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
 
 // ------------------------------------------------------------------------
 
-interface CreateTaskButtonProps {
-    data: ContactNotificationExtended;
-}
-
-const CreateTaskButton: FC<CreateTaskButtonProps> = ({ data }) => {
-    const { t } = useTranslation();
-
-    const [isOpen, openTask, closeTask] = useDialog();
-
-    return (
-        <>
-            <Button
-                onClick={openTask}
-                variant="contained"
-                endIcon={<AssignmentIcon />}
-                sx={{
-                    width: "max-content",
-                    textWrap: "nowrap",
-                }}
-            >
-                {t("New Task")}
-            </Button>
-
-            {isOpen ? (
-                <TaskDialogForNotification data={data} onClose={closeTask} />
-            ) : null}
-        </>
-    );
-};
-
-export default CreateTaskButton;
+export default TaskDialogForNotification;
