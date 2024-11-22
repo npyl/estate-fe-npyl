@@ -89,12 +89,14 @@ type IKanbanColumn = {
     id: number;
     name: string;
     cardIds: number[];
+    cardOrder: number[];
     done: boolean;
     numberOfTasks: number;
 };
 type IKanbanColumnPOST = Partial<IKanbanColumn>;
 
 type IKanbanBoard = {
+    columnOrder: number[];
     cards: IKanbanCardShort[];
     columns: IKanbanColumn[];
 };
