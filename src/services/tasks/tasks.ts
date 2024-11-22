@@ -18,9 +18,16 @@ import {
     ICreateCommentReq,
     MoveCardProps,
     ReorderCardProps,
+    DeleteColumnReq,
     ReorderColumnProps,
 } from "./types";
-import { optimisticDeleteCard, optimisticReorderColumn } from "./optimistic";
+import {
+    optimisticDeleteCard,
+    optimisticMoveCard,
+    optimisticReorderCard,
+    optimisticReorderColumn,
+    optimisticDeleteColumn,
+} from "./optimistic";
 
 export const tasks = createApi({
     reducerPath: "tasks",
@@ -72,11 +79,12 @@ export const tasks = createApi({
             onQueryStarted: optimisticReorderColumn,
             invalidatesTags: ["Board"],
         }),
-        deleteColumn: builder.mutation<void, number>({
-            query: (columnId: number) => ({
+        deleteColumn: builder.mutation<void, DeleteColumnReq>({
+            query: ({ columnId }) => ({
                 url: `/column/${columnId}`,
                 method: "DELETE",
             }),
+            onQueryStarted: optimisticDeleteColumn,
             invalidatesTags: ["Board"],
         }),
 
@@ -87,7 +95,6 @@ export const tasks = createApi({
             }),
             providesTags: ["Card"],
         }),
-
         moveCard: builder.mutation<void, MoveCardProps>({
             query: ({ cardId, dstColumnId, position }: MoveCardProps) => ({
                 url: `/card/${cardId}/move/${dstColumnId}`,
@@ -96,6 +103,7 @@ export const tasks = createApi({
                     position,
                 },
             }),
+            onQueryStarted: optimisticMoveCard,
             invalidatesTags: ["Board", "Card"],
         }),
         reorderCard: builder.mutation<void, ReorderCardProps>({
@@ -104,6 +112,7 @@ export const tasks = createApi({
                 method: "POST",
                 params: { card: cardId, position },
             }),
+            onQueryStarted: optimisticReorderCard,
             invalidatesTags: ["Board", "Card"],
         }),
         deleteCard: builder.mutation<void, DeleteCardReq>({

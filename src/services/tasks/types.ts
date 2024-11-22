@@ -4,6 +4,10 @@ interface WithFilters {
     filters?: BoardFiltersReq;
 }
 
+interface DeleteColumnReq extends WithFilters {
+    columnId: number;
+}
+
 interface ReorderColumnProps extends WithFilters {
     columnId: number;
     position: number;
@@ -46,11 +50,14 @@ interface IAddAttachmentRes {
 }
 
 export type {
+    DeleteColumnReq,
     ReorderColumnProps,
+    // ...
     MoveCardProps,
     ReorderCardProps,
-    ICreateCommentReq,
     DeleteCardReq,
+    // ...
+    ICreateCommentReq,
     // ...
     IAddAttachmentReq,
     IAddAttachmentRes,
