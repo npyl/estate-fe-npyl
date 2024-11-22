@@ -8,24 +8,20 @@ const Pickers = () => {
 
     const due = watch("due");
 
-    const {
-        isAllDay,
-        allDayDate,
-        // ...
-        onAllDayChange,
-        onAllDayDateChange,
-    } = useEventDates(startDateKey, endDateKey, {
-        startDate: due?.[0],
-        endDate: due?.[1],
-    });
+    const { isAllDay, onAllDayChange } = useEventDates(
+        startDateKey,
+        endDateKey,
+        {
+            startDate: due?.[0],
+            endDate: due?.[1],
+        }
+    );
 
     return (
         <EventDates
             allDay={isAllDay}
-            allDayDate={allDayDate}
             // ...
             onAllDayChange={onAllDayChange}
-            onAllDayDateChange={onAllDayDateChange}
             // ...
             startDateKey={startDateKey}
             endDateKey={endDateKey}

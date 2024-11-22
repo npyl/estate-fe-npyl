@@ -86,8 +86,8 @@ const CreateUpdateForm: FC<Props> = ({
                     />
 
                     <Pickers
-                        startDate={event?.startDate!}
-                        endDate={event?.endDate!}
+                        startDate={startDate || event?.startDate}
+                        endDate={startDate || event?.endDate}
                     />
 
                     <RHFLocation />

@@ -2,34 +2,31 @@ import { Checkbox, FormControlLabel, Stack, StackProps } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import RHFDateTimePicker from "./RHFDateTimePicker";
+import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
 import dayjs, { Dayjs } from "dayjs";
-import { DatePicker } from "@mui/x-date-pickers";
 import { END_HOUR, START_HOUR } from "@/constants/calendar";
 import { DatePickerProps } from "@mui/lab";
+import { RHFDatePicker } from "@/components/hook-form";
+import { getAllDayStartEnd } from "@/components/Calendar/util";
 
 // ----------------------------------------------------------------------
 
 interface AllDayPickerProps {
-    date: string;
-    onChange: (v: string) => void;
+    startDateKey: string;
+    endDateKey: string;
 }
 
-const AllDayPicker: FC<AllDayPickerProps> = ({ date, onChange }) => {
-    const { t } = useTranslation();
+const AllDayPicker: FC<AllDayPickerProps> = ({ startDateKey, endDateKey }) => {
+    const { setValue } = useFormContext();
 
-    const handleFullDate = useCallback((v: dayjs.Dayjs | null) => {
-        if (!v) return;
-        onChange(v.toISOString());
+    const handleChange = useCallback((s: string) => {
+        const [start, end] = getAllDayStartEnd(s);
+
+        setValue(startDateKey, start, { shouldDirty: true });
+        setValue(endDateKey, end, { shouldDirty: true });
     }, []);
 
-    return (
-        <DatePicker
-            label={t("Day")}
-            value={date ? dayjs(date) : null}
-            onChange={handleFullDate}
-        />
-    );
+    return <RHFDatePicker name={startDateKey} onChange={handleChange} />;
 };
 
 // ----------------------------------------------------------------------
@@ -66,9 +63,6 @@ export interface EventDatesProps extends StackProps {
     allDay: boolean;
     onAllDayChange: (_: any, b: boolean) => void;
 
-    allDayDate: string;
-    onAllDayDateChange: (s: string) => void;
-
     // INFO: make this component reusable in many hook-form setups
     startDateKey?: string;
     endDateKey?: string;
@@ -78,25 +72,12 @@ const EventDates: FC<EventDatesProps> = ({
     allDay,
     onAllDayChange,
     // ...
-    allDayDate,
-    onAllDayDateChange,
-
     startDateKey = "startDate",
     endDateKey = "endDate",
-
+    // ...
     ...props
 }) => {
     const { t } = useTranslation();
-    const { setValue } = useFormContext();
-
-    const handleStartDate = useCallback((v: dayjs.Dayjs | null) => {
-        if (!v) return;
-        setValue(startDateKey, v.toISOString(), { shouldDirty: true });
-    }, []);
-    const handleEndDate = useCallback((v: dayjs.Dayjs | null) => {
-        if (!v) return;
-        setValue(endDateKey, v.toISOString(), { shouldDirty: true });
-    }, []);
 
     return (
         <Stack {...props}>
@@ -111,8 +92,8 @@ const EventDates: FC<EventDatesProps> = ({
 
                 {allDay ? (
                     <AllDayPicker
-                        date={allDayDate}
-                        onChange={onAllDayDateChange}
+                        startDateKey={startDateKey}
+                        endDateKey={endDateKey}
                     />
                 ) : null}
             </Stack>
@@ -130,7 +111,6 @@ const EventDates: FC<EventDatesProps> = ({
                         defaultValue={MIN_TIME}
                         label={t("Start")}
                         name={startDateKey}
-                        onChange={handleStartDate}
                         // ...
                         {...DatePickerConstraints}
                     />
@@ -138,7 +118,6 @@ const EventDates: FC<EventDatesProps> = ({
                         defaultValue={TODAY.hour(START_HOUR + 1)}
                         label={t("End")}
                         name={endDateKey}
-                        onChange={handleEndDate}
                         //  ...
                         {...DatePickerConstraints}
                     />

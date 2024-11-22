@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import dayjs from "dayjs";
 import {
     getAllDayStartEnd,
     isAllDay as getIsAllDay,
@@ -19,17 +18,28 @@ const useEventDates = (
     endDateKey: string,
     initial?: { startDate: string; endDate: string }
 ) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue, watch } = useFormContext();
 
     // INFO: is all day checkbox
     const _isAllDay = initial
         ? getIsAllDay(initial.startDate, initial.endDate)
         : false;
     const [isAllDay, setAllDay] = useState(_isAllDay);
+
     const onAllDayChange = useCallback((_: any, b: boolean) => {
         // INFO: when user checks all day make sure to initialise hook-form with values
         if (b) {
-            const [start, end] = getAllDayStartEnd(TODAY.toISOString());
+            const selected = watch(startDateKey);
+
+            // INFO: priority:
+            // - first initial (because it is most likely coming as a create/edit preselected date);
+            // - then hook-form's value since the user most likely has chosen something;
+            // - then a fallback (TODAY)
+            const calculated =
+                initial?.startDate || selected || TODAY.toISOString();
+
+            const [start, end] = getAllDayStartEnd(calculated);
+
             setValue(startDateKey, start, { shouldDirty: true });
             setValue(endDateKey, end, { shouldDirty: true });
         }
@@ -37,26 +47,13 @@ const useEventDates = (
         setAllDay(b);
     }, []);
 
-    // INFO: date for when checked
-    const [_allDayDate] = useState(initial?.startDate || dayjs().toISOString());
-    const allDayDate = watch(startDateKey) || _allDayDate;
-    const onAllDayDateChange = useCallback((s: string) => {
-        // INFO: normalise dates
-        const [start, end] = getAllDayStartEnd(s);
-
-        setValue(startDateKey, start, { shouldDirty: true });
-        setValue(endDateKey, end, { shouldDirty: true });
-    }, []);
+    const isDirty = _isAllDay !== isAllDay;
 
     return {
-        _isAllDay,
-        _allDayDate,
+        isDirty,
         // ...
         isAllDay,
-        allDayDate,
-        // ...
         onAllDayChange,
-        onAllDayDateChange,
     };
 };
 
