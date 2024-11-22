@@ -9,7 +9,6 @@ import { IKanbanCard } from "@/types/tasks";
 import { TranslationType } from "@/types/translation";
 import { useLazyFindByEmailQuery } from "@/services/customers";
 import { ICustomerMini } from "@/types/customer";
-import { IProperties } from "@/types/properties";
 import { IPropertyForNotification } from "@/types/notification/notification";
 
 const TaskDialog = dynamic(() =>
@@ -23,6 +22,37 @@ interface IPropertyMini {
     code: string;
     image: string;
 }
+
+const getName0 = (type: string) => {
+    switch (type) {
+        case "TOUR":
+            return "Tour request for";
+        case "REVIEW":
+            return "Review request for";
+        case "LISTING":
+            return "Listing from";
+        case "WORK_FOR_US":
+            return "Work application by";
+        case "AGREEMENT":
+            return "Agreement for";
+        default:
+            return "Task";
+    }
+};
+
+const getName1 = (
+    type: string,
+    WORK_FOR_US_CASE: string,
+    DEFAULT_CASE: string
+) => {
+    switch (type) {
+        case "WORK_FOR_US":
+        case "LISTING":
+            return WORK_FOR_US_CASE;
+        default:
+            return DEFAULT_CASE;
+    }
+};
 
 const IPropertiesToPropertyMini = ({ id, code }: IPropertyForNotification) => ({
     id,
@@ -40,15 +70,22 @@ const getTaskForNotification = (
         customerName,
         // ...
         message,
+        // ...
+        type,
     }: ContactNotificationExtended,
     customer: ICustomerMini | undefined
 ): Partial<IKanbanCard> => {
-    const NAME = t("Tour request for");
+    const NAME_0 = t(getName0(type.key));
+    const NAME_1 = getName1(
+        type.key,
+        customerName || "-",
+        propertyTile || customerName || "-"
+    );
     const CONTACT_DETAILS = t("Contact Details");
     const FULLNAME = t("Full Name");
     const MOBILE = t("Mobile");
 
-    const name = `${NAME} (${propertyTile || customerName || "-"})`;
+    const name = `${NAME_0} (${NAME_1})`;
 
     const description = customer
         ? message
