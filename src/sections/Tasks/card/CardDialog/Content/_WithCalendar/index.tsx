@@ -63,7 +63,7 @@ const WithCalendar: FC<WithCalendarProps> = ({ edit }) => {
                 <IsAuthenticatedIndicator sx={OAuthButtonSx}>
                     <Stack spacing={1} sx={EventOptionsSx}>
                         <Pickers />
-                        {!edit ? <Assignee /> : null}
+                        <Assignee edit={edit} />
                     </Stack>
                 </IsAuthenticatedIndicator>
             ) : null}

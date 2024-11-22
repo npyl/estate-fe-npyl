@@ -45,13 +45,11 @@ export default async function handler(
         const Authorization = req.headers.authorization;
         if (!Authorization) throw new Error("Invalid headers");
 
-        const {
-            withCalendar,
-            event: _eventId,
-            googleUserKey,
-            ...task
-        } = JSON.parse(req.body) as ICreateOrUpdateTaskReq;
+        const { withCalendar, googleUserKey, ...task } = JSON.parse(
+            req.body
+        ) as ICreateOrUpdateTaskReq;
 
+        const _eventId = task.event;
         const isEdit = Boolean(_eventId);
         let taskBody = { ...task } as IKanbanCardPOST;
 
@@ -66,6 +64,7 @@ export default async function handler(
                 const updatableEvent = { ...gEvent, id: _eventId };
                 await calendarService.updateEvent(iUserId, updatableEvent);
             } else {
+                // INFO: `event` meaning eventId
                 const event = await calendarService.createEvent(
                     iUserId,
                     gEvent,
