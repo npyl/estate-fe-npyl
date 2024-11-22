@@ -1094,6 +1094,7 @@ const resources = {
             "Contact Details": "Contact Details",
             "Full Name": "Full Name",
             Mobile: "Mobile",
+            VAT: "VAT",
         },
     },
     el: {
@@ -1108,6 +1109,7 @@ const resources = {
             "Agreement for": "Εντολή για",
             Task: "Εργασία",
             attachments: "συνημμένα",
+            VAT: "ΑΦΜ",
             "out of": "από",
             People: "Άτομα",
             "Meeting with": "Συνάντηση με",

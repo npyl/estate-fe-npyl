@@ -54,6 +54,7 @@ export interface ICustomer {
     email: string;
     mobilePhone: string;
     homePhone: string;
+    afm: string;
     managedBy: IUser;
     status: number;
     leaser: boolean;
@@ -89,6 +90,7 @@ export interface ICustomerPOST {
     firstName: string;
     lastName: string;
     email: string;
+    afm: string;
     mobilePhone: string;
     homePhone: string;
     managedBy?: number;
