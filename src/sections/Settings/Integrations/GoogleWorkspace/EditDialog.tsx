@@ -46,6 +46,10 @@ const EditDialog: FC<Props> = ({ onClose }) => {
                         <RHFTextField label="ClientId" name="clientId" />
                         <RHFTextField label="Secret" name="clientSecret" />
                         <RHFTextField label="Domain" name="domain" />
+
+                        <Typography color="text.secondary" variant="body2">
+                            {t("_UPDATE_WORKSPACE_EMAILS_")}
+                        </Typography>
                     </Stack>
                 </FormProvider>
             }

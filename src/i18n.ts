@@ -1095,10 +1095,16 @@ const resources = {
             "Full Name": "Full Name",
             Mobile: "Mobile",
             VAT: "VAT",
+
+            _UPDATE_WORKSPACE_EMAILS_:
+                "Make sure you remember to update your employees' Google Workspace Emails after.",
         },
     },
     el: {
         translation: {
+            _UPDATE_WORKSPACE_EMAILS_:
+                "Θα πρέπει να ενημερώσετε τα Google Workspace Email όλων των υπαλλήλων μετά από αυτό.",
+
             Mobile: "Κινητό",
             "Full Name": "Ον/μο",
             "Contact Details": "Στοιχεία Επικοινωνίας",

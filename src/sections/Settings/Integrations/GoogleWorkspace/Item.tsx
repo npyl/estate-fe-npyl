@@ -7,6 +7,9 @@ import {
     useIsGoogleWorkspaceIntegratedQuery,
 } from "@/services/company";
 import { LoadingButton } from "@mui/lab";
+import useDialog from "@/hooks/useDialog";
+import dynamic from "next/dynamic";
+const ConfirmationDialog = dynamic(() => import("./ConfirmDialog"));
 
 interface RemoveButtonProps {
     domain: string;
@@ -16,6 +19,8 @@ const RemoveButton: FC<RemoveButtonProps> = ({ domain }) => {
     const { t } = useTranslation();
     const [deleteWorkspace, { isLoading }] = useDeleteGoogleWorkspaceMutation();
     const handleDelete = useCallback(() => deleteWorkspace(), []);
+
+    const [isDelete, openDelete, closeDelete] = useDialog();
 
     return (
         <>
@@ -27,10 +32,17 @@ const RemoveButton: FC<RemoveButtonProps> = ({ domain }) => {
                 color="error"
                 loading={isLoading}
                 disabled={isLoading}
-                onClick={handleDelete}
+                onClick={openDelete}
             >
                 {t("Delete")}
             </LoadingButton>
+
+            {isDelete ? (
+                <ConfirmationDialog
+                    onConfirm={handleDelete}
+                    onClose={closeDelete}
+                />
+            ) : null}
         </>
     );
 };
