@@ -188,7 +188,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             >
                 <Title title={event.title} color={getTypeColor(event.type)} />
 
-                {!isMinimumHeight && (
+                {!isMinimumHeight ? (
                     <>
                         <Stack p={1} spacing={1}>
                             <Duration
@@ -211,7 +211,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                             <People type={event.type} p={event.people} />
                         </Stack>
                     </>
-                )}
+                ) : null}
             </Stack>
         );
     }

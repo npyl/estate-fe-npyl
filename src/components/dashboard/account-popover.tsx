@@ -1,7 +1,6 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
     Divider,
-    Link,
     ListItemIcon,
     ListItemText,
     MenuItem,
@@ -11,10 +10,11 @@ import {
 } from "@mui/material";
 import { useCallback, type FC } from "react";
 import toast from "react-hot-toast";
-import { useAuth } from "../../hooks/use-auth";
-import { UserCircle as UserCircleIcon } from "../../assets/icons/user-circle";
+import { useAuth } from "@/hooks/use-auth";
+import { UserCircle as UserCircleIcon } from "@/assets/icons/user-circle";
 import { useTranslation } from "react-i18next";
 import SettingsIcon from "@mui/icons-material/Settings";
+import Link from "@/components/Link";
 
 interface AccountPopoverProps {
     anchorEl: null | Element;
