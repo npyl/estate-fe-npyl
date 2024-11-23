@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useSearchEventsQuery } from "@/services/calendar";
 import { useAuth } from "@/hooks/use-auth";
@@ -13,7 +13,7 @@ const Search = () => {
     const anchorRef = useRef<HTMLDivElement>(null);
 
     const [search, setSearch] = useState("");
-    const [query] = useDebounce(search, 500);
+    const [query] = useDebounce(search, 100);
 
     const { user } = useAuth();
     const { calendarId } = useFiltersContext();
@@ -24,12 +24,12 @@ const Search = () => {
 
     const haveEvents = data?.length && data?.length > 0;
 
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
-        setSearch(e.target.value);
+    const handleSearch = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
+        []
+    );
 
-    const handleClear = () => {
-        setSearch("");
-    };
+    const handleClear = useCallback(() => setSearch(""), []);
 
     return (
         <>
