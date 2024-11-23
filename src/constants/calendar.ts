@@ -9,8 +9,8 @@ const TOTAL_HOURS = END_HOUR - START_HOUR + 1;
 const Z_INDEX = {
     DIVIDER: 0,
     NUMBERING: 1,
-    EVENT: 3,
-    HEADER: 4,
+    EVENT: 2, // INFO: leave big gap between the next zIndex layer to allow for overlaping events
+    HEADER: 30,
 };
 
 export {

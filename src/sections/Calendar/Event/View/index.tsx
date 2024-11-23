@@ -26,6 +26,7 @@ import { CalendarEventReq } from "@/types/calendar";
 import { LocationSearching } from "@mui/icons-material";
 import { SpaceBetween } from "@/components/styled";
 import DateInfo from "@/components/Calendar/Event/_shared/DateInfo";
+import People from "@/components/Calendar/Event/_shared/People";
 // ...
 const EditForm = dynamic(() => import("../form"));
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
@@ -144,10 +145,8 @@ const EventDialog: FC<Props> = ({ event, actions = true, onClose }) => {
                                     <Duration
                                         start={event.startDate}
                                         end={event.endDate}
-                                        sx={{
-                                            bgcolor: "transparent",
-                                            color: "text.secondary",
-                                        }}
+                                        bgcolor="transparent"
+                                        color="text.secondary"
                                         fontSize="14px"
                                     />
                                 </Stack>
@@ -166,6 +165,8 @@ const EventDialog: FC<Props> = ({ event, actions = true, onClose }) => {
                                 multiline
                                 rows={5}
                             />
+
+                            <People p={event?.people} type={event.type} />
                         </Stack>
                     )
                 }
