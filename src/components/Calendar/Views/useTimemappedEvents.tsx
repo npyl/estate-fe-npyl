@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { TCalendarEvent } from "../types";
-
 const CalendarEvent = dynamic(() => import("../Event"));
 
 // Constants
@@ -48,9 +47,19 @@ const getOverlapCount = (
     return count;
 };
 
+/**
+ * Returns an array of pre-rendered Events (as in @/components/Calendar/Event) in a way that their respective overlap count is calculated
+ * @param events -
+ * @param onEventClick -
+ * @param EventComponent (for customisation) This should be used if you want to implement a custom component (must conform to Event's props)
+ * @param EventProps (for customisation) pass some props to this custom element
+ */
 const useTimemappedEvents = (
     events: TCalendarEvent[],
-    onEventClick?: (e: TCalendarEvent) => void
+    onEventClick: ((e: TCalendarEvent) => void) | undefined,
+    // ...
+    EventComponent: any = CalendarEvent, // TODO: tired of these types for god's sake; this should be ComponentType<T extends EventProps = EventProps> or something...
+    EventProps?: (idx: number) => any
 ) => {
     // Memoize all timestamp calculations
     const timestampedEvents = useMemo(
@@ -73,11 +82,12 @@ const useTimemappedEvents = (
             );
 
             results.push(
-                <CalendarEvent
+                <EventComponent
                     key={event.id}
                     event={event}
                     overlapCount={overlapCount}
                     onClick={onEventClick}
+                    {...EventProps?.(i)}
                 />
             );
 

@@ -164,7 +164,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                         <Box flexGrow={1} />
 
                         <Stack p={1}>
-                            <People type={event.type} p={event.people} />
+                            <People p={event.people} />
                         </Stack>
                     </>
                 ) : null}

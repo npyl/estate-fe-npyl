@@ -27,7 +27,7 @@ const PeopleSection: FC<Props> = ({ people, type }) => {
     return (
         <Stack direction="row" spacing={1} alignItems="center">
             <Typography>{t(label)}:</Typography>
-            <People p={people} type={type} />
+            <People p={people} />
         </Stack>
     );
 };

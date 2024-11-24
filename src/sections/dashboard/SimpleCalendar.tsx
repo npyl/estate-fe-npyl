@@ -14,6 +14,7 @@ import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
 import dynamic from "next/dynamic";
 import { DAY_CELL_HEIGHT } from "@/constants/calendar";
+import useTimemappedEvents from "@/components/Calendar/Views/useTimemappedEvents";
 const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
 
 // ------------------------------------------------------------------------
@@ -59,10 +60,10 @@ interface CustomCalendarEventProps extends Omit<EventProps, "onLoad"> {
     onLoad?: (top: number) => void;
 }
 
-const CustomCalendarEvent: React.FC<CustomCalendarEventProps> = ({
+const CustomCalendarEvent = ({
     onLoad,
     ...props
-}) => {
+}: CustomCalendarEventProps) => {
     // onLoad() support on mount; null happens on unmount
     const handleRef = useCallback((node: HTMLDivElement | null) => {
         if (!node) return;
@@ -74,33 +75,31 @@ const CustomCalendarEvent: React.FC<CustomCalendarEventProps> = ({
 
 // -----------------------------------------------------------------------------------
 
-const getEvent =
-    (
-        onClick: ((e: TCalendarEvent) => void) | undefined,
-        onFirstLoad: (top: number) => void
-    ) =>
-    (ce: TCalendarEvent, i: number) =>
-        (
-            <CustomCalendarEvent
-                key={ce.id}
-                event={ce}
-                onLoad={i === 0 ? onFirstLoad : undefined}
-                onClick={onClick}
-            />
-        );
-
-// -----------------------------------------------------------------------------------
-
 interface DayCell extends CalendarCellProps {
     onFirstEventLoad: (top: number) => void;
 }
 
-const Cell: FC<DayCell> = ({ events, onEventClick, onFirstEventLoad }) => (
-    <>
-        {/* Events */}
-        {events.map(getEvent(onEventClick, onFirstEventLoad))}
-    </>
-);
+const Cell: FC<DayCell> = ({ events, onEventClick, onFirstEventLoad }) => {
+    const getEventProps = useCallback(
+        (i: number) => ({ onLoad: i === 0 ? onFirstEventLoad : undefined }),
+        [onFirstEventLoad]
+    );
+
+    const EVENTS = useTimemappedEvents(
+        events,
+        onEventClick,
+        // ...
+        CustomCalendarEvent,
+        getEventProps
+    );
+
+    return (
+        <>
+            {/* Events */}
+            {EVENTS}
+        </>
+    );
+};
 
 // -----------------------------------------------------------------------------------
 
