@@ -1,75 +1,15 @@
-import { FC, forwardRef, useCallback, useState } from "react";
-import { Box, Stack, SxProps, Theme, Tooltip, Typography } from "@mui/material";
-import { TCalendarEvent, TCalendarEventType } from "../types";
+import { ForwardedRef, forwardRef, useCallback, useState } from "react";
+import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
+import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
+import { LF } from "./_constants";
+const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
-
-// ------------------------------------------------------------------------------------
-
-const getBulletContainerSx = (
-    c: number = 0,
-    top: number = 0
-): SxProps<Theme> => {
-    const marginLeft = 1 + c * LF;
-    const zIndex = Z_INDEX.EVENT + c;
-
-    return {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-
-        position: "absolute",
-        top,
-
-        marginLeft,
-        zIndex,
-
-        cursor: "pointer",
-
-        "&:hover": {
-            ".Bullet": {
-                border: "2px solid",
-                borderColor: "primary.main",
-            },
-        },
-    };
-};
-
-interface BulletProps {
-    title: string;
-    type: TCalendarEventType;
-    overlapCount?: number;
-    top?: number;
-    onClick: VoidFunction;
-}
-
-const Bullet: FC<BulletProps> = ({
-    title,
-    type,
-    overlapCount,
-    top,
-    onClick,
-}) => (
-    <Tooltip
-        sx={getBulletContainerSx(overlapCount, top)}
-        title={title}
-        onClick={onClick}
-    >
-        <Box
-            className="Bullet"
-            bgcolor={getTypeColor(type)}
-            width={15}
-            height={15}
-            borderRadius="100%"
-        />
-    </Tooltip>
-);
 
 // ------------------------------------------------------------------------------------
 
@@ -91,9 +31,6 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 };
 
 // ------------------------------------------------------------------------------------
-
-// left-factor
-const LF = 10;
 
 const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
@@ -134,6 +71,39 @@ const DescriptionSx: SxProps<Theme> = {
     borderRadius: "5px",
 };
 
+/**
+ * Hook that observes the event's width on Stack's onLoad (using the ref), and calls the onGetWidth callback
+ * @param ref the element's ref (exposed by forwardRef)
+ * @param onGetWidth callback to handle a width value
+ */
+const useWidthObserver = (
+    ref: ForwardedRef<HTMLDivElement>,
+    onGetWidth: (width: number) => void
+) => {
+    const onRef = useCallback(
+        (node: HTMLDivElement | null) => {
+            // Combine refs
+            if (typeof ref === "function") {
+                ref(node);
+            } else if (ref) {
+                ref.current = node;
+            }
+
+            if (node) {
+                const resizeObserver = new ResizeObserver((entries) => {
+                    const width = entries[0].contentRect.width;
+                    onGetWidth(width);
+                });
+
+                resizeObserver.observe(node);
+            }
+        },
+        [ref, onGetWidth]
+    );
+
+    return { onRef };
+};
+
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
     ({ event, overlapCount = 0, onClick, ...props }, ref) => {
         const { top, height } = calculateEventPosition(event);
@@ -145,26 +115,12 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
 
         const handleClick = useCallback(() => onClick?.(event), [onClick]);
 
-        const setRef = useCallback(
-            (node: HTMLDivElement | null) => {
-                // Combine refs
-                if (typeof ref === "function") {
-                    ref(node);
-                } else if (ref) {
-                    ref.current = node;
-                }
-
-                if (node) {
-                    const resizeObserver = new ResizeObserver((entries) => {
-                        const width = entries[0].contentRect.width;
-                        setCompact(width <= 60);
-                    });
-
-                    resizeObserver.observe(node);
-                }
-            },
-            [ref]
+        const handleWidth = useCallback(
+            (width: number) => setCompact(width <= 60),
+            []
         );
+
+        const { onRef } = useWidthObserver(ref, handleWidth);
 
         if (isCompact) {
             return (
@@ -179,7 +135,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
 
         return (
             <Stack
-                ref={setRef}
+                ref={onRef}
                 sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
