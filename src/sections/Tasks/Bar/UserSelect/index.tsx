@@ -1,0 +1,57 @@
+import { useAllUsersQuery } from "@/services/user";
+import { useCallback } from "react";
+import { useFiltersContext } from "@/sections/Tasks/filters";
+import ToggleButton from "@mui/material/ToggleButton";
+import ClearIcon from "@mui/icons-material/Clear";
+import { MouseEvent } from "react";
+import AvatarSelectGroup from "@/components/AvatarSelectGroup";
+import dynamic from "next/dynamic";
+const MoreAvatars = dynamic(() => import("./MoreAvatars"));
+
+// -------------------------------------------------------------------
+
+const ClearButton = () => {
+    const { setAssigneeId } = useFiltersContext();
+
+    const handleClear = useCallback((e: MouseEvent) => {
+        e.preventDefault();
+        setAssigneeId(undefined);
+    }, []);
+
+    return (
+        <ToggleButton
+            value=""
+            onClick={handleClear}
+            size="small"
+            sx={{
+                ml: 1,
+                borderRadius: "100%",
+            }}
+        >
+            <ClearIcon />
+        </ToggleButton>
+    );
+};
+
+// -------------------------------------------------------------------
+
+const UserSelect = () => {
+    const { data } = useAllUsersQuery();
+    const { assigneeId, setAssigneeId } = useFiltersContext();
+
+    return (
+        <AvatarSelectGroup
+            max={6}
+            // ...
+            users={data}
+            value={assigneeId}
+            onChange={setAssigneeId}
+            // ...
+            MoreAvatars={MoreAvatars}
+        >
+            {assigneeId !== undefined ? <ClearButton /> : null}
+        </AvatarSelectGroup>
+    );
+};
+
+export default UserSelect;

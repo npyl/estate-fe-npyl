@@ -18,7 +18,6 @@ const ClearButton = () => {
             size="small"
             sx={{
                 ml: 1,
-                px: 1.3,
                 borderRadius: "100%",
             }}
         >

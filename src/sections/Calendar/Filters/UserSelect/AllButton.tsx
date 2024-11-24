@@ -1,4 +1,4 @@
-import { SelectedSx } from "@/components/AvatarSelectGroup";
+import { SelectedSx } from "@/components/AvatarSelectGroup/style";
 import { useFiltersContext } from "../context";
 import ToggleButton from "@mui/material/ToggleButton";
 import { MouseEvent, useCallback } from "react";

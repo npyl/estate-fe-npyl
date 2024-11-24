@@ -41,7 +41,7 @@ const UserSelect = () => {
         <AvatarSelectGroup
             users={officeUsers}
             value={value}
-            onChange={setCalendarId as any}
+            onChange={setCalendarId}
         >
             <AllButton />
             {calendarId && calendarId !== gwUser?.id ? <ClearButton /> : null}
