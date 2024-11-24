@@ -36,8 +36,11 @@ const isTCalendarEventType = (value: unknown): value is TCalendarEventType =>
     CALENDAR_EVENT_TYPES.includes(value as TCalendarEventType);
 
 type TCalendarEventPerson = {
+    customerId?: number;
+    // ...
     firstName?: string;
     lastName?: string;
+    // ...
     gwEmail?: string;
 };
 

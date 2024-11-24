@@ -1102,10 +1102,14 @@ const resources = {
 
             "free google emails": "free google emails",
             "taken google emails": "taken google emails",
+
+            "non-registered": "non-registered",
         },
     },
     el: {
         translation: {
+            "non-registered": "μη-εγγεγραμμένοι",
+
             "free google emails": "ελεύθερα google emails",
             "taken google emails": "κρατημένα google emails",
 

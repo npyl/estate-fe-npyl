@@ -6,6 +6,8 @@ import { useAllUsersQuery } from "@/services/user";
 import Skeleton from "@mui/material/Skeleton";
 import { IUser } from "@/types/user";
 import { TUser } from "@/components/Avatar/types";
+import { ICustomer } from "@/types/customer";
+import { useAllCustomersQuery } from "@/services/customers";
 const ShowAll = dynamic(() => import("./ShowAll"));
 
 // ------------------------------------------------------------------------------
@@ -18,16 +20,34 @@ const EMPTY_USER = {
 };
 
 const PersonToTUser =
-    (data: IUser[] = []) =>
+    (users: IUser[] = [], customers: ICustomer[] = []) =>
     (
-        { gwEmail, firstName = "", lastName = "" }: TCalendarEventPerson,
+        {
+            gwEmail,
+            customerId,
+            firstName = "",
+            lastName = "",
+        }: TCalendarEventPerson,
         idx: number
     ): TUser => {
-        if (!gwEmail) {
+        const haveGwEmail = Boolean(gwEmail);
+        const isCustomer = Boolean(customerId);
+
+        if (isCustomer) {
+            const found = customers?.find(({ id }) => id === customerId);
+            return {
+                id: customerId,
+                firstName: found?.firstName || "",
+                lastName: found?.lastName || "",
+                avatar: "",
+            };
+        }
+
+        if (!haveGwEmail) {
             return { id: idx, firstName, lastName, avatar: "" };
         }
 
-        const user = data?.find(
+        const user = users?.find(
             ({ workspaceEmail }) => workspaceEmail === gwEmail
         );
 
@@ -41,13 +61,18 @@ interface PeopleProps {
 }
 
 const People: FC<PeopleProps> = ({ p }) => {
-    const { data, isLoading } = useAllUsersQuery();
+    const { data: customers, isLoading: isLoading_0 } = useAllCustomersQuery();
+    const { data: users, isLoading: isLoading_1 } = useAllUsersQuery();
 
-    const users = useMemo(() => p.map(PersonToTUser(data)) || [], [p, data]);
+    const data = useMemo(
+        () => p.map(PersonToTUser(users, customers)) || [],
+        [p, users, customers]
+    );
 
-    if (isLoading) return <Skeleton width="150px" height="58px" />;
+    if (isLoading_0 || isLoading_1)
+        return <Skeleton width="150px" height="58px" />;
 
-    return <AvatarGroup max={2} users={users} MoreAvatars={ShowAll} />;
+    return <AvatarGroup max={6} users={data} MoreAvatars={ShowAll} />;
 };
 
 export default People;

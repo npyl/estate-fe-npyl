@@ -86,6 +86,10 @@ type TCalendarEventReq = Omit<TCalendarEvent, "id"> & { id?: string };
 
 const withGwEmail = ({ gwEmail }: TCalendarEventPerson) => Boolean(gwEmail);
 const withoutGwEmail = ({ gwEmail }: TCalendarEventPerson) => !Boolean(gwEmail);
+const withoutGwEmailAndNonCustomer = ({
+    gwEmail,
+    customerId,
+}: TCalendarEventPerson) => !Boolean(gwEmail) && !Boolean(customerId);
 
 /**
  * Convert `people` field of TCalendarEvent to an entry valid for google calendar event's extendedProperties.
@@ -120,11 +124,7 @@ const TCalendarEventToGCalendarEvent = ({
     type,
     people,
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
-    // console.log("start: ", startDate, " end: ", endDate);
-
-    // console.log("allPeople: ", people);
     const preparedPeople = preparePeople(people, type);
-    // console.log("prepared: ", preparedPeople);
 
     return {
         id,
@@ -145,7 +145,7 @@ const TCalendarEventToGCalendarEvent = ({
             private: {
                 ...extendedProperties?.private,
                 [PP_EVENT_TYPE_KEY]: type,
-                [PP_EVENT_PEOPLE_KEY]: preparePeople(people, type),
+                [PP_EVENT_PEOPLE_KEY]: preparedPeople,
             },
         },
     };
@@ -157,4 +157,5 @@ export {
     // ...
     withGwEmail,
     withoutGwEmail,
+    withoutGwEmailAndNonCustomer,
 };
