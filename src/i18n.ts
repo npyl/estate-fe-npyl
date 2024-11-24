@@ -1099,10 +1099,16 @@ const resources = {
 
             _UPDATE_WORKSPACE_EMAILS_:
                 "Make sure you remember to update your employees' Google Workspace Emails after.",
+
+            "free google emails": "free google emails",
+            "taken google emails": "taken google emails",
         },
     },
     el: {
         translation: {
+            "free google emails": "ελεύθερα google emails",
+            "taken google emails": "κρατημένα google emails",
+
             _UPDATE_WORKSPACE_EMAILS_:
                 "Θα πρέπει να ενημερώσετε τα Google Workspace Email όλων των υπαλλήλων μετά από αυτό.",
 

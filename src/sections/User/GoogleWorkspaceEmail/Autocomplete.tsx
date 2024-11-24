@@ -40,6 +40,7 @@ const RenderOption = (
             <Typography>
                 {option?.firstName || ""} {option?.lastName || ""}
             </Typography>
+            <Typography fontWeight="bold">({option?.id})</Typography>
         </MenuItem>
     );
 };
@@ -90,10 +91,25 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         const groupBy = useCallback(
             ({ id }: GUserMini) =>
                 findPPUserWithGoogleWorkspaceEmail(id)
-                    ? t("with google email")
-                    : t("without google email"),
+                    ? t("taken google emails")
+                    : t("free google emails"),
             [t, findPPUserWithGoogleWorkspaceEmail]
         );
+
+        // INFO: sort gwUsers so that the ones without pp-user association appear first
+        const sortedGwUsers = useMemo(() => {
+            if (!gwUsers) return [];
+
+            return [...gwUsers].sort((a, b) => {
+                const aHasPPUser = findPPUserWithGoogleWorkspaceEmail(a.id);
+                const bHasPPUser = findPPUserWithGoogleWorkspaceEmail(b.id);
+
+                if (!aHasPPUser && bHasPPUser) return -1;
+                if (aHasPPUser && !bHasPPUser) return 1;
+
+                return -1;
+            });
+        }, [gwUsers, findPPUserWithGoogleWorkspaceEmail]);
 
         const value = useMemo(
             () => gwUsers?.find(({ id }) => id === _value) || null!,
@@ -105,7 +121,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
                 ref={ref}
                 fullWidth
                 value={value}
-                options={gwUsers || []}
+                options={sortedGwUsers}
                 getOptionDisabled={getOptionDisabled}
                 getOptionLabel={getOptionLabel}
                 renderOption={RenderOption}
