@@ -4,7 +4,7 @@ import { useFiltersContext } from "@/sections/Tasks/filters";
 import ToggleButton from "@mui/material/ToggleButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import { MouseEvent } from "react";
-import AvatarSelectGroup from "@/components/AvatarSelectGroup";
+import AvatarSelectGroup from "@/components/Avatar/SelectGroup";
 import dynamic from "next/dynamic";
 const MoreAvatars = dynamic(() => import("./MoreAvatars"));
 

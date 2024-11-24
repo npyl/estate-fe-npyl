@@ -1,80 +1,53 @@
 import { FC, useMemo } from "react";
-import { AvatarGroup, Skeleton, Tooltip } from "@mui/material";
-import Avatar from "@/components/Avatar";
-import { SpaceBetween } from "@/components/styled";
+import AvatarGroup from "@/components/Avatar/Group";
 import dynamic from "next/dynamic";
-import {
-    TCalendarEventPerson,
-    TCalendarEventType,
-} from "@/components/Calendar/types";
+import { TCalendarEventPerson } from "@/components/Calendar/types";
 import { useAllUsersQuery } from "@/services/user";
+import Skeleton from "@mui/material/Skeleton";
+import { IUser } from "@/types/user";
+import { TUser } from "@/components/Avatar/types";
 const ShowAll = dynamic(() => import("./ShowAll"));
 
-// ---------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-interface AvatarForEmailProps {
-    gwEmail?: string;
-}
-
-const AvatarForEmail: FC<AvatarForEmailProps> = ({ gwEmail }) => {
-    const { data: users, isLoading } = useAllUsersQuery();
-
-    const user = useMemo(
-        () => users?.find(({ workspaceEmail }) => workspaceEmail === gwEmail),
-        [users]
-    );
-
-    if (isLoading) return <Skeleton variant="circular" />;
-
-    const fullname = `${user?.firstName || ""} ${user?.lastName || ""}`;
-
-    return (
-        <Tooltip title={fullname}>
-            <Avatar
-                firstName={user?.firstName}
-                lastName={user?.lastName}
-                src={user?.avatar}
-            />
-        </Tooltip>
-    );
+const EMPTY_USER = {
+    id: Date.now(),
+    firstName: "-",
+    lastName: "-",
+    avatar: "",
 };
 
-// ---------------------------------------------------------------------------------
+const PersonToTUser =
+    (data: IUser[] = []) =>
+    (
+        { gwEmail, firstName = "", lastName = "" }: TCalendarEventPerson,
+        idx: number
+    ): TUser => {
+        if (!gwEmail) {
+            return { id: idx, firstName, lastName, avatar: "" };
+        }
 
-interface PersonProps {
-    type: TCalendarEventType;
-    p: TCalendarEventPerson;
-}
+        const user = data?.find(
+            ({ workspaceEmail }) => workspaceEmail === gwEmail
+        );
 
-const Person: FC<PersonProps> = ({ type, p }) => {
-    if (type === "MEETING") return <AvatarForEmail gwEmail={p.gwEmail} />;
+        return user || EMPTY_USER;
+    };
 
-    const fullname = `${p?.firstName || ""} ${p?.lastName || ""}`;
-
-    return (
-        <Tooltip title={fullname}>
-            <Avatar firstName={p?.firstName} lastName={p?.lastName} />
-        </Tooltip>
-    );
-};
-
-// ---------------------------------------------------------------------------------
-
-const getPerson = (type: TCalendarEventType) => (p: TCalendarEventPerson) =>
-    <Person key={JSON.stringify(p)} type={type} p={p} />;
-
-// ---------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 interface PeopleProps {
     p: TCalendarEventPerson[];
-    type: TCalendarEventType;
 }
 
-const People: FC<PeopleProps> = ({ p, type }) => (
-    <SpaceBetween>
-        <AvatarGroup max={4}>{p.map(getPerson(type))}</AvatarGroup>
-        {p.length > 4 ? <ShowAll /> : null}
-    </SpaceBetween>
-);
+const People: FC<PeopleProps> = ({ p }) => {
+    const { data, isLoading } = useAllUsersQuery();
+
+    const users = useMemo(() => p.map(PersonToTUser(data)) || [], [p, data]);
+
+    if (isLoading) return <Skeleton width="150px" height="58px" />;
+
+    return <AvatarGroup max={2} users={users} MoreAvatars={ShowAll} />;
+};
 
 export default People;

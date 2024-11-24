@@ -9,7 +9,7 @@ import ClearButton from "./ClearButton";
 const Loader = () => <Skeleton width="100px" height="58px" />;
 
 const AvatarSelectGroup = dynamic(
-    () => import("@/components/AvatarSelectGroup"),
+    () => import("@/components/Avatar/SelectGroup"),
     {
         loading: Loader,
     }

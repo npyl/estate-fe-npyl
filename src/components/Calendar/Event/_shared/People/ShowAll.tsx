@@ -1,23 +1,12 @@
-import useDialog from "@/hooks/useDialog";
-import Button from "@mui/material/Button";
-import { useRef } from "react";
-import Popover from "./Popover";
+import { FC } from "react";
+import Popover from "@mui/material/Popover";
+import { MoreAvatarsProps } from "@/components/Avatar/Group/types";
+import AvatarGroup from "@/components/Avatar/Group";
 
-const ShowAll = () => {
-    const anchorRef = useRef<HTMLButtonElement>(null);
-    const [isOpen, openPopover, closePopover] = useDialog();
-
-    return (
-        <>
-            <Button ref={anchorRef} onClick={openPopover} variant="text">
-                Show all
-            </Button>
-
-            {isOpen && anchorRef.current ? (
-                <Popover anchorEl={anchorRef.current} onClose={closePopover} />
-            ) : null}
-        </>
-    );
-};
+const ShowAll: FC<MoreAvatarsProps> = ({ anchorEl, users, onClose }) => (
+    <Popover open anchorEl={anchorEl} onClose={onClose}>
+        <AvatarGroup max={users.length} users={users} />
+    </Popover>
+);
 
 export default ShowAll;

@@ -2,7 +2,6 @@ import {
     TCalendarEventPerson,
     TCalendarEventType,
 } from "@/components/Calendar/types";
-import { SpaceBetween } from "@/components/styled";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";

@@ -1,7 +1,8 @@
 import MuiAvatar from "@mui/material/Avatar";
 import { ComponentType, FC, useRef } from "react";
 import useDialog from "@/hooks/useDialog";
-import { MoreAvatarsProps, TUser } from "./types";
+import { TUser } from "../types";
+import { MoreAvatarsProps } from "./types";
 
 interface SurplusProps {
     users: TUser[];
