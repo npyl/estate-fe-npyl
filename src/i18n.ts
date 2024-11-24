@@ -1082,6 +1082,7 @@ const resources = {
             "with google email": "with google email",
             "without google email": "without google email",
             "Meeting with": "Meeting with",
+            Tour: "Tour",
             People: "People",
             "out of": "out of",
             attachments: "attachments",
@@ -1119,6 +1120,7 @@ const resources = {
             "out of": "από",
             People: "Άτομα",
             "Meeting with": "Συνάντηση με",
+            Tour: "Περιήγηση",
 
             Reporter: "Αναθέτης",
 

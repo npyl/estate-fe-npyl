@@ -26,7 +26,7 @@ import { CalendarEventReq } from "@/types/calendar";
 import { LocationSearching } from "@mui/icons-material";
 import { SpaceBetween } from "@/components/styled";
 import DateInfo from "@/components/Calendar/Event/_shared/DateInfo";
-import People from "@/components/Calendar/Event/_shared/People";
+import PeopleSection from "./PeopleSection";
 // ...
 const EditForm = dynamic(() => import("../form"));
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
@@ -166,7 +166,10 @@ const EventDialog: FC<Props> = ({ event, actions = true, onClose }) => {
                                 rows={5}
                             />
 
-                            <People p={event?.people} type={event.type} />
+                            <PeopleSection
+                                people={event?.people}
+                                type={event?.type}
+                            />
                         </Stack>
                     )
                 }
