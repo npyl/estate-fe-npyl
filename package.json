@@ -57,7 +57,6 @@
         "@pdfme/ui": "3.4.3",
         "@react-google-maps/api": "^2.18.1",
         "@reduxjs/toolkit": "^1.9.3",
-        "apexcharts": "^3.37.2",
         "chart.js": "^4.4.3",
         "date-fns": "^3.6.0",
         "dayjs": "^1.11.10",
