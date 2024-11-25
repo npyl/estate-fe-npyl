@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import { BaseCalendarWeekViewProps } from "../types";
 import { EmptyCell, NoNumbering } from "./Empty";
-import { getStartOfWeek } from "../util";
+import useWeekUtils from "../useWeekUtils";
 
 // ------------------------------------------------------------
 
@@ -25,6 +25,8 @@ const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
     style,
     ...props
 }) => {
+    const { getStartOfWeek } = useWeekUtils();
+
     const startOfWeek = getStartOfWeek(date);
 
     const weekDays = Array.from({ length: 7 }, (_, i) => {

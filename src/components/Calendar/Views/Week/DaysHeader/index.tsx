@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Box, Divider, Stack } from "@mui/material";
-import { getStartOfWeek } from "@/components/BaseCalendar/util";
+import useWeekUtils from "@/components/BaseCalendar/useWeekUtils";
 import { gridStyle, StyledStack } from "./styled";
 import Day from "./Day";
 import { Z_INDEX } from "@/constants/calendar";
@@ -25,6 +25,8 @@ interface DaysHeaderProps {
 }
 
 const DaysHeader: FC<DaysHeaderProps> = ({ date }) => {
+    const { getStartOfWeek } = useWeekUtils();
+
     const startOfWeek = getStartOfWeek(date);
 
     const weekDays = Array.from({ length: 7 }, (_, i) => {
