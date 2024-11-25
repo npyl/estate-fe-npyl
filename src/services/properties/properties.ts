@@ -192,7 +192,7 @@ export const properties = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["Properties", "Archived", "PropertyById"],
         }),
         bulkDeleteProperties: builder.mutation<void, number[]>({
             query: (propertyIds) => ({
@@ -200,7 +200,7 @@ export const properties = createApi({
                 method: "DELETE",
                 body: propertyIds,
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["Properties", "Archived", "PropertyById"],
         }),
 
         filterProperties: builder.query<

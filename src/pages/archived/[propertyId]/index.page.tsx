@@ -1,4 +1,4 @@
-import { AdminGuard } from "@/components/authentication/admin-guard";
+import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewPropertyById from "@/sections/Properties/ViewById";
 import { NextPage } from "next";
@@ -6,9 +6,9 @@ import { NextPage } from "next";
 const ArchivedByIdPage: NextPage = () => <ViewPropertyById archived />;
 
 ArchivedByIdPage.getLayout = (page) => (
-    <AdminGuard>
+    <AuthGuard>
         <DashboardLayout>{page}</DashboardLayout>
-    </AdminGuard>
+    </AuthGuard>
 );
 
 export default ArchivedByIdPage;

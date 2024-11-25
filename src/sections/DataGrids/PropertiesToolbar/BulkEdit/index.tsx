@@ -7,11 +7,8 @@ import {
     EditZipCode,
 } from "./Edit";
 import { BulkEditDrawer } from "@/sections/DataGrids/BulkEditDrawer";
-import { useMemo, useState } from "react";
-import {
-    BulkEditRequest,
-    useBulkEditPropertiesMutation,
-} from "src/services/properties";
+import { useCallback, useMemo, useState } from "react";
+import { BulkEditRequest } from "src/services/properties";
 import { EditLabels } from "./EditLabels";
 
 type StateType = {
@@ -37,10 +34,11 @@ const initialState: StateType = {
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
+    onSave: (req: BulkEditRequest) => Promise<any>;
     onClose: () => void;
 }
 
-export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
+const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     const [managerId, setManagerId] = useState<StateType["managerId"]>("");
     const [ownerId, setOwnerId] = useState<StateType["ownerId"]>("");
     const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
@@ -48,8 +46,6 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
     const [labels, setLabels] = useState<StateType["labels"]>([]);
     const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
     const [state, setState] = useState<StateType["state"]>("");
-
-    const [bulkEdit] = useBulkEditPropertiesMutation();
 
     const currentState: StateType = useMemo(
         () => ({
@@ -105,22 +101,23 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
         setState("");
     };
 
-    const handleSave = () => {
-        bulkEdit({
+    const handleSave = async () => {
+        const req = {
             ...changed,
             propertyIds: selectedIds,
-        } as BulkEditRequest).then(() => {
-            clearState();
-            onClose();
-        });
+        } as BulkEditRequest;
+
+        await onSave(req);
+
+        handleClose();
     };
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         clearState();
         onClose();
-    };
+    }, []);
 
-    const handleClear = () => clearState();
+    const handleClear = useCallback(clearState, []);
 
     return (
         <BulkEditDrawer
@@ -140,3 +137,5 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
         </BulkEditDrawer>
     );
 };
+
+export default BulkEdit;

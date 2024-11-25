@@ -6,17 +6,17 @@ import MoreButton from "./More";
 
 interface IViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
-    isArchived: boolean;
+    isArchived?: boolean;
     // ...
     onEdit: VoidFunction;
-    onArchive: VoidFunction;
+    onArchive?: VoidFunction;
     onDelete: VoidFunction;
     onClone?: VoidFunction;
 }
 
 const ViewHeader = ({
     isProperty,
-    isArchived,
+    isArchived = false,
     children,
     // ...
     onEdit,

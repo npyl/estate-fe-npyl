@@ -2,10 +2,7 @@ import { EditManager } from "./Edit";
 import { EditLabels } from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/EditLabels";
 import { useMemo, useState } from "react";
 import { BulkEditDrawer } from "@/sections/DataGrids/BulkEditDrawer";
-import {
-    BulkEditRequest,
-    useBulkEditCustomersMutation,
-} from "src/services/customers";
+import { BulkEditRequest } from "src/services/customers";
 
 type StateType = {
     managerId: string;
@@ -15,14 +12,13 @@ type StateType = {
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
+    onSave: (req: BulkEditRequest) => Promise<any>;
     onClose: () => void;
 }
 
-const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
+const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     const [managerId, setManagerId] = useState<StateType["managerId"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
-
-    const [bulkEdit] = useBulkEditCustomersMutation();
 
     const initialState: StateType = useMemo(
         () => ({
@@ -72,14 +68,16 @@ const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
         setLabels([]);
     };
 
-    const handleSave = () => {
-        bulkEdit({
+    const handleSave = async () => {
+        const req = {
             ...changed,
             customerIds: selectedIds,
-        } as BulkEditRequest).then(() => {
-            clearState();
-            onClose();
-        });
+        } as BulkEditRequest;
+
+        await onSave(req);
+
+        clearState();
+        onClose();
     };
 
     const handleClose = () => {
