@@ -253,13 +253,12 @@ export const properties = createApi({
             }),
             providesTags: ["SuggestedCustomers"],
         }),
-        // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
         deleteProperty: builder.mutation<IProperties, number>({
             query: (id) => ({
-                url: `/archive/${id}`,
+                url: `/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Properties"],
+            invalidatesTags: ["Properties", "Archived"],
         }),
         searchProperty: builder.query<
             IPage<IPropertyResultResponse>,
@@ -332,6 +331,13 @@ export const properties = createApi({
         }),
 
         // -------------------------------------------------------------------------
+
+        archivedCount: builder.query<number, void>({
+            query: () => ({
+                url: "/archive/count",
+            }),
+            providesTags: ["Archived"],
+        }),
 
         filterArchived: builder.query<
             IPage<IPropertyResultResponse>,
@@ -424,6 +430,7 @@ export const {
     useGetTasksQuery,
 
     // ...
+    useArchivedCountQuery,
     useFilterArchivedQuery,
     useArchivePropertyMutation,
     useRestorePropertyMutation,

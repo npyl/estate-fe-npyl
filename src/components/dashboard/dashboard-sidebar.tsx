@@ -8,6 +8,7 @@ import {
     Box,
     Drawer,
     Link,
+    Skeleton,
     Stack,
     Theme,
     Typography,
@@ -33,6 +34,34 @@ import CircleUnReadNotifications from "@/pages/notification/components/CircleUnR
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import { useArchivedCountQuery } from "@/services/properties";
+
+const ArchivedIcon = () => {
+    const { data, isLoading } = useArchivedCountQuery();
+
+    return (
+        <Box display="flex" justifyContent="space-between">
+            <ArchiveIcon fontSize="small" />
+
+            {isLoading ? (
+                <Skeleton
+                    width="20px"
+                    height="20px"
+                    variant="circular"
+                    sx={{
+                        position: "absolute",
+                        right: "-8px",
+                        top: "10px",
+                    }}
+                />
+            ) : null}
+
+            {data ? (
+                <CircleUnReadNotifications>{data}</CircleUnReadNotifications>
+            ) : null}
+        </Box>
+    );
+};
 
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -131,7 +160,7 @@ const getSections = (
             {
                 title: t("Archived"),
                 path: "/archived",
-                icon: <ArchiveIcon fontSize="small" />,
+                icon: <ArchivedIcon />,
             },
         ],
     },
