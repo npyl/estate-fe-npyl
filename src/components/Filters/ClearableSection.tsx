@@ -56,7 +56,7 @@ const ClearableSection: FC<ClearableSectionProps> = ({
     const handleClear = () => reset && dispatch(reset());
 
     return (
-        <Stack spacing={1} pb={2} {...props}>
+        <Stack spacing={1} pb={3} {...props}>
             <SpaceBetween>
                 <Typography variant="h6" fontWeight="600">
                     {title}

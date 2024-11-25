@@ -79,7 +79,7 @@ const ParentCategory = () => {
             title={t("Parent Category")}
             reset={resetParentCategories}
         >
-            <Stack direction="row" gap={1} flexWrap="wrap" p={4}>
+            <Stack direction="row" gap={1} flexWrap="wrap" p={1}>
                 {parentCategoryEnum.map(getOption)}
             </Stack>
         </ClearableSection>

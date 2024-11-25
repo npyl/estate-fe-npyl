@@ -82,7 +82,7 @@ export default function FilterCategory() {
             >
                 {parentCategories.map((parentCategory) => [
                     <ListSubheader key={`header_${parentCategory}`}>
-                        {parentCategory}
+                        {t(parentCategory)}
                     </ListSubheader>,
                     ...subCategoriesMap[parentCategory].map(
                         ({ key, value }) => (
