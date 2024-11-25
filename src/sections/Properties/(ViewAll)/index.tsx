@@ -6,7 +6,7 @@ import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore
 import { useFilterPropertiesQuery } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
-import Toolbar from "../../../sections/DataGrids/PropertiesToolbar";
+import Toolbar from "../../DataGrids/PropertiesToolbar";
 
 interface ViewAllProps {
     sortBy: string;
