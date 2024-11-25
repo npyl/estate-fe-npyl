@@ -190,7 +190,7 @@ const MoreButton = ({
                     >
                         {isProperty && <OpenIn />}
 
-                        {onClone ? (
+                        {!isArchived && onClone ? (
                             <Button
                                 fullWidth
                                 variant="outlined"
@@ -201,14 +201,16 @@ const MoreButton = ({
                             </Button>
                         ) : null}
 
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            color="secondary"
-                            onClick={handleEdit}
-                        >
-                            {t("Edit")}
-                        </Button>
+                        {!isArchived ? (
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                onClick={handleEdit}
+                            >
+                                {t("Edit")}
+                            </Button>
+                        ) : null}
 
                         {isArchived ? <RestoreButton /> : null}
 
