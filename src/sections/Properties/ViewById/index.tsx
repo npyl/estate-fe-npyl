@@ -86,10 +86,9 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const handleChange = useCallback((_: any, v: number) => setValue(v), []);
 
     const handleArchive = useCallback(async () => {
-        try {
-            await archiveProperty(+propertyId!);
-            router.push("/archived");
-        } catch (ex) {}
+        const res = await archiveProperty(+propertyId!);
+        if ("error" in res) return;
+        router.push("/archived");
     }, []);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);

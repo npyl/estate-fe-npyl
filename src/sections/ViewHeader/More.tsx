@@ -12,11 +12,29 @@ import { useAuth } from "@/hooks/use-auth";
 import ConfirmDialog from "@/components/confirm-dialog";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import UndoIcon from "@mui/icons-material/Undo";
+import { useRouter } from "next/router";
+import { useRestorePropertyMutation } from "@/services/properties";
 
 const RestoreButton = () => {
     const { t } = useTranslation();
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const [restore] = useRestorePropertyMutation();
+
+    const handleRestore = useCallback(async () => {
+        const res = await restore(+propertyId!);
+        if ("error" in res) return;
+        router.replace("/property");
+    }, [propertyId]);
+
     return (
-        <SoftButton fullWidth color="warning" startIcon={<UndoIcon />}>
+        <SoftButton
+            fullWidth
+            color="warning"
+            startIcon={<UndoIcon />}
+            onClick={handleRestore}
+        >
             {t("Restore")}
         </SoftButton>
     );

@@ -360,7 +360,7 @@ export const properties = createApi({
         restoreProperty: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/archive/restore/${id}`,
-                method: "DELETE",
+                method: "PUT",
             }),
             invalidatesTags: ["Archived", "Properties"],
         }),
@@ -426,6 +426,7 @@ export const {
     // ...
     useFilterArchivedQuery,
     useArchivePropertyMutation,
+    useRestorePropertyMutation,
     useBulkArchivePropertiesMutation,
     useBulkRestorePropertiesMutation,
 } = properties;
