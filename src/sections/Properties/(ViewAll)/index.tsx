@@ -1,19 +1,66 @@
 import { Paper } from "@mui/material";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
-import { useFilterPropertiesQuery } from "src/services/properties";
+import {
+    useFilterArchivedQuery,
+    useFilterPropertiesQuery,
+} from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
 import Toolbar from "../../DataGrids/PropertiesToolbar";
+import { IPropertyFilter } from "@/types/properties";
+
+interface Filters extends IPropertyFilter {
+    [key: string]: any;
+}
+
+type TReq = {
+    filter: Filters;
+    page: number;
+    pageSize: number;
+    sortBy: string;
+    direction: string;
+};
+
+const useFilteredRows = (archived: boolean, req: TReq) => {
+    const { data: data_0, isLoading: isLoading_0 } = useFilterPropertiesQuery(
+        req,
+        {
+            skip: archived,
+        }
+    );
+
+    const { data: data_1, isLoading: isLoading_1 } = useFilterArchivedQuery(
+        req,
+        {
+            skip: !archived,
+        }
+    );
+
+    const rows = useMemo(
+        () =>
+            Array.isArray(archived ? data_1?.content : data_0?.content)
+                ? archived
+                    ? data_1?.content
+                    : data_0?.content
+                : [],
+        [archived, data_0?.content, data_1?.content]
+    );
+
+    const totalRows = (archived ? data_1 : data_0)?.totalElements ?? 10;
+
+    return { rows, totalRows, isLoading: isLoading_0 || isLoading_1 };
+};
 
 interface ViewAllProps {
+    archived?: boolean;
     sortBy: string;
     direction: string;
 }
 
-const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
+const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
     const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
     // Pagination
@@ -22,20 +69,15 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
 
     const allFilters = useSelector(selectAll);
 
-    const { data, isLoading } = useFilterPropertiesQuery({
+    const req = {
         filter: allFilters,
         page,
         pageSize,
         sortBy,
         direction,
-    });
+    };
 
-    const rows = useMemo(
-        () => (Array.isArray(data?.content) ? data.content : []),
-        [data?.content]
-    );
-
-    const totalRows = data?.totalElements || 10;
+    const { rows, totalRows, isLoading } = useFilteredRows(archived, req);
 
     useLocalStorageScrollRestore();
 
@@ -52,7 +94,7 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
         }
     }, []);
 
-    const handlePaginationChange = (model: GridPaginationModel) => {
+    const handlePaginationChange = useCallback((model: GridPaginationModel) => {
         setPageSize(model.pageSize);
         setPage(model.page);
 
@@ -61,7 +103,7 @@ const ViewAll = ({ sortBy, direction }: ViewAllProps) => {
             "propertyPaginationState",
             JSON.stringify(paginationState)
         );
-    };
+    }, []);
 
     return (
         <>

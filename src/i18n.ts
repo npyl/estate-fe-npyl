@@ -1106,10 +1106,12 @@ const resources = {
             "non-registered": "non-registered",
 
             Archive: "Archive",
+            Archived: "Archived",
         },
     },
     el: {
         translation: {
+            Archived: "Αρχειοθετημένα",
             Archive: "Αρχειοθέτηση",
 
             "non-registered": "μη-εγγεγραμμένοι",

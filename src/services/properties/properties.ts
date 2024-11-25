@@ -110,6 +110,9 @@ export const properties = createApi({
 
         // ...
         "Tasks",
+
+        "Archived",
+        "ArchivedById",
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
@@ -329,6 +332,54 @@ export const properties = createApi({
         }),
 
         // -------------------------------------------------------------------------
+
+        filterArchived: builder.query<
+            IPage<IPropertyResultResponse>,
+            IPropertyFilterParams
+        >({
+            query: ({ filter, page, pageSize, sortBy, direction }) => ({
+                url: "/archive/filter",
+                method: "POST",
+                body: filter,
+                params: {
+                    page,
+                    pageSize,
+                    sortBy,
+                    direction,
+                },
+            }),
+            providesTags: ["Archived"],
+        }),
+        archiveProperty: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/archive/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Archived"],
+        }),
+        restoreProperty: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/archive/restore/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Archived"],
+        }),
+        bulkArchiveProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/archive/bulk`,
+                method: "DELETE",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Archived", "ArchivedById"],
+        }),
+        bulkRestoreProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/archive/restore/bulk`,
+                method: "POST",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Archived", "ArchivedById"],
+        }),
     }),
 });
 
@@ -371,4 +422,10 @@ export const {
 
     // ...
     useGetTasksQuery,
+
+    // ...
+    useFilterArchivedQuery,
+    useArchivePropertyMutation,
+    useBulkArchivePropertiesMutation,
+    useBulkRestorePropertiesMutation,
 } = properties;
