@@ -132,7 +132,6 @@ const getSections = (
                 title: t("Archived"),
                 path: "/archived",
                 icon: <ArchiveIcon fontSize="small" />,
-                adminOnly: true,
             },
         ],
     },

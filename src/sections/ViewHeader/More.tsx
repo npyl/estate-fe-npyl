@@ -5,21 +5,33 @@ import { useTranslation } from "react-i18next";
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 import useDialog from "@/hooks/useDialog";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import React, { FC, useCallback, useRef } from "react";
+import { FC, useCallback, useRef } from "react";
 import OpenIn from "./OpenIn";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/hooks/use-auth";
 import ConfirmDialog from "@/components/confirm-dialog";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import UndoIcon from "@mui/icons-material/Undo";
+
+const RestoreButton = () => {
+    const { t } = useTranslation();
+    return (
+        <SoftButton fullWidth color="warning" startIcon={<UndoIcon />}>
+            {t("Restore")}
+        </SoftButton>
+    );
+};
 
 interface Props {
     isProperty: boolean;
+    isArchived: boolean;
     onDelete: VoidFunction;
     onArchive: VoidFunction;
 }
 
 const DeleteOrArchiveButton: FC<Props> = ({
     isProperty,
+    isArchived,
     onDelete,
     onArchive,
 }) => {
@@ -42,7 +54,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
 
     return (
         <>
-            {isAdmin && isProperty ? (
+            {isProperty && !isArchived ? (
                 <SoftButton
                     fullWidth
                     color="error"
@@ -94,6 +106,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
 
 interface MoreButtonProps {
     isProperty: boolean;
+    isArchived: boolean;
     onEdit: VoidFunction;
     onDelete: VoidFunction;
     onArchive?: VoidFunction;
@@ -102,6 +115,7 @@ interface MoreButtonProps {
 
 const MoreButton = ({
     isProperty,
+    isArchived,
     onEdit,
     onDelete,
     onArchive,
@@ -178,8 +192,11 @@ const MoreButton = ({
                             {t("Edit")}
                         </Button>
 
+                        {isArchived ? <RestoreButton /> : null}
+
                         <DeleteOrArchiveButton
                             isProperty={isProperty}
+                            isArchived={isArchived}
                             onDelete={handleDelete}
                             onArchive={handleArchive}
                         />

@@ -2,6 +2,7 @@ import { Tab, TabProps, Tabs } from "@mui/material";
 import { useRouter } from "next/router";
 import { FC, Suspense, useCallback, useState } from "react";
 import {
+    useArchivePropertyMutation,
     useClonePropertyMutation,
     useDeletePropertyMutation,
 } from "src/services/properties";
@@ -75,6 +76,7 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
 
     const { propertyId } = router.query;
 
+    const [archiveProperty] = useArchivePropertyMutation();
     const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
 
@@ -82,6 +84,13 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
 
     const handleChange = useCallback((_: any, v: number) => setValue(v), []);
+
+    const handleArchive = useCallback(async () => {
+        try {
+            await archiveProperty(+propertyId!);
+            router.push("/archived");
+        } catch (ex) {}
+    }, []);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
 
@@ -107,6 +116,9 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
         <>
             <ViewHeader
                 isProperty
+                isArchived={archived}
+                // ...
+                onArchive={handleArchive}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onClone={handleClone}

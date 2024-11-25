@@ -114,6 +114,7 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
             <Paper>
                 {rows && !isLoading ? (
                     <DataGrid
+                        resource={archived ? "archived" : "property"}
                         rows={rows}
                         page={page}
                         pageSize={pageSize}

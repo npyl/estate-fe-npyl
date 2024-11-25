@@ -111,8 +111,8 @@ export const properties = createApi({
         // ...
         "Tasks",
 
+        // ...
         "Archived",
-        "ArchivedById",
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
@@ -355,14 +355,14 @@ export const properties = createApi({
                 url: `/archive/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Archived"],
+            invalidatesTags: ["Archived", "Properties"],
         }),
         restoreProperty: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/archive/restore/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Archived"],
+            invalidatesTags: ["Archived", "Properties"],
         }),
         bulkArchiveProperties: builder.mutation<void, number[]>({
             query: (propertyIds) => ({
@@ -370,7 +370,7 @@ export const properties = createApi({
                 method: "DELETE",
                 body: propertyIds,
             }),
-            invalidatesTags: ["Archived", "ArchivedById"],
+            invalidatesTags: ["Archived", "Properties"],
         }),
         bulkRestoreProperties: builder.mutation<void, number[]>({
             query: (propertyIds) => ({
@@ -378,7 +378,7 @@ export const properties = createApi({
                 method: "POST",
                 body: propertyIds,
             }),
-            invalidatesTags: ["Archived", "ArchivedById"],
+            invalidatesTags: ["Archived", "Properties"],
         }),
     }),
 });

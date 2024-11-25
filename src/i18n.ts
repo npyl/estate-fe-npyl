@@ -1107,10 +1107,12 @@ const resources = {
 
             Archive: "Archive",
             Archived: "Archived",
+            Restore: "Restore",
         },
     },
     el: {
         translation: {
+            Restore: "Επαναφορά",
             Archived: "Αρχειοθετημένα",
             Archive: "Αρχειοθέτηση",
 
