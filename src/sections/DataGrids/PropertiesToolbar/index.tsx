@@ -1,4 +1,5 @@
 import {
+    useBulkDeleteArchivedPropertiesMutation,
     useBulkDeletePropertiesMutation,
     useBulkEditPropertiesMutation,
 } from "@/services/properties";
@@ -24,16 +25,23 @@ const PropertiesToolbar: FC<ToolbarProps> = ({ archived, selectedRows }) => {
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
     const [isBulkDeleteOpen, openBulkDelete, closeBulkDelete] = useDialog();
 
-    const [bulkDelete, { isLoading: isDeleting }] =
+    const [bulkDeleteArchived, { isLoading: isDeleting_0 }] =
+        useBulkDeleteArchivedPropertiesMutation();
+    const [bulkDelete, { isLoading: isDeleting_1 }] =
         useBulkDeletePropertiesMutation();
+
+    const isDeleting = isDeleting_0 || isDeleting_1;
 
     const [bulkEdit, { isLoading: isEditing }] =
         useBulkEditPropertiesMutation();
 
     // Bulk Delete
     const handleBulkDelete = useCallback(
-        () => bulkDelete(selectedRows),
-        [selectedRows]
+        () =>
+            archived
+                ? bulkDeleteArchived(selectedRows)
+                : bulkDelete(selectedRows),
+        [archived, selectedRows]
     );
 
     return (
