@@ -129,9 +129,14 @@ export const properties = createApi({
             }),
         }),
 
-        getPropertyLocationMarkers: builder.query<IPropertyMarker[], void>({
-            query: () => ({
+        getPropertyLocationMarkers: builder.query<
+            IPropertyMarker[],
+            IPropertyFilter
+        >({
+            query: (body) => ({
                 url: "location-markers",
+                method: "POST",
+                body,
             }),
             providesTags: ["Properties"],
         }),
