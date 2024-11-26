@@ -13,14 +13,18 @@ const useAutofill = (row: number, onAutofill: VoidFunction) => {
         (p: IPropertyResultResponse) => {
             const lang = watch("language") as PreferredLanguageType;
 
-            setValue(`suggestedProperties.${row}`, {
-                area: lang === "GREEK" ? p.regionGR : p.regionEN || "-",
-                address: p.location.street || "-",
-                type: p.parentCategory.value || "-",
-                livingSpace: p.area || "-",
-                price: p.price ? formatThousands(p.price) : "-",
-                fee: "-",
-            });
+            setValue(
+                `suggestedProperties.${row}`,
+                {
+                    area: lang === "GREEK" ? p.regionGR : p.regionEN || "-",
+                    address: p.location.street || "-",
+                    type: p.parentCategory.value || "-",
+                    livingSpace: p.area.toString() || "-",
+                    price: p.price ? formatThousands(p.price) : "-",
+                    fee: "-",
+                },
+                { shouldDirty: true }
+            );
 
             // update form
             reloadInputs();

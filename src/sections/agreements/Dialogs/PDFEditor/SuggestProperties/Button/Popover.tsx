@@ -2,9 +2,7 @@ import PropertySearch from "@/components/Search/PropertySearch";
 import MuiPopover, {
     PopoverProps as MuiPopoverProps,
 } from "@mui/material/Popover";
-import { useRouter } from "next/router";
 import { FC } from "react";
-import { useFormContext } from "react-hook-form";
 import useAutofill from "./hook";
 import { PopoverSlotProps } from "./styled";
 import NoResultsPlaceholder from "./NoResultsPlaceholder";
@@ -19,15 +17,6 @@ interface PopoverProps
 }
 
 const Popover: FC<PopoverProps> = ({ row, ...props }) => {
-    const router = useRouter();
-    const { customerId: id_0 } = router.query;
-
-    const { watch } = useFormContext();
-    const id_1 = watch("ownerId") as number;
-
-    // INFO: try from router (/customer/[id]: create/edit); then try ownerId (/agreements: edit)
-    const ownerId = id_0 ? +id_0 : id_1;
-
     const { autofill } = useAutofill(row, props.onClose);
 
     return (
@@ -46,7 +35,6 @@ const Popover: FC<PopoverProps> = ({ row, ...props }) => {
         >
             <PropertySearch
                 showEmpty
-                customerId={ownerId}
                 NoResultsPlaceholder={NoResultsPlaceholder}
                 onSelectProperty={autofill}
             />
