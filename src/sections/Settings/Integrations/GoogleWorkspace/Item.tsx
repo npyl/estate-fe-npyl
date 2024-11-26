@@ -1,12 +1,58 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import BaseItem from "../BaseItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import { useIsGoogleWorkspaceIntegrated } from "@/services/company";
+import {
+    useDeleteGoogleWorkspaceMutation,
+    useIsGoogleWorkspaceIntegratedQuery,
+} from "@/services/company";
+import { LoadingButton } from "@mui/lab";
+import useDialog from "@/hooks/useDialog";
+import dynamic from "next/dynamic";
+const ConfirmationDialog = dynamic(() => import("./ConfirmDialog"));
+
+interface RemoveButtonProps {
+    domain: string;
+}
+
+const RemoveButton: FC<RemoveButtonProps> = ({ domain }) => {
+    const { t } = useTranslation();
+    const [deleteWorkspace, { isLoading }] = useDeleteGoogleWorkspaceMutation();
+    const handleDelete = useCallback(() => deleteWorkspace(), []);
+
+    const [isDelete, openDelete, closeDelete] = useDialog();
+
+    return (
+        <>
+            <Typography variant="body2" color="text.secondary">
+                {domain}
+            </Typography>
+
+            <LoadingButton
+                color="error"
+                loading={isLoading}
+                disabled={isLoading}
+                onClick={openDelete}
+            >
+                {t("Delete")}
+            </LoadingButton>
+
+            {isDelete ? (
+                <ConfirmationDialog
+                    onConfirm={handleDelete}
+                    onClose={closeDelete}
+                />
+            ) : null}
+        </>
+    );
+};
+
+// -----------------------------------------------------------------------------
 
 interface PlaceholderProps extends TypographyProps {
     integrated: boolean;
 }
+
 const Placeholder: FC<PlaceholderProps> = ({ integrated, ...props }) => {
     const { t } = useTranslation();
 
@@ -26,17 +72,29 @@ const Placeholder: FC<PlaceholderProps> = ({ integrated, ...props }) => {
     );
 };
 
+// -----------------------------------------------------------------------------
+
 interface ItemProps {
     onEdit: VoidFunction;
 }
 
 const Item: FC<ItemProps> = ({ onEdit }) => {
-    const { isIntegrated } = useIsGoogleWorkspaceIntegrated();
+    const { data } = useIsGoogleWorkspaceIntegratedQuery();
+
+    const isIntegrated = data?.isIntegrated;
 
     return (
-        <BaseItem type="Google Workspace" onEdit={onEdit}>
+        <BaseItem
+            type="Google Workspace"
+            topRightContent={
+                isIntegrated ? (
+                    <RemoveButton domain={data?.domain} />
+                ) : undefined
+            }
+            onEdit={onEdit}
+        >
             <Placeholder
-                integrated={isIntegrated}
+                integrated={Boolean(isIntegrated)}
                 p={2}
                 variant="body1"
                 color="text.secondary"

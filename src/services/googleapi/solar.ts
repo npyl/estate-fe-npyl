@@ -1,4 +1,4 @@
-import { BuildingInsights } from "@/pages/property/[propertyId]/(tabs)/Green/types";
+import { BuildingInsights } from "@/sections/Properties/ViewById/(tabs)/Green/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const solar = createApi({

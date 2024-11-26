@@ -14,14 +14,13 @@ const IKanbanCardRes2Req = (
         name,
         description,
         due, // INFO: we are ok with undefined when `withCalendar` is false
-        attachments,
         properties,
         customers,
         assignees,
         event,
     } = task || { assignee: {} };
 
-    console.log("EVENT: ", event);
+    // console.log("EVENT: ", event);
 
     return {
         id: id || -1,
@@ -29,7 +28,7 @@ const IKanbanCardRes2Req = (
         name: name || "",
         description: description || "",
         due,
-        attachments: attachments || [],
+        attachments: [],
         properties: properties?.map(getId) || [],
         customers: customers?.map(getId) || [],
         userIds: assignees?.map(getId) || [],
@@ -52,7 +51,7 @@ const KanbanTaskToCalendarEvent = ({
     startDate: due?.[0] || "",
     endDate: due?.[1] || "",
     location: "",
-    withIds: [],
+    people: [],
 });
 
 export { IKanbanCardRes2Req, KanbanTaskToCalendarEvent };

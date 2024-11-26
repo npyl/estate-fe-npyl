@@ -1,9 +1,9 @@
-import { ICustomerMini } from "@/sections/Tasks/card/CardDialog/Content/Autocompletes/Customer/types";
 import { IKanbanCardShort } from "@/types/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ICustomer,
     ICustomerFilter,
+    ICustomerMini,
     ICustomerPOST,
     ICustomerResultResponse,
 } from "src/types/customer";
@@ -87,6 +87,16 @@ export const customers = createApi({
             providesTags: ["Customers"],
         }),
 
+        findByEmail: builder.query<ICustomerMini, string>({
+            query: (email) => ({
+                url: "/find-by-email",
+                params: {
+                    email,
+                },
+            }),
+            providesTags: ["Customers"],
+        }),
+
         createOrUpdateCustomer: builder.mutation<number, ICustomerPOST>({
             query: (body) => ({
                 url: "",
@@ -147,6 +157,7 @@ export const {
     useGetNamesQuery,
     useGetCustomerByIdQuery,
     useFilterCustomersQuery,
+    useLazyFindByEmailQuery,
     useSearchCustomerQuery,
     useCreateOrUpdateCustomerMutation,
     useDeleteCustomerMutation,

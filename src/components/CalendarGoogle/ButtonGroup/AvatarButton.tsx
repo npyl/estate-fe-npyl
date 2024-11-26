@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import useDialog from "@/hooks/useDialog";
-import { useLogoutMutation } from "@/services/calendar";
+import { useLogoutMutation } from "@/services/google-oauth";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 import { Divider, Menu, MenuItem, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";

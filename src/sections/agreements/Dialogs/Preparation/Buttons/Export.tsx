@@ -25,7 +25,9 @@ const ExportButton = () => {
         const pdf = await generatePDF(variant, language, all);
         if (!pdf) return;
 
-        const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+        const blob = new Blob([pdf.buffer as BlobPart], {
+            type: "application/pdf",
+        });
 
         await downloadBlob(blob, `${title}.pdf`);
 

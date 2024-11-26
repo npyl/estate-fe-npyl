@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from "react";
+import { ForwardedRef, forwardRef, useCallback, useState } from "react";
 import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
@@ -7,7 +7,9 @@ import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
-const Members = dynamic(() => import("./_shared/Members"));
+import { LF } from "./_constants";
+const Bullet = dynamic(() => import("./Bullet"));
+const People = dynamic(() => import("./_shared/People"));
 
 // ------------------------------------------------------------------------------------
 
@@ -29,9 +31,6 @@ const calculateEventPosition = (event: TCalendarEvent) => {
 };
 
 // ------------------------------------------------------------------------------------
-
-// left-factor
-const LF = 10;
 
 const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
@@ -56,6 +55,7 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
         cursor: "pointer",
 
         "&:hover": {
+            zIndex: Z_INDEX.HEADER - 1,
             boxShadow: 20,
         },
     };
@@ -71,33 +71,78 @@ const DescriptionSx: SxProps<Theme> = {
     borderRadius: "5px",
 };
 
-const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
-    ({ event, overlapCount, onClick, ...props }, ref) => {
-        const { top, height } = calculateEventPosition(event);
+/**
+ * Hook that observes the event's width on Stack's onLoad (using the ref), and calls the onGetWidth callback
+ * @param ref the element's ref (exposed by forwardRef)
+ * @param onGetWidth callback to handle a width value
+ */
+const useWidthObserver = (
+    ref: ForwardedRef<HTMLDivElement>,
+    onGetWidth: (width: number) => void
+) => {
+    const onRef = useCallback(
+        (node: HTMLDivElement | null) => {
+            // Combine refs
+            if (typeof ref === "function") {
+                ref(node);
+            } else if (ref) {
+                ref.current = node;
+            }
 
-        console.log("overlayCount: ", overlapCount);
+            if (node) {
+                const resizeObserver = new ResizeObserver((entries) => {
+                    const width = entries[0].contentRect.width;
+                    onGetWidth(width);
+                });
+
+                resizeObserver.observe(node);
+            }
+        },
+        [ref, onGetWidth]
+    );
+
+    return { onRef };
+};
+
+const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
+    ({ event, overlapCount = 0, onClick, ...props }, ref) => {
+        const { top, height } = calculateEventPosition(event);
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
 
+        const [isCompact, setCompact] = useState(false);
+
         const handleClick = useCallback(() => onClick?.(event), [onClick]);
+
+        const handleWidth = useCallback(
+            (width: number) => setCompact(width <= 60),
+            []
+        );
+
+        const { onRef } = useWidthObserver(ref, handleWidth);
+
+        if (isCompact) {
+            return (
+                <Bullet
+                    top={top}
+                    title={event?.title}
+                    type={event?.type}
+                    onClick={handleClick}
+                />
+            );
+        }
 
         return (
             <Stack
-                ref={ref}
+                ref={onRef}
                 sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
                 onClick={handleClick}
                 {...props}
             >
-                <Title
-                    title={event.title}
-                    mini={isMinimumHeight}
-                    color={getTypeColor(event.type)}
-                    startDate={event.startDate}
-                    endDate={event.endDate}
-                />
+                <Title title={event.title} color={getTypeColor(event.type)} />
 
                 {!isMinimumHeight ? (
                     <>
@@ -107,7 +152,6 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                                 end={event.endDate}
                                 width={1}
                             />
-
                             <Typography
                                 variant="subtitle2"
                                 noWrap
@@ -119,9 +163,11 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
 
                         <Box flexGrow={1} />
 
-                        <Stack p={1}>
-                            <Members ids={[1, 2, 3, 4, 5]} />
-                        </Stack>
+                        {event.type !== "TASK" ? (
+                            <Stack p={1}>
+                                <People p={event.people} />
+                            </Stack>
+                        ) : null}
                     </>
                 ) : null}
             </Stack>

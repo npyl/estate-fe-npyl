@@ -24,6 +24,8 @@ const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
         <>
             <MuiPopover
                 open
+                disableAutoFocus // prevent focus ring
+                disableEnforceFocus // prevent search losing focus
                 anchorEl={anchorEl}
                 anchorOrigin={{
                     vertical: "bottom",

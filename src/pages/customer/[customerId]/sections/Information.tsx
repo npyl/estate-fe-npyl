@@ -85,6 +85,7 @@ const InformationSection: React.FC = () => {
                             label={t("email")}
                             value={data?.email || "-"}
                         />
+                        <ListItem label={t("VAT")} value={data?.afm || "-"} />
                         <ListManagerItem
                             label={t("Managed By").toString()}
                             manager={data.managedBy}

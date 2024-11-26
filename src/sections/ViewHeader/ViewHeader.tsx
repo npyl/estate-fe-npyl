@@ -1,22 +1,26 @@
 import { Box, Paper, Stack } from "@mui/material";
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
 import ExportButton from "./Export";
 import MoreButton from "./More";
-import { usePathname } from "next/navigation";
 
-interface IViewHeaderProps {
+interface IViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
+    isArchived?: boolean;
+    // ...
     onEdit: VoidFunction;
+    onArchive?: VoidFunction;
     onDelete: VoidFunction;
     onClone?: VoidFunction;
-    children?: ReactNode;
 }
 
 const ViewHeader = ({
     isProperty,
+    isArchived = false,
     children,
+    // ...
     onEdit,
+    onArchive,
     onDelete,
     onClone,
 }: IViewHeaderProps) => (
@@ -27,19 +31,9 @@ const ViewHeader = ({
             paddingRight: 1,
         }}
     >
-        <Stack flexDirection="row" alignItems="center">
-            <Box
-                sx={{
-                    width: "100%",
-                    overflowX: "auto",
-                    whiteSpace: "nowrap",
-                }}
-            >
-                <Stack
-                    flex={1}
-                    flexDirection="row"
-                    sx={{ minWidth: "max-content" }}
-                >
+        <Stack direction="row" alignItems="center">
+            <Box width={1} overflow="auto hidden" whiteSpace="nowrap">
+                <Stack direction="row" minWidth="max-content">
                     {children}
                 </Stack>
             </Box>
@@ -48,7 +42,10 @@ const ViewHeader = ({
                 {isProperty ? <ExportButton /> : null}
                 <MoreButton
                     isProperty={isProperty}
+                    isArchived={isArchived}
+                    // ...
                     onEdit={onEdit}
+                    onArchive={onArchive}
                     onDelete={onDelete}
                     onClone={onClone}
                 />

@@ -110,6 +110,9 @@ export const properties = createApi({
 
         // ...
         "Tasks",
+
+        // ...
+        "Archived",
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
@@ -126,9 +129,14 @@ export const properties = createApi({
             }),
         }),
 
-        getPropertyLocationMarkers: builder.query<IPropertyMarker[], void>({
-            query: () => ({
+        getPropertyLocationMarkers: builder.query<
+            IPropertyMarker[],
+            IPropertyFilter
+        >({
+            query: (body) => ({
                 url: "location-markers",
+                method: "POST",
+                body,
             }),
             providesTags: ["Properties"],
         }),
@@ -189,7 +197,7 @@ export const properties = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["Properties", "Archived", "PropertyById"],
         }),
         bulkDeleteProperties: builder.mutation<void, number[]>({
             query: (propertyIds) => ({
@@ -197,7 +205,7 @@ export const properties = createApi({
                 method: "DELETE",
                 body: propertyIds,
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["Properties", "Archived", "PropertyById"],
         }),
 
         filterProperties: builder.query<
@@ -250,13 +258,12 @@ export const properties = createApi({
             }),
             providesTags: ["SuggestedCustomers"],
         }),
-        // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
         deleteProperty: builder.mutation<IProperties, number>({
             query: (id) => ({
-                url: `/archive/${id}`,
+                url: `/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Properties"],
+            invalidatesTags: ["Properties", "Archived"],
         }),
         searchProperty: builder.query<
             IPage<IPropertyResultResponse>,
@@ -327,6 +334,63 @@ export const properties = createApi({
             }),
             providesTags: ["Tasks"],
         }),
+
+        // -------------------------------------------------------------------------
+
+        archivedCount: builder.query<number, void>({
+            query: () => ({
+                url: "/archive/count",
+            }),
+            providesTags: ["Archived"],
+        }),
+
+        filterArchived: builder.query<
+            IPage<IPropertyResultResponse>,
+            IPropertyFilterParams
+        >({
+            query: ({ filter, page, pageSize, sortBy, direction }) => ({
+                url: "/archive/filter",
+                method: "POST",
+                body: filter,
+                params: {
+                    page,
+                    pageSize,
+                    sortBy,
+                    direction,
+                },
+            }),
+            providesTags: ["Archived"],
+        }),
+        archiveProperty: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/archive/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
+        restoreProperty: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/archive/restore/${id}`,
+                method: "PUT",
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
+        bulkArchiveProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/archive/bulk`,
+                method: "DELETE",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
+        bulkRestoreProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/archive/restore/bulk`,
+                method: "POST",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
     }),
 });
 
@@ -369,4 +433,12 @@ export const {
 
     // ...
     useGetTasksQuery,
+
+    // ...
+    useArchivedCountQuery,
+    useFilterArchivedQuery,
+    useArchivePropertyMutation,
+    useRestorePropertyMutation,
+    useBulkArchivePropertiesMutation,
+    useBulkRestorePropertiesMutation,
 } = properties;

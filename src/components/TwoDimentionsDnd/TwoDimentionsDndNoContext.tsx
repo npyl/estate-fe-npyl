@@ -19,7 +19,7 @@ const TwoDimentionsDndNoContext = ({
     gap = 0.3,
     dndId,
     startIndex,
-    preventDrag = true,
+    preventDrag = false,
     draggableSx,
     children,
     ...props

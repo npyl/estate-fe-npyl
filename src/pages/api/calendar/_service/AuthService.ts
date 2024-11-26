@@ -4,6 +4,15 @@ import {
     IsAuthenticatedRes,
 } from "@/types/calendar/google";
 import { TokenStorage } from "./TokenStorage";
+import getCredentialsForUser, {
+    GoogleWorkspaceKeys,
+} from "@/pages/api/google/_service/getCredentialsForUser";
+
+// ------------------------------------------------------------------------
+
+const serviceLog = (...s: any) => console.log(`[AuthService]: `, ...s);
+
+// ------------------------------------------------------------------------
 
 interface UserToken {
     accessToken: string;
@@ -22,12 +31,7 @@ const SCOPES = [
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ];
 
-const COMPANY_ID = process.env.COMPANY_ID;
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
-
-const baseUrl = `${process.env.BACKEND_URL}/company/google-workspace-credentials`;
-
-type TBackendHeaders = HeadersInit & { "Company-Id"?: string };
 
 /**
  * Check if the current access token is expired
@@ -40,43 +44,13 @@ function isTokenExpired(expiryDate: number): boolean {
     return Date.now() >= expiryDate - bufferTime;
 }
 
-/**
- * getOauth2ClientForCompanyId
- * @param Authorization `Bearer ${...}`
- * @param companyId
- * @returns Receive google workspace credentials from backend
- */
-const getOauth2ClientForCompanyId = async (
-    Authorization: string,
-    companyId: number
-) => {
-    const headers = {
-        Authorization,
-        "Company-Id": companyId,
-    } as unknown as TBackendHeaders;
-
-    // const res = await fetch(baseUrl, {
-    //     headers,
-    // });
-    // if (!res.ok) return null;
-
-    const credentials = {
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // TODO: domain???
-    };
-
-    return new OAuth2Client(
-        credentials.clientId,
-        credentials.clientSecret,
-        REDIRECT_URI
-    );
-};
-
 class AuthService {
-    userTokens: Map<number, UserToken> = new Map();
-    oauth2Client!: OAuth2Client;
-    tokenStorage: TokenStorage;
+    private userTokens: Map<number, UserToken> = new Map();
+    private oauth2Client!: OAuth2Client;
+    private tokenStorage: TokenStorage;
+
+    // e.g. npylarinos@digipath.gr -> digipath.gr
+    WORKSPACE_DOMAIN: string | undefined;
 
     constructor() {
         this.tokenStorage = new TokenStorage();
@@ -116,7 +90,7 @@ class AuthService {
 
             // TODO: what should we do when we don't have refresh token but the user has an active oauth in his computer ??
 
-            console.log("recovered refreshToken: ", refreshToken);
+            serviceLog("recovered refreshToken: ", refreshToken);
 
             this.userTokens.set(userId, {
                 accessToken: res.data.access_token,
@@ -240,6 +214,48 @@ class AuthService {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------
+
+    /**
+     * Remove all users from our storage (a.k.a log them out), clear our in-memory record of logged-in users
+     */
+    private async logoutAllUsers() {
+        serviceLog("removing all user tokens (in-memory)");
+        this.userTokens.clear();
+        serviceLog("removing all user tokens (disk)");
+        await this.tokenStorage.deleteAllTokens();
+    }
+
+    private getRevokeUserPromise = async (tokens: UserToken, i: number) => {
+        this.oauth2Client.setCredentials({
+            access_token: tokens.accessToken,
+            refresh_token: tokens.refreshToken,
+            expiry_date: tokens.expiryDate,
+        });
+
+        await this.oauth2Client.revokeCredentials();
+
+        serviceLog(`revoked[${i}]: `, tokens.accessToken);
+    };
+
+    /**
+     * Invalidate oauth2Client instance so that when a pp-user (that is admin) changes his company's google workspace (or deletes it) a new one can be given upon request.
+     * Considering our development is also our production and testing (uhhh) this is also helpful for testing.
+     */
+    async dropGoogleWorkspace() {
+        await this.logoutAllUsers();
+
+        serviceLog("revoking workspace access");
+        const tokensList = Array.from(this.userTokens.values());
+        const promises = tokensList.map(this.getRevokeUserPromise);
+        await Promise.all(promises);
+
+        serviceLog("invalidating oauth2Client object");
+        this.oauth2Client = undefined!;
+    }
+
+    // ------------------------------------------------------------------------------------------------------
+
     async revokeAuthentication(userId: number) {
         try {
             await this.oauth2Client.revokeCredentials();
@@ -250,15 +266,41 @@ class AuthService {
         }
     }
 
+    // -------------------------------------------------------------------------------
+
+    setOauth2ClientForKeys = async (keys: GoogleWorkspaceKeys) => {
+        serviceLog(keys);
+
+        // INFO: keep this for workspace-related higher-level apis (like calendar)
+        this.WORKSPACE_DOMAIN = keys.domain;
+
+        const res = new OAuth2Client(
+            keys.clientId,
+            keys.clientSecret,
+            REDIRECT_URI
+        );
+        if (!res) return;
+
+        this.oauth2Client = res;
+    };
+
+    /**
+     * getOauth2ClientForUser
+     * @param Authorization `Bearer ${...}`
+     * @returns Receive google workspace credentials from backend
+     */
+    generateOauth2ClientForUser = async (Authorization: string) => {
+        const data = await getCredentialsForUser(Authorization);
+        if (!data) return null;
+        await this.setOauth2ClientForKeys(data);
+    };
+
     async initialise(Authorization: string) {
         if (this.oauth2Client) return;
 
-        console.log("[AuthService]: getting oauth for companyId: ", COMPANY_ID);
+        serviceLog("getting oauth for logged-in pp user");
 
-        this.oauth2Client = await getOauth2ClientForCompanyId(
-            Authorization,
-            +COMPANY_ID!
-        );
+        await this.generateOauth2ClientForUser(Authorization);
     }
 }
 

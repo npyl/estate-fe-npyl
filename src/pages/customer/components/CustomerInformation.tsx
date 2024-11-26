@@ -19,7 +19,12 @@ import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import Panel from "src/components/Panel";
-import { RHFSelect, RHFTextField, RHFRating } from "src/components/hook-form";
+import {
+    RHFSelect,
+    RHFTextField,
+    RHFRating,
+    RHFOnlyNumbers,
+} from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
 import { IUser } from "src/types/user";
@@ -80,6 +85,12 @@ const getFIELDS = (
     <RHFTextField fullWidth name="lastName" label={t("Last Name") + " *"} />,
     // eslint-disable-next-line react/jsx-key
     <RHFTextField fullWidth name="email" label={t("Email")} />,
+    <RHFOnlyNumbers
+        fullWidth
+        separateThousands={false}
+        name="afm"
+        label={t("VAT")}
+    />,
     <FormControl fullWidth variant="outlined">
         <InputLabel>{t("Managed By")}</InputLabel>
         <RHFSelect name="managedBy" label={t("Managed By")}>

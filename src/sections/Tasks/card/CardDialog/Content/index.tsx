@@ -5,7 +5,7 @@ import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import Buttons from "./Buttons";
-import Attachments from "./Attachments";
+const Attachments = dynamic(() => import("./Attachments"));
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import PropertiesAutocomplete from "./Autocompletes/Properties";
 import CustomerSelect from "./Autocompletes/Customer";
 import AssigneeSelect from "./Autocompletes/Assignee";
+import { AttachmentsProvider } from "./AttachmentsContext";
 const Comments = dynamic(() => import("./Comments"));
 
 // -----------------------------------------------------------------
@@ -23,6 +24,8 @@ interface ContentProps {
     columnId?: number;
     createdAt?: string;
     updatedAt?: string;
+    // ...
+    haveEvent: boolean;
 }
 
 const Content: FC<ContentProps> = ({
@@ -30,21 +33,25 @@ const Content: FC<ContentProps> = ({
     columnId,
     createdAt,
     updatedAt,
+    // ...
+    haveEvent,
 }) => {
     const { t } = useTranslation();
 
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
-            <Buttons columnId={columnId} />
-            <Attachments />
+            <AttachmentsProvider>
+                <Buttons columnId={columnId} cardId={cardId} />
+                <Attachments cardId={cardId} />
+            </AttachmentsProvider>
             {/* ------------------------ */}
 
             <Divider />
-            <WithCalendar />
+            <WithCalendar edit={haveEvent} />
             <Divider />
 
-            <RHFTextField name="name" label={t("Name")} />
+            <RHFTextField name="name" label={t("Title")} />
             <RHFMultilineTextField
                 name="description"
                 label={t("Description")}

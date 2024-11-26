@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
@@ -11,7 +11,22 @@ import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import Pickers from "./Pickers";
 import dynamic from "next/dynamic";
+const People = dynamic(() => import("./People"));
 const RHFLocation = dynamic(() => import("./RHFLocation"));
+
+// ------------------------------------------------------------------------
+
+const getDefault = (startDate?: string): CalendarEventReq => ({
+    title: "",
+    description: "",
+    startDate: startDate || "",
+    endDate: startDate ? dayjs(startDate).add(1, "hour").toISOString() : "",
+    location: "",
+    people: [],
+    type: "TASK",
+});
+
+// ------------------------------------------------------------------------
 
 const TextFieldSx = {
     px: 0.5,
@@ -33,36 +48,23 @@ const CreateUpdateForm: FC<Props> = ({
     const { t } = useTranslation();
 
     const methods = useForm<CalendarEventReq>({
-        values: event || {
-            title: "",
-            description: "",
-            startDate: startDate || "",
-            endDate: startDate
-                ? dayjs(startDate).add(1, "hour").toISOString()
-                : "",
-            location: "",
-            type: "TASK",
-            withIds: [],
-        },
+        values: event || getDefault(startDate),
     });
 
-    const isDirty =
-        // _isAllDay !== isAllDay ||
-        // _allDayDate !== allDayDate ||
-        methods.formState.isDirty;
+    const isNotTask = methods.watch("type") !== "TASK";
 
+    const isDirty = methods.formState.isDirty;
     const isSubmitting = methods.formState.isSubmitting;
 
-    const handleSubmit = async (e: CalendarEventReq) => {
-        await onSubmit(e);
-        onClose();
-    };
+    const handleSubmit = useCallback(
+        async (e: CalendarEventReq) => {
+            await onSubmit(e);
+            onClose();
+        },
+        [onClose]
+    );
 
-    const handleReset = () => {
-        // onAllDayChange({}, _isAllDay);
-        // onAllDayDateChange(_allDayDate);
-        methods.reset();
-    };
+    const handleReset = useCallback(() => methods.reset(), []);
 
     return (
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
@@ -76,13 +78,15 @@ const CreateUpdateForm: FC<Props> = ({
                     />
 
                     <Pickers
-                        startDate={event?.startDate!}
-                        endDate={event?.endDate!}
+                        startDate={startDate || event?.startDate}
+                        endDate={startDate || event?.endDate}
                     />
 
                     <RHFLocation />
 
                     <RHFTypeSelect />
+
+                    {isNotTask ? <People /> : null}
 
                     <RHFMultilineTextField
                         label={t("Description")}

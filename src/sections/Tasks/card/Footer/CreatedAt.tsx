@@ -1,4 +1,5 @@
 import { TODAY } from "@/components/BaseCalendar/constants";
+import useCalendarLocale from "@/components/Calendar/useCalendarLocale";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
@@ -35,10 +36,20 @@ interface Props {
 
 const CreatedAt: FC<Props> = ({ createdAt }) => {
     const { t } = useTranslation();
+    const loc = useCalendarLocale();
 
     const date = new Date(createdAt).toDateString();
     const isToday = date === TODAY.toDateString();
-    const label = createdAt ? (isToday ? t("today") : date) : "-";
+
+    const label = createdAt
+        ? isToday
+            ? t("today")
+            : new Date(createdAt).toLocaleDateString(loc, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+              })
+        : "-";
 
     return (
         <Stack direction="row" alignItems="center" spacing={1}>

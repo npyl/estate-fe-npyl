@@ -2,7 +2,7 @@ import { CalendarDayViewProps } from "@/components/Calendar/types";
 import CalendarWeekView from "@/components/Calendar/Views/Week";
 import { FC } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { getEndOfWeek, getStartOfWeek } from "@/components/BaseCalendar/util";
+import useWeekUtils from "@/components/BaseCalendar/useWeekUtils";
 import { useGetEventsQuery } from "@/services/calendar";
 
 const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
@@ -11,6 +11,8 @@ const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
     ...props
 }) => {
     const { user } = useAuth();
+
+    const { getStartOfWeek, getEndOfWeek } = useWeekUtils();
 
     const startDate = getStartOfWeek(props.date).toISOString();
     const endDate = getEndOfWeek(props.date).toISOString();

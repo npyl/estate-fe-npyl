@@ -3,6 +3,7 @@ import { IProperties } from "@/types/properties";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useFormContext } from "react-hook-form";
+import { useLazyGetCustomerByIdQuery } from "@/services/customers";
 
 const join = (v0: string | undefined, v1: string | undefined, sep: string) =>
     [v0, v1].filter((s) => !!s).join(sep) || "";
@@ -13,16 +14,24 @@ const useAutofill = () => {
     const { setValue } = useFormContext();
     const { t, i18n } = useTranslation();
 
+    const [getCustomerById] = useLazyGetCustomerByIdQuery();
+
     const autofill = useCallback(
-        (p: IProperties) => {
+        async (p: IProperties) => {
             // Prevent from autofilling from property without owner
-            if (!p?.owner?.id) {
+            const ownerId = p?.owner?.id;
+
+            if (ownerId === undefined) {
                 toast.error(t(NO_OWNER_LITERAL));
                 setValue("propertyId", -1);
                 return;
             }
 
-            const { owner, location, descriptions } = p || {};
+            const owner = ownerId
+                ? await getCustomerById(ownerId).unwrap()
+                : undefined;
+
+            const { location, descriptions } = p || {};
             const {
                 region,
                 street: address,
@@ -58,7 +67,7 @@ const useAutofill = () => {
                 maidenName: "",
                 idCardNumber: owner?.idNumber || "",
                 mobilePhone: owner?.mobilePhone || "",
-                vat: "",
+                vat: owner?.afm || "",
                 // ...
                 city: owner?.location?.city || "",
                 street: owner?.location?.street || "",

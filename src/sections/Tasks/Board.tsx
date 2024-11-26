@@ -1,11 +1,18 @@
 import Column, { DroppableTypeTask } from "./column";
 import { DropResult } from "react-beautiful-dnd";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
-import { useMoveCardMutation, useReorderCardMutation } from "@/services/tasks";
+import {
+    useMoveCardMutation,
+    useReorderCardMutation,
+    useReorderColumnMutation,
+} from "@/services/tasks";
 import { IKanbanColumn } from "@/types/tasks";
 import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveColumns";
 import React from "react";
+import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
+import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
+import { useFiltersContext } from "./filters";
 
 // --------------------------------------------------------------------
 
@@ -46,69 +53,78 @@ interface Props {
 const Board: FC<Props> = ({ columns }) => {
     const responsiveColumns = useResponsiveColumns(COLUMNS);
 
+    const { search, priority, assigneeId } = useFiltersContext();
+    const filters = { search, priority, assigneeId };
+
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
 
-    const handleDragEnd = ({
-        source,
-        destination,
-        type,
-        draggableId,
-    }: DropResult) => {
-        // if (type === DroppableTypeItem) {
-        //     const { itemId: draggedItemId } = parseItemId(draggableId);
-        //     const { rowId: dstRow } = parseRowId(destination?.droppableId);
-        //     const dstCol = destination?.index;
+    const [reorderColumn] = useReorderColumnMutation();
 
-        //     if (
-        //         draggedItemId === -1 ||
-        //         dstRow === -1 ||
-        //         dstCol === null ||
-        //         dstCol === undefined
-        //     )
-        //         return;
+    const handleDragEnd = useCallback(
+        ({ source, destination, type, draggableId }: DropResult) => {
+            if (type === DroppableTypeItem) {
+                const { itemId: draggedItemId } = parseItemId(draggableId);
+                const { rowId: dstRow } = parseRowId(destination?.droppableId);
+                const dstCol = destination?.index;
 
-        //     let oneDimentionArrayDstIndex = dstRow * responsiveColumns + dstCol;
+                if (
+                    draggedItemId === -1 ||
+                    dstRow === -1 ||
+                    dstCol === null ||
+                    dstCol === undefined
+                )
+                    return;
 
-        //     /* NOTE: compensate for when user moves a section at the end of the board */
-        //     if (oneDimentionArrayDstIndex === itemsLength)
-        //         oneDimentionArrayDstIndex -= 1;
+                let oneDimentionArrayDstIndex =
+                    dstRow * responsiveColumns + dstCol;
 
-        //Code for colum reordering
-        // reorderColumn({
-        //     columnId: draggedItemId,
-        //     position: oneDimentionArrayDstIndex,
-        // });
-        // }
-
-        if (type === DroppableTypeTask) {
-            const sourceCardId = cardId(draggableId);
-            const srcColumnId = columnId(source?.droppableId);
-            const dstColumnId = columnId(destination?.droppableId);
-
-            if (
-                sourceCardId === null ||
-                dstColumnId === null ||
-                srcColumnId === null
-            )
-                return;
-
-            if (srcColumnId === dstColumnId) {
-                const newIndex = destination?.index;
-                if (newIndex === null || newIndex === undefined) return;
-
-                // reorder inside same column
-                reorderCard({
-                    cardId: sourceCardId,
-                    position: newIndex,
-                    columnId: dstColumnId,
+                // Code for colum reordering
+                reorderColumn({
+                    columnId: draggedItemId,
+                    position: oneDimentionArrayDstIndex,
+                    filters,
                 });
-            } else {
-                // move to different column
-                moveCard({ cardId: sourceCardId, srcColumnId, dstColumnId });
             }
-        }
-    };
+
+            if (type === DroppableTypeTask) {
+                const sourceCardId = cardId(draggableId);
+                const srcColumnId = columnId(source?.droppableId);
+                const dstColumnId = columnId(destination?.droppableId);
+
+                if (
+                    sourceCardId === null ||
+                    dstColumnId === null ||
+                    srcColumnId === null
+                )
+                    return;
+
+                const position = destination?.index ?? 0;
+
+                console.log("position: ", position);
+
+                if (srcColumnId === dstColumnId) {
+                    // reorder inside same column
+                    reorderCard({
+                        cardId: sourceCardId,
+                        columnId: dstColumnId,
+                        position,
+                        filters,
+                    });
+                } else {
+                    // move to different column
+                    moveCard({
+                        cardId: sourceCardId,
+                        srcColumnId,
+                        dstColumnId,
+                        position,
+                        filters,
+                    });
+                }
+            }
+        },
+        [filters, responsiveColumns]
+    );
 
     return (
         <TwoDimentionsDnd

@@ -49,12 +49,14 @@ const LoginSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     email: Yup.string().email("Email must be a valid email address").optional(),
+    afm: Yup.string().length(9).optional(),
 });
 
 const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     firstName: customer?.firstName || "",
     lastName: customer?.lastName || "",
     email: customer?.email || "",
+    afm: customer?.afm || "",
     managedBy: customer?.managedBy?.id || "",
     mobilePhone: customer?.mobilePhone || "",
 

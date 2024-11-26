@@ -10,6 +10,15 @@ import {
 } from "@/components/BaseCalendar/types";
 import { ComponentType, HTMLAttributes } from "react";
 
+type TCalendarEventExtendedProperties = {
+    private?: {
+        [key: string]: string;
+    };
+    shared?: {
+        [key: string]: string;
+    };
+};
+
 type TCalendarLocale = "en-US" | "el-GR";
 
 const CALENDAR_EVENT_TYPES = [
@@ -26,29 +35,31 @@ const isTCalendarEventType = (value: unknown): value is TCalendarEventType =>
     typeof value === "string" &&
     CALENDAR_EVENT_TYPES.includes(value as TCalendarEventType);
 
+type TCalendarEventPerson = {
+    customerId?: number;
+    // ...
+    firstName?: string;
+    lastName?: string;
+    // ...
+    gwEmail?: string;
+};
+
 type TCalendarEvent = {
     id: string;
     title: string;
     description: string;
     type: TCalendarEventType;
-    location: string; // ?
+    people: Partial<TCalendarEventPerson>[];
+    location: string; // INFO: must be in google expected format in order for it to open in Maps
     startDate: string; // day-time
     endDate: string; // day-time
-    withIds: number[];
 
     /**
      * INFO: see https://developers.google.com/calendar/api/v3/reference/events
      * This field is an 1-1 copy of google's respective field.
      * We have this copy so that when we make changes to it, we don't overwrite other potential applications' data
      */
-    extendedProperties?: {
-        private?: {
-            [key: string]: string;
-        };
-        shared?: {
-            [key: string]: string;
-        };
-    } | null;
+    extendedProperties?: TCalendarEventExtendedProperties | null;
 };
 
 // ------------------------------------------------------------------------
@@ -126,6 +137,8 @@ export type {
     // ...
     TCalendarEvent,
     TCalendarEventType,
+    TCalendarEventPerson,
+    TCalendarEventExtendedProperties,
 
     // ...
     TGetCellEventsCb,

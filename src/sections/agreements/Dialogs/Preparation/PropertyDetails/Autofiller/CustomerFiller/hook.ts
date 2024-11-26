@@ -16,7 +16,7 @@ const useCustomerAutofill = (setValue: UseFormSetValue<FieldValues>) => {
             maidenName: "",
             idCardNumber: c?.idNumber || "",
             mobilePhone: c?.mobilePhone || "",
-            vat: "",
+            vat: c.afm || "",
             // ...
             city: c?.location?.city || "",
             street: c?.location?.street || "",

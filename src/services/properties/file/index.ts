@@ -29,8 +29,9 @@ import {
     reorderImagesWithVisibilityQueryFn,
     reorderQueryFn,
 } from "./queryFn";
-import { uploadWithProgress, removeMetadata } from "./util";
+import { removeMetadata } from "./util";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { uploadWithProgress } from "@/services/file";
 
 interface UploadDocumentToAmazonProps {
     variant: TFileVariant; // INFO: for image variant, we must also strip metadata

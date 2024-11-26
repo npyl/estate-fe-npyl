@@ -14,7 +14,7 @@ const SelfAssign: FC<SelfAssignProps> = ({ userKey }) => {
 
     useEffect(() => {
         if (!userKey) return; // INFO: this should not happen
-        setValue(googleUserKey, userKey, { shouldDirty: true });
+        setValue(googleUserKey, userKey);
     }, []);
 
     return null;

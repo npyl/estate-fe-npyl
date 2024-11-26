@@ -6,13 +6,13 @@ import useResponsive from "@/hooks/useResponsive";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 // filters
-import FilterBar from "./(FiltersBar)";
-import { optionType } from "./(FiltersBar)/types";
-import { getOptions } from "./(FiltersBar)/constants";
+import FilterBar from "@/sections/Properties/(FiltersBar)";
+import { optionType } from "@/sections/Properties/(FiltersBar)/types";
+import { getOptions } from "@/sections/Properties/(FiltersBar)/constants";
 // modes
-import ViewAll from "./(ViewAll)";
-import MediaCard from "./(MediaCard)";
-const MapView = dynamic(() => import("./(MapView)"));
+import ViewAll from "@/sections/Properties/(ViewAll)";
+import MediaCard from "@/sections/Properties/(MediaCard)";
+const MapView = dynamic(() => import("@/sections/Properties/(MapView)"));
 
 // -----------------------------------------------------------------------
 

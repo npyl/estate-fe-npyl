@@ -2,116 +2,227 @@ import { Button, IconButton, Popover, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SoftButton from "@/components/SoftButton";
 import { useTranslation } from "react-i18next";
-import DeleteDialog from "@/components/Dialog/Delete";
+const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 import useDialog from "@/hooks/useDialog";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import React from "react";
+import { FC, useCallback, useRef } from "react";
 import OpenIn from "./OpenIn";
+import dynamic from "next/dynamic";
+import { useAuth } from "@/hooks/use-auth";
+import ConfirmDialog from "@/components/confirm-dialog";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import UndoIcon from "@mui/icons-material/Undo";
+import { useRouter } from "next/router";
+import { useRestorePropertyMutation } from "@/services/properties";
+
+const RestoreButton = () => {
+    const { t } = useTranslation();
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const [restore] = useRestorePropertyMutation();
+
+    const handleRestore = useCallback(async () => {
+        const res = await restore(+propertyId!);
+        if ("error" in res) return;
+        router.replace("/property");
+    }, [propertyId]);
+
+    return (
+        <SoftButton
+            fullWidth
+            color="warning"
+            startIcon={<UndoIcon />}
+            onClick={handleRestore}
+        >
+            {t("Restore")}
+        </SoftButton>
+    );
+};
+
+interface Props {
+    isProperty: boolean;
+    isArchived: boolean;
+    onDelete: VoidFunction;
+    onArchive: VoidFunction;
+}
+
+const DeleteOrArchiveButton: FC<Props> = ({
+    isProperty,
+    isArchived,
+    onDelete,
+    onArchive,
+}) => {
+    const { t } = useTranslation();
+
+    const { user } = useAuth();
+    const isAdmin = user?.isAdmin;
+
+    const [isArchiveOpen, openArchive, closeArchive] = useDialog();
+    const [isDeleteOpen, openDelete, closeDelete] = useDialog();
+
+    const handleDelete = useCallback(() => {
+        onDelete();
+        closeDelete();
+    }, []);
+    const handleArchive = useCallback(() => {
+        onArchive();
+        closeDelete();
+    }, []);
+
+    return (
+        <>
+            {isProperty && !isArchived ? (
+                <SoftButton
+                    fullWidth
+                    color="error"
+                    onClick={openArchive}
+                    startIcon={<ArchiveIcon />}
+                >
+                    {t("Archive")}
+                </SoftButton>
+            ) : null}
+
+            {isAdmin || !isProperty ? (
+                <SoftButton
+                    fullWidth
+                    color="error"
+                    onClick={openDelete}
+                    startIcon={<DeleteIcon />}
+                >
+                    {t("Delete")}
+                </SoftButton>
+            ) : null}
+
+            {isArchiveOpen ? (
+                <ConfirmDialog
+                    open
+                    onClose={closeArchive}
+                    title={t("Archive")}
+                    action={
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleArchive}
+                        >
+                            {t("Archive")}
+                        </Button>
+                    }
+                />
+            ) : null}
+
+            {isDeleteOpen ? (
+                <DeleteDialog
+                    open
+                    onClose={closeDelete}
+                    onDelete={handleDelete}
+                />
+            ) : null}
+        </>
+    );
+};
 
 interface MoreButtonProps {
     isProperty: boolean;
+    isArchived: boolean;
     onEdit: VoidFunction;
     onDelete: VoidFunction;
+    onArchive?: VoidFunction;
     onClone?: VoidFunction;
 }
 
 const MoreButton = ({
     isProperty,
+    isArchived,
     onEdit,
     onDelete,
+    onArchive,
     onClone,
 }: MoreButtonProps) => {
     const { t } = useTranslation();
 
-    const [isDeleteOpen, openDelete, closeDelete] = useDialog();
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-        null
-    );
+    const anchorRef = useRef(null);
 
-    const open = Boolean(anchorEl);
+    const [isOpen, openPopover, closePopover] = useDialog();
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleDelete = () => {
-        openDelete();
-        handleClose(); // Ensure the popover is closed before showing the delete dialog
-    };
+    const handleEdit = useCallback(() => {
+        closePopover();
+        onEdit();
+    }, [onEdit]);
+    const handleClone = useCallback(() => {
+        closePopover();
+        onClone?.();
+    }, [onClone]);
+    const handleDelete = useCallback(() => {
+        closePopover();
+        onDelete();
+    }, [onDelete]);
+    const handleArchive = useCallback(() => {
+        closePopover();
+        onArchive?.();
+    }, [onArchive]);
 
     return (
         <>
-            <IconButton size="small" onClick={handleClick}>
+            <IconButton ref={anchorRef} size="small" onClick={openPopover}>
                 <MoreVertOutlinedIcon />
             </IconButton>
 
-            <Popover
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                }}
-            >
-                <Stack
-                    alignItems="center"
-                    p={1}
-                    spacing={1}
-                    sx={{ minWidth: 150 }}
+            {isOpen ? (
+                <Popover
+                    open
+                    anchorEl={anchorRef.current}
+                    onClose={closePopover}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                    }}
                 >
-                    {isProperty && <OpenIn />}
-
-                    {onClone && (
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => {
-                                onClone();
-                                handleClose();
-                            }}
-                        >
-                            {t("Clone")}
-                        </Button>
-                    )}
-
-                    <Button
-                        fullWidth
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => {
-                            onEdit();
-                            handleClose();
-                        }}
+                    <Stack
+                        alignItems="center"
+                        p={1}
+                        spacing={1}
+                        sx={{ minWidth: 150 }}
                     >
-                        {t("Edit")}
-                    </Button>
+                        {isProperty && <OpenIn />}
 
-                    <SoftButton
-                        fullWidth
-                        color="error"
-                        onClick={handleDelete}
-                        startIcon={<DeleteIcon />}
-                    >
-                        {t("Delete")}
-                    </SoftButton>
-                </Stack>
-            </Popover>
+                        {!isArchived && onClone ? (
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                onClick={handleClone}
+                            >
+                                {t("Clone")}
+                            </Button>
+                        ) : null}
 
-            <DeleteDialog
-                open={isDeleteOpen}
-                onClose={closeDelete}
-                onDelete={onDelete}
-            />
+                        {!isArchived ? (
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                onClick={handleEdit}
+                            >
+                                {t("Edit")}
+                            </Button>
+                        ) : null}
+
+                        {isArchived ? <RestoreButton /> : null}
+
+                        <DeleteOrArchiveButton
+                            isProperty={isProperty}
+                            isArchived={isArchived}
+                            onDelete={handleDelete}
+                            onArchive={handleArchive}
+                        />
+                    </Stack>
+                </Popover>
+            ) : null}
         </>
     );
 };

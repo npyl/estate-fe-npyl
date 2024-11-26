@@ -11,14 +11,20 @@ import { SpaceBetween } from "@/components/styled";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
 import useToggle from "@/hooks/useToggle";
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 
 interface BaseItemProps extends PropsWithChildren {
     type: string;
+    topRightContent?: ReactNode;
     onEdit: VoidFunction;
 }
 
-const BaseItem: FC<BaseItemProps> = ({ type, onEdit, children }) => {
+const BaseItem: FC<BaseItemProps> = ({
+    type,
+    onEdit,
+    topRightContent,
+    children,
+}) => {
     const { t } = useTranslation();
     const [isExpanded, toggle] = useToggle();
 
@@ -33,15 +39,19 @@ const BaseItem: FC<BaseItemProps> = ({ type, onEdit, children }) => {
             >
                 <Typography variant="h6">{type}</Typography>
 
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" spacing={1} alignItems="center">
                     {isExpanded ? (
-                        <SoftButton
-                            variant="contained"
-                            size="small"
-                            onClick={onEdit}
-                        >
-                            {t("Edit")}
-                        </SoftButton>
+                        <>
+                            {topRightContent}
+
+                            <SoftButton
+                                variant="contained"
+                                size="small"
+                                onClick={onEdit}
+                            >
+                                {t("Edit")}
+                            </SoftButton>
+                        </>
                     ) : null}
 
                     <IconButton

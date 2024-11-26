@@ -14,6 +14,7 @@ import {
     SyntheticEvent,
 } from "react";
 import { IPropertyCodeRes } from "@/types/properties";
+import getIcons from "@/assets/icons/parent-categories";
 
 // ------------------------------------------------------------------------
 
@@ -36,11 +37,7 @@ const RenderOption = (
     const { key: _, ...otherProps } = props;
     return (
         <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
-            <img
-                src="/static/categoryPhotos/home.webp"
-                alt="Home"
-                style={{ width: 30, height: 30 }}
-            />
+            {getIcons({ width: 30, height: 30 })[option.parentCategory]}
             {option.code}
         </MenuItem>
     );

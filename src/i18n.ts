@@ -1067,10 +1067,93 @@ const resources = {
 
             _COLUMN_DONE_:
                 "There is already a DONE column containing tasks. Move the tasks and retry.",
+
+            "Integrated. You can change workspace if you'd like.":
+                "Integrated. You can change workspace if you'd like.",
+
+            "Not integrated. Please edit to support features like Calendar.":
+                "Not integrated. Please edit to support features like Calendar.",
+
+            "Not integrated. Please go to Settings -> Integrations":
+                "Not integrated. Please go to Settings -> Integrations",
+
+            Reporter: "Reporter",
+
+            "with google email": "with google email",
+            "without google email": "without google email",
+            "Meeting with": "Meeting with",
+            Tour: "Tour",
+            People: "People",
+            "out of": "out of",
+            attachments: "attachments",
+            "Tour request for": "Tour request for",
+            "Review request for": "Review request for",
+            "Listing from": "Listing from",
+            "Work application by": "Work application by",
+            "Agreement for": "Agreement for",
+            Task: "Task",
+            "Contact Details": "Contact Details",
+            "Full Name": "Full Name",
+            Mobile: "Mobile",
+            VAT: "VAT",
+
+            _UPDATE_WORKSPACE_EMAILS_:
+                "Make sure you remember to update your employees' Google Workspace Emails after.",
+
+            "free google emails": "free google emails",
+            "taken google emails": "taken google emails",
+
+            "non-registered": "non-registered",
+
+            Archive: "Archive",
+            Archived: "Archived",
+            Restore: "Restore",
         },
     },
     el: {
         translation: {
+            Restore: "Επαναφορά",
+            Archived: "Αρχειοθετημένα",
+            Archive: "Αρχειοθέτηση",
+
+            "non-registered": "μη-εγγεγραμμένοι",
+
+            "free google emails": "ελεύθερα google emails",
+            "taken google emails": "κρατημένα google emails",
+
+            _UPDATE_WORKSPACE_EMAILS_:
+                "Θα πρέπει να ενημερώσετε τα Google Workspace Email όλων των υπαλλήλων μετά από αυτό.",
+
+            Mobile: "Κινητό",
+            "Full Name": "Ον/μο",
+            "Contact Details": "Στοιχεία Επικοινωνίας",
+            "Tour request for": "Αίτημα ξενάγησης για",
+            "Review request for": "Αξιολόγηση για",
+            "Listing from": "Καταχώρηση ακινήτου από",
+            "Work application by": "Αίτηση εργασίας από",
+            "Agreement for": "Εντολή για",
+            Task: "Εργασία",
+            attachments: "συνημμένα",
+            VAT: "ΑΦΜ",
+            "out of": "από",
+            People: "Άτομα",
+            "Meeting with": "Συνάντηση με",
+            Tour: "Περιήγηση",
+
+            Reporter: "Αναθέτης",
+
+            "with google email": "με google email",
+            "without google email": "χωρίς google email",
+
+            "Not integrated. Please go to Settings -> Integrations":
+                "Μη συνδεδεμένο. Παρακαλώ κατευθυνθείτε στις Ρυθμίσεις -> Διασυνδέσεις",
+
+            "Integrated. You can change workspace if you'd like.":
+                "Συνδέθηκε. Μπορείτε να αλλάξετε το workspace αν επιθυμείτε.",
+
+            "Not integrated. Please edit to support features like Calendar.":
+                "Μη συνδεδεμένο. Παρακαλώ επεξεργαστείτε για να υποστηρίζονται λειτουργίες όπως Ημερολόγιο.",
+
             _COLUMN_DONE_:
                 "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες. Μεταφέρετε τις εργασίες και δοκιμάστε ξανά.",
 

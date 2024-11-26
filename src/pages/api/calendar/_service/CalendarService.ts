@@ -11,9 +11,6 @@ interface CalendarService$IsAdminRes {
     userInfo?: GoogleCalendarUserInfo;
 }
 
-// e.g. npylarinos@digipath.gr -> digipath.gr
-const WORKSPACE_DOMAIN = process.env.GOOGLE_WORKSPACE_DOMAIN;
-
 class CalendarService {
     private calendar: calendar_v3.Calendar;
     private directory: admin_directory_v1.Admin;
@@ -58,7 +55,7 @@ class CalendarService {
     private async getWorkspaceUsers(auth: OAuth2Client) {
         try {
             const response = await this.directory.users.list({
-                domain: WORKSPACE_DOMAIN,
+                domain: authService.WORKSPACE_DOMAIN,
                 auth,
                 fields: "users(id,name,primaryEmail,thumbnailPhotoUrl)",
             });

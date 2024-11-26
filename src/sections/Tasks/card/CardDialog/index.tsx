@@ -25,7 +25,7 @@ interface DetailsProps {
     onClose: VoidFunction;
 }
 
-const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
+export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     const { name, uniqueCode } = task || {};
 
     const methods = useForm<ICreateOrUpdateTaskReq>({
@@ -36,15 +36,22 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
         resolver: yupResolver(schema),
     });
 
-    console.log("values: ", methods.watch());
-    console.log("errors: ", methods.formState.errors);
+    // console.log("values: ", methods.watch());
+    // console.log("errors: ", methods.formState.errors);
+
+    // INFO: flag to know whether we are editing (w/ calendar);
+    // Here, it is important to differenciate between a normal edit and an edit w/ calendar
+    const haveEvent = Boolean(task?.event);
 
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
-    const handleSubmit = useCallback(async (d: ICreateOrUpdateTaskReq) => {
-        await createOrUpdate(d);
-        onClose();
-    }, []);
+    const handleSubmit = useCallback(
+        async (d: ICreateOrUpdateTaskReq) => {
+            await createOrUpdate(d);
+            onClose();
+        },
+        [onClose]
+    );
 
     return (
         <FormProvider {...methods}>
@@ -66,6 +73,8 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                         // ...
                         createdAt={task?.createdAt}
                         updatedAt={task?.updatedAt}
+                        // ...
+                        haveEvent={haveEvent}
                     />
                 }
                 actions={<Actions onClose={onClose} />}

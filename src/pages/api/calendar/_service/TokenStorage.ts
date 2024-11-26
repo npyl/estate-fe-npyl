@@ -19,7 +19,7 @@ export class TokenStorage {
         );
     }
 
-    async initialize(): Promise<void> {
+    async initialize() {
         try {
             // Ensure the data directory exists
             const directory = path.dirname(this.tokenFilePath);
@@ -31,9 +31,8 @@ export class TokenStorage {
             } catch {
                 await fs.writeFile(this.tokenFilePath, JSON.stringify([]));
             }
-        } catch (error) {
-            console.error("Failed to initialize token storage:", error);
-            throw new Error("Failed to initialize token storage");
+        } catch (ex) {
+            console.error(ex);
         }
     }
 
@@ -51,8 +50,8 @@ export class TokenStorage {
             const tokens = await this.getAllTokens();
             const userToken = tokens.find((t) => t.userId === userId);
             return userToken?.refreshToken || null;
-        } catch (error) {
-            console.error("Failed to get token:", error);
+        } catch (ex) {
+            console.error(ex);
             return null;
         }
     }
@@ -72,13 +71,12 @@ export class TokenStorage {
                 this.tokenFilePath,
                 JSON.stringify(tokens, null, 2)
             );
-        } catch (error) {
-            console.error("Failed to save token:", error);
-            throw new Error("Failed to save token");
+        } catch (ex) {
+            console.error(ex);
         }
     }
 
-    async deleteToken(userId: number): Promise<void> {
+    async deleteToken(userId: number) {
         try {
             const tokens = await this.getAllTokens();
             const filteredTokens = tokens.filter((t) => t.userId !== userId);
@@ -86,9 +84,16 @@ export class TokenStorage {
                 this.tokenFilePath,
                 JSON.stringify(filteredTokens, null, 2)
             );
-        } catch (error) {
-            console.error("Failed to delete token:", error);
-            throw new Error("Failed to delete token");
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    async deleteAllTokens() {
+        try {
+            await fs.writeFile(this.tokenFilePath, JSON.stringify([], null, 2));
+        } catch (ex) {
+            console.error(ex);
         }
     }
 }

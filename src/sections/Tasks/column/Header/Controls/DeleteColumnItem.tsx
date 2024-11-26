@@ -1,5 +1,6 @@
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
 import useDialog from "@/hooks/useDialog";
+import { useFiltersContext } from "@/sections/Tasks/filters";
 import { useDeleteColumnMutation } from "@/services/tasks";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,9 +17,11 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
 
     const [isOpen, openConfirm, closeConfirm] = useDialog();
 
+    const { search, assigneeId, priority } = useFiltersContext();
+    const filters = { search, assigneeId, priority };
     const [deleteColumn] = useDeleteColumnMutation();
 
-    const handleDelete = () => deleteColumn(columnId);
+    const handleDelete = () => deleteColumn({ columnId, filters });
 
     return (
         <>
@@ -32,8 +35,12 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
                     title={t("Delete column?")}
                     content={t("Deleting a column will also delete the tasks")}
                     action={
-                        <Button variant="contained" onClick={handleDelete}>
-                            {t("Confirm")}
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleDelete}
+                        >
+                            {t("Delete")}
                         </Button>
                     }
                 />

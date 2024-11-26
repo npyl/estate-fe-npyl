@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, HTMLAttributes, ComponentType } from "react";
 
 type TCalendarView = "day" | "week" | "month" | "year";
+type TWeekViewMode = "monToSun" | "sunToSat";
 
 // -------------------------------------------------------------
 
@@ -112,6 +113,7 @@ interface BaseCalendarProps extends HTMLAttributes<HTMLDivElement> {
 
 export type {
     TCalendarView,
+    TWeekViewMode,
     // ...
     BaseCalendarCellProps,
     // ...

@@ -33,6 +33,8 @@ import {
 } from "src/services/user";
 import { IUser, IUserPOST } from "src/types/user";
 import { Schema } from "./validation";
+import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
+import { useAuth } from "@/hooks/use-auth";
 
 interface UserFormProps {
     open: boolean;
@@ -54,12 +56,16 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
         return users.find((u) => u.id === selectedUser) || null;
     }, [users, selectedUser]);
 
+    const { user: _loggedInUser } = useAuth();
+    const isAdmin = _loggedInUser?.isAdmin;
+
     const values = useMemo(
         () => ({
             id: selectedUser !== -1 ? selectedUser : null,
             firstName: user?.firstName || "",
             lastName: user?.lastName || "",
             email: user?.email || "",
+            workspaceEmail: user?.workspaceEmail || "",
             password: user?.password || "",
             mobilePhone: user?.mobilePhone || "",
             homePhone: user?.homePhone || "",
@@ -113,14 +119,25 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
         onClose();
     };
 
-    const onSubmit = ({ status, ...user }: IUserPOST) => {
-        addUser(user);
+    const onSubmit = async ({ status, ...user }: IUserPOST) => {
+        await addUser(user);
         onClose();
     };
 
     return (
         <>
-            <Dialog open={open} onClose={onClose} maxWidth="lg">
+            <Dialog
+                open={open}
+                onClose={onClose}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            minWidth: "50vw",
+                            minHeight: "80vh",
+                        },
+                    },
+                }}
+            >
                 <DialogTitle>
                     {t(user ? "User Update" : "Create User")}
                 </DialogTitle>
@@ -145,11 +162,21 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
                                             name="firstName"
                                             label={t("First Name")}
                                         />
-                                        <RHFTextField
-                                            required
-                                            name="email"
-                                            label={t("Email")}
-                                        />
+
+                                        {/* INFO: admin-only block */}
+                                        <>
+                                            <RHFTextField
+                                                required
+                                                name="email"
+                                                label={t("Email")}
+                                                disabled={!isAdmin}
+                                            />
+
+                                            {isAdmin ? (
+                                                <GoogleWorkspaceEmail />
+                                            ) : null}
+                                        </>
+
                                         <RHFTextField
                                             name="businessPhone"
                                             label={t("Business Phone")}

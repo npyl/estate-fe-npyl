@@ -7,7 +7,7 @@ const schema = yup.object<IKanbanCardPOST>().shape({
     name: yup.string().required(),
     description: yup.string().optional(),
 
-    attachments: yup.array(yup.string().required()).required(),
+    attachments: yup.array(yup.number().required()).required(),
 
     properties: yup.array(yup.number().min(0).required()).optional(),
     customers: yup.array(yup.number().min(0).required()).optional(),

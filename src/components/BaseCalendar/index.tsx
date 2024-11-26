@@ -3,6 +3,7 @@ import { BaseCalendarProps } from "./types";
 import { TODAY } from "./constants";
 import BaseHeader from "./Header";
 import BaseView from "./View";
+import { SettingsProvider } from "./Settings";
 
 const BaseCalendar: FC<BaseCalendarProps> = ({
     date = TODAY,
@@ -20,17 +21,19 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
 
     return (
         <div {...props}>
-            <Header
-                date={date}
-                view={view}
-                // ...
-                onDateChange={onDateChange}
-                onViewChange={onViewChange}
-                // ...
-                slots={HeaderSlots}
-            />
+            <SettingsProvider>
+                <Header
+                    date={date}
+                    view={view}
+                    // ...
+                    onDateChange={onDateChange}
+                    onViewChange={onViewChange}
+                    // ...
+                    slots={HeaderSlots}
+                />
 
-            <View view={view} date={date} slots={ViewSlots} />
+                <View view={view} date={date} slots={ViewSlots} />
+            </SettingsProvider>
         </div>
     );
 };

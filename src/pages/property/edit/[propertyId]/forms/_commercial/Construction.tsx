@@ -1,5 +1,4 @@
 import { Grid, MenuItem } from "@mui/material";
-import * as React from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import {
@@ -8,7 +7,7 @@ import {
     RHFTextField,
 } from "src/components/hook-form";
 
-const Construction: React.FC<any> = (props) => {
+const Construction = () => {
     const { t } = useTranslation();
 
     return (
@@ -17,6 +16,7 @@ const Construction: React.FC<any> = (props) => {
                 <Grid item xs={6}>
                     <RHFOnlyNumbers
                         fullWidth
+                        separateThousands={false}
                         label={t("Year of Construction")}
                         name="construction.yearOfConstruction"
                     />
@@ -24,6 +24,7 @@ const Construction: React.FC<any> = (props) => {
                 <Grid item xs={6}>
                     <RHFOnlyNumbers
                         fullWidth
+                        separateThousands={false}
                         label={t("Year of Renovation")}
                         name="construction.yearOfRenovation"
                     />

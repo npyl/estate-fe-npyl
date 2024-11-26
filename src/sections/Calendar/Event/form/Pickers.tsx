@@ -4,33 +4,20 @@ import { endDateKey, startDateKey } from "./EventDates/constants";
 import { FC } from "react";
 
 interface Props {
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 const Pickers: FC<Props> = ({ startDate, endDate }) => {
-    const {
-        _isAllDay,
-        _allDayDate,
-        // ..
-        isAllDay,
-        allDayDate,
-        // ...
-        onAllDayChange,
-        onAllDayDateChange,
-    } = useEventDates(startDateKey, endDateKey, {
-        startDate,
-        endDate,
-    });
+    const initial = startDate && endDate ? { startDate, endDate } : undefined;
 
-    return (
-        <EventDates
-            allDay={isAllDay}
-            onAllDayChange={onAllDayChange}
-            allDayDate={allDayDate}
-            onAllDayDateChange={onAllDayDateChange}
-        />
+    const { isAllDay, onAllDayChange } = useEventDates(
+        startDateKey,
+        endDateKey,
+        initial
     );
+
+    return <EventDates allDay={isAllDay} onAllDayChange={onAllDayChange} />;
 };
 
 export default Pickers;

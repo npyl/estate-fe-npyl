@@ -1,6 +1,9 @@
 import {
     isTCalendarEventType,
     TCalendarEvent,
+    TCalendarEventExtendedProperties,
+    TCalendarEventPerson,
+    TCalendarEventType,
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
@@ -20,6 +23,23 @@ import { getAllDayStartEnd } from "@/components/Calendar/util";
 */
 
 const PP_EVENT_TYPE_KEY = "pp-event-type";
+const PP_EVENT_PEOPLE_KEY = "pp-event-people";
+
+const extractPeople = (
+    extendedProperties?: TCalendarEventExtendedProperties | null
+) => {
+    try {
+        const field = extendedProperties?.private?.[PP_EVENT_PEOPLE_KEY];
+        if (!field) return [];
+
+        const people =
+            (JSON.parse(field) as unknown as TCalendarEventPerson[]) || [];
+
+        return people;
+    } catch (ex) {
+        return [];
+    }
+};
 
 const GCalendarToTCalendarEvent = ({
     id,
@@ -47,6 +67,7 @@ const GCalendarToTCalendarEvent = ({
     }
 
     const type = extendedProperties?.private?.[PP_EVENT_TYPE_KEY];
+    const people = extractPeople(extendedProperties);
 
     return {
         id: id!,
@@ -56,13 +77,41 @@ const GCalendarToTCalendarEvent = ({
         startDate,
         endDate,
         type: isTCalendarEventType(type) ? type : "TASK",
-        withIds: [],
-
+        people,
         extendedProperties,
     };
 };
 
 type TCalendarEventReq = Omit<TCalendarEvent, "id"> & { id?: string };
+
+const withGwEmail = ({ gwEmail }: TCalendarEventPerson) => Boolean(gwEmail);
+const withoutGwEmail = ({ gwEmail }: TCalendarEventPerson) => !Boolean(gwEmail);
+const withoutGwEmailAndNonCustomer = ({
+    gwEmail,
+    customerId,
+}: TCalendarEventPerson) => !Boolean(gwEmail) && !Boolean(customerId);
+
+/**
+ * Convert `people` field of TCalendarEvent to an entry valid for google calendar event's extendedProperties.
+ * Depending on the type we have to select *only* the entries that correspond. This is very important and must be
+ *  enforced for cases where a user changes the calendar's event type from e.g. MEETING to TOUR_XX
+ * Specifically,
+ *  - for MEETING, we need all entries *WITH* gwEmail
+ *  - for TOUR_XX, we need all entries *WITHOUT* gwEmail
+ */
+const preparePeople = (
+    people: TCalendarEventPerson[],
+    type: TCalendarEventType
+) => {
+    if (type === "TASK") return JSON.stringify([]);
+
+    const filtered =
+        type === "MEETING"
+            ? people?.filter(withGwEmail)
+            : people?.filter(withoutGwEmail);
+
+    return JSON.stringify(filtered);
+};
 
 const TCalendarEventToGCalendarEvent = ({
     id,
@@ -73,9 +122,9 @@ const TCalendarEventToGCalendarEvent = ({
     location,
     extendedProperties,
     type,
-    withIds,
+    people,
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
-    console.log("start: ", startDate, " end: ", endDate);
+    const preparedPeople = preparePeople(people, type);
 
     return {
         id,
@@ -96,9 +145,17 @@ const TCalendarEventToGCalendarEvent = ({
             private: {
                 ...extendedProperties?.private,
                 [PP_EVENT_TYPE_KEY]: type,
+                [PP_EVENT_PEOPLE_KEY]: preparedPeople,
             },
         },
     };
 };
 
-export { TCalendarEventToGCalendarEvent, GCalendarToTCalendarEvent };
+export {
+    TCalendarEventToGCalendarEvent,
+    GCalendarToTCalendarEvent,
+    // ...
+    withGwEmail,
+    withoutGwEmail,
+    withoutGwEmailAndNonCustomer,
+};

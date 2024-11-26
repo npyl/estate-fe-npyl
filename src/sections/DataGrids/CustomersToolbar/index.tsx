@@ -1,5 +1,8 @@
-import { FC } from "react";
-import { useBulkDeleteCustomersMutation } from "@/services/customers";
+import { FC, useCallback } from "react";
+import {
+    useBulkDeleteCustomersMutation,
+    useBulkEditCustomersMutation,
+} from "@/services/customers";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import BaseToolbar from "@/sections/DataGrids/BaseToolbar";
@@ -14,16 +17,21 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
     const [isBulkDeleteOpen, openBulkDelete, closeBulkDelete] = useDialog();
 
-    const [bulkDeleteCustomers, { isLoading }] =
+    const [bulkDelete, { isLoading: isDeleting }] =
         useBulkDeleteCustomersMutation();
 
-    // Bulk Delete
-    const handleBulkDelete = () => bulkDeleteCustomers(selectedRows);
+    const [bulkEdit, { isLoading: isEditing }] = useBulkEditCustomersMutation();
+
+    const handleBulkDelete = useCallback(
+        () => bulkDelete(selectedRows),
+        [selectedRows]
+    );
 
     return (
         <>
             <BaseToolbar
-                loading={isLoading}
+                isDeleting={isDeleting}
+                isEditing={isEditing}
                 onBulkEditClick={openBulkEdit}
                 onBulkDeleteClick={openBulkDelete}
             />
@@ -32,6 +40,7 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
                 <BulkEdit
                     open={isBulkEditOpen}
                     selectedIds={selectedRows}
+                    onSave={bulkEdit}
                     onClose={closeBulkEdit}
                 />
             ) : null}

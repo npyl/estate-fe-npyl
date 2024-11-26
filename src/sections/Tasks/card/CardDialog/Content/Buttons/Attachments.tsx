@@ -1,58 +1,80 @@
-import Button from "@mui/material/Button";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useTranslation } from "react-i18next";
 import { ChangeEvent, FC, useCallback } from "react";
 import FileInput, { OpenerBaseProps } from "@/components/FileInput";
+import { LoadingButton } from "@mui/lab";
+import useUploadAttachment from "./useUploadAttachment";
+import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
-import fileToBase64 from "@/utils/file-to-base64";
+import { useAttachmentsContext } from "../AttachmentsContext";
+import { IAddAttachmentRes } from "@/services/tasks/types";
 
 // ------------------------------------------------------------------
 
 const ButtonSx = { bgcolor: "info.dark" };
 
-const OpenerButton: FC<OpenerBaseProps> = ({ onClick }) => {
+const OpenerButton: FC<OpenerBaseProps> = ({ loading, onClick }) => {
     const { t } = useTranslation();
     return (
-        <Button
+        <LoadingButton
             variant="contained"
+            loading={loading}
+            disabled={loading}
             sx={ButtonSx}
             startIcon={<AttachFileIcon />}
             onClick={onClick}
         >
             {t("Attach")}
-        </Button>
+        </LoadingButton>
     );
 };
 
 // ------------------------------------------------------------------
 
-const attachmentsKey = "attachments";
+interface AttachmentsProps {
+    cardId?: number;
+}
 
-const Attachments = () => {
-    const { watch, setValue } = useFormContext();
+const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
+    const { setAttachments } = useAttachmentsContext();
+
+    const handleAdd = useCallback((res: IAddAttachmentRes[]) => {
+        setAttachments((old) => [...old, ...res]);
+    }, []);
+
+    const { upload, isUploading } = useUploadAttachment(cardId, handleAdd);
+
+    const { setValue, watch } = useFormContext();
 
     const handleChange = useCallback(
         async (event: ChangeEvent<HTMLInputElement>) => {
-            const files = event.target.files;
-            if (!files) return;
+            const fileList = event.target.files;
+            if (!fileList) return;
 
-            // TODO: check sizes !!! VERY IMPORTANT !!!
+            const files = Array.from(fileList);
+            const ids = await upload(files);
 
-            // convert files to base64 strings
-            const filesArray = Array.from(files);
-            const base64strs = await Promise.all(filesArray.map(fileToBase64));
+            const attachmentIds = watch(attachmentsKey);
 
-            // existing attachments
-            const attachments = (watch(attachmentsKey) as string[]) || [];
-
-            setValue(attachmentsKey, [...attachments, ...base64strs], {
-                shouldDirty: true,
-            });
+            // Create mode: Add id
+            if (cardId === undefined) {
+                setValue(attachmentsKey, [...attachmentIds, ...ids], {
+                    shouldDirty: true,
+                });
+            }
         },
-        []
+        [cardId]
     );
 
-    return <FileInput Opener={OpenerButton} multiple onChange={handleChange} />;
+    return (
+        <FileInput
+            loading={isUploading}
+            Opener={OpenerButton}
+            multiple
+            accept="image/*,application/pdf"
+            onChange={handleChange}
+        />
+    );
 };
 
 export default Attachments;

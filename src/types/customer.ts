@@ -54,6 +54,7 @@ export interface ICustomer {
     email: string;
     mobilePhone: string;
     homePhone: string;
+    afm: string;
     managedBy: IUser;
     status: number;
     leaser: boolean;
@@ -78,11 +79,18 @@ export interface ICustomer {
     updatedAt: string;
 }
 
+interface ICustomerMini {
+    id: number;
+    firstName: string;
+    lastName: string;
+}
+
 export interface ICustomerPOST {
     id?: number;
     firstName: string;
     lastName: string;
     email: string;
+    afm: string;
     mobilePhone: string;
     homePhone: string;
     managedBy?: number;
@@ -106,4 +114,4 @@ export interface ICustomerPOST {
     notes: string[];
 }
 
-export type { IDemand };
+export type { IDemand, ICustomerMini };

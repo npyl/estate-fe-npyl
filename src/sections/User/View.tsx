@@ -85,6 +85,10 @@ const ViewUser = ({ user }: ViewUserProps) => {
                             label={t("Email")}
                             value={user?.email || ""}
                         />
+                        <ListItem
+                            label={t("Google Workspace Email")}
+                            value={user?.workspaceEmail || ""}
+                        />
                     </List>
                 </Grid>
                 <Grid item xs={12} sm={6}>

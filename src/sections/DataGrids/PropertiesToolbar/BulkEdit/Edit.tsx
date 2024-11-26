@@ -103,7 +103,12 @@ export const EditZipCode = ({ data, setData }: EditProps<string>) => {
 
     return (
         <DefaultOrEdit label={t("Zip Code")} onDisable={handleDisable}>
-            <StyledOnlyNumbersInput label="" value={data} onChange={setData} />
+            <StyledOnlyNumbersInput
+                label=""
+                separateThousands={false}
+                value={data}
+                onChange={setData}
+            />
         </DefaultOrEdit>
     );
 };

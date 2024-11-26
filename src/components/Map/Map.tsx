@@ -227,7 +227,7 @@ const Map = ({
 
                 return (
                     <MarkerF
-                        key={JSON.stringify({ lat, lng })}
+                        key={`${marker.lat}-${marker.lng}-${marker.propertyId}`}
                         position={{ lat, lng }}
                         onMouseUp={() => setActiveMarker?.(ind)}
                         icon={"/static/map/mapIcon.svg"}
