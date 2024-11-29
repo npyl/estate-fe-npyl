@@ -1,12 +1,12 @@
-import useNotificationsSocket from "@/hooks/useNotificationsSocket";
+import useNotificationsSocket from "@/hooks/useTasksNotifications";
 import { useCallback } from "react";
 
 const NotificationsListener = () => {
-    const handleMessage = useCallback((e: WebSocketEventMap["message"]) => {
+    const onTaskNotification = useCallback(() => {
         // ...
     }, []);
 
-    useNotificationsSocket(handleMessage);
+    useNotificationsSocket({ onTaskNotification });
 
     return null;
 };

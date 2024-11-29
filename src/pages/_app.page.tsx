@@ -77,20 +77,22 @@ const App: FC<EnhancedAppProps> = (props) => {
                                     <TabsProvider>
                                         <Toaster position="top-right" />
 
-                                        <NotificationsListener />
-
                                         <AuthConsumer>
                                             {(auth) =>
                                                 !auth.isInitialized ? (
                                                     <SplashScreen />
                                                 ) : (
-                                                    <DatePickerProvider>
-                                                        {getLayout(
-                                                            <Component
-                                                                {...pageProps}
-                                                            />
-                                                        )}
-                                                    </DatePickerProvider>
+                                                    <>
+                                                        <NotificationsListener />
+
+                                                        <DatePickerProvider>
+                                                            {getLayout(
+                                                                <Component
+                                                                    {...pageProps}
+                                                                />
+                                                            )}
+                                                        </DatePickerProvider>
+                                                    </>
                                                 )
                                             }
                                         </AuthConsumer>
