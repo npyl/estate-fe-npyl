@@ -1,12 +1,11 @@
 import { Paper, Stack } from "@mui/material";
 import type { NextPage } from "next";
-import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import * as React from "react";
 import ViewsChart from "./LiveViews";
 import PropertyViewLineChart from "./Views";
 import CategoryViewsBarChart from "./CategoryViews";
 import PopularProperties from "./Popular";
+import { AdminGuard } from "@/components/authentication/admin-guard";
 
 const CHARTS = [
     <ViewsChart key="ViewsChart" />,
@@ -26,9 +25,9 @@ const Statistics: NextPage = () => (
 );
 
 Statistics.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+    <DashboardLayout>
+        <AdminGuard>{page}</AdminGuard>
+    </DashboardLayout>
 );
 
 export default Statistics;

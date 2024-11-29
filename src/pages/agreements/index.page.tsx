@@ -1,4 +1,4 @@
-import { AuthGuard } from "@/components/authentication/auth-guard";
+import { AdminGuard } from "@/components/authentication/admin-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import AgreementsSection from "@/sections/agreements";
 import { NextPage } from "next";
@@ -8,9 +8,9 @@ const AgreementsPage: NextPage = () => {
 };
 
 AgreementsPage.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+    <DashboardLayout>
+        <AdminGuard>{page} </AdminGuard>
+    </DashboardLayout>
 );
 
 export default AgreementsPage;

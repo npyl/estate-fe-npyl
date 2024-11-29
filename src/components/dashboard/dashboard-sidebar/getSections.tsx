@@ -68,23 +68,23 @@ const getSections = (
                 icon: <LabelImportant fontSize="small" />,
             },
 
-            {
-                title: t("Notifications"),
-                path: "/notification",
-                icon: <NotificationsIcon />,
-            },
-
             // ---------------------------------------------
             ...(withNotifications
                 ? [
                       {
-                          title: t("Tasks"),
-                          path: "/tasks",
-                          icon: <TasksIconWithCounter />,
+                          title: t("Notifications"),
+                          path: "/notification",
+                          icon: <NotificationsIcon />,
                       },
                   ]
                 : []),
             // ---------------------------------------------
+
+            {
+                title: t("Tasks"),
+                path: "/tasks",
+                icon: <TasksIconWithCounter />,
+            },
 
             ...ADMIN_ONLY(
                 {
