@@ -1,170 +1,29 @@
 import {
-    CircleNotifications,
-    ConfirmationNumber,
-    LabelImportant,
-} from "@mui/icons-material";
-import HandshakeIcon from "@mui/icons-material/Handshake";
-import {
     Box,
     Drawer,
     Link,
-    Skeleton,
     Stack,
     Theme,
     Typography,
     useMediaQuery,
 } from "@mui/material";
-import { TFunction } from "i18next";
-import { FC, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Home as HomeIcon } from "@/assets/icons/home";
-import { Users as UsersIcon } from "@/assets/icons/users";
-import { Scrollbar } from "../scrollbar";
-import { DashboardSidebarSection } from "./dashboard-sidebar-section";
-import { OrganizationPopover } from "./organization-popover";
-import HistoryIcon from "@mui/icons-material/History";
+import { Scrollbar } from "@/components/scrollbar";
+import { DashboardSidebarSection } from "../dashboard-sidebar-section";
+import { OrganizationPopover } from "../organization-popover";
 import { useGetProfileQuery } from "src/services/user";
-import { ChartPie } from "@/assets/icons/chart-pie";
-import { ChartLine as ChartLineIcon } from "@/assets/icons/chart-line";
 import { useRouter } from "next/router";
-import { LanguageButton } from "../Language/LanguageButton";
-import { SettingsButton } from "../settings-button";
+import { LanguageButton } from "@/components/Language/LanguageButton";
+import { SettingsButton } from "@/components/settings-button";
 import useResponsive from "@/hooks/useResponsive";
-import CircleUnReadNotifications from "@/pages/notification/components/CircleUnReadNotifications";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import { useArchivedCountQuery } from "@/services/properties";
-
-const ArchivedIcon = () => {
-    const { data, isLoading } = useArchivedCountQuery();
-
-    return (
-        <Box display="flex" justifyContent="space-between">
-            <ArchiveIcon fontSize="small" />
-
-            {isLoading ? (
-                <Skeleton
-                    width="20px"
-                    height="20px"
-                    variant="circular"
-                    sx={{
-                        position: "absolute",
-                        right: "-8px",
-                        top: "10px",
-                    }}
-                />
-            ) : null}
-
-            {data ? (
-                <CircleUnReadNotifications>{data}</CircleUnReadNotifications>
-            ) : null}
-        </Box>
-    );
-};
+import getSections from "./getSections";
 
 interface DashboardSidebarProps {
     onClose?: () => void;
     open?: boolean;
 }
-
-interface Item {
-    title: string;
-    children?: Item[];
-    adminOnly?: boolean;
-    chip?: ReactNode;
-    icon?: ReactNode;
-    path?: string;
-}
-
-interface Section {
-    title: string;
-    items: Item[];
-}
-
-const getSections = (
-    t: TFunction,
-    nonViewedNotificationsCount: number
-): Section[] => [
-    {
-        title: t("main"),
-        items: [
-            {
-                title: t("Dashboard"),
-
-                path: "/",
-                icon: <ChartPie fontSize="small" />,
-            },
-
-            {
-                title: t("Statistics"),
-                path: "/statistics",
-                icon: <ChartLineIcon fontSize="small" />,
-            },
-
-            {
-                title: t("Properties"),
-                path: "/property",
-                icon: <HomeIcon fontSize="small" />,
-            },
-
-            {
-                title: t("Customers"),
-                path: "/customers",
-                icon: <UsersIcon fontSize="small" />,
-            },
-
-            {
-                title: t("Labels"),
-                path: "/label",
-                icon: <LabelImportant fontSize="small" />,
-            },
-
-            {
-                title: t("Notifications"),
-                path: "/notification",
-                icon: (
-                    <Box display="flex" justifyContent="space-between">
-                        <CircleNotifications fontSize="small" />
-                        {nonViewedNotificationsCount ? (
-                            <CircleUnReadNotifications>
-                                {nonViewedNotificationsCount}
-                            </CircleUnReadNotifications>
-                        ) : null}
-                    </Box>
-                ),
-            },
-
-            {
-                title: t("Tasks"),
-                path: "/tasks",
-                icon: <ConfirmationNumber fontSize="small" />,
-            },
-            {
-                title: t("Logs"),
-                path: "/logs",
-                icon: <HistoryIcon fontSize="small" />,
-                adminOnly: true,
-            },
-            {
-                title: t("Agreements"),
-                path: "/agreements",
-                icon: <HandshakeIcon fontSize="small" />,
-                adminOnly: true,
-            },
-            {
-                title: t("Calendar"),
-                path: "/calendar",
-                icon: <CalendarTodayIcon fontSize="small" />,
-            },
-            {
-                title: t("Archived"),
-                path: "/archived",
-                icon: <ArchivedIcon />,
-            },
-        ],
-    },
-];
 
 export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     const { onClose, open } = props;

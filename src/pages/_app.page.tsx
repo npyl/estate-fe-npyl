@@ -27,6 +27,7 @@ import { TabsProvider } from "src/contexts/tabs";
 import DatePickerProvider from "@/providers/DatePicker";
 
 import { Toaster } from "react-hot-toast";
+import NotificationsListener from "@/providers/NotificationsListener";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -75,6 +76,9 @@ const App: FC<EnhancedAppProps> = (props) => {
                                     <CssBaseline />
                                     <TabsProvider>
                                         <Toaster position="top-right" />
+
+                                        <NotificationsListener />
+
                                         <AuthConsumer>
                                             {(auth) =>
                                                 !auth.isInitialized ? (

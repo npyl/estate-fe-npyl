@@ -100,6 +100,10 @@ export const notification = createApi({
             }),
             invalidatesTags: ["Notifications"],
         }),
+
+        activeAssignedTasksCount: builder.query<number, void>({
+            query: () => `/active-assigned-tasks/count`,
+        }),
     }),
 });
 
@@ -110,4 +114,6 @@ export const {
     useFilterNotificationsQuery,
     useToggleNotificationViewedStatusMutation,
     useDeleteNotificationMutation,
+
+    useActiveAssignedTasksCountQuery,
 } = notification;
