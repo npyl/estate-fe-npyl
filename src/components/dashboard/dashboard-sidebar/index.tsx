@@ -7,17 +7,15 @@ import {
     Typography,
     useMediaQuery,
 } from "@mui/material";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Scrollbar } from "@/components/scrollbar";
 import { DashboardSidebarSection } from "../dashboard-sidebar-section";
-import { OrganizationPopover } from "../organization-popover";
 import { useGetProfileQuery } from "src/services/user";
 import { useRouter } from "next/router";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { SettingsButton } from "@/components/settings-button";
 import useResponsive from "@/hooks/useResponsive";
-import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import getSections from "./getSections";
 
 interface DashboardSidebarProps {
@@ -33,39 +31,15 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         noSsr: true,
     });
 
-    const isAdmin = useGetProfileQuery().data?.isAdmin ?? false;
+    const { data } = useGetProfileQuery();
 
-    const { data: nonViewedNotificationsCount } =
-        useGetNonViewedNotificationsCountQuery();
+    const isAdmin = data?.isAdmin ?? false;
+    const withNotifications = data?.notificationsEnabled ?? false;
 
-    //  filter out the Contact notifications for now as in the page they are not shown and if there is one i get the unerad badge for something that i can not see at all
-    const filteredNotificationsCount = useMemo(() => {
-        if (nonViewedNotificationsCount) {
-            const { CONTACT, ...rest } = nonViewedNotificationsCount.types;
-            return Object.values(rest).reduce((sum, count) => sum + count, 0);
-        }
-        return 0;
-    }, [nonViewedNotificationsCount]);
-
-    const sections = useMemo(() => {
-        const sectionsData = getSections(t, filteredNotificationsCount ?? 0);
-
-        // Check if the user is not an admin (isAdmin is false)
-        if (!isAdmin) {
-            // Filter sections based on the adminOnly attribute
-            return sectionsData.map((section) => ({
-                ...section,
-                items: section.items.filter((item) => !item.adminOnly),
-            }));
-        }
-
-        // If the user is an admin, return all sections without filtering
-        return sectionsData;
-    }, [t, isAdmin, nonViewedNotificationsCount]);
-
-    const organizationsRef = useRef<HTMLButtonElement | null>(null);
-    const [openOrganizationsPopover, setOpenOrganizationsPopover] =
-        useState<boolean>(false);
+    const sections = useMemo(
+        () => getSections(t, isAdmin, withNotifications),
+        [t, isAdmin, withNotifications]
+    );
 
     const handlePathChange = () => {
         if (!router.isReady) {
@@ -82,10 +56,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [router.isReady, router.asPath]
     );
-
-    const handleCloseOrganizationsPopover = (): void => {
-        setOpenOrganizationsPopover(false);
-    };
 
     const belowMd = useResponsive("down", "md");
 
@@ -136,11 +106,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                     </Box>
                 </Box>
             </Scrollbar>
-            <OrganizationPopover
-                anchorEl={organizationsRef.current}
-                onClose={handleCloseOrganizationsPopover}
-                open={openOrganizationsPopover}
-            />
         </>
     );
 
