@@ -1,21 +1,20 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { IMapMarker } from "@/components/Map/Map";
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useMemo, useRef } from "react";
 import CarouselSimple from "@/components/CarouselSimple";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
-import { NormalBadge, PriceBadge, StyledLink } from "./styled";
+import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
 import { getPropertyStatusColor } from "@/theme/colors";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
-    selectedMarker: IMapMarker | null;
 };
 
 const defaultImage = "/static/noImage.png";
 
-const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
+const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const {
         id,
         images,
@@ -35,8 +34,6 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
 
     const bathrooms = details?.bathrooms;
     const bedrooms = details?.bedrooms;
-
-    const { lat, lng } = location || {};
 
     const { t, i18n } = useTranslation();
     const theme = useTheme();
@@ -66,26 +63,11 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
         [images]
     );
 
-    const isActive = Boolean(
-        lat &&
-            lat > 0 &&
-            lng &&
-            lng > 0 &&
-            lat === selectedMarker?.lat &&
-            lng === selectedMarker?.lng
-    );
-
-    useEffect(() => {
-        if (isActive) {
-            ref.current?.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [isActive]);
-
     const stateColor = getPropertyStatusColor(state.value);
     const categoryColor = theme.palette.mode === "dark" ? "#b39ddb" : "#3730a3";
 
     return (
-        <StyledLink isActive={isActive} ref={ref} href={`/property/${id}`}>
+        <StyledLink isActive={false} ref={ref} href={`/property/${id}`}>
             <CarouselSimple
                 data={
                     convertedImages.length > 0
@@ -124,7 +106,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                                     color="text.secondary"
                                     sx={{ textWrap: "nowrap" }}
                                 >
-                                    {plotArea || "N/A"}
+                                    {plotArea || "-"}
                                     {plotArea ? " m²" : null}
                                 </Typography>
                             </Stack>
@@ -141,7 +123,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                                     color="text.secondary"
                                     sx={{ textWrap: "nowrap" }}
                                 >
-                                    {area || "N/A"}
+                                    {area || "-"}
                                     {area ? " m²" : null}
                                 </Typography>
                             </Stack>
@@ -158,8 +140,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                                     color="text.secondary"
                                     sx={{ textWrap: "nowrap" }}
                                 >
-                                    {bedrooms || item.bedrooms || "N/A"}{" "}
-                                    {/* {t("beds")} */}
+                                    {bedrooms || item.bedrooms || "-"}{" "}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -175,8 +156,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                                     color="text.secondary"
                                     sx={{ textWrap: "nowrap" }}
                                 >
-                                    {bathrooms || item.bathrooms || "N/A"}{" "}
-                                    {/* {t("baths")} */}
+                                    {bathrooms || item.bathrooms || "-"}{" "}
                                 </Typography>
                             </Stack>
                         </Stack>
@@ -216,7 +196,6 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                                     color="text.secondary"
                                 >
                                     {details?.setbackCoefficient || "-"}
-                                    {""}
                                 </Typography>
                             </Stack>
                             <Stack
@@ -265,7 +244,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, selectedMarker }) => {
                     </Typography>
                 </Stack>
 
-                <Divider />
+                <Divider sx={DividerSx} />
 
                 <Stack
                     direction="row"

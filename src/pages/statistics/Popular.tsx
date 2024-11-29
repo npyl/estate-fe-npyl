@@ -199,10 +199,7 @@ export default function StackedAreas() {
                                 width={1}
                                 height={1}
                             >
-                                <PropertyCard
-                                    item={property}
-                                    selectedMarker={null}
-                                />
+                                <PropertyCard item={property} />
                                 <Stack
                                     position="absolute"
                                     direction="column"
@@ -261,10 +258,7 @@ export default function StackedAreas() {
                                 minWidth: belowSm ? "50%" : undefined,
                             }}
                         >
-                            <PropertyCard
-                                item={property}
-                                selectedMarker={null}
-                            />
+                            <PropertyCard item={property} />
                             <Stack
                                 position="absolute"
                                 direction="column"

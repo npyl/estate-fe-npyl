@@ -47,7 +47,7 @@ const OwnedCustomerPropertiesSection = () => {
             >
                 {ownedProperties.map((p) => (
                     <Grid item key={p.id} xs={12} sm={6}>
-                        <PropertyCard item={p} selectedMarker={null} />
+                        <PropertyCard item={p} />
                     </Grid>
                 ))}
             </Pagination>

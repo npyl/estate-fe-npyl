@@ -42,14 +42,9 @@ const FlipOrientationButton = ({ toggleOrientation }: Props) => {
 interface PropertiesListProps {
     isLoading: boolean;
     filtered: IPropertyResultResponse[];
-    selectedMarker: IMapMarker | null;
 }
 
-const PropertiesList = ({
-    isLoading,
-    filtered,
-    selectedMarker,
-}: PropertiesListProps) => {
+const PropertiesList = ({ isLoading, filtered }: PropertiesListProps) => {
     const [orientation, toggleOrientation] = useResponsiveOrientation();
 
     return (
@@ -68,15 +63,9 @@ const PropertiesList = ({
                         sm={orientation ? 12 : 6}
                     >
                         {orientation ? (
-                            <PropertyCardH
-                                item={item}
-                                selectedMarker={selectedMarker}
-                            />
+                            <PropertyCardH item={item} />
                         ) : (
-                            <PropertyCard
-                                item={item}
-                                selectedMarker={selectedMarker}
-                            />
+                            <PropertyCard item={item} />
                         )}
                     </Grid>
                 ))}
@@ -173,7 +162,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                         <PropertiesList
                             isLoading={isLoading}
                             filtered={properties?.content || []}
-                            selectedMarker={selectedMarker}
                         />
                     </Pagination>
                 )}

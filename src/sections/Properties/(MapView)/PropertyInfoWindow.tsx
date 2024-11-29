@@ -177,12 +177,7 @@ const PropertyInfoWindow = ({
                 >
                     X
                 </button>
-                {propertyToShow && (
-                    <PropertyCard
-                        item={propertyToShow}
-                        selectedMarker={marker}
-                    />
-                )}
+                {propertyToShow && <PropertyCard item={propertyToShow} />}
             </Box>
         </InfoWindowF>
     );

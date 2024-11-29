@@ -1,5 +1,12 @@
 import Link from "@/components/Link";
-import { Box, BoxProps, Theme, Typography, alpha } from "@mui/material";
+import {
+    Box,
+    BoxProps,
+    SxProps,
+    Theme,
+    Typography,
+    alpha,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const getCss = (theme: Theme) => ({
@@ -22,8 +29,9 @@ export const StyledLink = styled(Link, {
     transition: "all 0.2s ease-in-out",
     "&:hover": {
         ...getCss(theme),
+        backgroundColor: theme.palette.background.paper,
     },
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "transparent",
     ...(isActive ? getCss(theme) : {}),
 }));
 
@@ -79,3 +87,9 @@ export const NormalBadge = styled(
     color: alpha(color, 1),
     backgroundColor: alpha(color, 0.25),
 }));
+
+const DividerSx: SxProps<Theme> = {
+    width: "30%",
+};
+
+export { DividerSx };
