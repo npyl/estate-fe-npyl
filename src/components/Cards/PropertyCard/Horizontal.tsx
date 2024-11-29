@@ -64,7 +64,13 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
     const stateColor = getPropertyStatusColor(state.value);
 
     return (
-        <StyledLink isActive={false} ref={ref} href={`/property/${id}`}>
+        <StyledLink
+            isActive={false}
+            ref={ref}
+            href={`/property/${id}`}
+            border="1px solid"
+            borderColor="divider"
+        >
             <Grid container>
                 <Grid item xs={4} p={1} borderRadius="12px">
                     <CarouselSimple
@@ -87,7 +93,7 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
                     <Stack
                         px={2}
                         py={2}
-                        spacing={0.8}
+                        spacing={2}
                         justifyContent="space-between"
                     >
                         <Stack direction="row" spacing={1} alignItems="center">
@@ -138,6 +144,11 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {bedrooms || "-"}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {t("beds")}
                                 </Typography>
                             </Stack>
@@ -156,6 +167,11 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {bathrooms || "-"}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {t("baths")}
                                 </Typography>
                             </Stack>
@@ -173,6 +189,11 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {area || "-"}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {"m²"}
                                 </Typography>
                             </Stack>
@@ -189,6 +210,11 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
                                     color="text.secondary"
                                 >
                                     {plotArea || "-"}
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {"m²"}
                                 </Typography>
                             </Stack>

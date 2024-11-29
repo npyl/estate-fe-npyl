@@ -1,12 +1,24 @@
 import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
 // @mui
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 // components
 import Carousel from "./carousel";
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 import { ImageRatio, LabeledImage } from "src/components/image";
 import ICarouselImage from "./carousel/types";
+
+const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
+    color: theme.palette.neutral?.[100],
+    backgroundColor: "black",
+    opacity: 0.5,
+    borderRadius: "16px",
+    fontSize: 25,
+    position: "absolute",
+    top: 5,
+    right: 10,
+    zIndex: 1,
+}));
 
 // ----------------------------------------------------------------------
 
@@ -83,26 +95,9 @@ export default function CarouselSimple({
                 position: "relative",
             }}
         >
-            <Box
-                onClick={() => {
-                    onImageClick && onImageClick();
-                }}
-                sx={{ position: "relative" }}
-            >
-                {isActive === false && (
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            top: 5,
-                            right: 10,
-                            zIndex: 1,
-                        }}
-                    >
-                        <LinkOffOutlinedIcon
-                            sx={{ color: "aliceblue", fontSize: 25 }}
-                        />
-                    </Box>
-                )}
+            <Box onClick={onImageClick} sx={{ position: "relative" }}>
+                {isActive === false ? <StyledLinkOffIcon /> : null}
+
                 <Carousel
                     {...carouselSettings1}
                     asNavFor={nav1}

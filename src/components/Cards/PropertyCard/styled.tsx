@@ -14,7 +14,7 @@ const getCss = (theme: Theme) => ({
         theme.palette.mode === "light"
             ? "rgba(0, 0, 0, 0.6) 0px 5px 8px !important"
             : "rgba(255, 255, 255, 0.6) 0px 5px 8px !important",
-    transition: "all 0.2s ease-in-out !important",
+    transition: "all 0.1s ease-in-out !important",
 });
 
 interface StyledBoxProps extends BoxProps {
@@ -26,12 +26,10 @@ export const StyledLink = styled(Link, {
     display: "block", //without it the onHover css is not applied
     borderRadius: "12px",
     cursor: "pointer",
-    transition: "all 0.2s ease-in-out",
     "&:hover": {
         ...getCss(theme),
-        backgroundColor: theme.palette.background.paper,
     },
-    backgroundColor: "transparent",
+    backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
 }));
 
@@ -42,7 +40,7 @@ interface PriceBadgeProps extends BoxProps {
 export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
     <Box {...props}>
         <Typography variant="body2">
-            {`${price ? price?.toLocaleString("de-DE") : "N/A"} €`}
+            {`${price ? price?.toLocaleString("de-DE") : "-"} €`}
         </Typography>
     </Box>
 ))<PriceBadgeProps>(({ theme }) => ({
@@ -89,7 +87,9 @@ export const NormalBadge = styled(
 }));
 
 const DividerSx: SxProps<Theme> = {
-    width: "30%",
+    width: "15%",
+    borderColor: ({ palette: { mode, neutral } }) =>
+        mode === "light" ? neutral?.[100] : neutral?.[800],
 };
 
 export { DividerSx };
