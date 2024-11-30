@@ -12,10 +12,6 @@ export const global = createApi({
                 "Authorization",
                 `Bearer  ${localStorage.getItem("accessToken")}`
             );
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
 
             return headers;
         },
@@ -23,12 +19,15 @@ export const global = createApi({
     tagTypes: ["Global"],
     endpoints: (builder) => ({
         allGlobals: builder.query<IGlobal, string>({
-            query: () => ({
+            query: (lang) => ({
                 url: "",
+                headers: {
+                    "Accept-Language": lang,
+                },
             }),
             providesTags: ["Global"],
         }),
     }),
 });
 
-export const { useAllGlobalsQuery, useLazyAllGlobalsQuery } = global;
+export const { useAllGlobalsQuery } = global;
