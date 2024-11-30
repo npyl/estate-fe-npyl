@@ -17,6 +17,7 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
+import { createLanguageAwareHook } from "../_util";
 
 interface JustData<T> {
     data: T;
@@ -82,11 +83,6 @@ export const properties = createApi({
             headers.set(
                 "Authorization",
                 `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
             );
 
             return headers;
@@ -397,7 +393,6 @@ export const properties = createApi({
 export const {
     // get
     useSearchPropertyQuery,
-    useFilterPropertiesQuery,
     useGetFilterCountersQuery,
     useAllPropertiesQuery,
     useAllPropertyCodesQuery,
@@ -442,3 +437,9 @@ export const {
     useBulkArchivePropertiesMutation,
     useBulkRestorePropertiesMutation,
 } = properties;
+
+const useFilterPropertiesQuery = createLanguageAwareHook(
+    properties.useFilterPropertiesQuery
+);
+
+export { useFilterPropertiesQuery };
