@@ -17,7 +17,7 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
-import { createLanguageAwareHook } from "../_util";
+import { apiWithTranslation, createLanguageAwareHook } from "../_util";
 
 interface JustData<T> {
     data: T;
@@ -73,20 +73,10 @@ interface EditLocationDisplayProps {
     display: LocationDisplay;
 }
 
-export const properties = createApi({
+export const properties = apiWithTranslation({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
-            return headers;
-        },
     }),
     tagTypes: [
         "Properties",
