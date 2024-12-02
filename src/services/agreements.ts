@@ -5,7 +5,8 @@ import {
     IAgreementShort,
 } from "@/types/agreements";
 import IPage from "@/types/page";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 
 interface IAgreementSearchParams {
     search: string;
@@ -13,23 +14,10 @@ interface IAgreementSearchParams {
     pageSize: number;
 }
 
-export const agreements = createApi({
+export const agreements = apiWithTranslation({
     reducerPath: "agreements",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/agreements`,
-        prepareHeaders: (headers) => {
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
-            );
-
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
-
-            return headers;
-        },
     }),
 
     tagTypes: ["Agreements", "AgreementById"],
@@ -89,12 +77,19 @@ export const agreements = createApi({
 });
 
 export const {
-    useFilterAgreementsQuery,
-    useSearchAgreementsQuery,
-    useGetAgreementByIdQuery,
     useCreateAgreementMutation,
     useUpdateAgreementMutation,
     useDeleteAgreementMutation,
 
     useLazyGetAgreementByIdQuery,
 } = agreements;
+
+const useFilterAgreementsQuery = la(agreements.useFilterAgreementsQuery);
+const useSearchAgreementsQuery = la(agreements.useSearchAgreementsQuery);
+const useGetAgreementByIdQuery = la(agreements.useGetAgreementByIdQuery);
+
+export {
+    useFilterAgreementsQuery,
+    useSearchAgreementsQuery,
+    useGetAgreementByIdQuery,
+};
