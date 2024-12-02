@@ -4,7 +4,6 @@ import { exportPDF } from "@/services/exports";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Popover from "./popover";
-import SharePopover from "@/components/Share";
 import downloadBlob from "@/utils/downloadBlob";
 import ExportImage from "./ExportImage";
 
@@ -43,16 +42,6 @@ const ExportButton = () => {
             .finally(() => setLoading(false));
     }, [i18n.language, blueprints, version, propertyId]);
 
-    // Share Popover state
-    const [shareAnchorEl, setShareAnchorEl] =
-        useState<HTMLButtonElement | null>(null);
-    const isShareOpen = Boolean(shareAnchorEl);
-    const handleShareOpen = () => {
-        handleClose(); // Close the main Popover
-        setShareAnchorEl(anchorEl);
-    };
-    const handleShareClose = () => setShareAnchorEl(null);
-
     return (
         <>
             <IconButton onClick={handleOpen}>
@@ -67,22 +56,12 @@ const ExportButton = () => {
                     open={isOpen}
                     anchorEl={anchorEl}
                     onClose={handleClose}
-                    onShare={handleShareOpen}
                     onDownload={handleDownload}
                     blueprints={blueprints}
                     setBlueprints={setBlueprints}
                     version={version}
                     setVersion={setVersion}
                     loading={loading}
-                />
-            ) : null}
-
-            {isShareOpen ? (
-                <SharePopover
-                    open={isShareOpen}
-                    anchorEl={shareAnchorEl}
-                    onClose={handleShareClose}
-                    shareUrl={window.location.href}
                 />
             ) : null}
         </>

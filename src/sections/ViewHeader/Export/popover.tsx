@@ -5,15 +5,10 @@ import FormControlLabel, {
     FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {
-    Button,
-    Stack,
-    CircularProgress,
-    Tooltip,
-    IconButton,
-} from "@mui/material";
+import { Stack, Tooltip, IconButton } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { styled } from "@mui/material/styles";
+import { LoadingButton } from "@mui/lab";
 
 // ---------------------------------------------------
 
@@ -48,7 +43,6 @@ const StyledControlledLabel = styled(FormControlLabel)<ControlledLabelProps>(
 // ---------------------------------------------------
 
 interface ExportPopoverProps extends PopoverProps {
-    onShare: VoidFunction;
     onDownload: VoidFunction;
     blueprints: boolean;
     setBlueprints: (b: boolean) => void;
@@ -58,7 +52,6 @@ interface ExportPopoverProps extends PopoverProps {
 }
 
 const Popover = ({
-    onShare,
     onDownload,
     blueprints,
     setBlueprints,
@@ -154,17 +147,15 @@ const Popover = ({
                     onChange={(_, b) => setBlueprints(b)}
                 />
             </FormGroup>
-            <Stack direction="row" spacing={1}>
-                <Button onClick={onShare} variant="outlined">
-                    {t("Share PDF")}
-                </Button>
-                {loading ? (
-                    <CircularProgress />
-                ) : (
-                    <Button onClick={onDownload} variant="contained">
-                        {t("Download PDF")}
-                    </Button>
-                )}
+            <Stack direction="row" spacing={1} justifyContent="center">
+                <LoadingButton
+                    disabled={loading}
+                    loading={loading}
+                    onClick={onDownload}
+                    variant="contained"
+                >
+                    {t("Download PDF")}
+                </LoadingButton>
             </Stack>
         </MuiPopover>
     );

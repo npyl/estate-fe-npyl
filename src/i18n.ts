@@ -1108,10 +1108,14 @@ const resources = {
             Archive: "Archive",
             Archived: "Archived",
             Restore: "Restore",
+
+            "Property is not public": "Property is not public",
         },
     },
     el: {
         translation: {
+            "Property is not public": "Το ακίνητο δεν είναι δημόσιο",
+
             Restore: "Επαναφορά",
             Archived: "Αρχειοθετημένα",
             Archive: "Αρχειοθέτηση",
