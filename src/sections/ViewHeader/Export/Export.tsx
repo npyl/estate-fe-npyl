@@ -1,6 +1,5 @@
 import { IconButton, Typography } from "@mui/material";
 import { useState, MouseEvent, useCallback } from "react";
-import DocumentSvg from "@/assets/Document";
 import { exportPDF } from "@/services/exports";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -41,10 +40,8 @@ const ExportButton = () => {
             lang: i18n.language as "en" | "el",
         })
             .then(downloadBlob0)
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [blueprints, version, propertyId]);
+            .finally(() => setLoading(false));
+    }, [i18n.language, blueprints, version, propertyId]);
 
     // Share Popover state
     const [shareAnchorEl, setShareAnchorEl] =

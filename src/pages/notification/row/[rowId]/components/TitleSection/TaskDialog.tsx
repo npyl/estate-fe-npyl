@@ -8,10 +8,7 @@ import { ICustomerMini } from "@/types/customer";
 import { IPropertyForNotification } from "@/types/notification/notification";
 import dynamic from "next/dynamic";
 import { IUser } from "@/types/user";
-import {
-    useGetPropertyByCodeQuery,
-    useLazyGetPropertyByCodeQuery,
-} from "@/services/properties";
+import { useLazyGetPropertyByCodeQuery } from "@/services/properties";
 
 const TaskDialog = dynamic(() =>
     import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)

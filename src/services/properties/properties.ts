@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
     IPropertiesPOST,
@@ -17,6 +17,7 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
+import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
 
 interface JustData<T> {
     data: T;
@@ -72,25 +73,10 @@ interface EditLocationDisplayProps {
     display: LocationDisplay;
 }
 
-export const properties = createApi({
+export const properties = apiWithTranslation({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
-
-            return headers;
-        },
     }),
     tagTypes: [
         "Properties",
@@ -116,17 +102,12 @@ export const properties = createApi({
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
-            query: () => ({
-                url: "all",
-            }),
-
+            query: () => "all",
             providesTags: ["Properties"],
         }),
 
         allPropertyCodes: builder.query<IPropertyCodeRes[], void>({
-            query: () => ({
-                url: "/codes",
-            }),
+            query: () => "/codes",
         }),
 
         getPropertyLocationMarkers: builder.query<
@@ -338,9 +319,7 @@ export const properties = createApi({
         // -------------------------------------------------------------------------
 
         archivedCount: builder.query<number, void>({
-            query: () => ({
-                url: "/archive/count",
-            }),
+            query: () => "/archive/count",
             providesTags: ["Archived"],
         }),
 
@@ -404,25 +383,18 @@ export const properties = createApi({
 
 export const {
     // get
-    useSearchPropertyQuery,
-    useFilterPropertiesQuery,
     useGetFilterCountersQuery,
-    useAllPropertiesQuery,
     useAllPropertyCodesQuery,
-    useGetPropertyByIdQuery,
-    useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
     useGetPropertyLocationMarkersQuery,
-    useGetPropertyCardByIdQuery,
 
     // mutations
     useEditPropertyMutation,
     useCreatePropertyMutation,
     useClonePropertyMutation,
     useDeletePropertyMutation,
-    useSuggestForCustomerQuery,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
     useBulkDeletePropertiesMutation,
@@ -444,10 +416,36 @@ export const {
 
     // ...
     useArchivedCountQuery,
-    useFilterArchivedQuery,
     useArchivePropertyMutation,
     useRestorePropertyMutation,
     useBulkArchivePropertiesMutation,
     useBulkDeleteArchivedPropertiesMutation,
     useBulkRestorePropertiesMutation,
 } = properties;
+
+// TODO: this is taking a huge amount of time to come! -> Find better alternatives where it is used.
+const useAllPropertiesQuery = la(properties.useAllPropertiesQuery);
+const useSearchPropertyQuery = la(properties.useSearchPropertyQuery);
+
+const useGetPropertyByIdQuery = la(properties.useGetPropertyByIdQuery);
+const useGetPropertyCardByIdQuery = la(properties.useGetPropertyCardByIdQuery);
+const useGetPropertyByCodeQuery = la(properties.useGetPropertyByCodeQuery);
+
+const useSuggestForCustomerQuery = la(properties.useSuggestForCustomerQuery);
+
+const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
+const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
+
+export {
+    useAllPropertiesQuery,
+    useSearchPropertyQuery,
+    // ...
+    useGetPropertyByIdQuery,
+    useGetPropertyCardByIdQuery,
+    useGetPropertyByCodeQuery,
+    // ...
+    useSuggestForCustomerQuery,
+    // ...
+    useFilterPropertiesQuery,
+    useFilterArchivedQuery,
+};

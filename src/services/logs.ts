@@ -1,6 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ILog, ILogFilterPOST } from "src/types/logs";
 import IPage from "src/types/page";
+import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 
 export interface ILogsParams {
     id?: number;
@@ -11,21 +12,10 @@ export interface ILogsParams {
 interface ILogFilterProps extends ILogsParams {
     filter: ILogFilterPOST;
 }
-export const logs = createApi({
+export const logs = apiWithTranslation({
     reducerPath: "logs",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/logs`,
-        prepareHeaders: (headers) => {
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
-            return headers;
-        },
     }),
     tagTypes: ["Logs", "CustomerByIdLogs", "PropertyByIdLogs"],
 
@@ -59,8 +49,16 @@ export const logs = createApi({
     }),
 });
 
-export const {
-    useCustomerHistoryPaginatedQuery,
-    usePropertyHistoryPaginatedQuery,
+const useFilterLogsMutation = la(logs.useFilterLogsMutation);
+const usePropertyHistoryPaginatedQuery = la(
+    logs.usePropertyHistoryPaginatedQuery
+);
+const useCustomerHistoryPaginatedQuery = la(
+    logs.useCustomerHistoryPaginatedQuery
+);
+
+export {
     useFilterLogsMutation,
-} = logs;
+    usePropertyHistoryPaginatedQuery,
+    useCustomerHistoryPaginatedQuery,
+};
