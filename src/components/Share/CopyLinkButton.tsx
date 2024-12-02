@@ -6,6 +6,8 @@ import { FC, useCallback } from "react";
 import { SpaceBetween } from "../styled";
 
 const StyledStack = styled(SpaceBetween)(({ theme }) => ({
+    width: "100%",
+
     padding: theme.spacing(1),
     gap: theme.spacing(1),
 
@@ -14,13 +16,17 @@ const StyledStack = styled(SpaceBetween)(({ theme }) => ({
     cursor: "pointer",
 
     backgroundColor:
-        theme.palette.mode === "light" ? "grey.100" : "neutral.700",
+        theme.palette.mode === "light"
+            ? theme.palette.grey[100]
+            : theme.palette.neutral?.[700],
 
     borderRadius: theme.spacing(1),
 
     "&:hover": {
         backgroundColor:
-            theme.palette.mode === "light" ? "grey.200" : "neutral.500",
+            theme.palette.mode === "light"
+                ? theme.palette.grey[200]
+                : theme.palette.neutral?.[500],
     },
 }));
 

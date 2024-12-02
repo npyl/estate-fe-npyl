@@ -3,20 +3,33 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ShareIcon from "@mui/icons-material/Share";
 import { SvgIcon } from "@mui/material";
+import { useRouter } from "next/router";
+import { useGetPropertyListingsQuery } from "@/services/properties";
 
 const SharePopover = dynamic(() => import("@/components/Share"));
 
 const ShareButton = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const anchorRef = useRef(null);
     const [isOpen, openPopover, closePopover] = useDialog();
 
-    const hasPublic = false;
+    const router = useRouter();
+    const { propertyId } = router.query;
+    const { data: listings } = useGetPropertyListingsQuery(+propertyId!);
+
+    const hasPublic = useMemo(
+        () => listings?.publicSites?.some(({ published }) => published),
+        [listings?.publicSites]
+    );
+
+    const lang = i18n.language === "el" ? "gr" : "en";
+
+    const shareUrl = `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
 
     return (
         <>
@@ -49,7 +62,7 @@ const ShareButton = () => {
                 <SharePopover
                     anchorEl={anchorRef.current}
                     onClose={closePopover}
-                    shareUrl={window.location.href}
+                    shareUrl={shareUrl}
                 />
             ) : null}
         </>
