@@ -7,16 +7,25 @@ import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { ApiModules } from "@reduxjs/toolkit/query";
 import { useTranslation } from "react-i18next";
 
-function createLanguageAwareHook<T extends (args: any) => any>(hook: T): T {
-    return ((org: Parameters<T>[0]) => {
+function createLanguageAwareHook<T extends (...args: any[]) => any>(
+    hook: T
+): T {
+    return ((...args: Parameters<T>) => {
         const { i18n } = useTranslation();
 
-        const args = {
+        // The first argument is our main data argument
+        const firstArg = args[0];
+        // Get all other arguments after the first one
+        const restArgs = args.slice(1);
+
+        // Create the wrapped args object with language
+        const wrappedArgs = {
             language: i18n.language,
-            org,
+            org: firstArg,
         };
 
-        return hook(args);
+        // Call the hook with our wrapped first argument and spread the rest
+        return hook(wrappedArgs, ...restArgs);
     }) as T;
 }
 
