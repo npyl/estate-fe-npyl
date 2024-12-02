@@ -5,10 +5,7 @@ import {
 } from "@/types/notification/notification";
 import IPage from "@/types/page";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-    ContactNotification,
-    ContactNotificationExtended,
-} from "src/types/notification";
+import { ContactNotificationExtended } from "src/types/notification";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 
 interface INotificationFilterParams {

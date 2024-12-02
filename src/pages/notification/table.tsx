@@ -2,15 +2,10 @@ import {
     Table as MuiTable,
     Paper,
     TableBody,
-    TableCell,
     TableContainer,
-    TableHead,
     TablePagination,
-    TableRow,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import { ContactNotification, NotificationType } from "src/types/notification";
-import { useMemo } from "react";
 // rows
 import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
@@ -46,18 +41,6 @@ const Table = ({
     onRowsPerPageChange,
     totalRows,
 }: TableProps) => {
-    const { t } = useTranslation();
-
-    const COLUMNS: string[] = useMemo(
-        () => [
-            t("Name"),
-            t("Email"),
-            t("Mobile Phone"),
-            t("Notification Date"),
-        ],
-        [t]
-    );
-
     const RowComponent =
         variant === "LISTING"
             ? ListingRow
