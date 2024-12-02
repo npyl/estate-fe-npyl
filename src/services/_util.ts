@@ -8,15 +8,14 @@ import { ApiModules } from "@reduxjs/toolkit/query";
 import { useTranslation } from "react-i18next";
 
 function createLanguageAwareHook<T extends (args: any) => any>(hook: T): T {
-    return ((args: Parameters<T>[0]) => {
+    return ((org: Parameters<T>[0]) => {
         const { i18n } = useTranslation();
 
-        if (args && typeof args === "object") {
-            args = {
-                ...args,
-                language: i18n.language,
-            };
-        }
+        const args = {
+            language: i18n.language,
+            org,
+        };
+
         return hook(args);
     }) as T;
 }
@@ -35,10 +34,9 @@ const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
             const originalQueryFn = definition.query;
 
             definition.query = (args) => {
-                // Get the language from args if it exists
-                const language = args?.language;
+                const { language, org } = args || {};
 
-                let res = originalQueryFn?.(args);
+                let res = originalQueryFn?.(org);
 
                 // TOKEN
                 res = {
