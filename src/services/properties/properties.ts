@@ -375,7 +375,6 @@ export const properties = apiWithTranslation({
 
 export const {
     // get
-    useSearchPropertyQuery,
     useGetFilterCountersQuery,
     useAllPropertyCodesQuery,
     useLazyGetPropertyByCodeQuery,
@@ -388,7 +387,6 @@ export const {
     useCreatePropertyMutation,
     useClonePropertyMutation,
     useDeletePropertyMutation,
-    useSuggestForCustomerQuery,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
     useBulkDeletePropertiesMutation,
@@ -418,20 +416,26 @@ export const {
 
 // TODO: this is taking a huge amount of time to come! -> Find better alternatives where it is used.
 const useAllPropertiesQuery = la(properties.useAllPropertiesQuery);
+const useSearchPropertyQuery = la(properties.useSearchPropertyQuery);
 
 const useGetPropertyByIdQuery = la(properties.useGetPropertyByIdQuery);
 const useGetPropertyCardByIdQuery = la(properties.useGetPropertyCardByIdQuery);
 const useGetPropertyByCodeQuery = la(properties.useGetPropertyByCodeQuery);
+
+const useSuggestForCustomerQuery = la(properties.useSuggestForCustomerQuery);
 
 const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
 export {
     useAllPropertiesQuery,
+    useSearchPropertyQuery,
     // ...
     useGetPropertyByIdQuery,
     useGetPropertyCardByIdQuery,
     useGetPropertyByCodeQuery,
+    // ...
+    useSuggestForCustomerQuery,
     // ...
     useFilterPropertiesQuery,
     useFilterArchivedQuery,
