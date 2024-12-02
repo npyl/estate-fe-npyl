@@ -1,6 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IView } from "@/types/publicDashboard";
 import { IProperties } from "@/types/properties";
+import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 
 type TTimeFrame = "ALL_TIME" | "CUSTOM" | "DAY" | "MONTH" | "WEEK" | "YEAR";
 
@@ -26,21 +27,13 @@ interface TotalPropertyViews {
     }[];
 }
 
-export const publicDashboard = createApi({
+export const publicDashboard = apiWithTranslation({
     reducerPath: "publicDashboard",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/public-dashboard`,
         prepareHeaders: (headers) => {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
-            );
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
             headers.set("Time-Zone", timeZone);
 
             return headers;
@@ -78,6 +71,11 @@ export const publicDashboard = createApi({
 export const {
     useGetDailyViewsQuery,
     useGetPublicDashboardParentCategoriesQuery,
-    useGetPublicDashboardPopularPropertiesQuery,
     useGetPublicDashboardPropertyViewsQuery,
 } = publicDashboard;
+
+const useGetPublicDashboardPopularPropertiesQuery = la(
+    publicDashboard.useGetPublicDashboardPopularPropertiesQuery
+);
+
+export { useGetPublicDashboardPopularPropertiesQuery };
