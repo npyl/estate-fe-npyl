@@ -36,7 +36,7 @@ function ReviewRow({
 }: ReviewRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
-    const { data: review, isLoading } = useGetNotificationByIdQuery(row.id!, {
+    const { data: review } = useGetNotificationByIdQuery(row.id!, {
         skip: !row.id && !open,
         selectFromResult: ({ data, isLoading }) => ({
             data: data?.reviewDetails,

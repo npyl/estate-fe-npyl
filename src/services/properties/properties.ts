@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
     IPropertiesPOST,
@@ -17,7 +17,7 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
-import { apiWithTranslation, createLanguageAwareHook } from "../_util";
+import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
 
 interface JustData<T> {
     data: T;
@@ -102,17 +102,12 @@ export const properties = apiWithTranslation({
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
-            query: () => ({
-                url: "all",
-            }),
-
+            query: () => "all",
             providesTags: ["Properties"],
         }),
 
         allPropertyCodes: builder.query<IPropertyCodeRes[], void>({
-            query: () => ({
-                url: "/codes",
-            }),
+            query: () => "/codes",
         }),
 
         getPropertyLocationMarkers: builder.query<
@@ -324,9 +319,7 @@ export const properties = apiWithTranslation({
         // -------------------------------------------------------------------------
 
         archivedCount: builder.query<number, void>({
-            query: () => ({
-                url: "/archive/count",
-            }),
+            query: () => "/archive/count",
             providesTags: ["Archived"],
         }),
 
@@ -384,15 +377,11 @@ export const {
     // get
     useSearchPropertyQuery,
     useGetFilterCountersQuery,
-    useAllPropertiesQuery,
     useAllPropertyCodesQuery,
-    useGetPropertyByIdQuery,
-    useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
     useGetPropertyLocationMarkersQuery,
-    useGetPropertyCardByIdQuery,
 
     // mutations
     useEditPropertyMutation,
@@ -421,15 +410,29 @@ export const {
 
     // ...
     useArchivedCountQuery,
-    useFilterArchivedQuery,
     useArchivePropertyMutation,
     useRestorePropertyMutation,
     useBulkArchivePropertiesMutation,
     useBulkRestorePropertiesMutation,
 } = properties;
 
-const useFilterPropertiesQuery = createLanguageAwareHook(
-    properties.useFilterPropertiesQuery
-);
+// TODO: this is taking a huge amount of time to come! -> Find better alternatives where it is used.
+const useAllPropertiesQuery = la(properties.useAllPropertiesQuery);
 
-export { useFilterPropertiesQuery };
+const useGetPropertyByIdQuery = la(properties.useGetPropertyByIdQuery);
+const useGetPropertyCardByIdQuery = la(properties.useGetPropertyCardByIdQuery);
+const useGetPropertyByCodeQuery = la(properties.useGetPropertyByCodeQuery);
+
+const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
+const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
+
+export {
+    useAllPropertiesQuery,
+    // ...
+    useGetPropertyByIdQuery,
+    useGetPropertyCardByIdQuery,
+    useGetPropertyByCodeQuery,
+    // ...
+    useFilterPropertiesQuery,
+    useFilterArchivedQuery,
+};
