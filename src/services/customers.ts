@@ -9,6 +9,7 @@ import {
 } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
+import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 
 export interface BulkEditRequest {
     customerIds: number[];
@@ -27,20 +28,10 @@ interface ICustomerFilterProps extends ICustomerParams {
     filter: ICustomerFilter;
 }
 
-export const customers = createApi({
+export const customers = apiWithTranslation({
     reducerPath: "customers",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/customers`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
-            return headers;
-        },
     }),
     tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels", "Tasks"],
 
@@ -155,7 +146,6 @@ export const customers = createApi({
 export const {
     useAllCustomersQuery,
     useGetNamesQuery,
-    useGetCustomerByIdQuery,
     useFilterCustomersQuery,
     useLazyFindByEmailQuery,
     useSearchCustomerQuery,
@@ -170,3 +160,7 @@ export const {
 
     useGetTasksQuery,
 } = customers;
+
+const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);
+
+export { useGetCustomerByIdQuery };
