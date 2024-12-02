@@ -383,6 +383,14 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Archived", "Properties"],
         }),
+        bulkDeleteArchivedProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/archive/delete/bulk`,
+                method: "DELETE",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
         bulkRestoreProperties: builder.mutation<void, number[]>({
             query: (propertyIds) => ({
                 url: `/archive/restore/bulk`,
@@ -440,5 +448,6 @@ export const {
     useArchivePropertyMutation,
     useRestorePropertyMutation,
     useBulkArchivePropertiesMutation,
+    useBulkDeleteArchivedPropertiesMutation,
     useBulkRestorePropertiesMutation,
 } = properties;
