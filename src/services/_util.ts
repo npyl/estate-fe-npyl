@@ -34,33 +34,48 @@ const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
             const originalQueryFn = definition.query;
 
             definition.query = (args) => {
-                const { language, org } = args || {};
+                try {
+                    const { language, org } = args || {};
 
-                let res = originalQueryFn?.(org);
+                    // INFO: check for whether data is coming from `createLanguageAwareHook`.
+                    //  If not, make sure we pass down the original args because not all endpoints are wrapped with this!
+                    const wasWrapped = Boolean(language) && Boolean(org);
 
-                // TOKEN
-                res = {
-                    ...res,
-                    headers: {
-                        ...res.headers,
-                        Authorization: `Bearer  ${localStorage.getItem(
-                            "accessToken"
-                        )}`,
-                    },
-                };
+                    const res = originalQueryFn?.(wasWrapped ? org : args);
 
-                // Language
-                if (language) {
-                    res = {
-                        ...res,
+                    // INFO: some rtk apis use the quick notation: query: (id: number) => `${id}`
+                    // Make sure we support that
+                    let reworkedQuery =
+                        typeof res === "string"
+                            ? { url: res, method: "GET" }
+                            : res;
+
+                    // TOKEN
+                    reworkedQuery = {
+                        ...reworkedQuery,
                         headers: {
-                            ...res.headers,
-                            "Accept-Language": language,
+                            ...reworkedQuery.headers,
+                            Authorization: `Bearer  ${localStorage.getItem(
+                                "accessToken"
+                            )}`,
                         },
                     };
-                }
 
-                return res;
+                    // Language
+                    if (language) {
+                        reworkedQuery = {
+                            ...reworkedQuery,
+                            headers: {
+                                ...reworkedQuery.headers,
+                                "Accept-Language": language,
+                            },
+                        };
+                    }
+
+                    return reworkedQuery;
+                } catch (ex) {
+                    console.error(ex);
+                }
             };
         },
     }),
