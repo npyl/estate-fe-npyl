@@ -12,9 +12,9 @@ import { styled } from "@mui/material/styles";
 const getCss = (theme: Theme) => ({
     boxShadow:
         theme.palette.mode === "light"
-            ? "rgba(0, 0, 0, 0.6) 0px 5px 8px !important"
-            : "rgba(255, 255, 255, 0.6) 0px 5px 8px !important",
-    transition: "all 0.1s ease-in-out !important",
+            ? "rgba(0, 0, 0, 0.6) 0px 5px 8px"
+            : "rgba(255, 255, 255, 0.6) 0px 5px 8px",
+    transition: "boxShadow 0.1s ease-in-out",
 });
 
 interface StyledBoxProps extends BoxProps {
@@ -23,7 +23,7 @@ interface StyledBoxProps extends BoxProps {
 export const StyledLink = styled(Link, {
     shouldForwardProp: (prop) => prop !== "isActive",
 })<StyledBoxProps>(({ isActive, theme }) => ({
-    display: "block", //without it the onHover css is not applied
+    display: "block", // INFO: without it the onHover css is not applied
     borderRadius: "12px",
     cursor: "pointer",
     "&:hover": {

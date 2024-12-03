@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
+import {
+    useCallback,
+    useRef,
+    useState,
+    MouseEvent,
+    useLayoutEffect,
+} from "react";
 // @mui
-import { Box, styled } from "@mui/material";
+import { Box, BoxProps, styled, SxProps, Theme } from "@mui/material";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 // components
 import Carousel from "./carousel";
@@ -20,6 +26,20 @@ const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
     zIndex: 1,
 }));
 
+const BoxSx: SxProps<Theme> = {
+    "& .slick-slide": {
+        float: (theme) => (theme.direction === "rtl" ? "right" : "left"),
+    },
+
+    zIndex: 0,
+    overflow: "hidden",
+    position: "relative",
+
+    // INFO: important:
+    width: "100%",
+    height: "100%",
+};
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -32,49 +52,47 @@ type Props = {
     data: ICarouselImage[];
     mainLabel?: string;
     onImageChange?: (newImage: ICarouselImage) => void;
-    onImageClick?: () => void;
     isActive?: boolean;
-};
+} & BoxProps;
 
 // ----------------------------------------------------------------------
 
-export default function CarouselSimple({
+const CarouselSettings = {
+    dots: false,
+    arrows: false,
+    slidesToShow: 1,
+    draggable: false,
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+};
+
+function CarouselSimple({
     data,
     initialIndex,
     onImageChange,
-    onImageClick,
     mainLabel,
     ratio = "16/9",
     size,
     isActive,
+    sx,
+    ...props
 }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
-
     const carousel1 = useRef<Carousel | null>(null);
 
-    const carouselSettings1 = {
-        dots: false,
-        arrows: false,
-        slidesToShow: 1,
-        draggable: false,
-        slidesToScroll: 1,
-        adaptiveHeight: true,
-        beforeChange: (current: number, next: number) => setCurrentIndex(next),
-        afterChange: (currentSlide: number) =>
-            onImageChange && onImageChange(data[currentSlide]),
-    };
+    const onBeforeChange = useCallback(
+        (_: number, next: number) => setCurrentIndex(next),
+        []
+    );
 
-    useEffect(() => {
-        if (carousel1.current) {
-            setNav1(carousel1.current);
-        }
-    }, []);
+    const onAfterChange = useCallback(
+        (i: number) => onImageChange?.(data[i]),
+        [data, onImageChange]
+    );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!initialIndex) return;
-
         carousel1.current?.slickGoTo(initialIndex, false);
     }, [initialIndex]);
 
@@ -87,38 +105,29 @@ export default function CarouselSimple({
         carousel1.current?.slickNext();
     }, []);
 
-    const renderLargeImg = (
-        <Box
-            sx={{
-                zIndex: 0,
-                overflow: "hidden",
-                position: "relative",
-            }}
-        >
-            <Box onClick={onImageClick} sx={{ position: "relative" }}>
-                {isActive === false ? <StyledLinkOffIcon /> : null}
+    return (
+        <Box sx={{ ...(BoxSx as any), ...sx }} {...props}>
+            {!isActive ? <StyledLinkOffIcon /> : null}
 
-                <Carousel
-                    {...carouselSettings1}
-                    asNavFor={nav1}
-                    ref={carousel1}
-                >
-                    {data.map(({ id, title, url, hidden, thumbnail }) => (
-                        <LabeledImage
-                            key={id}
-                            alt={title}
-                            src={url || ""}
-                            hidden={hidden}
-                            label={mainLabel && thumbnail ? mainLabel : ""}
-                            onClick={() => {
-                                onImageClick && onImageClick();
-                            }}
-                            size={size}
-                            ratio={ratio! as ImageRatio}
-                        />
-                    ))}
-                </Carousel>
-            </Box>
+            <Carousel
+                {...CarouselSettings}
+                beforeChange={onBeforeChange}
+                afterChange={onAfterChange}
+                ref={carousel1}
+            >
+                {data.map(({ id, title, url, hidden, thumbnail }) => (
+                    <LabeledImage
+                        key={id}
+                        alt={title}
+                        src={url || ""}
+                        hidden={hidden}
+                        label={mainLabel && thumbnail ? mainLabel : ""}
+                        size={size}
+                        ratio={ratio! as ImageRatio}
+                    />
+                ))}
+            </Carousel>
+
             <CarouselArrowIndex
                 index={currentIndex}
                 total={data.length}
@@ -127,17 +136,6 @@ export default function CarouselSimple({
             />
         </Box>
     );
-
-    return (
-        <Box
-            sx={{
-                "& .slick-slide": {
-                    float: (theme) =>
-                        theme.direction === "rtl" ? "right" : "left",
-                },
-            }}
-        >
-            {renderLargeImg}
-        </Box>
-    );
 }
+
+export default CarouselSimple;
