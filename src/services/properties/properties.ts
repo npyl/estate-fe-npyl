@@ -180,14 +180,6 @@ export const properties = apiWithTranslation({
             }),
             invalidatesTags: ["Properties", "Archived", "PropertyById"],
         }),
-        bulkDeleteProperties: builder.mutation<void, number[]>({
-            query: (propertyIds) => ({
-                url: `/delete/bulk`,
-                method: "DELETE",
-                body: propertyIds,
-            }),
-            invalidatesTags: ["Properties", "Archived", "PropertyById"],
-        }),
 
         filterProperties: builder.query<
             IPage<IPropertyResultResponse>,
@@ -238,13 +230,6 @@ export const properties = apiWithTranslation({
                 params: params,
             }),
             providesTags: ["SuggestedCustomers"],
-        }),
-        deleteProperty: builder.mutation<IProperties, number>({
-            query: (id) => ({
-                url: `/${id}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Properties", "Archived"],
         }),
         searchProperty: builder.query<
             IPage<IPropertyResultResponse>,
@@ -340,13 +325,6 @@ export const properties = apiWithTranslation({
             }),
             providesTags: ["Archived"],
         }),
-        archiveProperty: builder.mutation<void, number>({
-            query: (id) => ({
-                url: `/archive/${id}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Archived", "Properties"],
-        }),
         restoreProperty: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/archive/restore/${id}`,
@@ -362,18 +340,47 @@ export const properties = apiWithTranslation({
             }),
             invalidatesTags: ["Archived", "Properties"],
         }),
-        bulkDeleteArchivedProperties: builder.mutation<void, number[]>({
-            query: (propertyIds) => ({
-                url: `/archive/delete/bulk`,
-                method: "DELETE",
-                body: propertyIds,
-            }),
-            invalidatesTags: ["Archived", "Properties"],
-        }),
         bulkRestoreProperties: builder.mutation<void, number[]>({
             query: (propertyIds) => ({
                 url: `/archive/restore/bulk`,
                 method: "POST",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
+
+        // -----------------------------------------------------------
+
+        // INFO: this has to do with how backend handles Archive and Delete but the gist is:
+        //  for non-permanent: call deleteProperty (this will make the property show up on the Archives page)
+        //  for permanent: call deletePermanentProperty (this will completely delete the property independently of where it is)
+
+        deleteProperty: builder.mutation<IProperties, number>({
+            query: (id) => ({
+                url: `/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Properties", "Archived"],
+        }),
+        deletePermanentProperty: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/archive/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Archived", "Properties"],
+        }),
+        bulkDeleteProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/delete/bulk`,
+                method: "DELETE",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Properties", "Archived", "PropertyById"],
+        }),
+        bulkDeletePermanentProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/archive/delete/bulk`,
+                method: "DELETE",
                 body: propertyIds,
             }),
             invalidatesTags: ["Archived", "Properties"],
@@ -394,10 +401,8 @@ export const {
     useEditPropertyMutation,
     useCreatePropertyMutation,
     useClonePropertyMutation,
-    useDeletePropertyMutation,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
-    useBulkDeletePropertiesMutation,
     useEditLocationDisplayMutation,
 
     // check
@@ -416,11 +421,14 @@ export const {
 
     // ...
     useArchivedCountQuery,
-    useArchivePropertyMutation,
     useRestorePropertyMutation,
     useBulkArchivePropertiesMutation,
-    useBulkDeleteArchivedPropertiesMutation,
     useBulkRestorePropertiesMutation,
+
+    useDeletePropertyMutation,
+    useDeletePermanentPropertyMutation,
+    useBulkDeletePropertiesMutation,
+    useBulkDeletePermanentPropertiesMutation,
 } = properties;
 
 // TODO: this is taking a huge amount of time to come! -> Find better alternatives where it is used.

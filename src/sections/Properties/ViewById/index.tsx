@@ -2,8 +2,8 @@ import { Tab, TabProps, Tabs } from "@mui/material";
 import { useRouter } from "next/router";
 import { FC, Suspense, useCallback, useState } from "react";
 import {
-    useArchivePropertyMutation,
     useClonePropertyMutation,
+    useDeletePermanentPropertyMutation,
     useDeletePropertyMutation,
 } from "src/services/properties";
 
@@ -76,20 +76,14 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
 
     const { propertyId } = router.query;
 
-    const [archiveProperty] = useArchivePropertyMutation();
     const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
+    const [deletePermanent] = useDeletePermanentPropertyMutation();
 
     const [value, setValue] = useState(0);
     const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
 
     const handleChange = useCallback((_: any, v: number) => setValue(v), []);
-
-    const handleArchive = useCallback(async () => {
-        const res = await archiveProperty(+propertyId!);
-        if ("error" in res) return;
-        router.push("/archived");
-    }, []);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
 
@@ -105,11 +99,16 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
             );
     };
 
-    const handleDelete = () =>
-        deleteProperty(+propertyId!).then(() => {
-            router.push("/");
-            removeTab(propertyId as string);
-        });
+    const handleArchive = useCallback(async () => {
+        const res = await deleteProperty(+propertyId!);
+        if ("error" in res) return;
+        router.push("/archived");
+    }, []);
+    const handleDelete = useCallback(async () => {
+        await deletePermanent(+propertyId!);
+        router.push("/property");
+        removeTab(propertyId as string);
+    }, [propertyId]);
 
     return (
         <>
