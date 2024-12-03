@@ -6,7 +6,7 @@ import {
     FacebookShareButton,
     FacebookIcon,
     TwitterShareButton,
-    TwitterIcon,
+    XIcon,
     LinkedinShareButton,
     LinkedinIcon,
     EmailShareButton,
@@ -145,8 +145,8 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 />
                 <Button
                     Component={TwitterShareButton}
-                    label="Twitter"
-                    icon={TwitterIcon}
+                    label="X"
+                    icon={XIcon}
                     shareUrl={shareUrl}
                 />
                 <Button
