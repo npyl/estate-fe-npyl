@@ -1,7 +1,7 @@
 import { isValidElement, ReactNode } from "react";
 import { TwoDimentionsDndNode } from "./types";
 import { Draggable } from "react-beautiful-dnd";
-import Grid from "@mui/material/Grid";
+import Grid, { GridProps } from "@mui/material/Grid";
 import { CenteredDiv } from "./styled";
 import { SxProps, Theme } from "@mui/material";
 
@@ -29,7 +29,8 @@ const getId = (dndId: number | undefined, item: ReactNode) =>
         ? `${dndId}-item-${getNodeId(item)}`
         : `item-${getNodeId(item)}`;
 
-interface DraggableItemProps {
+export interface DraggableItemProps
+    extends Omit<GridProps, "item" | "sx" | "columns"> {
     item: TwoDimentionsDndNode;
     dndId?: number;
     dndStartIndex?: number;
@@ -47,8 +48,9 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     preventDrag,
     columns,
     draggableSx,
+    ...props
 }) => (
-    <Grid item xs={12 / columns}>
+    <Grid item xs={12 / columns} {...props}>
         <Draggable
             draggableId={getId(dndId, item)}
             key={getId(dndId, item)}

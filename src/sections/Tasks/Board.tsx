@@ -1,5 +1,5 @@
 import Column, { DroppableTypeTask } from "./column";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DropResult } from "react-beautiful-dnd";
 import { FC, useCallback } from "react";
 import {
     useMoveCardMutation,
@@ -11,13 +11,29 @@ import React from "react";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 import { useFiltersContext } from "./filters";
-import DroppableRow from "@/components/TwoDimentionsDnd/DroppableRow";
+import { TwoDimentionsDnd } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import { GridProps } from "@mui/material/Grid";
 
 // --------------------------------------------------------------------
 
 const getColumn = (c: IKanbanColumn) => (
     <Column key={c.id} id={c.id} column={c} />
 );
+
+const DraggableProps: Omit<GridProps, "columns" | "sx" | "item"> = {
+    xs: 12,
+    sm: 6,
+    md: 4,
+    lg: 3,
+    xl: 12 / 5,
+    flexShrink: 0,
+    height: "100%",
+};
+
+const RowProps: Omit<GridProps, "gap" | "children"> = {
+    wrap: "nowrap",
+    overflow: "auto hidden",
+};
 
 // ----------------------------------------------------------------------
 // Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
@@ -114,17 +130,15 @@ const Board: FC<Props> = ({ columns }) => {
     );
 
     return (
-        <DragDropContext onDragEnd={handleDragEnd}>
-            <DroppableRow
-                mt={1}
-                index={0}
-                gap={1}
-                wrap="nowrap"
-                overflow="auto hidden"
-            >
-                {columns?.map(getColumn)}
-            </DroppableRow>
-        </DragDropContext>
+        <TwoDimentionsDnd
+            columns={columns.length}
+            gap={1}
+            draggableProps={DraggableProps}
+            rowProps={RowProps}
+            onDragEnd={handleDragEnd}
+        >
+            {columns?.map(getColumn)}
+        </TwoDimentionsDnd>
     );
 };
 

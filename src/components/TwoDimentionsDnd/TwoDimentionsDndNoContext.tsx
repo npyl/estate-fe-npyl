@@ -20,7 +20,11 @@ const TwoDimentionsDndNoContext = ({
     dndId,
     startIndex,
     preventDrag = false,
+    // ...
     draggableSx,
+    draggableProps,
+    rowProps,
+    // ...
     children,
     ...props
 }: TwoDimentionsDndNoContextProps) => {
@@ -53,6 +57,7 @@ const TwoDimentionsDndNoContext = ({
                     dndId={dndId}
                     index={i}
                     gap={gap}
+                    {...rowProps}
                 >
                     {row.map((item, j) => (
                         <DraggableItem
@@ -64,6 +69,7 @@ const TwoDimentionsDndNoContext = ({
                             preventDrag={preventDrag}
                             columns={columns}
                             draggableSx={draggableSx}
+                            {...draggableProps}
                         />
                     ))}
                 </DroppableRow>

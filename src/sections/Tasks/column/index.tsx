@@ -2,7 +2,7 @@ import { Droppable } from "react-beautiful-dnd";
 import { IKanbanColumn } from "@/types/tasks";
 import Header from "./Header";
 import Cards from "./Cards";
-import { StyledGrid } from "./styled";
+import { StyledPaper } from "./styled";
 
 // ----------------------------------------------------------------------
 
@@ -20,19 +20,10 @@ export default function Column({ column }: Props) {
             type={DroppableTypeTask}
         >
             {(provided) => (
-                <StyledGrid
+                <StyledPaper
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    // ...
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    lg={3}
-                    xl={12 / 5}
-                    flexShrink={0}
-                    border="1px solid"
-                    borderColor="divider"
+                    variant="outlined"
                 >
                     <Header
                         name={column.name}
@@ -49,7 +40,7 @@ export default function Column({ column }: Props) {
                     />
 
                     {provided.placeholder}
-                </StyledGrid>
+                </StyledPaper>
             )}
         </Droppable>
     );

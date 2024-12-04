@@ -1,5 +1,6 @@
-import { StackProps, SxProps, Theme } from "@mui/material";
+import { GridProps, StackProps, SxProps, Theme } from "@mui/material";
 import { ReactElement } from "react";
+import { DraggableItemProps } from "./DraggableItem";
 
 interface ChildProps {
     id: number | string; // INFO: this is the id referred to as "someId" below
@@ -36,8 +37,10 @@ export interface TwoDimentionsDndNoContextProps
     preventDrag?: boolean;
     children: TwoDimentionsDndNode | TwoDimentionsDndNode[];
 
-    //centering
+    rowProps?: Omit<GridProps, "children" | "gap">;
+
     draggableSx?: SxProps<Theme>;
+    draggableProps?: Omit<GridProps, "item" | "sx" | "columns">;
 }
 
 export const DroppableTypeItem = "ITEM";
