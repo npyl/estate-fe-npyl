@@ -40,7 +40,10 @@ const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
     name: "acceptLanguage" as any,
     init: () => ({
         injectEndpoint: (_, definition) => {
-            const originalQueryFn = definition.query;
+            // INFO: for queryFn we do not have to do anything
+            if (!definition.query) return;
+
+            const originalQuery = definition.query;
 
             definition.query = (args) => {
                 try {
@@ -50,7 +53,7 @@ const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
                     //  If not, make sure we pass down the original args because not all endpoints are wrapped with this!
                     const wasWrapped = Boolean(language) && Boolean(org);
 
-                    const res = originalQueryFn?.(wasWrapped ? org : args);
+                    const res = originalQuery?.(wasWrapped ? org : args);
 
                     // INFO: some rtk apis use the quick notation: query: (id: number) => `${id}`
                     // Make sure we support that
