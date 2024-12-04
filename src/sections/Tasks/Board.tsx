@@ -32,7 +32,10 @@ const DraggableProps: Omit<GridProps, "columns" | "sx" | "item"> = {
 
 const RowProps: Omit<GridProps, "gap" | "children"> = {
     wrap: "nowrap",
-    overflow: "auto hidden",
+    overflow: "auto",
+
+    // TODO: these values are super approximate! Make sure we actually calculate them somehow!
+    maxHeight: { xs: "calc(100vh - 170px)", lg: "calc(100vh - 226px)" },
 };
 
 // ----------------------------------------------------------------------
