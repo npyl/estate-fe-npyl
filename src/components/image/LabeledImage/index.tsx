@@ -17,7 +17,6 @@ const LabeledImage = ({
 }: LabeledImageProps) => (
     <Box position="relative">
         <Image src={src} {...props} />
-
         {label ? <Label>{label}</Label> : null}
         {hidden ? <LockIcon fontSize="large" /> : null}
     </Box>

@@ -13,6 +13,8 @@ import Carousel from "./carousel";
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 import { ImageRatio, LabeledImage } from "src/components/image";
 import ICarouselImage from "./carousel/types";
+import NoImageIcon from "@/assets/icons/no-image";
+import WrapperWithRatio from "./image/WrapperWithRatio";
 
 const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
     color: theme.palette.neutral?.[100],
@@ -126,14 +128,22 @@ function CarouselSimple({
                         ratio={ratio! as ImageRatio}
                     />
                 ))}
+
+                {data.length === 0 ? (
+                    <WrapperWithRatio ratio={ratio! as ImageRatio}>
+                        <NoImageIcon height="100%" width="100%" />
+                    </WrapperWithRatio>
+                ) : null}
             </Carousel>
 
-            <CarouselArrowIndex
-                index={currentIndex}
-                total={data.length}
-                onNext={handleNext}
-                onPrevious={handlePrev}
-            />
+            {data.length > 1 ? (
+                <CarouselArrowIndex
+                    index={currentIndex}
+                    total={data.length}
+                    onNext={handleNext}
+                    onPrevious={handlePrev}
+                />
+            ) : null}
         </Box>
     );
 }

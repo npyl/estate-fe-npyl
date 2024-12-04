@@ -11,8 +11,6 @@ type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
 };
 
-const defaultImage = "/static/noImage.png";
-
 // -------------------------------------------------------------
 
 const PropertyCard = ({ item }: PropertyCardProps) => {
@@ -37,12 +35,14 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
 
     const ref = useRef<HTMLAnchorElement>(null);
 
-    const addressParts =
-        i18n.language === "en"
-            ? [regionEN, cityEN, complexEN]
-            : [regionGR, cityGR, complexGR];
+    const address = useMemo(() => {
+        const addressParts =
+            i18n.language === "en"
+                ? [regionEN, cityEN, complexEN]
+                : [regionGR, cityGR, complexGR];
 
-    const address = addressParts.filter((part) => part).join(", ");
+        return addressParts.filter((part) => part).join(", ");
+    }, [i18n.language]);
 
     const convertedImages = useMemo(
         () =>
@@ -56,16 +56,10 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
 
                 return {
                     id: index,
-                    url: urlString || defaultImage,
+                    url: urlString,
                     title: "",
                 };
-            }) || [
-                {
-                    id: 1,
-                    url: defaultImage,
-                    title: "",
-                },
-            ],
+            }) || [],
         [images]
     );
 

@@ -1,77 +1,63 @@
-// @mui
-import Box from "@mui/material/Box";
-import getRatio from "./getRatio";
 import { ImageProps } from "./types";
-import { forwardRef, useCallback } from "react";
-
-// ----------------------------------------------------------------------
-
-const defaultImage = "/static/preview/previewImage.png";
+import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
+import NoImageIcon from "@/assets/icons/no-image";
+import WrapperWithRatio from "./WrapperWithRatio";
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(
     (
         {
-            ratio,
             alt = "",
-            src = defaultImage,
-            size = {
-                width: "100%",
-                height: "100%",
-            },
-            containerSx,
-            sx,
+            src = "",
+            size = { width: "100%", height: "100%" },
             imgStyle,
             ...other
         },
         ref
     ) => {
-        // Set defaultImage
-        const handleError = useCallback(() => {
-            if (!ref || typeof ref !== "object" || !ref.current) return;
-            ref.current.src = defaultImage;
-        }, []);
+        const fallbackRef = useRef<SVGSVGElement>(null);
+
+        const handleError = useCallback(
+            (e: SyntheticEvent<HTMLImageElement>) => {
+                e.currentTarget.style.display = "none";
+                if (!fallbackRef || !fallbackRef.current) return;
+                fallbackRef.current.style.display = "block";
+            },
+            []
+        );
+
+        const handleLoad = useCallback(
+            (e: SyntheticEvent<HTMLImageElement>) => {
+                e.currentTarget.style.display = "block";
+                e.currentTarget.style.visibility = "visible";
+            },
+            []
+        );
 
         return (
-            <Box
-                component="span"
-                sx={{
-                    borderRadius: 1,
-                    width: 1,
-                    lineHeight: 1,
-                    display: "block",
-                    overflow: "hidden",
-                    position: "relative",
-                    pt: getRatio(ratio),
-                    ...containerSx,
-                }}
-            >
-                <Box
-                    sx={{
-                        top: 0,
-                        left: 0,
-                        width: 1,
-                        height: 1,
-                        position: "absolute",
-                        ...sx,
+            <WrapperWithRatio size={size} {...other}>
+                <NoImageIcon
+                    height="100%"
+                    width="100%"
+                    style={{ display: "none", padding: "10px" }}
+                    ref={fallbackRef}
+                />
+
+                <img
+                    ref={ref}
+                    className="PPImage-img"
+                    src={src!}
+                    alt={alt}
+                    loading="lazy"
+                    width={size.width}
+                    height={size.height}
+                    style={{
+                        visibility: "hidden",
+                        ...imgStyle,
                     }}
-                    // TODO: investigate if this {...other} should go on the container box; currently changing it breaks carousel thumbnail
-                    {...other}
-                >
-                    <img
-                        ref={ref}
-                        className="PPImage-img"
-                        alt={alt}
-                        src={src!}
-                        loading="lazy"
-                        width={size.width}
-                        height={size.height}
-                        style={{
-                            ...imgStyle,
-                        }}
-                        onError={handleError}
-                    />
-                </Box>
-            </Box>
+                    onLoad={handleLoad}
+                    onError={handleError}
+                />
+            </WrapperWithRatio>
         );
     }
 );

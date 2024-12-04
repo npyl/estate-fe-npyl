@@ -1,5 +1,4 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-import { IMapMarker } from "@/components/Map/Map";
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
 import { FC, useMemo, useRef } from "react";
 import CarouselSimple from "@/components/CarouselSimple";
@@ -8,18 +7,25 @@ import { SpaceBetween } from "@/components/styled";
 import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
 import { getPropertyStatusColor } from "@/theme/colors";
 
+interface Props {
+    name: string;
+}
+
+const CategoryBadge: FC<Props> = ({ name }) => {
+    const theme = useTheme();
+    const categoryColor = theme.palette.mode === "dark" ? "#b39ddb" : "#3730a3";
+    return <NormalBadge name={name} color={categoryColor} />;
+};
+
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
 };
-
-const defaultImage = "/static/noImage.png";
 
 const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const {
         id,
         images,
         details,
-        location,
         price,
         code,
         state,
@@ -36,50 +42,43 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const bedrooms = details?.bedrooms;
 
     const { t, i18n } = useTranslation();
-    const theme = useTheme();
+
     const ref = useRef<HTMLAnchorElement>(null);
 
-    const addressParts =
-        i18n.language === "en"
-            ? [regionEN, cityEN, complexEN]
-            : [regionGR, cityGR, complexGR];
+    const address = useMemo(() => {
+        const addressParts =
+            i18n.language === "en"
+                ? [regionEN, cityEN, complexEN]
+                : [regionGR, cityGR, complexGR];
 
-    const address = addressParts.filter((part) => part).join(", ");
+        return addressParts.filter((part) => part).join(", ");
+    }, [i18n.language]);
 
     const convertedImages = useMemo(
         () =>
-            images.map((url, index) => {
-                let urlString = typeof url === "string" ? url : url?.url;
-                urlString =
-                    urlString && urlString.startsWith("https://")
-                        ? urlString
-                        : "https://" + urlString;
-                return {
-                    id: index,
-                    url: urlString || defaultImage,
-                    title: "",
-                };
-            }) || [],
+            images.length > 0
+                ? images.map((url, index) => {
+                      let urlString = typeof url === "string" ? url : url?.url;
+                      urlString =
+                          urlString && urlString.startsWith("https://")
+                              ? urlString
+                              : "https://" + urlString;
+                      return {
+                          id: index,
+                          url: urlString,
+                          title: "",
+                      };
+                  })
+                : [],
         [images]
     );
 
     const stateColor = getPropertyStatusColor(state.value);
-    const categoryColor = theme.palette.mode === "dark" ? "#b39ddb" : "#3730a3";
 
     return (
         <StyledLink isActive={false} ref={ref} href={`/property/${id}`}>
             <CarouselSimple
-                data={
-                    convertedImages.length > 0
-                        ? convertedImages
-                        : [
-                              {
-                                  id: 1,
-                                  url: defaultImage,
-                                  title: "",
-                              },
-                          ]
-                }
+                data={convertedImages}
                 ratio="4/3"
                 isActive={item.active}
             />
@@ -254,7 +253,8 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
                     {state?.value ? (
                         <NormalBadge name={state.value} color={stateColor} />
                     ) : null}
-                    <NormalBadge name={category.value} color={categoryColor} />
+
+                    <CategoryBadge name={category.value} />
                 </Stack>
                 <SpaceBetween alignItems="center">
                     <NormalBadge

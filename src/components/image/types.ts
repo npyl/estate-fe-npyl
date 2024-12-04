@@ -4,7 +4,7 @@ import { CSSProperties } from "react";
 
 // ----------------------------------------------------------------------
 
-export type ImageRatio =
+type ImageRatio =
     | "4/3"
     | "3/4"
     | "6/4"
@@ -15,20 +15,30 @@ export type ImageRatio =
     | "9/21"
     | "1/1";
 
-export interface ImageProps extends BoxProps {
-    src?: string | null;
-    alt?: string;
+interface WrapperWithRatioProps extends BoxProps {
     ratio?: ImageRatio;
     size?: { width: string; height: string };
-
     containerSx?: SxProps<Theme>;
+}
+
+interface ImageProps extends WrapperWithRatioProps {
+    src?: string | null;
+    alt?: string;
     imgStyle?: CSSProperties;
 }
 
-export interface IPreviewImageProps extends ImageProps {
+interface IPreviewImageProps extends ImageProps {
     animate?: boolean;
 }
 
-export interface UploadImageProps extends Omit<IPreviewImageProps, "src"> {
+interface UploadImageProps extends Omit<IPreviewImageProps, "src"> {
     progress: number;
 }
+
+export type {
+    ImageRatio,
+    WrapperWithRatioProps,
+    ImageProps,
+    IPreviewImageProps,
+    UploadImageProps,
+};

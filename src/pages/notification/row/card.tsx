@@ -3,11 +3,10 @@ import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
 import { Box, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
-
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { ListingNotification } from "src/types/notification/listing";
 import { formatNumberWithCommas } from "src/utils/formatNumber";
+import Image from "@/components/image";
 
 type BookingItemProps = {
     item?: ListingNotification;
@@ -35,19 +34,12 @@ const ForSaleLabel = () => {
     );
 };
 
-const defaultImage = "/static/noImage.png";
-
 export const ListingCard = ({ item }: BookingItemProps) => {
     const { t } = useTranslation();
     return (
         <Box
             sx={{
-                // position: "relative",
-                // mt: 2,
-                // mx: 1.5,
-                // pb: 2,
                 boxShadow: `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
-                // fontWeight: "normal",
                 "&:hover": {
                     cursor: "pointer",
                     boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
@@ -59,7 +51,11 @@ export const ListingCard = ({ item }: BookingItemProps) => {
             {item?.state?.key === "SALE" && <ForSaleLabel />}
 
             <Box sx={{ position: "relative", height: "100%" }}>
-                <Image src={item?.photo || defaultImage} fill alt="" />
+                <Image
+                    src={item?.photo}
+                    alt=""
+                    imgStyle={{ objectFit: "fill" }}
+                />
             </Box>
 
             <Box
