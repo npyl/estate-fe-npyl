@@ -1,6 +1,5 @@
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
-import Reporter from "./Reporter";
 import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
@@ -68,8 +67,6 @@ const Content: FC<ContentProps> = ({
             </Stack>
 
             <Comments cardId={cardId} />
-
-            <Reporter />
 
             {createdAt || updatedAt ? (
                 <>
