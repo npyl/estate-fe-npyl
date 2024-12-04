@@ -6,6 +6,8 @@ import AddButtons from "./AddButtons";
 import Priority from "./Priority";
 
 const BarSx: SxProps<Theme> = {
+    position: "sticky",
+    top: 64,
     bgcolor: "background.default",
     zIndex: 50,
     borderRadius: "10px",
