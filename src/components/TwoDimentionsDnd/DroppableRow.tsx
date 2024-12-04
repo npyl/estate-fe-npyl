@@ -1,11 +1,11 @@
 import { Droppable } from "react-beautiful-dnd";
 import { DroppableTypeItem, TwoDimentionsDndNode } from "./types";
-import Grid from "@mui/material/Grid";
+import Grid, { GridProps } from "@mui/material/Grid";
 
 const getDroppableId = (dndId: number | undefined, i: number) =>
     dndId !== undefined ? `${dndId}-row-${i}` : `row-${i}`;
 
-interface DroppableRowProps {
+interface DroppableRowProps extends Omit<GridProps, "children"> {
     dndId?: number;
     index: number;
     gap: number;
@@ -17,6 +17,7 @@ const DroppableRow: React.FC<DroppableRowProps> = ({
     index,
     gap,
     children,
+    ...props
 }) => (
     <Droppable
         droppableId={getDroppableId(dndId, index)}
@@ -26,7 +27,7 @@ const DroppableRow: React.FC<DroppableRowProps> = ({
     >
         {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-                <Grid container direction="row" spacing={gap}>
+                <Grid container direction="row" spacing={gap} {...props}>
                     {children}
                 </Grid>
                 {provided.placeholder}

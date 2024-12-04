@@ -1,34 +1,23 @@
 import Column, { DroppableTypeTask } from "./column";
-import { DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { FC, useCallback } from "react";
-import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import {
     useMoveCardMutation,
     useReorderCardMutation,
     useReorderColumnMutation,
 } from "@/services/tasks";
 import { IKanbanColumn } from "@/types/tasks";
-import useResponsiveColumns from "@/components/TwoDimentionsDnd/useResponsiveColumns";
 import React from "react";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 import { useFiltersContext } from "./filters";
+import DroppableRow from "@/components/TwoDimentionsDnd/DroppableRow";
 
 // --------------------------------------------------------------------
 
 const getColumn = (c: IKanbanColumn) => (
     <Column key={c.id} id={c.id} column={c} />
 );
-
-// --------------------------------------------------------------------
-
-const COLUMNS = {
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-};
 
 // ----------------------------------------------------------------------
 // Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
@@ -52,8 +41,6 @@ interface Props {
 }
 
 const Board: FC<Props> = ({ columns }) => {
-    const responsiveColumns = useResponsiveColumns(COLUMNS);
-
     const { search, priority, assigneeId } = useFiltersContext();
     const filters = { search, priority, assigneeId };
 
@@ -61,6 +48,8 @@ const Board: FC<Props> = ({ columns }) => {
     const [reorderCard] = useReorderCardMutation();
 
     const [reorderColumn] = useReorderColumnMutation();
+
+    const columnsCount = columns.length;
 
     const handleDragEnd = useCallback(
         ({ source, destination, type, draggableId }: DropResult) => {
@@ -77,8 +66,7 @@ const Board: FC<Props> = ({ columns }) => {
                 )
                     return;
 
-                let oneDimentionArrayDstIndex =
-                    dstRow * responsiveColumns + dstCol;
+                let oneDimentionArrayDstIndex = dstRow * columnsCount + dstCol;
 
                 // Code for colum reordering
                 reorderColumn({
@@ -122,17 +110,20 @@ const Board: FC<Props> = ({ columns }) => {
                 }
             }
         },
-        [filters, responsiveColumns]
+        [filters, columnsCount]
     );
 
     return (
-        <TwoDimentionsDnd
-            columns={responsiveColumns}
-            onDragEnd={handleDragEnd}
-            draggableSx={{ justifyContent: "flex-start" }}
-        >
-            {columns?.map(getColumn)}
-        </TwoDimentionsDnd>
+        <DragDropContext onDragEnd={handleDragEnd}>
+            <DroppableRow
+                index={0}
+                gap={1}
+                wrap="nowrap"
+                overflow="auto hidden"
+            >
+                {columns?.map(getColumn)}
+            </DroppableRow>
+        </DragDropContext>
     );
 };
 

@@ -1,12 +1,10 @@
-import Paper from "@mui/material/Paper";
+import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledGrid = styled(Grid)(({ theme }) => ({
     padding: theme.spacing(1),
 
     borderRadius: "25px",
-    borderStyle: "1px solid",
-    borderColor: "divider",
     backgroundColor:
         theme.palette.mode === "light"
             ? "#F7F8F9"
@@ -29,4 +27,4 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     },
 }));
 
-export { StyledPaper };
+export { StyledGrid };
