@@ -5,10 +5,6 @@ import { FC } from "react";
 
 const WrapperWithRatio: FC<WrapperWithRatioProps> = ({
     ratio,
-    size = {
-        width: "100%",
-        height: "100%",
-    },
     containerSx,
     sx,
     children,

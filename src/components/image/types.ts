@@ -15,9 +15,8 @@ type ImageRatio =
     | "9/21"
     | "1/1";
 
-interface WrapperWithRatioProps extends BoxProps {
+interface WrapperWithRatioProps extends Omit<BoxProps, "style"> {
     ratio?: ImageRatio;
-    size?: { width: string; height: string };
     containerSx?: SxProps<Theme>;
 }
 

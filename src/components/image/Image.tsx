@@ -4,16 +4,7 @@ import NoImageIcon from "@/assets/icons/no-image";
 import WrapperWithRatio from "./WrapperWithRatio";
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(
-    (
-        {
-            alt = "",
-            src = "",
-            size = { width: "100%", height: "100%" },
-            imgStyle,
-            ...other
-        },
-        ref
-    ) => {
+    ({ alt = "", src = "", imgStyle, ...props }, ref) => {
         const fallbackRef = useRef<SVGSVGElement>(null);
 
         const handleError = useCallback(
@@ -34,11 +25,11 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
         );
 
         return (
-            <WrapperWithRatio size={size} {...other}>
+            <WrapperWithRatio {...props}>
                 <NoImageIcon
                     height="100%"
                     width="100%"
-                    style={{ display: "none", padding: "10px" }}
+                    style={{ display: "none", padding: "10px", ...imgStyle }}
                     ref={fallbackRef}
                 />
 
@@ -48,8 +39,8 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
                     src={src!}
                     alt={alt}
                     loading="lazy"
-                    width={size.width}
-                    height={size.height}
+                    width="100%"
+                    height="100%"
                     style={{
                         visibility: "hidden",
                         ...imgStyle,

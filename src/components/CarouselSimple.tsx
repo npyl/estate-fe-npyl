@@ -47,10 +47,6 @@ const BoxSx: SxProps<Theme> = {
 type Props = {
     initialIndex?: number;
     ratio?: string;
-    size?: {
-        width: string;
-        height: string;
-    };
     data: ICarouselImage[];
     mainLabel?: string;
     onImageChange?: (newImage: ICarouselImage) => void;
@@ -74,7 +70,6 @@ function CarouselSimple({
     onImageChange,
     mainLabel,
     ratio = "16/9",
-    size,
     isActive,
     sx,
     ...props
@@ -124,7 +119,6 @@ function CarouselSimple({
                         src={url || ""}
                         hidden={hidden}
                         label={mainLabel && thumbnail ? mainLabel : ""}
-                        size={size}
                         ratio={ratio! as ImageRatio}
                     />
                 ))}
