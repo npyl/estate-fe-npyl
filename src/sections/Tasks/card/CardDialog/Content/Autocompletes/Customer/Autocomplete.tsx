@@ -4,6 +4,7 @@ import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import renderUserTags from "./renderUserTags";
 import { ICustomerMini } from "@/types/customer";
+import MultilineTextField from "@/components/MultilineTextField";
 
 // ------------------------------------------------------------------
 
@@ -58,7 +59,8 @@ const CustomerAutocomplete = forwardRef<
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
             renderInput={(props) => (
-                <TextField
+                <MultilineTextField
+                    multiline
                     label={label}
                     {...props}
                     error={error}
