@@ -36,59 +36,93 @@ type AcceptLanguageModule = keyof ApiModules<
     string
 >;
 
+type TBaseQuery = (arg: Parameters<BaseQueryFn>[0]) => ReturnType<BaseQueryFn>;
+
 const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
     name: "acceptLanguage" as any,
     init: () => ({
         injectEndpoint: (_, definition) => {
-            // INFO: for queryFn we do not have to do anything
-            if (!definition.query) return;
+            if (definition.queryFn) {
+                const originalQueryFn = definition.queryFn;
 
-            const originalQuery = definition.query;
+                // TODO: handle accept language ?
 
-            definition.query = (args) => {
-                try {
-                    const { language, org } = args || {};
+                definition.queryFn = async (
+                    args,
+                    api,
+                    extraOptions,
+                    baseQuery
+                ) => {
+                    const wrappedBaseQuery: TBaseQuery = async (query) => {
+                        const queryObj =
+                            typeof query === "string" ? { url: query } : query;
 
-                    // INFO: check for whether data is coming from `createLanguageAwareHook`.
-                    //  If not, make sure we pass down the original args because not all endpoints are wrapped with this!
-                    const wasWrapped = Boolean(language) && Boolean(org);
-
-                    const res = originalQuery?.(wasWrapped ? org : args);
-
-                    // INFO: some rtk apis use the quick notation: query: (id: number) => `${id}`
-                    // Make sure we support that
-                    let reworkedQuery =
-                        typeof res === "string"
-                            ? { url: res, method: "GET" }
-                            : res;
-
-                    // TOKEN
-                    reworkedQuery = {
-                        ...reworkedQuery,
-                        headers: {
-                            ...reworkedQuery.headers,
-                            Authorization: `Bearer  ${localStorage.getItem(
-                                "accessToken"
-                            )}`,
-                        },
+                        return baseQuery({
+                            ...queryObj,
+                            headers: {
+                                ...queryObj.headers,
+                                Authorization: `Bearer ${localStorage.getItem(
+                                    "accessToken"
+                                )}`,
+                            },
+                        });
                     };
 
-                    // Language
-                    if (language) {
+                    return originalQueryFn(
+                        args,
+                        api,
+                        extraOptions,
+                        wrappedBaseQuery
+                    );
+                };
+            } else if (definition.query) {
+                const originalQuery = definition.query;
+
+                definition.query = (args) => {
+                    try {
+                        const { language, org } = args || {};
+
+                        // INFO: check for whether data is coming from `createLanguageAwareHook`.
+                        //  If not, make sure we pass down the original args because not all endpoints are wrapped with this!
+                        const wasWrapped = Boolean(language) && Boolean(org);
+
+                        const res = originalQuery?.(wasWrapped ? org : args);
+
+                        // INFO: some rtk apis use the quick notation: query: (id: number) => `${id}`
+                        // Make sure we support that
+                        let reworkedQuery =
+                            typeof res === "string"
+                                ? { url: res, method: "GET" }
+                                : res;
+
+                        // TOKEN
                         reworkedQuery = {
                             ...reworkedQuery,
                             headers: {
                                 ...reworkedQuery.headers,
-                                "Accept-Language": language,
+                                Authorization: `Bearer  ${localStorage.getItem(
+                                    "accessToken"
+                                )}`,
                             },
                         };
-                    }
 
-                    return reworkedQuery;
-                } catch (ex) {
-                    console.error(ex);
-                }
-            };
+                        // Language
+                        if (language) {
+                            reworkedQuery = {
+                                ...reworkedQuery,
+                                headers: {
+                                    ...reworkedQuery.headers,
+                                    "Accept-Language": language,
+                                },
+                            };
+                        }
+
+                        return reworkedQuery;
+                    } catch (ex) {
+                        console.error(ex);
+                    }
+                };
+            }
         },
     }),
 });
