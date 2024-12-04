@@ -2,11 +2,16 @@ import Box from "@mui/material/Box";
 import { FC, useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Stack, SxProps, Theme, Typography } from "@mui/material";
+import { Stack, styled, SxProps, Theme, Typography } from "@mui/material";
 import { useDeleteAttachmentMutation } from "@/services/tasks";
 import { IKanbanAttachment } from "@/types/tasks";
 import { useAttachmentsContext } from "../AttachmentsContext";
 import DocumentIcon from "@/components/upload/preview/DocumentIcon";
+import Image from "@/components/image";
+import useDialog from "@/hooks/useDialog";
+import dynamic from "next/dynamic";
+const PDFViewer = dynamic(() => import("@/components/PDFViewer"));
+const Lightbox = dynamic(() => import("@/components/Lightbox"));
 
 // --------------------------------------------------------------
 
@@ -22,12 +27,7 @@ const IconButtonSx: SxProps<Theme> = {
     },
     borderRadius: "16px",
     p: 0.5,
-};
-
-const ImageSx: SxProps<Theme> = {
-    border: "3px solid",
-    borderRadius: "18px",
-    borderColor: "neutral.300",
+    zIndex: 1,
 };
 
 interface DeleteButtonProps {
@@ -53,6 +53,26 @@ const DeleteButton: FC<DeleteButtonProps> = ({ attachmentId }) => {
 
 // --------------------------------------------------------------
 
+const StyledImage = styled(Image)(({ theme }) => ({
+    "& img": {
+        objectFit: "contain",
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? theme.palette.neutral?.[250]
+                : theme.palette.neutral?.[800],
+    },
+}));
+
+const BoxSx: SxProps<Theme> = {
+    border: "2px solid transparent",
+    borderRadius: "10px",
+    cursor: "pointer",
+
+    "&:hover": {
+        borderColor: "info.main",
+    },
+};
+
 interface ViewProps {
     url: string;
     contentType: string;
@@ -60,47 +80,70 @@ interface ViewProps {
 }
 
 const View: FC<ViewProps> = ({ url, filename, contentType }) => {
-    console.log("view: ", contentType);
+    const [isLightboxOpen, openLightbox, closeLightbox] = useDialog();
+    const [isPDFViewerOpen, openPDFViewer, closePDFViewer] = useDialog();
 
     if (contentType === "application/pdf") {
         return (
-            <Stack
-                gap={1}
-                alignItems="center"
-                justifyContent="center"
-                bgcolor="background.paper"
-                borderRadius="16px"
-                width={180}
-                height={150}
-                sx={{
-                    cursor: "pointer",
-                }}
-            >
-                <DocumentIcon isPreview={false} />
-
-                <Typography
-                    textOverflow="ellipsis"
-                    overflow="hidden"
-                    width={1}
-                    px={3}
-                    variant="body2"
+            <>
+                <Stack
+                    gap={1}
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
+                    bgcolor="background.paper"
+                    borderRadius="12px"
+                    width={180}
+                    height={150}
+                    sx={{
+                        ...BoxSx,
+                    }}
+                    onClick={openPDFViewer}
                 >
-                    {filename}
-                </Typography>
-            </Stack>
+                    <DocumentIcon isPreview={false} />
+
+                    <Typography
+                        textOverflow="ellipsis"
+                        overflow="hidden"
+                        width={1}
+                        px={3}
+                        variant="body2"
+                    >
+                        {filename}
+                    </Typography>
+                </Stack>
+
+                {isPDFViewerOpen ? (
+                    <PDFViewer
+                        url={`https://${url}`}
+                        onClose={closePDFViewer}
+                    />
+                ) : null}
+            </>
         );
     }
 
     return (
-        <img
-            src={`https://${url}`}
-            alt=""
-            width={180}
-            height={150}
-            style={{
-                borderRadius: "16px",
-            }}
-        />
+        <>
+            <StyledImage
+                containerSx={{
+                    width: "180px",
+                    height: "150px",
+                    ...BoxSx,
+                }}
+                src={`https://${url}`}
+                alt=""
+                onClick={openLightbox}
+            />
+
+            {isLightboxOpen ? (
+                <Lightbox
+                    open
+                    images={[{ url: `https://${url}` }]}
+                    onClose={closeLightbox}
+                />
+            ) : null}
+        </>
     );
 };
 
@@ -111,7 +154,7 @@ interface AttachmentProps {
 }
 
 const Attachment: FC<AttachmentProps> = ({ a }) => (
-    <Box position="relative" sx={ImageSx}>
+    <Box position="relative">
         <DeleteButton attachmentId={a.id} />
         <View
             url={a.cdnUrl}
