@@ -20,7 +20,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import FormProvider from "src/components/hook-form";
 import * as Yup from "yup";
-import dayjs from "dayjs";
 
 interface ICustomerLocationYup {
     street: string;
@@ -49,7 +48,13 @@ const LoginSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     email: Yup.string().email("Email must be a valid email address").optional(),
-    afm: Yup.string().length(9).optional(),
+    afm: Yup.string()
+        .test(
+            "length",
+            "AFM must be empty or exactly 9 digits",
+            (value) => !value || value.length === 9
+        )
+        .optional(),
 });
 
 const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
