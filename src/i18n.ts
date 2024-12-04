@@ -1110,10 +1110,23 @@ const resources = {
             Restore: "Restore",
 
             "Property is not public": "Property is not public",
+
+            "First Name is required": "First Name is required",
+            "Last Name is required": "Last Name is required",
+            "Email must be a valid email address":
+                "Email must be a valid email address",
+            "VAT must be empty or exactly 9 digits":
+                "VAT must be empty or exactly 9 digits",
         },
     },
     el: {
         translation: {
+            "First Name is required": "Το Όνομα είναι υποχρεωτικό",
+            "Last Name is required": "Το Επώνυμο είναι υποχρεωτικό",
+            "Email must be a valid email address": "Πρέπει να έχει μορφή email",
+            "VAT must be empty or exactly 9 digits":
+                "Το ΑΦΜ μπορεί να'ναι άδειο ή ακριβώς 9 ψηφία",
+
             "Property is not public": "Το ακίνητο δεν είναι δημόσιο",
 
             Restore: "Επαναφορά",

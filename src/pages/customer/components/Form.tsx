@@ -20,6 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import FormProvider from "src/components/hook-form";
 import * as Yup from "yup";
+import { TranslationType } from "@/types/translation";
 
 interface ICustomerLocationYup {
     street: string;
@@ -44,18 +45,21 @@ interface FormProps {
     onCancel: () => void;
 }
 
-const LoginSchema = Yup.object().shape({
-    firstName: Yup.string().required("First Name is required"),
-    lastName: Yup.string().required("Last Name is required"),
-    email: Yup.string().email("Email must be a valid email address").optional(),
-    afm: Yup.string()
-        .test(
-            "length",
-            "AFM must be empty or exactly 9 digits",
-            (value) => !value || value.length === 9
-        )
-        .optional(),
-});
+const getLoginSchema = (t: TranslationType) =>
+    Yup.object().shape({
+        firstName: Yup.string().required(t<string>("First Name is required")),
+        lastName: Yup.string().required(t<string>("Last Name is required")),
+        email: Yup.string()
+            .email(t<string>("Email must be a valid email address"))
+            .optional(),
+        afm: Yup.string()
+            .test(
+                "length",
+                t<string>("VAT must be empty or exactly 9 digits"),
+                (value) => !value || value.length === 9
+            )
+            .optional(),
+    });
 
 const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     firstName: customer?.firstName || "",
@@ -100,7 +104,11 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
 });
 
 const useCustomerForm = (customer?: ICustomer) => {
+    const { t } = useTranslation();
+
     const defaultValues = useMemo(() => getDefaultValues(customer), [customer]);
+
+    const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
 
     const methods = useForm<ICustomerYup>({
         resolver: yupResolver(LoginSchema),
