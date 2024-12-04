@@ -2,7 +2,7 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(4),
+    padding: theme.spacing(1),
 
     borderRadius: "25px",
     borderStyle: "1px solid",

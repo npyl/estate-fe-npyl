@@ -1,6 +1,7 @@
+import useWidthObserver from "@/hooks/useWidthObserver";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, forwardRef, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const CommentIcon = () => (
@@ -21,20 +22,41 @@ const CommentIcon = () => (
     </svg>
 );
 
+// -------------------------------------------------------------
+
+interface Props {
+    count: number;
+}
+
+const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
+    ({ count }, ref) => {
+        const { t } = useTranslation();
+
+        const [isSmall, setSmall] = useState(false);
+
+        const handleWidth = useCallback((w: number) => {
+            if (w < 60) setSmall(true);
+        }, []);
+
+        const { onRef } = useWidthObserver(ref, handleWidth);
+
+        const label = isSmall ? count : `${count} ${t("Comments")}`;
+
+        return <Typography ref={onRef}>{label}</Typography>;
+    }
+);
+
+// -------------------------------------------------------------
+
 interface CommentsProps {
     count: number;
 }
 
-const Comments: FC<CommentsProps> = ({ count }) => {
-    const { t } = useTranslation();
-    return (
-        <Stack direction="row" alignItems="center" spacing={1}>
-            <CommentIcon />
-            <Typography>
-                {count} {t("Comments")}
-            </Typography>
-        </Stack>
-    );
-};
+const Comments: FC<CommentsProps> = ({ count }) => (
+    <Stack direction="row" alignItems="center" spacing={1}>
+        <CommentIcon />
+        <ResponsiveTypography count={count} />
+    </Stack>
+);
 
 export default Comments;

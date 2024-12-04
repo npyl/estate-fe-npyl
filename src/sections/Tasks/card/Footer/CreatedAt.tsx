@@ -1,8 +1,9 @@
 import { TODAY } from "@/components/BaseCalendar/constants";
 import useCalendarLocale from "@/components/Calendar/useCalendarLocale";
+import useWidthObserver from "@/hooks/useWidthObserver";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, forwardRef, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const CreatedAtIcon = () => (
@@ -30,33 +31,60 @@ const CreatedAtIcon = () => (
     </svg>
 );
 
+// -------------------------------------------------------------
+
 interface Props {
     createdAt: string;
 }
 
-const CreatedAt: FC<Props> = ({ createdAt }) => {
-    const { t } = useTranslation();
-    const loc = useCalendarLocale();
+const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
+    ({ createdAt }, ref) => {
+        const { t } = useTranslation();
 
-    const date = new Date(createdAt).toDateString();
-    const isToday = date === TODAY.toDateString();
+        const loc = useCalendarLocale();
 
-    const label = createdAt
-        ? isToday
-            ? t("today")
-            : new Date(createdAt).toLocaleDateString(loc, {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-              })
-        : "-";
+        const date = new Date(createdAt).toDateString();
+        const isToday = date === TODAY.toDateString();
 
-    return (
-        <Stack direction="row" alignItems="center" spacing={1}>
-            <CreatedAtIcon />
-            <Typography>{label}</Typography>
-        </Stack>
-    );
-};
+        const [isSmall, setSmall] = useState(false);
+
+        const handleWidth = useCallback((w: number) => {
+            if (w < 60) setSmall(true);
+        }, []);
+
+        const { onRef } = useWidthObserver(ref, handleWidth);
+
+        const label = createdAt
+            ? isToday
+                ? t("today")
+                : isSmall
+                ? new Date(createdAt).toLocaleDateString(loc, {
+                      year: "2-digit",
+                      month: "2-digit",
+                      day: "2-digit",
+                  })
+                : new Date(createdAt).toLocaleDateString(loc, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                  })
+            : "-";
+
+        return <Typography ref={onRef}>{label}</Typography>;
+    }
+);
+
+// -------------------------------------------------------------
+
+interface Props {
+    createdAt: string;
+}
+
+const CreatedAt: FC<Props> = ({ createdAt }) => (
+    <Stack direction="row" alignItems="center" spacing={1}>
+        <CreatedAtIcon />
+        <ResponsiveTypography createdAt={createdAt} />
+    </Stack>
+);
 
 export default CreatedAt;

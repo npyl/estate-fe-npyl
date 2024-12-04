@@ -13,7 +13,7 @@ type Props = {
 
 export default function Header({ name, done, columnId }: Props) {
     return (
-        <SpaceBetween alignItems="center" spacing={1}>
+        <SpaceBetween alignItems="center" spacing={1} px={1}>
             <Stack
                 direction="row"
                 spacing={1}

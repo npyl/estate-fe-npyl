@@ -32,7 +32,7 @@ export default function Column({ column }: Props) {
                     />
 
                     <Cards
-                        mt={2}
+                        mt={1}
                         spacing={2}
                         ids={column.cardIds}
                         columnId={column.id}

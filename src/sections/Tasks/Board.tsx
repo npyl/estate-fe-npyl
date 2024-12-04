@@ -26,7 +26,8 @@ const COLUMNS = {
     xs: 1,
     sm: 2,
     md: 3,
-    lg: 3,
+    lg: 4,
+    xl: 5,
 };
 
 // ----------------------------------------------------------------------
@@ -100,8 +101,6 @@ const Board: FC<Props> = ({ columns }) => {
                     return;
 
                 const position = destination?.index ?? 0;
-
-                console.log("position: ", position);
 
                 if (srcColumnId === dstColumnId) {
                     // reorder inside same column
