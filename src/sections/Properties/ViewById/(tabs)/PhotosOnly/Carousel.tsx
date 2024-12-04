@@ -4,7 +4,7 @@ import { Box, Button, Divider, Grid, Stack, Tab, Tabs } from "@mui/material";
 import { LabeledImage } from "src/components/image";
 
 import { useRouter } from "next/router";
-import { downloadImages as downloadZip } from "src/services/exports";
+import { useDownloadImages } from "src/services/exports";
 import PreviewImage from "@/components/image/PreviewImage";
 import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
@@ -45,22 +45,20 @@ function OnlyPhotosCarousel({ data }: Props) {
 
     const { propertyId } = router.query;
 
-    const [loading, setLoading] = useState(false);
-
     // -1: closed, >= 0: open
     const [clickedImageIndex, setClickedImageIndex] = useState(-1);
     const closeLightbox = () => setClickedImageIndex(-1);
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
+    const [downloadZip, { isLoading }] = useDownloadImages();
+
     const handleExport = async (hidden: boolean) => {
-        setLoading(true);
-        downloadZip({
+        const res = await downloadZip({
             propertyId: +propertyId!,
             hidden,
-        }).then((e) => {
-            downloadBlob(e, hidden);
-            setLoading(false);
         });
+        if (!res) return;
+        downloadBlob(res, hidden);
     };
 
     const [selectedTab, setSelectedTab] = useState(0);
@@ -144,7 +142,7 @@ function OnlyPhotosCarousel({ data }: Props) {
                     open={isDialogOpen}
                     onClose={closeDialog}
                     // ...
-                    loading={loading}
+                    loading={isLoading}
                     onExportAll={() => handleExport(true)}
                     onExportPublic={() => handleExport(false)}
                 />

@@ -17,7 +17,7 @@ import { useMemo, useState } from "react";
 import { Label } from "@/components/Label";
 import DocumentIcon from "src/components/upload/preview/DocumentIcon";
 import { useGetPropertyByIdQuery } from "src/services/properties";
-import { downloadDocuments } from "@/services/exports";
+import { useDownloadDocuments } from "@/services/exports";
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
 
@@ -49,16 +49,14 @@ const Documents: React.FC = () => {
     const documents = useMemo(() => property?.documents || [], [property]);
     const propertyCode = useMemo(() => property?.code || "", [property]);
 
-    const [isLoading, setLoading] = useState(false);
-
     const [openIframe, setOpenIframe] = useState("");
 
-    const handleDownload = () => {
-        setLoading(true);
-        downloadDocuments(+propertyId!).then((b) => {
-            setLoading(false);
-            downloadBlob(b, propertyCode);
-        });
+    const [downloadDocuments, { isLoading }] = useDownloadDocuments();
+
+    const handleDownload = async () => {
+        const res = await downloadDocuments(+propertyId!);
+        if (!res) return;
+        downloadBlob(res, propertyCode);
     };
 
     return (
