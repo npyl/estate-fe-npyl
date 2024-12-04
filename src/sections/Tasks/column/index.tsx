@@ -45,6 +45,7 @@ export default function Column({ column }: Props) {
                         spacing={2}
                         ids={column.cardIds}
                         columnId={column.id}
+                        overflow="auto"
                     />
 
                     {provided.placeholder}

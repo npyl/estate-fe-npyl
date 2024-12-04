@@ -5,6 +5,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     padding: theme.spacing(1),
 
     borderRadius: "25px",
+
     backgroundColor:
         theme.palette.mode === "light"
             ? "#F7F8F9"

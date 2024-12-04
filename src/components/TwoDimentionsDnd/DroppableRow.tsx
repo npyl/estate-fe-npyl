@@ -27,7 +27,7 @@ const DroppableRow: React.FC<DroppableRowProps> = ({
     >
         {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-                <Grid container direction="row" spacing={gap} {...props}>
+                <Grid container direction="row" gap={gap} {...props}>
                     {children}
                 </Grid>
                 {provided.placeholder}

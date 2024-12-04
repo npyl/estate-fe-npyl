@@ -116,6 +116,7 @@ const Board: FC<Props> = ({ columns }) => {
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <DroppableRow
+                mt={1}
                 index={0}
                 gap={1}
                 wrap="nowrap"

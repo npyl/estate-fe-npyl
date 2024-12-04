@@ -3,7 +3,7 @@ import { useGetBoardQuery } from "@/services/tasks";
 import dynamic from "next/dynamic";
 import { useFiltersContext } from "./filters";
 import { useDebounce } from "use-debounce";
-import { IKanbanBoard, IKanbanColumn, IKanbanCardShort } from "@/types/tasks";
+import { IKanbanBoard, IKanbanColumn } from "@/types/tasks";
 import { useMemo } from "react";
 
 const Board = dynamic(() => import("@/sections/Tasks/Board"));
