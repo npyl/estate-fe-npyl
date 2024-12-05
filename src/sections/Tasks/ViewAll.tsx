@@ -4,9 +4,12 @@ import dynamic from "next/dynamic";
 import { useFiltersContext } from "./filters";
 import { useDebounce } from "use-debounce";
 import { IKanbanBoard, IKanbanColumn } from "@/types/tasks";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
+const List = dynamic(() => import("./List"));
 
 const Board = dynamic(() => import("@/sections/Tasks/Board"));
+
+type TMode = "board" | "list";
 
 // TODO: speak with backend; theoretically this can be removed completely! + throw cardOrder/columnOrder
 const useSortedColumns = (board?: IKanbanBoard) => {
@@ -27,7 +30,11 @@ const useSortedColumns = (board?: IKanbanBoard) => {
     }, [board?.columns, board?.columnOrder, board?.cards]);
 };
 
-const Content = () => {
+interface ContentProps {
+    mode: TMode;
+}
+
+const Content: FC<ContentProps> = ({ mode }) => {
     const { search, assigneeId, priority } = useFiltersContext();
 
     const [debounced] = useDebounce(search, 300);
@@ -42,7 +49,12 @@ const Content = () => {
 
     return (
         <>
-            {board ? <Board columns={columns} /> : null}
+            {board ? (
+                <>
+                    {mode === "board" ? <Board columns={columns} /> : null}
+                    {mode === "board" ? <List columns={columns} /> : null}
+                </>
+            ) : null}
             {isLoading ? <SkeletonKanbanColumn /> : null}
         </>
     );
