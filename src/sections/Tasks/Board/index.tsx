@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, FC } from "react";
 import Column, { DroppableTypeTask } from "@/sections/Tasks/column";
-import { DropResult } from "react-beautiful-dnd";
+import { DropResult } from "@hello-pangea/dnd";
 import {
     useMoveCardMutation,
     useReorderCardMutation,

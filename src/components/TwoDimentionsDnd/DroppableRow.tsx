@@ -1,4 +1,4 @@
-import { Droppable } from "react-beautiful-dnd";
+import { Droppable } from "@hello-pangea/dnd";
 import { DroppableTypeItem, TwoDimentionsDndNode } from "./types";
 import Grid, { GridProps } from "@mui/material/Grid";
 import { forwardRef } from "react";

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { TwoDimentionsDndNoContextProps } from "./types";
 import TwoDimentionsDndNoContext from "./TwoDimentionsDndNoContext";
 

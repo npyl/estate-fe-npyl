@@ -1,4 +1,4 @@
-import { Droppable } from "react-beautiful-dnd";
+import { Droppable } from "@hello-pangea/dnd";
 import { IKanbanColumn } from "@/types/tasks";
 import Header from "./Header";
 import Cards from "./Cards";

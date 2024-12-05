@@ -2,7 +2,7 @@ import {
     DragDropContext,
     DragDropContextProps,
     OnDragEndResponder,
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
 import TwoDimentionsDndNoContext from "@/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
 import useResponsiveColumns, {

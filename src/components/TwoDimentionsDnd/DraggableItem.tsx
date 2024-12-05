@@ -1,6 +1,6 @@
 import { isValidElement, ReactNode } from "react";
 import { TwoDimentionsDndNode } from "./types";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import Grid, { GridProps } from "@mui/material/Grid";
 import { CenteredDiv } from "./styled";
 import { SxProps, Theme } from "@mui/material";
