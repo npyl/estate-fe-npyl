@@ -54,7 +54,7 @@ export const tasks = createApi({
         }),
 
         // Columns
-        addColumn: builder.mutation<void, IKanbanColumnPOST>({
+        addColumn: builder.mutation<number, IKanbanColumnPOST>({
             query: (body: IKanbanColumnPOST) => ({
                 url: "/column",
                 method: "POST",

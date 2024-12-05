@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, RefObject, useLayoutEffect } from "react";
-import Column, { DroppableTypeTask } from "./column";
+import React, { useCallback, useRef, FC } from "react";
+import Column, { DroppableTypeTask } from "@/sections/Tasks/column";
 import { DropResult } from "react-beautiful-dnd";
 import {
     useMoveCardMutation,
@@ -12,9 +12,12 @@ import {
     TRowProps,
 } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
-import { useFiltersContext } from "./filters";
+import { useFiltersContext } from "@/sections/Tasks/filters";
 import { TwoDimentionsDnd } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { GridProps } from "@mui/material/Grid";
+import useAvailableHeight from "./useAvailableHeight";
+import dynamic from "next/dynamic";
+const Autoscroller = dynamic(() => import("./Autoscroller"));
 
 // --------------------------------------------------------------------
 
@@ -36,20 +39,6 @@ const DraggableProps: Omit<GridProps, "columns" | "sx" | "item"> = {
 const RowProps: TRowProps = {
     wrap: "nowrap",
     overflow: "auto",
-};
-
-const useAvailableHeight = (targetRef: RefObject<HTMLDivElement>) => {
-    useLayoutEffect(() => {
-        const boardElement = targetRef.current;
-        if (!boardElement) return;
-
-        const boardTop = boardElement.getBoundingClientRect().top;
-        const buffer = 16;
-        const availableHeight = window.innerHeight - boardTop - buffer;
-        const newHeight = `${availableHeight}px`;
-
-        targetRef.current.style.height = newHeight;
-    }, []);
 };
 
 // ----------------------------------------------------------------------
@@ -84,6 +73,7 @@ const Board: React.FC<Props> = ({ columns }) => {
     const [reorderColumn] = useReorderColumnMutation();
 
     const columnsCount = columns.length;
+    const lastColumnId = columns?.at(-1)?.id;
 
     const handleDragEnd = useCallback(
         ({ source, destination, type, draggableId }: DropResult) => {
@@ -145,18 +135,22 @@ const Board: React.FC<Props> = ({ columns }) => {
     );
 
     return (
-        <TwoDimentionsDnd
-            columns={columns.length}
-            gap={1}
-            draggableProps={DraggableProps}
-            // ...
-            rowProps={RowProps}
-            rowRef={rowRef}
-            // ...
-            onDragEnd={handleDragEnd}
-        >
-            {columns?.map(getColumn)}
-        </TwoDimentionsDnd>
+        <>
+            <TwoDimentionsDnd
+                columns={columns.length}
+                gap={1}
+                draggableProps={DraggableProps}
+                // ...
+                rowProps={RowProps}
+                rowRef={rowRef}
+                // ...
+                onDragEnd={handleDragEnd}
+            >
+                {columns?.map(getColumn)}
+            </TwoDimentionsDnd>
+
+            <Autoscroller rowRef={rowRef} lastColumnId={lastColumnId} />
+        </>
     );
 };
 
