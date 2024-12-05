@@ -4,17 +4,18 @@ import {
     useState,
     MouseEvent,
     useLayoutEffect,
+    FC,
 } from "react";
 // @mui
 import { Box, BoxProps, styled, SxProps, Theme } from "@mui/material";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 // components
-import Carousel from "./carousel";
-import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
+import Slick from "react-slick";
+import CarouselArrowIndex from "./CarouselArrowIndex";
 import { ImageRatio, LabeledImage } from "src/components/image";
-import ICarouselImage from "./carousel/types";
+import ICarouselImage from "./types";
 import NoImageIcon from "@/assets/icons/no-image";
-import WrapperWithRatio from "./image/WrapperWithRatio";
+import WrapperWithRatio from "../image/WrapperWithRatio";
 
 const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
     color: theme.palette.neutral?.[100],
@@ -44,13 +45,14 @@ const BoxSx: SxProps<Theme> = {
 
 // ----------------------------------------------------------------------
 
-type Props = {
+type CarouselProps = {
     initialIndex?: number;
     ratio?: string;
     data: ICarouselImage[];
     mainLabel?: string;
-    onImageChange?: (newImage: ICarouselImage) => void;
     isActive?: boolean;
+    onImageChange?: (newImage: ICarouselImage) => void;
+    onImageClick?: (i: number) => void;
 } & BoxProps;
 
 // ----------------------------------------------------------------------
@@ -64,19 +66,20 @@ const CarouselSettings = {
     adaptiveHeight: true,
 };
 
-function CarouselSimple({
+const Carousel: FC<CarouselProps> = ({
     data,
     initialIndex,
-    onImageChange,
     mainLabel,
     ratio = "16/9",
     isActive,
     sx,
+    onImageChange,
+    onImageClick,
     ...props
-}: Props) {
+}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const carousel1 = useRef<Carousel | null>(null);
+    const carousel1 = useRef<Slick | null>(null);
 
     const onBeforeChange = useCallback(
         (_: number, next: number) => setCurrentIndex(next),
@@ -103,16 +106,16 @@ function CarouselSimple({
     }, []);
 
     return (
-        <Box sx={{ ...(BoxSx as any), ...sx }} {...props}>
+        <Box sx={{ ...BoxSx, ...sx }} {...props}>
             {!isActive ? <StyledLinkOffIcon /> : null}
 
-            <Carousel
+            <Slick
                 {...CarouselSettings}
                 beforeChange={onBeforeChange}
                 afterChange={onAfterChange}
                 ref={carousel1}
             >
-                {data.map(({ id, title, url, hidden, thumbnail }) => (
+                {data.map(({ id, title, url, hidden, thumbnail }, index) => (
                     <LabeledImage
                         key={id}
                         alt={title}
@@ -120,6 +123,7 @@ function CarouselSimple({
                         hidden={hidden}
                         label={mainLabel && thumbnail ? mainLabel : ""}
                         ratio={ratio! as ImageRatio}
+                        onClick={() => onImageClick?.(index)}
                     />
                 ))}
 
@@ -128,7 +132,7 @@ function CarouselSimple({
                         <NoImageIcon height="100%" width="100%" />
                     </WrapperWithRatio>
                 ) : null}
-            </Carousel>
+            </Slick>
 
             {data.length > 1 ? (
                 <CarouselArrowIndex
@@ -140,6 +144,7 @@ function CarouselSimple({
             ) : null}
         </Box>
     );
-}
+};
 
-export default CarouselSimple;
+export type { CarouselProps };
+export default Carousel;

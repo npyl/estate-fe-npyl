@@ -1,7 +1,7 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { Divider, Stack, Typography } from "@mui/material";
 import { useMemo, useRef } from "react";
-import CarouselSimple from "@/components/CarouselSimple";
+import CarouselSimple from "@/components/Carousel";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
