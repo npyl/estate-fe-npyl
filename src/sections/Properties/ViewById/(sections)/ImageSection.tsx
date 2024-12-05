@@ -1,4 +1,4 @@
-import ICarouselImage from "@/components/carousel/types";
+import ICarouselImage from "@/components/Carousel/types";
 import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
 import { IProperties } from "src/types/properties";
 
