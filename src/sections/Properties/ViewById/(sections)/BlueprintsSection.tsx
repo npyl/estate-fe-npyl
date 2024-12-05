@@ -3,7 +3,7 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
-import ICarouselImage from "@/components/carousel/types";
+import ICarouselImage from "@/components/Carousel/types";
 
 interface BlueprintsSectionProps {
     data: IProperties;
