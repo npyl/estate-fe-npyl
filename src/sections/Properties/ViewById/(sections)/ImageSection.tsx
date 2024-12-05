@@ -1,5 +1,5 @@
-import ICarouselImage from "@/components/Carousel/types";
-import CarouselWithLightbox from "@/components/carousel/WithLightbox";
+import ICarouselImage from "@/components/carousel/types";
+import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
 import { IProperties } from "src/types/properties";
 
 interface ImageSectionProps {

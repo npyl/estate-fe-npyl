@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Carousel, { CarouselProps } from "@/components/carousel";
+import Carousel, { CarouselProps } from "@/components/Carousel";
 import dynamic from "next/dynamic";
 const Lightbox = dynamic(() => import("@/components/Lightbox"));
 

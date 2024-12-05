@@ -1,9 +1,9 @@
 import React from "react";
 import { IProperties } from "src/types/properties";
-import CarouselWithLightbox from "@/components/carousel/WithLightbox";
 import { Typography, Box, Paper, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import ICarouselImage from "@/components/Carousel/types";
+import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
+import ICarouselImage from "@/components/carousel/types";
 
 interface BlueprintsSectionProps {
     data: IProperties;

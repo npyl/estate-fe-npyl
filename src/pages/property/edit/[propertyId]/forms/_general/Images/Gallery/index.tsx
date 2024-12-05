@@ -21,8 +21,8 @@ import { RHFRadioGroup, RHFTextField } from "@/components/hook-form";
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
 import { TranslationType } from "@/types/translation";
-import Carousel from "@/components/carousel";
-import ICarouselImage from "@/components/carousel/types";
+import ICarouselImage from "@/components/Carousel/types";
+import Carousel from "@/components/Carousel";
 
 const getVISIBILITY_OPTIONS = (t: TranslationType) => [
     { label: t("Public"), value: false },
