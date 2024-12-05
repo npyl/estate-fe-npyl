@@ -1,14 +1,16 @@
+import React, { useCallback, useRef, RefObject, useLayoutEffect } from "react";
 import Column, { DroppableTypeTask } from "./column";
 import { DropResult } from "react-beautiful-dnd";
-import { FC, useCallback } from "react";
 import {
     useMoveCardMutation,
     useReorderCardMutation,
     useReorderColumnMutation,
 } from "@/services/tasks";
 import { IKanbanColumn } from "@/types/tasks";
-import React from "react";
-import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
+import {
+    DroppableTypeItem,
+    TRowProps,
+} from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 import { useFiltersContext } from "./filters";
 import { TwoDimentionsDnd } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
@@ -27,15 +29,26 @@ const DraggableProps: Omit<GridProps, "columns" | "sx" | "item"> = {
     lg: 3,
     xl: 12 / 5,
     flexShrink: 0,
-    height: "100%",
+    height: "100vh",
 };
 
-const RowProps: Omit<GridProps, "gap" | "children"> = {
+const RowProps: TRowProps = {
     wrap: "nowrap",
     overflow: "auto",
+};
 
-    // TODO: these values are super approximate! Make sure we actually calculate them somehow!
-    maxHeight: { xs: "calc(100vh - 170px)", lg: "calc(100vh - 226px)" },
+const useAvailableHeight = (targetRef: RefObject<HTMLDivElement>) => {
+    useLayoutEffect(() => {
+        const boardElement = targetRef.current;
+        if (!boardElement) return;
+
+        const boardTop = boardElement.getBoundingClientRect().top;
+        const buffer = 16;
+        const availableHeight = window.innerHeight - boardTop - buffer;
+        const newHeight = `${availableHeight}px`;
+
+        targetRef.current.style.height = newHeight;
+    }, []);
 };
 
 // ----------------------------------------------------------------------
@@ -43,7 +56,6 @@ const RowProps: Omit<GridProps, "gap" | "children"> = {
 // task = card
 // section = IKanbanColumn = item
 // ----------------------------------------------------------------------
-
 const cardId = (str?: string) => {
     if (!str) return null;
     const match = str.match(/task-(\d+)/);
@@ -59,13 +71,15 @@ interface Props {
     columns: IKanbanColumn[];
 }
 
-const Board: FC<Props> = ({ columns }) => {
+const Board: React.FC<Props> = ({ columns }) => {
     const { search, priority, assigneeId } = useFiltersContext();
     const filters = { search, priority, assigneeId };
 
+    const rowRef = useRef<HTMLDivElement>(null);
+    useAvailableHeight(rowRef);
+
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
-
     const [reorderColumn] = useReorderColumnMutation();
 
     const columnsCount = columns.length;
@@ -87,7 +101,6 @@ const Board: FC<Props> = ({ columns }) => {
 
                 let oneDimentionArrayDstIndex = dstRow * columnsCount + dstCol;
 
-                // Code for colum reordering
                 reorderColumn({
                     columnId: draggedItemId,
                     position: oneDimentionArrayDstIndex,
@@ -110,7 +123,6 @@ const Board: FC<Props> = ({ columns }) => {
                 const position = destination?.index ?? 0;
 
                 if (srcColumnId === dstColumnId) {
-                    // reorder inside same column
                     reorderCard({
                         cardId: sourceCardId,
                         columnId: dstColumnId,
@@ -118,7 +130,6 @@ const Board: FC<Props> = ({ columns }) => {
                         filters,
                     });
                 } else {
-                    // move to different column
                     moveCard({
                         cardId: sourceCardId,
                         srcColumnId,
@@ -137,7 +148,10 @@ const Board: FC<Props> = ({ columns }) => {
             columns={columns.length}
             gap={1}
             draggableProps={DraggableProps}
+            // ...
             rowProps={RowProps}
+            rowRef={rowRef}
+            // ...
             onDragEnd={handleDragEnd}
         >
             {columns?.map(getColumn)}

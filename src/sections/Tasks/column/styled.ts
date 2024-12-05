@@ -14,7 +14,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
-    minHeight: 100, // NOTE: a minimum height helps a dropped card not fall on the column name glitch
+    height: "100vh",
     width: "100%",
 
     // ...

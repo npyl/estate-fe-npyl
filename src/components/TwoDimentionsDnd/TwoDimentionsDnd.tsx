@@ -13,11 +13,14 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
     gap = 3,
     onDragEnd,
     // ...
+    rowRef,
     rowProps,
     draggableSx,
     draggableProps,
     // ...
     children,
+    // ...
+    ...props
 }) => (
     <DragDropContext onDragEnd={onDragEnd}>
         <TwoDimentionsDndNoContext
@@ -26,6 +29,8 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
             draggableSx={draggableSx}
             draggableProps={draggableProps}
             rowProps={rowProps}
+            rowRef={rowRef}
+            {...props}
         >
             {children}
         </TwoDimentionsDndNoContext>

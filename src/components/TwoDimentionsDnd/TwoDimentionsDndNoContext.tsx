@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import { Children, ReactNode, useEffect, useMemo } from "react";
+import { Children, FC, ReactNode, useLayoutEffect, useMemo } from "react";
 import { TwoDimentionsDndNoContextProps, TwoDimentionsDndNode } from "./types";
 import React from "react";
 import DroppableRow from "./DroppableRow";
@@ -14,7 +14,7 @@ const chunks = (children: ReactNode, size: number): ReactNode[][] => {
     );
 };
 
-const TwoDimentionsDndNoContext = ({
+const TwoDimentionsDndNoContext: FC<TwoDimentionsDndNoContextProps> = ({
     columns,
     gap = 0.3,
     dndId,
@@ -24,13 +24,15 @@ const TwoDimentionsDndNoContext = ({
     draggableSx,
     draggableProps,
     rowProps,
+    rowRef,
     // ...
     children,
+    // ...
     ...props
-}: TwoDimentionsDndNoContextProps) => {
+}) => {
     const rows = useMemo(() => chunks(children, columns), [children, columns]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (dndId !== undefined && dndId < 1)
             throw new Error(
                 "TwoDimentionsDnd: dndIds must be greater than 1, and unique!"
@@ -53,6 +55,7 @@ const TwoDimentionsDndNoContext = ({
 
             {rows.map((row, i) => (
                 <DroppableRow
+                    ref={rowRef}
                     key={`${dndId}_${i}`}
                     dndId={dndId}
                     index={i}
