@@ -1117,10 +1117,16 @@ const resources = {
                 "Email must be a valid email address",
             "VAT must be empty or exactly 9 digits":
                 "VAT must be empty or exactly 9 digits",
+
+            "Task for property": "Task for property",
+            "Task for customer": "Task for customer",
         },
     },
     el: {
         translation: {
+            "Task for property": "Εργασία για το ακίνητο",
+            "Task for customer": "Εργασία για πελάτη",
+
             "First Name is required": "Το Όνομα είναι υποχρεωτικό",
             "Last Name is required": "Το Επώνυμο είναι υποχρεωτικό",
             "Email must be a valid email address": "Πρέπει να έχει μορφή email",
