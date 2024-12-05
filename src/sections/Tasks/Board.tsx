@@ -29,7 +29,8 @@ const DraggableProps: Omit<GridProps, "columns" | "sx" | "item"> = {
     lg: 3,
     xl: 12 / 5,
     flexShrink: 0,
-    height: "100vh",
+    flexGrow: 1,
+    height: "max-content",
 };
 
 const RowProps: TRowProps = {

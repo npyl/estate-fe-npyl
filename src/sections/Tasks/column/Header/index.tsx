@@ -22,6 +22,8 @@ export default function Header({ name, done, columnId }: Props) {
             top={0}
             bgcolor="background.default"
             zIndex={10}
+            // ...
+            boxShadow={5}
         >
             <Stack
                 direction="row"
@@ -29,6 +31,7 @@ export default function Header({ name, done, columnId }: Props) {
                 alignItems="center"
                 overflow="hidden"
                 width={1}
+                height="48px"
             >
                 <Typography
                     variant="h6"

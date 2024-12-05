@@ -2,9 +2,8 @@ import { Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(1),
-
-    borderRadius: "25px",
+    borderRadius: "20px",
+    borderTop: 0,
 
     backgroundColor:
         theme.palette.mode === "light"
@@ -14,7 +13,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
-    height: "100vh",
+    minHeight: 213,
+    height: "fit-content",
     width: "100%",
 
     // ...

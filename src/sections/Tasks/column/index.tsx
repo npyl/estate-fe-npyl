@@ -24,6 +24,9 @@ export default function Column({ column }: Props) {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     variant="outlined"
+                    sx={{
+                        boxShadow: 3,
+                    }}
                 >
                     <Header
                         name={column.name}
