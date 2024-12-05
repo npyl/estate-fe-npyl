@@ -36,7 +36,13 @@ const useCreateOrUpdateTaskMutation = () => {
 
             if (!res.ok) return null;
 
-            dispatch(tasks.util.invalidateTags(["Board", "Card"]));
+            dispatch(
+                tasks.util.invalidateTags(
+                    Boolean(b.id)
+                        ? ["Board", "Card", "AssigneeHistory"]
+                        : ["Board", "Card"]
+                )
+            );
 
             if (b.properties?.length && b.properties.length > 0)
                 dispatch(properties.util.invalidateTags(["Tasks"]));

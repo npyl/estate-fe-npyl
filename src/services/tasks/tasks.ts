@@ -6,6 +6,7 @@ import {
     IKanbanCard,
     IKanbanColumnPOST,
     IKanbanComment,
+    IKanbanAssigneeHistory,
 } from "@/types/tasks";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +46,7 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: ["Board", "Card", "Comments", "Attachments"],
+    tagTypes: ["Board", "Card", "Comments", "Attachments", "AssigneeHistory"],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
@@ -163,6 +164,14 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Attachments"],
         }),
+
+        // Assignee History
+        getAssigneeHistory: builder.query<IKanbanAssigneeHistory[], number>({
+            query: (cardId) => ({
+                url: `/card/${cardId}/assignee-history`,
+            }),
+            providesTags: ["AssigneeHistory"],
+        }),
     }),
 });
 
@@ -238,4 +247,7 @@ export const {
     useGetAttachmentsQuery,
     useAddAttachmentMutation,
     useDeleteAttachmentMutation,
+
+    // Assignee History
+    useGetAssigneeHistoryQuery,
 } = tasks;

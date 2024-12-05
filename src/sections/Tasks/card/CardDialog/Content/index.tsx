@@ -14,6 +14,7 @@ import PropertiesAutocomplete from "./Autocompletes/Properties";
 import CustomerSelect from "./Autocompletes/Customer";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import { AttachmentsProvider } from "./AttachmentsContext";
+const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
 
 // -----------------------------------------------------------------
@@ -36,6 +37,8 @@ const Content: FC<ContentProps> = ({
     haveEvent,
 }) => {
     const { t } = useTranslation();
+
+    const isEdit = Boolean(cardId);
 
     return (
         <Stack spacing={2} mt={3}>
@@ -71,6 +74,7 @@ const Content: FC<ContentProps> = ({
             {createdAt || updatedAt ? (
                 <>
                     <Divider />
+                    {isEdit ? <AssigneeHistory cardId={cardId!} /> : null}
                     <MiscInfo createdAt={createdAt} updatedAt={updatedAt} />
                 </>
             ) : null}
