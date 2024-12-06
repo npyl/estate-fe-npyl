@@ -1,4 +1,4 @@
-import useNotificationsSocket from "@/hooks/useTasksNotifications";
+import useTasksNotifications from "@/hooks/useTasksNotifications";
 import { useCallback } from "react";
 
 const NotificationsListener = () => {
@@ -6,7 +6,7 @@ const NotificationsListener = () => {
         // ...
     }, []);
 
-    useNotificationsSocket({ onTaskNotification });
+    useTasksNotifications({ onTaskNotification });
 
     return null;
 };
