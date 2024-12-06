@@ -1,13 +1,13 @@
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useGetBoardQuery } from "@/services/tasks";
 import dynamic from "next/dynamic";
-import { useFiltersContext } from "./filters";
+import { useFiltersContext } from "../filters";
 import { useDebounce } from "use-debounce";
 import { IKanbanBoard, IKanbanColumn } from "@/types/tasks";
 import { FC, useMemo } from "react";
 import { TMode } from "./types";
-const List = dynamic(() => import("@/sections/Tasks/List"));
-const Board = dynamic(() => import("@/sections/Tasks/Board"));
+const List = dynamic(() => import("./List"));
+const Board = dynamic(() => import("./Board"));
 
 // TODO: speak with backend; theoretically this can be removed completely! + throw cardOrder/columnOrder
 const useSortedColumns = (board?: IKanbanBoard) => {

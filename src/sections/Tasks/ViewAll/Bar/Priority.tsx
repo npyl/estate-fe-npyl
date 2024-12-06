@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useFiltersContext } from "../filters";
-import PriorityGroup from "../PriorityGroup";
+import { useFiltersContext } from "@/sections/Tasks/filters";
+import PriorityGroup from "@/sections/Tasks/PriorityGroup";
 
 const Priority = () => {
     const { priority, setPriority } = useFiltersContext();

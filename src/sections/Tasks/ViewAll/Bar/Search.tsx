@@ -1,5 +1,5 @@
 import PoppingSearch from "@/components/PoppingSearch";
-import { useFiltersContext } from "../../../sections/Tasks/filters";
+import { useFiltersContext } from "@/sections/Tasks/filters";
 import { ChangeEvent, useCallback } from "react";
 
 const Search = () => {

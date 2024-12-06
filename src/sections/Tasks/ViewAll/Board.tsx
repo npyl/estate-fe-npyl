@@ -17,7 +17,7 @@ import { TwoDimentionsDnd } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd
 import { GridProps } from "@mui/material/Grid";
 import useAvailableHeight from "@/hooks/useAvailableHeight";
 import dynamic from "next/dynamic";
-const Autoscroller = dynamic(() => import("@/sections/Tasks/Autoscroller"));
+const Autoscroller = dynamic(() => import("./Autoscroller"));
 
 // --------------------------------------------------------------------
 

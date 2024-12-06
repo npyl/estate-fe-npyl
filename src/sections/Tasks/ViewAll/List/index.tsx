@@ -2,7 +2,7 @@ import { IKanbanColumn } from "@/types/tasks";
 import Stack from "@mui/material/Stack";
 import { FC, useRef } from "react";
 import Row from "./Row";
-import Autoscroller from "@/sections/Tasks/Autoscroller";
+import Autoscroller from "../Autoscroller";
 import useAvailableHeight from "@/hooks/useAvailableHeight";
 
 // --------------------------------------------------------------

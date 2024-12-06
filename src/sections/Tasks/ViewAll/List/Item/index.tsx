@@ -6,7 +6,7 @@ import { SpaceBetween } from "@/components/styled";
 import TaskLabel from "@/sections/Tasks/card/CardDialog/TaskLabel";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 import { SxProps, Theme } from "@mui/material";
-import { getTaskColor } from "../../styled";
+import { getTaskColor } from "@/sections/Tasks/styled";
 import PriorityLabel from "@/sections/Tasks/card/PriorityLabel";
 import dynamic from "next/dynamic";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
