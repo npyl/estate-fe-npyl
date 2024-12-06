@@ -8,8 +8,9 @@ import { MenuItem } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import OptionButton from "@/components/OptionButton";
-import { HideText, PopoverProps } from "./style";
+import { PopoverProps } from "./style";
 import { useOperationsContext } from "../context";
+import { HideText } from "@/components/styled";
 
 interface GenerateButtonProps {
     lang: Language;

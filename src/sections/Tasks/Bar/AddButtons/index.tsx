@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRef } from "react";
+import { HideText } from "@/components/styled";
 const CardDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
 const Menu = dynamic(() => import("./Menu"));
 
@@ -26,6 +27,7 @@ const AddButtons = () => {
                 onClick={openDialog}
                 sx={{
                     textWrap: "nowrap",
+                    ...HideText,
                 }}
             >
                 {t("Add Task")}

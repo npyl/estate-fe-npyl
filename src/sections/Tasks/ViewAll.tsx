@@ -5,11 +5,10 @@ import { useFiltersContext } from "./filters";
 import { useDebounce } from "use-debounce";
 import { IKanbanBoard, IKanbanColumn } from "@/types/tasks";
 import { FC, useMemo } from "react";
+import { TMode } from "./types";
 const List = dynamic(() => import("./List"));
 
 const Board = dynamic(() => import("@/sections/Tasks/Board"));
-
-type TMode = "board" | "list";
 
 // TODO: speak with backend; theoretically this can be removed completely! + throw cardOrder/columnOrder
 const useSortedColumns = (board?: IKanbanBoard) => {

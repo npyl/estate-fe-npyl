@@ -1,9 +1,13 @@
-import { Stack, SxProps, Theme } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import { SxProps, Theme } from "@mui/material";
 import Search from "./Search";
 import UserSelect from "./UserSelect";
 import { SpaceBetween } from "@/components/styled";
 import AddButtons from "./AddButtons";
 import Priority from "./Priority";
+import { FC } from "react";
+import { TMode } from "../types";
+import ModeButton from "./ModeButton";
 
 const BarSx: SxProps<Theme> = {
     bgcolor: "background.default",
@@ -14,7 +18,12 @@ const BarSx: SxProps<Theme> = {
     borderColor: "divider",
 };
 
-const Bar = () => (
+interface BarProps {
+    mode: TMode;
+    onToggleMode: VoidFunction;
+}
+
+const Bar: FC<BarProps> = ({ mode, onToggleMode }) => (
     <SpaceBetween alignItems="center" sx={BarSx}>
         <Stack
             direction="row"
@@ -27,7 +36,10 @@ const Bar = () => (
             <Priority />
         </Stack>
 
-        <AddButtons />
+        <Stack direction="row" spacing={1} alignItems="center">
+            <ModeButton mode={mode} onClick={onToggleMode} />
+            <AddButtons />
+        </Stack>
     </SpaceBetween>
 );
 

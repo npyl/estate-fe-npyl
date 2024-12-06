@@ -1,12 +1,4 @@
-import { SxProps, Theme } from "@mui/material";
 import { PopoverProps as MuiPopoverProps } from "@mui/material/Popover";
-
-const HideText: SxProps<Theme> = {
-    "& .MuiButton-startIcon": {
-        mr: { xs: 0, sm: 1 },
-    },
-    fontSize: { xs: 0, sm: "initial" },
-};
 
 const PopoverProps: Omit<MuiPopoverProps, "open"> = {
     anchorOrigin: {
@@ -19,4 +11,4 @@ const PopoverProps: Omit<MuiPopoverProps, "open"> = {
     },
 };
 
-export { HideText, PopoverProps };
+export { PopoverProps };
