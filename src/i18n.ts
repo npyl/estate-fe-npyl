@@ -1120,10 +1120,18 @@ const resources = {
 
             "Task for property": "Task for property",
             "Task for customer": "Task for customer",
+
+            "You were assigned to a task": "You were assigned to a task",
+            Dismiss: "Dismiss",
+            "View Task": "View Task",
         },
     },
     el: {
         translation: {
+            "View Task": "Δείτε την εργασία",
+            Dismiss: "Απόκρυψη",
+            "You were assigned to a task": "Ανατεθήκατε σε εργασία",
+
             "Task for property": "Εργασία για το ακίνητο",
             "Task for customer": "Εργασία για πελάτη",
 

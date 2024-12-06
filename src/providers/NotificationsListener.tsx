@@ -1,13 +1,8 @@
 import useTasksNotifications from "@/hooks/useTasksNotifications";
-import { useCallback } from "react";
+import onTaskNotification from "@/sections/Tasks/toast";
 
 const NotificationsListener = () => {
-    const onTaskNotification = useCallback(() => {
-        // ...
-    }, []);
-
     useTasksNotifications({ onTaskNotification });
-
     return null;
 };
 
