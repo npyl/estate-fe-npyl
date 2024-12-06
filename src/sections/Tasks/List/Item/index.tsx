@@ -6,13 +6,20 @@ import { SpaceBetween } from "@/components/styled";
 import TaskLabel from "@/sections/Tasks/card/CardDialog/TaskLabel";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 import { SxProps, Theme } from "@mui/material";
-
-const ColumnPicker = () => null;
+import { getTaskColor } from "../../styled";
+import PriorityLabel from "@/sections/Tasks/card/PriorityLabel";
+import dynamic from "next/dynamic";
+const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 
 const NoAssignee = () => null;
 
-const ItemSx: SxProps<Theme> = {
+const getItemSx = (priority: number): SxProps<Theme> => ({
     cursor: "pointer",
+
+    borderLeft: "3px solid",
+    borderLeftColor: getTaskColor(priority),
+
+    borderRadius: "2px",
 
     ":not(last-of-type)": {
         borderBottom: 0,
@@ -22,7 +29,7 @@ const ItemSx: SxProps<Theme> = {
         backgroundColor: ({ palette: { mode, neutral } }) =>
             mode === "light" ? neutral?.[200] : neutral?.[800],
     },
-};
+});
 
 const getSx = (isCompleted: boolean): SxProps<Theme> => ({
     textDecoration: isCompleted ? "line-through" : "none",
@@ -30,9 +37,10 @@ const getSx = (isCompleted: boolean): SxProps<Theme> => ({
 
 interface ItemProps {
     c: IKanbanCardShort;
+    onClick: VoidFunction;
 }
 
-const Item: FC<ItemProps> = ({ c }) => {
+const Item: FC<ItemProps> = ({ c, onClick }) => {
     const assignee = c.assignees?.[0];
     const isCompleted = c.completed;
 
@@ -43,15 +51,17 @@ const Item: FC<ItemProps> = ({ c }) => {
             border="1px solid"
             borderColor="divider"
             alignItems="center"
-            sx={ItemSx}
+            sx={getItemSx(c.priority)}
+            onClick={onClick}
         >
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
                 <Typography variant="body2">{c.name}</Typography>
+                <PriorityLabel priority={c?.priority} />
             </Stack>
 
             <Stack direction="row" spacing={1} alignItems="center">
-                <ColumnPicker />
+                {isCompleted ? <CompletedLabel /> : null}
                 {assignee ? <TooltipAvatar u={assignee} /> : <NoAssignee />}
             </Stack>
         </SpaceBetween>

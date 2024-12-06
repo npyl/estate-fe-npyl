@@ -1,8 +1,10 @@
 import Stack, { StackProps } from "@mui/material/Stack";
-import { FC } from "react";
+import { FC, useCallback, useState } from "react";
 import { useMemo } from "react";
 import { useGetBoardQuery } from "@/services/tasks";
-import Item from "./Item";
+import dynamic from "next/dynamic";
+const Item = dynamic(() => import("./Item"));
+const CardDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
 
 interface ItemsProps extends StackProps {
     columnId: number;
@@ -13,15 +15,30 @@ const Items: FC<ItemsProps> = ({ columnId, ids, ...props }) => {
     const { data: board } = useGetBoardQuery({});
     const cards = useMemo(() => board?.cards || [], [board]);
 
-    return (
-        <Stack {...props}>
-            {ids.map((id) => {
-                const card = cards?.find((c) => c.id === id);
-                if (!card) return null;
+    const [taskId, setTaskId] = useState<number>();
+    const closeDialog = useCallback(() => setTaskId(undefined), []);
 
-                return <Item key={id} c={card} />;
-            })}
-        </Stack>
+    return (
+        <>
+            <Stack {...props}>
+                {ids.map((id) => {
+                    const card = cards?.find((c) => c.id === id);
+                    if (!card) return null;
+
+                    return (
+                        <Item key={id} c={card} onClick={() => setTaskId(id)} />
+                    );
+                })}
+            </Stack>
+
+            {taskId ? (
+                <CardDialog
+                    taskId={taskId}
+                    columnId={columnId}
+                    onClose={closeDialog}
+                />
+            ) : null}
+        </>
     );
 };
 
