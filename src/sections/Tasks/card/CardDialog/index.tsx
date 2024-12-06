@@ -7,7 +7,6 @@ import {
     StyledDialogContent,
     StyledDialogTitle,
 } from "./styled";
-import TaskLabel from "./TaskLabel";
 import Content from "./Content";
 import Actions from "./Actions";
 import { FormProvider, useForm } from "react-hook-form";
@@ -18,6 +17,7 @@ import {
     useGetCardQuery,
 } from "@/services/tasks";
 import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
+import TaskTitle from "./TaskTitle";
 
 interface DetailsProps {
     task?: IKanbanCard;
@@ -65,7 +65,7 @@ export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                 DialogContentComponent={StyledDialogContent}
                 DialogActionsComponent={StyledDialogActions}
                 // ...
-                title={<TaskLabel name={name} taskCode={uniqueCode} />}
+                title={<TaskTitle name={name} taskCode={uniqueCode} />}
                 content={
                     <Content
                         cardId={task?.id}

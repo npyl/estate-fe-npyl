@@ -6,8 +6,7 @@ import { useDebounce } from "use-debounce";
 import { IKanbanBoard, IKanbanColumn } from "@/types/tasks";
 import { FC, useMemo } from "react";
 import { TMode } from "./types";
-const List = dynamic(() => import("./List"));
-
+const List = dynamic(() => import("@/sections/Tasks/List"));
 const Board = dynamic(() => import("@/sections/Tasks/Board"));
 
 // TODO: speak with backend; theoretically this can be removed completely! + throw cardOrder/columnOrder
@@ -51,7 +50,7 @@ const Content: FC<ContentProps> = ({ mode }) => {
             {board ? (
                 <>
                     {mode === "board" ? <Board columns={columns} /> : null}
-                    {mode === "board" ? <List columns={columns} /> : null}
+                    {mode === "list" ? <List columns={columns} /> : null}
                 </>
             ) : null}
             {isLoading ? <SkeletonKanbanColumn /> : null}

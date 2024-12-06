@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, FC } from "react";
+import React, { useCallback, useRef } from "react";
 import Column, { DroppableTypeTask } from "@/sections/Tasks/column";
 import { DropResult } from "@hello-pangea/dnd";
 import {
@@ -15,9 +15,9 @@ import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 import { useFiltersContext } from "@/sections/Tasks/filters";
 import { TwoDimentionsDnd } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { GridProps } from "@mui/material/Grid";
-import useAvailableHeight from "./useAvailableHeight";
+import useAvailableHeight from "@/hooks/useAvailableHeight";
 import dynamic from "next/dynamic";
-const Autoscroller = dynamic(() => import("./Autoscroller"));
+const Autoscroller = dynamic(() => import("@/sections/Tasks/Autoscroller"));
 
 // --------------------------------------------------------------------
 
@@ -149,7 +149,7 @@ const Board: React.FC<Props> = ({ columns }) => {
                 {columns?.map(getColumn)}
             </TwoDimentionsDnd>
 
-            <Autoscroller rowRef={rowRef} lastColumnId={lastColumnId} />
+            <Autoscroller containerRef={rowRef} lastColumnId={lastColumnId} />
         </>
     );
 };

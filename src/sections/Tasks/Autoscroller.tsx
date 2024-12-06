@@ -1,11 +1,16 @@
 import { FC, RefObject, useEffect, useRef } from "react";
 
 interface AutoscrollerProps {
-    rowRef: RefObject<HTMLDivElement>;
+    containerRef: RefObject<HTMLDivElement>;
     lastColumnId?: number;
+    mode?: "horizontalEnd" | "verticalEnd";
 }
 
-const Autoscroller: FC<AutoscrollerProps> = ({ rowRef, lastColumnId = -1 }) => {
+const Autoscroller: FC<AutoscrollerProps> = ({
+    containerRef,
+    lastColumnId = -1,
+    mode = "horizontalEnd",
+}) => {
     const record = useRef(lastColumnId);
 
     useEffect(() => {
@@ -18,9 +23,11 @@ const Autoscroller: FC<AutoscrollerProps> = ({ rowRef, lastColumnId = -1 }) => {
         // update our record
         record.current = lastColumnId;
 
-        // scroll to end of row
-        rowRef.current?.scrollTo({
-            left: rowRef.current.scrollWidth,
+        // scroll to end of container width/height
+        containerRef.current?.scrollTo({
+            ...(mode === "horizontalEnd"
+                ? { left: containerRef.current.scrollWidth }
+                : { top: containerRef.current.scrollHeight }),
             behavior: "smooth",
         });
     }, [lastColumnId]);
