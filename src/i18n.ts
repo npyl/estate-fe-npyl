@@ -1129,10 +1129,18 @@ const resources = {
             _ERROR_: "Error",
             "Fill in property location first":
                 "Fill in property location first",
+
+            Uploading: "Uploading",
+            _UPLOAD_SUCCESS_TOAST_: "Upload success",
+            _UPLOAD_FAILURE_TOAST_: "Upload failure",
         },
     },
     el: {
         translation: {
+            Uploading: "Μεταφόρτωση",
+            _UPLOAD_SUCCESS_TOAST_: "Επιτυχία μεταφόρτωσης",
+            _UPLOAD_FAILURE_TOAST_: "Αποτυχία μεταφόρτωσης",
+
             _ERROR_: "Σφάλμα",
             _END_OF_SESSION_: "Λήξη συνεδρίας",
 

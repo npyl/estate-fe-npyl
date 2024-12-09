@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineRounded";
 import FileInput, { OpenerBaseProps } from "@/components/FileInput";
+import uploadToast from "@/components/Toaster/upload";
 
 const StyledAvatar = styled(Image)(({ theme }) => ({
     border: "3px solid",
@@ -92,22 +93,30 @@ const UploadImage = ({ src, label, variant }: Props) => {
             const file = event.target.files?.[0];
             if (!file) return;
 
-            const res0 = await uploadImage({
-                contentType: file.type,
-                filename: file.name,
-                size: file.size,
-                type: variant, // LOGO or WATERMARK
-            }).unwrap();
-            if (!res0) return;
+            const { endUploadToast } = uploadToast(file.name);
 
-            const res1 = await uploadFile({
-                file,
-                url: res0.url,
-                variant: "OTHER",
-            });
-            if (!res1) return;
+            try {
+                const res0 = await uploadImage({
+                    contentType: file.type,
+                    filename: file.name,
+                    size: file.size,
+                    type: variant, // LOGO or WATERMARK
+                }).unwrap();
+                if (!res0) return;
 
-            dispatch(company.util.invalidateTags(["Company"]));
+                const res1 = await uploadFile({
+                    file,
+                    url: res0.url,
+                    variant: "OTHER",
+                });
+                if (!res1) return;
+
+                endUploadToast(true);
+
+                dispatch(company.util.invalidateTags(["Company"]));
+            } catch (ex) {
+                endUploadToast(false);
+            }
         },
         []
     );

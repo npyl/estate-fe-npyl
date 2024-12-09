@@ -2,20 +2,15 @@ import DoneIcon from "@mui/icons-material/Done";
 import ErrorIcon from "@mui/icons-material/Error";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import toast, {
+import {
     Renderable,
     Toast as RHTToast,
     ValueOrFunction,
 } from "react-hot-toast";
-import {
-    FC,
-    ReactElement,
-    cloneElement,
-    isValidElement,
-    useCallback,
-} from "react";
+import { FC, ReactElement, cloneElement, isValidElement } from "react";
 import getBorderColor from "@/theme/borderColor";
 import { Theme } from "@mui/material/styles";
+import instantDismiss from "./instantDismiss";
 
 const getBgColor = ({ palette: { mode } }: Theme) =>
     mode === "light" ? "background.neutral" : "background.paper";
@@ -23,11 +18,14 @@ const getBgColor = ({ palette: { mode } }: Theme) =>
 interface MessageRendererProps {
     t: RHTToast;
     message: ValueOrFunction<Renderable, RHTToast>;
+    onDismiss: VoidFunction;
 }
 
-const MessageRenderer: FC<MessageRendererProps> = ({ t, message }) => {
-    const onDismiss = useCallback(() => toast.dismiss(t.id), [t.id]);
-
+const MessageRenderer: FC<MessageRendererProps> = ({
+    t,
+    message,
+    onDismiss,
+}) => {
     // Case 1: string
     if (typeof message === "string") {
         return <Typography>{message || ""}</Typography>;
@@ -71,12 +69,16 @@ const Toast: FC<ToastProps> = ({ t }) => {
             <ErrorIcon color="error" />
         ) : null;
 
+    const handleDismiss = () => instantDismiss(t.id);
+
     return (
         <Stack
+            id={`pp-toast-${t.id}`}
             border="1px solid"
             borderColor={getBorderColor}
             bgcolor={getBgColor}
             minHeight="50px"
+            minWidth="300px"
             direction="row"
             spacing={1}
             p={2}
@@ -84,7 +86,12 @@ const Toast: FC<ToastProps> = ({ t }) => {
             boxShadow={15}
         >
             {icon}
-            <MessageRenderer t={t} message={message} />
+
+            <MessageRenderer
+                t={t}
+                message={message}
+                onDismiss={handleDismiss}
+            />
         </Stack>
     );
 };
