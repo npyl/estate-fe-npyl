@@ -106,4 +106,6 @@ const PriorityGroup = forwardRef<HTMLDivElement, PriorityGroupProps>(
     }
 );
 
+PriorityGroup.displayName = "PriorityGroup";
+
 export default PriorityGroup;

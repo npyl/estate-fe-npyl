@@ -38,4 +38,6 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
     }
 );
 
+TaskCard.displayName = "TaskCard";
+
 export default TaskCard;

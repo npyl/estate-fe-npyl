@@ -35,7 +35,6 @@ const PropertyInfoWindow = ({
     );
 
     const propertyToShow = property || fetchedProperty;
-    if (!propertyToShow && !isLoading) return null;
 
     //mount and unmount styles for the popup window
     useEffect(() => {
@@ -135,6 +134,8 @@ const PropertyInfoWindow = ({
             setLastClickedMarker(marker.propertyId);
         }
     }, [propertyToShow, marker.propertyId, lastClickedMarker]);
+
+    if (!propertyToShow && !isLoading) return null;
 
     return (
         <InfoWindowF

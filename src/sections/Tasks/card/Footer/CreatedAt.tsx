@@ -74,6 +74,8 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
     }
 );
 
+ResponsiveTypography.displayName = "CreatedAtResponsiveTypography";
+
 // -------------------------------------------------------------
 
 interface Props {

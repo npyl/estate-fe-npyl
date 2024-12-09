@@ -46,6 +46,8 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
     }
 );
 
+ResponsiveTypography.displayName = "CommentsResponsiveTypography";
+
 // -------------------------------------------------------------
 
 interface CommentsProps {

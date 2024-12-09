@@ -82,4 +82,6 @@ const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
     }
 );
 
+HistoryButton.displayName = "HistoryButton";
+
 export default React.memo(HistoryButton);

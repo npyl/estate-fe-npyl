@@ -71,4 +71,6 @@ const PlacesAutocomplete = forwardRef<
     );
 });
 
+PlacesAutocomplete.displayName = "PlacesAutocomplete";
+
 export default PlacesAutocomplete;

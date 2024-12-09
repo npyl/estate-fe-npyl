@@ -148,4 +148,6 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     }
 );
 
+Autocomplete.displayName = "WorkspaceAutocomplete";
+
 export default Autocomplete;

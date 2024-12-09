@@ -39,4 +39,6 @@ const DroppableRow = forwardRef<HTMLDivElement, DroppableRowProps>(
     )
 );
 
+DroppableRow.displayName = "DroppableRow";
+
 export default DroppableRow;
