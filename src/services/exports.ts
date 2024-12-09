@@ -1,6 +1,6 @@
+import errorToast from "@/components/Toaster/error";
 import useDialog from "@/hooks/useDialog";
 import { useCallback } from "react";
-import toast from "react-hot-toast";
 
 interface DownloadImagesZipProps {
     hidden: boolean;
@@ -43,7 +43,7 @@ const useDownloadImages = () => {
 
                 return await res.blob();
             } catch (ex) {
-                toast.error("Σφάλμα (Error)");
+                errorToast("_ERROR_");
                 console.error(ex);
             } finally {
                 stopLoading();
@@ -78,7 +78,7 @@ const useDownloadDocuments = () => {
 
             return await res.blob();
         } catch (ex) {
-            toast.error("Σφάλμα (Error)");
+            errorToast("_ERROR_");
             console.error(ex);
         } finally {
             stopLoading();
@@ -125,7 +125,7 @@ const useExportPDF = () => {
 
                 return await res.blob();
             } catch (ex) {
-                toast.error("Σφάλμα (Error)");
+                errorToast("_ERROR_");
                 console.error(ex);
             } finally {
                 stopLoading();

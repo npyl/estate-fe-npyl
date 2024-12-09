@@ -1,9 +1,9 @@
+import errorToast from "@/components/Toaster/error";
 import {
     Middleware,
     MiddlewareAPI,
     isRejectedWithValue,
 } from "@reduxjs/toolkit";
-import { toast } from "react-hot-toast";
 
 /**
  * Log a warning and show a toast!
@@ -19,9 +19,9 @@ export const rtkQueryErrorLogger: Middleware =
             ) {
                 localStorage.removeItem("accessToken");
                 window.location.replace("/authentication/login");
-                toast.error("End of session (Λήξη συνεδρίας)");
+                errorToast("_END_OF_SESSION_");
             } else {
-                toast.error("Error (Σφάλμα)");
+                errorToast("_ERROR_");
             }
         }
 

@@ -1065,8 +1065,8 @@ const resources = {
             medium: "medium",
             high: "high",
 
-            _COLUMN_DONE_:
-                "There is already a DONE column containing tasks. Move the tasks and retry.",
+            _COLUMN_DONE_0: "There is already a DONE column containing tasks",
+            _COLUMN_DONE_1: "Move the tasks and retry",
 
             "Integrated. You can change workspace if you'd like.":
                 "Integrated. You can change workspace if you'd like.",
@@ -1124,10 +1124,18 @@ const resources = {
             "You were assigned to a task": "You were assigned to a task",
             Dismiss: "Dismiss",
             "View Task": "View Task",
+
+            _END_OF_SESSION_: "End of session",
+            _ERROR_: "Error",
+            "Fill in property location first":
+                "Fill in property location first",
         },
     },
     el: {
         translation: {
+            _ERROR_: "Σφάλμα",
+            _END_OF_SESSION_: "Λήξη συνεδρίας",
+
             "View Task": "Δείτε την εργασία",
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
@@ -1185,8 +1193,8 @@ const resources = {
             "Not integrated. Please edit to support features like Calendar.":
                 "Μη συνδεδεμένο. Παρακαλώ επεξεργαστείτε για να υποστηρίζονται λειτουργίες όπως Ημερολόγιο.",
 
-            _COLUMN_DONE_:
-                "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες. Μεταφέρετε τις εργασίες και δοκιμάστε ξανά.",
+            _COLUMN_DONE_0: "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες",
+            _COLUMN_DONE_1: "Μεταφέρετε τις εργασίες και δοκιμάστε ξανά",
 
             low: "χαμηλή",
             medium: "μεσαία",

@@ -9,12 +9,12 @@ import {
     Typography,
 } from "@mui/material";
 import { useCallback, type FC } from "react";
-import toast from "react-hot-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { UserCircle as UserCircleIcon } from "@/assets/icons/user-circle";
 import { useTranslation } from "react-i18next";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Link from "@/components/Link";
+import errorToast from "@/components/Toaster/error";
 
 interface AccountPopoverProps {
     anchorEl: null | Element;
@@ -35,7 +35,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             window.location.replace("/authentication/login");
         } catch (err) {
             console.error(err);
-            toast.error(t("Unable to logout"));
+            errorToast("Unable to logout");
         }
     }, []);
 

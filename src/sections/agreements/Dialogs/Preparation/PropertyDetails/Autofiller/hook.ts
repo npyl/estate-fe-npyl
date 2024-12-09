@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { IProperties } from "@/types/properties";
 import { useCallback } from "react";
-import { toast } from "react-hot-toast";
 import { useFormContext } from "react-hook-form";
 import { useLazyGetCustomerByIdQuery } from "@/services/customers";
+import errorToast from "@/components/Toaster/error";
 
 const join = (v0: string | undefined, v1: string | undefined, sep: string) =>
     [v0, v1].filter((s) => !!s).join(sep) || "";
@@ -12,7 +12,7 @@ const NO_OWNER_LITERAL = "_NO_OWNER_LITERAL_";
 
 const useAutofill = () => {
     const { setValue } = useFormContext();
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
 
     const [getCustomerById] = useLazyGetCustomerByIdQuery();
 
@@ -22,7 +22,7 @@ const useAutofill = () => {
             const ownerId = p?.owner?.id;
 
             if (ownerId === undefined) {
-                toast.error(t(NO_OWNER_LITERAL));
+                errorToast(NO_OWNER_LITERAL);
                 setValue("propertyId", -1);
                 return;
             }
