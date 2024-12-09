@@ -18,7 +18,7 @@ import { useMemo, useState } from "react";
 import PropertyCard from "@/components/Cards/PropertyCard";
 import useResponsive from "@/hooks/useResponsive";
 import { format } from "date-fns";
-import LabelComponent from "../../sections/dashboard/LabelComponent";
+import LabelComponent from "./LabelComponent";
 import DateRangePicker from "./DateRangePicker";
 
 export default function StackedAreas() {

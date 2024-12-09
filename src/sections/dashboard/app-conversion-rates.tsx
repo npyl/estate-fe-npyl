@@ -16,8 +16,6 @@ interface AppConversionRatesProps {
     subheader: string;
     chart: {
         series: ChartData[];
-        // colors: any | null;
-        // options: any | null;
     };
 }
 
@@ -52,11 +50,10 @@ export default function AppConversionRates({
         xaxis: {
             categories: series.map((i) => i.label),
         },
-        // ...options,
     });
 
     return (
-        <Card sx={{ minHeight: 468 }} {...other}>
+        <Card variant="outlined" sx={{ boxShadow: 5 }} {...other}>
             <CardHeader
                 title={title}
                 subheader={subheader}
