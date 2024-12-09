@@ -15,9 +15,9 @@ const Toast: FC<ToastProps> = ({ t }) => {
 
     const icon =
         type === "success" ? (
-            <DoneIcon />
+            <DoneIcon color="success" />
         ) : type == "error" ? (
-            <ErrorIcon />
+            <ErrorIcon color="error" />
         ) : null;
 
     const MESSAGE =
