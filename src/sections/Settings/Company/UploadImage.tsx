@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
-import { alpha, styled } from "@mui/material/styles";
-import { ChangeEvent, MouseEvent, useCallback, useRef } from "react";
-import Image from "next/image";
+import { styled } from "@mui/material/styles";
+import { ChangeEvent, FC, MouseEvent, useCallback } from "react";
+import Image from "@/components/image";
 import Box from "@mui/material/Box";
 import { CompanyImageType } from "@/types/company";
 import {
@@ -13,21 +13,16 @@ import { useUploadPropertyFileMutation } from "@/services/properties";
 import { useDispatch } from "react-redux";
 import { IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineRounded";
+import FileInput, { OpenerBaseProps } from "@/components/FileInput";
 
 const StyledAvatar = styled(Image)(({ theme }) => ({
-    border: "3px solid transparent",
+    border: "3px solid",
+    borderColor: theme.palette.divider,
     borderRadius: "15px",
     cursor: "pointer",
-    transition: theme.transitions.create("background-color", {
-        duration: theme.transitions.duration.short,
-    }),
+
     "&:hover": {
-        backgroundColor: alpha(
-            theme.palette.mode === "light"
-                ? theme.palette.grey[400]
-                : theme.palette.neutral?.[900]!,
-            0.75
-        ),
+        borderColor: theme.palette.info.main,
     },
 }));
 
@@ -41,21 +36,43 @@ const StyledButtonBackground = styled(Box)(({ theme }) => ({
         theme.palette.mode === "light"
             ? theme.palette.background.paper
             : theme.palette.neutral?.[700],
-    borderRadius: "15px",
+
+    borderRadius: "20px",
 }));
 
 const ContentStack = styled(Stack)(({ theme }) => ({
     justifyContent: "center",
     alignItems: "center",
+
     position: "relative",
+
     width: "200px",
     height: "200px",
+
     bgcolor:
         theme.palette.mode === "light"
             ? theme.palette.grey[200]
             : theme.palette.neutral?.[800],
-    borderRadius: "15px",
 }));
+
+interface OpenerProps extends OpenerBaseProps {
+    src: string;
+    onRemove: (e: MouseEvent<HTMLButtonElement>) => void;
+}
+
+const Opener: FC<OpenerProps> = ({ src, onClick, onRemove }) => (
+    <ContentStack onClick={onClick}>
+        <StyledAvatar alt="" src={src} width="200px" height="200px" />
+
+        {src ? (
+            <StyledButtonBackground position="absolute" top={10} right={-10}>
+                <IconButton color="error" size="small" onClick={onRemove}>
+                    <DeleteIcon />
+                </IconButton>
+            </StyledButtonBackground>
+        ) : null}
+    </ContentStack>
+);
 
 interface Props {
     src: string;
@@ -69,10 +86,6 @@ const UploadImage = ({ src, label, variant }: Props) => {
     const [uploadImage] = useUploadCompanyImageMutation(); // BE
     const [uploadFile] = useUploadPropertyFileMutation(); // AMAZON
     const [removeImage] = useRemoveCompanyImageMutation();
-
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const onAvatarClick = useCallback(() => fileInputRef.current?.click(), []);
 
     const handleChange = useCallback(
         async (event: ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +112,7 @@ const UploadImage = ({ src, label, variant }: Props) => {
         []
     );
 
-    const handleRemove = useCallback((e: MouseEvent) => {
+    const handleRemove = useCallback((e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         removeImage(variant);
     }, []);
@@ -108,31 +121,12 @@ const UploadImage = ({ src, label, variant }: Props) => {
         <Stack width={1} alignItems="center">
             <Typography fontWeight="500">{label}</Typography>
 
-            {/* Invisible Input Element */}
-            <input
-                ref={fileInputRef}
-                type="file"
+            <FileInput
+                Opener={(props) => (
+                    <Opener src={src} {...props} onRemove={handleRemove} />
+                )}
                 onChange={handleChange}
-                style={{ display: "none" }}
-                accept="image/*"
             />
-
-            {/* Content */}
-            <ContentStack onClick={onAvatarClick}>
-                <StyledAvatar fill objectFit="contain" alt="" src={src} />
-
-                {src ? (
-                    <StyledButtonBackground
-                        position="absolute"
-                        top={-10}
-                        right={-10}
-                    >
-                        <IconButton color="error" onClick={handleRemove}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </StyledButtonBackground>
-                ) : null}
-            </ContentStack>
         </Stack>
     );
 };

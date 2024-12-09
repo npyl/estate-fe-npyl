@@ -10,6 +10,9 @@ import {
 export type OpenerBaseProps = { loading?: boolean; onClick: VoidFunction };
 type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
+// INFO: in some places we have Next Image which doesn't allow svg by default so lets not accept it
+const ACCEPTED = "image/jpeg,image/jpg,image/png";
+
 interface FileInputProps<T extends OpenerBaseProps = OpenerBaseProps>
     extends InputProps {
     Opener: ComponentType<T>;
@@ -48,7 +51,7 @@ const FileInput: FC<FileInputProps> = ({
                 ref={fileInputRef}
                 type="file"
                 style={{ display: "none", ...style }}
-                accept="image/*"
+                accept={ACCEPTED}
                 onChange={handleChange}
                 {...props}
             />
