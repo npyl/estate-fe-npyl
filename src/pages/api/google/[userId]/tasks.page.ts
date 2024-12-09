@@ -15,8 +15,6 @@ const createOrUpdateTask = async (
 ) => {
     const method = body.id && body.id > -1 ? "PUT" : "POST";
 
-    console.log("METHOD: ", method, baseUrl);
-
     const response = await fetch(baseUrl, {
         headers: {
             Authorization,

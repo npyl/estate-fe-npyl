@@ -14,8 +14,6 @@ interface CreateTaskButtonProps {
 const CreateTaskButton: FC<CreateTaskButtonProps> = ({ data }) => {
     const { t } = useTranslation();
 
-    console.log("data: ", data);
-
     const [isOpen, openTask, closeTask] = useDialog();
 
     return (

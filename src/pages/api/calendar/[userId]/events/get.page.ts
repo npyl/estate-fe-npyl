@@ -22,8 +22,6 @@ export default async function handler(
         const calendarId = url.searchParams.get("calendarId");
         if (!startDate || !endDate) throw new Error("error!");
 
-        console.log("calendarId: ", calendarId);
-
         const iUserId = toNumber(userId);
 
         const data = await calendarService.getEvents(

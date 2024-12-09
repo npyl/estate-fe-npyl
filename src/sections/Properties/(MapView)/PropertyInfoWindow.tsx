@@ -84,7 +84,6 @@ const PropertyInfoWindow = ({
         e.stopPropagation();
         e.preventDefault();
         setActiveMarker(undefined);
-        console.log("Close clicked");
     };
     //controls the info window behavior depending on mouse clicks or drag on the map
     useEffect(() => {
