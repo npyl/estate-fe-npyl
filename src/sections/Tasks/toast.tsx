@@ -4,24 +4,22 @@ import { ITaskUpdateNotificationPayload } from "@/hooks/useTasksNotifications";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import orgToast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 interface TaskToastProps {
-    toastId: string;
     p: ITaskUpdateNotificationPayload;
 }
 
-const TaskToast: FC<TaskToastProps> = ({ p, toastId }) => {
+const TaskToast: FC<TaskToastProps> = ({ p, ...other }) => {
     const { reporter } = p || {};
 
     const { t } = useTranslation();
 
-    const handleDismiss = useCallback(
-        () => orgToast.dismiss(toastId),
-        [toastId]
-    );
+    // INFO: onDismiss is automatically passed to every message that is react component (from @/components/Toast)
+    const onDismiss =
+        "onDismiss" in other ? (other.onDismiss as VoidFunction) : undefined;
 
     const label = `${t("View Task")} (${p.uniqueCode})`;
 
@@ -45,7 +43,7 @@ const TaskToast: FC<TaskToastProps> = ({ p, toastId }) => {
                     sx={{
                         color: "text.secondary",
                     }}
-                    onClick={handleDismiss}
+                    onClick={onDismiss}
                 >
                     {t("Dismiss")}
                 </Button>
@@ -62,7 +60,7 @@ const TaskToast: FC<TaskToastProps> = ({ p, toastId }) => {
 };
 
 const toast = (p: ITaskUpdateNotificationPayload) =>
-    orgToast((t) => <TaskToast toastId={t.id} p={p} />, {
+    orgToast(<TaskToast p={p} />, {
         duration: Infinity,
         position: "bottom-right",
     });

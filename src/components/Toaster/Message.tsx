@@ -17,10 +17,15 @@ interface MessageProps {
     secondary?: string;
 }
 
-const Message: FC<MessageProps> = ({ main, secondary }) => {
+const Message: FC<MessageProps> = ({ main, secondary, ...other }) => {
     const { t } = useTranslation();
+
+    // INFO: onDismiss is automatically passed to every message that is react component (from @/components/Toast)
+    const onDismiss =
+        "onDismiss" in other ? (other.onDismiss as VoidFunction) : undefined;
+
     return (
-        <Stack position="relative" pr={5}>
+        <Stack position="relative" pr={onDismiss ? 5 : 0}>
             <Typography fontWeight="bold" fontSize="16px">
                 {t(main)}
             </Typography>
@@ -29,9 +34,11 @@ const Message: FC<MessageProps> = ({ main, secondary }) => {
                 <Typography color="text.secondary">{t(secondary)}</Typography>
             ) : null}
 
-            <IconButton size="small" sx={CloseSx}>
-                <CloseIcon fontSize="small" />
-            </IconButton>
+            {onDismiss ? (
+                <IconButton size="small" sx={CloseSx} onClick={onDismiss}>
+                    <CloseIcon fontSize="small" />
+                </IconButton>
+            ) : null}
         </Stack>
     );
 };
