@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import LinkIcon from "./LinkIcon";
 import { FC, useCallback } from "react";
 import { SpaceBetween } from "../styled";
+import successToast from "../Toaster/success";
 
 const StyledStack = styled(SpaceBetween)(({ theme }) => ({
     width: "100%",
@@ -40,11 +41,11 @@ const CopyLinkButton: FC<CopyLinkButtonProps> = ({ shareUrl }) => {
     const handleCopyShareUrl = useCallback(async () => {
         try {
             await navigator.clipboard.writeText(shareUrl);
-            toast.success(t("Copied to clipboard"));
+            successToast("Copied to clipboard");
         } catch (ex) {
             console.error(ex);
         }
-    }, [shareUrl, t]);
+    }, [shareUrl]);
 
     return (
         <StyledStack onClick={handleCopyShareUrl}>

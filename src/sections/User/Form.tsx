@@ -20,7 +20,6 @@ import {
 import { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-hot-toast";
 import { RHFSelect, RHFTextField } from "src/components/hook-form";
 import Iconify from "src/components/iconify";
 import { useSecurityContext } from "src/contexts/security";
@@ -35,6 +34,7 @@ import { IUser, IUserPOST } from "src/types/user";
 import { Schema } from "./validation";
 import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
 import { useAuth } from "@/hooks/use-auth";
+import successToast from "@/components/Toaster/success";
 
 interface UserFormProps {
     open: boolean;
@@ -107,13 +107,13 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
             (e: any) => {
                 handleCloseDelete();
                 onClose();
-                !e.error && toast.success(t("Success"));
+                !e.error && successToast("Success");
             }
         );
     };
     const handleResetPassword = () => {
         resetPassword({ userId: selectedUser, newPassword }).then(
-            (e: any) => !e.error && toast.success(t("Success"))
+            (e: any) => !e.error && successToast("Success")
         );
         setOpenReset(false);
         onClose();

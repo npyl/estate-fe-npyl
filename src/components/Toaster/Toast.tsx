@@ -4,7 +4,11 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Toast as RHTToast } from "react-hot-toast";
 import { FC } from "react";
-import { getBorderColor2 } from "@/theme/borderColor";
+import getBorderColor from "@/theme/borderColor";
+import { Theme } from "@mui/material/styles";
+
+const getBgColor = ({ palette: { mode } }: Theme) =>
+    mode === "light" ? "background.neutral" : "background.paper";
 
 interface ToastProps {
     t: RHTToast;
@@ -32,8 +36,8 @@ const Toast: FC<ToastProps> = ({ t }) => {
     return (
         <Stack
             border="1px solid"
-            borderColor={(theme) => getBorderColor2(theme)}
-            bgcolor="background.neutral"
+            borderColor={getBorderColor}
+            bgcolor={getBgColor}
             minHeight="50px"
             direction="row"
             spacing={1}
