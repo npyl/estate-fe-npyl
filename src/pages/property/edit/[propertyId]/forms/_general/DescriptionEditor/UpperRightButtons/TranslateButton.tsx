@@ -3,7 +3,7 @@ import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import TranslateIcon from "@mui/icons-material/Translate";
-import { HideText } from "./style";
+import { HideText } from "@/components/styled";
 import { useOperationsContext } from "../context";
 
 interface TranslateButtonProps {

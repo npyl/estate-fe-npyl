@@ -2,7 +2,6 @@ import { SxProps, Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import SaveButton from "./SaveButton";
-import ReporterAvatar from "./ReporterAvatar";
 import { useTranslation } from "react-i18next";
 
 const TextFieldSx: SxProps<Theme> = {
@@ -41,7 +40,6 @@ const Create: FC<CreateProps> = ({ cardId }) => {
             placeholder={t<string>("Comment") + "..."}
             sx={TextFieldSx}
             InputProps={{
-                startAdornment: <ReporterAvatar />,
                 endAdornment: (
                     <SaveButton
                         cardId={cardId}

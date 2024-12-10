@@ -1,16 +1,13 @@
 import useDialog from "@/hooks/useDialog";
 import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
 import { SERVICES } from "./constants";
 import { TService } from "./types";
+import errorToast from "@/components/Toaster/error";
 
 type TExtendedService = TService & { location: google.maps.LatLng };
 
 const useCalculate = (map?: google.maps.Map) => {
-    const { t } = useTranslation();
-
     const { setValue, watch } = useFormContext();
 
     const [loading, startLoading, stopLoading] = useDialog();
@@ -79,7 +76,7 @@ const useCalculate = (map?: google.maps.Map) => {
         const lng = watch("location.lng");
 
         if (!(lat > 0 && lng > 0)) {
-            toast.error(t("Fill in property location first"));
+            errorToast("Fill in property location first");
             return;
         }
 
@@ -92,7 +89,7 @@ const useCalculate = (map?: google.maps.Map) => {
         startLoading();
         await Promise.all(searchPromises);
         stopLoading();
-    }, [t, getSearchPromise]);
+    }, [getSearchPromise]);
 
     // INITIALISE
     useEffect(() => {

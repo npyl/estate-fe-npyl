@@ -36,7 +36,7 @@ const IsAuthenticatedIndicator: FC<IsAuthenticatedIndicatorProps> = ({
             <Button
                 onClick={authenticate}
                 startIcon={<OriginalGoogleLogo />}
-                sx={sx}
+                sx={{ ...(HideText as any), ...sx }}
             >
                 {t("Login")}
             </Button>
@@ -56,6 +56,7 @@ import React from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import { SvgIcon } from "@mui/material";
 import OriginalGoogleLogo from "@/assets/logo/OriginalGoogleLogo";
+import { HideText } from "@/components/styled";
 
 const CrossedGoogleIcon = () => (
     <SvgIcon>

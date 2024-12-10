@@ -28,17 +28,26 @@ import TitleSection from "./components/TitleSection";
 import enGB from "date-fns/locale/en-GB";
 import el from "date-fns/locale/el";
 
+type Positions = {
+    advisor: boolean;
+    external: boolean;
+    marketing: boolean;
+    informatics: boolean;
+    photography: boolean;
+    secretary: boolean;
+};
+
 const NotificationDetailPage: NextPage = () => {
     const { t, i18n } = useTranslation();
     const router = useRouter();
     const { rowId } = router.query;
-    const { data, error } = useGetNotificationByIdQuery(Number(rowId));
+
+    const { data, error } = useGetNotificationByIdQuery(+rowId!);
 
     const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
         skip: !rowId && !open,
-        selectFromResult: ({ data, isLoading }) => ({
+        selectFromResult: ({ data }) => ({
             data: data?.listingDetails,
-            isLoading,
         }),
     });
 
@@ -78,15 +87,6 @@ const NotificationDetailPage: NextPage = () => {
         message,
         notificationDate,
     } = data;
-
-    type Positions = {
-        advisor: boolean;
-        external: boolean;
-        marketing: boolean;
-        informatics: boolean;
-        photography: boolean;
-        secretary: boolean;
-    };
 
     // Filtering true work positions
     const truePositions = workForUs

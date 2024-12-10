@@ -1,4 +1,4 @@
-import { Droppable } from "react-beautiful-dnd";
+import { Droppable } from "@hello-pangea/dnd";
 import { IKanbanColumn } from "@/types/tasks";
 import Header from "./Header";
 import Cards from "./Cards";
@@ -24,6 +24,9 @@ export default function Column({ column }: Props) {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     variant="outlined"
+                    sx={{
+                        boxShadow: 3,
+                    }}
                 >
                     <Header
                         name={column.name}
@@ -32,7 +35,7 @@ export default function Column({ column }: Props) {
                     />
 
                     <Cards
-                        mt={2}
+                        mt={1}
                         spacing={2}
                         ids={column.cardIds}
                         columnId={column.id}

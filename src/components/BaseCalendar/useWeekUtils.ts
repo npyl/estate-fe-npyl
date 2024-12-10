@@ -24,7 +24,7 @@ const useWeekUtils = () => {
     );
 
     const getEndOfWeek: TWeekCb = useCallback(
-        (date, weekViewMode = "monToSun") => {
+        (date) => {
             const result = new Date(date);
 
             const dayOffset =

@@ -1,4 +1,4 @@
-import { useBulkArchivePropertiesMutation } from "@/services/properties";
+import { useBulkDeletePropertiesMutation } from "@/services/properties";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -11,7 +11,7 @@ interface BulkArchiveButtonProps {
 const BulkArchiveButton: FC<BulkArchiveButtonProps> = ({ selectedRows }) => {
     const { t } = useTranslation();
 
-    const [bulkArchive, { isLoading }] = useBulkArchivePropertiesMutation();
+    const [bulkArchive, { isLoading }] = useBulkDeletePropertiesMutation();
 
     const handleClick = useCallback(
         () => bulkArchive(selectedRows),

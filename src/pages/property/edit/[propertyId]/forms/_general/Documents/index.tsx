@@ -1,5 +1,5 @@
 import { useState } from "react";
-const PDFViewer = dynamic(() => import("./PDFViewer"));
+const PDFViewer = dynamic(() => import("@/components/PDFViewer"));
 import dynamic from "next/dynamic";
 import Panel from "./Panel";
 
@@ -11,11 +11,7 @@ const DocumentsSection: React.FC = () => {
             <Panel onDocumentClick={setPdfUrl} />
 
             {pdfUrl ? (
-                <PDFViewer
-                    open={!!pdfUrl}
-                    url={pdfUrl}
-                    onClose={() => setPdfUrl("")}
-                />
+                <PDFViewer url={pdfUrl} onClose={() => setPdfUrl("")} />
             ) : null}
         </>
     );

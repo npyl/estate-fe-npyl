@@ -1065,8 +1065,8 @@ const resources = {
             medium: "medium",
             high: "high",
 
-            _COLUMN_DONE_:
-                "There is already a DONE column containing tasks. Move the tasks and retry.",
+            _COLUMN_DONE_0: "There is already a DONE column containing tasks",
+            _COLUMN_DONE_1: "Move the tasks and retry",
 
             "Integrated. You can change workspace if you'd like.":
                 "Integrated. You can change workspace if you'd like.",
@@ -1108,10 +1108,67 @@ const resources = {
             Archive: "Archive",
             Archived: "Archived",
             Restore: "Restore",
+
+            "Property is not public": "Property is not public",
+
+            "First Name is required": "First Name is required",
+            "Last Name is required": "Last Name is required",
+            "Email must be a valid email address":
+                "Email must be a valid email address",
+            "VAT must be empty or exactly 9 digits":
+                "VAT must be empty or exactly 9 digits",
+
+            "Task for property": "Task for property",
+            "Task for customer": "Task for customer",
+
+            "You were assigned to a task": "You were assigned to a task",
+            Dismiss: "Dismiss",
+            "View Task": "View Task",
+
+            _END_OF_SESSION_: "End of session",
+            _ERROR_: "Error",
+            "Fill in property location first":
+                "Fill in property location first",
+
+            Uploading: "Uploading",
+            _UPLOAD_SUCCESS_TOAST_: "Upload success",
+            _UPLOAD_FAILURE_TOAST_: "Upload failure",
+
+            _WELCOME_:
+                "Welcome to PropertyPro, manage your real estate data easily with us.",
+
+            Hello: "Hello",
         },
     },
     el: {
         translation: {
+            Hello: "Γεια σας",
+
+            _WELCOME_:
+                "Καλωσήρθατε στο PropertyPro, διαχειριστείτε τα ακίνητά σας εύκολα με εμάς.",
+
+            Uploading: "Μεταφόρτωση",
+            _UPLOAD_SUCCESS_TOAST_: "Επιτυχία μεταφόρτωσης",
+            _UPLOAD_FAILURE_TOAST_: "Αποτυχία μεταφόρτωσης",
+
+            _ERROR_: "Σφάλμα",
+            _END_OF_SESSION_: "Λήξη συνεδρίας",
+
+            "View Task": "Δείτε την εργασία",
+            Dismiss: "Απόκρυψη",
+            "You were assigned to a task": "Ανατεθήκατε σε εργασία",
+
+            "Task for property": "Εργασία για το ακίνητο",
+            "Task for customer": "Εργασία για πελάτη",
+
+            "First Name is required": "Το Όνομα είναι υποχρεωτικό",
+            "Last Name is required": "Το Επώνυμο είναι υποχρεωτικό",
+            "Email must be a valid email address": "Πρέπει να έχει μορφή email",
+            "VAT must be empty or exactly 9 digits":
+                "Το ΑΦΜ μπορεί να'ναι άδειο ή ακριβώς 9 ψηφία",
+
+            "Property is not public": "Το ακίνητο δεν είναι δημόσιο",
+
             Restore: "Επαναφορά",
             Archived: "Αρχειοθετημένα",
             Archive: "Αρχειοθέτηση",
@@ -1154,8 +1211,8 @@ const resources = {
             "Not integrated. Please edit to support features like Calendar.":
                 "Μη συνδεδεμένο. Παρακαλώ επεξεργαστείτε για να υποστηρίζονται λειτουργίες όπως Ημερολόγιο.",
 
-            _COLUMN_DONE_:
-                "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες. Μεταφέρετε τις εργασίες και δοκιμάστε ξανά.",
+            _COLUMN_DONE_0: "Υπάρχει ήδη στήλη DONE που περιέχει εργασίες",
+            _COLUMN_DONE_1: "Μεταφέρετε τις εργασίες και δοκιμάστε ξανά",
 
             low: "χαμηλή",
             medium: "μεσαία",

@@ -1,5 +1,6 @@
 import { ICustomerMini } from "@/types/customer";
-import { AutocompleteRenderGetTagProps, Chip } from "@mui/material";
+import { AutocompleteRenderGetTagProps } from "@mui/material";
+import ChipLink from "../ChipLink";
 
 const renderUserTags = (
     tagValue: ICustomerMini[],
@@ -7,7 +8,17 @@ const renderUserTags = (
 ) =>
     tagValue.map((option, index) => {
         const { key, ...tagProps } = getTagProps({ index });
-        return <Chip key={key} label={option?.firstName} {...tagProps} />;
+
+        const label = `${option?.firstName || ""} ${option?.lastName || ""}`;
+
+        return (
+            <ChipLink
+                key={key}
+                href={`/customer/${option.id}`}
+                label={label}
+                {...tagProps}
+            />
+        );
     });
 
 export default renderUserTags;

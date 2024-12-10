@@ -1,22 +1,31 @@
 import CodeSelect from "@/sections/CodeSelect";
 import { IPropertyCodeRes } from "@/types/properties";
-import { AutocompleteRenderGetTagProps, Chip } from "@mui/material";
-import { TextField } from "@mui/material";
+import { AutocompleteRenderGetTagProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import ChipLink from "./ChipLink";
+import MultilineTextField from "@/components/MultilineTextField";
 
 const getOptionLabel = (o: IPropertyCodeRes | number) =>
     typeof o === "number" ? "" : o.code;
 
 // ---------------------------------------------------------------------------
 
-const renderTags = (
+const RenderTags = (
     tagValue: IPropertyCodeRes[],
     getTagProps: AutocompleteRenderGetTagProps
 ) =>
     tagValue.map((option, index) => {
         const { key, ...tagProps } = getTagProps({ index });
-        return <Chip key={key} label={option.code} {...tagProps} />;
+
+        return (
+            <ChipLink
+                key={key}
+                href={`/property/${option.id}`}
+                label={option.code}
+                {...tagProps}
+            />
+        );
     });
 
 // ---------------------------------------------------------------------------
@@ -37,9 +46,10 @@ const PropertiesAutocomplete = () => {
                 <CodeSelect<true>
                     multiple
                     getOptionLabel={getOptionLabel}
-                    renderTags={renderTags}
+                    renderTags={RenderTags}
                     renderInput={(props) => (
-                        <TextField
+                        <MultilineTextField
+                            multiline
                             label={t("Properties")}
                             {...props}
                             error={Boolean(error)}

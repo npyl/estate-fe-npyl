@@ -1,13 +1,20 @@
 import Link from "@/components/Link";
-import { Box, BoxProps, Theme, Typography, alpha } from "@mui/material";
+import {
+    Box,
+    BoxProps,
+    SxProps,
+    Theme,
+    Typography,
+    alpha,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const getCss = (theme: Theme) => ({
     boxShadow:
         theme.palette.mode === "light"
-            ? "rgba(0, 0, 0, 0.6) 0px 5px 8px !important"
-            : "rgba(255, 255, 255, 0.6) 0px 5px 8px !important",
-    transition: "all 0.2s ease-in-out !important",
+            ? "rgba(0, 0, 0, 0.6) 0px 5px 8px"
+            : "rgba(255, 255, 255, 0.6) 0px 5px 8px",
+    transition: "boxShadow 0.1s ease-in-out",
 });
 
 interface StyledBoxProps extends BoxProps {
@@ -16,10 +23,9 @@ interface StyledBoxProps extends BoxProps {
 export const StyledLink = styled(Link, {
     shouldForwardProp: (prop) => prop !== "isActive",
 })<StyledBoxProps>(({ isActive, theme }) => ({
-    display: "block", //without it the onHover css is not applied
+    display: "block", // INFO: without it the onHover css is not applied
     borderRadius: "12px",
     cursor: "pointer",
-    transition: "all 0.2s ease-in-out",
     "&:hover": {
         ...getCss(theme),
     },
@@ -34,7 +40,7 @@ interface PriceBadgeProps extends BoxProps {
 export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
     <Box {...props}>
         <Typography variant="body2">
-            {`${price ? price?.toLocaleString("de-DE") : "N/A"} €`}
+            {`${price ? price?.toLocaleString("de-DE") : "-"} €`}
         </Typography>
     </Box>
 ))<PriceBadgeProps>(({ theme }) => ({
@@ -79,3 +85,11 @@ export const NormalBadge = styled(
     color: alpha(color, 1),
     backgroundColor: alpha(color, 0.25),
 }));
+
+const DividerSx: SxProps<Theme> = {
+    width: "15%",
+    borderColor: ({ palette: { mode, neutral } }) =>
+        mode === "light" ? neutral?.[100] : neutral?.[800],
+};
+
+export { DividerSx };

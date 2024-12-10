@@ -58,7 +58,7 @@ export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
         >
             {content?.map((item, index) => (
                 <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    <PropertyCard item={item} selectedMarker={null} />
+                    <PropertyCard item={item} />
                 </Grid>
             ))}
         </Pagination>

@@ -13,13 +13,25 @@ type Props = {
 
 export default function Header({ name, done, columnId }: Props) {
     return (
-        <SpaceBetween alignItems="center" spacing={1}>
+        <SpaceBetween
+            alignItems="center"
+            spacing={1}
+            px={1}
+            // ...
+            position="sticky"
+            top={0}
+            bgcolor="background.default"
+            zIndex={10}
+            // ...
+            boxShadow={5}
+        >
             <Stack
                 direction="row"
                 spacing={1}
                 alignItems="center"
                 overflow="hidden"
                 width={1}
+                height="48px"
             >
                 <Typography
                     variant="h6"

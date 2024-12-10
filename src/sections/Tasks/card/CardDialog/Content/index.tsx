@@ -1,6 +1,5 @@
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
-import Reporter from "./Reporter";
 import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
@@ -15,6 +14,7 @@ import PropertiesAutocomplete from "./Autocompletes/Properties";
 import CustomerSelect from "./Autocompletes/Customer";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import { AttachmentsProvider } from "./AttachmentsContext";
+const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
 
 // -----------------------------------------------------------------
@@ -37,6 +37,8 @@ const Content: FC<ContentProps> = ({
     haveEvent,
 }) => {
     const { t } = useTranslation();
+
+    const isEdit = Boolean(cardId);
 
     return (
         <Stack spacing={2} mt={3}>
@@ -69,11 +71,10 @@ const Content: FC<ContentProps> = ({
 
             <Comments cardId={cardId} />
 
-            <Reporter />
-
             {createdAt || updatedAt ? (
                 <>
                     <Divider />
+                    {isEdit ? <AssigneeHistory cardId={cardId!} /> : null}
                     <MiscInfo createdAt={createdAt} updatedAt={updatedAt} />
                 </>
             ) : null}

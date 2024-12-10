@@ -25,6 +25,7 @@ interface PPEditorProps extends Omit<EditorProps, "toolbar"> {
 const PPEditor: FC<PPEditorProps> = ({ sx, readOnly = false, ...other }) => {
     const toolbarCustomButtons = [
         <IndentButtons
+            key="IndentButtons"
             editorState={other.editorState || EditorState.createEmpty()}
             setEditorState={other.onEditorStateChange || (() => {})}
         />,

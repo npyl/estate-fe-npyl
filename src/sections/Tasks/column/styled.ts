@@ -1,12 +1,10 @@
-import Paper from "@mui/material/Paper";
+import { Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(4),
+    borderRadius: "20px",
+    borderTop: 0,
 
-    borderRadius: "25px",
-    borderStyle: "1px solid",
-    borderColor: "divider",
     backgroundColor:
         theme.palette.mode === "light"
             ? "#F7F8F9"
@@ -15,7 +13,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
-    minHeight: 100, // NOTE: a minimum height helps a dropped card not fall on the column name glitch
+    minHeight: 213,
+    height: "fit-content",
     width: "100%",
 
     // ...

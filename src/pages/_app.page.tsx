@@ -26,7 +26,8 @@ import { TabsProvider } from "src/contexts/tabs";
 // DatePicker
 import DatePickerProvider from "@/providers/DatePicker";
 
-import { Toaster } from "react-hot-toast";
+import Toaster from "@/components/Toaster";
+import NotificationsListener from "@/providers/NotificationsListener";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -74,19 +75,24 @@ const App: FC<EnhancedAppProps> = (props) => {
                                 >
                                     <CssBaseline />
                                     <TabsProvider>
-                                        <Toaster position="top-right" />
+                                        <Toaster />
+
                                         <AuthConsumer>
                                             {(auth) =>
                                                 !auth.isInitialized ? (
                                                     <SplashScreen />
                                                 ) : (
-                                                    <DatePickerProvider>
-                                                        {getLayout(
-                                                            <Component
-                                                                {...pageProps}
-                                                            />
-                                                        )}
-                                                    </DatePickerProvider>
+                                                    <>
+                                                        <NotificationsListener />
+
+                                                        <DatePickerProvider>
+                                                            {getLayout(
+                                                                <Component
+                                                                    {...pageProps}
+                                                                />
+                                                            )}
+                                                        </DatePickerProvider>
+                                                    </>
                                                 )
                                             }
                                         </AuthConsumer>

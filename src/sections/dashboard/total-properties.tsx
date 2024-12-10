@@ -32,8 +32,6 @@ interface TotalPropertiesProps {
     subheader: string;
     chart: {
         series: ChartData[];
-        // colors: any | null;
-        // options: any | null;
     };
 }
 
@@ -93,7 +91,7 @@ export default function TotalProperties({
     });
 
     return (
-        <Card {...other}>
+        <Card variant="outlined" sx={{ boxShadow: 5 }} {...other}>
             <CardHeader
                 title={title}
                 subheader={subheader}

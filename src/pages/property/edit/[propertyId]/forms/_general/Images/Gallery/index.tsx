@@ -1,14 +1,11 @@
 import { Grid, Button, Stack, Skeleton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import SoftButton from "@/components/SoftButton";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
     useDeletePropertyImageMutation,
     useEditPropertyImageMutation,
 } from "@/services/properties";
-
-import CarouselSimple from "@/components/CarouselSimple";
-import ICarouselImage from "@/components/carousel/types";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 import usePropertyImages from "../hook";
@@ -24,6 +21,8 @@ import { RHFRadioGroup, RHFTextField } from "@/components/hook-form";
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
 import { TranslationType } from "@/types/translation";
+import ICarouselImage from "@/components/Carousel/types";
+import Carousel from "@/components/Carousel";
 
 const getVISIBILITY_OPTIONS = (t: TranslationType) => [
     { label: t("Public"), value: false },
@@ -96,7 +95,10 @@ const Gallery: React.FC<GalleryProps> = ({
         });
     };
 
-    const handleImageChange = (i: ICarouselImage) => setCurrentImageKey(i.key!);
+    const handleImageChange = useCallback(
+        (i: ICarouselImage) => setCurrentImageKey(i.key!),
+        []
+    );
 
     const handleDelete = () => {
         if (!currentImageKey) return;
@@ -136,7 +138,7 @@ const Gallery: React.FC<GalleryProps> = ({
                     <>
                         <Grid container spacing={1}>
                             <Grid item xs={10}>
-                                <CarouselSimple
+                                <Carousel
                                     onImageChange={handleImageChange}
                                     mainLabel={t("_main_").toString()}
                                     data={images as ICarouselImage[]}

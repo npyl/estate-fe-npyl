@@ -10,8 +10,8 @@ import FilterBar from "@/sections/Properties/(FiltersBar)";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import { getOptions } from "@/sections/Properties/(FiltersBar)/constants";
 // modes
-import ViewAll from "@/sections/Properties/(ViewAll)";
-import MediaCard from "@/sections/Properties/(MediaCard)";
+const ViewAll = dynamic(() => import("@/sections/Properties/(ViewAll)"));
+const MediaCard = dynamic(() => import("@/sections/Properties/(MediaCard)"));
 const MapView = dynamic(() => import("@/sections/Properties/(MapView)"));
 
 // -----------------------------------------------------------------------

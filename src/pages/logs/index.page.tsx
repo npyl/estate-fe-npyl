@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useResponsive from "src/hooks/useResponsive";
 import { useFilterLogsMutation } from "src/services/logs";
@@ -15,6 +14,7 @@ import LogCard from "@/components/Cards/LogCard";
 import Pagination, { usePagination } from "@/components/Pagination";
 import useDialog from "@/hooks/useDialog";
 import NoLogsPlaceholder from "./components/NoLogs";
+import { AdminGuard } from "@/components/authentication/admin-guard";
 
 const pageSize = 15;
 
@@ -91,9 +91,9 @@ const Logs: NextPage = () => {
 };
 
 Logs.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+    <DashboardLayout>
+        <AdminGuard>{page} </AdminGuard>
+    </DashboardLayout>
 );
 
 export default Logs;

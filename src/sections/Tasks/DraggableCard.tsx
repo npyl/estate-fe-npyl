@@ -1,4 +1,4 @@
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import useDialog from "@/hooks/useDialog";
 import Card, { TaskCardProps } from "./card";
 import dynamic from "next/dynamic";

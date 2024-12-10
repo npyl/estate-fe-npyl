@@ -1,6 +1,6 @@
+import successToast from "@/components/Toaster/success";
 import MenuItem from "@mui/material/MenuItem";
 import { FC, useCallback } from "react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 interface CopyLinkItemProps {
@@ -17,7 +17,7 @@ const CopyLinkItem: FC<CopyLinkItemProps> = ({ taskId }) => {
 
             await navigator.clipboard.writeText(url.toString());
 
-            toast.success(t("Copied to clipboard"));
+            successToast("Copied to clipboard");
         } catch (error) {
             console.error("Failed to copy link:", error);
         }

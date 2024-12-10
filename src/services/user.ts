@@ -1,25 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, IUserPOST } from "src/types/user";
+import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 
 interface UploadAvatarReq {
     userId: number;
     file: File;
 }
 
-export const user = createApi({
+export const user = apiWithTranslation({
     reducerPath: "user",
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/users`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
-            return headers;
-        },
     }),
     tagTypes: ["Users", "User", "UserActive"],
     endpoints: (builder) => ({
@@ -124,9 +115,7 @@ export const user = createApi({
 });
 
 export const {
-    useGetProfileQuery,
     useGetUserQuery,
-    useAllUsersQuery,
     // ...
     useUploadAvatarMutation,
     useRemoveAvatarMutation,
@@ -139,3 +128,8 @@ export const {
     useDeleteUserMutation,
     useResetPasswordMutation,
 } = user;
+
+const useGetProfileQuery = la(user.useGetProfileQuery);
+const useAllUsersQuery = la(user.useAllUsersQuery);
+
+export { useGetProfileQuery, useAllUsersQuery };

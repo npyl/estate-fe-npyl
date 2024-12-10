@@ -28,11 +28,7 @@ const filterPropertiesInShape = (
 
 const pageSize = 5;
 
-interface Props {
-    variant?: "default" | "small";
-}
-
-const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
+const MatchingPropertiesSection = () => {
     const { t } = useTranslation();
 
     const { isLoaded } = useLoadApi(); // google maps api
@@ -103,7 +99,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
             >
                 {properties.map((p) => (
                     <Grid item key={p.id} xs={12} sm={6}>
-                        <PropertyCard item={p} selectedMarker={null} />
+                        <PropertyCard item={p} />
                     </Grid>
                 ))}
             </Pagination>

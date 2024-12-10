@@ -162,8 +162,6 @@ const Map = ({
             // Access the address components from the first result
             const addressComponents = results[0].address_components;
 
-            console.log("geo: ", results[0]);
-
             // Extract the desired address details from address components
             const street = getAddressComponent(addressComponents, "route");
             const number = getAddressComponent(

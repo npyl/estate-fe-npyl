@@ -35,7 +35,6 @@ const PropertyInfoWindow = ({
     );
 
     const propertyToShow = property || fetchedProperty;
-    if (!propertyToShow && !isLoading) return null;
 
     //mount and unmount styles for the popup window
     useEffect(() => {
@@ -84,7 +83,6 @@ const PropertyInfoWindow = ({
         e.stopPropagation();
         e.preventDefault();
         setActiveMarker(undefined);
-        console.log("Close clicked");
     };
     //controls the info window behavior depending on mouse clicks or drag on the map
     useEffect(() => {
@@ -137,6 +135,8 @@ const PropertyInfoWindow = ({
         }
     }, [propertyToShow, marker.propertyId, lastClickedMarker]);
 
+    if (!propertyToShow && !isLoading) return null;
+
     return (
         <InfoWindowF
             position={{ lat: marker.lat, lng: marker.lng }}
@@ -177,12 +177,7 @@ const PropertyInfoWindow = ({
                 >
                     X
                 </button>
-                {propertyToShow && (
-                    <PropertyCard
-                        item={propertyToShow}
-                        selectedMarker={marker}
-                    />
-                )}
+                {propertyToShow && <PropertyCard item={propertyToShow} />}
             </Box>
         </InfoWindowF>
     );

@@ -90,8 +90,6 @@ const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
             drawingManager,
             "overlaycomplete",
             (event: google.maps.drawing.OverlayCompleteEvent) => {
-                console.log(event);
-
                 if (!event.overlay) return null;
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;

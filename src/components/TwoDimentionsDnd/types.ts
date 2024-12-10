@@ -1,12 +1,14 @@
-import { StackProps, SxProps, Theme } from "@mui/material";
-import { ReactElement } from "react";
+import { GridProps, StackProps, SxProps, Theme } from "@mui/material";
+import { ForwardedRef, ReactElement, RefObject } from "react";
 
 interface ChildProps {
     id: number | string; // INFO: this is the id referred to as "someId" below
     [key: string]: any;
 }
 
-export type TwoDimentionsDndNode = ReactElement<ChildProps> | null;
+type TwoDimentionsDndNode = ReactElement<ChildProps> | null;
+
+type TRowProps = Omit<GridProps, "children" | "gap" | "ref">;
 
 /*
  *  dndId:  To be used when we have multiple dnds under the same DragDropContext.
@@ -24,8 +26,7 @@ export type TwoDimentionsDndNode = ReactElement<ChildProps> | null;
  *              draggableId (and key):      item-{someId}
  *              draggable index:            {j}
  */
-export interface TwoDimentionsDndNoContextProps
-    extends Omit<StackProps, "children"> {
+interface TwoDimentionsDndNoContextProps extends Omit<StackProps, "children"> {
     columns: number;
     gap?: number;
 
@@ -36,8 +37,13 @@ export interface TwoDimentionsDndNoContextProps
     preventDrag?: boolean;
     children: TwoDimentionsDndNode | TwoDimentionsDndNode[];
 
-    //centering
+    rowProps?: TRowProps;
+    rowRef?: RefObject<HTMLDivElement>;
+
     draggableSx?: SxProps<Theme>;
+    draggableProps?: Omit<GridProps, "item" | "sx" | "columns">;
 }
 
 export const DroppableTypeItem = "ITEM";
+
+export type { TwoDimentionsDndNoContextProps, TwoDimentionsDndNode, TRowProps };

@@ -1,5 +1,5 @@
 import {
-    useBulkDeletePropertiesMutation,
+    useBulkDeletePermanentPropertiesMutation,
     useBulkEditPropertiesMutation,
 } from "@/services/properties";
 import { FC, useCallback } from "react";
@@ -24,15 +24,15 @@ const PropertiesToolbar: FC<ToolbarProps> = ({ archived, selectedRows }) => {
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
     const [isBulkDeleteOpen, openBulkDelete, closeBulkDelete] = useDialog();
 
-    const [bulkDelete, { isLoading: isDeleting }] =
-        useBulkDeletePropertiesMutation();
+    const [bulkDeletePermanent, { isLoading: isDeleting }] =
+        useBulkDeletePermanentPropertiesMutation();
 
     const [bulkEdit, { isLoading: isEditing }] =
         useBulkEditPropertiesMutation();
 
     // Bulk Delete
     const handleBulkDelete = useCallback(
-        () => bulkDelete(selectedRows),
+        () => bulkDeletePermanent(selectedRows),
         [selectedRows]
     );
 

@@ -33,11 +33,11 @@ const User: NextPage = () => {
 };
 
 User.getLayout = (page) => (
-    <AdminGuard>
-        <DashboardLayout>
+    <DashboardLayout>
+        <AdminGuard>
             <SecurityProvider>{page}</SecurityProvider>
-        </DashboardLayout>
-    </AdminGuard>
+        </AdminGuard>
+    </DashboardLayout>
 );
 
 export default User;

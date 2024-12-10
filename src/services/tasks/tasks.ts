@@ -6,10 +6,9 @@ import {
     IKanbanCard,
     IKanbanColumnPOST,
     IKanbanComment,
+    IKanbanAssigneeHistory,
 } from "@/types/tasks";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import {
     DeleteCardReq,
@@ -28,6 +27,7 @@ import {
     optimisticReorderColumn,
     optimisticDeleteColumn,
 } from "./optimistic";
+import errorToast from "@/components/Toaster/error";
 
 export const tasks = createApi({
     reducerPath: "tasks",
@@ -45,7 +45,7 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: ["Board", "Card", "Comments", "Attachments"],
+    tagTypes: ["Board", "Card", "Comments", "Attachments", "AssigneeHistory"],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
@@ -54,7 +54,7 @@ export const tasks = createApi({
         }),
 
         // Columns
-        addColumn: builder.mutation<void, IKanbanColumnPOST>({
+        addColumn: builder.mutation<number, IKanbanColumnPOST>({
             query: (body: IKanbanColumnPOST) => ({
                 url: "/column",
                 method: "POST",
@@ -163,6 +163,14 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Attachments"],
         }),
+
+        // Assignee History
+        getAssigneeHistory: builder.query<IKanbanAssigneeHistory[], number>({
+            query: (cardId) => ({
+                url: `/card/${cardId}/assignee-history`,
+            }),
+            providesTags: ["AssigneeHistory"],
+        }),
     }),
 });
 
@@ -175,37 +183,31 @@ const ERROR_MESSAGE =
 
 const useSetColumnDoneMutation = () => {
     const dispatch = useDispatch();
-    const { t } = useTranslation();
 
-    const cb = useCallback(
-        async (columnId: number) => {
-            const res = await fetch(`${url}/${columnId}/set-done`, {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
-                },
-            });
+    const cb = useCallback(async (columnId: number) => {
+        const res = await fetch(`${url}/${columnId}/set-done`, {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        });
 
-            if (res.status === 400) {
-                const data = await res.json();
-                if (data.errorMessage === ERROR_MESSAGE) {
-                    toast.error(t("_COLUMN_DONE_"));
-                }
-                return;
+        if (res.status === 400) {
+            const data = await res.json();
+            if (data.errorMessage === ERROR_MESSAGE) {
+                errorToast("_COLUMN_DONE_0", "_COLUMN_DONE_1");
             }
+            return;
+        }
 
-            // ...Otherwise
-            if (!res.ok) {
-                toast.error("Error (Σφάλμα)");
-                return;
-            }
+        // ...Otherwise
+        if (!res.ok) {
+            errorToast("_ERROR_");
+            return;
+        }
 
-            dispatch(tasks.util.invalidateTags(["Board"]));
-        },
-        [t]
-    );
+        dispatch(tasks.util.invalidateTags(["Board"]));
+    }, []);
 
     return [cb] as const;
 };
@@ -238,4 +240,7 @@ export const {
     useGetAttachmentsQuery,
     useAddAttachmentMutation,
     useDeleteAttachmentMutation,
+
+    // Assignee History
+    useGetAssigneeHistoryQuery,
 } = tasks;

@@ -12,13 +12,13 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import TabPanel from "src/components/Tabs";
-import { AdminGuard } from "src/components/authentication/admin-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { Listings, Tours, WorkApplications, Reviews } from "./tabs";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import UnReadBadge from "./components/UnReadBadge";
 import { styled } from "@mui/material";
 import Agreements from "./tabs/agreements";
+import NotificationsGuard from "@/components/authentication/notification-guard";
 
 const FilterFormControl = styled(FormControl)(({ theme }) => ({
     minWidth: 120,
@@ -201,9 +201,9 @@ const NotificationPage: NextPage = () => {
 };
 
 NotificationPage.getLayout = (page) => (
-    <AdminGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AdminGuard>
+    <DashboardLayout>
+        <NotificationsGuard>{page} </NotificationsGuard>
+    </DashboardLayout>
 );
 
 export default NotificationPage;

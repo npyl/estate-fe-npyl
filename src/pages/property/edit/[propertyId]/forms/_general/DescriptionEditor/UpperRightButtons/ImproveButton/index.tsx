@@ -8,9 +8,10 @@ import { IOpenAIDetailsPOST } from "@/types/openai";
 import { EditorState } from "draft-js";
 import OptionButton from "@/components/OptionButton";
 import Options from "./Options";
-import { HideText, PopoverProps } from "../style";
+import { PopoverProps } from "../style";
 import { useOperationsContext } from "../../context";
 import HistoryButtons, { HistoryButtonRef } from "./HistoryButton";
+import { HideText } from "@/components/styled";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(

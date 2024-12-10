@@ -101,7 +101,7 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
                             md={3}
                             position="relative"
                         >
-                            <PropertyCard item={p} selectedMarker={null} />
+                            <PropertyCard item={p} />
 
                             <Fab
                                 sx={{

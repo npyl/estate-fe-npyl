@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useCallback, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
@@ -8,6 +8,7 @@ import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
+import useWidthObserver from "@/hooks/useWidthObserver";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
 
@@ -69,39 +70,6 @@ const DescriptionSx: SxProps<Theme> = {
             ? theme.palette.neutral?.[200]
             : theme.palette.neutral?.[700],
     borderRadius: "5px",
-};
-
-/**
- * Hook that observes the event's width on Stack's onLoad (using the ref), and calls the onGetWidth callback
- * @param ref the element's ref (exposed by forwardRef)
- * @param onGetWidth callback to handle a width value
- */
-const useWidthObserver = (
-    ref: ForwardedRef<HTMLDivElement>,
-    onGetWidth: (width: number) => void
-) => {
-    const onRef = useCallback(
-        (node: HTMLDivElement | null) => {
-            // Combine refs
-            if (typeof ref === "function") {
-                ref(node);
-            } else if (ref) {
-                ref.current = node;
-            }
-
-            if (node) {
-                const resizeObserver = new ResizeObserver((entries) => {
-                    const width = entries[0].contentRect.width;
-                    onGetWidth(width);
-                });
-
-                resizeObserver.observe(node);
-            }
-        },
-        [ref, onGetWidth]
-    );
-
-    return { onRef };
 };
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(

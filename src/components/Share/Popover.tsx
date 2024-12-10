@@ -6,7 +6,7 @@ import {
     FacebookShareButton,
     FacebookIcon,
     TwitterShareButton,
-    TwitterIcon,
+    XIcon,
     LinkedinShareButton,
     LinkedinIcon,
     EmailShareButton,
@@ -21,14 +21,12 @@ import {
     Divider,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-hot-toast";
-import LinkIcon from "./LinkIcon";
 import Button from "./button";
-import { useCallback } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { StyledPaper } from "./styled";
+import CopyLinkButton from "./CopyLinkButton";
 
-interface SharePopoverProps extends Omit<PopoverProps, "onClose"> {
+interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
     shareUrl: string;
     onClose: VoidFunction;
 }
@@ -36,17 +34,9 @@ interface SharePopoverProps extends Omit<PopoverProps, "onClose"> {
 const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
     const { t } = useTranslation();
 
-    const handleCopyShareUrl = useCallback(async () => {
-        try {
-            await navigator.clipboard.writeText(shareUrl);
-            toast.success(t("Copied to clipboard"));
-        } catch (ex) {
-            console.error(ex);
-        }
-    }, [shareUrl, t]);
-
     return (
         <Popover
+            open
             {...props}
             anchorOrigin={{
                 vertical: "center",
@@ -155,8 +145,8 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 />
                 <Button
                     Component={TwitterShareButton}
-                    label="Twitter"
-                    icon={TwitterIcon}
+                    label="X"
+                    icon={XIcon}
                     shareUrl={shareUrl}
                 />
                 <Button
@@ -172,35 +162,8 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
             <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
                 {t("Other")}
             </Typography>
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    p: 1,
 
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === "light"
-                            ? "grey.100"
-                            : "neutral.700",
-
-                    borderRadius: 1,
-                    cursor: "pointer",
-
-                    "&:hover": {
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === "light"
-                                ? "grey.200"
-                                : "neutral.500",
-                    },
-                    width: "100%",
-                    justifyContent: "space-between",
-                }}
-                onClick={handleCopyShareUrl}
-            >
-                <Typography>{t(`Copy Link`)}</Typography>
-                <LinkIcon />
-            </Box>
+            <CopyLinkButton shareUrl={shareUrl} />
         </Popover>
     );
 };

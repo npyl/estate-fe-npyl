@@ -15,8 +15,7 @@ import {
     useRemoveAvatarMutation,
     useUploadAvatarMutation,
 } from "@/services/user";
-import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
+import errorToast from "@/components/Toaster/error";
 
 // ----------------------------------------------------------------------------
 
@@ -108,8 +107,6 @@ interface AvatarPickerProps
 }
 
 const AvatarPicker: FC<AvatarPickerProps> = ({ userId, ...props }) => {
-    const { t } = useTranslation();
-
     const [uploadAvatar, { isLoading: isUploading }] =
         useUploadAvatarMutation();
     const [removeAvatar, { isLoading: isRemoving }] = useRemoveAvatarMutation();
@@ -122,7 +119,7 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ userId, ...props }) => {
             if (!file) return;
 
             if (file.size > MAX_FILE_SIZE) {
-                toast.error(t("Please upload a file of size <3MB"));
+                errorToast("Please upload a file of size <3MB");
                 return;
             }
 

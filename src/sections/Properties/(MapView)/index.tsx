@@ -29,7 +29,7 @@ const FlipOrientationButton = ({ toggleOrientation }: Props) => {
     const belowLg = useResponsive("down", "lg");
 
     return !belowLg ? (
-        <Stack direction="row" justifyContent="flex-end">
+        <Stack direction="row" justifyContent="flex-end" mb={1}>
             <Button onClick={toggleOrientation} sx={{ width: 30 }}>
                 <FlipIcon />
             </Button>
@@ -42,14 +42,9 @@ const FlipOrientationButton = ({ toggleOrientation }: Props) => {
 interface PropertiesListProps {
     isLoading: boolean;
     filtered: IPropertyResultResponse[];
-    selectedMarker: IMapMarker | null;
 }
 
-const PropertiesList = ({
-    isLoading,
-    filtered,
-    selectedMarker,
-}: PropertiesListProps) => {
+const PropertiesList = ({ isLoading, filtered }: PropertiesListProps) => {
     const [orientation, toggleOrientation] = useResponsiveOrientation();
 
     return (
@@ -68,15 +63,9 @@ const PropertiesList = ({
                         sm={orientation ? 12 : 6}
                     >
                         {orientation ? (
-                            <PropertyCardH
-                                item={item}
-                                selectedMarker={selectedMarker}
-                            />
+                            <PropertyCardH item={item} />
                         ) : (
-                            <PropertyCard
-                                item={item}
-                                selectedMarker={selectedMarker}
-                            />
+                            <PropertyCard item={item} />
                         )}
                     </Grid>
                 ))}
@@ -102,9 +91,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
         lat: 38.246639,
         lng: 21.734573,
     });
-    const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
-        null
-    );
 
     const pagination = usePagination();
     const belowSm = useResponsive("down", "sm");
@@ -173,7 +159,6 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                         <PropertiesList
                             isLoading={isLoading}
                             filtered={properties?.content || []}
-                            selectedMarker={selectedMarker}
                         />
                     </Pagination>
                 )}
@@ -209,10 +194,7 @@ const MapView = ({ sortBy, direction }: MapViewProps) => {
                         <MarkerF
                             key={`${marker.lat}-${marker.lng}-${marker.propertyId}`}
                             position={{ lat: marker.lat, lng: marker.lng }}
-                            onClick={() => {
-                                setActiveMarker(index);
-                                setSelectedMarker(marker);
-                            }}
+                            onClick={() => setActiveMarker(index)}
                             icon="/static/map/mapIcon.svg"
                         >
                             {activeMarker === index && (

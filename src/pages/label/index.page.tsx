@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { toast } from "react-hot-toast";
 import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useAllCustomersQuery } from "@/services/customers";
@@ -25,6 +24,7 @@ import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { Preview } from "./components/Preview";
 import { IEditProps } from "./components/types";
+import successToast from "@/components/Toaster/success";
 
 const LabelsPage: NextPage = () => {
     const { t } = useTranslation();
@@ -72,7 +72,7 @@ const LabelsPage: NextPage = () => {
     );
 
     const onSuccess = () => {
-        toast.success(t("Success"));
+        successToast("Success");
         invalidateTags();
     };
 

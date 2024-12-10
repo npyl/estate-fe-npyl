@@ -63,4 +63,6 @@ const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
     }
 );
 
+PoppingSearch.displayName = "PoppingSearch";
+
 export default PoppingSearch;

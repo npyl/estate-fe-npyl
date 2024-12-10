@@ -1,6 +1,6 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { styled, SxProps, Theme } from "@mui/material/styles";
 
 export const SpaceBetween = styled(Stack)({
     flexDirection: "row",
@@ -45,3 +45,15 @@ export const PPButton = styled(Button, {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
 }));
+
+/**
+ * Apply to buttons to hide text on small displays
+ */
+const HideText: SxProps<Theme> = {
+    "& .MuiButton-startIcon": {
+        mr: { xs: 0, sm: 1 },
+    },
+    fontSize: { xs: 0, sm: "initial" },
+};
+
+export { HideText };

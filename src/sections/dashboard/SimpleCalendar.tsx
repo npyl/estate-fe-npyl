@@ -21,6 +21,7 @@ const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
 
 const PaperSx = {
     borderRadius: "15px",
+    boxShadow: 5,
 };
 
 // ------------------------------------------------------------------------
@@ -146,7 +147,7 @@ const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
 // ------------------------------------------------------------------------
 
 const SimpleCalendar = () => (
-    <Paper sx={PaperSx}>
+    <Paper sx={PaperSx} variant="outlined">
         <CalendarGoogle
             initialView="day"
             ViewSlots={{

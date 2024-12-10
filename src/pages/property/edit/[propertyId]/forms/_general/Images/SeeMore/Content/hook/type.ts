@@ -1,7 +1,7 @@
 import { IPropertyImage } from "@/types/file";
 import { TListingTab } from "../../types";
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
-import { DropResult } from "react-beautiful-dnd";
+import { DropResult } from "@hello-pangea/dnd";
 
 export interface ExtendedDropResult extends DropResult {
     columns: number;

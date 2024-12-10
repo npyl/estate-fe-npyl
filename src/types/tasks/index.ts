@@ -101,6 +101,11 @@ type IKanbanBoard = {
     columns: IKanbanColumn[];
 };
 
+interface IKanbanAssigneeHistory {
+    assignees: IUserMini[];
+    createdAt: string;
+}
+
 export type {
     IKanbanColumn,
     IKanbanColumnPOST,
@@ -111,6 +116,8 @@ export type {
     IKanbanCommentPOST,
     // ...
     IKanbanAttachment,
+    // ...
+    IKanbanAssigneeHistory,
     // ...
     IKanbanBoard,
 };

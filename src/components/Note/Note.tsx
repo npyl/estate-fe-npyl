@@ -3,13 +3,12 @@ import {
     Paper as MuiPaper,
     Typography,
     IconButton,
-    Avatar,
 } from "@mui/material";
-import { CustomAvatar } from "../custom-avatar";
 import { styled } from "@mui/material/styles";
 import { INote } from "src/types/note";
 
 import Iconify from "src/components/iconify/Iconify";
+import Avatar from "@/components/Avatar";
 
 const Paper = styled(MuiPaper)(({ theme }) => ({
     backgroundColor:
@@ -25,6 +24,7 @@ interface NoteProps {
 
 const Note: React.FC<NoteProps> = (props) => {
     const { note, onRemove } = props;
+    const { creator } = note || {};
 
     const createdAt = new Date(note.createdAt);
 
@@ -32,21 +32,17 @@ const Note: React.FC<NoteProps> = (props) => {
         createdAt.getMonth() + 1
     }/${createdAt.getFullYear()}`;
 
-    const username = note.creator.firstName + " " + note.creator.lastName;
+    const username = `${creator?.firstName || ""}  ${
+        note.creator.lastName || ""
+    }`;
 
     return (
         <Stack direction="row" spacing={1}>
-            {note.creator.firstName && note.creator.lastName ? (
-                <Avatar>
-                    {note.creator.firstName[0]}
-                    {note.creator.lastName[0]}
-                </Avatar>
-            ) : (
-                <CustomAvatar
-                    alt={username}
-                    src={note?.creator?.avatar || ""}
-                />
-            )}
+            <Avatar
+                src={creator?.avatar}
+                firstName={creator?.firstName}
+                lastName={creator?.lastName}
+            />
 
             <Paper
                 sx={{

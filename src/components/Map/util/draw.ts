@@ -2,17 +2,11 @@ import { DrawShape, ShapeData } from "../types";
 
 export const setShapeEvents = (shape: DrawShape, callback: () => void) => {
     if (shape instanceof google.maps.Circle) {
-        console.log("The shape is a Circle.");
-
         google.maps.event.addListener(shape, "dragend", callback);
         google.maps.event.addListener(shape, "radius_changed", callback);
     } else if (shape instanceof google.maps.Rectangle) {
-        console.log("The shape is a Rectangle.");
-
         google.maps.event.addListener(shape, "bounds_changed", callback);
     } else if (shape instanceof google.maps.Polygon) {
-        console.log("The shape is a Polygon.");
-
         const vertices = shape.getPath();
 
         vertices.addListener("set_at", callback);

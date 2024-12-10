@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 
 import ExportButton from "./Export";
 import MoreButton from "./More";
+import ShareButton from "./ShareButton";
 
 interface IViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
@@ -40,6 +41,7 @@ const ViewHeader = ({
 
             <Stack direction="row" spacing={1}>
                 {isProperty ? <ExportButton /> : null}
+                {isProperty ? <ShareButton /> : null}
                 <MoreButton
                     isProperty={isProperty}
                     isArchived={isArchived}
