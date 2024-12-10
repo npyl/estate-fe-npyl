@@ -16,12 +16,12 @@ export default function CardWithIcon({
         <Card
             component={Stack}
             spacing={1}
-            px={3}
-            py={5}
             borderRadius={2}
             height="200px"
             variant="outlined"
             boxShadow={5}
+            justifyContent="center"
+            alignItems="center"
         >
             <Typography variant="h4">{title}</Typography>
             <Stack spacing={1} direction="row" alignItems="center">

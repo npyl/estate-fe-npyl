@@ -1133,10 +1133,20 @@ const resources = {
             Uploading: "Uploading",
             _UPLOAD_SUCCESS_TOAST_: "Upload success",
             _UPLOAD_FAILURE_TOAST_: "Upload failure",
+
+            _WELCOME_:
+                "Welcome to PropertyPro, manage your real estate data easily with us.",
+
+            Hello: "Hello",
         },
     },
     el: {
         translation: {
+            Hello: "Γεια σας",
+
+            _WELCOME_:
+                "Καλωσήρθατε στο PropertyPro, διαχειριστείτε τα ακίνητά σας εύκολα με εμάς.",
+
             Uploading: "Μεταφόρτωση",
             _UPLOAD_SUCCESS_TOAST_: "Επιτυχία μεταφόρτωσης",
             _UPLOAD_FAILURE_TOAST_: "Αποτυχία μεταφόρτωσης",

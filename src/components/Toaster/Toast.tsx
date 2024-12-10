@@ -84,6 +84,7 @@ const Toast: FC<ToastProps> = ({ t }) => {
             p={2}
             borderRadius="20px"
             boxShadow={15}
+            position="relative"
         >
             {icon}
 

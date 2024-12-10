@@ -7,8 +7,9 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 const CloseSx: SxProps<Theme> = {
-    top: 0,
-    right: 1,
+    top: "50%",
+    transform: "translateY(-50%)",
+    right: 5,
     position: "absolute",
 };
 
@@ -25,7 +26,7 @@ const Message: FC<MessageProps> = ({ main, secondary, ...other }) => {
         "onDismiss" in other ? (other.onDismiss as VoidFunction) : undefined;
 
     return (
-        <Stack position="relative" pr={onDismiss ? 5 : 0}>
+        <Stack pr={onDismiss ? 5 : 0}>
             <Typography fontWeight="bold" fontSize="16px">
                 {t(main)}
             </Typography>
