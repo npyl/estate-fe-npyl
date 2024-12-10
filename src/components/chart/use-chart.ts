@@ -1,4 +1,3 @@
-import merge from "lodash/merge";
 import { alpha, useTheme } from "@mui/material/styles";
 import useResponsive from "@/hooks/useResponsive";
 
@@ -210,5 +209,5 @@ export default function useChart(options: any) {
         ],
     };
 
-    return merge(baseOptions, options);
+    return { ...baseOptions, ...options };
 }

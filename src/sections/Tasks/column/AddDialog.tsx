@@ -36,8 +36,8 @@ const AddOrEditDialog = ({ columnId, onClose }: Props) => {
         const action = columnId ? editColumn : addColumn;
         const body = columnId ? { id: columnId!, name } : { name };
 
-        startTransition(async () => {
-            await action(body);
+        startTransition(() => {
+            action(body);
         });
 
         onClose();
