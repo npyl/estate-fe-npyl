@@ -1,14 +1,29 @@
 import { Box, IconButton, Modal } from "@mui/material";
 import { ClearIcon } from "@mui/x-date-pickers";
+import CustomerForm from "@/pages/customer/components/Form";
+import { useCallback } from "react";
+import { ICustomerPOST } from "@/types/customer";
+import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
+import { useFormContext } from "react-hook-form";
+
 interface ModalProps {
-    open: boolean;
     onClose: () => void;
-    children: React.ReactNode;
 }
 
-const CustomerModal: React.FC<ModalProps> = ({ open, onClose, children }) => {
+const CustomerModal: React.FC<ModalProps> = ({ onClose }) => {
+    const { setValue } = useFormContext();
+
+    const [create, { isError, isLoading }] =
+        useCreateOrUpdateCustomerMutation();
+
+    const handleSave = useCallback(async (body: ICustomerPOST) => {
+        const newOwnerId = await create(body).unwrap();
+        setValue("ownerId", newOwnerId);
+        onClose();
+    }, []);
+
     return (
-        <Modal open={open} onClose={onClose}>
+        <Modal open onClose={onClose}>
             <Box
                 sx={{
                     position: "absolute",
@@ -35,7 +50,12 @@ const CustomerModal: React.FC<ModalProps> = ({ open, onClose, children }) => {
                 >
                     <ClearIcon />
                 </IconButton>
-                {children}
+                <CustomerForm
+                    isLoading={isLoading}
+                    isError={isError}
+                    onSave={handleSave}
+                    onCancel={onClose}
+                />
             </Box>
         </Modal>
     );
