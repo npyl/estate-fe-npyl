@@ -28,9 +28,15 @@ interface PropertiesDistribution {
     other: number;
 }
 
+interface IUserDetails extends IUserMini {
+    activeTasks: number;
+    email: string;
+}
+
 interface PropertiesPerUserList {
     properties: number;
     user: string;
+    userDetails: IUserDetails;
 }
 
 export type {
@@ -38,4 +44,5 @@ export type {
     IDashboardTask,
     PropertiesDistribution,
     PropertiesPerUserList,
+    IUserDetails,
 };

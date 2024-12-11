@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { FC, RefObject, useRef } from "react";
 import Tasks from "./Tasks";
 import useStickyPoint from "./useStickyPoint";
+import UserDetailList from "./UserDetailList";
 const SimpleCalendar = dynamic(() => import("./SimpleCalendar"));
 
 // ----------------------------------------------------------------------
@@ -57,18 +58,12 @@ const Title = () => {
 
 // ----------------------------------------------------------------------
 
-const Stats = () => {
+const Cards = () => {
     const { t } = useTranslation();
-
     const { data } = useGetDashboardQuery();
 
     return (
-        <Grid
-            container
-            width={{ xs: "100%", md: "50%" }}
-            spacing={1}
-            maxHeight={{ xs: "100%", md: "calc(100vh - 178px)" }}
-        >
+        <>
             <Grid xs={12} sm={6}>
                 <CardWithIcon
                     title={data?.totalProperties.toString() ?? ""}
@@ -98,8 +93,23 @@ const Stats = () => {
                     subtitle={t("Total Rented Properties")}
                 />
             </Grid>
+        </>
+    );
+};
 
-            <Grid xs={12}>
+const Stats = () => {
+    const { t } = useTranslation();
+
+    return (
+        <Grid
+            container
+            width={{ xs: "100%", md: "50%" }}
+            spacing={1}
+            maxHeight={{ xs: "100%", md: "calc(100vh - 178px)" }}
+        >
+            <Cards />
+
+            {/* <Grid xs={12}>
                 <TotalProperties
                     title={t("Total Properties")}
                     subheader={t("Properties Distribution")}
@@ -111,7 +121,7 @@ const Stats = () => {
                     title={t("Total Properties per User")}
                     subheader=""
                 />
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 };
@@ -133,6 +143,7 @@ const Dashboard = () => {
                 <StickyCalendar startRef={startRef} />
             </Stack>
 
+            <UserDetailList />
             <Tasks />
         </Stack>
     );

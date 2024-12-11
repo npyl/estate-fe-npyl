@@ -1138,10 +1138,20 @@ const resources = {
                 "Welcome to PropertyPro, manage your real estate data easily with us.",
 
             Hello: "Hello",
+
+            "My Tasks": "My Tasks",
+            _tasks_lowercase: "tasks",
+
+            "Active Tasks": "Active Tasks",
         },
     },
     el: {
         translation: {
+            "Active Tasks": "Ενεργές Εργασίες",
+
+            _tasks_lowercase: "εργασίες",
+            "My Tasks": "Οι Εργασίες μου",
+
             Hello: "Γεια σας",
 
             _WELCOME_:
