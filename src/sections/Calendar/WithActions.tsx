@@ -8,7 +8,9 @@ import {
 import dynamic from "next/dynamic";
 import { ComponentType, useState } from "react";
 
-const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
+const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"), {
+    ssr: false,
+});
 
 type AnyCalendarViewProps =
     | CalendarDayViewProps

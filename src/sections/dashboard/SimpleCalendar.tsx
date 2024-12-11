@@ -15,7 +15,9 @@ import { EventProps } from "@/components/Calendar/Event/types";
 import dynamic from "next/dynamic";
 import { DAY_CELL_HEIGHT } from "@/constants/calendar";
 import useTimemappedEvents from "@/components/Calendar/Views/useTimemappedEvents";
-const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
+const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"), {
+    ssr: false,
+});
 
 // ------------------------------------------------------------------------
 
