@@ -134,13 +134,6 @@ const Stats = () => {
                 <AppConversionRates
                     title={t("Total Properties per User")}
                     subheader=""
-                    chart={{
-                        series:
-                            data?.propertiesPerUserList.map((e) => ({
-                                label: e.user,
-                                value: e.properties,
-                            })) ?? [],
-                    }}
                 />
             </Grid>
         </Grid>

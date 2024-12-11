@@ -1,17 +1,12 @@
 import { Card, CardHeader, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import dynamic from "next/dynamic"; // Import 'next/dynamic'
-import useChart from "src/components/chart/use-chart";
-
-// Define the dynamic import for the Chart component
-const DynamicChart = dynamic(() => import("src/components/chart/chart"), {
-    ssr: false, // Disable server-side rendering for this component
-});
+import useChart from "@/components/chart/use-chart";
+import Chart from "@/components/chart";
 
 const CHART_HEIGHT = 400;
 const LEGEND_HEIGHT = 72;
 
-const StyledChart = styled(DynamicChart)(({ theme }) => ({
+const StyledChart = styled(Chart)(({ theme }) => ({
     height: CHART_HEIGHT,
     "& .apexcharts-canvas, .apexcharts-inner, svg, foreignObject": {
         height: `100% !important`,
@@ -72,7 +67,7 @@ export default function TotalProperties({
         tooltip: {
             fillSeriesColor: false,
             y: {
-                formatter: (value: number) => value,
+                formatter: (value: number) => value.toString(),
                 title: {
                     formatter: (seriesName: string) => `${seriesName}`,
                 },

@@ -1,12 +1,9 @@
 import { alpha, useTheme } from "@mui/material/styles";
-import useResponsive from "@/hooks/useResponsive";
 
 // ----------------------------------------------------------------------
 
 export default function useChart(options: ApexCharts.ApexOptions = {}) {
     const theme = useTheme();
-
-    const smUp = useResponsive("up", "sm");
 
     const LABEL_TOTAL = {
         show: true,
@@ -43,7 +40,6 @@ export default function useChart(options: ApexCharts.ApexOptions = {}) {
         chart: {
             toolbar: { show: false },
             zoom: { enabled: false },
-            // animations: { enabled: false },
             foreColor: theme.palette.text.disabled,
             fontFamily: theme.typography.fontFamily,
         },
@@ -135,7 +131,7 @@ export default function useChart(options: ApexCharts.ApexOptions = {}) {
         plotOptions: {
             // Bar
             bar: {
-                borderRadius: smUp ? 3 : 1,
+                borderRadius: 1,
                 columnWidth: "28%",
                 borderRadiusApplication: "end",
                 borderRadiusWhenStacked: "last",
