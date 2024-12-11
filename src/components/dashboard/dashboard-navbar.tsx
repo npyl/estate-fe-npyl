@@ -37,7 +37,7 @@ const Logo = () => {
         theme.palette.mode === "light"
             ? LogoHorizontalLight
             : LogoHorizontalDark;
-    return <Comp width="fit-content" height={64} />;
+    return <Comp height={64} />;
 };
 
 interface DashboardNavbarProps extends AppBarProps {
