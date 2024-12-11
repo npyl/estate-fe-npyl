@@ -103,30 +103,6 @@ const Stats = () => {
                 <TotalProperties
                     title={t("Total Properties")}
                     subheader={t("Properties Distribution")}
-                    chart={{
-                        series: [
-                            {
-                                label: t("Residential"),
-                                value:
-                                    data?.propertiesDistribution.residential ??
-                                    0,
-                            },
-                            {
-                                label: t("Commercial"),
-                                value:
-                                    data?.propertiesDistribution.commercial ??
-                                    0,
-                            },
-                            {
-                                label: t("Land"),
-                                value: data?.propertiesDistribution.land ?? 0,
-                            },
-                            {
-                                label: t("Other"),
-                                value: data?.propertiesDistribution.other ?? 0,
-                            },
-                        ],
-                    }}
                 />
             </Grid>
 

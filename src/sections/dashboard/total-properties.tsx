@@ -2,6 +2,9 @@ import { Card, CardHeader, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import useChart from "@/components/chart/use-chart";
 import Chart from "@/components/chart";
+import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
+import { useGetDashboardQuery } from "@/services/dashboard";
 
 const CHART_HEIGHT = 400;
 const LEGEND_HEIGHT = 72;
@@ -18,27 +21,44 @@ const StyledChart = styled(Chart)(({ theme }) => ({
     },
 }));
 
-interface ChartData {
-    label: string;
-    value: number;
-}
 interface TotalPropertiesProps {
     title: string;
     subheader: string;
-    chart: {
-        series: ChartData[];
-    };
 }
 
 export default function TotalProperties({
     title,
     subheader,
-    chart,
-    ...other
 }: TotalPropertiesProps) {
     const theme = useTheme();
 
-    const { series } = chart;
+    const { t } = useTranslation();
+    const { data } = useGetDashboardQuery();
+
+    const series = useMemo(
+        () =>
+            data?.propertiesDistribution
+                ? [
+                      {
+                          label: t("Residential"),
+                          value: data.propertiesDistribution.residential ?? 0,
+                      },
+                      {
+                          label: t("Commercial"),
+                          value: data.propertiesDistribution.commercial ?? 0,
+                      },
+                      {
+                          label: t("Land"),
+                          value: data?.propertiesDistribution.land ?? 0,
+                      },
+                      {
+                          label: t("Other"),
+                          value: data?.propertiesDistribution.other ?? 0,
+                      },
+                  ]
+                : [],
+        [t, data?.propertiesDistribution]
+    );
 
     const chartSeries = series.map((i) => i.value);
 
@@ -86,7 +106,7 @@ export default function TotalProperties({
     });
 
     return (
-        <Card variant="outlined" sx={{ boxShadow: 5 }} {...other}>
+        <Card variant="outlined" sx={{ boxShadow: 5 }}>
             <CardHeader
                 title={title}
                 subheader={subheader}

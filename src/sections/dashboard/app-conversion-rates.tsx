@@ -2,6 +2,7 @@ import { Box, Card, CardHeader } from "@mui/material";
 import { useGetDashboardQuery } from "@/services/dashboard";
 import useChart from "@/components/chart/use-chart";
 import Chart from "@/components/chart";
+import { useMemo } from "react";
 
 interface AppConversionRatesProps {
     title: string;
@@ -14,11 +15,16 @@ export default function AppConversionRates({
 }: AppConversionRatesProps) {
     const { data } = useGetDashboardQuery();
 
-    const series =
-        data?.propertiesPerUserList?.map((e) => ({
-            label: e.user,
-            value: e.properties,
-        })) || [];
+    const series = useMemo(
+        () =>
+            Array.isArray(data?.propertiesPerUserList)
+                ? data.propertiesPerUserList.map((e) => ({
+                      label: e.user,
+                      value: e.properties,
+                  }))
+                : [],
+        [data?.propertiesPerUserList]
+    );
 
     const chartSeries = series.map((i) => i.value);
 

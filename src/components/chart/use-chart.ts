@@ -1,4 +1,5 @@
 import { alpha, useTheme } from "@mui/material/styles";
+import merge from "lodash.merge";
 
 // ----------------------------------------------------------------------
 
@@ -199,5 +200,5 @@ export default function useChart(options: ApexCharts.ApexOptions = {}) {
         ],
     };
 
-    return { ...baseOptions, ...options };
+    return merge(baseOptions, options);
 }
