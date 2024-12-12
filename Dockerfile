@@ -8,10 +8,10 @@ COPY . /usr/src
 RUN rm -rf .next node_modules package-lock.json yarn.lock
 # install dependencies
 RUN npm i -g only-allow
-RUN npm i --omit=dev
+RUN npm i
 
 FROM base AS builder
-ENV NODE_OPTIONS="--max-old-space-size=3584"
+ENV NODE_OPTIONS="--max-old-space-size=5120"
 RUN npm run build
 
 FROM builder AS runner
