@@ -47,9 +47,9 @@ const useAutofill = () => {
             );
             const ownerFullname = join(owner?.firstName, owner?.lastName, " ");
 
-            setValue("ownerId", p.owner?.id || -1);
-            setValue("propertyId", p.id);
-            setValue("title", description.title);
+            setValue("ownerId", p?.owner?.id || -1);
+            setValue("propertyId", p?.id);
+            setValue("title", description?.title);
             // ...
             setValue("property", {
                 region: region || "",

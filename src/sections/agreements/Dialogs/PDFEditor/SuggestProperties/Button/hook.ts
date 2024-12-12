@@ -16,11 +16,11 @@ const useAutofill = (row: number, onAutofill: VoidFunction) => {
             setValue(
                 `suggestedProperties.${row}`,
                 {
-                    area: lang === "GREEK" ? p.regionGR : p.regionEN || "-",
-                    address: p.location.street || "-",
-                    type: p.parentCategory.value || "-",
-                    livingSpace: p.area.toString() || "-",
-                    price: p.price ? formatThousands(p.price) : "-",
+                    area: (lang === "GREEK" ? p?.regionGR : p?.regionEN) || "-",
+                    address: p?.location?.street || "-",
+                    type: p?.parentCategory?.value || "-",
+                    livingSpace: p?.area?.toString() || "-",
+                    price: p?.price ? formatThousands(p.price) : "-",
                     fee: "-",
                 },
                 { shouldDirty: true }
