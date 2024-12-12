@@ -115,13 +115,13 @@ const Stats = () => {
                     subheader={t("Properties Distribution")}
                 />
             </Grid>
-            {/* 
+
             <Grid xs={12}>
                 <AppConversionRates
                     title={t("Total Properties per User")}
                     subheader=""
                 />
-            </Grid> */}
+            </Grid>
         </Grid>
     );
 };
