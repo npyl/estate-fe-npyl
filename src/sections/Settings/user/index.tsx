@@ -16,7 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
+import AnimatedTableRow from "@/sections/Settings/user/AnimatedTableRow";
 const UserForm = dynamic(() => import("@/sections/User/Form"));
 import { IOSSwitch } from "src/components/iOSSwitch";
 import { Label } from "@/components/Label";
@@ -162,7 +162,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users?.map((user: any) => (
+                        {users?.map((user) => (
                             <AnimatedTableRow
                                 key={user.id}
                                 onClick={() => handleRowClick(user.id)}
