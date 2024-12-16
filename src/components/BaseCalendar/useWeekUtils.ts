@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import { useSettingsContext } from "./Settings";
+import useModeCookie from "./useModeCookie";
 
 type TWeekCb = (date: Date) => Date;
 
 const useWeekUtils = () => {
-    const { weekViewMode } = useSettingsContext();
+    const [weekViewMode] = useModeCookie();
 
     const getStartOfWeek: TWeekCb = useCallback(
         (date) => {

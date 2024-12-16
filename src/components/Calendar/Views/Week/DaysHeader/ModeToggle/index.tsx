@@ -1,25 +1,22 @@
-import { useSettingsContext } from "@/components/BaseCalendar/Settings";
 import Stack from "@mui/material/Stack";
 import MondayIcon from "./Monday";
 import SundayIcon from "./Sunday";
 import IconButton from "@mui/material/IconButton";
 import { useCallback } from "react";
+import useModeCookie from "@/components/BaseCalendar/useModeCookie";
 
 const ModeToggle = () => {
-    const { weekViewMode, setWeekViewMode } = useSettingsContext();
+    const [mode, set] = useModeCookie();
 
-    const handleToggle = useCallback(
-        () =>
-            setWeekViewMode((old) =>
-                old === "monToSun" ? "sunToSat" : "monToSun"
-            ),
-        []
-    );
+    const handleToggle = useCallback(() => {
+        if (mode === "monToSun") set("sunToSat");
+        if (mode === "sunToSat") set("monToSun");
+    }, []);
 
     return (
         <Stack width="50px" justifyContent="center" alignItems="center">
             <IconButton onClick={handleToggle}>
-                {weekViewMode === "monToSun" ? <SundayIcon /> : <MondayIcon />}
+                {mode === "monToSun" ? <SundayIcon /> : <MondayIcon />}
             </IconButton>
         </Stack>
     );

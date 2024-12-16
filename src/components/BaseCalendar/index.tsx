@@ -3,7 +3,7 @@ import { BaseCalendarProps } from "./types";
 import { TODAY } from "./constants";
 import BaseHeader from "./Header";
 import BaseView from "./View";
-import { SettingsProvider } from "./Settings";
+import { CookiesProvider } from "react-cookie";
 
 const BaseCalendar: FC<BaseCalendarProps> = ({
     date = TODAY,
@@ -21,7 +21,7 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
 
     return (
         <div {...props}>
-            <SettingsProvider>
+            <CookiesProvider>
                 <Header
                     date={date}
                     view={view}
@@ -33,7 +33,7 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
                 />
 
                 <View view={view} date={date} slots={ViewSlots} />
-            </SettingsProvider>
+            </CookiesProvider>
         </div>
     );
 };

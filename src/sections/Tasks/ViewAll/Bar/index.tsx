@@ -5,8 +5,6 @@ import UserSelect from "./UserSelect";
 import { SpaceBetween } from "@/components/styled";
 import AddButtons from "./AddButtons";
 import Priority from "./Priority";
-import { FC } from "react";
-import { TMode } from "../types";
 import ModeButton from "./ModeButton";
 
 const BarSx: SxProps<Theme> = {
@@ -18,12 +16,7 @@ const BarSx: SxProps<Theme> = {
     borderColor: "divider",
 };
 
-interface BarProps {
-    mode: TMode;
-    onToggleMode: VoidFunction;
-}
-
-const Bar: FC<BarProps> = ({ mode, onToggleMode }) => (
+const Bar = () => (
     <SpaceBetween alignItems="center" sx={BarSx}>
         <Stack
             direction="row"
@@ -37,7 +30,7 @@ const Bar: FC<BarProps> = ({ mode, onToggleMode }) => (
         </Stack>
 
         <Stack direction="row" spacing={1} alignItems="center">
-            <ModeButton mode={mode} onClick={onToggleMode} />
+            <ModeButton />
             <AddButtons />
         </Stack>
     </SpaceBetween>
