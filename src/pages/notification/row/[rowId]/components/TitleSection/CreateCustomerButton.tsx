@@ -1,21 +1,35 @@
 import Link from "@/components/Link";
 import { useFindByEmailQuery } from "@/services/customers";
-import { ICustomerMini } from "@/types/customer";
-import { Button, Skeleton } from "@mui/material";
-import { FC } from "react";
+import { ICustomer, ICustomerMini } from "@/types/customer";
+import { Button, Skeleton, SxProps, Theme } from "@mui/material";
+import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import PersonIcon from "@mui/icons-material/Person";
 import { HideText } from "@/components/styled";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
+import { ContactNotificationExtended } from "@/types/notification";
 const CustomerModal = dynamic(() => import("@/sections/Customer/Modal"));
 
 // -------------------------------------------------------------------------
 
-const CreateButton = () => {
+interface CreateButtonProps {
+    data?: ContactNotificationExtended;
+}
+
+const CreateButton: FC<CreateButtonProps> = ({ data }) => {
     const { t } = useTranslation();
 
     const [isOpen, openModal, closeModal] = useDialog();
+
+    const customer = useMemo(() => {
+        const parts = data?.customerName?.split(" ");
+        return {
+            firstName: parts?.[0] || "",
+            lastName: parts?.[1] || "",
+            email: data?.customerEmail || "",
+        } as ICustomer;
+    }, [data]);
 
     return (
         <>
@@ -32,12 +46,26 @@ const CreateButton = () => {
                 {t("Create Customer")}
             </Button>
 
-            {isOpen ? <CustomerModal onClose={closeModal} /> : null}
+            {isOpen ? (
+                <CustomerModal customer={customer} onClose={closeModal} />
+            ) : null}
         </>
     );
 };
 
 // -------------------------------------------------------------------------
+
+const CustomerLinkSx: SxProps<Theme> = {
+    textWrap: "nowrap",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    gap: 1,
+    "&:hover": {
+        cursor: "pointer",
+        textDecoration: "underline",
+    },
+};
 
 interface CustomerLinkProps {
     c?: ICustomerMini;
@@ -45,28 +73,46 @@ interface CustomerLinkProps {
 
 const CustomerLink: FC<CustomerLinkProps> = ({ c }) => {
     const fullname = `${c?.firstName || ""} ${c?.lastName || ""}`;
-    return <Link href={`/customers/${c?.id}`}>{fullname}</Link>;
+
+    return (
+        <Button
+            variant="outlined"
+            sx={CustomerLinkSx}
+            // ...
+            LinkComponent={Link}
+            href={`/customer/${c?.id}`}
+            startIcon={<PersonIcon />}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            {fullname}
+        </Button>
+    );
 };
 
 // -------------------------------------------------------------------------
 
 const useCustomerExists = (email: string) => {
-    const { data: customer, isLoading } = useFindByEmailQuery(email);
+    const { data: customer, isLoading } = useFindByEmailQuery(email, {
+        skip: !email,
+    });
     return { customer, didFound: Boolean(customer), isLoading };
 };
 
 interface Props {
-    email: string;
+    data: ContactNotificationExtended;
 }
 
-const CreateCustomerButton: FC<Props> = ({ email }) => {
-    const { customer, didFound, isLoading } = useCustomerExists(email);
+const CreateCustomerButton: FC<Props> = ({ data }) => {
+    const { customer, didFound, isLoading } = useCustomerExists(
+        data?.customerEmail
+    );
 
     if (isLoading) return <Skeleton width="150px" height="58px" />;
 
     if (didFound) return <CustomerLink c={customer} />;
 
-    return <CreateButton />;
+    return <CreateButton data={data} />;
 };
 
 export default CreateCustomerButton;

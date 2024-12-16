@@ -2,15 +2,20 @@ import { Box, IconButton, Modal } from "@mui/material";
 import { ClearIcon } from "@mui/x-date-pickers";
 import CustomerForm from "@/pages/customer/components/Form";
 import { useCallback } from "react";
-import { ICustomerPOST } from "@/types/customer";
+import { ICustomer, ICustomerPOST } from "@/types/customer";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 
 interface ModalProps {
+    customer?: ICustomer;
     onCreate?: (id: number) => void;
     onClose: () => void;
 }
 
-const CustomerModal: React.FC<ModalProps> = ({ onCreate, onClose }) => {
+const CustomerModal: React.FC<ModalProps> = ({
+    customer,
+    onCreate,
+    onClose,
+}) => {
     const [create, { isError, isLoading }] =
         useCreateOrUpdateCustomerMutation();
 
@@ -51,6 +56,7 @@ const CustomerModal: React.FC<ModalProps> = ({ onCreate, onClose }) => {
                     <ClearIcon />
                 </IconButton>
                 <CustomerForm
+                    customer={customer}
                     isLoading={isLoading}
                     isError={isError}
                     onSave={handleSave}

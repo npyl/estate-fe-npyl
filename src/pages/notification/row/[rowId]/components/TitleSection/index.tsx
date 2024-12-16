@@ -101,8 +101,8 @@ const TitleSection: React.FC<TitleSectionProps> = ({
                     </Typography>
 
                     <Stack direction="row" spacing={1} alignItems="center">
-                        {type === "TOUR" && data?.customerEmail ? (
-                            <CreateCustomerButton email={data.customerEmail} />
+                        {type === "TOUR" ? (
+                            <CreateCustomerButton data={data} />
                         ) : null}
 
                         <CreateTaskButton data={data} />
