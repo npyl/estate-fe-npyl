@@ -57,10 +57,19 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
                 <Typography variant="body2">{c.name}</Typography>
-                <PriorityLabel priority={c?.priority} />
             </Stack>
 
-            <Stack direction="row" spacing={1} alignItems="center">
+            <PriorityLabel
+                position="absolute"
+                left="50%"
+                priority={c?.priority}
+                display={{
+                    xs: "none",
+                    md: "block",
+                }}
+            />
+
+            <Stack direction="row" spacing={1} alignItems="center" width="25%">
                 {isCompleted ? <CompletedLabel /> : null}
                 {assignee ? <TooltipAvatar u={assignee} /> : <NoAssignee />}
             </Stack>
