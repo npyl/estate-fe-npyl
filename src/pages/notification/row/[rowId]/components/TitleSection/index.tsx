@@ -5,6 +5,7 @@ import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { ContactNotificationExtended } from "@/types/notification";
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
+const CreateCustomerButton = dynamic(() => import("./CreateCustomerButton"));
 const CreateTaskButton = dynamic(() => import("./CreateTaskButton"));
 
 interface TitleSectionProps {
@@ -99,7 +100,13 @@ const TitleSection: React.FC<TitleSectionProps> = ({
                         {getTitle()}
                     </Typography>
 
-                    <CreateTaskButton data={data} />
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        {type === "TOUR" && data?.customerEmail ? (
+                            <CreateCustomerButton email={data.customerEmail} />
+                        ) : null}
+
+                        <CreateTaskButton data={data} />
+                    </Stack>
                 </SpaceBetween>
             )}
         </>

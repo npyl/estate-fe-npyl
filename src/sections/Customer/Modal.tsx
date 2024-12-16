@@ -4,23 +4,24 @@ import CustomerForm from "@/pages/customer/components/Form";
 import { useCallback } from "react";
 import { ICustomerPOST } from "@/types/customer";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
-import { useFormContext } from "react-hook-form";
 
 interface ModalProps {
+    onCreate?: (id: number) => void;
     onClose: () => void;
 }
 
-const CustomerModal: React.FC<ModalProps> = ({ onClose }) => {
-    const { setValue } = useFormContext();
-
+const CustomerModal: React.FC<ModalProps> = ({ onCreate, onClose }) => {
     const [create, { isError, isLoading }] =
         useCreateOrUpdateCustomerMutation();
 
-    const handleSave = useCallback(async (body: ICustomerPOST) => {
-        const newOwnerId = await create(body).unwrap();
-        setValue("ownerId", newOwnerId);
-        onClose();
-    }, []);
+    const handleSave = useCallback(
+        async (body: ICustomerPOST) => {
+            const newOwnerId = await create(body).unwrap();
+            onCreate?.(newOwnerId);
+            onClose();
+        },
+        [onCreate]
+    );
 
     return (
         <Modal open onClose={onClose}>
@@ -31,12 +32,11 @@ const CustomerModal: React.FC<ModalProps> = ({ onClose }) => {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: 900,
+                    width: "70vw",
                     maxHeight: 650,
                     bgcolor: "background.paper",
                     borderRadius: "10px",
                     boxShadow: 24,
-                    p: 4,
                 }}
             >
                 <IconButton

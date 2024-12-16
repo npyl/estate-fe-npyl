@@ -1143,10 +1143,12 @@ const resources = {
             _tasks_lowercase: "tasks",
 
             "Active Tasks": "Active Tasks",
+            "Create Customer": "Create Customer",
         },
     },
     el: {
         translation: {
+            "Create Customer": "Δημιουργία Πελάτη",
             "Active Tasks": "Ενεργές Εργασίες",
 
             _tasks_lowercase: "εργασίες",
