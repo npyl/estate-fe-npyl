@@ -14,6 +14,8 @@ const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 const NoAssignee = () => null;
 
 const getItemSx = (priority: number): SxProps<Theme> => ({
+    position: "relative",
+
     cursor: "pointer",
 
     borderLeft: "3px solid",
@@ -65,11 +67,17 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 priority={c?.priority}
                 display={{
                     xs: "none",
-                    md: "block",
+                    lg: "block",
                 }}
             />
 
-            <Stack direction="row" spacing={1} alignItems="center" width="25%">
+            <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="flex-end"
+                width="25%"
+            >
                 {isCompleted ? <CompletedLabel /> : null}
                 {assignee ? <TooltipAvatar u={assignee} /> : <NoAssignee />}
             </Stack>
