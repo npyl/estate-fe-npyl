@@ -23,17 +23,17 @@ const Preview = ({ onEdit }: PreviewProps) => {
     const labelData: TLabelSections = useMemo(
         () => ({
             propertyLabels: {
-                label: t("Property Labels"),
+                label: t("Property"),
                 variant: "property",
                 data: labels?.propertyLabels || [],
             },
             customerLabels: {
-                label: t("Customer Labels"),
+                label: t("Customer"),
                 variant: "customer",
                 data: labels?.customerLabels || [],
             },
             documentLabels: {
-                label: t("Document Labels"),
+                label: t("Document"),
                 variant: "document",
                 data: labels?.documentLabels || [],
             },

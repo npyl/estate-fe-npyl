@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { Create } from "./components/Create";
+import Create from "./components/Create";
 import Preview from "./components/Preview";
 import { IEditProps } from "./components/Preview/types";
 import dynamic from "next/dynamic";
