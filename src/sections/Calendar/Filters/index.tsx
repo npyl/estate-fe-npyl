@@ -22,13 +22,13 @@ const Filters = () => {
         >
             <Search />
 
+            <UserSelect />
+
             <TypeSelect<TTypeFilter> type={type} onChange={setType}>
                 <ToggleButton value="ANY">
                     <Typography ml={1}>{t("All")}</Typography>
                 </ToggleButton>
             </TypeSelect>
-
-            <UserSelect />
         </Stack>
     );
 };
