@@ -12,24 +12,91 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SliderPicker } from "react-color";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useAllCustomersQuery } from "src/services/customers";
 import { useAllPropertiesQuery } from "src/services/properties";
-import { LabelResourceType } from "src/types/label";
+import {
+    labels,
+    useCreateLabelForCustomersMutation,
+    useCreateLabelForDocumentsMutation,
+    useCreateLabelForPropertiesMutation,
+    useCreateLabelForResourceMutation,
+} from "@/services/labels";
+import { dispatch } from "@/store";
+import successToast from "@/components/Toaster/success";
+import { LabelResourceType } from "@/types/label";
 
-interface CreateProps {
-    createLabel: (
+const useCreateLabel = () => {
+    const [createAssignLabel] = useCreateLabelForResourceMutation();
+
+    const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
+    const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
+    const [createLabelForDocuments] = useCreateLabelForDocumentsMutation();
+
+    const { data: allProperties } = useAllPropertiesQuery();
+    const { data: allCustomers } = useAllCustomersQuery();
+
+    const invalidateTags = () =>
+        dispatch(labels.util.invalidateTags(["Labels"]));
+
+    const propertyIdForCode = useCallback(
+        (code: string) =>
+            allProperties?.find((property) => property.code === code)?.id || "",
+        [allProperties]
+    );
+
+    const customerIdForFullname = useCallback(
+        (fullname: string) =>
+            allCustomers?.find(
+                (customer) =>
+                    customer.firstName + " " + customer.lastName === fullname
+            )?.id || "",
+        [allCustomers]
+    );
+
+    const onSuccess = () => {
+        successToast("Success");
+        invalidateTags();
+    };
+
+    const createLabel = (
         labelName: string,
         autocompleteValue: string,
         pickerColor: string,
-        assigneeType: LabelResourceType
-    ) => void;
-}
+        resource: LabelResourceType
+    ) => {
+        const code = autocompleteValue;
+        const body = { color: pickerColor, name: labelName };
 
-export const Create = ({ createLabel }: CreateProps) => {
+        if (code === "") {
+            // create without assign
+            if (resource === "property") createLabelForProperties(body);
+            else if (resource === "customer") createLabelForCustomers(body);
+            else if (resource === "document") createLabelForDocuments(body);
+        } else {
+            // create with assign
+            const resourceId =
+                resource === "property"
+                    ? propertyIdForCode(code)
+                    : customerIdForFullname(code);
+
+            if (!resourceId) return;
+
+            createAssignLabel({
+                resource,
+                resourceId,
+                body,
+            }).then(onSuccess);
+        }
+    };
+
+    return { createLabel };
+};
+
+export const Create = () => {
     const { t } = useTranslation();
 
     const [assigneeType, setAssigneeType] = useState<LabelResourceType>();
@@ -42,6 +109,8 @@ export const Create = ({ createLabel }: CreateProps) => {
 
     const [error, setError] = useState("");
     const [autocompleteError, setAutocompleteError] = useState("");
+
+    const { createLabel } = useCreateLabel();
 
     const properties: string[] =
         useAllPropertiesQuery(undefined, {

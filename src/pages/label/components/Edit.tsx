@@ -11,16 +11,45 @@ import {
 import { useState } from "react";
 import { SliderPicker } from "react-color";
 import { Label } from "@/components/Label";
-import { IEditProps } from "./types";
+import { IEditProps } from "./Preview/types";
 import { useTranslation } from "react-i18next";
+import {
+    useCreateLabelForCustomersMutation,
+    useCreateLabelForDocumentsMutation,
+    useCreateLabelForPropertiesMutation,
+} from "@/services/labels";
+
+const useEditLabel = () => {
+    const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
+    const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
+    const [createLabelForDocuments] = useCreateLabelForDocumentsMutation();
+
+    const editLabel = ({ id, name, color, resource }: IEditProps) => {
+        const cb =
+            resource === "property"
+                ? createLabelForProperties
+                : resource === "customer"
+                ? createLabelForCustomers
+                : resource === "document"
+                ? createLabelForDocuments
+                : () => {};
+
+        return cb({
+            id,
+            name,
+            color,
+        });
+    };
+
+    return { editLabel };
+};
 
 interface EditProps {
     editedLabel: IEditProps;
     cancelEdit: () => void;
-    editLabel: (editedLabel: IEditProps) => void;
 }
 
-export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
+const Edit = ({ editedLabel, cancelEdit }: EditProps) => {
     const { t } = useTranslation();
 
     const [pickerColor, setPickerColor] = useState(editedLabel.color);
@@ -30,18 +59,22 @@ export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
 
     const handleChangeComplete = (color: any) => setPickerColor(color.hex);
 
-    const handleCreateLabel = () => {
+    const { editLabel } = useEditLabel();
+
+    const handleCreateLabel = async () => {
         if (!labelName) {
             setError(t("The name of the label is mandatory") || "");
             return;
         }
 
-        editLabel({
+        await editLabel({
             id: editedLabel.id,
             name: labelName,
             color: pickerColor,
             resource: editedLabel.resource,
         });
+
+        cancelEdit();
     };
 
     return (
@@ -115,3 +148,5 @@ export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
         </Paper>
     );
 };
+
+export default Edit;
