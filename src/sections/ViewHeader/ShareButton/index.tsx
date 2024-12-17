@@ -49,9 +49,11 @@ const ShareButton = () => {
             ) : null}
 
             {hasPublic ? (
-                <IconButton ref={anchorRef} onClick={openPopover}>
-                    <ShareIcon fontSize="small" />
-                </IconButton>
+                <Tooltip title={t("Share")}>
+                    <IconButton ref={anchorRef} onClick={openPopover}>
+                        <ShareIcon fontSize="small" />
+                    </IconButton>
+                </Tooltip>
             ) : null}
 
             {isOpen ? (
