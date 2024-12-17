@@ -1,5 +1,10 @@
 export type CompanyImageType = "LOGO" | "WATERMARK";
 
+interface ICompanyImages {
+    LOGO: string;
+    WATERMARK: string;
+}
+
 export interface ICompany {
     companyName: string;
     address: string;
@@ -20,10 +25,7 @@ export interface ICompany {
 
     includeWatermark: boolean;
 
-    companyImages: {
-        LOGO: string;
-        WATERMARK: string;
-    };
+    companyImages?: Partial<ICompanyImages>;
 
     watermarkPosition:
         | "CENTER"
@@ -60,4 +62,6 @@ export interface ICompanyPOST
     twitter?: string;
 
     includeWatermark?: boolean;
+
+    companyImages?: Partial<ICompanyImages>;
 }
