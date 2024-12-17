@@ -4,11 +4,12 @@ import { useGetAgreementByIdQuery } from "@/services/agreements";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Skeleton from "./Skeleton";
-import PDFViewer from "./PDFViewer";
 import Description from "./Description";
 import { useTabsContext } from "@/contexts/tabs";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
+const PDFViewer = dynamic(() => import("./PDFViewer"), { ssr: false });
 
 const ViewAgreementPage: NextPage = () => {
     const { t } = useTranslation();
