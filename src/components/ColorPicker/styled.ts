@@ -61,6 +61,15 @@ const ColorSegment = styled(Box)<ColorSegmentProps>(({ selected }) => ({
     height: "10px",
     transform: selected ? "scaleY(2)" : "scale(1)",
     zIndex: selected ? 1 : 0,
+
+    "&:first-of-type": {
+        borderTopLeftRadius: "10px",
+        borderBottomLeftRadius: "10px",
+    },
+    "&:last-of-type": {
+        borderTopRightRadius: "10px",
+        borderBottomRightRadius: "10px",
+    },
 }));
 
 export {

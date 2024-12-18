@@ -2,6 +2,7 @@ import { useState, MouseEvent, useCallback, FC } from "react";
 import { ColorPickerWrapper, ColorSlider, SliderHandle } from "./styled";
 import SegmentPicker from "./SegmentPicker";
 import { BoxProps } from "@mui/material";
+import React from "react";
 
 const getColorFromPosition = (position: number): string => {
     const hue = (position / 100) * 360;
@@ -83,4 +84,4 @@ const ColorPicker: FC<ColorPickerProps> = ({
     );
 };
 
-export default ColorPicker;
+export default React.memo(ColorPicker);
