@@ -1,6 +1,7 @@
 import { useState, MouseEvent, useCallback, FC } from "react";
 import { ColorPickerWrapper, ColorSlider, SliderHandle } from "./styled";
 import SegmentPicker from "./SegmentPicker";
+import { BoxProps } from "@mui/material";
 
 const getColorFromPosition = (position: number): string => {
     const hue = (position / 100) * 360;
@@ -30,12 +31,16 @@ const getColorFromPosition = (position: number): string => {
         .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 };
 
-interface ColorPickerProps {
+interface ColorPickerProps extends BoxProps {
     color?: string;
     onColorChange?: (color: string) => void;
 }
 
-const ColorPicker: FC<ColorPickerProps> = ({ color, onColorChange }) => {
+const ColorPicker: FC<ColorPickerProps> = ({
+    color,
+    onColorChange,
+    ...props
+}) => {
     const [handlePosition, setHandlePosition] = useState<number>(50);
     const [baseColor, setBaseColor] = useState<string>(
         color || getColorFromPosition(50)
@@ -65,7 +70,7 @@ const ColorPicker: FC<ColorPickerProps> = ({ color, onColorChange }) => {
     );
 
     return (
-        <ColorPickerWrapper>
+        <ColorPickerWrapper {...props}>
             <ColorSlider onClick={handleSliderClick} onMouseMove={handleDrag}>
                 <SliderHandle left={handlePosition} />
             </ColorSlider>

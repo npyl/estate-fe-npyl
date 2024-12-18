@@ -1144,10 +1144,13 @@ const resources = {
 
             "Active Tasks": "Active Tasks",
             "Create Customer": "Create Customer",
+            Document: "Document",
         },
     },
     el: {
         translation: {
+            Document: "Έγγραφο",
+            Documents: "Έγγραφα",
             "Create Customer": "Δημιουργία Πελάτη",
             "Active Tasks": "Ενεργές Εργασίες",
 
@@ -2195,7 +2198,6 @@ const resources = {
             "Private Photos": "Ιδιωτικές Εικόνες",
 
             Integrations: "Διασύνδεση",
-            Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
             "Share PDF": "Κοινοποίση PDF",
             Download: "Λήψη",

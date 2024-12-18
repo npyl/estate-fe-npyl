@@ -74,9 +74,8 @@ const Create = () => {
                             <RHFTextField
                                 name="name"
                                 fullWidth
-                                label={t("Label's name")}
+                                label={t("Title")}
                                 variant="outlined"
-                                placeholder="Label's Name"
                             />
 
                             <RHFColorPicker />

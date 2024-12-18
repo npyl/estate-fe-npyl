@@ -5,21 +5,21 @@ import { useFormContext } from "react-hook-form";
 import { ILabelForm } from "./types";
 
 const Preview = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { watch } = useFormContext<ILabelForm>();
 
     const labelName = watch("name");
     const pickerColor = watch("color");
 
-    console.log("pickerColor: ", pickerColor);
+    const placeholder = i18n.language === "en" ? "New Label" : "Νέα Ετικέτα";
 
     return (
-        <Box my={2}>
+        <Box>
             <Typography variant="subtitle2" mb={1}>
                 {t("Preview")}
             </Typography>
 
-            <Label color={pickerColor} name={labelName || t("New Label")} />
+            <Label color={pickerColor} name={labelName || placeholder} />
         </Box>
     );
 };
