@@ -9,7 +9,7 @@ const LabelSx: SxProps<Theme> = {
 
     "& .pp-label-controls": {
         position: "absolute",
-        right: -60,
+        right: -75,
         visibility: "hidden",
     },
 

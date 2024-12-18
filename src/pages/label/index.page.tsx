@@ -15,7 +15,7 @@ const LabelsPage: NextPage = () => {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} lg={3}>
                 {editedLabel ? (
                     <Edit editedLabel={editedLabel} cancelEdit={cancelEdit} />
                 ) : (
@@ -23,7 +23,7 @@ const LabelsPage: NextPage = () => {
                 )}
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} lg={9}>
                 <Preview onEdit={setEditedLabel} />
             </Grid>
         </Grid>
