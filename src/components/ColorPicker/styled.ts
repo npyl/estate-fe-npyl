@@ -14,7 +14,7 @@ const ColorSlider = styled(Box)({
     width: "100%",
     height: "24px",
     background:
-        "linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)",
+        "linear-gradient(to right, #FF0000, #FFFF00, #00FF00, #00FFFF, #0000FF, #FF00FF, #FF0000)",
     position: "relative",
     cursor: "pointer",
 });
