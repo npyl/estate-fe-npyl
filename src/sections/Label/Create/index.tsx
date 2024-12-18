@@ -1,5 +1,5 @@
 import { Paper, Typography } from "@mui/material";
-import { CSSProperties, useCallback, useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { RHFRadioGroup, RHFTextField } from "@/components/hook-form";
@@ -17,6 +17,11 @@ const FormStyle: CSSProperties = {
     gap: "10px",
 };
 
+interface IOption {
+    label: string;
+    value: string;
+}
+
 const Create = () => {
     const { t } = useTranslation();
 
@@ -33,22 +38,13 @@ const Create = () => {
     const { createLabel } = useCreateLabel();
 
     const radioOptions = useMemo(
-        () => [
+        (): IOption[] => [
             { label: t("Property"), value: "property" },
             { label: t("Customer"), value: "customer" },
             { label: t("Document"), value: "document" },
-            { label: t("Task"), value: "task" },
+            { label: t("Task"), value: "ticket" },
         ],
         [t]
-    );
-
-    const handleSubmit = useCallback(
-        // async ({ resource, resourceId, ...d }: ILabelForm) => {
-        async (d: ILabelForm) => {
-            console.log("pira: ", d);
-            // await createLabel(d.name, resourceId, d.color, resource);
-        },
-        []
     );
 
     return (
@@ -65,7 +61,7 @@ const Create = () => {
             <FormProvider {...methods}>
                 <form
                     style={FormStyle}
-                    onSubmit={methods.handleSubmit(handleSubmit)}
+                    onSubmit={methods.handleSubmit(createLabel)}
                 >
                     <RHFRadioGroup name="resource" options={radioOptions} />
 
@@ -83,7 +79,7 @@ const Create = () => {
                             <Preview />
 
                             {assigneeType !== "document" &&
-                            assigneeType !== "task" ? (
+                            assigneeType !== "ticket" ? (
                                 <Assign />
                             ) : null}
 

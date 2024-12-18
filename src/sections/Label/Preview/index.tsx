@@ -24,7 +24,7 @@ const getSections = (t: TranslationType): Record<keyof ILabels, TSection> => ({
     },
     ticketLabels: {
         label: t("Tasks"),
-        variant: "task",
+        variant: "ticket",
     },
 });
 
