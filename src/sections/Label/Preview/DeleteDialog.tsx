@@ -33,7 +33,7 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
         <ConfirmationDialogBox
             open
             onClose={onClose}
-            text={t("Are you Sure You want to Delete This Label?")}
+            text={t("_UNDONE_")}
             onConfirm={handleConfirm}
             action={"delete"}
         />

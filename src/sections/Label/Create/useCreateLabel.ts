@@ -1,17 +1,17 @@
 import { useCallback } from "react";
 import {
-    useAssignLabelToResourceIdMutation,
+    useCreateAssignLabelForResourceIdMutation,
     useCreateLabelForResourceMutation,
 } from "@/services/labels";
 import successToast from "@/components/Toaster/success";
 import { ILabelForm } from "./types";
 
 const useCreateLabel = () => {
-    const [createAssignLabel] = useAssignLabelToResourceIdMutation();
+    const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
     const [createLabelForResource] = useCreateLabelForResourceMutation();
 
     const createLabel = useCallback(
-        async ({ id, name, color, resource, resourceId }: ILabelForm) => {
+        async ({ name, color, resource, resourceId }: ILabelForm) => {
             const body = { color, name };
 
             let res;
@@ -26,7 +26,7 @@ const useCreateLabel = () => {
                 res = await createAssignLabel({
                     resource,
                     resourceId,
-                    body: { ...body, id },
+                    body,
                 });
             }
 

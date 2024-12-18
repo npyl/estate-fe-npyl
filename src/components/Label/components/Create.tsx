@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./Dialog";
 import {
     useAssignLabelToResourceIdMutation,
-    useCreateLabelForResourceIdMutation,
+    useCreateAssignLabelForResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
     useGetLabelsQuery,
 } from "src/services/labels";
@@ -65,7 +65,7 @@ const LabelCreate = ({
     //  Mutations
     //
     const [createAssignLabel, { isLoading: isCreateLoading }] =
-        useCreateLabelForResourceIdMutation();
+        useCreateAssignLabelForResourceIdMutation();
     const [assignLabel, { isLoading: isAssignLoading }] =
         useAssignLabelToResourceIdMutation();
     const [deleteLabel, { isLoading: isDeleteLoading }] =

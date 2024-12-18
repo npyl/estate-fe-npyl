@@ -8,7 +8,6 @@ import {
 } from "src/types/label";
 import { filesApiSlice, properties } from "./properties";
 import { customers } from "./customers";
-
 import type { AnyAction } from "redux";
 import type { ThunkDispatch } from "redux-thunk";
 
@@ -171,7 +170,7 @@ export const labels = createApi({
         //
         //  Ultra General
         //
-        createLabelForResourceId: builder.mutation<
+        createAssignLabelForResourceId: builder.mutation<
             ILabels,
             LabelForResourceProps
         >({
@@ -264,8 +263,8 @@ export const {
     useCreateLabelForResourceMutation,
     // delete
     useDeleteLabelForResourceMutation,
-    // for specific resourceId
-    useCreateLabelForResourceIdMutation,
+    // resourceId
+    useCreateAssignLabelForResourceIdMutation,
     useAssignLabelToResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
 } = labels;

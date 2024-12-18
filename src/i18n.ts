@@ -1145,10 +1145,16 @@ const resources = {
             "Active Tasks": "Active Tasks",
             "Create Customer": "Create Customer",
             Document: "Document",
+
+            "Are you sure?": "Are you sure?",
+            _UNDONE_: "This action cannot be undone",
         },
     },
     el: {
         translation: {
+            _UNDONE_: "Η ενέργεια δεν μπορεί να αναιρεθεί",
+            "Are you sure?": "Είστε σίγουρος?",
+
             Document: "Έγγραφο",
             Documents: "Έγγραφα",
             "Create Customer": "Δημιουργία Πελάτη",

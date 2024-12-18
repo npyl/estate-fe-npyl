@@ -9,6 +9,8 @@ import SubmitButton from "./SubmitButton";
 import dynamic from "next/dynamic";
 import useCreateLabel from "./useCreateLabel";
 import { ILabelForm } from "./types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import schema from "./schema";
 const Assign = dynamic(() => import("./Assign"));
 
 const FormStyle: CSSProperties = {
@@ -31,6 +33,7 @@ const Create = () => {
             color: "#22194d",
             resource: "property",
         },
+        resolver: yupResolver(schema) as any,
     });
 
     const assigneeType = methods.watch("resource");
