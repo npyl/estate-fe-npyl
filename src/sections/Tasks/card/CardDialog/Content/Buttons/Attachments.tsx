@@ -8,10 +8,11 @@ import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
 import { useAttachmentsContext } from "../AttachmentsContext";
 import { IAddAttachmentRes } from "@/services/tasks/types";
+import { HideText } from "@/components/styled";
 
 // ------------------------------------------------------------------
 
-const ButtonSx = { bgcolor: "info.dark" };
+const ButtonSx = { bgcolor: "info.dark", ...HideText };
 
 const OpenerButton: FC<OpenerBaseProps> = ({ loading, onClick }) => {
     const { t } = useTranslation();

@@ -4,8 +4,8 @@ import dynamic from "next/dynamic";
 import { useFiltersContext } from "../filters";
 import { useDebounce } from "use-debounce";
 import { IKanbanBoard, IKanbanColumn } from "@/types/tasks";
-import { FC, useMemo } from "react";
-import { TMode } from "./types";
+import { useMemo } from "react";
+import useModeCookie from "./useModeCookie";
 const List = dynamic(() => import("./List"));
 const Board = dynamic(() => import("./Board"));
 
@@ -28,11 +28,9 @@ const useSortedColumns = (board?: IKanbanBoard) => {
     }, [board?.columns, board?.columnOrder, board?.cards]);
 };
 
-interface ContentProps {
-    mode: TMode;
-}
+const Content = () => {
+    const [mode] = useModeCookie();
 
-const Content: FC<ContentProps> = ({ mode }) => {
     const { search, assigneeId, priority } = useFiltersContext();
 
     const [debounced] = useDebounce(search, 300);

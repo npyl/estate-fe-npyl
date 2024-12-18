@@ -26,7 +26,12 @@ const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
         );
 
         return (
-            <Link ref={ref} href={href}>
+            <Link
+                ref={ref}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 <Chip
                     onDelete={handleDelete}
                     sx={{ ...Sx, ...sx }}

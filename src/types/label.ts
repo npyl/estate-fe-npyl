@@ -1,4 +1,4 @@
-export type LabelResourceType = "property" | "customer" | "document";
+export type LabelResourceType = "property" | "customer" | "document" | "ticket";
 
 export interface ILabel {
     id: number;
@@ -16,4 +16,5 @@ export interface ILabels {
     customerLabels: ILabel[];
     propertyLabels: ILabel[];
     documentLabels: ILabel[];
+    ticketLabels: ILabel[];
 }

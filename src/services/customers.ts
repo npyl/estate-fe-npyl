@@ -147,6 +147,7 @@ export const {
     useAllCustomersQuery,
     useGetNamesQuery,
     useFilterCustomersQuery,
+    useFindByEmailQuery,
     useLazyFindByEmailQuery,
     useSearchCustomerQuery,
     useCreateOrUpdateCustomerMutation,

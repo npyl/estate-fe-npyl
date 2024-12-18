@@ -4,7 +4,6 @@ import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import Buttons from "./Buttons";
-const Attachments = dynamic(() => import("./Attachments"));
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
@@ -14,8 +13,10 @@ import PropertiesAutocomplete from "./Autocompletes/Properties";
 import CustomerSelect from "./Autocompletes/Customer";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import { AttachmentsProvider } from "./AttachmentsContext";
+const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
+const Labels = dynamic(() => import("./Labels"));
 
 // -----------------------------------------------------------------
 
@@ -68,6 +69,8 @@ const Content: FC<ContentProps> = ({
             <Stack alignItems="center">
                 <PriorityButtonGroup />
             </Stack>
+
+            <Labels />
 
             <Comments cardId={cardId} />
 

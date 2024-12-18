@@ -1138,10 +1138,31 @@ const resources = {
                 "Welcome to PropertyPro, manage your real estate data easily with us.",
 
             Hello: "Hello",
+
+            "My Tasks": "My Tasks",
+            _tasks_lowercase: "tasks",
+
+            "Active Tasks": "Active Tasks",
+            "Create Customer": "Create Customer",
+            Document: "Document",
+
+            "Are you sure?": "Are you sure?",
+            _UNDONE_: "This action cannot be undone",
         },
     },
     el: {
         translation: {
+            _UNDONE_: "Η ενέργεια δεν μπορεί να αναιρεθεί",
+            "Are you sure?": "Είστε σίγουρος?",
+
+            Document: "Έγγραφο",
+            Documents: "Έγγραφα",
+            "Create Customer": "Δημιουργία Πελάτη",
+            "Active Tasks": "Ενεργές Εργασίες",
+
+            _tasks_lowercase: "εργασίες",
+            "My Tasks": "Οι Εργασίες μου",
+
             Hello: "Γεια σας",
 
             _WELCOME_:
@@ -2183,7 +2204,6 @@ const resources = {
             "Private Photos": "Ιδιωτικές Εικόνες",
 
             Integrations: "Διασύνδεση",
-            Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
             "Share PDF": "Κοινοποίση PDF",
             Download: "Λήψη",

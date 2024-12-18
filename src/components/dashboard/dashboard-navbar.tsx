@@ -23,6 +23,7 @@ import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import useResponsive from "@/hooks/useResponsive";
 import Avatar from "@/components/Avatar";
 import { useAuth } from "@/hooks/use-auth";
+import Link from "@/components/Link";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -37,7 +38,7 @@ const Logo = () => {
         theme.palette.mode === "light"
             ? LogoHorizontalLight
             : LogoHorizontalDark;
-    return <Comp width="fit-content" height={64} />;
+    return <Comp height={64} />;
 };
 
 interface DashboardNavbarProps extends AppBarProps {
@@ -135,7 +136,14 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         direction="row"
                         alignItems="center"
                     >
-                        <Logo />
+                        <Link
+                            href="/"
+                            display="flex"
+                            flexDirection="row"
+                            alignItems="center"
+                        >
+                            <Logo />
+                        </Link>
 
                         {/* nick ama to svhseis se gamhsa */}
                         {/* <Tooltip title="Alex Gamiesai file">

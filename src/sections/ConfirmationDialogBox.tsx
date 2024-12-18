@@ -65,15 +65,11 @@ const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (props) => {
             </DialogTitle>
             <DialogContent sx={{ textAlign: "center" }}>
                 <Typography variant="h5" fontWeight={400}>
-                    Are you sure?
+                    {t("Are you sure?")}
                 </Typography>
             </DialogContent>
             <DialogContentText ml={3} mr={3} sx={{ textAlign: "center" }}>
                 {text}
-                <br />
-                {action === "delete" // Check if the action prop is 'delete'
-                    ? "This process cannot be undone"
-                    : ""}
             </DialogContentText>
             <DialogActions
                 sx={{
@@ -86,7 +82,7 @@ const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (props) => {
                         color="primary"
                         onClick={onConfirm}
                     >
-                        Confirm
+                        {t("Confirm")}
                     </Button>
                     <Button
                         variant="outlined"

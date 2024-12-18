@@ -1,31 +1,30 @@
 import { Box, Card, CardHeader } from "@mui/material";
-import dynamic from "next/dynamic"; // Import 'next/dynamic'
-import useChart from "src/components/chart/use-chart";
-
-// Define the dynamic import for the Chart component
-const DynamicChart = dynamic(() => import("src/components/chart/chart"), {
-    ssr: false, // Disable server-side rendering for this component
-});
-interface ChartData {
-    label: string;
-    value: number;
-}
+import { useGetDashboardQuery } from "@/services/dashboard";
+import useChart from "@/components/chart/use-chart";
+import Chart from "@/components/chart";
+import { useMemo } from "react";
 
 interface AppConversionRatesProps {
     title: string;
     subheader: string;
-    chart: {
-        series: ChartData[];
-    };
 }
 
 export default function AppConversionRates({
     title,
     subheader,
-    chart,
-    ...other
 }: AppConversionRatesProps) {
-    const { series } = chart;
+    const { data } = useGetDashboardQuery();
+
+    const series = useMemo(
+        () =>
+            Array.isArray(data?.propertiesPerUserList)
+                ? data.propertiesPerUserList.map((e) => ({
+                      label: e.user,
+                      value: e.properties,
+                  }))
+                : [],
+        [data?.propertiesPerUserList]
+    );
 
     const chartSeries = series.map((i) => i.value);
 
@@ -34,9 +33,9 @@ export default function AppConversionRates({
         tooltip: {
             marker: { show: false },
             y: {
-                formatter: (value: number) => value,
+                formatter: (value) => value.toString(),
                 title: {
-                    formatter: () => "",
+                    formatter: (value: string) => `${value}`,
                 },
             },
         },
@@ -53,7 +52,7 @@ export default function AppConversionRates({
     });
 
     return (
-        <Card variant="outlined" sx={{ boxShadow: 5 }} {...other}>
+        <Card variant="outlined" sx={{ boxShadow: 5 }}>
             <CardHeader
                 title={title}
                 subheader={subheader}
@@ -62,8 +61,7 @@ export default function AppConversionRates({
                 }}
             />
             <Box sx={{ mx: 3 }}>
-                {/* Render the dynamic Chart component */}
-                <DynamicChart
+                <Chart
                     dir="ltr"
                     type="bar"
                     series={[{ data: chartSeries }]}

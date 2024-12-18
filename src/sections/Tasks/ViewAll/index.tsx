@@ -3,24 +3,18 @@ import Bar from "./Bar";
 import ParamLooker from "./ParamLooker";
 import { FiltersProvider } from "@/sections/Tasks/filters";
 import Content from "./Content";
-import { useCallback, useState } from "react";
-import { TMode } from "./types";
+import { CookiesProvider } from "react-cookie";
 
 function ViewAllTasks() {
-    const [mode, setMode] = useState<TMode>("board");
-
-    const toggleMode = useCallback(
-        () => setMode((old) => (old === "board" ? "list" : "board")),
-        []
-    );
-
     return (
         <>
             <FiltersProvider>
-                <Stack spacing={1}>
-                    <Bar mode={mode} onToggleMode={toggleMode} />
-                    <Content mode={mode} />
-                </Stack>
+                <CookiesProvider>
+                    <Stack spacing={1}>
+                        <Bar />
+                        <Content />
+                    </Stack>
+                </CookiesProvider>
             </FiltersProvider>
 
             {/* Handle search params */}

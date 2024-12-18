@@ -7,7 +7,7 @@ import ErrorTooltips from "./ErrorTooltips";
 import useValidatePDF from "./useValidatePDF";
 import dynamic from "next/dynamic";
 import { Z_INDEX } from "@/config";
-const PDFEditor = dynamic(() => import("./Editor"));
+const PDFEditor = dynamic(() => import("./Editor"), { ssr: false });
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 
 interface Props extends Omit<DialogProps, "onClose"> {

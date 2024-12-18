@@ -1,18 +1,16 @@
 import { alpha, useTheme } from "@mui/material/styles";
-import useResponsive from "@/hooks/useResponsive";
+import merge from "lodash.merge";
 
 // ----------------------------------------------------------------------
 
-export default function useChart(options: any) {
+export default function useChart(options: ApexCharts.ApexOptions = {}) {
     const theme = useTheme();
-
-    const smUp = useResponsive("up", "sm");
 
     const LABEL_TOTAL = {
         show: true,
         label: "Total",
         color: theme.palette.text.secondary,
-        fontSize: theme.typography.subtitle2.fontSize,
+        fontSize: theme.typography.subtitle2.fontSize?.toString(),
         fontWeight: theme.typography.subtitle2.fontWeight,
         lineHeight: theme.typography.subtitle2.lineHeight,
     };
@@ -20,12 +18,12 @@ export default function useChart(options: any) {
     const LABEL_VALUE = {
         offsetY: 8,
         color: theme.palette.text.primary,
-        fontSize: theme.typography.h3.fontSize,
+        fontSize: theme.typography.h3.fontSize?.toString(),
         fontWeight: theme.typography.h3.fontWeight,
         lineHeight: theme.typography.h3.lineHeight,
     };
 
-    const baseOptions = {
+    const baseOptions: ApexCharts.ApexOptions = {
         // Colors
         colors: [
             theme.palette.primary.main,
@@ -43,7 +41,6 @@ export default function useChart(options: any) {
         chart: {
             toolbar: { show: false },
             zoom: { enabled: false },
-            // animations: { enabled: false },
             foreColor: theme.palette.text.disabled,
             fontFamily: theme.typography.fontFamily,
         },
@@ -53,13 +50,11 @@ export default function useChart(options: any) {
             hover: {
                 filter: {
                     type: "lighten",
-                    value: 0.04,
                 },
             },
             active: {
                 filter: {
                     type: "darken",
-                    value: 0.88,
                 },
             },
         },
@@ -113,7 +108,6 @@ export default function useChart(options: any) {
 
         // Tooltip
         tooltip: {
-            theme: false,
             x: {
                 show: true,
             },
@@ -122,12 +116,9 @@ export default function useChart(options: any) {
         // Legend
         legend: {
             show: true,
-            fontSize: 13,
+            fontSize: "13px",
             position: "top",
             horizontalAlign: "right",
-            markers: {
-                radius: 12,
-            },
             fontWeight: 500,
             itemMargin: {
                 horizontal: 8,
@@ -141,7 +132,7 @@ export default function useChart(options: any) {
         plotOptions: {
             // Bar
             bar: {
-                borderRadius: smUp ? 3 : 1,
+                borderRadius: 1,
                 columnWidth: "28%",
                 borderRadiusApplication: "end",
                 borderRadiusWhenStacked: "last",
@@ -209,5 +200,5 @@ export default function useChart(options: any) {
         ],
     };
 
-    return { ...baseOptions, ...options };
+    return merge(baseOptions, options);
 }

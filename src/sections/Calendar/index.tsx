@@ -18,6 +18,11 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 
 const MobileControls = dynamic(() => import("./MobileControls"));
 
+const DayView = WithActions(CalendarGoogleDayView);
+const WeekView = WithActions(CalendarGoogleWeekView);
+const MonthView = WithActions(CalendarGoogleMonthView);
+const YearView = WithActions(CalendarGoogleYearView);
+
 const CalendarSection = () => {
     const belowMd = useResponsive("down", "md");
 
@@ -38,10 +43,10 @@ const CalendarSection = () => {
                 view={belowMd ? "day" : undefined}
                 // ...
                 ViewSlots={{
-                    DayView: WithActions(CalendarGoogleDayView),
-                    WeekView: WithActions(CalendarGoogleWeekView),
-                    MonthView: WithActions(CalendarGoogleMonthView),
-                    YearView: WithActions(CalendarGoogleYearView),
+                    DayView,
+                    WeekView,
+                    MonthView,
+                    YearView,
                 }}
                 slots={{
                     Header: StyledHeader,

@@ -1,7 +1,6 @@
 import useDialog from "@/hooks/useDialog";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
 import { useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -50,12 +49,11 @@ const ShareButton = () => {
             ) : null}
 
             {hasPublic ? (
-                <IconButton ref={anchorRef} onClick={openPopover}>
-                    <Typography mr={1} variant="body2">
-                        {t("Share")}
-                    </Typography>
-                    <ShareIcon fontSize="small" />
-                </IconButton>
+                <Tooltip title={t("Share")}>
+                    <IconButton ref={anchorRef} onClick={openPopover}>
+                        <ShareIcon fontSize="small" />
+                    </IconButton>
+                </Tooltip>
             ) : null}
 
             {isOpen ? (

@@ -1,10 +1,10 @@
-import { IconButton, Typography } from "@mui/material";
 import { useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { IconButton, Tooltip } from "@mui/material";
 const Popover = dynamic(() => import("./popover"));
 import ExportImage from "./ExportImage";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
+import { useTranslation } from "react-i18next";
 
 const ExportButton = () => {
     const { t } = useTranslation();
@@ -15,12 +15,11 @@ const ExportButton = () => {
 
     return (
         <>
-            <IconButton ref={anchorRef} onClick={openPopover}>
-                <Typography mr={1} variant="body2">
-                    {t("Export")}
-                </Typography>
-                <ExportImage />
-            </IconButton>
+            <Tooltip title={t("Export")}>
+                <IconButton ref={anchorRef} onClick={openPopover}>
+                    <ExportImage />
+                </IconButton>
+            </Tooltip>
 
             {isOpen && anchorRef.current ? (
                 <Popover anchorEl={anchorRef.current} onClose={closePopover} />

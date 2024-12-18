@@ -5,6 +5,7 @@ import useDialog from "@/hooks/useDialog";
 import { FC } from "react";
 import { ContactNotificationExtended } from "@/types/notification";
 import dynamic from "next/dynamic";
+import { HideText } from "@/components/styled";
 const TaskDialogForNotification = dynamic(() => import("./TaskDialog"));
 
 interface CreateTaskButtonProps {
@@ -21,10 +22,11 @@ const CreateTaskButton: FC<CreateTaskButtonProps> = ({ data }) => {
             <Button
                 onClick={openTask}
                 variant="contained"
-                endIcon={<AssignmentIcon />}
+                startIcon={<AssignmentIcon />}
                 sx={{
                     width: "max-content",
                     textWrap: "nowrap",
+                    ...HideText,
                 }}
             >
                 {t("New Task")}

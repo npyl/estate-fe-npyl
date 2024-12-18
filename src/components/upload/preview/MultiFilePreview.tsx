@@ -4,7 +4,7 @@ import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
 import { IPropertyFile, UploadVariant } from "../types";
-import { LabelCreate } from "@/components/Label";
+import LabelCreate from "@/sections/LabelCreate";
 import DocumentIcon from "./DocumentIcon";
 import { styled } from "@mui/material/styles";
 

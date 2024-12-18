@@ -8,7 +8,6 @@ import {
 } from "src/types/label";
 import { filesApiSlice, properties } from "./properties";
 import { customers } from "./customers";
-
 import type { AnyAction } from "redux";
 import type { ThunkDispatch } from "redux-thunk";
 
@@ -111,6 +110,16 @@ const optimisticDelete = (
     return res;
 };
 
+interface ILabelForResourceReq {
+    resource: LabelResourceType;
+    body: ILabelPOST;
+}
+
+interface IDeleteLabelForResourceReq {
+    resource: LabelResourceType;
+    labelId: number;
+}
+
 export const labels = createApi({
     reducerPath: "labels",
     baseQuery: fetchBaseQuery({
@@ -138,48 +147,21 @@ export const labels = createApi({
         //
         // general
         //
-        createLabelForProperties: builder.mutation<ILabels, ILabelPOST>({
-            query: (data: ILabel) => ({
-                url: `property`,
+        createLabelForResource: builder.mutation<void, ILabelForResourceReq>({
+            query: ({ resource, body }) => ({
+                url: `${resource}`,
                 method: "POST",
-                body: data,
-            }),
-            invalidatesTags: ["Labels"],
-        }),
-        createLabelForCustomers: builder.mutation<ILabels, ILabelPOST>({
-            query: (data: ILabel) => ({
-                url: `customer`,
-                method: "POST",
-                body: data,
-            }),
-            invalidatesTags: ["Labels"],
-        }),
-        createLabelForDocuments: builder.mutation<ILabels, ILabelPOST>({
-            query: (data: ILabel) => ({
-                url: `document`,
-                method: "POST",
-                body: data,
+                body,
             }),
             invalidatesTags: ["Labels"],
         }),
 
-        deletePropertyLabel: builder.mutation<void, number>({
-            query: (labelId: number) => ({
-                url: `property/${labelId}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Labels"],
-        }),
-        deleteCustomerLabel: builder.mutation<void, number>({
-            query: (labelId: number) => ({
-                url: `customer/${labelId}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Labels"],
-        }),
-        deleteDocumentLabel: builder.mutation<void, number>({
-            query: (labelId: number) => ({
-                url: `document/${labelId}`,
+        deleteLabelForResource: builder.mutation<
+            void,
+            IDeleteLabelForResourceReq
+        >({
+            query: ({ resource, labelId }) => ({
+                url: `${resource}/${labelId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Labels"],
@@ -188,7 +170,7 @@ export const labels = createApi({
         //
         //  Ultra General
         //
-        createLabelForResource: builder.mutation<
+        createAssignLabelForResourceId: builder.mutation<
             ILabels,
             LabelForResourceProps
         >({
@@ -216,8 +198,9 @@ export const labels = createApi({
                     patchResult.undo();
                 }
             },
+            invalidatesTags: ["Labels"],
         }),
-        assignLabelToResource: builder.mutation<ILabels, AssignLabelProps>({
+        assignLabelToResourceId: builder.mutation<ILabels, AssignLabelProps>({
             query: ({ resource, resourceId, body }: AssignLabelProps) => ({
                 url: `add/${resource}/${resourceId}`,
                 method: "POST",
@@ -242,8 +225,9 @@ export const labels = createApi({
                     patchResult.undo();
                 }
             },
+            invalidatesTags: ["Labels"],
         }),
-        deleteLabelForResource: builder.mutation<ILabels, DeleteLabelProps>({
+        deleteLabelForResourceId: builder.mutation<ILabels, DeleteLabelProps>({
             query: ({ resource, resourceId, labelId }: DeleteLabelProps) => ({
                 url: `/remove/${resource}/${resourceId}`,
                 method: "DELETE",
@@ -268,6 +252,7 @@ export const labels = createApi({
                     patchResult.undo();
                 }
             },
+            invalidatesTags: ["Labels"],
         }),
     }),
 });
@@ -275,14 +260,11 @@ export const labels = createApi({
 export const {
     useGetLabelsQuery,
     // general
-    useCreateLabelForPropertiesMutation,
-    useCreateLabelForCustomersMutation,
-    useCreateLabelForDocumentsMutation,
-    useDeletePropertyLabelMutation,
-    useDeleteCustomerLabelMutation,
-    useDeleteDocumentLabelMutation,
-    // for specific resourceId
     useCreateLabelForResourceMutation,
-    useAssignLabelToResourceMutation,
+    // delete
     useDeleteLabelForResourceMutation,
+    // resourceId
+    useCreateAssignLabelForResourceIdMutation,
+    useAssignLabelToResourceIdMutation,
+    useDeleteLabelForResourceIdMutation,
 } = labels;
