@@ -63,10 +63,9 @@ const getLabel = (l: ILabel) => (
 
 interface CreateAssignProps {
     ids?: number[];
-    onChange: (ids: number) => void;
 }
 
-const CreateAssign: FC<CreateAssignProps> = ({ ids, onChange }) => {
+const CreateAssign: FC<CreateAssignProps> = ({ ids }) => {
     const { t } = useTranslation();
 
     const { data, isLoading } = useGetLabelsQuery();
@@ -104,9 +103,7 @@ const RHFCreate = () => {
         <Controller
             name="labels"
             control={control}
-            render={({ field: { value, onChange } }) => (
-                <CreateAssign ids={value} onChange={onChange} />
-            )}
+            render={({ field: { value } }) => <CreateAssign ids={value} />}
         />
     );
 };
