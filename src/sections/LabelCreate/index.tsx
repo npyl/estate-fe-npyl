@@ -1,24 +1,22 @@
 import { Box, BoxProps, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import Label from "@/components/Label/Label";
 import { ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
-import { AddLabelDialog } from "./Dialog";
+const AddLabelDialog = dynamic(() => import("./Dialog"));
 import {
     useAssignLabelToResourceIdMutation,
     useCreateAssignLabelForResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
-    useGetLabelsQuery,
 } from "src/services/labels";
-import {
-    useGetPropertyLabelsQuery,
-    useGetPropertyDocumentsQuery,
-    properties,
-} from "src/services/properties";
-import { customers, useGetCustomerLabelsQuery } from "src/services/customers";
-import { useRouter } from "next/router";
+import { properties } from "src/services/properties";
+import { customers } from "src/services/customers";
 import { useDispatch } from "react-redux";
+import dynamic from "next/dynamic";
+import useDialog from "@/hooks/useDialog";
+import useAssignedLabels from "./useAssignedLabels";
+import useExistingLabels from "./useExistingLabels";
 
 interface ILabelCreateProps extends BoxProps {
     variant: LabelResourceType;
@@ -35,31 +33,13 @@ const LabelCreate = ({
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const router = useRouter();
-    const { propertyId } = router.query;
-
-    const [dialogOpen, setDialogOpen] = useState(false);
+    const [isOpen, openDialog, closeDialog] = useDialog();
 
     //
-    //  Queries
+    // Assigned & Existing
     //
-    const { data: propertyLabels } = useGetPropertyLabelsQuery(resourceId!, {
-        skip: variant !== "property" || resourceId === -1,
-    });
-    const { data: documentLabels } = useGetPropertyDocumentsQuery(
-        +propertyId!,
-        {
-            skip: variant !== "document",
-            selectFromResult: ({ data }) => ({
-                data: data?.find((d) => d.id === resourceId)?.labels,
-            }),
-        }
-    );
-    const { data: customerLabels } = useGetCustomerLabelsQuery(resourceId!, {
-        skip: variant !== "customer" || resourceId === -1,
-    });
-
-    const { data: labels } = useGetLabelsQuery();
+    const assignedLabels = useAssignedLabels(variant, resourceId);
+    const existingLabels = useExistingLabels(variant);
 
     //
     //  Mutations
@@ -70,22 +50,6 @@ const LabelCreate = ({
         useAssignLabelToResourceIdMutation();
     const [deleteLabel, { isLoading: isDeleteLoading }] =
         useDeleteLabelForResourceIdMutation();
-
-    const existingLabels = useMemo(() => {
-        if (variant === "property") return labels?.propertyLabels || [];
-        if (variant === "customer") return labels?.customerLabels || [];
-        if (variant === "document") return labels?.documentLabels || [];
-
-        return [];
-    }, [labels, variant]);
-
-    const assignedLabels = useMemo(() => {
-        if (variant === "property") return propertyLabels || [];
-        if (variant === "customer") return customerLabels || [];
-        if (variant === "document") return documentLabels || [];
-
-        return [];
-    }, [variant, propertyLabels, documentLabels, customerLabels]);
 
     const isLoading = useMemo(
         () => isCreateLoading || isAssignLoading || isDeleteLoading,
@@ -129,9 +93,8 @@ const LabelCreate = ({
 
     const handleOpenDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        setDialogOpen(true);
+        openDialog();
     };
-    const handleCloseDialog = () => setDialogOpen(false);
 
     return (
         <Box
@@ -181,17 +144,16 @@ const LabelCreate = ({
                 </Stack>
             </Box>
 
-            {dialogOpen && (
+            {isOpen ? (
                 <AddLabelDialog
-                    open={dialogOpen}
                     variant={variant}
                     existingLabels={existingLabels}
                     assignedLabels={assignedLabels}
                     onLabelClick={handleLabelClick}
                     onCreate={handleLabelCreate}
-                    onClose={handleCloseDialog}
+                    onClose={closeDialog}
                 />
-            )}
+            ) : null}
         </Box>
     );
 };

@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
-import { LabelCreate } from "@/components/Label";
+import LabelCreate from "@/sections/LabelCreate";
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";

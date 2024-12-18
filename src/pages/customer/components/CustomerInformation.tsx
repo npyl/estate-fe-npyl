@@ -10,10 +10,8 @@ import {
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
-import {
-    LabelCreate,
-    Placeholder as LabelPlaceholder,
-} from "@/components/Label";
+import { Placeholder as LabelPlaceholder } from "@/components/Label";
+import LabelCreate from "@/sections/LabelCreate";
 import { LeadSource } from "src/types/global";
 import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";

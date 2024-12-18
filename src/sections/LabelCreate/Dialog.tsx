@@ -21,7 +21,6 @@ import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import ColorPicker from "@/components/ColorPicker";
 
 interface AddLabelDialog {
-    open: boolean;
     variant: LabelResourceType;
 
     existingLabels: ILabel[];
@@ -32,8 +31,7 @@ interface AddLabelDialog {
     onClose: () => void;
 }
 
-export const AddLabelDialog = ({
-    open,
+const AddLabelDialog = ({
     variant,
 
     existingLabels,
@@ -79,9 +77,9 @@ export const AddLabelDialog = ({
 
     return (
         <Dialog
+            open
             fullWidth
             maxWidth="xs"
-            open={open}
             onClose={onClose}
             closeAfterTransition={true}
         >
@@ -204,3 +202,5 @@ export const AddLabelDialog = ({
         </Dialog>
     );
 };
+
+export default AddLabelDialog;

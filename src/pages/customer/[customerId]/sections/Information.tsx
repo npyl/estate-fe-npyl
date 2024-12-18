@@ -5,7 +5,7 @@ import { ListItem, ListManagerItem, ListRatingItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { TypeLabels } from "@/components/TypeLabels";
-import { LabelCreate } from "@/components/Label";
+import LabelCreate from "@/sections/LabelCreate";
 import useGetCustomer from "@/hooks/customer";
 import { SpaceBetween } from "@/components/styled";
 
