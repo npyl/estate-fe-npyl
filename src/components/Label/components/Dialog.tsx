@@ -12,14 +12,13 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-
 import { Close as CloseIcon } from "@mui/icons-material";
 import * as React from "react";
 import { useMemo, useState } from "react";
-import { SliderPicker } from "react-color";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
+import ColorPicker from "@/components/ColorPicker";
 
 interface AddLabelDialog {
     open: boolean;
@@ -44,7 +43,7 @@ export const AddLabelDialog = ({
     onCreate,
     onClose,
 }: AddLabelDialog) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [error, setError] = useState("");
 
@@ -58,10 +57,8 @@ export const AddLabelDialog = ({
                 : variant === "customer"
                 ? t("Customer Labels")
                 : t("Document Labels"),
-        [i18n.language]
+        [t]
     );
-
-    const handleChangeComplete = (color: any) => setPickerColor(color.hex);
 
     const createLabel = () => {
         if (!labelName) {
@@ -165,9 +162,9 @@ export const AddLabelDialog = ({
                                 />
                             </Stack>
                             <Box m={2}>
-                                <SliderPicker
+                                <ColorPicker
                                     color={pickerColor}
-                                    onChangeComplete={handleChangeComplete}
+                                    onColorChange={setPickerColor}
                                 />
                             </Box>
                             <FormControl>

@@ -11,6 +11,8 @@ const Preview = () => {
     const labelName = watch("name");
     const pickerColor = watch("color");
 
+    console.log("pickerColor: ", pickerColor);
+
     return (
         <Box my={2}>
             <Typography variant="subtitle2" mb={1}>

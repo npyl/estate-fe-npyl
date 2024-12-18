@@ -9,11 +9,11 @@ import {
     Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { SliderPicker } from "react-color";
 import { Label } from "@/components/Label";
 import { IEditProps } from "./Preview/types";
 import { useTranslation } from "react-i18next";
 import { useCreateLabelForResourceMutation } from "@/services/labels";
+import ColorPicker from "@/components/ColorPicker";
 
 const useEditLabel = () => {
     const [createLabelForResource] = useCreateLabelForResourceMutation();
@@ -44,8 +44,6 @@ const Edit = ({ editedLabel, cancelEdit }: EditProps) => {
     const [labelName, setLabelName] = useState(editedLabel.name);
 
     const [error, setError] = useState("");
-
-    const handleChangeComplete = (color: any) => setPickerColor(color.hex);
 
     const { editLabel } = useEditLabel();
 
@@ -96,9 +94,9 @@ const Edit = ({ editedLabel, cancelEdit }: EditProps) => {
                 />
 
                 <Box my={3}>
-                    <SliderPicker
+                    <ColorPicker
                         color={pickerColor}
-                        onChangeComplete={handleChangeComplete}
+                        onColorChange={setPickerColor}
                     />
                 </Box>
 

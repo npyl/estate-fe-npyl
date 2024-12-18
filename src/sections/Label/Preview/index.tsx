@@ -51,10 +51,13 @@ const Section: FC<SectionProps> = ({ sectionKey, section, onEdit }) => {
                     <Grid item key={i} xs={12} sm={6}>
                         <HoverableLabel
                             maxWidth="70%"
+                            // ...
                             labelId={label.id}
                             variant={variant}
+                            // ...
                             color={label.color}
                             name={label.name}
+                            // ...
                             onEdit={() =>
                                 onEdit({
                                     ...label,
