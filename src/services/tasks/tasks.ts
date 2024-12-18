@@ -28,6 +28,7 @@ import {
     optimisticDeleteColumn,
 } from "./optimistic";
 import errorToast from "@/components/Toaster/error";
+import { ILabel } from "@/types/label";
 
 export const tasks = createApi({
     reducerPath: "tasks",
@@ -45,7 +46,14 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: ["Board", "Card", "Comments", "Attachments", "AssigneeHistory"],
+    tagTypes: [
+        "Board",
+        "Card",
+        "Comments",
+        "Attachments",
+        "Labels",
+        "AssigneeHistory",
+    ],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
@@ -171,6 +179,15 @@ export const tasks = createApi({
             }),
             providesTags: ["AssigneeHistory"],
         }),
+
+        // Labels
+
+        getCardLabels: builder.query<ILabel[], number>({
+            query: (cardId) => ({
+                url: `/card/${cardId}/labels`,
+            }),
+            providesTags: ["Labels"],
+        }),
     }),
 });
 
@@ -243,4 +260,7 @@ export const {
 
     // Assignee History
     useGetAssigneeHistoryQuery,
+
+    // Labels
+    useGetCardLabelsQuery,
 } = tasks;

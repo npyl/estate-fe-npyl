@@ -147,7 +147,7 @@ export const labels = createApi({
         //
         // general
         //
-        createLabelForResource: builder.mutation<void, ILabelForResourceReq>({
+        createLabelForResource: builder.mutation<number, ILabelForResourceReq>({
             query: ({ resource, body }) => ({
                 url: `${resource}`,
                 method: "POST",

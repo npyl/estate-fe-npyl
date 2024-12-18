@@ -70,7 +70,7 @@ const Content: FC<ContentProps> = ({
                 <PriorityButtonGroup />
             </Stack>
 
-            <Labels />
+            <Labels cardId={cardId} />
 
             <Comments cardId={cardId} />
 

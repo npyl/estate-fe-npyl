@@ -132,9 +132,9 @@ const LabelCreate = ({
 
             <Box flex={1} justifyContent={"center"} flexWrap={"wrap"} pt={2}>
                 <Stack direction="row" flexWrap="wrap" gap={1}>
-                    {assignedLabels?.map(({ id, color, name }, index) => (
+                    {assignedLabels?.map(({ id, color, name }) => (
                         <Label
-                            key={index}
+                            key={id}
                             color={color}
                             name={name}
                             disabled={disabled || isLoading}
