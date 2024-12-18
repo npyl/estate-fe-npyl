@@ -22,7 +22,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ variant, labelId }) => {
 
             {isDeleteOpen ? (
                 <DeleteDialog
-                    variant={variant}
+                    resource={variant}
                     labelId={labelId}
                     onClose={closeDelete}
                 />

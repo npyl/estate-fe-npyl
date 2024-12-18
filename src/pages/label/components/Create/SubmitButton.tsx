@@ -13,6 +13,7 @@ const SubmitButton = () => {
             variant="contained"
             color="primary"
             size="large"
+            type="submit"
         >
             {t("Create")}
         </LoadingButton>

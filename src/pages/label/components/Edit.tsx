@@ -13,31 +13,19 @@ import { SliderPicker } from "react-color";
 import { Label } from "@/components/Label";
 import { IEditProps } from "./Preview/types";
 import { useTranslation } from "react-i18next";
-import {
-    useCreateLabelForCustomersMutation,
-    useCreateLabelForDocumentsMutation,
-    useCreateLabelForPropertiesMutation,
-} from "@/services/labels";
+import { useCreateLabelForResourceMutation } from "@/services/labels";
 
 const useEditLabel = () => {
-    const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
-    const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
-    const [createLabelForDocuments] = useCreateLabelForDocumentsMutation();
+    const [createLabelForResource] = useCreateLabelForResourceMutation();
 
     const editLabel = ({ id, name, color, resource }: IEditProps) => {
-        const cb =
-            resource === "property"
-                ? createLabelForProperties
-                : resource === "customer"
-                ? createLabelForCustomers
-                : resource === "document"
-                ? createLabelForDocuments
-                : () => {};
-
-        return cb({
-            id,
-            name,
-            color,
+        return createLabelForResource({
+            resource,
+            body: {
+                id,
+                name,
+                color,
+            },
         });
     };
 

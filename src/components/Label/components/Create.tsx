@@ -6,9 +6,9 @@ import { ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./Dialog";
 import {
-    useAssignLabelToResourceMutation,
-    useCreateLabelForResourceMutation,
-    useDeleteLabelForResourceMutation,
+    useAssignLabelToResourceIdMutation,
+    useCreateLabelForResourceIdMutation,
+    useDeleteLabelForResourceIdMutation,
     useGetLabelsQuery,
 } from "src/services/labels";
 import {
@@ -65,11 +65,11 @@ const LabelCreate = ({
     //  Mutations
     //
     const [createAssignLabel, { isLoading: isCreateLoading }] =
-        useCreateLabelForResourceMutation();
+        useCreateLabelForResourceIdMutation();
     const [assignLabel, { isLoading: isAssignLoading }] =
-        useAssignLabelToResourceMutation();
+        useAssignLabelToResourceIdMutation();
     const [deleteLabel, { isLoading: isDeleteLoading }] =
-        useDeleteLabelForResourceMutation();
+        useDeleteLabelForResourceIdMutation();
 
     const existingLabels = useMemo(() => {
         if (variant === "property") return labels?.propertyLabels || [];

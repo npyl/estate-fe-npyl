@@ -1,7 +1,6 @@
 import { Paper, Typography } from "@mui/material";
-import { CSSProperties, useCallback } from "react";
+import { CSSProperties, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ILabelPOST, LabelResourceType } from "@/types/label";
 import { FormProvider, useForm } from "react-hook-form";
 import { RHFRadioGroup, RHFTextField } from "@/components/hook-form";
 import RHFColorPicker from "./RHFColorPicker";
@@ -9,6 +8,7 @@ import Preview from "./Preview";
 import SubmitButton from "./SubmitButton";
 import dynamic from "next/dynamic";
 import useCreateLabel from "./useCreateLabel";
+import { ILabelForm } from "./types";
 const Assign = dynamic(() => import("./Assign"));
 
 const FormStyle: CSSProperties = {
@@ -16,11 +16,6 @@ const FormStyle: CSSProperties = {
     flexDirection: "column",
     gap: "10px",
 };
-
-interface ILabelForm extends ILabelPOST {
-    resource: LabelResourceType;
-    resourceId?: number;
-}
 
 const Create = () => {
     const { t } = useTranslation();
@@ -37,16 +32,21 @@ const Create = () => {
 
     const { createLabel } = useCreateLabel();
 
-    const radioOptions = [
-        { label: t("Property"), value: "property" },
-        { label: t("Customer"), value: "customer" },
-        { label: t("Document"), value: "document" },
-        { label: t("Task"), value: "task" },
-    ];
+    const radioOptions = useMemo(
+        () => [
+            { label: t("Property"), value: "property" },
+            { label: t("Customer"), value: "customer" },
+            { label: t("Document"), value: "document" },
+            { label: t("Task"), value: "task" },
+        ],
+        [t]
+    );
 
     const handleSubmit = useCallback(
-        async ({ resource, resourceId, ...d }: ILabelForm) => {
-            await createLabel(d.name, resourceId ?? -1, d.color, resource);
+        // async ({ resource, resourceId, ...d }: ILabelForm) => {
+        async (d: ILabelForm) => {
+            console.log("pira: ", d);
+            // await createLabel(d.name, resourceId, d.color, resource);
         },
         []
     );
@@ -72,7 +72,7 @@ const Create = () => {
                     {assigneeType ? (
                         <>
                             <RHFTextField
-                                name="labelName"
+                                name="name"
                                 fullWidth
                                 label={t("Label's name")}
                                 variant="outlined"
@@ -83,7 +83,10 @@ const Create = () => {
 
                             <Preview />
 
-                            {assigneeType !== "document" && <Assign />}
+                            {assigneeType !== "document" &&
+                            assigneeType !== "task" ? (
+                                <Assign />
+                            ) : null}
 
                             <SubmitButton />
                         </>

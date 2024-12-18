@@ -109,7 +109,7 @@ const Stats = () => {
         >
             <Cards />
 
-            <Grid xs={12}>
+            {/* <Grid xs={12}>
                 <TotalProperties
                     title={t("Total Properties")}
                     subheader={t("Properties Distribution")}
@@ -121,7 +121,7 @@ const Stats = () => {
                     title={t("Total Properties per User")}
                     subheader=""
                 />
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 };

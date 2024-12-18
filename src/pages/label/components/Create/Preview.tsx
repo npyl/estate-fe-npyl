@@ -2,10 +2,11 @@ import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useFormContext } from "react-hook-form";
+import { ILabelForm } from "./types";
 
 const Preview = () => {
     const { t } = useTranslation();
-    const { watch } = useFormContext();
+    const { watch } = useFormContext<ILabelForm>();
 
     const labelName = watch("name");
     const pickerColor = watch("color");

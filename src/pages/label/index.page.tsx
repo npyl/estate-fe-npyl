@@ -11,7 +11,6 @@ const Edit = dynamic(() => import("./components/Edit"));
 
 const LabelsPage: NextPage = () => {
     const [editedLabel, setEditedLabel] = useState<IEditProps>();
-
     const cancelEdit = () => setEditedLabel(undefined);
 
     return (

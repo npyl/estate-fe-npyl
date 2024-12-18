@@ -1,8 +1,9 @@
 import { SliderPicker } from "react-color";
 import { Controller, useFormContext } from "react-hook-form";
+import { ILabelForm } from "./types";
 
 const RHFColorPicker = () => {
-    const { control } = useFormContext();
+    const { control } = useFormContext<ILabelForm>();
 
     return (
         <Controller

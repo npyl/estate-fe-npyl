@@ -62,7 +62,7 @@ interface CodeSelectProps<Multiple extends TMultiple = false>
     ) => void;
 }
 
-function CodeSelect<Multiple extends TMultiple = false>(
+function UnforwardedCodeSelect<Multiple extends TMultiple = false>(
     { idValue, codeValue, onChange, ...props }: CodeSelectProps<Multiple>,
     ref: ForwardedRef<HTMLElement>
 ) {
@@ -119,12 +119,12 @@ function CodeSelect<Multiple extends TMultiple = false>(
     );
 }
 
-const ForwardedCodeSelect = forwardRef(CodeSelect) as <
+const CodeSelect = forwardRef(UnforwardedCodeSelect) as <
     Multiple extends TMultiple = false
 >(
     props: CodeSelectProps<Multiple> & { ref?: ForwardedRef<HTMLElement> }
 ) => JSX.Element;
 
-CodeSelect.displayName = "CodeSelect";
+UnforwardedCodeSelect.displayName = "CodeSelect";
 
-export default ForwardedCodeSelect;
+export default CodeSelect;
