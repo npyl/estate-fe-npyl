@@ -115,6 +115,10 @@ interface ILabelForResourceReq {
     body: ILabelPOST;
 }
 
+interface ILabelForResourceRes {
+    id: number;
+}
+
 interface IDeleteLabelForResourceReq {
     resource: LabelResourceType;
     labelId: number;
@@ -147,7 +151,10 @@ export const labels = createApi({
         //
         // general
         //
-        createLabelForResource: builder.mutation<number, ILabelForResourceReq>({
+        createLabelForResource: builder.mutation<
+            ILabelForResourceRes,
+            ILabelForResourceReq
+        >({
             query: ({ resource, body }) => ({
                 url: `${resource}`,
                 method: "POST",

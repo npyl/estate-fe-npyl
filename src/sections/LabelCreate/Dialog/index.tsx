@@ -54,7 +54,7 @@ const AddLabelDialog = ({
         async ({ resource: _0, resourceId: _, ...body }: ILabelForm) => {
             const res = await createLabel({ resource: variant, body });
             if (res && "error" in res) return;
-            onCreate?.(res.data);
+            onCreate?.(res.data?.id);
             onClose();
         },
         []

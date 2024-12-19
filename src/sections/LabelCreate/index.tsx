@@ -84,13 +84,6 @@ const LabelCreate = ({
             body,
         }).then(invalidateTags);
 
-    const handleLabelCreate = (body: ILabelPOST) =>
-        createAssignLabel({
-            resource: variant,
-            resourceId,
-            body,
-        }).then(invalidateTags);
-
     const handleOpenDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         openDialog();
@@ -150,7 +143,7 @@ const LabelCreate = ({
                     existingLabels={existingLabels}
                     assignedLabels={assignedLabels}
                     onLabelClick={handleLabelClick}
-                    onCreate={handleLabelCreate}
+                    onCreate={invalidateTags}
                     onClose={closeDialog}
                 />
             ) : null}
