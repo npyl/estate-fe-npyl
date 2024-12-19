@@ -1,24 +1,34 @@
-import { Stack, TextField, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
-import { ILabel } from "src/types/label";
-import CreateButton from "./CreateButton";
-import Preview from "@/sections/Label/Create/Preview";
-import RHFColorPicker from "@/sections/Label/Create/RHFColorPicker";
+import { ILabel, LabelResourceType } from "src/types/label";
+import dynamic from "next/dynamic";
+const LabelForm = dynamic(() => import("@/sections/LabelCreate/Form"));
 
 interface ContentProps {
+    resourceId?: number;
+    resource: LabelResourceType;
+    onCreate: (id: number) => void;
+
     existingLabels: ILabel[];
     assignedLabels: ILabel[];
     onLabelClick: (l: ILabel) => void;
 }
 
 const Content: FC<ContentProps> = ({
+    resourceId,
+    resource,
+    onCreate,
+    // ...
     existingLabels,
     assignedLabels,
+    // ...
     onLabelClick,
 }) => {
     const { t } = useTranslation();
+
+    const isEdit = Boolean(resourceId);
 
     return (
         <>
@@ -49,26 +59,14 @@ const Content: FC<ContentProps> = ({
                     );
                 })}
             </Stack>
-            <Typography variant="h5" mt={2}>
-                {t("Create Label")}
-            </Typography>
-            <Stack spacing={3} mt={1}>
-                <Stack spacing={1}>
-                    <Stack direction="row" spacing={1}>
-                        <TextField
-                            fullWidth
-                            label={t("Label's name")}
-                            variant="outlined"
-                        />
-                    </Stack>
 
-                    <RHFColorPicker />
-
-                    <Preview />
-
-                    <CreateButton />
-                </Stack>
-            </Stack>
+            {isEdit ? (
+                <LabelForm
+                    resource={resource}
+                    resourceId={resourceId}
+                    onCreate={onCreate}
+                />
+            ) : null}
         </>
     );
 };

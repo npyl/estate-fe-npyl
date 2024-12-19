@@ -178,7 +178,7 @@ export const labels = createApi({
         //  Ultra General
         //
         createAssignLabelForResourceId: builder.mutation<
-            ILabels,
+            ILabelForResourceRes,
             LabelForResourceProps
         >({
             query: ({ resource, resourceId, body }: LabelForResourceProps) => ({
@@ -190,19 +190,17 @@ export const labels = createApi({
                 { resource, resourceId, body },
                 { dispatch, queryFulfilled }
             ) => {
-                let patchResult = optimisticCreate(
+                const patchResult = optimisticCreate(
                     resource,
                     resourceId,
                     body,
                     dispatch
                 );
 
-                if (!patchResult) throw new Error("Failure!");
-
                 try {
                     await queryFulfilled;
                 } catch {
-                    patchResult.undo();
+                    patchResult?.undo();
                 }
             },
             invalidatesTags: ["Labels"],
@@ -224,12 +222,10 @@ export const labels = createApi({
                     dispatch
                 );
 
-                if (!patchResult) throw new Error("Failure!");
-
                 try {
                     await queryFulfilled;
                 } catch {
-                    patchResult.undo();
+                    patchResult?.undo();
                 }
             },
             invalidatesTags: ["Labels"],
@@ -251,12 +247,10 @@ export const labels = createApi({
                     dispatch
                 );
 
-                if (!patchResult) throw new Error("Failure!");
-
                 try {
                     await queryFulfilled;
                 } catch {
-                    patchResult.undo();
+                    patchResult?.undo();
                 }
             },
             invalidatesTags: ["Labels"],

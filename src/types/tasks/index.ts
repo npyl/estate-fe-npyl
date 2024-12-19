@@ -75,6 +75,8 @@ export type IKanbanCardPOST = {
     customers?: number[];
     userIds: number[];
 
+    labels: number[];
+
     // INFO: supported by backend, but theoretically I should never update it!
     event?: string;
 };

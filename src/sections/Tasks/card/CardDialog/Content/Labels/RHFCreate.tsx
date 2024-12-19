@@ -15,15 +15,8 @@ import { useTranslation } from "react-i18next";
 import LoadingIconButton from "@/components/LoadingIconButton";
 const AddLabelDialog = dynamic(() => import("@/sections/LabelCreate/Dialog"));
 
-interface AddButtonProps {
-    assignedLabels: ILabel[];
-}
-
-const AddButton: FC<AddButtonProps> = ({ assignedLabels }) => {
+const AddButton = () => {
     const [isOpen, openDialog, closeDialog] = useDialog();
-
-    const { data, isLoading } = useGetLabelsQuery();
-    const existingLabels = data?.ticketLabels || [];
 
     const { watch, setValue } = useFormContext();
     const handleLabelClick = useCallback((l: ILabel) => handleCreate(l.id), []);
@@ -34,19 +27,12 @@ const AddButton: FC<AddButtonProps> = ({ assignedLabels }) => {
 
     return (
         <>
-            <LoadingIconButton
-                loading={isLoading}
-                disabled={isLoading}
-                onClick={openDialog}
-                size="small"
-            >
+            <LoadingIconButton onClick={openDialog} size="small">
                 <AddIcon />
             </LoadingIconButton>
 
             {isOpen ? (
                 <AddLabelDialog
-                    assignedLabels={assignedLabels}
-                    existingLabels={existingLabels}
                     variant="ticket"
                     onClose={closeDialog}
                     onLabelClick={handleLabelClick}
@@ -88,7 +74,7 @@ const CreateAssign: FC<CreateAssignProps> = ({ ids }) => {
         >
             <SpaceBetween alignItems="center">
                 <Typography>{t("Labels")}</Typography>
-                <AddButton assignedLabels={labels} />
+                <AddButton />
             </SpaceBetween>
             <Stack direction="row" spacing={1} flexWrap="wrap" width={1}>
                 {labels?.map(getLabel)}

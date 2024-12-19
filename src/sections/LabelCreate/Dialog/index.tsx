@@ -4,14 +4,12 @@ import Dialog from "@/components/Dialog";
 import Content from "./Content";
 import { FormProvider, useForm } from "react-hook-form";
 import { ILabelForm } from "@/sections/Label/Create/types";
-import { useCreateLabelForResourceMutation } from "@/services/labels";
-import { useCallback } from "react";
+import useExistingLabels from "./useExistingLabels";
+import useAssignedLabels from "../useAssignedLabels";
 
 interface AddLabelDialog {
+    resourceId?: number;
     variant: LabelResourceType;
-
-    existingLabels: ILabel[];
-    assignedLabels: ILabel[];
 
     onLabelClick: (l: ILabel) => void;
     onCreate: (id: number) => void;
@@ -19,10 +17,8 @@ interface AddLabelDialog {
 }
 
 const AddLabelDialog = ({
+    resourceId,
     variant,
-
-    existingLabels,
-    assignedLabels,
 
     onLabelClick,
     onCreate,
@@ -30,15 +26,8 @@ const AddLabelDialog = ({
 }: AddLabelDialog) => {
     const { t } = useTranslation();
 
-    // const title = useMemo(
-    //     () =>
-    //         variant === "property"
-    //             ? t("Property Labels")
-    //             : variant === "customer"
-    //             ? t("Customer Labels")
-    //             : t("Document Labels"),
-    //     [t]
-    // );
+    const assignedLabels = useAssignedLabels(variant, resourceId);
+    const existingLabels = useExistingLabels(variant);
 
     const methods = useForm<ILabelForm>({
         values: {
@@ -48,18 +37,6 @@ const AddLabelDialog = ({
         },
     });
 
-    const [createLabel] = useCreateLabelForResourceMutation();
-
-    const handleSubmit = useCallback(
-        async ({ resource: _0, resourceId: _, ...body }: ILabelForm) => {
-            const res = await createLabel({ resource: variant, body });
-            if (res && "error" in res) return;
-            onCreate?.(res.data?.id);
-            onClose();
-        },
-        []
-    );
-
     return (
         <Dialog
             open
@@ -67,13 +44,18 @@ const AddLabelDialog = ({
             onClose={onClose}
             // ...
             submit
-            onSubmit={methods.handleSubmit(handleSubmit)}
+            // ...
             title={t("Add an existing label")}
             content={
                 <FormProvider {...methods}>
                     <Content
+                        resourceId={resourceId}
+                        resource={variant}
+                        onCreate={onCreate}
+                        // ...
                         existingLabels={existingLabels}
                         assignedLabels={assignedLabels}
+                        // ...
                         onLabelClick={onLabelClick}
                     />
                 </FormProvider>

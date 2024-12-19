@@ -33,6 +33,7 @@ const IKanbanCardRes2Req = (
         columnId: -1,
         event: event || "",
         withCalendar: Boolean(event),
+        labels: [],
     };
 };
 
