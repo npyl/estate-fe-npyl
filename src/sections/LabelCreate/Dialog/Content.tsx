@@ -3,6 +3,8 @@ import { FC } from "react";
 import Label from "@/components/Label/Label";
 import { ILabel, LabelResourceType } from "src/types/label";
 import dynamic from "next/dynamic";
+import useAssignedLabels from "../useAssignedLabels";
+import useExistingLabels from "./useExistingLabels";
 const LabelForm = dynamic(() => import("@/sections/LabelCreate/Form"));
 
 interface ContentProps {
@@ -10,9 +12,9 @@ interface ContentProps {
     resource: LabelResourceType;
     onCreate: (id: number) => void;
 
-    existingLabels: ILabel[];
-    assignedLabels: ILabel[];
     onLabelClick: (l: ILabel) => void;
+
+    onClose: () => void;
 }
 
 const Content: FC<ContentProps> = ({
@@ -20,12 +22,13 @@ const Content: FC<ContentProps> = ({
     resource,
     onCreate,
     // ...
-    existingLabels,
-    assignedLabels,
-    // ...
     onLabelClick,
+    onClose,
 }) => {
     const isEdit = Boolean(resourceId);
+
+    const assignedLabels = useAssignedLabels(resource, resourceId);
+    const existingLabels = useExistingLabels(resource);
 
     return (
         <>
@@ -62,6 +65,7 @@ const Content: FC<ContentProps> = ({
                     resource={resource}
                     resourceId={resourceId}
                     onCreate={onCreate}
+                    onCancel={onClose}
                 />
             ) : null}
         </>

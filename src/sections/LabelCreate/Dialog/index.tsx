@@ -2,8 +2,6 @@ import { useTranslation } from "react-i18next";
 import { ILabel, LabelResourceType } from "src/types/label";
 import Dialog from "@/components/Dialog";
 import Content from "./Content";
-import useExistingLabels from "./useExistingLabels";
-import useAssignedLabels from "../useAssignedLabels";
 
 interface AddLabelDialog {
     resourceId?: number;
@@ -24,9 +22,6 @@ const AddLabelDialog = ({
 }: AddLabelDialog) => {
     const { t } = useTranslation();
 
-    const assignedLabels = useAssignedLabels(variant, resourceId);
-    const existingLabels = useExistingLabels(variant);
-
     return (
         <Dialog
             open
@@ -42,10 +37,8 @@ const AddLabelDialog = ({
                     resource={variant}
                     onCreate={onCreate}
                     // ...
-                    existingLabels={existingLabels}
-                    assignedLabels={assignedLabels}
-                    // ...
                     onLabelClick={onLabelClick}
+                    onClose={onClose}
                 />
             }
         />

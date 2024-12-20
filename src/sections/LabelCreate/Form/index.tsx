@@ -17,7 +17,7 @@ interface LabelFormProps {
     resourceId?: number;
     resource: LabelResourceType;
 
-    onCancel?: () => void;
+    onCancel: () => void;
     onCreate?: (id: number) => void;
 }
 
@@ -31,7 +31,7 @@ const LabelForm: FC<LabelFormProps> = ({
     const { t } = useTranslation();
 
     const isEdit = Boolean(label);
-    const title = isEdit ? t("Edit Label") : "Create Label";
+    const title = isEdit ? t("Edit Label") : t("Create Label");
 
     const methods = useForm<ILabelForm>({
         values: {
