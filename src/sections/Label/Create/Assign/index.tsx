@@ -28,6 +28,9 @@ const Assign = () => {
             <FormControlLabel
                 control={<Checkbox checked={isChecked} onClick={toggle} />}
                 label={t("Label assignment")}
+                sx={{
+                    color: "text.secondary",
+                }}
             />
 
             {isChecked ? (

@@ -16,7 +16,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ variant, labelId }) => {
 
     return (
         <>
-            <IconButton onClick={openDelete}>
+            <IconButton onClick={openDelete} sx={{ borderRadius: "100%" }}>
                 <DeleteIcon fontSize="small" />
             </IconButton>
 

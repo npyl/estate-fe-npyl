@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { AuthGuard } from "@/components/authentication/auth-guard";
@@ -15,12 +15,17 @@ const LabelsPage: NextPage = () => {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={12} lg={3}>
-                {editedLabel ? (
-                    <Edit editedLabel={editedLabel} cancelEdit={cancelEdit} />
-                ) : (
-                    <Create />
-                )}
+            <Grid item xs={12} lg={3} position="relative">
+                <Box position="sticky" top={73}>
+                    {editedLabel ? (
+                        <Edit
+                            editedLabel={editedLabel}
+                            cancelEdit={cancelEdit}
+                        />
+                    ) : (
+                        <Create />
+                    )}
+                </Box>
             </Grid>
 
             <Grid item xs={12} lg={9}>

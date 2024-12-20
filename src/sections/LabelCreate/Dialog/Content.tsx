@@ -1,6 +1,5 @@
 import { Stack } from "@mui/material";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { ILabel, LabelResourceType } from "src/types/label";
 import dynamic from "next/dynamic";
@@ -26,8 +25,6 @@ const Content: FC<ContentProps> = ({
     // ...
     onLabelClick,
 }) => {
-    const { t } = useTranslation();
-
     const isEdit = Boolean(resourceId);
 
     return (

@@ -10,21 +10,26 @@ import { ILabelForm } from "@/sections/Label/Create/types";
 import { LabelResourceType } from "@/types/label";
 
 interface CreateButtonProps {
+    edit: boolean;
     resourceId?: number;
     resource: LabelResourceType;
     onCreate?: (id: number) => void;
 }
 
 const CreateButton: FC<CreateButtonProps> = ({
+    edit,
     resource,
     resourceId,
     onCreate,
 }) => {
     const { t } = useTranslation();
+
     const { formState, handleSubmit } = useFormContext<ILabelForm>();
     const isSubmitting = formState.isSubmitting;
+    const isDirty = formState.isDirty;
 
     const isAssign = Boolean(resourceId);
+    const title = edit ? t("Update") : t("Create");
 
     const [createLabel] = useCreateLabelForResourceMutation();
     const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
@@ -32,11 +37,8 @@ const CreateButton: FC<CreateButtonProps> = ({
     const onSubmit = useCallback(
         async ({ resource: _0, resourceId: _, ...body }: ILabelForm) => {
             const cb = isAssign ? createAssignLabel : createLabel;
-            const bd = isAssign
-                ? { body, resource, resourceId: resourceId! }
-                : { body, resource };
 
-            const res = await cb(bd);
+            const res = await cb({ body, resource, resourceId: resourceId! });
 
             if (res && "error" in res) return;
 
@@ -48,11 +50,11 @@ const CreateButton: FC<CreateButtonProps> = ({
     return (
         <LoadingButton
             loading={isSubmitting}
-            disabled={isSubmitting}
-            variant="outlined"
+            disabled={!isDirty || isSubmitting}
+            variant="contained"
             onClick={handleSubmit(onSubmit)}
         >
-            {t("Create")}
+            {title}
         </LoadingButton>
     );
 };
