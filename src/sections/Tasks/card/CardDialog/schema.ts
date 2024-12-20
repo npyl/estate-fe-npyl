@@ -15,6 +15,8 @@ const schema = yup.object<IKanbanCardPOST>().shape({
 
     columnId: yup.number().min(0).required(),
 
+    labels: yup.array(yup.number().required()).required(),
+
     // TODO: supported by backend, but theoretically I should never update it!
     event: yup.string().optional(),
     withCalendar: yup.boolean().required(),

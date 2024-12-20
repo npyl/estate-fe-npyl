@@ -5,17 +5,15 @@ import { ILabelForm } from "../types";
 
 const RHFCustomerSelect = () => {
     const { t } = useTranslation();
-
     const { control } = useFormContext<ILabelForm>();
-
     return (
         <Controller
             name="resourceId"
             control={control}
             render={({ field, fieldState: { error } }) => (
                 <CustomerAutocompleteSingle
-                    label={t("Customers")}
                     {...field}
+                    label={t("Customer")}
                     error={Boolean(error)}
                     helperText={error?.message}
                 />

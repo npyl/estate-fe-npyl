@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useFormContext } from "react-hook-form";
@@ -14,13 +14,18 @@ const Preview = () => {
     const placeholder = i18n.language === "en" ? "New Label" : "Νέα Ετικέτα";
 
     return (
-        <Box>
+        <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="center"
+        >
             <Typography variant="subtitle2" mb={1}>
                 {t("Preview")}
             </Typography>
 
             <Label color={pickerColor} name={labelName || placeholder} />
-        </Box>
+        </Stack>
     );
 };
 

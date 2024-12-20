@@ -8,12 +8,24 @@ const LabelSx: SxProps<Theme> = {
     position: "relative",
 
     "& .pp-label-controls": {
+        gap: 2,
         position: "absolute",
         right: -75,
+        top: "50%",
+        transform: "translateY(-50%)",
         visibility: "hidden",
+        // Add an invisible extension to the left to increase hover area
+        "&::before": {
+            content: '""',
+            position: "absolute",
+            right: "100%",
+            top: -8,
+            bottom: -8,
+            width: 20,
+            background: "transparent",
+        },
     },
-
-    "&:hover .pp-label-controls": {
+    "&:hover .pp-label-controls, .pp-label-controls:hover": {
         visibility: "visible",
     },
 };
@@ -34,9 +46,8 @@ const HoverableLabel = ({
 }: HoverableLabelProps) => (
     <Label sx={{ ...LabelSx, ...sx }} {...props}>
         {children}
-
         <div className="pp-label-controls">
-            <IconButton onClick={onEdit}>
+            <IconButton onClick={onEdit} sx={{ borderRadius: "100%" }}>
                 <EditIcon fontSize="small" />
             </IconButton>
             <DeleteButton variant={variant} labelId={labelId} />

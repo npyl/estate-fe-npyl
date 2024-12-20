@@ -6,8 +6,9 @@ import {
 } from "src/services/properties";
 import { useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
+import { useGetCardLabelsQuery } from "@/services/tasks";
 
-const useAssignedLabels = (variant: LabelResourceType, resourceId: number) => {
+const useAssignedLabels = (variant: LabelResourceType, resourceId?: number) => {
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -27,18 +28,24 @@ const useAssignedLabels = (variant: LabelResourceType, resourceId: number) => {
         skip: variant !== "customer" || resourceId === -1,
     });
 
-    // const { data: ticketsLabels } = useGetTicketLabelsQuery(resourceId!, {
-    //     skip: variant !== "ticket" || resourceId === -1,
-    // });
+    const { data: ticketsLabels } = useGetCardLabelsQuery(resourceId!, {
+        skip: variant !== "ticket" || resourceId === -1,
+    });
 
     const assignedLabels = useMemo(() => {
         if (variant === "property") return propertyLabels || [];
         if (variant === "customer") return customerLabels || [];
         if (variant === "document") return documentLabels || [];
-        // if (variant === "ticket") return ticketsLabels || [];
+        if (variant === "ticket") return ticketsLabels || [];
 
         return [];
-    }, [variant, propertyLabels, documentLabels, customerLabels]);
+    }, [
+        variant,
+        propertyLabels,
+        documentLabels,
+        customerLabels,
+        ticketsLabels,
+    ]);
 
     return assignedLabels;
 };
