@@ -27,7 +27,6 @@ const ViewAgreementPage: NextPage = () => {
         if (agreement && agreementId) {
             pushTab({
                 path: `/agreements/${agreementId}`,
-                id: agreementId as string,
                 label: `${t("Agreement")} ${agreement?.code}`,
             });
         }

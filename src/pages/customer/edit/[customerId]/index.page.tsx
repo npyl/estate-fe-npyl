@@ -39,7 +39,6 @@ const useLoadCustomer = () => {
 
                 pushTab({
                     path: `/customer/edit/${customerId}`,
-                    id: (customerId + "edit") as string,
                     label,
                 });
             });

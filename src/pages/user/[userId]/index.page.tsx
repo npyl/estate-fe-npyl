@@ -19,7 +19,6 @@ const User: NextPage = () => {
         if (user) {
             pushTab({
                 path: `/user/${userId}`,
-                id: `user-${userId}`,
                 label: `${user.firstName} ${user.lastName}`,
             });
         }

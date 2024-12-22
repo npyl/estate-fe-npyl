@@ -37,7 +37,6 @@ const MainContainer: React.FC = () => {
         if (data && propertyId) {
             pushTab({
                 path: `/property/${propertyId}`,
-                id: propertyId as string,
                 label: `${t("Property")} ${data?.code || ""}`,
             });
         }

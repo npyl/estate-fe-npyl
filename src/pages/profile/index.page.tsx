@@ -22,7 +22,6 @@ const Profile: NextPage = () => {
         if (profile) {
             pushTab({
                 path: `/profile`,
-                id: `profile-${profile.id}`,
                 label: t("Profile").toString(),
             });
         }

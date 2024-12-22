@@ -8,7 +8,7 @@ import {
 import { ITab } from "@/types/tabs";
 
 type ITabState = {
-    pushTab: (newTab: ITab) => void;
+    pushTab: (t: ITab) => void;
     removeTab: (identifier: string) => void;
 };
 

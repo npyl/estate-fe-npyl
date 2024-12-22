@@ -20,7 +20,6 @@ const ClearIcon = styled(MuiClearIcon)({
 });
 
 interface TabItemProps extends ButtonProps {
-    id: string;
     path: string;
     label: string;
 }
@@ -137,7 +136,7 @@ const TabItem: FC<TabItemProps> = ({ id, path, label }) => {
             //         : tabsAfterRemove[currentTabIndex].path
             //     : basePath;
 
-            removeTab(id);
+            // removeTab(id);
 
             // router.push(newUrl);
         },

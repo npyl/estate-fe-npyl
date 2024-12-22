@@ -35,7 +35,6 @@ const useLoadProperty = () => {
 
                 pushTab({
                     path: `/property/edit/${propertyId}`,
-                    id: (propertyId + "edit") as string,
                     label,
                 });
             });

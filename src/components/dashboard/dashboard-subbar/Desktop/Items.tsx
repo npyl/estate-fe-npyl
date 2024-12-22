@@ -11,8 +11,8 @@ import dynamic from "next/dynamic";
 import { SubbarRef } from "@/contexts/tabs";
 const TabItem = dynamic(() => import("./Item"));
 
-const getTabItem: FC<ITab> = ({ id, label, path }) => (
-    <TabItem key={id} id={id} label={label} path={path} />
+const getTabItem: FC<ITab> = ({ label, path }) => (
+    <TabItem key={path} label={label} path={path} />
 );
 
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
