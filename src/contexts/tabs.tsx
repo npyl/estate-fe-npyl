@@ -5,7 +5,7 @@ import {
     RefObject,
     useContext,
 } from "react";
-import { ITab } from "src/interfaces/tabs";
+import { ITab } from "@/types/tabs";
 
 type ITabState = {
     pushTab: (newTab: ITab) => void;

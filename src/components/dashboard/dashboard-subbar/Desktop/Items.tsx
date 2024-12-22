@@ -6,7 +6,7 @@ import {
     useImperativeHandle,
     useState,
 } from "react";
-import { ITab } from "@/interfaces/tabs";
+import { ITab } from "@/types/tabs";
 import dynamic from "next/dynamic";
 import { SubbarRef } from "@/contexts/tabs";
 const TabItem = dynamic(() => import("./Item"));

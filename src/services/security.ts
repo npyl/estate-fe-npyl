@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IPreset, IPresetReq, IRolesReq } from "../interfaces/roles";
+import { IPreset, IPresetReq, IRolesReq } from "../types/roles";
 
 export const security = createApi({
     reducerPath: "security",
