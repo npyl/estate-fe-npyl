@@ -18,8 +18,18 @@ const getTabItem: FC<ITab> = ({ label, path }) => (
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     const [tabs, setTabs] = useState<ITab[]>([]);
 
-    const pushTab = useCallback((i: ITab) => setTabs((old) => [...old, i]), []);
-    const removeTab = useCallback(() => {}, []);
+    const pushTab = useCallback(
+        (i: ITab) =>
+            setTabs((old) =>
+                old.some(({ path }) => path === i.path) ? old : [...old, i]
+            ),
+        []
+    );
+
+    const removeTab = useCallback(
+        (p: string) => setTabs((old) => old.filter(({ path }) => path !== p)),
+        []
+    );
 
     useImperativeHandle(
         ref,
@@ -29,6 +39,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
         }),
         [pushTab, removeTab]
     );
+
     return (
         <Stack direction="row" spacing={1.5} {...props}>
             {tabs.map(getTabItem)}

@@ -2,11 +2,11 @@ import { Button, ButtonProps, SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
 import useResponsive from "@/hooks/useResponsive";
 import { FC, useCallback, MouseEvent } from "react";
-import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
 import MuiClearIcon from "@mui/icons-material/Clear";
 import { useTabsContext } from "@/contexts/tabs";
 import { usePathname } from "next/navigation";
+import Link from "@/components/Link";
 
 const ClearIcon = styled(MuiClearIcon)({
     height: "20px",
@@ -100,56 +100,58 @@ const ResponsiveLabel: FC<ResponsiveLabelProps> = ({ label }) => {
     );
 };
 
-const TabItem: FC<TabItemProps> = ({ id, path, label }) => {
+interface ClearButtonProps {
+    path: string;
+}
+
+const ClearButton: FC<ClearButtonProps> = ({ path }) => {
     const { removeTab } = useTabsContext();
 
-    const router = useRouter();
-    const currentPath = usePathname();
-
-    const handleClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    const handleRemove = useCallback((e: MouseEvent) => {
         e.stopPropagation();
-        router.push(path);
+        e.preventDefault();
+
+        removeTab(path);
+
+        // const tabsAfterRemove = removeTabNoChange(id);
+
+        // const currentTabIndex = appTabs.findIndex(
+        //     ({ id: _id }) => _id === id
+        // );
+        // const isCurrentLast = appTabs[appTabs.length - 1].id === id;
+        // const hasMoreAfterRemove = tabsAfterRemove.length > 0;
+
+        // // Determine the base path based on the current path
+        // const basePath = currentPath.startsWith("/property")
+        //     ? "/property"
+        //     : currentPath.startsWith("/customer")
+        //     ? "/customers"
+        //     : "/customers";
+
+        // const newUrl = hasMoreAfterRemove
+        //     ? isCurrentLast
+        //         ? tabsAfterRemove[tabsAfterRemove.length - 1].path
+        //         : tabsAfterRemove[currentTabIndex].path
+        //     : basePath;
+
+        // removeTab(id);
+
+        // router.push(newUrl);
     }, []);
 
-    const handleRemove = useCallback(
-        (e: MouseEvent) => {
-            e.stopPropagation();
+    return <ClearIcon onClick={handleRemove} />;
+};
 
-            // const tabsAfterRemove = removeTabNoChange(id);
-
-            // const currentTabIndex = appTabs.findIndex(
-            //     ({ id: _id }) => _id === id
-            // );
-            // const isCurrentLast = appTabs[appTabs.length - 1].id === id;
-            // const hasMoreAfterRemove = tabsAfterRemove.length > 0;
-
-            // // Determine the base path based on the current path
-            // const basePath = currentPath.startsWith("/property")
-            //     ? "/property"
-            //     : currentPath.startsWith("/customer")
-            //     ? "/customers"
-            //     : "/customers";
-
-            // const newUrl = hasMoreAfterRemove
-            //     ? isCurrentLast
-            //         ? tabsAfterRemove[tabsAfterRemove.length - 1].path
-            //         : tabsAfterRemove[currentTabIndex].path
-            //     : basePath;
-
-            // removeTab(id);
-
-            // router.push(newUrl);
-        },
-        [currentPath]
-    );
-
+const TabItem: FC<TabItemProps> = ({ path, label }) => {
+    const currentPath = usePathname();
     const isCurrent = currentPath === path;
 
     return (
         <Button
-            onClick={handleClick}
+            LinkComponent={Link}
+            href={path}
             sx={getButtonSx(isCurrent)}
-            endIcon={<ClearIcon onClick={handleRemove} />}
+            endIcon={<ClearButton path={path} />}
         >
             <ResponsiveLabel label={label} />
         </Button>

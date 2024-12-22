@@ -26,7 +26,7 @@ export const useTabsContext = () => {
 
 export type SubbarRef = {
     pushTab: (i: ITab) => void;
-    removeTab: () => void;
+    removeTab: (p: string) => void;
 };
 
 interface TabsProviderProps extends PropsWithChildren {
@@ -42,8 +42,9 @@ export const TabsProvider: FC<TabsProviderProps> = ({
             subbarRef?.current?.pushTab(i);
         } catch (ex) {}
     };
-    const removeTab = () => {
+    const removeTab = (p: string) => {
         try {
+            subbarRef?.current?.removeTab(p);
         } catch (ex) {}
     };
 
