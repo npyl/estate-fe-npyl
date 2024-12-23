@@ -5,32 +5,17 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Skeleton from "./Skeleton";
 import Description from "./Description";
-import { useTabsContext } from "@/contexts/tabs";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
+import AgreementPusher from "./AgreementPusher";
 const PDFViewer = dynamic(() => import("./PDFViewer"), { ssr: false });
 
 const ViewAgreementPage: NextPage = () => {
-    const { t } = useTranslation();
-
     const router = useRouter();
     const { agreementId } = router.query;
-
-    const { pushTab } = useTabsContext();
 
     const { data: agreement, isLoading } = useGetAgreementByIdQuery(
         +agreementId!
     );
-
-    useEffect(() => {
-        if (agreement && agreementId) {
-            pushTab({
-                path: `/agreements/${agreementId}`,
-                label: `${t("Agreement")} ${agreement?.code}`,
-            });
-        }
-    }, [agreement, agreementId, t]);
 
     if (isLoading || !agreement) return <Skeleton />;
 
@@ -44,7 +29,10 @@ const ViewAgreementPage: NextPage = () => {
 
 ViewAgreementPage.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <AgreementPusher />
+            {page}
+        </DashboardLayout>
     </AuthGuard>
 );
 

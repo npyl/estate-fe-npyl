@@ -1,12 +1,12 @@
 import { Button, ButtonProps, SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
-import useResponsive from "@/hooks/useResponsive";
-import { FC, useCallback, MouseEvent } from "react";
+import { FC, useCallback, MouseEvent, ReactNode } from "react";
 import { styled } from "@mui/material/styles";
 import MuiClearIcon from "@mui/icons-material/Clear";
 import { useTabsContext } from "@/contexts/tabs";
 import { usePathname } from "next/navigation";
 import Link from "@/components/Link";
+import { ITab } from "@/types/tabs";
 
 const ClearIcon = styled(MuiClearIcon)({
     height: "20px",
@@ -19,10 +19,7 @@ const ClearIcon = styled(MuiClearIcon)({
     },
 });
 
-interface TabItemProps extends ButtonProps {
-    path: string;
-    label: string;
-}
+type TabItemProps = Omit<ButtonProps, "label"> & ITab;
 
 const getButtonSx = (current: boolean): SxProps<Theme> => ({
     border: "1px solid",
@@ -61,44 +58,26 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
     minWidth: "275px",
     width: "max-content",
     maxWidth: "350px",
-    // Text Content
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
 });
-
-const getLabel = (belowSm: boolean, label: string) => {
-    let res = label;
-
-    if (belowSm) {
-        const parts = label.split(" ");
-        res = parts[parts.length - 1]; // First two words only
-    }
-
-    return res;
-};
 
 /* Code to keep the Clear icon always inside the SubbarItem and cut the text with '...' */
 interface ResponsiveLabelProps {
-    label: string;
+    label: ReactNode;
 }
 
-const ResponsiveLabel: FC<ResponsiveLabelProps> = ({ label }) => {
-    const belowSm = useResponsive("down", "sm");
-
-    return (
-        <span
-            style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                flex: 1,
-            }}
-        >
-            {getLabel(belowSm, label)}
-        </span>
-    );
-};
+const ResponsiveLabel: FC<ResponsiveLabelProps> = ({ label }) => (
+    <span
+        style={{
+            flex: 1,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            maxWidth: "330px",
+        }}
+    >
+        {label}
+    </span>
+);
 
 interface ClearButtonProps {
     path: string;
