@@ -17,30 +17,15 @@ import {
 } from "../(sections)";
 import ConstructionSection from "../(sections)/ConstructionSection";
 import { useRouter } from "next/router";
-import { useTabsContext } from "src/contexts/tabs";
 import { useGetPropertyByIdQuery } from "src/services/properties";
-import { useEffect } from "react";
 import Features from "../(sections)/FeaturesSection";
 import DescriptionSection from "../(sections)/DescriptionSection";
-import { useTranslation } from "react-i18next";
 
 const MainContainer: React.FC = () => {
-    const { t } = useTranslation();
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const { pushTab } = useTabsContext();
-
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
-
-    useEffect(() => {
-        if (data && propertyId) {
-            pushTab({
-                path: `/property/${propertyId}`,
-                label: `${t("Property")} ${data?.code || ""}`,
-            });
-        }
-    }, [data, propertyId, t]);
 
     return data ? (
         <Grid container spacing={1}>

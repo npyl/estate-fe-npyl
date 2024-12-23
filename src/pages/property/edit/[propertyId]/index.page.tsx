@@ -1,45 +1,22 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
     useEditPropertyMutation,
-    useLazyGetPropertyByIdQuery,
+    useGetPropertyByIdQuery,
 } from "src/services/properties";
 import Form from "./Form";
 import { useTabsContext } from "src/contexts/tabs";
 import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
-import { useTranslation } from "react-i18next";
+import PropertyPusher from "./PropertyPusher";
 
 const useLoadProperty = () => {
-    const { t } = useTranslation();
     const router = useRouter();
-    const { pushTab } = useTabsContext();
-
-    const [getProperty, { data: property }] = useLazyGetPropertyByIdQuery();
-
     const { propertyId } = router.query;
-
-    useEffect(() => {
-        if (!propertyId) return;
-
-        getProperty(+propertyId!)
-            .unwrap()
-            .then((p) => {
-                const isFirstEdit = p.createdAt === p.updatedAt;
-                const label = `${isFirstEdit ? t("Create") : t("Edit")} ${t(
-                    "Property_geniki"
-                )} ${p.code || ""}`;
-
-                pushTab({
-                    path: `/property/edit/${propertyId}`,
-                    label,
-                });
-            });
-    }, [propertyId, t]);
-
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
     return { property, propertyId };
 };
 
@@ -91,7 +68,10 @@ const EditPropertyPage: NextPage = () => {
 
 EditPropertyPage.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <PropertyPusher />
+            {page}
+        </DashboardLayout>
     </AuthGuard>
 );
 

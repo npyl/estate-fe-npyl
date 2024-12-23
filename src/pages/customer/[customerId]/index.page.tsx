@@ -1,7 +1,7 @@
 import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
@@ -21,10 +21,10 @@ import {
 import TabPanel from "src/components/Tabs";
 import ViewHeader from "@/sections/ViewHeader";
 import { useTranslation } from "react-i18next";
-import { useTabsContext } from "src/contexts/tabs";
 import React from "react";
 import Agreements from "@/sections/agreements";
 import dynamic from "next/dynamic";
+import CustomerPusher from "./CustomerPusher";
 const Tasks = dynamic(() => import("./sections/Tasks"));
 
 type TabConfig = {
@@ -35,7 +35,6 @@ type TabConfig = {
 const CustomerView: NextPage = () => {
     const router = useRouter();
     const { t } = useTranslation();
-    const { removeTab, pushTab } = useTabsContext();
 
     const { customerId } = router.query;
 
@@ -43,17 +42,6 @@ const CustomerView: NextPage = () => {
     const [deleteCustomer] = useDeleteCustomerMutation();
 
     const [value, setValue] = useState(0);
-
-    useEffect(() => {
-        if (data && customerId) {
-            pushTab({
-                path: `/customer/${customerId}`,
-                label: `${t("Customer")} ${data?.firstName || ""} ${
-                    data?.lastName || ""
-                }`,
-            });
-        }
-    }, [data, customerId, t]);
 
     const isSellerOrLessor = data?.seller || data?.lessor;
     const isBuyerOrLeaser = data?.buyer || data?.leaser;
@@ -65,7 +53,6 @@ const CustomerView: NextPage = () => {
     const handleDelete = () =>
         deleteCustomer(+customerId!).then(() => {
             router.push("/customers");
-            removeTab(customerId as string);
         });
 
     const tabsConfig = [
@@ -149,7 +136,10 @@ const CustomerView: NextPage = () => {
 
 CustomerView.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <CustomerPusher />
+            {page}
+        </DashboardLayout>
     </AuthGuard>
 );
 

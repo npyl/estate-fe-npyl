@@ -3,15 +3,15 @@ import { ITab } from "@/types/tabs";
 import { FC, useEffect } from "react";
 
 interface PusherProps {
-    tabPromise: Promise<ITab>;
+    tab: ITab;
 }
 
-const Pusher: FC<PusherProps> = ({ tabPromise }) => {
+const Pusher: FC<PusherProps> = ({ tab }) => {
     const { pushTab } = useTabsContext();
 
     useEffect(() => {
-        tabPromise.then(pushTab);
-    }, [tabPromise]);
+        pushTab(tab);
+    }, []);
 
     return null;
 };
