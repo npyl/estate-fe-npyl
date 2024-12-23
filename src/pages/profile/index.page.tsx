@@ -6,7 +6,7 @@ import { SecurityProvider } from "src/contexts/security";
 import { useGetUserQuery } from "src/services/user";
 import { AuthGuard } from "@/components/authentication/auth-guard";
 import { useAuth } from "@/hooks/use-auth";
-import ProfilePusher from "./ProfilePusher";
+import ProfilePusher from "@/sections/Profile/ProfilePusher";
 
 const Profile: NextPage = () => {
     const { user } = useAuth();

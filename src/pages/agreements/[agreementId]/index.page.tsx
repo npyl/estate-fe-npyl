@@ -6,7 +6,9 @@ import { useRouter } from "next/router";
 import Skeleton from "./Skeleton";
 import Description from "./Description";
 import dynamic from "next/dynamic";
-import AgreementPusher from "./AgreementPusher";
+const AgreementPusher = dynamic(
+    () => import("@/sections/agreements/AgreementById/AgreementPusher")
+);
 const PDFViewer = dynamic(() => import("./PDFViewer"), { ssr: false });
 
 const ViewAgreementPage: NextPage = () => {

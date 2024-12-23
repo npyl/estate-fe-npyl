@@ -2,12 +2,12 @@ import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { AuthGuard } from "src/components/authentication/auth-guard";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { AuthGuard } from "@/components/authentication/auth-guard";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
-} from "src/services/customers";
+} from "@/services/customers";
 
 import {
     Address,
@@ -18,14 +18,16 @@ import {
     OwnedProperties,
     Logs,
 } from "./sections";
-import TabPanel from "src/components/Tabs";
+import TabPanel from "@/components/Tabs";
 import ViewHeader from "@/sections/ViewHeader";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import Agreements from "@/sections/agreements";
 import dynamic from "next/dynamic";
-import CustomerPusher from "./CustomerPusher";
 const Tasks = dynamic(() => import("./sections/Tasks"));
+const CustomerPusher = dynamic(
+    () => import("@/sections/Customer/ViewById/CustomerPusher")
+);
 
 type TabConfig = {
     label: string;

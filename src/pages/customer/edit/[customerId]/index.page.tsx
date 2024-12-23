@@ -7,9 +7,9 @@ import {
     useCreateOrUpdateCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-import Form from "../../components/Form";
+import Form from "@/sections/Customer/Form";
 import { ICustomerPOST } from "src/types/customer";
-import CustomerPusher from "./CustomerPusher";
+import CustomerPusher from "@/sections/Customer/EditById/CustomerPusher";
 
 const useLoadCustomer = () => {
     const router = useRouter();

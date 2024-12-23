@@ -11,7 +11,10 @@ import Form from "./Form";
 import { useTabsContext } from "src/contexts/tabs";
 import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
-import PropertyPusher from "./PropertyPusher";
+import dynamic from "next/dynamic";
+const PropertyPusher = dynamic(
+    () => import("@/sections/Properties/Edit/PropertyPusher")
+);
 
 const useLoadProperty = () => {
     const router = useRouter();

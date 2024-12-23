@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
-import { AuthGuard } from "src/components/authentication/auth-guard";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import Form from "../components/Form";
-import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
-import { ICustomerPOST } from "src/types/customer";
+import { AuthGuard } from "@/components/authentication/auth-guard";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import Form from "@/sections/Customer/Form";
+import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
+import { ICustomerPOST } from "@/types/customer";
 
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
