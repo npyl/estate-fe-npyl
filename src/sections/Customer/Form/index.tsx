@@ -17,8 +17,7 @@ import NotesSection from "./NotesSection";
 
 // Forms
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import FormProvider from "src/components/hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { TranslationType } from "@/types/translation";
 
@@ -115,20 +114,17 @@ const useCustomerForm = (customer?: ICustomer) => {
         values: defaultValues,
     });
 
-    const {
-        reset,
-        handleSubmit,
-        formState: { errors },
-    } = methods;
-
-    const haveError = useMemo(() => Object.keys(errors).length > 0, [errors]);
+    const haveError = useMemo(
+        () => Object.keys(methods.formState.errors).length > 0,
+        [methods.formState.errors]
+    );
 
     // Scroll to top on error
     useEffect(() => {
         if (haveError) window.scrollTo(0, 0);
     }, [haveError]);
 
-    return { methods, handleSubmit, reset };
+    return { methods };
 };
 
 const Form = ({
@@ -140,9 +136,9 @@ const Form = ({
 }: FormProps) => {
     const { t } = useTranslation();
 
-    const { methods, handleSubmit, reset } = useCustomerForm(customer);
+    const { methods } = useCustomerForm(customer);
 
-    const onSubmit = handleSubmit((data: ICustomerYup) => {
+    const handleSubmit = (data: ICustomerYup) => {
         try {
             onSave({
                 ...(data as ICustomerPOST),
@@ -154,61 +150,64 @@ const Form = ({
             });
         } catch (error) {
             console.error(error);
-            reset();
+            methods.reset();
         }
-    });
+    };
 
-    const handleClear = useCallback(() => reset(), []);
+    const handleClear = useCallback(() => methods.reset(), []);
 
     return (
-        <FormProvider methods={methods} onSubmit={onSubmit}>
-            <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-                <Grid item xs={12} lg={6}>
-                    <CustomerInformation />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <AddressDetails />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <NotesSection isEditMode={!!customer} />
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+            <FormProvider {...methods}>
+                <Grid container paddingTop={1} paddingRight={1} spacing={1}>
+                    <Grid item xs={12} lg={6}>
+                        <CustomerInformation />
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <AddressDetails />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <NotesSection isEditMode={!!customer} />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
 
-            <Stack
-                my={2}
-                display="flex"
-                justifyContent="flex-end"
-                direction="row"
-                spacing={1}
-            >
-                <Button
-                    variant="outlined"
-                    startIcon={<CancelIcon />}
-                    onClick={onCancel}
+                <Stack
+                    my={2}
+                    display="flex"
+                    justifyContent="flex-end"
+                    direction="row"
+                    spacing={1}
                 >
-                    {t("Cancel")}
-                </Button>
-                <Button
-                    variant="outlined"
-                    startIcon={<DeleteIcon />}
-                    onClick={handleClear}
-                >
-                    {t("Clear")}
-                </Button>
-                <LoadingButton
-                    loading={isLoading && !isError}
-                    variant="contained"
-                    startIcon={<SendIcon />}
-                    onClick={onSubmit}
-                >
-                    {t("Save")}
-                </LoadingButton>
-            </Stack>
-        </FormProvider>
+                    <Button
+                        variant="outlined"
+                        startIcon={<CancelIcon />}
+                        onClick={onCancel}
+                    >
+                        {t("Cancel")}
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                        onClick={handleClear}
+                    >
+                        {t("Clear")}
+                    </Button>
+
+                    <LoadingButton
+                        loading={isLoading && !isError}
+                        variant="contained"
+                        startIcon={<SendIcon />}
+                        type="submit"
+                    >
+                        {t("Save")}
+                    </LoadingButton>
+                </Stack>
+            </FormProvider>
+        </form>
     );
 };
 

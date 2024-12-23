@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
@@ -8,8 +8,6 @@ import {
     useGetPropertyByIdQuery,
 } from "src/services/properties";
 import Form from "./Form";
-import { useTabsContext } from "src/contexts/tabs";
-import ConfirmationDialogBox from "@/sections/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
 import dynamic from "next/dynamic";
 const PropertyPusher = dynamic(
@@ -25,12 +23,9 @@ const useLoadProperty = () => {
 
 const EditPropertyPage: NextPage = () => {
     const router = useRouter();
-    const { removeTab } = useTabsContext();
 
     const { property, propertyId } = useLoadProperty();
-    const [edit, { isError, isLoading }] = useEditPropertyMutation();
-
-    const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
+    const [edit] = useEditPropertyMutation();
 
     const handleEdit = useCallback(
         (body: IPropertiesPOST) =>
@@ -41,31 +36,14 @@ const EditPropertyPage: NextPage = () => {
 
     const redirectToView = useCallback(() => {
         router.push(`/property/${propertyId}`);
-        removeTab((propertyId + "edit") as string);
     }, [propertyId]);
 
-    const resetEverything = () => setclearConfirmDialogOpen(true);
-    const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);
-
     return (
-        <>
-            <Form
-                property={property}
-                isLoading={isLoading}
-                isError={isError}
-                onSave={handleEdit}
-                onClear={resetEverything}
-                onCancel={redirectToView}
-            />
-
-            <ConfirmationDialogBox
-                action={"delete"}
-                open={clearConfirmDialogOpen}
-                onClose={closeClearConfirmDialog}
-                text="Are you sure you want to clear all fields?"
-                onConfirm={closeClearConfirmDialog}
-            />
-        </>
+        <Form
+            property={property}
+            onSave={handleEdit}
+            onCancel={redirectToView}
+        />
     );
 };
 

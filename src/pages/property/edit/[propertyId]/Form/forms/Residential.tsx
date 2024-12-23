@@ -5,7 +5,6 @@ import {
     Areas,
     BasicDetails,
     DescriptionEditor,
-    Distances,
     Blueprints,
     Images,
     VideoLink,
@@ -40,6 +39,7 @@ const ResidentialFormSection: React.FC = () => {
                 <Grid item xs={12} md={6}>
                     <Stack spacing={1}>
                         <BasicDetails />
+
                         {/* <ROISection /> */}
                         {state === "Sale" && <ROI />}
 

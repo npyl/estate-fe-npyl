@@ -11,7 +11,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 type OmitList = "managerId" | "ownerId";
 
-interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
+export interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
     code: string;
     state: string;
     managerId?: number | "";
@@ -379,50 +379,44 @@ const usePropertyForm = (property?: IProperties) => {
         defaultValues,
     });
 
-    const {
-        reset,
-        handleSubmit,
-        formState: { errors },
-        watch,
-        setError,
-        clearErrors,
-    } = methods;
-
-    const haveError = useMemo(() => Object.keys(errors).length > 0, [errors]);
+    const haveError = useMemo(
+        () => Object.keys(methods.formState.errors).length > 0,
+        [methods.formState.errors]
+    );
 
     const debouncedCodeValidation = useDebouncedCallback(async (value) => {
         const result = await codeIsUnique(property?.code || null, value);
         if (result !== true) {
-            setError("code", {
+            methods.setError("code", {
                 type: "manual",
                 message: result as string,
             });
         } else {
-            clearErrors("code");
+            methods.clearErrors("code");
         }
     }, 250);
 
     const debouncedKeyCodeValidation = useDebouncedCallback(async (value) => {
         const result = await keyCodeIsUnique(property?.keyCode || null, value);
         if (result !== true) {
-            setError("keyCode", {
+            methods.setError("keyCode", {
                 type: "manual",
                 message: result as string,
             });
         } else {
-            clearErrors("keyCode");
+            methods.clearErrors("keyCode");
         }
     }, 250);
 
     // Watch and debounce code and keyCode changes
     useEffect(() => {
-        const subscription = watch(({ code, keyCode }) => {
+        const subscription = methods.watch(({ code, keyCode }) => {
             if (code !== undefined) debouncedCodeValidation(code);
             if (keyCode !== undefined) debouncedKeyCodeValidation(keyCode);
         });
 
         return () => subscription.unsubscribe();
-    }, [watch, debouncedCodeValidation, debouncedKeyCodeValidation]);
+    }, [methods.watch, debouncedCodeValidation, debouncedKeyCodeValidation]);
 
     // Scroll to top on error
     useEffect(() => {
@@ -430,10 +424,10 @@ const usePropertyForm = (property?: IProperties) => {
     }, [haveError]);
 
     useEffect(() => {
-        reset(defaultValues); // Ensure the form is reset with the default values
-    }, [defaultValues, reset]);
+        methods.reset(defaultValues); // Ensure the form is reset with the default values
+    }, [defaultValues, methods.reset]);
 
-    return { methods, handleSubmit, reset };
+    return { methods };
 };
 
 export default usePropertyForm;
