@@ -7,8 +7,6 @@ import { forwardRef } from "react";
 import { SubbarRef } from "@/contexts/tabs";
 
 const DesktopBar = forwardRef<SubbarRef, object>(({}, ref) => {
-    console.log("DesktopBar received ref:", ref);
-
     const router = useRouter();
 
     //use these two specific paths so the subbar is sticky in edit and create property form
