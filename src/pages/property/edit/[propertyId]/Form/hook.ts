@@ -367,7 +367,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
 };
 
 const usePropertyForm = (property?: IProperties) => {
-    const defaultValues = useMemo(() => getDefaultValues(property), [property]);
+    const values = useMemo(() => getDefaultValues(property), [property]);
 
     const LoginSchema = getLoginSchema(
         property?.code || null,
@@ -376,56 +376,42 @@ const usePropertyForm = (property?: IProperties) => {
 
     const methods = useForm<IPropertyYup>({
         resolver: yupResolver(LoginSchema),
-        defaultValues,
+        values,
     });
 
-    const haveError = useMemo(
-        () => Object.keys(methods.formState.errors).length > 0,
-        [methods.formState.errors]
-    );
+    // const debouncedCodeValidation = useDebouncedCallback(async (value) => {
+    //     const result = await codeIsUnique(property?.code || null, value);
+    //     if (result !== true) {
+    //         methods.setError("code", {
+    //             type: "manual",
+    //             message: result as string,
+    //         });
+    //     } else {
+    //         methods.clearErrors("code");
+    //     }
+    // }, 250);
 
-    const debouncedCodeValidation = useDebouncedCallback(async (value) => {
-        const result = await codeIsUnique(property?.code || null, value);
-        if (result !== true) {
-            methods.setError("code", {
-                type: "manual",
-                message: result as string,
-            });
-        } else {
-            methods.clearErrors("code");
-        }
-    }, 250);
+    // const debouncedKeyCodeValidation = useDebouncedCallback(async (value) => {
+    //     const result = await keyCodeIsUnique(property?.keyCode || null, value);
+    //     if (result !== true) {
+    //         methods.setError("keyCode", {
+    //             type: "manual",
+    //             message: result as string,
+    //         });
+    //     } else {
+    //         methods.clearErrors("keyCode");
+    //     }
+    // }, 250);
 
-    const debouncedKeyCodeValidation = useDebouncedCallback(async (value) => {
-        const result = await keyCodeIsUnique(property?.keyCode || null, value);
-        if (result !== true) {
-            methods.setError("keyCode", {
-                type: "manual",
-                message: result as string,
-            });
-        } else {
-            methods.clearErrors("keyCode");
-        }
-    }, 250);
+    // // Watch and debounce code and keyCode changes
+    // useEffect(() => {
+    //     const subscription = methods.watch(({ code, keyCode }) => {
+    //         if (code !== undefined) debouncedCodeValidation(code);
+    //         if (keyCode !== undefined) debouncedKeyCodeValidation(keyCode);
+    //     });
 
-    // Watch and debounce code and keyCode changes
-    useEffect(() => {
-        const subscription = methods.watch(({ code, keyCode }) => {
-            if (code !== undefined) debouncedCodeValidation(code);
-            if (keyCode !== undefined) debouncedKeyCodeValidation(keyCode);
-        });
-
-        return () => subscription.unsubscribe();
-    }, [methods.watch, debouncedCodeValidation, debouncedKeyCodeValidation]);
-
-    // Scroll to top on error
-    useEffect(() => {
-        if (haveError) window.scrollTo(0, 0);
-    }, [haveError]);
-
-    useEffect(() => {
-        methods.reset(defaultValues); // Ensure the form is reset with the default values
-    }, [defaultValues, methods.reset]);
+    //     return () => subscription.unsubscribe();
+    // }, [debouncedCodeValidation, debouncedKeyCodeValidation]);
 
     return { methods };
 };

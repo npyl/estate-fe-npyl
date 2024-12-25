@@ -4,7 +4,7 @@ import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import Panel from "src/components/Panel";
 import { IPropertyDetailsBalconyPOST } from "src/types/details";
 import { useCallback, useMemo } from "react";
@@ -54,13 +54,17 @@ const useEnums = () => {
     return { balconySide };
 };
 
+const nameKey = "details.balconies";
+
 const BalconiesSection: React.FC = () => {
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
+
+    const { setValue } = useFormContext();
+
     const { balconySide } = useEnums();
 
     const balconies =
-        (watch("details.balconies") as IPropertyDetailsBalconyPOST[]) || [];
+        (useWatch({ name: nameKey }) as IPropertyDetailsBalconyPOST[]) || [];
 
     const addBalcony = useCallback(
         () =>
@@ -100,8 +104,10 @@ const BalconiesSection: React.FC = () => {
         () => (balconies.length > 0 ? balconies.length - 1 : 0),
         [balconies.length]
     );
-    const lastArea = watch(`details.balconies[${lastIndex}].area`);
-    const lastSide = watch(`details.balconies[${lastIndex}].side`);
+
+    const lastArea = useWatch({ name: `details.balconies[${lastIndex}].area` });
+    const lastSide = useWatch({ name: `details.balconies[${lastIndex}].side` });
+
     const disabled = useMemo(
         () => balconies.length > 0 && (!lastArea || !lastSide),
         [balconies.length, lastArea, lastSide]

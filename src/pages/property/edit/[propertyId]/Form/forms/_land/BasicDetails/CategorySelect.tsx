@@ -1,17 +1,16 @@
 import { useMemo } from "react";
 import { KeyValue } from "src/types/KeyValue";
 import { Select } from "src/components/hook-form";
-import { useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import useEnums from "./useEnums";
 import { useTranslation } from "react-i18next";
 
 const CategorySelect = () => {
     const { t } = useTranslation();
 
-    const { watch } = useFormContext();
     const { enums } = useEnums();
 
-    const parentCategory = watch("parentCategory") || "";
+    const parentCategory = useWatch({ name: "parentCategory" }) || "";
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];

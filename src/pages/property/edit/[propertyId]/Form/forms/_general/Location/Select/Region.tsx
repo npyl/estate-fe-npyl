@@ -6,7 +6,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { FC, useCallback } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import MenuItem from "./MenuItem";
 
@@ -19,13 +19,13 @@ interface IRegionSelectProps {
 }
 
 const RegionSelect: FC<IRegionSelectProps> = ({ onChange }) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     const { t, i18n } = useTranslation();
 
     const regions = useGetRegionsQuery(undefined).data || [];
 
-    const regionCode = watch(name);
+    const regionCode = useWatch({ name });
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const areaID = event.target.value;

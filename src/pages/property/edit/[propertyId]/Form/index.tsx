@@ -1,13 +1,14 @@
-import { Button, Stack } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { useTranslation } from "react-i18next";
+import { Stack } from "@mui/material";
 import usePropertyForm, { fixDropdowns, IPropertyYup } from "./hook";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
-import UnsavedChangesWatcher from "./UnsavedChangesWatcher";
 import ClearButton from "./ClearButton";
 import SubmitButton from "./SubmitButton";
 import dynamic from "next/dynamic";
+import { useMemo } from "react";
+import CancelButton from "./CancelButton";
+const ErrorWatcher = dynamic(() => import("./ErrorWatcher"));
+const UnsavedChangesWatcher = dynamic(() => import("./UnsavedChangesWatcher"));
 // ...
 const Residential = dynamic(() => import("./forms/Residential"));
 const Commercial = dynamic(() => import("./forms/Commercial"));
@@ -21,10 +22,13 @@ interface IFormProps {
 }
 
 export default function Form({ property, onSave, onCancel }: IFormProps) {
-    const { t } = useTranslation();
-
     const { methods } = usePropertyForm(property);
     const isDirty = methods.formState.isDirty;
+
+    const haveError = useMemo(
+        () => Object.keys(methods.formState.errors).length > 0,
+        [methods.formState.errors]
+    );
 
     const handleSubmit = (data: IPropertyYup) => {
         try {
@@ -32,8 +36,6 @@ export default function Form({ property, onSave, onCancel }: IFormProps) {
                 ...(data as IPropertiesPOST),
                 ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
             });
-
-            // methods.reset(data); // Reset the form so it's not dirty anymore
         } catch (error) {
             console.error(error);
             methods.reset();
@@ -68,22 +70,16 @@ export default function Form({ property, onSave, onCancel }: IFormProps) {
                             bottom: 1,
                         }}
                     >
-                        <Button
-                            variant="outlined"
-                            startIcon={<CancelIcon />}
-                            onClick={onCancel}
-                        >
-                            {t("Cancel")}
-                        </Button>
-
+                        <CancelButton onClick={onCancel} />
                         <ClearButton />
-
                         <SubmitButton />
                     </Stack>
                 </FormProvider>
             </form>
 
-            <UnsavedChangesWatcher isDirty={isDirty} />
+            {/* Watchers w/ effects */}
+            {isDirty ? <UnsavedChangesWatcher /> : null}
+            {haveError ? <ErrorWatcher /> : null}
         </>
     );
 }

@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { useCallback, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
 import Panel from "src/components/Panel";
 import DistancesSection from "./Distances";
@@ -14,15 +14,15 @@ import useToggle from "@/hooks/useToggle";
 import PinLock from "./PinLock";
 
 const LocationSection = () => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
     const { t } = useTranslation();
 
     const [map, setMap] = useState<google.maps.Map>();
 
     const [isPinLocked, togglePinLock, setPinLocked] = useToggle(false);
 
-    const lat = watch("location.lat");
-    const lng = watch("location.lng");
+    const lat = useWatch({ name: "location.lat" });
+    const lng = useWatch({ name: "location.lng" });
 
     const mainMarker: IMapMarker = {
         lat,

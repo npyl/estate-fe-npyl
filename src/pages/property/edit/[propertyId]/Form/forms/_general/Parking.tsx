@@ -4,7 +4,7 @@ import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import Panel from "src/components/Panel";
 import { IPropertyDetailsParkingPOST } from "src/types/details";
 import { useCallback, useMemo } from "react";
@@ -56,11 +56,13 @@ const useEnums = () => {
 
 const ParkingSection: React.FC = () => {
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
     const { parkingType } = useEnums();
 
     const parkings =
-        (watch("details.parkings") as IPropertyDetailsParkingPOST[]) || [];
+        (useWatch({
+            name: "details.parkings",
+        }) as IPropertyDetailsParkingPOST[]) || [];
 
     const addParking = useCallback(
         () =>
@@ -100,8 +102,14 @@ const ParkingSection: React.FC = () => {
         () => (parkings.length > 0 ? parkings.length - 1 : 0),
         [parkings.length]
     );
-    const lastParkingType = watch(`details.parkings[${lastIndex}].parkingType`);
-    const lastSpots = watch(`details.parkings[${lastIndex}].spots`);
+
+    const lastParkingType = useWatch({
+        name: `details.parkings[${lastIndex}].parkingType`,
+    });
+    const lastSpots = useWatch({
+        name: `details.parkings[${lastIndex}].spots`,
+    });
+
     const disabled = useMemo(
         () => parkings.length > 0 && (!lastParkingType || !lastSpots),
         [parkings.length, lastParkingType, lastSpots]

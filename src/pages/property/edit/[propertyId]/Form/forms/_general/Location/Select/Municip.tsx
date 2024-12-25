@@ -6,7 +6,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { FC, useCallback } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useGetMunicipalitiesQuery } from "src/services/location";
@@ -20,12 +20,12 @@ interface IMunicipSelectProps {
 }
 
 const MunicipSelect: FC<IMunicipSelectProps> = ({ onChange }) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     const { t, i18n } = useTranslation();
 
-    const municipCode = watch(name);
-    const regionCode = watch(regionName);
+    const municipCode = useWatch({ name });
+    const regionCode = useWatch({ name: regionName });
 
     const municips =
         useGetMunicipalitiesQuery(+regionCode, { skip: !regionCode }).data ||

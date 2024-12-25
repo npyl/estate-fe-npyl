@@ -6,7 +6,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { FC, useCallback } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useGetNeighbourhoodsQuery } from "src/services/location";
@@ -21,12 +21,12 @@ interface NeighbourSelectProps {
 }
 
 const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     const { t, i18n } = useTranslation();
 
-    const neighbourCode = watch(name);
-    const municipCode = watch(municipName);
+    const neighbourCode = useWatch({ name });
+    const municipCode = useWatch({ name: municipName });
 
     const neighbours =
         useGetNeighbourhoodsQuery(+municipCode, {

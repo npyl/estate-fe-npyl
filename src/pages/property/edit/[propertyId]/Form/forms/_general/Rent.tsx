@@ -1,12 +1,8 @@
 import { Grid, Box } from "@mui/material";
 import { useCallback } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-    RHFCheckbox,
-    RHFDatePicker,
-    RHFOnlyNumbers,
-} from "src/components/hook-form";
+import { RHFCheckbox, RHFDatePicker } from "src/components/hook-form";
 import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
 import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
@@ -22,11 +18,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const Rent = () => {
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
-    const rented = watch("rented");
 
-    const availDate = watch("availableAfter");
-    const startDate = watch("rentalStart");
+    const { setValue } = useFormContext();
+
+    const rented = useWatch({ name: "rented" });
+    const availDate = useWatch({ name: "availableAfter" });
+    const startDate = useWatch({ name: "rentalStart" });
 
     const handleAvailableAfterChange = useCallback(() => {
         setValue("rentalStart", "");
