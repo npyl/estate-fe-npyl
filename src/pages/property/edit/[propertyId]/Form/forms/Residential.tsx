@@ -11,7 +11,6 @@ import {
     Notes,
     Documents,
     Parking,
-    ROI,
     Balconies,
     Features,
 } from "./_general";
@@ -23,16 +22,11 @@ import {
     TechnicalFeaturesAndInterior,
     HeatingAndEnergy,
 } from "./_residential";
-
 import LocationSection from "./_general/Location";
-
-import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";
+import ROISection from "./_general/ROI";
 
 const ResidentialFormSection: React.FC = () => {
-    const { watch } = useFormContext();
-    const state = watch("state");
-
     return (
         <>
             <Grid container spacing={1}>
@@ -40,8 +34,7 @@ const ResidentialFormSection: React.FC = () => {
                     <Stack spacing={1}>
                         <BasicDetails />
 
-                        {/* <ROISection /> */}
-                        {state === "Sale" && <ROI />}
+                        <ROISection />
 
                         <Description />
                         <Construction />

@@ -6,7 +6,6 @@ import {
     DescriptionEditor,
     Blueprints,
     Images,
-    ROI,
     VideoLink,
     Documents,
     Notes,
@@ -24,21 +23,18 @@ import {
 } from "./_other";
 
 import LocationSection from "./_general/Location";
-
-import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";
+import ROISection from "./_general/ROI";
 
 const OtherFormSection: React.FC = () => {
-    const { watch } = useFormContext();
-    const state = watch("state");
-
     return (
         <>
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={6} order={"row"}>
                     <Stack spacing={1}>
                         <BasicDetails />
-                        {state === "Sale" && <ROI />}
+
+                        <ROISection />
 
                         <Description />
                         <Construction />

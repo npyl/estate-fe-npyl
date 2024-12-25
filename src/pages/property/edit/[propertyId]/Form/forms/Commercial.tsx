@@ -9,7 +9,6 @@ import {
     VideoLink,
     Notes,
     Documents,
-    ROI,
     DescriptionEditor,
 } from "./_general";
 
@@ -21,23 +20,18 @@ import {
     SuitableFor,
     TechnicalFeaturesAndInterior,
 } from "./_commercial";
-
 import LocationSection from "./_general/Location";
-
-import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";
+import ROISection from "./_general/ROI";
 
 const CommercialFormSection: React.FC<any> = () => {
-    const { watch } = useFormContext();
-    const state = watch("state");
-
     return (
         <>
             <Grid container spacing={1}>
                 <Grid item xs={12} md={6}>
                     <Stack spacing={1}>
                         <BasicDetails />
-                        {state === "Sale" && <ROI />}
+                        <ROISection />
                         <Description />
                         <HeatingAndEnergy />
                         <Areas />
