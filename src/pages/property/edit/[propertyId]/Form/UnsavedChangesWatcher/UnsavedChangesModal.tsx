@@ -12,20 +12,18 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useTranslation } from "react-i18next";
 
 interface UnsavedChangesModalProps {
-    open: boolean;
     onConfirm: () => void;
     onCancel: () => void;
 }
 
 export default function UnsavedChangesModal({
-    open,
     onConfirm,
     onCancel,
 }: UnsavedChangesModalProps) {
     const { t } = useTranslation();
 
     return (
-        <Dialog open={open} onClose={onCancel}>
+        <Dialog open onClose={onCancel}>
             <DialogTitle>
                 <Stack
                     direction="row"

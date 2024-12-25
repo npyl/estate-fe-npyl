@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import UnsavedChangesModal from "./UnsavedChangesModal";
-import { FC, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useDialog from "@/hooks/useDialog";
 
@@ -26,41 +26,64 @@ const useOnRouteChange = (cb: (url: string) => void) => {
     }, [cb]);
 };
 
-interface Props {
-    isDirty: boolean;
-}
-
-const UnsavedChangesWatcher: FC<Props> = ({ isDirty }) => {
+const UnsavedChangesWatcher = () => {
     const { t } = useTranslation();
 
     const router = useRouter();
 
     const [isOpen, openModal, closeModal] = useDialog();
+    const [nextRoute, setNextRoute] = useState("");
 
-    const confirmationMessage = t(
-        "You have unsaved changes. All changes will be lost. Are you sure?"
-    );
+    const handleConfirm = () => {
+        closeModal();
 
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-        if (isDirty) {
-            e.preventDefault();
-            return confirmationMessage;
+        if (nextRoute) {
+            router.push(nextRoute);
         }
     };
 
-    const handleRouteChangeStart = (url: string) => {
-        // if (isDirty && !isNavigating && url !== router.asPath) {
-        //     setNextRoute(url); // Store the next route
-        //     openModal();
-        //     router.events.emit("routeChangeError"); // Cancel the route change
-        //     throw "Abort route change"; // Prevent navigation
-        // }
+    const handleCancel = () => {
+        closeModal();
+        setNextRoute("");
     };
+
+    const handleBeforeUnload = useCallback(
+        (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+
+            const confirmationMessage = t(
+                "You have unsaved changes. All changes will be lost. Are you sure?"
+            );
+
+            return confirmationMessage;
+        },
+        [t]
+    );
+
+    const handleRouteChangeStart = useCallback(
+        (url: string) => {
+            if (nextRoute || url === router.asPath) return;
+            openModal();
+            setNextRoute(url);
+            router.events.emit("routeChangeError"); // Cancel the route change
+            throw "Abort route change"; // Prevent navigation
+        },
+        [nextRoute, router.asPath]
+    );
 
     useBeforeUnload(handleBeforeUnload);
     useOnRouteChange(handleRouteChangeStart);
 
-    return null;
+    return (
+        <>
+            {isOpen ? (
+                <UnsavedChangesModal
+                    onCancel={handleCancel}
+                    onConfirm={handleConfirm}
+                />
+            ) : null}
+        </>
+    );
 };
 
 export default UnsavedChangesWatcher;
