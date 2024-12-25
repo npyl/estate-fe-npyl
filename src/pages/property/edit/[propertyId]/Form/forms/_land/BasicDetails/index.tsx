@@ -9,7 +9,6 @@ import {
     RHFCheckbox,
     RHFOnlyNumbers,
     RHFSwitch,
-    RHFTextField,
     Select,
 } from "src/components/hook-form";
 import Autocomplete from "../../components/OwnerAutocomplete";
@@ -22,6 +21,8 @@ import ManagerSelect from "./ManagerSelect";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
 import { useFormContext } from "react-hook-form";
+import RHFCode from "../../_general/RHFCode";
+import RHFKeyCode from "../../_general/RHFKeyCode";
 
 const getCHECKBOXES = (t: TranslationType) => [
     { name: "debatablePrice", label: t("Debatable Price") },
@@ -116,11 +117,7 @@ const BasicForLandSection: React.FC<any> = () => {
         >
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                    <RHFTextField
-                        fullWidth
-                        name="code"
-                        label={t("Code") + " *"}
-                    />
+                    <RHFCode fullWidth name="code" label={t("Code") + " *"} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <CategorySelect />
@@ -165,7 +162,7 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <RHFTextField
+                    <RHFKeyCode
                         fullWidth
                         name="keyCode"
                         label={t("Key Code")}

@@ -8,7 +8,6 @@ import {
     RHFSwitch,
     RHFOnlyNumbers,
     Select,
-    RHFTextField,
     RHFCheckbox,
 } from "src/components/hook-form";
 import Rent from "../Rent";
@@ -18,6 +17,8 @@ import ManagerSelect from "./ManagerSelect";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
 import OwnerSelect from "./OwnerSelect";
+import RHFCode from "../RHFCode";
+import RHFKeyCode from "../RHFKeyCode";
 
 const BasicSection: React.FC<any> = () => {
     const router = useRouter();
@@ -34,11 +35,7 @@ const BasicSection: React.FC<any> = () => {
         >
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                    <RHFTextField
-                        fullWidth
-                        name="code"
-                        label={t("Code") + " *"}
-                    />
+                    <RHFCode fullWidth name="code" label={t("Code") + " *"} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <CategorySelect />
@@ -112,7 +109,7 @@ const BasicSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <RHFTextField
+                    <RHFKeyCode
                         fullWidth
                         name="keyCode"
                         label={t("Key Code")}

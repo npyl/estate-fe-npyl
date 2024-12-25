@@ -1,13 +1,14 @@
-import { useEffect, useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { properties } from "src/services/properties";
-import { dispatch } from "src/store";
 import { LocationDisplay } from "src/types/enums";
 import * as Yup from "yup";
 import dayjs from "dayjs";
-import { useDebouncedCallback } from "use-debounce";
+import {
+    codeIsUnique,
+    keyCodeIsUnique,
+} from "@/sections/Properties/validators";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -17,46 +18,6 @@ export interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
     managerId?: number | "";
     ownerId?: number | "";
 }
-// Custom validation function
-const codeIsUnique = async (
-    initialCode: string | null,
-    code?: string
-): Promise<boolean | string> => {
-    if (!code) return true;
-    if (initialCode === code) return true;
-
-    try {
-        const promise = dispatch(
-            properties.endpoints.checkCodeExists.initiate(code)
-        );
-        const { data: exists } = await promise;
-        promise.unsubscribe();
-        return exists ? "Code already exists" : true;
-    } catch (error) {
-        console.error("Error in API call:", error);
-        return "Error validating code";
-    }
-};
-// Custom validation function
-const keyCodeIsUnique = async (
-    initialKeyCode: string | null,
-    keyCode?: string
-): Promise<boolean | string> => {
-    if (!keyCode) return true;
-    if (initialKeyCode === keyCode) return true;
-
-    try {
-        const promise = dispatch(
-            properties.endpoints.checkKeyCodeExists.initiate(keyCode)
-        );
-        const { data: exists } = await promise;
-        promise.unsubscribe();
-        return exists ? "Key Code already exists" : true;
-    } catch (error) {
-        console.error("Error in API call:", error);
-        return "Error validating key code";
-    }
-};
 
 const getLoginSchema = (
     initialCode: string | null,
@@ -378,40 +339,6 @@ const usePropertyForm = (property?: IProperties) => {
         resolver: yupResolver(LoginSchema),
         values,
     });
-
-    // const debouncedCodeValidation = useDebouncedCallback(async (value) => {
-    //     const result = await codeIsUnique(property?.code || null, value);
-    //     if (result !== true) {
-    //         methods.setError("code", {
-    //             type: "manual",
-    //             message: result as string,
-    //         });
-    //     } else {
-    //         methods.clearErrors("code");
-    //     }
-    // }, 250);
-
-    // const debouncedKeyCodeValidation = useDebouncedCallback(async (value) => {
-    //     const result = await keyCodeIsUnique(property?.keyCode || null, value);
-    //     if (result !== true) {
-    //         methods.setError("keyCode", {
-    //             type: "manual",
-    //             message: result as string,
-    //         });
-    //     } else {
-    //         methods.clearErrors("keyCode");
-    //     }
-    // }, 250);
-
-    // // Watch and debounce code and keyCode changes
-    // useEffect(() => {
-    //     const subscription = methods.watch(({ code, keyCode }) => {
-    //         if (code !== undefined) debouncedCodeValidation(code);
-    //         if (keyCode !== undefined) debouncedKeyCodeValidation(keyCode);
-    //     });
-
-    //     return () => subscription.unsubscribe();
-    // }, [debouncedCodeValidation, debouncedKeyCodeValidation]);
 
     return { methods };
 };
