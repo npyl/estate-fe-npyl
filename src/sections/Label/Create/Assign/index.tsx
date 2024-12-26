@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { ILabelForm } from "../types";
 import { useState } from "react";
@@ -10,9 +10,9 @@ const RHFCustomerAutocomplete = dynamic(() => import("./Customer"));
 const Assign = () => {
     const { t } = useTranslation();
 
-    const { watch, setValue } = useFormContext<ILabelForm>();
+    const { setValue } = useFormContext<ILabelForm>();
 
-    const resource = watch("resource");
+    const resource = useWatch({ name: "resource" });
 
     const [isChecked, setChecked] = useState(false);
     const toggle = () => {

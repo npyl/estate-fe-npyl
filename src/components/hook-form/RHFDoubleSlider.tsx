@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { Slider, SliderProps } from "@mui/material";
 import { useCallback } from "react";
 
@@ -16,10 +16,10 @@ export default function RHFSlider({
     isForPrice = false,
     ...other
 }: Props) {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
-    const min = watch(minName);
-    const max = watch(maxName);
+    const min = useWatch({ name: minName });
+    const max = useWatch({ name: maxName });
 
     const formatValue = (value: number) => {
         return isForPrice ? value.toLocaleString("de-DE") : value.toString();

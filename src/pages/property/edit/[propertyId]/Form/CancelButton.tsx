@@ -1,16 +1,22 @@
 import { Button } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useTranslation } from "react-i18next";
-import { FC } from "react";
+import Link from "@/components/Link";
+import { useRouter } from "next/router";
 
-interface CancelButtonProps {
-    onClick: VoidFunction;
-}
-
-const CancelButton: FC<CancelButtonProps> = ({ onClick }) => {
+const CancelButton = () => {
     const { t } = useTranslation();
+
+    const router = useRouter();
+    const { propertyId } = router.query;
+
     return (
-        <Button variant="outlined" startIcon={<CancelIcon />} onClick={onClick}>
+        <Button
+            LinkComponent={Link}
+            variant="outlined"
+            startIcon={<CancelIcon />}
+            href={`/property/${propertyId}`}
+        >
             {t("Cancel")}
         </Button>
     );

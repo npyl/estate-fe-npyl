@@ -3,7 +3,7 @@ import { Suspense, useCallback, useState, lazy } from "react";
 import { FC } from "react";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { IDemandPOST } from "src/types/demand";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
@@ -92,9 +92,9 @@ interface Props {
 const DemandSection: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
-    const demands = watch(demandsName) as IDemandPOST[];
+    const demands = useWatch({ name: demandsName }) as IDemandPOST[];
 
     const [index, setIndex] = useState(0);
 

@@ -9,7 +9,7 @@ import {
     useMemo,
     useState,
 } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import MunicipSelectDemands from "./MunicipSelectDemands";
 import NeighbourSelectDemands from "./NeighbourSelectDemands";
@@ -56,10 +56,10 @@ const AreaOfPreference: FC<Props> = ({
         [onGetDemandName, onGetDemandFilterName]
     );
 
-    const regions = (watch(regionsName) as string[]) || [];
-    const cities = (watch(citiesName) as string[]) || [];
-    const complexes = (watch(complexesName) as string[]) || [];
-    const shapes = (watch(shapesName) as string[]) || [];
+    const regions = (useWatch({ name: regionsName }) as string[]) || [];
+    const cities = (useWatch({ name: citiesName }) as string[]) || [];
+    const complexes = (useWatch({ name: complexesName }) as string[]) || [];
+    const shapes = (useWatch({ name: shapesName }) as string[]) || [];
 
     // Initialize state from watched values to hold the actual valies of Regions , Municipalities and Neighbourhoods
     const [selectedRegions, setSelectedRegions] = useState<string[]>(regions);

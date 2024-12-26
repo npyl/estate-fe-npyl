@@ -29,7 +29,7 @@ const ExportButton = () => {
             type: "application/pdf",
         });
 
-        await downloadBlob(blob, `${title}.pdf`);
+        downloadBlob(blob, `${title}.pdf`);
 
         setVisible(false);
     };

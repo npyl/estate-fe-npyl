@@ -1,7 +1,7 @@
-import { Button, Drawer, Grid, IconButton, Typography } from "@mui/material";
+import { Button, Drawer, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { RHFCheckbox } from "src/components/hook-form";
-import { useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import useDialog from "@/hooks/useDialog";
 import DemandSection from "./Demand";
 import EditIcon from "@mui/icons-material/Edit";
@@ -25,10 +25,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const CustomerTypeSelect = () => {
     const { t } = useTranslation();
 
-    const { watch } = useFormContext();
-
-    const leaser = watch("leaser");
-    const buyer = watch("buyer");
+    const leaser = useWatch({ name: "leaser" });
+    const buyer = useWatch({ name: "buyer" });
 
     // WARN: show DemandSection only if leaser or buyer
     const [isDrawerOpen, openDrawer, closeDrawer] = useDialog();

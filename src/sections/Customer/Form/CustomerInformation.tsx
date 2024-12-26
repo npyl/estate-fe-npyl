@@ -27,7 +27,7 @@ import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
 import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
-import { useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
 import Select from "src/components/hook-form/Select";
 
@@ -146,12 +146,11 @@ const getFIELDS = (
 const CustomerInformation: React.FC<any> = () => {
     const router = useRouter();
     const { t } = useTranslation();
-    const { watch } = useFormContext();
 
     const { customerId } = router.query;
     const enums = useGlobals();
     const managers = useAllUsersQuery().data || [];
-    const leadSource = watch("leadSource");
+    const leadSource = useWatch({ name: "leadSource" });
 
     const nationalitiesEnum = enums?.customer?.nationality || [];
     const leadSourceEnum = enums?.customer?.leadSource || [];

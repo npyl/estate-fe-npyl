@@ -2,13 +2,13 @@ import NoteCreate from "@/components/Note/Create";
 import { useAuth } from "@/hooks/use-auth";
 import { INote } from "@/types/note";
 import { useCallback, useMemo } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 const RHFNoteSection = () => {
     const { user } = useAuth();
     const { watch, setValue } = useFormContext();
 
-    const contents = (watch("notes") || []) as string[];
+    const contents = (useWatch({ name: "notes" }) || []) as string[];
 
     const notes = useMemo(
         () =>

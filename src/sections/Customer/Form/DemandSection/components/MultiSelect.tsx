@@ -9,7 +9,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useCallback } from "react";
 import { KeyValue } from "src/types/KeyValue";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { RHFSelect } from "src/components/hook-form";
 
 // InputLabel that works well with a big label content
@@ -29,9 +29,9 @@ interface MultiSelectProps {
 }
 
 const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
-    const values = (watch(name) as string[]) || [];
+    const values = (useWatch({ name }) as string[]) || [];
 
     const renderValue = useCallback(
         (selected: string[]) =>

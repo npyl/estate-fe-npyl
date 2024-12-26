@@ -1,12 +1,11 @@
 import { useGetPropertyByIdQuery } from "@/services/properties";
 import Skeleton from "@mui/material/Skeleton";
-import { useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 
 const useSelectedProperty = () => {
-    const { watch } = useFormContext();
-    const propertyId = watch("propertyId");
+    const propertyId = useWatch({ name: "propertyId" });
 
     const { data: property, isLoading } = useGetPropertyByIdQuery(
         +propertyId!,

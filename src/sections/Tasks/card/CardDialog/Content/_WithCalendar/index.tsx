@@ -3,7 +3,7 @@
  */
 
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
@@ -46,9 +46,7 @@ interface WithCalendarProps {
 const WithCalendar: FC<WithCalendarProps> = ({ edit }) => {
     const { t } = useTranslation();
 
-    const { watch } = useFormContext();
-
-    const isOpen = watch("withCalendar");
+    const isOpen = useWatch({ name: "withCalendar" });
 
     return (
         <Stack position="relative" spacing={1}>

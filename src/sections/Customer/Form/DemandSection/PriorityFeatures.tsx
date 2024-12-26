@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 import { Residential, Commercial, Land, Other } from "./features";
 
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 interface PriorityFeaturesProps {
     index: number;
@@ -11,14 +11,14 @@ interface PriorityFeaturesProps {
 }
 
 const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     const getName = useCallback(
         (key: string) => `demands[${index}].priorityFeatures.${key}`,
         [index]
     );
 
-    const features = watch(`demands[${index}].priorityFeatures`);
+    const features = useWatch({ name: `demands[${index}].priorityFeatures` });
 
     const handleChange = useCallback(
         (key: string, checked: boolean) => setValue(getName(key), checked),

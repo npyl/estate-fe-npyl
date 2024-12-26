@@ -8,7 +8,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useCallback } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
@@ -22,10 +22,10 @@ export const LabelSelect: React.FC<LabelSelectProps> = ({
     onDemandFiltersName,
 }) => {
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     const labelsName = onDemandFiltersName("labels");
-    const labels = (watch(labelsName) as number[]) || [];
+    const labels = (useWatch({ name: labelsName }) as number[]) || [];
 
     const { data } = useGetLabelsQuery();
     const labelOptions = data?.propertyLabels || [];

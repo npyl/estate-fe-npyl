@@ -7,6 +7,7 @@ import SubmitButton from "./SubmitButton";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import CancelButton from "./CancelButton";
+import { useEditPropertyMutation } from "@/services/properties";
 const ErrorWatcher = dynamic(() => import("./ErrorWatcher"));
 const UnsavedChangesWatcher = dynamic(() => import("./UnsavedChangesWatcher"));
 // ...
@@ -17,13 +18,13 @@ const Other = dynamic(() => import("./forms/Other"));
 
 interface IFormProps {
     property?: IProperties;
-    onSave: (body: IPropertiesPOST) => void;
-    onCancel: () => void;
 }
 
-export default function Form({ property, onSave, onCancel }: IFormProps) {
+export default function Form({ property }: IFormProps) {
     const { methods } = usePropertyForm(property);
     const isDirty = methods.formState.isDirty;
+
+    const [edit] = useEditPropertyMutation();
 
     const haveError = useMemo(
         () => Object.keys(methods.formState.errors).length > 0,
@@ -32,9 +33,14 @@ export default function Form({ property, onSave, onCancel }: IFormProps) {
 
     const handleSubmit = (data: IPropertyYup) => {
         try {
-            onSave({
+            const body = {
                 ...(data as IPropertiesPOST),
                 ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
+            };
+
+            edit({
+                body,
+                id: property?.id!,
             });
         } catch (error) {
             console.error(error);
@@ -70,7 +76,7 @@ export default function Form({ property, onSave, onCancel }: IFormProps) {
                             bottom: 1,
                         }}
                     >
-                        <CancelButton onClick={onCancel} />
+                        <CancelButton />
                         <ClearButton />
                         <SubmitButton />
                     </Stack>
