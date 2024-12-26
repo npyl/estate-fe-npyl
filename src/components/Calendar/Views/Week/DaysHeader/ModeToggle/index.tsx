@@ -11,7 +11,7 @@ const ModeToggle = () => {
     const handleToggle = useCallback(() => {
         if (mode === "monToSun") set("sunToSat");
         if (mode === "sunToSat") set("monToSun");
-    }, []);
+    }, [mode]);
 
     return (
         <Stack width="50px" justifyContent="center" alignItems="center">
