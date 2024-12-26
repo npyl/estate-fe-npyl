@@ -17,7 +17,7 @@ const NotFound: NextPage = () => {
     return (
         <>
             <Head>
-                <title>Error: Not Found | Material Kit Pro</title>
+                <title>Error: Not Found</title>
             </Head>
             <Box
                 component="main"

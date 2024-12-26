@@ -1,23 +1,21 @@
-import {
-    Box,
-    Button,
-    Container,
-    Link,
-    Typography,
-    useMediaQuery,
-} from "@mui/material";
+import Link from "@/components/Link";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useTranslation } from "react-i18next";
+
+const ERR_ADMIN_ONLY = "ERR_ADMIN_ONLY";
+const ERR_ADMIN_ONLY_0 = "ERR_ADMIN_ONLY_0";
 
 const AuthorizationRequired: NextPage = () => {
+    const { t } = useTranslation();
     const theme = useTheme();
-    const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
     return (
         <>
             <Head>
-                <title>Error: Authorization Required | Material Kit Pro</title>
+                <title>{t(ERR_ADMIN_ONLY)}</title>
             </Head>
             <Box
                 component="main"
@@ -26,56 +24,39 @@ const AuthorizationRequired: NextPage = () => {
                     backgroundColor: "background.paper",
                     display: "flex",
                     flexGrow: 1,
-                    py: "80px",
                 }}
             >
                 <Container maxWidth="lg">
                     <Typography
                         align="center"
-                        variant={mobileDevice ? "h4" : "h1"}
-                    >
-                        401: Authorization required
-                    </Typography>
-                    <Typography
-                        align="center"
                         color="textSecondary"
-                        sx={{ mt: 0.5 }}
-                        variant="subtitle2"
+                        variant="h4"
+                        mt={0.5}
                     >
-                        You either tried some shady route or you came here by
-                        mistake. Whichever it is, try using the navigation.
+                        {t(ERR_ADMIN_ONLY_0)}
                     </Typography>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mt: 6,
-                        }}
-                    >
+
+                    <Box mt={6} display="flex" justifyContent="center">
                         <Box
                             alt="Under development"
                             component="img"
                             src={`/static/error/error401_${theme.palette.mode}.svg`}
-                            sx={{
-                                height: "auto",
-                                maxWidth: "100%",
-                                width: 400,
-                            }}
+                            width={400}
+                            height="auto"
+                            maxWidth="100%"
                         />
                     </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mt: 6,
-                        }}
-                    >
-                        <Link href="/">
-                            <Button variant="outlined">
-                                Back to Dashboard
-                            </Button>
-                        </Link>
-                    </Box>
+
+                    <Stack mt={6} justifyContent="center" direction="row">
+                        <Button
+                            LinkComponent={Link}
+                            href="/"
+                            variant="outlined"
+                            sx={{ width: "max-content" }}
+                        >
+                            {t("Back")}
+                        </Button>
+                    </Stack>
                 </Container>
             </Box>
         </>
