@@ -87,35 +87,8 @@ const ClearButton: FC<ClearButtonProps> = ({ path }) => {
     const { removeTab } = useTabsContext();
 
     const handleRemove = useCallback((e: MouseEvent) => {
-        e.stopPropagation();
         e.preventDefault();
-
         removeTab(path);
-
-        // const tabsAfterRemove = removeTabNoChange(id);
-
-        // const currentTabIndex = appTabs.findIndex(
-        //     ({ id: _id }) => _id === id
-        // );
-        // const isCurrentLast = appTabs[appTabs.length - 1].id === id;
-        // const hasMoreAfterRemove = tabsAfterRemove.length > 0;
-
-        // // Determine the base path based on the current path
-        // const basePath = currentPath.startsWith("/property")
-        //     ? "/property"
-        //     : currentPath.startsWith("/customer")
-        //     ? "/customers"
-        //     : "/customers";
-
-        // const newUrl = hasMoreAfterRemove
-        //     ? isCurrentLast
-        //         ? tabsAfterRemove[tabsAfterRemove.length - 1].path
-        //         : tabsAfterRemove[currentTabIndex].path
-        //     : basePath;
-
-        // removeTab(id);
-
-        // router.push(newUrl);
     }, []);
 
     return <ClearIcon onClick={handleRemove} />;
