@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { forwardRef } from "react";
 const FabMenu = dynamic(() => import("./Mobile"));
 import DesktopBar from "./Desktop";
-// const DesktopBar = dynamic(() => import("./Desktop"), { ssr: false });
 
 const Subbar = forwardRef<SubbarRef, object>(({}, ref) => {
     const belowLg = useResponsive("down", "lg");

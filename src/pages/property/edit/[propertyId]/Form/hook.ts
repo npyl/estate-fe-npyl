@@ -240,15 +240,19 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
             goldenVisa: notNot(property?.details?.goldenVisa),
             ...property?.details,
             balconies:
-                property?.details?.balconies.map(({ area, side }) => ({
+                property?.details?.balconies.map(({ id, area, side }) => ({
+                    id,
                     area,
                     side: side?.key,
                 })) || [],
             parkings:
-                property?.details?.parkings?.map(({ spots, parkingType }) => ({
-                    spots,
-                    parkingType: parkingType?.key,
-                })) || [],
+                property?.details?.parkings?.map(
+                    ({ id, spots, parkingType }) => ({
+                        id,
+                        spots,
+                        parkingType: parkingType?.key,
+                    })
+                ) || [],
             orientation: getEnumKey(property?.details?.orientation?.key),
             accessibility: getEnumKey(property?.details?.accessibility?.key),
             landUse: getEnumKey(property?.details?.landUse?.key),
