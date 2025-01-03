@@ -31,14 +31,14 @@ const Content: FC<ContentProps> = ({
     return (
         <>
             <Stack direction={"row"} flexWrap={"wrap"} gap={1} mt={1}>
-                {existingLabels.map((label, index) => {
+                {existingLabels.map((label) => {
                     const isAssigned = assignedLabels.some(
                         (assignedLabel) => assignedLabel.name === label.name
                     );
 
                     return (
                         <Label
-                            key={index}
+                            key={label.id}
                             color={label.color}
                             name={label.name}
                             onClick={

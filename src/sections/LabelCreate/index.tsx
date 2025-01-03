@@ -53,7 +53,6 @@ const LabelCreate = ({
     }, [variant]);
 
     const handleRemoveLabel = (labelId: number) =>
-        labelId &&
         deleteLabel({
             resource: variant,
             resourceId,
@@ -61,7 +60,6 @@ const LabelCreate = ({
         }).then(invalidateTags);
 
     const handleLabelClick = (body: ILabelPOST) =>
-        body.id &&
         assignLabel({
             resource: variant,
             resourceId,
