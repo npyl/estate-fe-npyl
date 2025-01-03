@@ -18,7 +18,7 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
 }) => {
     const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
     return (
-        <div style={{ ...CellStyle, ...style }} {...props}>
+        <div className="PPCell" style={{ ...CellStyle, ...style }} {...props}>
             {/* Events */}
             {EVENTS}
         </div>
