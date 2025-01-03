@@ -9,10 +9,18 @@ import { SpaceBetween } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import AddButton from "./AddButton";
+import { useFormContext, useWatch } from "react-hook-form";
 
-const getLabel = (l: ILabel) => (
-    <Label key={l.id} color={l.color} name={l.name} width="min-content" />
-);
+const getLabel = (onRemove: (id: number) => void) => (l: ILabel) =>
+    (
+        <Label
+            key={l.id}
+            color={l.color}
+            name={l.name}
+            width="min-content"
+            onClose={() => onRemove(l.id)}
+        />
+    );
 
 interface CreateAssignProps {
     ids?: number[];
@@ -22,6 +30,13 @@ const CreateAssign: FC<CreateAssignProps> = ({ ids }) => {
     const { t } = useTranslation();
 
     const { data, isLoading } = useGetLabelsQuery();
+
+    const { setValue } = useFormContext();
+    const old = (useWatch({ name: "labels" }) as number[]) || [];
+    const handleRemove = (id: number) => {
+        const filtered = old.filter((oldId) => oldId !== id);
+        setValue("labels", filtered, { shouldDirty: true });
+    };
 
     const labels = useMemo(
         () => data?.ticketLabels?.filter((l) => ids?.includes(l.id)) || [],
@@ -44,7 +59,7 @@ const CreateAssign: FC<CreateAssignProps> = ({ ids }) => {
                 <AddButton />
             </SpaceBetween>
             <Stack direction="row" spacing={1} flexWrap="wrap" width={1}>
-                {labels?.map(getLabel)}
+                {labels?.map(getLabel(handleRemove))}
             </Stack>
         </Stack>
     );

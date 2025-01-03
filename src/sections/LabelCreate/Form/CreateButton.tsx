@@ -29,7 +29,7 @@ const CreateButton: FC<CreateButtonProps> = ({
     const isDirty = formState.isDirty;
 
     const isAssign = Boolean(resourceId);
-    const title = edit ? t("Create & Assign") : t("Create");
+    const title = edit ? t("Update") : t("Create");
 
     const [createLabel] = useCreateLabelForResourceMutation();
     const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
