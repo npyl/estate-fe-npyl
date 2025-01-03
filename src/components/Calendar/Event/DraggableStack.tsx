@@ -1,51 +1,40 @@
-import { forwardRef, MouseEvent, useCallback, useRef } from "react";
+import { forwardRef, MouseEvent, useRef } from "react";
 import { Stack, StackProps } from "@mui/material";
-
-interface Position {
-    x: number;
-    y: number;
-}
 
 interface DragState {
     isDragging: boolean;
-    startPosition: Position;
-    startElementPosition: Position;
+    startX: number;
+    startY: number;
+    elementX: number;
+    elementY: number;
 }
-
-const boundaryPadding = 0;
-const gridSnap = 1;
-
-const snapToGrid = (value: number): number => {
-    return Math.round(value / gridSnap) * gridSnap;
-};
 
 const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
     ({ sx, children, ...props }, ref) => {
         const elementRef = useRef<HTMLDivElement>();
-        const positionRef = useRef<Position>({ x: 0, y: 0 });
 
         const dragState = useRef<DragState>({
             isDragging: false,
-            startPosition: { x: 0, y: 0 },
-            startElementPosition: { x: 0, y: 0 },
+            startX: 0,
+            startY: 0,
+            elementX: 0,
+            elementY: 0,
         });
 
-        const updateElementPosition = (x: number, y: number) => {
+        const updatePosition = (x: number, y: number) => {
             if (!elementRef.current) return;
             elementRef.current.style.transform = `translate(${x}px, ${y}px)`;
-            positionRef.current = { x, y };
+            dragState.current.elementX = x;
+            dragState.current.elementY = y;
         };
 
         const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
 
-            const { x, y } = positionRef.current;
-
-            dragState.current = {
-                isDragging: true,
-                startPosition: { x: e.clientX, y: e.clientY },
-                startElementPosition: { x, y },
-            };
+            const state = dragState.current;
+            state.isDragging = true;
+            state.startX = e.clientX;
+            state.startY = e.clientY;
 
             if (elementRef.current) {
                 elementRef.current.style.transition = "none";
@@ -53,73 +42,39 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             }
         };
 
-        const handleMouseMove = useCallback(
-            (e: MouseEvent | globalThis.MouseEvent) => {
-                if (!dragState.current.isDragging || !elementRef.current)
-                    return;
+        const handleMouseMove = (e: MouseEvent) => {
+            e.stopPropagation();
 
-                const deltaX = e.clientX - dragState.current.startPosition.x;
-                const deltaY = e.clientY - dragState.current.startPosition.y;
+            const state = dragState.current;
+            if (!state.isDragging || !elementRef.current) return;
 
-                // Get screen boundaries
-                const screenWidth = window.innerWidth;
-                const screenHeight = window.innerHeight;
-                const elementRect = elementRef.current.getBoundingClientRect();
+            const deltaX = e.clientX - state.startX;
+            const deltaY = e.clientY - state.startY;
 
-                // Calculate new positions with boundary checks
-                let newX = dragState.current.startElementPosition.x + deltaX;
-                let newY = dragState.current.startElementPosition.y + deltaY;
+            updatePosition(state.elementX + deltaX, state.elementY + deltaY);
 
-                // Apply grid snapping if enabled
-                if (gridSnap > 1) {
-                    newX = snapToGrid(newX);
-                    newY = snapToGrid(newY);
-                }
+            state.startX = e.clientX;
+            state.startY = e.clientY;
+        };
 
-                // Apply boundary constraints if needed
-                if (boundaryPadding > 0) {
-                    newX = Math.max(
-                        boundaryPadding,
-                        Math.min(
-                            newX,
-                            screenWidth - elementRect.width - boundaryPadding
-                        )
-                    );
-                    newY = Math.max(
-                        boundaryPadding,
-                        Math.min(
-                            newY,
-                            screenHeight - elementRect.height - boundaryPadding
-                        )
-                    );
-                }
+        const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
 
-                updateElementPosition(newX, newY);
-            },
-            []
-        );
-
-        const handleMouseUp = useCallback(() => {
             if (!dragState.current.isDragging) return;
-
             dragState.current.isDragging = false;
 
             if (elementRef.current) {
                 elementRef.current.style.transition = "transform 0.2s ease";
                 elementRef.current.style.cursor = "grab";
             }
-        }, []);
+        };
 
         return (
             <Stack
                 ref={(node) => {
-                    if (typeof ref === "function") {
-                        ref(node);
-                    } else if (ref) {
-                        ref.current = node;
-                    }
-
                     if (node) elementRef.current = node;
+                    if (typeof ref === "function") ref(node);
+                    else if (ref) ref.current = node;
                 }}
                 sx={{
                     position: "absolute",
