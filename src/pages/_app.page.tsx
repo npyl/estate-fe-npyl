@@ -21,8 +21,6 @@ import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
-import { TabsProvider } from "src/contexts/tabs";
-
 // DatePicker
 import DatePickerProvider from "@/providers/DatePicker";
 
@@ -74,29 +72,27 @@ const App: FC<EnhancedAppProps> = (props) => {
                                     })}
                                 >
                                     <CssBaseline />
-                                    <TabsProvider>
-                                        <Toaster />
+                                    <Toaster />
 
-                                        <AuthConsumer>
-                                            {(auth) =>
-                                                !auth.isInitialized ? (
-                                                    <SplashScreen />
-                                                ) : (
-                                                    <>
-                                                        <NotificationsListener />
+                                    <AuthConsumer>
+                                        {(auth) =>
+                                            !auth.isInitialized ? (
+                                                <SplashScreen />
+                                            ) : (
+                                                <>
+                                                    <NotificationsListener />
 
-                                                        <DatePickerProvider>
-                                                            {getLayout(
-                                                                <Component
-                                                                    {...pageProps}
-                                                                />
-                                                            )}
-                                                        </DatePickerProvider>
-                                                    </>
-                                                )
-                                            }
-                                        </AuthConsumer>
-                                    </TabsProvider>
+                                                    <DatePickerProvider>
+                                                        {getLayout(
+                                                            <Component
+                                                                {...pageProps}
+                                                            />
+                                                        )}
+                                                    </DatePickerProvider>
+                                                </>
+                                            )
+                                        }
+                                    </AuthConsumer>
                                 </ThemeProvider>
                             )}
                         </SettingsConsumer>

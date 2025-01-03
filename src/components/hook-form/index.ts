@@ -1,7 +1,5 @@
 export * from "./RHFCheckbox";
 
-export { default } from "./FormProvider";
-
 export { default as RHFRadioGroup } from "./RHFRadioGroup";
 export { default as RHFSelect } from "./RHFSelect";
 export { default as RHFSlider } from "./RHFSlider";

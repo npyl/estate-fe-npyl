@@ -13,7 +13,7 @@ import * as React from "react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSecurityContext } from "src/contexts/security";
-import { IActions, IRoles } from "src/interfaces/roles";
+import { IActions, IRoles } from "@/types/roles";
 import {
     ActionsHeadCells,
     ActionsHeadCellsLabels,

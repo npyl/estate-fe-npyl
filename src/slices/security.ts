@@ -1,7 +1,7 @@
 // slice for property's notes
 
 import { createSlice } from "@reduxjs/toolkit";
-import { IRoles } from "src/interfaces/roles";
+import { IRoles } from "@/types/roles";
 import { initRoles } from "@/constants/security";
 import type { RootState } from "src/store";
 

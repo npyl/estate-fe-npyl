@@ -1,0 +1,136 @@
+import { Grid, Stack } from "@mui/material";
+import * as React from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import LabelCreate from "@/sections/LabelCreate";
+import Panel from "@/components/Panel";
+import {
+    RHFSwitch,
+    RHFOnlyNumbers,
+    Select,
+    RHFCheckbox,
+} from "src/components/hook-form";
+import Rent from "../Rent";
+import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
+import { useGetPropertyByIdQuery } from "@/services/properties";
+import ManagerSelect from "./ManagerSelect";
+import useEnums from "./useEnums";
+import CategorySelect from "./CategorySelect";
+import OwnerSelect from "./OwnerSelect";
+import RHFCode from "../RHFCode";
+import RHFKeyCode from "../RHFKeyCode";
+
+const BasicSection: React.FC<any> = () => {
+    const router = useRouter();
+    const { t } = useTranslation();
+    const { stateEnum } = useEnums();
+
+    const { propertyId } = router.query;
+    const { data } = useGetPropertyByIdQuery(+propertyId!);
+
+    return (
+        <Panel
+            label={t("Basic Details").toString()}
+            endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />}
+        >
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <RHFCode fullWidth name="code" label={t("Code") + " *"} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <CategorySelect />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <ManagerSelect />
+                </Grid>
+                {/* OWNER */}
+                <OwnerSelect />
+                <Grid item xs={12} sm={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="area"
+                        label={t("Living Space")}
+                        adornment="m²"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <Select
+                        name="state"
+                        label={t("State") + " *"}
+                        options={stateEnum}
+                    />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                    <Stack direction="row" gap={3}>
+                        <RHFOnlyNumbersForPrice
+                            fullWidth
+                            name="price"
+                            label={t("Price")}
+                            adornment="€"
+                            initialValue={data?.price}
+                        />
+
+                        <RHFCheckbox
+                            name="hidePrice"
+                            sx={{ textWrap: "nowrap" }}
+                            label={t("Hide Price")}
+                        />
+                    </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="plotArea"
+                        label={t("Plot Size")}
+                        adornment="m²"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <LabelCreate variant="property" resourceId={+propertyId!} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <RHFOnlyNumbersForPrice
+                        name="averageUtils"
+                        label={t("Average Utils")}
+                        adornment="€/Month"
+                        initialValue={data?.averageUtils}
+                    />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                    <RHFOnlyNumbersForPrice
+                        fullWidth
+                        name="estimatedRentPrice"
+                        label={t("Estimated Rent Price")}
+                        adornment="€"
+                        initialValue={data?.estimatedRentPrice}
+                    />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                    <RHFKeyCode
+                        fullWidth
+                        name="keyCode"
+                        label={t("Key Code")}
+                    />
+                </Grid>
+            </Grid>
+
+            <Rent />
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <RHFCheckbox
+                        name="debatablePrice"
+                        label={t("Debatable Price")}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <RHFCheckbox name="auction" label={t("Auction")} />
+                </Grid>
+            </Grid>
+        </Panel>
+    );
+};
+
+export default BasicSection;

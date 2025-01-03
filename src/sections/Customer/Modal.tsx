@@ -1,6 +1,6 @@
 import { Box, IconButton, Modal } from "@mui/material";
 import { ClearIcon } from "@mui/x-date-pickers";
-import CustomerForm from "@/pages/customer/components/Form";
+import CustomerForm from "@/sections/Customer/Form";
 import { useCallback } from "react";
 import { ICustomer, ICustomerPOST } from "@/types/customer";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
