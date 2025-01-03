@@ -7,10 +7,15 @@ interface DragState {
     startY: number;
     elementX: number;
     elementY: number;
+    totalMovement: number;
 }
 
+const stopPropagation = (e: MouseEvent) => e.stopPropagation();
+
+const DRAG_THRESHOLD = 5; // pixels
+
 const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
-    ({ sx, children, ...props }, ref) => {
+    ({ sx, children, onClick, onDragEnd, ...props }, ref) => {
         const elementRef = useRef<HTMLDivElement>();
 
         const dragState = useRef<DragState>({
@@ -19,6 +24,7 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             startY: 0,
             elementX: 0,
             elementY: 0,
+            totalMovement: 0,
         });
 
         const updatePosition = (x: number, y: number) => {
@@ -35,6 +41,7 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             state.isDragging = true;
             state.startX = e.clientX;
             state.startY = e.clientY;
+            state.totalMovement = 0;
 
             if (elementRef.current) {
                 elementRef.current.style.transition = "none";
@@ -51,6 +58,9 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             const deltaX = e.clientX - state.startX;
             const deltaY = e.clientY - state.startY;
 
+            // Calculate total movement
+            state.totalMovement += Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
             updatePosition(state.elementX + deltaX, state.elementY + deltaY);
 
             state.startX = e.clientX;
@@ -61,11 +71,18 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             e.stopPropagation();
 
             if (!dragState.current.isDragging) return;
+
             dragState.current.isDragging = false;
 
             if (elementRef.current) {
                 elementRef.current.style.transition = "transform 0.2s ease";
                 elementRef.current.style.cursor = "grab";
+            }
+
+            const wasDragged = dragState.current.totalMovement > DRAG_THRESHOLD;
+
+            if (!wasDragged) {
+                onClick?.(e);
             }
         };
 
@@ -85,6 +102,9 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
+                // ...
+                onClick={stopPropagation} // INFO: ignore the actual onClick event!
+                // ...
                 {...props}
             >
                 {children}
