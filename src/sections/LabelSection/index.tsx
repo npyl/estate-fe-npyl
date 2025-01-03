@@ -4,10 +4,9 @@ import Label from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import useDialog from "@/hooks/useDialog";
-import useAssignedLabels from "../LabelCreate/useAssignedLabels";
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 const AddLabelDialog = dynamic(() => import("./Dialog"));
 
 interface LabelSectionProps extends StackProps {
@@ -39,12 +38,17 @@ const LabelSection: FC<LabelSectionProps> = ({
 }) => {
     const { t } = useTranslation();
 
+    console.log("INTERNAL: ", assignedLabels);
+
     const [isOpen, openDialog, closeDialog] = useDialog();
 
-    const handleOpenDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        openDialog();
-    };
+    const handleOpenDialog = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            openDialog();
+        },
+        []
+    );
 
     return (
         <Stack
@@ -67,7 +71,7 @@ const LabelSection: FC<LabelSectionProps> = ({
             </SpaceBetween>
 
             <Stack direction="row" flexWrap="wrap" gap={1} pt={2} px={0.5}>
-                {assignedLabels?.map(({ id, color, name }) => (
+                {assignedLabels.map(({ id, color, name }) => (
                     <Label
                         key={id}
                         color={color}

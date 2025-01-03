@@ -10,6 +10,7 @@ import {
 } from "./types";
 import { labels } from ".";
 import { tasks } from "@/services/tasks";
+import uuidv4 from "@/utils/uuidv4";
 
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
@@ -28,12 +29,16 @@ type TAssignCb = OptimisticCb<
 
 type TDeleteCb = OptimisticCb<DeleteLabelProps, void>;
 
+const getRandomId = () => Math.random() * 2000;
+
 const optimisticCreateAssign: TCreateCb = async (
     { resource, resourceId, body },
     { dispatch, queryFulfilled }
 ) => {
     let assignRes;
     const isAssign = Boolean(resourceId);
+
+    const newId = getRandomId();
 
     //
     //  Create
@@ -43,25 +48,25 @@ const optimisticCreateAssign: TCreateCb = async (
             if (resource === "property") {
                 draft.propertyLabels.push({
                     ...body,
-                    id: draft.propertyLabels.length,
+                    id: newId,
                 });
             }
             if (resource === "customer") {
                 draft.customerLabels.push({
                     ...body,
-                    id: draft.propertyLabels.length,
+                    id: newId,
                 });
             }
             if (resource === "document") {
                 draft.documentLabels.push({
                     ...body,
-                    id: draft.propertyLabels.length,
+                    id: newId,
                 });
             }
             if (resource === "ticket") {
                 draft.ticketLabels.push({
                     ...body,
-                    id: draft.propertyLabels.length,
+                    id: newId,
                 });
             }
         })
@@ -79,7 +84,7 @@ const optimisticCreateAssign: TCreateCb = async (
                     (draft) => {
                         draft.push({
                             ...body,
-                            id: draft?.length ?? 1,
+                            id: newId,
                         });
                     }
                 )
@@ -92,7 +97,7 @@ const optimisticCreateAssign: TCreateCb = async (
                     (draft) => {
                         draft.push({
                             ...body,
-                            id: draft?.length ?? 1,
+                            id: newId,
                         });
                     }
                 )
@@ -110,7 +115,7 @@ const optimisticCreateAssign: TCreateCb = async (
                         if (idx !== -1) {
                             draft[idx].labels?.push({
                                 ...body,
-                                id: draft[idx].labels?.length ?? 1,
+                                id: newId,
                             });
                         }
                     }
@@ -124,7 +129,7 @@ const optimisticCreateAssign: TCreateCb = async (
                     (draft) => {
                         draft.push({
                             ...body,
-                            id: draft.length ?? 1,
+                            id: newId,
                         });
                     }
                 )
@@ -148,6 +153,8 @@ const optimisticAssign: TAssignCb = async (
 ) => {
     let assignRes;
 
+    const newId = getRandomId();
+
     //
     //  Assign
     //
@@ -160,7 +167,7 @@ const optimisticAssign: TAssignCb = async (
                 (draft) => {
                     draft.push({
                         ...body,
-                        id: draft?.length ?? 1,
+                        id: newId,
                     });
                 }
             )
@@ -173,7 +180,7 @@ const optimisticAssign: TAssignCb = async (
                 (draft) => {
                     draft.push({
                         ...body,
-                        id: draft?.length ?? 1,
+                        id: newId,
                     });
                 }
             )
@@ -189,7 +196,7 @@ const optimisticAssign: TAssignCb = async (
                     if (idx !== -1) {
                         draft[idx].labels?.push({
                             ...body,
-                            id: draft[idx].labels?.length ?? 1,
+                            id: newId,
                         });
                     }
                 }
@@ -203,7 +210,7 @@ const optimisticAssign: TAssignCb = async (
                 (draft) => {
                     draft.push({
                         ...body,
-                        id: draft.length ?? 1,
+                        id: newId,
                     });
                 }
             )
