@@ -9,6 +9,7 @@ import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
+import DraggableStack from "./DraggableStack";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
 
@@ -108,7 +109,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         }
 
         return (
-            <Stack
+            <DraggableStack
                 ref={onRef}
                 sx={getEventSx(overlapCount)}
                 top={top}
@@ -144,7 +145,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                         ) : null}
                     </>
                 ) : null}
-            </Stack>
+            </DraggableStack>
         );
     }
 );
