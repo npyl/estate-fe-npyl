@@ -8,7 +8,7 @@ interface AddLabelDialog {
     variant: LabelResourceType;
 
     onLabelClick: (l: ILabel) => void;
-    onCreate: (id: number) => void;
+    onCreate?: (id: number) => void;
     onClose: () => void;
 }
 

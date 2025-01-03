@@ -3,14 +3,14 @@ import { FC } from "react";
 import Label from "@/components/Label/Label";
 import { ILabel, LabelResourceType } from "src/types/label";
 import dynamic from "next/dynamic";
-import useAssignedLabels from "../useAssignedLabels";
+import useAssignedLabels from "../../LabelCreate/useAssignedLabels";
 import useExistingLabels from "./useExistingLabels";
-const LabelForm = dynamic(() => import("@/sections/LabelCreate/Form"));
+const LabelForm = dynamic(() => import("../Form"));
 
 interface ContentProps {
     resourceId?: number;
     resource: LabelResourceType;
-    onCreate: (id: number) => void;
+    onCreate?: (id: number) => void;
 
     onLabelClick: (l: ILabel) => void;
 

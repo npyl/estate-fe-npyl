@@ -1,67 +1,50 @@
-import { Label } from "@/components/Label";
-import { useGetLabelsQuery } from "@/services/labels";
-import { ILabel } from "@/types/label";
-import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
-import { FC, useMemo } from "react";
-import { getBorderColor2 } from "@/theme/borderColor";
-import { SpaceBetween } from "@/components/styled";
-import Typography from "@mui/material/Typography";
-import { useTranslation } from "react-i18next";
-import AddButton from "./AddButton";
+import { ILabelPOST } from "@/types/label";
+import { FC, useCallback, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-
-const getLabel = (onRemove: (id: number) => void) => (l: ILabel) =>
-    (
-        <Label
-            key={l.id}
-            color={l.color}
-            name={l.name}
-            width="min-content"
-            onClose={() => onRemove(l.id)}
-        />
-    );
+import LabelSection from "@/sections/LabelSection";
+import { useGetLabelsQuery } from "@/services/labels";
 
 interface CreateAssignProps {
-    ids?: number[];
+    ids: number[];
 }
 
 const CreateAssign: FC<CreateAssignProps> = ({ ids }) => {
-    const { t } = useTranslation();
-
     const { data, isLoading } = useGetLabelsQuery();
 
-    const { setValue } = useFormContext();
-    const old = (useWatch({ name: "labels" }) as number[]) || [];
-    const handleRemove = (id: number) => {
-        const filtered = old.filter((oldId) => oldId !== id);
-        setValue("labels", filtered, { shouldDirty: true });
-    };
-
-    const labels = useMemo(
+    const assignedLabels = useMemo(
         () => data?.ticketLabels?.filter((l) => ids?.includes(l.id)) || [],
         [data?.ticketLabels, ids]
     );
 
-    if (isLoading) return <Skeleton width="150px" height="58px" />;
+    const { setValue } = useFormContext();
+    const old = (useWatch({ name: "labels" }) as number[]) || [];
+
+    const handleCreate = useCallback(
+        (newId: number) =>
+            setValue("labels", [...old, newId], { shouldDirty: true }),
+        [old]
+    );
+
+    const handleLabelClick = (l: ILabelPOST) => handleCreate(l.id!);
+
+    const handleRemove = useCallback(
+        (id: number) => {
+            const filtered = old.filter((oldId) => oldId !== id);
+            setValue("labels", filtered, { shouldDirty: true });
+        },
+        [old]
+    );
 
     return (
-        <Stack
-            spacing={1}
-            width={1}
-            border="1px solid"
-            borderColor={getBorderColor2}
-            borderRadius="10px"
-            p={0.5}
-        >
-            <SpaceBetween alignItems="center">
-                <Typography>{t("Labels")}</Typography>
-                <AddButton />
-            </SpaceBetween>
-            <Stack direction="row" spacing={1} flexWrap="wrap" width={1}>
-                {labels?.map(getLabel(handleRemove))}
-            </Stack>
-        </Stack>
+        <LabelSection
+            loading={isLoading}
+            assignedLabels={assignedLabels}
+            variant="ticket"
+            resourceId={-1}
+            onLabelClick={handleLabelClick}
+            onLabelCreate={handleCreate}
+            onLabelRemove={handleRemove}
+        />
     );
 };
 
