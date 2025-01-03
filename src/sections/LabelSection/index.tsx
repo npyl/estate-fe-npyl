@@ -13,7 +13,7 @@ interface LabelSectionProps extends StackProps {
     assignedLabels: ILabel[];
 
     variant: LabelResourceType;
-    resourceId: number; // > 0 valid, -1 invalid
+    resourceId?: number; // > 0 valid, undefined invalid
     disabled?: boolean;
     loading?: boolean;
 

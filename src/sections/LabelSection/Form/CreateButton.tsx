@@ -39,6 +39,8 @@ const CreateButton: FC<CreateButtonProps> = ({
 
     const onSubmit = useCallback(
         async ({ resource: _0, resourceId: _, ...body }: ILabelForm) => {
+            console.log("isAssign: ", isAssign);
+
             const cb = isAssign ? createAssignLabel : createLabel;
 
             const res = await cb({ body, resource, resourceId: resourceId! });

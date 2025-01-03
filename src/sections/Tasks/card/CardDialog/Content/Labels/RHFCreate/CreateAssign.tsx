@@ -40,7 +40,6 @@ const CreateAssign: FC<CreateAssignProps> = ({ ids }) => {
             loading={isLoading}
             assignedLabels={assignedLabels}
             variant="ticket"
-            resourceId={-1}
             onLabelClick={handleLabelClick}
             onLabelCreate={handleCreate}
             onLabelRemove={handleRemove}
