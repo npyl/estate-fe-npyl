@@ -82,7 +82,12 @@ interface DayCell extends CalendarCellProps {
     onFirstEventLoad: (top: number) => void;
 }
 
-const Cell: FC<DayCell> = ({ events, onEventClick, onFirstEventLoad }) => {
+const Cell: FC<DayCell> = ({
+    events,
+    onEventClick,
+    onEventDragEnd: _,
+    onFirstEventLoad,
+}) => {
     const getEventProps = useCallback(
         (i: number) => ({ onLoad: i === 0 ? onFirstEventLoad : undefined }),
         [onFirstEventLoad]
@@ -91,6 +96,7 @@ const Cell: FC<DayCell> = ({ events, onEventClick, onFirstEventLoad }) => {
     const EVENTS = useTimemappedEvents(
         events,
         onEventClick,
+        undefined,
         // ...
         CustomCalendarEvent,
         getEventProps

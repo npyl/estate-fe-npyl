@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import { BaseCalendarCellProps } from "@/components/BaseCalendar/types";
 import MonthView from "@/components/BaseCalendar/View/Month";
 import { SxProps, Theme, Typography } from "@mui/material";
-import { WEEKDAYS } from "@/components/BaseCalendar/constants";
 import { CalendarMonthViewProps } from "../../types";
 import { _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";

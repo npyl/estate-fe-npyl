@@ -6,10 +6,13 @@ import useFilteredEvents from "./useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
 import WithEventClick from "./WithEventClick";
 import WithTimeOffsetClick from "./WithTimeOffsetClick";
+import WithDragEnd from "./WithDragEnd";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithTimeOffsetClick(WithEventClick(CalendarDayViewCell));
+const Cell = WithDragEnd(
+    WithTimeOffsetClick(WithEventClick(CalendarDayViewCell))
+);
 
 // --------------------------------------------------------------------------
 

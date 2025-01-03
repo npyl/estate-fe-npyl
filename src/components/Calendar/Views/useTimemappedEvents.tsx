@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { ComponentType, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { TCalendarEvent } from "../types";
+import { EventProps } from "../Event/types";
 const CalendarEvent = dynamic(() => import("../Event"));
 
 // Constants
@@ -48,19 +49,23 @@ const getOverlapCount = (
 };
 
 /**
- * Returns an array of pre-rendered Events (as in @/components/Calendar/Event) in a way that their respective overlap count is calculated
- * @param events -
- * @param onEventClick -
- * @param EventComponent (for customisation) This should be used if you want to implement a custom component (must conform to Event's props)
- * @param EventProps (for customisation) pass some props to this custom element
+ * Returns an array of pre-rendered Events with calculated overlap counts
+ * @template TCustomProps - Additional props that can be passed to the EventComponent
+ * @param events - Array of calendar events
+ * @param onEventClick - Optional click handler for events
+ * @param onEventDragEnd - Optional drag end handler for events
+ * @param EventComponent - (for customisation) This should be used if you want to implement a custom component (must conform to Event's props)
+ * @param EventProps - (for customisation) pass some props to this custom element
  */
-const useTimemappedEvents = (
+function useTimemappedEvents<TCustomProps extends object = object>(
     events: TCalendarEvent[],
     onEventClick: ((e: TCalendarEvent) => void) | undefined,
-    // ...
-    EventComponent: any = CalendarEvent, // TODO: tired of these types for god's sake; this should be ComponentType<T extends EventProps = EventProps> or something...
-    EventProps?: (idx: number) => any
-) => {
+    onEventDragEnd: (() => void) | undefined,
+    EventComponent: ComponentType<
+        EventProps & TCustomProps
+    > = CalendarEvent as ComponentType<EventProps & TCustomProps>,
+    EventProps?: (idx: number) => TCustomProps
+) {
     // Memoize all timestamp calculations
     const timestampedEvents = useMemo(
         () => events.map(createTimestampedEvent),
@@ -71,7 +76,6 @@ const useTimemappedEvents = (
         const all: TimestampedEvent[] = [];
         const results: JSX.Element[] = [];
 
-        // Preallocate array and use for loop for better performance
         const len = timestampedEvents.length | 0;
         for (let i = 0; i < len; i = (i + 1) | 0) {
             const event = timestampedEvents[i];
@@ -87,7 +91,8 @@ const useTimemappedEvents = (
                     event={event}
                     overlapCount={overlapCount}
                     onClick={onEventClick}
-                    {...EventProps?.(i)}
+                    onDragEnd={onEventDragEnd}
+                    {...(EventProps?.(i) || ({} as TCustomProps))}
                 />
             );
 
@@ -95,7 +100,7 @@ const useTimemappedEvents = (
         }
 
         return results;
-    }, [timestampedEvents, onEventClick]);
-};
+    }, [timestampedEvents, onEventClick, onEventDragEnd, EventProps]);
+}
 
 export default useTimemappedEvents;

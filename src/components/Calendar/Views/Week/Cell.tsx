@@ -12,10 +12,11 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     date: _,
     events,
     onEventClick,
+    onEventDragEnd,
     style,
     ...props
 }) => {
-    const EVENTS = useTimemappedEvents(events, onEventClick);
+    const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
     return (
         <div style={{ ...CellStyle, ...style }} {...props}>
             {/* Events */}

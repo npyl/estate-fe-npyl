@@ -14,12 +14,14 @@ const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 const DRAG_THRESHOLD = 5; // pixels
 
-interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
-    onDragEnd: () => void;
+export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
+    onDragEnd?: () => void;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
     ({ sx, onClick, onDragEnd, ...props }, ref) => {
+        const isEnabled = Boolean(onDragEnd);
+
         const elementRef = useRef<HTMLDivElement>();
 
         const dragState = useRef<DragState>({
@@ -71,30 +73,42 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
             state.startY = e.clientY;
         }, []);
 
-        const handleMouseUp = useCallback((e: MouseEvent<HTMLDivElement>) => {
-            e.stopPropagation();
+        const handleMouseUp = useCallback(
+            (e: MouseEvent<HTMLDivElement>) => {
+                e.stopPropagation();
 
-            if (!dragState.current.isDragging) return;
+                if (!dragState.current.isDragging) return;
 
-            dragState.current.isDragging = false;
+                dragState.current.isDragging = false;
 
-            if (elementRef.current) {
-                elementRef.current.style.transition = "transform 0.2s ease";
-                elementRef.current.style.cursor = "grab";
-            }
+                if (elementRef.current) {
+                    elementRef.current.style.transition = "transform 0.2s ease";
+                    elementRef.current.style.cursor = "grab";
+                }
 
-            const wasDragged = dragState.current.totalMovement > DRAG_THRESHOLD;
+                const wasDragged =
+                    dragState.current.totalMovement > DRAG_THRESHOLD;
 
-            if (!wasDragged) {
-                onClick?.(e);
-            }
-        }, []);
+                if (wasDragged) {
+                    onDragEnd?.();
+                } else {
+                    onClick?.(e);
+                }
+            },
+            [onDragEnd, onClick]
+        );
 
         const setRefs = useCallback((node: HTMLDivElement | null) => {
             if (node) elementRef.current = node;
             if (typeof ref === "function") ref(node);
             else if (ref) ref.current = node;
         }, []);
+
+        const mouseDownCb = isEnabled ? handleMouseDown : undefined;
+        const mouseMoveCb = isEnabled ? handleMouseMove : undefined;
+        const mouseUpCb = isEnabled ? handleMouseUp : undefined;
+
+        const onClickCb = !isEnabled ? undefined : stopPropagation; // INFO: ignore the actual onClick event!
 
         return (
             <Stack
@@ -105,11 +119,11 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
                     transition: "transform 0.2s ease",
                     ...sx,
                 }}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
+                onMouseDown={mouseDownCb}
+                onMouseMove={mouseMoveCb}
+                onMouseUp={mouseUpCb}
                 // ...
-                onClick={stopPropagation} // INFO: ignore the actual onClick event!
+                onClick={onClickCb}
                 // ...
                 {...props}
             />

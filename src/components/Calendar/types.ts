@@ -67,6 +67,7 @@ type TCalendarEvent = {
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
     onEventClick?: (e: TCalendarEvent) => void;
+    onEventDragEnd?: () => void;
 }
 
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
