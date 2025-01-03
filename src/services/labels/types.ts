@@ -5,7 +5,6 @@ interface LabelForResourceProps {
     resource: LabelResourceType;
     body: ILabelPOST;
 }
-type AssignLabelProps = LabelForResourceProps;
 
 interface DeleteLabelProps {
     resource: LabelResourceType;
@@ -19,6 +18,8 @@ interface ILabelForResourceReq {
     body: ILabelPOST;
 }
 
+interface IAssignLabelToResourceReq extends Required<ILabelForResourceReq> {}
+
 interface ILabelForResourceRes {
     id: number;
 }
@@ -30,7 +31,7 @@ interface IDeleteLabelForResourceReq {
 
 export type {
     LabelForResourceProps,
-    AssignLabelProps,
+    IAssignLabelToResourceReq,
     DeleteLabelProps,
     ILabelForResourceReq,
     ILabelForResourceRes,

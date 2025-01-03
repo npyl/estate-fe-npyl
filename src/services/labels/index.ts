@@ -2,12 +2,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ILabels } from "@/types/label";
 import {
     DeleteLabelProps,
+    IAssignLabelToResourceReq,
     IDeleteLabelForResourceReq,
     ILabelForResourceReq,
     ILabelForResourceRes,
     LabelForResourceProps,
 } from "./types";
-import { optimisticCreate, optimisticDelete } from "./optimistic";
+import {
+    optimisticAssign,
+    optimisticCreateAssign,
+    optimisticDelete,
+} from "./optimistic";
 
 export const labels = createApi({
     reducerPath: "labels",
@@ -72,16 +77,19 @@ export const labels = createApi({
                 method: "POST",
                 body,
             }),
-            onQueryStarted: optimisticCreate,
+            onQueryStarted: optimisticCreateAssign,
             invalidatesTags: ["Labels"],
         }),
-        assignLabelToResourceId: builder.mutation<void, LabelForResourceProps>({
+        assignLabelToResourceId: builder.mutation<
+            void,
+            IAssignLabelToResourceReq
+        >({
             query: ({ resource, resourceId, body }) => ({
                 url: `add/${resource}/${resourceId}`,
                 method: "POST",
                 params: { labelId: body.id },
             }),
-            onQueryStarted: optimisticCreate,
+            onQueryStarted: optimisticAssign,
             invalidatesTags: ["Labels"],
         }),
         deleteLabelForResourceId: builder.mutation<void, DeleteLabelProps>({

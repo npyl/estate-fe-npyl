@@ -25,8 +25,6 @@ const Content: FC<ContentProps> = ({
     onLabelClick,
     onClose,
 }) => {
-    const isEdit = Boolean(resourceId);
-
     const assignedLabels = useAssignedLabels(resource, resourceId);
     const existingLabels = useExistingLabels(resource);
 
@@ -60,14 +58,12 @@ const Content: FC<ContentProps> = ({
                 })}
             </Stack>
 
-            {isEdit ? (
-                <LabelForm
-                    resource={resource}
-                    resourceId={resourceId}
-                    onCreate={onCreate}
-                    onCancel={onClose}
-                />
-            ) : null}
+            <LabelForm
+                resource={resource}
+                resourceId={resourceId}
+                onCreate={onCreate}
+                onCancel={onClose}
+            />
         </>
     );
 };

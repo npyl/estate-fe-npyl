@@ -102,7 +102,7 @@ const LabelCreate = ({
                 </IconButton>
             </SpaceBetween>
 
-            <Stack direction="row" flexWrap="wrap" gap={1} pt={2}>
+            <Stack direction="row" flexWrap="wrap" gap={1} pt={2} px={0.5}>
                 {assignedLabels?.map(({ id, color, name }) => (
                     <Label
                         key={id}

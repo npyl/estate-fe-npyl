@@ -36,8 +36,10 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
             name={name}
             ref={ref}
             sx={{
+                pt: 0.25,
                 px: 0.75,
                 borderRadius: radius,
+                gap: 0.3,
                 ...sx,
             }}
             {...other}
@@ -63,9 +65,9 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
             {onClose ? (
                 <IconButton
                     size="small"
-                    aria-label="close"
                     disabled={disabled}
                     onClick={onClose}
+                    sx={{ borderRadius: "16px" }}
                 >
                     <CloseIcon sx={{ height: 16, width: 16 }} />
                 </IconButton>

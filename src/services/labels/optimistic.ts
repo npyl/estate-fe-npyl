@@ -4,6 +4,7 @@ import { filesApiSlice, properties } from "@/services/properties";
 import { customers } from "@/services/customers";
 import {
     DeleteLabelProps,
+    IAssignLabelToResourceReq,
     ILabelForResourceReq,
     ILabelForResourceRes,
 } from "./types";
@@ -19,9 +20,15 @@ type TCreateCb = OptimisticCb<
     ILabelForResourceReq,
     ILabelForResourceRes | void
 >;
+
+type TAssignCb = OptimisticCb<
+    IAssignLabelToResourceReq,
+    ILabelForResourceRes | void
+>;
+
 type TDeleteCb = OptimisticCb<DeleteLabelProps, void>;
 
-const optimisticCreate: TCreateCb = async (
+const optimisticCreateAssign: TCreateCb = async (
     { resource, resourceId, body },
     { dispatch, queryFulfilled }
 ) => {
@@ -109,6 +116,19 @@ const optimisticCreate: TCreateCb = async (
                     }
                 )
             );
+        } else if (resource === "ticket") {
+            assignRes = dispatch(
+                tasks.util.updateQueryData(
+                    "getCardLabels",
+                    resourceId!,
+                    (draft) => {
+                        draft.push({
+                            ...body,
+                            id: draft.length ?? 1,
+                        });
+                    }
+                )
+            );
         }
     }
 
@@ -119,6 +139,81 @@ const optimisticCreate: TCreateCb = async (
         if (isAssign) {
             assignRes?.undo();
         }
+    }
+};
+
+const optimisticAssign: TAssignCb = async (
+    { resource, resourceId, body },
+    { dispatch, queryFulfilled }
+) => {
+    let assignRes;
+
+    //
+    //  Assign
+    //
+
+    if (resource === "property") {
+        assignRes = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyLabels",
+                resourceId!,
+                (draft) => {
+                    draft.push({
+                        ...body,
+                        id: draft?.length ?? 1,
+                    });
+                }
+            )
+        );
+    } else if (resource === "customer") {
+        assignRes = dispatch(
+            customers.util.updateQueryData(
+                "getCustomerLabels",
+                resourceId!,
+                (draft) => {
+                    draft.push({
+                        ...body,
+                        id: draft?.length ?? 1,
+                    });
+                }
+            )
+        );
+    } else if (resource === "document") {
+        assignRes = dispatch(
+            filesApiSlice.util.updateQueryData(
+                "getPropertyDocuments",
+                resourceId!,
+                (draft) => {
+                    const idx = draft.findIndex(({ id }) => id === resourceId);
+
+                    if (idx !== -1) {
+                        draft[idx].labels?.push({
+                            ...body,
+                            id: draft[idx].labels?.length ?? 1,
+                        });
+                    }
+                }
+            )
+        );
+    } else if (resource === "ticket") {
+        assignRes = dispatch(
+            tasks.util.updateQueryData(
+                "getCardLabels",
+                resourceId!,
+                (draft) => {
+                    draft.push({
+                        ...body,
+                        id: draft.length ?? 1,
+                    });
+                }
+            )
+        );
+    }
+
+    try {
+        await queryFulfilled;
+    } catch {
+        assignRes?.undo();
     }
 };
 
@@ -177,4 +272,4 @@ const optimisticDelete: TDeleteCb = async (
     }
 };
 
-export { optimisticCreate, optimisticDelete };
+export { optimisticCreateAssign, optimisticAssign, optimisticDelete };

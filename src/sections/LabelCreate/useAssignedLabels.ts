@@ -8,7 +8,10 @@ import { useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useGetCardLabelsQuery } from "@/services/tasks";
 
-const useAssignedLabels = (variant: LabelResourceType, resourceId?: number) => {
+const useAssignedLabels = (
+    variant: LabelResourceType,
+    resourceId: number = -1
+) => {
     const router = useRouter();
     const { propertyId } = router.query;
 
