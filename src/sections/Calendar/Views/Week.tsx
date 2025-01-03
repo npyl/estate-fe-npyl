@@ -11,6 +11,11 @@ import dynamic from "next/dynamic";
 import useFilteredEvents from "./useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
 import useAuthenticatedClick from "./useAuthenticatedClick";
+import WithEventClick from "./WithEventClick";
+
+// --------------------------------------------------------------------------
+
+const Cell = WithEventClick(CalendarWeekViewCell);
 
 // --------------------------------------------------------------------------
 
@@ -21,7 +26,7 @@ interface CellProps extends CalendarCellProps {
 const CellWithTimeOffset: FC<CellProps> = ({ onClickWithOffset, ...props }) => {
     const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);
     const { onAuthenticatedClick } = useAuthenticatedClick(onClick);
-    return <CalendarWeekViewCell {...props} onClick={onAuthenticatedClick} />;
+    return <Cell {...props} onClick={onAuthenticatedClick} />;
 };
 
 // --------------------------------------------------------------------------

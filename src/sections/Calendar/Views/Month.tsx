@@ -6,7 +6,12 @@ import CalendarMonthViewCell from "@/components/Calendar/Views/Month/Cell";
 import useFilteredEvents from "./useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
 import useAuthenticatedClick from "./useAuthenticatedClick";
+import WithEventClick from "./WithEventClick";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
+
+// --------------------------------------------------------------------------
+
+const Cell = WithEventClick(CalendarMonthViewCell);
 
 // --------------------------------------------------------------------------
 
@@ -27,7 +32,7 @@ const MonthView: FC<CalendarMonthViewProps> = (props) => {
                 filters={{ calendarId }}
                 getCellEvents={getCellEvents}
                 Cell={(other) => (
-                    <CalendarMonthViewCell
+                    <Cell
                         {...other}
                         onClick={onAuthenticatedClick?.(
                             other.date.toISOString()

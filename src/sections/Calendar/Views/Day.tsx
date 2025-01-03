@@ -10,7 +10,12 @@ import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
 import useFilteredEvents from "./useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
 import useAuthenticatedCallback from "./useAuthenticatedClick";
+import WithEventClick from "./WithEventClick";
 const CreateEventDialog = dynamic(() => import("../Event/Create"));
+
+// --------------------------------------------------------------------------
+
+const Cell = WithEventClick(CalendarDayViewCell);
 
 // --------------------------------------------------------------------------
 
@@ -21,8 +26,7 @@ interface CellProps extends CalendarCellProps {
 const CellWithTimeOffset: FC<CellProps> = ({ onClickWithOffset, ...props }) => {
     const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);
     const { onAuthenticatedClick } = useAuthenticatedCallback(onClick);
-
-    return <CalendarDayViewCell {...props} onClick={onAuthenticatedClick} />;
+    return <Cell {...props} onClick={onAuthenticatedClick} />;
 };
 
 // --------------------------------------------------------------------------
