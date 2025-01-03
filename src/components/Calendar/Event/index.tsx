@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef, MouseEvent, useCallback, useState } from "react";
 import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
@@ -81,7 +81,13 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
 
         const [isCompact, setCompact] = useState(false);
 
-        const handleClick = useCallback(() => onClick?.(event), [onClick]);
+        const handleClick = useCallback(
+            (e: MouseEvent<HTMLDivElement>) => {
+                e.stopPropagation();
+                onClick?.(event);
+            },
+            [onClick]
+        );
 
         const handleWidth = useCallback(
             (width: number) => setCompact(width <= 60),
