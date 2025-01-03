@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent, useRef } from "react";
+import { forwardRef, MouseEvent, useCallback, useRef } from "react";
 import { Stack, StackProps } from "@mui/material";
 
 interface DragState {
@@ -14,8 +14,12 @@ const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 const DRAG_THRESHOLD = 5; // pixels
 
-const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
-    ({ sx, children, onClick, onDragEnd, ...props }, ref) => {
+interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
+    onDragEnd: () => void;
+}
+
+const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
+    ({ sx, onClick, onDragEnd, ...props }, ref) => {
         const elementRef = useRef<HTMLDivElement>();
 
         const dragState = useRef<DragState>({
@@ -27,14 +31,14 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             totalMovement: 0,
         });
 
-        const updatePosition = (x: number, y: number) => {
+        const updatePosition = useCallback((x: number, y: number) => {
             if (!elementRef.current) return;
             elementRef.current.style.transform = `translate(${x}px, ${y}px)`;
             dragState.current.elementX = x;
             dragState.current.elementY = y;
-        };
+        }, []);
 
-        const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+        const handleMouseDown = useCallback((e: MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
 
             const state = dragState.current;
@@ -47,9 +51,9 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
                 elementRef.current.style.transition = "none";
                 elementRef.current.style.cursor = "grabbing";
             }
-        };
+        }, []);
 
-        const handleMouseMove = (e: MouseEvent) => {
+        const handleMouseMove = useCallback((e: MouseEvent) => {
             e.stopPropagation();
 
             const state = dragState.current;
@@ -65,9 +69,9 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
 
             state.startX = e.clientX;
             state.startY = e.clientY;
-        };
+        }, []);
 
-        const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
+        const handleMouseUp = useCallback((e: MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
 
             if (!dragState.current.isDragging) return;
@@ -84,15 +88,17 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
             if (!wasDragged) {
                 onClick?.(e);
             }
-        };
+        }, []);
+
+        const setRefs = useCallback((node: HTMLDivElement | null) => {
+            if (node) elementRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) ref.current = node;
+        }, []);
 
         return (
             <Stack
-                ref={(node) => {
-                    if (node) elementRef.current = node;
-                    if (typeof ref === "function") ref(node);
-                    else if (ref) ref.current = node;
-                }}
+                ref={setRefs}
                 sx={{
                     position: "absolute",
                     cursor: "grab",
@@ -106,9 +112,7 @@ const DraggableStack = forwardRef<HTMLDivElement, StackProps>(
                 onClick={stopPropagation} // INFO: ignore the actual onClick event!
                 // ...
                 {...props}
-            >
-                {children}
-            </Stack>
+            />
         );
     }
 );
