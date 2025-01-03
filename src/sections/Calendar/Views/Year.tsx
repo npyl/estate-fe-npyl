@@ -2,19 +2,17 @@ import {
     CalendarCellProps,
     CalendarYearViewProps,
 } from "@/components/Calendar/types";
-import { FC, useCallback, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
+import { FC, useMemo } from "react";
 import CalendarGoogleYearView from "@/components/CalendarGoogle/Views/Year";
 import useMonthEvents from "@/components/CalendarGoogle/Views/useMonthEvents";
 import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
 import { useFiltersContext } from "../Filters/context";
-import useAuthenticatedClick from "./useAuthenticatedClick";
 import WithEventClick from "./WithEventClick";
-const CreateEventDialog = dynamic(() => import("../Event/Create"));
+import WithTimeOffsetClick from "./WithTimeOffsetClick";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithEventClick(CalendarYearViewCell);
+const Cell = WithTimeOffsetClick(WithEventClick(CalendarYearViewCell));
 
 // --------------------------------------------------------------------------
 
@@ -35,36 +33,16 @@ export const CalendarGoogleYearViewCell: FC<CalendarCellProps> = (props) => {
 
 // --------------------------------------------------------------------------
 
-const YearView: FC<CalendarYearViewProps> = ({ onEventClick, ...props }) => {
-    const [startDate, setStartDate] = useState("");
-    const closeDialog = () => setStartDate("");
-
-    const handleClick = useCallback((s: string) => () => setStartDate(s), []);
-    const { onAuthenticatedClick } = useAuthenticatedClick(handleClick);
-
-    return (
-        <>
-            <CalendarGoogleYearView
-                {...props}
-                Cell={(other) => (
-                    <CalendarGoogleYearViewCell
-                        {...other}
-                        onEventClick={onEventClick}
-                        onClick={onAuthenticatedClick?.(
-                            other.date.toISOString()
-                        )}
-                    />
-                )}
+const YearView: FC<CalendarYearViewProps> = ({ onEventClick, ...props }) => (
+    <CalendarGoogleYearView
+        {...props}
+        Cell={(other) => (
+            <CalendarGoogleYearViewCell
+                {...other}
+                onEventClick={onEventClick}
             />
-
-            {startDate ? (
-                <CreateEventDialog
-                    startDate={startDate}
-                    onClose={closeDialog}
-                />
-            ) : null}
-        </>
-    );
-};
+        )}
+    />
+);
 
 export default YearView;
