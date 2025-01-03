@@ -1,16 +1,13 @@
 import { StackProps } from "@mui/material";
-import { useCallback } from "react";
 import { ILabelPOST, LabelResourceType } from "src/types/label";
 import {
     useAssignLabelToResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
 } from "src/services/labels";
-import { properties } from "src/services/properties";
-import { customers } from "src/services/customers";
 import { useDispatch } from "react-redux";
-import { tasks } from "@/services/tasks";
 import LabelSection from "@/sections/LabelSection";
 import useAssignedLabels from "./useAssignedLabels";
+import useInvalidateTags from "@/sections/LabelSection/Form/useInvalidateTags";
 
 interface ILabelCreateProps extends StackProps {
     variant: LabelResourceType;
@@ -41,16 +38,7 @@ const LabelCreate = ({
     //
     //  Callbacks
     //
-    const invalidateTags = useCallback(() => {
-        if (variant === "property")
-            dispatch(properties.util.invalidateTags(["PropertyByIdLabels"]));
-        else if (variant === "document")
-            dispatch(properties.util.invalidateTags(["PropertyByIdDocuments"]));
-        else if (variant === "customer")
-            dispatch(customers.util.invalidateTags(["CustomerByIdLabels"]));
-        else if (variant === "ticket")
-            dispatch(tasks.util.invalidateTags(["Labels"]));
-    }, [variant]);
+    const { invalidateTags } = useInvalidateTags(variant);
 
     const handleRemoveLabel = (labelId: number) =>
         deleteLabel({

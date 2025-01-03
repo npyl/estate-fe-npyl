@@ -38,8 +38,6 @@ const LabelSection: FC<LabelSectionProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    console.log("INTERNAL: ", assignedLabels);
-
     const [isOpen, openDialog, closeDialog] = useDialog();
 
     const handleOpenDialog = useCallback(

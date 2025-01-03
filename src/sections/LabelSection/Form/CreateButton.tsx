@@ -8,6 +8,7 @@ import {
 import { FC, useCallback } from "react";
 import { ILabelForm } from "@/sections/Label/Create/types";
 import { LabelResourceType } from "@/types/label";
+import useInvalidateTags from "./useInvalidateTags";
 
 interface CreateButtonProps {
     edit: boolean;
@@ -31,6 +32,8 @@ const CreateButton: FC<CreateButtonProps> = ({
     const isAssign = Boolean(resourceId);
     const title = edit ? t("Update") : t("Create");
 
+    const { invalidateTags } = useInvalidateTags(resource);
+
     const [createLabel] = useCreateLabelForResourceMutation();
     const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
 
@@ -41,6 +44,8 @@ const CreateButton: FC<CreateButtonProps> = ({
             const res = await cb({ body, resource, resourceId: resourceId! });
 
             if (res && "error" in res) return;
+
+            invalidateTags();
 
             onCreate?.(res.data?.id);
         },
