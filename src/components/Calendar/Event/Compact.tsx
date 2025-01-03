@@ -39,6 +39,7 @@ const CompactCalendarEvent: FC<CompactEventProps> = ({
     event,
     withDate = false,
     onClick,
+    onDragEnd: _ /* INFO: relevant only for the normal Event */,
     ...props
 }) => {
     const handleClick = (e: MouseEvent) => {
