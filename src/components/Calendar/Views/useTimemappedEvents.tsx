@@ -60,7 +60,7 @@ const getOverlapCount = (
 function useTimemappedEvents<TCustomProps extends object = object>(
     events: TCalendarEvent[],
     onEventClick: ((e: TCalendarEvent) => void) | undefined,
-    onEventDragEnd: (() => void) | undefined,
+    onEventDragEnd: ((startDate: string) => void) | undefined,
     EventComponent: ComponentType<
         EventProps & TCustomProps
     > = CalendarEvent as ComponentType<EventProps & TCustomProps>,

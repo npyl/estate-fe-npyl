@@ -5,11 +5,22 @@ import { CellPosition } from "./types";
 const DRAG_THRESHOLD = 5; // pixels
 const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
 
+const calculateNewDate = (targetCell: HTMLElement) => {
+    const cellDate = targetCell.getAttribute("data-date");
+
+    if (!cellDate) {
+        console.warn("No date attribute found on target cell");
+        return null;
+    }
+
+    return cellDate; // Already in ISO string format
+};
+
 const useDraggable = (
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
     onClick: ((e: MouseEvent<HTMLDivElement>) => void) | undefined,
-    onDragEnd: ((targetCell?: HTMLElement) => void) | undefined
+    onDragEnd: ((newStartDate: string) => void) | undefined
 ) => {
     const dragRef = useRef({
         isDragging: false,
@@ -102,7 +113,18 @@ const useDraggable = (
                 drag.elementPos.x = newX;
             }
 
-            onDragEnd?.(target?.cell);
+            //
+            // onDragEnd calculations
+            //
+
+            if (!target?.cell || !onDragEnd) {
+                console.log("No target cell or onDragEnd handler");
+                return;
+            }
+
+            const newStartDate = calculateNewDate(target.cell) || "";
+
+            onDragEnd?.(newStartDate);
         },
         [onClick, onDragEnd]
     );

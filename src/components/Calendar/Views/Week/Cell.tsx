@@ -9,7 +9,7 @@ const CellStyle: CSSProperties = { position: "relative" };
 // -------------------------------------------------------------------------
 
 const CalendarWeekViewCell: FC<CalendarCellProps> = ({
-    date: _,
+    date,
     events,
     onEventClick,
     onEventDragEnd,
@@ -18,7 +18,12 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
 }) => {
     const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
     return (
-        <div className="PPCell" style={{ ...CellStyle, ...style }} {...props}>
+        <div
+            className="PPCell"
+            data-date={date.toISOString()}
+            style={{ ...CellStyle, ...style }}
+            {...props}
+        >
             {/* Events */}
             {EVENTS}
         </div>
