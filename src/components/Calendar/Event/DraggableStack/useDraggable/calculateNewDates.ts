@@ -27,12 +27,9 @@ const calculateNewDates = (targetCell: HTMLElement, elementRect: DOMRect) => {
     const startDate = new Date(cellDate);
     const endDate = new Date(cellDate);
 
-    // Get timezone offset in minutes
-    const timezoneOffset = startDate.getTimezoneOffset();
-
     // Set hours and minutes for both dates, adjusting for timezone
-    startDate.setHours(startHours, startMinutes - timezoneOffset, 0, 0);
-    endDate.setHours(endHours, endMinutes - timezoneOffset, 0, 0);
+    startDate.setHours(startHours, startMinutes, 0, 0);
+    endDate.setHours(endHours, endMinutes, 0, 0);
 
     return {
         startDate: startDate.toISOString(),

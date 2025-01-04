@@ -2,20 +2,23 @@ import { forwardRef, MouseEvent, useRef } from "react";
 import { Stack, StackProps } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
+import { TCalendarEvent } from "../../types";
 
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
-    onDragEnd?: (startDate: string, endDate: string) => void;
+    event: TCalendarEvent;
+    onDragEnd?: (e: TCalendarEvent, startDate: string, endDate: string) => void;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
-    ({ sx, onClick, onDragEnd, ...props }, ref) => {
+    ({ event, sx, onClick, onDragEnd, ...props }, ref) => {
         const elementRef = useRef<HTMLDivElement>(null);
 
         const { cellsRef } = useResponsiveCellPositions();
 
         const { onMouseDown, onMouseMove, onMouseUp } = useDraggable(
+            event,
             elementRef,
             cellsRef,
             onClick,

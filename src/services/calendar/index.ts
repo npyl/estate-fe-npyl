@@ -1,47 +1,19 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
-import { CalendarEventReq } from "@/types/calendar";
 import { GUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { useTranslation } from "react-i18next";
 import {
     useAuthenticateMutation,
     useIsAuthenticatedQuery,
-} from "./google-oauth";
-
-interface EventFilters {
-    calendarId?: string;
-}
-
-interface BasicEventReq {
-    userId: number;
-}
-
-interface GetEventsReq extends BasicEventReq {
-    startDate: string;
-    endDate: string;
-    filters?: Partial<EventFilters>;
-}
-
-interface SearchEventsReq extends BasicEventReq {
-    query: string;
-    startDate?: string;
-    endDate?: string;
-    filters?: Partial<EventFilters>;
-}
-
-interface DeleteEventReq extends BasicEventReq {
-    eventId: string;
-}
-
-interface CreateUpdateEventReq extends BasicEventReq {
-    body: CalendarEventReq;
-}
-
-interface IsAdminRes {
-    isAdmin: boolean;
-    user?: GUserMini;
-}
+} from "@/services/google-oauth";
+import {
+    CreateUpdateEventReq,
+    DeleteEventReq,
+    GetEventsReq,
+    IsAdminRes,
+    SearchEventsReq,
+} from "./types";
+import { optimisticDelete, optimisticUpdate } from "./optimistic";
 
 export const calendar = createApi({
     reducerPath: "calendar",
@@ -109,22 +81,22 @@ export const calendar = createApi({
                 body,
                 method: "PUT",
             }),
+            onQueryStarted: optimisticUpdate,
             invalidatesTags: ["Events"],
         }),
 
-        deleteEvent: builder.mutation<TCalendarEvent[], DeleteEventReq>({
+        deleteEvent: builder.mutation<void, DeleteEventReq>({
             query: ({ userId, eventId }) => ({
                 url: `/${userId}/events/${eventId}`,
                 method: "DELETE",
             }),
+            onQueryStarted: optimisticDelete,
             invalidatesTags: ["Events"],
         }),
     }),
 });
 
 const useCalendarAuth = () => {
-    const { t } = useTranslation();
-
     const { user } = useAuth();
 
     const { data, isLoading } = useIsAuthenticatedQuery(user?.id!, {

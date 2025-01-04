@@ -114,6 +114,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                 sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
+                event={event}
                 onClick={handleClick}
                 {...props}
             >

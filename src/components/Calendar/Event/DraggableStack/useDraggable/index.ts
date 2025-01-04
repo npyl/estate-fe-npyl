@@ -2,15 +2,19 @@ import { MouseEvent, RefObject, useCallback, useRef } from "react";
 import getOverlapRatio from "./getOverlapRatio";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
+import { TCalendarEvent } from "@/components/Calendar/types";
 
 const DRAG_THRESHOLD = 5; // pixels
 const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
 
 const useDraggable = (
+    event: TCalendarEvent,
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
     onClick: ((e: MouseEvent<HTMLDivElement>) => void) | undefined,
-    onDragEnd: ((startDate: string, endDate: string) => void) | undefined
+    onDragEnd:
+        | ((event: TCalendarEvent, startDate: string, endDate: string) => void)
+        | undefined
 ) => {
     const dragRef = useRef({
         isDragging: false,
@@ -114,7 +118,7 @@ const useDraggable = (
                 // TODO: maybe reset event's position to the one before drag!
                 if (!startDate || !endDate) return;
 
-                onDragEnd(startDate, endDate);
+                onDragEnd(event, startDate, endDate);
             }
         },
         [onClick, onDragEnd]
