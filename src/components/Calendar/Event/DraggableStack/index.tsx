@@ -6,7 +6,7 @@ import useDraggable from "./useDraggable";
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
-    onDragEnd?: (startDate: string) => void;
+    onDragEnd?: (startDate: string, endDate: string) => void;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(

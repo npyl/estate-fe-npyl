@@ -4,11 +4,13 @@ import { ComponentType, useCallback } from "react";
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
 const WithDragEnd = (Cell: AnyCalendarCell) => {
-    // INFO: Make sure to return a named component instead of an anonymous function
     const WrappedComponent = (props: CalendarCellProps) => {
-        const handleDragEnd = useCallback(() => {
-            console.log("ENA!!!!");
-        }, []);
+        const handleDragEnd = useCallback(
+            (startDate: string, endDate: string) => {
+                console.log("start: ", startDate, " \nend: ", endDate);
+            },
+            []
+        );
 
         return <Cell {...props} onEventDragEnd={handleDragEnd} />;
     };

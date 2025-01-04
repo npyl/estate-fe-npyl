@@ -1,26 +1,16 @@
 import { MouseEvent, RefObject, useCallback, useRef } from "react";
 import getOverlapRatio from "./getOverlapRatio";
-import { CellPosition } from "./types";
+import { CellPosition } from "../types";
+import calculateNewDates from "./calculateNewDates";
 
 const DRAG_THRESHOLD = 5; // pixels
 const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
-
-const calculateNewDate = (targetCell: HTMLElement) => {
-    const cellDate = targetCell.getAttribute("data-date");
-
-    if (!cellDate) {
-        console.warn("No date attribute found on target cell");
-        return null;
-    }
-
-    return cellDate; // Already in ISO string format
-};
 
 const useDraggable = (
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
     onClick: ((e: MouseEvent<HTMLDivElement>) => void) | undefined,
-    onDragEnd: ((newStartDate: string) => void) | undefined
+    onDragEnd: ((startDate: string, endDate: string) => void) | undefined
 ) => {
     const dragRef = useRef({
         isDragging: false,
@@ -111,20 +101,21 @@ const useDraggable = (
 
                 elementRef.current.style.transform = `translate(${newX}px, ${drag.elementPos.y}px)`;
                 drag.elementPos.x = newX;
+
+                //
+                // Calculate new date with time
+                //
+
+                if (!onDragEnd) return;
+
+                const { startDate, endDate } =
+                    calculateNewDates(target.cell, elementRect) || {};
+
+                // TODO: maybe reset event's position to the one before drag!
+                if (!startDate || !endDate) return;
+
+                onDragEnd(startDate, endDate);
             }
-
-            //
-            // onDragEnd calculations
-            //
-
-            if (!target?.cell || !onDragEnd) {
-                console.log("No target cell or onDragEnd handler");
-                return;
-            }
-
-            const newStartDate = calculateNewDate(target.cell) || "";
-
-            onDragEnd?.(newStartDate);
         },
         [onClick, onDragEnd]
     );
