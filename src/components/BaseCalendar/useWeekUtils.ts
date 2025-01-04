@@ -8,15 +8,24 @@ const useWeekUtils = () => {
 
     const getStartOfWeek: TWeekCb = useCallback(
         (date) => {
-            const result = new Date(date);
+            const result = new Date(
+                Date.UTC(
+                    date.getUTCFullYear(),
+                    date.getUTCMonth(),
+                    date.getUTCDate(),
+                    0,
+                    0,
+                    0,
+                    0
+                )
+            );
 
             const dayOffset =
                 weekViewMode === "monToSun"
-                    ? (date.getDay() + 6) % 7
-                    : date.getDay();
+                    ? (date.getUTCDay() + 6) % 7
+                    : date.getUTCDay();
 
-            result.setDate(date.getDate() - dayOffset);
-            result.setHours(0, 0, 0, 0);
+            result.setUTCDate(date.getUTCDate() - dayOffset);
 
             return result;
         },
@@ -25,15 +34,24 @@ const useWeekUtils = () => {
 
     const getEndOfWeek: TWeekCb = useCallback(
         (date) => {
-            const result = new Date(date);
+            const result = new Date(
+                Date.UTC(
+                    date.getUTCFullYear(),
+                    date.getUTCMonth(),
+                    date.getUTCDate(),
+                    23,
+                    59,
+                    59,
+                    999
+                )
+            );
 
             const dayOffset =
                 weekViewMode === "monToSun"
-                    ? (date.getDay() + 6) % 7
-                    : date.getDay();
+                    ? (date.getUTCDay() + 6) % 7
+                    : date.getUTCDay();
 
-            result.setDate(date.getDate() - dayOffset + 6);
-            result.setHours(23, 59, 59, 999);
+            result.setUTCDate(date.getUTCDate() - dayOffset + 6);
 
             return result;
         },
