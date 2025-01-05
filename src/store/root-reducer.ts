@@ -27,7 +27,6 @@ import { googleOAuth } from "@/services/google-oauth";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as filtersReducer } from "../slices/filters";
 import { reducer as logReducer } from "../slices/log";
-import { reducer as securityReducer } from "../slices/security";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -64,6 +63,5 @@ export const rootReducer = combineReducers({
     // customer
     customerFilters: customerFiltersReducer,
     // general
-    securitySlice: securityReducer,
     logsFilters: logReducer,
 });
