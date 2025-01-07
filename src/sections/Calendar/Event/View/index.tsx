@@ -2,6 +2,7 @@ import {
     IconButton,
     InputBase,
     Popover,
+    PopoverActions,
     Stack,
     SxProps,
     Theme,
@@ -9,7 +10,7 @@ import {
 } from "@mui/material";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
-import { FC } from "react";
+import { FC, useCallback, useRef } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import Duration from "@/components/Calendar/Event/_shared/Duration";
 import EditIcon from "@mui/icons-material/Edit";
@@ -62,27 +63,42 @@ const EventPopover: FC<Props> = ({
         onClose();
     };
 
+    // INFO: when EditForm loads, it causes a big shift to the popover's height
+    // which makes the (previous) optimal position (calculated by popper.js internally) wrong!
+    // Make sure we get a good positioning after EditForm load!
+    const popoverRef = useRef<PopoverActions>(null);
+    const updatePositioning = useCallback(
+        () => popoverRef.current?.updatePosition(),
+        []
+    );
+
     return (
         <Popover
             open
             anchorEl={anchorEl}
-            anchorOrigin={{ horizontal: "right", vertical: "top" }}
+            action={popoverRef}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            transformOrigin={{ horizontal: "left", vertical: "bottom" }}
             onClose={onClose}
             slotProps={{
                 paper: {
                     sx: {
                         minWidth: "300px",
-                        width: "max-content",
-                        height: "max-content",
+                        minHeight: "fit-content",
+                        p: 1,
+                    },
+                },
+                root: {
+                    sx: {
+                        ml: 0.5,
                     },
                 },
             }}
         >
-            <Stack width={1} direction="row" alignItems="center">
+            <SpaceBetween width={1} direction="row" alignItems="center" mb={2}>
                 <Typography
                     variant="h6"
                     textAlign="left"
-                    px={1}
                     noWrap
                     width="calc(100% - 150px)"
                 >
@@ -94,9 +110,7 @@ const EventPopover: FC<Props> = ({
                         direction="row"
                         spacing={1}
                         position="absolute"
-                        right={50}
-                        top={1}
-                        p={1}
+                        right={0}
                     >
                         <IconButton onClick={openEdit}>
                             <EditIcon />
@@ -105,15 +119,16 @@ const EventPopover: FC<Props> = ({
                         <DeleteButton eventId={event?.id} onClose={onClose} />
                     </Stack>
                 ) : null}
-            </Stack>
+            </SpaceBetween>
             {isEdit ? (
                 <EditForm
                     event={event}
+                    onLoad={updatePositioning}
                     onSubmit={handleEdit}
                     onClose={closeEdit}
                 />
             ) : (
-                <Stack spacing={1} px={1}>
+                <Stack spacing={1}>
                     <SpaceBetween alignItems="center" px={1}>
                         <Stack direction="row" alignItems="center">
                             <DateInfo
