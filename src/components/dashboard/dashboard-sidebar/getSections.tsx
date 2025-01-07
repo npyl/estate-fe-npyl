@@ -11,6 +11,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import TasksIconWithCounter from "./TasksIconWithCounter";
 import ArchivedIcon from "./ArchivedIcon";
 import NotificationsIcon from "./NotificationsIcon";
+import ChatIcon from "@mui/icons-material/Chat";
 
 interface Item {
     title: string;
@@ -111,6 +112,11 @@ const getSections = (
                 title: t("Archived"),
                 path: "/archived",
                 icon: <ArchivedIcon />,
+            },
+            {
+                title: t("Messages"),
+                path: "/messages",
+                icon: <ChatIcon />,
             },
         ],
     },
