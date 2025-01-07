@@ -1,22 +1,29 @@
-import { CalendarCellProps, TCalendarEvent } from "@/components/Calendar/types";
+import {
+    CalendarCellProps,
+    CalendarMouseEvent,
+} from "@/components/Calendar/types";
 import dynamic from "next/dynamic";
-import { ComponentType, useState } from "react";
+import { ComponentType, useCallback, useState } from "react";
 
 const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"));
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
 const WithEventClick = (Cell: AnyCalendarCell) => {
-    // INFO: Make sure to return a named component instead of an anonymous function
     const WrappedComponent = (props: CalendarCellProps) => {
-        const [event, setEvent] = useState<TCalendarEvent>();
-        const closeDialog = () => setEvent(undefined);
+        const [mouseEvent, setMouseEvent] = useState<CalendarMouseEvent>();
+        const closeDialog = useCallback(() => setMouseEvent(undefined), []);
 
         return (
             <>
-                <Cell {...props} onEventClick={setEvent} />
-                {event ? (
-                    <EventDialog event={event} onClose={closeDialog} />
+                <Cell {...props} onEventClick={setMouseEvent} />
+
+                {mouseEvent ? (
+                    <EventDialog
+                        anchorEl={mouseEvent.target}
+                        event={mouseEvent.currentTarget.event}
+                        onClose={closeDialog}
+                    />
                 ) : null}
             </>
         );

@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack, { StackProps } from "@mui/material/Stack";
@@ -42,10 +42,13 @@ const CompactCalendarEvent: FC<CompactEventProps> = ({
     onDragEnd: _ /* INFO: relevant only for the normal Event */,
     ...props
 }) => {
-    const handleClick = (e: MouseEvent) => {
-        e.stopPropagation();
-        onClick?.(event);
-    };
+    const handleClick = useCallback(
+        (e: MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            onClick?.({ ...e, currentTarget: { ...e.currentTarget, event } });
+        },
+        [onClick, event]
+    );
 
     return (
         <StyledStack

@@ -1,6 +1,7 @@
 import {
     IconButton,
     InputBase,
+    Popover,
     Stack,
     SxProps,
     Theme,
@@ -10,16 +11,10 @@ import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
 import { FC } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
-import Dialog from "@/components/Dialog";
 import Duration from "@/components/Calendar/Event/_shared/Duration";
 import EditIcon from "@mui/icons-material/Edit";
 import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
-import {
-    StyledDialogActions,
-    StyledDialogContent,
-    StyledDialogTitle,
-} from "../styled";
 import { CalendarEventReq } from "@/types/calendar";
 import { LocationSearching } from "@mui/icons-material";
 import { SpaceBetween } from "@/components/styled";
@@ -28,18 +23,6 @@ import PeopleSection from "./PeopleSection";
 // ...
 const DeleteButton = dynamic(() => import("./DeleteButton"));
 const EditForm = dynamic(() => import("../form"));
-
-// -----------------------------------------------------------
-
-const getDialogSx = (isEdit: boolean): SxProps<Theme> => ({
-    "& .MuiDialogTitle-root": {
-        display: isEdit ? "none" : "block",
-    },
-
-    "& .MuiPaper-root": {
-        minHeight: "300px",
-    },
-});
 
 // -----------------------------------------------------------
 
@@ -54,12 +37,18 @@ const DescriptionSx: SxProps<Theme> = {
 };
 
 interface Props {
+    anchorEl: any;
     event: TCalendarEvent;
     actions?: boolean;
     onClose: VoidFunction;
 }
 
-const EventDialog: FC<Props> = ({ event, actions = true, onClose }) => {
+const EventPopover: FC<Props> = ({
+    anchorEl,
+    event,
+    actions = true,
+    onClose,
+}) => {
     const { t } = useTranslation();
 
     const { editEvent } = useEventMutations();
@@ -74,100 +63,98 @@ const EventDialog: FC<Props> = ({ event, actions = true, onClose }) => {
     };
 
     return (
-        <Dialog
+        <Popover
             open
-            sx={getDialogSx(isEdit)}
-            DialogTitleComponent={StyledDialogTitle}
-            DialogContentComponent={StyledDialogContent}
-            DialogActionsComponent={StyledDialogActions}
-            title={
-                <Stack direction="row" width={1} alignItems="center">
-                    <Typography
-                        variant="h6"
-                        textAlign="left"
-                        px={1}
-                        noWrap
-                        width="calc(100% - 150px)"
+            anchorEl={anchorEl}
+            anchorOrigin={{ horizontal: "right", vertical: "top" }}
+            onClose={onClose}
+            slotProps={{
+                paper: {
+                    sx: {
+                        minWidth: "300px",
+                        width: "max-content",
+                        height: "max-content",
+                    },
+                },
+            }}
+        >
+            <Stack width={1} direction="row" alignItems="center">
+                <Typography
+                    variant="h6"
+                    textAlign="left"
+                    px={1}
+                    noWrap
+                    width="calc(100% - 150px)"
+                >
+                    {title}
+                </Typography>
+
+                {actions && !isEdit ? (
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        position="absolute"
+                        right={50}
+                        top={1}
+                        p={1}
                     >
-                        {title}
-                    </Typography>
+                        <IconButton onClick={openEdit}>
+                            <EditIcon />
+                        </IconButton>
 
-                    {actions && !isEdit ? (
-                        <Stack
-                            direction="row"
-                            spacing={1}
-                            position="absolute"
-                            right={50}
-                            top={1}
-                            p={1}
-                        >
-                            <IconButton onClick={openEdit}>
-                                <EditIcon />
-                            </IconButton>
+                        <DeleteButton eventId={event?.id} onClose={onClose} />
+                    </Stack>
+                ) : null}
+            </Stack>
+            {isEdit ? (
+                <EditForm
+                    event={event}
+                    onSubmit={handleEdit}
+                    onClose={closeEdit}
+                />
+            ) : (
+                <Stack spacing={1} px={1}>
+                    <SpaceBetween alignItems="center" px={1}>
+                        <Stack direction="row" alignItems="center">
+                            <DateInfo
+                                date={event.startDate}
+                                width="fit-content"
+                                px={1}
+                                py={0.5}
+                                bgcolor="transparent"
+                                color="text.secondary"
+                                fontSize="14px"
+                            />
 
-                            <DeleteButton
-                                eventId={event?.id}
-                                onClose={onClose}
+                            <Duration
+                                start={event.startDate}
+                                end={event.endDate}
+                                bgcolor="transparent"
+                                color="text.secondary"
+                                fontSize="14px"
                             />
                         </Stack>
-                    ) : null}
-                </Stack>
-            }
-            content={
-                isEdit ? (
-                    <EditForm
-                        event={event}
-                        onSubmit={handleEdit}
-                        onClose={closeEdit}
+
+                        <Stack direction="row" spacing={1}>
+                            <LocationSearching />
+                            <Typography color="text.secondary">
+                                {event?.location || "-"}
+                            </Typography>
+                        </Stack>
+                    </SpaceBetween>
+
+                    <InputBase
+                        value={event?.description}
+                        sx={DescriptionSx}
+                        multiline
+                        rows={5}
                     />
-                ) : (
-                    <Stack spacing={1} px={1}>
-                        <SpaceBetween alignItems="center" px={1}>
-                            <Stack direction="row" alignItems="center">
-                                <DateInfo
-                                    date={event.startDate}
-                                    width="fit-content"
-                                    px={1}
-                                    py={0.5}
-                                    bgcolor="transparent"
-                                    color="text.secondary"
-                                    fontSize="14px"
-                                />
 
-                                <Duration
-                                    start={event.startDate}
-                                    end={event.endDate}
-                                    bgcolor="transparent"
-                                    color="text.secondary"
-                                    fontSize="14px"
-                                />
-                            </Stack>
-
-                            <Stack direction="row" spacing={1}>
-                                <LocationSearching />
-                                <Typography color="text.secondary">
-                                    {event?.location || "-"}
-                                </Typography>
-                            </Stack>
-                        </SpaceBetween>
-
-                        <InputBase
-                            value={event?.description}
-                            sx={DescriptionSx}
-                            multiline
-                            rows={5}
-                        />
-
-                        <PeopleSection
-                            people={event?.people}
-                            type={event?.type}
-                        />
-                    </Stack>
-                )
-            }
-            onClose={onClose}
-        />
+                    <PeopleSection people={event?.people} type={event?.type} />
+                </Stack>
+            )}
+        </Popover>
     );
 };
 
-export default EventDialog;
+export default EventPopover;

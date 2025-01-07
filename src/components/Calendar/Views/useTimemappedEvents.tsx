@@ -1,6 +1,6 @@
 import { ComponentType, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { TCalendarEvent } from "../types";
+import { CalendarMouseEvent, TCalendarEvent } from "../types";
 import { EventProps } from "../Event/types";
 const CalendarEvent = dynamic(() => import("../Event"));
 
@@ -59,7 +59,7 @@ const getOverlapCount = (
  */
 function useTimemappedEvents<TCustomProps extends object = object>(
     events: TCalendarEvent[],
-    onEventClick: ((e: TCalendarEvent) => void) | undefined,
+    onEventClick: ((e: CalendarMouseEvent) => void) | undefined,
     onEventDragEnd:
         | ((e: TCalendarEvent, startDate: string, endDate: string) => void)
         | undefined,

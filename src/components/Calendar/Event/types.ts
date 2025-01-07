@@ -1,9 +1,9 @@
-import { TCalendarEvent } from "../types";
+import { CalendarMouseEvent } from "../types";
 import { DraggableStackProps } from "./DraggableStack";
 
 interface EventProps extends Omit<DraggableStackProps, "ref" | "onClick"> {
     overlapCount?: number;
-    onClick?: (e: TCalendarEvent) => void;
+    onClick?: (e: CalendarMouseEvent) => void;
 }
 
 export type { EventProps };

@@ -8,7 +8,7 @@ import CalendarGoogleDayView from "@/components/CalendarGoogle/Views/Day";
 import {
     CalendarCellProps,
     CalendarDayViewProps,
-    TCalendarEvent,
+    CalendarMouseEvent,
 } from "@/components/Calendar/types";
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
@@ -113,8 +113,8 @@ const Cell: FC<DayCell> = ({
 // -----------------------------------------------------------------------------------
 
 const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
-    const [event, setEvent] = useState<TCalendarEvent>();
-    const closeDialog = () => setEvent(undefined);
+    const [mouseEvent, setMouseEvent] = useState<CalendarMouseEvent>();
+    const closeDialog = useCallback(() => setMouseEvent(undefined), []);
 
     // Scroll to first event on load
     const handleFirstLoad = useCallback((top: number) => {
@@ -134,17 +134,18 @@ const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
                 Cell={(props) => (
                     <Cell
                         {...props}
-                        onEventClick={setEvent}
+                        onEventClick={setMouseEvent}
                         onFirstEventLoad={handleFirstLoad}
                     />
                 )}
                 {...props}
             />
 
-            {event ? (
+            {mouseEvent ? (
                 <EventDialog
                     actions={false}
-                    event={event}
+                    anchorEl={mouseEvent.currentTarget}
+                    event={mouseEvent.currentTarget.event}
                     onClose={closeDialog}
                 />
             ) : null}

@@ -85,9 +85,13 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         const handleClick = useCallback(
             (e: MouseEvent<HTMLDivElement>) => {
                 e.stopPropagation();
-                onClick?.(event);
+
+                onClick?.({
+                    ...e,
+                    currentTarget: { ...e.currentTarget, event },
+                });
             },
-            [onClick]
+            [onClick, event]
         );
 
         const handleWidth = useCallback(
