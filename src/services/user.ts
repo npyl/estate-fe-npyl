@@ -116,6 +116,7 @@ export const user = apiWithTranslation({
 
 export const {
     useGetUserQuery,
+    useLazyGetUserQuery,
     // ...
     useUploadAvatarMutation,
     useRemoveAvatarMutation,

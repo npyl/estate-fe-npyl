@@ -35,6 +35,8 @@ const getUserOptionSx = (selected: boolean): SxProps<Theme> => ({
     },
 });
 
+// ----------------------------------------------------------------------
+
 interface UserOptionProps {
     c: IConversation;
 }
@@ -51,20 +53,25 @@ const Conversation: FC<UserOptionProps> = ({ c }) => {
 
     return (
         <Stack
+            width={1}
             direction="row"
             spacing={1}
             sx={getUserOptionSx(isSelected)}
             onClick={handleClick}
         >
+            {/* INFO: width is approx. 120px */}
             <Avatars userIds={participants} />
 
-            <Stack width="100%">
-                <Title
-                    name={id}
-                    userIdsCount={participants.length}
-                    userId0={participants?.[0]}
-                />
-                <Typography variant="body2" color="text.secondary">
+            <Stack width="calc(90% - 130px)">
+                <Title name={id} userIdsCount={5} userId0={participants?.[0]} />
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    noWrap
+                    textOverflow="ellipsis"
+                    overflow="hidden"
+                >
                     Το τελευταίο που έγραψε!
                 </Typography>
             </Stack>

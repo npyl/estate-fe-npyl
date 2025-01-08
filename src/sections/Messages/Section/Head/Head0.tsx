@@ -1,23 +1,34 @@
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { HEAD_HEIGHT } from "../constants";
 import { useTranslation } from "react-i18next";
 import { getBorderColor2 } from "@/theme/borderColor";
+import { SpaceBetween } from "@/components/styled";
+import IconButton from "@mui/material/IconButton";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+
+const CreateButton = () => (
+    <IconButton>
+        <AddCommentIcon />
+    </IconButton>
+);
+
 const Head0 = () => {
     const { t } = useTranslation();
     return (
-        <Stack
+        <SpaceBetween
             minHeight={HEAD_HEIGHT}
             height={HEAD_HEIGHT}
             maxHeight={HEAD_HEIGHT}
             width={1}
-            justifyContent="center"
+            alignItems="center"
             pl={5}
+            pr={1}
             borderBottom="1px solid"
             borderColor={getBorderColor2}
         >
             <Typography variant="h6">{t("Messages")}</Typography>
-        </Stack>
+            <CreateButton />
+        </SpaceBetween>
     );
 };
 export default Head0;

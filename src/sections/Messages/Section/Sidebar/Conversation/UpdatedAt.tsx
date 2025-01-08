@@ -7,7 +7,11 @@ interface UpdatedAtProps {
 
 const UpdatedAt: FC<UpdatedAtProps> = ({ date }) => (
     <Typography variant="body2" fontWeight="300" color="text.secondary">
-        {new Date(date).toLocaleDateString()}
+        {new Date(date).toLocaleTimeString(undefined, {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: false,
+        })}
     </Typography>
 );
 

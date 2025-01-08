@@ -1,6 +1,6 @@
 import { useGetUserQuery } from "@/services/user";
 import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
+import Typography from "./Typography";
 import { FC } from "react";
 
 interface Title0Props {
@@ -14,11 +14,7 @@ const Title0: FC<Title0Props> = ({ userId }) => {
 
     if (isLoading) return <Skeleton width="70%" height="35px" variant="text" />;
 
-    return (
-        <Typography variant="body2" fontWeight="bold">
-            {fullname}
-        </Typography>
-    );
+    return <Typography>{fullname}</Typography>;
 };
 
 export default Title0;
