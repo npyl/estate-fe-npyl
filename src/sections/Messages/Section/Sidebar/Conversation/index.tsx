@@ -1,12 +1,14 @@
-import Avatar from "@/components/Avatar";
 import { getBorderColor2 } from "@/theme/borderColor";
-import { IUser } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useCallback } from "react";
 import { SxProps, Theme } from "@mui/material";
 import StatusIndicator from "./StatusIndicator";
-import { useSelectedUserContext } from "../SelectedUser";
+import { useSelectedConversationContext } from "../../SelectedConversation";
+import { IConversation } from "@/types/messages";
+import UpdatedAt from "./UpdatedAt";
+import Avatars from "./Avatars";
+import Title from "./Title";
 
 // ----------------------------------------------------------------------
 
@@ -34,18 +36,18 @@ const getUserOptionSx = (selected: boolean): SxProps<Theme> => ({
 });
 
 interface UserOptionProps {
-    u: IUser;
+    c: IConversation;
 }
 
-const UserOption: FC<UserOptionProps> = ({ u }) => {
-    const { userId, setUserId } = useSelectedUserContext();
+const Conversation: FC<UserOptionProps> = ({ c }) => {
+    const { conversationId, setConversationId } =
+        useSelectedConversationContext();
 
-    const isSelected = userId === u.id;
+    const isSelected = conversationId === c.id;
 
-    const { avatar, firstName, lastName } = u || {};
-    const fullname = `${firstName || ""} ${lastName || ""}`;
+    const { id, participants, updatedAt } = c || {};
 
-    const handleClick = useCallback(() => setUserId(u?.id), []);
+    const handleClick = useCallback(() => setConversationId(c?.id), []);
 
     return (
         <Stack
@@ -54,27 +56,24 @@ const UserOption: FC<UserOptionProps> = ({ u }) => {
             sx={getUserOptionSx(isSelected)}
             onClick={handleClick}
         >
-            <Avatar src={avatar} firstName={firstName} lastName={lastName} />
+            <Avatars userIds={participants} />
+
             <Stack width="100%">
-                <Typography variant="body2" fontWeight="bold">
-                    {fullname}
-                </Typography>
+                <Title
+                    name={id}
+                    userIdsCount={participants.length}
+                    userId0={participants?.[0]}
+                />
                 <Typography variant="body2" color="text.secondary">
                     Το τελευταίο που έγραψε!
                 </Typography>
             </Stack>
             <Stack width="10%" height={1} alignItems="end">
-                <Typography
-                    variant="body2"
-                    fontWeight="300"
-                    color="text.secondary"
-                >
-                    Date
-                </Typography>
+                <UpdatedAt date={updatedAt} />
                 <StatusIndicator />
             </Stack>
         </Stack>
     );
 };
 
-export default UserOption;
+export default Conversation;

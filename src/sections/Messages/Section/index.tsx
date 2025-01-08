@@ -5,14 +5,14 @@ import Sidebar from "./Sidebar";
 import Content from "./Content";
 import { getBorderColor2 } from "@/theme/borderColor";
 import FullPaper from "./FullPaper";
-import { SelectedUserProvider } from "./SelectedUser";
+import { SelectedConversationProvider } from "./SelectedConversation";
 
 const MessagesSection = () => (
     <FullPaper elevation={7}>
-        <SelectedUserProvider>
+        <SelectedConversationProvider>
             <Stack direction="row" alignItems="center" height={1}>
                 <Stack
-                    width="20%"
+                    width="30%"
                     height={1}
                     borderRight="1px solid"
                     borderColor={getBorderColor2}
@@ -20,12 +20,12 @@ const MessagesSection = () => (
                     <Head0 />
                     <Sidebar />
                 </Stack>
-                <Stack width="80%" height={1}>
+                <Stack width="70%" height={1}>
                     <Head1 />
                     <Content />
                 </Stack>
             </Stack>
-        </SelectedUserProvider>
+        </SelectedConversationProvider>
     </FullPaper>
 );
 

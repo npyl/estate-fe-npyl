@@ -1,22 +1,30 @@
-import { useAllUsersQuery } from "@/services/user";
-import { IUser } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import SidebarSkeleton from "./Skeleton";
 import dynamic from "next/dynamic";
-const UserOption = dynamic(() => import("./UserOption"));
+import { IConversation } from "@/types/messages";
+import useChatService from "./useChatService";
+import { useGetConversationsQuery } from "@/services/messages";
+const Conversation = dynamic(() => import("./Conversation"));
 
 // ----------------------------------------------------------------------
 
-const getUserOption = (u: IUser) => <UserOption key={u.id} u={u} />;
+const getConversationOption = (c: IConversation) => (
+    <Conversation key={c.id} c={c} />
+);
 
 // ----------------------------------------------------------------------
 
 const MessageSidebar = () => {
-    const { data: users, isLoading } = useAllUsersQuery();
+    const { isConnected } = useChatService();
+
+    const { data, isLoading } = useGetConversationsQuery(undefined, {
+        skip: !isConnected,
+    });
+
     return (
         <Stack height={1} overflow="hidden auto">
             {isLoading ? <SidebarSkeleton /> : null}
-            {users?.map(getUserOption)}
+            {data?.map(getConversationOption)}
         </Stack>
     );
 };
