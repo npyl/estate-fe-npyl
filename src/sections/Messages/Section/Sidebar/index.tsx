@@ -8,9 +8,7 @@ const Conversation = dynamic(() => import("./Conversation"));
 
 // ----------------------------------------------------------------------
 
-const getConversationOption = (c: IConversation) => (
-    <Conversation key={c.id} c={c} />
-);
+const getConversation = (c: IConversation) => <Conversation key={c.id} c={c} />;
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +22,7 @@ const MessageSidebar = () => {
     return (
         <Stack height={1} overflow="hidden auto">
             {isLoading ? <SidebarSkeleton /> : null}
-            {data?.map(getConversationOption)}
+            {data?.map(getConversation)}
         </Stack>
     );
 };
