@@ -8,4 +8,14 @@ interface IConversation {
     updatedAt: string;
 }
 
-export type { IConversation };
+type TMessageType = "TEXT";
+
+interface IMessageRes {
+    id: string;
+    sender: number; // userId
+    type: TMessageType;
+    content: string;
+    createdAt: string;
+}
+
+export type { IConversation, IMessageRes };

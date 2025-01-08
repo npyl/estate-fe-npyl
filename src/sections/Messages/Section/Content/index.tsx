@@ -12,7 +12,10 @@ const MessageContent = () => {
     return (
         <Stack>
             {!conversationId ? <NotSelectedPlaceholder /> : null}
-            {conversationId ? <UserChat /> : null}
+
+            {conversationId ? (
+                <UserChat conversationId={conversationId} />
+            ) : null}
         </Stack>
     );
 };

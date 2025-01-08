@@ -1,4 +1,4 @@
-import { IConversation } from "@/types/messages";
+import { IConversation, IMessageRes } from "@/types/messages";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = process.env.NEXT_PUBLIC_MESSAGES_API;
@@ -10,16 +10,6 @@ interface IConversationMessagesReq {
         page: number;
         size: number;
     };
-}
-
-type TMessageType = "TEXT";
-
-interface IMessageRes {
-    id: string;
-    sender: number; // userId
-    type: TMessageType;
-    content: string;
-    createdAt: string;
 }
 
 interface IConversationMessagesRes {
@@ -50,7 +40,9 @@ export const messages = createApi({
             query: (body) => ({
                 url: "conversations/load-messages",
                 body,
+                method: "POST",
             }),
+
             providesTags: ["Conversation"],
         }),
     }),
