@@ -5,13 +5,11 @@ import Sidebar from "./Sidebar";
 import Content from "./Content";
 import { getBorderColor2 } from "@/theme/borderColor";
 import FullPaper from "./FullPaper";
-import { useState } from "react";
+import { SelectedUserProvider } from "./SelectedUser";
 
-const MessagesSection = () => {
-    const [selectedUser, setSelectedUser] = useState<number>();
-
-    return (
-        <FullPaper elevation={7}>
+const MessagesSection = () => (
+    <FullPaper elevation={7}>
+        <SelectedUserProvider>
             <Stack direction="row" alignItems="center" height={1}>
                 <Stack
                     width="20%"
@@ -20,15 +18,15 @@ const MessagesSection = () => {
                     borderColor={getBorderColor2}
                 >
                     <Head0 />
-                    <Sidebar onUserSelect={setSelectedUser} />
+                    <Sidebar />
                 </Stack>
                 <Stack width="80%" height={1}>
                     <Head1 />
-                    <Content userId={selectedUser} />
+                    <Content />
                 </Stack>
             </Stack>
-        </FullPaper>
-    );
-};
+        </SelectedUserProvider>
+    </FullPaper>
+);
 
 export default MessagesSection;

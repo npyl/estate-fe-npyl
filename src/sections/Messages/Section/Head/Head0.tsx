@@ -7,7 +7,9 @@ const Head0 = () => {
     const { t } = useTranslation();
     return (
         <Stack
+            minHeight={HEAD_HEIGHT}
             height={HEAD_HEIGHT}
+            maxHeight={HEAD_HEIGHT}
             width={1}
             justifyContent="center"
             pl={5}
