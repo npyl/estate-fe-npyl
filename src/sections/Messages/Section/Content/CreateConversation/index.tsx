@@ -14,23 +14,24 @@ const CreateConversation = () => {
 
     const [initiate] = useInitiateConversationMutation();
 
-    // TODO ...
-    recipients;
+    const handleSend = useCallback(
+        async (v: string) => {
+            const recipientId = recipients?.[0];
+            if (recipientId === undefined) return;
 
-    const handleSend = useCallback(async (v: string) => {
-        const { id } = await initiate({
-            tenantId,
-            recipientId: "5",
+            const { id } = await initiate({
+                tenantId,
+                recipientId: recipientId.toString(),
 
-            // recipientId: `${recipients?.[0] ?? -1}`,
+                // TODO: also pass message
+            }).unwrap();
 
-            // TODO: also pass message
-        }).unwrap();
+            if (!id) return;
 
-        if (!id) return;
-
-        setConversationId(id);
-    }, []);
+            setConversationId(id);
+        },
+        [recipients]
+    );
 
     return (
         <Stack height={`calc(100% - ${HEAD_HEIGHT})`}>

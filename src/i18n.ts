@@ -1154,10 +1154,14 @@ const resources = {
                 "This page is accessible only from within an admin account",
 
             Messages: "Messages",
+
+            Disconnected: "Disconnected",
         },
     },
     el: {
         translation: {
+            Disconnected: "Αποσυνδέθηκε",
+
             Messages: "Μηνύματα",
 
             ERR_ADMIN_ONLY: "Πρόσβασιμη από διαχειριστές μόνο",

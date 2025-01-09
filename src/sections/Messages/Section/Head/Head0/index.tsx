@@ -1,24 +1,9 @@
 import Typography from "@mui/material/Typography";
-import { HEAD_HEIGHT } from "../constants";
+import { HEAD_HEIGHT } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SpaceBetween } from "@/components/styled";
-import IconButton from "@mui/material/IconButton";
-import AddCommentIcon from "@mui/icons-material/AddComment";
-import { useSelectedConversationContext } from "../SelectedConversation";
-
-const CreateButton = () => {
-    const { isCreating, startCreating } = useSelectedConversationContext();
-    return (
-        <IconButton
-            disabled={isCreating}
-            sx={{ visibility: isCreating ? "hidden" : "visible" }}
-            onClick={startCreating}
-        >
-            <AddCommentIcon />
-        </IconButton>
-    );
-};
+import Control from "./Control";
 
 const Head0 = () => {
     const { t } = useTranslation();
@@ -35,7 +20,7 @@ const Head0 = () => {
             borderColor={getBorderColor2}
         >
             <Typography variant="h6">{t("Messages")}</Typography>
-            <CreateButton />
+            <Control />
         </SpaceBetween>
     );
 };
