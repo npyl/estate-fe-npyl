@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useGetConversationMessagesQuery } from "@/services/messages";
 import { IMessageRes } from "@/types/messages";
+import { SxProps, Theme } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 import { FC, useRef } from "react";
@@ -12,6 +13,54 @@ const getMessage = (currentUserId: number) => (m: IMessageRes) =>
     <Message key={m.id} currentUserId={currentUserId} m={m} />;
 
 // -----------------------------------------------------------------------
+
+const hideConsecutiveMessageMeta = {
+    ".pp-message-avatar, .pp-message-fullname": {
+        display: "none",
+    },
+
+    ml: "40px",
+};
+
+const bubbleRadiusStyles = {
+    consecutive: {
+        ".pp-text-align-left": {
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+        },
+        ".pp-text-align-right": {
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+        },
+    },
+    firstInSequence: {
+        ".pp-text-align-left": {
+            borderBottomLeftRadius: 0,
+        },
+        ".pp-text-align-right": {
+            borderBottomRightRadius: 0,
+        },
+    },
+    lastInSequence: {
+        ".pp-text-align-left": {
+            borderBottomLeftRadius: "16px",
+        },
+        ".pp-text-align-right": {
+            borderBottomRightRadius: "16px",
+        },
+    },
+};
+
+const ContainerSx: SxProps<Theme> = {
+    '& [class*="pp-message-"] + [class*="pp-message-"]': {
+        ...hideConsecutiveMessageMeta,
+        ...bubbleRadiusStyles.consecutive,
+    },
+    '& [class*="pp-message-"]:has(+ [class*="pp-message-"])':
+        bubbleRadiusStyles.firstInSequence,
+    '& [class*="pp-message-"] + [class*="pp-message-"]:not(:has(+ [class*="pp-message-"]))':
+        bubbleRadiusStyles.lastInSequence,
+};
 
 const PAGE_SIZE = 15;
 
@@ -35,25 +84,7 @@ const Messages: FC<MessagesProps> = ({ conversationId }) => {
     const { hasMore, messages } = data || {};
 
     return (
-        <Stack
-            overflow="hidden auto"
-            p={1}
-            sx={{
-                // When a message with class pp-message-X is followed by another message with the same class,
-                // hide the avatar and fullname of the second message
-                // Target any message class that starts with pp-message- followed by the same sender ID
-                // Use a more specific selector to target consecutive messages from the same sender
-                '& [class*="pp-message-"] + [class*="pp-message-"]': {
-                    ".pp-message-avatar, .pp-message-fullname": {
-                        display: "none",
-                    },
-
-                    ml: "40px",
-                },
-            }}
-            height={1}
-            bgcolor="black"
-        >
+        <Stack overflow="hidden auto" p={1} height={1} sx={ContainerSx}>
             {messages?.map(getMessage(user?.id!))}
         </Stack>
     );

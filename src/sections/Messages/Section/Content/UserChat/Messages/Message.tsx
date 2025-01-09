@@ -33,6 +33,8 @@ const Message: FC<MessageProps> = ({ currentUserId, m }) => {
     const isCurrentUser = iSender === currentUserId;
     const alignSelf = isCurrentUser ? "flex-end" : "normal";
 
+    const textClassName = `pp-text-align-${isCurrentUser ? "right" : "left"}`;
+
     return (
         <Stack
             className={className}
@@ -45,7 +47,9 @@ const Message: FC<MessageProps> = ({ currentUserId, m }) => {
             <SenderAvatar userId={iSender} />
             <Stack>
                 <FullName userId={iSender} />
+
                 <Typography
+                    className={textClassName}
                     p={1}
                     borderRadius="16px"
                     sx={getTextSx(isCurrentUser)}
