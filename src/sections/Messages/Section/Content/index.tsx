@@ -1,22 +1,24 @@
-import Stack from "@mui/material/Stack";
 import { useSelectedConversationContext } from "../SelectedConversation";
 import dynamic from "next/dynamic";
+const CreateConversation = dynamic(() => import("./CreateConversation"));
 const NotSelectedPlaceholder = dynamic(
     () => import("./NotSelectedPlaceholder")
 );
 const UserChat = dynamic(() => import("./UserChat"));
 
 const MessageContent = () => {
-    const { conversationId } = useSelectedConversationContext();
+    const { conversationId, isCreating } = useSelectedConversationContext();
 
     return (
-        <Stack>
+        <>
             {!conversationId ? <NotSelectedPlaceholder /> : null}
 
-            {conversationId ? (
+            {conversationId && !isCreating ? (
                 <UserChat conversationId={conversationId} />
             ) : null}
-        </Stack>
+
+            {isCreating ? <CreateConversation /> : null}
+        </>
     );
 };
 

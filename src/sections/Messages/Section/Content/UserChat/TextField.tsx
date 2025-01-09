@@ -10,7 +10,7 @@ const SendButton = () => (
 );
 
 const TextField = () => (
-    <Stack direction="row" spacing={1} p={1}>
+    <Stack direction="row" spacing={1} p={1} justifySelf="flex-end">
         <MuiTextField fullWidth InputProps={{ sx: { borderRadius: "16px" } }} />
         <SendButton />
     </Stack>

@@ -5,12 +5,20 @@ import { getBorderColor2 } from "@/theme/borderColor";
 import { SpaceBetween } from "@/components/styled";
 import IconButton from "@mui/material/IconButton";
 import AddCommentIcon from "@mui/icons-material/AddComment";
+import { useSelectedConversationContext } from "../SelectedConversation";
 
-const CreateButton = () => (
-    <IconButton>
-        <AddCommentIcon />
-    </IconButton>
-);
+const CreateButton = () => {
+    const { isCreating, startCreating } = useSelectedConversationContext();
+    return (
+        <IconButton
+            disabled={isCreating}
+            sx={{ visibility: isCreating ? "hidden" : "visible" }}
+            onClick={startCreating}
+        >
+            <AddCommentIcon />
+        </IconButton>
+    );
+};
 
 const Head0 = () => {
     const { t } = useTranslation();
@@ -31,4 +39,5 @@ const Head0 = () => {
         </SpaceBetween>
     );
 };
+
 export default Head0;

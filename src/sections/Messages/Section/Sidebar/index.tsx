@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { IConversation } from "@/types/messages";
 import useChatService from "./useChatService";
 import { useGetConversationsQuery } from "@/services/messages";
+import { useSelectedConversationContext } from "../SelectedConversation";
+const NewPlaceholder = dynamic(() => import("./Conversation/NewPlaceholder"));
 const Conversation = dynamic(() => import("./Conversation"));
 
 // ----------------------------------------------------------------------
@@ -19,9 +21,13 @@ const MessageSidebar = () => {
         skip: !isConnected,
     });
 
+    const { isCreating } = useSelectedConversationContext();
+
+    if (isLoading) return <SidebarSkeleton />;
+
     return (
         <Stack height={1} overflow="hidden auto">
-            {isLoading ? <SidebarSkeleton /> : null}
+            {isCreating ? <NewPlaceholder /> : null}
             {data?.map(getConversation)}
         </Stack>
     );

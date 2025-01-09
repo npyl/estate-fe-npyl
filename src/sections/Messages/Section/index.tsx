@@ -8,10 +8,15 @@ import FullPaper from "./FullPaper";
 import { SelectedConversationProvider } from "./SelectedConversation";
 import HideWithConversationStack from "./_shared/HideWithConvesationStack";
 import HideWithoutConversationStack from "./_shared/HideWithoutConversationStack";
+import { FC, PropsWithChildren } from "react";
+
+const Providers: FC<PropsWithChildren> = ({ children }) => (
+    <SelectedConversationProvider>{children}</SelectedConversationProvider>
+);
 
 const MessagesSection = () => (
     <FullPaper elevation={7}>
-        <SelectedConversationProvider>
+        <Providers>
             <Stack direction="row" alignItems="center" height={1}>
                 <HideWithConversationStack
                     width={{ xs: "100%", md: "30%" }}
@@ -30,7 +35,7 @@ const MessagesSection = () => (
                     <Content />
                 </HideWithoutConversationStack>
             </Stack>
-        </SelectedConversationProvider>
+        </Providers>
     </FullPaper>
 );
 
