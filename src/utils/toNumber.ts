@@ -5,4 +5,13 @@ const toNumber = (s?: string | string[]) => {
     return res;
 };
 
-export { toNumber };
+const toNumberSafe = (s?: string | string[]) => {
+    try {
+        return toNumber(s);
+    } catch (ex) {
+        return -1;
+    }
+};
+
+export { toNumberSafe };
+export default toNumber;

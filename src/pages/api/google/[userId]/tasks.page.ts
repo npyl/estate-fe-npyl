@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../calendar/_service/CalendarService";
 import { KanbanTaskToCalendarEvent } from "@/types/tasks/mapper";
 import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
-import { toNumber } from "../../util";
+import toNumber from "@/utils/toNumber";
 
 // -----------------------------------------------------------------------
 
