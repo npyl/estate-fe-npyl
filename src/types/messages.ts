@@ -12,10 +12,10 @@ type TMessageType = "TEXT";
 
 interface IMessageRes {
     id: string;
-    sender: number; // userId
+    sender: string; // userId
     type: TMessageType;
     content: string;
     createdAt: string;
 }
 
-export type { IConversation, IMessageRes };
+export type { TConversationType, IConversation, TMessageType, IMessageRes };

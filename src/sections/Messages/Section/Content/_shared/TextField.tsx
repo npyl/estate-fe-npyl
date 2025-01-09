@@ -39,6 +39,7 @@ const TextField: FC<TextFieldProps> = ({ onSend }) => {
         const v = inputRef.current?.value;
         if (!v) return;
         onSend(v);
+        inputRef.current.value = "";
     }, [onSend]);
 
     return (
