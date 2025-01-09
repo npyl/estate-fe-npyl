@@ -13,7 +13,7 @@ const getMessage = (currentUserId: number) => (m: IMessageRes) =>
 
 // -----------------------------------------------------------------------
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 15;
 
 interface MessagesProps {
     conversationId: string;
@@ -51,6 +51,8 @@ const Messages: FC<MessagesProps> = ({ conversationId }) => {
                     ml: "40px",
                 },
             }}
+            height={1}
+            bgcolor="black"
         >
             {messages?.map(getMessage(user?.id!))}
         </Stack>
