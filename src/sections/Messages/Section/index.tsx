@@ -9,6 +9,7 @@ import { SelectedConversationProvider } from "./SelectedConversation";
 import HideWithConversationStack from "./_shared/HideWithConvesationStack";
 import HideWithoutConversationStack from "./_shared/HideWithoutConversationStack";
 import { FC, PropsWithChildren } from "react";
+import { CreateConversationProvider } from "./CreateConversation";
 
 const Providers: FC<PropsWithChildren> = ({ children }) => (
     <SelectedConversationProvider>{children}</SelectedConversationProvider>
@@ -31,8 +32,10 @@ const MessagesSection = () => (
                     width={{ xs: "100%", md: "70%" }}
                     height={1}
                 >
-                    <Head1 />
-                    <Content />
+                    <CreateConversationProvider>
+                        <Head1 />
+                        <Content />
+                    </CreateConversationProvider>
                 </HideWithoutConversationStack>
             </Stack>
         </Providers>

@@ -1,6 +1,6 @@
 import { useGetConversationMessagesQuery } from "@/services/messages";
 import { FC, useRef } from "react";
-import TextField from "./TextField";
+import TextField from "../_shared/TextField";
 import Stack from "@mui/material/Stack";
 import Messages from "./Messages";
 import { HEAD_HEIGHT } from "../../constants";
@@ -28,7 +28,7 @@ const UserChat: FC<UserChatProps> = ({ conversationId }) => {
         <Stack height={`calc(100% - ${HEAD_HEIGHT})`}>
             <Messages messages={messages} />
             <Stack flexGrow={1} />
-            <TextField />
+            <TextField onSend={() => {}} />
         </Stack>
     );
 };
