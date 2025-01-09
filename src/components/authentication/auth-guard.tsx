@@ -1,18 +1,14 @@
-import type { FC, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import type { FC, PropsWithChildren } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../../hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth";
 
-interface AuthGuardProps {
-    children: ReactNode;
-}
-
-export const AuthGuard: FC<AuthGuardProps> = (props) => {
-    const { children } = props;
+export const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
     const auth = useAuth();
     const router = useRouter();
     const [checked, setChecked] = useState(false);
-    useEffect(
+
+    useLayoutEffect(
         () => {
             if (!router.isReady) {
                 return;

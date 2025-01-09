@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef, MouseEvent, useCallback, useState } from "react";
 import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
@@ -9,6 +9,7 @@ import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
+import DraggableStack from "./DraggableStack";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
 
@@ -81,7 +82,17 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
 
         const [isCompact, setCompact] = useState(false);
 
-        const handleClick = useCallback(() => onClick?.(event), [onClick]);
+        const handleClick = useCallback(
+            (e: MouseEvent<HTMLDivElement>) => {
+                e.stopPropagation();
+
+                onClick?.({
+                    ...e,
+                    currentTarget: { ...e.currentTarget, event },
+                });
+            },
+            [onClick, event]
+        );
 
         const handleWidth = useCallback(
             (width: number) => setCompact(width <= 60),
@@ -102,11 +113,12 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         }
 
         return (
-            <Stack
+            <DraggableStack
                 ref={onRef}
                 sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
+                event={event}
                 onClick={handleClick}
                 {...props}
             >
@@ -138,7 +150,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                         ) : null}
                     </>
                 ) : null}
-            </Stack>
+            </DraggableStack>
         );
     }
 );

@@ -9,7 +9,7 @@ import { useMemo } from "react";
 export const useGetProperty = () => {
     const { propertyId } = useRouter().query;
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-    return { property };
+    return { property, propertyId: +propertyId! };
 };
 
 export const usePropertyBlueprints = () => {

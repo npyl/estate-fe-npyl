@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import { Box, SxProps, Theme, Tooltip } from "@mui/material";
 import { TCalendarEventType } from "../types";
 import { Z_INDEX } from "@/constants/calendar";
@@ -71,7 +71,7 @@ interface BulletProps {
     type: TCalendarEventType;
     overlapCount?: number;
     top?: number;
-    onClick: VoidFunction;
+    onClick: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
 const Bullet: FC<BulletProps> = ({

@@ -8,7 +8,7 @@ import {
     BaseCalendarYearViewProps,
     TCalendarView,
 } from "@/components/BaseCalendar/types";
-import { ComponentType, HTMLAttributes } from "react";
+import { ComponentType, HTMLAttributes, MouseEvent } from "react";
 
 type TCalendarEventExtendedProperties = {
     private?: {
@@ -64,9 +64,20 @@ type TCalendarEvent = {
 
 // ------------------------------------------------------------------------
 
+type CalendarMouseEvent = MouseEvent<
+    HTMLDivElement & { event: TCalendarEvent }
+>;
+
+// ------------------------------------------------------------------------
+
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
-    onEventClick?: (e: TCalendarEvent) => void;
+    onEventClick?: (e: CalendarMouseEvent) => void;
+    onEventDragEnd?: (
+        e: TCalendarEvent,
+        startDate: string,
+        endDate: string
+    ) => void;
 }
 
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
@@ -90,7 +101,7 @@ interface ViewEvents {
     events?: TCalendarEvent[];
     filters?: object;
     getCellEvents?: TGetCellEventsCb;
-    onEventClick?: (e: TCalendarEvent) => void;
+    onEventClick?: (e: CalendarMouseEvent) => void;
 }
 
 type CalendarDayViewProps<
@@ -133,6 +144,9 @@ export { isTCalendarEventType };
 
 export type {
     TCalendarLocale,
+
+    // ...
+    CalendarMouseEvent,
 
     // ...
     TCalendarEvent,

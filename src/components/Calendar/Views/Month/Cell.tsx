@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { Stack, SxProps, Theme } from "@mui/material";
-import { CalendarCellProps, TCalendarEvent } from "../../types";
+import {
+    CalendarCellProps,
+    CalendarMouseEvent,
+    TCalendarEvent,
+} from "../../types";
 import CompactCalendarEvent from "../../Event/Compact";
 import HighlightTypography from "../../HighlightTypography";
 import { TODAY } from "@/components/BaseCalendar/constants";
@@ -8,7 +12,7 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 // ------------------------------------------------------------------
 
 const getEvent =
-    (onClick?: (e: TCalendarEvent) => void) => (e: TCalendarEvent) =>
+    (onClick?: (e: CalendarMouseEvent) => void) => (e: TCalendarEvent) =>
         <CompactCalendarEvent key={e.id} event={e} onClick={onClick} />;
 
 // ------------------------------------------------------------------

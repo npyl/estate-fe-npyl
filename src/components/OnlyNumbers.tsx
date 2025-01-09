@@ -1,6 +1,6 @@
 import { InputAdornment, TextFieldProps } from "@mui/material";
 import { TextField } from "@mui/material";
-import React, { ChangeEvent, forwardRef, useCallback } from "react";
+import { ChangeEvent, forwardRef, useCallback } from "react";
 
 const BEtoVisible_withThousands = (v: string | number): string => {
     if (!v) return "";
@@ -144,4 +144,4 @@ const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
     }
 );
 
-export default React.memo(OnlyNumbersInput);
+export default OnlyNumbersInput;

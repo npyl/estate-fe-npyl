@@ -1148,10 +1148,18 @@ const resources = {
 
             "Are you sure?": "Are you sure?",
             _UNDONE_: "This action cannot be undone",
+
+            ERR_ADMIN_ONLY: "Accessible to admins only",
+            ERR_ADMIN_ONLY_0:
+                "This page is accessible only from within an admin account",
         },
     },
     el: {
         translation: {
+            ERR_ADMIN_ONLY: "Πρόσβασιμη από διαχειριστές μόνο",
+            ERR_ADMIN_ONLY_0:
+                "Η σελίδα αυτή είναι προσβάσιμη μόνο από λογαριασμό διαχειριστή",
+
             _UNDONE_: "Η ενέργεια δεν μπορεί να αναιρεθεί",
             "Are you sure?": "Είστε σίγουρος?",
 

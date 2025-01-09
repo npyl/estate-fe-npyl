@@ -1,15 +1,19 @@
-import { createContext, useCallback, useContext, useState } from "react";
-import { ITab } from "src/interfaces/tabs";
+import {
+    createContext,
+    FC,
+    PropsWithChildren,
+    RefObject,
+    useContext,
+} from "react";
+import { ITab } from "@/types/tabs";
 
 type ITabState = {
-    appTabs: ITab[];
-    setAppTabs: React.Dispatch<React.SetStateAction<ITab[]>>;
-    pushTab: (newTab: ITab) => void;
-    removeTabNoChange: (identifier: string) => ITab[];
+    pushTab: (t: ITab) => void;
     removeTab: (identifier: string) => void;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
+
 export const useTabsContext = () => {
     const context = useContext(TabsContext);
     if (context === undefined) {
@@ -20,44 +24,37 @@ export const useTabsContext = () => {
     return context;
 };
 
-const useTabsState = () => {
-    const [appTabs, setAppTabs] = useState<ITab[]>([]);
-    const pushTab = useCallback(
-        (value: ITab) =>
-            setAppTabs((old) => {
-                const exists = old.some((item) => item.id === value.id);
-
-                return !exists
-                    ? [...old, value] // add
-                    : old.map((tab) => (tab.id === value.id ? value : tab)); // update
-            }),
-        []
-    );
-
-    const removeTab = useCallback(
-        (identifier: string) =>
-            setAppTabs((old) => old.filter((item) => item.id !== identifier)),
-        []
-    );
-
-    const removeTabNoChange = useCallback(
-        (identifier: string) =>
-            appTabs.filter((item) => item.id !== identifier),
-        [appTabs]
-    );
-
-    return {
-        appTabs,
-        pushTab,
-        removeTab,
-        setAppTabs,
-        removeTabNoChange,
-    };
+export type SubbarRef = {
+    pushTab: (i: ITab) => void;
+    removeTab: (p: string) => void;
 };
 
-export const TabsProvider: React.FC<React.PropsWithChildren<unknown>> = (
-    props
-) => {
-    const value = useTabsState();
-    return <TabsContext.Provider value={value} {...props} />;
+interface TabsProviderProps extends PropsWithChildren {
+    subbarRef?: RefObject<SubbarRef>;
+}
+
+export const TabsProvider: FC<TabsProviderProps> = ({
+    subbarRef,
+    ...props
+}) => {
+    const pushTab = (i: ITab) => {
+        try {
+            subbarRef?.current?.pushTab(i);
+        } catch (ex) {}
+    };
+    const removeTab = (p: string) => {
+        try {
+            subbarRef?.current?.removeTab(p);
+        } catch (ex) {}
+    };
+
+    return (
+        <TabsContext.Provider
+            value={{
+                pushTab,
+                removeTab,
+            }}
+            {...props}
+        />
+    );
 };

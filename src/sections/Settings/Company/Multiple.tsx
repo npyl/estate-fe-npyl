@@ -1,6 +1,6 @@
 import { RHFTextField } from "@/components/hook-form";
 import Stack from "@mui/material/Stack";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import {
     Button,
     IconButton,
@@ -69,7 +69,7 @@ interface MultipleProps {
 const Multiple = ({ label, name }: MultipleProps) => {
     const { watch, setValue } = useFormContext();
 
-    const values = (watch(name) as string[]) || [];
+    const values = (useWatch({ name }) as string[]) || [];
 
     const [wantNew, openNew, closeNew] = useDialog();
     const handleAddNew = useCallback((v: string) => {

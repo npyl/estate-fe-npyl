@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { peopleKey } from "../constants";
 import { SpaceBetween } from "@/components/styled";
@@ -58,8 +58,8 @@ const getPerson = (p: TCalendarEventPerson) => (
 // -------------------------------------------------------------------------
 
 const useTourPeople = () => {
-    const { watch } = useFormContext();
-    const people = (watch(peopleKey) as TCalendarEventPerson[]) || [];
+    const people =
+        (useWatch({ name: peopleKey }) as TCalendarEventPerson[]) || [];
     const filtered = useMemo(
         () => people.filter(withoutGwEmailAndNonCustomer),
         [people]

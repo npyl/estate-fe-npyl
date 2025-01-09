@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useGetDashboardQuery } from "src/services/dashboard";
 import { useGetProfileQuery } from "src/services/user";
 import CardWithIcon from "./CardWithIcon";
-import AppConversionRates from "./app-conversion-rates";
-import TotalProperties from "./total-properties";
+// import AppConversionRates from "./app-conversion-rates";
+// import TotalProperties from "./total-properties";
 import dynamic from "next/dynamic";
 import { FC, RefObject, useRef } from "react";
 import Tasks from "./Tasks";
@@ -43,7 +43,7 @@ const Title = () => {
     const { t } = useTranslation();
     const { firstName, lastName } = useGetProfileQuery().data ?? {};
 
-    const name = `${lastName} ${firstName}`;
+    const name = firstName && lastName ? `${lastName} ${firstName}` : "";
 
     return (
         <Stack spacing={0.2}>
@@ -51,7 +51,9 @@ const Title = () => {
                 {t("Hello")}, {name}
             </Typography>
 
-            <Typography color="text.secondary">{t("_WELCOME_")}</Typography>
+            <Typography color="text.secondary" maxWidth={{ md: "50%" }} pr={2}>
+                {t("_WELCOME_")}
+            </Typography>
         </Stack>
     );
 };

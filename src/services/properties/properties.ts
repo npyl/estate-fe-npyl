@@ -101,11 +101,6 @@ export const properties = apiWithTranslation({
         "Archived",
     ],
     endpoints: (builder) => ({
-        allProperties: builder.query<IProperties[], void>({
-            query: () => "all",
-            providesTags: ["Properties"],
-        }),
-
         allPropertyCodes: builder.query<IPropertyCodeRes[], void>({
             query: () => "/codes",
         }),
@@ -431,8 +426,6 @@ export const {
     useBulkDeletePermanentPropertiesMutation,
 } = properties;
 
-// TODO: this is taking a huge amount of time to come! -> Find better alternatives where it is used.
-const useAllPropertiesQuery = la(properties.useAllPropertiesQuery);
 const useSearchPropertyQuery = la(properties.useSearchPropertyQuery);
 
 const useGetPropertyByIdQuery = la(properties.useGetPropertyByIdQuery);
@@ -445,7 +438,6 @@ const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
 export {
-    useAllPropertiesQuery,
     useSearchPropertyQuery,
     // ...
     useGetPropertyByIdQuery,

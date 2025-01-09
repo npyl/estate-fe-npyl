@@ -11,15 +11,21 @@ const ViewStyle: CSSProperties = {
 };
 
 const CalendarDayViewCell: FC<CalendarCellProps> = ({
-    date: _,
+    date,
     events,
     onEventClick,
+    onEventDragEnd,
     style,
     ...props
 }) => {
-    const EVENTS = useTimemappedEvents(events, onEventClick);
+    const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
     return (
-        <div style={{ ...ViewStyle, ...style }} {...props}>
+        <div
+            className="PPCell"
+            data-date={date.toISOString()}
+            style={{ ...ViewStyle, ...style }}
+            {...props}
+        >
             {/* Events */}
             {EVENTS}
         </div>

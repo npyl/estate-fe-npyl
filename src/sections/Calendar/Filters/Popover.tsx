@@ -1,13 +1,16 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import MuiPopover from "@mui/material/Popover";
-import { TCalendarEvent } from "@/components/Calendar/types";
+import {
+    CalendarMouseEvent,
+    TCalendarEvent,
+} from "@/components/Calendar/types";
 import CompactCalendarEvent from "@/components/Calendar/Event/Compact";
 import Stack from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 const EventDialog = dynamic(() => import("../Event/View"));
 
 const getEvent =
-    (onClick: (event: TCalendarEvent) => void) => (event: TCalendarEvent) =>
+    (onClick: (event: CalendarMouseEvent) => void) => (event: TCalendarEvent) =>
         <CompactCalendarEvent key={event.id} event={event} onClick={onClick} />;
 
 interface PopoverProps {
@@ -17,8 +20,8 @@ interface PopoverProps {
 }
 
 const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
-    const [event, setEvent] = useState<TCalendarEvent>();
-    const closeDialog = () => setEvent(undefined);
+    const [mouseEvent, setMouseEvent] = useState<CalendarMouseEvent>();
+    const closeDialog = useCallback(() => setMouseEvent(undefined), []);
 
     return (
         <>
@@ -34,11 +37,17 @@ const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
                 onClose={onClose}
             >
                 <Stack spacing={1} width="max-content" p={1}>
-                    {events.map(getEvent(setEvent))}
+                    {events.map(getEvent(setMouseEvent))}
                 </Stack>
             </MuiPopover>
 
-            {event ? <EventDialog event={event} onClose={closeDialog} /> : null}
+            {mouseEvent ? (
+                <EventDialog
+                    anchorEl={mouseEvent.currentTarget}
+                    event={mouseEvent.currentTarget.event}
+                    onClose={closeDialog}
+                />
+            ) : null}
         </>
     );
 };

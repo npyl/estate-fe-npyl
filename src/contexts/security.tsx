@@ -7,7 +7,7 @@ import {
     useMemo,
     useState,
 } from "react";
-import { IPreset, IRolesReq, ITargets } from "src/interfaces/roles";
+import { IPreset, IRolesReq, ITargets } from "@/types/roles";
 import { initRoles } from "@/constants/security";
 import {
     useGetPresetByIdQuery,

@@ -1,19 +1,23 @@
 import { KeyValue } from "./KeyValue";
 
 export interface IPropertyDetailsParking {
+    id: number;
     parkingType: KeyValue;
     spots: number;
 }
 export interface IPropertyDetailsBalcony {
+    id: number;
     side: KeyValue;
     area: number;
 }
 
 export interface IPropertyDetailsParkingPOST {
+    id?: number;
     parkingType: string;
     spots: number;
 }
 export interface IPropertyDetailsBalconyPOST {
+    id?: number;
     side: string;
     area: number;
 }
