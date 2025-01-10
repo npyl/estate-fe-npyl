@@ -1,14 +1,17 @@
 import { getBorderColor2 } from "@/theme/borderColor";
 import Stack from "@mui/material/Stack";
-import { FC, useCallback } from "react";
+import { FC, PropsWithChildren, useCallback } from "react";
 import { SxProps, Theme } from "@mui/material";
 import StatusIndicator from "./StatusIndicator";
 import { useSelectedConversationContext } from "../../SelectedConversation";
 import { IConversation } from "@/types/messages";
 import UpdatedAt from "./UpdatedAt";
-import Avatars from "./Avatars";
 import Title from "./Title";
 import LastMessage from "./LastMessage";
+import { CONVERSATION_IMAGE_WIDTH } from "./constants";
+import { NEW_CONVERSATION_ID } from "../../constants";
+import Avatars from "./Avatars";
+import MessageIcon from "@mui/icons-material/Message";
 
 // ----------------------------------------------------------------------
 
@@ -37,41 +40,85 @@ const getUserOptionSx = (selected: boolean): SxProps<Theme> => ({
 
 // ----------------------------------------------------------------------
 
-interface UserOptionProps {
+const END_WIDTH = "64px";
+
+const CreateContentDummy = () => (
+    <Stack
+        width={CONVERSATION_IMAGE_WIDTH}
+        height={1}
+        justifyContent="center"
+        alignItems="center"
+    >
+        <MessageIcon />
+    </Stack>
+);
+
+interface ContentProps {
     c: IConversation;
 }
 
-const Conversation: FC<UserOptionProps> = ({ c }) => {
+const Content: FC<ContentProps> = ({ c }) => {
+    const { id, participants, updatedAt } = c || {};
+
+    const middleWidth = `calc(100% - ${CONVERSATION_IMAGE_WIDTH} - ${END_WIDTH})`;
+
+    return (
+        <>
+            <Avatars userIds={participants} />
+
+            <Stack width={middleWidth}>
+                <Title name={id} userIdsCount={5} userId0={participants?.[0]} />
+                <LastMessage conversationId={c.id} />
+            </Stack>
+
+            <Stack width={END_WIDTH} height={1} alignItems="end">
+                <UpdatedAt date={updatedAt} />
+                <StatusIndicator />
+            </Stack>
+        </>
+    );
+};
+
+// ----------------------------------------------------------------------
+
+interface ConversationStackProps extends PropsWithChildren {
+    cId: string;
+}
+
+const ConversationStack: FC<ConversationStackProps> = ({ cId, children }) => {
     const { conversationId, setConversationId } =
         useSelectedConversationContext();
 
-    const isSelected = conversationId === c.id;
+    const isSelected = conversationId === cId;
 
-    const { id, participants, updatedAt } = c || {};
-
-    const handleClick = useCallback(() => setConversationId(c?.id), []);
+    const handleClick = useCallback(() => setConversationId(cId), []);
 
     return (
         <Stack
             width={1}
+            minHeight="62px"
             direction="row"
             spacing={1}
             sx={getUserOptionSx(isSelected)}
             onClick={handleClick}
         >
-            {/* INFO: width is approx. 120px */}
-            <Avatars userIds={participants} />
-
-            <Stack width="calc(90% - 130px)">
-                <Title name={id} userIdsCount={5} userId0={participants?.[0]} />
-                <LastMessage conversationId={c.id} />
-            </Stack>
-            <Stack width="10%" height={1} alignItems="end">
-                <UpdatedAt date={updatedAt} />
-                <StatusIndicator />
-            </Stack>
+            {children}
         </Stack>
     );
+};
+
+// ----------------------------------------------------------------------
+
+interface UserOptionProps {
+    c: IConversation;
+}
+
+const Conversation: FC<UserOptionProps> = ({ c }) => {
+    const isCreate = c.id === NEW_CONVERSATION_ID;
+
+    const content = isCreate ? <CreateContentDummy /> : <Content c={c} />;
+
+    return <ConversationStack cId={c.id}>{content}</ConversationStack>;
 };
 
 export default Conversation;
