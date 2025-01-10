@@ -1,16 +1,10 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useGetConversationMessagesQuery } from "@/services/messages";
-import { IMessageRes } from "@/types/messages";
 import { SxProps, Theme } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import dynamic from "next/dynamic";
 import { FC, useRef } from "react";
-const Message = dynamic(() => import("./Message"));
-
-// -----------------------------------------------------------------------
-
-const getMessage = (currentUserId: number) => (m: IMessageRes) =>
-    <Message key={m.id} currentUserId={currentUserId} m={m} />;
+import RealTimeMessages from "./RealTime";
+import getMessage from "./getMessage";
 
 // -----------------------------------------------------------------------
 
@@ -92,6 +86,7 @@ const Messages: FC<MessagesProps> = ({ conversationId }) => {
             sx={ContainerSx}
         >
             {messages?.map(getMessage(user?.id!))}
+            <RealTimeMessages currentUserId={user?.id!} />
         </Stack>
     );
 };

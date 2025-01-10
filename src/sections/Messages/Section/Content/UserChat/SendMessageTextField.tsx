@@ -1,6 +1,6 @@
-import { useSendMessageToConversationMutation } from "@/services/messages";
 import { FC, useCallback } from "react";
 import TextField from "../_shared/TextField";
+import useChatService from "../../Sidebar/useChatService";
 
 interface SendMessageTextFieldProps {
     conversationId: string;
@@ -9,7 +9,8 @@ interface SendMessageTextFieldProps {
 const SendMessageTextField: FC<SendMessageTextFieldProps> = ({
     conversationId,
 }) => {
-    const [sendMessage] = useSendMessageToConversationMutation();
+    const { sendMessage } = useChatService();
+
     const handleSend = useCallback(
         (content: string) =>
             sendMessage({ conversationId, type: "TEXT", content }),

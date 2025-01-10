@@ -8,7 +8,7 @@ interface IConversation {
     updatedAt: string;
 }
 
-type TMessageType = "TEXT";
+type TMessageType = "TEXT" | "IMAGE" | "FILE";
 
 interface IMessageRes {
     id: string;
@@ -18,4 +18,16 @@ interface IMessageRes {
     createdAt: string;
 }
 
-export type { TConversationType, IConversation, TMessageType, IMessageRes };
+interface IMessageReq {
+    conversationId: string;
+    type: TMessageType;
+    content: string;
+}
+
+export type {
+    TConversationType,
+    IConversation,
+    TMessageType,
+    IMessageReq,
+    IMessageRes,
+};
