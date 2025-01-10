@@ -52,13 +52,13 @@ const bubbleRadiusStyles = {
 };
 
 const ContainerSx: SxProps<Theme> = {
-    '& [class*="pp-message-"] + [class*="pp-message-"]': {
+    '& [class*="pp-message-sender-"] + [class*="pp-message-sender-"]': {
         ...hideConsecutiveMessageMeta,
         ...bubbleRadiusStyles.consecutive,
     },
-    '& [class*="pp-message-"]:has(+ [class*="pp-message-"])':
+    '& [class*="pp-message-sender-"]:has(+ [class*="pp-message-sender-"])':
         bubbleRadiusStyles.firstInSequence,
-    '& [class*="pp-message-"] + [class*="pp-message-"]:not(:has(+ [class*="pp-message-"]))':
+    '& [class*="pp-message-sender-"] + [class*="pp-message-sender-"]:not(:has(+ [class*="pp-message-sender-"]))':
         bubbleRadiusStyles.lastInSequence,
 };
 

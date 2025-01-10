@@ -27,7 +27,7 @@ interface MessageProps {
 const Message: FC<MessageProps> = ({ currentUserId, m }) => {
     const { sender, content } = m;
 
-    const className = `pp-message-${sender}`;
+    const className = `pp-message-sender-${sender}`;
 
     const iSender = toNumberSafe(sender);
     const isCurrentUser = iSender === currentUserId;
