@@ -52,7 +52,13 @@ const Message: FC<MessageProps> = ({ currentUserId, m }) => {
                     className={textClassName}
                     p={1}
                     borderRadius="16px"
-                    sx={getTextSx(isCurrentUser)}
+                    sx={{
+                        // INFO: make sure the content breaks if not fitting
+                        whiteSpace: "wrap",
+                        wordBreak: "break-word",
+                        overflowWrap: "break-word",
+                        ...getTextSx(isCurrentUser),
+                    }}
                 >
                     {content}
                 </Typography>
