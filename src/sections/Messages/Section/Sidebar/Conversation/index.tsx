@@ -1,6 +1,5 @@
 import { getBorderColor2 } from "@/theme/borderColor";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import { FC, useCallback } from "react";
 import { SxProps, Theme } from "@mui/material";
 import StatusIndicator from "./StatusIndicator";
@@ -9,6 +8,7 @@ import { IConversation } from "@/types/messages";
 import UpdatedAt from "./UpdatedAt";
 import Avatars from "./Avatars";
 import Title from "./Title";
+import LastMessage from "./LastMessage";
 
 // ----------------------------------------------------------------------
 
@@ -64,16 +64,7 @@ const Conversation: FC<UserOptionProps> = ({ c }) => {
 
             <Stack width="calc(90% - 130px)">
                 <Title name={id} userIdsCount={5} userId0={participants?.[0]} />
-
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    noWrap
-                    textOverflow="ellipsis"
-                    overflow="hidden"
-                >
-                    Το τελευταίο που έγραψε!
-                </Typography>
+                <LastMessage conversationId={c.id} />
             </Stack>
             <Stack width="10%" height={1} alignItems="end">
                 <UpdatedAt date={updatedAt} />

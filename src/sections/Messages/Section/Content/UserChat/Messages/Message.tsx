@@ -44,9 +44,9 @@ const Message: FC<MessageProps> = ({ currentUserId, m }) => {
             spacing={1}
             alignSelf={alignSelf}
         >
-            <SenderAvatar userId={iSender} />
+            {!isCurrentUser ? <SenderAvatar userId={iSender} /> : null}
             <Stack>
-                <FullName userId={iSender} />
+                {!isCurrentUser ? <FullName userId={iSender} /> : null}
 
                 <Typography
                     className={textClassName}

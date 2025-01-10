@@ -25,20 +25,20 @@ const hideConsecutiveMessageMeta = {
 const bubbleRadiusStyles = {
     consecutive: {
         ".pp-text-align-left": {
-            borderTopLeftRadius: 0,
-            borderBottomLeftRadius: 0,
+            borderTopLeftRadius: "5px",
+            borderBottomLeftRadius: "5px",
         },
         ".pp-text-align-right": {
-            borderTopRightRadius: 0,
-            borderBottomRightRadius: 0,
+            borderTopRightRadius: "5px",
+            borderBottomRightRadius: "5px",
         },
     },
     firstInSequence: {
         ".pp-text-align-left": {
-            borderBottomLeftRadius: 0,
+            borderBottomLeftRadius: "5px",
         },
         ".pp-text-align-right": {
-            borderBottomRightRadius: 0,
+            borderBottomRightRadius: "5px",
         },
     },
     lastInSequence: {
@@ -84,7 +84,13 @@ const Messages: FC<MessagesProps> = ({ conversationId }) => {
     const { hasMore, messages } = data || {};
 
     return (
-        <Stack overflow="hidden auto" p={1} height={1} sx={ContainerSx}>
+        <Stack
+            overflow="hidden auto"
+            p={1}
+            height={1}
+            spacing={0.15}
+            sx={ContainerSx}
+        >
             {messages?.map(getMessage(user?.id!))}
         </Stack>
     );
