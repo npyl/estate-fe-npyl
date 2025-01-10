@@ -3,6 +3,7 @@ import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation } from "../services/auth";
 import { IUser } from "src/types/user";
 import { useLazyGetProfileQuery } from "src/services/user";
+import getChatToken from "./getChatToken";
 
 interface State {
     platform: "JWT";
@@ -150,6 +151,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         if (!user) {
             throw "Failed getting profile!";
         }
+
+        // TODO: temporary!
+        localStorage.setItem("chatToken", getChatToken(user.id));
 
         dispatch({
             type: ActionType.LOGIN,

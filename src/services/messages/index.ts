@@ -2,7 +2,6 @@ import { IConversation, IMessageRes, TMessageType } from "@/types/messages";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = process.env.NEXT_PUBLIC_MESSAGES_API;
-const token = process.env.NEXT_PUBLIC_MESSAGES_TKN; // tenant token
 
 interface IConversationMessagesReq {
     conversationId: string;
@@ -42,7 +41,10 @@ export const messages = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl,
         prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer ${token}`);
+            headers.set(
+                "Authorization",
+                `Bearer ${localStorage.getItem("chatToken")}`
+            );
             return headers;
         },
     }),
