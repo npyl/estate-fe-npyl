@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import useChatService from "../../Sidebar/useChatService";
+import useChatService from "@/sections/Messages/useChatService";
 const DisconnectedIndicator = dynamic(() => import("./DisconnectedIndicator"));
 const CreateButton = dynamic(() => import("./CreateButton"));
 

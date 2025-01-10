@@ -1,5 +1,8 @@
 import { FC, useCallback, useState } from "react";
-import useChatService from "../../../Sidebar/useChatService";
+import useChatService, {
+    EVENTS,
+    useApplyListener,
+} from "@/sections/Messages/useChatService";
 import { IMessageRes } from "@/types/messages";
 import getMessage from "./getMessage";
 
@@ -15,7 +18,8 @@ const RealTimeMessages: FC<Props> = ({ currentUserId }) => {
         []
     );
 
-    useChatService({ onMessage });
+    const { socket } = useChatService();
+    useApplyListener(socket, EVENTS.MESSAGE_RECEIVED, onMessage);
 
     return <>{messages?.map(getMessage(currentUserId))}</>;
 };

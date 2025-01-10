@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import SidebarSkeleton from "./Skeleton";
 import dynamic from "next/dynamic";
 import { IConversation } from "@/types/messages";
-import useChatService from "./useChatService";
+import useChatService from "@/sections/Messages/useChatService";
 import { useGetConversationsQuery } from "@/services/messages";
 import { useSelectedConversationContext } from "../SelectedConversation";
 const NewPlaceholder = dynamic(() => import("./Conversation/NewPlaceholder"));

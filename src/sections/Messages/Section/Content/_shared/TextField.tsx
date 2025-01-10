@@ -1,6 +1,8 @@
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import MuiTextField from "@mui/material/TextField";
+import MuiTextField, {
+    TextFieldProps as MuiTextFieldProps,
+} from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 import { FC, useCallback, useRef } from "react";
 import { SxProps, Theme } from "@mui/material";
@@ -28,19 +30,24 @@ const StackSx: SxProps<Theme> = {
     },
 };
 
-interface TextFieldProps {
+type TMuiProps = Omit<MuiTextFieldProps<"outlined">, "variant" | "onEmptied">;
+
+interface TextFieldProps extends TMuiProps {
     onSend: (text: string) => void;
+    onEmptied?: () => void;
 }
 
-const TextField: FC<TextFieldProps> = ({ onSend }) => {
+const TextField: FC<TextFieldProps> = ({ onSend, onEmptied, ...props }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleSend = useCallback(() => {
         const v = inputRef.current?.value;
         if (!v) return;
         onSend(v);
+
         inputRef.current.value = "";
-    }, [onSend]);
+        onEmptied?.();
+    }, [onSend, onEmptied]);
 
     return (
         <Stack
@@ -59,6 +66,7 @@ const TextField: FC<TextFieldProps> = ({ onSend }) => {
                     },
                 }}
                 inputRef={inputRef}
+                {...props}
             />
 
             <SendButton className="SendButton" onClick={handleSend} />

@@ -1,6 +1,6 @@
-import { FC, useCallback } from "react";
+import { ChangeEvent, FC, useCallback } from "react";
 import TextField from "../_shared/TextField";
-import useChatService from "../../Sidebar/useChatService";
+import useChatService from "@/sections/Messages/useChatService";
 
 interface SendMessageTextFieldProps {
     conversationId: string;
@@ -9,7 +9,14 @@ interface SendMessageTextFieldProps {
 const SendMessageTextField: FC<SendMessageTextFieldProps> = ({
     conversationId,
 }) => {
-    const { sendMessage } = useChatService();
+    const {
+        sendMessage,
+        // ...
+        sendStartedTyping,
+        sendStoppedTyping,
+    } = useChatService();
+
+    // ---------------------------------------------------------------
 
     const handleSend = useCallback(
         (content: string) =>
@@ -17,7 +24,37 @@ const SendMessageTextField: FC<SendMessageTextFieldProps> = ({
         [conversationId]
     );
 
-    return <TextField onSend={handleSend} />;
+    const handleStartTyping = useCallback(
+        () => sendStartedTyping(conversationId),
+        [conversationId]
+    );
+    const handleStopTyping = useCallback(
+        () => sendStoppedTyping(conversationId),
+        [conversationId]
+    );
+
+    // ---------------------------------------------------------------
+
+    const handleChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const v = e.target.value;
+
+            if (!v) {
+                handleStopTyping();
+            } else {
+                handleStartTyping();
+            }
+        },
+        [handleStartTyping, handleStopTyping]
+    );
+
+    return (
+        <TextField
+            onChange={handleChange}
+            onEmptied={handleStopTyping}
+            onSend={handleSend}
+        />
+    );
 };
 
 export default SendMessageTextField;
