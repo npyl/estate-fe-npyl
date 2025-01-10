@@ -6,31 +6,28 @@ import { useSelectedConversationContext } from "../../SelectedConversation";
 import Stack from "@mui/material/Stack";
 import { HEAD_HEIGHT } from "../../constants";
 
-const tenantId = process.env.NEXT_PUBLIC_MESSAGES_TID || "";
-
 const CreateConversation = () => {
     const { setConversationId } = useSelectedConversationContext();
+
     const { recipients } = useCreateConversationContext();
+    const recipientId = recipients?.[0];
 
     const [initiate] = useInitiateConversationMutation();
 
     const handleSend = useCallback(
-        async (v: string) => {
-            const recipientId = recipients?.[0];
+        async (message: string) => {
             if (recipientId === undefined) return;
 
             const { id } = await initiate({
-                tenantId,
                 recipientId: recipientId.toString(),
-
-                // TODO: also pass message
+                message,
             }).unwrap();
 
             if (!id) return;
 
             setConversationId(id);
         },
-        [recipients]
+        [recipientId]
     );
 
     return (

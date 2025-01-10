@@ -18,9 +18,10 @@ interface IConversationMessagesRes {
 }
 
 interface IConversationReq {
-    tenantId: string;
     recipientId: string;
+    message: string;
 }
+
 interface IConversationRes {
     id: string;
 
