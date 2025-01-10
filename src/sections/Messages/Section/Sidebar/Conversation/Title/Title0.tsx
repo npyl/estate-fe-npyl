@@ -2,13 +2,16 @@ import { useGetUserQuery } from "@/services/user";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "./Typography";
 import { FC } from "react";
+import { toNumberSafe } from "@/utils/toNumber";
 
 interface Title0Props {
-    userId: number;
+    userId: string;
 }
 
 const Title0: FC<Title0Props> = ({ userId }) => {
-    const { data, isLoading } = useGetUserQuery(userId);
+    const iUserId = toNumberSafe(userId);
+
+    const { data, isLoading } = useGetUserQuery(iUserId);
     const { firstName, lastName } = data || {};
     const fullname = `${firstName || ""} ${lastName || ""}`;
 

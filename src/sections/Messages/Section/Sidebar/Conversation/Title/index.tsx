@@ -6,7 +6,7 @@ const Title0 = dynamic(() => import("./Title0"));
 interface TitleProps {
     name?: string;
     userIdsCount: number;
-    userId0?: number;
+    userId0?: string;
 }
 
 const Title: FC<TitleProps> = ({ name, userIdsCount, userId0 }) => {

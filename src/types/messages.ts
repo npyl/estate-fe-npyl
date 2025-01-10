@@ -3,7 +3,7 @@ type TConversationType = "DIRECT";
 interface IConversation {
     id: string;
     type: TConversationType;
-    participants: number[]; // userIds
+    participants: string[]; // userIds
     createdAt: string;
     updatedAt: string;
 }
