@@ -3,45 +3,11 @@ import {
     IConversationMessagesRes,
     useLazyGetConversationMessagesQuery,
 } from "@/services/messages";
-import {
-    Dispatch,
-    FC,
-    forwardRef,
-    SetStateAction,
-    useCallback,
-    useImperativeHandle,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
-import getMessage from "../getMessage";
-import PageTrigger, { PageTriggerProps } from "./PageTrigger";
-import { IMessageRes } from "@/types/messages";
-
-// -------------------------------------------------------------------
-
-interface PageTriggerControllerRef {
-    setHasMore: Dispatch<SetStateAction<boolean>>;
-}
-
-const PageTriggerController = forwardRef<
+import { FC, useCallback, useRef } from "react";
+import PageTriggerController, {
     PageTriggerControllerRef,
-    PageTriggerProps
->((props, ref) => {
-    const [hasMore, setHasMore] = useState(false);
-
-    useImperativeHandle(
-        ref,
-        () => ({
-            setHasMore,
-        }),
-        []
-    );
-
-    if (!hasMore) return null;
-
-    return <PageTrigger {...props} />;
-});
+} from "./PageTriggerController";
+import MessagesList, { MessagesListRef } from "./MessagesList";
 
 // -------------------------------------------------------------------
 
@@ -56,9 +22,9 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
     const page = useRef(0);
 
     const pageTriggerRef = useRef<PageTriggerControllerRef>(null);
+    const messagesListRef = useRef<MessagesListRef>(null);
 
     const [getPage] = useLazyGetConversationMessagesQuery();
-    const [messages, setMessages] = useState<IMessageRes[]>([]);
 
     const onPage = useCallback((res: IConversationMessagesRes | null) => {
         if (!res) return;
@@ -66,8 +32,7 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
         const { hasMore, messages } = res;
 
         pageTriggerRef.current?.setHasMore(hasMore);
-
-        setMessages((old) => [...messages, ...old]);
+        messagesListRef.current?.prependMessages(messages);
     }, []);
 
     const getNextPage = useCallback(async () => {
@@ -94,11 +59,6 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
         [getNextPage]
     );
 
-    // INFO: initial page
-    useLayoutEffect(() => {
-        loadNextPage();
-    }, [loadNextPage]);
-
     return (
         <>
             <PageTriggerController
@@ -106,7 +66,11 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
                 onScrollReach={loadNextPage}
             />
 
-            {messages?.map(getMessage(currentUserId))}
+            <MessagesList
+                ref={messagesListRef}
+                currentUserId={currentUserId}
+                onLoad={loadNextPage}
+            />
         </>
     );
 };
