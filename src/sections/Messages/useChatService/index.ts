@@ -39,8 +39,6 @@ export const useApplyListener = (
 
 // ------------------------------------------------------------------------------
 
-// useApplyListener("message:received", onMessage);
-
 const useChatService = () => {
     const [isConnected, setConnected, unsetConnected] = useDialog();
 

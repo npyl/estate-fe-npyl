@@ -1,10 +1,9 @@
 import { useAuth } from "@/hooks/use-auth";
-import { useGetConversationMessagesQuery } from "@/services/messages";
 import { SxProps, Theme } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { FC, useRef } from "react";
+import { FC } from "react";
 import RealTimeMessages from "./RealTime";
-import getMessage from "./getMessage";
+import StickyScroll from "./StickyScroll";
+import Pages from "./Pages";
 
 // -----------------------------------------------------------------------
 
@@ -56,8 +55,6 @@ const ContainerSx: SxProps<Theme> = {
         bubbleRadiusStyles.lastInSequence,
 };
 
-const PAGE_SIZE = 15;
-
 interface MessagesProps {
     conversationId: string;
 }
@@ -65,29 +62,11 @@ interface MessagesProps {
 const Messages: FC<MessagesProps> = ({ conversationId }) => {
     const { user } = useAuth();
 
-    const page = useRef(0);
-
-    const { data, isLoading } = useGetConversationMessagesQuery({
-        conversationId,
-        pagination: {
-            page: page.current,
-            size: PAGE_SIZE,
-        },
-    });
-
-    const { hasMore, messages } = data || {};
-
     return (
-        <Stack
-            overflow="hidden auto"
-            p={1}
-            height={1}
-            spacing={0.15}
-            sx={ContainerSx}
-        >
-            {messages?.map(getMessage(user?.id!))}
+        <StickyScroll p={1} height={1} spacing={0.15} sx={ContainerSx}>
+            <Pages currentUserId={user?.id!} conversationId={conversationId} />
             <RealTimeMessages currentUserId={user?.id!} />
-        </Stack>
+        </StickyScroll>
     );
 };
 

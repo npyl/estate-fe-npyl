@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = process.env.NEXT_PUBLIC_MESSAGES_API;
 
-interface IConversationMessagesReq {
+export interface IConversationMessagesReq {
     conversationId: string;
     pagination: {
         page: number;
@@ -11,7 +11,7 @@ interface IConversationMessagesReq {
     };
 }
 
-interface IConversationMessagesRes {
+export interface IConversationMessagesRes {
     messages: IMessageRes[];
     page: number;
     hasMore: boolean;
@@ -86,4 +86,5 @@ export const {
     useInitiateConversationMutation,
     // ...
     useGetConversationMessagesQuery,
+    useLazyGetConversationMessagesQuery,
 } = messages;
