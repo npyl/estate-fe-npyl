@@ -2,7 +2,7 @@ import Stack, { StackProps } from "@mui/material/Stack";
 import { HEAD_HEIGHT } from "../../../../constants";
 import { FC, useLayoutEffect, useRef } from "react";
 
-interface PageTriggerProps extends Omit<StackProps, "children"> {
+export interface PageTriggerProps extends Omit<StackProps, "children"> {
     onScrollReach: VoidFunction;
 }
 

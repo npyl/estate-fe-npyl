@@ -3,10 +3,47 @@ import {
     IConversationMessagesRes,
     useLazyGetConversationMessagesQuery,
 } from "@/services/messages";
-import { FC, useCallback, useLayoutEffect, useRef, useState } from "react";
+import {
+    Dispatch,
+    FC,
+    forwardRef,
+    SetStateAction,
+    useCallback,
+    useImperativeHandle,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import getMessage from "../getMessage";
-import PageTrigger from "./PageTrigger";
+import PageTrigger, { PageTriggerProps } from "./PageTrigger";
 import { IMessageRes } from "@/types/messages";
+
+// -------------------------------------------------------------------
+
+interface PageTriggerControllerRef {
+    setHasMore: Dispatch<SetStateAction<boolean>>;
+}
+
+const PageTriggerController = forwardRef<
+    PageTriggerControllerRef,
+    PageTriggerProps
+>((props, ref) => {
+    const [hasMore, setHasMore] = useState(false);
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            setHasMore,
+        }),
+        []
+    );
+
+    if (!hasMore) return null;
+
+    return <PageTrigger {...props} />;
+});
+
+// -------------------------------------------------------------------
 
 const PAGE_SIZE = 15;
 
@@ -18,8 +55,9 @@ interface MessagesPagesProps {
 const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
     const page = useRef(0);
 
+    const pageTriggerRef = useRef<PageTriggerControllerRef>(null);
+
     const [getPage] = useLazyGetConversationMessagesQuery();
-    const [hasMore, setHasMore] = useState(false);
     const [messages, setMessages] = useState<IMessageRes[]>([]);
 
     const onPage = useCallback((res: IConversationMessagesRes | null) => {
@@ -27,7 +65,7 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
 
         const { hasMore, messages } = res;
 
-        setHasMore(hasMore);
+        pageTriggerRef.current?.setHasMore(hasMore);
 
         setMessages((old) => [...messages, ...old]);
     }, []);
@@ -63,7 +101,11 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
 
     return (
         <>
-            {hasMore ? <PageTrigger onScrollReach={loadNextPage} /> : null}
+            <PageTriggerController
+                ref={pageTriggerRef}
+                onScrollReach={loadNextPage}
+            />
+
             {messages?.map(getMessage(currentUserId))}
         </>
     );
