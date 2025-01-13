@@ -8,6 +8,8 @@ import PageTriggerController, {
     PageTriggerControllerRef,
 } from "./PageTriggerController";
 import MessagesList, { MessagesListRef } from "./MessagesList";
+import RealTimeMessages from "./RealTime";
+import { IMessageRes } from "@/types/messages";
 
 // -------------------------------------------------------------------
 
@@ -59,6 +61,18 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
         [getNextPage]
     );
 
+    // -------------------------------------------------------------------
+
+    const handleRealTimeMessage = useCallback((m: IMessageRes) => {
+        const count = messagesListRef.current?.getMessagesCount() ?? 0;
+        const hasMore = (count + 1) % PAGE_SIZE > 0;
+
+        console.log("hasMore: ", hasMore, "count: ", count);
+
+        pageTriggerRef.current?.setHasMore(hasMore);
+        messagesListRef.current?.appendMessage(m);
+    }, []);
+
     return (
         <>
             <PageTriggerController
@@ -71,6 +85,8 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
                 currentUserId={currentUserId}
                 onLoad={loadNextPage}
             />
+
+            <RealTimeMessages onMessage={handleRealTimeMessage} />
         </>
     );
 };

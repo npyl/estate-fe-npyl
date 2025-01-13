@@ -1,6 +1,5 @@
 import { useAuth } from "@/hooks/use-auth";
 import { FC } from "react";
-import RealTimeMessages from "./RealTime";
 import StickyScroll from "./StickyScroll";
 import Pages from "./Pages";
 import { SxProps, Theme } from "@mui/material";
@@ -97,7 +96,6 @@ const Messages: FC<MessagesProps> = ({ conversationId }) => {
     return (
         <StickyScroll p={1} height={1} spacing={0.15} sx={ContainerSx}>
             <Pages currentUserId={user?.id!} conversationId={conversationId} />
-            <RealTimeMessages currentUserId={user?.id!} />
         </StickyScroll>
     );
 };
