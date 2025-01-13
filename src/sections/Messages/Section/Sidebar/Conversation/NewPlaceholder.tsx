@@ -7,6 +7,10 @@ const NewPlaceholder = () => (
             id: NEW_CONVERSATION_ID,
             participants: [],
             type: "DIRECT",
+            lastMessage: {
+                content: "",
+                createdAt: "",
+            },
             createdAt: "",
             updatedAt: "",
         }}
