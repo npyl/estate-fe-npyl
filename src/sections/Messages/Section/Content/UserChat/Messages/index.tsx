@@ -1,58 +1,90 @@
 import { useAuth } from "@/hooks/use-auth";
-import { SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import RealTimeMessages from "./RealTime";
 import StickyScroll from "./StickyScroll";
 import Pages from "./Pages";
-
-// -----------------------------------------------------------------------
-
-const hideConsecutiveMessageMeta = {
-    ".pp-message-avatar, .pp-message-fullname": {
-        display: "none",
-    },
-
-    ml: "40px",
-};
-
-const bubbleRadiusStyles = {
-    consecutive: {
-        ".pp-text-align-left": {
-            borderTopLeftRadius: "5px",
-            borderBottomLeftRadius: "5px",
-        },
-        ".pp-text-align-right": {
-            borderTopRightRadius: "5px",
-            borderBottomRightRadius: "5px",
-        },
-    },
-    firstInSequence: {
-        ".pp-text-align-left": {
-            borderBottomLeftRadius: "5px",
-        },
-        ".pp-text-align-right": {
-            borderBottomRightRadius: "5px",
-        },
-    },
-    lastInSequence: {
-        ".pp-text-align-left": {
-            borderBottomLeftRadius: "16px",
-        },
-        ".pp-text-align-right": {
-            borderBottomRightRadius: "16px",
-        },
-    },
-};
+import { SxProps, Theme } from "@mui/material";
 
 const ContainerSx: SxProps<Theme> = {
-    '& [class*="pp-message-sender-"] + [class*="pp-message-sender-"]': {
-        ...hideConsecutiveMessageMeta,
-        ...bubbleRadiusStyles.consecutive,
+    // Remove default margins
+    "& > *": { margin: "0 !important" },
+
+    gap: 0.2,
+    p: 2,
+
+    "& .message": {
+        alignSelf: "flex-start",
     },
-    '& [class*="pp-message-sender-"]:has(+ [class*="pp-message-sender-"])':
-        bubbleRadiusStyles.firstInSequence,
-    '& [class*="pp-message-sender-"] + [class*="pp-message-sender-"]:not(:has(+ [class*="pp-message-sender-"]))':
-        bubbleRadiusStyles.lastInSequence,
+
+    // Current user messages base styles
+    "& .message.current-user": {
+        alignSelf: "flex-end",
+
+        // Default full rounded corners (for single messages)
+        ".pp-message-content": {
+            borderRadius: "20px",
+        },
+
+        // First in group
+        "&:has(+ .message.current-user)": {
+            ".pp-message-content": {
+                borderRadius: "20px 20px 4px 20px",
+            },
+        },
+
+        // Middle messages
+        "& + .message.current-user": {
+            ".pp-message-avatar, .pp-message-fullname": {
+                display: "none",
+            },
+
+            ".pp-message-content": {
+                borderRadius: "20px 4px 4px 20px",
+            },
+        },
+
+        // Last message in group
+        "&:not(:has(+ .message.current-user))": {
+            ".pp-message-content": {
+                borderRadius: "20px 4px 20px 20px",
+            },
+        },
+    },
+
+    // Other users' messages grouping
+    "& .message:not(.current-user)": {
+        // Default full rounded corners (for single messages)
+        ".pp-message-content": {
+            borderRadius: "20px",
+        },
+
+        // First in group
+        "&:has(+ .message:not(.current-user))": {
+            ".pp-message-content": {
+                borderRadius: "20px 20px 20px 4px",
+            },
+        },
+
+        // Middle messages
+        "& + .message:not(.current-user)": {
+            ".pp-message-avatar, .pp-message-fullname": {
+                display: "none",
+            },
+
+            pl: "40px",
+
+            ".pp-message-content": {
+                borderRadius: "4px 20px 20px 4px",
+            },
+        },
+
+        // Last message in group
+        "&:not(:has(+ .message:not(.current-user)))": {
+            ".pp-message-content": {
+                borderRadius: "4px 20px 20px 20px",
+            },
+        },
+    },
 };
 
 interface MessagesProps {

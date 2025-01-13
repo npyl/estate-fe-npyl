@@ -1,11 +1,11 @@
 import { IMessageRes } from "@/types/messages";
 import { toNumberSafe } from "@/utils/toNumber";
-import { SxProps, Theme } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import SenderAvatar from "./SenderAvatar";
 import FullName from "./FullName";
+import { SxProps, Theme } from "@mui/material/styles";
 
 const getTextSx = (isCurrentUser: boolean): SxProps<Theme> =>
     isCurrentUser
@@ -27,13 +27,9 @@ interface MessageProps {
 const Message: FC<MessageProps> = ({ currentUserId, m }) => {
     const { sender, content } = m;
 
-    const className = `pp-message-sender-${sender}`;
-
     const iSender = toNumberSafe(sender);
     const isCurrentUser = iSender === currentUserId;
-    const alignSelf = isCurrentUser ? "flex-end" : "normal";
-
-    const textClassName = `pp-text-align-${isCurrentUser ? "right" : "left"}`;
+    const className = `message ${isCurrentUser ? "current-user" : ""}`;
 
     return (
         <Stack
@@ -42,14 +38,13 @@ const Message: FC<MessageProps> = ({ currentUserId, m }) => {
             maxWidth="50%"
             direction="row"
             spacing={1}
-            alignSelf={alignSelf}
         >
             {!isCurrentUser ? <SenderAvatar userId={iSender} /> : null}
             <Stack>
                 {!isCurrentUser ? <FullName userId={iSender} /> : null}
 
                 <Typography
-                    className={textClassName}
+                    className="pp-message-content"
                     p={1}
                     borderRadius="16px"
                     sx={{
