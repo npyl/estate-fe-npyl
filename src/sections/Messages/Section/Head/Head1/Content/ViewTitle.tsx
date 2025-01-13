@@ -22,7 +22,11 @@ const ViewTitle: FC<ViewTitleProps> = ({ conversationId }) => {
     return (
         <>
             <Avatars userIds={participants || []} />
-            <Title name={id} userIdsCount={2} userId0={participants?.[0]} />
+            <Title
+                name={id}
+                userIdsCount={participants?.length ?? 1}
+                userId0={participants?.[0]}
+            />
         </>
     );
 };

@@ -58,7 +58,8 @@ interface ContentProps {
 }
 
 const Content: FC<ContentProps> = ({ c }) => {
-    const { id, participants, updatedAt } = c || {};
+    const { id, participants, lastMessage, updatedAt } = c || {};
+    const { content } = lastMessage || {};
 
     const middleWidth = `calc(100% - ${CONVERSATION_IMAGE_WIDTH} - ${END_WIDTH})`;
 
@@ -67,8 +68,12 @@ const Content: FC<ContentProps> = ({ c }) => {
             <Avatars userIds={participants} />
 
             <Stack width={middleWidth}>
-                <Title name={id} userIdsCount={5} userId0={participants?.[0]} />
-                <LastMessage conversationId={c.id} />
+                <Title
+                    name={id}
+                    userIdsCount={participants.length}
+                    userId0={participants?.[0]}
+                />
+                <LastMessage content={content} />
             </Stack>
 
             <Stack width={END_WIDTH} height={1} alignItems="end">

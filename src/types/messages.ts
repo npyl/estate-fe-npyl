@@ -4,6 +4,10 @@ interface IConversation {
     id: string;
     type: TConversationType;
     participants: string[]; // userIds
+    lastMessage: {
+        content: string;
+        createdAt: string;
+    };
     createdAt: string;
     updatedAt: string;
 }
