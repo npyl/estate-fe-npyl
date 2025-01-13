@@ -18,6 +18,7 @@ import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
 import AccountButton from "./account-button";
+import { HideText } from "@/components/styled";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -121,7 +122,9 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     <Stack alignItems="center" direction="row">
                         <CreateButton
                             sx={{
+                                ml: 1,
                                 display: { xs: "flex", lg: "none" },
+                                ...HideText,
                             }}
                         />
 
@@ -135,7 +138,11 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             }}
                         />
 
-                        <AccountButton />
+                        <AccountButton
+                            sx={{
+                                display: { xs: "none", md: "block" },
+                            }}
+                        />
                     </Stack>
                 </Toolbar>
             </DashboardNavbarRoot>

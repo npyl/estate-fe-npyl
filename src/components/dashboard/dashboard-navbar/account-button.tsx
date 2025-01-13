@@ -1,11 +1,12 @@
-import { Box, ButtonBase } from "@mui/material";
-import { useRef } from "react";
-import { AccountPopover } from "./account-popover";
+import { Box, BoxProps, ButtonBase } from "@mui/material";
+import { FC, useRef } from "react";
 import Avatar from "@/components/Avatar";
 import { useAuth } from "@/hooks/use-auth";
 import useDialog from "@/hooks/useDialog";
+import dynamic from "next/dynamic";
+const AccountPopover = dynamic(() => import("./account-popover"));
 
-const AccountButton = () => {
+const AccountButton: FC<BoxProps> = ({ sx, ...props }) => {
     const { user } = useAuth();
 
     const anchorRef = useRef<HTMLButtonElement | null>(null);
@@ -21,7 +22,9 @@ const AccountButton = () => {
                     alignItems: "center",
                     display: "flex",
                     ml: 2,
+                    ...sx,
                 }}
+                {...props}
             >
                 <Avatar
                     firstName={user?.firstName}

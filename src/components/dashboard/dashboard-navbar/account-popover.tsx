@@ -22,7 +22,7 @@ interface AccountPopoverProps {
     open?: boolean;
 }
 
-export const AccountPopover: FC<AccountPopoverProps> = (props) => {
+const AccountPopover: FC<AccountPopoverProps> = (props) => {
     const { anchorEl, onClose, open, ...other } = props;
     const { user } = useAuth();
     const { t } = useTranslation();
@@ -113,3 +113,5 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
         </Popover>
     );
 };
+
+export default AccountPopover;

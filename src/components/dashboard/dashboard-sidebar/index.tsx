@@ -98,7 +98,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                         ))}
 
                         {belowMd ? (
-                            <Stack direction="row" justifyContent="center">
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
                                 <LanguageButton />
                                 <SettingsButton />
                             </Stack>
