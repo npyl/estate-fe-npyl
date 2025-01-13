@@ -3,7 +3,7 @@ export const Z_INDEX = {
 };
 
 export const LAYOUT = {
-    FAB_OFFSET_BOTTOM: 60,
+    FAB_OFFSET_BOTTOM: 70,
 };
 
 export const HEADER = {

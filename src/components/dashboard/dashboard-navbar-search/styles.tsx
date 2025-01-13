@@ -1,8 +1,28 @@
-import { Popper, PopperProps, Stack, StackProps } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { alpha } from "@mui/material";
+import { Popper, PopperProps } from "@mui/material";
 import { bgBlur } from "src/utils/cssStyles";
-import { SearchCategory } from "./dashboard-navbar-search/types";
+import { SearchCategory } from "./types";
+
+export const StyledSearchStack = styled((props: StackProps) => (
+    <Stack {...props} />
+))(({ theme }) => ({
+    margin: 0,
+
+    border: `dashed 1px transparent`,
+    borderBottomColor: theme.palette.divider,
+    "&:last-of-type": {
+        borderBottomColor: "transparent",
+    },
+    "&:hover": {
+        borderColor: theme.palette.primary.main,
+        backgroundColor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.hoverOpacity
+        ),
+    },
+}));
 
 interface StyledPopperProps extends PopperProps {
     searchCategory: SearchCategory;
@@ -63,24 +83,5 @@ export const StyledPopper = styled((props: StyledPopperProps) => (
                 ),
             },
         },
-    },
-}));
-
-export const StyledSearchStack = styled((props: StackProps) => (
-    <Stack {...props} />
-))(({ theme }) => ({
-    margin: 0,
-
-    border: `dashed 1px transparent`,
-    borderBottomColor: theme.palette.divider,
-    "&:last-of-type": {
-        borderBottomColor: "transparent",
-    },
-    "&:hover": {
-        borderColor: theme.palette.primary.main,
-        backgroundColor: alpha(
-            theme.palette.primary.main,
-            theme.palette.action.hoverOpacity
-        ),
     },
 }));

@@ -1,4 +1,5 @@
-import { IconButton } from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
+import { FC } from "react";
 import { useSettings } from "src/hooks/use-settings";
 
 const MoonIcon = () => {
@@ -41,7 +42,7 @@ const SunIcon = () => {
     );
 };
 
-export const SettingsButton = () => {
+export const SettingsButton: FC<IconButtonProps> = (props) => {
     const { settings, saveSettings } = useSettings();
 
     const toggleMode = () =>
@@ -51,7 +52,7 @@ export const SettingsButton = () => {
         });
 
     return (
-        <IconButton size="medium" onClick={toggleMode}>
+        <IconButton size="small" onClick={toggleMode} {...props}>
             {settings.theme === "light" ? <MoonIcon /> : <SunIcon />}
         </IconButton>
     );

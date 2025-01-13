@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "src/components/image/Image";
 import { IPropertyResultResponse } from "src/types/properties";
-import { StyledSearchStack } from "../styles";
+import { StyledSearchStack } from "./styles";
 import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
@@ -65,41 +65,12 @@ export const PropertySearchItem = ({
 
     const stateColor = getPropertyStatusColor(_state.value);
 
-    const code = useMemo(
-        () => ({
-            highlight: false,
-            text: "",
-        }),
-        [option.code, searchText]
-    );
-    const keyCode = useMemo(
-        () => ({
-            highlight: false,
-            text: "",
-        }),
-        [option.keyCode, searchText]
-    );
-    const price = useMemo(
-        () => ({
-            highlight: false,
-            text: "",
-        }),
-        [option.price, searchText]
-    );
     const area = useMemo(
         () => ({
             highlight: false,
             text: "",
         }),
         [option.area, searchText]
-    );
-
-    const location = useMemo(
-        () => ({
-            highlight: false,
-            text: "",
-        }),
-        [option.location, searchText]
     );
 
     const other: MatchResult = useMemo(() => {

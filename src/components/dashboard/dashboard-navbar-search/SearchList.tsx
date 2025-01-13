@@ -7,9 +7,8 @@ import {
     Theme,
     Typography,
     useMediaQuery,
-    useTheme,
 } from "@mui/material";
-import { StyledPopper } from "../styles";
+import { StyledPopper } from "./styles";
 import { useEffect, useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
@@ -25,7 +24,6 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import AgreementItems from "./AgreementItems";
 import useScreenWidth from "./hook";
 import { addSearchHistory, getSearchHistory } from ".";
-// import { useTheme } from "@emotion/react";
 
 const PAGE_SIZE = 20;
 

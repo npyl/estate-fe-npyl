@@ -14,7 +14,7 @@ import { DashboardSidebarSection } from "../dashboard-sidebar-section";
 import { useGetProfileQuery } from "src/services/user";
 import { useRouter } from "next/router";
 import { LanguageButton } from "@/components/Language/LanguageButton";
-import { SettingsButton } from "@/components/settings-button";
+import { SettingsButton } from "@/components/dashboard/settings-button";
 import useResponsive from "@/hooks/useResponsive";
 import getSections from "./getSections";
 

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { FC, ReactNode, useRef } from "react";
-import { DashboardNavbar } from "./dashboard-navbar";
+import DashboardNavbar from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import useDialog from "@/hooks/useDialog";
 import Subbar from "./dashboard-subbar";

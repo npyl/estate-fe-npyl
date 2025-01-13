@@ -1,8 +1,6 @@
 import {
     AppBar,
     AppBarProps,
-    Box,
-    ButtonBase,
     IconButton,
     Stack,
     Toolbar,
@@ -11,19 +9,15 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
-import { useRef, useState } from "react";
-import { Menu as MenuIcon } from "../../assets/icons/menu";
-import { UserCircle as UserCircleIcon } from "../../assets/icons/user-circle";
-import { AccountPopover } from "./account-popover";
-import { DashboardNavbarSearch } from "./dashboard-navbar-search";
-import { LanguageButton } from "../Language/LanguageButton";
-import { SettingsButton } from "../settings-button";
+import { Menu as MenuIcon } from "@/assets/icons/menu";
+import DashboardNavbarSearch from "@/components/dashboard/dashboard-navbar-search";
+import { LanguageButton } from "@/components/Language/LanguageButton";
+import { SettingsButton } from "@/components/dashboard/settings-button";
 import LogoHorizontalLight from "@/assets/logo/horizontal/light";
 import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
-import useResponsive from "@/hooks/useResponsive";
-import Avatar from "@/components/Avatar";
-import { useAuth } from "@/hooks/use-auth";
 import Link from "@/components/Link";
+import CreateButton from "../CreateButton";
+import AccountButton from "./account-button";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -63,49 +57,8 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     zIndex: 200,
 }));
 
-const AccountButton = () => {
-    const { user } = useAuth();
-
-    const anchorRef = useRef<HTMLButtonElement | null>(null);
-    const [openPopover, setOpenPopover] = useState<boolean>(false);
-
-    const handleOpenPopover = () => setOpenPopover(true);
-    const handleClosePopover = () => setOpenPopover(false);
-
-    return (
-        <>
-            <Box
-                component={ButtonBase}
-                onClick={handleOpenPopover}
-                ref={anchorRef}
-                sx={{
-                    alignItems: "center",
-                    display: "flex",
-                    ml: 2,
-                }}
-            >
-                <Avatar
-                    firstName={user?.firstName}
-                    lastName={user?.lastName}
-                    src={user?.avatar}
-                    sx={{
-                        height: 40,
-                        width: 40,
-                    }}
-                />
-            </Box>
-            <AccountPopover
-                anchorEl={anchorRef.current}
-                onClose={handleClosePopover}
-                open={openPopover}
-            />
-        </>
-    );
-};
-
-export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
+const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
     const { onOpenSidebar, ...other } = props;
-    const belowMd = useResponsive("down", "md");
 
     return (
         <>
@@ -162,15 +115,26 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     >
                         <MenuIcon fontSize="small" />
                     </IconButton>
-                    <DashboardNavbarSearch />
-                    <Stack direction={"row"}>
-                        {belowMd ? null : (
-                            <>
-                                <LanguageButton />
 
-                                <SettingsButton />
-                            </>
-                        )}
+                    <DashboardNavbarSearch />
+
+                    <Stack alignItems="center" direction="row">
+                        <CreateButton
+                            sx={{
+                                display: { xs: "flex", lg: "none" },
+                            }}
+                        />
+
+                        <LanguageButton
+                            sx={{ display: { xs: "none", md: "flex" } }}
+                        />
+
+                        <SettingsButton
+                            sx={{
+                                display: { xs: "none", md: "block" },
+                            }}
+                        />
+
                         <AccountButton />
                     </Stack>
                 </Toolbar>
@@ -178,3 +142,5 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
         </>
     );
 };
+
+export default DashboardNavbar;

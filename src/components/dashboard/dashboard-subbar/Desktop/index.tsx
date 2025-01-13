@@ -2,7 +2,7 @@ import { SpaceBetween } from "@/components/styled";
 import { useRouter } from "next/router";
 import SubbarItems from "./Items";
 import Paper from "@mui/material/Paper";
-import CreateButton from "./CreateButton";
+import CreateButton from "@/components/dashboard/CreateButton";
 import { forwardRef } from "react";
 import { SubbarRef } from "@/contexts/tabs";
 
@@ -22,6 +22,7 @@ const DesktopBar = forwardRef<SubbarRef, object>(({}, ref) => {
             p={1}
             gap={1}
             sx={{
+                display: { xs: "none", lg: "flex" },
                 position: isStickyPath ? "sticky" : "relative",
                 top: isStickyPath ? 64 : 0,
                 zIndex: 100,
@@ -29,6 +30,7 @@ const DesktopBar = forwardRef<SubbarRef, object>(({}, ref) => {
             }}
         >
             <SubbarItems ref={ref} overflow="auto" width="90%" />
+
             <CreateButton />
         </Paper>
     );

@@ -51,7 +51,7 @@ const removeSearchHistoryItem = (searchTerm: string) => {
     return updatedHistory;
 };
 
-export const DashboardNavbarSearch: FC = () => {
+const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -376,3 +376,5 @@ export const DashboardNavbarSearch: FC = () => {
         </>
     );
 };
+
+export default DashboardNavbarSearch;

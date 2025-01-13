@@ -1,5 +1,5 @@
 import AgreementCard from "@/components/Cards/AgreementCard";
-import Pagination, { usePagination } from "@/components/Pagination";
+import { usePagination } from "@/components/Pagination";
 import { useSearchAgreementsQuery } from "@/services/agreements";
 import Grid from "@mui/material/Grid";
 import React, { useMemo } from "react";
