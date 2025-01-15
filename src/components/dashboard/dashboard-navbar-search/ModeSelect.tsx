@@ -24,7 +24,7 @@ const SelectSx: SxProps<Theme> = {
     borderLeft: "1px solid",
     borderColor: "divider",
     borderRadius: 0,
-    width: { xs: "85px", sm: "150px" },
+    width: { xs: "50px", sm: "150px" },
     ".MuiOutlinedInput-input": {
         display: "flex",
         gap: 1,

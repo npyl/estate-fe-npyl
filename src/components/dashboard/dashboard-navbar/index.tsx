@@ -105,19 +105,28 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         <StyledTypography variant="h6">v0.97</StyledTypography>
                     </Stack>
 
-                    <IconButton
-                        onClick={onOpenSidebar}
+                    <Stack
+                        direction="row"
+                        alignItems="center"
                         sx={{
                             display: {
-                                xs: "inline-flex",
+                                xs: "flex",
                                 md: "none",
                             },
                         }}
                     >
-                        <MenuIcon fontSize="small" />
-                    </IconButton>
+                        <IconButton onClick={onOpenSidebar}>
+                            <MenuIcon fontSize="small" />
+                        </IconButton>
 
-                    <DashboardNavbarSearch />
+                        <DashboardNavbarSearch />
+                    </Stack>
+
+                    <DashboardNavbarSearch
+                        sx={{
+                            display: { xs: "none", md: "flex" },
+                        }}
+                    />
 
                     <Stack alignItems="center" direction="row">
                         <CreateButton

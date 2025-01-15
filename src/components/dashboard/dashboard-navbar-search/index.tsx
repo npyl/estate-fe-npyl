@@ -1,5 +1,12 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { ClickAwayListener, IconButton, InputAdornment } from "@mui/material";
+import {
+    ClickAwayListener,
+    IconButton,
+    InputAdornment,
+    InputBaseProps,
+    SxProps,
+    Theme,
+} from "@mui/material";
 import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import SearchInput from "@/components/Search/SearchInput";
@@ -12,7 +19,37 @@ import { HistoryListRef } from "./HistoryList";
 const HistoryList = dynamic(() => import("./HistoryList"));
 const SearchList = dynamic(() => import("./SearchList"));
 
-const DashboardNavbarSearch: FC = () => {
+const SearchInputSx: SxProps<Theme> = {
+    input: {
+        pl: { xs: 0, sm: "15px" }, // adjust this as needed
+    },
+    "input::placeholder": {
+        textIndent: "0px", // adjust this as needed
+    },
+    p: { xs: 0.5, sm: 1 },
+    width: { xs: "min-content", sm: "100%", lg: "40vw" },
+};
+
+const StartAdornment = () => (
+    <InputAdornment position="start">
+        <IconButton
+            disabled
+            sx={{
+                borderRight: { xs: 0, sm: "1px solid" },
+                borderColor: "divider",
+                borderRadius: 0,
+                pr: { xs: 0, sm: 1 },
+            }}
+            color="primary"
+            disableFocusRipple
+            disableRipple
+        >
+            <SearchIcon />
+        </IconButton>
+    </InputAdornment>
+);
+
+const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
     const { t } = useTranslation();
 
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -82,38 +119,15 @@ const DashboardNavbarSearch: FC = () => {
                         onFocus={handleFocus}
                         placeholder={t("Search") || ""}
                         onKeyDown={handleKeyDown}
-                        sx={{
-                            input: {
-                                paddingLeft: "15px", // adjust this as needed
-                            },
-                            "input::placeholder": {
-                                textIndent: "0px", // adjust this as needed
-                            },
-                            width: { xs: "65vw", sm: "40vw" },
-                        }}
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <IconButton
-                                    disabled
-                                    sx={{
-                                        borderRight: "1px solid",
-                                        borderColor: "divider",
-                                        borderRadius: 0,
-                                    }}
-                                    color={"primary"}
-                                    disableFocusRipple
-                                    disableRipple
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        }
+                        sx={{ ...SearchInputSx, ...sx }}
+                        startAdornment={<StartAdornment />}
                         endAdornment={
                             <ModeSelect
                                 value={searchCategory}
                                 onChange={handleChangeCategory}
                             />
                         }
+                        {...props}
                     />
 
                     {open && searchText.trim() === "" ? (
