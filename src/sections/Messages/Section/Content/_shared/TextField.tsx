@@ -6,6 +6,7 @@ import MuiTextField, {
 import SendIcon from "@mui/icons-material/Send";
 import { FC, useCallback, useRef } from "react";
 import { SxProps, Theme } from "@mui/material";
+import EmojiPickerButton from "./EmojiPickerButton";
 
 const SendButton: FC<IconButtonProps> = (props) => (
     <IconButton {...props}>
@@ -57,6 +58,8 @@ const TextField: FC<TextFieldProps> = ({ onSend, onEmptied, ...props }) => {
             justifySelf="flex-end"
             sx={StackSx}
         >
+            <EmojiPickerButton />
+
             <MuiTextField
                 fullWidth
                 placeholder={PLACEHOLDER_CONTENT}
