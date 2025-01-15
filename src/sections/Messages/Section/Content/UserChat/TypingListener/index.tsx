@@ -1,6 +1,6 @@
 import useChatService, {
     EVENTS,
-    useApplyListener,
+    TChatServiceInitCb,
 } from "@/sections/Messages/useChatService";
 import { useCallback, useState } from "react";
 import UserTyping from "./UserTyping";
@@ -17,9 +17,20 @@ const TypingListener = () => {
     const { userId } = userTyping || {};
     const onTypingStopped = useCallback(() => setUserTyping(undefined), []);
 
-    const { socket } = useChatService();
-    useApplyListener(socket, EVENTS.USER_TYPING_STARTED, setUserTyping);
-    useApplyListener(socket, EVENTS.USER_TYPING_STOPPED, onTypingStopped);
+    const serviceInit: TChatServiceInitCb = useCallback(
+        (applyListener, removeListener) => {
+            applyListener(EVENTS.USER_TYPING_STARTED, setUserTyping);
+            applyListener(EVENTS.USER_TYPING_STOPPED, onTypingStopped);
+
+            return () => {
+                removeListener(EVENTS.USER_TYPING_STARTED, setUserTyping);
+                removeListener(EVENTS.USER_TYPING_STOPPED, onTypingStopped);
+            };
+        },
+        []
+    );
+
+    useChatService(serviceInit);
 
     if (userId) return <UserTyping userId={userId} />;
 

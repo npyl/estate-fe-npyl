@@ -2,7 +2,6 @@ import { useCallback, useLayoutEffect } from "react";
 import useDialog from "@/hooks/useDialog";
 import { IMessageReq } from "@/types/messages";
 import socket from "./socket";
-import { Socket } from "socket.io-client";
 
 // ------------------------------------------------------------------------------
 
@@ -14,32 +13,37 @@ const EVENTS = {
 
 // ------------------------------------------------------------------------------
 
-export interface DefaultEventsMap {
-    [event: string]: (...args: any[]) => void;
-}
-
-export const useApplyListener = (
-    socket: Socket<DefaultEventsMap, DefaultEventsMap>,
+const applyListener = (
     ev: (typeof EVENTS)[keyof typeof EVENTS],
     cb?: (...args: any) => any
 ) => {
-    useLayoutEffect(() => {
-        if (!socket) return;
-        if (!cb) return;
+    if (!socket) return;
+    if (!cb) return;
 
-        socket.on(ev, cb);
-
-        return () => {
-            if (!socket) return;
-
-            socket.off(ev, cb);
-        };
-    }, [cb]);
+    socket.on(ev, cb);
 };
+
+const removeListener = (
+    ev: (typeof EVENTS)[keyof typeof EVENTS],
+    cb?: (...args: any) => any
+) => {
+    if (!socket) return;
+    if (!cb) return;
+
+    socket.off(ev, cb);
+};
+
+type TApplyListenerCb = typeof applyListener;
+type TRemoveListenerCb = typeof removeListener;
 
 // ------------------------------------------------------------------------------
 
-const useChatService = () => {
+type TChatServiceInitCb = (
+    cb0: TApplyListenerCb,
+    cb1: TRemoveListenerCb
+) => VoidFunction | undefined;
+
+const useChatService = (cb?: TChatServiceInitCb) => {
     const [isConnected, setConnected, unsetConnected] = useDialog();
 
     useLayoutEffect(() => {
@@ -50,15 +54,19 @@ const useChatService = () => {
 
         socket.connect();
 
+        const onUnmount = cb?.(applyListener, removeListener);
+
         return () => {
             if (!socket) return;
+
+            onUnmount?.();
 
             socket.off("connect");
             socket.off("disconnect");
 
             socket.disconnect();
         };
-    }, []);
+    }, [cb]);
 
     //
     // ---------------------------------------------------------------
@@ -79,8 +87,6 @@ const useChatService = () => {
     }, []);
 
     return {
-        socket: socket!,
-        // ...
         isConnected,
         // ...
         sendMessage,
@@ -91,4 +97,5 @@ const useChatService = () => {
 };
 
 export { EVENTS };
+export type { TChatServiceInitCb };
 export default useChatService;
