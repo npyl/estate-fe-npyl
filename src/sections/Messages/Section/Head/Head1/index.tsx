@@ -9,7 +9,7 @@ import Content from "./Content";
 const StackSx: SxProps<Theme> = {
     ".BackButton": {
         display: {
-            xs: "block",
+            xs: "flex",
             md: "none",
         },
     },
