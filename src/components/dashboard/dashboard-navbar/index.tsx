@@ -122,8 +122,8 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     <Stack alignItems="center" direction="row">
                         <CreateButton
                             sx={{
-                                mx: 1,
-                                display: { xs: "flex", lg: "none" },
+                                ml: 1,
+                                mr: 2,
                                 ...HideText,
                             }}
                         />

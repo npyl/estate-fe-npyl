@@ -9,9 +9,10 @@ const Menu = dynamic(() => import("./dashboard-subbar/Desktop/Menu"));
 
 const ButtonSx: SxProps<Theme> = {
     color: "white",
-    fontSize: "16px",
-    borderRadius: "5px",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+    "&:hover": {
+        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+    },
 };
 
 const CreateButton: FC<ButtonProps> = ({ sx, ...props }) => {
