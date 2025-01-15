@@ -130,7 +130,7 @@ interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     updateSearchHistory: (history: string[]) => void;
 }
 
-export const SearchList = ({
+const SearchList = ({
     searchText,
     searchCategory,
     open,
@@ -380,3 +380,5 @@ export const SearchList = ({
         </div>
     );
 };
+
+export default SearchList;

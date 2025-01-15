@@ -1,6 +1,4 @@
 import SearchIcon from "@mui/icons-material/Search";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import {
     ClickAwayListener,
     IconButton,
@@ -9,22 +7,19 @@ import {
     ListItem,
     ListItemButton,
     ListItemText,
-    MenuItem,
-    Select,
     Stack,
-    Typography,
 } from "@mui/material";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SearchList } from "./SearchList";
 import SearchInput from "@/components/Search/SearchInput";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
-import { useMediaQuery, useTheme } from "@mui/material";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
-import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
+import ModeSelect from "./ModeSelect";
+import dynamic from "next/dynamic";
+const SearchList = dynamic(() => import("./SearchList"));
+
 const SEARCH_HISTORY_KEY = "search_history";
 
 export const getSearchHistory = (): string[] => {
@@ -53,8 +48,8 @@ const removeSearchHistoryItem = (searchTerm: string) => {
 
 const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const [searchText, setSearchText] = useState("");
     const [debouncedSearch] = useDebounce(searchText, 300);
@@ -64,7 +59,7 @@ const DashboardNavbarSearch: FC = () => {
     // search history states
     const [searchHistory, setSearchHistory] =
         useState<string[]>(getSearchHistory);
-    const inputRef = useRef<HTMLInputElement | null>(null);
+
     useEffect(() => {
         setSearchHistory(getSearchHistory());
     }, []);
@@ -156,108 +151,13 @@ const DashboardNavbarSearch: FC = () => {
                             </InputAdornment>
                         }
                         endAdornment={
-                            <InputAdornment
-                                sx={{
-                                    display: { xs: "flex", md: "flex" },
-                                }}
-                                position="end"
-                            >
-                                <Select
-                                    sx={{
-                                        borderLeft: "1px solid",
-                                        borderColor: "divider",
-                                        borderRadius: 0,
-                                        width: isMobile ? "85px" : "150px",
-                                        ".MuiOutlinedInput-notchedOutline": {
-                                            border: 0,
-                                        },
-                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                            {
-                                                border: 0,
-                                            },
-                                        alignItems: "center",
-                                    }}
-                                    MenuProps={{ disableScrollLock: true }}
-                                    value={searchCategory}
-                                    onChange={handleChangeCategory}
-                                >
-                                    <MenuItem value="all">
-                                        {" "}
-                                        <Stack
-                                            direction="row"
-                                            alignItems="center"
-                                            gap={0.6}
-                                        >
-                                            <SelectAllOutlinedIcon
-                                                sx={{
-                                                    fontSize: "18px",
-                                                }}
-                                            />{" "}
-                                            {t("All")}
-                                        </Stack>
-                                    </MenuItem>
-                                    <MenuItem value="properties">
-                                        {isMobile ? (
-                                            <HomeOutlinedIcon sx={{ mt: 1 }} />
-                                        ) : (
-                                            <Stack
-                                                direction="row"
-                                                alignItems="center"
-                                                gap={0.6}
-                                            >
-                                                <HomeOutlinedIcon
-                                                    sx={{
-                                                        fontSize: "18px",
-                                                    }}
-                                                />{" "}
-                                                {t("Properties")}
-                                            </Stack>
-                                        )}
-                                    </MenuItem>
-                                    <MenuItem value="customers">
-                                        {isMobile ? (
-                                            <PersonOutlineOutlinedIcon
-                                                sx={{ mt: 1 }}
-                                            />
-                                        ) : (
-                                            <Stack
-                                                direction="row"
-                                                alignItems="center"
-                                                gap={0.6}
-                                            >
-                                                <PersonOutlineOutlinedIcon
-                                                    sx={{
-                                                        fontSize: "18px",
-                                                    }}
-                                                />{" "}
-                                                {t("Customers")}
-                                            </Stack>
-                                        )}
-                                    </MenuItem>
-                                    <MenuItem value="agreements">
-                                        {isMobile ? (
-                                            <HandshakeOutlinedIcon
-                                                sx={{ mt: 1 }}
-                                            />
-                                        ) : (
-                                            <Stack
-                                                direction="row"
-                                                alignItems="center"
-                                                gap={0.6}
-                                            >
-                                                <HandshakeOutlinedIcon
-                                                    sx={{
-                                                        fontSize: "18px",
-                                                    }}
-                                                />{" "}
-                                                {t("Agreements")}
-                                            </Stack>
-                                        )}
-                                    </MenuItem>
-                                </Select>
-                            </InputAdornment>
+                            <ModeSelect
+                                value={searchCategory}
+                                onChange={handleChangeCategory}
+                            />
                         }
                     />
+
                     {open && searchText.trim() === "" && (
                         <List
                             sx={{
