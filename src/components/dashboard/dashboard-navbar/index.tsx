@@ -123,7 +123,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         <CreateButton
                             sx={{
                                 ml: 1,
-                                mr: 2,
+                                mr: { xs: 0, md: 2 },
                                 ...HideText,
                             }}
                         />
@@ -138,11 +138,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             }}
                         />
 
-                        <AccountButton
-                            sx={{
-                                display: { xs: "none", md: "block" },
-                            }}
-                        />
+                        <AccountButton />
                     </Stack>
                 </Toolbar>
             </DashboardNavbarRoot>
