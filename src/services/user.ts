@@ -7,6 +7,10 @@ interface UploadAvatarReq {
     file: File;
 }
 
+interface IChatTokenRes {
+    token: string;
+}
+
 export const user = apiWithTranslation({
     reducerPath: "user",
     baseQuery: fetchBaseQuery({
@@ -111,6 +115,18 @@ export const user = apiWithTranslation({
                 },
             }),
         }),
+
+        // -------------------------------------------
+
+        generateChatToken: builder.mutation<IChatTokenRes, string>({
+            query: (accessToken) => ({
+                url: "generate-chat-token",
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }),
+        }),
     }),
 });
 
@@ -128,6 +144,8 @@ export const {
     useLazyGetProfileQuery,
     useDeleteUserMutation,
     useResetPasswordMutation,
+    // ....
+    useGenerateChatTokenMutation,
 } = user;
 
 const useGetProfileQuery = la(user.useGetProfileQuery);
