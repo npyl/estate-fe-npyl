@@ -36,7 +36,7 @@ type TMuiProps = Omit<MuiTextFieldProps<"outlined">, "variant" | "onEmptied">;
 
 interface TextFieldProps extends TMuiProps {
     onSend: (text: string) => void;
-    onEmojiClick: (text: string) => void;
+    onEmojiClick?: (text: string) => void;
     onEmptied?: () => void;
 }
 
@@ -64,7 +64,7 @@ const TextField: FC<TextFieldProps> = ({
             const v = inputRef.current.value + data.emoji;
 
             inputRef.current.value = v;
-            onEmojiClick(v);
+            onEmojiClick?.(v);
         },
         [onEmojiClick]
     );
