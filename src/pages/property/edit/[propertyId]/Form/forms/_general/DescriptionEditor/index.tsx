@@ -14,8 +14,7 @@ import UpperRightButtons from "./UpperRightButtons";
 import { SxProps, Theme } from "@mui/material";
 import { textToEditorState } from "./util";
 import { OperationsProvider, useOperationsContext } from "./context";
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+import sleep from "@/utils/sleep";
 
 const EditorSx: SxProps<Theme> = {
     minHeight: "200px",

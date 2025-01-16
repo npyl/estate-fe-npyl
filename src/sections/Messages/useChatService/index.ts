@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect } from "react";
 import useDialog from "@/hooks/useDialog";
 import { IMessageReq } from "@/types/messages";
 import socket from "./socket";
+import sleep from "@/utils/sleep";
 
 // ------------------------------------------------------------------------------
 
@@ -38,6 +39,35 @@ type TRemoveListenerCb = typeof removeListener;
 
 // ------------------------------------------------------------------------------
 
+// INFO: this implements something like the equivalent of a refcount; used to prevent socket disconnect before executing unmount code
+
+declare global {
+    // eslint-disable-next-line no-var
+    var chatUsers: number;
+}
+
+const incrementUsers = () => {
+    globalThis.chatUsers = (globalThis.chatUsers ?? 0) + 1;
+};
+
+const decrementUsers = () => {
+    globalThis.chatUsers = (globalThis.chatUsers ?? 1) - 1;
+    return globalThis.chatUsers;
+};
+
+// ------------------------------------------------------------------------------
+
+/**
+ * Wait 2 sec before disconnecting the socket
+ */
+const safeDisconnect = async () => {
+    if (!socket) return;
+    await sleep(2000);
+    socket.disconnect();
+};
+
+// ------------------------------------------------------------------------------
+
 type TChatServiceInitCb = (
     cb0: TApplyListenerCb,
     cb1: TRemoveListenerCb
@@ -49,10 +79,15 @@ const useChatService = (cb?: TChatServiceInitCb) => {
     useLayoutEffect(() => {
         if (!socket) throw new Error("Socket is not available!");
 
+        incrementUsers();
+
         socket.on("connect", setConnected);
         socket.on("disconnect", unsetConnected);
 
-        socket.connect();
+        // INFO: make sure we only connect to the socket ONCE! (a.k.a. on first user of useChatService)
+        if (!socket.connected) {
+            socket.connect();
+        }
 
         const onUnmount = cb?.(applyListener, removeListener);
 
@@ -64,7 +99,12 @@ const useChatService = (cb?: TChatServiceInitCb) => {
             socket.off("connect");
             socket.off("disconnect");
 
-            socket.disconnect();
+            const remaining = decrementUsers();
+
+            // INFO: Make sure we disconnect from the socket when ALL listeners have been removed (a.k.a. every ui element has stopped listening to the socket!)
+            if (remaining === 0) {
+                safeDisconnect();
+            }
         };
     }, [cb]);
 
