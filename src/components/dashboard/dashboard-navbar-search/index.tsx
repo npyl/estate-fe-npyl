@@ -9,15 +9,32 @@ import {
 } from "@mui/material";
 import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import SearchInput from "@/components/Search/SearchInput";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
 import ModeSelect from "./ModeSelect";
 import dynamic from "next/dynamic";
-import { addSearchHistory } from "./history";
+import { addSearchHistory } from "./HistoryList/history";
 import { HistoryListRef } from "./HistoryList";
+import ResponsiveSearchInput from "./ResponsiveSearchInput";
 const HistoryList = dynamic(() => import("./HistoryList"));
 const SearchList = dynamic(() => import("./SearchList"));
+
+const StartAdornmentSx: SxProps<Theme> = {
+    height: 1,
+    borderRight: { xs: 0, sm: "1px solid" },
+    borderColor: ({ palette: { divider } }) => `${divider} !important`,
+    borderRadius: 0,
+};
+
+const StartAdornment = () => (
+    <InputAdornment position="start" sx={StartAdornmentSx}>
+        <IconButton disableFocusRipple disableRipple>
+            <SearchIcon />
+        </IconButton>
+    </InputAdornment>
+);
+
+// ------------------------------------------------------------------------------
 
 const SearchInputSx: SxProps<Theme> = {
     input: {
@@ -30,29 +47,10 @@ const SearchInputSx: SxProps<Theme> = {
     width: { xs: "min-content", sm: "100%", lg: "40vw" },
 };
 
-const StartAdornment = () => (
-    <InputAdornment position="start">
-        <IconButton
-            disabled
-            sx={{
-                borderRight: { xs: 0, sm: "1px solid" },
-                borderColor: "divider",
-                borderRadius: 0,
-                pr: { xs: 0, sm: 1 },
-            }}
-            color="primary"
-            disableFocusRipple
-            disableRipple
-        >
-            <SearchIcon />
-        </IconButton>
-    </InputAdornment>
-);
-
 const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
     const { t } = useTranslation();
 
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     const historyRef = useRef<HistoryListRef>(null);
 
     const [searchText, setSearchText] = useState("");
@@ -84,7 +82,7 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
         }
     };
 
-    const handleFocus = (event: any) => {
+    const handleFocus = () => {
         if (inputRef.current) {
             const closestEl = inputRef.current.closest(
                 ".MuiInputBase-root"
@@ -111,15 +109,18 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
     return (
         <>
             <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-                <div style={{ position: "relative" }}>
-                    <SearchInput
+                <div>
+                    <ResponsiveSearchInput
                         ref={inputRef}
                         value={searchText}
                         onChange={handleInputChange}
                         onFocus={handleFocus}
                         placeholder={t("Search") || ""}
                         onKeyDown={handleKeyDown}
-                        sx={{ ...SearchInputSx, ...sx }}
+                        sx={{
+                            ...SearchInputSx,
+                            ...sx,
+                        }}
                         startAdornment={<StartAdornment />}
                         endAdornment={
                             <ModeSelect

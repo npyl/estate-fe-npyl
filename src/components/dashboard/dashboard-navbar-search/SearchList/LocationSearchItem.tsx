@@ -2,11 +2,11 @@ import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { IGeoLocation } from "src/types/geolocation";
-import { StyledSearchStack } from "./styles";
+import { StyledSearchStack } from "../styles";
 import { useSearchLocationsQuery } from "src/services/location";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
-import { MatchResult } from "./types";
+import { MatchResult } from "../types";
 
 interface SearchItemProps {
     searchText: string;

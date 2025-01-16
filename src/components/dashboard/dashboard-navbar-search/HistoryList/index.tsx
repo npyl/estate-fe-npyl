@@ -11,7 +11,6 @@ import {
     forwardRef,
     SetStateAction,
     useCallback,
-    useEffect,
     useImperativeHandle,
     useState,
 } from "react";
@@ -30,7 +29,9 @@ export interface HistoryListRef {
 const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
     ({ onSelect }, ref) => {
         // search history states
-        const [searchHistory, setSearchHistory] = useState<string[]>([]);
+        const [searchHistory, setSearchHistory] = useState<string[]>(
+            getSearchHistory()
+        );
 
         useImperativeHandle(
             ref,
@@ -48,10 +49,6 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
             },
             []
         );
-
-        useEffect(() => {
-            setSearchHistory(getSearchHistory());
-        }, []);
 
         return (
             <List

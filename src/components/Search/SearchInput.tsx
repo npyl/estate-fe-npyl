@@ -1,5 +1,7 @@
-import InputBase from "@mui/material/InputBase";
+import InputBase, { InputBaseProps } from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
+
+interface SearchInputProps extends InputBaseProps {}
 
 const SearchInput = styled(InputBase)(({ theme }) => ({
     borderRadius: 24,
@@ -14,4 +16,5 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
     height: "50px",
 }));
 
+export type { SearchInputProps };
 export default SearchInput;

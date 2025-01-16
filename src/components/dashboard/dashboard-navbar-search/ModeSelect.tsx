@@ -13,6 +13,8 @@ import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
 
+const Empty = () => null;
+
 const MenuItemSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
@@ -24,7 +26,8 @@ const SelectSx: SxProps<Theme> = {
     borderLeft: "1px solid",
     borderColor: "divider",
     borderRadius: 0,
-    width: { xs: "50px", sm: "150px" },
+    width: { xs: "50px", sm: "min-content", md: "130px" },
+
     ".MuiOutlinedInput-input": {
         display: "flex",
         gap: 1,
@@ -36,7 +39,6 @@ const SelectSx: SxProps<Theme> = {
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
         border: 0,
     },
-    alignItems: "center",
 };
 
 const ModeSelect: FC<SelectProps> = (props) => {
@@ -46,6 +48,7 @@ const ModeSelect: FC<SelectProps> = (props) => {
             <Select
                 sx={SelectSx}
                 MenuProps={{ disableScrollLock: true }}
+                IconComponent={Empty}
                 {...props}
             >
                 <MenuItem value="all" sx={MenuItemSx}>

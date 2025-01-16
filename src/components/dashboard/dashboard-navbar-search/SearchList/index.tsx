@@ -8,7 +8,7 @@ import {
     Typography,
     useMediaQuery,
 } from "@mui/material";
-import { StyledPopper } from "./styles";
+import { StyledPopper } from "../styles";
 import { useEffect, useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
@@ -18,12 +18,12 @@ import { useTranslation } from "react-i18next";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { useSearchCustomerQuery } from "@/services/customers";
-import { SearchCategory } from "./types";
+import { SearchCategory } from "../types";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AgreementItems from "./AgreementItems";
-import useScreenWidth from "./hook";
-import { addSearchHistory, getSearchHistory } from ".";
+import useScreenWidth from "../hook";
+import { addSearchHistory, getSearchHistory } from "../HistoryList/history";
 
 const PAGE_SIZE = 20;
 

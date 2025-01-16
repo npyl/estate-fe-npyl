@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import Image from "src/components/image/Image";
 import { IPropertyResultResponse } from "src/types/properties";
-import { StyledSearchStack } from "./styles";
+import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
-import { MatchResult } from "./types";
+import { MatchResult } from "../types";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { getPropertyStatusColor } from "@/theme/colors";
