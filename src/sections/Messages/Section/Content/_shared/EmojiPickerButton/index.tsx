@@ -1,11 +1,16 @@
 import IconButton from "@mui/material/IconButton";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import { EmojiPickerProps } from "./types";
 const EmojiPickerPopper = dynamic(() => import("./popper"));
 
-const EmojiPickerButton = () => {
+interface Props {
+    PickerProps?: EmojiPickerProps;
+}
+
+const EmojiPickerButton: FC<Props> = ({ PickerProps }) => {
     const [isOpen, openPopover, closePopover] = useDialog();
     const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -16,7 +21,10 @@ const EmojiPickerButton = () => {
             </IconButton>
 
             {isOpen && anchorRef.current ? (
-                <EmojiPickerPopper anchorEl={anchorRef.current} />
+                <EmojiPickerPopper
+                    anchorEl={anchorRef.current}
+                    PickerProps={PickerProps}
+                />
             ) : null}
         </>
     );

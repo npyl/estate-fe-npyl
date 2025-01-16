@@ -52,17 +52,27 @@ const SendMessageTextField: FC<SendMessageTextFieldProps> = ({
                 handleStopTyping();
             } else {
                 // INFO: prevent re-sending a typing:start event after the first character written!
-                if (e.target.value.length > 1) return;
-
+                if (v.length > 1) return;
                 handleStartTyping();
             }
         },
         [handleStartTyping, handleStopTyping]
     );
 
+    const handleEmojiClick = useCallback(
+        (text: string) => {
+            // INFO: prevent re-sending a typing:start event after the first character written!
+            // (one emoji has length 2)
+            if (text.length > 2) return;
+            handleStartTyping();
+        },
+        [handleStartTyping]
+    );
+
     return (
         <TextField
             onChange={handleChange}
+            onEmojiClick={handleEmojiClick}
             onEmptied={handleStopTyping}
             onSend={handleSend}
         />
