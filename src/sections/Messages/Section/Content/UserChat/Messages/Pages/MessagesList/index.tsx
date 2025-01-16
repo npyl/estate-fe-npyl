@@ -9,7 +9,6 @@ import getMessage from "./getMessage";
 import { IMessageRes } from "@/types/messages";
 
 export interface MessagesListRef {
-    getMessagesCount: () => number;
     prependMessages: (m: IMessageRes[]) => void;
     appendMessage: (m: IMessageRes) => void;
 }
@@ -22,8 +21,6 @@ interface MessagesListProps {
 const MessagesList = forwardRef<MessagesListRef, MessagesListProps>(
     ({ currentUserId, onLoad }, ref) => {
         const [messages, setMessages] = useState<IMessageRes[]>([]);
-
-        const getMessagesCount = () => messages.length;
 
         const prependMessages = useCallback(
             (m: IMessageRes[]) => setMessages((old) => [...m, ...old]),
@@ -38,11 +35,10 @@ const MessagesList = forwardRef<MessagesListRef, MessagesListProps>(
         useImperativeHandle(
             ref,
             () => ({
-                getMessagesCount,
                 prependMessages,
                 appendMessage,
             }),
-            [getMessagesCount]
+            []
         );
 
         // INFO: use to fetch initial page
