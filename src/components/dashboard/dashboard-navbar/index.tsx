@@ -130,7 +130,6 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         <CreateButton
                             sx={{
                                 ml: 1,
-                                mr: { xs: 0, md: 2 },
                                 ...HideText,
                             }}
                         />

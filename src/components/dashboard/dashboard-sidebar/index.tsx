@@ -40,7 +40,9 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
         }
     };
 
-    useEffect(handlePathChange, [handlePathChange]);
+    // WARN: Do not change the deps; they are intentionally left like so in order not to mess up the `open` state behavior
+    // TODO: change this bs...
+    useEffect(handlePathChange, [router.isReady, router.asPath]);
 
     const content = useMemo(
         () => (

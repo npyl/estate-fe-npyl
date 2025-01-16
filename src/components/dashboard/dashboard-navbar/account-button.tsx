@@ -21,7 +21,7 @@ const AccountButton: FC<BoxProps> = ({ sx, ...props }) => {
                 sx={{
                     alignItems: "center",
                     display: "flex",
-                    ml: 2,
+                    ml: 1,
                     ...sx,
                 }}
                 {...props}
