@@ -100,7 +100,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         {/* nick ama to svhseis se gamhsa */}
                         {/* <Tooltip title="Alex Gamiesai file">
                             </Tooltip> */}
-                        <StyledTypography variant="h6">v0.97</StyledTypography>
+                        <StyledTypography variant="h6">v0.98</StyledTypography>
                     </Stack>
 
                     <Stack
