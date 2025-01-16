@@ -1,5 +1,4 @@
 import {
-    Box,
     Drawer,
     Link,
     Stack,
@@ -8,38 +7,28 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { FC, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { Scrollbar } from "@/components/scrollbar";
-import { DashboardSidebarSection } from "../dashboard-sidebar-section";
-import { useGetProfileQuery } from "src/services/user";
 import { useRouter } from "next/router";
 import { LanguageButton } from "@/components/Language/LanguageButton";
 import { SettingsButton } from "@/components/dashboard/settings-button";
-import useResponsive from "@/hooks/useResponsive";
-import getSections from "./getSections";
+import dynamic from "next/dynamic";
+import SidebarSkeleton from "./SidebarSkeleton";
+const Sections = dynamic(() => import("./Sections"), {
+    loading: () => <SidebarSkeleton />,
+});
 
 interface DashboardSidebarProps {
     onClose?: () => void;
     open?: boolean;
 }
 
-export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
-    const { onClose, open } = props;
+export const DashboardSidebar: FC<DashboardSidebarProps> = ({
+    onClose,
+    open,
+}) => {
     const router = useRouter();
-    const { t } = useTranslation();
     const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"), {
         noSsr: true,
     });
-
-    const { data } = useGetProfileQuery();
-
-    const isAdmin = data?.isAdmin ?? false;
-    const withNotifications = data?.notificationsEnabled ?? false;
-
-    const sections = useMemo(
-        () => getSections(t, isAdmin, withNotifications),
-        [t, isAdmin, withNotifications]
-    );
 
     const handlePathChange = () => {
         if (!router.isReady) {
@@ -51,66 +40,24 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         }
     };
 
-    useEffect(
-        handlePathChange,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [router.isReady, router.asPath]
-    );
+    useEffect(handlePathChange, [handlePathChange]);
 
-    const belowMd = useResponsive("down", "md");
+    const content = useMemo(
+        () => (
+            <Stack height={1} bgcolor="background.default">
+                <Sections currentPath={router.asPath} />
 
-    const content = (
-        <>
-            <Scrollbar
-                sx={{
-                    height: "100%",
-                    "& .simplebar-content": {
-                        height: "100%",
-                    },
-                }}
-            >
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        height: "100%",
-                    }}
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
                 >
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            backgroundColor: "background.default",
-                        }}
-                    >
-                        {sections.map((section) => (
-                            <DashboardSidebarSection
-                                key={section.title}
-                                path={router.asPath}
-                                sx={{
-                                    pt: 2,
-
-                                    width: "100%",
-                                    overflowY: "hidden",
-                                    textWrap: "nowrap",
-                                }}
-                                {...section}
-                            />
-                        ))}
-
-                        {belowMd ? (
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                justifyContent="center"
-                            >
-                                <LanguageButton />
-                                <SettingsButton />
-                            </Stack>
-                        ) : null}
-                    </Box>
-                </Box>
-            </Scrollbar>
-        </>
+                    <LanguageButton />
+                    <SettingsButton />
+                </Stack>
+            </Stack>
+        ),
+        [router.asPath]
     );
 
     if (lgUp) {

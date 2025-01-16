@@ -11,8 +11,6 @@ import { styled } from "@mui/material/styles";
 import type { FC } from "react";
 import { Menu as MenuIcon } from "@/assets/icons/menu";
 import DashboardNavbarSearch from "@/components/dashboard/dashboard-navbar-search";
-import { LanguageButton } from "@/components/Language/LanguageButton";
-import { SettingsButton } from "@/components/dashboard/settings-button";
 import LogoHorizontalLight from "@/assets/logo/horizontal/light";
 import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
@@ -134,16 +132,6 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                                 ml: 1,
                                 mr: { xs: 0, md: 2 },
                                 ...HideText,
-                            }}
-                        />
-
-                        <LanguageButton
-                            sx={{ display: { xs: "none", md: "flex" } }}
-                        />
-
-                        <SettingsButton
-                            sx={{
-                                display: { xs: "none", md: "block" },
                             }}
                         />
 
