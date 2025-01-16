@@ -21,7 +21,7 @@ interface MessagesPagesProps {
 }
 
 const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
-    const page = useRef(0);
+    const cursor = useRef<string | null>(null);
 
     const pageTriggerRef = useRef<PageTriggerControllerRef>(null);
     const messagesListRef = useRef<MessagesListRef>(null);
@@ -33,6 +33,10 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
 
         const { hasMore, messages } = res;
 
+        const id = messages?.at(0)?.id;
+        if (!id) return;
+        cursor.current = id;
+
         pageTriggerRef.current?.setHasMore(hasMore);
         messagesListRef.current?.prependMessages(messages);
     }, []);
@@ -41,14 +45,15 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
         try {
             const body: IConversationMessagesReq = {
                 conversationId,
-                pagination: { page: page.current, size: PAGE_SIZE },
+                pagination: {
+                    page: 0,
+                    cursor: cursor.current,
+                    size: PAGE_SIZE,
+                },
             };
 
             const res = await getPage(body).unwrap();
             if (!res) throw new Error("");
-
-            // INFO: make sure we increment the page ONLY! if the request suceeds
-            page.current += 1;
 
             return res;
         } catch (ex) {

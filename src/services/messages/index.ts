@@ -8,6 +8,7 @@ export interface IConversationMessagesReq {
     pagination: {
         page: number;
         size: number;
+        cursor: string | null; // INFO: when cursor is passed, page is ignored
     };
 }
 
