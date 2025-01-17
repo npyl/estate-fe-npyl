@@ -24,6 +24,7 @@ const EmojiPickerButton: FC<Props> = ({ PickerProps }) => {
                 <EmojiPickerPopper
                     anchorEl={anchorRef.current}
                     PickerProps={PickerProps}
+                    onClose={closePopover}
                 />
             ) : null}
         </>
