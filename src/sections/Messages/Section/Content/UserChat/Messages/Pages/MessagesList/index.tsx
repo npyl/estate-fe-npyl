@@ -7,19 +7,24 @@ import {
 } from "react";
 import getMessage from "./getMessage";
 import { IMessageRes } from "@/types/messages";
+import { useAuth } from "@/hooks/use-auth";
 
 export interface MessagesListRef {
     prependMessages: (m: IMessageRes[]) => void;
     appendMessage: (m: IMessageRes) => void;
+    clearMessages: VoidFunction;
 }
 
 interface MessagesListProps {
-    currentUserId: number;
+    conversationId: string;
     onLoad: VoidFunction;
 }
 
 const MessagesList = forwardRef<MessagesListRef, MessagesListProps>(
-    ({ currentUserId, onLoad }, ref) => {
+    ({ conversationId, onLoad }, ref) => {
+        const { user } = useAuth();
+        const currentUserId = user?.id!;
+
         const [messages, setMessages] = useState<IMessageRes[]>([]);
 
         const prependMessages = useCallback(
@@ -32,11 +37,14 @@ const MessagesList = forwardRef<MessagesListRef, MessagesListProps>(
             []
         );
 
+        const clearMessages = useCallback(() => setMessages([]), []);
+
         useImperativeHandle(
             ref,
             () => ({
                 prependMessages,
                 appendMessage,
+                clearMessages,
             }),
             []
         );
@@ -44,7 +52,7 @@ const MessagesList = forwardRef<MessagesListRef, MessagesListProps>(
         // INFO: use to fetch initial page
         useLayoutEffect(() => {
             onLoad();
-        }, []);
+        }, [conversationId]);
 
         return <>{messages?.map(getMessage(currentUserId))}</>;
     }

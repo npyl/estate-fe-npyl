@@ -61,10 +61,13 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
         }
     }, [conversationId]);
 
-    const loadNextPage = useCallback(
-        () => getNextPage().then(onPage),
-        [getNextPage]
-    );
+    const loadNextPage = () => getNextPage().then(onPage);
+
+    const loadFirstPage = async () => {
+        cursor.current = null;
+        messagesListRef.current?.clearMessages();
+        await loadNextPage();
+    };
 
     // -------------------------------------------------------------------
 
@@ -81,8 +84,8 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
 
             <MessagesList
                 ref={messagesListRef}
-                currentUserId={currentUserId}
-                onLoad={loadNextPage}
+                conversationId={conversationId}
+                onLoad={loadFirstPage}
             />
 
             <RealTimeMessages onMessage={handleRealTimeMessage} />
