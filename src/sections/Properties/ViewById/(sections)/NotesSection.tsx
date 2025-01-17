@@ -7,7 +7,7 @@ import {
     useGetNotesByPropertyIdQuery,
 } from "src/services/note";
 
-const NotesPropertySection: React.FC = () => {
+const NotesSection: React.FC = () => {
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -36,4 +36,4 @@ const NotesPropertySection: React.FC = () => {
     );
 };
 
-export default NotesPropertySection;
+export default NotesSection;
