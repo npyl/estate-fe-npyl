@@ -4,7 +4,6 @@ import {
     IconButton,
     Stack,
     Toolbar,
-    Typography,
     useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -17,13 +16,6 @@ import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
 import AccountButton from "./account-button";
 import { HideText } from "@/components/styled";
-
-const StyledTypography = styled(Typography)`
-    color: ${({ theme }) =>
-        theme.palette.mode === "light"
-            ? theme.palette.neutral![900]
-            : theme.palette.grey[100]};
-`;
 
 const Logo = () => {
     const theme = useTheme();
@@ -96,11 +88,6 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         >
                             <Logo />
                         </Link>
-
-                        {/* nick ama to svhseis se gamhsa */}
-                        {/* <Tooltip title="Alex Gamiesai file">
-                            </Tooltip> */}
-                        <StyledTypography variant="h6">v0.98</StyledTypography>
                     </Stack>
 
                     <Stack

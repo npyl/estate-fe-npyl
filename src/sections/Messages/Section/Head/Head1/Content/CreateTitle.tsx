@@ -5,7 +5,6 @@ import { useCallback } from "react";
 import { IUserMini } from "@/types/user";
 import { useAuth } from "@/hooks/use-auth";
 import Stack from "@mui/material/Stack";
-import BackButton from "../BackButton";
 
 const CreateTitle = () => {
     const { t } = useTranslation();
@@ -21,8 +20,6 @@ const CreateTitle = () => {
 
     return (
         <Stack direction="row" spacing={1} alignItems="center">
-            <BackButton className="" />
-
             <AssigneeAutocomplete
                 label={t("User")}
                 error={false}

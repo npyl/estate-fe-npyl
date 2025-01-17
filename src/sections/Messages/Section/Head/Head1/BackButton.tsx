@@ -4,17 +4,24 @@ import { useSelectedConversationContext } from "../../SelectedConversation";
 import { SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 
-const ButtonSx: SxProps<Theme> = {
+const getButtonSx = (isCreating: boolean): SxProps<Theme> => ({
     borderRadius: "100%",
-};
+
+    display: {
+        xs: "flex",
+        md: isCreating ? "flex" : "none",
+    },
+});
 
 const BackButton: FC<IconButtonProps> = (props) => {
-    const { clearConversationId } = useSelectedConversationContext();
+    const { isCreating, clearConversationId } =
+        useSelectedConversationContext();
+
     return (
         <IconButton
             className="BackButton"
             onClick={clearConversationId}
-            sx={ButtonSx}
+            sx={getButtonSx(isCreating)}
             {...props}
         >
             <ChevronLeftIcon />

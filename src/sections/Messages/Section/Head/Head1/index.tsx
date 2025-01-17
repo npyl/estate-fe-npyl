@@ -2,18 +2,8 @@ import Stack from "@mui/material/Stack";
 import { HEAD_HEIGHT } from "../../constants";
 import { getBorderColor2 } from "@/theme/borderColor";
 const BackButton = dynamic(() => import("./BackButton"));
-import { SxProps, Theme } from "@mui/material";
 import dynamic from "next/dynamic";
 import Content from "./Content";
-
-const StackSx: SxProps<Theme> = {
-    ".BackButton": {
-        display: {
-            xs: "flex",
-            md: "none",
-        },
-    },
-};
 
 const Head1 = () => (
     <Stack
@@ -26,7 +16,6 @@ const Head1 = () => (
         spacing={1}
         alignItems="center"
         px={1}
-        sx={StackSx}
     >
         <BackButton />
         <Content />

@@ -57,6 +57,18 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                     <LanguageButton />
                     <SettingsButton />
                 </Stack>
+
+                {/* nick ama to svhseis se gamhsa */}
+                {/* <Tooltip title="Alex Gamiesai file">
+                            </Tooltip> */}
+                <Typography
+                    mt={3}
+                    variant="body2"
+                    textAlign="center"
+                    color="text.secondary"
+                >
+                    v0.98
+                </Typography>
             </Stack>
         ),
         [router.asPath]
