@@ -10,6 +10,7 @@ const SocketIOSingleton = () => {
         path: "/socket",
         auth: { token },
         autoConnect: false,
+        withCredentials: true,
     });
 
     return socket;
