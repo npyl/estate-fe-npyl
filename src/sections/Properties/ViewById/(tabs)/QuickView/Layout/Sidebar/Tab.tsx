@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Tab from "@mui/material/Tab";
-import isNamedComponent from "./isNamedComponent";
+import isNamedComponent from "../isNamedComponent";
 
 const SECTION_LABELS: Record<string, string> = {
     ImageSection: "Images",
