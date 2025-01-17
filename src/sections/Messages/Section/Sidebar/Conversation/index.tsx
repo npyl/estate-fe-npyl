@@ -73,7 +73,7 @@ const Content: FC<ContentProps> = ({ c }) => {
                     userIdsCount={participants.length}
                     userId0={participants?.[0]}
                 />
-                <LastMessage content={content} />
+                <LastMessage conversationId={id} content={content} />
             </Stack>
 
             <Stack width={END_WIDTH} height={1} alignItems="end">

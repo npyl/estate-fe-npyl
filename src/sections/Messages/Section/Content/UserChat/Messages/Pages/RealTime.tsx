@@ -3,10 +3,10 @@ import useChatService, {
     EVENTS,
     TChatServiceInitCb,
 } from "@/sections/Messages/useChatService";
-import { IMessageRes } from "@/types/messages";
+import { IRealtimeMessage } from "@/types/messages";
 
 interface Props {
-    onMessage: (m: IMessageRes) => void;
+    onMessage: (m: IRealtimeMessage) => void;
 }
 
 const RealTimeMessages: FC<Props> = ({ onMessage }) => {

@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/use-auth";
 import { FC } from "react";
 import StickyScroll from "./StickyScroll";
 import Pages from "./Pages";
@@ -90,14 +89,10 @@ interface MessagesProps {
     conversationId: string;
 }
 
-const Messages: FC<MessagesProps> = ({ conversationId }) => {
-    const { user } = useAuth();
-
-    return (
-        <StickyScroll p={1} height={1} spacing={0.15} sx={ContainerSx}>
-            <Pages currentUserId={user?.id!} conversationId={conversationId} />
-        </StickyScroll>
-    );
-};
+const Messages: FC<MessagesProps> = ({ conversationId }) => (
+    <StickyScroll p={1} height={1} spacing={0.15} sx={ContainerSx}>
+        <Pages conversationId={conversationId} />
+    </StickyScroll>
+);
 
 export default Messages;

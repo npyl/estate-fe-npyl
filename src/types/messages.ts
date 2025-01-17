@@ -28,10 +28,40 @@ interface IMessageReq {
     content: string;
 }
 
+// -----------------------------------------------------------------------
+
+interface IRealtimeMessage {
+    conversationId: string;
+    messageId: string;
+    sender: string;
+    type: TMessageType;
+    content: string;
+    createdAt: string;
+}
+
+const RealtimeMessageToMessageRes = ({
+    messageId,
+    conversationId: _,
+    content,
+    createdAt,
+    sender,
+    type,
+}: IRealtimeMessage) => ({
+    id: messageId,
+    content,
+    createdAt,
+    sender,
+    type,
+});
+
 export type {
     TConversationType,
     IConversation,
     TMessageType,
     IMessageReq,
     IMessageRes,
+    // ...
+    IRealtimeMessage,
 };
+
+export { RealtimeMessageToMessageRes };

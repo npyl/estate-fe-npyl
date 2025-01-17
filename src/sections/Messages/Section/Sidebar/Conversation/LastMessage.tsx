@@ -2,18 +2,24 @@ import useChatService, {
     EVENTS,
     TChatServiceInitCb,
 } from "@/sections/Messages/useChatService";
-import { IMessageRes } from "@/types/messages";
+import { IRealtimeMessage } from "@/types/messages";
 import Typography from "@mui/material/Typography";
 import { FC, useCallback, useState } from "react";
 
 interface LastMessageProps {
+    conversationId: string;
     content: string;
 }
 
-const LastMessage: FC<LastMessageProps> = ({ content }) => {
+const LastMessage: FC<LastMessageProps> = ({ conversationId, content }) => {
     const [message, setMessage] = useState<string>();
 
-    const onMessage = (m: IMessageRes) => setMessage(m.content);
+    const onMessage = useCallback((m: IRealtimeMessage) => {
+        const { conversationId: cid, content } = m;
+        if (conversationId !== cid) return;
+
+        setMessage(content);
+    }, []);
 
     const initService: TChatServiceInitCb = useCallback(
         (applyListener, removeListener) => {

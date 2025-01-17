@@ -9,18 +9,20 @@ import PageTriggerController, {
 } from "./PageTriggerController";
 import MessagesList, { MessagesListRef } from "./MessagesList";
 import RealTimeMessages from "./RealTime";
-import { IMessageRes } from "@/types/messages";
+import {
+    IRealtimeMessage,
+    RealtimeMessageToMessageRes,
+} from "@/types/messages";
 
 // -------------------------------------------------------------------
 
 const PAGE_SIZE = 15;
 
 interface MessagesPagesProps {
-    currentUserId: number;
     conversationId: string;
 }
 
-const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
+const Pages: FC<MessagesPagesProps> = ({ conversationId }) => {
     const cursor = useRef<string | null>(null);
 
     const pageTriggerRef = useRef<PageTriggerControllerRef>(null);
@@ -71,8 +73,8 @@ const Pages: FC<MessagesPagesProps> = ({ currentUserId, conversationId }) => {
 
     // -------------------------------------------------------------------
 
-    const handleRealTimeMessage = useCallback((m: IMessageRes) => {
-        messagesListRef.current?.appendMessage(m);
+    const handleRealTimeMessage = useCallback((m: IRealtimeMessage) => {
+        messagesListRef.current?.appendMessage(RealtimeMessageToMessageRes(m));
     }, []);
 
     return (
