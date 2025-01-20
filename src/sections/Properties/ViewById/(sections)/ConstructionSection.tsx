@@ -198,7 +198,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                         }}
                     >
                         <Typography variant="h6">
-                            {t("Construction")}
+                            {t(ConstructionSection.name)}
                         </Typography>
                     </Box>
                     <Divider></Divider>

@@ -30,7 +30,7 @@ const AddressSection: React.FC = () => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Address Details")}</Typography>
+                <Typography variant="h6">{t(AddressSection.name)}</Typography>
             </Box>
             <Divider />
             <ViewLocation location={location} />

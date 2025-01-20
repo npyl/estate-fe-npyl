@@ -423,7 +423,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Basic Details")}</Typography>
+                <Typography variant="h6">{t(BasicSection.name)}</Typography>
             </Box>
             <Divider />
             {renderBasicDetails(data?.parentCategory.key as ParentCategory)}

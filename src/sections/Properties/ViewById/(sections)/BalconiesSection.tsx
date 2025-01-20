@@ -58,9 +58,7 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
                 );
             })}
         </Box>
-    ) : (
-        <></>
-    );
+    ) : null;
 };
 
 export default BalconiesSection;

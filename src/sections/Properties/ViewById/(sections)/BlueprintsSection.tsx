@@ -24,7 +24,9 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = ({
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Blueprints")}</Typography>
+                <Typography variant="h6">
+                    {t(BlueprintsSection.name)}
+                </Typography>
             </Box>
             <Divider></Divider>
 
