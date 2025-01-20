@@ -2,7 +2,6 @@ import {
     AddressSection,
     AreaSection,
     BalconiesSection,
-    BasicSection,
     BlueprintsSection,
     DetailsSection,
     DistanceSection,
@@ -14,6 +13,7 @@ import {
     TechnicalFeatures,
     VideoSection,
 } from "../../(sections)";
+import BasicSectionThreeCols from "./BasicSectionThreeCols";
 import ConstructionSection from "../../(sections)/ConstructionSection";
 import { useRouter } from "next/router";
 import { useGetPropertyByIdQuery } from "src/services/properties";
@@ -38,7 +38,7 @@ const QuickView = () => {
             <DescriptionSection />
             <AddressSection />
             <VideoSection data={data} />
-            <BasicSection data={data} />
+            <BasicSectionThreeCols data={data} />
             <HeatingSection data={data} />
             <AreaSection data={data} />
             <DistanceSection data={data} />
