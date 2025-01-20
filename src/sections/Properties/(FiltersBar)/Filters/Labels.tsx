@@ -5,7 +5,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
@@ -15,17 +15,25 @@ import { useSelector } from "react-redux";
 import { selectLabels, setLabels } from "@/slices/filters";
 import { ILabel } from "@/types/label";
 
-const Option: FC<ILabel> = ({ id, color, name }) => {
+interface IOption {
+    l: ILabel;
+}
+
+const Option: FC<IOption> = ({ l: { id, color, name } }) => {
     const labels = useSelector(selectLabels) || [];
     return (
-        <MenuItem key={id} value={id}>
+        <>
             <Checkbox checked={labels.indexOf(id!) > -1} />
             <Label color={color} name={name} />
-        </MenuItem>
+        </>
     );
 };
 
-const getOption = (l: ILabel) => <Option key={l.id} {...l} />;
+const getOption = (l: ILabel) => (
+    <MenuItem key={l.id} value={l.id}>
+        <Option key={l.id} l={l} />
+    </MenuItem>
+);
 
 export default function FilterLabels() {
     const { t } = useTranslation();
@@ -35,29 +43,29 @@ export default function FilterLabels() {
 
     const { data } = useGetLabelsQuery();
 
-    const labelOptions = useMemo(() => data?.propertyLabels, [data]) || [];
+    const labelOptions = useMemo(
+        () => data?.propertyLabels || [],
+        [data?.propertyLabels]
+    );
 
-    const renderLabelNames = (selectedIds: number[]) =>
-        selectedIds
-            .map((id) => {
-                const labelOption = labelOptions.find(
-                    (option) => option.id === id
-                );
-                return labelOption ? labelOption.name : "Unknown";
-            })
-            .join(", ");
+    const renderLabelNames = useCallback(
+        (selectedIds: number[]) =>
+            selectedIds
+                .map(
+                    (id) =>
+                        labelOptions.find((option) => option.id === id)?.name ||
+                        ""
+                )
+                .join(", "),
+        [labelOptions]
+    );
 
-    const handleChange = (event: SelectChangeEvent<typeof labels>) => {
+    const handleChange = useCallback((event: SelectChangeEvent<number[]>) => {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setLabels(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
-        );
-    };
+        dispatch(setLabels(value));
+    }, []);
 
     return (
         <FormControl
@@ -79,6 +87,13 @@ export default function FilterLabels() {
                 onChange={handleChange}
                 renderValue={renderLabelNames}
                 label={t("Labels")}
+                MenuProps={{
+                    PaperProps: {
+                        style: {
+                            maxHeight: 500,
+                        },
+                    },
+                }}
             >
                 {labelOptions.map(getOption)}
             </Select>
