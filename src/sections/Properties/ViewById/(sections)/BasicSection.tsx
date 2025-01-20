@@ -414,32 +414,20 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     };
 
     return (
-        <Grid
-            container
-            spacing={1}
-            sx={{ mt: data.images.length === 0 ? 0 : null }}
-        >
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "hidden" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t("Basic Details")}
-                        </Typography>
-                    </Box>
-                    <Divider />
-                    {renderBasicDetails(
-                        data?.parentCategory.key as ParentCategory
-                    )}
-                </Paper>
-            </Grid>
-        </Grid>
+        <Paper elevation={10} sx={{ overflow: "hidden" }}>
+            <Box
+                sx={{
+                    px: 2.5,
+                    py: 1,
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6">{t("Basic Details")}</Typography>
+            </Box>
+            <Divider />
+            {renderBasicDetails(data?.parentCategory.key as ParentCategory)}
+        </Paper>
     );
 };
 
