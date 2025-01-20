@@ -1,6 +1,5 @@
 import { RefObject, useCallback, useLayoutEffect, useRef } from "react";
 import { SidebarRef } from "./Sidebar";
-import sleep from "@/utils/sleep";
 
 const OFFSET_TOP = 0; // pixels from top
 
@@ -27,8 +26,6 @@ const useClosestSection = (sidebarRef: RefObject<SidebarRef>) => {
             return;
         }
 
-        await sleep(100);
-
         const currentSection = findFirstSectionAfterOffset();
         if (!currentSection) return;
 
@@ -47,11 +44,11 @@ const useClosestSection = (sidebarRef: RefObject<SidebarRef>) => {
             return originalScroll.apply(window, args);
         };
 
-        window.addEventListener("scroll", onScroll);
+        window.addEventListener("scrollend", onScroll);
 
         return () => {
             window.scroll = originalScroll;
-            window.removeEventListener("scroll", onScroll);
+            window.removeEventListener("scrollend", onScroll);
         };
     }, []);
 };
