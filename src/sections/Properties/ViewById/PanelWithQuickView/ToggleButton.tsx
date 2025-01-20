@@ -1,14 +1,12 @@
+import CookieNames from "@/constants/cookies";
 import useCookie from "@/hooks/useCookie";
 import Checkbox from "@mui/material/Checkbox";
 import { FC } from "react";
+import { PPQuickViewLayoutCookie } from "./types";
 
 // --------------------------------------------------------
 
-interface PPQuickViewLayoutCookie {
-    sectionNames: string[];
-}
-
-const cookieName = "PPQuickViewLayout";
+const cookieName = CookieNames.QuickViewLayout;
 
 interface ToggleButtonProps {
     sectionName: string;
