@@ -33,6 +33,7 @@ const PropertyLogs = dynamic(() => import("./(sections)/Logs"));
 const GreenMap = dynamic(() => import("./(tabs)/Green"));
 const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
 const Tasks = dynamic(() => import("./(tabs)/Tasks"));
+const QuickView = dynamic(() => import("./(tabs)/QuickView"));
 
 import { styled } from "@mui/material/styles";
 
@@ -151,7 +152,9 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                 <MainContainer />
             </TabPanel>
             <Suspense>
-                <TabPanel value={value} index={1}></TabPanel>
+                <TabPanel value={value} index={1}>
+                    <QuickView />
+                </TabPanel>
                 <TabPanel value={value} index={2}>
                     <Tasks />
                 </TabPanel>

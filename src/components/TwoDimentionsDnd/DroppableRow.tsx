@@ -1,6 +1,6 @@
 import { Droppable } from "@hello-pangea/dnd";
 import { DroppableTypeItem, TwoDimentionsDndNode } from "./types";
-import Grid, { GridProps } from "@mui/material/Grid";
+import Grid, { Grid2Props as GridProps } from "@mui/material/Unstable_Grid2";
 import { forwardRef } from "react";
 
 const getDroppableId = (dndId: number | undefined, i: number) =>
@@ -27,7 +27,7 @@ const DroppableRow = forwardRef<HTMLDivElement, DroppableRowProps>(
                         ref={ref}
                         container
                         direction="row"
-                        gap={gap}
+                        spacing={gap}
                         {...props}
                     >
                         {children}

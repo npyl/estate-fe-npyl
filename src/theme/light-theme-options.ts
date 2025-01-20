@@ -24,7 +24,7 @@ const background = {
 
 const divider = "#E6E8F0";
 
-const primary = {
+export const primary = {
     light: "#84A9FF",
     main: "#3366FF",
     dark: "#1939B7",

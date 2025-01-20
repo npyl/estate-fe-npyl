@@ -82,7 +82,12 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     );
 
     return (
-        <Stack direction="row" spacing={1.5} {...props}>
+        <Stack
+            direction="row"
+            spacing={1.5}
+            mb={tabs.length > 0 ? 1 : 0}
+            {...props}
+        >
             {tabs.map(getTabItem)}
         </Stack>
     );

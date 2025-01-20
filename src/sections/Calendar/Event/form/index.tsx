@@ -79,7 +79,7 @@ const CreateUpdateForm: FC<Props> = ({
     return (
         <form ref={onRef} onSubmit={methods.handleSubmit(handleSubmit)}>
             <FormProvider {...methods}>
-                <Stack spacing={2} mt={1}>
+                <Stack spacing={2}>
                     <RHFTextField
                         variant="standard"
                         name="title"

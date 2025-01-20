@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Controller, useFormContext } from "react-hook-form";
-import AssigneeAutocomplete from "./Autocomplete";
+import AssigneeAutocomplete from "@/sections/_Autocompletes/Assignee";
 
 const RHFAssignee = () => {
     const { t } = useTranslation();

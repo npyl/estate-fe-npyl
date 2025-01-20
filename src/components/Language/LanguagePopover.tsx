@@ -22,7 +22,7 @@ const languageOptions: LanguageOptions = {
     },
 };
 
-export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
+const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
     const {
         updatesGlobalLanguage,
         anchorEl,
@@ -114,3 +114,5 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
         </Popover>
     );
 };
+
+export default LanguagePopover;

@@ -23,6 +23,7 @@ import { agreements } from "@/services/agreements";
 import { calendar } from "@/services/calendar";
 import { googleWorkspaceApi } from "@/services/company";
 import { googleOAuth } from "@/services/google-oauth";
+import { messages } from "@/services/messages";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as filtersReducer } from "../slices/filters";
@@ -57,6 +58,7 @@ export const rootReducer = combineReducers({
     [calendar.reducerPath]: calendar.reducer,
     [googleWorkspaceApi.reducerPath]: googleWorkspaceApi.reducer,
     [googleOAuth.reducerPath]: googleOAuth.reducer,
+    [messages.reducerPath]: messages.reducer,
 
     // property
     filters: filtersReducer,

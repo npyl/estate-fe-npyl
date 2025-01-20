@@ -2,7 +2,10 @@ import type { FC, ReactNode } from "react";
 import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation } from "../services/auth";
 import { IUser } from "src/types/user";
-import { useLazyGetProfileQuery } from "src/services/user";
+import {
+    useGenerateChatTokenMutation,
+    useLazyGetProfileQuery,
+} from "src/services/user";
 
 interface State {
     platform: "JWT";
@@ -99,6 +102,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [login, { isSuccess }] = useLoginMutation();
     const [getProfile] = useLazyGetProfileQuery();
 
+    const [generateChatToken] = useGenerateChatTokenMutation();
+
     useEffect(() => {
         initialize();
     }, [isSuccess]);
@@ -150,6 +155,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         if (!user) {
             throw "Failed getting profile!";
         }
+
+        // INFO: chat token
+        try {
+            const { token } = await generateChatToken(loginRes.token).unwrap();
+            if (!token) throw new Error("");
+            localStorage.setItem("chatToken", token);
+        } catch (ex) {}
 
         dispatch({
             type: ActionType.LOGIN,

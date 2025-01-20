@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../_service/CalendarService";
-import { toNumber } from "../../../util";
+import toNumber from "@/utils/toNumber";
 import { GUserToGUserMini, UserInfoToGUserMini } from "@/types/user/google";
 
 export default async function handler(

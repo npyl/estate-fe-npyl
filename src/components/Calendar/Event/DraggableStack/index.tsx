@@ -1,8 +1,36 @@
-import { forwardRef, MouseEvent, useRef } from "react";
+import {
+    ForwardedRef,
+    forwardRef,
+    MouseEvent,
+    useImperativeHandle,
+    useRef,
+} from "react";
 import { Stack, StackProps } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
 import { TCalendarEvent } from "../../types";
+
+// ------------------------------------------------------------------------------------
+
+/**
+ * This hook makes allows us to use a local ref and forward it as the `ref` of forwardRef()
+ *
+ * @param ref a forwarded ref coming from forwardRef()
+ * @param initialValue initial value for local ref object (e.g. usually null)
+ * @returns local ref object
+ */
+const useForwardedLocalRef = <T extends HTMLElement = HTMLElement>(
+    ref: ForwardedRef<T>,
+    initialValue: T | null = null
+) => {
+    const localRef = useRef<T>(initialValue);
+
+    useImperativeHandle(ref, () => localRef.current!);
+
+    return localRef;
+};
+
+// -------------------------------------------------------------------------------------
 
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
@@ -13,7 +41,7 @@ export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
     ({ event, sx, onClick, onDragEnd, ...props }, ref) => {
-        const elementRef = useRef<HTMLDivElement>(null);
+        const elementRef = useForwardedLocalRef<HTMLDivElement>(ref);
 
         const { cellsRef } = useResponsiveCellPositions();
 
@@ -26,7 +54,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
         );
 
         // If no drag handling needed, return simple Stack
-        if (!onDragEnd) return <Stack ref={ref} sx={sx} {...props} />;
+        if (!onDragEnd) return <Stack ref={elementRef} sx={sx} {...props} />;
 
         return (
             <Stack

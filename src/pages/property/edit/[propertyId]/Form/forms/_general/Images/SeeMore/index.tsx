@@ -33,7 +33,7 @@ interface SeeMoreProps {
 }
 
 const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
-    const [tab, setTab, tabRef] = useRefState<TListingTab>("CRM");
+    const [tab, setTab] = useRefState<TListingTab>("CRM");
     const [mode, setMode, modeRef] = useRefState<"" | "multiple" | "compare">(
         ""
     );
