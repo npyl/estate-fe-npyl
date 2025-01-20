@@ -329,7 +329,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                         }}
                     >
                         <Typography variant="h6">
-                            {t("Property Description")}
+                            {t(DetailsSection.name)}
                         </Typography>
                     </Box>
                     <Divider />

@@ -208,6 +208,10 @@ const resources = {
             "Popular Properties": "Popular Properties",
             //Distances
 
+            ParkingsSection: "Parking",
+            VideoSection: "Video",
+            TechnicalFeatures: "Technical Features and Interior",
+            DistanceSection: "Distances",
             Distances: "Distances",
             "Public Transportation": "Public Transportation",
 
@@ -326,6 +330,9 @@ const resources = {
 
             //Heating and Energy
 
+            NotesSection: "Notes",
+            ImageSection: "Images",
+            HeatingSection: "Heating and Energy",
             "Heating and Energy": "Heating and Energy",
             "Heating Type": "Heating Type",
             Central: "Central",
@@ -438,6 +445,7 @@ const resources = {
 
             //Suitable For
 
+            SuitableFor: "Suitable For",
             "Suitable For": "Suitable For",
             Student: "Student",
             Cottage: "Cottage",
@@ -684,7 +692,7 @@ const resources = {
             Integrations: "Integrations",
             Documents: "Documents",
 
-            "Property Description": "Property Description",
+            DetailsSection: "Property Description",
             "Write a note...": "Write a note...",
 
             Customer_geniki: "Customer",
@@ -1505,7 +1513,7 @@ const resources = {
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",
             "Newly Built": "Νεόδμητο",
-            "Property Description": "Περιγραφή ακινήτου",
+            DetailsSection: "Περιγραφή ακινήτου",
 
             Edit: "Επεξεργασία",
             Thumbnail: "Μικρογραφία",
@@ -1791,6 +1799,7 @@ const resources = {
 
             //Distances
 
+            DistanceSection: "Αποστάσεις",
             Distances: "Αποστάσεις",
             "Public Transportation": "Μέσα Μαζικής Μεταφοράς",
 
@@ -1878,6 +1887,12 @@ const resources = {
 
             //Heating and Energy
 
+            ParkingsSection: "Πάρκινγκ",
+            VideoSection: "Βίντεο",
+            SuitableFor: "Κατάλληλο Για",
+            NotesSection: "Σημειώσεις",
+            ImageSection: "Εικόνες",
+            HeatingSection: "Θέρμανση και Ενέργεια",
             "Heating and Energy": "Θέρμανση και Ενέργεια",
             "Heating Type": "Τύπος Θέρμανσης",
             Central: "Κεντρική",
@@ -1953,6 +1968,7 @@ const resources = {
 
             "Display Window Length": "Μήκος Βιτρίνας",
             Entrances: "Εισόδοι",
+            TechnicalFeatures: "Τεχνικά Χαρακτηριστικά και Εσωτερικό",
             "Technical Features And Interior":
                 "Τεχνικά Χαρακτηριστικά και Εσωτερικό",
             Furnished: "Επιπλωμένο",

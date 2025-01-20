@@ -29,7 +29,7 @@ const MatchingCustomersSection = dynamic(
     () => import("./(tabs)/MatchingCustomers")
 );
 const PhotosOnly = dynamic(() => import("./(tabs)/PhotosOnly"));
-const PropertyLogs = dynamic(() => import("./(sections)/Logs"));
+const PropertyLogs = dynamic(() => import("./(tabs)/Logs"));
 const GreenMap = dynamic(() => import("./(tabs)/Green"));
 const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
 const Tasks = dynamic(() => import("./(tabs)/Tasks"));

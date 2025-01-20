@@ -399,7 +399,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                             justifyContent: "left",
                         }}
                     >
-                        <Typography variant="h6">{t("Features")}</Typography>
+                        <Typography variant="h6">{t(Features.name)}</Typography>
                     </Box>
                     <Divider></Divider>
                     <Grid container>

@@ -161,7 +161,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                         }}
                     >
                         <Typography variant="h6">
-                            {t("Heating and Energy")}
+                            {t(HeatingSection.name)}
                         </Typography>
                     </Box>
                     <Divider></Divider>

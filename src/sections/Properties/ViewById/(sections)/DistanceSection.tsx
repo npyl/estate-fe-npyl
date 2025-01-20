@@ -145,7 +145,9 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                             justifyContent: "left",
                         }}
                     >
-                        <Typography variant="h6">{t("Distances")}</Typography>
+                        <Typography variant="h6">
+                            {t(DistanceSection.name)}
+                        </Typography>
                     </Box>
                     <Divider></Divider>
                     <Grid container>

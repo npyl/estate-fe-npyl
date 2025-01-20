@@ -15,66 +15,66 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
     const parkings = data.details?.parkings;
     const { t } = useTranslation();
 
-    if (data.parentCategory.key === "RESIDENTIAL") {
-        return parkings && parkings.length > 0 ? (
-            <>
-                <Box
-                    sx={{
-                        border: 1,
-                        borderColor: "divider",
-                        borderRadius: 1,
-                        width: { md: "100%", sm: "100%" },
-                    }}
-                >
-                    {parkings?.map((parking, index) => {
-                        return (
-                            <Paper
-                                elevation={10}
-                                sx={{ overflow: "auto" }}
-                                key={index}
+    if (data.parentCategory.key !== "RESIDENTIAL") return null;
+    if (!parkings) return null;
+    if (parkings.length === 0) return null;
+
+    return (
+        <>
+            <Box
+                sx={{
+                    border: 1,
+                    borderColor: "divider",
+                    borderRadius: 1,
+                    width: { md: "100%", sm: "100%" },
+                }}
+            >
+                {parkings?.map((parking, index) => {
+                    return (
+                        <Paper
+                            elevation={10}
+                            sx={{ overflow: "auto" }}
+                            key={index}
+                        >
+                            <Grid
+                                sx={{
+                                    border: 1,
+                                    borderColor: "divider",
+                                    borderRadius: 1,
+                                }}
+                                item
                             >
-                                <Grid
+                                <Box
                                     sx={{
-                                        border: 1,
-                                        borderColor: "divider",
-                                        borderRadius: 1,
+                                        px: 3,
+                                        py: 1.5,
+                                        display: "flex",
+                                        justifyContent: "left",
                                     }}
-                                    item
                                 >
-                                    <Box
-                                        sx={{
-                                            px: 3,
-                                            py: 1.5,
-                                            display: "flex",
-                                            justifyContent: "left",
-                                        }}
-                                    >
-                                        <Typography variant="h6">
-                                            {t("Parking No.")}
-                                            {index + 1}
-                                        </Typography>
-                                    </Box>
-                                    <Divider></Divider>
-                                    <List>
-                                        <ListItem
-                                            label={t("Parking Type")}
-                                            value={parking?.parkingType.value}
-                                        />
-                                        <ListItem
-                                            label={t("Spots")}
-                                            value={parking?.spots}
-                                        />
-                                    </List>
-                                </Grid>
-                            </Paper>
-                        );
-                    })}
-                </Box>
-            </>
-        ) : (
-            <></>
-        );
-    } else return null;
+                                    <Typography variant="h6">
+                                        {t("Parking No.")}
+                                        {index + 1}
+                                    </Typography>
+                                </Box>
+                                <Divider></Divider>
+                                <List>
+                                    <ListItem
+                                        label={t("Parking Type")}
+                                        value={parking?.parkingType.value}
+                                    />
+                                    <ListItem
+                                        label={t("Spots")}
+                                        value={parking?.spots}
+                                    />
+                                </List>
+                            </Grid>
+                        </Paper>
+                    );
+                })}
+            </Box>
+        </>
+    );
 };
 
 export default ParkingsSection;

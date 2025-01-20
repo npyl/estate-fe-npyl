@@ -154,7 +154,7 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                         }}
                     >
                         <Typography variant="h6">
-                            {t("Suitable For")}
+                            {t(SuitableFor.name)}
                         </Typography>
                     </Box>
                     <Divider></Divider>

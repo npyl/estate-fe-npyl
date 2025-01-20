@@ -324,7 +324,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                         }}
                     >
                         <Typography variant="h6">
-                            {t("Technical Features And Interior")}
+                            {t(TechnicalFeatures.name)}
                         </Typography>
                     </Box>
                     <Divider></Divider>
