@@ -1,7 +1,7 @@
 import { isValidElement, ReactNode } from "react";
 import { TwoDimentionsDndNode } from "./types";
 import { Draggable } from "@hello-pangea/dnd";
-import Grid, { GridProps } from "@mui/material/Grid";
+import Grid, { Grid2Props as GridProps } from "@mui/material/Unstable_Grid2";
 import { CenteredDiv } from "./styled";
 import { SxProps, Theme } from "@mui/material";
 
@@ -50,7 +50,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     draggableSx,
     ...props
 }) => (
-    <Grid item xs={12 / columns} {...props}>
+    <Grid xs={12 / columns} {...props}>
         <Draggable
             draggableId={getId(dndId, item)}
             key={getId(dndId, item)}
