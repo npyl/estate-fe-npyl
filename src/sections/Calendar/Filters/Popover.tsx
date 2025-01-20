@@ -43,7 +43,7 @@ const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
 
             {mouseEvent ? (
                 <EventDialog
-                    anchorEl={mouseEvent.currentTarget}
+                    anchorEl={mouseEvent.target}
                     event={mouseEvent.currentTarget.event}
                     onClose={closeDialog}
                 />

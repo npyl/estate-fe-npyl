@@ -1,13 +1,13 @@
 import {
     IconButton,
     InputBase,
-    Popover,
     PopoverActions,
     Stack,
     SxProps,
     Theme,
     Typography,
 } from "@mui/material";
+import Popover from "./Popover";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
 import { FC, useCallback, useRef } from "react";
@@ -56,7 +56,7 @@ const EventPopover: FC<Props> = ({
 
     const [isEdit, openEdit, closeEdit] = useDialog();
 
-    const title = isEdit ? t("Edit") + " " + event.title : event.title;
+    const title = isEdit ? `${event.title} (${t("Edit")})` : event.title;
 
     const handleEdit = async (e: CalendarEventReq) => {
         await editEvent(e);
@@ -73,37 +73,18 @@ const EventPopover: FC<Props> = ({
     );
 
     return (
-        <Popover
-            open
-            anchorEl={anchorEl}
-            action={popoverRef}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            transformOrigin={{ horizontal: "left", vertical: "bottom" }}
-            onClose={onClose}
-            slotProps={{
-                paper: {
-                    sx: {
-                        minWidth: "300px",
-                        minHeight: "fit-content",
-                        p: 1,
-                    },
-                },
-                root: {
-                    sx: {
-                        ml: 0.5,
-                    },
-                },
-            }}
-        >
-            <SpaceBetween width={1} direction="row" alignItems="center" mb={2}>
-                <Typography
-                    variant="h6"
-                    textAlign="left"
-                    noWrap
-                    width="calc(100% - 150px)"
-                >
-                    {title}
-                </Typography>
+        <Popover open anchorEl={anchorEl} action={popoverRef} onClose={onClose}>
+            <SpaceBetween width={1} direction="row" alignItems="center">
+                {!isEdit ? (
+                    <Typography
+                        variant="h6"
+                        textAlign="left"
+                        noWrap
+                        width="calc(100% - 150px)"
+                    >
+                        {title}
+                    </Typography>
+                ) : null}
 
                 {actions && !isEdit ? (
                     <Stack
