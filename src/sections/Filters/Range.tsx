@@ -5,7 +5,7 @@ import { RootState, useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import OnlyNumbersInput from "@/components/OnlyNumbers";
+import DebouncedInput from "./DebouncedInput";
 
 interface Props {
     type: "price" | "area";
@@ -34,39 +34,15 @@ const Content: FC<Props> = ({
     const valueMin = useSelector(selectMin) || 0;
     const valueMax = useSelector(selectMax) || 0;
 
-    const handleInputChangeMin = (v: string) => {
-        let newValue = v;
-        if (newValue === "") {
-            dispatch(setMin(""));
-        } else {
-            if (valueMin === 0) {
-                newValue = newValue.slice(-1);
-            }
-            dispatch(setMin(newValue));
-        }
-    };
-
-    const handleInputChangeMax = (v: string) => {
-        let newValue = v;
-        if (newValue === "") {
-            dispatch(setMax(""));
-        } else {
-            if (valueMax === 0) {
-                newValue = newValue.slice(-1);
-            }
-            dispatch(setMax(newValue));
-        }
-    };
-
     const options = useMemo(() => generateNumbers(type), [type]);
 
     return (
         <Grid container p={1} spacing={3} sx={{ textWrap: "nowrap" }}>
             <Grid item xs={12} sm={6}>
-                <OnlyNumbersInput
+                <DebouncedInput
                     label={`${symbol} ${t("from")}`}
-                    value={valueMin.toString()}
-                    onChange={handleInputChangeMin}
+                    setter={setMin}
+                    selector={selectMin}
                 />
 
                 <List
@@ -94,11 +70,12 @@ const Content: FC<Props> = ({
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <OnlyNumbersInput
+                <DebouncedInput
                     label={`${symbol} ${t("to")}`}
-                    value={valueMax.toString()}
-                    onChange={handleInputChangeMax}
+                    setter={setMax}
+                    selector={selectMax}
                 />
+
                 <List
                     sx={{
                         maxHeight: 300,
@@ -127,7 +104,7 @@ const Content: FC<Props> = ({
 };
 
 const PriceSelect: FC<Props> = (props) => {
-    const { type, selectMin, selectMax, setMin, setMax } = props;
+    const { type, selectMin, selectMax } = props;
 
     const { t } = useTranslation();
 
