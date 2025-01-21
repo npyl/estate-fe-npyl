@@ -81,6 +81,12 @@ const Carousel: FC<CarouselProps> = ({
 
     const carousel1 = useRef<Slick | null>(null);
 
+    // INFO: isActive:
+    // when false, we need to show indicator (unpublished)
+    // when undefined, it means we are on a view that doesn't need to show indicator (we don't care)
+    // when true, we don't show indicator (published)
+    const isNotPublished = isActive !== undefined && isActive === false;
+
     const onBeforeChange = useCallback(
         (_: number, next: number) => setCurrentIndex(next),
         []
@@ -107,7 +113,7 @@ const Carousel: FC<CarouselProps> = ({
 
     return (
         <Box sx={{ ...BoxSx, ...sx }} {...props}>
-            {!isActive ? <StyledLinkOffIcon /> : null}
+            {isNotPublished ? <StyledLinkOffIcon /> : null}
 
             <Slick
                 {...CarouselSettings}
