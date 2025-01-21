@@ -24,7 +24,13 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         pt={0}
     >
         <SpaceBetween>
-            <Stack direction="row" spacing={0.3} pt={1} overflow="auto hidden">
+            <Stack
+                direction="row"
+                spacing={0.3}
+                pt={1}
+                overflow="auto hidden"
+                mb="-5px" // INFO: helps scrollbar not cause a layout shift
+            >
                 {filters}
             </Stack>
             <Box mt={1}>{controls}</Box>
