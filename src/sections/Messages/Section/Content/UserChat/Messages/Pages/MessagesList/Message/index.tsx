@@ -1,23 +1,10 @@
 import { IMessageRes } from "@/types/messages";
 import { toNumberSafe } from "@/utils/toNumber";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import SenderAvatar from "./SenderAvatar";
 import FullName from "./FullName";
-import { SxProps, Theme } from "@mui/material/styles";
-
-const getTextSx = (isCurrentUser: boolean): SxProps<Theme> =>
-    isCurrentUser
-        ? {
-              bgcolor: "primary.main",
-              color: ({ palette: { mode } }) =>
-                  mode === "light" ? "white" : "neutral.200",
-          }
-        : {
-              bgcolor: ({ palette: { mode } }) =>
-                  mode === "light" ? "neutral.200" : "neutral.700",
-          };
+import Content from "./Content";
 
 interface MessageProps {
     m: IMessageRes;
@@ -25,7 +12,7 @@ interface MessageProps {
 }
 
 const Message: FC<MessageProps> = ({ currentUserId, m }) => {
-    const { sender, content } = m;
+    const { sender, content, createdAt } = m;
 
     const iSender = toNumberSafe(sender);
     const isCurrentUser = iSender === currentUserId;
@@ -43,20 +30,11 @@ const Message: FC<MessageProps> = ({ currentUserId, m }) => {
             <Stack>
                 {!isCurrentUser ? <FullName userId={iSender} /> : null}
 
-                <Typography
-                    className="pp-message-content"
-                    p={1}
-                    borderRadius="16px"
-                    sx={{
-                        // INFO: make sure the content breaks if not fitting
-                        whiteSpace: "wrap",
-                        wordBreak: "break-word",
-                        overflowWrap: "break-word",
-                        ...getTextSx(isCurrentUser),
-                    }}
-                >
-                    {content}
-                </Typography>
+                <Content
+                    currentUser={isCurrentUser}
+                    content={content}
+                    createdAt={createdAt}
+                />
             </Stack>
         </Stack>
     );
