@@ -118,10 +118,11 @@ const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
             : BEtoVisible(_value);
 
         const handleChange = useCallback(
-            (e: ChangeEvent<HTMLInputElement>) =>
+            (e: ChangeEvent<HTMLInputElement>) => {
                 separateThousands
                     ? visibleToBE_withThousands(e, onChange, acceptsDecimal)
-                    : visibleToBE(e, onChange, acceptsDecimal),
+                    : visibleToBE(e, onChange, acceptsDecimal);
+            },
             [separateThousands, acceptsDecimal, onChange]
         );
 

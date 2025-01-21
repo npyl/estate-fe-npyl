@@ -1,10 +1,11 @@
 import { FormControl, InputLabel, Select } from "@mui/material";
-import { Grid, List, ListItemText, TextField } from "@mui/material";
+import { Grid, List, ListItemText } from "@mui/material";
 import { FC, useMemo } from "react";
 import { RootState, useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import OnlyNumbersInput from "@/components/OnlyNumbers";
 
 interface Props {
     type: "price" | "area";
@@ -33,10 +34,9 @@ const Content: FC<Props> = ({
     const valueMin = useSelector(selectMin) || 0;
     const valueMax = useSelector(selectMax) || 0;
 
-    //Code for deleting the '0' in minValue textField when a number is typed
-    const handleInputChangeMin = (event: any) => {
-        let newValue = event.target.value;
-        if (newValue === "" || isNaN(newValue)) {
+    const handleInputChangeMin = (v: string) => {
+        let newValue = v;
+        if (newValue === "") {
             dispatch(setMin(""));
         } else {
             if (valueMin === 0) {
@@ -46,10 +46,9 @@ const Content: FC<Props> = ({
         }
     };
 
-    //Code for deleting the '0' in maxValue textField when a number is typed
-    const handleInputChangeMax = (event: any) => {
-        let newValue = event.target.value;
-        if (newValue === "" || isNaN(newValue)) {
+    const handleInputChangeMax = (v: string) => {
+        let newValue = v;
+        if (newValue === "") {
             dispatch(setMax(""));
         } else {
             if (valueMax === 0) {
@@ -64,9 +63,9 @@ const Content: FC<Props> = ({
     return (
         <Grid container p={1} spacing={3} sx={{ textWrap: "nowrap" }}>
             <Grid item xs={12} sm={6}>
-                <TextField
+                <OnlyNumbersInput
                     label={`${symbol} ${t("from")}`}
-                    value={valueMin.toLocaleString("el-GR")}
+                    value={valueMin.toString()}
                     onChange={handleInputChangeMin}
                 />
 
@@ -95,9 +94,9 @@ const Content: FC<Props> = ({
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <TextField
+                <OnlyNumbersInput
                     label={`${symbol} ${t("to")}`}
-                    value={valueMax.toLocaleString("el-GR")}
+                    value={valueMax.toString()}
                     onChange={handleInputChangeMax}
                 />
                 <List
