@@ -1,3 +1,5 @@
+// TODO: does not support thousands separated by dot!
+
 const toNumber = (s?: string | string[]) => {
     if (typeof s !== "string") throw new Error("Not a string: " + s);
     const res = parseInt(s, 10);

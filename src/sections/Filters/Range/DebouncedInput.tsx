@@ -12,7 +12,6 @@ interface DebouncedInputProps
 }
 
 const DebouncedInput: FC<DebouncedInputProps> = ({
-    defaultValue,
     selector,
     setter,
     ...props
@@ -32,7 +31,8 @@ const DebouncedInput: FC<DebouncedInputProps> = ({
 
     const handleChange = useCallback((v: string) => {
         let newValue = v;
-        if (newValue === "") {
+
+        if (!newValue) {
             debouncedChange("");
             setValue("");
         } else {
@@ -42,12 +42,7 @@ const DebouncedInput: FC<DebouncedInputProps> = ({
     }, []);
 
     return (
-        <OnlyNumbersInput
-            // max="10000000"
-            value={value}
-            onChange={handleChange}
-            {...props}
-        />
+        <OnlyNumbersInput value={value} onChange={handleChange} {...props} />
     );
 };
 

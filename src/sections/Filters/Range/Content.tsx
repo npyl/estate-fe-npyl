@@ -25,11 +25,14 @@ const Content: FC<Props> = ({
 
     const options = useMemo(() => generateNumbers(type), [type]);
 
+    const MAX_OPTION = (options?.at(-1) ?? 10000).toString();
+
     return (
         <Grid container p={1} spacing={3} sx={{ textWrap: "nowrap" }}>
             <Grid item xs={12} sm={6}>
                 <DebouncedInput
                     label={`${symbol} ${t("from")}`}
+                    max={MAX_OPTION}
                     setter={setMin}
                     selector={selectMin}
                 />
@@ -61,6 +64,7 @@ const Content: FC<Props> = ({
             <Grid item xs={12} sm={6}>
                 <DebouncedInput
                     label={`${symbol} ${t("to")}`}
+                    max={MAX_OPTION}
                     setter={setMax}
                     selector={selectMax}
                 />
