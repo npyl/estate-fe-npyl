@@ -6,8 +6,10 @@ interface ImageSectionProps {
     data: IProperties;
 }
 
-const ImageSection: React.FC<ImageSectionProps> = ({ data: { images } }) => (
-    <CarouselWithLightbox data={images as ICarouselImage[]} />
+const ImageSection: React.FC<ImageSectionProps> = ({
+    data: { active, images },
+}) => (
+    <CarouselWithLightbox isActive={active} data={images as ICarouselImage[]} />
 );
 
 export default ImageSection;
