@@ -1,22 +1,11 @@
-import { FormControl, InputLabel, Select } from "@mui/material";
 import { Grid, List, ListItemText } from "@mui/material";
 import { FC, useMemo } from "react";
-import { RootState, useDispatch, useSelector } from "src/store";
+import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import DebouncedInput from "./DebouncedInput";
-
-interface Props {
-    type: "price" | "area";
-
-    selectMin: (s: RootState) => number | undefined;
-    selectMax: (s: RootState) => number | undefined;
-    setMin: ActionCreatorWithPayload<any, any>;
-    setMax: ActionCreatorWithPayload<any, any>;
-
-    generateNumbers: (type: "price" | "area") => number[];
-}
+import { Props } from "./types";
+import formatNumber from "./formatNumber";
 
 const Content: FC<Props> = ({
     type,
@@ -103,58 +92,4 @@ const Content: FC<Props> = ({
     );
 };
 
-const PriceSelect: FC<Props> = (props) => {
-    const { type, selectMin, selectMax } = props;
-
-    const { t } = useTranslation();
-
-    const { symbol, label } = useMemo(
-        () =>
-            type === "price"
-                ? {
-                      symbol: "€",
-                      label: "Price",
-                  }
-                : {
-                      symbol: "m²",
-                      label: "Area",
-                  },
-        [type]
-    );
-
-    const valueMin = useSelector(selectMin) || 0;
-    const valueMax = useSelector(selectMax) || 0;
-
-    const value = useMemo(() => {
-        if (valueMin === 0 && valueMax === 0) {
-            return "";
-        }
-        if (valueMin && valueMax === 0) {
-            return t("From") + " " + formatNumber(+valueMin) + symbol;
-        }
-        if (valueMin === 0 && valueMax) {
-            return t("Until") + " " + formatNumber(+valueMax) + symbol;
-        }
-
-        return formatNumber(+valueMin) + "-" + formatNumber(+valueMax) + symbol;
-    }, [valueMax, valueMin, t]);
-
-    return (
-        <FormControl sx={{ minWidth: "135px", textWrap: "nowrap" }}>
-            <InputLabel>{t(label)}</InputLabel>
-            <Select
-                label={t(label)}
-                value={value}
-                renderValue={(selected) => selected as string}
-            >
-                <Content {...props} />
-            </Select>
-        </FormControl>
-    );
-};
-
-function formatNumber(num: number) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-export default PriceSelect;
+export default Content;
