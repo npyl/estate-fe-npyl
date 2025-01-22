@@ -30,7 +30,7 @@ const BasicSection: React.FC<any> = () => {
 
     return (
         <Panel
-            label={t("Basic Details").toString()}
+            label={t("Basic Details")}
             endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />}
         >
             <Grid container spacing={2}>

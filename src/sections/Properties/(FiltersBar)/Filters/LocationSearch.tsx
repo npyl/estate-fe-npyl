@@ -1,11 +1,5 @@
-import React, { useCallback, useState, useEffect } from "react";
-import {
-    IconButton,
-    TextField,
-    InputAdornment,
-    Grid,
-    debounce,
-} from "@mui/material";
+import React, { useState } from "react";
+import { IconButton, TextField, InputAdornment, Grid } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTranslation } from "react-i18next";
@@ -16,42 +10,33 @@ import {
     resetLocationSearch,
     selectLocationSearch,
 } from "@/slices/filters";
+import { useDebouncedCallback } from "use-debounce";
+import useToggle from "@/hooks/useToggle";
 
 const LocationSearch = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const selectedLocation = useSelector(selectLocationSearch);
     const [inputValue, setInputValue] = useState(selectedLocation || "");
-    const [showSearch, setShowSearch] = useState(false);
+    const [showSearch, handleSearchToggle] = useToggle(false);
     const theme = useTheme();
 
-    const handleSearchToggle = () => {
-        setShowSearch(!showSearch);
-    };
-
-    const debouncedOnLocationChange = useCallback(
-        debounce((location: string) => {
-            if (location) {
-                dispatch(setLocationSearch(location));
-            }
-        }, 300),
-        []
+    const debouncedOnLocationChange = useDebouncedCallback(
+        (location: string) => {
+            dispatch(setLocationSearch(location));
+        },
+        300
     );
-
-    useEffect(() => {
-        // Update local input state when locationSearch in the store changes
-        setInputValue(selectedLocation || "");
-    }, [selectedLocation]);
 
     // Handle input changes for location
     const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const location = e.target.value;
-        setInputValue(location);
 
         if (location.trim() === "") {
-            debouncedOnLocationChange.clear();
+            setInputValue("");
             dispatch(resetLocationSearch());
         } else {
+            setInputValue(location);
             debouncedOnLocationChange(location);
         }
     };
@@ -59,6 +44,7 @@ const LocationSearch = () => {
     const handleClearLocation = () => {
         setInputValue("");
         dispatch(resetLocationSearch());
+        handleSearchToggle();
     };
 
     return (
@@ -66,7 +52,6 @@ const LocationSearch = () => {
             <Grid item xs={12}>
                 <TextField
                     label={showSearch ? t("Search Location") : ""}
-                    // placeholder={t("") || ""}
                     value={inputValue}
                     onChange={handleLocationChange}
                     sx={{

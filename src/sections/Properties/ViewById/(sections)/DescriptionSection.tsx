@@ -39,7 +39,9 @@ const DescriptionSection = () => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Description")}</Typography>
+                <Typography variant="h6">
+                    {t(DescriptionSection.name)}
+                </Typography>
             </Box>
 
             <DraftEditor

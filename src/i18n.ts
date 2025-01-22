@@ -81,7 +81,7 @@ const resources = {
             Statistics: "Statistics",
             Time: "Time",
             Calendar: "Calendar",
-            "Basic Details": "Basic Details",
+            BasicSection: "Basic Details",
             Code: "Code",
             Owner: "Owner",
             Manager: "Manager",
@@ -167,6 +167,7 @@ const resources = {
             Playroom: "Playroom",
             Storeroom: "Storeroom",
             Penthouse: "Penthouse",
+            ConstructionSection: "Construction",
             Construction: "Construction",
             "Year of Construction": "Year of Construction",
             "Year of Renovation": "Year of Renovation",
@@ -187,6 +188,9 @@ const resources = {
 
             Garden: "Garden",
             Balconies: "Balconies",
+
+            BalconiesSection: "Balconies",
+
             "Available only on View / Edit": "Available only on View / Edit",
 
             "Last update": "Last update",
@@ -204,6 +208,10 @@ const resources = {
             "Popular Properties": "Popular Properties",
             //Distances
 
+            ParkingsSection: "Parking",
+            VideoSection: "Video",
+            TechnicalFeatures: "Technical Features and Interior",
+            DistanceSection: "Distances",
             Distances: "Distances",
             "Public Transportation": "Public Transportation",
 
@@ -322,6 +330,9 @@ const resources = {
 
             //Heating and Energy
 
+            NotesSection: "Notes",
+            ImageSection: "Images",
+            HeatingSection: "Heating and Energy",
             "Heating and Energy": "Heating and Energy",
             "Heating Type": "Heating Type",
             Central: "Central",
@@ -434,6 +445,7 @@ const resources = {
 
             //Suitable For
 
+            SuitableFor: "Suitable For",
             "Suitable For": "Suitable For",
             Student: "Student",
             Cottage: "Cottage",
@@ -475,13 +487,14 @@ const resources = {
             Lessor: "Lessor",
             Leaser: "Leaser",
             Buyer: "Buyer",
-            "Address Details": "Address Details",
+            AddressSection: "Address Details",
             "Matching system enabled": "Matching system enabled",
             Edit: "Edit",
 
             "Floor Apartment": "Floor Apartment",
 
             Blueprints: "Blueprints",
+            BlueprintsSection: "Blueprints",
 
             "Remove all": "Remove all",
             Delete: "Delete",
@@ -624,6 +637,7 @@ const resources = {
             Positions: "Positions",
             "Work Regions": "Work Regions",
             Attachment: "Attachment",
+            DescriptionSection: "Description",
             Description: "Description",
             "Property Code": "Property Code",
             Message: "Message",
@@ -678,7 +692,7 @@ const resources = {
             Integrations: "Integrations",
             Documents: "Documents",
 
-            "Property Description": "Property Description",
+            DetailsSection: "Property Description",
             "Write a note...": "Write a note...",
 
             Customer_geniki: "Customer",
@@ -712,7 +726,7 @@ const resources = {
             Download: "Download",
             Options: "Options",
             Living: "Living",
-            "Living Space": "Living Space",
+            AreaSection: "Living Space",
 
             "No location data available": "No location data available",
             "Please make sure this property has a location or try again later.":
@@ -1499,7 +1513,7 @@ const resources = {
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",
             "Newly Built": "Νεόδμητο",
-            "Property Description": "Περιγραφή ακινήτου",
+            DetailsSection: "Περιγραφή ακινήτου",
 
             Edit: "Επεξεργασία",
             Thumbnail: "Μικρογραφία",
@@ -1555,7 +1569,7 @@ const resources = {
             Detached: "Μονοκατοικία",
             Air: "Αέρας",
 
-            "Basic Details": "Βασικές Λεπτομέρειες",
+            BasicSection: "Βασικές Λεπτομέρειες",
             Code: "Κωδικός",
             Owner: "Ιδιοκτήτης",
             Manager: "Διαχειριστής",
@@ -1650,6 +1664,7 @@ const resources = {
             Playroom: "Playroom",
             Storeroom: "Αποθήκη",
             Penthouse: "Ρετιρέ",
+            ConstructionSection: "Κατασκευή",
             Construction: "Κατασκευή",
             "Year of Construction": "Έτος Κατασκευής",
             "Year of Renovation": "Έτος Ανακαίνισης",
@@ -1784,6 +1799,7 @@ const resources = {
 
             //Distances
 
+            DistanceSection: "Αποστάσεις",
             Distances: "Αποστάσεις",
             "Public Transportation": "Μέσα Μαζικής Μεταφοράς",
 
@@ -1871,6 +1887,12 @@ const resources = {
 
             //Heating and Energy
 
+            ParkingsSection: "Πάρκινγκ",
+            VideoSection: "Βίντεο",
+            SuitableFor: "Κατάλληλο Για",
+            NotesSection: "Σημειώσεις",
+            ImageSection: "Εικόνες",
+            HeatingSection: "Θέρμανση και Ενέργεια",
             "Heating and Energy": "Θέρμανση και Ενέργεια",
             "Heating Type": "Τύπος Θέρμανσης",
             Central: "Κεντρική",
@@ -1915,9 +1937,8 @@ const resources = {
             "Solar Boiler": "Ηλιακός Θερμοσίφωνας",
             "Off Peak Electricity": "Νυχτερινό ρεύμα",
 
-            //Blueprints
-
             Blueprints: "Σχεδιαγράμματα",
+            BlueprintsSection: "Σχεδιαγράμματα",
             "Drop or Select file": "Σύρετε ή επιλέξτε αρχείο",
 
             "Drop files here or click browse thorough your machine":
@@ -1947,6 +1968,7 @@ const resources = {
 
             "Display Window Length": "Μήκος Βιτρίνας",
             Entrances: "Εισόδοι",
+            TechnicalFeatures: "Τεχνικά Χαρακτηριστικά και Εσωτερικό",
             "Technical Features And Interior":
                 "Τεχνικά Χαρακτηριστικά και Εσωτερικό",
             Furnished: "Επιπλωμένο",
@@ -2021,6 +2043,7 @@ const resources = {
             "Features for Other Category": "Χαρακτηριστικά για κατηγορία Άλλο",
 
             //Description
+            DescriptionSection: "Περιγραφή",
             Description: "Περιγραφή",
             Generate: "Παραγωγή",
             "Generate (RTF)": "Παραγωγή (RTF)",
@@ -2059,8 +2082,11 @@ const resources = {
 
             Buyer: "Αγοραστής",
 
-            "Address Details": "Λεπτομέρειες Διεύθυνσης",
+            AreaSection: "Κατοικήσιμος Χώρος",
+            AddressSection: "Λεπτομέρειες Διεύθυνσης",
+            BalconiesSection: "Μπαλκόνια",
             Features: "Χαρακτηριστικά",
+
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
@@ -2227,7 +2253,6 @@ const resources = {
             Options: "Επιλογές",
 
             Living: "Κατοικήσιμος",
-            "Living Space": "Κατοικήσιμος Χώρος",
             "Edit Company Information": "Επεξεργασία Πληροφοριών Εταιρείας",
             "Company Information": "Πληροφορίες Εταιρείας",
             "Company Name": "Επωνυμία",

@@ -1,44 +1,54 @@
-import { RefObject, useCallback, useLayoutEffect } from "react";
-import sleep from "@/utils/sleep";
+import { RefObject, useCallback, useLayoutEffect, useRef } from "react";
 import { SidebarRef } from "./Sidebar";
 
-type ClosestSection = {
-    element: HTMLElement | null;
-    distance: number;
+const OFFSET_TOP = 0; // pixels from top
+
+const findFirstSectionAfterOffset = () => {
+    const sections = Array.from(
+        document.querySelectorAll<HTMLElement>('[id^="NavSection-"]')
+    );
+
+    // Find the first section whose top edge is below our offset
+    const firstSection = sections.find((section) => {
+        const { top } = section.getBoundingClientRect();
+        return top >= OFFSET_TOP;
+    });
+
+    return firstSection || null;
 };
 
 const useClosestSection = (sidebarRef: RefObject<SidebarRef>) => {
-    const onScrollEnd = useCallback(async () => {
-        await sleep(500);
+    const isProgrammaticScroll = useRef(false);
 
-        const viewportCenter = window.innerHeight / 2;
+    const onScroll = useCallback(async () => {
+        if (isProgrammaticScroll.current) {
+            isProgrammaticScroll.current = false;
+            return;
+        }
 
-        const sections = Array.from(
-            document.querySelectorAll<HTMLElement>('[id^="NavSection-"]')
-        );
+        const currentSection = findFirstSectionAfterOffset();
+        if (!currentSection) return;
 
-        const closestSection = sections.reduce<ClosestSection>(
-            (closest, section) => {
-                const { top, height } = section.getBoundingClientRect();
-                const distance = Math.abs(top + height / 2 - viewportCenter);
-                return !closest.element || distance < closest.distance
-                    ? { element: section, distance }
-                    : closest;
-            },
-            { element: null, distance: Infinity }
-        );
-
-        if (!closestSection.element) return;
-
-        const name = closestSection.element.id.slice(11);
-
+        const name = currentSection.id.slice(11);
         sidebarRef.current?.setValue(name);
     }, []);
 
     useLayoutEffect(() => {
-        window.addEventListener("scrollend", onScrollEnd);
+        //
+        // Override scroll methods
+        //
+        const originalScroll = window.scroll;
+
+        window.scroll = (...args: any) => {
+            isProgrammaticScroll.current = true;
+            return originalScroll.apply(window, args);
+        };
+
+        window.addEventListener("scrollend", onScroll);
+
         return () => {
-            window.removeEventListener("scrollend", onScrollEnd);
+            window.scroll = originalScroll;
+            window.removeEventListener("scrollend", onScroll);
         };
     }, []);
 };

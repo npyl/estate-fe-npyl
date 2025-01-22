@@ -2,15 +2,13 @@ import { useState } from "react";
 import { usePropertyHistoryPaginatedQuery } from "src/services/logs";
 import { Box, Pagination, Stack } from "@mui/material";
 import { NextPage } from "next";
-import { useSelector } from "react-redux";
-import { selectAll } from "src/slices/log";
 import LogCard from "@/components/Cards/LogCard";
 import { useRouter } from "next/router";
 
 const PropertyLogs: NextPage = () => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const allFilters = useSelector(selectAll);
+
     const router = useRouter();
     const { propertyId } = router.query;
     const { data } = usePropertyHistoryPaginatedQuery({

@@ -29,7 +29,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Living Space")}</Typography>
+                <Typography variant="h6">{t(AreaSection.name)}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container>

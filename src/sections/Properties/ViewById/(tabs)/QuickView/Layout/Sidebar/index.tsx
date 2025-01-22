@@ -49,7 +49,7 @@ const Sidebar = forwardRef<SidebarRef, SidebarProps>(
             const el = document.getElementById(sectionId);
             if (!el) return;
 
-            window?.scroll({ top: el.offsetTop, behavior: "smooth" });
+            window?.scroll({ top: el.offsetTop - 70, behavior: "smooth" });
 
             setValue(name);
         }, []);

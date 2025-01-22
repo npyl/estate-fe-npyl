@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
  * @param fallbackValue fallback value for when the cookie's value isn't yet set
  * @returns res: useCookies()'s value or fallback, actualSet, actualRemove are wrappers for only changing specific cookie
  */
-const useCookie = <V extends string | number = string>(
+const useCookie = <V extends string | number | object = string>(
     cookieName: string,
     fallbackValue: V
 ) => {

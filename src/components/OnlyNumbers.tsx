@@ -1,3 +1,4 @@
+import { toNumberSafe } from "@/utils/toNumber";
 import { InputAdornment, TextFieldProps } from "@mui/material";
 import { TextField } from "@mui/material";
 import { ChangeEvent, forwardRef, useCallback } from "react";
@@ -25,12 +26,12 @@ const BEtoVisible_withThousands = (v: string | number): string => {
 };
 
 const visibleToBE_withThousands = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    v: string,
     onChange: (s: string) => void,
     acceptsDecimal: boolean
 ) => {
     // Remove all dots
-    let value = e.target.value.replace(/\./g, "");
+    let value = v.replace(/\./g, "");
 
     // Accept only numbers
     if (!/^[0-9,]*$/.test(value)) {
@@ -64,12 +65,10 @@ const BEtoVisible = (v: string | number): string => {
 };
 
 const visibleToBE = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value: string,
     onChange: (s: string) => void,
     acceptsDecimal: boolean
 ) => {
-    let value = e.target.value;
-
     // Accept only numbers and one decimal separator
     if (!/^[0-9.,]*$/.test(value)) {
         return;
@@ -92,6 +91,28 @@ const visibleToBE = (
     onChange?.(value);
 };
 
+const isWithinRange = (v: string, min?: string, max?: string) => {
+    // TODO: see if we need to support comma for decimal (now supports dot for thousands)
+
+    const cleanValue = v.replace(/\./g, "");
+    const iValue = toNumberSafe(cleanValue);
+
+    if (min) {
+        const iMin = toNumberSafe(min);
+        if (iMin === -1) return false;
+
+        if (iValue < iMin) return false;
+    }
+    if (max) {
+        const iMax = toNumberSafe(max);
+        if (iMax === -1) return false;
+
+        if (iValue > iMax) return false;
+    }
+
+    return true;
+};
+
 export interface OnlyNumbersInputProps
     extends Omit<TextFieldProps<"standard">, "value" | "onChange"> {
     acceptsDecimal?: boolean;
@@ -99,6 +120,10 @@ export interface OnlyNumbersInputProps
     adornment?: string;
     value: string;
     onChange: (s: string) => void;
+
+    // ...
+    min?: string;
+    max?: string;
 }
 
 const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
@@ -109,6 +134,8 @@ const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
             separateThousands = true,
             value: _value,
             onChange,
+            min,
+            max,
             ...other
         },
         ref
@@ -118,11 +145,17 @@ const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
             : BEtoVisible(_value);
 
         const handleChange = useCallback(
-            (e: ChangeEvent<HTMLInputElement>) =>
+            (e: ChangeEvent<HTMLInputElement>) => {
+                const v = e.target.value;
+
+                // INFO: if we have a range, make sure we accept only the values within
+                if ((min || max) && !isWithinRange(v, min, max)) return;
+
                 separateThousands
-                    ? visibleToBE_withThousands(e, onChange, acceptsDecimal)
-                    : visibleToBE(e, onChange, acceptsDecimal),
-            [separateThousands, acceptsDecimal, onChange]
+                    ? visibleToBE_withThousands(v, onChange, acceptsDecimal)
+                    : visibleToBE(v, onChange, acceptsDecimal);
+            },
+            [separateThousands, acceptsDecimal, min, max, onChange]
         );
 
         return (

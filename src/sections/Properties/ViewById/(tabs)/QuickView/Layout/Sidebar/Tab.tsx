@@ -1,39 +1,34 @@
-import { ReactNode } from "react";
-import Tab from "@mui/material/Tab";
+import { FC, ReactNode } from "react";
+import Tab, { TabProps } from "@mui/material/Tab";
 import isNamedComponent from "../isNamedComponent";
+import { useTranslation } from "react-i18next";
 
-const SECTION_LABELS: Record<string, string> = {
-    ImageSection: "Images",
-    BlueprintsSection: "Blueprints",
-    DetailsSection: "Details",
-    ConstructionSection: "Construction",
-    TechnicalFeatures: "Technical Features",
-    Features: "Features",
-    DescriptionSection: "Description",
-    AddressSection: "Address",
-    VideoSection: "Video",
-    BasicSection: "Basic",
-    HeatingSection: "Heating",
-    AreaSection: "Area",
-    DistanceSection: "Distance",
-    SuitableFor: "Suitable For",
-    BalconiesSection: "Balconies",
-    ParkingsSection: "Parkings",
-    NotesSection: "Notes",
-};
+// -----------------------------------------------------------
 
 const getTabId = (name: string) => `Tab-${name}`;
 
+// -----------------------------------------------------------
+
+interface TranslatedTabProps extends Omit<TabProps, "label"> {
+    label: string;
+}
+
+const TranslatedTab: FC<TranslatedTabProps> = ({ label, ...props }) => {
+    const { t } = useTranslation();
+    return <Tab label={t(label)} {...props} />;
+};
+
+// -----------------------------------------------------------
+
 const getTab = (content: ReactNode) => {
-    if (!isNamedComponent(content))
+    if (!isNamedComponent(content)) {
         throw new Error("Invalid section component");
+    }
 
     const name = content.type.name;
     const id = getTabId(name);
 
-    const label = SECTION_LABELS[name];
-
-    return <Tab key={name} id={id} label={label} value={name} />;
+    return <TranslatedTab key={name} id={id} label={name} value={name} />;
 };
 
 export { getTabId };

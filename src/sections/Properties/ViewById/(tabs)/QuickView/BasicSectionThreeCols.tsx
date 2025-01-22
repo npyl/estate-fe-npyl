@@ -126,10 +126,6 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     ],
 };
 
-const formatNumberWithDots = (number: number) => {
-    return new Intl.NumberFormat("de-DE").format(number);
-};
-
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
@@ -137,12 +133,18 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const manager: IUser = data?.manager;
     const owner: ICustomer = data?.owner;
 
-    const renderHalfOfFields = (fields: string[], from: number, to: number) => (
-        <Grid item xs={12} sm={6}>
+    const renderColumnFields = (
+        fields: string[],
+        startIndex: number,
+        itemsPerColumn: number
+    ) => (
+        <Grid item xs={12} sm={4}>
             <List sx={{ p: 0 }}>
-                {fields.slice(from, to).map((field, i) => (
-                    <BasicDetailItem field={field} key={i} />
-                ))}
+                {fields
+                    .slice(startIndex, startIndex + itemsPerColumn)
+                    .map((field, i) => (
+                        <BasicDetailItem field={field} key={i} />
+                    ))}
             </List>
         </Grid>
     );
@@ -151,19 +153,27 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
 
-        const half = Math.ceil(fieldsForCategory.length / 2);
+        // Calculate items per column, rounding up to ensure all items are displayed
+        const totalItems = fieldsForCategory.length;
+        const itemsPerColumn = Math.ceil(totalItems / 3);
 
         return (
             <Grid container>
-                {renderHalfOfFields(fieldsForCategory, 0, half)}
-                {renderHalfOfFields(
+                {renderColumnFields(fieldsForCategory, 0, itemsPerColumn)}
+                {renderColumnFields(
                     fieldsForCategory,
-                    half,
-                    fieldsForCategory.length
+                    itemsPerColumn,
+                    itemsPerColumn
+                )}
+                {renderColumnFields(
+                    fieldsForCategory,
+                    itemsPerColumn * 2,
+                    itemsPerColumn
                 )}
             </Grid>
         );
     };
+
     const BasicDetailItem: FC<BasicDetailItemProps> = ({ field }) => {
         switch (field) {
             case "Visitors":
