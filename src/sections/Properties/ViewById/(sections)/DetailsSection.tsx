@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
-import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface DetailsSectionProps {
     data: IProperties;
@@ -317,30 +318,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
     };
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t(DetailsSection.name)}
-                        </Typography>
-                    </Box>
-                    <Divider />
-                    <Grid container>
-                        {propertyDescription(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label={DetailsSection.name}>
+            {propertyDescription(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 

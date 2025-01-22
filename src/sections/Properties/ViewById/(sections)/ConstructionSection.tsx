@@ -1,10 +1,11 @@
 import { IProperties, ParentCategory } from "src/types/properties";
 
-import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface ConstructionSectionProps {
     data: IProperties;
@@ -186,30 +187,9 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
         return null;
     };
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t(ConstructionSection.name)}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        {propertyConstruction(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label={ConstructionSection.name}>
+            {propertyConstruction(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 

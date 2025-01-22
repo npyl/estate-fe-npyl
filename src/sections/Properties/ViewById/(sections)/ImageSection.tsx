@@ -1,6 +1,7 @@
 import ICarouselImage from "@/components/Carousel/types";
 import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
 import { IProperties } from "src/types/properties";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface ImageSectionProps {
     data: IProperties;
@@ -9,7 +10,12 @@ interface ImageSectionProps {
 const ImageSection: React.FC<ImageSectionProps> = ({
     data: { active, images },
 }) => (
-    <CarouselWithLightbox isActive={active} data={images as ICarouselImage[]} />
+    <PanelWithQuickView label={ImageSection.name}>
+        <CarouselWithLightbox
+            isActive={active}
+            data={images as ICarouselImage[]}
+        />
+    </PanelWithQuickView>
 );
 
 export default ImageSection;
