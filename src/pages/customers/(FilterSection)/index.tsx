@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { PaperProps, Stack } from "@mui/material";
 import {
     resetState,
+    setSorting,
     sumOfChangedProperties,
 } from "src/slices/customer/filters";
 // filters
@@ -30,12 +31,10 @@ const FilterMore = dynamic(
 
 interface FilterSectionProps extends PaperProps {
     sorting: string;
-    onSortingChange: (s: string) => void;
 }
 
 export const FilterSection: React.FC<FilterSectionProps> = ({
     sorting,
-    onSortingChange,
     ...props
 }) => {
     const { t } = useTranslation();
@@ -62,6 +61,10 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
     const belowLg = useResponsive("down", "lg");
 
     const options = useMemo(() => getOptions(t), [t]);
+    const handleSortingChange = useCallback(
+        (s: string) => dispatch(setSorting(s)),
+        []
+    );
 
     return (
         <>
@@ -84,7 +87,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     <FilterSortBy
                         options={options}
                         sorting={sorting}
-                        onSortingChange={onSortingChange}
+                        onSortingChange={handleSortingChange}
                     />
                 }
             />

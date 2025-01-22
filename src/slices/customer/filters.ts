@@ -7,6 +7,7 @@ interface Filters extends ICustomerFilter {
 }
 interface IFilterProps {
     filters: Filters;
+    sorting: string;
     ids: string[];
 }
 
@@ -20,6 +21,7 @@ const initialState: IFilterProps = {
         buyer: false,
         seller: false,
     },
+    sorting: "default",
     ids: [],
 };
 
@@ -84,28 +86,11 @@ const slice = createSlice({
             state.filters.maxCovered = payload;
             !state.ids.includes("maxArea") && state.ids.push("maxArea");
         },
-        // resetBasic: (state) => {
-        //     state.filters.managerId = initialState.filters.managerId;
 
-        //     state.filters.parentCategories =
-        //         initialState.filters.parentCategories;
-        //     state.filters.categories = initialState.filters.categories;
-        //     state.filters.minPrice = initialState.filters.minPrice;
-        //     state.filters.maxPrice = initialState.filters.maxPrice;
-        //     state.filters.minArea = initialState.filters.minArea;
-        //     state.filters.maxArea = initialState.filters.maxArea;
-        //     state.filters.labels = initialState.filters.labels;
+        setSorting(state, { payload }) {
+            state.sorting = payload;
+        },
 
-        //     state.ids = state.ids.filter((id) => id !== "minArea");
-        //     state.ids = state.ids.filter((id) => id !== "maxPrice");
-        //     state.ids = state.ids.filter((id) => id !== "minPrice");
-        //     state.ids = state.ids.filter((id) => id !== "categories");
-        //     state.ids = state.ids.filter((id) => id !== "parentCategory");
-        //     state.ids = state.ids.filter((id) => id !== "states");
-        //     state.ids = state.ids.filter((id) => id !== "managerId");
-        //     state.ids = state.ids.filter((id) => id !== "code");
-        //     state.ids = state.ids.filter((id) => id !== "labels");
-        // },
         setStates(state, { payload }) {
             state.filters.states = payload;
             !state.ids.includes("states") && state.ids.push("states");
@@ -139,6 +124,7 @@ export const {
     setLeaser,
     setLessor,
     setSeller,
+    setSorting,
     // multiple
     setLabels,
     setCategories,
@@ -169,6 +155,8 @@ export const selectLessor = ({ customerFilters }: RootState) =>
     customerFilters.filters.lessor;
 export const selectSeller = ({ customerFilters }: RootState) =>
     customerFilters.filters.seller;
+export const selectSorting = ({ customerFilters }: RootState) =>
+    customerFilters.sorting;
 export const selectLabels = ({ customerFilters }: RootState) =>
     customerFilters.filters.labels;
 export const selectParentCategories = ({ customerFilters }: RootState) =>
