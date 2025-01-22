@@ -132,7 +132,7 @@ const Customers: NextPage = () => {
             ) : (
                 <Paper>
                     <DataGrid
-                        skeleton={isLoading}
+                        loading={isLoading}
                         rows={rows}
                         page={page}
                         pageSize={pageSize}

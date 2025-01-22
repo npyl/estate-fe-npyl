@@ -1,14 +1,22 @@
-import { FC } from "react";
-import { useTranslation } from "react-i18next";
+import { FC, useMemo } from "react";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
 import CustomRow from "./Row";
+import renderSkeletonCell from "./renderSkeletonCell";
+import { useTranslation } from "react-i18next";
+
+// ------------------------------------------------------------------------
+
+const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
+    id: index + 1,
+}));
 
 // ------------------------------------------------------------------------
 
 const DataGridTable: FC<GridProps> = ({
-    rows,
-    columns,
+    rows: _rows,
+    columns: _columns,
+    loading,
     page,
     pageSize,
     totalRows,
@@ -16,6 +24,19 @@ const DataGridTable: FC<GridProps> = ({
     ...props
 }) => {
     const { t } = useTranslation();
+
+    const columns = useMemo(
+        () =>
+            loading
+                ? _columns.map((c) => ({
+                      ...c,
+                      renderCell: renderSkeletonCell,
+                  }))
+                : _columns,
+        [_columns, loading]
+    );
+
+    const rows = loading ? skeletonRows : _rows || [];
 
     return (
         <StyledDataGrid
@@ -50,7 +71,6 @@ const DataGridTable: FC<GridProps> = ({
             }}
             checkboxSelection
             disableRowSelectionOnClick
-            autoHeight
             rows={rows}
             columns={columns}
             pageSizeOptions={[25, 50, 100]}
