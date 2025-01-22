@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
-import * as React from "react";
 import { ViewLocation } from "src/components/Location/View";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import PanelWithQuickView from "../PanelWithQuickView";
 
-const AddressSection: React.FC = () => {
+const AddressSection = () => {
     const router = useRouter();
     const { propertyId } = router.query;
     const { data } = useGetPropertyByIdQuery(+propertyId!);
@@ -13,7 +12,7 @@ const AddressSection: React.FC = () => {
     if (!location) return null;
 
     return (
-        <PanelWithQuickView label={AddressSection.name}>
+        <PanelWithQuickView label="AddressSection">
             <ViewLocation location={location} />
         </PanelWithQuickView>
     );

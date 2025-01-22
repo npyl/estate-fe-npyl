@@ -1,17 +1,15 @@
-import React from "react";
 import { IProperties } from "src/types/properties";
-
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-
+import { Grid } from "@mui/material";
 import { List, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { FC } from "react";
 
 interface AreaSectionProps {
     data: IProperties;
 }
 
-const AreaSection: React.FC<AreaSectionProps> = (props) => {
+const AreaSection: FC<AreaSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
     if (!data) return null;
@@ -21,7 +19,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
     if (!areas) return null;
 
     return (
-        <PanelWithQuickView label={AreaSection.name}>
+        <PanelWithQuickView label="AreaSection">
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <List>

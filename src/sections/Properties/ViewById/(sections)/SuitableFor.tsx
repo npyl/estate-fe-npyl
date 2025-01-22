@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { List, ListBooleanItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface SuitableForProps {
     data: IProperties;
@@ -142,30 +143,9 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
     };
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t(SuitableFor.name)}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        {renderSuitableFor(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label="SuitableFor">
+            {renderSuitableFor(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 

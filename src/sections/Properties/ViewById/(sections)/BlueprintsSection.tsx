@@ -10,12 +10,10 @@ interface BlueprintsSectionProps {
 
 const BlueprintsSection: React.FC<BlueprintsSectionProps> = ({
     data: { blueprints },
-}) => {
-    return (
-        <PanelWithQuickView label={BlueprintsSection.name}>
-            <CarouselWithLightbox data={blueprints as ICarouselImage[]} />
-        </PanelWithQuickView>
-    );
-};
+}) => (
+    <PanelWithQuickView label="BlueprintsSection">
+        <CarouselWithLightbox data={blueprints as ICarouselImage[]} />
+    </PanelWithQuickView>
+);
 
 export default BlueprintsSection;

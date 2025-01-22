@@ -318,7 +318,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
     };
 
     return (
-        <PanelWithQuickView label={DetailsSection.name}>
+        <PanelWithQuickView label="DetailsSection">
             {propertyDescription(data?.parentCategory.key as ParentCategory)}
         </PanelWithQuickView>
     );

@@ -24,11 +24,7 @@ interface ImageSectionProps {
 const ImageSection: React.FC<ImageSectionProps> = ({
     data: { active, images },
 }) => (
-    <PanelWithQuickView
-        hideHeader
-        label={ImageSection.name}
-        toggleSx={toggleSx}
-    >
+    <PanelWithQuickView hideHeader label="ImageSection" toggleSx={toggleSx}>
         <CarouselWithLightbox
             isActive={active}
             data={images as ICarouselImage[]}

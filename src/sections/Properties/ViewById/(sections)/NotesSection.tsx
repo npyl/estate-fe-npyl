@@ -6,6 +6,7 @@ import {
     useDeleteWithIdMutation,
     useGetNotesByPropertyIdQuery,
 } from "src/services/note";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 const NotesSection: React.FC = () => {
     const router = useRouter();
@@ -28,11 +29,13 @@ const NotesSection: React.FC = () => {
     if (!propertyId) return null;
 
     return (
-        <NoteCreate
-            notes={notes || []}
-            onAdd={handleAddNote}
-            onRemove={hadleRemove}
-        />
+        <PanelWithQuickView hideHeader label="NotesSection">
+            <NoteCreate
+                notes={notes || []}
+                onAdd={handleAddNote}
+                onRemove={hadleRemove}
+            />
+        </PanelWithQuickView>
     );
 };
 

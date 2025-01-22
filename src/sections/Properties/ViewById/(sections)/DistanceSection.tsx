@@ -1,11 +1,10 @@
 import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
-
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-
+import { Grid } from "@mui/material";
 import { List } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import DistanceListItem from "@/components/List/Items/distance";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface DistanceSectionProps {
     data: IProperties;
@@ -134,30 +133,9 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
         return null;
     };
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t(DistanceSection.name)}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        {renderDistances(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label="DistanceSection">
+            {renderDistances(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 
