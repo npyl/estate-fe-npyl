@@ -4,6 +4,7 @@ import ParamLooker from "./ParamLooker";
 import { FiltersProvider } from "@/sections/Tasks/filters";
 import Content from "./Content";
 import { CookiesProvider } from "react-cookie";
+import NotificationHandler from "./NotificationHandler";
 
 function ViewAllTasks() {
     return (
@@ -19,6 +20,8 @@ function ViewAllTasks() {
 
             {/* Handle search params */}
             <ParamLooker />
+
+            <NotificationHandler />
         </>
     );
 }
