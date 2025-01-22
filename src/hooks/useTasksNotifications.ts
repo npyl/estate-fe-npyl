@@ -1,7 +1,6 @@
-import { useCallback } from "react";
-import useWebSocket from "react-use-websocket";
-import { useAuth } from "./use-auth";
+import { useCallback, useLayoutEffect } from "react";
 import { IUserMini } from "@/types/user";
+import useMainSocket from "@/_private/useMainSocket";
 
 interface IActiveTaskCountPayload {
     userId: number;
@@ -23,25 +22,16 @@ type IMessageData =
           payload: ITaskUpdateNotificationPayload;
       };
 
+interface Callbacks {
+    onCountChange?: (n: number) => void;
+    onTaskNotification?: (p: ITaskUpdateNotificationPayload) => void;
+}
+
 const useTasksNotifications = ({
     onCountChange,
     onTaskNotification,
-}: {
-    onCountChange?: (n: number) => void;
-    onTaskNotification?: (p: ITaskUpdateNotificationPayload) => void;
-}) => {
-    const { user } = useAuth();
-
-    const onOpen = useCallback(() => {
-        if (user?.id === undefined) return;
-
-        const req = {
-            type: "register",
-            userId: user?.id,
-        };
-
-        sendJsonMessage(req);
-    }, [user?.id]);
+}: Callbacks) => {
+    const { socket } = useMainSocket();
 
     const onMessage = useCallback(
         (event: WebSocketEventMap["message"]) => {
@@ -69,13 +59,15 @@ const useTasksNotifications = ({
         [onCountChange, onTaskNotification]
     );
 
-    const { sendJsonMessage } = useWebSocket(
-        process.env.NEXT_PUBLIC_TASKS_SOCKET ?? "",
-        {
-            onOpen,
-            onMessage,
-        }
-    );
+    useLayoutEffect(() => {
+        if (!socket) return;
+        socket.onmessage = onMessage;
+
+        return () => {
+            if (!socket) return;
+            socket.onmessage = null;
+        };
+    }, [socket, onMessage]);
 };
 
 export default useTasksNotifications;
