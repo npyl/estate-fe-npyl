@@ -5,7 +5,11 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { Stack, SvgIconTypeMap } from "@mui/material";
 // redux
 import { useSelector } from "react-redux";
-import { sumOfChangedProperties } from "src/slices/filters";
+import {
+    selectSorting,
+    setSorting,
+    sumOfChangedProperties,
+} from "src/slices/filters";
 // icons
 import { Menu } from "@/assets/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -15,16 +19,15 @@ import ChosenFilters from "./ChosenFilters";
 // components
 import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
-import { FC, useMemo } from "react";
-
+import { FC, useCallback, useMemo } from "react";
 import useDialog from "@/hooks/useDialog";
-const FilterMore = dynamic(() => import("./FilterMore"));
 import FilterMoreButton from "@/sections/Filters/FilterMore/Button";
 import FilterSortBy from "@/sections/Filters/SortBy";
-import { getOptions } from "./constants";
-import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
+import useSortingOptions from "./useSortingOptions";
+import { useDispatch } from "react-redux";
+const FilterMore = dynamic(() => import("./FilterMore"));
 
 type viewOptionsType = {
     id: optionType;
@@ -53,9 +56,6 @@ const viewOptions: viewOptionsType[] = [
 ];
 
 interface Props extends PaperProps {
-    sorting: string;
-    onSortingChange: (s: string) => void;
-
     optionView: optionType;
     setOptionView: (o: optionType) => void;
 
@@ -63,16 +63,12 @@ interface Props extends PaperProps {
 }
 
 const FilterBar: FC<Props> = ({
-    sorting,
-    onSortingChange,
     optionView,
     setOptionView,
 
     belowLg,
     ...props
 }) => {
-    const { t } = useTranslation();
-
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
     const BUTTONS = useMemo(() => {
@@ -93,7 +89,13 @@ const FilterBar: FC<Props> = ({
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
-    const options = useMemo(() => getOptions(t), [t]);
+    const dispatch = useDispatch();
+    const options = useSortingOptions();
+    const sorting = useSelector(selectSorting);
+    const handleSortingChange = useCallback(
+        (s: string) => dispatch(setSorting(s)),
+        []
+    );
 
     return (
         <>
@@ -116,7 +118,7 @@ const FilterBar: FC<Props> = ({
                         <FilterSortBy
                             options={options}
                             sorting={sorting}
-                            onSortingChange={onSortingChange}
+                            onSortingChange={handleSortingChange}
                         />
 
                         <ButtonGroup
