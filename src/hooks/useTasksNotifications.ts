@@ -61,11 +61,13 @@ const useTasksNotifications = ({
 
     useLayoutEffect(() => {
         if (!socket) return;
-        socket.onmessage = onMessage;
+        if (socket.readyState !== socket.OPEN) return;
+
+        socket.addEventListener("message", onMessage);
 
         return () => {
             if (!socket) return;
-            socket.onmessage = null;
+            socket.removeEventListener("message", onMessage);
         };
     }, [socket, onMessage]);
 };
