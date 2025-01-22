@@ -5,6 +5,7 @@ import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface AreaSectionProps {
     data: IProperties;
@@ -20,18 +21,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
     if (!areas) return null;
 
     return (
-        <Paper elevation={10} sx={{ overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t(AreaSection.name)}</Typography>
-            </Box>
-            <Divider></Divider>
+        <PanelWithQuickView label={AreaSection.name}>
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <List>
@@ -116,7 +106,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                     </List>
                 </Grid>
             </Grid>
-        </Paper>
+        </PanelWithQuickView>
     );
 };
 
