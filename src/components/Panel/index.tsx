@@ -28,6 +28,7 @@ const Panel: FC<PanelProps> = ({
         }}
     >
         <Stack
+            className="PPPanel-Header"
             p={1.5}
             direction="row"
             justifyContent={!!endNode ? "space-between" : "left"}
