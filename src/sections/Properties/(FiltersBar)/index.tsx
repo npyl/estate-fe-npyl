@@ -19,8 +19,8 @@ import { FC, useMemo } from "react";
 
 import useDialog from "@/hooks/useDialog";
 const FilterMore = dynamic(() => import("./FilterMore"));
-import FilterMoreButton from "@/components/Filters/FilterMore/Button";
-import FilterSortBy from "@/components/Filters/SortBy";
+import FilterMoreButton from "@/sections/Filters/FilterMore/Button";
+import FilterSortBy from "@/sections/Filters/SortBy";
 import { getOptions } from "./constants";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
 import { sumOfChangedProperties, resetState } from "src/slices/filters";
-import { FilterMoreDialog } from "@/components/Filters/FilterMore";
+import { FilterMoreDialog } from "@/sections/Filters/FilterMore";
 import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./CompactFilters/Floors";
 import Fields from "./CompactFilters/Fields";

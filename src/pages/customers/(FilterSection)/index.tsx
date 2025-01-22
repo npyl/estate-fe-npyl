@@ -11,7 +11,7 @@ import FilterCategory from "./Filters/Category";
 import FilterParentCategory from "./Filters/ParentCategory";
 import ChosenFilters from "./Filters/ChosenFilters";
 import FilterManager from "./Filters/ManagedBy";
-import FilterMoreButton from "@/components/Filters/FilterMore/Button";
+import FilterMoreButton from "@/sections/Filters/FilterMore/Button";
 import FilterLabels from "./Filters/Labels";
 import useDialog from "@/hooks/useDialog";
 import { getOptions } from "./constants";
@@ -20,12 +20,12 @@ import { useSelector } from "src/store";
 import useResponsive from "@/hooks/useResponsive";
 import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
-import FilterSortBy from "@/components/Filters/SortBy";
+import FilterSortBy from "@/sections/Filters/SortBy";
 import { useDispatch } from "react-redux";
 import PriceSelect from "./Filters/Price";
 import AreaSelect from "./Filters/Area";
 const FilterMore = dynamic(
-    () => import("@/components/Filters/FilterMore/Dialog")
+    () => import("@/sections/Filters/FilterMore/Dialog")
 );
 
 interface FilterSectionProps extends PaperProps {
