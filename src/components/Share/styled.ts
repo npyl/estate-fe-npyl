@@ -8,14 +8,15 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     maxWidth: "90vw",
     display: "flex",
     flexDirection: "column",
-    gap: theme.spacing(1.5),
     alignItems: "flex-start",
     position: "relative",
-    borderRadius: "15px",
-    boxShadow: theme.shadows[3],
+    gap: theme.spacing(2),
     border: "1px solid",
     borderColor: getBorderColor(theme),
-    backgroundColor: theme.palette.background.paper,
+
+    "& .PPShareButton:hover": {
+        backgroundColor: theme.palette.action.hover,
+    },
 }));
 
 export { StyledPaper };

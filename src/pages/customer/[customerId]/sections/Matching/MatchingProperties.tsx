@@ -113,7 +113,7 @@ const MatchingPropertiesSection = () => {
             }}
         >
             <DataGrid
-                skeleton={isLoading}
+                loading={isLoading}
                 // ...
                 rows={properties}
                 totalRows={properties.length ?? pageSize}

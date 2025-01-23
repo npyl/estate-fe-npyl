@@ -1,7 +1,6 @@
-import { Box, Paper } from "@mui/material";
 import React from "react";
-
 import { IProperties } from "src/types/properties";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface VideoSectionProps {
     data: IProperties;
@@ -33,29 +32,16 @@ const VideoSection: React.FC<VideoSectionProps> = (props) => {
     if (!videoId) return null;
 
     return (
-        <Paper elevation={10} sx={{ overflow: "auto" }}>
-            <Box
-                sx={{
-                    border: 1,
-                    borderColor: "divider",
-                    borderRadius: 1,
-                    width: {},
-                    height: "80vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${videoId}`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                ></iframe>
-            </Box>
-        </Paper>
+        <PanelWithQuickView label="VideoSection">
+            <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${videoId}`}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+            ></iframe>
+        </PanelWithQuickView>
     );
 };
 

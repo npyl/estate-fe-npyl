@@ -7,7 +7,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import { useFilterCustomersQuery } from "src/services/customers";
-import { selectAll } from "src/slices/customer/filters";
+import { selectAll, selectSorting } from "src/slices/customer/filters";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/Cards/CustomerCard";
@@ -31,7 +31,7 @@ const Customers: NextPage = () => {
 
     const sortingOptions = useMemo(() => getOptions(t), [t]);
 
-    const [sorting, setSorting] = useState("default");
+    const sorting = useSelector(selectSorting);
 
     const { sortBy, direction } = useMemo(
         () =>
@@ -103,7 +103,6 @@ const Customers: NextPage = () => {
                     border: "1px solid rgba(255, 255, 255, 0.18)",
                 }}
                 sorting={sorting}
-                onSortingChange={setSorting}
             />
 
             {selectedRows && selectedRows.length > 0 ? (
@@ -133,7 +132,7 @@ const Customers: NextPage = () => {
             ) : (
                 <Paper>
                     <DataGrid
-                        skeleton={isLoading}
+                        loading={isLoading}
                         rows={rows}
                         page={page}
                         pageSize={pageSize}

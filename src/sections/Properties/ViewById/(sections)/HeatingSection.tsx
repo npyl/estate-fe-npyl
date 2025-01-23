@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { List, ListItem, ListBooleanItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface HeatingSectionProps {
     data: IProperties;
@@ -149,30 +150,9 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     };
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "hidden", pb: 2 }}>
-                    <Box
-                        sx={{
-                            px: 3,
-                            py: 1.5,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t(HeatingSection.name)}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        {propertyDescription(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label="HeatingSection">
+            {propertyDescription(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 

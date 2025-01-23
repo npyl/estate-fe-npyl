@@ -7,6 +7,7 @@ interface Filters extends IPropertyFilter {
 }
 interface IFilterProps {
     filters: Filters;
+    sorting: string;
     ids: string[];
 }
 
@@ -25,6 +26,7 @@ const initialState: IFilterProps = {
         heatingType: [],
         active: null,
     },
+    sorting: "default",
     ids: [],
 };
 
@@ -206,6 +208,10 @@ const slice = createSlice({
             state.filters.points = payload;
         },
 
+        setSorting: (state, { payload }) => {
+            state.sorting = payload;
+        },
+
         deleteState(state, { payload }) {
             state.filters.states.length === 1 &&
                 state.ids.filter((id) => id !== payload);
@@ -350,6 +356,7 @@ export const {
     setMinPrice,
     setIds,
     setActiveState,
+    setSorting,
 
     // multiple
     setLabels,
@@ -432,6 +439,8 @@ export const selectSubCategories = ({ filters }: RootState) =>
 export const selectLabels = ({ filters }: RootState) => filters.filters.labels;
 export const selectIds = ({ filters }: RootState) => filters.ids;
 export const selectPoints = ({ filters }: RootState) => filters.filters.points;
+
+export const selectSorting = ({ filters }: RootState) => filters.sorting;
 
 export const selectAll = ({ filters }: RootState) => filters.filters;
 export const selectActiveState = ({ filters }: RootState) =>

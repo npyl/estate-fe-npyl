@@ -187,7 +187,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
         return null;
     };
     return (
-        <PanelWithQuickView label={ConstructionSection.name}>
+        <PanelWithQuickView label="ConstructionSection">
             {propertyConstruction(data?.parentCategory.key as ParentCategory)}
         </PanelWithQuickView>
     );

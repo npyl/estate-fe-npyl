@@ -34,8 +34,11 @@ const SelectPopover: FC<SelectPopoverProps> = ({
         {...props}
         sx={{
             ...props.sx,
+            mt: 0.5,
             zIndex: 1000,
         }}
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+        transformOrigin={{ horizontal: "center", vertical: "top" }}
         slotProps={slotProps}
     >
         {options.map(({ label, value, icon }) => (

@@ -1,4 +1,6 @@
+import { Typography } from "@mui/material";
 import { ComponentType } from "react";
+import { SpaceBetween } from "../styled";
 
 interface ButtonProps {
     Component: ComponentType<any>;
@@ -13,20 +15,20 @@ const Button: React.FC<ButtonProps> = ({
     label,
     shareUrl,
 }) => (
-    <Component
-        style={{
-            borderRadius: "17px",
-            padding: "8px 12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-            textAlign: "left",
-        }}
-        url={shareUrl}
-    >
-        <p style={{ margin: 0 }}>{label}</p>
-        <Icon size={24} round />
+    <Component url={shareUrl}>
+        <SpaceBetween
+            width={1}
+            textAlign="left"
+            alignItems="center"
+            className="PPShareButton"
+            p={0.1}
+            borderRadius={1}
+        >
+            <Typography variant="body1" color="text.secondary" width={1}>
+                {label}
+            </Typography>
+            <Icon size={33} round />
+        </SpaceBetween>
     </Component>
 );
 
