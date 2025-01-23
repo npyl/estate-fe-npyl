@@ -15,16 +15,32 @@ import {
 import {
     Popover,
     PopoverProps,
-    IconButton,
-    Box,
     Typography,
     Divider,
+    Stack,
+    StackProps,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Button from "./button";
-import CloseIcon from "@mui/icons-material/Close";
 import { StyledPaper } from "./styled";
 import CopyLinkButton from "./CopyLinkButton";
+import { FC } from "react";
+import GmailButton from "./GmailButton";
+
+interface SectionProps extends StackProps {
+    title: string;
+}
+
+const Section: FC<SectionProps> = ({ title, children, ...props }) => (
+    <Stack width={1} spacing={1} {...props}>
+        <Typography variant="h6" fontWeight="400">
+            {title}
+        </Typography>
+        <Stack width={1} spacing={0.5}>
+            {children}
+        </Stack>
+    </Stack>
+);
 
 interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
     shareUrl: string;
@@ -38,53 +54,15 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
         <Popover
             open
             {...props}
-            anchorOrigin={{
-                vertical: "center",
-                horizontal: "center",
-            }}
-            transformOrigin={{
-                vertical: "center",
-                horizontal: "center",
-            }}
+            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+            transformOrigin={{ horizontal: "center", vertical: "top" }}
             keepMounted
             slots={{
                 paper: StyledPaper,
             }}
+            onClose={onClose}
         >
-            <Typography
-                variant="h6"
-                sx={{
-                    alignSelf: "center",
-                }}
-            >
-                {t("Share")}
-            </Typography>
-
-            <IconButton
-                sx={{
-                    position: "absolute",
-                    top: 4,
-                    right: 4,
-                }}
-                onClick={onClose}
-            >
-                <CloseIcon />
-            </IconButton>
-            <Divider sx={{ width: 1 }} />
-
-            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
-                {t("Chat")}
-            </Typography>
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: 1,
-                    flexWrap: "wrap",
-                    justifyContent: "flex-start",
-                    mb: 1,
-                    width: "100%",
-                }}
-            >
+            <Section title={t("Chat")}>
                 <Button
                     Component={WhatsappShareButton}
                     label="WhatsApp"
@@ -97,46 +75,24 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     icon={ViberIcon}
                     shareUrl={shareUrl}
                 />
-            </Box>
+            </Section>
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
-                {t("Email")}
-            </Typography>
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: 1,
-                    flexWrap: "wrap",
-                    justifyContent: "flex-start",
-                    mb: 1,
-                    width: "100%",
-                }}
-            >
+            <Section title={t("Email")}>
                 <Button
                     Component={EmailShareButton}
                     label="Email"
                     icon={EmailIcon}
                     shareUrl={shareUrl}
                 />
-            </Box>
+
+                <GmailButton shareUrl={shareUrl} />
+            </Section>
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
-                {t("Social Networks")}
-            </Typography>
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: 1,
-                    flexWrap: "wrap",
-                    justifyContent: "flex-start",
-                    mb: 1,
-                    width: "100%",
-                }}
-            >
+            <Section title={t("Social Networks")}>
                 <Button
                     Component={FacebookShareButton}
                     label="Facebook"
@@ -155,15 +111,13 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     icon={LinkedinIcon}
                     shareUrl={shareUrl}
                 />
-            </Box>
+            </Section>
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
-                {t("Other")}
-            </Typography>
-
-            <CopyLinkButton shareUrl={shareUrl} />
+            <Section title={t("Other")}>
+                <CopyLinkButton shareUrl={shareUrl} />
+            </Section>
         </Popover>
     );
 };
