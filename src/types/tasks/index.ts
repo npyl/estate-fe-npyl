@@ -1,9 +1,13 @@
+import { TSorting } from "@/sections/Filters/SortBy/types";
 import { IUserMini } from "@/types/user";
 
 export interface BoardFiltersReq {
     search?: string;
     assigneeId?: number;
     priority?: number;
+
+    sortBy?: TSorting["sortBy"];
+    direction?: TSorting["direction"];
 }
 
 export type IKanbanComment = {

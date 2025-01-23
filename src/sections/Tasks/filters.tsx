@@ -6,12 +6,16 @@ import {
     useContext,
     useState,
 } from "react";
+import { TSorting } from "../Filters/SortBy/types";
 
 type FiltersState = Omit<BoardFiltersReq, "search"> & {
     search: string; // INFO: required to avoid undefined as initial value
     setSearch: Dispatch<SetStateAction<string>>;
     setAssigneeId: Dispatch<SetStateAction<number | undefined>>;
     setPriority: Dispatch<SetStateAction<number | undefined>>;
+
+    sorting?: TSorting;
+    setSorting: Dispatch<SetStateAction<TSorting | undefined>>;
 };
 
 const FiltersContext = createContext<FiltersState>({
@@ -19,6 +23,9 @@ const FiltersContext = createContext<FiltersState>({
     setSearch: () => {},
     setAssigneeId: () => {},
     setPriority: () => {},
+
+    sorting: undefined,
+    setSorting: () => {},
 });
 
 export const useFiltersContext = () => {
@@ -38,16 +45,20 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     const [assigneeId, setAssigneeId] = useState<number>();
     const [priority, setPriority] = useState<number>();
 
+    const [sorting, setSorting] = useState<TSorting>();
+
     return (
         <FiltersContext.Provider
             value={{
                 search,
                 assigneeId,
                 priority,
+                sorting,
                 // ...
                 setSearch,
                 setAssigneeId,
                 setPriority,
+                setSorting,
             }}
             {...props}
         />
