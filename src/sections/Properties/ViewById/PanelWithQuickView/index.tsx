@@ -22,7 +22,7 @@ const PanelWithQuickView: FC<PanelWithQuickView> = ({
             <ViewPanel
                 label={t(label)}
                 headerSx={{
-                    display: hideHeader ? "none" : "block",
+                    display: hideHeader ? "none" : "flex",
                     ...headerSx,
                 }}
                 {...props}

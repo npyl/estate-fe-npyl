@@ -31,7 +31,8 @@ const Panel: FC<PanelProps> = ({
             className="PPPanel-Header"
             p={1.5}
             direction="row"
-            justifyContent={!!endNode ? "space-between" : "left"}
+            alignItems="center"
+            justifyContent={Boolean(endNode) ? "space-between" : "left"}
             sx={headerSx}
         >
             <Typography variant="h6">{label}</Typography>
