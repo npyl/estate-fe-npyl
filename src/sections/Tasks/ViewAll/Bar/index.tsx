@@ -6,6 +6,7 @@ import { SpaceBetween } from "@/components/styled";
 import AddButtons from "./AddButtons";
 import Priority from "./Priority";
 import ModeButton from "./ModeButton";
+import SortBy from "./SortBy";
 
 const BarSx: SxProps<Theme> = {
     bgcolor: "background.default",
@@ -27,6 +28,7 @@ const Bar = () => (
             <Search />
             <UserSelect />
             <Priority />
+            <SortBy />
         </Stack>
 
         <Stack direction="row" spacing={1} alignItems="center">

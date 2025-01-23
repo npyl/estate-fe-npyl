@@ -1,14 +1,13 @@
 import type { NextPage } from "next";
 import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useResponsive from "@/hooks/useResponsive";
-import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 // filters
 import FilterBar from "@/sections/Properties/(FiltersBar)";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
-import { getOptions } from "@/sections/Properties/(FiltersBar)/constants";
+import useCurrentSortingOption from "@/sections/Properties/(FiltersBar)/useCurrentSortingOption";
 // modes
 const ViewAll = dynamic(() => import("@/sections/Properties/(ViewAll)"));
 const MediaCard = dynamic(() => import("@/sections/Properties/(MediaCard)"));
@@ -33,27 +32,16 @@ const useResponsiveOptionView = () => {
 // -----------------------------------------------------------------------
 
 const Home: NextPage = () => {
-    const { t } = useTranslation();
-
     const optionViewProps = useResponsiveOptionView();
 
-    // sorting
-    const sortingOptions = useMemo(() => getOptions(t), [t]);
-    const [sorting, setSorting] = useState("default"); // general
-    const { sortBy, direction } = useMemo(
-        () =>
-            sortingOptions.find(({ value }) => value === sorting)?.sorting || {
-                sortBy: "updatedAt",
-                direction: "DESC",
-            },
-        [sortingOptions, sorting]
-    );
+    const { sortBy, direction } = useCurrentSortingOption()?.sorting || {
+        sortBy: "updatedAt",
+        direction: "DESC",
+    };
 
     return (
         <>
             <FilterBar
-                sorting={sorting}
-                onSortingChange={setSorting}
                 {...optionViewProps}
                 sx={{
                     position: "sticky",

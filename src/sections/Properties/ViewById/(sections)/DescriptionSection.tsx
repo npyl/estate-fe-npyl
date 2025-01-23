@@ -1,9 +1,10 @@
-import { Box, Divider, Paper, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import DraftEditor from "@/components/draft-editor";
 import { useGetDescription } from "../hooks";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
@@ -18,7 +19,7 @@ const DescriptionSection = () => {
     }, [description]);
 
     return (
-        <Paper elevation={10} sx={{ overflow: "auto" }}>
+        <PanelWithQuickView hideHeader label="DescriptionSection">
             <Box
                 sx={{
                     px: 3,
@@ -50,7 +51,7 @@ const DescriptionSection = () => {
                 toolbarHidden
                 sx={{ border: "unset" }}
             />
-        </Paper>
+        </PanelWithQuickView>
     );
 };
 

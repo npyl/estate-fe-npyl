@@ -61,10 +61,9 @@ const OwnedCustomerPropertiesSection = () => {
             }}
         >
             <DataGrid
-                skeleton={isLoading}
+                loading={isLoading}
                 // ...
                 rows={ownedProperties}
-                resource="property"
                 // ...
                 paginationMode="client"
                 page={pagination.page}

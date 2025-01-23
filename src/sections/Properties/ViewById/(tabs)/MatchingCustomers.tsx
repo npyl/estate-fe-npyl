@@ -72,7 +72,6 @@ const MatchingCustomersSection: React.FC = () => {
         >
             <DataGrid
                 rows={customers}
-                resource="customer"
                 page={pagination.page}
                 pageSize={pageSize}
                 totalRows={totalRows}

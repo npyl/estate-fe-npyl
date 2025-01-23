@@ -1,5 +1,4 @@
-import { Button, Divider, Grid, List, Paper, Typography } from "@mui/material";
-import { Box } from "@mui/material";
+import { Button, Grid, List } from "@mui/material";
 import { FC } from "react";
 import {
     ListBooleanItem,
@@ -13,6 +12,7 @@ import { IProperties, ParentCategory } from "@/types/properties";
 import { IUser } from "@/types/user";
 import { ICustomer } from "@/types/customer";
 import { useTranslation } from "react-i18next";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface BasicSectionProps {
     data: IProperties;
@@ -414,20 +414,9 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     };
 
     return (
-        <Paper elevation={10} sx={{ overflow: "hidden" }}>
-            <Box
-                sx={{
-                    px: 2.5,
-                    py: 1,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t(BasicSection.name)}</Typography>
-            </Box>
-            <Divider />
+        <PanelWithQuickView label="BasicSection">
             {renderBasicDetails(data?.parentCategory.key as ParentCategory)}
-        </Paper>
+        </PanelWithQuickView>
     );
 };
 

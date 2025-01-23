@@ -3,10 +3,16 @@ import useCookie from "@/hooks/useCookie";
 import Checkbox from "@mui/material/Checkbox";
 import { FC } from "react";
 import { PPQuickViewLayoutCookie } from "./types";
+import { Star } from "@mui/icons-material";
+import { SxProps, Theme } from "@mui/material";
 
 // --------------------------------------------------------
 
 const cookieName = CookieNames.QuickViewLayout;
+
+const CheckboxSx: SxProps<Theme> = {
+    pb: 0.5,
+};
 
 interface ToggleButtonProps {
     sectionName: string;
@@ -41,8 +47,11 @@ const ToggleButton: FC<ToggleButtonProps> = ({ sectionName }) => {
     return (
         <Checkbox
             className="ToggleButton"
+            icon={<Star />}
+            checkedIcon={<Star color="warning" />}
             checked={checked}
             onChange={handleChange}
+            sx={CheckboxSx}
         />
     );
 };

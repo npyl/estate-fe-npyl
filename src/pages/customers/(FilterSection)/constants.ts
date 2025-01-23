@@ -1,4 +1,4 @@
-import { TSortByOptions } from "@/components/Filters/SortBy";
+import { TSortByOptions } from "@/sections/Filters/SortBy";
 import { TranslationType } from "@/types/translation";
 
 export const getOptions = (t: TranslationType): TSortByOptions => [

@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
-const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
+const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 
 interface ViewAllProps {
     archived?: boolean;
@@ -67,29 +67,18 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
             ) : null}
 
             <Paper>
-                {rows && !isLoading ? (
-                    <DataGrid
-                        resource={archived ? "archived" : "property"}
-                        rows={rows}
-                        page={page}
-                        pageSize={pageSize}
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationChange}
-                        checkboxSelection
-                        onRowSelectionModelChange={setSelectedRows as any}
-                        disableColumnMenu
-                    />
-                ) : (
-                    <DataGrid
-                        skeleton
-                        page={page}
-                        pageSize={pageSize}
-                        checkboxSelection
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationChange}
-                        disableColumnMenu
-                    />
-                )}
+                <DataGrid
+                    loading={isLoading}
+                    resource={archived ? "archived" : "property"}
+                    rows={rows || []}
+                    page={page}
+                    pageSize={pageSize}
+                    totalRows={totalRows}
+                    onPaginationModelChange={handlePaginationChange}
+                    checkboxSelection
+                    onRowSelectionModelChange={setSelectedRows as any}
+                    disableColumnMenu
+                />
             </Paper>
         </>
     );

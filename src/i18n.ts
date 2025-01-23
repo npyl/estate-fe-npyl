@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Secret",
+            INFO_LOCATION_DISPLAY_GENERAL: "General (radius)",
+            INFO_LOCATION_DISPLAY_EXACT: "Exact (pin)",
+
             "Drop or Select files": "Drop or Select files",
 
             Monthly: "Monthly",
@@ -1174,6 +1178,10 @@ const resources = {
     },
     el: {
         translation: {
+            INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Κρυφή",
+            INFO_LOCATION_DISPLAY_GENERAL: "Γενική (ακτίνα)",
+            INFO_LOCATION_DISPLAY_EXACT: "Ακριβής (πινέζα)",
+
             Disconnected: "Αποσυνδέθηκε",
 
             Messages: "Μηνύματα",

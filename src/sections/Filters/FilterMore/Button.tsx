@@ -1,5 +1,5 @@
 import { ButtonProps } from "@mui/material/Button";
-import { FilterButton } from "../styled";
+import { FilterButton } from "../../../components/Filters/styled";
 import Badge from "@mui/material/Badge";
 import TuneIcon from "@mui/icons-material/Tune";
 

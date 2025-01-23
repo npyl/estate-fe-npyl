@@ -1,8 +1,9 @@
-import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
 import { IProperties, ParentCategory } from "src/types/properties";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface FeaturesProps {
     data: IProperties;
@@ -388,28 +389,9 @@ const Features: React.FC<FeaturesProps> = (props) => {
     };
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">{t(Features.name)}</Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        {propertyFeatures(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label="Features">
+            {propertyFeatures(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 

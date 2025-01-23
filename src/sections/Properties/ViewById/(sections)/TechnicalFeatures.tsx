@@ -1,10 +1,9 @@
 import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
-
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-
+import { Grid } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import PanelWithQuickView from "../PanelWithQuickView";
 
 interface TechnicalFeaturesProps {
     data: IProperties;
@@ -311,31 +310,11 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
         }
         return null;
     };
+
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Paper elevation={10} sx={{ overflow: "auto" }}>
-                    <Box
-                        sx={{
-                            px: 2.5,
-                            py: 1,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t(TechnicalFeatures.name)}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        {technicalFeatures1(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+        <PanelWithQuickView label="TechnicalFeatures">
+            {technicalFeatures1(data?.parentCategory.key as ParentCategory)}
+        </PanelWithQuickView>
     );
 };
 
