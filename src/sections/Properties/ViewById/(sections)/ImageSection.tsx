@@ -14,6 +14,9 @@ const toggleSx: SxProps<Theme> = {
         right: 5,
         borderColor: getBorderColor2,
         boxShadow: 20,
+        ":hover": {
+            bgcolor: "background.paper",
+        },
     },
 };
 
