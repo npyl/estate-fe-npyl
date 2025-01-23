@@ -3,6 +3,17 @@ import useSortingOptions from "./useSortingOptions";
 import useCurrentValue from "./useCurrentValue";
 import { useCallback } from "react";
 import { useFiltersContext } from "@/sections/Tasks/filters";
+import { SxProps, Theme } from "@mui/material";
+
+const ButtonSx: SxProps<Theme> = {
+    minWidth: "fit-content",
+
+    "& .PPSortByButton-Label": {
+        display: {
+            xs: "block",
+        },
+    },
+};
 
 const SortBy = () => {
     const options = useSortingOptions();
@@ -21,13 +32,12 @@ const SortBy = () => {
         [options]
     );
 
-    console.log("GOT: ", sorting);
-
     return (
         <FilterSortBy
             options={options}
             sorting={sorting}
             onSortingChange={handleSortingChange}
+            sx={ButtonSx}
         />
     );
 };

@@ -1,13 +1,13 @@
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { Typography } from "@mui/material";
+import { Stack, StackProps, Typography } from "@mui/material";
 import { FC, useMemo, useRef } from "react";
-import useResponsive from "@/hooks/useResponsive";
-import StyledStack from "./styled";
-import SelectPopover from "./popover";
 import { TSortByOptions } from "./types";
 import useDialog from "@/hooks/useDialog";
+import dynamic from "next/dynamic";
+import getStackSx from "./styled";
+const SelectPopover = dynamic(() => import("./popover"));
 
-interface FilterSortByProps {
+interface FilterSortByProps extends StackProps {
     options: TSortByOptions;
     sorting: string;
     onSortingChange: (s: string) => void;
@@ -17,12 +17,11 @@ const FilterSortBy: FC<FilterSortByProps> = ({
     options,
     sorting,
     onSortingChange,
+    sx,
+    ...props
 }) => {
     const anchorRef = useRef<HTMLDivElement>(null);
-
     const [isOpen, openPopover, closePopover] = useDialog();
-
-    const belowMd = useResponsive("down", "md");
 
     const label = useMemo(
         () => options.find(({ value }) => value === sorting)?.label || "",
@@ -31,15 +30,22 @@ const FilterSortBy: FC<FilterSortByProps> = ({
 
     return (
         <>
-            <StyledStack ref={anchorRef} open={isOpen} onClick={openPopover}>
+            <Stack
+                ref={anchorRef}
+                onClick={openPopover}
+                sx={{ ...getStackSx(isOpen), ...sx } as any}
+                {...props}
+            >
                 <SwapVertIcon />
 
-                {belowMd ? null : (
-                    <Typography fontWeight={400} noWrap>
-                        {label}
-                    </Typography>
-                )}
-            </StyledStack>
+                <Typography
+                    className="PPSortByButton-Label"
+                    fontWeight={400}
+                    noWrap
+                >
+                    {label}
+                </Typography>
+            </Stack>
 
             {isOpen ? (
                 <SelectPopover
