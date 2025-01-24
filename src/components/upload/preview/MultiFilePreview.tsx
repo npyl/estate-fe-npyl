@@ -1,24 +1,31 @@
 // @mui
-import { Grid, IconButton, Stack, StackProps, Typography } from "@mui/material";
+import {
+    IconButton,
+    Stack,
+    StackProps,
+    SxProps,
+    Theme,
+    Typography,
+} from "@mui/material";
 import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
 import { TUploadFile, UploadVariant } from "../types";
 import LabelCreate from "@/sections/LabelCreate";
 import DocumentIcon from "./DocumentIcon";
-import { styled } from "@mui/material/styles";
+import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
+import { SpaceBetween } from "@/components/styled";
 
 // ----------------------------------------------------------------------
 
-const StyledContainer = styled(Grid)(({ theme }) => ({
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    paddingTop: theme.spacing(0.75),
-    paddingBottom: theme.spacing(0.75),
-    borderRadius: theme.spacing(0.75),
-    border: `solid 1px ${theme.palette.divider}`,
+const ItemSx: SxProps<Theme> = {
+    px: 1,
+    py: 0.75,
+    borderRadius: 0.75,
+    border: "1px solid",
+    borderColor: "divider",
     cursor: "pointer",
-}));
+};
 
 // ----------------------------------------------------------------------
 
@@ -46,8 +53,8 @@ const Item = ({
     };
 
     return (
-        <StyledContainer container alignItems="center" onClick={handleClick}>
-            <Grid item xs={2}>
+        <SpaceBetween alignItems="center" sx={ItemSx} onClick={handleClick}>
+            <Stack direction="row" spacing={1} alignItems="center">
                 {variant === "image" && <FileThumbnail file={file} />}
 
                 {variant === "document" && (
@@ -59,18 +66,20 @@ const Item = ({
                         }}
                     />
                 )}
-            </Grid>
 
-            <Grid item xs={6}>
+                {variant === "googleEarth" ? (
+                    <GoogleEarthIcon width={50} height={50} />
+                ) : null}
+
                 {"filename" in file && (
                     <Typography ml={1} variant="subtitle2">
                         {file.filename}
                     </Typography>
                 )}
-            </Grid>
+            </Stack>
 
-            <Grid item xs={4} display="flex" justifyContent="flex-end">
-                {variant === "document" && file.url && (
+            <Stack direction="row" spacing={1} alignItems="center">
+                {variant === "document" && file.url ? (
                     <div onClick={(e) => e.stopPropagation()}>
                         <LabelCreate
                             variant="document"
@@ -78,7 +87,7 @@ const Item = ({
                             disabled={disabled}
                         />
                     </div>
-                )}
+                ) : null}
 
                 {onRemove && file.url && (
                     <IconButton
@@ -90,8 +99,8 @@ const Item = ({
                         <Iconify icon="eva:close-fill" />
                     </IconButton>
                 )}
-            </Grid>
-        </StyledContainer>
+            </Stack>
+        </SpaceBetween>
     );
 };
 

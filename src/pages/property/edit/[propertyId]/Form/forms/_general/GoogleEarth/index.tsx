@@ -28,6 +28,7 @@ const GoogleEarth = () => {
     return (
         <Panel label={t("GoogleEarthSection")}>
             <Upload
+                variant="googleEarth"
                 disabled={disabled}
                 accept={{
                     kmz: ["kmz"],
