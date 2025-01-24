@@ -1,9 +1,7 @@
 import { useDropzone } from "react-dropzone";
 // @mui
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
-//
-import Iconify from "../iconify";
 //
 import RejectionFiles from "./errors/RejectionFiles";
 import MultiFilePreview from "./preview/MultiFilePreview";
@@ -36,11 +34,8 @@ export default function Upload({
     helperText,
     variant = "image",
     //
-    file,
-    onFileClick,
-    onDelete,
-    //
     files,
+    onFileClick,
     onRemove,
     onRemoveAll,
     sx,
@@ -67,9 +62,7 @@ export default function Upload({
         ...other,
     });
 
-    const hasFile = !!file && !multiple;
-
-    const hasFiles = files && multiple && files.length > 0;
+    const hasFiles = files && files.length > 0;
 
     const isError = isDragReject || !!error;
 
@@ -100,31 +93,7 @@ export default function Upload({
 
             <RejectionFiles fileRejections={fileRejections} />
 
-            {hasFile && onDelete && (
-                <IconButton
-                    size="small"
-                    disabled={disabled}
-                    onClick={onDelete}
-                    sx={{
-                        top: 16,
-                        right: 16,
-                        zIndex: 9,
-                        position: "absolute",
-                        color: (theme) =>
-                            alpha(theme.palette.common.white, 0.8),
-                        bgcolor: (theme) =>
-                            alpha(theme.palette.grey[900], 0.72),
-                        "&:hover": {
-                            bgcolor: (theme) =>
-                                alpha(theme.palette.grey[900], 0.48),
-                        },
-                    }}
-                >
-                    <Iconify icon="eva:close-fill" width={18} />
-                </IconButton>
-            )}
-
-            {hasFiles && (
+            {hasFiles ? (
                 <>
                     <MultiFilePreview
                         files={files}
@@ -153,7 +122,7 @@ export default function Upload({
                         </Stack>
                     ) : null}
                 </>
-            )}
+            ) : null}
 
             {helperText}
         </Box>

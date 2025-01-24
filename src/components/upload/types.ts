@@ -28,9 +28,6 @@ export interface UploadProps extends DropzoneOptions {
     disableMultiple?: boolean;
     variant?: UploadVariant;
     //
-    file?: CustomFile | string | null;
-    onDelete?: VoidFunction;
-    //
     files?: TUploadFile[];
     onFileClick?: (key: string) => void;
     onRemove?: (key: string) => void;
