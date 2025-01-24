@@ -3,7 +3,6 @@ import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { TCalendarEvent } from "../types";
 import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
-import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
@@ -43,8 +42,8 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
 
     return {
         backgroundColor: ({ palette }) => palette.background.paper,
-        borderRadius: "10px",
-        boxShadow: 10,
+        borderRadius: 1,
+        boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.4)",
 
         marginLeft,
         width,
@@ -58,7 +57,7 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
 
         "&:hover": {
             zIndex: Z_INDEX.HEADER - 1,
-            boxShadow: 20,
+            boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.55)",
         },
     };
 };
@@ -122,16 +121,16 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                 onClick={handleClick}
                 {...props}
             >
-                <Title title={event.title} color={getTypeColor(event.type)} />
+                <Title
+                    title={event.title}
+                    startDate={event.startDate}
+                    endDate={event.startDate}
+                    color={getTypeColor(event.type)}
+                />
 
                 {!isMinimumHeight ? (
                     <>
                         <Stack p={1} spacing={1}>
-                            <Duration
-                                start={event.startDate}
-                                end={event.endDate}
-                                width={1}
-                            />
                             <Typography
                                 variant="subtitle2"
                                 noWrap

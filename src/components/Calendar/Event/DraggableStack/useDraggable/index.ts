@@ -3,6 +3,7 @@ import getOverlapRatio from "./getOverlapRatio";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent } from "@/components/Calendar/types";
+import updateDurationLabelAsync from "./updateDuration";
 
 const DRAG_THRESHOLD = 5; // pixels
 const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
@@ -23,7 +24,7 @@ const useDraggable = (
         movement: 0,
     });
 
-    const onMouseMove = useCallback((e: MouseEvent) => {
+    const onMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
         const drag = dragRef.current;
         if (!drag.isDragging || !elementRef.current) return;
 
@@ -42,6 +43,8 @@ const useDraggable = (
 
         drag.startPos = { x: e.clientX, y: e.clientY };
         drag.elementPos = newPos;
+
+        updateDurationLabelAsync(e.currentTarget, cellsRef);
     }, []);
 
     const findSnapTarget = useCallback(() => {

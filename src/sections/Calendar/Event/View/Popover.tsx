@@ -10,8 +10,8 @@ interface EventPopoverProps
 
 const EventPopover: FC<EventPopoverProps> = (props) => (
     <Popover
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        transformOrigin={{ horizontal: "left", vertical: "bottom" }}
+        anchorOrigin={{ horizontal: "right", vertical: "center" }}
+        transformOrigin={{ horizontal: "left", vertical: "center" }}
         slotProps={{
             paper: {
                 sx: {
