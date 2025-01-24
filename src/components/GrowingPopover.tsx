@@ -12,6 +12,18 @@ import useDialog from "@/hooks/useDialog";
 
 const POPOVER_INDEX = 200;
 
+const getOpenerSx = (isOpen: boolean): SxProps<Theme> => ({
+    position: "absolute",
+    zIndex: isOpen ? POPOVER_INDEX : "initial",
+    mt: isOpen ? 1 : 0,
+
+    transition: (theme) =>
+        theme.transitions.create(["margin-top"], {
+            duration: theme.transitions.duration.short,
+            easing: theme.transitions.easing.easeInOut,
+        }),
+});
+
 interface OpenerProps {
     sx: SxProps<Theme>;
 }
@@ -55,50 +67,41 @@ const GrowingPopover: FC<GrowingPopover> = ({
     return (
         <>
             <Box onClick={openPopover} ref={anchorRef} position="relative">
-                <Opener
-                    ref={openerRef}
-                    sx={{
-                        position: "absolute",
-                        zIndex: isOpen ? POPOVER_INDEX : "initial",
-                        mt: isOpen ? 1 : 0,
-                    }}
-                />
+                <Opener ref={openerRef} sx={getOpenerSx(isOpen)} />
             </Box>
 
-            {isOpen ? (
-                <Popover
-                    open
-                    disablePortal
-                    anchorOrigin={{
-                        horizontal: "right",
-                        vertical: "top",
-                    }}
-                    transformOrigin={{
-                        horizontal: "right",
-                        vertical: "top",
-                    }}
-                    slotProps={{
-                        ...slotProps,
-                        root: {
-                            ...(slotProps?.root || {}),
-                            sx: {
-                                mt: -1,
-                                mr: -1,
-                                zIndex: POPOVER_INDEX - 1,
-                                ...((slotProps?.root as any)?.sx || {}),
-                            },
+            <Popover
+                open={isOpen}
+                disablePortal
+                anchorOrigin={{
+                    horizontal: "right",
+                    vertical: "top",
+                }}
+                transformOrigin={{
+                    horizontal: "right",
+                    vertical: "top",
+                }}
+                slotProps={{
+                    ...slotProps,
+                    root: {
+                        ...(slotProps?.root || {}),
+                        sx: {
+                            mt: -1,
+                            mr: -1,
+                            zIndex: POPOVER_INDEX - 1,
+                            ...((slotProps?.root as any)?.sx || {}),
                         },
-                    }}
-                    onClose={closePopover}
-                    {...other}
-                >
-                    <Box mr={openerWidth} width="fit-content">
-                        <HeadContentLeft />
-                    </Box>
+                    },
+                }}
+                onClose={closePopover}
+                {...other}
+            >
+                <Box mr={openerWidth} width="fit-content">
+                    <HeadContentLeft />
+                </Box>
 
-                    {children}
-                </Popover>
-            ) : null}
+                {children}
+            </Popover>
         </>
     );
 };
