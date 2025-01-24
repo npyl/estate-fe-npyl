@@ -15,7 +15,7 @@ import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
 import { HideText } from "@/components/styled";
-import AccountButton from "./account-button";
+import AccountPopover from "./account-popover";
 
 const Logo = () => {
     const theme = useTheme();
@@ -116,12 +116,12 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     <Stack alignItems="center" direction="row">
                         <CreateButton
                             sx={{
-                                ml: 1,
+                                mx: 1,
                                 ...HideText,
                             }}
                         />
 
-                        <AccountButton />
+                        <AccountPopover />
                     </Stack>
                 </Toolbar>
             </DashboardNavbarRoot>

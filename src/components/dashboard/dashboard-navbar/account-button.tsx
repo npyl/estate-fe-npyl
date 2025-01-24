@@ -19,6 +19,7 @@ const AccountButton: FC<BoxProps> = ({ sx, ...props }) => {
                 onClick={openPopover}
                 ref={anchorRef}
                 sx={{
+                    position: "relative",
                     alignItems: "center",
                     display: "flex",
                     ml: 1,
@@ -33,17 +34,12 @@ const AccountButton: FC<BoxProps> = ({ sx, ...props }) => {
                     sx={{
                         height: 40,
                         width: 40,
+                        zIndex: 10000,
                     }}
                 />
             </Box>
 
-            {isOpen ? (
-                <AccountPopover
-                    anchorEl={anchorRef.current}
-                    onClose={closePopover}
-                    open
-                />
-            ) : null}
+            {isOpen ? <AccountPopover /> : null}
         </>
     );
 };
