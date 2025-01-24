@@ -23,6 +23,8 @@ const GoogleEarth = () => {
     const files = data ? [data] : [];
     const disabled = isLoading || isUploading || isDeleting;
 
+    const handleRemove = () => remove(+propertyId!);
+
     return (
         <Panel label={t("GoogleEarthSection")}>
             <Upload
@@ -37,8 +39,7 @@ const GoogleEarth = () => {
                         display: data ? "none" : "block",
                     },
                 }}
-                // onFileClick={setBlueprintUrl}
-                onRemove={() => {}}
+                onRemove={handleRemove}
             />
         </Panel>
     );

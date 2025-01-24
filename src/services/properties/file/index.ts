@@ -170,7 +170,7 @@ export const filesApiSlice = properties.injectEndpoints({
         }),
         deletePropertyGoogleEarth: builder.mutation<void, number>({
             query: (propertyId) => ({
-                url: `/${propertyId}/googleEarth`,
+                url: `/${propertyId}/google-earth`,
                 method: "DELETE",
             }),
             invalidatesTags: ["PropertyByIdGoogleEarth"],
