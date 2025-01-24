@@ -36,19 +36,23 @@ const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
+    overlapCount: number;
     onDragEnd?: (e: TCalendarEvent, startDate: string, endDate: string) => void;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
-    ({ event, sx, onClick, onDragEnd, ...props }, ref) => {
+    ({ event, overlapCount, sx, onClick, onDragEnd, ...props }, ref) => {
         const elementRef = useForwardedLocalRef<HTMLDivElement>(ref);
 
         const { cellsRef } = useResponsiveCellPositions();
 
         const { onMouseDown, onMouseMove, onMouseUp } = useDraggable(
             event,
+            overlapCount,
+            // ...
             elementRef,
             cellsRef,
+            // ...
             onClick,
             onDragEnd
         );

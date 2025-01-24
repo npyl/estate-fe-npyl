@@ -4,12 +4,14 @@ import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import updateDurationLabelAsync from "./updateDuration";
+import { Z_INDEX } from "@/constants/calendar";
 
 const DRAG_THRESHOLD = 5; // pixels
 const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
 
 const useDraggable = (
     event: TCalendarEvent,
+    overlapCount: number,
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
     onClick: ((e: MouseEvent<HTMLDivElement>) => void) | undefined,
@@ -72,21 +74,24 @@ const useDraggable = (
         if (elementRef.current) {
             elementRef.current.style.transition = "none";
             elementRef.current.style.cursor = "grabbing";
+            elementRef.current.style.zIndex = String(Z_INDEX.HEADER); // Add this line
         }
     }, []);
 
     const onMouseUp = useCallback(
         (e: MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
-            const drag = dragRef.current;
+            if (!elementRef.current) return;
 
+            const drag = dragRef.current;
             if (!drag.isDragging) return;
             drag.isDragging = false;
 
-            if (elementRef.current) {
-                elementRef.current.style.transition = "transform 0.2s ease";
-                elementRef.current.style.cursor = "grab";
-            }
+            elementRef.current.style.transition = "transform 0.2s ease";
+            elementRef.current.style.cursor = "grab";
+            elementRef.current.style.zIndex = String(
+                Z_INDEX.EVENT + (overlapCount || 0)
+            );
 
             // Handle click vs drag
             if (drag.movement <= DRAG_THRESHOLD) {
