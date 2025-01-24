@@ -10,7 +10,6 @@ const ForceVisible: FC<StackProps> = (props) => (
 const getTitleSx = (color: string): SxProps<Theme> => ({
     marginTop: (theme) => theme.spacing(1),
     px: 1,
-    borderLeft: "4px solid",
     width: 1,
     backgroundColor: color[0] === "#" ? alpha(color, 0.3) : "transparent",
 });
