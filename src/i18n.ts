@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            GoogleEarthSection: "GoogleEarth (.kmz)",
+
             INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Secret",
             INFO_LOCATION_DISPLAY_GENERAL: "General (radius)",
             INFO_LOCATION_DISPLAY_EXACT: "Exact (pin)",
@@ -1178,6 +1180,8 @@ const resources = {
     },
     el: {
         translation: {
+            GoogleEarthSection: "GoogleEarth (.kmz)",
+
             INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Κρυφή",
             INFO_LOCATION_DISPLAY_GENERAL: "Γενική (ακτίνα)",
             INFO_LOCATION_DISPLAY_EXACT: "Ακριβής (πινέζα)",

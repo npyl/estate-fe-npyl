@@ -25,6 +25,7 @@ import {
 import LocationSection from "./_general/Location";
 import Public from "./_general/Public";
 import ROISection from "./_general/ROI";
+import GoogleEarth from "./_general/GoogleEarth";
 
 const ResidentialFormSection: React.FC = () => {
     return (
@@ -41,6 +42,7 @@ const ResidentialFormSection: React.FC = () => {
                         <Areas />
                         <Blueprints />
                         <Documents />
+                        <GoogleEarth />
                         <VideoLink />
                         <Notes />
                     </Stack>

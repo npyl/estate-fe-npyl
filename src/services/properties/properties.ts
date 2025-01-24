@@ -92,6 +92,7 @@ export const properties = apiWithTranslation({
         "PropertyByIdLabels",
         "PropertyByIdDocuments",
         "PropertyByIdBlueprints",
+        "PropertyByIdGoogleEarth",
         "PropertyByIdZip",
 
         // ...

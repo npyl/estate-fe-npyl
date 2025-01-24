@@ -76,6 +76,7 @@ export default function Upload({
     return (
         <Box sx={{ width: 1, position: "relative", ...sx }}>
             <StyledDropZone
+                className="PPUpload-DropZone"
                 {...getRootProps()}
                 sx={{
                     ...(isDragActive && {

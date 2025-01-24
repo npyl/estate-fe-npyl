@@ -23,6 +23,7 @@ import {
 import LocationSection from "./_general/Location";
 import Public from "./_general/Public";
 import ROISection from "./_general/ROI";
+import GoogleEarth from "./_general/GoogleEarth";
 
 const CommercialFormSection: React.FC<any> = () => {
     return (
@@ -37,6 +38,7 @@ const CommercialFormSection: React.FC<any> = () => {
                         <Areas />
                         <Blueprints />
                         <Documents />
+                        <GoogleEarth />
                         <VideoLink />
                         <Notes />
                     </Stack>
