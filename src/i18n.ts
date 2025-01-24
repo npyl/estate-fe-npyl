@@ -4,6 +4,11 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            GOOGLE_EARTH_INSTALLED:
+                "Make sure you have Google Earth Pro installed to view this file on your computer",
+
+            GOOGLE_EARTH_FAULTY_URL: "The file's url appears to be invalid",
+
             GOOGLE_EARTH_NOT_UPLOADED:
                 "You have not attached a GoogleEarth file, yet.",
 
@@ -1183,6 +1188,11 @@ const resources = {
     },
     el: {
         translation: {
+            GOOGLE_EARTH_INSTALLED:
+                "Βεβαιωθείτε ότι έχετε εγκαταστήσει το Google Earth Pro για να δείτε το αρχείο αυτό στον υπολογιστή σας",
+
+            GOOGLE_EARTH_FAULTY_URL: "Ο σύνδεσμος του αρχείο φαίνεται άκυρος",
+
             GOOGLE_EARTH_NOT_UPLOADED:
                 "Δεν έχετε προσθέσει αρχείο GoogleEarth, ακόμη.",
 
