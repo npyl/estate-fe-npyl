@@ -50,7 +50,7 @@ export const ImageOperationsProvider: React.FC<
 > = (props) => {
     const { setUploadProgress } = useUploadFileContext();
 
-    const { uploadFiles, isLoading: isUploading } = usePropertyUpload(
+    const { uploadFiles, isUploading } = usePropertyUpload(
         "image",
         setUploadProgress
     );
