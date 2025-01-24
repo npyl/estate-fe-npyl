@@ -15,6 +15,8 @@ import { useTranslation } from "react-i18next";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Link from "@/components/Link";
 import errorToast from "@/components/Toaster/error";
+import { LanguageButton } from "@/components/Language/LanguageButton";
+import { SettingsButton } from "@/components/dashboard/settings-button";
 
 interface AccountPopoverProps {
     anchorEl: null | Element;
@@ -49,8 +51,7 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
             disableScrollLock={true}
             keepMounted
             onClose={onClose}
-            open={Boolean(open)}
-            transitionDuration={0}
+            open
             slotProps={{
                 paper: {
                     sx: {
@@ -63,9 +64,20 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
             }}
             {...other}
         >
-            <Typography variant="body1" py={1} px={1.5} textAlign="center">
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                mt={1}
+            >
+                <LanguageButton />
+                <SettingsButton />
+            </Stack>
+
+            <Typography variant="body1" pb={1} px={1.5} textAlign="center">
                 {user?.username}
             </Typography>
+
             <Divider />
             <Stack spacing={1}>
                 <Link href="/profile">

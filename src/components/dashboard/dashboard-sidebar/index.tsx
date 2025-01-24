@@ -8,8 +8,6 @@ import {
 } from "@mui/material";
 import { FC, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
-import { LanguageButton } from "@/components/Language/LanguageButton";
-import { SettingsButton } from "@/components/dashboard/settings-button";
 import dynamic from "next/dynamic";
 import SidebarSkeleton from "./SidebarSkeleton";
 const Sections = dynamic(() => import("./Sections"), {
@@ -48,15 +46,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
         () => (
             <Stack height={1} bgcolor="background.default">
                 <Sections currentPath={router.asPath} />
-
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <LanguageButton />
-                    <SettingsButton />
-                </Stack>
 
                 {/* nick ama to svhseis se gamhsa */}
                 {/* <Tooltip title="Alex Gamiesai file">
