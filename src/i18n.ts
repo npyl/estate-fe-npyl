@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            GOOGLE_EARTH_NOT_UPLOADED:
+                "You have not attached a GoogleEarth file, yet.",
+
             GoogleEarthSection: "GoogleEarth (.kmz)",
 
             INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Secret",
@@ -1180,6 +1183,9 @@ const resources = {
     },
     el: {
         translation: {
+            GOOGLE_EARTH_NOT_UPLOADED:
+                "Δεν έχετε προσθέσει αρχείο GoogleEarth, ακόμη.",
+
             GoogleEarthSection: "GoogleEarth (.kmz)",
 
             INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Κρυφή",

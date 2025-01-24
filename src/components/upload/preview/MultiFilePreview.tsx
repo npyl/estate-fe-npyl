@@ -8,13 +8,12 @@ import {
     Typography,
 } from "@mui/material";
 import FileThumbnail from "../../file-thumbnail";
-import Iconify from "../../iconify";
-//
 import { TUploadFile, UploadVariant } from "../types";
 import LabelCreate from "@/sections/LabelCreate";
 import DocumentIcon from "./DocumentIcon";
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
 import { SpaceBetween } from "@/components/styled";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // ----------------------------------------------------------------------
 
@@ -96,7 +95,7 @@ const Item = ({
                         disabled={disabled}
                         onClick={handleRemove}
                     >
-                        <Iconify icon="eva:close-fill" />
+                        <DeleteIcon />
                     </IconButton>
                 )}
             </Stack>

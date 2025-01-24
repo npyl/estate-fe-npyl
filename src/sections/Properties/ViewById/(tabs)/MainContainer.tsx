@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import Features from "../(sections)/FeaturesSection";
 import DescriptionSection from "../(sections)/DescriptionSection";
+import GoogleEarthSection from "../(sections)/GoogleEarthSection";
 
 const MainContainer: React.FC = () => {
     const router = useRouter();
@@ -85,6 +86,9 @@ const MainContainer: React.FC = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <BlueprintsSection data={data} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <GoogleEarthSection />
                     </Grid>
                 </Grid>
             </Grid>
