@@ -2,11 +2,7 @@ import { DropzoneOptions } from "react-dropzone";
 // @mui
 import { SxProps } from "@mui/material";
 import { Theme } from "@mui/material/styles";
-import {
-    IPropertyBlueprint,
-    IPropertyDocument,
-    IPropertyImage,
-} from "src/types/file";
+import { IPropertyBlueprint, IPropertyDocument } from "src/types/file";
 
 // ----------------------------------------------------------------------
 
@@ -31,24 +27,4 @@ export interface UploadProps extends DropzoneOptions {
     files?: TUploadFile[];
     onFileClick?: (key: string) => void;
     onRemove?: (key: string) => void;
-    onRemoveAll?: VoidFunction;
-}
-
-export interface UploadPropertyImageProps extends DropzoneOptions {
-    error?: boolean;
-    sx?: SxProps<Theme>;
-    thumbnail?: boolean;
-    placeholder?: React.ReactNode;
-    helperText?: React.ReactNode;
-    disableMultiple?: boolean;
-    //
-    file?: string | null;
-    onDelete?: VoidFunction;
-    //
-    files?: IPropertyImage[];
-    onImageClick?: (file: IPropertyImage) => void;
-    onImageDoubleClick?: (file: IPropertyImage) => void;
-    onReorder?: (keys: string[]) => void;
-    onRemove?: (file: IPropertyImage) => void;
-    onRemoveAll?: VoidFunction;
 }

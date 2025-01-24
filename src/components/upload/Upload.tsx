@@ -1,12 +1,13 @@
 import { useDropzone } from "react-dropzone";
 // @mui
-import { Box, Button, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 //
-import RejectionFiles from "./errors/RejectionFiles";
-import MultiFilePreview from "./preview/MultiFilePreview";
 import { UploadProps } from "./types";
 import Placeholder from "./placeholder";
+import dynamic from "next/dynamic";
+const MultiFilePreview = dynamic(() => import("./preview/MultiFilePreview"));
+const RejectionFiles = dynamic(() => import("./errors/RejectionFiles"));
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +38,6 @@ export default function Upload({
     files,
     onFileClick,
     onRemove,
-    onRemoveAll,
     sx,
     ...other
 }: UploadProps) {
@@ -94,34 +94,14 @@ export default function Upload({
             <RejectionFiles fileRejections={fileRejections} />
 
             {hasFiles ? (
-                <>
-                    <MultiFilePreview
-                        files={files}
-                        variant={variant}
-                        disabled={disabled}
-                        onFileClick={onFileClick}
-                        onRemove={onRemove}
-                        my={1}
-                    />
-
-                    {onRemoveAll ? (
-                        <Stack
-                            direction="row"
-                            justifyContent="flex-end"
-                            spacing={1.5}
-                        >
-                            <Button
-                                color="inherit"
-                                variant="outlined"
-                                size="small"
-                                onClick={onRemoveAll}
-                                disabled={disabled}
-                            >
-                                Remove all
-                            </Button>
-                        </Stack>
-                    ) : null}
-                </>
+                <MultiFilePreview
+                    files={files}
+                    variant={variant}
+                    disabled={disabled}
+                    onFileClick={onFileClick}
+                    onRemove={onRemove}
+                    my={1}
+                />
             ) : null}
 
             {helperText}
