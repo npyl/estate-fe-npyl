@@ -14,8 +14,8 @@ import LogoHorizontalLight from "@/assets/logo/horizontal/light";
 import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
-import AccountButton from "./account-button";
 import { HideText } from "@/components/styled";
+import AccountButton from "./account-button";
 
 const Logo = () => {
     const theme = useTheme();
