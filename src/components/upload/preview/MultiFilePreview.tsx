@@ -3,7 +3,7 @@ import { Grid, IconButton, Stack, StackProps, Typography } from "@mui/material";
 import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
-import { IPropertyFile, UploadVariant } from "../types";
+import { TUploadFile, UploadVariant } from "../types";
 import LabelCreate from "@/sections/LabelCreate";
 import DocumentIcon from "./DocumentIcon";
 import { styled } from "@mui/material/styles";
@@ -24,7 +24,7 @@ const StyledContainer = styled(Grid)(({ theme }) => ({
 
 interface ItemProps {
     variant: UploadVariant;
-    file: IPropertyFile;
+    file: TUploadFile;
     disabled?: boolean;
     onClick?: (url: string) => void;
     onRemove?: (key: string) => void;
@@ -98,7 +98,7 @@ const Item = ({
 // ----------------------------------------------------------------------
 
 interface MultiFilePreviewProps extends StackProps {
-    files: IPropertyFile[];
+    files: TUploadFile[];
     variant: UploadVariant;
     disabled?: boolean;
     onFileClick?: (url: string) => void;

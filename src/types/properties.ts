@@ -3,7 +3,12 @@ import { ICustomer } from "./customer";
 import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
-import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
+import {
+    IPropertyBlueprint,
+    IPropertyDocument,
+    IPropertyFile,
+    IPropertyImage,
+} from "./file";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
@@ -447,6 +452,8 @@ export interface IProperties {
     visitors: number;
     bedrooms: number;
     bathrooms: number;
+
+    googleEarth: IPropertyFile;
 }
 
 export interface IPropertyMarker {

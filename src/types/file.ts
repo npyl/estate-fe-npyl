@@ -1,6 +1,11 @@
 import { ILabel } from "./label";
 
-export type TFileVariant = "image" | "blueprint" | "document" | "OTHER";
+export type TFileVariant =
+    | "image"
+    | "blueprint"
+    | "document"
+    | "google-earth"
+    | "OTHER";
 
 export type UploadProgress = {
     key: string;
@@ -25,7 +30,7 @@ export interface IPropertyFileRes {
 
 // ----------------------------------------------------------------------------------------
 
-interface IPropertyFile {
+export interface IPropertyFile {
     id: number;
     url: string | null;
     key: string;

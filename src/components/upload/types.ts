@@ -16,7 +16,7 @@ export interface CustomFile extends File {
     lastModifiedDate?: Date;
 }
 
-export type IPropertyFile = IPropertyBlueprint | IPropertyDocument;
+export type TUploadFile = IPropertyBlueprint | IPropertyDocument;
 
 export type UploadVariant = "image" | "document" | "googleEarth" | undefined;
 
@@ -31,7 +31,7 @@ export interface UploadProps extends DropzoneOptions {
     file?: CustomFile | string | null;
     onDelete?: VoidFunction;
     //
-    files?: IPropertyFile[];
+    files?: TUploadFile[];
     onFileClick?: (key: string) => void;
     onRemove?: (key: string) => void;
     onRemoveAll?: VoidFunction;

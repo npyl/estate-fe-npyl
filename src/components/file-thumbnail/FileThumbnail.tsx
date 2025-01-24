@@ -1,11 +1,11 @@
 import Image from "../image/Image";
 import PreviewImage from "../image/PreviewImage";
-import { IPropertyFile } from "../upload";
+import { TUploadFile } from "../upload";
 
 // ----------------------------------------------------------------------
 
 type FileIconProps = {
-    file: IPropertyFile;
+    file: TUploadFile;
 };
 
 const FileThumbnail = ({ file }: FileIconProps) =>
