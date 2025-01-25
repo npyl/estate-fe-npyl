@@ -29,7 +29,7 @@ interface OpenerProps {
 }
 
 interface GrowingPopover<T extends OpenerProps = OpenerProps>
-    extends Omit<PopoverProps, "open" | "onClose"> {
+    extends Omit<PopoverProps, "anchorEl" | "open" | "onClose"> {
     HeadContentLeft: ComponentType;
 
     // INFO: the ref is mandatory
@@ -51,7 +51,7 @@ const GrowingPopover: FC<GrowingPopover> = ({
     const openerRef = useRef<HTMLDivElement>(null);
 
     // INFO: will be (intentionally) recalculated on isOpen-change
-    const openerWidth = `${(openerRef.current?.clientWidth ?? 30) + 10}px`;
+    const openerWidth = `${(openerRef.current?.clientWidth ?? 40) - 20}px`;
 
     useLayoutEffect(() => {
         if (!openerRef.current) return;
@@ -71,6 +71,7 @@ const GrowingPopover: FC<GrowingPopover> = ({
             </Box>
 
             <Popover
+                anchorEl={anchorRef.current}
                 open={isOpen}
                 disablePortal
                 anchorOrigin={{
@@ -86,10 +87,16 @@ const GrowingPopover: FC<GrowingPopover> = ({
                     root: {
                         ...(slotProps?.root || {}),
                         sx: {
-                            mt: -1,
-                            mr: -1,
                             zIndex: POPOVER_INDEX - 1,
                             ...((slotProps?.root as any)?.sx || {}),
+                        },
+                    },
+                    paper: {
+                        ...(slotProps?.paper || {}),
+                        sx: {
+                            mt: -1,
+                            right: 15,
+                            ...((slotProps?.paper as any)?.sx || {}),
                         },
                     },
                 }}
