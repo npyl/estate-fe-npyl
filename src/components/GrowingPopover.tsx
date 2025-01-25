@@ -1,4 +1,12 @@
-import { Box, Popover, PopoverProps, SxProps, Theme } from "@mui/material";
+import {
+    Box,
+    BoxProps,
+    Popover,
+    PopoverProps,
+    SxProps,
+    Theme,
+    useTheme,
+} from "@mui/material";
 import {
     ComponentType,
     ForwardRefExoticComponent,
@@ -9,6 +17,22 @@ import {
     type FC,
 } from "react";
 import useDialog from "@/hooks/useDialog";
+
+interface HeaderContainerProps extends BoxProps {
+    openerWidth: number;
+}
+
+const HeaderContainer: FC<HeaderContainerProps> = ({
+    openerWidth,
+    ...props
+}) => {
+    const theme = useTheme();
+    const spacing = theme.spacing;
+
+    const mr = `calc(${openerWidth}px - ${spacing(1)}`;
+
+    return <Box mr={mr} width="fit-content" {...props} />;
+};
 
 const POPOVER_INDEX = 200;
 
@@ -51,7 +75,7 @@ const GrowingPopover: FC<GrowingPopover> = ({
     const openerRef = useRef<HTMLDivElement>(null);
 
     // INFO: will be (intentionally) recalculated on isOpen-change
-    const openerWidth = `${(openerRef.current?.clientWidth ?? 40) - 20}px`;
+    const openerWidth = openerRef.current?.clientWidth ?? 40;
 
     useLayoutEffect(() => {
         if (!openerRef.current) return;
@@ -103,9 +127,9 @@ const GrowingPopover: FC<GrowingPopover> = ({
                 onClose={closePopover}
                 {...other}
             >
-                <Box mr={openerWidth} width="fit-content">
+                <HeaderContainer openerWidth={openerWidth}>
                     <HeadContentLeft />
-                </Box>
+                </HeaderContainer>
 
                 {children}
             </Popover>
