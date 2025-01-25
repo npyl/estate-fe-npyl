@@ -29,7 +29,7 @@ const HeaderContainer: FC<HeaderContainerProps> = ({
     const theme = useTheme();
     const spacing = theme.spacing;
 
-    const mr = `calc(${openerWidth}px - ${spacing(1)}`;
+    const mr = `calc(${openerWidth}px + ${spacing(1)})`;
 
     return <Box mr={mr} width="fit-content" {...props} />;
 };
@@ -40,10 +40,11 @@ const getOpenerSx = (isOpen: boolean): SxProps<Theme> => ({
     position: "absolute",
     zIndex: isOpen ? POPOVER_INDEX : "initial",
     mt: isOpen ? 1 : 0,
+    right: isOpen ? 10 : 0,
 
     transition: (theme) =>
-        theme.transitions.create(["margin-top"], {
-            duration: theme.transitions.duration.short,
+        theme.transitions.create(["margin-top", "right"], {
+            duration: theme.transitions.duration.standard,
             easing: theme.transitions.easing.easeInOut,
         }),
 });
@@ -75,7 +76,15 @@ const GrowingPopover: FC<GrowingPopover> = ({
     const openerRef = useRef<HTMLDivElement>(null);
 
     // INFO: will be (intentionally) recalculated on isOpen-change
-    const openerWidth = openerRef.current?.clientWidth ?? 40;
+    const openerWidth = openerRef.current?.clientWidth ?? 0;
+
+    const anchorPosition =
+        isOpen && anchorRef.current
+            ? {
+                  left: anchorRef.current.offsetLeft + openerWidth,
+                  top: anchorRef.current.offsetTop,
+              }
+            : undefined;
 
     useLayoutEffect(() => {
         if (!openerRef.current) return;
@@ -95,9 +104,9 @@ const GrowingPopover: FC<GrowingPopover> = ({
             </Box>
 
             <Popover
-                anchorEl={anchorRef.current}
                 open={isOpen}
                 disablePortal
+                anchorReference="anchorPosition"
                 anchorOrigin={{
                     horizontal: "right",
                     vertical: "top",
@@ -106,6 +115,7 @@ const GrowingPopover: FC<GrowingPopover> = ({
                     horizontal: "right",
                     vertical: "top",
                 }}
+                anchorPosition={anchorPosition}
                 slotProps={{
                     ...slotProps,
                     root: {
@@ -119,7 +129,6 @@ const GrowingPopover: FC<GrowingPopover> = ({
                         ...(slotProps?.paper || {}),
                         sx: {
                             mt: -1,
-                            right: 15,
                             ...((slotProps?.paper as any)?.sx || {}),
                         },
                     },
