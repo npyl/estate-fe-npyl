@@ -3,7 +3,6 @@ import {
     ListItemIcon,
     ListItemText,
     MenuItem,
-    Stack,
     Typography,
 } from "@mui/material";
 import { UserCircle as UserCircleIcon } from "@/assets/icons/user-circle";
@@ -32,49 +31,45 @@ const Content = () => {
     return (
         <>
             <Divider />
-            <Stack spacing={1}>
-                <Link href="/profile">
-                    <MenuItem>
-                        <ListItemIcon>
-                            <UserCircleIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={
-                                <Typography variant="body1">
-                                    {t("Profile")}
-                                </Typography>
-                            }
-                        />
-                    </MenuItem>
-                </Link>
-                <Link href="/settings">
-                    <MenuItem>
-                        <ListItemIcon>
-                            <SettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={
-                                <Typography variant="body1">
-                                    {t("Settings")}
-                                </Typography>
-                            }
-                        />
-                    </MenuItem>
-                </Link>
-                <Divider />
-                <MenuItem onClick={handleLogout}>
+            <Link href="/profile">
+                <MenuItem>
                     <ListItemIcon>
-                        <LogoutIcon fontSize="small" />
+                        <UserCircleIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText
                         primary={
                             <Typography variant="body1">
-                                {t("Logout")}
+                                {t("Profile")}
                             </Typography>
                         }
                     />
                 </MenuItem>
-            </Stack>
+            </Link>
+            <Link href="/settings">
+                <MenuItem>
+                    <ListItemIcon>
+                        <SettingsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary={
+                            <Typography variant="body1">
+                                {t("Settings")}
+                            </Typography>
+                        }
+                    />
+                </MenuItem>
+            </Link>
+            <Divider />
+            <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                    <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                    primary={
+                        <Typography variant="body1">{t("Logout")}</Typography>
+                    }
+                />
+            </MenuItem>
         </>
     );
 };
