@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
 import { getPropertyStatusColor } from "@/theme/colors";
+import { LinkProps } from "@/components/Link";
 
 interface Props {
     name: string;
@@ -19,9 +20,9 @@ const CategoryBadge: FC<Props> = ({ name }) => {
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
-};
+} & Omit<LinkProps, "href">;
 
-const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
+const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
     const {
         id,
         images,
@@ -74,7 +75,11 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const stateColor = getPropertyStatusColor(state.value);
 
     return (
-        <StyledLink isActive={false} href={`/property/${id}`}>
+        <StyledLink
+            isActive={false}
+            href={`/property/${id}`}
+            {...(props as any)}
+        >
             <CarouselSimple
                 data={convertedImages}
                 ratio="4/3"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import Map, { IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
@@ -6,25 +6,64 @@ import { useDebouncedCallback } from "use-debounce";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
 import { selectAll, setPoints, resetPoints } from "src/slices/filters";
 import { useDispatch, useSelector } from "react-redux";
-import { MarkerF } from "@react-google-maps/api";
+import { MarkerF, MarkerProps } from "@react-google-maps/api";
 import getMarkerId from "../getMarkerId";
 import dynamic from "next/dynamic";
+import { useMarkerRefsContext } from "../context";
 const PropertyInfoWindow = dynamic(() => import("./PropertyInfoWindow"));
+
+// ----------------------------------------------------------------------------------
+
+interface ReferencableMarkerFProps extends MarkerProps {
+    propertyId: number;
+}
+
+const ReferencableMarkerF: FC<ReferencableMarkerFProps> = ({
+    propertyId,
+    ...props
+}) => {
+    const { onMarkerLoad } = useMarkerRefsContext();
+    return <MarkerF onLoad={(m) => onMarkerLoad(propertyId, m)} {...props} />;
+};
+
+// ----------------------------------------------------------------------------------
+
+const MarkerList = () => {
+    const allFilters = useSelector(selectAll);
+
+    const { data: markers } = useGetPropertyLocationMarkersQuery(allFilters);
+
+    const [activeMarker, setActiveMarker] = useState<number>();
+
+    return (
+        <>
+            {markers?.map((marker, index) => (
+                <ReferencableMarkerF
+                    key={getMarkerId(marker)}
+                    propertyId={marker.propertyId}
+                    position={{ lat: marker.lat, lng: marker.lng }}
+                    onClick={() => setActiveMarker(index)}
+                    icon="/static/map/mapIcon.svg"
+                >
+                    {activeMarker === index ? (
+                        <PropertyInfoWindow
+                            marker={marker}
+                            setActiveMarker={setActiveMarker}
+                        />
+                    ) : null}
+                </ReferencableMarkerF>
+            ))}
+        </>
+    );
+};
 
 const MapSection = () => {
     const dispatch = useDispatch();
 
-    const [activeMarker, setActiveMarker] = useState<number | undefined>(
-        undefined
-    );
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: 38.246639,
         lng: 21.734573,
     });
-
-    const allFilters = useSelector(selectAll);
-
-    const { data: markers } = useGetPropertyLocationMarkersQuery(allFilters);
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
         dispatch(
@@ -52,29 +91,12 @@ const MapSection = () => {
     return (
         <Map
             mainMarker={mainMarker}
-            activeMarker={activeMarker}
-            setActiveMarker={setActiveMarker}
-            // search
-            drawing={true}
+            drawing
             onDraw={handleDraw}
             onShapeChange={handleChange}
             onSearchSelect={handleSearchSelect}
         >
-            {markers?.map((marker, index) => (
-                <MarkerF
-                    key={getMarkerId(marker)}
-                    position={{ lat: marker.lat, lng: marker.lng }}
-                    onClick={() => setActiveMarker(index)}
-                    icon="/static/map/mapIcon.svg"
-                >
-                    {activeMarker === index ? (
-                        <PropertyInfoWindow
-                            marker={marker}
-                            setActiveMarker={setActiveMarker}
-                        />
-                    ) : null}
-                </MarkerF>
-            ))}
+            <MarkerList />
         </Map>
     );
 };

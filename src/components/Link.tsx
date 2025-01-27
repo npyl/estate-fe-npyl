@@ -10,4 +10,5 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
 
 Link.displayName = "Link";
 
+export type { LinkProps };
 export default Link;
