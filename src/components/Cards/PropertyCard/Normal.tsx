@@ -1,6 +1,6 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
-import { FC, useMemo, useRef } from "react";
+import { FC, useMemo } from "react";
 import CarouselSimple from "@/components/Carousel";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
@@ -43,8 +43,6 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
 
     const { t, i18n } = useTranslation();
 
-    const ref = useRef<HTMLAnchorElement>(null);
-
     const address = useMemo(() => {
         const addressParts =
             i18n.language === "en"
@@ -76,7 +74,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const stateColor = getPropertyStatusColor(state.value);
 
     return (
-        <StyledLink isActive={false} ref={ref} href={`/property/${id}`}>
+        <StyledLink isActive={false} href={`/property/${id}`}>
             <CarouselSimple
                 data={convertedImages}
                 ratio="4/3"

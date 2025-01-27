@@ -1,6 +1,5 @@
 import PropertyCard from "@/components/Cards/PropertyCard";
 import { IMapMarker } from "@/components/Map/Map";
-import { IPropertyResultResponse } from "@/types/properties";
 import { useGetPropertyCardByIdQuery } from "@/services/properties";
 import { InfoWindowF } from "@react-google-maps/api";
 import { useEffect, useRef, useState } from "react";
@@ -8,13 +7,11 @@ import { Box } from "@mui/material";
 
 interface PropertyInfoWindowProps {
     marker: IMapMarker;
-    properties: IPropertyResultResponse[] | undefined;
     setActiveMarker: (index: number | undefined) => void;
 }
 
 const PropertyInfoWindow = ({
     marker,
-    properties,
     setActiveMarker,
 }: PropertyInfoWindowProps) => {
     //useRef for closing the infoWindow
@@ -23,18 +20,11 @@ const PropertyInfoWindow = ({
     const [lastClickedMarker, setLastClickedMarker] = useState<
         number | undefined
     >(undefined);
-    // Check if the property is in the current filtered properties
-    const property = properties?.find((item) => item.id === marker.propertyId);
 
     // Fetch the property data if not found in the filtered properties
-    const { data: fetchedProperty, isLoading } = useGetPropertyCardByIdQuery(
-        +marker.propertyId!,
-        {
-            skip: !!property, // Skip fetching if the property is already available
-        }
+    const { data: propertyToShow, isLoading } = useGetPropertyCardByIdQuery(
+        +marker.propertyId!
     );
-
-    const propertyToShow = property || fetchedProperty;
 
     //mount and unmount styles for the popup window
     useEffect(() => {
@@ -177,6 +167,7 @@ const PropertyInfoWindow = ({
                 >
                     X
                 </button>
+
                 {propertyToShow && <PropertyCard item={propertyToShow} />}
             </Box>
         </InfoWindowF>

@@ -13,7 +13,7 @@ const useResponsiveOrientation = (): [boolean, VoidFunction] => {
     // Revert to vertical orientation on mobile
     useEffect(() => {
         if (belowLg) setOrientation(false);
-    }, []);
+    }, [belowLg]);
 
     return [orientation, toggleOrientation];
 };

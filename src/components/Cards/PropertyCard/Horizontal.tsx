@@ -1,6 +1,6 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { Divider, Stack, Typography } from "@mui/material";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import CarouselSimple from "@/components/Carousel";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
@@ -32,8 +32,6 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
         (item as IPropertyResultResponse) || {};
 
     const { t, i18n } = useTranslation();
-
-    const ref = useRef<HTMLAnchorElement>(null);
 
     const address = useMemo(() => {
         const addressParts =
@@ -68,7 +66,6 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
     return (
         <StyledLink
             isActive={false}
-            ref={ref}
             href={`/property/${id}`}
             // ...
             border="1px solid"
