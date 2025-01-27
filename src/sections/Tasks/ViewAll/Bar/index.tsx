@@ -7,6 +7,7 @@ import AddButtons from "./AddButtons";
 import Priority from "./Priority";
 import ModeButton from "./ModeButton";
 import SortBy from "./SortBy";
+import { FC } from "react";
 
 const BarSx: SxProps<Theme> = {
     bgcolor: "background.default",
@@ -17,7 +18,11 @@ const BarSx: SxProps<Theme> = {
     borderColor: "divider",
 };
 
-const Bar = () => (
+interface BarProps {
+    create?: boolean;
+}
+
+const Bar: FC<BarProps> = ({ create }) => (
     <SpaceBetween alignItems="center" sx={BarSx}>
         <Stack
             direction="row"
@@ -33,7 +38,7 @@ const Bar = () => (
 
         <Stack direction="row" spacing={1} alignItems="center">
             <ModeButton />
-            <AddButtons />
+            <AddButtons create={create} />
         </Stack>
     </SpaceBetween>
 );

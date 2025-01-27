@@ -5,7 +5,7 @@ import useDialog from "@/hooks/useDialog";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import dynamic from "next/dynamic";
 import { SxProps, Theme } from "@mui/material";
-const Menu = dynamic(() => import("./dashboard-subbar/Desktop/Menu"));
+const Menu = dynamic(() => import("./Menu"));
 
 const ButtonSx: SxProps<Theme> = {
     color: "white",

@@ -2,9 +2,8 @@ import { forwardRef } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import GrowingPopover from "@/components/GrowingPopover";
 import Avatar, { AvatarProps } from "@/components/Avatar";
-import dynamic from "next/dynamic";
 import Header from "./Header";
-const Content = dynamic(() => import("./Content"));
+import Content from "./Content";
 
 const AvatarButton = forwardRef<HTMLDivElement, AvatarProps>((props, ref) => {
     const { user } = useAuth();

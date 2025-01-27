@@ -15,7 +15,11 @@ import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
 import { HideText } from "@/components/styled";
-import AccountPopover from "./account-popover";
+import dynamic from "next/dynamic";
+import AccountLoader from "./AccountLoader";
+const AccountPopover = dynamic(() => import("./account-popover"), {
+    loading: () => <AccountLoader />,
+});
 
 const Logo = () => {
     const theme = useTheme();

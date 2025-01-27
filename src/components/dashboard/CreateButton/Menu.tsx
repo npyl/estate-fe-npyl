@@ -1,27 +1,21 @@
 import StyledMenu from "@/components/StyledMenu";
-import { itemTypeToPath, MENU_ITEMS } from "../constants";
+import { MENU_ITEMS } from "./constants";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import MenuItem from "@mui/material/MenuItem";
-import { TMenuItem } from "../types";
+import { TMenuItem } from "./types";
+import Link from "@/components/Link";
 
 interface DekstopMenuItemProps extends TMenuItem {}
 
 const DesktopMenuItem: FC<DekstopMenuItemProps> = ({ path, icon, label }) => {
     const { t } = useTranslation();
-
-    const router = useRouter();
-
-    const startCreate = useCallback(
-        () => router.push(itemTypeToPath[path]),
-        []
-    );
-
     return (
-        <MenuItem onClick={startCreate} disableRipple>
+        <MenuItem disableRipple>
             {icon}
-            {t(label)}
+            <Link href={path} width={1}>
+                {t(label)}
+            </Link>
         </MenuItem>
     );
 };
