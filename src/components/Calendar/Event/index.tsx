@@ -1,7 +1,6 @@
 import { forwardRef, MouseEvent, useCallback, useState } from "react";
 import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
-import { TCalendarEvent } from "../types";
-import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
+import { DAY_CELL_HEIGHT, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
@@ -9,27 +8,9 @@ import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import DraggableStack from "./DraggableStack";
+import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
-
-// ------------------------------------------------------------------------------------
-
-const calculateEventPosition = (event: TCalendarEvent) => {
-    const startHour = new Date(event.startDate).getHours();
-    const startMinutes = new Date(event.startDate).getMinutes();
-    const endHour = new Date(event.endDate).getHours();
-    const endMinutes = new Date(event.endDate).getMinutes();
-
-    const top = (startHour - START_HOUR + startMinutes / 60) * DAY_CELL_HEIGHT;
-    const height =
-        (endHour - startHour + (endMinutes - startMinutes) / 60) *
-        DAY_CELL_HEIGHT;
-
-    return {
-        top,
-        height,
-    };
-};
 
 // ------------------------------------------------------------------------------------
 
@@ -74,7 +55,10 @@ const DescriptionSx: SxProps<Theme> = {
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
     ({ event, overlapCount = 0, onClick, ...props }, ref) => {
-        const { top, height } = calculateEventPosition(event);
+        const { top, height } = calculateTimePosition(
+            event.startDate,
+            event.endDate
+        );
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
