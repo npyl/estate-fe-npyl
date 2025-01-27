@@ -4,7 +4,7 @@ import { IPropertyResultResponse } from "@/types/properties";
 import Placeholder from "./Placeholder";
 import useResponsiveOrientation from "./hook";
 import FlipOrientationButton from "./FlipOrientationButton";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useRef } from "react";
 import { useMarkerRefsContext } from "../../context";
 import sleep from "@/utils/sleep";
 
@@ -23,21 +23,31 @@ const GridItem: FC<GridItemProps> = ({ orientation, item }) => {
 
     const Card = orientation ? PropertyCardH : PropertyCard;
 
+    const zIndex = useRef(0);
+
     const handleHover = useCallback(() => {
         if (item?.id === undefined) return;
         const m = getByPropertyId(item.id);
         if (!m) return;
+
+        // store old zIndex
+        zIndex.current = m.getZIndex() ?? 0;
+
+        // Docs state that setting MAX + 1 can be used to bring the marker to front
+        const MAX_ZINDEX = google.maps.Marker.MAX_ZINDEX;
+        m.setZIndex(MAX_ZINDEX + 1);
+
         m.setIcon(ACTIVE);
-        m.setZIndex(1000);
     }, []);
 
     const handleUnhover = useCallback(async () => {
         if (item?.id === undefined) return;
-
-        await sleep(300);
-
         const m = getByPropertyId(item.id);
         if (!m) return;
+
+        await sleep(100);
+
+        m.setZIndex(zIndex.current);
         m.setIcon(NORMAL);
     }, []);
 
