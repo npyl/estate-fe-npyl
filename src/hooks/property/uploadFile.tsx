@@ -6,9 +6,10 @@ import {
 } from "@/services/properties/file";
 import { IPropertyFileRes, TFileVariant } from "@/types/file";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import executeSequentially from "@/utils/executeSequentially";
+import useDialog from "../useDialog";
 
 interface UploadResponse {
     key: string;
@@ -22,6 +23,8 @@ const getTag = (variant: TFileVariant) =>
         ? "PropertyByIdBlueprints"
         : variant === "document"
         ? "PropertyByIdDocuments"
+        : variant === "google-earth"
+        ? "PropertyByIdGoogleEarth"
         : null;
 
 const usePropertyUpload = (
@@ -36,7 +39,7 @@ const usePropertyUpload = (
 
     const dispatch = useDispatch();
 
-    const [isLoading, setLoading] = useState(false);
+    const [isUploading, startUploading, stopUploading] = useDialog();
 
     const invalidateTags = () => {
         const tag = getTag(variant);
@@ -99,7 +102,7 @@ const usePropertyUpload = (
     );
 
     const uploadFiles = useCallback(async (acceptedFiles: File[]) => {
-        setLoading(true);
+        startUploading();
 
         const fileResponses = await Promise.all(acceptedFiles.map(step0));
 
@@ -110,11 +113,11 @@ const usePropertyUpload = (
 
         executeSequentially(uploadPromises)
             .then(invalidateTags)
-            .then(() => setLoading(false))
+            .then(stopUploading)
             .catch((error) => console.error("SequentialUploadError:", error));
     }, []);
 
-    return { uploadFiles, invalidateTags, isLoading };
+    return { uploadFiles, invalidateTags, isUploading };
 };
 
 export default usePropertyUpload;

@@ -15,8 +15,7 @@ const DocumentsPanel: FC<Props> = ({ onDocumentClick }) => {
 
     const { documents, propertyId } = usePropertyDocuments();
 
-    const { uploadFiles, isLoading: isUploading } =
-        usePropertyUpload("document");
+    const { uploadFiles, isUploading } = usePropertyUpload("document");
 
     const [deleteDocument, { isLoading: isDeleteLoading }] =
         useDeletePropertyDocumentMutation();

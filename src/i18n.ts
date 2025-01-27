@@ -4,6 +4,16 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            GOOGLE_EARTH_INSTALLED:
+                "Make sure you have Google Earth Pro installed to view this file on your computer",
+
+            GOOGLE_EARTH_FAULTY_URL: "The file's url appears to be invalid",
+
+            GOOGLE_EARTH_NOT_UPLOADED:
+                "You have not attached a GoogleEarth file, yet.",
+
+            GoogleEarthSection: "GoogleEarth (.kmz)",
+
             INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Secret",
             INFO_LOCATION_DISPLAY_GENERAL: "General (radius)",
             INFO_LOCATION_DISPLAY_EXACT: "Exact (pin)",
@@ -1178,6 +1188,16 @@ const resources = {
     },
     el: {
         translation: {
+            GOOGLE_EARTH_INSTALLED:
+                "Βεβαιωθείτε ότι έχετε εγκαταστήσει το Google Earth Pro για να δείτε το αρχείο αυτό στον υπολογιστή σας",
+
+            GOOGLE_EARTH_FAULTY_URL: "Ο σύνδεσμος του αρχείο φαίνεται άκυρος",
+
+            GOOGLE_EARTH_NOT_UPLOADED:
+                "Δεν έχετε προσθέσει αρχείο GoogleEarth, ακόμη.",
+
+            GoogleEarthSection: "GoogleEarth (.kmz)",
+
             INFO_LOCATION_DISPLAY_NOT_VISIBLE: "Κρυφή",
             INFO_LOCATION_DISPLAY_GENERAL: "Γενική (ακτίνα)",
             INFO_LOCATION_DISPLAY_EXACT: "Ακριβής (πινέζα)",

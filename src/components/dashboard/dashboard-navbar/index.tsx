@@ -14,8 +14,12 @@ import LogoHorizontalLight from "@/assets/logo/horizontal/light";
 import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
-import AccountButton from "./account-button";
 import { HideText } from "@/components/styled";
+import dynamic from "next/dynamic";
+import AccountLoader from "./AccountLoader";
+const AccountPopover = dynamic(() => import("./account-popover"), {
+    loading: () => <AccountLoader />,
+});
 
 const Logo = () => {
     const theme = useTheme();
@@ -116,12 +120,12 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     <Stack alignItems="center" direction="row">
                         <CreateButton
                             sx={{
-                                ml: 1,
+                                mx: 1,
                                 ...HideText,
                             }}
                         />
 
-                        <AccountButton />
+                        <AccountPopover />
                     </Stack>
                 </Toolbar>
             </DashboardNavbarRoot>

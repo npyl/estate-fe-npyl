@@ -25,6 +25,7 @@ import {
 import LocationSection from "./_general/Location";
 import Public from "./_general/Public";
 import ROISection from "./_general/ROI";
+import GoogleEarth from "./_general/GoogleEarth";
 
 const OtherFormSection: React.FC = () => {
     return (
@@ -42,6 +43,7 @@ const OtherFormSection: React.FC = () => {
                         <SuitableFor />
                         <Blueprints />
                         <Documents />
+                        <GoogleEarth />
                         <VideoLink />
                         <Notes />
                     </Stack>

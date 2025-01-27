@@ -1,6 +1,8 @@
 import { CSSProperties, FC } from "react";
 import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
+import { TODAY } from "@/components/BaseCalendar/constants";
+import TodayIndicator from "../TodayIndicator";
 
 // -------------------------------------------------------------------------
 
@@ -17,6 +19,7 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     ...props
 }) => {
     const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
+    const isToday = TODAY.toDateString() === date.toDateString();
     return (
         <div
             className="PPCell"
@@ -26,6 +29,9 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
         >
             {/* Events */}
             {EVENTS}
+
+            {/* Today Indicator */}
+            {isToday ? <TodayIndicator /> : null}
         </div>
     );
 };

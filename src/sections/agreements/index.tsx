@@ -7,16 +7,22 @@ import dynamic from "next/dynamic";
 const PreparationDialog = dynamic(() => import("./Dialogs/Preparation"));
 
 interface Props {
+    create?: boolean;
+
     // Are we on a property/[propertyId] page or the agreements page?
     propertyId?: number;
     customerId?: number;
 }
 
-const AgreementsSection: React.FC<Props> = ({ propertyId, customerId }) => {
+const AgreementsSection: React.FC<Props> = ({
+    create = false,
+    propertyId,
+    customerId,
+}) => {
     // -1: closed
     // 0: create
     // >0: edit with agreement id
-    const [dialogMode, setDialogMode] = useState(-1);
+    const [dialogMode, setDialogMode] = useState(create ? 0 : -1);
     const openCreateDialog = () => setDialogMode(0);
     const openEditDialog = (id: number) => setDialogMode(id);
     const closeDialog = () => setDialogMode(-1);

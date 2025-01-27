@@ -4,7 +4,7 @@ import MuiTextField, {
     TextFieldProps as MuiTextFieldProps,
 } from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
-import { FC, useCallback, useRef } from "react";
+import { FC, useCallback, useRef, KeyboardEvent } from "react";
 import { SxProps, Theme } from "@mui/material";
 import EmojiPickerButton from "./EmojiPickerButton";
 import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
@@ -69,6 +69,18 @@ const TextField: FC<TextFieldProps> = ({
         [onEmojiClick]
     );
 
+    const handleKeyDown = useCallback(
+        (event: KeyboardEvent<HTMLDivElement>) => {
+            const v = inputRef.current?.value;
+            if (!v) return;
+
+            if (event.key !== "Enter" || event.shiftKey) return;
+
+            handleSend();
+        },
+        [handleSend]
+    );
+
     return (
         <Stack
             direction="row"
@@ -92,6 +104,7 @@ const TextField: FC<TextFieldProps> = ({
                     },
                 }}
                 inputRef={inputRef}
+                onKeyDown={handleKeyDown}
                 {...props}
             />
 

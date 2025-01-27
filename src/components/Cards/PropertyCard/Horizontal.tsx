@@ -1,19 +1,20 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { Divider, Stack, Typography } from "@mui/material";
-import { useMemo, useRef } from "react";
+import { FC, useMemo } from "react";
 import CarouselSimple from "@/components/Carousel";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
 import { getPropertyStatusColor } from "@/theme/colors";
+import { LinkProps } from "@/components/Link";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
-};
+} & Omit<LinkProps, "href">;
 
 // -------------------------------------------------------------
 
-const PropertyCard = ({ item }: PropertyCardProps) => {
+const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
     const {
         id,
         images,
@@ -32,8 +33,6 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
         (item as IPropertyResultResponse) || {};
 
     const { t, i18n } = useTranslation();
-
-    const ref = useRef<HTMLAnchorElement>(null);
 
     const address = useMemo(() => {
         const addressParts =
@@ -68,11 +67,11 @@ const PropertyCard = ({ item }: PropertyCardProps) => {
     return (
         <StyledLink
             isActive={false}
-            ref={ref}
             href={`/property/${id}`}
             // ...
             border="1px solid"
             borderColor="divider"
+            {...(props as any)}
         >
             <Stack direction="row" spacing={1} alignItems="center">
                 <CarouselSimple

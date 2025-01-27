@@ -6,6 +6,7 @@ import {
     IPropertyBlueprint,
     IPropertyDocument,
     TFileVariant,
+    IPropertyFile,
 } from "src/types/file";
 
 import { properties } from "../properties";
@@ -57,6 +58,10 @@ export const filesApiSlice = properties.injectEndpoints({
         getPropertyDocuments: builder.query<IPropertyDocument[], number>({
             query: (propertyId) => `${propertyId}/documents`,
             providesTags: ["PropertyByIdDocuments"],
+        }),
+        getPropertyGoogleEarth: builder.query<IPropertyFile, number>({
+            query: (propertyId) => `${propertyId}/googleEarth`,
+            providesTags: ["PropertyByIdGoogleEarth"],
         }),
 
         // ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -163,6 +168,13 @@ export const filesApiSlice = properties.injectEndpoints({
             }),
             invalidatesTags: ["PropertyByIdDocuments"],
         }),
+        deletePropertyGoogleEarth: builder.mutation<void, number>({
+            query: (propertyId) => ({
+                url: `/${propertyId}/google-earth`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["PropertyByIdGoogleEarth"],
+        }),
 
         // ---------------------------------------------------------------
         //  UPLOAD
@@ -213,6 +225,7 @@ export const {
     useGetPropertyImagesQuery,
     useGetPropertyBlueprintsQuery,
     useGetPropertyDocumentsQuery,
+    useGetPropertyGoogleEarthQuery,
 
     useAddPropertyFileMutation,
 
@@ -225,6 +238,7 @@ export const {
 
     useDeletePropertyBlueprintMutation,
     useDeletePropertyDocumentMutation,
+    useDeletePropertyGoogleEarthMutation,
 
     useUploadPropertyFileMutation,
 } = filesApiSlice;

@@ -1,36 +1,16 @@
 import { forwardRef, MouseEvent, useCallback, useState } from "react";
 import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
-import { TCalendarEvent } from "../types";
-import { DAY_CELL_HEIGHT, START_HOUR, Z_INDEX } from "@/constants/calendar";
+import { DAY_CELL_HEIGHT, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
-import Duration from "./_shared/Duration";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import DraggableStack from "./DraggableStack";
+import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
-
-// ------------------------------------------------------------------------------------
-
-const calculateEventPosition = (event: TCalendarEvent) => {
-    const startHour = new Date(event.startDate).getHours();
-    const startMinutes = new Date(event.startDate).getMinutes();
-    const endHour = new Date(event.endDate).getHours();
-    const endMinutes = new Date(event.endDate).getMinutes();
-
-    const top = (startHour - START_HOUR + startMinutes / 60) * DAY_CELL_HEIGHT;
-    const height =
-        (endHour - startHour + (endMinutes - startMinutes) / 60) *
-        DAY_CELL_HEIGHT;
-
-    return {
-        top,
-        height,
-    };
-};
 
 // ------------------------------------------------------------------------------------
 
@@ -43,8 +23,8 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
 
     return {
         backgroundColor: ({ palette }) => palette.background.paper,
-        borderRadius: "10px",
-        boxShadow: 10,
+        borderRadius: 1,
+        boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.4)",
 
         marginLeft,
         width,
@@ -58,7 +38,7 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
 
         "&:hover": {
             zIndex: Z_INDEX.HEADER - 1,
-            boxShadow: 20,
+            boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.55)",
         },
     };
 };
@@ -75,7 +55,10 @@ const DescriptionSx: SxProps<Theme> = {
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
     ({ event, overlapCount = 0, onClick, ...props }, ref) => {
-        const { top, height } = calculateEventPosition(event);
+        const { top, height } = calculateTimePosition(
+            event.startDate,
+            event.endDate
+        );
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
@@ -116,22 +99,23 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             <DraggableStack
                 ref={onRef}
                 sx={getEventSx(overlapCount)}
+                overlapCount={overlapCount}
                 top={top}
                 height={maxHeight}
                 event={event}
                 onClick={handleClick}
                 {...props}
             >
-                <Title title={event.title} color={getTypeColor(event.type)} />
+                <Title
+                    title={event.title}
+                    startDate={event.startDate}
+                    endDate={event.startDate}
+                    color={getTypeColor(event.type)}
+                />
 
                 {!isMinimumHeight ? (
                     <>
                         <Stack p={1} spacing={1}>
-                            <Duration
-                                start={event.startDate}
-                                end={event.endDate}
-                                width={1}
-                            />
                             <Typography
                                 variant="subtitle2"
                                 noWrap

@@ -12,8 +12,7 @@ const BlueprintsSection: React.FC = () => {
 
     const { blueprints, propertyId } = usePropertyBlueprints();
 
-    const { uploadFiles, isLoading: isUploading } =
-        usePropertyUpload("blueprint");
+    const { uploadFiles, isUploading } = usePropertyUpload("blueprint");
 
     const [deleteBlueprint, { isLoading: isDeleting }] =
         useDeletePropertyBlueprintMutation();

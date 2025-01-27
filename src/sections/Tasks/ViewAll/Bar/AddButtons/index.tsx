@@ -6,18 +6,22 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { HideText } from "@/components/styled";
 const CardDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
 const Menu = dynamic(() => import("./Menu"));
 
-const AddButtons = () => {
+interface AddButtonsProps {
+    create?: boolean;
+}
+
+const AddButtons: FC<AddButtonsProps> = ({ create = false }) => {
     const { t } = useTranslation();
 
     const anchorRef = useRef(null);
 
     const [isMenuOpen, openMenu, closeMenu] = useDialog();
-    const [isDialogOpen, openDialog, closeDialog] = useDialog();
+    const [isDialogOpen, openDialog, closeDialog] = useDialog(create);
 
     return (
         <Stack direction="row" alignItems="center" spacing={1} mt={1}>

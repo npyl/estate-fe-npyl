@@ -1,14 +1,13 @@
 import { useDropzone } from "react-dropzone";
 // @mui
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 //
-import Iconify from "../iconify";
-//
-import RejectionFiles from "./errors/RejectionFiles";
-import MultiFilePreview from "./preview/MultiFilePreview";
 import { UploadProps } from "./types";
 import Placeholder from "./placeholder";
+import dynamic from "next/dynamic";
+const MultiFilePreview = dynamic(() => import("./preview/MultiFilePreview"));
+const RejectionFiles = dynamic(() => import("./errors/RejectionFiles"));
 
 // ----------------------------------------------------------------------
 
@@ -36,13 +35,9 @@ export default function Upload({
     helperText,
     variant = "image",
     //
-    file,
-    onFileClick,
-    onDelete,
-    //
     files,
+    onFileClick,
     onRemove,
-    onRemoveAll,
     sx,
     ...other
 }: UploadProps) {
@@ -67,15 +62,14 @@ export default function Upload({
         ...other,
     });
 
-    const hasFile = !!file && !multiple;
-
-    const hasFiles = files && multiple && files.length > 0;
+    const hasFiles = files && files.length > 0;
 
     const isError = isDragReject || !!error;
 
     return (
         <Box sx={{ width: 1, position: "relative", ...sx }}>
             <StyledDropZone
+                className="PPUpload-DropZone"
                 {...getRootProps()}
                 sx={{
                     ...(isDragActive && {
@@ -99,60 +93,16 @@ export default function Upload({
 
             <RejectionFiles fileRejections={fileRejections} />
 
-            {hasFile && onDelete && (
-                <IconButton
-                    size="small"
+            {hasFiles ? (
+                <MultiFilePreview
+                    files={files}
+                    variant={variant}
                     disabled={disabled}
-                    onClick={onDelete}
-                    sx={{
-                        top: 16,
-                        right: 16,
-                        zIndex: 9,
-                        position: "absolute",
-                        color: (theme) =>
-                            alpha(theme.palette.common.white, 0.8),
-                        bgcolor: (theme) =>
-                            alpha(theme.palette.grey[900], 0.72),
-                        "&:hover": {
-                            bgcolor: (theme) =>
-                                alpha(theme.palette.grey[900], 0.48),
-                        },
-                    }}
-                >
-                    <Iconify icon="eva:close-fill" width={18} />
-                </IconButton>
-            )}
-
-            {hasFiles && (
-                <>
-                    <MultiFilePreview
-                        files={files}
-                        variant={variant}
-                        disabled={disabled}
-                        onFileClick={onFileClick}
-                        onRemove={onRemove}
-                        my={1}
-                    />
-
-                    {onRemoveAll ? (
-                        <Stack
-                            direction="row"
-                            justifyContent="flex-end"
-                            spacing={1.5}
-                        >
-                            <Button
-                                color="inherit"
-                                variant="outlined"
-                                size="small"
-                                onClick={onRemoveAll}
-                                disabled={disabled}
-                            >
-                                Remove all
-                            </Button>
-                        </Stack>
-                    ) : null}
-                </>
-            )}
+                    onFileClick={onFileClick}
+                    onRemove={onRemove}
+                    my={1}
+                />
+            ) : null}
 
             {helperText}
         </Box>

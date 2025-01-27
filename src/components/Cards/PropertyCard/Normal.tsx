@@ -1,11 +1,12 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
-import { FC, useMemo, useRef } from "react";
+import { FC, useMemo } from "react";
 import CarouselSimple from "@/components/Carousel";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
 import { getPropertyStatusColor } from "@/theme/colors";
+import { LinkProps } from "@/components/Link";
 
 interface Props {
     name: string;
@@ -19,9 +20,9 @@ const CategoryBadge: FC<Props> = ({ name }) => {
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
-};
+} & Omit<LinkProps, "href">;
 
-const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
+const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
     const {
         id,
         images,
@@ -42,8 +43,6 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const bedrooms = details?.bedrooms;
 
     const { t, i18n } = useTranslation();
-
-    const ref = useRef<HTMLAnchorElement>(null);
 
     const address = useMemo(() => {
         const addressParts =
@@ -76,7 +75,11 @@ const PropertyCard: FC<PropertyCardProps> = ({ item }) => {
     const stateColor = getPropertyStatusColor(state.value);
 
     return (
-        <StyledLink isActive={false} ref={ref} href={`/property/${id}`}>
+        <StyledLink
+            isActive={false}
+            href={`/property/${id}`}
+            {...(props as any)}
+        >
             <CarouselSimple
                 data={convertedImages}
                 ratio="4/3"

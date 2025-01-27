@@ -104,7 +104,6 @@ const Map = ({
     const geocoderRef = useRef<google.maps.Geocoder>();
     const [isFullscreen, setIsFullscreen] = useState(false);
 
-    console.log("fullScreen:", isFullscreen);
     useEffect(() => {
         const handleFullscreenChange = () => {
             setIsFullscreen(!!document.fullscreenElement);

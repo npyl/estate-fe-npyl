@@ -44,4 +44,5 @@ const Duration: FC<DurationProps> = ({ start, end, sx, ...props }) => {
     );
 };
 
+export { getText };
 export default Duration;

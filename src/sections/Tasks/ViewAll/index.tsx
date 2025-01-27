@@ -5,14 +5,19 @@ import { FiltersProvider } from "@/sections/Tasks/filters";
 import Content from "./Content";
 import { CookiesProvider } from "react-cookie";
 import NotificationHandler from "./NotificationHandler";
+import { FC } from "react";
 
-function ViewAllTasks() {
+interface ViewAllTasksProps {
+    create?: boolean;
+}
+
+const ViewAllTasks: FC<ViewAllTasksProps> = ({ create }) => {
     return (
         <>
             <FiltersProvider>
                 <CookiesProvider>
                     <Stack spacing={1}>
-                        <Bar />
+                        <Bar create={create} />
                         <Content />
                     </Stack>
                 </CookiesProvider>
@@ -24,6 +29,6 @@ function ViewAllTasks() {
             <NotificationHandler />
         </>
     );
-}
+};
 
 export default ViewAllTasks;
