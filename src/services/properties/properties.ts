@@ -18,6 +18,7 @@ import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
 import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
+import { IPropertyFile } from "@/types/file";
 
 interface JustData<T> {
     data: T;
@@ -73,6 +74,11 @@ interface EditLocationDisplayProps {
     display: LocationDisplay;
 }
 
+interface IGeneratePDFReq {
+    propertyId: number;
+    qrPath: string;
+}
+
 export const properties = apiWithTranslation({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
@@ -100,6 +106,8 @@ export const properties = apiWithTranslation({
 
         // ...
         "Archived",
+
+        "PDF",
     ],
     endpoints: (builder) => ({
         allPropertyCodes: builder.query<IPropertyCodeRes[], void>({
@@ -381,6 +389,29 @@ export const properties = apiWithTranslation({
             }),
             invalidatesTags: ["Archived", "Properties"],
         }),
+
+        // --------------------------------------------------------------------
+
+        getPDFGeneratedAt: builder.query<number, number>({
+            query: (propertyId) => `/${propertyId}/pdfGeneratedAt`,
+            providesTags: ["PDF"],
+        }),
+
+        getPDF: builder.query<IPropertyFile, number>({
+            query: (propertyId) => `/${propertyId}/export`,
+            providesTags: ["PDF"],
+        }),
+
+        generatePDF: builder.mutation<void, IGeneratePDFReq>({
+            query: ({ propertyId, qrPath }) => ({
+                url: `/${propertyId}/generate-export`,
+                method: "POST",
+                params: {
+                    qrPath,
+                },
+            }),
+            invalidatesTags: ["PDF"],
+        }),
     }),
 });
 
@@ -425,6 +456,11 @@ export const {
     useDeletePermanentPropertyMutation,
     useBulkDeletePropertiesMutation,
     useBulkDeletePermanentPropertiesMutation,
+
+    // ...
+    useGetPDFQuery,
+    useGetPDFGeneratedAtQuery,
+    useGeneratePDFMutation,
 } = properties;
 
 const useSearchPropertyQuery = la(properties.useSearchPropertyQuery);

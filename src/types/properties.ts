@@ -454,6 +454,8 @@ export interface IProperties {
     bathrooms: number;
 
     googleEarth: IPropertyFile;
+
+    pdfGeneratedAt: string | null;
 }
 
 export interface IPropertyMarker {

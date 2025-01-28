@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Last generated:": "Last generated:",
+
             GOOGLE_EARTH_INSTALLED:
                 "Make sure you have Google Earth Pro installed to view this file on your computer",
 
@@ -1188,6 +1190,8 @@ const resources = {
     },
     el: {
         translation: {
+            "Last generated:": "Τελευταία παραγωγή:",
+
             GOOGLE_EARTH_INSTALLED:
                 "Βεβαιωθείτε ότι έχετε εγκαταστήσει το Google Earth Pro για να δείτε το αρχείο αυτό στον υπολογιστή σας",
 

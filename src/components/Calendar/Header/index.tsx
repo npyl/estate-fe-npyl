@@ -7,7 +7,7 @@ import { renderValue } from "./util";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import Divider from "@mui/material/Divider";
 import HighlightTypography from "../HighlightTypography";
-import useCalendarLocale from "../useCalendarLocale";
+import useCalendarLocale from "../../../hooks/useDateLocale";
 const TodayButton = dynamic(() => import("./TodayButton"));
 
 const CalendarHeader: FC<BaseCalendarHeaderProps> = ({

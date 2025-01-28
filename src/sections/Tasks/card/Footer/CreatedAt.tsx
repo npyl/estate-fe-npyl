@@ -1,5 +1,5 @@
 import { TODAY } from "@/components/BaseCalendar/constants";
-import useCalendarLocale from "@/components/Calendar/useCalendarLocale";
+import useCalendarLocale from "@/hooks/useDateLocale";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";

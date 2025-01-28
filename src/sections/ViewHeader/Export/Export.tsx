@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { IconButton, Tooltip } from "@mui/material";
-const Popover = dynamic(() => import("./popover"));
+const Popover = dynamic(() => import("./ppvr"));
 import ExportImage from "./ExportImage";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";

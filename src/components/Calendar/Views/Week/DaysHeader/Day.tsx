@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Stack, Typography } from "@mui/material";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import HighlightTypography from "@/components/Calendar/HighlightTypography";
-import useCalendarLocale from "@/components/Calendar/useCalendarLocale";
+import useCalendarLocale from "@/hooks/useDateLocale";
 
 interface DayTypographyProps {
     date: Date;

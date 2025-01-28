@@ -8,7 +8,7 @@ import {
 import CompactCalendarEvent from "../../Event/Compact";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import HighlightTypography from "../../HighlightTypography";
-import useCalendarLocale from "../../useCalendarLocale";
+import useCalendarLocale from "../../../../hooks/useDateLocale";
 
 const CellSx: SxProps<Theme> = {
     position: "relative",

@@ -6,7 +6,7 @@ import { SxProps, Theme, Typography } from "@mui/material";
 import { CalendarMonthViewProps } from "../../types";
 import { _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
-import useCalendarLocale from "../../useCalendarLocale";
+import useCalendarLocale from "../../../../hooks/useDateLocale";
 const CalendarMonthViewCell = dynamic(() => import("./Cell"));
 
 // --------------------------------------------------------------------------
