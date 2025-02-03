@@ -2,7 +2,6 @@ import { FC } from "react";
 import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
-import dynamic from "next/dynamic";
 
 interface AgreementTitleProps {
     agreementVariant?: string;

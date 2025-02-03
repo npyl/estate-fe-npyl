@@ -131,6 +131,7 @@ const BasicRow = ({
                 href={`/notification/row/${row.id}`}
                 onClick={handleRowClick}
                 display="flex"
+                justifyContent="space-between"
             >
                 <TableCell>
                     <Stack

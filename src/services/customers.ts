@@ -28,10 +28,18 @@ interface ICustomerFilterProps extends ICustomerParams {
     filter: ICustomerFilter;
 }
 
+interface ICustomerFromStayUpdatedReq {
+    notificationId: number;
+    body: ICustomerPOST;
+}
+
+const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
+const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
+
 export const customers = apiWithTranslation({
     reducerPath: "customers",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/customers`,
+        baseUrl,
     }),
     tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels", "Tasks"],
 
@@ -140,6 +148,20 @@ export const customers = apiWithTranslation({
             }),
             providesTags: ["Tasks"],
         }),
+
+        // ---------------------------------------------------
+
+        createOrUpdateCustomerFromStayUpdated: builder.mutation<
+            void,
+            ICustomerFromStayUpdatedReq
+        >({
+            query: ({ notificationId, body }) => ({
+                url: `${notificationBaseUrl}/${notificationId}/register-customer`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Customers", "CustomerById"],
+        }),
     }),
 });
 
@@ -158,8 +180,10 @@ export const {
     useLazyGetCustomerByIdQuery,
 
     // ...
-
     useGetTasksQuery,
+    // ...
+
+    useCreateOrUpdateCustomerFromStayUpdatedMutation,
 } = customers;
 
 const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);
