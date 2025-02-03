@@ -16,12 +16,6 @@ const MENU_ITEMS = [
         icon: <UsersIcon />,
     },
     {
-        label: "Label",
-        path: "/label",
-        icon: <LabelImportantIcon />,
-    },
-
-    {
         label: "Task",
         path: "/tasks/create",
         icon: <TasksIcon />,
@@ -30,6 +24,11 @@ const MENU_ITEMS = [
         label: "Agreement",
         path: "/agreements/create",
         icon: <HandshakeIcon />,
+    },
+    {
+        label: "Label",
+        path: "/label",
+        icon: <LabelImportantIcon />,
     },
 ];
 
