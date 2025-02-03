@@ -12,12 +12,12 @@ import {
 } from "src/services/location";
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
-import useGetCustomer from "@/hooks/customer";
 import { IGeoLocation } from "@/types/geolocation";
 import { useHumanReadableCallback } from "@/components/Location/hook";
+import { IDemand } from "@/types/demand";
 
 interface AreaOfPreferenceProps {
-    index: number; // index of demand
+    demand?: IDemand;
 }
 
 interface ViewLocationMiniProps {
@@ -113,16 +113,10 @@ export const ViewLocationMini = ({
 };
 
 const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
-    index,
+    demand,
 }) => {
     const { t } = useTranslation();
 
-    const { customer: data } = useGetCustomer();
-
-    const demand = useMemo(
-        () => data?.demands[index] || null,
-        [data?.demands[index]]
-    );
     const demandFilters = useMemo(
         () => demand?.filters || null,
         [demand?.filters]
@@ -191,7 +185,7 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
 
             map.setZoom(12);
         }
-    }, [shapeData0, index, map]);
+    }, [shapeData0, map]);
 
     return (
         <>
@@ -212,7 +206,7 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
             />
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
-                    key={index}
+                    // key={demand.id}
                     zoom={12}
                     multipleShapes
                     drawing={false}

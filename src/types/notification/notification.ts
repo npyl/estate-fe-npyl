@@ -1,6 +1,7 @@
 import { IPropertyImage } from "../file";
 import { KeyValue } from "../KeyValue";
 import { ListingNotification } from "./listing";
+import { IStayUpdatedDetails } from "./stayUpdated";
 import IWorkForUs from "./workForUs";
 
 // TODO: "CONTACT" is removed ?
@@ -139,14 +140,12 @@ export interface AgreementDetails {
 
 // -----------------------------------------------------------------------------------
 
-interface IStayUpdatedDetails {}
-
-// -----------------------------------------------------------------------------------
-
-export interface ContactNotificationExtended extends ContactNotification {
+interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
     workForUsDetails: IWorkForUs;
     reviewDetails: ReviewDetails;
     agreementDetails: AgreementDetails;
     stayUpdatedDetails: IStayUpdatedDetails;
 }
+
+export type { ContactNotificationExtended };

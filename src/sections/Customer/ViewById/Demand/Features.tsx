@@ -1,13 +1,15 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { List, ListBooleanItem } from "src/components/List";
-import useGetCustomer from "@/hooks/customer";
-import { ParentCategory } from "src/types/demand";
+import { List, ListBooleanItem } from "@/components/List";
+import { IPriorityFeatures, ParentCategory } from "@/types/demand";
+import { KeyValue } from "@/types/KeyValue";
 
 interface FeaturesProps {
-    index: number;
+    features?: IPriorityFeatures;
+    parentCategories?: KeyValue<string>[];
 }
+
 interface PropertyFeaturesItemProps {
     field: string;
 }
@@ -80,13 +82,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     OTHER: ["Panoramic View", "Facade", "Loading Dock", "Veranda", "View"],
 };
 
-const Features: React.FC<FeaturesProps> = ({ index }) => {
+const Features: React.FC<FeaturesProps> = ({ features, parentCategories }) => {
     const { t } = useTranslation();
-
-    const { customer: data } = useGetCustomer();
-
-    const demands = data?.demands[index];
-    const features = demands?.priorityFeatures;
 
     const renderThirdOfFields = (
         fields: string[],
@@ -423,18 +420,16 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     >
                         <Typography variant="h6">{t("Features")}</Typography>
                     </Box>
-                    <Divider></Divider>
+                    <Divider />
                     <Grid container>
-                        {Array.isArray(demands?.filters?.parentCategories) &&
-                            demands?.filters.parentCategories.map(
-                                (categoryObj, index) => (
-                                    <React.Fragment key={index}>
-                                        {propertyFeatures(
-                                            categoryObj.key as ParentCategory
-                                        )}
-                                    </React.Fragment>
-                                )
-                            )}
+                        {Array.isArray(parentCategories) &&
+                            parentCategories.map((categoryObj, index) => (
+                                <React.Fragment key={index}>
+                                    {propertyFeatures(
+                                        categoryObj.key as ParentCategory
+                                    )}
+                                </React.Fragment>
+                            ))}
                     </Grid>
                 </Paper>
             </Grid>

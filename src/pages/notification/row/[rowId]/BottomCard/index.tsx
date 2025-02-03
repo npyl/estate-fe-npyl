@@ -19,9 +19,8 @@ const TourPropertyDetails = dynamic(() => import("./TourPropertyDetails"));
 const ListingPropertyDetails = dynamic(
     () => import("./ListingPropertyDetails")
 );
+const StayUpdated = dynamic(() => import("./StayUpdated"));
 import dynamic from "next/dynamic";
-
-const StayUpdated = () => null;
 
 type Positions = {
     advisor: boolean;
@@ -43,17 +42,17 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
     const router = useRouter();
     const { rowId } = router.query;
 
-    const { data: workForUs } = useGetNotificationByIdQuery(+rowId!, {
-        skip: !rowId && !open,
+    const { workForUs } = useGetNotificationByIdQuery(+rowId!, {
+        skip: !rowId,
         selectFromResult: ({ data }) => ({
-            data: data?.workForUsDetails,
+            workForUs: data?.workForUsDetails,
         }),
     });
 
-    const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
-        skip: !rowId && !open,
+    const { listing } = useGetNotificationByIdQuery(+rowId!, {
+        skip: !rowId,
         selectFromResult: ({ data }) => ({
-            data: data?.listingDetails,
+            listing: data?.listingDetails,
         }),
     });
 
@@ -79,15 +78,18 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
                 onClick={handlePropertyCodeClick}
                 sx={{
                     boxShadow: 1,
-                    "&:hover": {
-                        boxShadow: 18,
-                        cursor: type === "LISTING" ? null : "pointer",
-                    },
+                    "&:hover": property
+                        ? {
+                              boxShadow: 18,
+                              cursor: "pointer",
+                          }
+                        : {},
                 }}
             >
                 <Stack direction="row">
-                    {/* If it is work application it does not have an image */}
-                    {workForUs ? null : (
+                    {/* IMAGE */}
+                    {type === "WORK_FOR_US" ||
+                    type === "STAY_UPDATED" ? null : (
                         <CardMedia
                             component="img"
                             image={property?.thumbnail || listing?.photo || ""}
@@ -99,6 +101,7 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
                             }}
                         />
                     )}
+
                     {workForUs ? (
                         <Box p={1}>
                             <WorkDetails
@@ -107,6 +110,7 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
                             />
                         </Box>
                     ) : null}
+
                     <CardContent sx={{ ml: 5 }}>
                         <Stack
                             direction="row"
@@ -149,11 +153,13 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
                                     </Stack>
                                 </Stack>
                             )}
-
-                            {type === "STAY_UPDATED" ? <StayUpdated /> : null}
                         </Stack>
                     </CardContent>
                 </Stack>
+
+                {type === "STAY_UPDATED" ? (
+                    <StayUpdated rowId={+rowId!} />
+                ) : null}
             </Card>
         </>
     );

@@ -24,7 +24,7 @@ const NotificationDetailPage: NextPage = () => {
     const { data, error } = useGetNotificationByIdQuery(+rowId!);
 
     const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
-        skip: !rowId && !open,
+        skip: !rowId,
         selectFromResult: ({ data }) => ({
             data: data?.listingDetails,
         }),

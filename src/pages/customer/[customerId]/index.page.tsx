@@ -11,7 +11,6 @@ import {
 
 import {
     Address,
-    Demand,
     Information,
     MatchingProperties,
     Notes,
@@ -28,6 +27,7 @@ const Tasks = dynamic(() => import("./sections/Tasks"));
 const CustomerPusher = dynamic(
     () => import("@/sections/Customer/ViewById/CustomerPusher")
 );
+const DemandSection = dynamic(() => import("./sections/Demand"));
 
 type TabConfig = {
     label: string;
@@ -49,8 +49,7 @@ const CustomerView: NextPage = () => {
     const isBuyerOrLeaser = data?.buyer || data?.leaser;
     const demands = data?.demands;
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) =>
-        setValue(newValue);
+    const handleChange = (_: any, v: number) => setValue(v);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = () =>
         deleteCustomer(+customerId!).then(() => {
@@ -90,7 +89,7 @@ const CustomerView: NextPage = () => {
             content: (
                 <Stack spacing={1}>
                     {demands?.map((d, i) => (
-                        <Demand key={i} index={i} />
+                        <DemandSection key={i} demand={d} index={i} />
                     ))}
                 </Stack>
             ),
