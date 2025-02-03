@@ -15,13 +15,14 @@ export interface ContactNotificationPOST {
     tourType?: string;
 }
 
+// INFO: "CONTACT" is removed ?
 export type NotificationType =
     | "LISTING"
-    // | "CONTACT"
     | "TOUR"
     | "WORK_FOR_US"
     | "REVIEW"
-    | "AGREEMENT";
+    | "AGREEMENT"
+    | "STAY_UPDATED";
 
 interface IPropertyLocation {
     street: string;

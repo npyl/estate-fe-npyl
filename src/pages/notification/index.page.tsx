@@ -1,58 +1,35 @@
-import {
-    Box,
-    Stack,
-    Tab,
-    Tabs,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-} from "@mui/material";
+import { Box, Stack, Tabs, InputLabel, MenuItem, Select } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import TabPanel from "src/components/Tabs";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { Listings, Tours, WorkApplications, Reviews } from "./tabs";
-import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
-import UnReadBadge from "./components/UnReadBadge";
-import { styled } from "@mui/material";
-import Agreements from "./tabs/agreements";
 import NotificationsGuard from "@/components/authentication/notification-guard";
+const Listings = dynamic(() => import("./tabs/listings"));
+const Tours = dynamic(() => import("./tabs/tours"));
+const WorkApplications = dynamic(() => import("./tabs/work"));
+const Reviews = dynamic(() => import("./tabs/reviews"));
+const Agreements = dynamic(() => import("./tabs/agreements"));
+const StayUpdated = dynamic(() => import("./tabs/StayUpdated"));
+import dynamic from "next/dynamic";
+import { INotificationTab, TViewFilter } from "./types";
+import getTabOption from "./getTabOption";
+import { FilterFormControl } from "./styled";
 
-const FilterFormControl = styled(FormControl)(({ theme }) => ({
-    minWidth: 120,
-    marginLeft: theme.spacing(2),
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-
-    "& .MuiInputLabel-root": {
-        color: theme.palette.text.primary,
-        fontSize: "medium",
-    },
-    "& .MuiSelect-select": {
-        padding: theme.spacing(1),
-    },
-    "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-            borderColor: theme.palette.divider,
-        },
-        "&:hover fieldset": {
-            borderColor: theme.palette.text.primary,
-        },
-    },
-}));
+const TABS: INotificationTab[] = [
+    { label: "Tours", type: "TOUR" },
+    { label: "Listings", type: "LISTING" },
+    { label: "Work Applications", type: "WORK_FOR_US" },
+    { label: "Reviews", type: "REVIEW" },
+    { label: "Agreements", type: "AGREEMENT" },
+    { label: "Stay Updated", type: "STAY_UPDATED" },
+];
 
 const NotificationPage: NextPage = () => {
     const { t } = useTranslation();
-    const { data: nonViewedNotificationsCount } =
-        useGetNonViewedNotificationsCountQuery();
-    const [tab, setTab] = useState(0);
-    const [filter, setFilter] = useState("all");
 
-    const getUnreadCount = (type: string) => {
-        return nonViewedNotificationsCount?.types[type] || 0;
-    };
+    const [tab, setTab] = useState(0);
+    const [filter, setFilter] = useState<TViewFilter>("all");
 
     const handleFilterChange = (event: any) => {
         setFilter(event.target.value);
@@ -68,91 +45,7 @@ const NotificationPage: NextPage = () => {
                     spacing={2}
                 >
                     <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                        <Tab
-                            label={
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    position="relative"
-                                    gap={1}
-                                    pr={1}
-                                >
-                                    {t("Tours")}
-                                    <UnReadBadge
-                                        count={getUnreadCount("TOUR")}
-                                    />
-                                </Box>
-                            }
-                            value={0}
-                        />
-                        <Tab
-                            label={
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    position="relative"
-                                    gap={1}
-                                    pr={0.5}
-                                >
-                                    {t("Listings")}
-                                    <UnReadBadge
-                                        count={getUnreadCount("LISTING")}
-                                    />
-                                </Box>
-                            }
-                            value={1}
-                        />
-                        <Tab
-                            label={
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    position="relative"
-                                    gap={1}
-                                    pr={0.5}
-                                >
-                                    {t("Work Applications")}
-                                    <UnReadBadge
-                                        count={getUnreadCount("WORK_FOR_US")}
-                                    />
-                                </Box>
-                            }
-                            value={2}
-                        />
-                        <Tab
-                            label={
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    position="relative"
-                                    gap={1}
-                                    pr={0.5}
-                                >
-                                    {t("Reviews")}
-                                    <UnReadBadge
-                                        count={getUnreadCount("REVIEW")}
-                                    />
-                                </Box>
-                            }
-                            value={3}
-                        />
-                        <Tab
-                            label={
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    position="relative"
-                                    gap={1}
-                                    pr={0.5}
-                                >
-                                    {t("Agreements")}
-                                    <UnReadBadge
-                                        count={getUnreadCount("AGREEMENT")}
-                                    />
-                                </Box>
-                            }
-                            value={4}
-                        />
+                        {TABS.map(getTabOption)}
                     </Tabs>
                     <FilterFormControl
                         sx={{ minWidth: 120, borderColor: "1px solid red" }}
@@ -181,6 +74,7 @@ const NotificationPage: NextPage = () => {
                     </FilterFormControl>
                 </Stack>
             </Box>
+            {/* ------------------------------------------------ */}
             <TabPanel value={tab} index={0}>
                 <Tours filter={filter} />
             </TabPanel>
@@ -195,6 +89,9 @@ const NotificationPage: NextPage = () => {
             </TabPanel>
             <TabPanel value={tab} index={4}>
                 <Agreements filter={filter} />
+            </TabPanel>
+            <TabPanel value={tab} index={5}>
+                <StayUpdated filter={filter} />
             </TabPanel>
         </>
     );

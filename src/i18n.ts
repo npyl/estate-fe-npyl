@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Stay Updated": "Stay Updated",
+
             "Last generated:": "Last generated:",
 
             GOOGLE_EARTH_INSTALLED:
@@ -1190,6 +1192,8 @@ const resources = {
     },
     el: {
         translation: {
+            "Stay Updated": "Μείνετε Ενημερωμένοι",
+
             "Last generated:": "Τελευταία παραγωγή:",
 
             GOOGLE_EARTH_INSTALLED:

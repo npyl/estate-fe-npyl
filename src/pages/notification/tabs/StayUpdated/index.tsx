@@ -1,0 +1,63 @@
+import {
+    useDeleteNotificationMutation,
+    useFilterNotificationsQuery,
+} from "src/services/notification";
+import Table from "../../table";
+import { Box } from "@mui/material";
+import { FC, useState } from "react";
+import { TViewFilter } from "../../types";
+
+interface StayUpdatedProps {
+    filter: TViewFilter;
+}
+
+const StayUpdated: FC<StayUpdatedProps> = ({ filter }) => {
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sortBy, setSortBy] = useState("createdAt");
+    const [direction, setDirection] = useState("DESC");
+    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
+
+    const { data } = useFilterNotificationsQuery({
+        filter: { types: ["STAY_UPDATED"] },
+        page,
+        pageSize,
+        sortBy,
+        direction,
+    });
+
+    const handlePageChange = (_: any, newPage: any) => setPage(newPage);
+
+    const handleRowsPerPageChange = (event: any) => {
+        setPageSize(parseInt(event.target.value, 10));
+        setPage(0); // reset to the first page
+    };
+
+    const filtered =
+        data?.content?.filter((agreement) => {
+            if (filter === "viewed") return agreement.viewed === true;
+            if (filter === "notViewed") return agreement.viewed === false;
+            return true; //ALL
+        }) || [];
+
+    return (
+        <Box sx={{ width: "100%", overflowX: "auto" }}>
+            <Table
+                variant="STAY_UPDATED"
+                rows={filtered}
+                onRemove={deleteNotification}
+                loading={isLoading}
+                sortBy={sortBy}
+                direction={direction}
+                page={page}
+                filter={filter}
+                pageSize={pageSize}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                totalRows={data?.totalElements || 0}
+            />
+        </Box>
+    );
+};
+
+export default StayUpdated;
