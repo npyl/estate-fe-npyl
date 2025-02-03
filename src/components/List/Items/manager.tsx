@@ -1,12 +1,12 @@
 import { Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { IUser } from "src/types/user";
 import ListItem from "../item";
 import { useTranslation } from "react-i18next";
 import ListItemProps from "../types";
 import { CustomAvatar, CustomButton } from "./styled";
 import { useGetProfileQuery } from "@/services/user";
+import Link from "@/components/Link";
 
 // -----------------------------------------------------------
 
@@ -21,35 +21,30 @@ const ListManagerItem: FC<ListManagerItemProps> = ({
     ...props
 }) => {
     const { t } = useTranslation();
-    const router = useRouter();
 
     const { data } = useGetProfileQuery();
-
-    const handleClick = useCallback(
-        () => manager?.id && router.push(`/user/${manager?.id}`),
-        []
-    );
-
-    if (!data) return null;
+    const { firstName, lastName } = data || {};
+    const fullname =
+        firstName || lastName ? `${firstName || ""} ${lastName || ""}` : "-";
 
     return (
         <ListItem label={label || t("Manager")} {...props}>
-            <CustomButton variant="outlined" onClick={handleClick}>
-                <CustomAvatar />
-
-                <Typography
-                    noWrap
-                    variant="subtitle2"
-                    component="div"
-                    sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                    }}
-                >
-                    {manager?.lastName || "-"}
-                </Typography>
-            </CustomButton>
+            <Link href={`/user/${manager?.id}`}>
+                <CustomButton variant="outlined">
+                    <CustomAvatar />
+                    <Typography
+                        noWrap
+                        variant="subtitle2"
+                        sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        {fullname}
+                    </Typography>
+                </CustomButton>
+            </Link>
         </ListItem>
     );
 };

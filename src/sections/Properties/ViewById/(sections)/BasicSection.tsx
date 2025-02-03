@@ -126,10 +126,6 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     ],
 };
 
-const formatNumberWithDots = (number: number) => {
-    return new Intl.NumberFormat("de-DE").format(number);
-};
-
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
@@ -275,11 +271,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
             case "ROI":
                 return (
                     <ListItem label={"ROI"} sx={{ minHeight: "60px" }}>
-                        <Button
-                            sx={{ height: "23px" }}
-                            variant="outlined"
-                            // onClick={handleOpenPopup}
-                        >
+                        <Button sx={{ height: "23px" }} variant="outlined">
                             ROI
                         </Button>
                     </ListItem>

@@ -1,5 +1,4 @@
 import { Typography, Fade } from "@mui/material";
-import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import { ICustomer } from "src/types/customer";
 import ListItemProps from "../types";
 import { CustomAvatar, CustomButton } from "./styled";
 import Iconify from "@/components/iconify";
+import Link from "@/components/Link";
 
 interface ListOwnerItemProps extends Omit<ListItemProps, "value" | "label"> {
     owner?: ICustomer;
@@ -18,14 +18,8 @@ interface ListOwnerItemProps extends Omit<ListItemProps, "value" | "label"> {
 const ListOwnerItem: FC<ListOwnerItemProps> = ({ owner, label, ...other }) => {
     const { t } = useTranslation();
 
-    const router = useRouter();
     const { data } = useGetProfileQuery();
     const [showOwner, setShowOwner] = useState(false);
-
-    const handleClick = useCallback(
-        () => owner?.id && router.push(`/customer/${owner?.id}`),
-        []
-    );
 
     const handleTouchStart = useCallback(() => setShowOwner(true), []);
     const handleTouchEnd = useCallback(() => setShowOwner(false), []);
@@ -34,33 +28,34 @@ const ListOwnerItem: FC<ListOwnerItemProps> = ({ owner, label, ...other }) => {
 
     return (
         <ListItem label={label || t("Owner")} {...other}>
-            <CustomButton
-                variant="outlined"
-                onClick={handleClick}
-                onMouseOver={handleTouchStart}
-                onMouseLeave={handleTouchEnd}
-            >
-                <CustomAvatar />
+            <Link href={`/customer/${owner?.id}`}>
+                <CustomButton
+                    variant="outlined"
+                    onMouseOver={handleTouchStart}
+                    onMouseLeave={handleTouchEnd}
+                >
+                    <CustomAvatar />
 
-                {showOwner ? (
-                    <Fade in={showOwner}>
-                        <Typography
-                            noWrap
-                            variant="subtitle2"
-                            component="div"
-                            sx={{
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-                            {owner?.lastName || "-"}
-                        </Typography>
-                    </Fade>
-                ) : (
-                    <Iconify icon="eva:eye-off-fill" />
-                )}
-            </CustomButton>
+                    {showOwner ? (
+                        <Fade in={showOwner}>
+                            <Typography
+                                noWrap
+                                variant="subtitle2"
+                                component="div"
+                                sx={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                {owner?.lastName || "-"}
+                            </Typography>
+                        </Fade>
+                    ) : (
+                        <Iconify icon="eva:eye-off-fill" />
+                    )}
+                </CustomButton>
+            </Link>
         </ListItem>
     );
 };

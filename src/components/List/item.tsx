@@ -38,7 +38,7 @@ const ListItem: FC<ListItemProps & { hidePrice?: boolean }> = (props) => {
         hidePrice,
         ...other
     } = props;
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <StyledListItem
