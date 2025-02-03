@@ -5,7 +5,7 @@ import {
     IDemandPOST,
 } from "src/types/demand";
 
-export const demandFiltersMapper = (
+const demandFiltersMapper = (
     demandFilters: IDemandFilters
 ): IDemandFiltersPOST => ({
     minBedrooms: demandFilters.minBedrooms,
@@ -32,9 +32,11 @@ export const demandFiltersMapper = (
     parentCategories: demandFilters.parentCategories.map((i) => i.key) || [],
 });
 
-export const demandMapper = (demand: IDemand): IDemandPOST => ({
+const demandMapper = (demand: IDemand): IDemandPOST => ({
     filters: demandFiltersMapper(demand.filters),
     priorityFeatures: demand.priorityFeatures,
     timeframe: demand.timeframe.key,
     shapes: demand.shapes,
 });
+
+export { demandMapper, demandFiltersMapper };

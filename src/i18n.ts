@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Registered: "Registered",
+
             "Stay Updated": "Stay Updated",
 
             "Last generated:": "Last generated:",
@@ -1192,6 +1194,8 @@ const resources = {
     },
     el: {
         translation: {
+            Registered: "Εγγεγραμμένος",
+
             "Stay Updated": "Μείνετε Ενημερωμένοι",
 
             "Last generated:": "Τελευταία παραγωγή:",

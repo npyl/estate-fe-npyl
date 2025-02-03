@@ -7,6 +7,7 @@ import {
     ContactNotificationExtended,
     NotificationType,
 } from "@/types/notification";
+import RegisteredLabel from "./RegisteredLabel";
 const StayUpdatedButtons = dynamic(() => import("./StayUpdatedButtons"));
 const CreateCustomerButton = dynamic(() => import("./CreateCustomerButton"));
 const CreateTaskButton = dynamic(() => import("./CreateTaskButton"));
@@ -29,10 +30,16 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
                 return t("Listing details");
             case "WORK_FOR_US":
                 return t("Work application details");
+            case "STAY_UPDATED":
+                return t("Stay Updated");
             default:
                 return "";
         }
     };
+
+    // INFO: make sure we only show the Create User button from stay updated when the user is not already created!
+    const isRegistered = data?.stayUpdatedDetails?.clientRegistered;
+    const stayUpdatedButtons = type === "STAY_UPDATED" && !isRegistered;
 
     return (
         <SpaceBetween
@@ -46,7 +53,8 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center">
-                {type === "STAY_UPDATED" ? <StayUpdatedButtons /> : null}
+                {isRegistered ? <RegisteredLabel /> : null}
+                {stayUpdatedButtons ? <StayUpdatedButtons /> : null}
 
                 {type === "TOUR" ? <CreateCustomerButton data={data} /> : null}
 
