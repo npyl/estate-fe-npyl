@@ -66,7 +66,7 @@ const NotificationDetailPage: NextPage = () => {
         <Box>
             {/* FIRST CARD IN UI */}
 
-            <Card sx={{ marginBottom: 2, padding: 2 }}>
+            <Card sx={{ mb: 1 }}>
                 <CardContent>
                     <TitleSection
                         type={type}
