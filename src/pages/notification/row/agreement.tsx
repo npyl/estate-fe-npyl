@@ -26,7 +26,6 @@ function AgreementRow({
             <BasicRow
                 row={row}
                 open={open}
-                variant="showType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 filter={filter}

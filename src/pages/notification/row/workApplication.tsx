@@ -44,7 +44,6 @@ function WorkApplication({
             <BasicRow
                 row={row}
                 open={open}
-                variant="dontShowType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 filter={filter}

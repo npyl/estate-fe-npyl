@@ -3,7 +3,6 @@ import useToggle from "src/hooks/useToggle";
 import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
-import { Skeleton } from "@mui/material";
 
 interface ListingRowProps {
     row: ContactNotification;
@@ -34,7 +33,6 @@ function ListingRow({
             <BasicRow
                 row={row}
                 open={open}
-                variant="showType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
                 loading={loading}

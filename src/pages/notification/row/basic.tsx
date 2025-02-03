@@ -61,7 +61,6 @@ export const getDate = (s?: string, language?: string) => {
 interface BasicRowProps {
     row: ContactNotification;
     open: boolean;
-    variant?: "showType" | "dontShowType";
     onToggle: () => void;
     onRemove: () => void;
     onClick: () => void;
@@ -72,7 +71,6 @@ interface BasicRowProps {
 }
 
 const BasicRow = ({
-    variant = "dontShowType",
     row,
     filter,
     contactDetails,
