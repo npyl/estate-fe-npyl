@@ -1,7 +1,6 @@
 import {
     INotificationFilter,
     INotificationResponse,
-    NotViewedContactNotifications,
 } from "@/types/notification/notification";
 import IPage from "@/types/page";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -14,6 +13,13 @@ interface INotificationFilterParams {
     pageSize: number;
     sortBy: string;
     direction: string; // asc - desc
+}
+
+interface NotViewedContactNotifications {
+    total: number;
+    types: {
+        [key: string]: number;
+    };
 }
 
 export const notification = apiWithTranslation({

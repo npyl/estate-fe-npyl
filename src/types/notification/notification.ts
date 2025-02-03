@@ -3,19 +3,7 @@ import { KeyValue } from "../KeyValue";
 import { ListingNotification } from "./listing";
 import IWorkForUs from "./workForUs";
 
-export interface ContactNotificationPOST {
-    customerName?: string;
-    customerEmail?: string;
-    customerMobile?: string;
-    message?: string;
-
-    propertyCode?: string;
-    tourDate?: string;
-    tourTime?: string;
-    tourType?: string;
-}
-
-// INFO: "CONTACT" is removed ?
+// TODO: "CONTACT" is removed ?
 export type NotificationType =
     | "LISTING"
     | "TOUR"
@@ -106,10 +94,14 @@ export interface INotificationResponse {
     propertyId: number;
 }
 
+// -----------------------------------------------------------------------------------
+
 export interface INotificationFilter {
     types: NotificationType[];
     viewed?: boolean;
 }
+
+// -----------------------------------------------------------------------------------
 
 interface ReviewDetails {
     comment?: string;
@@ -120,6 +112,8 @@ interface ReviewDetails {
     propertyRating?: number;
     source?: string;
 }
+
+// -----------------------------------------------------------------------------------
 
 interface OwnerAgreement {
     id: number;
@@ -143,15 +137,16 @@ export interface AgreementDetails {
     variant: KeyValue;
 }
 
-export interface NotViewedContactNotifications {
-    total: number;
-    types: {
-        [key: string]: number;
-    };
-}
+// -----------------------------------------------------------------------------------
+
+interface IStayUpdatedDetails {}
+
+// -----------------------------------------------------------------------------------
+
 export interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
     workForUsDetails: IWorkForUs;
     reviewDetails: ReviewDetails;
     agreementDetails: AgreementDetails;
+    stayUpdatedDetails: IStayUpdatedDetails;
 }

@@ -1,7 +1,6 @@
 export type {
     ContactNotification,
     ContactNotificationExtended,
-    ContactNotificationPOST,
     NotificationType,
 } from "./notification";
 

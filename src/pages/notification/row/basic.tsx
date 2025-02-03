@@ -32,8 +32,6 @@ import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriat
 import ExpiredIcon from "@mui/icons-material/Error";
 import { el, enUS } from "date-fns/locale";
 
-type TourType = "inPerson" | "askQuestion";
-
 export const getDate = (s?: string, language?: string) => {
     if (!s) return "";
     const date = new Date(s);

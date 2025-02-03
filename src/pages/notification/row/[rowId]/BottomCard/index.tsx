@@ -6,17 +6,22 @@ import {
     CardContent,
     CardMedia,
 } from "@mui/material";
-import WorkDetails from "./components/WorkDetails";
-import TourPropertyBadges from "./components/TourPropertyBadges";
-import ListingStateBadge from "./components/ListingStateBadge";
-import TourPropertyDetails from "./components/TourPropertyDetails";
-import ListingPropertyDetails from "./components/ListingPropertyDetails";
 import { useGetNotificationByIdQuery } from "@/services/notification";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { NotificationType } from "@/types/notification";
 import { useTranslation } from "react-i18next";
 import { IPropertyForNotification } from "@/types/notification/notification";
+const WorkDetails = dynamic(() => import("./WorkDetails"));
+const TourPropertyBadges = dynamic(() => import("./TourPropertyBadges"));
+const ListingStateBadge = dynamic(() => import("./ListingStateBadge"));
+const TourPropertyDetails = dynamic(() => import("./TourPropertyDetails"));
+const ListingPropertyDetails = dynamic(
+    () => import("./ListingPropertyDetails")
+);
+import dynamic from "next/dynamic";
+
+const StayUpdated = () => null;
 
 type Positions = {
     advisor: boolean;
@@ -144,6 +149,8 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
                                     </Stack>
                                 </Stack>
                             )}
+
+                            {type === "STAY_UPDATED" ? <StayUpdated /> : null}
                         </Stack>
                     </CardContent>
                 </Stack>

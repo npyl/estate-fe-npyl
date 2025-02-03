@@ -1,5 +1,5 @@
 import { TCalendarView } from "@/components/BaseCalendar/types";
-import { TCalendarLocale } from "../types";
+import { TDateLocale } from "@/hooks/useDateLocale";
 
 interface RenderValue {
     main: string;
@@ -9,7 +9,7 @@ interface RenderValue {
 const renderValue = (
     view: TCalendarView,
     date: Date,
-    loc: TCalendarLocale
+    loc: TDateLocale
 ): RenderValue => {
     switch (view) {
         case "day":
