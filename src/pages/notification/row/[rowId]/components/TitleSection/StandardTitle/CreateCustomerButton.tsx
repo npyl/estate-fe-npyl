@@ -1,7 +1,5 @@
-import Link from "@/components/Link";
-import { useFindByEmailQuery } from "@/services/customers";
-import { ICustomer, ICustomerMini } from "@/types/customer";
-import { Button, Skeleton, SxProps, Theme } from "@mui/material";
+import { ICustomer } from "@/types/customer";
+import { Button, Skeleton } from "@mui/material";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import PersonIcon from "@mui/icons-material/Person";
@@ -9,6 +7,8 @@ import { HideText } from "@/components/styled";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { ContactNotificationExtended } from "@/types/notification";
+import CustomerLink from "./CustomerLink";
+import useCustomerExists from "./useCustomerExists";
 const CustomerModal = dynamic(() => import("@/sections/Customer/Modal"));
 
 // -------------------------------------------------------------------------
@@ -54,50 +54,6 @@ const CreateButton: FC<CreateButtonProps> = ({ data }) => {
 };
 
 // -------------------------------------------------------------------------
-
-const CustomerLinkSx: SxProps<Theme> = {
-    textWrap: "nowrap",
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
-    gap: 1,
-    "&:hover": {
-        cursor: "pointer",
-        textDecoration: "underline",
-    },
-};
-
-interface CustomerLinkProps {
-    c?: ICustomerMini;
-}
-
-const CustomerLink: FC<CustomerLinkProps> = ({ c }) => {
-    const fullname = `${c?.firstName || ""} ${c?.lastName || ""}`;
-
-    return (
-        <Button
-            variant="outlined"
-            sx={CustomerLinkSx}
-            // ...
-            LinkComponent={Link}
-            href={`/customer/${c?.id}`}
-            startIcon={<PersonIcon />}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            {fullname}
-        </Button>
-    );
-};
-
-// -------------------------------------------------------------------------
-
-const useCustomerExists = (email: string) => {
-    const { data: customer, isLoading } = useFindByEmailQuery(email, {
-        skip: !email,
-    });
-    return { customer, didFound: Boolean(customer), isLoading };
-};
 
 interface Props {
     data: ContactNotificationExtended;
