@@ -36,22 +36,6 @@ const NotificationDetailPage: NextPage = () => {
     const type = data?.type?.key as NotificationType;
     const reviewDetails = data?.reviewDetails;
 
-    const handlePropertyCodeClick = () => {
-        if (property) {
-            router.push(`/property/${property?.id}`);
-        } else {
-            return;
-        }
-    };
-
-    const handleCustomerNameClick = () => {
-        if (property) {
-            router.push(`/custromer/${data?.agreement?.owner?.id}`);
-        } else {
-            return;
-        }
-    };
-
     const {
         customerName,
         customerEmail,
@@ -138,11 +122,7 @@ const NotificationDetailPage: NextPage = () => {
                     ) : null}
 
                     {type === "AGREEMENT" ? (
-                        <AgreementDetails
-                            data={data}
-                            handleCustomerNameClick={handleCustomerNameClick}
-                            handlePropertyCodeClick={handlePropertyCodeClick}
-                        />
+                        <AgreementDetails data={data} />
                     ) : null}
                 </CardContent>
             </Card>

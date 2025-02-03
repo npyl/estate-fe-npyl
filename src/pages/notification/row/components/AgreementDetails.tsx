@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Link from "next/link";
+import Link from "@/components/Link";
 import Tooltip from "@mui/material/Tooltip";
 import ExpireIcon from "@mui/icons-material/WarningAmber"; // Use appropriate icon
 import ExpiredIcon from "@mui/icons-material/Cancel"; // Use appropriate icon
@@ -43,16 +43,9 @@ interface AgreementDetailsProps {
         message: string;
     };
     t: (key: string) => string;
-    handlePropertyCodeClick: (event: React.MouseEvent) => void;
-    handleCustomerNameClick: (event: React.MouseEvent) => void;
 }
 
-const AgreementDetails: React.FC<AgreementDetailsProps> = ({
-    row,
-    t,
-    handlePropertyCodeClick,
-    handleCustomerNameClick,
-}) => (
+const AgreementDetails: React.FC<AgreementDetailsProps> = ({ row, t }) => (
     <Box>
         <Typography fontWeight="bold">{row?.agreement?.title}</Typography>
         <Box>
@@ -79,7 +72,6 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({
                                 backgroundColor: "#e6b800",
                             },
                         }}
-                        onClick={handlePropertyCodeClick}
                     />
                 </Link>
             </Stack>
@@ -88,11 +80,7 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({
                 passHref
                 style={{ textDecoration: "none" }}
             >
-                <Typography
-                    variant="body2"
-                    onClick={handleCustomerNameClick}
-                    mt={0.5}
-                >
+                <Typography variant="body2" mt={0.5}>
                     Owner: {row?.agreement?.owner?.name}
                 </Typography>
             </Link>

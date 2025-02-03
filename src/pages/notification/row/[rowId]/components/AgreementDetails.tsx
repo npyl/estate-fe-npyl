@@ -5,26 +5,24 @@ import { useTranslation } from "react-i18next";
 import ExpireIcon from "@mui/icons-material/AccessTime";
 import ExpiredIcon from "@mui/icons-material/Error";
 // Adjust the path as necessary
-import Link from "next/link";
+import Link from "@/components/Link";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { ContactNotificationExtended } from "@/types/notification";
 
 interface AgreementDetailsProps {
     data: ContactNotificationExtended;
-    handlePropertyCodeClick: () => void;
-    handleCustomerNameClick: () => void;
 }
 
-const AgreementDetails: React.FC<AgreementDetailsProps> = ({
-    data,
-    handlePropertyCodeClick,
-    handleCustomerNameClick,
-}) => {
+const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
     const { t } = useTranslation();
 
     const expirationDate = data?.agreement?.expirationDate
         ? format(new Date(data?.agreement?.expirationDate), "dd MMMM yyyy")
         : "";
+
+    const propertyHref = `/property/${data?.agreement?.property?.id}`;
+    const customerHref = `/customer/${data?.agreement?.owner?.id}`;
+
     return (
         <>
             <Stack
@@ -60,8 +58,9 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({
                         <Typography variant="body2" color="text.secondary">
                             Property with
                         </Typography>
+
                         <Link
-                            href={`/property/${data?.agreement?.property?.id}`}
+                            href={propertyHref}
                             passHref
                             style={{ textDecoration: "none" }}
                         >
@@ -77,25 +76,22 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({
                                         backgroundColor: "#e6b800",
                                     },
                                 }}
-                                onClick={handlePropertyCodeClick}
                             />
                         </Link>
                     </Stack>
 
                     <Stack direction="row" gap={0.5} mt={0.5}>
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            onClick={handleCustomerNameClick}
-                        >
-                            {" "}
-                            Property Owner{": "}
+                        <Typography variant="body2" color="text.secondary">
+                            Property Owner:
                         </Typography>
                         <Link
-                            href={`/customer/${data?.agreement?.owner?.id}`}
+                            href={customerHref}
                             passHref
-                            style={{
+                            sx={{
                                 textDecoration: "none",
+                                "&:hover": {
+                                    textDecoration: "underline",
+                                },
                                 color: "black",
                             }}
                         >
