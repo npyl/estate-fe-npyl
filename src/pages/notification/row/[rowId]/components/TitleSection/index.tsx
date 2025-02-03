@@ -2,14 +2,17 @@ import React from "react";
 import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
-import { ContactNotificationExtended } from "@/types/notification";
+import {
+    ContactNotificationExtended,
+    NotificationType,
+} from "@/types/notification";
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
 const CreateCustomerButton = dynamic(() => import("./CreateCustomerButton"));
 const CreateTaskButton = dynamic(() => import("./CreateTaskButton"));
 
 interface TitleSectionProps {
-    type: string;
+    type: NotificationType;
     variant?: string;
     agreementVariant?: string;
     isAgreementActive?: boolean;

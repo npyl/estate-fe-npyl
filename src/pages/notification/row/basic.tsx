@@ -25,7 +25,6 @@ import { ListingNotification } from "@/types/notification/listing";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import dayjs from "dayjs";
 import PropertyRegion from "./components/PropertyRegion";
 import CustomerInfo from "./components/CustomerInfo";
 import PropertyDetails from "./components/PropertyDetails";
