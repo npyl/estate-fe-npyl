@@ -55,6 +55,23 @@ const viewOptions: viewOptionsType[] = [
     },
 ];
 
+const FilterMoreWrap = () => {
+    const changedPropertyFilters = useSelector(sumOfChangedProperties);
+
+    const [isDialogOpen, openDialog, closeDialog] = useDialog();
+
+    return (
+        <>
+            <FilterMoreButton
+                changedFiltersCount={changedPropertyFilters}
+                onClick={openDialog}
+            />
+
+            {isDialogOpen ? <FilterMore onClose={closeDialog} /> : null}
+        </>
+    );
+};
+
 interface Props extends PaperProps {
     optionView: optionType;
     setOptionView: (o: optionType) => void;
@@ -87,8 +104,6 @@ const FilterBar: FC<Props> = ({
         ));
     }, [optionView, belowLg]);
 
-    const [isDialogOpen, openDialog, closeDialog] = useDialog();
-
     const dispatch = useDispatch();
     const options = useSortingOptions();
     const sorting = useSelector(selectSorting);
@@ -98,44 +113,36 @@ const FilterBar: FC<Props> = ({
     );
 
     return (
-        <>
-            <FiltersBar
-                bottomContent={
-                    changedPropertyFilters > 0 ? <ChosenFilters mt={1} /> : null
-                }
-                filters={
-                    <>
-                        {belowLg ? null : <FilterSection />}
+        <FiltersBar
+            bottomContent={
+                changedPropertyFilters > 0 ? <ChosenFilters mt={1} /> : null
+            }
+            filters={
+                <>
+                    {belowLg ? null : <FilterSection />}
+                    <FilterMoreWrap />
+                </>
+            }
+            controls={
+                <Stack direction="row" spacing={0.3} alignItems="center">
+                    <FilterSortBy
+                        options={options}
+                        sorting={sorting}
+                        onSortingChange={handleSortingChange}
+                    />
 
-                        <FilterMoreButton
-                            changedFiltersCount={changedPropertyFilters}
-                            onClick={openDialog}
-                        />
-                    </>
-                }
-                controls={
-                    <Stack direction="row" spacing={0.3} alignItems="center">
-                        <FilterSortBy
-                            options={options}
-                            sorting={sorting}
-                            onSortingChange={handleSortingChange}
-                        />
-
-                        <ButtonGroup
-                            size="small"
-                            sx={{
-                                gap: 0.3,
-                            }}
-                        >
-                            {BUTTONS}
-                        </ButtonGroup>
-                    </Stack>
-                }
-                {...props}
-            />
-
-            {isDialogOpen ? <FilterMore onClose={closeDialog} /> : null}
-        </>
+                    <ButtonGroup
+                        size="small"
+                        sx={{
+                            gap: 0.3,
+                        }}
+                    >
+                        {BUTTONS}
+                    </ButtonGroup>
+                </Stack>
+            }
+            {...props}
+        />
     );
 };
 
