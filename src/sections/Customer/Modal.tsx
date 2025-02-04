@@ -1,5 +1,4 @@
-import { Box, IconButton, Modal } from "@mui/material";
-import { ClearIcon } from "@mui/x-date-pickers";
+import { Drawer } from "@mui/material";
 import CustomerForm from "@/sections/Customer/Form";
 import { useCallback } from "react";
 import { ICustomer, ICustomerPOST } from "@/types/customer";
@@ -43,41 +42,28 @@ const CustomerModal: React.FC<ModalProps> = ({
     );
 
     return (
-        <Modal open onClose={onClose} disablePortal>
-            <Box
-                sx={{
-                    position: "absolute",
-                    overflow: "auto",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: "70vw",
-                    maxHeight: 650,
-                    bgcolor: "background.paper",
-                    borderRadius: "10px",
-                    boxShadow: 24,
-                }}
-            >
-                <IconButton
-                    onClick={onClose}
-                    sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        zIndex: 1,
-                    }}
-                >
-                    <ClearIcon />
-                </IconButton>
-                <CustomerForm
-                    customer={customer}
-                    isLoading={isLoading}
-                    isError={isError}
-                    onSave={handleSave}
-                    onCancel={onClose}
-                />
-            </Box>
-        </Modal>
+        <Drawer
+            open
+            anchor="right"
+            PaperProps={{
+                sx: {
+                    width: {
+                        xs: "100vw",
+                        lg: "30vw",
+                    },
+                },
+            }}
+            onClose={onClose}
+        >
+            <CustomerForm
+                compact
+                customer={customer}
+                isLoading={isLoading}
+                isError={isError}
+                onSave={handleSave}
+                onCancel={onClose}
+            />
+        </Drawer>
     );
 };
 

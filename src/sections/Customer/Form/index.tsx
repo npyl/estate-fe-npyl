@@ -6,7 +6,7 @@ import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import { LoadingButton } from "@mui/lab";
-import { useCallback, useEffect, useMemo } from "react";
+import { FC, useCallback, useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 
@@ -37,6 +37,8 @@ interface ICustomerYup
 }
 
 interface FormProps {
+    compact?: boolean;
+
     customer?: ICustomer;
     isLoading: boolean;
     isError: boolean;
@@ -127,13 +129,23 @@ const useCustomerForm = (customer?: ICustomer) => {
     return { methods };
 };
 
-const Form = ({
+const COLUMN_GRID = (compact: boolean) =>
+    compact
+        ? {
+              lg: 12,
+          }
+        : {};
+
+const Form: FC<FormProps> = ({
+    compact = false,
+
     customer,
     isLoading,
     isError,
+
     onSave,
     onCancel,
-}: FormProps) => {
+}) => {
     const { t } = useTranslation();
 
     const { methods } = useCustomerForm(customer);
@@ -160,10 +172,10 @@ const Form = ({
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <FormProvider {...methods}>
                 <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-                    <Grid item xs={12} lg={6}>
+                    <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
                         <CustomerInformation />
                     </Grid>
-                    <Grid item xs={12} lg={6}>
+                    <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <AddressDetails />
@@ -181,6 +193,16 @@ const Form = ({
                     justifyContent="flex-end"
                     direction="row"
                     spacing={1}
+                    sx={{
+                        bgcolor: "background.neutral",
+                        width: "100%",
+                        p: 0.5,
+                        alignSelf: "flex-end",
+                        borderRadius: "10px",
+                        position: "sticky",
+                        zIndex: 1000,
+                        bottom: 0,
+                    }}
                 >
                     <Button
                         variant="outlined"
