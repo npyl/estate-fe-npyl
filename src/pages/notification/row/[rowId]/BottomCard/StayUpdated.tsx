@@ -1,21 +1,13 @@
 import DemandSection from "@/sections/Customer/ViewById/Demand";
-import { useGetNotificationByIdQuery } from "@/services/notification";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-interface StayUpdatedProps {
-    rowId: number;
-}
-
-const StayUpdated: FC<StayUpdatedProps> = ({ rowId }) => {
+const StayUpdated = () => {
     const { t } = useTranslation();
 
-    const { demand } = useGetNotificationByIdQuery(rowId, {
-        selectFromResult: ({ data }) => ({
-            demand: data?.stayUpdatedDetails?.customerDemand,
-        }),
-    });
+    const { notification } = useGetNotification();
+    const demand = notification?.stayUpdatedDetails?.customerDemand;
 
     return (
         <>

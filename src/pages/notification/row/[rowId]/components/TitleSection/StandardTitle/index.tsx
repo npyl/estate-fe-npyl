@@ -7,10 +7,9 @@ import {
     ContactNotificationExtended,
     NotificationType,
 } from "@/types/notification";
-const CustomerLinkWrap = dynamic(() => import("./CustomerLinkWrap"));
-const StayUpdatedButtons = dynamic(() => import("./StayUpdatedButtons"));
-const CreateCustomerButton = dynamic(() => import("./CreateCustomerButton"));
-const CreateTaskButton = dynamic(() => import("./CreateTaskButton"));
+const StayUpdatedButtons = dynamic(() => import("./Controls/StayUpdated"));
+const CreateCustomerButton = dynamic(() => import("./Controls/CreateCustomer"));
+const CreateTaskButton = dynamic(() => import("./Controls/CreateTask"));
 
 interface StandardTitleProps {
     type: NotificationType;
@@ -37,9 +36,7 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
         }
     };
 
-    // INFO: make sure we only show the Create User button from stay updated when the user is not already created!
-    const isRegistered = data?.stayUpdatedDetails?.clientRegistered;
-    const stayUpdatedButtons = type === "STAY_UPDATED" && !isRegistered;
+    const stayUpdatedButtons = type === "STAY_UPDATED";
 
     const email = data?.stayUpdatedDetails?.email || "";
 
@@ -55,8 +52,9 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center">
-                {isRegistered ? <CustomerLinkWrap email={email} /> : null}
-                {stayUpdatedButtons ? <StayUpdatedButtons /> : null}
+                {stayUpdatedButtons ? (
+                    <StayUpdatedButtons email={email} />
+                ) : null}
 
                 {type === "TOUR" ? <CreateCustomerButton data={data} /> : null}
 

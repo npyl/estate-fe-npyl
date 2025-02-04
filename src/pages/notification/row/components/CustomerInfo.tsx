@@ -2,22 +2,13 @@ import React from "react";
 import { Stack, Typography } from "@mui/material";
 import LocalPhone from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 
-interface CustomerInfoProps {
-    customerMobile: string;
-    customerEmail: string;
-    tourType?: string;
-    tourDate?: string;
-    tourTime?: string;
-}
+const CustomerInfo = () => {
+    const { notification } = useGetNotification();
+    const { customerMobile, customerEmail, tourType, tourDate, tourTime } =
+        notification || {};
 
-const CustomerInfo: React.FC<CustomerInfoProps> = ({
-    customerMobile,
-    customerEmail,
-    tourType,
-    tourDate,
-    tourTime,
-}) => {
     return (
         <Stack
             flexDirection="row"

@@ -13,6 +13,7 @@ import enGB from "date-fns/locale/en-GB";
 import el from "date-fns/locale/el";
 import dynamic from "next/dynamic";
 import { NotificationType } from "@/types/notification";
+import CustomerName from "./CustomerName";
 const AgreementDetails = dynamic(() => import("./components/AgreementDetails"));
 const BottomCard = dynamic(() => import("./BottomCard"));
 
@@ -32,17 +33,10 @@ const NotificationDetailPage: NextPage = () => {
 
     if (error || !data) return null;
 
-    const property = data?.property;
     const type = data?.type?.key as NotificationType;
     const reviewDetails = data?.reviewDetails;
 
-    const {
-        customerName,
-        customerEmail,
-        customerMobile,
-        message,
-        notificationDate,
-    } = data;
+    const { message, notificationDate } = data;
 
     const locale = i18n.language === "el" ? el : enGB;
 
@@ -66,9 +60,8 @@ const NotificationDetailPage: NextPage = () => {
                                 width="100%"
                                 justifyContent="space-between"
                             >
-                                <Typography variant="h6">
-                                    {customerName}
-                                </Typography>
+                                <CustomerName />
+
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
@@ -82,10 +75,7 @@ const NotificationDetailPage: NextPage = () => {
                                 </Typography>
                             </Stack>
                             <Stack direction="column" mt={2}>
-                                <CustomerInfo
-                                    customerEmail={customerEmail}
-                                    customerMobile={customerMobile}
-                                />
+                                <CustomerInfo />
 
                                 {type === "REVIEW" ? (
                                     <PropertyRating
@@ -127,9 +117,7 @@ const NotificationDetailPage: NextPage = () => {
                 </CardContent>
             </Card>
 
-            {type !== "AGREEMENT" ? (
-                <BottomCard type={type} property={property} />
-            ) : null}
+            {type !== "AGREEMENT" ? <BottomCard type={type} /> : null}
         </Box>
     );
 };

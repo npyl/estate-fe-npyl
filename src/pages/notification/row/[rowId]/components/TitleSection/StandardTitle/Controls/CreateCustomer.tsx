@@ -7,8 +7,7 @@ import { HideText } from "@/components/styled";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { ContactNotificationExtended } from "@/types/notification";
-import CustomerLink from "./CustomerLink";
-import useCustomerExists from "./useCustomerExists";
+import useCustomerExists from "../../../../CustomerName/useCustomerExists";
 const CustomerModal = dynamic(() => import("@/sections/Customer/Modal"));
 
 // -------------------------------------------------------------------------
@@ -60,14 +59,9 @@ interface Props {
 }
 
 const CreateCustomerButton: FC<Props> = ({ data }) => {
-    const { customer, didFound, isLoading } = useCustomerExists(
-        data?.customerEmail
-    );
-
+    const { didFound, isLoading } = useCustomerExists(data?.customerEmail);
     if (isLoading) return <Skeleton width="150px" height="58px" />;
-
-    if (didFound) return <CustomerLink c={customer} />;
-
+    if (didFound) return null;
     return <CreateButton data={data} />;
 };
 

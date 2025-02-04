@@ -6,12 +6,9 @@ import {
     CardContent,
     CardMedia,
 } from "@mui/material";
-import { useGetNotificationByIdQuery } from "@/services/notification";
-import { useRouter } from "next/router";
 import { FC } from "react";
 import { NotificationType } from "@/types/notification";
 import { useTranslation } from "react-i18next";
-import { IPropertyForNotification } from "@/types/notification/notification";
 const WorkDetails = dynamic(() => import("./WorkDetails"));
 const TourPropertyBadges = dynamic(() => import("./TourPropertyBadges"));
 const ListingStateBadge = dynamic(() => import("./ListingStateBadge"));
@@ -21,6 +18,7 @@ const ListingPropertyDetails = dynamic(
 );
 const StayUpdated = dynamic(() => import("./StayUpdated"));
 import dynamic from "next/dynamic";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 
 type Positions = {
     advisor: boolean;
@@ -33,28 +31,17 @@ type Positions = {
 
 interface BottomCardProps {
     type: NotificationType;
-    property?: IPropertyForNotification;
 }
 
-const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
+const BottomCard: FC<BottomCardProps> = ({ type }) => {
     const { t } = useTranslation();
 
-    const router = useRouter();
-    const { rowId } = router.query;
-
-    const { workForUs } = useGetNotificationByIdQuery(+rowId!, {
-        skip: !rowId,
-        selectFromResult: ({ data }) => ({
-            workForUs: data?.workForUsDetails,
-        }),
-    });
-
-    const { listing } = useGetNotificationByIdQuery(+rowId!, {
-        skip: !rowId,
-        selectFromResult: ({ data }) => ({
-            listing: data?.listingDetails,
-        }),
-    });
+    const { notification } = useGetNotification();
+    const {
+        property,
+        workForUsDetails: workForUs,
+        listingDetails: listing,
+    } = notification || {};
 
     // Filtering true work positions
     const truePositions = workForUs
@@ -63,19 +50,19 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
           )
         : [];
 
-    const handlePropertyCodeClick = () => {
-        if (property) {
-            router.push(`/property/${property?.id}`);
-        } else {
-            return;
-        }
-    };
+    // const handlePropertyCodeClick = () => {
+    //     if (property) {
+    //         router.push(`/property/${property?.id}`);
+    //     } else {
+    //         return;
+    //     }
+    // };
 
     return (
         <>
             {/* SECOND CARD IN UI */}
             <Card
-                onClick={handlePropertyCodeClick}
+                // onClick={handlePropertyCodeClick}
                 sx={{
                     boxShadow: 1,
                     "&:hover": property
@@ -157,9 +144,7 @@ const BottomCard: FC<BottomCardProps> = ({ type, property }) => {
                     </CardContent>
                 </Stack>
 
-                {type === "STAY_UPDATED" ? (
-                    <StayUpdated rowId={+rowId!} />
-                ) : null}
+                {type === "STAY_UPDATED" ? <StayUpdated /> : null}
             </Card>
         </>
     );

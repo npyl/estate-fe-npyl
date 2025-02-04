@@ -102,7 +102,7 @@ export const customers = apiWithTranslation({
                     email,
                 },
             }),
-            providesTags: ["Customers"],
+            providesTags: ["CustomerById"],
         }),
 
         createOrUpdateCustomer: builder.mutation<number, ICustomerPOST>({
