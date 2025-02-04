@@ -36,7 +36,9 @@ const AgreementDetails = () => {
                     color="text.secondary"
                     align="right"
                 >
-                    {format(new Date(notificationDate || ""), "dd MMM yyyy")}
+                    {notificationDate
+                        ? format(new Date(notificationDate), "dd MMM yyyy")
+                        : ""}
                 </Typography>
             </Stack>
             <Stack>

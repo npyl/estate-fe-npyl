@@ -54,11 +54,13 @@ const TopCard = () => {
                                     color="text.secondary"
                                     align="right"
                                 >
-                                    {format(
-                                        new Date(notificationDate || ""),
-                                        "dd MMM yyyy",
-                                        { locale }
-                                    )}
+                                    {notificationDate
+                                        ? format(
+                                              new Date(notificationDate),
+                                              "dd MMM yyyy",
+                                              { locale }
+                                          )
+                                        : ""}
                                 </Typography>
                             </Stack>
                             <Stack direction="column" mt={2}>
