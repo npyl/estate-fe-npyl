@@ -18,7 +18,7 @@ const useCreateCb = () => {
         async (body: ICustomerPOST) => {
             const cb = type?.key === "STAY_UPDATED" ? create1 : create0;
 
-            const req =
+            const req: any =
                 type?.key === "STAY_UPDATED" ? { notificationId, body } : body;
 
             const res = await cb(req).unwrap();

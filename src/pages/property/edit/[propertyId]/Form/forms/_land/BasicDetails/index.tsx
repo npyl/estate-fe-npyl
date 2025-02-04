@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
 import LabelCreate from "@/sections/LabelCreate";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
@@ -11,18 +11,16 @@ import {
     RHFSwitch,
     Select,
 } from "src/components/hook-form";
-import Autocomplete from "../../components/OwnerAutocomplete";
 import { TranslationType } from "src/types/translation";
 import Rent from "../../_general/Rent";
 import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 import { useGetPropertyByIdQuery } from "@/services/properties";
-import CreateTooltip from "@/sections/Customer/CreateTooltip";
 import ManagerSelect from "./ManagerSelect";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
-import { useFormContext } from "react-hook-form";
 import RHFCode from "../../_general/RHFCode";
 import RHFKeyCode from "../../_general/RHFKeyCode";
+import OwnerSelect from "../../_shared/OwnerSelect";
 
 const getCHECKBOXES = (t: TranslationType) => [
     { name: "debatablePrice", label: t("Debatable Price") },
@@ -66,31 +64,6 @@ const Checkboxes = () => {
                 </Grid>
             ))}
         </>
-    );
-};
-
-const OwnerSelect = () => {
-    const { setValue } = useFormContext();
-
-    const handleCreate = useCallback((id: number) => {
-        console.log("id: ", id);
-        setValue("ownerId", id, { shouldDirty: true });
-    }, []);
-
-    return (
-        <Grid
-            item
-            xs={12}
-            sm={6}
-            display="flex"
-            width="100%"
-            direction="row"
-            alignItems="center"
-            gap={1}
-        >
-            <Autocomplete />
-            <CreateTooltip onCreate={handleCreate} />
-        </Grid>
     );
 };
 

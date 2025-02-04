@@ -16,7 +16,7 @@ import { useGetPropertyByIdQuery } from "@/services/properties";
 import ManagerSelect from "./ManagerSelect";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
-import OwnerSelect from "./OwnerSelect";
+import OwnerSelect from "../../_shared/OwnerSelect";
 import RHFCode from "../RHFCode";
 import RHFKeyCode from "../RHFKeyCode";
 

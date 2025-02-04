@@ -1,12 +1,13 @@
 import { Grid } from "@mui/material";
-import Autocomplete from "../../components/OwnerAutocomplete";
+import Autocomplete from "../components/OwnerAutocomplete";
 import CreateTooltip from "@/sections/Customer/CreateTooltip";
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 
 const OwnerSelect = () => {
     const { setValue } = useFormContext();
-    const handleCustomerCreate = useCallback((id: number) => {
+
+    const handleCreate = useCallback((id: number) => {
         console.log("id: ", id);
         setValue("ownerId", id, { shouldDirty: true });
     }, []);
@@ -24,7 +25,7 @@ const OwnerSelect = () => {
             gap={1.5}
         >
             <Autocomplete />
-            <CreateTooltip onCreate={handleCustomerCreate} />
+            <CreateTooltip onCreate={handleCreate} />
         </Grid>
     );
 };

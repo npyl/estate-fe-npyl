@@ -43,7 +43,7 @@ const CustomerModal: React.FC<ModalProps> = ({
     );
 
     return (
-        <Modal open onClose={onClose}>
+        <Modal open onClose={onClose} disablePortal>
             <Box
                 sx={{
                     position: "absolute",
