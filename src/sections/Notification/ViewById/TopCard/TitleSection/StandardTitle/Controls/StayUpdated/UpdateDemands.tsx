@@ -2,16 +2,22 @@ import { HideText } from "@/components/styled";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useTranslation } from "react-i18next";
 import PersonIcon from "@mui/icons-material/Person";
-import useCreateCb from "../useCreateCb";
 import useDialog from "@/hooks/useDialog";
 import CustomerModal from "@/sections/Customer/Modal";
+import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
+import { useCallback } from "react";
+import { ICustomerPOST } from "@/types/customer";
 
 const UpdateDemandsButton = () => {
     const { t } = useTranslation();
 
     const [isOpen, openModal, closeModal] = useDialog();
 
-    const [createCb, { isLoading, isError }] = useCreateCb();
+    const [create, { isLoading, isError }] =
+        useCreateOrUpdateCustomerMutation();
+    const createCb = useCallback(async (d: ICustomerPOST) => {
+        return await create(d).unwrap();
+    }, []);
 
     return (
         <>

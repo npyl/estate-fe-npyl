@@ -1190,10 +1190,14 @@ const resources = {
             Messages: "Messages",
 
             Disconnected: "Disconnected",
+
+            "Update Demands": "Update Demands",
         },
     },
     el: {
         translation: {
+            "Update Demands": "Ενημέρωση Απαιτήσεων",
+
             Registered: "Εγγεγραμμένος",
 
             "Stay Updated": "Μείνετε Ενημερωμένοι",

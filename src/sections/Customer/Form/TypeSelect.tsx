@@ -22,14 +22,27 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 // ------------------------------------------------------------
 
-const CustomerTypeSelect = () => {
-    const { t } = useTranslation();
-
+const useDemandsButton = () => {
     const leaser = useWatch({ name: "leaser" });
     const buyer = useWatch({ name: "buyer" });
 
-    // WARN: show DemandSection only if leaser or buyer
+    const demands = useWatch({ name: "demands" });
+    const demandsCount = Array.isArray(demands) ? demands.length : -1;
+
+    // INFO: show DemandSection *ONLY* if leaser or buyer or we have demands (e.g. Stay Updated)
+    const isVisible = leaser || buyer || demandsCount > 0;
+
+    return { isVisible };
+};
+
+// ------------------------------------------------------------
+
+const CustomerTypeSelect = () => {
+    const { t } = useTranslation();
+
     const [isDrawerOpen, openDrawer, closeDrawer] = useDialog();
+
+    const { isVisible } = useDemandsButton();
 
     return (
         <>
@@ -60,7 +73,7 @@ const CustomerTypeSelect = () => {
                     <Typography variant="h6">{t("Buyer")}</Typography>
                 </Grid>
 
-                {leaser || buyer ? (
+                {isVisible ? (
                     <StyledButton
                         sx={{
                             position: "absolute",

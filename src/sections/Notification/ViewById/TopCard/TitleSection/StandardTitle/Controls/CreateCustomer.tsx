@@ -1,6 +1,6 @@
 import { ICustomer } from "@/types/customer";
 import { Button, Skeleton } from "@mui/material";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import PersonIcon from "@mui/icons-material/Person";
 import { HideText } from "@/components/styled";
@@ -20,16 +20,19 @@ const CreateButton = () => {
     const customerName = notification?.customerName;
     const email = notification?.customerEmail || "";
 
+    const demand = notification?.stayUpdatedDetails?.customerDemand;
+
     const [isOpen, openModal, closeModal] = useDialog();
 
-    const customer = useMemo(() => {
+    const getCustomer = () => {
         const parts = customerName?.split(" ");
         return {
             firstName: parts?.[0] || "",
             lastName: parts?.[1] || "",
             email,
+            demands: demand ? [demand] : [],
         } as ICustomer;
-    }, [customerName, email]);
+    };
 
     const [createCb, { isLoading, isError }] = useCreateCb();
 
@@ -50,7 +53,7 @@ const CreateButton = () => {
 
             {isOpen ? (
                 <CustomerModal
-                    customer={customer}
+                    customer={getCustomer()}
                     createCb={createCb}
                     isLoading={isLoading}
                     isError={isError}
