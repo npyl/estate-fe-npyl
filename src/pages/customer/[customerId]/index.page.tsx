@@ -47,7 +47,9 @@ const CustomerView: NextPage = () => {
 
     const isSellerOrLessor = data?.seller || data?.lessor;
     const isBuyerOrLeaser = data?.buyer || data?.leaser;
+
     const demands = data?.demands;
+    const hasDemands = data?.demands?.length && data?.demands?.length > 0;
 
     const handleChange = (_: any, v: number) => setValue(v);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
@@ -83,8 +85,7 @@ const CustomerView: NextPage = () => {
             content: <Tasks />,
         },
 
-        // Add this new tab configuration for DemandSection
-        isBuyerOrLeaser && {
+        hasDemands && {
             label: t("Demands"),
             content: (
                 <Stack spacing={1}>
