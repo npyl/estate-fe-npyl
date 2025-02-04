@@ -15,7 +15,7 @@ import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
 import { useGetNotificationByIdQuery } from "@/services/notification";
-import { CodeBadge } from "../components/CodeBadge";
+import { CodeBadge } from "@/sections/Notification/_shared/CodeBadge";
 import Link from "next/link";
 import { useGetPropertyByCodeQuery } from "@/services/properties";
 

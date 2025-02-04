@@ -2,7 +2,7 @@ import { Box, Tab, TabProps } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
-import UnReadBadge from "./components/UnReadBadge";
+import UnReadBadge from "@/sections/Notification/_shared/UnReadBadge";
 import { NotificationType } from "@/types/notification";
 import { INotificationTab } from "./types";
 

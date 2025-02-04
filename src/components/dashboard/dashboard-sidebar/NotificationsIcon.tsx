@@ -1,4 +1,4 @@
-import CircleUnReadNotifications from "@/pages/notification/components/CircleUnReadNotifications";
+import CircleUnReadNotifications from "@/sections/Notification/_shared/CircleUnReadNotifications";
 import { useGetNonViewedNotificationsCountQuery } from "@/services/notification";
 import { CircleNotifications } from "@mui/icons-material";
 import Box from "@mui/material/Box";

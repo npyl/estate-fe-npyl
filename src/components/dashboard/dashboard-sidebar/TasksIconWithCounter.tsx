@@ -1,5 +1,5 @@
 import useNotificationsSocket from "@/hooks/useTasksNotifications";
-import CircleUnReadNotifications from "@/pages/notification/components/CircleUnReadNotifications";
+import CircleUnReadNotifications from "@/sections/Notification/_shared/CircleUnReadNotifications";
 import { useActiveAssignedTasksCountQuery } from "@/services/notification";
 import { ConfirmationNumber } from "@mui/icons-material";
 import Box from "@mui/material/Box";

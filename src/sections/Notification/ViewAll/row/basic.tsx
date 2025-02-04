@@ -128,7 +128,7 @@ const BasicRow = ({
             }}
         >
             <Link
-                href={`/notification/row/${row.id}`}
+                href={`/notification/${row.id}`}
                 onClick={handleRowClick}
                 display="flex"
                 justifyContent="space-between"

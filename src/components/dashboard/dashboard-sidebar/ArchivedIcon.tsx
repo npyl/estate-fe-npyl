@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import CircleUnReadNotifications from "@/pages/notification/components/CircleUnReadNotifications";
+import CircleUnReadNotifications from "@/sections/Notification/_shared/CircleUnReadNotifications";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import { useArchivedCountQuery } from "@/services/properties";
 import CounterSkeleton from "./CounterSkeleton";
