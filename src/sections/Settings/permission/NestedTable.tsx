@@ -56,9 +56,12 @@ const NestedTable = ({ row, state }: Props) => {
             (e) => e.category === category && e.state === state
         );
         const action = actions[columnIndex];
-        const updatedData: IRoles[] = JSON.parse(
+
+        const updatedData = JSON.parseSafe<IRoles[]>(
             JSON.stringify(data?.permissionResponses)
         );
+
+        if (!updatedData) return;
 
         updatedData[rowIndex as number].actions[
             action as unknown as keyof IActions
@@ -74,7 +77,10 @@ const NestedTable = ({ row, state }: Props) => {
         e: React.ChangeEvent<HTMLInputElement>,
         row: string
     ) => {
-        const newData = JSON.parse(JSON.stringify(data?.permissionResponses));
+        const str = JSON.stringify(data?.permissionResponses);
+        const newData = JSON.parseSafe(str);
+        if (!newData) return;
+
         for (const key in data?.permissionResponses) {
             if (
                 newData[key].parentCategory === row &&
@@ -114,9 +120,11 @@ const NestedTable = ({ row, state }: Props) => {
         e: React.ChangeEvent<HTMLInputElement>,
         category: string
     ) => {
-        const newData: IRoles[] = JSON.parse(
+        const newData = JSON.parseSafe<IRoles[]>(
             JSON.stringify(data?.permissionResponses)
         );
+        if (!newData) return;
+
         const rowIndex = data?.permissionResponses.findIndex(
             (e) => e.category === category && e.state === state
         );
@@ -163,9 +171,11 @@ const NestedTable = ({ row, state }: Props) => {
         row: string,
         state: string
     ) => {
-        const newData: IRoles[] = JSON.parse(
+        const newData = JSON.parseSafe<IRoles[]>(
             JSON.stringify(data?.permissionResponses)
         );
+        if (!newData) return;
+
         for (const role of newData) {
             if (row === role.parentCategory && role.state === state) {
                 role.actions[action as unknown as keyof IActions] =

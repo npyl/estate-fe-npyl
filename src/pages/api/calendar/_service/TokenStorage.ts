@@ -39,7 +39,9 @@ export class TokenStorage {
     async getAllTokens(): Promise<StoredToken[]> {
         try {
             const data = await fs.readFile(this.tokenFilePath, "utf-8");
-            return JSON.parse(data);
+            const res = JSON.parseSafe(data);
+            if (!res) return [];
+            return res;
         } catch {
             return [];
         }

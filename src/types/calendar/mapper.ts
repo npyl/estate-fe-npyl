@@ -32,8 +32,7 @@ const extractPeople = (
         const field = extendedProperties?.private?.[PP_EVENT_PEOPLE_KEY];
         if (!field) return [];
 
-        const people =
-            (JSON.parse(field) as unknown as TCalendarEventPerson[]) || [];
+        const people = JSON.parseSafe<TCalendarEventPerson[]>(field) || [];
 
         return people;
     } catch (ex) {

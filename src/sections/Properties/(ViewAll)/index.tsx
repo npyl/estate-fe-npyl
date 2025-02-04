@@ -42,7 +42,9 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
         );
 
         if (storedPagination) {
-            const parsedPagination = JSON.parse(storedPagination);
+            const parsedPagination = JSON.parseSafe(storedPagination);
+            if (!parsedPagination) return;
+
             if (page !== parsedPagination.page) {
                 setPage(parsedPagination.page);
             }

@@ -70,7 +70,9 @@ const Customers: NextPage = () => {
         );
 
         if (storedPagination) {
-            const parsedPagination = JSON.parse(storedPagination);
+            const parsedPagination = JSON.parseSafe(storedPagination);
+            if (!parsedPagination) return;
+
             if (page !== parsedPagination.page) {
                 setPage(parsedPagination.page);
             }

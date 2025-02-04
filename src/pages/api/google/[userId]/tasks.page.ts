@@ -43,9 +43,9 @@ export default async function handler(
         const Authorization = req.headers.authorization;
         if (!Authorization) throw new Error("Invalid headers");
 
-        const { withCalendar, googleUserKey, ...task } = JSON.parse(
-            req.body
-        ) as ICreateOrUpdateTaskReq;
+        const parsedBody = JSON.parseSafe<ICreateOrUpdateTaskReq>(req.body);
+        if (!parsedBody) throw new Error("Bad json body");
+        const { withCalendar, googleUserKey, ...task } = parsedBody;
 
         const _eventId = task.event;
         const isEdit = Boolean(_eventId);

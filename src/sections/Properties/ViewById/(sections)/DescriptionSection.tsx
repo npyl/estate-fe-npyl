@@ -14,7 +14,10 @@ const DescriptionSection = () => {
     const editorState = useMemo(() => {
         if (!description) return EditorState.createEmpty();
 
-        const contentState = convertFromRaw(JSON.parse(description));
+        const json = JSON.parseSafe(description);
+        if (!json) return EditorState.createEmpty();
+
+        const contentState = convertFromRaw(json);
         return EditorState.createWithContent(contentState);
     }, [description]);
 

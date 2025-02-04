@@ -37,7 +37,7 @@ const useTasksNotifications = ({
         (event: WebSocketEventMap["message"]) => {
             try {
                 const { type, payload } =
-                    (JSON.parse(event?.data) as IMessageData) || {};
+                    (JSON.parseSafe(event?.data) as IMessageData) || {};
 
                 const cb =
                     type === "active-task-count"

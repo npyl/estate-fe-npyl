@@ -2,7 +2,7 @@ const SEARCH_HISTORY_KEY = "search_history";
 
 const getSearchHistory = (): string[] => {
     const history = localStorage.getItem(SEARCH_HISTORY_KEY);
-    return history ? JSON.parse(history) : [];
+    return history ? JSON.parseSafe(history) || [] : [];
 };
 
 const addSearchHistory = (searchTerm: string) => {

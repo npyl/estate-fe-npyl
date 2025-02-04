@@ -30,7 +30,7 @@ export const restoreSettings = (): Settings | null => {
         const storedData = globalThis.localStorage.getItem("settings");
 
         if (storedData) {
-            settings = JSON.parse(storedData);
+            settings = JSON.parseSafe(storedData);
         } else {
             settings = {
                 direction: "ltr",

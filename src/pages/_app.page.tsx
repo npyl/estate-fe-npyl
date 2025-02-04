@@ -27,6 +27,9 @@ import DatePickerProvider from "@/providers/DatePicker";
 import Toaster from "@/components/Toaster";
 import NotificationsListener from "@/providers/NotificationsListener";
 
+// IMPORTANT
+import "@/_private/JSON";
+
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
     emotionCache: EmotionCache;

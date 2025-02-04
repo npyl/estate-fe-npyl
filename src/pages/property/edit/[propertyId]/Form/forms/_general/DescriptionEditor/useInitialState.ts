@@ -11,6 +11,15 @@ import { useLazyGetPropertyByIdQuery } from "src/services/properties";
 import { IProperties } from "src/types/properties";
 import { TABS } from "./constants";
 
+const getStateSafe = (description: string) => {
+    if (!description) return ContentState.createFromText("");
+
+    const json = JSON.parseSafe(description);
+    if (!json) return ContentState.createFromText("");
+
+    return convertFromRaw(json);
+};
+
 const useInitialDescriptionState = (
     setEditorState: (s: EditorState) => void
 ) => {
@@ -25,9 +34,7 @@ const useInitialDescriptionState = (
             ([lang, { description, title }]) => {
                 const i = TABS.findIndex(({ value }) => value === lang);
 
-                const state = description
-                    ? convertFromRaw(JSON.parse(description))
-                    : ContentState.createFromText("");
+                const state = getStateSafe(description);
 
                 const plainText = state.getPlainText();
                 const contentStateJSON = JSON.stringify(convertToRaw(state));

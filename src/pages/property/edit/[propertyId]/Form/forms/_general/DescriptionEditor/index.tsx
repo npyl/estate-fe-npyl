@@ -84,7 +84,10 @@ const DescriptionSection: React.FC = () => {
             return;
         }
 
-        const contentState = convertFromRaw(JSON.parse(description));
+        const json = JSON.parseSafe(description);
+        if (!json) setEditorState(EditorState.createEmpty());
+
+        const contentState = convertFromRaw(json);
         setEditorState(EditorState.createWithContent(contentState));
     }, []);
 
