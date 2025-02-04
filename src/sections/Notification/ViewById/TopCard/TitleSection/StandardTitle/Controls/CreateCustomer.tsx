@@ -8,6 +8,7 @@ import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import useCustomerExists from "../../../CustomerName/useCustomerExists";
 import useGetNotification from "@/sections/Notification/useGetNotification";
+import useCreateCb from "./useCreateCb";
 const CustomerModal = dynamic(() => import("@/sections/Customer/Modal"));
 
 // -------------------------------------------------------------------------
@@ -30,6 +31,8 @@ const CreateButton = () => {
         } as ICustomer;
     }, [customerName, email]);
 
+    const [createCb, { isLoading, isError }] = useCreateCb();
+
     return (
         <>
             <Button
@@ -46,7 +49,13 @@ const CreateButton = () => {
             </Button>
 
             {isOpen ? (
-                <CustomerModal customer={customer} onClose={closeModal} />
+                <CustomerModal
+                    customer={customer}
+                    createCb={createCb}
+                    isLoading={isLoading}
+                    isError={isError}
+                    onClose={closeModal}
+                />
             ) : null}
         </>
     );

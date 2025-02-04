@@ -3,29 +3,43 @@ import { ClearIcon } from "@mui/x-date-pickers";
 import CustomerForm from "@/sections/Customer/Form";
 import { useCallback } from "react";
 import { ICustomer, ICustomerPOST } from "@/types/customer";
-import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 
+/**
+ * createCb: provide your own create callback so that we can either use
+ * e.g. the standard useCreaterOrUpdateCustomerMutation or the useCreateOrUpdateCustomerForStayUpdatedMutation or any other
+ */
 interface ModalProps {
     customer?: ICustomer;
+
+    createCb: (body: ICustomerPOST) => Promise<number | void>;
+    isLoading?: boolean;
+    isError?: boolean;
+
     onCreate?: (id: number) => void;
     onClose: () => void;
 }
 
 const CustomerModal: React.FC<ModalProps> = ({
     customer,
+
+    createCb,
+    isLoading = false,
+    isError = false,
+
     onCreate,
     onClose,
 }) => {
-    const [create, { isError, isLoading }] =
-        useCreateOrUpdateCustomerMutation();
-
     const handleSave = useCallback(
         async (body: ICustomerPOST) => {
-            const newOwnerId = await create(body).unwrap();
-            onCreate?.(newOwnerId);
+            const newOwnerId = await createCb(body);
+
+            if (newOwnerId && onCreate) {
+                onCreate(newOwnerId);
+            }
+
             onClose();
         },
-        [onCreate]
+        [createCb, onCreate]
     );
 
     return (

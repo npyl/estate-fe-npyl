@@ -1,16 +1,4 @@
-import {
-    Button,
-    Collapse,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography,
-} from "@mui/material";
-import { Fragment, useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import DocumentSvg from "src/assets/Document";
+import { Fragment } from "react";
 import useToggle from "src/hooks/useToggle";
 import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ContactNotification } from "src/types/notification";

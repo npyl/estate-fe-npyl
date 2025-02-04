@@ -6,31 +6,27 @@ import TitleSection from "./TitleSection";
 import dynamic from "next/dynamic";
 import CustomerName from "./CustomerName";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import { useGetNotificationByIdQuery } from "@/services/notification";
-import { NotificationType } from "@/types/notification";
 import el from "date-fns/locale/el";
 import enGB from "date-fns/locale/en-GB";
+import useGetNotification from "@/sections/Notification/useGetNotification";
+import { NotificationType } from "@/types/notification";
+import { FC } from "react";
 const AgreementDetails = dynamic(() => import("./AgreementDetails"));
 
-const TopCard = () => {
+interface TopCardProps {
+    type: NotificationType;
+}
+
+const TopCard: FC<TopCardProps> = ({ type }) => {
     const { t, i18n } = useTranslation();
-    const router = useRouter();
-    const { rowId } = router.query;
 
-    const { data } = useGetNotificationByIdQuery(+rowId!);
-
-    const { data: listing } = useGetNotificationByIdQuery(+rowId!, {
-        skip: !rowId,
-        selectFromResult: ({ data }) => ({
-            data: data?.listingDetails,
-        }),
-    });
-
-    const type = data?.type?.key as NotificationType;
-    const reviewDetails = data?.reviewDetails;
-
-    const { message, notificationDate } = data || {};
+    const { notification } = useGetNotification();
+    const {
+        message,
+        notificationDate,
+        listingDetails: listing,
+        reviewDetails,
+    } = notification || {};
 
     const locale = i18n.language === "el" ? el : enGB;
 

@@ -1,6 +1,6 @@
 import {
     INotificationFilter,
-    INotificationResponse,
+    INotificationShort,
 } from "@/types/notification/notification";
 import IPage from "@/types/page";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -45,7 +45,7 @@ export const notification = apiWithTranslation({
         ),
 
         filterNotifications: builder.query<
-            IPage<INotificationResponse>,
+            IPage<INotificationShort>,
             INotificationFilterParams
         >({
             query: ({ filter, page, pageSize, sortBy, direction }) => ({

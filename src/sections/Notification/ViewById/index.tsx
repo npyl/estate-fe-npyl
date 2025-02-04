@@ -10,7 +10,7 @@ const ViewNotificationById = () => {
 
     return (
         <>
-            <TopCard />
+            <TopCard type={type} />
             {type !== "AGREEMENT" ? <BottomCard type={type} /> : null}
         </>
     );

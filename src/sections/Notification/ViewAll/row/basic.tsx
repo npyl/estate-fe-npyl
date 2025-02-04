@@ -111,6 +111,9 @@ const BasicRow = ({
     const propertyDetails = row?.property;
     const type = row?.type?.key;
 
+    const { customerEmail, customerMobile, tourType, tourDate, tourTime } =
+        row || {};
+
     return (
         <TableRow
             sx={{
@@ -341,7 +344,15 @@ const BasicRow = ({
                                     </>
                                 ) : null}
                             </Box>
-                            {type !== "AGREEMENT" ? <CustomerInfo /> : null}
+                            {type !== "AGREEMENT" ? (
+                                <CustomerInfo
+                                    customerEmail={customerEmail}
+                                    customerMobile={customerMobile}
+                                    tourDate={tourDate}
+                                    tourTime={tourTime}
+                                    tourType={tourType}
+                                />
+                            ) : null}
                         </Stack>
                     </Stack>
                 </TableCell>

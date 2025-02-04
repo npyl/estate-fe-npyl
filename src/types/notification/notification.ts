@@ -67,12 +67,12 @@ export interface ContactNotification {
     notificationType: NotificationType;
     property?: IPropertyForNotification;
     descriptions?: IPropertyDescriptionsForNotification;
-    type: KeyValue;
+    type: KeyValue<NotificationType>;
     reviewDetails: ReviewDetails;
     agreement?: AgreementDetails;
 }
 
-export interface INotificationResponse {
+interface INotificationShort {
     customerEmail: string;
     customerMobile: string;
     customerName: string;
@@ -86,7 +86,7 @@ export interface INotificationResponse {
     tourDate: string;
     tourTime: string;
     tourType: string;
-    type: KeyValue;
+    type: KeyValue<NotificationType>;
     viewed: boolean;
     workForUsDetails: IWorkForUs;
     agreementDetails: AgreementDetails;
@@ -148,4 +148,4 @@ interface ContactNotificationExtended extends ContactNotification {
     stayUpdatedDetails: IStayUpdatedDetails;
 }
 
-export type { ContactNotificationExtended };
+export type { INotificationShort, ContactNotificationExtended };

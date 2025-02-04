@@ -10,7 +10,6 @@ import {
 import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
-import { IDemandPOST } from "@/types/demand";
 
 export interface BulkEditRequest {
     customerIds: number[];
@@ -29,17 +28,9 @@ interface ICustomerFilterProps extends ICustomerParams {
     filter: ICustomerFilter;
 }
 
-interface ICustomerFromStayUpdatedReq {
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobilePhone: string;
-    demands: IDemandPOST[];
-}
-
 interface ICreateCustomerFromStayUpdatedReq {
     notificationId: number;
-    body: ICustomerFromStayUpdatedReq;
+    body: ICustomerPOST;
 }
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
@@ -197,5 +188,4 @@ export const {
 
 const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);
 
-export type { ICustomerFromStayUpdatedReq };
 export { useGetCustomerByIdQuery };

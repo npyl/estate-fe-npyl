@@ -20,11 +20,11 @@ function ListingRow({
     filter,
 }: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
-    const { data: listing, isLoading } = useGetNotificationByIdQuery(row.id!, {
+
+    const { data: listing } = useGetNotificationByIdQuery(row.id!, {
         skip: !row.id && !open,
-        selectFromResult: ({ data, isLoading }) => ({
+        selectFromResult: ({ data }) => ({
             data: data?.listingDetails,
-            isLoading,
         }),
     });
 
