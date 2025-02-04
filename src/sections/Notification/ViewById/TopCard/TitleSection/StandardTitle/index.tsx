@@ -3,20 +3,16 @@ import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
-import {
-    ContactNotificationExtended,
-    NotificationType,
-} from "@/types/notification";
+import { NotificationType } from "@/types/notification";
 const StayUpdatedButtons = dynamic(() => import("./Controls/StayUpdated"));
 const CreateCustomerButton = dynamic(() => import("./Controls/CreateCustomer"));
 const CreateTaskButton = dynamic(() => import("./Controls/CreateTask"));
 
 interface StandardTitleProps {
     type: NotificationType;
-    data: ContactNotificationExtended;
 }
 
-const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
+const StandardTitle: FC<StandardTitleProps> = ({ type }) => {
     const { t } = useTranslation();
 
     const getTitle = () => {
@@ -38,8 +34,6 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
 
     const stayUpdatedButtons = type === "STAY_UPDATED";
 
-    const email = data?.stayUpdatedDetails?.email || "";
-
     return (
         <SpaceBetween
             borderBottom="1px solid lightgray"
@@ -52,13 +46,9 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, data }) => {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center">
-                {stayUpdatedButtons ? (
-                    <StayUpdatedButtons email={email} />
-                ) : null}
-
-                {type === "TOUR" ? <CreateCustomerButton data={data} /> : null}
-
-                <CreateTaskButton data={data} />
+                {stayUpdatedButtons ? <StayUpdatedButtons /> : null}
+                {type === "TOUR" ? <CreateCustomerButton /> : null}
+                <CreateTaskButton />
             </Stack>
         </SpaceBetween>
     );

@@ -2,19 +2,15 @@ import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import useDialog from "@/hooks/useDialog";
-import { FC } from "react";
-import { ContactNotificationExtended } from "@/types/notification";
 import dynamic from "next/dynamic";
 import { HideText } from "@/components/styled";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 const TaskDialogForNotification = dynamic(() => import("./TaskDialog"));
 
-interface CreateTaskButtonProps {
-    data: ContactNotificationExtended;
-}
-
-const CreateTaskButton: FC<CreateTaskButtonProps> = ({ data }) => {
+const CreateTaskButton = () => {
     const { t } = useTranslation();
 
+    const { notification } = useGetNotification();
     const [isOpen, openTask, closeTask] = useDialog();
 
     return (
@@ -32,8 +28,11 @@ const CreateTaskButton: FC<CreateTaskButtonProps> = ({ data }) => {
                 {t("New Task")}
             </Button>
 
-            {isOpen ? (
-                <TaskDialogForNotification data={data} onClose={closeTask} />
+            {isOpen && notification ? (
+                <TaskDialogForNotification
+                    data={notification}
+                    onClose={closeTask}
+                />
             ) : null}
         </>
     );

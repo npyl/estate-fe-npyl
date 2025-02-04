@@ -1,16 +1,12 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { LocalPhone, Email } from "@mui/icons-material";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 
-interface CustomerInfoProps {
-    customerMobile: string;
-    customerEmail: string;
-}
+const CustomerInfo = () => {
+    const { notification } = useGetNotification();
+    const { customerEmail, customerMobile } = notification || {};
 
-const CustomerInfo: React.FC<CustomerInfoProps> = ({
-    customerMobile,
-    customerEmail,
-}) => {
     return (
         <Box display="flex" flexDirection="row" gap={7}>
             <Typography display="flex" alignItems="center">

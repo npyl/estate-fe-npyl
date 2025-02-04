@@ -1,18 +1,15 @@
-import { FC } from "react";
 import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 
-interface AgreementTitleProps {
-    agreementVariant?: string;
-    isAgreementActive?: boolean;
-}
-
-const AgreementTitle: FC<AgreementTitleProps> = ({
-    agreementVariant,
-    isAgreementActive,
-}) => {
+const AgreementTitle = () => {
     const { t } = useTranslation();
+
+    const { notification } = useGetNotification();
+    const { variant, active } = notification?.agreement || {};
+
+    const agreementVariant = variant?.value;
 
     return (
         <Stack
@@ -37,7 +34,7 @@ const AgreementTitle: FC<AgreementTitleProps> = ({
                         mb: 0.5,
                     }}
                 />
-                {isAgreementActive ? (
+                {active ? (
                     <NormalBadge
                         name={`${t("Active")}`}
                         color={"#43c6b7"}

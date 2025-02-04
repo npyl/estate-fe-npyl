@@ -160,7 +160,7 @@ const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
         };
 
         getTask().then(setTask);
-    }, [t, i18n.language, data]);
+    }, [t, i18n.language]);
 
     if (!task) return null;
 

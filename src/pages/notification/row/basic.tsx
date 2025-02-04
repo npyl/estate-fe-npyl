@@ -341,15 +341,7 @@ const BasicRow = ({
                                     </>
                                 ) : null}
                             </Box>
-                            {type !== "AGREEMENT" ? (
-                                <CustomerInfo
-                                    customerMobile={row.customerMobile}
-                                    customerEmail={row.customerEmail}
-                                    tourType={row.tourType}
-                                    tourDate={row.tourDate}
-                                    tourTime={row.tourTime}
-                                />
-                            ) : null}
+                            {type !== "AGREEMENT" ? <CustomerInfo /> : null}
                         </Stack>
                     </Stack>
                 </TableCell>

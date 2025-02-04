@@ -1,4 +1,3 @@
-import React from "react";
 import { Stack, Typography, Tooltip } from "@mui/material";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -7,21 +6,21 @@ import ExpiredIcon from "@mui/icons-material/Error";
 // Adjust the path as necessary
 import Link from "@/components/Link";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
-import { ContactNotificationExtended } from "@/types/notification";
+import useGetNotification from "@/sections/Notification/useGetNotification";
 
-interface AgreementDetailsProps {
-    data: ContactNotificationExtended;
-}
-
-const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
+const AgreementDetails = () => {
     const { t } = useTranslation();
 
-    const expirationDate = data?.agreement?.expirationDate
-        ? format(new Date(data?.agreement?.expirationDate), "dd MMMM yyyy")
+    const { notification } = useGetNotification();
+
+    const { notificationDate, agreement, message } = notification || {};
+
+    const expirationDate = agreement?.expirationDate
+        ? format(new Date(agreement?.expirationDate), "dd MMMM yyyy")
         : "";
 
-    const propertyHref = `/property/${data?.agreement?.property?.id}`;
-    const customerHref = `/customer/${data?.agreement?.owner?.id}`;
+    const propertyHref = `/property/${agreement?.property?.id}`;
+    const customerHref = `/customer/${agreement?.owner?.id}`;
 
     return (
         <>
@@ -31,21 +30,18 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
                 justifyContent="space-between"
                 mt={1}
             >
-                <Typography variant="h6">{data?.agreement?.title}</Typography>
+                <Typography variant="h6">{agreement?.title}</Typography>
                 <Typography
                     variant="body2"
                     color="text.secondary"
                     align="right"
                 >
-                    {format(
-                        new Date(data?.notificationDate || ""),
-                        "dd MMM yyyy"
-                    )}
+                    {format(new Date(notificationDate || ""), "dd MMM yyyy")}
                 </Typography>
             </Stack>
             <Stack>
                 <Typography variant="body2" mt={0.5}>
-                    {data?.message}
+                    {message}
                 </Typography>
 
                 <Stack
@@ -66,7 +62,7 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
                         >
                             <NormalBadge
                                 name={`${t("Code")}: ${
-                                    data?.agreement?.property?.code || ""
+                                    agreement?.property?.code || ""
                                 }`}
                                 color={"#ffcc00"}
                                 sx={{
@@ -95,7 +91,7 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
                                 color: "black",
                             }}
                         >
-                            {data?.agreement?.owner?.name}
+                            {agreement?.owner?.name}
                         </Link>
                     </Stack>
                     <Stack direction="row" gap={0.5} mt={0.5}>
@@ -105,7 +101,7 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
                         <Typography variant="body2">
                             {expirationDate}
                         </Typography>
-                        {data?.agreement?.expiresSoon && (
+                        {agreement?.expiresSoon && (
                             <Tooltip title="Expires soon" placement="top">
                                 <ExpireIcon
                                     color="warning"
@@ -116,7 +112,7 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({ data }) => {
                                 />
                             </Tooltip>
                         )}
-                        {data?.agreement?.expiredToday && (
+                        {agreement?.expiredToday && (
                             <Tooltip title="Expired" placement="top">
                                 <ExpiredIcon
                                     color="error"
