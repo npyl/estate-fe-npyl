@@ -1,6 +1,16 @@
-import { ReactNode } from "react";
+type TTabRenderer =
+    | "CUSTOMER_VIEW"
+    | "CUSTOMER_EDIT"
+    | "PROPERTY_VIEW"
+    | "PROPERTY_EDIT"
+    | "AGREEMENT"
+    | "PROFILE"
+    | "USER";
 
-export interface ITab {
+interface ITab {
     path: string;
-    label: ReactNode;
+    renderer: TTabRenderer;
+    resourceId: number;
 }
+
+export type { TTabRenderer, ITab };

@@ -1,19 +1,14 @@
 import { Stack, StackProps } from "@mui/material";
-import {
-    FC,
-    forwardRef,
-    useCallback,
-    useImperativeHandle,
-    useState,
-} from "react";
+import { FC, forwardRef, useCallback, useImperativeHandle } from "react";
 import { ITab } from "@/types/tabs";
 import dynamic from "next/dynamic";
 import { SubbarRef } from "@/contexts/tabs";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import useCookie from "@/hooks/useCookie";
 const TabItem = dynamic(() => import("./Item"));
 
-const pushOrUpdate = (t: ITab) => (old: ITab[]) => {
+const pushOrUpdate = (old: ITab[], t: ITab) => {
     // Update
     if (old.some(({ path }) => path === t.path))
         return old.map((ot) => (ot.path === t.path ? t : ot));
@@ -22,14 +17,17 @@ const pushOrUpdate = (t: ITab) => (old: ITab[]) => {
     return [...old, t];
 };
 
-const getTabItem: FC<ITab> = ({ label, path }) => (
-    <TabItem key={path} label={label} path={path} />
-);
+const getTabItem: FC<ITab> = (t) => <TabItem key={t.path} t={t} />;
+
+const cookieName = "PPSubbarTabs";
 
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
-    const [tabs, setTabs] = useState<ITab[]>([]);
+    const [tabs, setTabs] = useCookie<ITab[]>(cookieName, []);
 
-    const pushTab = useCallback((t: ITab) => setTabs(pushOrUpdate(t)), []);
+    const pushTab = useCallback(
+        (t: ITab) => setTabs(pushOrUpdate(tabs, t)),
+        [tabs]
+    );
 
     const router = useRouter();
     const pathname = usePathname();
