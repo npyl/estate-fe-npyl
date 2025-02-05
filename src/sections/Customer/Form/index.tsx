@@ -6,7 +6,7 @@ import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import { LoadingButton } from "@mui/lab";
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { BaseSyntheticEvent, FC, useCallback, useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 
@@ -152,7 +152,8 @@ const Form: FC<FormProps> = ({
 
     const { methods } = useCustomerForm(customer);
 
-    const handleSubmit = (data: ICustomerYup) => {
+    // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
+    const handleSubmit = methods.handleSubmit((data: ICustomerYup) => {
         try {
             onSave({
                 ...(data as ICustomerPOST),
@@ -166,12 +167,12 @@ const Form: FC<FormProps> = ({
             console.error(error);
             methods.reset();
         }
-    };
+    });
 
     const handleClear = useCallback(() => methods.reset(), []);
 
     return (
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form>
             <FormProvider {...methods}>
                 <Grid container paddingTop={1} paddingRight={1} spacing={1}>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
@@ -225,7 +226,7 @@ const Form: FC<FormProps> = ({
                         loading={isLoading && !isError}
                         variant="contained"
                         startIcon={<SendIcon />}
-                        type="submit"
+                        onClick={handleSubmit}
                     >
                         {t("Save")}
                     </LoadingButton>
