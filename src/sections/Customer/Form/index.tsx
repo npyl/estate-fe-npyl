@@ -63,6 +63,8 @@ const getLoginSchema = (t: TranslationType) =>
     });
 
 const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
+    id: customer?.id,
+
     firstName: customer?.firstName || "",
     lastName: customer?.lastName || "",
     email: customer?.email || "",
