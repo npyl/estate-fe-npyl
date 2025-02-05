@@ -1,7 +1,8 @@
-import Typography from "@mui/material/Typography";
+import Typography, { TypographyProps } from "@mui/material/Typography";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-const AdminLabel = () => {
+const AdminLabel: FC<TypographyProps> = (props) => {
     const { t } = useTranslation();
     return (
         <Typography
@@ -12,6 +13,7 @@ const AdminLabel = () => {
             color="white"
             borderRadius="40px"
             px={1}
+            {...props}
         >
             {t("Admin")}
         </Typography>
