@@ -11,8 +11,7 @@ const onlyOnce = <T extends (...args: any[]) => any>(cb: T) => {
     };
 };
 
-const WARN_MESSAGE =
-    "WARN: Make sure you use the safe-alternative: JSON.parseSafe";
+const WARN_MESSAGE = "JSON.parse: Use safe-alternative JSON.parseSafe instead";
 
 const warnOnce = onlyOnce(() => {
     debugLog(WARN_MESSAGE);
