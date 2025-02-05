@@ -5,10 +5,15 @@ import PersonIcon from "@mui/icons-material/Person";
 import useDialog from "@/hooks/useDialog";
 import CustomerModal from "@/sections/Customer/Modal";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import { ICustomerPOST } from "@/types/customer";
+import useCustomerWithUpdatedDemands from "./useCustomerDemands";
 
-const UpdateDemandsButton = () => {
+interface Props {
+    customerId?: number;
+}
+
+const UpdateDemandsButton: FC<Props> = ({ customerId }) => {
     const { t } = useTranslation();
 
     const [isOpen, openModal, closeModal] = useDialog();
@@ -19,11 +24,14 @@ const UpdateDemandsButton = () => {
         return await create(d).unwrap();
     }, []);
 
+    const customer = useCustomerWithUpdatedDemands(customerId);
+    const isDisabled = isLoading || !customer;
+
     return (
         <>
             <LoadingButton
                 loading={isLoading}
-                disabled={isLoading}
+                disabled={isDisabled}
                 sx={{
                     textWrap: "nowrap",
                     ...HideText,
@@ -38,7 +46,7 @@ const UpdateDemandsButton = () => {
 
             {isOpen ? (
                 <CustomerModal
-                    customer={{} as any}
+                    customer={customer}
                     createCb={createCb}
                     isLoading={isLoading}
                     isError={isError}

@@ -7,6 +7,9 @@ import { Box } from "@mui/material";
 import { FC, useState } from "react";
 import { TViewFilter } from "../../types";
 
+const sortBy = "updatedAt";
+const direction = "DESC";
+
 interface StayUpdatedProps {
     filter: TViewFilter;
 }
@@ -14,8 +17,6 @@ interface StayUpdatedProps {
 const StayUpdated: FC<StayUpdatedProps> = ({ filter }) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sortBy, setSortBy] = useState("createdAt");
-    const [direction, setDirection] = useState("DESC");
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
     const { data } = useFilterNotificationsQuery({

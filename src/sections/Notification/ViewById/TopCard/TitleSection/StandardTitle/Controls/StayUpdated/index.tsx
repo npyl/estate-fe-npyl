@@ -5,13 +5,16 @@ import CreateCustomerButton from "../CreateCustomer";
 // -------------------------------------------------------------------
 
 const StayUpdatedButtons = () => {
-    const { didFound } = useCustomerExists();
+    const { customer, didFound } = useCustomerExists();
 
     // TODO: show update demands only if there is *actually* an update
 
     return (
         <>
-            {didFound ? <UpdateDemandsButton /> : null}
+            {didFound ? (
+                <UpdateDemandsButton customerId={customer?.id} />
+            ) : null}
+
             {!didFound ? <CreateCustomerButton /> : null}
         </>
     );
