@@ -50,9 +50,13 @@ const Layout: FC<LayoutProps> = ({ initial, children }) => {
     const filtered = useFilteredChildern(children);
 
     return (
-        <Stack direction="row-reverse" spacing={1}>
+        <Stack direction={{ xs: "column", lg: "row-reverse" }} spacing={3}>
             {/* Sidebar */}
-            <Sidebar ref={sidebarRef} initial={initial}>
+            <Sidebar
+                ref={sidebarRef}
+                initial={initial}
+                width={{ xs: "100%", lg: "20%" }}
+            >
                 {filtered}
             </Sidebar>
 

@@ -1,16 +1,10 @@
-import Stack from "@mui/material/Stack";
-import {
-    forwardRef,
-    PropsWithChildren,
-    useCallback,
-    useImperativeHandle,
-    useState,
-} from "react";
+import Stack, { StackProps } from "@mui/material/Stack";
+import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import React from "react";
-import Tabs from "@mui/material/Tabs";
 import getTab from "./Tab";
 import { getSectionId } from "../NavSection";
 import { SxProps, Theme } from "@mui/material";
+import ResponsiveTabs from "./ResponsiveTabs";
 
 // ------------------------------------------------------------------------
 
@@ -20,8 +14,8 @@ const TabSx: SxProps<Theme> = {
     zIndex: 10,
 
     "& .MuiTabs-indicator": {
-        height: "60px !important",
-        left: 20,
+        height: { xs: "2px", lg: "60px" },
+        left: { xs: "initial", lg: 20 },
     },
 };
 
@@ -31,12 +25,12 @@ interface SidebarRef {
     setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-interface SidebarProps extends PropsWithChildren {
+interface SidebarProps extends StackProps {
     initial?: string;
 }
 
 const Sidebar = forwardRef<SidebarRef, SidebarProps>(
-    ({ initial = "", children }, ref) => {
+    ({ initial = "", children, ...props }, ref) => {
         const [value, setValue] = useState<string>(initial);
 
         useImperativeHandle(ref, () => ({ setValue }), []);
@@ -55,16 +49,14 @@ const Sidebar = forwardRef<SidebarRef, SidebarProps>(
         }, []);
 
         return (
-            <Stack>
-                <Tabs
-                    orientation="vertical"
-                    variant="scrollable"
+            <Stack {...props}>
+                <ResponsiveTabs
                     value={value}
                     onChange={handleChange}
                     sx={TabSx}
                 >
                     {React.Children.map(children, getTab)}
-                </Tabs>
+                </ResponsiveTabs>
             </Stack>
         );
     }
