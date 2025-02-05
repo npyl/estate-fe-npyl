@@ -2,7 +2,6 @@ import {
     Divider,
     Grid,
     SelectChangeEvent,
-    Slider,
     Stack,
     Typography,
 } from "@mui/material";

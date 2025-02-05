@@ -1,5 +1,12 @@
-import { IconButton, Tab, Tabs, Stack, Typography } from "@mui/material";
-import { Suspense, useCallback, useState, lazy } from "react";
+import {
+    IconButton,
+    Tab,
+    Tabs,
+    Stack,
+    Typography,
+    Button,
+} from "@mui/material";
+import { useCallback, useState } from "react";
 import { FC } from "react";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -9,9 +16,8 @@ import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import useResponsive from "@/hooks/useResponsive";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-
-// Dynamic
-const DemandForm = lazy(() => import("./DemandSection/Form"));
+import dynamic from "next/dynamic";
+const DemandForm = dynamic(() => import("./Form"));
 
 const emptyDemand: IDemandPOST = {
     filters: {
@@ -104,11 +110,13 @@ const DemandSection: FC<Props> = ({ onClose }) => {
     );
     const handleTabChange = useCallback((e: any, v: number) => setIndex(v), []);
     const handleDeleteTab = useCallback(
-        (i: number) =>
-            setValue(
-                demandsName,
-                demands.filter((d, index) => index !== i)
-            ),
+        (i: number) => {
+            setIndex((old) => Math.max(0, old - 1));
+
+            // remove tab
+            const filtered = demands.filter((d, index) => index !== i);
+            setValue(demandsName, filtered);
+        },
         [demands]
     );
 
@@ -120,9 +128,12 @@ const DemandSection: FC<Props> = ({ onClose }) => {
                 <Typography variant="h6">{t("Demands")}</Typography>
 
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <IconButton onClick={handleTabCreate}>
-                        <AddCircleOutlineOutlinedIcon />
-                    </IconButton>
+                    <Button
+                        startIcon={<AddCircleOutlineOutlinedIcon />}
+                        onClick={handleTabCreate}
+                    >
+                        {t("Add")}
+                    </Button>
 
                     {isMobile ? (
                         <IconButton onClick={onClose}>
@@ -145,7 +156,15 @@ const DemandSection: FC<Props> = ({ onClose }) => {
                                 gap: 2,
                             }}
                             icon={
-                                <CloseIcon onClick={() => handleDeleteTab(i)} />
+                                <IconButton
+                                    size="small"
+                                    onClick={() => handleDeleteTab(i)}
+                                    sx={{
+                                        borderRadius: "100%",
+                                    }}
+                                >
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
                             }
                         />
                     ))}
@@ -153,9 +172,7 @@ const DemandSection: FC<Props> = ({ onClose }) => {
             </Stack>
 
             {demands.length > index ? ( // prevent loading DemandForm too fast
-                <Suspense fallback={null}>
-                    <DemandForm index={index} />
-                </Suspense>
+                <DemandForm index={index} />
             ) : null}
         </>
     );
