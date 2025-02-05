@@ -1,3 +1,4 @@
+import { Language } from "@/components/LanguageButton/types";
 import { createContext, useCallback, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,6 +12,7 @@ export interface Settings {
 export interface SettingsContextValue {
     settings: Settings;
     saveSettings: (update: Settings) => void;
+    setLanguage: (language: Language) => void;
 }
 
 interface SettingsProviderProps {
@@ -57,6 +59,7 @@ export const storeSettings = (settings: Settings): void => {
 export const SettingsContext = createContext<SettingsContextValue>({
     settings: initialSettings,
     saveSettings: () => {},
+    setLanguage(language) {},
 });
 
 export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
@@ -81,11 +84,17 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
         storeSettings(updatedSettings);
     }, []);
 
+    const setLanguage = useCallback((language: Language) => {
+        localStorage.setItem("language", language);
+        i18n.changeLanguage(language);
+    }, []);
+
     return (
         <SettingsContext.Provider
             value={{
                 settings,
                 saveSettings,
+                setLanguage,
             }}
         >
             {children}

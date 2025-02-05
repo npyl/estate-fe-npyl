@@ -1,15 +1,16 @@
-import React from "react";
+import React, { SVGProps } from "react";
 
-const createSvg = (): JSX.Element => (
+const LanguageImage = (props: SVGProps<SVGSVGElement>) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth={1.5}
+        strokeWidth={2}
         stroke="currentColor"
         className="size-6"
-        width="20"
-        height="20"
+        width={20}
+        height={20}
+        {...props}
     >
         <path
             strokeLinecap="round"
@@ -18,9 +19,5 @@ const createSvg = (): JSX.Element => (
         />
     </svg>
 );
-
-const LanguageImage: React.FC = () => {
-    return <div>{createSvg()}</div>;
-};
 
 export default LanguageImage;

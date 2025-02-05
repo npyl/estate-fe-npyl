@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Language } from "@/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 import { useOpenAIDetails } from "../hooks";
 import fixDropdowns from "./stupid";
 import useDialog from "@/hooks/useDialog";

@@ -1,4 +1,4 @@
-import { Language } from "@/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 
 const TABS: {
     label: string;

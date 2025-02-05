@@ -4,7 +4,7 @@ import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Language } from "@/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 import DraftEditor from "@/components/draft-editor";
 import { RHFTextField } from "@/components/hook-form";
 import TabbedBox from "./TabbedBox";

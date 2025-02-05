@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { Language } from "@/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 import dynamic from "next/dynamic";
 import { EditorState } from "draft-js";
 import { textToEditorState } from "../util";

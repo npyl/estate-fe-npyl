@@ -2,7 +2,6 @@ import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
-import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import { IUser } from "src/types/user";
 import ListLanguageItem from "@/components/List/Items/language";
@@ -11,6 +10,7 @@ const UserForm = dynamic(() => import("./Form"));
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
 import AvatarPicker from "./AvatarPicker";
+import AdminLabel from "./AdminLabel";
 
 interface ViewUserProps {
     user?: IUser;
@@ -29,11 +29,6 @@ const RenderUsername = ({ username }: { username?: string }) => {
             <Typography variant="h6">{username}</Typography>
         </Box>
     ) : null;
-};
-
-const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
-    const { t } = useTranslation();
-    return isAdmin ? <Label color="warning" opaque name={t("Admin")} /> : null;
 };
 
 const ViewUser = ({ user }: ViewUserProps) => {
@@ -71,7 +66,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                     lastName={user?.lastName}
                 />
                 <RenderUsername username={user?.username} />
-                <RenderIsAdmin isAdmin={user?.isAdmin} />
+                {user?.isAdmin ? <AdminLabel /> : null}
             </Stack>
             <Divider />
             <Grid container>

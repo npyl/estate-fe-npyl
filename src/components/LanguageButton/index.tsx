@@ -11,9 +11,9 @@ import { Language } from "./types";
 import useDialog from "@/hooks/useDialog";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import LanguageImage from "./languageImage";
+import LanguageImage from "@/assets/icons/language";
 import dynamic from "next/dynamic";
-const LanguagePopover = dynamic(() => import("./LanguagePopover"));
+const LanguagePopover = dynamic(() => import("./Popover"));
 
 const IconButtonSx: SxProps<Theme> = {
     padding: 0,

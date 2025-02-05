@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
-import { Language } from "src/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 
 // Utility function to join elements with a comma, excluding nullish or empty values

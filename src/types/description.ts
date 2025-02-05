@@ -1,4 +1,4 @@
-import { Language } from "src/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 
 export interface DescriptionEntry {
     title: string;

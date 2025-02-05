@@ -1064,6 +1064,7 @@ const resources = {
             Start: "Start",
             End: "End",
             Day: "Day",
+            Night: "Night",
             Login: "Login",
             GOOGLE_OATH_FAIL: "Failed to login",
 
@@ -1348,6 +1349,7 @@ const resources = {
             Start: "Έναρξη",
             End: "Λήξη",
             Day: "Ημέρα",
+            Night: "Νύχτα",
 
             "Delete Event": "Διαγραφή Γεγονότος",
             "Are you sure you want to delete this event?":

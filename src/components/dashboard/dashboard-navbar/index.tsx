@@ -17,7 +17,7 @@ import CreateButton from "../CreateButton";
 import { HideText } from "@/components/styled";
 import dynamic from "next/dynamic";
 import AccountLoader from "./AccountLoader";
-const AccountPopover = dynamic(() => import("./account-popover"), {
+const AccountButton = dynamic(() => import("./AccountButton"), {
     loading: () => <AccountLoader />,
 });
 
@@ -125,7 +125,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             }}
                         />
 
-                        <AccountPopover />
+                        <AccountButton />
                     </Stack>
                 </Toolbar>
             </DashboardNavbarRoot>

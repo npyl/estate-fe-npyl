@@ -1,9 +1,6 @@
 import { forwardRef } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import GrowingPopover from "@/components/GrowingPopover";
 import Avatar, { AvatarProps } from "@/components/Avatar";
-import Header from "./Header";
-import Content from "./Content";
 
 const AvatarButton = forwardRef<HTMLDivElement, AvatarProps>((props, ref) => {
     const { user } = useAuth();
@@ -23,10 +20,4 @@ const AvatarButton = forwardRef<HTMLDivElement, AvatarProps>((props, ref) => {
     );
 });
 
-const AccountPopover = () => (
-    <GrowingPopover HeadContentLeft={Header} Opener={AvatarButton}>
-        <Content />
-    </GrowingPopover>
-);
-
-export default AccountPopover;
+export default AvatarButton;

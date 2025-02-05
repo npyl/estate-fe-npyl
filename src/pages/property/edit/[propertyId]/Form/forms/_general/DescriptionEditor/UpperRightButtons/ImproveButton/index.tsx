@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Language } from "@/components/Language/types";
+import { Language } from "@/components/LanguageButton/types";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import { useOpenAIDetails } from "../../hooks";
 import { IOpenAIDetailsPOST } from "@/types/openai";

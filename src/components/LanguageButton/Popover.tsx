@@ -2,6 +2,7 @@ import { MenuItem, Popover, Typography, List } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
+import { useSettings } from "@/hooks/use-settings";
 
 interface LanguagePopoverProps {
     updatesGlobalLanguage: boolean;
@@ -31,14 +32,16 @@ const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
         open,
         ...other
     } = props;
+
+    const { setLanguage } = useSettings();
     const { i18n, t } = useTranslation();
 
     const handleChange = async (language: Language): Promise<void> => {
         onClose?.();
         onChange?.(language);
-        localStorage.setItem("language", language);
 
-        if (updatesGlobalLanguage) i18n.changeLanguage(language);
+        // INFO: system-wide change
+        if (updatesGlobalLanguage) setLanguage(language);
     };
 
     const currentLanguage = updatesGlobalLanguage
