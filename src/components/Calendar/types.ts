@@ -11,8 +11,9 @@ import {
 import { ComponentType, HTMLAttributes, MouseEvent } from "react";
 
 /**
- * id: matches Google's colorId
- * color: matches Google's foreground (hex)
+ * This type is generated from a `calendar_v3.Schema$ColorDefinition` entry (key, value pair)
+ * id: matches colorId
+ * color: matches background (hex)
  */
 type TCalendarColor = {
     id: string;

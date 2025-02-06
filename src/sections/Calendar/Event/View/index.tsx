@@ -87,14 +87,9 @@ const EventPopover: FC<Props> = ({
                 ) : null}
 
                 {actions && !isEdit ? (
-                    <Stack
-                        direction="row"
-                        spacing={1}
-                        position="absolute"
-                        right={0}
-                    >
-                        <IconButton onClick={openEdit}>
-                            <EditIcon />
+                    <Stack direction="row" spacing={1}>
+                        <IconButton size="small" onClick={openEdit}>
+                            <EditIcon fontSize="small" />
                         </IconButton>
 
                         <DeleteButton eventId={event?.id} onClose={onClose} />
@@ -110,34 +105,30 @@ const EventPopover: FC<Props> = ({
                 />
             ) : (
                 <Stack spacing={1}>
-                    <SpaceBetween alignItems="center" px={1}>
-                        <Stack direction="row" alignItems="center">
-                            <DateInfo
-                                date={event.startDate}
-                                width="fit-content"
-                                px={1}
-                                py={0.5}
-                                bgcolor="transparent"
-                                color="text.secondary"
-                                fontSize="14px"
-                            />
+                    <Stack direction="row" alignItems="center">
+                        <DateInfo
+                            date={event.startDate}
+                            width="fit-content"
+                            bgcolor="transparent"
+                            color="text.secondary"
+                            fontSize="14px"
+                        />
 
-                            <Duration
-                                start={event.startDate}
-                                end={event.endDate}
-                                bgcolor="transparent"
-                                color="text.secondary"
-                                fontSize="14px"
-                            />
-                        </Stack>
+                        <Duration
+                            start={event.startDate}
+                            end={event.endDate}
+                            bgcolor="transparent"
+                            color="text.secondary"
+                            fontSize="14px"
+                        />
+                    </Stack>
 
-                        <Stack direction="row" spacing={1}>
-                            <LocationSearching />
-                            <Typography color="text.secondary">
-                                {event?.location || "-"}
-                            </Typography>
-                        </Stack>
-                    </SpaceBetween>
+                    <Stack direction="row" spacing={1}>
+                        <LocationSearching />
+                        <Typography color="text.secondary">
+                            {event?.location || "-"}
+                        </Typography>
+                    </Stack>
 
                     <InputBase
                         value={event?.description}

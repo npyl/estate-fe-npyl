@@ -28,8 +28,8 @@ const DeleteButton: FC<DeleteButtonProps> = ({ eventId, onClose }) => {
 
     return (
         <>
-            <IconButton onClick={openDelete}>
-                <DeleteIcon />
+            <IconButton size="small" onClick={openDelete}>
+                <DeleteIcon fontSize="small" />
             </IconButton>
 
             {/* Delete */}

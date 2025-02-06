@@ -1,16 +1,39 @@
-import { forwardRef, MouseEvent, useCallback, useState } from "react";
-import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
+import { FC, forwardRef, MouseEvent, useCallback, useState } from "react";
+import {
+    Box,
+    Stack,
+    SxProps,
+    Theme,
+    Typography,
+    TypographyProps,
+} from "@mui/material";
 import { DAY_CELL_HEIGHT, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import Title from "./_shared/Title";
 import { EventProps } from "./types";
-import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import DraggableStack from "./DraggableStack";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
+
+// ------------------------------------------------------------------------------------
+
+const DescriptionSx: SxProps<Theme> = {
+    px: 1,
+    height: "100%",
+    color: "text.secondary",
+    bgcolor: (theme) =>
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[700],
+    borderRadius: "5px",
+};
+
+const Description: FC<TypographyProps> = (props) => (
+    <Typography variant="subtitle2" sx={DescriptionSx} p={1} m={1} {...props} />
+);
 
 // ------------------------------------------------------------------------------------
 
@@ -41,16 +64,6 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
             boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.55)",
         },
     };
-};
-
-const DescriptionSx: SxProps<Theme> = {
-    px: 1,
-    height: "100%",
-    bgcolor: (theme) =>
-        theme.palette.mode === "light"
-            ? theme.palette.neutral?.[200]
-            : theme.palette.neutral?.[700],
-    borderRadius: "5px",
 };
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
@@ -110,20 +123,13 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                     title={event.title}
                     startDate={event.startDate}
                     endDate={event.startDate}
-                    color={getTypeColor(event.type)}
+                    type={event.type}
+                    colorId={event.colorId}
                 />
 
                 {!isMinimumHeight ? (
                     <>
-                        <Stack p={1} spacing={1}>
-                            <Typography
-                                variant="subtitle2"
-                                noWrap
-                                sx={DescriptionSx}
-                            >
-                                {event.description}
-                            </Typography>
-                        </Stack>
+                        <Description>{event.description}</Description>
 
                         <Box flexGrow={1} />
 

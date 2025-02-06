@@ -1,6 +1,9 @@
 import { Button, Skeleton, Stack } from "@mui/material";
 import { FC, useCallback } from "react";
-import { TCalendarEvent } from "@/components/Calendar/types";
+import {
+    CALENDAR_COLOR_FALLBACK,
+    TCalendarEvent,
+} from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { CalendarEventReq } from "@/types/calendar";
@@ -27,7 +30,7 @@ const getDefault = (startDate?: string): CalendarEventReq => ({
     location: "",
     people: [],
     type: "TASK",
-    colorId: "1",
+    colorId: CALENDAR_COLOR_FALLBACK,
 });
 
 // ------------------------------------------------------------------------
@@ -83,7 +86,7 @@ const CreateUpdateForm: FC<Props> = ({
     return (
         <form ref={onRef} onSubmit={methods.handleSubmit(handleSubmit)}>
             <FormProvider {...methods}>
-                <Stack spacing={2}>
+                <Stack spacing={2} minHeight="400px">
                     <RHFTextField
                         variant="standard"
                         name="title"
