@@ -151,41 +151,39 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
             <TabPanel value={value} index={0}>
                 <MainContainer />
             </TabPanel>
-            <Suspense>
-                <TabPanel value={value} index={1}>
-                    <QuickView />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    <Tasks />
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                    <MatchingCustomersSection />
-                </TabPanel>
-                <TabPanel value={value} index={4}>
-                    <PhotosOnly />
-                </TabPanel>
-                <TabPanel value={value} index={5}>
-                    <Integrations />
-                </TabPanel>
-                <TabPanel value={value} index={6}>
-                    <PropertyLogs />
-                </TabPanel>
-                <TabPanel value={value} index={7}>
-                    <Documents />
-                </TabPanel>
-                <TabPanel value={value} index={8}>
-                    <Map />
-                </TabPanel>
-                <TabPanel value={value} index={9}>
-                    <StreetView />
-                </TabPanel>
-                <TabPanel value={value} index={10}>
-                    <AgreementsTab />
-                </TabPanel>
-                <TabPanel value={value} index={GREEN_MAP_INDEX}>
-                    <GreenMap />
-                </TabPanel>
-            </Suspense>
+            <TabPanel value={value} index={1}>
+                <QuickView />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <Tasks />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <MatchingCustomersSection />
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+                <PhotosOnly />
+            </TabPanel>
+            <TabPanel value={value} index={5}>
+                <Integrations />
+            </TabPanel>
+            <TabPanel value={value} index={6}>
+                <PropertyLogs />
+            </TabPanel>
+            <TabPanel value={value} index={7}>
+                <Documents />
+            </TabPanel>
+            <TabPanel value={value} index={8}>
+                <Map />
+            </TabPanel>
+            <TabPanel value={value} index={9}>
+                <StreetView />
+            </TabPanel>
+            <TabPanel value={value} index={10}>
+                <AgreementsTab />
+            </TabPanel>
+            <TabPanel value={value} index={GREEN_MAP_INDEX}>
+                <GreenMap />
+            </TabPanel>
 
             {cloneConfirmDialogOpen ? (
                 <ConfirmationDialogBox

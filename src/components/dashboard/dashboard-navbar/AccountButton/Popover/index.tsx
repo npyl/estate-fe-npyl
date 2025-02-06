@@ -23,8 +23,7 @@ const Popover: FC<Props> = ({ anchorEl, onClose }) => (
         slotProps={{
             paper: {
                 sx: {
-                    py: 1,
-                    px: 2,
+                    p: 1,
                     width: "fit-content",
                     ".MuiMenuItem-root": {
                         gap: 1,
