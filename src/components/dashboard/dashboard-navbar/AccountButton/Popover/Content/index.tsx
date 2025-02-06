@@ -38,7 +38,7 @@ const Content = () => {
                     <Typography variant="body1" width={1}>
                         {t("Profile")}
                     </Typography>
-                    {isAdmin ? <AdminLabel width="fit-content" /> : null}
+                    {isAdmin ? <AdminLabel /> : null}
                 </MenuItem>
             </Link>
             <Link href="/settings">

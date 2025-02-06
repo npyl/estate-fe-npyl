@@ -6,7 +6,7 @@ const AdminLabel: FC<TypographyProps> = (props) => {
     const { t } = useTranslation();
     return (
         <Typography
-            width={1}
+            width="fit-content"
             ml={2}
             variant="body2"
             bgcolor="#AF52DE"

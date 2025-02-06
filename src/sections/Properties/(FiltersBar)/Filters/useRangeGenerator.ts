@@ -15,7 +15,7 @@ const useRangeGenerator = () => {
             const TEN_K = 10 * 1000;
 
             if (type === "price") {
-                if (states.includes("Sale")) {
+                if (states.includes("SALE")) {
                     for (let i = TEN_K; i <= TEN_M; i += HUNDRED_K - TEN_K) {
                         numbers.push(i);
                     }
