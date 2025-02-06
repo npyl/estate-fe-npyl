@@ -1,12 +1,4 @@
-import {
-    IconButton,
-    InputBase,
-    PopoverActions,
-    Stack,
-    SxProps,
-    Theme,
-    Typography,
-} from "@mui/material";
+import { IconButton, PopoverActions, Stack, Typography } from "@mui/material";
 import Popover from "./Popover";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
@@ -21,21 +13,12 @@ import { LocationSearching } from "@mui/icons-material";
 import { SpaceBetween } from "@/components/styled";
 import DateInfo from "@/components/Calendar/Event/_shared/DateInfo";
 import PeopleSection from "./PeopleSection";
+import Description from "./Description";
 // ...
 const DeleteButton = dynamic(() => import("./DeleteButton"));
 const EditForm = dynamic(() => import("../form"));
 
-// -----------------------------------------------------------
-
-const DescriptionSx: SxProps<Theme> = {
-    px: 1,
-    height: "100%",
-    bgcolor: (theme) =>
-        theme.palette.mode === "light"
-            ? theme.palette.neutral?.[200]
-            : theme.palette.neutral?.[700],
-    borderRadius: "5px",
-};
+// ---------------------------------------------------------------------------
 
 interface Props {
     anchorEl: any;
@@ -130,12 +113,7 @@ const EventPopover: FC<Props> = ({
                         </Typography>
                     </Stack>
 
-                    <InputBase
-                        value={event?.description}
-                        sx={DescriptionSx}
-                        multiline
-                        rows={5}
-                    />
+                    <Description value={event?.description} />
 
                     <PeopleSection people={event?.people} type={event?.type} />
                 </Stack>

@@ -29,6 +29,9 @@ const DescriptionSx: SxProps<Theme> = {
             ? theme.palette.neutral?.[200]
             : theme.palette.neutral?.[700],
     borderRadius: "5px",
+
+    overflow: "hidden",
+    textOverflow: "ellipsis",
 };
 
 const Description: FC<TypographyProps> = (props) => (
@@ -76,7 +79,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
 
-        const [isCompact, setCompact] = useState(false);
+        const [isBullet, setBullet] = useState(false);
 
         const handleClick = useCallback(
             (e: MouseEvent<HTMLDivElement>) => {
@@ -91,13 +94,13 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         );
 
         const handleWidth = useCallback(
-            (width: number) => setCompact(width <= 60),
+            (width: number) => setBullet(width <= 60),
             []
         );
 
         const { onRef } = useWidthObserver(ref, handleWidth);
 
-        if (isCompact) {
+        if (isBullet) {
             return (
                 <Bullet
                     top={top}

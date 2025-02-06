@@ -10,6 +10,9 @@ const TitleSx: SxProps<Theme> = {
     marginTop: (theme) => theme.spacing(1),
     px: 1,
     width: 1,
+    minHeight: "45px",
+    justifyContent: "center",
+    overflowX: "hidden",
 };
 
 interface TitleProps {
@@ -41,6 +44,7 @@ const Title: FC<TitleProps> = ({
             start={startDate}
             end={endDate}
             width={1}
+            noWrap
             sx={{
                 pl: 0,
             }}
