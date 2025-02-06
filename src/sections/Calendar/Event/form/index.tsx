@@ -99,8 +99,8 @@ const CreateUpdateForm: FC<Props> = ({
                     <RHFLocation />
 
                     <Stack direction="row" spacing={1}>
-                        <RHFTypeSelect />
                         <Color />
+                        <RHFTypeSelect />
                     </Stack>
 
                     {isNotTask ? <People /> : null}

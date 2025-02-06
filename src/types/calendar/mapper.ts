@@ -148,6 +148,7 @@ const TCalendarEventToGCalendarEvent = ({
     extendedProperties,
     type,
     people,
+    colorId,
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
     const preparedPeople = preparePeople(people, type);
 
@@ -164,7 +165,7 @@ const TCalendarEventToGCalendarEvent = ({
             timeZone: "UTC",
         },
         location,
-
+        colorId: getValidColorId(colorId),
         extendedProperties: {
             shared: extendedProperties?.shared,
             private: {

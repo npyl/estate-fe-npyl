@@ -3,16 +3,20 @@ import { useWatch } from "react-hook-form";
 import { useGetColorsQuery } from "@/services/calendar";
 import { useAuth } from "@/hooks/use-auth";
 import { toNumberSafe } from "@/utils/toNumber";
+import { CalendarEventReq } from "@/types/calendar";
 
 const useCurrentColor = () => {
     const { user } = useAuth();
     const { data } = useGetColorsQuery(+user?.id!);
 
-    const colorId = useWatch({ name: "colorId" });
+    const colorId = useWatch<CalendarEventReq>({ name: "colorId" });
     const bgcolor = useMemo(
         () => data?.find(({ id }) => id === colorId)?.color,
         [colorId, data]
     );
+
+    if (!colorId) return "text.secondary";
+    if (typeof colorId !== "string") return "text.secondary";
 
     const iColorId = toNumberSafe(colorId);
     const isValid = iColorId > 0 && iColorId < 12;

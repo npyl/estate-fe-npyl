@@ -1,8 +1,9 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import ColorBox, { ColorBoxProps } from "../Box";
 import { SxProps, Theme } from "@mui/material";
 import { FC, useCallback } from "react";
 import { TCalendarColor } from "@/components/Calendar/types";
+import { CalendarEventReq } from "@/types/calendar";
 
 const getBoxSx = (isSelected: boolean): SxProps<Theme> => ({
     border: "2px solid",
@@ -13,20 +14,15 @@ const getBoxSx = (isSelected: boolean): SxProps<Theme> => ({
     },
 });
 
-interface Props extends ColorBoxProps {
+interface Props extends Omit<ColorBoxProps, "onClick"> {
     c: TCalendarColor;
+    onClick: (colorId: string) => void;
 }
 
-const RHFColorBox: FC<Props> = ({ c: { id, color }, ...props }) => {
-    const colorId = useWatch({ name: "colorId" });
+const RHFColorBox: FC<Props> = ({ c: { id, color }, onClick, ...props }) => {
+    const colorId = useWatch<CalendarEventReq>({ name: "colorId" });
     const isSelected = id === colorId;
-
-    const { setValue } = useFormContext();
-    const handleClick = useCallback(
-        () => setValue("colorId", id, { shouldDirty: true }),
-        []
-    );
-
+    const handleClick = useCallback(() => onClick(id), [id, onClick]);
     return (
         <ColorBox
             sx={getBoxSx(isSelected)}
