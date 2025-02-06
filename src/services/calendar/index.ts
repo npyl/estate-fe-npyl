@@ -1,4 +1,4 @@
-import { TCalendarEvent } from "@/components/Calendar/types";
+import { TCalendarColor, TCalendarEvent } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { GUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -21,7 +21,7 @@ export const calendar = createApi({
         baseUrl: `${process.env.NEXT_PUBLIC_PROXY_API}/calendar`,
     }),
 
-    tagTypes: ["IsAdmin", "Events", "Users"],
+    tagTypes: ["IsAdmin", "Events", "Users", "Colors"],
 
     endpoints: (builder) => ({
         // ------------------------- OFFICE ---------------------------
@@ -93,6 +93,15 @@ export const calendar = createApi({
             onQueryStarted: optimisticDelete,
             invalidatesTags: ["Events"],
         }),
+
+        // ------------------------- COLORS ---------------------------
+
+        getColors: builder.query<TCalendarColor[], number>({
+            query: (userId) => ({
+                url: `/${userId}/colors`,
+            }),
+            providesTags: ["Colors"],
+        }),
     }),
 });
 
@@ -131,4 +140,6 @@ export const {
     useCreateEventMutation,
     useUpdateEventMutation,
     useDeleteEventMutation,
+    // ...
+    useGetColorsQuery,
 } = calendar;

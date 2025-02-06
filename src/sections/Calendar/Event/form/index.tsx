@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Skeleton, Stack } from "@mui/material";
 import { FC, useCallback } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,9 @@ import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import Pickers from "./Pickers";
 import dynamic from "next/dynamic";
+const Color = dynamic(() => import("./Color"), {
+    loading: () => <Skeleton variant="circular" width="30px" height="30px" />,
+});
 const People = dynamic(() => import("./People"));
 const RHFLocation = dynamic(() => import("./RHFLocation"));
 
@@ -24,6 +27,7 @@ const getDefault = (startDate?: string): CalendarEventReq => ({
     location: "",
     people: [],
     type: "TASK",
+    colorId: "1",
 });
 
 // ------------------------------------------------------------------------
@@ -94,7 +98,10 @@ const CreateUpdateForm: FC<Props> = ({
 
                     <RHFLocation />
 
-                    <RHFTypeSelect />
+                    <Stack direction="row" spacing={1}>
+                        <RHFTypeSelect />
+                        <Color />
+                    </Stack>
 
                     {isNotTask ? <People /> : null}
 

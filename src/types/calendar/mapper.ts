@@ -1,4 +1,5 @@
 import {
+    CALENDAR_COLOR_FALLBACK,
     isTCalendarEventType,
     TCalendarEvent,
     TCalendarEventExtendedProperties,
@@ -7,6 +8,19 @@ import {
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
+import { TCalendarColor } from "@/components/Calendar/types";
+import { toNumberSafe } from "@/utils/toNumber";
+
+type TColorDefinition = calendar_v3.Schema$ColorDefinition;
+type TColorEntry = [string, TColorDefinition];
+
+const GColorToTCalendarColor = ([
+    colorId,
+    definition,
+]: TColorEntry): TCalendarColor => ({
+    id: colorId,
+    color: definition?.background || "",
+});
 
 /**
     From Google Docs: 
@@ -40,6 +54,16 @@ const extractPeople = (
     }
 };
 
+const getValidColorId = (colorId?: string | null) => {
+    if (!colorId) return CALENDAR_COLOR_FALLBACK;
+
+    const iColorId = toNumberSafe(colorId);
+    if (!Number.isInteger(iColorId)) return CALENDAR_COLOR_FALLBACK;
+    if (iColorId < 1 || iColorId > 11) return CALENDAR_COLOR_FALLBACK;
+
+    return colorId;
+};
+
 const GCalendarToTCalendarEvent = ({
     id,
     summary,
@@ -48,6 +72,7 @@ const GCalendarToTCalendarEvent = ({
     description,
     location,
     extendedProperties,
+    colorId,
 }: calendar_v3.Schema$Event): TCalendarEvent => {
     const isAllDay =
         !start?.dateTime &&
@@ -76,6 +101,7 @@ const GCalendarToTCalendarEvent = ({
         startDate,
         endDate,
         type: isTCalendarEventType(type) ? type : "TASK",
+        colorId: getValidColorId(colorId),
         people,
         extendedProperties,
     };
@@ -151,6 +177,7 @@ const TCalendarEventToGCalendarEvent = ({
 };
 
 export {
+    GColorToTCalendarColor,
     TCalendarEventToGCalendarEvent,
     GCalendarToTCalendarEvent,
     // ...

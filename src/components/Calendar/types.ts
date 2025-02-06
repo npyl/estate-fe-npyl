@@ -10,6 +10,17 @@ import {
 } from "@/components/BaseCalendar/types";
 import { ComponentType, HTMLAttributes, MouseEvent } from "react";
 
+/**
+ * id: matches Google's colorId
+ * color: matches Google's foreground (hex)
+ */
+type TCalendarColor = {
+    id: string;
+    color: string;
+};
+
+const CALENDAR_COLOR_FALLBACK = "1";
+
 type TCalendarEventExtendedProperties = {
     private?: {
         [key: string]: string;
@@ -47,6 +58,7 @@ type TCalendarEvent = {
     title: string;
     description: string;
     type: TCalendarEventType;
+    colorId: string;
     people: Partial<TCalendarEventPerson>[];
     location: string; // INFO: must be in google expected format in order for it to open in Maps
     startDate: string; // day-time
@@ -138,7 +150,7 @@ interface CalendarProps {
     ViewSlots?: Partial<CalendarViewSlots>;
 }
 
-export { isTCalendarEventType };
+export { isTCalendarEventType, CALENDAR_COLOR_FALLBACK };
 
 export type {
     // ...
@@ -149,6 +161,7 @@ export type {
     TCalendarEventType,
     TCalendarEventPerson,
     TCalendarEventExtendedProperties,
+    TCalendarColor,
 
     // ...
     TGetCellEventsCb,

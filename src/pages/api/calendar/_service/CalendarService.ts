@@ -306,6 +306,17 @@ class CalendarService {
             auth,
         });
     }
+
+    // --------------------------------------------------------------------
+
+    async getColors(userId: number) {
+        const auth = await authService.getAuthForUser(userId);
+        if (!auth) throw new Error("Could not find user!");
+
+        const res = await this.calendar.colors.get({ auth });
+
+        return res?.data?.event;
+    }
 }
 
 // ------------------------------------------------------------------------------

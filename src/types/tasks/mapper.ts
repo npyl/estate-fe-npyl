@@ -1,3 +1,4 @@
+import { CALENDAR_COLOR_FALLBACK } from "@/components/Calendar/types";
 import { ICreateOrUpdateTaskReq, IKanbanCard, IKanbanCardPOST } from ".";
 import { CalendarEventReq } from "@/types/calendar";
 
@@ -51,6 +52,7 @@ const KanbanTaskToCalendarEvent = ({
     endDate: due?.[1] || "",
     location: "",
     people: [],
+    colorId: CALENDAR_COLOR_FALLBACK,
 });
 
 export { IKanbanCardRes2Req, KanbanTaskToCalendarEvent };
