@@ -14,6 +14,8 @@ import {
     SearchEventsReq,
 } from "./types";
 import { optimisticDelete, optimisticUpdate } from "./optimistic";
+import { useMemo } from "react";
+import { primary } from "@/theme/light-theme-options";
 
 export const calendar = createApi({
     reducerPath: "calendar",
@@ -128,7 +130,21 @@ const useCalendarAuth = () => {
     };
 };
 
-export { useCalendarAuth };
+// ----------------------------------------------------------------------------------
+
+const useCalendarColorById = (colorId: string) => {
+    const { user } = useAuth();
+    const { data } = useGetColorsQuery(user?.id!);
+    const bgcolor = useMemo(
+        () => data?.find(({ id }) => id === colorId)?.color,
+        [data, colorId]
+    );
+    return bgcolor || primary.main;
+};
+
+// ----------------------------------------------------------------------------------
+
+export { useCalendarAuth, useCalendarColorById };
 
 export const {
     // ...
