@@ -84,7 +84,6 @@ export const calendar = createApi({
                 method: "PUT",
             }),
             onQueryStarted: optimisticUpdate,
-            invalidatesTags: ["Events"],
         }),
 
         deleteEvent: builder.mutation<void, DeleteEventReq>({
@@ -93,7 +92,6 @@ export const calendar = createApi({
                 method: "DELETE",
             }),
             onQueryStarted: optimisticDelete,
-            invalidatesTags: ["Events"],
         }),
 
         // ------------------------- COLORS ---------------------------
