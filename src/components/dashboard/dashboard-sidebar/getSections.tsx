@@ -2,8 +2,8 @@ import { LabelImportant } from "@mui/icons-material";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import { TFunction } from "i18next";
 import { ReactNode } from "react";
-import { Home as HomeIcon } from "@/assets/icons/home";
-import { Users as UsersIcon } from "@/assets/icons/users";
+import HomeIcon from "@/assets/icons/home";
+import CustomersIcon from "@/assets/icons/customers";
 import HistoryIcon from "@mui/icons-material/History";
 import { ChartPie } from "@/assets/icons/chart-pie";
 import { ChartLine as ChartLineIcon } from "@/assets/icons/chart-line";
@@ -60,7 +60,7 @@ const getSections = (
             {
                 title: t("Customers"),
                 path: "/customers",
-                icon: <UsersIcon fontSize="small" />,
+                icon: <CustomersIcon fontSize="small" />,
             },
 
             {

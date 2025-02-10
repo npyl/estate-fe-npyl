@@ -6,6 +6,7 @@ import { ITab } from "@/types/tabs";
 import ClearButton from "./ClearButton";
 import Content from "./Content";
 import { getButtonSx } from "./styles";
+import Icon from "./Icon";
 
 type TabItemProps = Omit<ButtonProps, "label"> & { t: ITab };
 
@@ -34,6 +35,7 @@ const TabItem: FC<TabItemProps> = ({ t: { path, renderer, resourceId } }) => {
             sx={getButtonSx(isCurrent)}
             endIcon={<ClearButton path={path} />}
         >
+            <Icon renderer={renderer} />
             <ResponsiveLabel>
                 <Content renderer={renderer} resourceId={resourceId} />
             </ResponsiveLabel>

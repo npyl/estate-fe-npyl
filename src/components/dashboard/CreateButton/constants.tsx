@@ -2,7 +2,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 import TasksIcon from "@mui/icons-material/ConfirmationNumber";
 import HandshakeIcon from "@mui/icons-material/Handshake";
-import { Users as UsersIcon } from "@/assets/icons/users";
+import CustomersIcon from "@/assets/icons/customers";
 
 const MENU_ITEMS = [
     {
@@ -13,7 +13,7 @@ const MENU_ITEMS = [
     {
         label: "Customer",
         path: "/customer/create",
-        icon: <UsersIcon />,
+        icon: <CustomersIcon />,
     },
     {
         label: "Task",

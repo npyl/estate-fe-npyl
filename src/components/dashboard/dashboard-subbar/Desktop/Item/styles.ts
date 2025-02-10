@@ -4,8 +4,13 @@ import { getBorderColor2 } from "@/theme/borderColor";
 const getButtonSx = (current: boolean): SxProps<Theme> => ({
     border: "1px solid",
     borderColor: getBorderColor2,
+
     display: "flex",
+    flexDirection: "row",
+    gap: 1,
+
     marginInline: 2,
+
     justifyContent: "space-between",
     alignItems: "center",
 
@@ -32,11 +37,12 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
           }),
 
     boxShadow: (theme) => theme.shadows[5],
+
     transition: "all 0.3s ease",
+
     cursor: "pointer",
-    flexDirection: "row",
-    minWidth: "275px",
-    width: "max-content",
+
+    width: "fit-content",
     maxWidth: "350px",
 });
 

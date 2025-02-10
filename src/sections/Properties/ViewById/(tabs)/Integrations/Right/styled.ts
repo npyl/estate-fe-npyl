@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 
 const Item = styled(Stack)(({ theme }) => ({
     flexDirection: "column",
+    gap: 2,
     [theme.breakpoints.up("md")]: {
         flexDirection: "row",
     },
