@@ -1,9 +1,15 @@
+import { IntegrationSite } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const spitogatosListing = createApi({
-    reducerPath: "spitogatosListing",
+interface IListingReq {
+    propertyId: number;
+    site: IntegrationSite;
+}
+
+export const generalListing = createApi({
+    reducerPath: "generalListing",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/integrations/spitogatos`,
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/integrations`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -22,29 +28,38 @@ export const spitogatosListing = createApi({
     }),
     tagTypes: [],
     endpoints: (builder) => ({
-        addSpitogatosListing: builder.mutation<void, number>({
-            query: (propertyId: number) => ({
+        addGeneralListing: builder.mutation<void, IListingReq>({
+            query: ({ propertyId, site }) => ({
                 url: `addListing/${propertyId}`,
                 method: "POST",
+                params: {
+                    site,
+                },
             }),
         }),
-        removeSpitogatosListing: builder.mutation<void, number>({
-            query: (propertyId: number) => ({
+        removeGeneralListing: builder.mutation<void, IListingReq>({
+            query: ({ propertyId, site }) => ({
                 url: `removeListing/${propertyId}`,
                 method: "DELETE",
+                params: {
+                    site,
+                },
             }),
         }),
-        syncSpitogatosListing: builder.mutation<void, number>({
-            query: (propertyId: number) => ({
+        syncGeneralListing: builder.mutation<void, IListingReq>({
+            query: ({ propertyId, site }) => ({
                 url: `syncListing/${propertyId}`,
                 method: "POST",
+                params: {
+                    site,
+                },
             }),
         }),
     }),
 });
 
 export const {
-    useAddSpitogatosListingMutation,
-    useRemoveSpitogatosListingMutation,
-    useSyncSpitogatosListingMutation,
-} = spitogatosListing;
+    useAddGeneralListingMutation,
+    useRemoveGeneralListingMutation,
+    useSyncGeneralListingMutation,
+} = generalListing;

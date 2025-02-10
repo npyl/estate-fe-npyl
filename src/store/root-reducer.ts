@@ -2,7 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 import { dashboard } from "src/services/dashboard";
 import { labels } from "src/services/labels";
-import { publicListing, spitogatosListing } from "src/services/listings";
+import { generalListing, publicListing } from "src/services/listings";
 import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
@@ -49,7 +49,7 @@ export const rootReducer = combineReducers({
     [agreements.reducerPath]: agreements.reducer,
     // Listings
     [publicListing.reducerPath]: publicListing.reducer,
-    [spitogatosListing.reducerPath]: spitogatosListing.reducer,
+    [generalListing.reducerPath]: generalListing.reducer,
     // ...
     [solar.reducerPath]: solar.reducer,
     [airQuality.reducerPath]: airQuality.reducer,

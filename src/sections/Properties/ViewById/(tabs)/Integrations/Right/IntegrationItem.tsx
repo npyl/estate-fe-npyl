@@ -7,7 +7,7 @@ import FerimmoIcon from "@/assets/integrations/ferimmo";
 import PlotGRIcon from "@/assets/integrations/plotgr";
 import XEIcon from "@/assets/integrations/xrysh_eukairia";
 import JamesEditionIcon from "@/assets/integrations/james_edition";
-import { spitogatosListing } from "@/services/listings";
+import { generalListing } from "@/services/listings";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -41,7 +41,24 @@ const useCooldown = (): [boolean, VoidFunction] => {
     return [cooldown, startCooldown];
 };
 
-// -------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+const getFROM_GENERAL = (propertyId: number, site: IntegrationSite) => ({
+    publish: generalListing.endpoints.addGeneralListing.initiate({
+        propertyId,
+        site,
+    }),
+    unpublish: generalListing.endpoints.removeGeneralListing.initiate({
+        propertyId,
+        site,
+    }),
+    sync: generalListing.endpoints.syncGeneralListing.initiate({
+        propertyId,
+        site,
+    }),
+});
+
+// ---------------------------------------------------------------------------
 
 type LISTING_STATIC_DATUM = {
     text: string;
@@ -57,17 +74,7 @@ const getSTATIC_DATA = (
     SPITOGATOS: {
         icon: <SpitogatosSvg width={36} height={36} />,
         text: "Spitogatos.gr",
-        publish:
-            spitogatosListing.endpoints.addSpitogatosListing.initiate(
-                propertyId
-            ),
-        unpublish:
-            spitogatosListing.endpoints.removeSpitogatosListing.initiate(
-                propertyId
-            ),
-        sync: spitogatosListing.endpoints.syncSpitogatosListing.initiate(
-            propertyId
-        ),
+        ...getFROM_GENERAL(propertyId, "SPITOGATOS"),
     },
     PLOT_GR: {
         icon: <PlotGRIcon width={30} height={30} />,
@@ -79,9 +86,7 @@ const getSTATIC_DATA = (
     JAMES_EDITION: {
         icon: <JamesEditionIcon width={30} height={30} />,
         text: "jamesedition.com",
-        publish: () => {},
-        unpublish: () => {},
-        // sync: () => {},
+        ...getFROM_GENERAL(propertyId, "JAMES_EDITION"),
     },
     XE: {
         icon: <XEIcon width={30} height={30} />,

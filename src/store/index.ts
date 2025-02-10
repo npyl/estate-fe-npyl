@@ -8,7 +8,7 @@ import {
 import type { ThunkAction } from "redux-thunk";
 import { global } from "src/services/global";
 import { labels } from "src/services/labels";
-import { publicListing, spitogatosListing } from "src/services/listings";
+import { generalListing, publicListing } from "src/services/listings";
 import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
@@ -61,8 +61,8 @@ export const createStore = (
                 publicDashboard.middleware,
                 company.middleware,
                 // listings
+                generalListing.middleware,
                 publicListing.middleware,
-                spitogatosListing.middleware,
                 // ...
                 translation.middleware,
                 solar.middleware,
