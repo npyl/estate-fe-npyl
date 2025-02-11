@@ -507,7 +507,6 @@ const resources = {
             Lessor: "Lessor",
             Leaser: "Leaser",
             Buyer: "Buyer",
-            AddressSection: "Address Details",
             "Matching system enabled": "Matching system enabled",
             Edit: "Edit",
 

@@ -20,7 +20,7 @@ const AddressDetails: React.FC<any> = () => {
     const FIELDS = useMemo(() => getFIELDS(t), [t]);
 
     return (
-        <Panel label="Address Details">
+        <Panel label={t("Address")}>
             <Grid container spacing={2} p={1}>
                 {FIELDS.map((f, i) => (
                     <Grid key={i} item xs={6}>
