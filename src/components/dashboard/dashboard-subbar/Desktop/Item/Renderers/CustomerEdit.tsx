@@ -6,16 +6,18 @@ import { ITabRendererProps } from "../types";
 const CustomerEdit: FC<ITabRendererProps> = ({ resourceId }) => {
     const { t } = useTranslation();
 
-    const { data: c } = useGetCustomerByIdQuery(resourceId);
+    const { data: c } = useGetCustomerByIdQuery(resourceId!, {
+        skip: !Boolean(resourceId),
+    });
 
-    const { createdAt, updatedAt, firstName, lastName } = c || {};
+    const { firstName, lastName } = c || {};
 
-    const isFirstEdit = createdAt === updatedAt;
-    const title = isFirstEdit ? t("Create") : t("Edit");
-    const fullname = firstName && lastName ? `${firstName} ${lastName}` : "";
-    const label = `${title} ${t("Customer_geniki")} ${fullname}`;
+    const fullname =
+        firstName && lastName
+            ? `${firstName} ${lastName}`
+            : t("Customer_geniki");
 
-    return label;
+    return fullname;
 };
 
 export default CustomerEdit;

@@ -5,9 +5,13 @@ import { ITabRendererProps } from "../types";
 
 const CustomerView: FC<ITabRendererProps> = ({ resourceId }) => {
     const { t } = useTranslation();
-    const { data } = useGetCustomerByIdQuery(resourceId);
+    const { data } = useGetCustomerByIdQuery(resourceId!, {
+        skip: !Boolean(resourceId),
+    });
     const { firstName, lastName } = data || {};
-    return `${t("Customer")} ${firstName || ""} ${lastName || ""}`;
+    if (!firstName && !lastName) return t("Customer");
+    const fullname = `${firstName || ""} ${lastName || ""}`;
+    return fullname;
 };
 
 export default CustomerView;

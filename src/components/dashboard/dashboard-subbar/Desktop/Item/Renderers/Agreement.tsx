@@ -5,7 +5,9 @@ import { ITabRendererProps } from "../types";
 
 const Agreement: FC<ITabRendererProps> = ({ resourceId }) => {
     const { t } = useTranslation();
-    const { data } = useGetAgreementByIdQuery(resourceId);
+    const { data } = useGetAgreementByIdQuery(resourceId!, {
+        skip: !Boolean(resourceId),
+    });
     return data?.code || t("Agreement");
 };
 

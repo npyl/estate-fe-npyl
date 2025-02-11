@@ -5,7 +5,9 @@ import { ITabRendererProps } from "../types";
 
 const PropertyView: FC<ITabRendererProps> = ({ resourceId }) => {
     const { t } = useTranslation();
-    const { data } = useGetPropertyByIdQuery(resourceId);
+    const { data } = useGetPropertyByIdQuery(resourceId!, {
+        skip: !Boolean(resourceId),
+    });
     return data?.code || t("Property");
 };
 

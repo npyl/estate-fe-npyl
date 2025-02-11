@@ -1,5 +1,5 @@
 interface ITabRendererProps {
-    resourceId: number;
+    resourceId?: number;
 }
 
 export type { ITabRendererProps };

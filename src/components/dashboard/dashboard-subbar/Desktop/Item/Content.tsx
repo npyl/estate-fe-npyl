@@ -8,6 +8,8 @@ import Agreement from "./Renderers/Agreement";
 import Profile from "./Renderers/Profile";
 import PropertyView from "./Renderers/PropertyView";
 import User from "./Renderers/User";
+import CustomerCreate from "./Renderers/CustomerCreate";
+import PropertyCreate from "./Renderers/PropertyCreate";
 
 // --------------------------------------------------------------------
 
@@ -16,8 +18,10 @@ type TRenderers = {
 };
 
 const RENDERERS: TRenderers = {
+    CUSTOMER_CREATE: CustomerCreate,
     CUSTOMER_EDIT: CustomerEdit,
     CUSTOMER_VIEW: CustomerView,
+    PROPERTY_CREATE: PropertyCreate,
     PROPERTY_EDIT: PropertyEdit,
     PROPERTY_VIEW: PropertyView,
     AGREEMENT: Agreement,
@@ -29,7 +33,7 @@ const RENDERERS: TRenderers = {
 
 interface ContentProps {
     renderer: TTabRenderer;
-    resourceId: number;
+    resourceId?: number;
 }
 
 const Content: FC<ContentProps> = ({ renderer, resourceId }) => {
