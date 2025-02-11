@@ -6,7 +6,7 @@ import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import { LoadingButton } from "@mui/lab";
-import { BaseSyntheticEvent, FC, useCallback, useEffect, useMemo } from "react";
+import { FC, useCallback, useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 
@@ -20,21 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { TranslationType } from "@/types/translation";
-
-interface ICustomerLocationYup {
-    street: string;
-    number: string;
-    city: string;
-}
-
-// required fields
-interface ICustomerYup
-    extends Partial<Omit<ICustomerPOST, "location" | "managedBy">> {
-    firstName: string;
-    lastName: string;
-    managedBy?: string | number;
-    location?: ICustomerLocationYup;
-}
+import { ICustomerYup } from "./types";
 
 interface FormProps {
     compact?: boolean;
