@@ -31,7 +31,7 @@ const Description: React.FC = () => {
         useEnums();
 
     return (
-        <Panel label={"Property Description"}>
+        <Panel label={t("DetailsSection")}>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Select

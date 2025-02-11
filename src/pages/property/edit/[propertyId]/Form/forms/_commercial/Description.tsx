@@ -77,7 +77,7 @@ const Description: React.FC = () => {
     );
 
     return (
-        <Panel label={t("Property Description")}>
+        <Panel label={t("DetailsSection")}>
             <Grid container spacing={2}>
                 {FEILDS.map((f, i) => (
                     <Grid key={i} item xs={12} sm={6}>

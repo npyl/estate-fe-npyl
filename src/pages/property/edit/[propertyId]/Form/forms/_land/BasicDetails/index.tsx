@@ -85,7 +85,7 @@ const BasicForLandSection: React.FC<any> = () => {
 
     return (
         <Panel
-            label={t("Basic Details")}
+            label={t("BasicSection")}
             endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />} // TODO: iOS switch
         >
             <Grid container spacing={2}>
