@@ -231,6 +231,9 @@ export const baseThemeOptions: ThemeOptions = {
         MuiPopover: {
             defaultProps: {
                 elevation: 16,
+                sx: {
+                    marginTop: 0.5,
+                },
             },
         },
         MuiRadio: {

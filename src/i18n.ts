@@ -1265,7 +1265,7 @@ const resources = {
             "Property is not public": "Το ακίνητο δεν είναι δημόσιο",
 
             Restore: "Επαναφορά",
-            Archived: "Αρχειοθετημένα",
+            Archived: "Αρχείο",
             Archive: "Αρχειοθέτηση",
 
             "non-registered": "μη-εγγεγραμμένοι",
