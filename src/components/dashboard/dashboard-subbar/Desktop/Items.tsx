@@ -39,7 +39,15 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
 
             // Case 1: we have no more tabs
             if (res.length === 0) {
-                // do nothing
+                const basePath = p.startsWith("/property")
+                    ? "/property"
+                    : p.startsWith("/customer")
+                    ? "/customers"
+                    : p.startsWith("/agreements")
+                    ? "/agreements"
+                    : "/";
+
+                router.push(basePath);
             }
             // Case 2: we have more tabs
             else {
