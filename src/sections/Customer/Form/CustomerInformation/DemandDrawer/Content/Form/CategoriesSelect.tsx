@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
 import { useWatch } from "react-hook-form";
 import MultiSelect from "./_shared/MultiSelect";
-import { ICustomerYup } from "../../../types";
+import { ICustomerYup } from "../../../../types";
 import useDemandEnums from "./useDemandEnums";
 import { filterName } from "./util";
 

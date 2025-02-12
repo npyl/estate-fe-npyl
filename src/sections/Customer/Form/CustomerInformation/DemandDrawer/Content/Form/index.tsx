@@ -6,7 +6,6 @@ import MapSkeleton from "./AreaOfPreference/MapSkeleton";
 import FeaturesList from "./FeaturesList";
 import Sliders from "./Sliders";
 import CategoriesSelect from "./CategoriesSelect";
-
 const AreaOfPreference = dynamic(() => import("./AreaOfPreference"), {
     loading: () => <MapSkeleton />,
 });

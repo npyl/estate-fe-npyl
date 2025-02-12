@@ -2,34 +2,25 @@
 import {
     Box,
     FormControl,
-    Grid,
     InputLabel,
     MenuItem,
     Typography,
 } from "@mui/material";
-import * as React from "react";
-import { useGlobals } from "src/hooks/useGlobals";
-import { useAllUsersQuery } from "src/services/user";
 import { Placeholder as LabelPlaceholder } from "@/components/Label";
 import LabelCreate from "@/sections/LabelCreate";
-import { LeadSource } from "src/types/global";
-import CustomerTypeSelect from "./TypeSelect";
-import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import Panel from "src/components/Panel";
+import { LeadSource } from "@/types/global";
 import {
     RHFSelect,
     RHFTextField,
-    RHFRating,
     RHFOnlyNumbers,
-} from "src/components/hook-form";
-import { TranslationType } from "src/types/translation";
-import { useMemo } from "react";
-import { IUser } from "src/types/user";
-import { KeyValue } from "src/types/KeyValue";
-import { useWatch } from "react-hook-form";
-import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
-import Select from "src/components/hook-form/Select";
+    RHFRating,
+} from "@/components/hook-form";
+import { TranslationType } from "@/types/translation";
+import { IUser } from "@/types/user";
+import { KeyValue } from "@/types/KeyValue";
+import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
+import Select from "@/components/hook-form/Select";
+import { useTranslation } from "react-i18next";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -79,9 +70,7 @@ const getFIELDS = (
     customerId?: string
 ) => [
     <RHFTextField fullWidth name="firstName" label={t("First Name") + " *"} />,
-    // eslint-disable-next-line react/jsx-key
     <RHFTextField fullWidth name="lastName" label={t("Last Name") + " *"} />,
-    // eslint-disable-next-line react/jsx-key
     <RHFTextField fullWidth name="email" label={t("Email")} />,
     <RHFOnlyNumbers
         fullWidth
@@ -143,44 +132,4 @@ const getFIELDS = (
     ),
 ];
 
-const CustomerInformation: React.FC<any> = () => {
-    const router = useRouter();
-    const { t } = useTranslation();
-
-    const { customerId } = router.query;
-    const enums = useGlobals();
-    const managers = useAllUsersQuery().data || [];
-    const leadSource = useWatch({ name: "leadSource" });
-
-    const nationalitiesEnum = enums?.customer?.nationality || [];
-    const leadSourceEnum = enums?.customer?.leadSource || [];
-
-    const FIELDS = useMemo(
-        () =>
-            getFIELDS(
-                t,
-                managers,
-                nationalitiesEnum,
-                leadSourceEnum,
-                leadSource,
-                customerId as string
-            ),
-        [t, managers, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
-    );
-
-    return (
-        <Panel label={t("Customer Information")}>
-            <Grid container spacing={2} p={1.5}>
-                {FIELDS.map((f, i) => (
-                    <Grid key={i} item xs={12} sm={6}>
-                        {f}
-                    </Grid>
-                ))}
-                <Grid item xs={12}>
-                    <CustomerTypeSelect />
-                </Grid>
-            </Grid>
-        </Panel>
-    );
-};
-export default CustomerInformation;
+export default getFIELDS;

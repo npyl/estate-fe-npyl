@@ -27,7 +27,7 @@ interface Props {
     onClose: VoidFunction;
 }
 
-const DemandSection: FC<Props> = ({ onClose }) => {
+const Content: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
     const { tabsRef, index, isIndexSafe, fields, changeTab } = useTabControl();
@@ -55,4 +55,4 @@ const DemandSection: FC<Props> = ({ onClose }) => {
         </>
     );
 };
-export default DemandSection;
+export default Content;

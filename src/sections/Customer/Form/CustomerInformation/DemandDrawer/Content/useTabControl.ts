@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { TabsRef } from "./types";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { ICustomerYup } from "../../types";
+import { ICustomerYup } from "../../../types";
 import { EMTPY_DEMAND } from "./constant";
 
 const useTabControl = () => {
