@@ -72,7 +72,6 @@ const Slider: FC<DemandFormSliderProps> = ({
                             name={minName}
                             adornment={adornment}
                             options={options}
-                            allowClear
                             isForYearOfConstruction={isForYearOfConstruction}
                         />
                     </Grid>
@@ -82,7 +81,6 @@ const Slider: FC<DemandFormSliderProps> = ({
                             name={maxName}
                             adornment={adornment}
                             options={options}
-                            allowClear
                             isForYearOfConstruction={isForYearOfConstruction}
                         />
                     </Grid>
