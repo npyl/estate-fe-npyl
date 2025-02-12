@@ -2,7 +2,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext, Controller } from "react-hook-form";
-import RHFDoubleSlider from "src/components/hook-form/RHFDoubleSlider"; // Adjust the import as needed
+import RHFDoubleSlider from "@/components/hook-form/RHFDoubleSlider"; // Adjust the import as needed
 import RHFSelectDemandForm from "./RHFSelectDemandForm";
 
 type DemandFormSliderProps = {
@@ -19,9 +19,6 @@ type DemandFormSliderProps = {
     options?: number[];
 };
 
-const formatNumber = (value: number) => {
-    return value.toLocaleString("de-DE");
-};
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     label,
     min,

@@ -7,24 +7,22 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { IDemandFiltersPOST } from "src/types/demand";
+import { filterName } from "../util";
 
-interface LabelSelectProps {
-    onDemandFiltersName: (k: keyof IDemandFiltersPOST) => any;
+interface Props {
+    index: number;
 }
 
-export const LabelSelect: React.FC<LabelSelectProps> = ({
-    onDemandFiltersName,
-}) => {
+const LabelSelect: FC<Props> = ({ index }) => {
     const { t } = useTranslation();
     const { setValue } = useFormContext();
 
-    const labelsName = onDemandFiltersName("labels");
+    const labelsName = filterName("labels", index);
     const labels = (useWatch({ name: labelsName }) as number[]) || [];
 
     const { data } = useGetLabelsQuery();
@@ -63,3 +61,5 @@ export const LabelSelect: React.FC<LabelSelectProps> = ({
         </FormControl>
     );
 };
+
+export default LabelSelect;

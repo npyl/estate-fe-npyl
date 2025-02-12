@@ -23,7 +23,7 @@ const RHFSelectDemandForm: FC<RHFSelectDemandFormProps> = ({
     ...props
 }) => {
     const { field } = useController(props);
-    const { control, getValues, setValue } = useFormContext();
+    const { getValues, setValue } = useFormContext();
     const [inputValue, setInputValue] = useState<string>("");
 
     const formatNumber = (value: number | string) => {

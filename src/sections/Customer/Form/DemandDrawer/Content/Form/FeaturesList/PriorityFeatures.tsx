@@ -1,9 +1,10 @@
 import { Grid } from "@mui/material";
 import { useCallback } from "react";
-
 import { Residential, Commercial, Land, Other } from "./features";
-
 import { useFormContext, useWatch } from "react-hook-form";
+
+const getName = (index: number) => `demands[${index}].priorityFeatures`;
+const getKeyName = (key: string, index: number) => `${getName(index)}.${key}`;
 
 interface PriorityFeaturesProps {
     index: number;
@@ -13,16 +14,12 @@ interface PriorityFeaturesProps {
 const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
     const { setValue } = useFormContext();
 
-    const getName = useCallback(
-        (key: string) => `demands[${index}].priorityFeatures.${key}`,
-        [index]
-    );
-
-    const features = useWatch({ name: `demands[${index}].priorityFeatures` });
+    const features = useWatch({ name: getName(index) });
 
     const handleChange = useCallback(
-        (key: string, checked: boolean) => setValue(getName(key), checked),
-        [getName]
+        (key: string, checked: boolean) =>
+            setValue(getKeyName(key, index), checked),
+        []
     );
 
     return (

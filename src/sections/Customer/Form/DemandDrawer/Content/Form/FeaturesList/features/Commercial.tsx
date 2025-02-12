@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import CheckboxItem from "../components/CheckboxItem";
+import CheckboxItem from "./CheckboxItem";
 import { IFeatureSectionProps } from "./types";
 
 const FeaturesForCommercialSection = ({

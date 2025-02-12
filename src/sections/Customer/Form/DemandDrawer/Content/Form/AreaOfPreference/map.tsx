@@ -14,16 +14,16 @@ import { useTranslation } from "react-i18next";
 import MunicipSelectDemands from "./MunicipSelectDemands";
 import NeighbourSelectDemands from "./NeighbourSelectDemands";
 import RegionSelectDemands from "./RegionSelectDemands";
-import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
+import Map, { IMapMarker } from "src/components/Map/Map";
 import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
+import { demandName, filterName } from "../util";
 const NextShapeCenter = lazy(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -34,26 +34,20 @@ enum ZOOM_LEVELS {
 
 interface Props {
     index: number;
-    onGetDemandName: (k: keyof IDemandPOST) => any;
-    onGetDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
 }
 
-const AreaOfPreference: FC<Props> = ({
-    index,
-    onGetDemandName,
-    onGetDemandFilterName,
-}) => {
+const AreaOfPreference: FC<Props> = ({ index }) => {
     const { watch, setValue } = useFormContext();
     const { t } = useTranslation();
 
     const { regionsName, citiesName, complexesName, shapesName } = useMemo(
         () => ({
-            regionsName: onGetDemandFilterName("regions"),
-            citiesName: onGetDemandFilterName("cities"),
-            complexesName: onGetDemandFilterName("complexes"),
-            shapesName: onGetDemandName("shapes"),
+            regionsName: filterName("regions", index),
+            citiesName: filterName("cities", index),
+            complexesName: filterName("complexes", index),
+            shapesName: demandName("shapes", index),
         }),
-        [onGetDemandName, onGetDemandFilterName]
+        []
     );
 
     const regions = (useWatch({ name: regionsName }) as string[]) || [];
@@ -185,11 +179,7 @@ const AreaOfPreference: FC<Props> = ({
         getClosest(newLat, newLng);
         updateMainMarkerCoordinates(newLat, newLng);
     };
-    const handleSearchSelect = (
-        address: IMapAddress,
-        lat: number,
-        lng: number
-    ) => {
+    const handleSearchSelect = (_: any, lat: number, lng: number) => {
         if (!lat || !lng) return;
 
         getClosest(lat, lng);
@@ -232,10 +222,6 @@ const AreaOfPreference: FC<Props> = ({
         [complexesName]
     );
 
-    const regionCode = useMemo(
-        () => selectedRegions.join(","),
-        [selectedRegions]
-    );
     const municipCodes = useMemo(
         () => selectedMunicipalities,
         [selectedMunicipalities]
