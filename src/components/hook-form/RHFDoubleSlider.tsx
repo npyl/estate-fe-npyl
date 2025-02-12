@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { Slider, SliderProps } from "@mui/material";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -10,12 +10,12 @@ type Props = SliderProps & {
     isForPrice?: boolean; //it is used to have the appropriate format for price in the slider's tooltip
 };
 
-export default function RHFSlider({
+const RHFDoubleSlider: FC<Props> = ({
     minName,
     maxName,
     isForPrice = false,
     ...other
-}: Props) {
+}) => {
     const { setValue } = useFormContext();
 
     const min = useWatch({ name: minName });
@@ -26,13 +26,12 @@ export default function RHFSlider({
     };
 
     const handleChange = useCallback(
-        (e: Event, value: number | number[]) => {
-            if (Array.isArray(value)) {
-                setValue(minName, value[0]);
-                setValue(maxName, value[1]);
-            }
+        (_: any, value: number | number[]) => {
+            if (!Array.isArray(value)) return;
+            setValue(minName, value[0], { shouldDirty: true });
+            setValue(maxName, value[1], { shouldDirty: true });
         },
-        [minName, maxName, setValue]
+        [minName, maxName]
     );
 
     return (
@@ -44,4 +43,6 @@ export default function RHFSlider({
             {...other}
         />
     );
-}
+};
+
+export default RHFDoubleSlider;

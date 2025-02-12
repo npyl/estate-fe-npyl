@@ -3,7 +3,7 @@ import { FC, useMemo } from "react";
 import LabelSelect from "./LabelSelect";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "src/types/translation";
-import Select from "@/components/hook-form/Select";
+import Select from "@/components/hook-form/dynamic/Select";
 import MultiSelect from "../_shared/MultiSelect";
 import DemandAutocomplete from "./Autocomplete";
 import { useTranslation } from "react-i18next";
