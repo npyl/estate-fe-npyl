@@ -4,13 +4,12 @@ import {
     InputLabel,
     MenuItem,
     OutlinedInput,
-    SelectChangeEvent,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useCallback } from "react";
 import { KeyValue } from "src/types/KeyValue";
-import { useFormContext, useWatch } from "react-hook-form";
-import { RHFSelect } from "src/components/hook-form";
+import { useWatch } from "react-hook-form";
+import RHFSelect from "@/components/hook-form/dynamic/RHFSelect";
 
 // InputLabel that works well with a big label content
 const BigInputLabel = styled(InputLabel)(({ theme }) => ({
@@ -29,8 +28,6 @@ interface MultiSelectProps {
 }
 
 const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
-    const { setValue } = useFormContext();
-
     const values = (useWatch({ name }) as string[]) || [];
 
     const renderValue = useCallback(
@@ -42,11 +39,6 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
         [options]
     );
 
-    const handleChange = useCallback(
-        (e: SelectChangeEvent<string[]>) => setValue(name, e.target.value),
-        [name]
-    );
-
     return (
         <FormControl fullWidth variant="outlined">
             <BigInputLabel>{label}</BigInputLabel>
@@ -54,10 +46,10 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
                 multiple
                 fullWidth
                 name={name}
+                key={name}
+                defaultValue={[]}
                 input={<OutlinedInput />}
-                onChange={handleChange}
                 renderValue={renderValue}
-                value={values}
             >
                 {options.map(({ key, value }, i) => (
                     <MenuItem key={i} value={key}>

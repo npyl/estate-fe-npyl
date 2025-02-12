@@ -5,16 +5,12 @@ import { Select, SelectProps } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
-export type RHFSelectProps<T> = SelectProps<T> & {
+type RHFSelectProps<T> = SelectProps<T> & {
     name: string;
     children: React.ReactNode;
 };
 
-export default function RHFSelect<T>({
-    name,
-    children,
-    ...other
-}: RHFSelectProps<T>) {
+function RHFSelect<T>({ name, children, ...other }: RHFSelectProps<T>) {
     const { control } = useFormContext();
     if (!children) {
         return null;
@@ -31,3 +27,6 @@ export default function RHFSelect<T>({
         />
     );
 }
+
+export type { RHFSelectProps };
+export default RHFSelect;

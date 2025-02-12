@@ -52,7 +52,7 @@ const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
             setCode(code);
             getPropertyByCode(code).unwrap().then(fillFromPropertyForCode);
         },
-        [index]
+        [fillFromPropertyForCode]
     );
 
     return (

@@ -1,18 +1,11 @@
-import {
-    Checkbox,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, FormControl, InputLabel, MenuItem } from "@mui/material";
 import { FC, useCallback } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { filterName } from "../util";
+import RHFSelect from "@/components/hook-form/dynamic/RHFSelect";
 
 interface Props {
     index: number;
@@ -20,36 +13,30 @@ interface Props {
 
 const LabelSelect: FC<Props> = ({ index }) => {
     const { t } = useTranslation();
-    const { setValue } = useFormContext();
 
-    const labelsName = filterName("labels", index);
-    const labels = (useWatch({ name: labelsName }) as number[]) || [];
+    const name = filterName("labels", index);
+    const labels = (useWatch({ name }) as number[]) || [];
 
     const { data } = useGetLabelsQuery();
     const labelOptions = data?.propertyLabels || [];
 
-    const handleChange = useCallback(
-        (event: SelectChangeEvent<number[]>) => {
-            setValue(labelsName, event.target.value);
-        },
-        [labelsName]
+    const nameForId = useCallback(
+        (id: number) => labelOptions.find((option) => option.id === id)?.name,
+        [labelOptions]
     );
 
-    const nameForId = (id: number) =>
-        labelOptions.find((option) => option.id === id)?.name;
-
     const renderValue = (selected: number[]) =>
-        selected.map((id) => nameForId(id)).join(", ");
+        selected.map(nameForId).join(", ");
 
     return (
         <FormControl fullWidth>
             <InputLabel>{t("Labels")}</InputLabel>
-            <Select
+            <RHFSelect
+                label={t("Labels")}
+                name={name}
                 multiple
-                value={labels}
-                onChange={handleChange}
                 renderValue={renderValue}
-                input={<OutlinedInput />}
+                defaultValue={[]}
             >
                 {labelOptions.map(({ id, color, name }) => (
                     <MenuItem key={id} value={id}>
@@ -57,7 +44,7 @@ const LabelSelect: FC<Props> = ({ index }) => {
                         <Label color={color} name={name} />
                     </MenuItem>
                 ))}
-            </Select>
+            </RHFSelect>
         </FormControl>
     );
 };
