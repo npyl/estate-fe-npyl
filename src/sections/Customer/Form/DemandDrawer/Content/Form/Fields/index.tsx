@@ -51,6 +51,7 @@ const getFIELDS = (
         name={demandName("timeframe", index)}
         label={t("Time Frame")}
         options={timeframeEnum}
+        defaultValue=""
     />,
 ];
 

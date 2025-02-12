@@ -4,21 +4,22 @@ import { RHFSelect } from "src/components/hook-form";
 import { KeyValue } from "src/types/KeyValue";
 import { RHFSelectProps } from "./RHFSelect";
 
+const NOT_SELECTED_VALUE = "";
+
 type SelectProps<T = string> = Omit<RHFSelectProps<T>, "children"> & {
     name: string;
     label: string;
-    emptyValue?: any;
     options: KeyValue[];
 };
 
-const Select = ({ name, label, emptyValue, options }: SelectProps) => {
+const Select = ({ name, label, options, ...props }: SelectProps) => {
     const { t } = useTranslation();
 
     return (
         <FormControl fullWidth variant="outlined">
             <InputLabel>{label}</InputLabel>
-            <RHFSelect fullWidth name={name} label={label}>
-                <MenuItem value={emptyValue || ""}>
+            <RHFSelect fullWidth name={name} label={label} {...props}>
+                <MenuItem value={NOT_SELECTED_VALUE}>
                     {t("Not selected")}
                 </MenuItem>
                 {options.map(({ key, value }, i) => (

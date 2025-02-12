@@ -1,10 +1,4 @@
-import {
-    Checkbox,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-} from "@mui/material";
+import { Checkbox, FormControl, InputLabel, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useCallback } from "react";
 import { KeyValue } from "src/types/KeyValue";
@@ -46,9 +40,7 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
                 multiple
                 fullWidth
                 name={name}
-                key={name}
                 defaultValue={[]}
-                input={<OutlinedInput />}
                 renderValue={renderValue}
             >
                 {options.map(({ key, value }, i) => (

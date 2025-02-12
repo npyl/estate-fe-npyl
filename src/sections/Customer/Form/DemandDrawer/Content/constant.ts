@@ -6,6 +6,7 @@ const EMTPY_DEMAND: IDemandPOST = {
         regions: [],
         cities: [],
         complexes: [],
+        states: [],
         categories: [],
         parentCategories: [],
         furnished: [],
@@ -68,6 +69,7 @@ const EMTPY_DEMAND: IDemandPOST = {
         loadingDock: false,
     },
     shapes: [],
+    timeframe: "",
 };
 
 export { EMTPY_DEMAND };
