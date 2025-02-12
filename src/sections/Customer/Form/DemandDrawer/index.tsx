@@ -1,8 +1,6 @@
 import Drawer from "@mui/material/Drawer";
 import { FC } from "react";
 import Content from "./Content";
-import { FieldArrayProvider } from "@/components/hook-form/FieldArrayContext";
-import { ICustomerYup } from "../types";
 
 interface DemandDrawerProps {
     onClose: VoidFunction;
@@ -26,9 +24,7 @@ const DemandDrawer: FC<DemandDrawerProps> = ({ onClose }) => (
         }}
         onClose={onClose}
     >
-        <FieldArrayProvider<ICustomerYup> name="demands">
-            <Content onClose={onClose} />
-        </FieldArrayProvider>
+        <Content onClose={onClose} />
     </Drawer>
 );
 

@@ -1,17 +1,12 @@
+import { RefObject } from "react";
 import DemandTab from "./DemandTab";
+import { TabsRef } from "../types";
 
 type TTabOption = Record<"id", string>;
 
 const getTab =
-    (onBeforeRemove: (index: number) => void) =>
-    ({ id }: TTabOption, i: number) =>
-        (
-            <DemandTab
-                key={id}
-                index={i}
-                value={i}
-                onBeforeRemove={onBeforeRemove}
-            />
-        );
+    (tabsRef: RefObject<TabsRef>) =>
+    ({ id }: TTabOption, index: number) =>
+        <DemandTab key={id} index={index} value={index} tabsRef={tabsRef} />;
 
 export default getTab;

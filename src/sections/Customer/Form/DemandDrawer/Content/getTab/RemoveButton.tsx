@@ -1,29 +1,30 @@
-import { IconButton } from "@mui/material";
-import { useCallback } from "react";
+import { IconButton, SxProps, Theme } from "@mui/material";
+import { MouseEvent, RefObject, useCallback } from "react";
 import { FC } from "react";
-import { CloseIcon } from "yet-another-react-lightbox/core";
-import { useFieldArrayContext } from "@/components/hook-form/FieldArrayContext";
+import CloseIcon from "@mui/icons-material/Close";
+import { TabsRef } from "../types";
+
+const CloseButtonSx: SxProps<Theme> = {
+    borderRadius: "100%",
+};
 
 interface RemoveButtonProps {
     index: number;
-    onBeforeRemove: (index: number) => void;
+    tabsRef: RefObject<TabsRef>;
 }
 
-const RemoveButton: FC<RemoveButtonProps> = ({ index, onBeforeRemove }) => {
-    const { remove } = useFieldArrayContext();
-    const handleRemove = useCallback(() => {
-        onBeforeRemove(index);
-        remove(index);
-    }, []);
+const RemoveButton: FC<RemoveButtonProps> = ({ index, tabsRef }) => {
+    const handleRemove = useCallback(
+        (e: MouseEvent<HTMLButtonElement>) => {
+            // IMPORTANT: do not trigger a tab click
+            e.stopPropagation();
+            tabsRef.current?.remove(index);
+        },
+        [index]
+    );
 
     return (
-        <IconButton
-            size="small"
-            onClick={handleRemove}
-            sx={{
-                borderRadius: "100%",
-            }}
-        >
+        <IconButton size="small" onClick={handleRemove} sx={CloseButtonSx}>
             <CloseIcon fontSize="small" />
         </IconButton>
     );

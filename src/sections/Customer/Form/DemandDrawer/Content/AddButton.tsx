@@ -1,15 +1,17 @@
 import { Button } from "@mui/material";
-import { useCallback } from "react";
+import { FC, RefObject, useCallback } from "react";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useTranslation } from "react-i18next";
-import { EMTPY_DEMAND } from "./constant";
-import { useFieldArrayContext } from "@/components/hook-form/FieldArrayContext";
+import { TabsRef } from "./types";
 
-const AddButton = () => {
+interface AddButtonProps {
+    tabsRef: RefObject<TabsRef>;
+}
+
+const AddButton: FC<AddButtonProps> = ({ tabsRef }) => {
     const { t } = useTranslation();
-    const { append } = useFieldArrayContext();
 
-    const handleClick = useCallback(() => append(EMTPY_DEMAND), []);
+    const handleClick = useCallback(() => tabsRef.current?.add(), []);
 
     return (
         <Button

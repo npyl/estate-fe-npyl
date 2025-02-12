@@ -6,7 +6,6 @@ import {
     SxProps,
     Theme,
 } from "@mui/material";
-import { useCallback, useState } from "react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
@@ -14,7 +13,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import dynamic from "next/dynamic";
 import AddButton from "./AddButton";
 import getTab from "./getTab";
-import { useFieldArrayContext } from "@/components/hook-form/FieldArrayContext";
+import useTabControl from "./useTabControl";
 const DemandForm = dynamic(() => import("./Form"));
 
 const CloseButtonSx: SxProps<Theme> = {
@@ -31,16 +30,7 @@ interface Props {
 const DemandSection: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
-    const { fields } = useFieldArrayContext();
-
-    const [index, setIndex] = useState(0);
-    const handleTabChange = useCallback((_: any, v: number) => setIndex(v), []);
-
-    const handleBeforeRemove = (index: number) => {
-        const lastIdx = fields.length - 1;
-        if (lastIdx !== index) return;
-        setIndex(index - 1);
-    };
+    const { tabsRef, index, isIndexSafe, fields, changeTab } = useTabControl();
 
     return (
         <>
@@ -48,8 +38,7 @@ const DemandSection: FC<Props> = ({ onClose }) => {
                 <Typography variant="h6">{t("Demands")}</Typography>
 
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <AddButton />
-
+                    <AddButton tabsRef={tabsRef} />
                     <IconButton onClick={onClose} sx={CloseButtonSx}>
                         <CloseOutlinedIcon />
                     </IconButton>
@@ -57,12 +46,12 @@ const DemandSection: FC<Props> = ({ onClose }) => {
             </SpaceBetween>
 
             <Stack borderBottom={1} borderColor="divider" direction="row">
-                <Tabs value={index} onChange={handleTabChange}>
-                    {fields.map(getTab(handleBeforeRemove))}
+                <Tabs value={index} onChange={changeTab}>
+                    {fields.map(getTab(tabsRef))}
                 </Tabs>
             </Stack>
 
-            {fields.length > 0 ? <DemandForm index={index} /> : null}
+            {isIndexSafe ? <DemandForm index={index} /> : null}
         </>
     );
 };
