@@ -1,9 +1,9 @@
 import { Grid, Stack, Typography } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useFormContext, Controller } from "react-hook-form";
-import RHFDoubleSlider from "@/components/hook-form/RHFDoubleSlider"; // Adjust the import as needed
-import RHFSelectDemandForm from "./RHFSelectDemandForm";
+import { useFormContext } from "react-hook-form";
+import RHFDoubleSlider from "@/components/hook-form/dynamic/RHFDoubleSlider"; // Adjust the import as needed
+import OptionsAutocomplete from "./OptionsAutocomplete";
 
 type DemandFormSliderProps = {
     label: any;
@@ -19,7 +19,7 @@ type DemandFormSliderProps = {
     options?: number[];
 };
 
-export const DemandFormSlider: FC<DemandFormSliderProps> = ({
+const Slider: FC<DemandFormSliderProps> = ({
     label,
     min,
     max,
@@ -33,25 +33,12 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     options = [],
 }) => {
     const { t } = useTranslation();
-    const { setValue, getValues } = useFormContext();
+    const { setValue } = useFormContext();
 
-    const minName = `demands[${demandIndex}].filters.${min}`;
-    const maxName = `demands[${demandIndex}].filters.${max}`;
+    const minName = `demands.${demandIndex}.filters.${min}`;
+    const maxName = `demands.${demandIndex}.filters.${max}`;
 
-    // Initialize the  values to null if they are not set
-    useEffect(() => {
-        const minValue = getValues(minName);
-        const maxValue = getValues(maxName);
-
-        if (minValue === 0 || minValue === "") {
-            setValue(minName, null);
-        }
-        if (maxValue === 0 || maxValue === "") {
-            setValue(maxName, null);
-        }
-    }, [getValues, setValue, minName, maxName]);
-
-    const handleSliderChange = (name: string, value: number[]) => {
+    const handleSliderChange = (value: number[]) => {
         let [minValue, maxValue] = value;
 
         // Ensure minValue is not greater than maxValue
@@ -64,37 +51,23 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
         setValue(maxName, maxValue === defaultMax ? defaultMax : maxValue);
     };
 
-    const sliderValue = [
-        getValues(minName) === null ? defaultMin : getValues(minName),
-        getValues(maxName) === null ? defaultMax : getValues(maxName),
-    ];
-
     return (
         <>
             <Typography variant="h6">{label}</Typography>
             <Stack mt={1} px={1}>
-                <Controller
-                    name={minName}
-                    render={({ field }) => (
-                        <RHFDoubleSlider
-                            {...field}
-                            minName={minName}
-                            maxName={maxName}
-                            min={defaultMin}
-                            max={defaultMax}
-                            step={step}
-                            value={sliderValue}
-                            onChange={(event, value) =>
-                                handleSliderChange(minName, value as number[])
-                            }
-                            valueLabelDisplay="auto"
-                            isForPrice={isForPrice}
-                        />
-                    )}
+                <RHFDoubleSlider
+                    minName={minName}
+                    maxName={maxName}
+                    min={defaultMin}
+                    max={defaultMax}
+                    step={step}
+                    onChange={(_, v) => handleSliderChange(v as number[])}
+                    valueLabelDisplay="auto"
+                    isForPrice={isForPrice}
                 />
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <RHFSelectDemandForm
+                        <OptionsAutocomplete
                             label={t("Min")}
                             name={minName}
                             adornment={adornment}
@@ -104,7 +77,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <RHFSelectDemandForm
+                        <OptionsAutocomplete
                             label={t("Max")}
                             name={maxName}
                             adornment={adornment}
@@ -118,3 +91,5 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
         </>
     );
 };
+
+export default Slider;
