@@ -58,6 +58,7 @@ interface IKanbanCardShort {
     uniqueCode: string;
     priority: number;
     attachmentsCount: number;
+    updatedAt?: string;
     commentsCount: number;
     completed: boolean;
     assignees: IUserMini[];

@@ -1250,6 +1250,8 @@ const resources = {
             _END_OF_SESSION_: "Λήξη συνεδρίας",
 
             "View Task": "Δείτε την εργασία",
+            "Last Updated Date": "Τελευταία ενημέρωση εργασίας",
+
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 
