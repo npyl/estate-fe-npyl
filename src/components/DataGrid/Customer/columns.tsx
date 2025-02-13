@@ -5,6 +5,7 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
+import { Box, Tooltip } from "@mui/material";
 
 const StatusColor = ({ row }: GridCellParams) => (
     <Stack width={1} height={1} justifyContent="center" alignItems="center">
@@ -61,22 +62,35 @@ const renderDateCell = ({ row }: GridCellParams) => {
         <Typography variant="inherit">{`${day}/${month}/${year}`}</Typography>
     );
 };
+const RenderFullNameCell = ({ row }: GridCellParams) => {
+    const fullName = ` ${row.lastName ?? ""} ${row.firstName ?? ""}`.trim();
 
+    return (
+        <Box
+            sx={{
+                width: "100%",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                textAlign: "center",
+            }}
+        >
+            <Typography variant="inherit" noWrap>
+                {fullName}
+            </Typography>
+        </Box>
+    );
+};
 const getColumns = (t: TranslationType): GridColDef[] => [
     {
         flex: 1,
-        field: "firstName",
-        headerName: t("First Name").toString(),
+        field: "fullName",
+        headerName: t("Full Name").toString(),
         headerAlign: "center",
         align: "center",
+        renderCell: RenderFullNameCell,
     },
-    {
-        flex: 1,
-        field: "lastName",
-        headerName: t("Last Name").toString(),
-        headerAlign: "center",
-        align: "center",
-    },
+
     {
         flex: 1,
         field: "mobilePhone",
