@@ -7,7 +7,6 @@ import SubmitButton from "./SubmitButton";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import CancelButton from "./CancelButton";
-import { useEditPropertyMutation } from "@/services/properties";
 // ...
 const Residential = dynamic(() => import("./forms/Residential"));
 const Commercial = dynamic(() => import("./forms/Commercial"));
@@ -20,13 +19,13 @@ const UnsavedChangesWatcher = dynamic(() => import("./UnsavedChangesWatcher"));
 
 interface IFormProps {
     property?: IProperties;
+    isSuccess: boolean;
+    onSubmit: (b: IPropertiesPOST) => void;
 }
 
-export default function Form({ property }: IFormProps) {
+export default function Form({ property, isSuccess, onSubmit }: IFormProps) {
     const { methods } = usePropertyForm(property);
     const isDirty = methods.formState.isDirty;
-
-    const [edit, { isSuccess }] = useEditPropertyMutation();
 
     const haveError = useMemo(
         () => Object.keys(methods.formState.errors).length > 0,
@@ -40,10 +39,7 @@ export default function Form({ property }: IFormProps) {
                 ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
             };
 
-            await edit({
-                body,
-                id: property?.id!,
-            });
+            onSubmit(body);
         } catch (error) {
             console.error(error);
             methods.reset();
