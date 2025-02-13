@@ -350,7 +350,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 if (data.manager != null)
                     return (
                         <ListManagerItem
-                            manager={manager}
+                            managerId={manager?.id!}
                             sx={{ minHeight: "61px" }}
                         />
                     );
@@ -406,7 +406,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 if (data.owner != null)
                     return (
                         <ListOwnerItem
-                            owner={owner}
+                            ownerId={owner?.id!}
                             sx={{ minHeight: "60px" }}
                         />
                     );
