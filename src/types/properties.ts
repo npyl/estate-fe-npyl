@@ -33,7 +33,7 @@ export interface IPropertyResultResponse {
     location: ILocationPOST;
     active: boolean;
     createdAt: string;
-    updatedAt: string;
+    modifiedAt: string;
 
     // ...
     regionEN: string;

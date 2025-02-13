@@ -35,7 +35,7 @@ const Home: NextPage = () => {
     const optionViewProps = useResponsiveOptionView();
 
     const { sortBy, direction } = useCurrentSortingOption()?.sorting || {
-        sortBy: "updatedAt",
+        sortBy: "modifiedAt",
         direction: "DESC",
     };
 
