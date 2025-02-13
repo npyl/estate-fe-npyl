@@ -22,7 +22,7 @@ const InformationSection: React.FC = () => {
     let displayNationality = "-";
     if (nationalitiesEnum && data?.nationality !== undefined) {
         const foundNationality = nationalitiesEnum.find(
-            ({ key, value }) => key === data?.nationality.key
+            ({ key }) => key === data?.nationality.key
         );
 
         displayNationality = foundNationality
@@ -32,12 +32,10 @@ const InformationSection: React.FC = () => {
     let displayLeadSource = "-";
     if (leadSourceEnum && leadSource !== undefined) {
         const foundLeadSource = leadSourceEnum.find(
-            ({ key, value }) => key === leadSource
+            ({ key }) => key === leadSource
         );
         displayLeadSource = foundLeadSource ? foundLeadSource.value : "Unknown";
     }
-
-    if (!data) return null;
 
     return (
         <Paper
@@ -88,7 +86,7 @@ const InformationSection: React.FC = () => {
                         <ListItem label={t("VAT")} value={data?.afm || "-"} />
                         <ListManagerItem
                             label={t("Managed By").toString()}
-                            manager={data.managedBy}
+                            managerId={data?.managedBy?.id!}
                         />
                         <ListItem
                             label={t("Mobile Phone")}
@@ -102,7 +100,7 @@ const InformationSection: React.FC = () => {
 
                         <ListRatingItem
                             label={t("Status")}
-                            status={data?.status}
+                            status={data?.status!}
                         />
                     </List>
                 </Grid>

@@ -7,10 +7,10 @@ import useResponsive from "src/hooks/useResponsive";
 interface TypeProps extends BoxProps {
     forceTruncate?: boolean;
 
-    seller: boolean;
-    lessor: boolean;
-    leaser: boolean;
-    buyer: boolean;
+    seller?: boolean;
+    lessor?: boolean;
+    leaser?: boolean;
+    buyer?: boolean;
 }
 
 export const TypeLabels = ({
