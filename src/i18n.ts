@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            FIRST_NAME_ASC: "First Name (A-Z)",
+            FIRST_NAME_DESC: "First Name (Z-A)",
+
             Registered: "Registered",
 
             "Stay Updated": "Stay Updated",
@@ -1196,6 +1199,9 @@ const resources = {
     },
     el: {
         translation: {
+            FIRST_NAME_ASC: "Όνομα (Α-Ω)",
+            FIRST_NAME_DESC: "Όνομα (Ω-Α)",
+
             "Update Demands": "Ενημέρωση Απαιτήσεων",
 
             Registered: "Εγγεγραμμένος",

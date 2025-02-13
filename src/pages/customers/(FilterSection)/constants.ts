@@ -13,6 +13,25 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
     },
 
     {
+        value: "FIRST_NAME_ASC",
+        label: t("FIRST_NAME_ASC"),
+        sorting: {
+            sortBy: "firstName",
+            direction: "ASC",
+        },
+        icon: "",
+    },
+    {
+        value: "FIRST_NAME_DESC",
+        label: t("FIRST_NAME_DESC"),
+        sorting: {
+            sortBy: "firstName",
+            direction: "DESC",
+        },
+        icon: "",
+    },
+
+    {
         value: "LAST_ENTRY",
         label: t("Last entry"),
         sorting: {

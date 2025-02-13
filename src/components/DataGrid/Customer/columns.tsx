@@ -5,6 +5,7 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
+import { ICustomerResultResponse } from "@/types/customer";
 
 const StatusColor = ({ row }: GridCellParams) => (
     <Stack width={1} height={1} justifyContent="center" alignItems="center">
@@ -62,29 +63,18 @@ const renderDateCell = ({ row }: GridCellParams) => {
     );
 };
 
-const getColumns = (t: TranslationType): GridColDef[] => [
+const getColumns = (
+    t: TranslationType
+): GridColDef<ICustomerResultResponse>[] => [
     {
         flex: 1,
-        field: "firstName",
-        headerName: t("First Name").toString(),
+        field: "fullName",
+        headerName: t<string>("Fullname"),
         headerAlign: "center",
         align: "center",
+        renderCell: ({ row: { firstName, lastName } }) =>
+            `${firstName || "-"} ${lastName || "-"}`,
     },
-    {
-        flex: 1,
-        field: "lastName",
-        headerName: t("Last Name").toString(),
-        headerAlign: "center",
-        align: "center",
-    },
-    {
-        flex: 1,
-        field: "mobilePhone",
-        headerName: t("Mobile Phone").toString(),
-        headerAlign: "center",
-        align: "center",
-    },
-
     {
         flex: 1,
         field: "budget",
