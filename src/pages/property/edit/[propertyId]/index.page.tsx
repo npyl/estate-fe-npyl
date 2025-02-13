@@ -1,17 +1,13 @@
 import type { NextPage } from "next";
-import { AuthGuard } from "src/components/authentication/auth-guard";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import Form from "./Form";
+import { AuthGuard } from "@/components/authentication/auth-guard";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import dynamic from "next/dynamic";
-import { useGetProperty } from "@/hooks/property";
+import EditById from "@/sections/Properties/Edit";
 const PropertyPusher = dynamic(
     () => import("@/sections/Properties/Edit/PropertyPusher")
 );
 
-const EditPropertyPage: NextPage = () => {
-    const { property } = useGetProperty();
-    return <Form property={property} />;
-};
+const EditPropertyPage: NextPage = () => <EditById />;
 
 EditPropertyPage.getLayout = (page) => (
     <AuthGuard>
