@@ -28,7 +28,7 @@ const VisibilityStatus = () => {
     if (!key) return null;
 
     return (
-        <SoftTypography mr={5} p={0.5} borderRadius={2} color={getColor(key)}>
+        <SoftTypography mr={5} px={1} py={0.5} borderRadius={2} color={getColor(key)}>
             {getText(t, key)}
         </SoftTypography>
     );
