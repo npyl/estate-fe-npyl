@@ -8,15 +8,19 @@ import useCookie from "@/hooks/useCookie";
 import CookieNames from "@/constants/cookies";
 import { PPQuickViewLayoutCookie } from "@/sections/Properties/ViewById/PanelWithQuickView/types";
 import isNamedComponent from "./isNamedComponent";
+import debugLog from "@/_private/debugLog";
 
 // ----------------------------------------------------------------------------
 
 const getWithPermittedName =
     (sectionNames: string[]) => (content: ReactNode) => {
-        if (!isNamedComponent(content))
-            throw new Error("Invalid section component");
+        if (!isNamedComponent(content)) {
+            debugLog("Invalid section component");
+            return null;
+        }
 
         const name = content.type.name;
+        console.log("GOT: ", name);
 
         if (!sectionNames.includes(name)) return null;
 
@@ -29,6 +33,8 @@ const useFilteredChildern = (children: React.ReactElement[]) => {
     });
 
     const { sectionNames } = layout;
+
+    console.log("sectionNames: ", sectionNames);
 
     return React.Children.map(children, getWithPermittedName(sectionNames));
 };
