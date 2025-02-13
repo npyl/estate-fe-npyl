@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Chip } from "@mui/material";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
@@ -28,23 +28,37 @@ const greekGenitiveMonths = [
     "Δεκεμβρίου",
 ];
 
+// Function to format date with translation support
 const formatTourDate = (dateString: any, language?: string) => {
     const date = dayjs(dateString);
     const locale = language === "el" ? "el" : "en";
+
     if (language === "el") {
         const day = date.format("D");
-        const monthIndex = parseInt(date.format("M"), 10) - 1; // Get zero-indexed month
+        const monthIndex = parseInt(date.format("M"), 10) - 1; // Zero-indexed month
         const year = date.format("YYYY");
         return `${day} ${greekGenitiveMonths[monthIndex]} ${year}`;
     }
+
     return dayjs(dateString).locale(locale).format("D MMMM YYYY");
 };
 
 type TourType = "inPerson" | "askQuestion";
 
-const tourTypeMapper: Record<TourType, string> = {
-    inPerson: "In Person",
-    askQuestion: "Ask Question",
+const tourTypeLabels: Record<
+    TourType,
+    { label: string; bgColor: string; textColor: string }
+> = {
+    inPerson: {
+        label: "In Person",
+        bgColor: "#D1E7DD !important",
+        textColor: "#0F5132 !important",
+    },
+    askQuestion: {
+        label: "Ask Question",
+        bgColor: "#FDE2E4 !important",
+        textColor: "#842029 !important",
+    },
 };
 
 interface PropertyRegionProps {
@@ -61,7 +75,6 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
     handlePropertyCodeClick,
 }) => {
     const { i18n, t } = useTranslation();
-
     const isEnglish = i18n.language === "en";
 
     const complex = isEnglish
@@ -96,7 +109,6 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
                                         theme.palette.mode === "light"
                                             ? "#854D0E"
                                             : "null",
-
                                     "&:hover": {
                                         backgroundColor: (theme) =>
                                             theme.palette.mode === "light"
@@ -110,17 +122,37 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
                     </Stack>
                 ) : null}
             </Stack>
-            <Box display="flex" flexDirection="row" gap={0.5}>
-                <Typography variant="body2">
-                    {t(row?.tourType as TourType)}
-                </Typography>
+
+            {/* Tour Type Label with Date & Time */}
+            <Stack direction="row" alignItems="center" gap={0.3}>
+                {row?.tourType && tourTypeLabels[row.tourType as TourType] ? (
+                    <Chip
+                        label={t(
+                            tourTypeLabels[row.tourType as TourType].label
+                        )}
+                        sx={{
+                            backgroundColor:
+                                tourTypeLabels[row.tourType as TourType]
+                                    .bgColor,
+                            color: tourTypeLabels[row.tourType as TourType]
+                                .textColor,
+                            fontWeight: 600,
+                            fontSize: "12px",
+                        }}
+                        size="small"
+                    />
+                ) : null}
+
+                {/* Display formatted tour date */}
                 {row?.tourDate ? (
                     <Typography variant="body2">
                         - {formatTourDate(row?.tourDate, i18n.language)}
                     </Typography>
                 ) : null}
+
+                {/* Display tour time */}
                 <Typography variant="body2">{row?.tourTime}</Typography>
-            </Box>
+            </Stack>
         </Box>
     );
 };

@@ -114,6 +114,7 @@ const BasicRow = ({
     const { customerEmail, customerMobile, tourType, tourDate, tourTime } =
         row || {};
 
+    console.log(row);
     return (
         <TableRow
             sx={{
@@ -174,7 +175,7 @@ const BasicRow = ({
                                             propertyDetails={propertyDetails}
                                             contactDetails={contactDetails}
                                         />
-                                        <PropertyRegion
+                                        <PropertyRegion //IN here there is the tour type as well
                                             propertyDetails={propertyDetails}
                                             contactDetails={contactDetails}
                                             row={row}

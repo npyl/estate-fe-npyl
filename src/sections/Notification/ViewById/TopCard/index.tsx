@@ -26,6 +26,9 @@ const TopCard: FC<TopCardProps> = ({ type }) => {
         notificationDate,
         listingDetails: listing,
         reviewDetails,
+        tourType,
+        tourTime,
+        tourDate,
     } = notification || {};
 
     const locale = i18n.language === "el" ? el : enGB;
@@ -59,8 +62,12 @@ const TopCard: FC<TopCardProps> = ({ type }) => {
                                         : ""}
                                 </Typography>
                             </Stack>
-                            <Stack direction="column" mt={2}>
-                                <CustomerInfo />
+                            <Stack direction="column" mt={1}>
+                                <CustomerInfo
+                                    tourType={tourType}
+                                    tourDate={tourDate}
+                                    tourTime={tourTime}
+                                />
 
                                 {type === "REVIEW" ? (
                                     <PropertyRating
@@ -76,7 +83,7 @@ const TopCard: FC<TopCardProps> = ({ type }) => {
 
                                 {message ? (
                                     <>
-                                        <Typography fontWeight="bold" mt={3}>
+                                        <Typography fontWeight="bold" mt={1}>
                                             {t("Message")}
                                         </Typography>
                                         <Typography>{message}</Typography>

@@ -22,7 +22,6 @@ const TourPropertyDetails: React.FC<TourPropertyDetailsProps> = ({
     if (!property) return null;
 
     const isEnglish = i18n.language === "en";
-
     return (
         <>
             <Typography variant="body2" mt={2}>
@@ -31,7 +30,7 @@ const TourPropertyDetails: React.FC<TourPropertyDetailsProps> = ({
                 {property.state.key === "RENT" ? t("€/month") : "€"}
             </Typography>
             <Typography variant="body2">
-                {isEnglish ? property.regionEN : property.regionGR}
+                {isEnglish ? property.complexEN : property.complexGR}
                 {isEnglish
                     ? property.regionEN
                         ? ", "
