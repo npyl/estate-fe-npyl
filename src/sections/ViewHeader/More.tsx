@@ -20,7 +20,8 @@ const TaskDialog = dynamic(() =>
     import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
 );
 import AssignmentIcon from "@mui/icons-material/Assignment";
-
+import ControlPointDuplicateOutlinedIcon from "@mui/icons-material/ControlPointDuplicateOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 const RestoreButton = () => {
     const { t } = useTranslation();
     const router = useRouter();
@@ -84,6 +85,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
                     color="error"
                     onClick={openArchive}
                     startIcon={<ArchiveIcon />}
+                    sx={{ justifyContent: "flex-start" }}
                 >
                     {t("Archive")}
                 </SoftButton>
@@ -95,6 +97,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
                     color="error"
                     onClick={openDelete}
                     startIcon={<DeleteIcon />}
+                    sx={{ justifyContent: "flex-start" }}
                 >
                     {t("Delete")}
                 </SoftButton>
@@ -110,6 +113,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
                             variant="contained"
                             color="error"
                             onClick={handleArchive}
+                            sx={{ justifyContent: "flex-start" }}
                         >
                             {t("Archive")}
                         </Button>
@@ -198,6 +202,7 @@ const MoreButton = ({
                 >
                     <Stack
                         alignItems="center"
+                        justifyContent="flex-start"
                         p={1}
                         spacing={1}
                         sx={{ minWidth: 150 }}
@@ -209,7 +214,11 @@ const MoreButton = ({
                                 fullWidth
                                 variant="outlined"
                                 color="secondary"
+                                startIcon={
+                                    <ControlPointDuplicateOutlinedIcon />
+                                }
                                 onClick={handleClone}
+                                sx={{ justifyContent: "flex-start" }}
                             >
                                 {t("Clone")}
                             </Button>
@@ -221,6 +230,8 @@ const MoreButton = ({
                                 variant="outlined"
                                 color="secondary"
                                 onClick={handleEdit}
+                                startIcon={<EditOutlinedIcon />}
+                                sx={{ justifyContent: "flex-start" }}
                             >
                                 {t("Edit")}
                             </Button>
@@ -230,8 +241,9 @@ const MoreButton = ({
                             fullWidth
                             variant="outlined"
                             color="primary"
-                            endIcon={<AssignmentIcon />}
+                            startIcon={<AssignmentIcon />}
                             onClick={handleOpenTaskDialog}
+                            sx={{ justifyContent: "flex-start" }}
                         >
                             {t("New Task")}
                         </Button>

@@ -81,7 +81,7 @@ const OpenIn = () => {
                     },
                 }}
             >
-                <Typography ml={1} sx={{ textWrap: "nowrap" }}>
+                <Typography sx={{ ml: 1, textWrap: "nowrap" }}>
                     {t("Open in")}
                 </Typography>
                 {hasPublic && (
@@ -89,7 +89,10 @@ const OpenIn = () => {
                         <img
                             src={publicLogo}
                             alt="Public Logo"
-                            style={{ width: "20px", height: "20px" }}
+                            style={{
+                                width: "18px",
+                                height: "18px",
+                            }}
                         />
                     </IconButton>
                 )}
