@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            PDF_EXPORT_FAULTY_0: "Error downloading PDF",
+            PDF_EXPORT_FAULTY_1: "Make sure you have generated",
+
             _PDF_NOT_GENERATED_: "Not generated",
             Fullname: "Fullname",
             _GENERATE_CHECKBOX_: "Generate PDF",
@@ -1203,6 +1206,9 @@ const resources = {
     },
     el: {
         translation: {
+            PDF_EXPORT_FAULTY_0: "Σφάλμα κατά τη λήψη PDF",
+            PDF_EXPORT_FAULTY_1: "Βεβαιωθείτε ότι έχει παραχθεί",
+
             _PDF_NOT_GENERATED_: "Δεν έχει παραχθεί",
             Fullname: "Ον/μο",
             _GENERATE_CHECKBOX_: "Παραγωγή PDF",
