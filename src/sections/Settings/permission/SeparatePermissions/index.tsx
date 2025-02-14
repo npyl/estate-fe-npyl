@@ -8,34 +8,18 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
-import { MouseEvent, FC } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    useAllUsersQuery,
-    useToggleActiveNotificationMutation,
-} from "@/services/user";
-import { IOSSwitch } from "@/components/iOSSwitch";
+import { useAllUsersQuery } from "@/services/user";
 import Avatar from "@/components/Avatar";
-import AdminLabel from "@/sections/User/AdminLabel";
+import {
+    ToggleAgreements,
+    ToggleMessages,
+    ToggleNotifications,
+} from "./Toggles";
+import TaskView from "./TaskView";
 
-interface ToggleNotificationsProps {
-    userId: number;
-    notificationsEnabled: boolean;
-}
-
-const ToggleNotifications: FC<ToggleNotificationsProps> = ({
-    userId,
-    notificationsEnabled,
-}) => {
-    const [toggleActiveNotification] = useToggleActiveNotificationMutation();
-
-    const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        toggleActiveNotification(userId);
-    };
-
-    return <IOSSwitch checked={notificationsEnabled} onClick={handleClick} />;
-};
+// -------------------------------------------------------------------------------------
 
 interface RowProps {
     user: IUser;
@@ -55,19 +39,27 @@ const Row: FC<RowProps> = ({ user }) => {
                 />
             </TableCell>
             <TableCell>
-                {isAdmin ? <AdminLabel /> : null}
-                {!isAdmin ? (
-                    <ToggleNotifications
-                        userId={id}
-                        notificationsEnabled={notificationsEnabled}
-                    />
-                ) : null}
+                <ToggleNotifications
+                    userId={id}
+                    notificationsEnabled={notificationsEnabled}
+                />
+            </TableCell>
+            <TableCell>
+                <TaskView userId={id} />
+            </TableCell>
+            <TableCell>
+                <ToggleAgreements userId={id} enabled={notificationsEnabled} />
+            </TableCell>
+            <TableCell>
+                <ToggleMessages userId={id} enabled={notificationsEnabled} />
             </TableCell>
         </TableRow>
     );
 };
 
-const getRow = (user: IUser) => <Row key={user.id} user={user} />;
+// INFO: ignore admins
+const getRow = (user: IUser) =>
+    user.isAdmin ? null : <Row key={user.id} user={user} />;
 
 const SeparatePermissions = () => {
     const { data: users } = useAllUsersQuery();
