@@ -17,14 +17,21 @@ import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegration } from "@/types/integrations";
 import ItemSkeleton from "../Skeleton";
+import { FC, ReactNode } from "react";
 
 interface Props {
+    icon?: ReactNode;
     type: IntegrationSite;
     expandedInitialy: boolean;
     onEdit: (s: IIntegration) => void;
 }
 
-const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
+const IntegrationItem: FC<Props> = ({
+    icon,
+    type,
+    expandedInitialy,
+    onEdit,
+}) => {
     const { t } = useTranslation();
 
     const [expanded, toggleExpanded] = useToggle(expandedInitialy);
@@ -33,9 +40,7 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
         skip: !expanded,
     });
 
-    if (isLoading) {
-        return <ItemSkeleton />;
-    }
+    if (isLoading) return <ItemSkeleton />;
 
     return (
         <Paper elevation={10}>
@@ -46,7 +51,10 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                 gap={1}
                 direction="row"
             >
-                <Typography variant="h6">{type}</Typography>
+                <Stack direction="row" spacing={1}>
+                    {icon}
+                    <Typography variant="h6">{type}</Typography>
+                </Stack>
 
                 <Stack direction="row" spacing={1}>
                     {expanded ? (

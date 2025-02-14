@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { IIntegration } from "src/types/integrations";
 import IntegrationItem from "./Item";
 import { IntegrationSite } from "@/types/listings";
@@ -7,10 +7,12 @@ const EditDialog = dynamic(() => import("./EditDialog"));
 
 // const DISABLED: IntegrationSite[] = ["XE", "FERIMMO"];
 
-const INTEGRATION_SITES: IntegrationSite[] = [
-    "SPITOGATOS",
-    "PLOT_GR",
-    "JAMES_EDITION",
+type TIntegrationOption = { type: IntegrationSite; icon: ReactNode };
+
+const INTEGRATION_SITES: TIntegrationOption[] = [
+    { type: "SPITOGATOS", icon: null },
+    { type: "PLOT_GR", icon: null },
+    { type: "JAMES_EDITION", icon: null },
 ];
 
 const StandardItems = () => {
@@ -24,10 +26,10 @@ const StandardItems = () => {
 
     return (
         <>
-            {INTEGRATION_SITES.map((t, i) => (
+            {INTEGRATION_SITES.map(({ type, icon }, i) => (
                 <IntegrationItem
-                    key={t}
-                    type={t}
+                    key={type}
+                    type={type}
                     expandedInitialy={i === 0}
                     onEdit={setSelectedIntegration}
                 />
@@ -35,7 +37,7 @@ const StandardItems = () => {
 
             {selectedIntegration ? (
                 <EditDialog
-                    open={!!selectedIntegration}
+                    open
                     onClose={handleCloseDialog}
                     initialValues={selectedIntegration}
                 />
