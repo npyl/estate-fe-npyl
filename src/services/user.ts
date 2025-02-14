@@ -81,7 +81,7 @@ export const user = apiWithTranslation({
                 url: `toggle-notification-view/${userId}`,
                 method: "POST",
             }),
-            invalidatesTags: ["Users"],
+            invalidatesTags: ["User", "Users"],
         }),
 
         isAdmin: builder.query<boolean, number>({
