@@ -16,6 +16,7 @@ import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegration } from "@/types/integrations";
 import ItemSkeleton from "../Skeleton";
+import RightMoveIcon from "@/assets/integrations/RightMoveIcon";
 
 interface Props {
     onEdit: (s: IIntegration) => void;
@@ -46,7 +47,12 @@ const IntegrationItem = ({ onEdit }: Props) => {
                 gap={1}
                 direction="row"
             >
-                <Typography variant="h6">RIGHT_MOVE</Typography>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <RightMoveIcon width={30} height={30} />
+                    <Typography variant="body1" color="text.secondary">
+                        rightmove.co.uk
+                    </Typography>
+                </Stack>
 
                 <Stack direction="row" spacing={1}>
                     {expanded ? (

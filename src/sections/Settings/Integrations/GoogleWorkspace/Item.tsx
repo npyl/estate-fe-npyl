@@ -9,6 +9,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
+import OriginalGoogleLogo from "@/assets/logo/OriginalGoogleLogo";
 const ConfirmationDialog = dynamic(() => import("./ConfirmDialog"));
 
 interface RemoveButtonProps {
@@ -83,14 +84,15 @@ const Item: FC<ItemProps> = ({ onEdit }) => {
 
     const isIntegrated = data?.isIntegrated;
 
+    const topRightContent = isIntegrated ? (
+        <RemoveButton domain={data?.domain} />
+    ) : null;
+
     return (
         <BaseItem
+            Icon={OriginalGoogleLogo}
             type="Google Workspace"
-            topRightContent={
-                isIntegrated ? (
-                    <RemoveButton domain={data?.domain} />
-                ) : undefined
-            }
+            topRightContent={topRightContent}
             onEdit={onEdit}
         >
             <Placeholder
