@@ -1,4 +1,4 @@
-import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
+import { MenuItem, SxProps, TextField, Theme, Avatar } from "@mui/material";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
@@ -20,6 +20,10 @@ const OptionSx: SxProps<Theme> = {
     width: "100%",
 };
 
+const getInitials = (firstName: string, lastName: string) => {
+    return `${firstName?.charAt(0) ?? ""}${lastName?.charAt(0) ?? ""}`;
+};
+
 const RenderOption = (
     props: React.HTMLAttributes<HTMLLIElement> & { key: string },
     option: ICustomerMini
@@ -27,6 +31,17 @@ const RenderOption = (
     const { key: _, ...otherProps } = props;
     return (
         <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+            <Avatar
+                sx={{
+                    width: 32,
+                    height: 32,
+                    bgcolor: "primary.main",
+                    color: "white",
+                }}
+            >
+                {/* If we want the avatar to inculde first letter of firstName and lastName uncomment the following  */}
+                {/* {getInitials(option.firstName, option.lastName)}    */}
+            </Avatar>
             {option.firstName} {option.lastName}
         </MenuItem>
     );
