@@ -1,10 +1,10 @@
 import SearchIcon from "@mui/icons-material/Search";
 import {
-    Box,
     ClickAwayListener,
     IconButton,
     InputAdornment,
     InputBaseProps,
+    Stack,
     SxProps,
     Theme,
 } from "@mui/material";
@@ -145,38 +145,24 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
                         }}
                         startAdornment={<StartAdornment />}
                         endAdornment={
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                                {searchText && (
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                {searchText ? (
                                     <IconButton
                                         onClick={handleClearSearch}
-                                        //SEE HERE:  if used a constant SX the css is not applied
-                                        sx={{
-                                            width: 24,
-                                            height: 24,
-                                            borderRadius: "50%",
-                                            border: "1px solid rgba(0,0,0,0.2)",
-                                            backgroundColor:
-                                                "rgba(0, 0, 0, 0.05)",
-                                            transition: "0.2s",
-                                            "&:hover": {
-                                                backgroundColor:
-                                                    "rgba(0, 0, 0, 0.1)",
-                                            },
-                                            // force the CloseIcon to be smaller
-                                            "& svg": {
-                                                fontSize: "1.1rem",
-                                                transform: "scale(0.8)",
-                                            },
-                                        }}
+                                        sx={ClearButtonSx}
                                     >
                                         <CloseIcon />
                                     </IconButton>
-                                )}
+                                ) : null}
                                 <ModeSelect
                                     value={searchCategory}
                                     onChange={handleChangeCategory}
                                 />
-                            </Box>
+                            </Stack>
                         }
                         {...props}
                     />
