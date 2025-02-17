@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import { FC, PropsWithChildren } from "react";
-import { AuthGuard } from "./auth-guard";
+import AuthGuard from "./auth-guard";
 
 const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();

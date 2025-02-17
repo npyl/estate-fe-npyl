@@ -3,7 +3,7 @@ import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import { useLazyIsAdminQuery } from "src/services/user";
-import { AuthGuard } from "./auth-guard";
+import AuthGuard from "./auth-guard";
 
 const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
