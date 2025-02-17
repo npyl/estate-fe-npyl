@@ -15,10 +15,10 @@ const Sections: FC<SectionsProps> = ({ currentPath }) => {
 
     const isAdmin = data?.isAdmin ?? false;
 
-    const notifications = Boolean(data?.notificationsEnabled);
-    const agreements = Boolean(data?.agreementsEnabled);
-    const messages = Boolean(data?.messagingEnabled);
-    const tasks = data?.tasksEnabled !== "NONE";
+    const notifications = isAdmin || Boolean(data?.notificationsEnabled);
+    const agreements = isAdmin || Boolean(data?.agreementsEnabled);
+    const messages = isAdmin || Boolean(data?.messagingEnabled);
+    const tasks = isAdmin || data?.tasksEnabled !== "NONE";
 
     const sections = useMemo(
         () =>
