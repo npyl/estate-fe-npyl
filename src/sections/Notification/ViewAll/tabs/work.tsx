@@ -4,17 +4,34 @@ import {
 } from "src/services/notification";
 import Table from "../table";
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { NotificationType } from "@/types/notification";
 
-const WorkApplications = ({ filter }: any) => {
+const WorkApplications = ({ filter, searchText }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState("createdAt");
     const [direction, setDirection] = useState("DESC");
 
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
+
+    const filterBody = useMemo(() => {
+        return {
+            fromDate: null,
+            toDate: null,
+            search: searchText || "",
+            types: ["WORK_FOR_US"] as NotificationType[],
+            viewed:
+                filter === "viewed"
+                    ? true
+                    : filter === "notViewed"
+                    ? false
+                    : undefined,
+        };
+    }, [filter, searchText]);
+
     const { data: works } = useFilterNotificationsQuery({
-        filter: { types: ["WORK_FOR_US"] },
+        filter: filterBody,
         page,
         pageSize,
         sortBy,
