@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
-import { AuthGuard } from "src/components/authentication/auth-guard";
+import AuthGuard from "@/components/authentication/auth-guard";
+
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import DashboardSection from "@/sections/dashboard";
 

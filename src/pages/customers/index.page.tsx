@@ -3,7 +3,8 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 import type { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { AuthGuard } from "src/components/authentication/auth-guard";
+import AuthGuard from "@/components/authentication/auth-guard";
+
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import { useFilterCustomersQuery } from "src/services/customers";
