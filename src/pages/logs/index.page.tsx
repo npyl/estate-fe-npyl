@@ -1,44 +1,40 @@
 import { Paper, Stack } from "@mui/material";
 import { NextPage } from "next";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import useResponsive from "src/hooks/useResponsive";
-import { useFilterLogsMutation } from "src/services/logs";
-import { selectAll } from "src/slices/log";
+import { useFilterLogsQuery } from "src/services/logs";
+import { selectAll } from "@/slices/log";
 import { FilterLogSection } from "./components/FilterSection";
-import FilterMore from "@/sections/Filters/FilterMore/Dialog";
+const FilterMore = dynamic(
+    () => import("@/sections/Filters/FilterMore/Dialog")
+);
 import FloatingButton from "@/sections/Filters/FilterMore/FloatingButton";
 import LogCard from "@/components/Cards/LogCard";
 import Pagination, { usePagination } from "@/components/Pagination";
 import useDialog from "@/hooks/useDialog";
 import NoLogsPlaceholder from "./components/NoLogs";
 import AdminGuard from "@/components/authentication/admin-guard";
+import dynamic from "next/dynamic";
 
 const pageSize = 15;
 
 const Logs: NextPage = () => {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     const pagination = usePagination();
 
-    const allFilters = useSelector(selectAll);
+    const filter = useSelector(selectAll);
 
-    const [filterLogs, { data, isLoading }] = useFilterLogsMutation();
-
-    const isMobile = useResponsive("down", 500);
-
-    useEffect(() => {
-        filterLogs({
-            filter: allFilters,
-            page: pagination.page,
-            pageSize,
-            language: i18n.language,
-        });
-    }, [allFilters, pagination.page, pageSize, i18n.language]);
+    const { data, isLoading } = useFilterLogsQuery({
+        filter,
+        page: pagination.page,
+        pageSize,
+        language: i18n.language,
+    });
 
     const content = useMemo(
         () => (Array.isArray(data?.content) ? data.content : []),
@@ -47,16 +43,28 @@ const Logs: NextPage = () => {
 
     return (
         <>
-            {isMobile ? (
-                <FloatingButton
-                    badgeContent={checkFields(allFilters) ? 1 : 0}
-                    onClick={openDialog}
-                />
-            ) : (
-                <Stack spacing={1} component={Paper} p={1}>
-                    <FilterLogSection />
-                </Stack>
-            )}
+            <FloatingButton
+                badgeContent={checkFields(filter) ? 1 : 0}
+                onClick={openDialog}
+                sx={{
+                    display: {
+                        xs: "block",
+                        lg: "none",
+                    },
+                }}
+            />
+
+            <Stack
+                spacing={1}
+                component={Paper}
+                p={1}
+                display={{
+                    xs: "none",
+                    lg: "block",
+                }}
+            >
+                <FilterLogSection />
+            </Stack>
 
             {content.length === 0 ? <NoLogsPlaceholder /> : null}
 
@@ -68,7 +76,8 @@ const Logs: NextPage = () => {
                     totalItems={data?.totalElements ?? pageSize}
                     Container={Stack}
                     ContainerProps={{
-                        spacing: 2,
+                        spacing: 1,
+                        mt: 1,
                     }}
                 >
                     {content.map((log, index) => (

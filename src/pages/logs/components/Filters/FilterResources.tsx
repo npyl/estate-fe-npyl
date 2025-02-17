@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
 import { selectResources, setResources } from "src/slices/log";
-import { KeyValue } from "src/types/KeyValue";
 
 export default function FilterResources() {
     const dispatch = useDispatch();
@@ -21,10 +20,7 @@ export default function FilterResources() {
     const resources = useSelector(selectResources);
 
     const logsEnums = data?.logs;
-    const resourceEnums = logsEnums?.resourceTypes;
-    const actionsEnums = logsEnums?.userActions;
-
-    if (!data) return null;
+    const resourceEnums = logsEnums?.resourceTypes || [];
 
     const handleChange = (event: SelectChangeEvent<typeof resources>) => {
         const {
@@ -62,7 +58,7 @@ export default function FilterResources() {
                 input={<OutlinedInput label={t("Resource")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {resourceEnums!.map(({ key, value }) => {
+                {resourceEnums.map(({ key, value }) => {
                     const isKeySelected = resources?.some(
                         (resourceKey) => resourceKey === key
                     );

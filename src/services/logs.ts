@@ -9,9 +9,11 @@ export interface ILogsParams {
     pageSize: number;
     language?: string;
 }
+
 interface ILogFilterProps extends ILogsParams {
     filter: ILogFilterPOST;
 }
+
 export const logs = apiWithTranslation({
     reducerPath: "logs",
     baseQuery: fetchBaseQuery({
@@ -34,7 +36,7 @@ export const logs = apiWithTranslation({
             }),
             providesTags: ["PropertyByIdLogs"],
         }),
-        filterLogs: builder.mutation<IPage<ILog>, ILogFilterProps>({
+        filterLogs: builder.query<IPage<ILog>, ILogFilterProps>({
             query: (props: ILogFilterProps) => ({
                 url: "/filter",
                 method: "POST",
@@ -44,12 +46,12 @@ export const logs = apiWithTranslation({
                     pageSize: props.pageSize,
                 },
             }),
-            invalidatesTags: ["Logs"],
+            providesTags: ["Logs"],
         }),
     }),
 });
 
-const useFilterLogsMutation = la(logs.useFilterLogsMutation);
+const useFilterLogsQuery = la(logs.useFilterLogsQuery);
 const usePropertyHistoryPaginatedQuery = la(
     logs.usePropertyHistoryPaginatedQuery
 );
@@ -58,7 +60,7 @@ const useCustomerHistoryPaginatedQuery = la(
 );
 
 export {
-    useFilterLogsMutation,
+    useFilterLogsQuery,
     usePropertyHistoryPaginatedQuery,
     useCustomerHistoryPaginatedQuery,
 };

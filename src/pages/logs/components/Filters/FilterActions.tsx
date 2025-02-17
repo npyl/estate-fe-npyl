@@ -11,19 +11,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
 import { selectActions, setActions } from "src/slices/log";
-import { KeyValue } from "src/types/KeyValue";
 
 export default function FilterActions() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
-
     const actions = useSelector(selectActions);
-
     const logsEnums = data?.logs;
-    const actionsEnums = logsEnums?.userActions;
-
-    if (!data) return null;
+    const actionsEnums = logsEnums?.userActions || [];
 
     const handleChange = (event: SelectChangeEvent<typeof actions>) => {
         const {
@@ -34,7 +29,6 @@ export default function FilterActions() {
         );
     };
 
-    // Function to retrieve the display text for selected keys
     const getSelectedActionValues = (selectedKeys: string[]) => {
         return selectedKeys.map((key: string) => {
             const found = actionsEnums?.find((action) => action.key === key);

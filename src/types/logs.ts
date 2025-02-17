@@ -1,21 +1,38 @@
 import { KeyValue } from "./KeyValue";
-import { IUser } from "./user";
+import { IUserMini } from "./user";
 
-export interface ILog {
-    user?: IUser;
-    action?: KeyValue;
-    resourceType?: KeyValue;
-    createdAt: number;
-    message?: string;
-    propertyId?: number;
-    propertyCode?: string;
-    customerId?: number;
+type TLogAction =
+    | "ADD"
+    | "CREATE"
+    | "DELETE"
+    | "DOWNLOAD"
+    | "EDIT"
+    | "LOGIN"
+    | "LOGOUT"
+    | "RESTORE";
+
+// TODO: what is this? Is it correct? Where should I use it?
+type TLogResource = "ENGLISH" | "GREEK" | "SYSTEM";
+
+interface ILog {
+    action: KeyValue<TLogAction>;
+    message: string;
+    resourceType: KeyValue<TLogResource>;
+    user: IUserMini;
+    createdAt: string;
+
+    agreementCode?: string;
+    agreementId?: number;
+    agreementTitle?: string;
+
     customer?: string;
+    customerId?: number;
+
+    propertyCode?: string;
+    propertyId?: number;
 }
 
-export interface ILogResultResponse {}
-
-export interface ILogFilter {
+interface ILogFilter {
     fromDate?: string;
     toDate?: string;
     users?: number[]; //id
@@ -25,7 +42,7 @@ export interface ILogFilter {
     customersIds?: number[];
 }
 
-export interface ILogFilterPOST {
+interface ILogFilterPOST {
     fromDate?: string;
     toDate?: string;
     users?: number[]; //id
@@ -34,3 +51,5 @@ export interface ILogFilterPOST {
     propertiesIds?: number[];
     customersIds?: number[];
 }
+
+export type { TLogAction, ILog, ILogFilter, ILogFilterPOST };

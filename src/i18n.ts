@@ -1057,6 +1057,8 @@ const resources = {
             "No results. This customer does not own any property!":
                 "No results. This customer does not own any property!",
 
+            "No results": "No results",
+
             Any: "Any",
             Regions: "Regions",
             Cities: "Cities",
@@ -1210,6 +1212,8 @@ const resources = {
     },
     el: {
         translation: {
+            "No results": "Δεν βρέθηκαν αποτελέσματα",
+
             Tasks_NotAtAll: "Όχι",
             Tasks_Own: "Προσωπικές",
             Tasks_All: "Όλες",
