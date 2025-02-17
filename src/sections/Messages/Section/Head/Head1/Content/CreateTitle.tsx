@@ -29,6 +29,8 @@ const CreateTitle = () => {
                 sx={{
                     width: "300px",
                 }}
+                onAssignToMe={() => {}}
+                isMessagesPage={true}
             />
         </Stack>
     );

@@ -14,7 +14,7 @@ const Footer: FC<FooterProps> = ({ commentsCount, createdAt, ...props }) => (
         alignItems="center"
         borderTop="1px solid"
         borderColor="divider"
-        py={1}
+        pt={0.5}
         {...props}
     >
         <Comments count={commentsCount} />

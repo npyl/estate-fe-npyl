@@ -1825,6 +1825,7 @@ const resources = {
             "Maximum Floor": "Μέγιστος όροφος",
             "Minimum Floor": "Ελάχιστος όροφος",
             "Assigned to": "Ανάθεση στον/ην",
+            "Assign to me": "Ανάθεση σε εμένα",
             "Add section": "Προσθήκη Τμήματος",
             "Add column": "Προσθήκη Στήλης",
             "Delete column?": "Διαγραφή στήλης?",

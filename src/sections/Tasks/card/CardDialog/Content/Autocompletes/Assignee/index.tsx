@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { Controller, useFormContext } from "react-hook-form";
 import AssigneeAutocomplete from "@/sections/_Autocompletes/Assignee";
+import { useAuth } from "@/hooks/use-auth";
 
 const RHFAssignee = () => {
     const { t } = useTranslation();
 
     const { control } = useFormContext();
-
+    const { user } = useAuth();
     return (
         <Controller
             name="userIds"
@@ -24,6 +25,11 @@ const RHFAssignee = () => {
                     {...field}
                     error={Boolean(error)}
                     helperText={error?.message}
+                    onAssignToMe={() => {
+                        if (user) {
+                            onChange([user.id]); // Assign the logged-in user
+                        }
+                    }}
                 />
             )}
         />

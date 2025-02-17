@@ -42,7 +42,11 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
 
         const label = isSmall ? count : `${count} ${t("Comments")}`;
 
-        return <Typography ref={onRef}>{label}</Typography>;
+        return (
+            <Typography ref={onRef} variant="body2">
+                {label}
+            </Typography>
+        );
     }
 );
 

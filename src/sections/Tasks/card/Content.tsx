@@ -17,7 +17,9 @@ interface ContentProps {
 
 const Content: FC<ContentProps> = ({ name, priority }) => (
     <Stack direction="row" spacing={1}>
-        <Typography sx={EllipsisSx}>{name}</Typography>
+        <Typography sx={EllipsisSx} variant="body2">
+            {name}
+        </Typography>
         <PriorityLabel priority={priority} />
     </Stack>
 );
