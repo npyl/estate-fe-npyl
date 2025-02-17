@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Tasks_NotAtAll: "No",
+            Tasks_Own: "Personal",
+            Tasks_All: "All",
+
             PDF_EXPORT_FAULTY_0: "Error downloading PDF",
             PDF_EXPORT_FAULTY_1: "Make sure you have generated",
 
@@ -1206,6 +1210,10 @@ const resources = {
     },
     el: {
         translation: {
+            Tasks_NotAtAll: "Όχι",
+            Tasks_Own: "Προσωπικές",
+            Tasks_All: "Όλες",
+
             PDF_EXPORT_FAULTY_0: "Σφάλμα κατά τη λήψη PDF",
             PDF_EXPORT_FAULTY_1: "Βεβαιωθείτε ότι έχει παραχθεί",
 

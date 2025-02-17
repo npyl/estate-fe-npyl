@@ -10,16 +10,17 @@ interface IOption {
 }
 
 const BUTTONS: IOption[] = [
-    { key: "NONE", label: "None" },
-    { key: "OWN", label: "Own" },
-    { key: "ALL", label: "All" },
+    { key: "NONE", label: "Tasks_NotAtAll" },
+    { key: "OWN", label: "Tasks_Own" },
+    { key: "ALL", label: "Tasks_All" },
 ];
 
 interface TaskViewProps {
     userId: number;
+    value: TTaskVisibility;
 }
 
-const TaskView: FC<TaskViewProps> = ({ userId }) => {
+const TaskView: FC<TaskViewProps> = ({ userId, value }) => {
     const { t } = useTranslation();
 
     const [setView, { isLoading }] = useSetTaskViewMutation();
@@ -30,7 +31,12 @@ const TaskView: FC<TaskViewProps> = ({ userId }) => {
     );
 
     return (
-        <ToggleButtonGroup disabled={isLoading} onChange={handleChange}>
+        <ToggleButtonGroup
+            exclusive
+            disabled={isLoading}
+            value={value}
+            onChange={handleChange}
+        >
             {BUTTONS.map(({ key, label }) => (
                 <ToggleButton key={key} value={key}>
                     {t(label)}

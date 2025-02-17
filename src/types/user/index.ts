@@ -1,6 +1,7 @@
 import { KeyValue } from "../KeyValue";
 import { PreferredLanguageType } from "../enums";
 import { IProperties } from "../properties";
+import { TTaskVisibility } from "../roles";
 
 interface IUser {
     id: number;
@@ -30,7 +31,11 @@ interface IUser {
     registrationDate: string;
 
     preferredLanguage: KeyValue<PreferredLanguageType>;
+
     notificationsEnabled: boolean;
+    agreementsEnabled: boolean;
+    messagingEnabled: boolean;
+    tasksEnabled: TTaskVisibility;
 }
 
 interface IUserMini {

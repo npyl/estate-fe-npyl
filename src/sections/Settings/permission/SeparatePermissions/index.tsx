@@ -11,13 +11,13 @@ import {
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "@/services/user";
-import Avatar from "@/components/Avatar";
 import {
     ToggleAgreements,
     ToggleMessages,
     ToggleNotifications,
 } from "./Toggles";
 import TaskView from "./TaskView";
+import AvatarLarge from "@/components/Avatar/Large";
 
 // -------------------------------------------------------------------------------------
 
@@ -26,16 +26,26 @@ interface RowProps {
 }
 
 const Row: FC<RowProps> = ({ user }) => {
-    const { id, firstName, lastName, avatar, notificationsEnabled, isAdmin } =
-        user;
+    const {
+        id,
+        firstName,
+        lastName,
+        email,
+        avatar,
+        notificationsEnabled,
+        agreementsEnabled,
+        messagingEnabled,
+        tasksEnabled,
+    } = user;
 
     return (
         <TableRow>
             <TableCell>
-                <Avatar
+                <AvatarLarge
                     src={avatar}
                     firstName={firstName}
                     lastName={lastName}
+                    email={email}
                 />
             </TableCell>
             <TableCell>
@@ -45,13 +55,13 @@ const Row: FC<RowProps> = ({ user }) => {
                 />
             </TableCell>
             <TableCell>
-                <TaskView userId={id} />
+                <TaskView userId={id} value={tasksEnabled} />
             </TableCell>
             <TableCell>
-                <ToggleAgreements userId={id} enabled={notificationsEnabled} />
+                <ToggleAgreements userId={id} enabled={agreementsEnabled} />
             </TableCell>
             <TableCell>
-                <ToggleMessages userId={id} enabled={notificationsEnabled} />
+                <ToggleMessages userId={id} enabled={messagingEnabled} />
             </TableCell>
         </TableRow>
     );

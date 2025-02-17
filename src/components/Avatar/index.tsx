@@ -9,7 +9,7 @@
 import MuiAvatar, { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
 import { forwardRef } from "react";
 
-export interface AvatarProps extends MuiAvatarProps {
+interface AvatarProps extends MuiAvatarProps {
     firstName?: string;
     lastName?: string;
 }
@@ -25,4 +25,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     }
 );
 
+Avatar.displayName = "Avatar";
+
+export type { AvatarProps };
 export default Avatar;
