@@ -22,6 +22,7 @@ const TaskDialog = dynamic(() =>
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ControlPointDuplicateOutlinedIcon from "@mui/icons-material/ControlPointDuplicateOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import NewTaskDialog from "./NewTaskDialog";
 const RestoreButton = () => {
     const { t } = useTranslation();
     const router = useRouter();
@@ -153,8 +154,7 @@ const MoreButton = ({
 
     const anchorRef = useRef(null);
     // state for create new task Dialog
-    const [task, setTask] = useState<IKanbanCard | undefined>();
-    const { getTask } = useTaskFromProperty();
+
     const [isOpen, openPopover, closePopover] = useDialog();
 
     const handleEdit = useCallback(() => {
@@ -174,12 +174,6 @@ const MoreButton = ({
         onArchive?.();
     }, [onArchive]);
 
-    const handleOpenTaskDialog = useCallback(() => {
-        setTask(getTask());
-    }, [getTask]);
-    const handleCloseTaskDialog = useCallback(() => {
-        setTask(undefined);
-    }, []);
     return (
         <>
             <IconButton ref={anchorRef} size="small" onClick={openPopover}>
@@ -237,16 +231,7 @@ const MoreButton = ({
                             </Button>
                         ) : null}
 
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            color="primary"
-                            startIcon={<AssignmentIcon />}
-                            onClick={handleOpenTaskDialog}
-                            sx={{ justifyContent: "flex-start" }}
-                        >
-                            {t("New Task")}
-                        </Button>
+                        <NewTaskDialog buttonFullWidth />
 
                         {isArchived ? <RestoreButton /> : null}
 
@@ -257,13 +242,6 @@ const MoreButton = ({
                             onArchive={handleArchive}
                         />
                     </Stack>
-
-                    {task && (
-                        <TaskDialog
-                            task={task}
-                            onClose={handleCloseTaskDialog}
-                        />
-                    )}
                 </Popover>
             ) : null}
         </>

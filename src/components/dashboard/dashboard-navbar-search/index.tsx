@@ -49,6 +49,22 @@ const SearchInputSx: SxProps<Theme> = {
     width: { xs: "min-content", sm: "100%", lg: "40vw" },
 };
 
+const ClearButtonSx: SxProps<Theme> = {
+    width: 24,
+    height: 24,
+    borderRadius: "50%",
+    border: "1px solid rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    transition: "0.2s",
+    "&:hover": {
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+    },
+    "& svg": {
+        fontSize: "1.1rem",
+        transform: "scale(0.8)", // Make the CloseIcon smaller
+    },
+};
+
 const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
     const { t } = useTranslation();
 
@@ -133,6 +149,7 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
                                 {searchText && (
                                     <IconButton
                                         onClick={handleClearSearch}
+                                        //SEE HERE:  if used a constant SX the css is not applied
                                         sx={{
                                             width: 24,
                                             height: 24,

@@ -53,6 +53,17 @@ const AvatarSx = {
     width: "35px",
 };
 
+const TaskCodeBoxSx = (theme: any) => ({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 0.5,
+    paddingInline: 1,
+    borderRadius: "25px",
+    backgroundColor:
+        theme.palette.mode === "light" ? "neutral.200" : "neutral.600",
+});
+
 interface HeaderProps {
     taskId: number;
     assignee: IUserMini;
@@ -69,7 +80,6 @@ const Header: FC<HeaderProps> = ({
     const fullname = `${assignee?.firstName || ""} ${assignee?.lastName || ""}`;
     const { t } = useTranslation();
     const theme = useTheme();
-    console.log(uniqueCode);
     return (
         <SpaceBetween alignItems="center">
             <Stack justifyContent={"flex-start"} direction="row" gap={2}>
@@ -81,21 +91,7 @@ const Header: FC<HeaderProps> = ({
                         sx={AvatarSx}
                     />
                 </Tooltip>
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 0.5,
-
-                        paddingInline: 1,
-                        borderRadius: "25px",
-                        backgroundColor:
-                            theme.palette.mode === "light"
-                                ? "neutral.200"
-                                : "neutral.600",
-                    }}
-                >
+                <Box sx={TaskCodeBoxSx(theme)}>
                     <BookmarkBorderIcon
                         color="action"
                         sx={{ fontSize: "large" }}

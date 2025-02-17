@@ -16,7 +16,6 @@ export type TaskCardProps = PaperProps & {
 const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
     ({ card, ...props }, ref) => {
         const { name, completed, priority, assignees, uniqueCode } = card || {};
-        console.log(uniqueCode);
         return (
             <StyledPaper ref={ref} priority={priority} elevation={8} {...props}>
                 <Header

@@ -20,10 +20,6 @@ const OptionSx: SxProps<Theme> = {
     width: "100%",
 };
 
-const getInitials = (firstName: string, lastName: string) => {
-    return `${firstName?.charAt(0) ?? ""}${lastName?.charAt(0) ?? ""}`;
-};
-
 const RenderOption = (
     props: React.HTMLAttributes<HTMLLIElement> & { key: string },
     option: ICustomerMini
@@ -38,10 +34,7 @@ const RenderOption = (
                     bgcolor: "primary.main",
                     color: "white",
                 }}
-            >
-                {/* If we want the avatar to inculde first letter of firstName and lastName uncomment the following  */}
-                {/* {getInitials(option.firstName, option.lastName)}    */}
-            </Avatar>
+            />
             {option.firstName} {option.lastName}
         </MenuItem>
     );

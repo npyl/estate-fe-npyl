@@ -6,6 +6,17 @@ import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { el } from "date-fns/locale"; // Change to the user's locale dynamically if needed
 
+const InPersonChipSx = {
+    backgroundColor: "#D1E7DD !important",
+    color: "#0F5132 !important",
+    fontWeight: 600,
+};
+
+const ContactChipSx = {
+    backgroundColor: "#FDE2E4 !important",
+    color: "#842029 !important",
+    fontWeight: 600,
+};
 interface CustomerInfoProps {
     tourType?: string;
     tourDate?: string;
@@ -33,25 +44,13 @@ const CustomerInfo: React.FC<CustomerInfoProps> = ({
     const getTourLabel = (type: string | undefined) => {
         if (type === "inPerson") {
             return (
-                <Chip
-                    label={t("In Person")}
-                    sx={{
-                        backgroundColor: "#D1E7DD !important", // Light green
-                        color: "#0F5132 !important", // Dark green
-                        fontWeight: 600,
-                    }}
-                    size="small"
-                />
+                <Chip label={t("In Person")} sx={InPersonChipSx} size="small" />
             );
         } else if (type === "askQuestion") {
             return (
                 <Chip
                     label={t("Contact with customer")}
-                    sx={{
-                        backgroundColor: "#FDE2E4 !important",
-                        color: "#842029 !important",
-                        fontWeight: 600,
-                    }}
+                    sx={ContactChipSx}
                     size="small"
                 />
             );

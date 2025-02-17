@@ -45,19 +45,28 @@ const formatTourDate = (dateString: any, language?: string) => {
 
 type TourType = "inPerson" | "askQuestion";
 
-const tourTypeLabels: Record<
-    TourType,
-    { label: string; bgColor: string; textColor: string }
-> = {
+const TourInPersonChipSx = {
+    backgroundColor: "#D1E7DD !important",
+    color: "#0F5132 !important",
+    fontWeight: 600,
+    fontSize: "12px",
+};
+
+const TourAskQuestionChipSx = {
+    backgroundColor: "#FDE2E4 !important",
+    color: "#842029 !important",
+    fontWeight: 600,
+    fontSize: "12px",
+};
+
+const tourTypeLabels: Record<TourType, { label: string; sx: any }> = {
     inPerson: {
         label: "In Person",
-        bgColor: "#D1E7DD !important",
-        textColor: "#0F5132 !important",
+        sx: TourInPersonChipSx,
     },
     askQuestion: {
         label: "Ask Question",
-        bgColor: "#FDE2E4 !important",
-        textColor: "#842029 !important",
+        sx: TourAskQuestionChipSx,
     },
 };
 
@@ -130,19 +139,10 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
                         label={t(
                             tourTypeLabels[row.tourType as TourType].label
                         )}
-                        sx={{
-                            backgroundColor:
-                                tourTypeLabels[row.tourType as TourType]
-                                    .bgColor,
-                            color: tourTypeLabels[row.tourType as TourType]
-                                .textColor,
-                            fontWeight: 600,
-                            fontSize: "12px",
-                        }}
+                        sx={tourTypeLabels[row.tourType as TourType].sx}
                         size="small"
                     />
                 ) : null}
-
                 {/* Display formatted tour date */}
                 {row?.tourDate ? (
                     <Typography variant="body2">
