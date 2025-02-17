@@ -9,7 +9,10 @@ import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@/components/Avatar";
 import Tooltip from "@mui/material/Tooltip";
+import { Box, Typography, useTheme } from "@mui/material";
+import { useTranslation } from "react-i18next";
 const Menu = dynamic(() => import("./Menu"));
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 interface Props {
     taskId: number;
@@ -50,24 +53,57 @@ const AvatarSx = {
     width: "35px",
 };
 
+const TaskCodeBoxSx = (theme: any) => ({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 0.5,
+    paddingInline: 1,
+    borderRadius: "25px",
+    backgroundColor:
+        theme.palette.mode === "light" ? "neutral.200" : "neutral.600",
+});
+
 interface HeaderProps {
     taskId: number;
     assignee: IUserMini;
     completed: boolean;
+    uniqueCode: string;
 }
 
-const Header: FC<HeaderProps> = ({ taskId, assignee, completed }) => {
+const Header: FC<HeaderProps> = ({
+    taskId,
+    assignee,
+    completed,
+    uniqueCode,
+}) => {
     const fullname = `${assignee?.firstName || ""} ${assignee?.lastName || ""}`;
+    const { t } = useTranslation();
+    const theme = useTheme();
     return (
         <SpaceBetween alignItems="center">
-            <Tooltip title={fullname}>
-                <Avatar
-                    firstName={assignee?.firstName}
-                    lastName={assignee?.lastName}
-                    src={assignee?.avatar}
-                    sx={AvatarSx}
-                />
-            </Tooltip>
+            <Stack justifyContent={"flex-start"} direction="row" gap={2}>
+                <Tooltip title={fullname}>
+                    <Avatar
+                        firstName={assignee?.firstName}
+                        lastName={assignee?.lastName}
+                        src={assignee?.avatar}
+                        sx={AvatarSx}
+                    />
+                </Tooltip>
+                <Box sx={TaskCodeBoxSx(theme)}>
+                    <BookmarkBorderIcon
+                        color="action"
+                        sx={{ fontSize: "large" }}
+                    />
+                    <Typography variant="body2">
+                        {uniqueCode
+                            ? `${t("Task")} - ${uniqueCode.split(" - ")[1]}`
+                            : "N/A"}
+                    </Typography>
+                </Box>
+            </Stack>
+
             <Stack spacing={1} direction="row" alignItems="center">
                 {completed ? <CheckIcon color="success" /> : null}
                 <MenuButton taskId={taskId} />

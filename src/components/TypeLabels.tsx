@@ -54,21 +54,13 @@ export const TypeLabels = ({
             display="flex"
             flexDirection="row"
             flexWrap="wrap"
-            gap={0.7}
+            justifyContent="center"
+            gap={1}
             {...props}
         >
             {Object.entries(map).map(([type, { value, color }]) =>
                 value ? (
-                    <Label
-                        key={type}
-                        opaque
-                        color={color}
-                        name={
-                            belowSm || forceTruncate
-                                ? t(type).slice(0, 3)
-                                : t(type)
-                        }
-                    />
+                    <Label key={type} opaque color={color} name={t(type)} />
                 ) : null
             )}
         </Box>

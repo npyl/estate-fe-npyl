@@ -5,6 +5,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ChipLink from "./ChipLink";
 import MultilineTextField from "@/components/MultilineTextField";
+import getIcons from "@/assets/icons/parent-categories";
 
 const getOptionLabel = (o: IPropertyCodeRes | number) =>
     typeof o === "number" ? "" : o.code;
@@ -22,7 +23,23 @@ const RenderTags = (
             <ChipLink
                 key={key}
                 href={`/property/${option.id}`}
-                label={option.code}
+                label={
+                    <span
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                        }}
+                    >
+                        {/* show property icon depending on the property category */}
+                        {
+                            getIcons({ width: 28, height: 28 })[
+                                option.parentCategory
+                            ]
+                        }
+                        {option.code}
+                    </span>
+                }
                 {...tagProps}
             />
         );

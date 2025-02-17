@@ -1,4 +1,4 @@
-import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
+import { MenuItem, SxProps, TextField, Theme, Avatar } from "@mui/material";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
@@ -27,6 +27,14 @@ const RenderOption = (
     const { key: _, ...otherProps } = props;
     return (
         <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+            <Avatar
+                sx={{
+                    width: 32,
+                    height: 32,
+                    bgcolor: "primary.main",
+                    color: "white",
+                }}
+            />
             {option.firstName} {option.lastName}
         </MenuItem>
     );

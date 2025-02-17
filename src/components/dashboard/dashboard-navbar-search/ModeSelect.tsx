@@ -1,5 +1,3 @@
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import {
     InputAdornment,
     MenuItem,
@@ -8,18 +6,22 @@ import {
     SxProps,
     Theme,
 } from "@mui/material";
-import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import CustomersIcon from "@/assets/icons/customers";
 
 const Empty = () => null;
 
 const MenuItemSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
-    gap: 1,
+    gap: 1.5,
     alignItems: "center",
+    color: "text.secondary",
+    fontWeight: 500,
 };
 
 const SelectSx: SxProps<Theme> = {
@@ -52,19 +54,39 @@ const ModeSelect: FC<SelectProps> = (props) => {
                 {...props}
             >
                 <MenuItem value="all" sx={MenuItemSx}>
-                    <SelectAllOutlinedIcon />
+                    <SelectAllOutlinedIcon
+                        sx={{
+                            color: "text.secondary",
+                            fontSize: "large",
+                        }}
+                    />
                     {t("All")}
                 </MenuItem>
                 <MenuItem value="properties" sx={MenuItemSx}>
-                    <HomeOutlinedIcon />
+                    <HomeIcon
+                        sx={{
+                            color: "text.secondary",
+                            fontSize: "large",
+                        }}
+                    />
                     {t("Properties")}
                 </MenuItem>
                 <MenuItem value="customers" sx={MenuItemSx}>
-                    <PersonOutlineOutlinedIcon />
+                    <CustomersIcon
+                        sx={{
+                            color: "text.secondary",
+                            fontSize: "large",
+                        }}
+                    />
                     {t("Customers")}
                 </MenuItem>
                 <MenuItem value="agreements" sx={MenuItemSx}>
-                    <HandshakeOutlinedIcon />
+                    <HandshakeIcon
+                        sx={{
+                            color: "text.secondary",
+                            fontSize: "large",
+                        }}
+                    />
                     {t("Agreements")}
                 </MenuItem>
             </Select>

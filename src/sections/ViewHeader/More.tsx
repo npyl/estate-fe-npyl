@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 import useDialog from "@/hooks/useDialog";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { FC, useCallback, useRef } from "react";
+import { FC, useCallback, useRef, useState } from "react";
 import OpenIn from "./OpenIn";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/hooks/use-auth";
@@ -14,7 +14,15 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useRouter } from "next/router";
 import { useRestorePropertyMutation } from "@/services/properties";
-
+import { IKanbanCard } from "@/types/tasks";
+import useTaskFromProperty from "../Properties/ViewById/(tabs)/Tasks/useTaskFromProperty";
+const TaskDialog = dynamic(() =>
+    import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
+);
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import ControlPointDuplicateOutlinedIcon from "@mui/icons-material/ControlPointDuplicateOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import NewTaskDialog from "./NewTaskDialog";
 const RestoreButton = () => {
     const { t } = useTranslation();
     const router = useRouter();
@@ -78,6 +86,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
                     color="error"
                     onClick={openArchive}
                     startIcon={<ArchiveIcon />}
+                    sx={{ justifyContent: "flex-start" }}
                 >
                     {t("Archive")}
                 </SoftButton>
@@ -89,6 +98,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
                     color="error"
                     onClick={openDelete}
                     startIcon={<DeleteIcon />}
+                    sx={{ justifyContent: "flex-start" }}
                 >
                     {t("Delete")}
                 </SoftButton>
@@ -104,6 +114,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
                             variant="contained"
                             color="error"
                             onClick={handleArchive}
+                            sx={{ justifyContent: "flex-start" }}
                         >
                             {t("Archive")}
                         </Button>
@@ -142,6 +153,7 @@ const MoreButton = ({
     const { t } = useTranslation();
 
     const anchorRef = useRef(null);
+    // state for create new task Dialog
 
     const [isOpen, openPopover, closePopover] = useDialog();
 
@@ -184,6 +196,7 @@ const MoreButton = ({
                 >
                     <Stack
                         alignItems="center"
+                        justifyContent="flex-start"
                         p={1}
                         spacing={1}
                         sx={{ minWidth: 150 }}
@@ -195,7 +208,11 @@ const MoreButton = ({
                                 fullWidth
                                 variant="outlined"
                                 color="secondary"
+                                startIcon={
+                                    <ControlPointDuplicateOutlinedIcon />
+                                }
                                 onClick={handleClone}
+                                sx={{ justifyContent: "flex-start" }}
                             >
                                 {t("Clone")}
                             </Button>
@@ -207,10 +224,14 @@ const MoreButton = ({
                                 variant="outlined"
                                 color="secondary"
                                 onClick={handleEdit}
+                                startIcon={<EditOutlinedIcon />}
+                                sx={{ justifyContent: "flex-start" }}
                             >
                                 {t("Edit")}
                             </Button>
                         ) : null}
+
+                        <NewTaskDialog buttonFullWidth />
 
                         {isArchived ? <RestoreButton /> : null}
 

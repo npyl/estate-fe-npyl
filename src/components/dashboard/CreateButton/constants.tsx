@@ -3,7 +3,7 @@ import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 import TasksIcon from "@mui/icons-material/ConfirmationNumber";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
-
+import MessageIcon from "@mui/icons-material/Message";
 const MENU_ITEMS = [
     {
         label: "Property",
@@ -29,6 +29,11 @@ const MENU_ITEMS = [
         label: "Label",
         path: "/label",
         icon: <LabelImportantIcon />,
+    },
+    {
+        label: "Message",
+        path: "/messages",
+        icon: <MessageIcon />,
     },
 ];
 

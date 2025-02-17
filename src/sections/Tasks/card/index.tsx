@@ -15,14 +15,14 @@ export type TaskCardProps = PaperProps & {
 
 const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
     ({ card, ...props }, ref) => {
-        const { name, completed, priority, assignees } = card || {};
-
+        const { name, completed, priority, assignees, uniqueCode } = card || {};
         return (
             <StyledPaper ref={ref} priority={priority} elevation={8} {...props}>
                 <Header
                     taskId={card.id}
                     assignee={assignees[0]}
                     completed={completed}
+                    uniqueCode={uniqueCode}
                 />
 
                 <Content name={name} priority={priority} />

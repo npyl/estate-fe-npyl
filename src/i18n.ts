@@ -1270,6 +1270,8 @@ const resources = {
             _END_OF_SESSION_: "Λήξη συνεδρίας",
 
             "View Task": "Δείτε την εργασία",
+            "Last Updated Date": "Τελευταία ενημέρωση εργασίας",
+
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 
@@ -1301,6 +1303,7 @@ const resources = {
             "Contact Details": "Στοιχεία Επικοινωνίας",
             "Tour request for": "Αίτημα ξενάγησης για",
             "Review request for": "Αξιολόγηση για",
+            "Tour request": "Αίτημα ξενάγησης",
             "Listing from": "Καταχώρηση ακινήτου από",
             "Work application by": "Αίτηση εργασίας από",
             "Agreement for": "Εντολή για",
@@ -1835,6 +1838,7 @@ const resources = {
             "Mark Complete": "Σήμανση Ολοκληρωμένου",
             Completed: "Ολοκληρώθηκε",
             Assignee: "Ανάθεση",
+            at: "στις",
             Priority: "Προτεραιότητα",
             Attachments: "Συνημμένα",
             "Type a message": "Πληκτρολογήστε ένα μήνυμα",
@@ -2181,7 +2185,9 @@ const resources = {
             Label: "Ετικέτα",
             Notification: "Ειδοποίηση",
             inPerson: "Από κοντά",
+            "In Person": "Από κοντά",
             askQuestion: "Επικοινωνία με πελάτη",
+            "Contact with customer": "Επικοινωνία με πελάτη",
             July: "Ιουλίου",
             "Construction Year": "Έτος Κατασκευής",
             "Clear all": "Καθαρισμός όλων",

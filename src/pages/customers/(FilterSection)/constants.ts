@@ -9,7 +9,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "updatedAt",
             direction: "DESC",
         },
-        icon: "",
+        icon: "mdi:clock-outline",
     },
 
     {
@@ -38,7 +38,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "createdAt",
             direction: "DESC",
         },
-        icon: "",
+        icon: "mdi:clock-outline",
     },
     {
         value: "PRICE_DESC",
@@ -47,7 +47,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "budget",
             direction: "DESC",
         },
-        icon: "",
+        icon: "ant-design:euro-outlined",
     },
     {
         value: "PRICE_ASC",
@@ -56,7 +56,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "budget",
             direction: "ASC",
         },
-        icon: "",
+        icon: "ant-design:euro-outlined",
     },
     {
         value: "RATING_DESC",
@@ -65,6 +65,6 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "rating",
             direction: "DESC",
         },
-        icon: "",
+        icon: "teenyicons:star-outline",
     },
 ];
