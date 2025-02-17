@@ -5,6 +5,7 @@ export interface BoardFiltersReq {
     search?: string;
     assigneeId?: number;
     priority?: number;
+    labels?: number[];
 
     sortBy?: TSorting["sortBy"];
     direction?: TSorting["direction"];

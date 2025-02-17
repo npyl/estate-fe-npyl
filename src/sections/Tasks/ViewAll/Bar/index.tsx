@@ -7,6 +7,7 @@ import AddButtons from "./AddButtons";
 import Priority from "./Priority";
 import ModeButton from "./ModeButton";
 import SortBy from "./SortBy";
+import Labels from "./Labels";
 import { FC } from "react";
 
 const BarSx: SxProps<Theme> = {
@@ -33,6 +34,7 @@ const Bar: FC<BarProps> = ({ create }) => (
             <Search />
             <UserSelect />
             <Priority />
+            <Labels />
             <SortBy />
         </Stack>
 

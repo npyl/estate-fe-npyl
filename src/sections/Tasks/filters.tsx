@@ -12,6 +12,7 @@ type FiltersState = Omit<BoardFiltersReq, "search"> & {
     search: string; // INFO: required to avoid undefined as initial value
     setSearch: Dispatch<SetStateAction<string>>;
     setAssigneeId: Dispatch<SetStateAction<number | undefined>>;
+    setLabels: Dispatch<SetStateAction<number[]>>;
     setPriority: Dispatch<SetStateAction<number | undefined>>;
 
     sorting?: TSorting;
@@ -22,6 +23,7 @@ const FiltersContext = createContext<FiltersState>({
     search: "",
     setSearch: () => {},
     setAssigneeId: () => {},
+    setLabels: () => {},
     setPriority: () => {},
 
     sorting: undefined,
@@ -44,6 +46,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     const [search, setSearch] = useState("");
     const [assigneeId, setAssigneeId] = useState<number>();
     const [priority, setPriority] = useState<number>();
+    const [labels, setLabels] = useState<number[]>([]);
 
     const [sorting, setSorting] = useState<TSorting>();
 
@@ -53,11 +56,13 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
                 search,
                 assigneeId,
                 priority,
+                labels,
                 sorting,
                 // ...
                 setSearch,
                 setAssigneeId,
                 setPriority,
+                setLabels,
                 setSorting,
             }}
             {...props}
