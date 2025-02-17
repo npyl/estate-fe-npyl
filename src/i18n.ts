@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Unpublished: "Unpublished",
+
             Tasks_NotAtAll: "No",
             Tasks_Own: "Personal",
             Tasks_All: "All",
@@ -1213,6 +1215,8 @@ const resources = {
     el: {
         translation: {
             "No results": "Δεν βρέθηκαν αποτελέσματα",
+
+            Unpublished: "Αδημοσίευτο",
 
             Tasks_NotAtAll: "Όχι",
             Tasks_Own: "Προσωπικές",

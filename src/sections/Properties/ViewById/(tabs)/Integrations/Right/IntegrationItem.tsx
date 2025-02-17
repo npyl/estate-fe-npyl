@@ -15,6 +15,7 @@ import Iconify from "@/components/iconify";
 import { LoadingButton } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import Item from "./styled";
+import { useTranslation } from "react-i18next";
 
 // -------------------------------------------------------
 
@@ -120,6 +121,7 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const router = useRouter();
@@ -161,9 +163,8 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
                 <LabeledSwitch
                     checked={value}
                     labelOn="Published"
-                    labelOff="Unpublished"
+                    labelOff={t("Unpublished")}
                     onChange={handleChange}
-                    name="checkedA"
                 />
 
                 {STATIC_DATA[label].sync ? (

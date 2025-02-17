@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { LabeledSwitch } from "./Switch";
 import Item from "./styled";
 import { IconButton } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface PublicItemProps {
     label: string;
@@ -12,29 +13,32 @@ interface PublicItemProps {
 }
 const publicLogo = "/static/PublicLogo.png";
 
-const PublicItem = ({ label, published, onClick }: PublicItemProps) => (
-    <Item>
-        <Stack direction="row" spacing={1.5} alignItems="center">
-            <IconButton size="small">
-                <img
-                    src={publicLogo}
-                    alt="Public Logo"
-                    style={{ width: "20px", height: "20px" }}
-                />
-            </IconButton>
-            <Typography sx={{ position: "relative", left: -7 }}>
-                {label}
-            </Typography>
+const PublicItem = ({ label, published, onClick }: PublicItemProps) => {
+    const { t } = useTranslation();
+    return (
+        <Item>
+            <Stack direction="row" spacing={1.5} alignItems="center">
+                <IconButton size="small">
+                    <img
+                        src={publicLogo}
+                        alt="Public Logo"
+                        style={{ width: "20px", height: "20px" }}
+                    />
+                </IconButton>
+                <Typography sx={{ position: "relative", left: -7 }}>
+                    {label}
+                </Typography>
 
-            <LabeledSwitch
-                checked={published}
-                labelOn="Published"
-                labelOff="Unpublished"
-                onChange={onClick}
-                name="checkedA"
-            />
-        </Stack>
-    </Item>
-);
+                <LabeledSwitch
+                    checked={published}
+                    labelOn="Published"
+                    labelOff={t("Unpublished")}
+                    onChange={onClick}
+                    name="checkedA"
+                />
+            </Stack>
+        </Item>
+    );
+};
 
 export default PublicItem;
