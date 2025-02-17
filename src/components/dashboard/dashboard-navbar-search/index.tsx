@@ -20,6 +20,7 @@ import ResponsiveSearchInput from "./ResponsiveSearchInput";
 const HistoryList = dynamic(() => import("./HistoryList"));
 const SearchList = dynamic(() => import("./SearchList"));
 import CloseIcon from "@mui/icons-material/Close";
+import getBorderColor from "@/theme/borderColor";
 
 const StartAdornmentSx: SxProps<Theme> = {
     height: 1,
@@ -53,15 +54,11 @@ const ClearButtonSx: SxProps<Theme> = {
     width: 24,
     height: 24,
     borderRadius: "50%",
-    border: "1px solid rgba(0,0,0,0.2)",
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    transition: "0.2s",
-    "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
-    },
+    border: "1px solid",
+    borderColor: getBorderColor,
     "& svg": {
         fontSize: "1.1rem",
-        transform: "scale(0.8)", // Make the CloseIcon smaller
+        transform: "scale(0.8)",
     },
 };
 
