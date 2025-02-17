@@ -68,26 +68,24 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                         </Stack>
                     </Tooltip>
                 ) : (
-                    <Tooltip title={visibleLabel?.name} placement="top">
-                        <Box
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            maxWidth: isLargeScreen ? 250 : 140,
+                        }}
+                    >
+                        <Label
+                            color={visibleLabel?.color}
+                            name={visibleLabel?.name}
                             sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                maxWidth: isLargeScreen ? 250 : 140,
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                maxWidth: isLargeScreen ? 195 : 130,
                             }}
-                        >
-                            <Label
-                                color={visibleLabel?.color}
-                                name={visibleLabel?.name}
-                                sx={{
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    maxWidth: isLargeScreen ? 195 : 130,
-                                }}
-                            />
-                        </Box>
-                    </Tooltip>
+                        />
+                    </Box>
                 )}
             </Stack>
         </ListItem>
