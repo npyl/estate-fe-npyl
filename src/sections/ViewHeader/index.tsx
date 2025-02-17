@@ -1,9 +1,12 @@
 import { Box, Paper, Stack } from "@mui/material";
 import { PropsWithChildren } from "react";
-
-import ExportButton from "./Export";
-import MoreButton from "./More";
-import ShareButton from "./ShareButton";
+import dynamic from "next/dynamic";
+const ExportButton = dynamic(() => import("./Export"));
+const MoreButton = dynamic(() => import("./More"));
+const ShareButton = dynamic(() => import("./ShareButton"));
+const DownloadGoogleEarthButton = dynamic(
+    () => import("./DownloadGoogleEarthButton")
+);
 
 interface IViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
@@ -40,6 +43,7 @@ const ViewHeader = ({
             </Box>
 
             <Stack direction="row" spacing={1}>
+                {isProperty ? <DownloadGoogleEarthButton /> : null}
                 {isProperty ? <ExportButton /> : null}
                 {isProperty ? <ShareButton /> : null}
                 <MoreButton

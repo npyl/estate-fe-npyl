@@ -74,11 +74,6 @@ interface EditLocationDisplayProps {
     display: LocationDisplay;
 }
 
-interface IGeneratePDFReq {
-    propertyId: number;
-    qrPath: string;
-}
-
 export const properties = apiWithTranslation({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
@@ -402,12 +397,12 @@ export const properties = apiWithTranslation({
             providesTags: ["PDF"],
         }),
 
-        generatePDF: builder.mutation<void, IGeneratePDFReq>({
-            query: ({ propertyId, qrPath }) => ({
+        generatePDF: builder.mutation<void, number>({
+            query: (propertyId) => ({
                 url: `/${propertyId}/generate-export`,
                 method: "POST",
                 params: {
-                    qrPath,
+                    qrPath: "", // TODO: I think this is handled from the BE now!
                 },
             }),
             invalidatesTags: ["PDF"],

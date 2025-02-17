@@ -1,13 +1,10 @@
-import { Stack } from "@mui/material";
 import usePropertyForm, { fixDropdowns, IPropertyYup } from "./hook";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
-import ClearButton from "./ClearButton";
-import SubmitButton from "./SubmitButton";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
-import CancelButton from "./CancelButton";
-import { useEditPropertyMutation } from "@/services/properties";
+import { useMemo, useRef } from "react";
+import { GenerateCheckboxRef } from "./BottomBar/GenerateCheckbox";
+import BottomBar from "./BottomBar";
 // ...
 const Residential = dynamic(() => import("./forms/Residential"));
 const Commercial = dynamic(() => import("./forms/Commercial"));
@@ -20,30 +17,30 @@ const UnsavedChangesWatcher = dynamic(() => import("./UnsavedChangesWatcher"));
 
 interface IFormProps {
     property?: IProperties;
+    isSuccess: boolean;
+    onSubmit: (b: IPropertiesPOST, generate: boolean) => void;
 }
 
-export default function Form({ property }: IFormProps) {
+function Form({ property, isSuccess, onSubmit }: IFormProps) {
     const { methods } = usePropertyForm(property);
     const isDirty = methods.formState.isDirty;
-
-    const [edit, { isSuccess }] = useEditPropertyMutation();
 
     const haveError = useMemo(
         () => Object.keys(methods.formState.errors).length > 0,
         [methods.formState.errors]
     );
 
+    const checkboxRef = useRef<GenerateCheckboxRef>(null);
     const handleSubmit = async (data: IPropertyYup) => {
         try {
+            const generate = checkboxRef.current?.getGenerate() || false;
+
             const body = {
                 ...(data as IPropertiesPOST),
                 ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
             };
 
-            await edit({
-                body,
-                id: property?.id!,
-            });
+            onSubmit(body, generate);
         } catch (error) {
             console.error(error);
             methods.reset();
@@ -61,27 +58,7 @@ export default function Form({ property }: IFormProps) {
                     {pc === "LAND" ? <Land /> : null}
                     {pc === "OTHER" ? <Other /> : null}
 
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="flex-end"
-                        spacing={1}
-                        mt={2}
-                        sx={{
-                            backgroundColor: "rgba(128, 128, 128, 0.1)",
-                            width: "100%",
-                            p: 0.5,
-                            alignSelf: "flex-end",
-                            borderRadius: "10px",
-                            position: "sticky",
-                            zIndex: 1000,
-                            bottom: 1,
-                        }}
-                    >
-                        <CancelButton />
-                        <ClearButton />
-                        <SubmitButton />
-                    </Stack>
+                    <BottomBar checkboxRef={checkboxRef} />
                 </FormProvider>
             </form>
 
@@ -92,3 +69,5 @@ export default function Form({ property }: IFormProps) {
         </>
     );
 }
+
+export default Form;

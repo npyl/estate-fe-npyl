@@ -1,5 +1,4 @@
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
     Button,
     FormGroup,
@@ -14,7 +13,7 @@ import {
 } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, MouseEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AnimatedTableRow from "@/sections/Settings/user/AnimatedTableRow";
 const UserForm = dynamic(() => import("@/sections/User/Form"));
@@ -23,14 +22,10 @@ import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import {
     useAllUsersQuery,
-    useToggleActiveNotificationMutation,
     useToggleActiveUserMutation,
 } from "src/services/user";
 import dynamic from "next/dynamic";
-
-type Props = {
-    changeTab: (event: React.SyntheticEvent, newValue: number) => void;
-};
+import GotoPermissions from "./GotoPermissions";
 
 type ActiveStatusesType = {
     [userId: number]: boolean;
@@ -40,19 +35,20 @@ type ActiveNotificationsType = {
     [userId: number]: boolean;
 };
 
-const UserPage: FC<Props> = ({ changeTab }) => {
+interface Props {
+    onGotoPermissions: VoidFunction;
+}
+
+const UserPage: FC<Props> = ({ onGotoPermissions }) => {
     const router = useRouter();
     const { data: users } = useAllUsersQuery();
     const { setSelectedUser } = useSecurityContext();
     const [toggleActiveUser] = useToggleActiveUserMutation();
-    const [toggleActiveNotification] = useToggleActiveNotificationMutation();
 
     const [openUserForm, setOpenUserForm] = useState(false);
     const [activeStatuses, setActiveStatuses] = useState<ActiveStatusesType>(
         {}
     );
-    const [activeNotifications, setActiveNotifications] =
-        useState<ActiveNotificationsType>({});
 
     useEffect(() => {
         if (users) {
@@ -63,7 +59,6 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                 initialNotifications[user.id] = user.notificationsEnabled;
             });
             setActiveStatuses(initialStatuses);
-            setActiveNotifications(initialNotifications);
         }
     }, [users]);
 
@@ -97,36 +92,6 @@ const UserPage: FC<Props> = ({ changeTab }) => {
         }
     };
 
-    const handleToggleActiveNotifications = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-        userId: number
-    ) => {
-        // Prevent further propagation of the event
-        event.stopPropagation();
-
-        const currentNotificationStatus = event.target.checked;
-
-        // Optimistically update the UI for a faster response
-        setActiveNotifications((prevNotifications) => ({
-            ...prevNotifications,
-            [userId]: currentNotificationStatus,
-        }));
-
-        try {
-            // Make the API request and await its result
-            await toggleActiveNotification(userId);
-        } catch (error) {
-            // If the request fails, revert the UI change
-            setActiveNotifications((prevNotifications) => ({
-                ...prevNotifications,
-                [userId]: !currentNotificationStatus, // revert the status
-            }));
-
-            // Optionally, show an error message to the user
-            console.error("Failed to update user notification status:", error);
-        }
-    };
-
     const handleOpenUserForm = () => setOpenUserForm(true);
     const handleCloseUserForm = () => {
         setOpenUserForm(false);
@@ -136,7 +101,9 @@ const UserPage: FC<Props> = ({ changeTab }) => {
         setSelectedUser(userId);
         router.push(`/user/${userId}`);
     };
+
     const { t } = useTranslation();
+
     return (
         <div>
             <Button
@@ -151,14 +118,11 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>{t("First Name")}</TableCell>
-                            <TableCell>{t("Last Name")}</TableCell>
+                            <TableCell>{t("Fullname")}</TableCell>
                             <TableCell>{t("Email")}</TableCell>
                             <TableCell>{t("Status")}</TableCell>
-                            <TableCell>{t("Notifications")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
                             <TableCell>{t("Update")}</TableCell>
-                            <TableCell>{t("Permissions")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -167,8 +131,9 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                 key={user.id}
                                 onClick={() => handleRowClick(user.id)}
                             >
-                                <TableCell>{user.firstName}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>
+                                    {user.firstName || ""} {user.lastName || ""}
+                                </TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
                                     {user.isAdmin ? (
@@ -206,42 +171,6 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                         </FormGroup>
                                     )}
                                 </TableCell>
-                                <TableCell>
-                                    {user.isAdmin ? (
-                                        <Label
-                                            opaque
-                                            color="info"
-                                            name={t("Admin")}
-                                        />
-                                    ) : (
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <IOSSwitch
-                                                        checked={
-                                                            activeNotifications[
-                                                                user.id
-                                                            ] || false
-                                                        } // fallback to 'false' if the id is not yet in the state
-                                                        onChange={(e) => {
-                                                            e.stopPropagation();
-                                                            handleToggleActiveNotifications(
-                                                                e,
-                                                                user.id
-                                                            );
-                                                        }}
-                                                        onClick={(e) =>
-                                                            e.stopPropagation()
-                                                        }
-                                                        name="isActiveSwitch"
-                                                        sx={{ m: 1 }}
-                                                    />
-                                                }
-                                                label="View all"
-                                            />
-                                        </FormGroup>
-                                    )}
-                                </TableCell>
 
                                 <TableCell>{user.mobilePhone}</TableCell>
                                 <TableCell>
@@ -258,17 +187,10 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
-                                    <Button
-                                        variant="text"
-                                        sx={{ color: "#5e5e5e" }}
-                                        onClick={(e) => {
-                                            changeTab(e, 1);
-                                            setSelectedUser(user.id);
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        <VisibilityIcon fontSize="small"></VisibilityIcon>
-                                    </Button>
+                                    <GotoPermissions
+                                        userId={user.id}
+                                        onGotoPermissions={onGotoPermissions}
+                                    />
                                 </TableCell>
                             </AnimatedTableRow>
                         ))}

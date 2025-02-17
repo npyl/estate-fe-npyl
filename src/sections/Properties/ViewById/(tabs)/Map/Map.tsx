@@ -13,6 +13,7 @@ import {
     ToggleButtonGroup,
     useTheme,
     Typography,
+    Stack,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
@@ -23,6 +24,7 @@ import RelatedPlaces from "./RelatedPlaces";
 import Grid from "@mui/material/Grid";
 import MapUnavailable from "@/components/Map/MapUnavailable";
 import { useTranslation } from "react-i18next";
+import { AddressSection } from "../../(sections)";
 
 const initialState: any[] = [];
 
@@ -229,7 +231,7 @@ function MyComponent() {
     }
 
     return (
-        <Grid container spacing={2} mt={2}>
+        <Grid container spacing={1}>
             <Grid
                 item
                 xs={12}
@@ -307,11 +309,13 @@ function MyComponent() {
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </>
-                ) : (
-                    <div>Loading maps</div>
-                )}
+                ) : null}
             </Grid>
             <Grid item xs={12} md={6}>
+                <AddressSection />
+
+                <Box mt={1} />
+
                 <RelatedPlaces
                     data={data}
                     title={t("Closest points") || ""}

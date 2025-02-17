@@ -11,9 +11,10 @@ import { SpaceBetween } from "@/components/styled";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
 import useToggle from "@/hooks/useToggle";
-import { FC, PropsWithChildren, ReactNode } from "react";
+import { ComponentType, FC, PropsWithChildren, ReactNode } from "react";
 
 interface BaseItemProps extends PropsWithChildren {
+    Icon?: ComponentType<any>;
     type: string;
     topRightContent?: ReactNode;
     onEdit: VoidFunction;
@@ -21,6 +22,7 @@ interface BaseItemProps extends PropsWithChildren {
 
 const BaseItem: FC<BaseItemProps> = ({
     type,
+    Icon,
     onEdit,
     topRightContent,
     children,
@@ -37,7 +39,12 @@ const BaseItem: FC<BaseItemProps> = ({
                 gap={1}
                 direction="row"
             >
-                <Typography variant="h6">{type}</Typography>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    {Icon ? <Icon width={30} height={30} /> : null}
+                    <Typography variant="body1" color="text.secondary">
+                        {type}
+                    </Typography>
+                </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">
                     {isExpanded ? (

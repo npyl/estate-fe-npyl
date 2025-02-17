@@ -1,6 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, IUserPOST } from "src/types/user";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import { TTaskVisibility } from "@/types/roles";
 
 interface UploadAvatarReq {
     userId: number;
@@ -9,6 +10,11 @@ interface UploadAvatarReq {
 
 interface IChatTokenRes {
     token: string;
+}
+
+interface ISetTaskViewReq {
+    userId: number;
+    visibility: TTaskVisibility;
 }
 
 export const user = apiWithTranslation({
@@ -68,22 +74,6 @@ export const user = apiWithTranslation({
             providesTags: ["Users"],
         }),
 
-        toggleActiveUser: builder.mutation<IUser[], number>({
-            query: (userId: number) => ({
-                url: `toggleActive/${userId}`,
-                method: "POST",
-            }),
-            invalidatesTags: ["Users"],
-        }),
-
-        toggleActiveNotification: builder.mutation<IUser[], number>({
-            query: (userId: number) => ({
-                url: `toggle-notification-view/${userId}`,
-                method: "POST",
-            }),
-            invalidatesTags: ["Users"],
-        }),
-
         isAdmin: builder.query<boolean, number>({
             query: (userId) => ({
                 url: `${userId}/isAdmin`,
@@ -127,6 +117,51 @@ export const user = apiWithTranslation({
                 },
             }),
         }),
+
+        // ----------------------- PERMISSIONS ----------------------------
+
+        toggleActiveUser: builder.mutation<IUser[], number>({
+            query: (userId) => ({
+                url: `toggleActive/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Users"],
+        }),
+
+        toggleNotificationAccess: builder.mutation<void, number>({
+            query: (userId) => ({
+                url: `toggle-notification-view/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["User", "Users"],
+        }),
+
+        toggleAgreementsAccess: builder.mutation<void, number>({
+            query: (userId) => ({
+                url: `toggle-agreement-view/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["User", "Users"],
+        }),
+
+        toggleMessagesAccess: builder.mutation<void, number>({
+            query: (userId) => ({
+                url: `toggle-messaging-view/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["User", "Users"],
+        }),
+
+        setTaskView: builder.mutation<void, ISetTaskViewReq>({
+            query: ({ userId, visibility }) => ({
+                url: `change-task-view/${userId}`,
+                method: "POST",
+                params: {
+                    visibility,
+                },
+            }),
+            invalidatesTags: ["User", "Users"],
+        }),
     }),
 });
 
@@ -138,14 +173,18 @@ export const {
     useRemoveAvatarMutation,
     // ...
     useAddUserMutation,
-    useToggleActiveUserMutation,
-    useToggleActiveNotificationMutation,
     useLazyIsAdminQuery,
     useLazyGetProfileQuery,
     useDeleteUserMutation,
     useResetPasswordMutation,
-    // ....
+    // ...
     useGenerateChatTokenMutation,
+    // ...
+    useToggleActiveUserMutation,
+    useToggleNotificationAccessMutation,
+    useToggleAgreementsAccessMutation,
+    useToggleMessagesAccessMutation,
+    useSetTaskViewMutation,
 } = user;
 
 const useGetProfileQuery = la(user.useGetProfileQuery);

@@ -15,9 +15,10 @@ const AgreementDetails = dynamic(() => import("./AgreementDetails"));
 
 interface TopCardProps {
     type: NotificationType;
+    onPrint: VoidFunction;
 }
 
-const TopCard: FC<TopCardProps> = ({ type }) => {
+const TopCard: FC<TopCardProps> = ({ type, onPrint }) => {
     const { t, i18n } = useTranslation();
 
     const { notification } = useGetNotification();
@@ -37,7 +38,7 @@ const TopCard: FC<TopCardProps> = ({ type }) => {
         <>
             <Card sx={{ mb: 1 }}>
                 <CardContent>
-                    <TitleSection type={type} />
+                    <TitleSection type={type} onPrint={onPrint} />
 
                     {type !== "AGREEMENT" ? (
                         <>

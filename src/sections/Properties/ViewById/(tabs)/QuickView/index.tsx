@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import Features from "../../(sections)/FeaturesSection";
 import DescriptionSection from "../../(sections)/DescriptionSection";
+import GoogleEarthSection from "../../(sections)/GoogleEarthSection";
 import Layout from "./Layout";
 
 const QuickView = () => {
@@ -47,6 +48,7 @@ const QuickView = () => {
             <ParkingsSection data={data} />
             <NotesSection />
             <BlueprintsSection data={data} />
+            <GoogleEarthSection />
         </Layout>
     );
 };
