@@ -14,11 +14,16 @@ const Sections: FC<SectionsProps> = ({ currentPath }) => {
     const { data } = useGetProfileQuery();
 
     const isAdmin = data?.isAdmin ?? false;
-    const withNotifications = data?.notificationsEnabled ?? false;
+
+    const notifications = Boolean(data?.notificationsEnabled);
+    const agreements = Boolean(data?.agreementsEnabled);
+    const messages = Boolean(data?.messagingEnabled);
+    const tasks = data?.tasksEnabled !== "NONE";
 
     const sections = useMemo(
-        () => getSections(t, isAdmin, withNotifications),
-        [t, isAdmin, withNotifications]
+        () =>
+            getSections(t, isAdmin, notifications, agreements, messages, tasks),
+        [t, isAdmin, notifications, agreements, messages, tasks]
     );
 
     return (

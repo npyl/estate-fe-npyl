@@ -26,12 +26,15 @@ interface Section {
     items: Item[];
 }
 
-const ADMIN_ONLY = (i: Item, isAdmin: boolean) => (isAdmin ? [i] : []);
+const WITH = (i: Item, onOff: boolean) => (onOff ? [i] : []);
 
 const getSections = (
     t: TFunction,
     isAdmin: boolean,
-    withNotifications: boolean
+    notifications: boolean,
+    agreements: boolean,
+    messages: boolean,
+    tasks: boolean
 ): Section[] => [
     {
         title: t("main"),
@@ -42,7 +45,8 @@ const getSections = (
                 icon: <ChartPie fontSize="small" />,
             },
 
-            ...ADMIN_ONLY(
+            // ---------------------------------------------
+            ...WITH(
                 {
                     title: t("Statistics"),
                     path: "/statistics",
@@ -50,6 +54,7 @@ const getSections = (
                 },
                 isAdmin
             ),
+            // ---------------------------------------------
 
             {
                 title: t("Properties"),
@@ -70,24 +75,25 @@ const getSections = (
             },
 
             // ---------------------------------------------
-            ...(withNotifications
-                ? [
-                      {
-                          title: t("Notifications"),
-                          path: "/notification",
-                          icon: <NotificationsIcon />,
-                      },
-                  ]
-                : []),
+            ...WITH(
+                {
+                    title: t("Notifications"),
+                    path: "/notification",
+                    icon: <NotificationsIcon />,
+                },
+                notifications
+            ),
             // ---------------------------------------------
-
-            {
-                title: t("Tasks"),
-                path: "/tasks",
-                icon: <TasksIconWithCounter />,
-            },
-
-            ...ADMIN_ONLY(
+            ...WITH(
+                {
+                    title: t("Tasks"),
+                    path: "/tasks",
+                    icon: <TasksIconWithCounter />,
+                },
+                tasks
+            ),
+            // ---------------------------------------------
+            ...WITH(
                 {
                     title: t("Logs"),
                     path: "/logs",
@@ -95,14 +101,17 @@ const getSections = (
                 },
                 isAdmin
             ),
-            ...ADMIN_ONLY(
+            // ---------------------------------------------
+            ...WITH(
                 {
                     title: t("Agreements"),
                     path: "/agreements",
                     icon: <HandshakeIcon fontSize="small" />,
                 },
-                isAdmin
+                agreements
             ),
+            // ---------------------------------------------
+
             {
                 title: t("Calendar"),
                 path: "/calendar",
@@ -113,11 +122,16 @@ const getSections = (
                 path: "/archived",
                 icon: <ArchivedIcon />,
             },
-            {
-                title: t("Messages"),
-                path: "/messages",
-                icon: <ChatIcon />,
-            },
+
+            // ---------------------------------------------
+            ...WITH(
+                {
+                    title: t("Messages"),
+                    path: "/messages",
+                    icon: <ChatIcon />,
+                },
+                messages
+            ),
         ],
     },
 ];
