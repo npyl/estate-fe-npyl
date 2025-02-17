@@ -4,15 +4,18 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
 import { NotificationType } from "@/types/notification";
+import PrintButton from "./Controls/Print";
+import { NON_PRINTABLE } from "../../../styles";
 const StayUpdatedButtons = dynamic(() => import("./Controls/StayUpdated"));
 const CreateCustomerButton = dynamic(() => import("./Controls/CreateCustomer"));
 const CreateTaskButton = dynamic(() => import("./Controls/CreateTask"));
 
 interface StandardTitleProps {
     type: NotificationType;
+    onPrint: VoidFunction;
 }
 
-const StandardTitle: FC<StandardTitleProps> = ({ type }) => {
+const StandardTitle: FC<StandardTitleProps> = ({ type, onPrint }) => {
     const { t } = useTranslation();
 
     const getTitle = () => {
@@ -45,7 +48,13 @@ const StandardTitle: FC<StandardTitleProps> = ({ type }) => {
                 {getTitle()}
             </Typography>
 
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={NON_PRINTABLE}
+            >
+                <PrintButton onClick={onPrint} />
                 {stayUpdatedButtons ? <StayUpdatedButtons /> : null}
                 {type === "TOUR" ? <CreateCustomerButton /> : null}
                 <CreateTaskButton />

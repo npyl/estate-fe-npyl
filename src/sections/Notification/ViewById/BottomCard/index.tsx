@@ -2,9 +2,11 @@ import {
     Box,
     Stack,
     Typography,
-    Card,
     CardContent,
     CardMedia,
+    SxProps,
+    Theme,
+    Card,
 } from "@mui/material";
 import { FC } from "react";
 import { NotificationType } from "@/types/notification";
@@ -19,6 +21,16 @@ const ListingPropertyDetails = dynamic(
 const StayUpdated = dynamic(() => import("./StayUpdated"));
 import dynamic from "next/dynamic";
 import useGetNotification from "@/sections/Notification/useGetNotification";
+
+const getCardSx = (isProperty: boolean): SxProps<Theme> => ({
+    boxShadow: 1,
+    "&:hover": isProperty
+        ? {
+              boxShadow: 18,
+              cursor: "pointer",
+          }
+        : {},
+});
 
 type Positions = {
     advisor: boolean;
@@ -50,103 +62,80 @@ const BottomCard: FC<BottomCardProps> = ({ type }) => {
           )
         : [];
 
-    // const handlePropertyCodeClick = () => {
-    //     if (property) {
-    //         router.push(`/property/${property?.id}`);
-    //     } else {
-    //         return;
-    //     }
-    // };
+    const isProperty = Boolean(property);
 
     return (
-        <>
-            {/* SECOND CARD IN UI */}
-            <Card
-                // onClick={handlePropertyCodeClick}
-                sx={{
-                    boxShadow: 1,
-                    "&:hover": property
-                        ? {
-                              boxShadow: 18,
-                              cursor: "pointer",
-                          }
-                        : {},
-                }}
-            >
-                <Stack direction="row">
-                    {/* IMAGE */}
-                    {type === "WORK_FOR_US" ||
-                    type === "STAY_UPDATED" ? null : (
-                        <CardMedia
-                            component="img"
-                            image={property?.thumbnail || listing?.photo || ""}
-                            alt=""
-                            sx={{
-                                width: "250px",
-                                maxHeight: "180px",
-                                p: 1,
-                            }}
+        <Card sx={getCardSx(isProperty)}>
+            <Stack direction="row">
+                {/* IMAGE */}
+                {type === "WORK_FOR_US" || type === "STAY_UPDATED" ? null : (
+                    <CardMedia
+                        component="img"
+                        image={property?.thumbnail || listing?.photo || ""}
+                        alt=""
+                        sx={{
+                            width: "250px",
+                            maxHeight: "180px",
+                            p: 1,
+                        }}
+                    />
+                )}
+
+                {workForUs ? (
+                    <Box p={1}>
+                        <WorkDetails
+                            workForUs={workForUs}
+                            truePositions={truePositions}
                         />
-                    )}
+                    </Box>
+                ) : null}
 
-                    {workForUs ? (
-                        <Box p={1}>
-                            <WorkDetails
-                                workForUs={workForUs}
-                                truePositions={truePositions}
-                            />
-                        </Box>
-                    ) : null}
+                <CardContent sx={{ ml: 5 }}>
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        width="100%"
+                    >
+                        {type === "LISTING" ? (
+                            <Stack direction={"column"}>
+                                <Typography variant="h6">
+                                    {listing?.title}
+                                </Typography>
 
-                    <CardContent sx={{ ml: 5 }}>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            width="100%"
-                        >
-                            {type === "LISTING" ? (
-                                <Stack direction={"column"}>
-                                    <Typography variant="h6">
-                                        {listing?.title}
-                                    </Typography>
-
-                                    <ListingPropertyDetails listing={listing} />
-                                    <Stack mt={3} gap={2} direction="row">
-                                        <ListingStateBadge
-                                            stateValue={
-                                                t(
-                                                    listing?.state?.value ?? ""
-                                                ) || ""
-                                            }
-                                        />
-                                    </Stack>
+                                <ListingPropertyDetails listing={listing} />
+                                <Stack mt={3} gap={2} direction="row">
+                                    <ListingStateBadge
+                                        stateValue={
+                                            t(listing?.state?.value ?? "") || ""
+                                        }
+                                    />
                                 </Stack>
-                            ) : null}
+                            </Stack>
+                        ) : null}
 
-                            {(type === "TOUR" || type === "REVIEW") && (
-                                <Stack>
-                                    <Typography variant="h6">
-                                        {property?.descriptions?.el?.title}
-                                    </Typography>
-                                    <TourPropertyDetails property={property} />
+                        {(type === "TOUR" || type === "REVIEW") && (
+                            <Stack>
+                                <Typography variant="h6">
+                                    {property?.descriptions?.el?.title}
+                                </Typography>
+                                <TourPropertyDetails property={property} />
 
-                                    <Stack mt={3} gap={2} direction="row">
-                                        <TourPropertyBadges
-                                            stateValue={t(
-                                                property?.state?.value || ""
-                                            )}
-                                            code={property?.code || ""}
-                                        />
-                                    </Stack>
+                                <Stack mt={3} gap={2} direction="row">
+                                    <TourPropertyBadges
+                                        stateValue={t(
+                                            property?.state?.value || ""
+                                        )}
+                                        code={property?.code || ""}
+                                    />
                                 </Stack>
-                            )}
-                        </Stack>
-                    </CardContent>
-                </Stack>
+                            </Stack>
+                        )}
+                    </Stack>
+                </CardContent>
+            </Stack>
 
-                {type === "STAY_UPDATED" ? <StayUpdated /> : null}
-            </Card>
-        </>
+            {type === "STAY_UPDATED" ? <StayUpdated /> : null}
+        </Card>
     );
 };
 
