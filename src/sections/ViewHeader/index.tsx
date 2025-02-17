@@ -2,11 +2,11 @@ import { Box, Paper, Stack } from "@mui/material";
 import { PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 const ExportButton = dynamic(() => import("./Export"));
-const MoreButton = dynamic(() => import("./More"));
 const ShareButton = dynamic(() => import("./ShareButton"));
 const DownloadGoogleEarthButton = dynamic(
     () => import("./DownloadGoogleEarthButton")
 );
+import MoreButton from "./More";
 
 interface IViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
