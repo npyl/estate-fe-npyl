@@ -7,7 +7,7 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
     const { user } = useAuth();
 
-    if (!user?.notificationsEnabled) {
+    if (!user?.agreementsEnabled) {
         router.push("/401");
         return null;
     }
@@ -15,10 +15,10 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
     return <>{children}</>;
 };
 
-const NotificationsGuard: FC<PropsWithChildren> = ({ children }) => (
+const AgreementsGuard: FC<PropsWithChildren> = ({ children }) => (
     <AuthGuard>
         <Guard>{children}</Guard>
     </AuthGuard>
 );
 
-export default NotificationsGuard;
+export default AgreementsGuard;

@@ -3,7 +3,7 @@ import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 
-export const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
+const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
     const auth = useAuth();
     const router = useRouter();
     const [checked, setChecked] = useState(false);
@@ -38,3 +38,5 @@ export const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
 
     return <>{children}</>;
 };
+
+export default AuthGuard;

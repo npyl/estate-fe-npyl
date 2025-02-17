@@ -1,15 +1,11 @@
-import type { FC, ReactNode } from "react";
+import type { FC, PropsWithChildren } from "react";
 import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import { useLazyIsAdminQuery } from "src/services/user";
 import { AuthGuard } from "./auth-guard";
 
-interface AdminGuardProps {
-    children: ReactNode;
-}
-
-export const AdminGuard: FC<AdminGuardProps> = ({ children }) => {
+const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
     const { user } = useAuth();
 
@@ -44,5 +40,13 @@ export const AdminGuard: FC<AdminGuardProps> = ({ children }) => {
     // If got here, it means that the redirect did not occur, and that tells us that the user is
     // authenticated / authorized.
 
-    return <AuthGuard>{children}</AuthGuard>;
+    return <>{children}</>;
 };
+
+const AdminGuard: FC<PropsWithChildren> = ({ children }) => (
+    <AuthGuard>
+        <Guard>{children}</Guard>
+    </AuthGuard>
+);
+
+export default AdminGuard;
