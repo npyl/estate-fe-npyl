@@ -7,7 +7,9 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
     const { user } = useAuth();
 
-    if (!user?.agreementsEnabled) {
+    const isAdmin = user?.isAdmin;
+
+    if (!user?.agreementsEnabled && !isAdmin) {
         router.push("/401");
         return null;
     }

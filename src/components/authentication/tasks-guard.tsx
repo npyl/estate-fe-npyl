@@ -7,7 +7,9 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
     const { user } = useAuth();
 
-    if (!user?.tasksEnabled || user?.tasksEnabled === "NONE") {
+    const isAdmin = user?.isAdmin;
+
+    if ((!user?.tasksEnabled || user?.tasksEnabled === "NONE") && !isAdmin) {
         router.push("/401");
         return null;
     }
