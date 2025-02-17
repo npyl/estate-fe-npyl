@@ -1,5 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import {
+    Box,
     ClickAwayListener,
     IconButton,
     InputAdornment,
@@ -18,6 +19,7 @@ import { HistoryListRef } from "./HistoryList";
 import ResponsiveSearchInput from "./ResponsiveSearchInput";
 const HistoryList = dynamic(() => import("./HistoryList"));
 const SearchList = dynamic(() => import("./SearchList"));
+import CloseIcon from "@mui/icons-material/Close";
 
 const StartAdornmentSx: SxProps<Theme> = {
     height: 1,
@@ -106,6 +108,10 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
 
     const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
+    const handleClearSearch = () => {
+        setSearchText("");
+    };
+
     return (
         <>
             <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
@@ -123,10 +129,37 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
                         }}
                         startAdornment={<StartAdornment />}
                         endAdornment={
-                            <ModeSelect
-                                value={searchCategory}
-                                onChange={handleChangeCategory}
-                            />
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                {searchText && (
+                                    <IconButton
+                                        onClick={handleClearSearch}
+                                        sx={{
+                                            width: 24,
+                                            height: 24,
+                                            borderRadius: "50%",
+                                            border: "1px solid rgba(0,0,0,0.2)",
+                                            backgroundColor:
+                                                "rgba(0, 0, 0, 0.05)",
+                                            transition: "0.2s",
+                                            "&:hover": {
+                                                backgroundColor:
+                                                    "rgba(0, 0, 0, 0.1)",
+                                            },
+                                            // force the CloseIcon to be smaller
+                                            "& svg": {
+                                                fontSize: "1.1rem",
+                                                transform: "scale(0.8)",
+                                            },
+                                        }}
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
+                                )}
+                                <ModeSelect
+                                    value={searchCategory}
+                                    onChange={handleChangeCategory}
+                                />
+                            </Box>
                         }
                         {...props}
                     />

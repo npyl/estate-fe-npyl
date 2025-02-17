@@ -1818,6 +1818,7 @@ const resources = {
             "Mark Complete": "Σήμανση Ολοκληρωμένου",
             Completed: "Ολοκληρώθηκε",
             Assignee: "Ανάθεση",
+            at: "στις",
             Priority: "Προτεραιότητα",
             Attachments: "Συνημμένα",
             "Type a message": "Πληκτρολογήστε ένα μήνυμα",

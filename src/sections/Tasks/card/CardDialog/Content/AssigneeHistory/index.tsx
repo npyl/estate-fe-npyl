@@ -34,12 +34,27 @@ const TimelineSx: SxProps<Theme> = {
 
 interface HistoryItemProps {
     i: IKanbanAssigneeHistory;
+    updatedAt: string;
     last: boolean;
 }
 
-const HistoryItem: FC<HistoryItemProps> = ({ i, last }) => {
-    const { t } = useTranslation();
+const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
+    const { t, i18n } = useTranslation();
+    const loc = i18n.language === "en" ? "en-US" : "el-GR";
 
+    if (!updatedAt) return null;
+    const dateObj = new Date(updatedAt);
+
+    const formattedDate = dateObj.toLocaleDateString(loc, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+    const formattedTime = dateObj.toLocaleTimeString(loc, {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+    });
     return (
         <TimelineItem>
             <TimelineSeparator>
@@ -52,7 +67,8 @@ const HistoryItem: FC<HistoryItemProps> = ({ i, last }) => {
                     fontWeight="600"
                     color="primary.main"
                 >
-                    {dayjs(i.createdAt).toDate().toLocaleDateString()}
+                    {/* Format like this 12/02/2024 - 16:32 */}
+                    {formattedDate} - {formattedTime}
                 </Typography>
                 <Stack
                     direction="row"
@@ -79,6 +95,7 @@ const getHistoryItem =
                 key={JSON.stringify(ids)}
                 i={i}
                 last={index === length - 1}
+                updatedAt={i.createdAt}
             />
         );
     };
