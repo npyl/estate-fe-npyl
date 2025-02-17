@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import { FC } from "react";
 import ListItem from "../item";
 import { useTranslation } from "react-i18next";
@@ -28,22 +28,24 @@ const ListManagerItem: FC<ListManagerItemProps> = ({
 
     return (
         <ListItem label={label || t("Manager")} {...props}>
-            <CustomButton
-                variant="outlined"
-                LinkComponent={Link}
-                href={`/user/${managerId}`}
-            >
-                <CustomAvatar />
-                <Typography
-                    noWrap
-                    variant="subtitle2"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
+            <Tooltip title={fullname} placement="top">
+                <CustomButton
+                    variant="outlined"
+                    LinkComponent={Link}
+                    href={`/user/${managerId}`}
                 >
-                    {fullname}
-                </Typography>
-            </CustomButton>
+                    <CustomAvatar />
+                    <Typography
+                        noWrap
+                        variant="subtitle2"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                    >
+                        {fullname}
+                    </Typography>
+                </CustomButton>
+            </Tooltip>
         </ListItem>
     );
 };
