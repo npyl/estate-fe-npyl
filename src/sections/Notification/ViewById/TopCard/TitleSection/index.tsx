@@ -6,12 +6,15 @@ const AgreementTitle = dynamic(() => import("./AgreementTitle"));
 
 interface TitleSectionProps {
     type: NotificationType;
+    onPrint: VoidFunction;
 }
 
-const TitleSection: FC<TitleSectionProps> = ({ type }) => (
+const TitleSection: FC<TitleSectionProps> = ({ type, onPrint }) => (
     <>
         {type === "AGREEMENT" ? <AgreementTitle /> : null}
-        {type !== "AGREEMENT" ? <StandardTitle type={type} /> : null}
+        {type !== "AGREEMENT" ? (
+            <StandardTitle type={type} onPrint={onPrint} />
+        ) : null}
     </>
 );
 
