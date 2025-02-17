@@ -26,7 +26,7 @@ const ColumnSelect: FC<SelectProps> = (props) => {
     return (
         <FormControl>
             <InputLabel>{props.label}</InputLabel>
-            <RHFSelect name="columnId" {...props}>
+            <RHFSelect name="columnId" defaultValue={-1} {...props}>
                 <MenuItem value={-1}>{t("Not selected")}</MenuItem>
                 {columns?.map(getOption)}
             </RHFSelect>

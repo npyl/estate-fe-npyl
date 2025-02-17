@@ -22,7 +22,6 @@ const Labels = dynamic(() => import("./Labels"));
 
 interface ContentProps {
     cardId?: number;
-    columnId?: number;
     createdAt?: string;
     updatedAt?: string;
     // ...
@@ -31,7 +30,6 @@ interface ContentProps {
 
 const Content: FC<ContentProps> = ({
     cardId,
-    columnId,
     createdAt,
     updatedAt,
     // ...
@@ -45,7 +43,7 @@ const Content: FC<ContentProps> = ({
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
             <AttachmentsProvider>
-                <Buttons columnId={columnId} cardId={cardId} />
+                <Buttons cardId={cardId} />
                 <Attachments cardId={cardId} />
             </AttachmentsProvider>
             {/* ------------------------ */}

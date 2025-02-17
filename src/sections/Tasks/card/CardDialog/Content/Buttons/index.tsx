@@ -7,22 +7,16 @@ import AttachmentsButton from "./Attachments";
 const ColumnSelectSx = { minWidth: "150px" };
 
 interface ButtonsProps {
-    columnId?: number;
     cardId?: number;
 }
 
-const Buttons: FC<ButtonsProps> = ({ columnId, cardId }) => {
+const Buttons: FC<ButtonsProps> = ({ cardId }) => {
     const { t } = useTranslation();
 
     return (
         <Stack direction="row" spacing={1}>
             <AttachmentsButton cardId={cardId} />
-
-            <ColumnSelect
-                label={t("_Column_")}
-                defaultValue={columnId}
-                sx={ColumnSelectSx}
-            />
+            <ColumnSelect label={t("_Column_")} sx={ColumnSelectSx} />
         </Stack>
     );
 };

@@ -66,7 +66,6 @@ export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                 content={
                     <Content
                         cardId={task?.id}
-                        columnId={columnId}
                         // ...
                         createdAt={task?.createdAt}
                         updatedAt={task?.updatedAt}

@@ -17,10 +17,7 @@ const Actions: FC<ActionsProps> = ({ onClose }) => {
     const { formState, reset } = useFormContext();
 
     const isSubmitting = formState.isSubmitting;
-    const isDirty =
-        // _isAllDay !== isAllDay ||
-        // _allDayDate !== allDayDate ||
-        formState.isDirty;
+    const isDirty = formState.isDirty;
 
     const handleReset = useCallback(() => reset(), []);
 
