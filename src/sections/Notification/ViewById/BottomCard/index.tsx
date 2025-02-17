@@ -2,12 +2,11 @@ import {
     Box,
     Stack,
     Typography,
+    Card,
     CardContent,
     CardMedia,
-    SxProps,
-    Theme,
 } from "@mui/material";
-import { forwardRef } from "react";
+import { FC } from "react";
 import { NotificationType } from "@/types/notification";
 import { useTranslation } from "react-i18next";
 const WorkDetails = dynamic(() => import("./WorkDetails"));
@@ -20,16 +19,6 @@ const ListingPropertyDetails = dynamic(
 const StayUpdated = dynamic(() => import("./StayUpdated"));
 import dynamic from "next/dynamic";
 import useGetNotification from "@/sections/Notification/useGetNotification";
-import PrintableCard from "./PrintableCard";
-import { BottomCardRef } from "./types";
-
-const CardSx: SxProps<Theme> = {
-    boxShadow: 1,
-    "&:hover": {
-        boxShadow: 18,
-        cursor: "pointer",
-    },
-};
 
 type Positions = {
     advisor: boolean;
@@ -44,26 +33,46 @@ interface BottomCardProps {
     type: NotificationType;
 }
 
-const BottomCard = forwardRef<BottomCardRef, BottomCardProps>(
-    ({ type }, ref) => {
-        const { t } = useTranslation();
+const BottomCard: FC<BottomCardProps> = ({ type }) => {
+    const { t } = useTranslation();
 
-        const { notification } = useGetNotification();
-        const {
-            property,
-            workForUsDetails: workForUs,
-            listingDetails: listing,
-        } = notification || {};
+    const { notification } = useGetNotification();
+    const {
+        property,
+        workForUsDetails: workForUs,
+        listingDetails: listing,
+    } = notification || {};
 
-        // Filtering true work positions
-        const truePositions = workForUs
-            ? (Object.keys(workForUs.positions) as (keyof Positions)[]).filter(
-                  (key) => workForUs.positions[key]
-              )
-            : [];
+    // Filtering true work positions
+    const truePositions = workForUs
+        ? (Object.keys(workForUs.positions) as (keyof Positions)[]).filter(
+              (key) => workForUs.positions[key]
+          )
+        : [];
 
-        return (
-            <PrintableCard ref={ref} sx={CardSx}>
+    // const handlePropertyCodeClick = () => {
+    //     if (property) {
+    //         router.push(`/property/${property?.id}`);
+    //     } else {
+    //         return;
+    //     }
+    // };
+
+    return (
+        <>
+            {/* SECOND CARD IN UI */}
+            <Card
+                // onClick={handlePropertyCodeClick}
+                sx={{
+                    boxShadow: 1,
+                    "&:hover": property
+                        ? {
+                              boxShadow: 18,
+                              cursor: "pointer",
+                          }
+                        : {},
+                }}
+            >
                 <Stack direction="row">
                     {/* IMAGE */}
                     {type === "WORK_FOR_US" ||
@@ -136,11 +145,9 @@ const BottomCard = forwardRef<BottomCardRef, BottomCardProps>(
                 </Stack>
 
                 {type === "STAY_UPDATED" ? <StayUpdated /> : null}
-            </PrintableCard>
-        );
-    }
-);
-
-BottomCard.displayName = "BottomCard";
+            </Card>
+        </>
+    );
+};
 
 export default BottomCard;
