@@ -6,6 +6,7 @@ import {
     useGenerateChatTokenMutation,
     useLazyGetProfileQuery,
 } from "src/services/user";
+import { useLogoutMutation } from "@/services/logout";
 
 interface State {
     platform: "JWT";
@@ -99,7 +100,8 @@ export const AuthContext = createContext<AuthContextValue>({
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const [login, { isSuccess }] = useLoginMutation();
+    const [loginCb, { isSuccess }] = useLoginMutation();
+    const [logoutCb] = useLogoutMutation();
     const [getProfile] = useLazyGetProfileQuery();
 
     const [generateChatToken] = useGenerateChatTokenMutation();
@@ -144,7 +146,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         username: string,
         password: string
     ): Promise<void> => {
-        const loginRes = await login({
+        const loginRes = await loginCb({
             username,
             password,
         }).unwrap();
@@ -172,6 +174,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     };
 
     const logout = async (): Promise<void> => {
+        await logoutCb();
         localStorage.removeItem("accessToken");
         dispatch({ type: ActionType.LOGOUT });
     };

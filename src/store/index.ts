@@ -30,6 +30,7 @@ import { integrations } from "@/services/integrations";
 import { calendar } from "@/services/calendar";
 import { googleOAuth } from "@/services/google-oauth";
 import { messages } from "@/services/messages";
+import { logout } from "@/services/logout";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -73,6 +74,7 @@ export const createStore = (
                 googleWorkspaceApi.middleware,
                 googleOAuth.middleware,
                 messages.middleware,
+                logout.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,
