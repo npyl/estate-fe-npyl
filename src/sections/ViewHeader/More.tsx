@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 import useDialog from "@/hooks/useDialog";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useCallback, useRef } from "react";
 import OpenIn from "./OpenIn";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/hooks/use-auth";
@@ -14,15 +14,10 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useRouter } from "next/router";
 import { useRestorePropertyMutation } from "@/services/properties";
-import { IKanbanCard } from "@/types/tasks";
-import useTaskFromProperty from "../Properties/ViewById/(tabs)/Tasks/useTaskFromProperty";
-const TaskDialog = dynamic(() =>
-    import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
-);
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import ControlPointDuplicateOutlinedIcon from "@mui/icons-material/ControlPointDuplicateOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import NewTaskDialog from "./NewTaskDialog";
+const NewTaskButton = dynamic(() => import("./NewTaskButton"));
+
 const RestoreButton = () => {
     const { t } = useTranslation();
     const router = useRouter();
@@ -153,7 +148,6 @@ const MoreButton = ({
     const { t } = useTranslation();
 
     const anchorRef = useRef(null);
-    // state for create new task Dialog
 
     const [isOpen, openPopover, closePopover] = useDialog();
 
@@ -231,7 +225,7 @@ const MoreButton = ({
                             </Button>
                         ) : null}
 
-                        <NewTaskDialog buttonFullWidth />
+                        {isProperty ? <NewTaskButton /> : null}
 
                         {isArchived ? <RestoreButton /> : null}
 

@@ -1,10 +1,12 @@
-import { MenuItem, SxProps, TextField, Theme, Avatar } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import renderUserTags from "./renderUserTags";
 import { ICustomerMini } from "@/types/customer";
 import MultilineTextField from "@/components/MultilineTextField";
+import PlaceholderAvatar from "./PlaceholderAvatar";
 
 // ------------------------------------------------------------------
 
@@ -27,14 +29,7 @@ const RenderOption = (
     const { key: _, ...otherProps } = props;
     return (
         <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
-            <Avatar
-                sx={{
-                    width: 32,
-                    height: 32,
-                    bgcolor: "primary.main",
-                    color: "white",
-                }}
-            />
+            <PlaceholderAvatar />
             {option.firstName} {option.lastName}
         </MenuItem>
     );

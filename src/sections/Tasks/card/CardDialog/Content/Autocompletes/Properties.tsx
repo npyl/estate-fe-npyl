@@ -1,14 +1,30 @@
 import CodeSelect from "@/sections/CodeSelect";
 import { IPropertyCodeRes } from "@/types/properties";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ChipLink from "./ChipLink";
 import MultilineTextField from "@/components/MultilineTextField";
 import getIcons from "@/assets/icons/parent-categories";
+import { FC } from "react";
 
 const getOptionLabel = (o: IPropertyCodeRes | number) =>
     typeof o === "number" ? "" : o.code;
+
+// ---------------------------------------------------------------------------
+
+interface LabelProps {
+    code: string;
+    parentCategory: string;
+}
+
+const Label: FC<LabelProps> = ({ code, parentCategory }) => (
+    <Stack direction="row" gap={1} alignItems="center">
+        {getIcons({ width: 28, height: 28 })[parentCategory]}
+        {code}
+    </Stack>
+);
 
 // ---------------------------------------------------------------------------
 
@@ -24,21 +40,10 @@ const RenderTags = (
                 key={key}
                 href={`/property/${option.id}`}
                 label={
-                    <span
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                        }}
-                    >
-                        {/* show property icon depending on the property category */}
-                        {
-                            getIcons({ width: 28, height: 28 })[
-                                option.parentCategory
-                            ]
-                        }
-                        {option.code}
-                    </span>
+                    <Label
+                        code={option.code}
+                        parentCategory={option.parentCategory}
+                    />
                 }
                 {...tagProps}
             />

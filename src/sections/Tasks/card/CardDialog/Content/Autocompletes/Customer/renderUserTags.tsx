@@ -1,6 +1,7 @@
 import { ICustomerMini } from "@/types/customer";
-import { AutocompleteRenderGetTagProps, Avatar } from "@mui/material";
+import { AutocompleteRenderGetTagProps } from "@mui/material";
 import ChipLink from "../ChipLink";
+import PlaceholderAvatar from "./PlaceholderAvatar";
 
 const renderUserTags = (
     tagValue: ICustomerMini[],
@@ -16,16 +17,7 @@ const renderUserTags = (
                 key={key}
                 href={`/customer/${option.id}`}
                 label={label}
-                avatar={
-                    <Avatar
-                        sx={{
-                            width: 30,
-                            height: 30,
-                            bgcolor: "primary.main",
-                            color: "white !important",
-                        }}
-                    ></Avatar>
-                }
+                avatar={<PlaceholderAvatar />}
                 {...tagProps}
             />
         );

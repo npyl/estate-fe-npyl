@@ -10,11 +10,7 @@ const TaskDialog = dynamic(() =>
     import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
 );
 
-interface NewTaskDialogProps {
-    buttonFullWidth?: boolean; // Allows flexibility for button width
-}
-
-const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ buttonFullWidth }) => {
+const NewTaskDialog = () => {
     const { t } = useTranslation();
     const [task, setTask] = useState<IKanbanCard | undefined>();
     const { getTask } = useTaskFromProperty();
@@ -30,7 +26,7 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ buttonFullWidth }) => {
     return (
         <>
             <Button
-                fullWidth={buttonFullWidth}
+                fullWidth
                 variant="outlined"
                 color="primary"
                 startIcon={<AssignmentIcon />}
