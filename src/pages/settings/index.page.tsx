@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { SecurityProvider } from "@/contexts/security";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { AdminGuard } from "@/components/authentication/admin-guard";
+import AdminGuard from "@/components/authentication/admin-guard";
 import Settings from "@/sections/Settings";
 
 const SettingsPage: NextPage = () => <Settings />;

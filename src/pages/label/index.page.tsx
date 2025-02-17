@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { AuthGuard } from "@/components/authentication/auth-guard";
+import AuthGuard from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import Create from "@/sections/Label/Create";
 import Preview from "@/sections/Label/Preview";

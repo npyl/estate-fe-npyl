@@ -1,41 +1,21 @@
-import { AuthGuard } from "@/components/authentication/auth-guard";
+import AgreementsGuard from "@/components/authentication/agreements-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { useGetAgreementByIdQuery } from "@/services/agreements";
+import ViewById from "@/sections/agreements/AgreementById";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import Skeleton from "./Skeleton";
-import Description from "./Description";
 import dynamic from "next/dynamic";
 const AgreementPusher = dynamic(
     () => import("@/sections/agreements/AgreementById/AgreementPusher")
 );
-const PDFViewer = dynamic(() => import("./PDFViewer"), { ssr: false });
 
-const ViewAgreementPage: NextPage = () => {
-    const router = useRouter();
-    const { agreementId } = router.query;
-
-    const { data: agreement, isLoading } = useGetAgreementByIdQuery(
-        +agreementId!
-    );
-
-    if (isLoading || !agreement) return <Skeleton />;
-
-    return (
-        <>
-            <Description a={agreement} />
-            <PDFViewer a={agreement} />
-        </>
-    );
-};
+const ViewAgreementPage: NextPage = () => <ViewById />;
 
 ViewAgreementPage.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>
+    <DashboardLayout>
+        <AgreementsGuard>
             <AgreementPusher />
             {page}
-        </DashboardLayout>
-    </AuthGuard>
+        </AgreementsGuard>
+    </DashboardLayout>
 );
 
 export default ViewAgreementPage;

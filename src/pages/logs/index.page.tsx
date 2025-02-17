@@ -14,7 +14,7 @@ import LogCard from "@/components/Cards/LogCard";
 import Pagination, { usePagination } from "@/components/Pagination";
 import useDialog from "@/hooks/useDialog";
 import NoLogsPlaceholder from "./components/NoLogs";
-import { AdminGuard } from "@/components/authentication/admin-guard";
+import AdminGuard from "@/components/authentication/admin-guard";
 
 const pageSize = 15;
 

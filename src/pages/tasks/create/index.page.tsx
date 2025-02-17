@@ -1,3 +1,4 @@
+import TasksGuard from "@/components/authentication/tasks-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewAllTasks from "@/sections/Tasks/ViewAll";
 
@@ -8,5 +9,7 @@ export default function CreateTaskPage() {
 // ----------------------------------------------------
 
 CreateTaskPage.getLayout = (page: React.ReactElement) => (
-    <DashboardLayout>{page}</DashboardLayout>
+    <DashboardLayout>
+        <TasksGuard>{page}</TasksGuard>
+    </DashboardLayout>
 );

@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
-import { AuthGuard } from "@/components/authentication/auth-guard";
+import AuthGuard from "@/components/authentication/auth-guard";
+
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useEffect, useState } from "react";
 import useResponsive from "@/hooks/useResponsive";

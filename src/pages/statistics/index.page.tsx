@@ -5,7 +5,7 @@ import ViewsChart from "./LiveViews";
 import PropertyViewLineChart from "./Views";
 import CategoryViewsBarChart from "./CategoryViews";
 import PopularProperties from "./Popular";
-import { AdminGuard } from "@/components/authentication/admin-guard";
+import AdminGuard from "@/components/authentication/admin-guard";
 
 const CHARTS = [
     <ViewsChart key="ViewsChart" />,

@@ -4,7 +4,8 @@ import ViewUser from "@/sections/User/View";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useGetUserQuery } from "src/services/user";
-import { AuthGuard } from "@/components/authentication/auth-guard";
+import AuthGuard from "@/components/authentication/auth-guard";
+
 import { useAuth } from "@/hooks/use-auth";
 import ProfilePusher from "@/sections/Profile/ProfilePusher";
 
