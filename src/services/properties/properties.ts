@@ -411,26 +411,6 @@ export const properties = apiWithTranslation({
     }),
 });
 
-const useGetPDFQuery = (propertyId: number) => {
-    useLayoutEffect(() => {
-        fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/property/${propertyId}/export`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
-                },
-            }
-        ).then((res) => {
-            console.log(res);
-        });
-    }, []);
-
-    return { data: {} };
-};
-
 export const {
     // get
     useGetFilterCountersQuery,
@@ -474,6 +454,7 @@ export const {
     useBulkDeletePermanentPropertiesMutation,
 
     // ...
+    useGetPDFQuery,
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
 } = properties;
@@ -502,4 +483,4 @@ export {
     useFilterArchivedQuery,
 };
 
-export { useGetPDFQuery };
+export type { IPropertyFilterParams };

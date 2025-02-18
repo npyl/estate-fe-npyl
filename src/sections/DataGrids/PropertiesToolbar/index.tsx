@@ -1,4 +1,5 @@
 import {
+    IPropertyFilterParams,
     useBulkDeletePermanentPropertiesMutation,
     useBulkEditPropertiesMutation,
 } from "@/services/properties";
@@ -16,9 +17,14 @@ const BulkRestoreButton = dynamic(() => import("./BulkRestoreButton"));
 interface ToolbarProps {
     archived: boolean;
     selectedRows: number[];
+    filters: IPropertyFilterParams;
 }
 
-const PropertiesToolbar: FC<ToolbarProps> = ({ archived, selectedRows }) => {
+const PropertiesToolbar: FC<ToolbarProps> = ({
+    archived,
+    selectedRows,
+    filters,
+}) => {
     const { user } = useAuth();
     const isAdmin = user?.isAdmin;
 
@@ -45,7 +51,7 @@ const PropertiesToolbar: FC<ToolbarProps> = ({ archived, selectedRows }) => {
                 onBulkEditClick={openBulkEdit}
                 onBulkDeleteClick={isAdmin ? openBulkDelete : undefined}
             >
-                <Share selectedRows={selectedRows} />
+                <Share selectedRows={selectedRows} filters={filters} />
 
                 {!archived ? (
                     <BulkArchiveButton selectedRows={selectedRows} />

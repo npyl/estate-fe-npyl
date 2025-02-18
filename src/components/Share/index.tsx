@@ -27,12 +27,7 @@ import CopyLinkButton from "./CopyLinkButton";
 import { FC } from "react";
 import GmailButton from "./GmailButton";
 
-type FacebookProps = React.ComponentProps<typeof FacebookShareButton>;
-type TwitterProps = React.ComponentProps<typeof TwitterShareButton>;
-type WhatsappProps = React.ComponentProps<typeof WhatsappShareButton>;
-type ViberProps = React.ComponentProps<typeof ViberShareButton>;
-type LinkedinProps = React.ComponentProps<typeof LinkedinShareButton>;
-type EmailProps = React.ComponentProps<typeof EmailShareButton>;
+// ---------------------------------------------------------------------------
 
 interface SectionProps extends StackProps {
     title: string;
@@ -49,13 +44,30 @@ const Section: FC<SectionProps> = ({ title, children, ...props }) => (
     </Stack>
 );
 
+// ---------------------------------------------------------------------------
+
+// TODO: update this to handle properties that are:
+// 1. published on a different public
+// 2. that were inactive but where selected by mistake
+
+const getShareUrl = (lang: string) => (propertyId: number) =>
+    `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
+
 interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
-    shareUrl: string;
+    propertyIds: number[];
     onClose: VoidFunction;
 }
 
-const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
-    const { t } = useTranslation();
+const SharePopover = ({
+    propertyIds = [],
+    onClose,
+    ...props
+}: SharePopoverProps) => {
+    const { t, i18n } = useTranslation();
+
+    const lang = i18n.language === "el" ? "gr" : "en";
+
+    const shareUrl = propertyIds.map(getShareUrl(lang)).join("\n");
 
     return (
         <Popover
@@ -73,13 +85,13 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 <Button
                     Component={WhatsappShareButton}
                     label="WhatsApp"
-                    icon={WhatsappIcon}
+                    Icon={WhatsappIcon}
                     shareUrl={shareUrl}
                 />
                 <Button
                     Component={ViberShareButton}
                     label="Viber"
-                    icon={ViberIcon}
+                    Icon={ViberIcon}
                     shareUrl={shareUrl}
                 />
             </Section>
@@ -90,7 +102,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 <Button
                     Component={EmailShareButton}
                     label="Email"
-                    icon={EmailIcon}
+                    Icon={EmailIcon}
                     shareUrl={shareUrl}
                 />
 
@@ -103,19 +115,19 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 <Button
                     Component={FacebookShareButton}
                     label="Facebook"
-                    icon={FacebookIcon}
+                    Icon={FacebookIcon}
                     shareUrl={shareUrl}
                 />
                 <Button
                     Component={TwitterShareButton}
                     label="X"
-                    icon={XIcon}
+                    Icon={XIcon}
                     shareUrl={shareUrl}
                 />
                 <Button
                     Component={LinkedinShareButton}
                     label="LinkedIn"
-                    icon={LinkedinIcon}
+                    Icon={LinkedinIcon}
                     shareUrl={shareUrl}
                 />
             </Section>

@@ -2,12 +2,8 @@ import { Typography } from "@mui/material";
 import { ComponentType } from "react";
 import { SpaceBetween } from "../styled";
 
-interface BaseComponentProps {
-    url: string;
-}
-
-interface ButtonProps<T extends BaseComponentProps = BaseComponentProps> {
-    Component: ComponentType<T>;
+interface ButtonProps {
+    Component: ComponentType<any>;
     Icon: React.FC<any>;
     label: string;
     shareUrl: string;
@@ -15,12 +11,11 @@ interface ButtonProps<T extends BaseComponentProps = BaseComponentProps> {
 
 const Button: React.FC<ButtonProps> = ({
     Component,
-    ComponentProps,
     Icon,
     label,
     shareUrl,
 }) => (
-    <Component url={shareUrl} {...ComponentProps}>
+    <Component url={shareUrl}>
         <SpaceBetween
             width={1}
             textAlign="left"
