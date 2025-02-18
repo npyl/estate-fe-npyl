@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Living Space": "Living Space",
             Unpublished: "Unpublished",
 
             Tasks_NotAtAll: "No",
@@ -1220,6 +1221,7 @@ const resources = {
     },
     el: {
         translation: {
+            "Living Space": "Κατοικήσιμος Χώρος",
             "No results": "Δεν βρέθηκαν αποτελέσματα",
 
             Unpublished: "Αδημοσίευτο",
