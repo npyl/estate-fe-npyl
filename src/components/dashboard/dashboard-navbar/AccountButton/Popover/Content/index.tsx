@@ -35,7 +35,7 @@ const Content = () => {
             <Link href="/profile">
                 <MenuItem>
                     <UserCircleIcon fontSize="small" />
-                    <Typography variant="body1" width={1}>
+                    <Typography variant="body1" width={1} fontWeight={500}>
                         {t("Profile")}
                     </Typography>
                     {isAdmin ? <AdminLabel /> : null}
@@ -44,7 +44,9 @@ const Content = () => {
             <Link href="/settings">
                 <MenuItem>
                     <SettingsIcon fontSize="small" />
-                    <Typography variant="body1">{t("Settings")}</Typography>
+                    <Typography variant="body1" fontWeight={500}>
+                        {t("Settings")}
+                    </Typography>
                 </MenuItem>
             </Link>
 
@@ -55,7 +57,9 @@ const Content = () => {
 
             <MenuItem onClick={handleLogout}>
                 <LogoutIcon fontSize="small" />
-                <Typography variant="body1">{t("Logout")}</Typography>
+                <Typography variant="body1" fontWeight={500}>
+                    {t("Logout")}
+                </Typography>
             </MenuItem>
         </>
     );
