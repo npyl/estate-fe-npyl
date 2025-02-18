@@ -2210,6 +2210,8 @@ const resources = {
             Notification: "Ειδοποίηση",
             inPerson: "Από κοντά",
             "In Person": "Από κοντά",
+            "Ask Question": "Επικοινωνία με πελάτη",
+            "  View ": "Προβολή",
             askQuestion: "Επικοινωνία με πελάτη",
             "Contact with customer": "Επικοινωνία με πελάτη",
             July: "Ιουλίου",

@@ -133,7 +133,7 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
             </Stack>
 
             {/* Tour Type Label with Date & Time */}
-            <Stack direction="row" alignItems="center" gap={0.3}>
+            <Stack direction="row" alignItems="center" gap={0.3} mt={0.7}>
                 {row?.tourType && tourTypeLabels[row.tourType as TourType] ? (
                     <Chip
                         label={t(
