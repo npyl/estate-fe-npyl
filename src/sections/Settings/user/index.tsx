@@ -123,6 +123,7 @@ const UserPage: FC<Props> = ({ onGotoPermissions }) => {
                             <TableCell>{t("Status")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
                             <TableCell>{t("Update")}</TableCell>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
