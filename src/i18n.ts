@@ -666,6 +666,9 @@ const resources = {
                 "Select user to transfer properties",
             Name: "Name",
             "Notification Date": "Notification Date",
+            "No tour notifications available for this property.":
+                "No tour notifications available for this property.",
+
             Tours: "Tours",
             "Search for Tours": "Search for tours",
             "Search for Listings": "Search for listings",
@@ -2314,6 +2317,9 @@ const resources = {
                 "Επιλέξτε χρήστη να μεταφέρετε τα ακίνητα",
             Name: "Όνομα",
             "Notification Date": "Ημερομηνία",
+            "No tour notifications available for this property.":
+                "Καμία ενημέρωση για ξενάγηση διαθέσιμη για αυτό το ακίνητο.",
+            "Search for tours": "Αναζήτηση για ξεναγήσεις",
             Tours: "Ξεναγήσεις",
             Listings: "Νέο Ακίνητο",
             "Work Applications": "Αίτηση Εργασίας",

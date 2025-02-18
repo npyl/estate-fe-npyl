@@ -34,6 +34,7 @@ const GreenMap = dynamic(() => import("./(tabs)/Green"));
 const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
 const Tasks = dynamic(() => import("./(tabs)/Tasks"));
 const QuickView = dynamic(() => import("./(tabs)/QuickView"));
+const NotificationsTab = dynamic(() => import("./(tabs)/NotificationsTab"));
 
 import { styled } from "@mui/material/styles";
 
@@ -62,7 +63,7 @@ const GreenMapTab: React.FC<TabProps> = (props) => (
     />
 );
 
-const GREEN_MAP_INDEX = 11;
+const GREEN_MAP_INDEX = 12;
 
 // -----------------------------------------------------------------
 
@@ -144,6 +145,8 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                     <Tab label={t("Documents")} />
                     <Tab label={t("Map")} />
                     <Tab label={t("Street View")} />
+                    <Tab label={t("Notifications")} />
+
                     <Tab label={t("Agreements")} />
                     <GreenMapTab label={t("Eco Map")} />
                 </Tabs>
@@ -179,6 +182,9 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                 <StreetView />
             </TabPanel>
             <TabPanel value={value} index={10}>
+                <NotificationsTab />
+            </TabPanel>
+            <TabPanel value={value} index={11}>
                 <AgreementsTab />
             </TabPanel>
             <TabPanel value={value} index={GREEN_MAP_INDEX}>
