@@ -34,11 +34,11 @@ export const BulkEditDrawer = ({
         >
             <Typography variant="h6">{t("Bulk Edit")}</Typography>
 
-            <Stack mt={2} gap={4}>
+            <Stack mt={2} gap={4} height={1}>
                 {children}
             </Stack>
 
-            <Stack direction={"row"} justifyContent={"right"} spacing={1} m={1}>
+            <Stack direction={"row"} justifyContent={"right"} spacing={1}>
                 <Button variant="outlined" color="secondary" onClick={onClose}>
                     {t("Close")}
                 </Button>
