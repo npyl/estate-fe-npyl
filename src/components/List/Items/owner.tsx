@@ -1,4 +1,4 @@
-import { Typography, Fade, SxProps, Theme } from "@mui/material";
+import { Typography, Fade, SxProps, Theme, Tooltip } from "@mui/material";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import ListItem from "../item";
@@ -45,28 +45,30 @@ const ListOwnerItem: FC<ListOwnerItemProps> = ({
 
     return (
         <ListItem label={label || t("Owner")} {...other}>
-            <CustomButton
-                variant="outlined"
-                LinkComponent={Link}
-                href={`/customer/${ownerId}`}
-                sx={LinkSx}
-            >
-                <CustomAvatar />
+            <Tooltip title={fullname} placement="top">
+                <CustomButton
+                    variant="outlined"
+                    LinkComponent={Link}
+                    href={`/customer/${ownerId}`}
+                    sx={LinkSx}
+                >
+                    <CustomAvatar />
 
-                <Fade in className="FadeInContent">
-                    <Typography
-                        noWrap
-                        variant="subtitle2"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        whiteSpace="nowrap"
-                    >
-                        {fullname}
-                    </Typography>
-                </Fade>
+                    <Fade in className="FadeInContent">
+                        <Typography
+                            noWrap
+                            variant="subtitle2"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            whiteSpace="nowrap"
+                        >
+                            {fullname}
+                        </Typography>
+                    </Fade>
 
-                <Iconify icon="eva:eye-off-fill" className="UserIcon" />
-            </CustomButton>
+                    <Iconify icon="eva:eye-off-fill" className="UserIcon" />
+                </CustomButton>
+            </Tooltip>
         </ListItem>
     );
 };

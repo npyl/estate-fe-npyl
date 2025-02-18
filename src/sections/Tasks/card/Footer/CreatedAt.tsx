@@ -70,7 +70,11 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
                   })
             : "-";
 
-        return <Typography ref={onRef}>{label}</Typography>;
+        return (
+            <Typography ref={onRef} variant="body2">
+                {label}
+            </Typography>
+        );
     }
 );
 

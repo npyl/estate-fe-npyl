@@ -8,8 +8,10 @@ import {
 } from "./Edit";
 import { BulkEditDrawer } from "@/sections/DataGrids/BulkEditDrawer";
 import { useCallback, useMemo, useState } from "react";
-import { BulkEditRequest } from "src/services/properties";
+import { BulkEditRequest } from "@/services/properties";
 import { EditLabels } from "./EditLabels";
+import Active from "./Active";
+import { SelectChangeEvent } from "@mui/material";
 
 type StateType = {
     managerId: string;
@@ -19,6 +21,7 @@ type StateType = {
     labels: number[];
     bedrooms: string;
     state: string;
+    publicSites: number[];
 };
 
 const initialState: StateType = {
@@ -29,6 +32,7 @@ const initialState: StateType = {
     labels: [],
     bedrooms: "",
     state: "",
+    publicSites: [],
 };
 
 interface BulkEditProps {
@@ -47,18 +51,25 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
     const [state, setState] = useState<StateType["state"]>("");
 
-    const currentState: StateType = useMemo(
-        () => ({
-            managerId,
-            ownerId,
-            zipCode,
-            area,
-            labels,
-            bedrooms,
-            state,
-        }),
-        [managerId, ownerId, zipCode, area, labels, bedrooms, state]
+    const [publicSites, setPublicSites] = useState<number[]>([]);
+    const onPublicSitesChange = useCallback(
+        (e: SelectChangeEvent<number[]>) => {
+            console.log("setting: ", e.target.value);
+            setPublicSites(e.target.value as any);
+        },
+        []
     );
+
+    const currentState: StateType = {
+        managerId,
+        ownerId,
+        zipCode,
+        area,
+        labels,
+        bedrooms,
+        state,
+        publicSites,
+    };
 
     const changed: Partial<StateType> = useMemo(() => {
         return (Object.keys(currentState) as Array<keyof StateType>)
@@ -78,7 +89,7 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
             .reduce((acc: Partial<StateType>, key: keyof StateType) => {
                 // INFO: Cast currentState[key] to `any` to avoid type errors
                 if (
-                    key !== "state" &&
+                    acc[key] !== "state" &&
                     key !== "labels" &&
                     !isNaN(Number(currentState[key]))
                 ) {
@@ -89,9 +100,9 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
                 }
                 return acc;
             }, {});
-    }, [managerId, ownerId, zipCode, area, labels, bedrooms, state]);
+    }, [currentState]);
 
-    const clearState = () => {
+    const clearState = useCallback(() => {
         setManagerId("");
         setOwnerId("");
         setZipCode("");
@@ -99,7 +110,8 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
         setLabels([]);
         setBedrooms("");
         setState("");
-    };
+        setPublicSites([]);
+    }, []);
 
     const handleSave = async () => {
         const req = {
@@ -134,6 +146,7 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
             <EditLabels variant="property" data={labels} setData={setLabels} />
             <EditBedrooms data={bedrooms} setData={setBedrooms} />
             <EditState data={state} setData={setState} />
+            <Active value={publicSites} onChange={onPublicSitesChange} />
         </BulkEditDrawer>
     );
 };

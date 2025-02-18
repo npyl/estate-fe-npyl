@@ -12,6 +12,11 @@ interface IUploadCompanyImage {
     type: CompanyImageType;
 }
 
+interface IPublicSitesRes {
+    id: number;
+    siteUrl: string;
+}
+
 export const company = createApi({
     reducerPath: "company",
     baseQuery: fetchBaseQuery({
@@ -25,7 +30,7 @@ export const company = createApi({
         },
     }),
 
-    tagTypes: ["Company", "CompanyIntegrations"],
+    tagTypes: ["Company", "CompanyIntegrations", "CompanyPublicSites"],
 
     endpoints: (builder) => ({
         getCompanyDetails: builder.query<ICompany, void>({
@@ -92,6 +97,13 @@ export const company = createApi({
             }),
             invalidatesTags: ["Company"],
         }),
+
+        // ----------------------------------------------------------------------------
+
+        getPublicSites: builder.query<IPublicSitesRes[], void>({
+            query: () => "/public-sites",
+            providesTags: ["CompanyPublicSites"],
+        }),
     }),
 });
 
@@ -104,4 +116,7 @@ export const {
     useRemoveCompanyImageMutation,
 
     useGetMembersQuery,
+    useGetPublicSitesQuery,
 } = company;
+
+export type { IPublicSitesRes };

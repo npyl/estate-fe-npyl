@@ -32,7 +32,7 @@ const CreateFromResourceButton: FC<CreateFromResourceButtonProps> = ({
             <Button
                 onClick={handleOpenDialog}
                 variant="contained"
-                endIcon={<AssignmentIcon />}
+                startIcon={<AssignmentIcon />}
                 sx={{
                     width: "max-content",
                     textWrap: "nowrap",

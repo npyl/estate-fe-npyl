@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@/components/Avatar";
 import Tooltip from "@mui/material/Tooltip";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, SxProps, Theme, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 const Menu = dynamic(() => import("./Menu"));
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -57,12 +57,16 @@ const TaskCodeBoxSx = (theme: any) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 0.5,
+    gap: 0.3,
     paddingInline: 1,
     borderRadius: "25px",
     backgroundColor:
         theme.palette.mode === "light" ? "neutral.200" : "neutral.600",
 });
+
+const SmallBodySx: SxProps<Theme> = {
+    fontSize: "0.8rem",
+};
 
 interface HeaderProps {
     taskId: number;
@@ -94,9 +98,9 @@ const Header: FC<HeaderProps> = ({
                 <Box sx={TaskCodeBoxSx(theme)}>
                     <BookmarkBorderIcon
                         color="action"
-                        sx={{ fontSize: "large" }}
+                        sx={{ fontSize: "medium" }}
                     />
-                    <Typography variant="body2">
+                    <Typography variant="body2" sx={SmallBodySx}>
                         {uniqueCode
                             ? `${t("Task")} - ${uniqueCode.split(" - ")[1]}`
                             : "N/A"}

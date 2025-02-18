@@ -249,7 +249,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
-        flex: 0.8,
+        flex: 0.7,
     },
     {
         field: "labels",
@@ -257,7 +257,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         align: "center",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
-        flex: 1,
+        flex: 1.3,
     },
     {
         field: "location",

@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Living Space": "Living Space",
             Unpublished: "Unpublished",
 
             Tasks_NotAtAll: "No",
@@ -667,6 +668,12 @@ const resources = {
             Name: "Name",
             "Notification Date": "Notification Date",
             Tours: "Tours",
+            "Search for Tours": "Search for tours",
+            "Search for Listings": "Search for listings",
+            "Search for Work Applications": "Search for work applications",
+            "Search for Reviews": "Search for reviews",
+            "Search for Agreements": "Search for agreements",
+            "Search for Stay Updated": "Search for stay updated",
             Listings: "Listings",
             "Work Applications": "Work Applications",
             Positions: "Positions",
@@ -1214,6 +1221,7 @@ const resources = {
     },
     el: {
         translation: {
+            "Living Space": "Κατοικήσιμος Χώρος",
             "No results": "Δεν βρέθηκαν αποτελέσματα",
 
             Unpublished: "Αδημοσίευτο",
@@ -1841,6 +1849,8 @@ const resources = {
             "Maximum Floor": "Μέγιστος όροφος",
             "Minimum Floor": "Ελάχιστος όροφος",
             "Assigned to": "Ανάθεση στον/ην",
+            "Assign to me": "Ανάθεση σε εμένα",
+
             "Add section": "Προσθήκη Τμήματος",
             "Add column": "Προσθήκη Στήλης",
             "Delete column?": "Διαγραφή στήλης?",
@@ -2307,6 +2317,12 @@ const resources = {
             Tours: "Ξεναγήσεις",
             Listings: "Νέο Ακίνητο",
             "Work Applications": "Αίτηση Εργασίας",
+            "Search for Tours": "Αναζήτηση για ξεναγήσεις",
+            "Search for Listings": "Αναζήτηση για νέο ακίνητο",
+            "Search for Work Applications": "Αναζήτηση για αίτηση εργασίας",
+            "Search for Reviews": "Αναζήτηση για αξιολογήσεις",
+            "Search for Agreements": "Αναζήτηση για εντολές",
+            "Search for Stay Updated": "Αναζήτηση για μείνετε ενημερωμένοι",
             Positions: "Θέσεις",
             "Work Regions": "Περιοχές Εργασία",
             Attachment: "Επισυναπτόμενο",
