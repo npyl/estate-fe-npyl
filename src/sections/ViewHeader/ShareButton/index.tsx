@@ -2,38 +2,15 @@ import useDialog from "@/hooks/useDialog";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import dynamic from "next/dynamic";
-import { FC, PropsWithChildren, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ShareIcon from "@mui/icons-material/Share";
-import { SvgIcon } from "@mui/material";
 import { useRouter } from "next/router";
 import { useGetPropertyListingsQuery } from "@/services/properties";
 import { toNumberSafe } from "@/utils/toNumber";
+import DisabledShareButton from "./DisabledShareButton";
 
 const SharePopover = dynamic(() => import("@/components/Share"));
-
-interface DisabledIconButtonProps extends PropsWithChildren {
-    title: string;
-}
-
-const DisabledIconButton: FC<DisabledIconButtonProps> = ({
-    title,
-    children,
-}) => (
-    <Tooltip title={title}>
-        <IconButton>
-            <SvgIcon>
-                <ShareIcon color="disabled" />
-                <path
-                    d="M22 2L2 22"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                />
-            </SvgIcon>
-        </IconButton>
-    </Tooltip>
-);
 
 const ShareButton = () => {
     const { t } = useTranslation();
@@ -55,19 +32,7 @@ const ShareButton = () => {
     return (
         <>
             {!hasPublic ? (
-                <Tooltip title={t("Property is not public")}>
-                    <IconButton>
-                        <SvgIcon>
-                            <ShareIcon color="disabled" />
-                            <path
-                                d="M22 2L2 22"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                        </SvgIcon>
-                    </IconButton>
-                </Tooltip>
+                <DisabledShareButton title={t("Property is not public")} />
             ) : null}
 
             {hasPublic ? (

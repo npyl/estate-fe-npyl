@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _SELECT_ACTIVE_TO_SHARE:
+                "Please select at least one active property to share",
+
             "Living Space": "Living Space",
             Unpublished: "Unpublished",
 
@@ -1221,6 +1224,9 @@ const resources = {
     },
     el: {
         translation: {
+            _SELECT_ACTIVE_TO_SHARE:
+                "Παρακαλώ επιλέξτε τουλάχιστον ένα δημοσιευμένο ακίνητο",
+
             "Living Space": "Κατοικήσιμος Χώρος",
             "No results": "Δεν βρέθηκαν αποτελέσματα",
 
