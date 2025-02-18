@@ -23,7 +23,7 @@ interface PriorityLabelProps extends TypographyProps {
 const PriorityLabel: FC<PriorityLabelProps> = ({ priority, ...props }) => {
     const { t } = useTranslation();
     return (
-        <Typography sx={getSx(priority)} {...props}>
+        <Typography sx={getSx(priority)} {...props} variant="body2">
             {t(getLabel(priority))}
         </Typography>
     );

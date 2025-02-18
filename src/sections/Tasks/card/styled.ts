@@ -7,13 +7,13 @@ interface TaskCardProps extends PaperProps {
 }
 
 const StyledPaper = styled(Paper)<TaskCardProps>(({ theme, priority }) => ({
-    padding: theme.spacing(1),
+    padding: theme.spacing(0.8),
 
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
 
-    borderRadius: "12px",
-    borderLeft: "14px solid",
+    borderRadius: "9px",
+    borderLeft: "9px solid",
     borderLeftColor: lighten(getTaskColor(priority)(theme), 0.5),
 
     minHeight: "148px",

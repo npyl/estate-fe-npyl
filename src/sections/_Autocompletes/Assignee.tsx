@@ -1,9 +1,19 @@
-import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
+import {
+    Box,
+    MenuItem,
+    SxProps,
+    TextField,
+    Theme,
+    Typography,
+    Button,
+} from "@mui/material";
 import { forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { IUserMini } from "@/types/user";
 import { useAllUsersQuery } from "@/services/user";
 import Avatar from "@/components/Avatar";
+import { useAuth } from "@/hooks/use-auth"; // Hook to get logged-in user
+import { useTranslation } from "react-i18next";
 
 // ------------------------------------------------------------------
 
@@ -11,6 +21,16 @@ const getOptionLabel = (o: IUserMini | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 // -------------------------------------------------------------------------
+
+const AssignToMeButtonSx: SxProps<Theme> = {
+    textTransform: "none",
+    fontSize: "0.875rem",
+    backgroundColor: "transparent",
+    ":hover": {
+        backgroundColor: "transparent !important",
+        textDecoration: "underline",
+    },
+};
 
 const OptionSx: SxProps<Theme> = {
     display: "flex",
@@ -45,34 +65,105 @@ interface AssigneeAutocompleteProps
     label: string;
     error: boolean;
     helperText?: string;
+    onAssignToMe?: (user: IUserMini) => void;
+    assignToMe?: boolean;
 }
 
 const AssigneeAutocomplete = forwardRef<
     HTMLDivElement,
     AssigneeAutocompleteProps
->(({ label, error, helperText, ...props }, ref) => {
-    const { data, isLoading } = useAllUsersQuery();
-    const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+>(
+    (
+        { label, error, helperText, onAssignToMe, assignToMe = true, ...props },
+        ref
+    ) => {
+        const { data, isLoading } = useAllUsersQuery();
+        const { t } = useTranslation();
+        const { user } = useAuth(); // Get current user
 
-    return (
-        <Autocomplete
-            ref={ref}
-            loading={isLoading}
-            renderOption={renderOption}
-            options={options}
-            getOptionLabel={getOptionLabel}
-            renderInput={(props) => (
-                <TextField
-                    label={label}
+        const options = useMemo(
+            () => (Array.isArray(data) ? data : []),
+            [data]
+        );
+        const handleAssignToMe = () => {
+            if (user && onAssignToMe) {
+                onAssignToMe({
+                    id: user.id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    avatar: user.avatar,
+                });
+            }
+        };
+
+        return (
+            <Box>
+                <Autocomplete
+                    ref={ref}
+                    loading={isLoading}
+                    renderOption={renderOption}
+                    options={options}
+                    getOptionLabel={getOptionLabel}
+                    renderInput={(params) => {
+                        const selectedUser = params.inputProps.value
+                            ? options.find(
+                                  (user) =>
+                                      getOptionLabel(user) ===
+                                      params.inputProps.value
+                              )
+                            : null;
+
+                        return (
+                            <TextField
+                                {...params}
+                                label={label}
+                                error={error}
+                                helperText={helperText}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    startAdornment: selectedUser ? (
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <Avatar
+                                                src={selectedUser.avatar}
+                                                firstName={
+                                                    selectedUser.firstName
+                                                }
+                                                lastName={selectedUser.lastName}
+                                                sx={{
+                                                    width: 24,
+                                                    height: 24,
+                                                    marginInline: 0.6,
+                                                }}
+                                            />
+                                        </Box>
+                                    ) : null,
+                                }}
+                            />
+                        );
+                    }}
                     {...props}
-                    error={error}
-                    helperText={helperText}
                 />
-            )}
-            {...props}
-        />
-    );
-});
+
+                {/* Assign to Me Section */}
+                {assignToMe && user && (
+                    <Button
+                        variant="text"
+                        color="primary"
+                        sx={AssignToMeButtonSx}
+                        onClick={handleAssignToMe}
+                    >
+                        {t("Assign to me")}
+                    </Button>
+                )}
+            </Box>
+        );
+    }
+);
 
 AssigneeAutocomplete.displayName = "AssigneeAutocomplete";
 

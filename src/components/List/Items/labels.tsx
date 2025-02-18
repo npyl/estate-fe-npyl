@@ -1,10 +1,16 @@
-import { Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import type { FC } from "react";
 import Label from "@/components/Label/Label";
 import { ILabel } from "src/types/label";
 import ListItem from "../item";
 import ListItemProps from "../types";
 
+const LABEL_SX = (isLargeScreen: boolean) => ({
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: isLargeScreen ? 195 : 130,
+});
 interface ListLabelsItemProps extends ListItemProps {
     labels: ILabel[];
 }
@@ -16,7 +22,7 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
     // Show only the first label
     const visibleLabel = labels[0];
     const remainingLabels = labels.slice(1);
-
+    const isLargeScreen = useMediaQuery("(min-width:1900px)");
     return (
         <ListItem {...other}>
             <Stack spacing={1} ml={0.5} alignItems="center">
@@ -68,12 +74,19 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                         </Stack>
                     </Tooltip>
                 ) : (
-                    <Label
-                        color={visibleLabel?.color}
-                        width="min-content"
-                        maxWidth="100%"
-                        name={visibleLabel?.name}
-                    />
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            maxWidth: isLargeScreen ? 250 : 140,
+                        }}
+                    >
+                        <Label
+                            color={visibleLabel?.color}
+                            name={visibleLabel?.name}
+                            sx={LABEL_SX(isLargeScreen)}
+                        />
+                    </Box>
                 )}
             </Stack>
         </ListItem>

@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Box, IconButton, Typography, alpha } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography, alpha } from "@mui/material";
 //
 import { StyledLabel } from "./styles";
 import { LabelProps } from "./types";
@@ -7,14 +7,6 @@ import { LabelProps } from "./types";
 import { Close as CloseIcon } from "@mui/icons-material";
 
 // ----------------------------------------------------------------------
-
-const iconStyle = {
-    minWidth: 16,
-    minHeight: 16,
-    "& svg, img": { width: 1, height: 1, objectFit: "cover" },
-};
-
-const radius = 10;
 
 const Label = forwardRef<HTMLDivElement, LabelProps>(
     (
@@ -38,31 +30,48 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
             sx={{
                 pt: 0.25,
                 px: 0.75,
-                borderRadius: radius,
+                borderRadius: 10,
                 gap: 0.3,
+                display: "flex",
+                alignItems: "center",
+                maxWidth: "100%",
                 ...sx,
             }}
             {...other}
         >
-            {opaque ? null : (
+            {!opaque && (
                 <Box
                     sx={{
                         mr: 0.75,
-                        ...sx,
                         backgroundColor: alpha(color, opacity),
-                        borderRadius: radius,
-                        ...iconStyle,
+                        borderRadius: 10,
+                        width: 12,
+                        height: 12,
+                        flexShrink: 0, // Prevents shrinking
                     }}
                 />
             )}
 
-            <Typography variant="body2" noWrap textOverflow="ellipsis">
-                {name}
-            </Typography>
+            <Tooltip title={name} placement="top">
+                <Box sx={{ minWidth: 0, flexGrow: 1, overflow: "hidden" }}>
+                    <Typography
+                        variant="body2"
+                        noWrap
+                        sx={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "100%",
+                        }}
+                    >
+                        {name}
+                    </Typography>
+                </Box>
+            </Tooltip>
 
             {children}
 
-            {onClose ? (
+            {onClose && (
                 <IconButton
                     size="small"
                     disabled={disabled}
@@ -71,7 +80,7 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
                 >
                     <CloseIcon sx={{ height: 16, width: 16 }} />
                 </IconButton>
-            ) : null}
+            )}
         </StyledLabel>
     )
 );
