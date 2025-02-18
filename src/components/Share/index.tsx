@@ -27,6 +27,13 @@ import CopyLinkButton from "./CopyLinkButton";
 import { FC } from "react";
 import GmailButton from "./GmailButton";
 
+type FacebookProps = React.ComponentProps<typeof FacebookShareButton>;
+type TwitterProps = React.ComponentProps<typeof TwitterShareButton>;
+type WhatsappProps = React.ComponentProps<typeof WhatsappShareButton>;
+type ViberProps = React.ComponentProps<typeof ViberShareButton>;
+type LinkedinProps = React.ComponentProps<typeof LinkedinShareButton>;
+type EmailProps = React.ComponentProps<typeof EmailShareButton>;
+
 interface SectionProps extends StackProps {
     title: string;
 }

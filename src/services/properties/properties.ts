@@ -19,6 +19,7 @@ import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
 import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
 import { IPropertyFile } from "@/types/file";
+import { useLayoutEffect } from "react";
 
 interface JustData<T> {
     data: T;
@@ -410,6 +411,26 @@ export const properties = apiWithTranslation({
     }),
 });
 
+const useGetPDFQuery = (propertyId: number) => {
+    useLayoutEffect(() => {
+        fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/property/${propertyId}/export`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            }
+        ).then((res) => {
+            console.log(res);
+        });
+    }, []);
+
+    return { data: {} };
+};
+
 export const {
     // get
     useGetFilterCountersQuery,
@@ -453,7 +474,6 @@ export const {
     useBulkDeletePermanentPropertiesMutation,
 
     // ...
-    useGetPDFQuery,
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
 } = properties;
@@ -481,3 +501,5 @@ export {
     useFilterPropertiesQuery,
     useFilterArchivedQuery,
 };
+
+export { useGetPDFQuery };

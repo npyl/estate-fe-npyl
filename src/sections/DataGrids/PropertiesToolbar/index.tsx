@@ -7,6 +7,7 @@ import BaseToolbar from "@/sections/DataGrids/BaseToolbar";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/hooks/use-auth";
+import Share from "./Share";
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 const BulkEdit = dynamic(() => import("./BulkEdit"));
 const BulkArchiveButton = dynamic(() => import("./BulkArchiveButton"));
@@ -44,6 +45,8 @@ const PropertiesToolbar: FC<ToolbarProps> = ({ archived, selectedRows }) => {
                 onBulkEditClick={openBulkEdit}
                 onBulkDeleteClick={isAdmin ? openBulkDelete : undefined}
             >
+                <Share selectedRows={selectedRows} />
+
                 {!archived ? (
                     <BulkArchiveButton selectedRows={selectedRows} />
                 ) : null}
