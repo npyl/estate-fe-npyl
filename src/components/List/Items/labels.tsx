@@ -5,6 +5,12 @@ import { ILabel } from "src/types/label";
 import ListItem from "../item";
 import ListItemProps from "../types";
 
+const LABEL_SX = (isLargeScreen: boolean) => ({
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: isLargeScreen ? 195 : 130,
+});
 interface ListLabelsItemProps extends ListItemProps {
     labels: ILabel[];
 }
@@ -78,12 +84,7 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                         <Label
                             color={visibleLabel?.color}
                             name={visibleLabel?.name}
-                            sx={{
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                maxWidth: isLargeScreen ? 195 : 130,
-                            }}
+                            sx={LABEL_SX(isLargeScreen)}
                         />
                     </Box>
                 )}
