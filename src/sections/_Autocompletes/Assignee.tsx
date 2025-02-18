@@ -65,8 +65,8 @@ interface AssigneeAutocompleteProps
     label: string;
     error: boolean;
     helperText?: string;
-    onAssignToMe: (user: IUserMini) => void;
-    isMessagesPage?: boolean;
+    onAssignToMe?: (user: IUserMini) => void;
+    assignToMe?: boolean;
 }
 
 const AssigneeAutocomplete = forwardRef<
@@ -74,14 +74,7 @@ const AssigneeAutocomplete = forwardRef<
     AssigneeAutocompleteProps
 >(
     (
-        {
-            label,
-            error,
-            helperText,
-            onAssignToMe,
-            isMessagesPage = false,
-            ...props
-        },
+        { label, error, helperText, onAssignToMe, assignToMe = true, ...props },
         ref
     ) => {
         const { data, isLoading } = useAllUsersQuery();
@@ -93,7 +86,7 @@ const AssigneeAutocomplete = forwardRef<
             [data]
         );
         const handleAssignToMe = () => {
-            if (user) {
+            if (user && onAssignToMe) {
                 onAssignToMe({
                     id: user.id,
                     firstName: user.firstName,
@@ -157,7 +150,7 @@ const AssigneeAutocomplete = forwardRef<
                 />
 
                 {/* Assign to Me Section */}
-                {!isMessagesPage && user && (
+                {assignToMe && user && (
                     <Button
                         variant="text"
                         color="primary"
