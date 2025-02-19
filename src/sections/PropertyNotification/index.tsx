@@ -179,7 +179,7 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                     onRemove={handleRemove}
                 />
             ) : (
-                <Typography color="textSecondary" variant="body2">
+                <Typography color="textSecondary" variant="body2" mt={1}>
                     {t("No tour notifications available for this property.")}
                 </Typography>
             )}

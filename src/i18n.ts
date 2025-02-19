@@ -1524,7 +1524,7 @@ const resources = {
             _Public_FEMALE_PLURAL: "Δημόσιες",
             "Rest Integrations": "Λοιπές Συνδέσεις",
 
-            "Location Details": "Λεπτομέρεις Τοποθεσίας",
+            "Location Details": "Λεπτομέρειες Τοποθεσίας",
             "Select which information will be visible to the user on Search result pages:":
                 "Επιλέξτε τι πληροφορία θα είναι φανερή στο χρήστη κατά την αναζήτηση",
             "Location not visible": "Μη-εμφανής τοποθεσία",
