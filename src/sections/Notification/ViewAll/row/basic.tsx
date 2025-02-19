@@ -114,7 +114,6 @@ const BasicRow = ({
     const { customerEmail, customerMobile, tourType, tourDate, tourTime } =
         row || {};
 
-    console.log(row);
     return (
         <TableRow
             sx={{

@@ -24,6 +24,7 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
 import { demandName, filterName } from "../util";
+import debugLog from "@/_private/debugLog";
 const NextShapeCenter = lazy(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -126,7 +127,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
 
                         setValue(regionsName, [regionId.toString()]);
                     })
-                    .catch((reason) => console.log("getHierarchy: ", reason));
+                    .catch(debugLog);
             }
         },
         [regionsName, citiesName, complexesName]

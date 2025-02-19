@@ -54,7 +54,6 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     const [publicSites, setPublicSites] = useState<number[]>([]);
     const onPublicSitesChange = useCallback(
         (e: SelectChangeEvent<number[]>) => {
-            console.log("setting: ", e.target.value);
             setPublicSites(e.target.value as any);
         },
         []

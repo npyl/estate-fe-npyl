@@ -13,6 +13,7 @@ import useLoadApi from "./hook";
 import dynamic from "next/dynamic";
 import getAddressComponent from "./util/getAddressComponent";
 import MapControl from "./MapControl";
+import debugLog from "@/_private/debugLog";
 
 // plugins
 const Draw = dynamic(() => import("./plugins/Draw"));
@@ -124,7 +125,7 @@ const Map = ({
         position: "relative",
     };
 
-    console.log("RE_RENDER");
+    debugLog("RE_RENDER");
 
     // center is based on mainMarker's latLng
     const center = useMemo(

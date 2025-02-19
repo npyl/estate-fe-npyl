@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useLayoutEffect, useState } from "react";
+import debugLog from "./debugLog";
 
 const socketUrl = process.env.NEXT_PUBLIC_MAIN_SOCKET;
 
@@ -18,14 +19,14 @@ const connectSocket = (userId: number): Promise<WebSocket> => {
          * INFO: without this message no communication can be established!*
          */
         socket.addEventListener("open", () => {
-            console.log("WS_OPEN");
+            debugLog("WS_OPEN");
             const req = JSON.stringify({ type: "register", userId });
             socket.send(req);
             resolve(socket);
         });
 
         socket.addEventListener("close", () => {
-            console.log("WS_CLOSE");
+            debugLog("WS_CLOSE");
             globalThis.socketPromise = undefined;
         });
     });

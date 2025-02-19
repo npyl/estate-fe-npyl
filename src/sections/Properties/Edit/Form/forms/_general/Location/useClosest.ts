@@ -1,3 +1,4 @@
+import debugLog from "@/_private/debugLog";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
@@ -42,7 +43,7 @@ const useClosest = () => {
 
                     setValue("location.region", regionId.toString());
                 })
-                .catch((reason) => console.log("getHierarchy: ", reason));
+                .catch(debugLog);
         }
     }, []);
 
