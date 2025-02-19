@@ -1,12 +1,14 @@
 import { EditManager } from "./Edit";
 import { EditLabels } from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/EditLabels";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BulkEditDrawer } from "@/sections/DataGrids/BulkEditDrawer";
 import { BulkEditRequest } from "src/services/customers";
+import StayUpdated from "./StayUpdated";
 
 type StateType = {
     managerId: string;
     labels: number[];
+    enableEmails: boolean | "";
 };
 
 interface BulkEditProps {
@@ -19,53 +21,54 @@ interface BulkEditProps {
 const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     const [managerId, setManagerId] = useState<StateType["managerId"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
+    const [enableEmails, setEnableEmails] = useState<boolean | "">("");
 
     const initialState: StateType = useMemo(
         () => ({
             managerId: "",
             labels: [],
+            enableEmails: "",
         }),
         []
     );
 
-    const currentState: StateType = useMemo(
-        () => ({
-            managerId,
-            labels,
-        }),
-        [managerId, labels]
-    );
+    const currentState: StateType = {
+        managerId,
+        labels,
+        enableEmails,
+    };
 
-    const changed: Partial<StateType> = useMemo(() => {
-        return (Object.keys(currentState) as Array<keyof StateType>)
-            .filter((key) => {
-                if (
-                    Array.isArray(currentState[key]) &&
-                    Array.isArray(initialState[key])
-                ) {
-                    return (
-                        JSON.stringify(currentState[key]) !==
-                        JSON.stringify(initialState[key])
-                    );
-                } else {
-                    return currentState[key] !== initialState[key];
-                }
-            })
-            .reduce((acc: Partial<StateType>, key: keyof StateType) => {
-                // INFO: Cast currentState[key] to `any` to avoid type errors
-                if (key !== "labels" && !isNaN(Number(currentState[key]))) {
-                    // every string except state is expected to be int in Backend
-                    acc[key] = parseInt(currentState[key] as string, 10) as any;
-                } else {
-                    acc[key] = currentState[key] as any;
-                }
-                return acc;
-            }, {});
-    }, [managerId, labels]);
+    const changed = useMemo(() => {
+        const changedFields: Partial<StateType> = {};
+
+        // Check managerId - convert to number if it's a valid numeric string
+        if (managerId !== initialState.managerId) {
+            changedFields.managerId = managerId;
+        }
+
+        // Check labels - include if array contents have changed
+        if (
+            labels.length > 0 ||
+            (initialState.labels.length > 0 && labels.length === 0)
+        ) {
+            changedFields.labels = labels;
+        }
+
+        // Check enableEmails - include if it's been set to a boolean value
+        if (
+            enableEmails !== initialState.enableEmails &&
+            typeof enableEmails === "boolean"
+        ) {
+            changedFields.enableEmails = enableEmails;
+        }
+
+        return changedFields;
+    }, [managerId, labels, enableEmails]);
 
     const clearState = () => {
         setManagerId("");
         setLabels([]);
+        setEnableEmails(false);
     };
 
     const handleSave = async () => {
@@ -87,6 +90,11 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
 
     const handleClear = () => clearState();
 
+    const handleStayUpdatedChange = useCallback(
+        (_: any, v: boolean | "") => setEnableEmails(v),
+        []
+    );
+
     return (
         <BulkEditDrawer
             open={open}
@@ -97,6 +105,10 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
         >
             <EditManager data={managerId} setData={setManagerId} />
             <EditLabels variant="customer" data={labels} setData={setLabels} />
+            <StayUpdated
+                value={enableEmails}
+                onChange={handleStayUpdatedChange}
+            />
         </BulkEditDrawer>
     );
 };

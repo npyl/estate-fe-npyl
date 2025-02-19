@@ -15,6 +15,7 @@ export interface BulkEditRequest {
     customerIds: number[];
     managerId?: number;
     labels?: number[];
+    enableEmails?: boolean;
 }
 
 interface ICustomerParams {
