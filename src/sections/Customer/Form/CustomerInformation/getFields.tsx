@@ -21,6 +21,7 @@ import { KeyValue } from "@/types/KeyValue";
 import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
 import Select from "@/components/hook-form/Select";
 import { useTranslation } from "react-i18next";
+import StayUpdated from "./StayUpdated";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -130,6 +131,8 @@ const getFIELDS = (
     ) : (
         <LabelPlaceholder />
     ),
+
+    <StayUpdated />,
 ];
 
 export default getFIELDS;
