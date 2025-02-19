@@ -10,14 +10,15 @@ import PublicItem from "./PublicItem";
 import IntegrationItem from "./IntegrationItem";
 import usePropertyListings from "@/hooks/listings";
 import { useTranslation } from "react-i18next";
-
-// ------------------------------------------------------------------------------------
+import useInvalidateTags from "./useInvalidateTags";
 
 interface PublicSitesProps {
     onClick: VoidFunction;
 }
 
 const PublicSites: React.FC<PublicSitesProps> = ({ onClick }) => {
+    const { invalidateTags } = useInvalidateTags();
+
     const { publicListings, propertyId } = usePropertyListings();
 
     // Mutations
@@ -28,6 +29,9 @@ const PublicSites: React.FC<PublicSitesProps> = ({ onClick }) => {
         try {
             if (p) await unpublishPublicSite(+propertyId!);
             else await publishPublicSite(+propertyId!);
+
+            invalidateTags();
+
             onClick();
         } catch (err) {}
     }, []);
