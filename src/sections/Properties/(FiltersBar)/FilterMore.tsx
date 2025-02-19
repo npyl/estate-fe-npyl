@@ -11,6 +11,7 @@ import Category from "./CompactFilters/Category";
 import ParentCategory from "./CompactFilters/ParentCategory";
 import dynamic from "next/dynamic";
 import Beds from "./CompactFilters/Beds";
+import Lifestyle from "./CompactFilters/Lifestyle";
 const ChosenFilters = dynamic(() => import("./ChosenFilters"));
 
 // ----------------------------------------------------------------------
@@ -33,6 +34,7 @@ export default function FilterMore({ onClose }: Props) {
             <Basic />
 
             <State />
+            <Lifestyle />
             <ParentCategory />
             <Category />
 

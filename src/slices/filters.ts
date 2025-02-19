@@ -25,6 +25,15 @@ const initialState: IFilterProps = {
         furnished: [],
         heatingType: [],
         active: null,
+        extras: {
+            student: false,
+            seaFront: false,
+            luxury: false,
+            mountainView: false,
+            neoclassical: false,
+            investment: false,
+            goldenVisa: false,
+        },
     },
     sorting: "default",
     ids: [],
@@ -132,6 +141,7 @@ const slice = createSlice({
             state.filters.subLocation = payload;
             !state.ids.includes("subLocation") && state.ids.push("subLocation");
         },
+
         setStates(state, { payload }) {
             state.filters.states = payload;
             !state.ids.includes("states") && state.ids.push("states");
@@ -185,6 +195,12 @@ const slice = createSlice({
                 // doesn't exist; add
                 state.filters.furnished.push(payload);
                 !state.ids.includes("furnished") && state.ids.push("furnished");
+            }
+        },
+
+        toggleLifestyleFilter(state, { payload }) {
+            if (state.filters.extras.hasOwnProperty(payload)) {
+                state.filters.extras[payload] = !state.filters.extras[payload];
             }
         },
 
@@ -322,6 +338,10 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "cities");
         },
 
+        resetExtras: (state) => {
+            state.filters.extras = { ...initialState.filters.extras };
+        },
+
         resetState: () => {
             return initialState;
         },
@@ -343,6 +363,7 @@ export const {
     toggleFrameType,
     toggleFurnished,
     toggleHeatingType,
+    toggleLifestyleFilter,
     setManagerId,
     setMaxArea,
     setMaxBedrooms,
@@ -387,7 +408,7 @@ export const {
     resetPoints,
     resetState,
     resetActiveState,
-
+    resetExtras,
     resetStates,
     resetCategories,
     resetParentCategories,
@@ -517,6 +538,27 @@ export const getChangedFields = createSelector(
             {}
         );
         return changedFields;
+    }
+);
+
+export const selectActiveFilters = createSelector(
+    (state: RootState) => state.filters.filters,
+    (filters) => {
+        // Extract lifestyle filters (Only keep the ones that are true)
+        const activeExtras = Object.keys(filters.extras).reduce((acc, key) => {
+            if (filters.extras[key]) {
+                acc[key] = true; // Only include checked filters
+            }
+            return acc;
+        }, {} as Record<string, boolean>);
+
+        return {
+            ...filters,
+            extras: activeExtras,
+            states: filters.states.filter(
+                (state) => !Object.keys(filters.extras).includes(state)
+            ),
+        };
     }
 );
 

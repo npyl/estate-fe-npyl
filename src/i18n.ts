@@ -2115,9 +2115,12 @@ const resources = {
             //Suitable For
 
             "Translate from greek": "Μετάφραση από ελληνικά",
-
             "Suitable For": "Κατάλληλο Για",
             Student: "Φοιτητικό",
+            Seafront: "Πρόσοψη Θάλασσα",
+            "Luxury Homes": "Πολυτελείς κατοικίες",
+            "Historic/Neoclassical": "Ιστορικά/Νεοκλασικά",
+            "Golden Visa": "Χρυσή Βίζα",
             Cottage: "Εξοχική Κατοικία",
             "Tourist Rental": "Τουριστική Ενοικίαση",
             Investment: "Επενδυτικό",
