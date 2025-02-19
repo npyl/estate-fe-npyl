@@ -9,6 +9,7 @@ import Link from "@/components/Link";
 import { useGetCustomerByIdQuery } from "@/services/customers";
 
 const LinkSx: SxProps<Theme> = {
+    ml: 0.5,
     ".FadeInContent": {
         display: "none",
     },
