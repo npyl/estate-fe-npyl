@@ -24,9 +24,11 @@ const Share: FC<ShareProps> = ({ selectedRows, filters }) => {
 
     const { data } = useFilterPropertiesQuery(filters);
     const selectedActiveRows =
-        data?.content?.filter(
-            ({ id, active }) => Boolean(active) && selectedRows.includes(id)
-        ) || [];
+        data?.content
+            ?.filter(
+                ({ id, active }) => Boolean(active) && selectedRows.includes(id)
+            )
+            ?.map(({ id }) => id) || [];
     const haveRows = selectedActiveRows.length > 0;
 
     return (
@@ -43,7 +45,8 @@ const Share: FC<ShareProps> = ({ selectedRows, filters }) => {
 
             {isOpen ? (
                 <SharePopover
-                    propertyIds={selectedRows}
+                    anchorEl={anchorRef.current}
+                    propertyIds={selectedActiveRows}
                     onClose={closePopover}
                 />
             ) : null}

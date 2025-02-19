@@ -46,9 +46,10 @@ const Section: FC<SectionProps> = ({ title, children, ...props }) => (
 
 // ---------------------------------------------------------------------------
 
+type FacebookButtonProps = React.ComponentProps<typeof FacebookShareButton>;
+
 // TODO: update this to handle properties that are:
 // 1. published on a different public
-// 2. that were inactive but where selected by mistake
 
 const getShareUrl = (lang: string) => (propertyId: number) =>
     `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
@@ -68,6 +69,7 @@ const SharePopover = ({
     const lang = i18n.language === "el" ? "gr" : "en";
 
     const shareUrl = propertyIds.map(getShareUrl(lang)).join("\n");
+    const isOne = propertyIds.length === 1;
 
     return (
         <Popover
@@ -112,30 +114,36 @@ const SharePopover = ({
             <Divider sx={{ width: "100%" }} />
 
             <Section title={t("Social Networks")}>
-                <Button
-                    Component={FacebookShareButton}
-                    label="Facebook"
-                    Icon={FacebookIcon}
-                    shareUrl={shareUrl}
-                />
+                {isOne ? (
+                    <Button<FacebookButtonProps>
+                        Component={FacebookShareButton}
+                        label="Facebook"
+                        Icon={FacebookIcon}
+                        shareUrl={shareUrl}
+                    />
+                ) : null}
+
                 <Button
                     Component={TwitterShareButton}
                     label="X"
                     Icon={XIcon}
                     shareUrl={shareUrl}
                 />
-                <Button
-                    Component={LinkedinShareButton}
-                    label="LinkedIn"
-                    Icon={LinkedinIcon}
-                    shareUrl={shareUrl}
-                />
+
+                {isOne ? (
+                    <Button
+                        Component={LinkedinShareButton}
+                        label="LinkedIn"
+                        Icon={LinkedinIcon}
+                        shareUrl={shareUrl}
+                    />
+                ) : null}
             </Section>
 
             <Divider sx={{ width: "100%" }} />
 
             <Section title={t("Other")}>
-                <CopyLinkButton shareUrl={shareUrl} />
+                <CopyLinkButton many={!isOne} shareUrl={shareUrl} />
             </Section>
         </Popover>
     );

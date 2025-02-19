@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            COPY_LINK_MANY: "Copy Links",
+
             _SELECT_ACTIVE_TO_SHARE:
                 "Please select at least one active property to share",
 
@@ -1224,6 +1226,8 @@ const resources = {
     },
     el: {
         translation: {
+            COPY_LINK_MANY: "Αντιγραφή Συνδέσμων",
+
             _SELECT_ACTIVE_TO_SHARE:
                 "Παρακαλώ επιλέξτε τουλάχιστον ένα δημοσιευμένο ακίνητο",
 
