@@ -15,13 +15,14 @@ const EditById = () => {
 
     const handleSubmit = useCallback(
         async (body: IPropertiesPOST, generate: boolean) => {
-            const editPromise = edit({ id, body });
-            const generatePromise = generatePDF(id);
+            // TODO: as improvement tell BE to incorporate this condition inside property-create.
 
-            const promises: any = [editPromise];
-            if (generate) promises.push(generatePromise);
+            const res0 = await edit({ id, body });
+            if ("error" in res0) return;
 
-            await Promise.all(promises);
+            if (generate) {
+                await generatePDF(id);
+            }
         },
         []
     );
