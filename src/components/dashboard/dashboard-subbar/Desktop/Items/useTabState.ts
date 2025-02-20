@@ -1,32 +1,48 @@
-import { Stack, StackProps } from "@mui/material";
-import { FC, forwardRef, useCallback, useImperativeHandle } from "react";
+import { useCallback } from "react";
 import { ITab } from "@/types/tabs";
-import dynamic from "next/dynamic";
-import { SubbarRef } from "@/contexts/tabs";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import useCookie from "@/hooks/useCookie";
-const TabItem = dynamic(() => import("./Item"));
+import { useAuth } from "@/hooks/use-auth";
 
-const pushOrUpdate = (old: ITab[], t: ITab) => {
+// -----------------------------------------------------------------------
+
+type TTabState = Record<number, ITab[]>;
+
+// -----------------------------------------------------------------------
+
+const pushOrUpdate = (old: ITab[], userId: number, t: ITab) => {
+    console.log("pushing: ", t, " for userId: ", userId);
+
     // Update
-    if (old.some(({ path }) => path === t.path))
+    if (old.some(({ path }) => path === t.path)) {
         return old.map((ot) => (ot.path === t.path ? t : ot));
+    }
 
     // Push
     return [...old, t];
 };
 
-const getTabItem: FC<ITab> = (t) => <TabItem key={t.path} t={t} />;
+// -----------------------------------------------------------------------
 
 const cookieName = "PPSubbarTabs";
 
-const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
-    const [tabs, setTabs] = useCookie<ITab[]>(cookieName, []);
+const useTabState = () => {
+    const { user } = useAuth();
+    const userId = user?.id!;
+    console.log("userId: ", userId);
+
+    const [tabState, setTabState] = useCookie<TTabState>(cookieName, {});
+    const tabs = tabState?.[userId] || [];
+
+    console.log("TABSSTATE: ", tabState, " tabs: ", tabs);
 
     const pushTab = useCallback(
-        (t: ITab) => setTabs(pushOrUpdate(tabs, t)),
-        [tabs]
+        (t: ITab) => {
+            const res = pushOrUpdate(tabs, userId, t);
+            setTabState({ ...tabState, [userId]: res });
+        },
+        [tabState, tabs, userId]
     );
 
     const router = useRouter();
@@ -35,7 +51,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     const removeTab = useCallback(
         (p: string) => {
             const res = tabs.filter(({ path }) => path !== p);
-            setTabs(res);
+            setTabState({ ...tabState, [userId]: res });
 
             // Case 1: we have no more tabs
             if (res.length === 0) {
@@ -69,30 +85,10 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
                 router.push(newUrl);
             }
         },
-        [tabs, pathname]
+        [tabState, tabs, userId, pathname]
     );
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            pushTab,
-            removeTab,
-        }),
-        [pushTab, removeTab]
-    );
+    return { tabs, pushTab, removeTab };
+};
 
-    return (
-        <Stack
-            direction="row"
-            spacing={1.5}
-            mb={tabs.length > 0 ? 1 : 0}
-            {...props}
-        >
-            {tabs.map(getTabItem)}
-        </Stack>
-    );
-});
-
-SubbarItems.displayName = "SubbarItems";
-
-export default SubbarItems;
+export default useTabState;

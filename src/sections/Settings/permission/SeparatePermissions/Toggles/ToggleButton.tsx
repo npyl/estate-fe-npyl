@@ -1,5 +1,5 @@
 import { MouseEvent, FC } from "react";
-import { IOSSwitch } from "@/components/iOSSwitch";
+import IOSSwitch from "@/components/iOSSwitch";
 
 interface ToggleButtonProps {
     userId: number;
