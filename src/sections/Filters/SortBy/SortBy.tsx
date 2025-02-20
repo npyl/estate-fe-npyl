@@ -52,7 +52,7 @@ const FilterSortBy: FC<FilterSortByProps> = ({
                     open
                     anchorEl={anchorRef.current}
                     onClose={closePopover}
-                    disableScrollLock={true}
+                    disableScrollLock
                     // ...
                     options={options}
                     sorting={sorting}
