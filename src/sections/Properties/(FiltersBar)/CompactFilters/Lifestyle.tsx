@@ -10,8 +10,11 @@ import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
-import { Typography } from "@mui/material";
 import { IPropertyFilterExtras } from "@/types/properties";
+import { FC, useCallback } from "react";
+import { dispatch } from "@/store";
+import CounterChip from "./OptionCheckbox/CounterChip";
+import { TOptionMapper } from "./OptionCheckbox/types";
 
 interface IOption {
     key: keyof IPropertyFilterExtras;
@@ -33,48 +36,58 @@ const lifestyleOptions: IOption[] = [
     { key: "goldenVisa", label: "Golden Visa", value: "golden_visa" },
 ];
 
+const mapper: TOptionMapper = (optionKey, counters) =>
+    (counters?.[optionKey.toLowerCase()] as number) || 0;
+
+interface OptionProps {
+    o: IOption;
+}
+
+const Option: FC<OptionProps> = ({ o: { key, label, value } }) => {
+    const { t } = useTranslation();
+
+    const { counters } = useFilterCounters();
+    const count = counters?.[value] || 0;
+    const isDisabled = count === 0;
+
+    const extras = useSelector(selectExtras);
+    const checked = extras[key];
+    const handleToggle = useCallback(
+        () => dispatch(toggleLifestyleFilter(key)),
+        []
+    );
+
+    return (
+        <Grid item xs={6} sm={4} display="flex" alignItems="center" pr={1}>
+            <FormControlLabel
+                control={<Checkbox />}
+                checked={checked}
+                onChange={handleToggle}
+                disabled={isDisabled}
+                label={t(label)}
+            />
+
+            <CounterChip optionKey={value} mapper={mapper} />
+        </Grid>
+    );
+};
+
+// ------------------------------------------------------------------------
+
+const getOption = (o: IOption) => <Option key={o.key} o={o} />;
+
+// ------------------------------------------------------------------------
+
 const Lifestyle = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const extras = useSelector(selectExtras);
-    const { counters, isCountersLoading } = useFilterCounters();
 
     return (
         <ClearableSection
             title={t("Lifestyle")}
             reset={() => dispatch(resetExtras())}
         >
-            <Grid container>
-                {lifestyleOptions.map(({ key, label, value }) => {
-                    const count = counters?.[value] || 0;
-                    const isDisabled = count === 0;
-
-                    return (
-                        <Grid item xs={6} sm={4} key={key}>
-                            <FormControlLabel
-                                control={<Checkbox />}
-                                checked={extras[key]}
-                                onChange={() =>
-                                    dispatch(toggleLifestyleFilter(key))
-                                }
-                                disabled={isDisabled}
-                                label={
-                                    <Typography
-                                        color={
-                                            isDisabled
-                                                ? "textSecondary"
-                                                : "inherit"
-                                        }
-                                    >
-                                        {t(label)}{" "}
-                                        {Number(count) > 0 && `(${count})`}
-                                    </Typography>
-                                }
-                            />
-                        </Grid>
-                    );
-                })}
-            </Grid>
+            <Grid container>{lifestyleOptions.map(getOption)}</Grid>
         </ClearableSection>
     );
 };

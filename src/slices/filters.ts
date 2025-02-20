@@ -202,7 +202,6 @@ const slice = createSlice({
             state,
             { payload }: { payload: keyof IPropertyFilterExtras }
         ) {
-            console.log("payload: ", payload);
             if (state.filters.extras.hasOwnProperty(payload)) {
                 const newState = {
                     ...state.filters.extras,
@@ -253,7 +252,6 @@ const slice = createSlice({
             );
         },
 
-        //delete lifestyle
         deleteLifestyle(
             state,
             { payload }: { payload: keyof IPropertyFilterExtras }
@@ -267,7 +265,6 @@ const slice = createSlice({
             }
         },
 
-        // general delete
         deleteFilter(state, { payload }) {
             const key = payload;
 
@@ -499,6 +496,7 @@ export const selectSorting = ({ filters }: RootState) => filters.sorting;
 export const selectAll = ({ filters }: RootState) => filters.filters;
 export const selectActiveState = ({ filters }: RootState) =>
     filters.filters.active;
+
 export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.filters,
     (filter) => {
@@ -517,6 +515,7 @@ export const sumOfChangedProperties = createSelector(
             "maxConstructionYear",
             "managerId",
             "active",
+            "extras",
 
             // multiple
             "regions",

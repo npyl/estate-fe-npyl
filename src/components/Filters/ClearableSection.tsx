@@ -6,10 +6,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import {
-    ActionCreatorWithoutPayload,
-    ActionCreatorWithPayload,
-} from "@reduxjs/toolkit";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";

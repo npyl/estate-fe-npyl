@@ -4,6 +4,15 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Student: "Student",
+            Seafront: "Seafront",
+            "Luxury Homes": "Luxury Homes",
+            "Historic/Neoclassical": "Historic/Neoclassical",
+            "Golden Visa": "Golden Visa",
+            Cottage: "Cottage",
+            "Tourist Rental": "Tourist Rental",
+            Investment: "Investment",
+
             COPY_LINK_MANY: "Copy Links",
 
             _SELECT_ACTIVE_TO_SHARE:
@@ -489,10 +498,6 @@ const resources = {
 
             SuitableFor: "Suitable For",
             "Suitable For": "Suitable For",
-            Student: "Student",
-            Cottage: "Cottage",
-            "Tourist Rental": "Tourist Rental",
-            Investment: "Investment",
             "Doctor's Office": "Doctor's Office",
             "Professional Use": "Professional Use",
             Renovation: "Renovation",
@@ -2128,6 +2133,7 @@ const resources = {
 
             "Translate from greek": "Μετάφραση από ελληνικά",
             "Suitable For": "Κατάλληλο Για",
+
             Student: "Φοιτητικό",
             Seafront: "Πρόσοψη Θάλασσα",
             "Luxury Homes": "Πολυτελείς κατοικίες",
@@ -2136,6 +2142,7 @@ const resources = {
             Cottage: "Εξοχική Κατοικία",
             "Tourist Rental": "Τουριστική Ενοικίαση",
             Investment: "Επενδυτικό",
+
             "Doctor's Office": "Ιατρείο",
             "Professional Use": "Επαγγελματική Χρήση",
             Renovation: "Ανακαίνιση",
