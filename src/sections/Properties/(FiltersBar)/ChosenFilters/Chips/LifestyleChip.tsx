@@ -1,5 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectExtras, toggleLifestyleFilter } from "@/slices/filters";
+import {
+    deleteLifestyle,
+    selectExtras,
+    toggleLifestyleFilter,
+} from "@/slices/filters";
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
 import { Stack } from "@mui/material";
@@ -39,7 +43,7 @@ const LifestyleChip = () => {
                             value={t(lifestyleLabels[key])}
                         />
                     }
-                    onDelete={() => dispatch(toggleLifestyleFilter(key))} // Todo: can be done with deleteLifestyle from slices code
+                    onDelete={() => dispatch(deleteLifestyle(key))}
                 />
             ))}
         </Stack>

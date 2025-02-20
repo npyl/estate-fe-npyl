@@ -253,6 +253,20 @@ const slice = createSlice({
             );
         },
 
+        //delete lifestyle
+        deleteLifestyle(
+            state,
+            { payload }: { payload: keyof IPropertyFilterExtras }
+        ) {
+            if (state.filters.extras.hasOwnProperty(payload)) {
+                state.filters.extras[payload] = false;
+
+                if (!Object.values(state.filters.extras).some((val) => val)) {
+                    state.ids = state.ids.filter((id) => id !== "extras");
+                }
+            }
+        },
+
         // general delete
         deleteFilter(state, { payload }) {
             const key = payload;
@@ -410,8 +424,8 @@ export const {
 
     // delete
     deleteSubCategory,
-
     deleteState,
+    deleteLifestyle,
     deleteFilter,
 
     // reset
