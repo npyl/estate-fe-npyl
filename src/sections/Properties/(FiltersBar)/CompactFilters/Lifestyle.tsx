@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
     resetExtras,
-    resetState,
+    selectExtras,
     toggleLifestyleFilter,
 } from "@/slices/filters";
 import ClearableSection from "@/components/Filters/ClearableSection";
@@ -11,8 +11,15 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
 import { Typography } from "@mui/material";
+import { IPropertyFilterExtras } from "@/types/properties";
 
-const lifestyleOptions = [
+interface IOption {
+    key: keyof IPropertyFilterExtras;
+    label: string;
+    value: string;
+}
+
+const lifestyleOptions: IOption[] = [
     { key: "student", label: "Student", value: "student" },
     { key: "seaFront", label: "Seafront", value: "sea_front" },
     { key: "luxury", label: "Luxury Homes", value: "luxury" },
@@ -29,7 +36,7 @@ const lifestyleOptions = [
 const Lifestyle = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const extras = useSelector((state: any) => state.filters.filters.extras);
+    const extras = useSelector(selectExtras);
     const { counters, isCountersLoading } = useFilterCounters();
 
     return (
@@ -45,15 +52,12 @@ const Lifestyle = () => {
                     return (
                         <Grid item xs={6} sm={4} key={key}>
                             <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={extras[key]}
-                                        onChange={() =>
-                                            dispatch(toggleLifestyleFilter(key))
-                                        }
-                                        disabled={isDisabled}
-                                    />
+                                control={<Checkbox />}
+                                checked={extras[key]}
+                                onChange={() =>
+                                    dispatch(toggleLifestyleFilter(key))
                                 }
+                                disabled={isDisabled}
                                 label={
                                     <Typography
                                         color={

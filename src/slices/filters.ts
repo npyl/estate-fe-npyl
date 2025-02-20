@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
-import { IPropertyFilter } from "src/types/properties";
+import { IPropertyFilter, IPropertyFilterExtras } from "src/types/properties";
 
 interface Filters extends IPropertyFilter {
     [key: string]: any;
@@ -198,9 +198,26 @@ const slice = createSlice({
             }
         },
 
-        toggleLifestyleFilter(state, { payload }) {
+        toggleLifestyleFilter(
+            state,
+            { payload }: { payload: keyof IPropertyFilterExtras }
+        ) {
+            console.log("payload: ", payload);
             if (state.filters.extras.hasOwnProperty(payload)) {
-                state.filters.extras[payload] = !state.filters.extras[payload];
+                const newState = {
+                    ...state.filters.extras,
+                    [payload]: !state.filters.extras[payload],
+                };
+
+                state.filters.extras = newState;
+            }
+
+            if (Object.values(state.filters.extras).some((v) => Boolean(v))) {
+                !state.ids.includes("extras") && state.ids.push("extras");
+            } else {
+                if (state.ids.includes("extras")) {
+                    state.ids = state.ids.filter((id) => id !== "extras");
+                }
             }
         },
 
@@ -339,7 +356,8 @@ const slice = createSlice({
         },
 
         resetExtras: (state) => {
-            state.filters.extras = { ...initialState.filters.extras };
+            state.filters.extras = initialState.filters.extras;
+            state.ids = state.ids.filter((id) => id !== "extras");
         },
 
         resetState: () => {
@@ -460,6 +478,7 @@ export const selectSubCategories = ({ filters }: RootState) =>
 export const selectLabels = ({ filters }: RootState) => filters.filters.labels;
 export const selectIds = ({ filters }: RootState) => filters.ids;
 export const selectPoints = ({ filters }: RootState) => filters.filters.points;
+export const selectExtras = ({ filters }: RootState) => filters.filters.extras;
 
 export const selectSorting = ({ filters }: RootState) => filters.sorting;
 
@@ -537,28 +556,8 @@ export const getChangedFields = createSelector(
             },
             {}
         );
+
         return changedFields;
-    }
-);
-
-export const selectActiveFilters = createSelector(
-    (state: RootState) => state.filters.filters,
-    (filters) => {
-        // Extract lifestyle filters (Only keep the ones that are true)
-        const activeExtras = Object.keys(filters.extras).reduce((acc, key) => {
-            if (filters.extras[key]) {
-                acc[key] = true; // Only include checked filters
-            }
-            return acc;
-        }, {} as Record<string, boolean>);
-
-        return {
-            ...filters,
-            extras: activeExtras,
-            states: filters.states.filter(
-                (state) => !Object.keys(filters.extras).includes(state)
-            ),
-        };
     }
 );
 

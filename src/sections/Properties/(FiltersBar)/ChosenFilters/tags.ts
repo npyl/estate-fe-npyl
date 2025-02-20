@@ -68,6 +68,9 @@ const getFilterTags = (t: TranslationType): TTags => ({
     labels: {
         label: t("Labels"),
     },
+    extras: {
+        label: t("Lifestyle"),
+    },
     active: {
         label: t("Active"),
     },
