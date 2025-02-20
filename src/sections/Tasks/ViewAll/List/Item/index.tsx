@@ -1,4 +1,4 @@
-import { IKanbanCardShort } from "@/types/tasks";
+import { IKanbanCardShort, IKanbanColumn } from "@/types/tasks";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
@@ -19,6 +19,7 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import UpdatedAtIcon from "./icons/UpdatedAtIcon";
 import CommentIcon from "./icons/CommentIcon";
+import ColumnLabel from "./ColumnLabel";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 
 const NoAssignee = () => null;
@@ -67,17 +68,24 @@ const getSx = (isCompleted: boolean): SxProps<Theme> => ({
 
 interface ItemProps {
     c: IKanbanCardShort;
+    columns?: IKanbanColumn[];
     onClick: VoidFunction;
 }
 
-const Item: FC<ItemProps> = ({ c, onClick }) => {
+const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
     const { t, i18n } = useTranslation();
     const isLargeScreen = useMediaQuery("(min-width:1900px)");
 
     const assignee = c.assignees?.[0];
     const isCompleted = c.completed;
 
-    console.log(c.labels);
+    const columnName = columns?.length
+        ? columns.find((col) => col.id === c.column)?.name ||
+          `Column ${c.column}`
+        : "No Columns Available";
+
+    console.log("Columns:", columns);
+    console.log("Task Column ID:", c.column);
     const formatDate = (timestamp: string) => {
         return new Intl.DateTimeFormat(i18n.language, {
             day: "2-digit",
@@ -193,6 +201,8 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 width="25%"
             >
                 {isCompleted ? <CompletedLabel /> : null}
+                {!isCompleted && <ColumnLabel name={columnName} />}
+
                 {assignee ? <TooltipAvatar u={assignee} /> : <NoAssignee />}
             </Stack>
         </SpaceBetween>

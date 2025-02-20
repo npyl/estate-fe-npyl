@@ -71,6 +71,7 @@ interface IKanbanCardShort {
     assignees: IUserMini[];
     createdAt: string;
     labels?: IKanbanCardLabels[];
+    column?: number;
 }
 
 // INFO: sent to Backend directly
