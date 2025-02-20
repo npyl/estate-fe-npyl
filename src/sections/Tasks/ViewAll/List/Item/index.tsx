@@ -5,7 +5,14 @@ import { FC } from "react";
 import { SpaceBetween } from "@/components/styled";
 import TaskLabel from "@/sections/Tasks/card/CardDialog/TaskLabel";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
-import { SxProps, Theme, Tooltip } from "@mui/material";
+import {
+    Box,
+    Chip,
+    SxProps,
+    Theme,
+    Tooltip,
+    useMediaQuery,
+} from "@mui/material";
 import { getTaskColor } from "@/sections/Tasks/styled";
 import PriorityLabel from "@/sections/Tasks/card/PriorityLabel";
 import dynamic from "next/dynamic";
@@ -15,6 +22,29 @@ import CommentIcon from "./icons/CommentIcon";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 
 const NoAssignee = () => null;
+
+const chipStyles: SxProps<Theme> = {
+    backgroundColor: "rgba(0, 0, 0, 0.05) !important",
+    color: "black",
+    fontWeight: 400,
+    fontSize: "14px",
+    height: "26px",
+    borderRadius: "16px",
+};
+
+const colorCircleStyles: SxProps<Theme> = {
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+    display: "inline-block",
+};
+
+const taskNameSx: SxProps<Theme> = {
+    whiteSpace: "nowrap !important",
+    overflow: "hidden !important",
+    textOverflow: "ellipsis !important",
+    maxWidth: "100%",
+};
 
 const getItemSx = (priority: number): SxProps<Theme> => ({
     position: "relative",
@@ -42,14 +72,23 @@ interface ItemProps {
 
 const Item: FC<ItemProps> = ({ c, onClick }) => {
     const { t, i18n } = useTranslation();
+    const isLargeScreen = useMediaQuery("(min-width:1900px)");
+
     const assignee = c.assignees?.[0];
     const isCompleted = c.completed;
+
+    console.log(c.labels);
     const formatDate = (timestamp: string) => {
         return new Intl.DateTimeFormat(i18n.language, {
             day: "2-digit",
-            month: "long",
+            month: "short",
             year: "numeric",
-        }).format(new Date(timestamp));
+            hour: "numeric",
+            minute: "2-digit",
+            hourCycle: "h12",
+        })
+            .format(new Date(timestamp))
+            .replace(",", " -");
     };
 
     return (
@@ -64,14 +103,47 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
         >
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
-                <Typography variant="body2" textOverflow={"ellipsis"}>
+                <Typography
+                    variant="body2"
+                    textOverflow={"ellipsis"}
+                    sx={taskNameSx}
+                >
                     {c.name}
                 </Typography>
             </Stack>
-
+            {c.labels && c.labels.length > 0 && (
+                <Box position="absolute" left={isLargeScreen ? "43%" : "41%"}>
+                    {c.labels && c.labels.length > 0 && (
+                        <>
+                            {c.labels.slice(0, 1).map((label) => (
+                                <Chip
+                                    key={label.id}
+                                    label={
+                                        <Box
+                                            display="flex"
+                                            alignItems="center"
+                                            gap={1}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    ...colorCircleStyles,
+                                                    backgroundColor:
+                                                        label.color,
+                                                }}
+                                            />
+                                            {label.name}
+                                        </Box>
+                                    }
+                                    sx={chipStyles}
+                                />
+                            ))}
+                        </>
+                    )}
+                </Box>
+            )}
             <PriorityLabel
                 position="absolute"
-                left="48%"
+                left={isLargeScreen ? "59%" : "58%"}
                 priority={c?.priority}
                 display={{
                     xs: "none",
@@ -82,7 +154,7 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={"60%"}
+                left={isLargeScreen ? "68%" : "66%"}
                 position="absolute"
             >
                 <UpdatedAtIcon />
@@ -97,14 +169,21 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={"79%"}
+                left={isLargeScreen ? "84%" : "82%"}
                 position="absolute"
             >
-                <CommentIcon />
+                <Tooltip
+                    placement="top"
+                    title={t("Total Comments for this task")}
+                >
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <CommentIcon />
 
-                <Typography variant="body2">
-                    {c.commentsCount} {t("Comments")}
-                </Typography>
+                        <Typography variant="body2">
+                            {c.commentsCount}
+                        </Typography>
+                    </Box>
+                </Tooltip>
             </Stack>
             <Stack
                 direction="row"
