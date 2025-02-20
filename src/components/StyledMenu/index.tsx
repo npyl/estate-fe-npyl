@@ -16,17 +16,20 @@ const StyledMenu = styled((props: MenuProps) => (
     />
 ))(({ theme }) => ({
     "& .MuiPaper-root": {
-        borderRadius: 6,
+        borderRadius: 8,
         minWidth: 180,
         color:
             theme.palette.mode === "light"
-                ? "rgb(55, 65, 81)"
-                : theme.palette.grey[300],
-
+                ? "text.secondary !important"
+                : theme.palette.grey[200],
+        fontWeight: "500 !important",
         "& .MuiMenu-list": {
-            padding: "4px 0",
+            padding: "4px 6px",
+            borderRadius: "8px",
         },
         "& .MuiMenuItem-root": {
+            borderRadius: "8px",
+
             "& .MuiSvgIcon-root": {
                 fontSize: 18,
                 color: theme.palette.text.secondary,

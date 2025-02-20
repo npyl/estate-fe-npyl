@@ -51,7 +51,7 @@ const Left = () => {
             alignItems="center"
         >
             <Typography variant="h4" mt={10} mb={10} textAlign="center">
-                {t("Location Details")}
+                {t("Location Details")}:
             </Typography>
             <Typography variant="body1" mb={5} sx={{ textAlign: "center" }}>
                 {t(

@@ -11,9 +11,10 @@ const ChosenFilters: FC<StackProps> = (props) => {
 
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
-
     const filterTags = useMemo(() => getFilterTags(t), [t]);
     const pairFilterTags = useMemo(() => getPairFilterTags(t), [t]);
+
+    console.log("ids: ", ids, " filterTags: ", filterTags);
 
     return (
         <Stack direction="row" gap={0.3} flexWrap="wrap" {...props}>

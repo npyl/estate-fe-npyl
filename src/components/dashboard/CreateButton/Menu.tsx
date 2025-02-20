@@ -13,7 +13,7 @@ const DesktopMenuItem: FC<DekstopMenuItemProps> = ({ path, icon, label }) => {
     return (
         <MenuItem disableRipple>
             {icon}
-            <Link href={path} width={1}>
+            <Link href={path} width={1} color="text.secondary" fontWeight={500}>
                 {t(label)}
             </Link>
         </MenuItem>

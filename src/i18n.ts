@@ -672,6 +672,9 @@ const resources = {
                 "Select user to transfer properties",
             Name: "Name",
             "Notification Date": "Notification Date",
+            "No tour notifications available for this property.":
+                "No tour notifications available for this property.",
+
             Tours: "Tours",
             "Search for Tours": "Search for tours",
             "Search for Listings": "Search for listings",
@@ -1533,7 +1536,7 @@ const resources = {
             _Public_FEMALE_PLURAL: "Δημόσιες",
             "Rest Integrations": "Λοιπές Συνδέσεις",
 
-            "Location Details": "Λεπτομέρεις Τοποθεσίας",
+            "Location Details": "Λεπτομέρειες Τοποθεσίας",
             "Select which information will be visible to the user on Search result pages:":
                 "Επιλέξτε τι πληροφορία θα είναι φανερή στο χρήστη κατά την αναζήτηση",
             "Location not visible": "Μη-εμφανής τοποθεσία",
@@ -2124,9 +2127,12 @@ const resources = {
             //Suitable For
 
             "Translate from greek": "Μετάφραση από ελληνικά",
-
             "Suitable For": "Κατάλληλο Για",
             Student: "Φοιτητικό",
+            Seafront: "Πρόσοψη Θάλασσα",
+            "Luxury Homes": "Πολυτελείς κατοικίες",
+            "Historic/Neoclassical": "Ιστορικά/Νεοκλασικά",
+            "Golden Visa": "Χρυσή Βίζα",
             Cottage: "Εξοχική Κατοικία",
             "Tourist Rental": "Τουριστική Ενοικίαση",
             Investment: "Επενδυτικό",
@@ -2222,6 +2228,8 @@ const resources = {
             Notification: "Ειδοποίηση",
             inPerson: "Από κοντά",
             "In Person": "Από κοντά",
+            "Ask Question": "Επικοινωνία με πελάτη",
+            "  View ": "Προβολή",
             askQuestion: "Επικοινωνία με πελάτη",
             "Contact with customer": "Επικοινωνία με πελάτη",
             July: "Ιουλίου",
@@ -2324,6 +2332,9 @@ const resources = {
                 "Επιλέξτε χρήστη να μεταφέρετε τα ακίνητα",
             Name: "Όνομα",
             "Notification Date": "Ημερομηνία",
+            "No tour notifications available for this property.":
+                "Καμία ενημέρωση για ξενάγηση διαθέσιμη για αυτό το ακίνητο.",
+            "Search for tours": "Αναζήτηση για ξεναγήσεις",
             Tours: "Ξεναγήσεις",
             Listings: "Νέο Ακίνητο",
             "Work Applications": "Αίτηση Εργασίας",

@@ -17,7 +17,7 @@ const LanguageButton = () => {
     return (
         <MenuItem onClick={toggleLanguage}>
             <LanguageImage />
-            <Typography>{t(label)}</Typography>
+            <Typography fontWeight={500}>{t(label)}</Typography>
         </MenuItem>
     );
 };

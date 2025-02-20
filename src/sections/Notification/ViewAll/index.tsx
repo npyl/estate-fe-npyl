@@ -9,6 +9,7 @@ import {
     InputAdornment,
     SxProps,
     Theme,
+    IconButton,
 } from "@mui/material";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +26,8 @@ import getTabOption from "./getTabOption";
 import { FilterFormControl } from "./styled";
 import { useDebounce } from "use-debounce";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
+import getBorderColor from "@/theme/borderColor";
 
 const SearchInputSx: SxProps<Theme> = {
     minWidth: 350,
@@ -37,6 +40,18 @@ const SearchInputSx: SxProps<Theme> = {
         "&:hover": {
             borderColor: "primary.light",
         },
+    },
+};
+
+const ClearButtonSx: SxProps<Theme> = {
+    width: 24,
+    height: 24,
+    borderRadius: "50%",
+    border: "1px solid",
+    borderColor: getBorderColor,
+    "& svg": {
+        fontSize: "1.1rem",
+        transform: "scale(0.8)",
     },
 };
 
@@ -68,6 +83,11 @@ const ViewAllNotifications = () => {
         },
         []
     );
+
+    const handleClearSearch = () => {
+        setSearchText("");
+    };
+
     return (
         <>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -96,7 +116,7 @@ const ViewAllNotifications = () => {
 
                         <Select
                             value={filter}
-                            label="Filter"
+                            label={t(`  View `)}
                             onChange={handleFilterChange}
                         >
                             <MenuItem value="all">{t(`All`)}</MenuItem>
@@ -119,9 +139,29 @@ const ViewAllNotifications = () => {
                         sx={SearchInputSx}
                         InputProps={{
                             startAdornment: (
-                                <InputAdornment position="start">
+                                <InputAdornment
+                                    position="start"
+                                    sx={{ ml: 0.5 }}
+                                >
                                     <SearchIcon sx={{ color: "gray" }} />
                                 </InputAdornment>
+                            ),
+                            endAdornment: (
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    alignItems="center"
+                                    mr={0.5}
+                                >
+                                    {searchText ? (
+                                        <IconButton
+                                            onClick={handleClearSearch}
+                                            sx={ClearButtonSx}
+                                        >
+                                            <CloseIcon />
+                                        </IconButton>
+                                    ) : null}
+                                </Stack>
                             ),
                         }}
                     />
