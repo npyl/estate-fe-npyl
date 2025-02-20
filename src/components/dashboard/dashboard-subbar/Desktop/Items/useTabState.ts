@@ -12,8 +12,6 @@ type TTabState = Record<number, ITab[]>;
 // -----------------------------------------------------------------------
 
 const pushOrUpdate = (old: ITab[], userId: number, t: ITab) => {
-    console.log("pushing: ", t, " for userId: ", userId);
-
     // Update
     if (old.some(({ path }) => path === t.path)) {
         return old.map((ot) => (ot.path === t.path ? t : ot));
@@ -30,12 +28,9 @@ const cookieName = "PPSubbarTabs";
 const useTabState = () => {
     const { user } = useAuth();
     const userId = user?.id!;
-    console.log("userId: ", userId);
 
     const [tabState, setTabState] = useCookie<TTabState>(cookieName, {});
     const tabs = tabState?.[userId] || [];
-
-    console.log("TABSSTATE: ", tabState, " tabs: ", tabs);
 
     const pushTab = useCallback(
         (t: ITab) => {
