@@ -2,7 +2,7 @@ import usePropertyForm, { fixDropdowns, IPropertyYup } from "./hook";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
 import dynamic from "next/dynamic";
-import { useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { GenerateCheckboxRef } from "./BottomBar/GenerateCheckbox";
 import BottomBar from "./BottomBar";
 // ...
@@ -11,14 +11,13 @@ const Commercial = dynamic(() => import("./forms/Commercial"));
 const Land = dynamic(() => import("./forms/Land"));
 const Other = dynamic(() => import("./forms/Other"));
 // Watchers
-const SuccessWatcher = dynamic(() => import("./SuccessWatcher"));
 const ErrorWatcher = dynamic(() => import("./ErrorWatcher"));
 const UnsavedChangesWatcher = dynamic(() => import("./UnsavedChangesWatcher"));
 
 interface IFormProps {
     property?: IProperties;
     isSuccess: boolean;
-    onSubmit: (b: IPropertiesPOST, generate: boolean) => void;
+    onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<void>;
 }
 
 function Form({ property, isSuccess, onSubmit }: IFormProps) {
@@ -31,21 +30,26 @@ function Form({ property, isSuccess, onSubmit }: IFormProps) {
     );
 
     const checkboxRef = useRef<GenerateCheckboxRef>(null);
-    const handleSubmit = async (data: IPropertyYup) => {
-        try {
-            const generate = checkboxRef.current?.getGenerate() || false;
+    const handleSubmit = useCallback(
+        async (data: IPropertyYup) => {
+            try {
+                const generate = checkboxRef.current?.getGenerate() || false;
 
-            const body = {
-                ...(data as IPropertiesPOST),
-                ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
-            };
+                const body = {
+                    ...(data as IPropertiesPOST),
+                    ...(fixDropdowns(
+                        data as IPropertiesPOST
+                    ) as IPropertiesPOST),
+                };
 
-            onSubmit(body, generate);
-        } catch (error) {
-            console.error(error);
-            methods.reset();
-        }
-    };
+                await onSubmit(body, generate);
+            } catch (error) {
+                console.error(error);
+                methods.reset();
+            }
+        },
+        [onSubmit]
+    );
 
     const pc = property?.parentCategory?.key;
 
@@ -63,7 +67,6 @@ function Form({ property, isSuccess, onSubmit }: IFormProps) {
             </form>
 
             {/* Watchers w/ effects */}
-            {isSuccess ? <SuccessWatcher propertyId={property?.id!} /> : null}
             {isDirty && !isSuccess ? <UnsavedChangesWatcher /> : null}
             {haveError ? <ErrorWatcher /> : null}
         </>
