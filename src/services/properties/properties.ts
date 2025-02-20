@@ -454,7 +454,6 @@ export const {
     useBulkDeletePermanentPropertiesMutation,
 
     // ...
-    useGetPDFQuery,
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
 } = properties;
@@ -470,6 +469,8 @@ const useSuggestForCustomerQuery = la(properties.useSuggestForCustomerQuery);
 const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
+const useGetPDFQuery = la(properties.useGetPDFQuery);
+
 export {
     useSearchPropertyQuery,
     // ...
@@ -481,6 +482,8 @@ export {
     // ...
     useFilterPropertiesQuery,
     useFilterArchivedQuery,
+    // ...
+    useGetPDFQuery,
 };
 
 export type { IPropertyFilterParams };
