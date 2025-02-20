@@ -16,6 +16,7 @@ import { LoadingButton } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import Item from "./styled";
 import { useTranslation } from "react-i18next";
+import useInvalidateTags from "./useInvalidateTags";
 
 // -------------------------------------------------------
 
@@ -123,6 +124,7 @@ interface ListingCardProps {
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const { invalidateTags } = useInvalidateTags();
 
     const router = useRouter();
     const { propertyId } = router.query;
@@ -137,6 +139,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
 
         if (b) await dispatch(d.unpublish);
         else await dispatch(d.publish);
+        invalidateTags();
 
         onClick();
     };

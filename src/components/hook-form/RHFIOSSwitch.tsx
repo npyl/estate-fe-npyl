@@ -2,7 +2,7 @@ import FormControlLabel, {
     FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
 import { Controller, useFormContext } from "react-hook-form";
-import { IOSSwitch } from "@/components/iOSSwitch";
+import IOSSwitch from "@/components/iOSSwitch";
 import { FC } from "react";
 
 interface RHFIOSSwitch extends Omit<FormControlLabelProps, "control"> {

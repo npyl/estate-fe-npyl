@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useLayoutEffect } from "react";
 import AuthGuard from "./auth-guard";
 
 const Guard: FC<PropsWithChildren> = ({ children }) => {
@@ -9,10 +9,11 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
 
     const isAdmin = user?.isAdmin;
 
-    if (!user?.messagingEnabled && !isAdmin) {
-        router.push("/401");
-        return null;
-    }
+    useLayoutEffect(() => {
+        if (!user?.messagingEnabled && !isAdmin) {
+            router.push("/401");
+        }
+    }, [user?.messagingEnabled, isAdmin]);
 
     return <>{children}</>;
 };

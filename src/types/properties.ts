@@ -74,8 +74,19 @@ export interface IPropertyFilter {
     heatingType: string[];
     frameType: string[];
     furnished: string[];
+
+    extras: IPropertyFilterExtras;
 }
 
+interface IPropertyFilterExtras {
+    student: boolean;
+    seaFront: boolean;
+    luxury: boolean;
+    mountainView: boolean;
+    neoclassical: boolean;
+    investment: boolean;
+    goldenVisa: boolean;
+}
 interface ParentCategoriesCounters {
     commercial: number;
     land: number;
@@ -482,4 +493,4 @@ interface IPropertyCodeRes {
     parentCategory: ParentCategory;
 }
 
-export type { IPropertyCodeRes };
+export type { IPropertyCodeRes, IPropertyFilterExtras };

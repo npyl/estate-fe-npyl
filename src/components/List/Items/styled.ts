@@ -13,10 +13,8 @@ export const CustomButton = styled(Button)(({ theme }) => ({
     alignItems: "center",
     justifyContent: "space-between",
     height: "auto",
-
     // INFO: appears better to my eyes.
     marginRight: theme.spacing(-1),
-
     paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(0),
     paddingLeft: theme.spacing(0.1),

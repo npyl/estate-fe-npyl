@@ -90,6 +90,8 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
 
     // INFO: this field will only contain data on customer creation
     notes: [],
+
+    enableEmails: customer?.enableEmails || false,
 });
 
 const useCustomerForm = (customer?: ICustomer) => {

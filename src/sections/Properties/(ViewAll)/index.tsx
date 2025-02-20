@@ -7,6 +7,7 @@ import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
 import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
+import { IPropertyFilterParams } from "@/services/properties";
 const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 
 interface ViewAllProps {
@@ -22,10 +23,10 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
-    const allFilters = useSelector(selectAll);
+    const filter = useSelector(selectAll);
 
-    const req = {
-        filter: allFilters,
+    const req: IPropertyFilterParams = {
+        filter,
         page,
         pageSize,
         sortBy,
@@ -65,7 +66,11 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
     return (
         <>
             {selectedRows && selectedRows.length > 0 ? (
-                <Toolbar archived={archived} selectedRows={selectedRows} />
+                <Toolbar
+                    archived={archived}
+                    selectedRows={selectedRows}
+                    filters={req}
+                />
             ) : null}
 
             <Paper>

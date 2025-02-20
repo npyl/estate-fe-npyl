@@ -19,6 +19,7 @@ import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
 import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
 import { IPropertyFile } from "@/types/file";
+import { useLayoutEffect } from "react";
 
 interface JustData<T> {
     data: T;
@@ -453,7 +454,6 @@ export const {
     useBulkDeletePermanentPropertiesMutation,
 
     // ...
-    useGetPDFQuery,
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
 } = properties;
@@ -469,6 +469,8 @@ const useSuggestForCustomerQuery = la(properties.useSuggestForCustomerQuery);
 const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
+const useGetPDFQuery = la(properties.useGetPDFQuery);
+
 export {
     useSearchPropertyQuery,
     // ...
@@ -480,4 +482,8 @@ export {
     // ...
     useFilterPropertiesQuery,
     useFilterArchivedQuery,
+    // ...
+    useGetPDFQuery,
 };
+
+export type { IPropertyFilterParams };

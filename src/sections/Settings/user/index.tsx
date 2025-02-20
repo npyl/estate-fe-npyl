@@ -13,11 +13,11 @@ import {
 } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
-import React, { FC, MouseEvent, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AnimatedTableRow from "@/sections/Settings/user/AnimatedTableRow";
 const UserForm = dynamic(() => import("@/sections/User/Form"));
-import { IOSSwitch } from "src/components/iOSSwitch";
+import IOSSwitch from "@/components/iOSSwitch";
 import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import {

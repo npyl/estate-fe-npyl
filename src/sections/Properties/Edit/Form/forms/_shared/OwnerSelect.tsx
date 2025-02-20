@@ -8,7 +8,6 @@ const OwnerSelect = () => {
     const { setValue } = useFormContext();
 
     const handleCreate = useCallback((id: number) => {
-        console.log("id: ", id);
         setValue("ownerId", id, { shouldDirty: true });
     }, []);
 

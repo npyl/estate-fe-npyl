@@ -4,6 +4,20 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Student: "Student",
+            Seafront: "Seafront",
+            "Luxury Homes": "Luxury Homes",
+            "Historic/Neoclassical": "Historic/Neoclassical",
+            "Golden Visa": "Golden Visa",
+            Cottage: "Cottage",
+            "Tourist Rental": "Tourist Rental",
+            Investment: "Investment",
+
+            COPY_LINK_MANY: "Copy Links",
+
+            _SELECT_ACTIVE_TO_SHARE:
+                "Please select at least one active property to share",
+
             "Living Space": "Living Space",
             Unpublished: "Unpublished",
 
@@ -484,10 +498,6 @@ const resources = {
 
             SuitableFor: "Suitable For",
             "Suitable For": "Suitable For",
-            Student: "Student",
-            Cottage: "Cottage",
-            "Tourist Rental": "Tourist Rental",
-            Investment: "Investment",
             "Doctor's Office": "Doctor's Office",
             "Professional Use": "Professional Use",
             Renovation: "Renovation",
@@ -667,6 +677,9 @@ const resources = {
                 "Select user to transfer properties",
             Name: "Name",
             "Notification Date": "Notification Date",
+            "No tour notifications available for this property.":
+                "No tour notifications available for this property.",
+
             Tours: "Tours",
             "Search for Tours": "Search for tours",
             "Search for Listings": "Search for listings",
@@ -1221,6 +1234,11 @@ const resources = {
     },
     el: {
         translation: {
+            COPY_LINK_MANY: "Αντιγραφή Συνδέσμων",
+
+            _SELECT_ACTIVE_TO_SHARE:
+                "Παρακαλώ επιλέξτε τουλάχιστον ένα δημοσιευμένο ακίνητο",
+
             "Living Space": "Κατοικήσιμος Χώρος",
             "No results": "Δεν βρέθηκαν αποτελέσματα",
 
@@ -1523,7 +1541,7 @@ const resources = {
             _Public_FEMALE_PLURAL: "Δημόσιες",
             "Rest Integrations": "Λοιπές Συνδέσεις",
 
-            "Location Details": "Λεπτομέρεις Τοποθεσίας",
+            "Location Details": "Λεπτομέρειες Τοποθεσίας",
             "Select which information will be visible to the user on Search result pages:":
                 "Επιλέξτε τι πληροφορία θα είναι φανερή στο χρήστη κατά την αναζήτηση",
             "Location not visible": "Μη-εμφανής τοποθεσία",
@@ -2114,12 +2132,17 @@ const resources = {
             //Suitable For
 
             "Translate from greek": "Μετάφραση από ελληνικά",
-
             "Suitable For": "Κατάλληλο Για",
+
             Student: "Φοιτητικό",
+            Seafront: "Πρόσοψη Θάλασσα",
+            "Luxury Homes": "Πολυτελείς κατοικίες",
+            "Historic/Neoclassical": "Ιστορικά/Νεοκλασικά",
+            "Golden Visa": "Χρυσή Βίζα",
             Cottage: "Εξοχική Κατοικία",
             "Tourist Rental": "Τουριστική Ενοικίαση",
             Investment: "Επενδυτικό",
+
             "Doctor's Office": "Ιατρείο",
             "Professional Use": "Επαγγελματική Χρήση",
             Renovation: "Ανακαίνιση",
@@ -2212,6 +2235,8 @@ const resources = {
             Notification: "Ειδοποίηση",
             inPerson: "Από κοντά",
             "In Person": "Από κοντά",
+            "Ask Question": "Επικοινωνία με πελάτη",
+            "  View ": "Προβολή",
             askQuestion: "Επικοινωνία με πελάτη",
             "Contact with customer": "Επικοινωνία με πελάτη",
             July: "Ιουλίου",
@@ -2314,6 +2339,9 @@ const resources = {
                 "Επιλέξτε χρήστη να μεταφέρετε τα ακίνητα",
             Name: "Όνομα",
             "Notification Date": "Ημερομηνία",
+            "No tour notifications available for this property.":
+                "Καμία ενημέρωση για ξενάγηση διαθέσιμη για αυτό το ακίνητο.",
+            "Search for tours": "Αναζήτηση για ξεναγήσεις",
             Tours: "Ξεναγήσεις",
             Listings: "Νέο Ακίνητο",
             "Work Applications": "Αίτηση Εργασίας",

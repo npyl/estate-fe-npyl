@@ -20,7 +20,6 @@ const getWithPermittedName =
         }
 
         const name = content.type.name;
-        console.log("GOT: ", name);
 
         if (!sectionNames.includes(name)) return null;
 
@@ -33,8 +32,6 @@ const useFilteredChildern = (children: React.ReactElement[]) => {
     });
 
     const { sectionNames } = layout;
-
-    console.log("sectionNames: ", sectionNames);
 
     return React.Children.map(children, getWithPermittedName(sectionNames));
 };

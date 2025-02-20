@@ -32,11 +32,14 @@ const StyledStack = styled(SpaceBetween)(({ theme }) => ({
 }));
 
 interface CopyLinkButtonProps {
+    many: boolean;
     shareUrl: string;
 }
 
-const CopyLinkButton: FC<CopyLinkButtonProps> = ({ shareUrl }) => {
+const CopyLinkButton: FC<CopyLinkButtonProps> = ({ many, shareUrl }) => {
     const { t } = useTranslation();
+
+    const label = many ? t("COPY_LINK_MANY") : t("Copy Link");
 
     const handleCopyShareUrl = useCallback(async () => {
         try {
@@ -49,7 +52,7 @@ const CopyLinkButton: FC<CopyLinkButtonProps> = ({ shareUrl }) => {
 
     return (
         <StyledStack onClick={handleCopyShareUrl}>
-            <Typography>{t(`Copy Link`)}</Typography>
+            <Typography>{label}</Typography>
             <LinkIcon />
         </StyledStack>
     );

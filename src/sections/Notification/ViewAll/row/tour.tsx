@@ -14,7 +14,7 @@ interface TourRowProps {
 
 function TourRow({ row, onRemove, loading, onClick, filter }: TourRowProps) {
     const [open, toggleOpen] = useToggle(false);
-    console.log(row);
+
     return (
         <Fragment>
             <BasicRow

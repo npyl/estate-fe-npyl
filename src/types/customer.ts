@@ -77,6 +77,8 @@ export interface ICustomer {
 
     createdAt: string;
     updatedAt: string;
+
+    enableEmails: boolean;
 }
 
 interface ICustomerMini {
@@ -112,6 +114,8 @@ export interface ICustomerPOST {
     labelIDs: number[];
     demands: IDemandPOST[];
     notes: string[];
+
+    enableEmails: boolean;
 }
 
 export type { IDemand, ICustomerMini };

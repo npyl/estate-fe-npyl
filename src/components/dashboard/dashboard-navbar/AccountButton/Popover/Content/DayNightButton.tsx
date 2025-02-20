@@ -19,7 +19,9 @@ const DayNightButton = () => {
     return (
         <MenuItem onClick={toggleMode}>
             {isLight ? <MoonIcon /> : <SunIcon />}
-            <Typography>{isLight ? t("Night") : t("Day")}</Typography>
+            <Typography fontWeight={500}>
+                {isLight ? t("Night") : t("Day")}
+            </Typography>
         </MenuItem>
     );
 };

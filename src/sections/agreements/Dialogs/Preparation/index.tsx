@@ -80,8 +80,6 @@ const PreparationDialog: React.FC<Props> = ({
 
     const isPurchase = values.variant === "PURCHASE";
 
-    console.log("ERRORS: ", methods.formState.errors);
-
     const handleSubmit = async ({
         auto,
         property,

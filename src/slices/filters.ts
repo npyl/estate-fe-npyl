@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
-import { IPropertyFilter } from "src/types/properties";
+import { IPropertyFilter, IPropertyFilterExtras } from "src/types/properties";
 
 interface Filters extends IPropertyFilter {
     [key: string]: any;
@@ -25,6 +25,15 @@ const initialState: IFilterProps = {
         furnished: [],
         heatingType: [],
         active: null,
+        extras: {
+            student: false,
+            seaFront: false,
+            luxury: false,
+            mountainView: false,
+            neoclassical: false,
+            investment: false,
+            goldenVisa: false,
+        },
     },
     sorting: "default",
     ids: [],
@@ -132,6 +141,7 @@ const slice = createSlice({
             state.filters.subLocation = payload;
             !state.ids.includes("subLocation") && state.ids.push("subLocation");
         },
+
         setStates(state, { payload }) {
             state.filters.states = payload;
             !state.ids.includes("states") && state.ids.push("states");
@@ -188,6 +198,28 @@ const slice = createSlice({
             }
         },
 
+        toggleLifestyleFilter(
+            state,
+            { payload }: { payload: keyof IPropertyFilterExtras }
+        ) {
+            if (state.filters.extras.hasOwnProperty(payload)) {
+                const newState = {
+                    ...state.filters.extras,
+                    [payload]: !state.filters.extras[payload],
+                };
+
+                state.filters.extras = newState;
+            }
+
+            if (Object.values(state.filters.extras).some((v) => Boolean(v))) {
+                !state.ids.includes("extras") && state.ids.push("extras");
+            } else {
+                if (state.ids.includes("extras")) {
+                    state.ids = state.ids.filter((id) => id !== "extras");
+                }
+            }
+        },
+
         toggleHeatingType(state, { payload }) {
             if (state.filters.heatingType.includes(payload)) {
                 // already exists; remove
@@ -220,7 +252,19 @@ const slice = createSlice({
             );
         },
 
-        // general delete
+        deleteLifestyle(
+            state,
+            { payload }: { payload: keyof IPropertyFilterExtras }
+        ) {
+            if (state.filters.extras.hasOwnProperty(payload)) {
+                state.filters.extras[payload] = false;
+
+                if (!Object.values(state.filters.extras).some((val) => val)) {
+                    state.ids = state.ids.filter((id) => id !== "extras");
+                }
+            }
+        },
+
         deleteFilter(state, { payload }) {
             const key = payload;
 
@@ -322,6 +366,11 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "cities");
         },
 
+        resetExtras: (state) => {
+            state.filters.extras = initialState.filters.extras;
+            state.ids = state.ids.filter((id) => id !== "extras");
+        },
+
         resetState: () => {
             return initialState;
         },
@@ -343,6 +392,7 @@ export const {
     toggleFrameType,
     toggleFurnished,
     toggleHeatingType,
+    toggleLifestyleFilter,
     setManagerId,
     setMaxArea,
     setMaxBedrooms,
@@ -371,8 +421,8 @@ export const {
 
     // delete
     deleteSubCategory,
-
     deleteState,
+    deleteLifestyle,
     deleteFilter,
 
     // reset
@@ -387,7 +437,7 @@ export const {
     resetPoints,
     resetState,
     resetActiveState,
-
+    resetExtras,
     resetStates,
     resetCategories,
     resetParentCategories,
@@ -439,12 +489,14 @@ export const selectSubCategories = ({ filters }: RootState) =>
 export const selectLabels = ({ filters }: RootState) => filters.filters.labels;
 export const selectIds = ({ filters }: RootState) => filters.ids;
 export const selectPoints = ({ filters }: RootState) => filters.filters.points;
+export const selectExtras = ({ filters }: RootState) => filters.filters.extras;
 
 export const selectSorting = ({ filters }: RootState) => filters.sorting;
 
 export const selectAll = ({ filters }: RootState) => filters.filters;
 export const selectActiveState = ({ filters }: RootState) =>
     filters.filters.active;
+
 export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.filters,
     (filter) => {
@@ -463,6 +515,7 @@ export const sumOfChangedProperties = createSelector(
             "maxConstructionYear",
             "managerId",
             "active",
+            "extras",
 
             // multiple
             "regions",
@@ -516,6 +569,7 @@ export const getChangedFields = createSelector(
             },
             {}
         );
+
         return changedFields;
     }
 );

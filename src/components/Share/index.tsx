@@ -27,6 +27,8 @@ import CopyLinkButton from "./CopyLinkButton";
 import { FC } from "react";
 import GmailButton from "./GmailButton";
 
+// ---------------------------------------------------------------------------
+
 interface SectionProps extends StackProps {
     title: string;
 }
@@ -42,13 +44,32 @@ const Section: FC<SectionProps> = ({ title, children, ...props }) => (
     </Stack>
 );
 
+// ---------------------------------------------------------------------------
+
+type FacebookButtonProps = React.ComponentProps<typeof FacebookShareButton>;
+
+// TODO: update this to handle properties that are:
+// 1. published on a different public
+
+const getShareUrl = (lang: string) => (propertyId: number) =>
+    `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
+
 interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
-    shareUrl: string;
+    propertyIds: number[];
     onClose: VoidFunction;
 }
 
-const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
-    const { t } = useTranslation();
+const SharePopover = ({
+    propertyIds = [],
+    onClose,
+    ...props
+}: SharePopoverProps) => {
+    const { t, i18n } = useTranslation();
+
+    const lang = i18n.language === "el" ? "gr" : "en";
+
+    const shareUrl = propertyIds.map(getShareUrl(lang)).join("\n");
+    const isOne = propertyIds.length === 1;
 
     return (
         <Popover
@@ -66,13 +87,13 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 <Button
                     Component={WhatsappShareButton}
                     label="WhatsApp"
-                    icon={WhatsappIcon}
+                    Icon={WhatsappIcon}
                     shareUrl={shareUrl}
                 />
                 <Button
                     Component={ViberShareButton}
                     label="Viber"
-                    icon={ViberIcon}
+                    Icon={ViberIcon}
                     shareUrl={shareUrl}
                 />
             </Section>
@@ -83,7 +104,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                 <Button
                     Component={EmailShareButton}
                     label="Email"
-                    icon={EmailIcon}
+                    Icon={EmailIcon}
                     shareUrl={shareUrl}
                 />
 
@@ -93,30 +114,36 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
             <Divider sx={{ width: "100%" }} />
 
             <Section title={t("Social Networks")}>
-                <Button
-                    Component={FacebookShareButton}
-                    label="Facebook"
-                    icon={FacebookIcon}
-                    shareUrl={shareUrl}
-                />
+                {isOne ? (
+                    <Button<FacebookButtonProps>
+                        Component={FacebookShareButton}
+                        label="Facebook"
+                        Icon={FacebookIcon}
+                        shareUrl={shareUrl}
+                    />
+                ) : null}
+
                 <Button
                     Component={TwitterShareButton}
                     label="X"
-                    icon={XIcon}
+                    Icon={XIcon}
                     shareUrl={shareUrl}
                 />
-                <Button
-                    Component={LinkedinShareButton}
-                    label="LinkedIn"
-                    icon={LinkedinIcon}
-                    shareUrl={shareUrl}
-                />
+
+                {isOne ? (
+                    <Button
+                        Component={LinkedinShareButton}
+                        label="LinkedIn"
+                        Icon={LinkedinIcon}
+                        shareUrl={shareUrl}
+                    />
+                ) : null}
             </Section>
 
             <Divider sx={{ width: "100%" }} />
 
             <Section title={t("Other")}>
-                <CopyLinkButton shareUrl={shareUrl} />
+                <CopyLinkButton many={!isOne} shareUrl={shareUrl} />
             </Section>
         </Popover>
     );

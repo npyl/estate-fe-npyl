@@ -19,7 +19,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "firstName",
             direction: "ASC",
         },
-        icon: "",
+        icon: "mdi:sort-alphabetical-ascending",
     },
     {
         value: "FIRST_NAME_DESC",
@@ -28,7 +28,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
             sortBy: "firstName",
             direction: "DESC",
         },
-        icon: "",
+        icon: "mdi:sort-alphabetical-descending",
     },
 
     {

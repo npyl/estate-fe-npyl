@@ -56,7 +56,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                     textAlign="center"
                     color="text.secondary"
                 >
-                    v0.98.6
+                    v0.98.7
                 </Typography>
             </Stack>
         ),

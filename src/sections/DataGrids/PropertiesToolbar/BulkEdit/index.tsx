@@ -54,7 +54,6 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     const [publicSites, setPublicSites] = useState<number[]>([]);
     const onPublicSitesChange = useCallback(
         (e: SelectChangeEvent<number[]>) => {
-            console.log("setting: ", e.target.value);
             setPublicSites(e.target.value as any);
         },
         []
@@ -71,36 +70,56 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
         publicSites,
     };
 
-    const changed: Partial<StateType> = useMemo(() => {
-        return (Object.keys(currentState) as Array<keyof StateType>)
-            .filter((key) => {
-                if (
-                    Array.isArray(currentState[key]) &&
-                    Array.isArray(initialState[key])
-                ) {
-                    return (
-                        JSON.stringify(currentState[key]) !==
-                        JSON.stringify(initialState[key])
-                    );
-                } else {
-                    return currentState[key] !== initialState[key];
-                }
-            })
-            .reduce((acc: Partial<StateType>, key: keyof StateType) => {
-                // INFO: Cast currentState[key] to `any` to avoid type errors
-                if (
-                    acc[key] !== "state" &&
-                    key !== "labels" &&
-                    !isNaN(Number(currentState[key]))
-                ) {
-                    // every string except state is expected to be int in Backend
-                    acc[key] = parseInt(currentState[key] as string, 10) as any;
-                } else {
-                    acc[key] = currentState[key] as any;
-                }
-                return acc;
-            }, {});
-    }, [currentState]);
+    const changed = useMemo(() => {
+        const changedFields: Partial<StateType> = {};
+
+        // Compare each field with its initial value
+        if (managerId !== initialState.managerId) {
+            changedFields.managerId = managerId;
+        }
+        if (ownerId !== initialState.ownerId) {
+            changedFields.ownerId = ownerId;
+        }
+        if (zipCode !== initialState.zipCode) {
+            changedFields.zipCode = zipCode;
+        }
+        if (area !== initialState.area) {
+            changedFields.area = area;
+        }
+        if (bedrooms !== initialState.bedrooms) {
+            changedFields.bedrooms = bedrooms;
+        }
+        if (state !== initialState.state) {
+            changedFields.state = state;
+        }
+
+        // For arrays, we need to compare them with initial state
+        // Only include if they're different from initial empty array
+        if (
+            labels.length > 0 ||
+            (initialState.labels.length > 0 && labels.length === 0)
+        ) {
+            changedFields.labels = labels;
+        }
+
+        if (
+            publicSites.length > 0 ||
+            (initialState.publicSites.length > 0 && publicSites.length === 0)
+        ) {
+            changedFields.publicSites = publicSites;
+        }
+
+        return changedFields;
+    }, [
+        managerId,
+        ownerId,
+        zipCode,
+        area,
+        labels,
+        bedrooms,
+        state,
+        publicSites,
+    ]);
 
     const clearState = useCallback(() => {
         setManagerId("");

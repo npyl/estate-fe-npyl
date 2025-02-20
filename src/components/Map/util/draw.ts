@@ -1,3 +1,4 @@
+import debugLog from "@/_private/debugLog";
 import { DrawShape, ShapeData } from "../types";
 
 export const setShapeEvents = (shape: DrawShape, callback: () => void) => {
@@ -12,7 +13,7 @@ export const setShapeEvents = (shape: DrawShape, callback: () => void) => {
         vertices.addListener("set_at", callback);
         vertices.addListener("insert_at", callback);
     } else {
-        console.log("Unknown shape type.");
+        debugLog("Unknown shape type.");
     }
 };
 

@@ -1,7 +1,12 @@
 import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { ListItem, ListManagerItem, ListRatingItem } from "src/components/List";
+import {
+    ListBooleanItem,
+    ListItem,
+    ListManagerItem,
+    ListRatingItem,
+} from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { TypeLabels } from "@/components/TypeLabels";
@@ -142,6 +147,11 @@ const InformationSection: React.FC = () => {
                                 value={data?.suggestedBy || "-"}
                             />
                         )}
+
+                        <ListBooleanItem
+                            label={t("Stay Updated")}
+                            status={data?.enableEmails || false}
+                        />
 
                         <LabelCreate
                             mt={1}

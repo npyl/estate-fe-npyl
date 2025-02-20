@@ -21,12 +21,13 @@ interface TableProps {
     direction: string;
     onRemove: (index: number) => void;
     loading: boolean;
-    page: number;
-    pageSize: number;
-    onPageChange: (event: unknown, newPage: number) => void;
-    onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    page?: number;
+    pageSize?: number;
+    onPageChange?: (event: unknown, newPage: number) => void;
+    onRowsPerPageChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     totalRows: number;
     filter: any;
+    hidePagination?: boolean;
 }
 
 const Table = ({
@@ -40,6 +41,7 @@ const Table = ({
     onPageChange,
     onRowsPerPageChange,
     totalRows,
+    hidePagination = false,
 }: TableProps) => {
     const RowComponent =
         variant === "LISTING"
@@ -86,15 +88,17 @@ const Table = ({
                     ))}
                 </TableBody>
             </MuiTable>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={totalRows}
-                rowsPerPage={pageSize}
-                page={page}
-                onPageChange={onPageChange}
-                onRowsPerPageChange={onRowsPerPageChange}
-            />
+            {hidePagination ? null : (
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={totalRows}
+                    rowsPerPage={pageSize ?? 10}
+                    page={page ?? 0}
+                    onPageChange={onPageChange ?? (() => {})}
+                    onRowsPerPageChange={onRowsPerPageChange ?? (() => {})}
+                />
+            )}
         </TableContainer>
     );
 };

@@ -6,7 +6,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
@@ -42,7 +42,7 @@ interface StyledStackProps extends Omit<StackProps, "divider"> {}
 
 export interface ClearableSectionProps extends StyledStackProps {
     title: string;
-    reset?: ActionCreatorWithPayload<void, string>;
+    reset?: (() => void) | ActionCreatorWithoutPayload<string>;
 }
 
 const ClearableSection: FC<ClearableSectionProps> = ({
@@ -53,7 +53,13 @@ const ClearableSection: FC<ClearableSectionProps> = ({
 }) => {
     const dispatch = useDispatch();
 
-    const handleClear = () => reset && dispatch(reset());
+    const handleClear = () => {
+        if (!reset) return;
+        const action = reset(); // Call reset function to get action
+        if (action) {
+            dispatch(action); // Dispatch Redux action if applicable
+        }
+    };
 
     return (
         <Stack spacing={1} pb={3} {...props}>
