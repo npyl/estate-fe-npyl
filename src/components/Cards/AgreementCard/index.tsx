@@ -14,10 +14,9 @@ import { CardLabel, DraftLabel } from "./Labels";
 interface Props {
     a: IAgreementShort;
     onEdit?: (id: number) => void;
-    onDelete?: (id: number) => void;
 }
 
-const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
+const AgreementCard: React.FC<Props> = ({ a, onEdit }) => (
     <MuiLink component={Card} href={`/agreements/${a.id}`}>
         <CardImage variant={a.variant.key} />
 
@@ -50,12 +49,8 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
                 {a.property ? <PropertyDetails code={a.property.code} /> : null}
             </Stack>
 
-            {onDelete && onEdit ? (
-                <Controls
-                    agreementId={a.id}
-                    onEdit={() => onEdit(a.id)}
-                    onDelete={() => onDelete(a.id)}
-                />
+            {onEdit ? (
+                <Controls agreementId={a.id} onEdit={() => onEdit(a.id)} />
             ) : null}
         </Stack>
     </MuiLink>

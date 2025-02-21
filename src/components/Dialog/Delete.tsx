@@ -21,6 +21,7 @@ const DeleteIcon = styled(HighlightOffIcon)(({ theme }) => ({
 
 interface DeleteDialogProps {
     open: boolean;
+    loading?: boolean;
     multiple?: boolean;
     onClose: () => void;
     onDelete: () => void;
@@ -29,6 +30,7 @@ interface DeleteDialogProps {
 const DeleteDialog = ({
     open,
     multiple = false,
+    loading = false,
     onClose,
     onDelete,
 }: DeleteDialogProps) => {
@@ -66,7 +68,12 @@ const DeleteDialog = ({
                     {t("No")}
                 </Button>
 
-                <SoftButton color="error" onClick={onDelete}>
+                <SoftButton
+                    loading={loading}
+                    disabled={loading}
+                    color="error"
+                    onClick={onDelete}
+                >
                     {t("Yes")}
                 </SoftButton>
             </DialogContent>
