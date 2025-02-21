@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "File(s)": "File(s)",
             _SHARE_FILE_ERROR_: "Cannot share this file(s)",
 
             Student: "Student",
@@ -1236,6 +1237,8 @@ const resources = {
     },
     el: {
         translation: {
+            "File(s)": "Αρχείο(α)",
+
             _SHARE_FILE_ERROR_:
                 "Δεν είναι δυνατή η κοινοποίηση αυτού του αρχείου(ων)",
 
