@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _SHARE_FILE_ERROR_: "Cannot share this file(s)",
+
             Student: "Student",
             Seafront: "Seafront",
             "Luxury Homes": "Luxury Homes",
@@ -1234,6 +1236,9 @@ const resources = {
     },
     el: {
         translation: {
+            _SHARE_FILE_ERROR_:
+                "Δεν είναι δυνατή η κοινοποίηση αυτού του αρχείου(ων)",
+
             COPY_LINK_MANY: "Αντιγραφή Συνδέσμων",
 
             _SELECT_ACTIVE_TO_SHARE:

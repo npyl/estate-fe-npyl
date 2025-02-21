@@ -5,9 +5,10 @@ import Typography from "@mui/material/Typography";
 import MuiLink from "@mui/material/Link";
 import Card from "./Card";
 import PropertyDetails from "./PropertyDetails";
-import Controls from "./Controls";
 import CardImage from "./Image";
 import { CardLabel, DraftLabel } from "./Labels";
+import dynamic from "next/dynamic";
+const Controls = dynamic(() => import("./Controls"));
 
 // ------------------------------------------------------------
 

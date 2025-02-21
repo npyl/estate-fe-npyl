@@ -15,7 +15,7 @@ interface Props {
     onEditAgreement: (id: number) => void;
 }
 
-const CardsContent: React.FC<Props> = ({
+const CardsContent: FC<Props> = ({
     propertyId,
     customerId,
     onEditAgreement,
