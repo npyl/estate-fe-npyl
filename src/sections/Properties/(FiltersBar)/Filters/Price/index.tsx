@@ -7,10 +7,10 @@ import {
 
 import RangeSelect from "@/sections/Filters/Range";
 
-import useRangeGenerator from "./useRangeGenerator";
+import usePriceRangeGenerator from "./usePriceRangeGenerator";
 
 const PriceSelect = () => {
-    const { generateNumbers } = useRangeGenerator();
+    const { generateNumbers } = usePriceRangeGenerator();
     return (
         <RangeSelect
             type="price"

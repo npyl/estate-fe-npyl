@@ -9,7 +9,7 @@ interface Props {
     setMin: ActionCreatorWithPayload<any, any>;
     setMax: ActionCreatorWithPayload<any, any>;
 
-    generateNumbers: (type: "price" | "area") => number[];
+    generateNumbers: () => number[];
 }
 
 export type { Props };

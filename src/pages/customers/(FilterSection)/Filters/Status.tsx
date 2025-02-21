@@ -46,13 +46,7 @@ export default function FilterStatus() {
 
     return (
         <FormControl>
-            <StyledRating
-                name="simple-controlled"
-                value={status}
-                onChange={onChange}
-                // sx={{ width: "100%" }}$
-                // icon={<Rating fontSize="large" />}
-            />
+            <StyledRating value={status} onChange={onChange} />
         </FormControl>
     );
 }
