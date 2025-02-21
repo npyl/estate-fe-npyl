@@ -1,9 +1,5 @@
 import { SpaceBetween } from "@/components/styled";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { FC, MouseEvent, useCallback, useRef } from "react";
-import IconButton from "@mui/material/IconButton";
-import useDialog from "@/hooks/useDialog";
-import dynamic from "next/dynamic";
+import { FC } from "react";
 import { IUserMini } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
@@ -11,41 +7,7 @@ import Avatar from "@/components/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import TaskLabel from "../CardDialog/TaskLabel";
 import { SxProps, Theme } from "@mui/material";
-const Menu = dynamic(() => import("./Menu"));
-
-interface Props {
-    taskId: number;
-}
-
-const MenuButton: FC<Props> = ({ taskId }) => {
-    const anchorRef = useRef(null);
-    const [isOpen, openMenu, closeMenu] = useDialog();
-
-    const handleClick = useCallback((e: MouseEvent) => {
-        e.stopPropagation();
-        openMenu();
-    }, []);
-
-    return (
-        <>
-            <IconButton
-                className="TaskCard-HeaderControls"
-                ref={anchorRef}
-                onClick={handleClick}
-            >
-                <MoreHorizIcon />
-            </IconButton>
-
-            {isOpen && anchorRef.current ? (
-                <Menu
-                    taskId={taskId}
-                    anchorEl={anchorRef.current}
-                    onClose={closeMenu}
-                />
-            ) : null}
-        </>
-    );
-};
+import MenuButton from "./MenuButton";
 
 const AvatarSx: SxProps<Theme> = {
     height: "35px",

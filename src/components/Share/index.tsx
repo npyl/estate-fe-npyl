@@ -36,8 +36,11 @@ interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
 const SharePopover = ({
     shareUrls = [],
     onClose,
+    // ...
     files,
     getFiles,
+    // ...
+    slots,
     ...props
 }: SharePopoverProps) => {
     const { t } = useTranslation();
@@ -50,14 +53,15 @@ const SharePopover = ({
     return (
         <Popover
             open
-            {...props}
             anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
             transformOrigin={{ horizontal: "center", vertical: "top" }}
             keepMounted
             slots={{
                 paper: StyledPaper,
+                ...slots,
             }}
             onClose={onClose}
+            {...props}
         >
             <Section title={t("Chat")}>
                 <Button
@@ -110,9 +114,12 @@ const SharePopover = ({
                 ) : null}
             </Section>
 
-            <Divider sx={{ width: "100%" }} />
+            <Divider
+                sx={{ width: "100%" }}
+                className="PPShare-OtherSectionDivider"
+            />
 
-            <Section title={t("Other")}>
+            <Section title={t("Other")} className="PPShare-OtherSection">
                 <CopyLinkButton many={!isOne} shareUrl={shareUrl} />
                 {canShareFile ? <FileButton getter={getFiles} /> : null}
             </Section>
