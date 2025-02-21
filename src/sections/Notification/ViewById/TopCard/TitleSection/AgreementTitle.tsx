@@ -2,6 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
 import useGetNotification from "@/sections/Notification/useGetNotification";
+import ShareButton from "./ShareButton";
 
 const AgreementTitle = () => {
     const { t } = useTranslation();
@@ -55,6 +56,8 @@ const AgreementTitle = () => {
                         }}
                     />
                 )}
+
+                <ShareButton />
             </Stack>
         </Stack>
     );
