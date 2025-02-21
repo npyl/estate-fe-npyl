@@ -9,10 +9,9 @@ import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@/components/Avatar";
 import Tooltip from "@mui/material/Tooltip";
-import { Box, SxProps, Theme, Typography, useTheme } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import TaskLabel from "../CardDialog/TaskLabel";
+import { SxProps, Theme } from "@mui/material";
 const Menu = dynamic(() => import("./Menu"));
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 interface Props {
     taskId: number;
@@ -48,24 +47,15 @@ const MenuButton: FC<Props> = ({ taskId }) => {
     );
 };
 
-const AvatarSx = {
+const AvatarSx: SxProps<Theme> = {
     height: "35px",
     width: "35px",
 };
 
-const TaskCodeBoxSx = (theme: any) => ({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 0.3,
-    paddingInline: 1,
-    borderRadius: "25px",
-    backgroundColor:
-        theme.palette.mode === "light" ? "neutral.200" : "neutral.600",
-});
-
-const SmallBodySx: SxProps<Theme> = {
-    fontSize: "0.8rem",
+const TaskLabelSx: SxProps<Theme> = {
+    ".MuiSvgIcon-root": {
+        fontSize: "1rem",
+    },
 };
 
 interface HeaderProps {
@@ -82,11 +72,10 @@ const Header: FC<HeaderProps> = ({
     uniqueCode,
 }) => {
     const fullname = `${assignee?.firstName || ""} ${assignee?.lastName || ""}`;
-    const { t } = useTranslation();
-    const theme = useTheme();
+
     return (
         <SpaceBetween alignItems="center">
-            <Stack justifyContent={"flex-start"} direction="row" gap={2}>
+            <Stack justifyContent="flex-start" direction="row" gap={2}>
                 <Tooltip title={fullname}>
                     <Avatar
                         firstName={assignee?.firstName}
@@ -95,17 +84,7 @@ const Header: FC<HeaderProps> = ({
                         sx={AvatarSx}
                     />
                 </Tooltip>
-                <Box sx={TaskCodeBoxSx(theme)}>
-                    <BookmarkBorderIcon
-                        color="action"
-                        sx={{ fontSize: "medium" }}
-                    />
-                    <Typography variant="body2" sx={SmallBodySx}>
-                        {uniqueCode
-                            ? `${t("Task")} - ${uniqueCode.split(" - ")[1]}`
-                            : "N/A"}
-                    </Typography>
-                </Box>
+                <TaskLabel taskCode={uniqueCode} sx={TaskLabelSx} />
             </Stack>
 
             <Stack spacing={1} direction="row" alignItems="center">
