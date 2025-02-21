@@ -1,6 +1,6 @@
 const SharePopover = dynamic(() => import("@/components/Share"));
 import useDialog from "@/hooks/useDialog";
-import DisabledShareButton from "@/sections/ViewHeader/ShareButton/DisabledShareButton";
+import DisabledShareButton from "@/sections/ViewHeader/ShareButton/Property/DisabledShareButton";
 import {
     IPropertyFilterParams,
     useFilterPropertiesQuery,

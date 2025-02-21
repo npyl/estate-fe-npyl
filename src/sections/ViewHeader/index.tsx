@@ -45,7 +45,7 @@ const ViewHeader = ({
             <Stack direction="row" spacing={1}>
                 {isProperty ? <DownloadGoogleEarthButton /> : null}
                 {isProperty ? <ExportButton /> : null}
-                {isProperty ? <ShareButton /> : null}
+                <ShareButton />
                 <MoreButton
                     isProperty={isProperty}
                     isArchived={isArchived}

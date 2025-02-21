@@ -1,29 +1,24 @@
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import { useGetPropertyListingsQuery } from "@/services/properties";
-import DisabledShareButton from "./DisabledShareButton";
-import EnabledShareButton from "./EnabledShareButton";
+import PropertyShareButton from "./Property";
+import toNumber, { toNumberSafe } from "@/utils/toNumber";
+import CustomerShareButton from "./Customer";
 
 const ShareButton = () => {
-    const { t } = useTranslation();
-
     const router = useRouter();
-    const { propertyId } = router.query;
-    const { data: listings } = useGetPropertyListingsQuery(+propertyId!);
+    const { customerId, propertyId } = router.query;
 
-    const hasPublic = useMemo(
-        () => listings?.publicSites?.some(({ published }) => published),
-        [listings?.publicSites]
-    );
+    const iPropertyId = toNumberSafe(propertyId);
+    const iCustomerId = toNumber(customerId);
+
+    const isProperty = iPropertyId !== -1;
+    const isCustomer = iCustomerId !== -1;
 
     return (
         <>
-            {!hasPublic ? (
-                <DisabledShareButton title={t("Property is not public")} />
+            {isProperty ? (
+                <PropertyShareButton propertyId={iPropertyId} />
             ) : null}
-
-            {hasPublic ? <EnabledShareButton /> : null}
+            {isCustomer ? <CustomerShareButton /> : null}
         </>
     );
 };

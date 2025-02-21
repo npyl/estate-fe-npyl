@@ -6,6 +6,7 @@ import {
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import BaseToolbar from "@/sections/DataGrids/BaseToolbar";
+import ShareButton from "./Share";
 const BulkEdit = dynamic(() => import("./(BulkEdit)"));
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 
@@ -34,7 +35,9 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
                 isEditing={isEditing}
                 onBulkEditClick={openBulkEdit}
                 onBulkDeleteClick={openBulkDelete}
-            />
+            >
+                <ShareButton selectedRows={selectedRows} />
+            </BaseToolbar>
 
             {isBulkEditOpen ? (
                 <BulkEdit
