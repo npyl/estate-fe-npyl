@@ -1,21 +1,18 @@
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import EmailIcon from "@mui/icons-material/Email";
 import { FC, useCallback } from "react";
-import { SpaceBetween } from "../styled";
-import GMailIcon from "@/assets/logo/Gmail";
-
-const getUrl = (url: string) =>
-    `https://mail.google.com/mail/?view=cm&body=${encodeURIComponent(url)}`;
+import { SpaceBetween } from "@/components/styled";
 
 interface Props {
     shareUrl: string;
 }
 
-const GmailButton: FC<Props> = ({ shareUrl }) => {
-    const url = getUrl(shareUrl);
-
+const EmailButton: FC<Props> = ({ shareUrl }) => {
     const handleClick = useCallback(() => {
-        window.open(url, "_blank");
-    }, [url]);
+        const encodedBody = encodeURIComponent(shareUrl);
+        const mailtoLink = `mailto:?subject=&body=${encodedBody}`;
+        window.location.href = mailtoLink;
+    }, [shareUrl]);
 
     return (
         <SpaceBetween
@@ -31,12 +28,12 @@ const GmailButton: FC<Props> = ({ shareUrl }) => {
             onClick={handleClick}
         >
             <Typography variant="body1" color="text.secondary" width={1}>
-                Gmail
+                Email
             </Typography>
-            <GMailIcon
-                width={33}
-                height={33}
-                style={{
+
+            <EmailIcon
+                sx={{
+                    fontSize: "30px",
                     borderRadius: "100%",
                 }}
             />
@@ -44,4 +41,4 @@ const GmailButton: FC<Props> = ({ shareUrl }) => {
     );
 };
 
-export default GmailButton;
+export default EmailButton;

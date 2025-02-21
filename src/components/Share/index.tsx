@@ -9,67 +9,43 @@ import {
     XIcon,
     LinkedinShareButton,
     LinkedinIcon,
-    EmailShareButton,
-    EmailIcon,
 } from "react-share";
-import {
-    Popover,
-    PopoverProps,
-    Typography,
-    Divider,
-    Stack,
-    StackProps,
-} from "@mui/material";
+import { Popover, PopoverProps, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Button from "./button";
 import { StyledPaper } from "./styled";
-import CopyLinkButton from "./CopyLinkButton";
-import { FC } from "react";
-import GmailButton from "./GmailButton";
-
-// ---------------------------------------------------------------------------
-
-interface SectionProps extends StackProps {
-    title: string;
-}
-
-const Section: FC<SectionProps> = ({ title, children, ...props }) => (
-    <Stack width={1} spacing={1} {...props}>
-        <Typography variant="h6" fontWeight="400">
-            {title}
-        </Typography>
-        <Stack width={1} spacing={0.5}>
-            {children}
-        </Stack>
-    </Stack>
-);
+import GmailButton from "./Buttons/Gmail";
+import CopyLinkButton from "./Buttons/CopyLink";
+import Section from "./Section";
+import dynamic from "next/dynamic";
+import EmailButton from "./Buttons/Email";
+const FileButton = dynamic(() => import("./Buttons/File"));
 
 // ---------------------------------------------------------------------------
 
 type FacebookButtonProps = React.ComponentProps<typeof FacebookShareButton>;
 
-// TODO: update this to handle properties that are:
-// 1. published on a different public
-
-const getShareUrl = (lang: string) => (propertyId: number) =>
-    `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
-
 interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
-    propertyIds: number[];
+    shareUrls: string[];
     onClose: VoidFunction;
+
+    files?: boolean;
+    getFiles?: () => Promise<File[] | null>;
 }
 
 const SharePopover = ({
-    propertyIds = [],
+    shareUrls = [],
     onClose,
+    files,
+    getFiles,
     ...props
 }: SharePopoverProps) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
-    const lang = i18n.language === "el" ? "gr" : "en";
+    const shareUrl = shareUrls.join("\n");
+    const isOne = shareUrls.length === 1;
 
-    const shareUrl = propertyIds.map(getShareUrl(lang)).join("\n");
-    const isOne = propertyIds.length === 1;
+    const canShareFile = files && getFiles && "share" in window.navigator;
 
     return (
         <Popover
@@ -101,13 +77,7 @@ const SharePopover = ({
             <Divider sx={{ width: "100%" }} />
 
             <Section title={t("Email")}>
-                <Button
-                    Component={EmailShareButton}
-                    label="Email"
-                    Icon={EmailIcon}
-                    shareUrl={shareUrl}
-                />
-
+                <EmailButton shareUrl={shareUrl} />
                 <GmailButton shareUrl={shareUrl} />
             </Section>
 
@@ -144,9 +114,11 @@ const SharePopover = ({
 
             <Section title={t("Other")}>
                 <CopyLinkButton many={!isOne} shareUrl={shareUrl} />
+                {canShareFile ? <FileButton getter={getFiles} /> : null}
             </Section>
         </Popover>
     );
 };
 
+export type { SharePopoverProps };
 export default SharePopover;
