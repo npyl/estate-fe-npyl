@@ -13,4 +13,6 @@ const LoadingIconButton = forwardRef<HTMLButtonElement, LoadingIconButtonProps>(
     )
 );
 
+LoadingIconButton.displayName = "LoadingIconButton";
+
 export default LoadingIconButton;
