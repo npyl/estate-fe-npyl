@@ -19,6 +19,7 @@ import CopyLinkButton from "./Buttons/CopyLink";
 import Section from "./Section";
 import dynamic from "next/dynamic";
 import EmailButton from "./Buttons/Email";
+import { ComponentType } from "react";
 const FileButton = dynamic(() => import("./Buttons/File"));
 
 // ---------------------------------------------------------------------------
@@ -31,6 +32,7 @@ interface SharePopoverProps extends Omit<PopoverProps, "open" | "onClose"> {
 
     files?: boolean;
     getFiles?: () => Promise<File[] | null>;
+    FilesPlaceholder?: ComponentType<any>;
 }
 
 const SharePopover = ({
@@ -39,6 +41,7 @@ const SharePopover = ({
     // ...
     files,
     getFiles,
+    FilesPlaceholder,
     // ...
     slots,
     ...props
@@ -122,6 +125,7 @@ const SharePopover = ({
             <Section title={t("Other")} className="PPShare-OtherSection">
                 <CopyLinkButton many={!isOne} shareUrl={shareUrl} />
                 {canShareFile ? <FileButton getter={getFiles} /> : null}
+                {FilesPlaceholder ? <FilesPlaceholder /> : null}
             </Section>
         </Popover>
     );

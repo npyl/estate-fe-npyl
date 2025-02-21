@@ -12,16 +12,20 @@ interface FileButtonProps {
 const FileButton: FC<FileButtonProps> = ({ getter }) => {
     const { t } = useTranslation();
 
-    const shareFiles = useCallback((files: File[]) => {
-        const can = window.navigator.canShare({ files });
-        if (!can) {
-            errorToast("_SHARE_FILE_ERROR_");
-            return;
-        }
+    const shareFiles = useCallback(async (files: File[]) => {
+        try {
+            const can = window.navigator.canShare({ files });
+            if (!can) {
+                errorToast("_SHARE_FILE_ERROR_");
+                return;
+            }
 
-        navigator.share({
-            files,
-        });
+            await navigator.share({
+                files,
+            });
+        } catch (ex) {
+            errorToast("_ERROR_");
+        }
     }, []);
 
     const handleClick = useCallback(async () => {
