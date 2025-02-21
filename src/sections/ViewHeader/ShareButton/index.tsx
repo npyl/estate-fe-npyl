@@ -9,11 +9,16 @@ import { useRouter } from "next/router";
 import { useGetPropertyListingsQuery } from "@/services/properties";
 import { toNumberSafe } from "@/utils/toNumber";
 import DisabledShareButton from "./DisabledShareButton";
-
 const SharePopover = dynamic(() => import("@/components/Share"));
 
+// TODO: update this to handle properties that are:
+// 1. published on a different public
+
+const getShareUrl = (lang: string) => (propertyId: number) =>
+    `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
+
 const ShareButton = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const anchorRef = useRef(null);
     const [isOpen, openPopover, closePopover] = useDialog();
@@ -27,7 +32,9 @@ const ShareButton = () => {
         [listings?.publicSites]
     );
 
+    const lang = i18n.language === "en" ? "en" : "gr";
     const iPropertyId = toNumberSafe(propertyId);
+    const shareUrls = [getShareUrl(lang)(iPropertyId)];
 
     return (
         <>
@@ -43,11 +50,11 @@ const ShareButton = () => {
                 </Tooltip>
             ) : null}
 
-            {isOpen ? (
+            {isOpen && iPropertyId !== -1 ? (
                 <SharePopover
                     anchorEl={anchorRef.current}
                     onClose={closePopover}
-                    propertyIds={[iPropertyId]}
+                    shareUrls={shareUrls}
                 />
             ) : null}
         </>

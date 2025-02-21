@@ -11,13 +11,19 @@ import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ShareIcon from "@mui/icons-material/Share";
 
+// TODO: update this to handle properties that are:
+// 1. published on a different public
+
+const getShareUrl = (lang: string) => (propertyId: number) =>
+    `https://www.kopanitsanos.gr/${lang}/property-detail/${propertyId}`;
+
 interface ShareProps {
     selectedRows: number[];
     filters: IPropertyFilterParams;
 }
 
 const Share: FC<ShareProps> = ({ selectedRows, filters }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [isOpen, openPopover, closePopover] = useDialog();
     const anchorRef = useRef<HTMLButtonElement>(null);
@@ -29,6 +35,8 @@ const Share: FC<ShareProps> = ({ selectedRows, filters }) => {
                 ({ id, active }) => Boolean(active) && selectedRows.includes(id)
             )
             ?.map(({ id }) => id) || [];
+    const lang = i18n.language === "en" ? "en" : "gr";
+    const shareUrls = selectedActiveRows.map(getShareUrl(lang));
     const haveRows = selectedActiveRows.length > 0;
 
     return (
@@ -46,7 +54,7 @@ const Share: FC<ShareProps> = ({ selectedRows, filters }) => {
             {isOpen ? (
                 <SharePopover
                     anchorEl={anchorRef.current}
-                    propertyIds={selectedActiveRows}
+                    shareUrls={shareUrls}
                     onClose={closePopover}
                 />
             ) : null}
