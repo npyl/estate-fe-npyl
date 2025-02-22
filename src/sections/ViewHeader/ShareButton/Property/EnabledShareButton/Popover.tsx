@@ -26,7 +26,7 @@ const PropertyShare: FC<PropertyShareProps> = (props) => {
     const isPDFGenerated = Boolean(property?.pdfGeneratedAt);
     const placeholder = isPDFGenerated ? undefined : NotGeneratedPlaceholder;
 
-    const { getFile, isDownloading } = usePropertyPDFDownloader(propertyId);
+    const { getFile } = usePropertyPDFDownloader(propertyId);
     const getter = useCallback(async () => {
         const file = await getFile();
         if (!file) return null;
