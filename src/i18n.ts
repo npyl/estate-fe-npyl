@@ -4,6 +4,11 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Refresh: "Refresh",
+            _DEPLOY_VERSION_MISMATCH_0: "A newer version of PropertyPro is up",
+            _DEPLOY_VERSION_MISMATCH_1:
+                "Please, refresh the page. Your work will be preserved!",
+
             "File(s)": "File(s)",
             _SHARE_FILE_ERROR_: "Cannot share this file(s)",
 
@@ -1237,6 +1242,13 @@ const resources = {
     },
     el: {
         translation: {
+            Refresh: "Ανανέωση",
+
+            _DEPLOY_VERSION_MISMATCH_0:
+                "Μία νέα έκδοση του PropertyPro έχει ανέβει",
+            _DEPLOY_VERSION_MISMATCH_1:
+                "Παρακαλώ, ανανεώστε τη σελίδα. Οι αλλαγές σας θα διατηρηθούν!",
+
             "File(s)": "Αρχείο(α)",
 
             _SHARE_FILE_ERROR_:

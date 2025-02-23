@@ -31,6 +31,7 @@ import { calendar } from "@/services/calendar";
 import { googleOAuth } from "@/services/google-oauth";
 import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
+import { server } from "@/services/server";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -75,6 +76,8 @@ export const createStore = (
                 googleOAuth.middleware,
                 messages.middleware,
                 logout.middleware,
+                // ...
+                server.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,

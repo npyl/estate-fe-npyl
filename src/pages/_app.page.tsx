@@ -29,6 +29,7 @@ import NotificationsListener from "@/providers/NotificationsListener";
 
 // IMPORTANT
 import "@/_private/JSON";
+import DeployListener from "@/providers/DeployListener";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -83,6 +84,7 @@ const App: FC<EnhancedAppProps> = (props) => {
                                                 <SplashScreen />
                                             ) : (
                                                 <>
+                                                    <DeployListener />
                                                     <NotificationsListener />
 
                                                     <DatePickerProvider>
