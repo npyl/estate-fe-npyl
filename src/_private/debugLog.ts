@@ -1,4 +1,4 @@
-const isDebug = process.env.NPYL_DEBUG === "1";
+const isDebug = process.env.NODE_ENV === "development";
 
 const debugLog = (...s: any) => {
     if (!isDebug) return;
