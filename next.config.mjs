@@ -1,5 +1,3 @@
-const buildId = new Date().getTime().toString();
-
 /** @type {import('next').NextConfig} */
 const config = {
     reactStrictMode: false,
@@ -26,8 +24,13 @@ const config = {
         ],
     },
 
-    env: {
-        NEXT_PUBLIC_BUILD_ID: buildId,
+    webpack: (config, { buildId, webpack }) => {
+        config.plugins.push(
+            new webpack.DefinePlugin({
+                "process.env.NEXT_PUBLIC_BUILD_ID": JSON.stringify(buildId),
+            })
+        );
+        return config;
     },
 };
 
