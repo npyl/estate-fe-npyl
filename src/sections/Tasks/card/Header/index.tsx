@@ -1,71 +1,23 @@
 import { SpaceBetween } from "@/components/styled";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { FC, MouseEvent, useCallback, useRef } from "react";
-import IconButton from "@mui/material/IconButton";
-import useDialog from "@/hooks/useDialog";
-import dynamic from "next/dynamic";
+import { FC } from "react";
 import { IUserMini } from "@/types/user";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
 import Avatar from "@/components/Avatar";
 import Tooltip from "@mui/material/Tooltip";
-import { Box, SxProps, Theme, Typography, useTheme } from "@mui/material";
-import { useTranslation } from "react-i18next";
-const Menu = dynamic(() => import("./Menu"));
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import TaskLabel from "../CardDialog/TaskLabel";
+import { SxProps, Theme } from "@mui/material";
+import MenuButton from "./MenuButton";
 
-interface Props {
-    taskId: number;
-}
-
-const MenuButton: FC<Props> = ({ taskId }) => {
-    const anchorRef = useRef(null);
-    const [isOpen, openMenu, closeMenu] = useDialog();
-
-    const handleClick = useCallback((e: MouseEvent) => {
-        e.stopPropagation();
-        openMenu();
-    }, []);
-
-    return (
-        <>
-            <IconButton
-                className="TaskCard-HeaderControls"
-                ref={anchorRef}
-                onClick={handleClick}
-            >
-                <MoreHorizIcon />
-            </IconButton>
-
-            {isOpen && anchorRef.current ? (
-                <Menu
-                    taskId={taskId}
-                    anchorEl={anchorRef.current}
-                    onClose={closeMenu}
-                />
-            ) : null}
-        </>
-    );
-};
-
-const AvatarSx = {
+const AvatarSx: SxProps<Theme> = {
     height: "35px",
     width: "35px",
 };
 
-const TaskCodeBoxSx = (theme: any) => ({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 0.3,
-    paddingInline: 1,
-    borderRadius: "25px",
-    backgroundColor:
-        theme.palette.mode === "light" ? "neutral.200" : "neutral.600",
-});
-
-const SmallBodySx: SxProps<Theme> = {
-    fontSize: "0.8rem",
+const TaskLabelSx: SxProps<Theme> = {
+    ".MuiSvgIcon-root": {
+        fontSize: "1rem",
+    },
 };
 
 interface HeaderProps {
@@ -82,11 +34,10 @@ const Header: FC<HeaderProps> = ({
     uniqueCode,
 }) => {
     const fullname = `${assignee?.firstName || ""} ${assignee?.lastName || ""}`;
-    const { t } = useTranslation();
-    const theme = useTheme();
+
     return (
         <SpaceBetween alignItems="center">
-            <Stack justifyContent={"flex-start"} direction="row" gap={2}>
+            <Stack justifyContent="flex-start" direction="row" gap={2}>
                 <Tooltip title={fullname}>
                     <Avatar
                         firstName={assignee?.firstName}
@@ -95,17 +46,7 @@ const Header: FC<HeaderProps> = ({
                         sx={AvatarSx}
                     />
                 </Tooltip>
-                <Box sx={TaskCodeBoxSx(theme)}>
-                    <BookmarkBorderIcon
-                        color="action"
-                        sx={{ fontSize: "medium" }}
-                    />
-                    <Typography variant="body2" sx={SmallBodySx}>
-                        {uniqueCode
-                            ? `${t("Task")} - ${uniqueCode.split(" - ")[1]}`
-                            : "N/A"}
-                    </Typography>
-                </Box>
+                <TaskLabel taskCode={uniqueCode} sx={TaskLabelSx} />
             </Stack>
 
             <Stack spacing={1} direction="row" alignItems="center">

@@ -1,17 +1,18 @@
 import { CircularProgress, IconButton, IconButtonProps } from "@mui/material";
+import { forwardRef } from "react";
 
 interface LoadingIconButtonProps extends IconButtonProps {
     loading?: boolean;
 }
 
-const LoadingIconButton: React.FC<LoadingIconButtonProps> = ({
-    loading = false,
-    children,
-    ...props
-}) => (
-    <IconButton disabled={loading} {...props}>
-        {loading ? <CircularProgress size={20} /> : children}
-    </IconButton>
+const LoadingIconButton = forwardRef<HTMLButtonElement, LoadingIconButtonProps>(
+    ({ loading = false, children, ...props }, ref) => (
+        <IconButton ref={ref} disabled={loading} {...props}>
+            {loading ? <CircularProgress size={20} /> : children}
+        </IconButton>
+    )
 );
+
+LoadingIconButton.displayName = "LoadingIconButton";
 
 export default LoadingIconButton;

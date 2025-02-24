@@ -50,6 +50,7 @@ const Section: FC<SectionProps> = ({ sectionKey, section, onEdit }) => {
                 {data?.map((label, i) => (
                     <Grid item key={i} xs={12} sm={6} md={4} xl={3}>
                         <HoverableLabel
+                            width="fit-content"
                             maxWidth="70%"
                             // ...
                             labelId={label.id}

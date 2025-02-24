@@ -2,18 +2,20 @@ import Drawer from "@mui/material/Drawer";
 import { FC, useCallback, useRef } from "react";
 import Content from "./Content";
 import Form, { FormRef, IDemandForms } from "./Form";
+import Controls from "./Controls";
 
 interface DemandDrawerProps {
-    onClose: (v: IDemandForms) => void;
+    onClose: VoidFunction;
+    onSave: (v: IDemandForms) => void;
 }
 
-const DemandDrawer: FC<DemandDrawerProps> = ({ onClose }) => {
+const DemandDrawer: FC<DemandDrawerProps> = ({ onSave, onClose }) => {
     const formRef = useRef<FormRef>(null);
 
-    const handleClose = useCallback(() => {
+    const handleSave = useCallback(() => {
         const values = formRef.current?.getValues();
         if (!values) return;
-        onClose(values);
+        onSave(values);
     }, []);
 
     return (
@@ -31,10 +33,11 @@ const DemandDrawer: FC<DemandDrawerProps> = ({ onClose }) => {
                     },
                 },
             }}
-            onClose={handleClose}
+            onClose={onClose}
         >
             <Form ref={formRef}>
-                <Content onClose={handleClose} />
+                <Content onClose={onClose} />
+                <Controls onSave={handleSave} />
             </Form>
         </Drawer>
     );

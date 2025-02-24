@@ -2,6 +2,7 @@ import MuiMenu from "@mui/material/Menu";
 import { FC, MouseEvent } from "react";
 import CopyLinkItem from "./CopyLinkItem";
 import DeleteItem from "./DeleteLinkItem";
+import ShareItem from "./ShareItem";
 
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
@@ -19,6 +20,7 @@ const Menu: FC<Props> = ({ anchorEl, taskId, onClose }) => (
         onClose={onClose}
     >
         <CopyLinkItem taskId={taskId} />
+        <ShareItem taskId={taskId} />
         <DeleteItem taskId={taskId} />
     </MuiMenu>
 );

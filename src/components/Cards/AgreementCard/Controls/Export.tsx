@@ -15,8 +15,6 @@ const ExportButton: React.FC<Props> = ({ agreementId }) => {
     const { generatePDF, isGenerating } = useGeneratePDF();
 
     const handleGenerate = async (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
         const agreement = await getAgreement(agreementId).unwrap();
         if (!agreement) return;
 

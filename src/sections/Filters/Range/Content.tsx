@@ -1,5 +1,5 @@
 import { Grid, List, ListItemText } from "@mui/material";
-import { FC, useMemo } from "react";
+import { FC, useState } from "react";
 import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
@@ -23,7 +23,7 @@ const Content: FC<Props> = ({
     const valueMin = useSelector(selectMin) || 0;
     const valueMax = useSelector(selectMax) || 0;
 
-    const options = useMemo(() => generateNumbers(type), [type]);
+    const [options] = useState(generateNumbers());
 
     const MAX_OPTION = (options?.at(-1) ?? 10000).toString();
 

@@ -1,8 +1,7 @@
 import { SxProps, Tab, TabProps, Theme } from "@mui/material";
-import { FC, RefObject } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import RemoveButton from "./RemoveButton";
-import { TabsRef } from "../types";
 
 const TabSx: SxProps<Theme> = {
     display: "flex",
@@ -13,10 +12,10 @@ const TabSx: SxProps<Theme> = {
 
 interface DemandTabProps extends TabProps {
     index: number;
-    tabsRef: RefObject<TabsRef>;
+    removeTab: (removeIndex: number) => void;
 }
 
-const DemandTab: FC<DemandTabProps> = ({ index, tabsRef, ...props }) => {
+const DemandTab: FC<DemandTabProps> = ({ index, removeTab, ...props }) => {
     const { t } = useTranslation();
 
     const label = `${t("Demand")} ${index + 1}`;
@@ -25,7 +24,7 @@ const DemandTab: FC<DemandTabProps> = ({ index, tabsRef, ...props }) => {
         <Tab
             label={label}
             sx={TabSx}
-            icon={<RemoveButton index={index} tabsRef={tabsRef} />}
+            icon={<RemoveButton index={index} removeTab={removeTab} />}
             {...props}
         />
     );

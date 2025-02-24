@@ -32,7 +32,7 @@ const ResponsiveTaskCode: FC<Props> = ({ taskCode }) => {
     const label = getLabel(t, belowSm, taskCode);
 
     return (
-        <Typography variant="body2" pr={0.5}>
+        <Typography variant="body2" pr={0.5} noWrap>
             {label || t("New Task")}
         </Typography>
     );
@@ -57,6 +57,7 @@ const TaskLabel: FC<TaskLabelProps> = ({ taskCode, ...props }) => (
         px={1}
         py={0.5}
         width="fit-content"
+        flexWrap="nowrap"
         {...props}
     >
         <BookmarkBorderIcon color="action" />

@@ -5,19 +5,19 @@ import Typography from "@mui/material/Typography";
 import MuiLink from "@mui/material/Link";
 import Card from "./Card";
 import PropertyDetails from "./PropertyDetails";
-import Controls from "./Controls";
 import CardImage from "./Image";
 import { CardLabel, DraftLabel } from "./Labels";
+import dynamic from "next/dynamic";
+const Controls = dynamic(() => import("./Controls"));
 
 // ------------------------------------------------------------
 
 interface Props {
     a: IAgreementShort;
     onEdit?: (id: number) => void;
-    onDelete?: (id: number) => void;
 }
 
-const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
+const AgreementCard: React.FC<Props> = ({ a, onEdit }) => (
     <MuiLink component={Card} href={`/agreements/${a.id}`}>
         <CardImage variant={a.variant.key} />
 
@@ -50,12 +50,8 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
                 {a.property ? <PropertyDetails code={a.property.code} /> : null}
             </Stack>
 
-            {onDelete && onEdit ? (
-                <Controls
-                    agreementId={a.id}
-                    onEdit={() => onEdit(a.id)}
-                    onDelete={() => onDelete(a.id)}
-                />
+            {onEdit ? (
+                <Controls agreementId={a.id} onEdit={() => onEdit(a.id)} />
             ) : null}
         </Stack>
     </MuiLink>

@@ -52,7 +52,7 @@ const PropertiesProgress: FC<PropertiesProgressProps> = ({ count }) => {
                     height="100%"
                     bgcolor="warning.main"
                     position="absolute"
-                    zIndex={1000}
+                    zIndex={100}
                     top={0}
                     left={0}
                     borderRadius="4px"

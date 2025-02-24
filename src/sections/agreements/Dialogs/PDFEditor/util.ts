@@ -45,7 +45,7 @@ const loadPdf = async (
     lang: PreferredLanguageType
 ) => {
     try {
-        const res = await fetch("/api/pdf", {
+        const res = await fetch("/api/agreements/pdf", {
             method: "POST",
             headers: {
                 "Content-Type": "application/pdf",

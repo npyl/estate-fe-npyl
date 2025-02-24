@@ -4,6 +4,14 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Refresh: "Refresh",
+            _DEPLOY_VERSION_MISMATCH_0: "A newer version of PropertyPro is up",
+            _DEPLOY_VERSION_MISMATCH_1:
+                "Please, refresh the page. Your work will be preserved!",
+
+            "File(s)": "File(s)",
+            _SHARE_FILE_ERROR_: "Cannot share this file(s)",
+
             Student: "Student",
             Seafront: "Seafront",
             "Luxury Homes": "Luxury Homes",
@@ -339,6 +347,8 @@ const resources = {
             "Delete section": "Delete section",
             "Rename section": "Rename section",
             "Task name": "Task name",
+            "Last Updated Date": "Last Updated Date",
+            "Total Comments for this task": "Total Comments for this task",
             "Mark Complete": "Mark Complete",
             Completed: "Completed",
             "Type a message": "Type a message",
@@ -1234,6 +1244,18 @@ const resources = {
     },
     el: {
         translation: {
+            Refresh: "Ανανέωση",
+
+            _DEPLOY_VERSION_MISMATCH_0:
+                "Μία νέα έκδοση του PropertyPro έχει ανέβει",
+            _DEPLOY_VERSION_MISMATCH_1:
+                "Παρακαλώ, ανανεώστε τη σελίδα. Οι αλλαγές σας θα διατηρηθούν!",
+
+            "File(s)": "Αρχείο(α)",
+
+            _SHARE_FILE_ERROR_:
+                "Δεν είναι δυνατή η κοινοποίηση αυτού του αρχείου(ων)",
+
             COPY_LINK_MANY: "Αντιγραφή Συνδέσμων",
 
             _SELECT_ACTIVE_TO_SHARE:
@@ -1313,7 +1335,8 @@ const resources = {
 
             "View Task": "Δείτε την εργασία",
             "Last Updated Date": "Τελευταία ενημέρωση εργασίας",
-
+            "Total Comments for this task":
+                "Συνολικά σχόλια για αυτή την εργασία",
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 

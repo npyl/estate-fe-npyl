@@ -21,7 +21,8 @@ const getTaskRow = (onClick: (id: number) => void) => (t: IDashboardTask) =>
                     ...t,
                     assignees: [],
                     attachmentsCount: 0,
-                    commentsCount: 0,
+                    commentsCount: t.commentsCount,
+                    columnName: t.columnName,
                     completed: false,
                 }}
             />
@@ -51,7 +52,6 @@ const Tasks = () => {
 
     const { data, isLoading } = useGetDashboardQuery();
     const { tasks } = data || {};
-
     const handleClick = useCallback(
         (id: number) => router.push(`/tasks?taskId=${id}`),
         []

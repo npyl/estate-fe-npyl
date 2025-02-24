@@ -6,6 +6,7 @@ import { FC } from "react";
 import { NotificationType } from "@/types/notification";
 import PrintButton from "./Controls/Print";
 import { NON_PRINTABLE } from "../../../styles";
+import ShareButton from "../ShareButton";
 const StayUpdatedButtons = dynamic(() => import("./Controls/StayUpdated"));
 const CreateCustomerButton = dynamic(() => import("./Controls/CreateCustomer"));
 const CreateTaskButton = dynamic(() => import("./Controls/CreateTask"));
@@ -54,6 +55,7 @@ const StandardTitle: FC<StandardTitleProps> = ({ type, onPrint }) => {
                 alignItems="center"
                 sx={NON_PRINTABLE}
             >
+                <ShareButton />
                 <PrintButton onClick={onPrint} />
                 {stayUpdatedButtons ? <StayUpdatedButtons /> : null}
                 {type === "TOUR" ? <CreateCustomerButton /> : null}
