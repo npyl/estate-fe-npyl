@@ -84,19 +84,22 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
           `Column ${c.column}`
         : "No Columns Available";
 
-    console.log("Columns:", columns);
-    console.log("Task Column ID:", c.column);
     const formatDate = (timestamp: string) => {
-        return new Intl.DateTimeFormat(i18n.language, {
+        const date = new Date(timestamp);
+
+        const options: Intl.DateTimeFormatOptions = {
             day: "2-digit",
             month: "short",
             year: "numeric",
-            hour: "numeric",
+            hour: "2-digit",
             minute: "2-digit",
-            hourCycle: "h12",
-        })
-            .format(new Date(timestamp))
-            .replace(",", " -");
+            hour12: true,
+        };
+
+        const locale = i18n.language === "el" ? "el-GR" : "en-GB";
+        const formattedDate = date.toLocaleDateString(locale, options);
+
+        return formattedDate.replace(",", " -");
     };
 
     return (
