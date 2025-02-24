@@ -51,7 +51,7 @@ const DemandsButton = () => {
     const [isDrawerOpen, openDrawer, closeDrawer] = useDialog();
 
     const { setValue } = useFormContext<ICustomerYup>();
-    const handleClose = useCallback(({ demands }: IDemandForms) => {
+    const handleSave = useCallback(({ demands }: IDemandForms) => {
         setValue("demands", demands, { shouldDirty: true });
         closeDrawer();
     }, []);
@@ -64,7 +64,9 @@ const DemandsButton = () => {
                 {t("Demands")}
             </StyledButton>
 
-            {isDrawerOpen ? <DemandDrawer onClose={handleClose} /> : null}
+            {isDrawerOpen ? (
+                <DemandDrawer onSave={handleSave} onClose={closeDrawer} />
+            ) : null}
         </>
     );
 };
