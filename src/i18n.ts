@@ -342,6 +342,8 @@ const resources = {
             "Delete section": "Delete section",
             "Rename section": "Rename section",
             "Task name": "Task name",
+            "Last Updated Date": "Last Updated Date",
+            "Total Comments for this task": "Total Comments for this task",
             "Mark Complete": "Mark Complete",
             Completed: "Completed",
             "Type a message": "Type a message",
@@ -1321,7 +1323,8 @@ const resources = {
 
             "View Task": "Δείτε την εργασία",
             "Last Updated Date": "Τελευταία ενημέρωση εργασίας",
-
+            "Total Comments for this task":
+                "Συνολικά σχόλια για αυτή την εργασία",
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 

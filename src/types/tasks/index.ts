@@ -53,6 +53,12 @@ type IKanbanCard = {
     updatedAt: string;
 };
 
+interface IKanbanCardLabels {
+    color: string;
+    id: number;
+    name: string;
+}
+
 interface IKanbanCardShort {
     id: number;
     name: string;
@@ -64,6 +70,9 @@ interface IKanbanCardShort {
     completed: boolean;
     assignees: IUserMini[];
     createdAt: string;
+    labels?: IKanbanCardLabels[];
+    column?: number;
+    columnName?: string;
 }
 
 // INFO: sent to Backend directly

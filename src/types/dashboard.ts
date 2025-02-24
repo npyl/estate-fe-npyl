@@ -19,6 +19,8 @@ interface IDashboardTask {
     createdAt: string;
     updatedAt: string;
     reporter: IUserMini;
+    commentsCount: number;
+    columnName: string;
 }
 
 interface PropertiesDistribution {

@@ -1,20 +1,52 @@
-import { IKanbanCardShort } from "@/types/tasks";
+import { IKanbanCardShort, IKanbanColumn } from "@/types/tasks";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { SpaceBetween } from "@/components/styled";
 import TaskLabel from "@/sections/Tasks/card/CardDialog/TaskLabel";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
-import { SxProps, Theme, Tooltip } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Chip,
+    SxProps,
+    Theme,
+    Tooltip,
+    useMediaQuery,
+} from "@mui/material";
 import { getTaskColor } from "@/sections/Tasks/styled";
 import PriorityLabel from "@/sections/Tasks/card/PriorityLabel";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import UpdatedAtIcon from "./icons/UpdatedAtIcon";
 import CommentIcon from "./icons/CommentIcon";
+import ColumnLabel from "./ColumnLabel";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 
 const NoAssignee = () => null;
+
+const chipStyles: SxProps<Theme> = {
+    backgroundColor: "rgba(0, 0, 0, 0.05) !important",
+    color: "black",
+    fontWeight: 400,
+    fontSize: "14px",
+    height: "26px",
+    borderRadius: "16px",
+};
+
+const colorCircleStyles: SxProps<Theme> = {
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+    display: "inline-block",
+};
+
+const taskNameSx: SxProps<Theme> = {
+    whiteSpace: "nowrap !important",
+    overflow: "hidden !important",
+    textOverflow: "ellipsis !important",
+    maxWidth: "100%",
+};
 
 const getItemSx = (priority: number): SxProps<Theme> => ({
     position: "relative",
@@ -37,19 +69,38 @@ const getSx = (isCompleted: boolean): SxProps<Theme> => ({
 
 interface ItemProps {
     c: IKanbanCardShort;
+    columns?: IKanbanColumn[];
     onClick: VoidFunction;
 }
 
-const Item: FC<ItemProps> = ({ c, onClick }) => {
+const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
     const { t, i18n } = useTranslation();
+    const isLargeScreen = useMediaQuery("(min-width:1900px)");
+
     const assignee = c.assignees?.[0];
     const isCompleted = c.completed;
+
+    const columnName =
+        c.columnName ||
+        columns?.find((col) => col.id === c.column)?.name ||
+        `Column ${c.column}`;
+
     const formatDate = (timestamp: string) => {
-        return new Intl.DateTimeFormat(i18n.language, {
+        const date = new Date(timestamp);
+
+        const options: Intl.DateTimeFormatOptions = {
             day: "2-digit",
-            month: "long",
+            month: "short",
             year: "numeric",
-        }).format(new Date(timestamp));
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        };
+
+        const locale = i18n.language === "el" ? "el-GR" : "en-GB";
+        const formattedDate = date.toLocaleDateString(locale, options);
+
+        return formattedDate.replace(",", " -");
     };
 
     return (
@@ -64,14 +115,47 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
         >
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
-                <Typography variant="body2" textOverflow={"ellipsis"}>
+                <Typography
+                    variant="body2"
+                    textOverflow={"ellipsis"}
+                    sx={taskNameSx}
+                >
                     {c.name}
                 </Typography>
             </Stack>
-
+            {c.labels && c.labels.length > 0 && (
+                <Box position="absolute" left={isLargeScreen ? "43%" : "41%"}>
+                    {c.labels && c.labels.length > 0 && (
+                        <>
+                            {c.labels.slice(0, 1).map((label) => (
+                                <Chip
+                                    key={label.id}
+                                    label={
+                                        <Box
+                                            display="flex"
+                                            alignItems="center"
+                                            gap={1}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    ...colorCircleStyles,
+                                                    backgroundColor:
+                                                        label.color,
+                                                }}
+                                            />
+                                            {label.name}
+                                        </Box>
+                                    }
+                                    sx={chipStyles}
+                                />
+                            ))}
+                        </>
+                    )}
+                </Box>
+            )}
             <PriorityLabel
                 position="absolute"
-                left="48%"
+                left={isLargeScreen ? "59%" : "58%"}
                 priority={c?.priority}
                 display={{
                     xs: "none",
@@ -82,7 +166,7 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={"60%"}
+                left={isLargeScreen ? "68%" : "66%"}
                 position="absolute"
             >
                 <UpdatedAtIcon />
@@ -97,14 +181,21 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={"79%"}
+                left={isLargeScreen ? "84%" : "82%"}
                 position="absolute"
             >
-                <CommentIcon />
+                <Tooltip
+                    placement="top"
+                    title={t("Total Comments for this task")}
+                >
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <CommentIcon />
 
-                <Typography variant="body2">
-                    {c.commentsCount} {t("Comments")}
-                </Typography>
+                        <Typography variant="body2">
+                            {c.commentsCount}
+                        </Typography>
+                    </Box>
+                </Tooltip>
             </Stack>
             <Stack
                 direction="row"
@@ -114,7 +205,9 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 width="25%"
             >
                 {isCompleted ? <CompletedLabel /> : null}
-                {assignee ? <TooltipAvatar u={assignee} /> : <NoAssignee />}
+                {!isCompleted && <ColumnLabel name={columnName} />}
+
+                {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
             </Stack>
         </SpaceBetween>
     );

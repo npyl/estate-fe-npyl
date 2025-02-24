@@ -134,7 +134,7 @@ const Dashboard = () => {
     const startRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Stack spacing={1}>
+        <Stack spacing={1} pb={8}>
             <Stack position="relative" width={1} height={1} spacing={1}>
                 <Title />
 

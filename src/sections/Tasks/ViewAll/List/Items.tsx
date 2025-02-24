@@ -17,7 +17,7 @@ const Items: FC<ItemsProps> = ({ columnId, ids, ...props }) => {
 
     const [taskId, setTaskId] = useState<number>();
     const closeDialog = useCallback(() => setTaskId(undefined), []);
-
+    const columns = useMemo(() => board?.columns || [], [board]);
     return (
         <>
             <Stack {...props}>
@@ -26,7 +26,12 @@ const Items: FC<ItemsProps> = ({ columnId, ids, ...props }) => {
                     if (!card) return null;
 
                     return (
-                        <Item key={id} c={card} onClick={() => setTaskId(id)} />
+                        <Item
+                            key={id}
+                            c={card}
+                            columns={columns}
+                            onClick={() => setTaskId(id)}
+                        />
                     );
                 })}
             </Stack>

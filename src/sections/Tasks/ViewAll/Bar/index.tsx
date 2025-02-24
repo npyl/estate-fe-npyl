@@ -29,7 +29,7 @@ const Bar: FC<BarProps> = ({ create }) => (
             direction="row"
             spacing={3}
             alignItems="center"
-            overflow="auto hidden"
+            // overflow="auto hidden" // This is the issue for not showing the whole input label text
         >
             <Search />
             <UserSelect />
