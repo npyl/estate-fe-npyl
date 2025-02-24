@@ -72,6 +72,7 @@ interface IKanbanCardShort {
     createdAt: string;
     labels?: IKanbanCardLabels[];
     column?: number;
+    columnName?: string;
 }
 
 // INFO: sent to Backend directly

@@ -6,6 +6,7 @@ import { SpaceBetween } from "@/components/styled";
 import TaskLabel from "@/sections/Tasks/card/CardDialog/TaskLabel";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 import {
+    Avatar,
     Box,
     Chip,
     SxProps,
@@ -79,10 +80,10 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
     const assignee = c.assignees?.[0];
     const isCompleted = c.completed;
 
-    const columnName = columns?.length
-        ? columns.find((col) => col.id === c.column)?.name ||
-          `Column ${c.column}`
-        : "No Columns Available";
+    const columnName =
+        c.columnName ||
+        columns?.find((col) => col.id === c.column)?.name ||
+        `Column ${c.column}`;
 
     const formatDate = (timestamp: string) => {
         const date = new Date(timestamp);
@@ -206,7 +207,7 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
                 {isCompleted ? <CompletedLabel /> : null}
                 {!isCompleted && <ColumnLabel name={columnName} />}
 
-                {assignee ? <TooltipAvatar u={assignee} /> : <NoAssignee />}
+                {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
             </Stack>
         </SpaceBetween>
     );
