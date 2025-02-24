@@ -30,7 +30,8 @@ interface Props {
 const Content: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
-    const { tabsRef, index, isIndexSafe, fields, changeTab } = useTabControl();
+    const { tabsRef, index, isIndexSafe, fields, changeTab, removeTab } =
+        useTabControl();
 
     return (
         <>
@@ -47,7 +48,7 @@ const Content: FC<Props> = ({ onClose }) => {
 
             <Stack borderBottom={1} borderColor="divider" direction="row">
                 <Tabs value={index} onChange={changeTab}>
-                    {fields.map(getTab(tabsRef))}
+                    {fields.map(getTab(removeTab))}
                 </Tabs>
             </Stack>
 

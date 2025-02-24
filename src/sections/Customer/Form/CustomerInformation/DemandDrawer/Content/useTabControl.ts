@@ -11,7 +11,7 @@ const useTabControl = () => {
         control,
     });
 
-    const tabCount = fields.length;
+    const lastIndex = Math.max(fields.length - 1, 0);
 
     const [index, setIndex] = useState(0);
     const changeTab = useCallback((_: any, v: number) => setIndex(v), []);
@@ -23,21 +23,33 @@ const useTabControl = () => {
         setIndex((old) => Math.max(old, 0));
     }, []);
 
-    const handleRemove = (removeIndex: number) => {
-        if (index === removeIndex) setIndex((old) => Math.max(old - 1, 0));
-        if (index >= tabCount - 1) setIndex((old) => Math.max(old - 1, 0));
+    const removeTab = (removeIndex: number) => {
+        if (removeIndex < index) {
+            setIndex((old) => Math.max(old - 1, 0));
+        } else if (removeIndex === index) {
+            if (index === 0) {
+                // first (including first & last); do nothing
+            } else if (index !== lastIndex) {
+                // in-between; do nothing
+            } else {
+                // last
+                setIndex((old) => old - 1);
+            }
+        } else {
+            // do-nothing
+        }
+
         remove(removeIndex);
     };
 
     const tabsRef = useRef<TabsRef>({
         add: handleAdd,
-        remove: handleRemove,
     });
 
     const isIndexSafe =
         index > -1 && index < fields.length && fields.length > 0;
 
-    return { tabsRef, index, isIndexSafe, changeTab, fields };
+    return { tabsRef, index, isIndexSafe, changeTab, removeTab, fields };
 };
 
 export default useTabControl;
