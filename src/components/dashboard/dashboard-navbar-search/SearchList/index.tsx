@@ -29,11 +29,13 @@ const PAGE_SIZE = 20;
 
 interface PropertiesSubListProps {
     searchString: string;
+    sortBy?: string;
     onItemClick: (value: string) => void;
 }
 
 const PropertiesSubList = ({
     searchString,
+    sortBy = "code", //used for property search only
     onItemClick,
 }: PropertiesSubListProps) => {
     const { t } = useTranslation();
@@ -45,6 +47,7 @@ const PropertiesSubList = ({
             searchString,
             page: pagination.page,
             pageSize: PAGE_SIZE,
+            sortBy,
         },
         {
             skip: searchString === "",
@@ -127,7 +130,7 @@ interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchText: string;
     searchCategory: SearchCategory;
     onClickOutside: () => void;
-    updateSearchHistory: (history: string[]) => void;
+    updateSearchHistory: (history: { term: string; date: string }[]) => void;
 }
 
 const SearchList = ({
@@ -204,6 +207,7 @@ const SearchList = ({
                             <PropertiesSubList
                                 searchString={searchText}
                                 onItemClick={handleItemClick}
+                                sortBy="code"
                             />
                         )}
 
