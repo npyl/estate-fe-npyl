@@ -30,21 +30,34 @@ const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
     justifyContent: "space-between",
 }));
 
+const totalPropertiesButtonSx = {
+    backgroundColor: "primary.main",
+    color: "white",
+    fontWeight: "bold",
+    borderRadius: "8px",
+    textTransform: "none",
+    px: 3,
+};
+
 // ----------------------------------------------------------------------
 
 type Props = DialogProps & {
     onResetFilter: VoidFunction;
+    totalProperties?: number;
+    onClose: VoidFunction;
 };
 
 export default function FilterMore({
     onResetFilter,
+    totalProperties,
+    onClose,
     children,
     ...props
 }: Props) {
     const { t } = useTranslation();
 
     return (
-        <Dialog maxWidth="md" {...props}>
+        <Dialog maxWidth="md" onClose={onClose} {...props}>
             <StyledDialogTitle textAlign="center">
                 {t("Filters")}
             </StyledDialogTitle>
@@ -54,6 +67,13 @@ export default function FilterMore({
             <StyledDialogActions>
                 <Button variant="outlined" onClick={onResetFilter}>
                     {t("Clear all")}
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={onClose}
+                    sx={totalPropertiesButtonSx}
+                >
+                    {t("See")} {totalProperties} {t("properties")}
                 </Button>
             </StyledDialogActions>
         </Dialog>

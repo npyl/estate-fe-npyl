@@ -18,9 +18,10 @@ const ChosenFilters = dynamic(() => import("./ChosenFilters"));
 
 type Props = {
     onClose: VoidFunction;
+    totalProperties?: number;
 };
 
-export default function FilterMore({ onClose }: Props) {
+export default function FilterMore({ onClose, totalProperties }: Props) {
     const dispatch = useDispatch();
 
     const changedPropsCount = useSelector(sumOfChangedProperties);
@@ -28,7 +29,12 @@ export default function FilterMore({ onClose }: Props) {
     const clearAll = () => dispatch(resetState());
 
     return (
-        <FilterMoreDialog open onClose={onClose} onResetFilter={clearAll}>
+        <FilterMoreDialog
+            open
+            onClose={onClose}
+            onResetFilter={clearAll}
+            totalProperties={totalProperties}
+        >
             {changedPropsCount > 0 ? <ChosenFilters mb={1} /> : null}
 
             <Basic />

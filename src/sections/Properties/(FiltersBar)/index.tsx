@@ -6,6 +6,7 @@ import { Stack, SvgIconTypeMap } from "@mui/material";
 // redux
 import { useSelector } from "react-redux";
 import {
+    selectAll,
     selectSorting,
     setSorting,
     sumOfChangedProperties,
@@ -27,6 +28,7 @@ import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
 import useSortingOptions from "./useSortingOptions";
 import { useDispatch } from "react-redux";
+import { useFilterPropertiesQuery } from "@/services/properties";
 const FilterMore = dynamic(() => import("./FilterMore"));
 
 type viewOptionsType = {
@@ -59,7 +61,19 @@ const FilterMoreWrap = () => {
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
+    const filters = useSelector(selectAll);
 
+    //See if can be done better so i do not call again the filterProperties
+    const { data } = useFilterPropertiesQuery({
+        filter: filters,
+        page: 0,
+        pageSize: 1, // filters only one property just to get the totalProperties from the data
+        sortBy: "modifiedAt",
+        direction: "DESC",
+    });
+    //See if can be done better so i do not call again the filterProperties
+
+    const totalProperties = data?.totalElements ?? 0;
     return (
         <>
             <FilterMoreButton
@@ -67,7 +81,12 @@ const FilterMoreWrap = () => {
                 onClick={openDialog}
             />
 
-            {isDialogOpen ? <FilterMore onClose={closeDialog} /> : null}
+            {isDialogOpen ? (
+                <FilterMore
+                    onClose={closeDialog}
+                    totalProperties={totalProperties}
+                />
+            ) : null}
         </>
     );
 };
