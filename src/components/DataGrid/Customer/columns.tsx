@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import { Box, Tooltip } from "@mui/material";
 
 const StatusColor = ({ row }: GridCellParams) => (
-    <Stack width={1} height={1} justifyContent="center" alignItems="center">
+    <Stack width={1} height={1} justifyContent="center" alignItems="flex-start">
         <TypeLabels
             forceTruncate
             seller={row.seller}
@@ -72,7 +72,7 @@ const RenderFullNameCell = ({ row }: GridCellParams) => {
                 overflow: "hidden",
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
-                textAlign: "center",
+                textAlign: "left",
             }}
         >
             <Typography variant="inherit" noWrap>
@@ -83,11 +83,11 @@ const RenderFullNameCell = ({ row }: GridCellParams) => {
 };
 const getColumns = (t: TranslationType): GridColDef[] => [
     {
-        flex: 1,
+        flex: 1.2,
         field: "fullName",
         headerName: t("Full Name").toString(),
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         renderCell: RenderFullNameCell,
     },
 
@@ -95,16 +95,16 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
         field: "mobilePhone",
         headerName: t("Mobile Phone").toString(),
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
     },
 
     {
         flex: 1,
         field: "budget",
         headerName: t("Price").toString(),
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         renderCell: RenderPriceCell,
     },
 
@@ -112,8 +112,8 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
         field: "areas",
         headerName: t("Region").toString(),
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         renderCell: RenderAreaCell,
     },
 
@@ -121,23 +121,23 @@ const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
         field: "createdAt",
         headerName: t("Date of Entry").toString(),
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         renderCell: renderDateCell,
     },
     {
-        flex: 1,
+        flex: 1.2,
         field: "category",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("_SubCategory").toString(),
         renderCell: StatusColor,
     },
     {
         width: 255,
         field: "labels",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("Labels").toString(),
         renderCell: RenderLabelsCell,
     },

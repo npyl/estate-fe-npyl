@@ -25,11 +25,19 @@ const RenderLabelsCell = (params: GridCellParams) => {
             spacing={0.5}
             width={1}
             height={1}
-            alignItems="center"
+            alignItems="flex-start"
+            alignSelf={"flex-start"}
+            justifySelf={"flex-start"}
             justifyContent="center"
         >
             {labels.slice(0, 2).map(({ color, name }) => (
-                <Box sx={{ maxWidth: 150, minWidth: 50, overflow: "hidden" }}>
+                <Box
+                    sx={{
+                        maxWidth: 150,
+                        minWidth: 50,
+                        overflow: "hidden",
+                    }}
+                >
                     <Label color={color} name={name} sx={LABEL_SX} />
                 </Box>
             ))}
