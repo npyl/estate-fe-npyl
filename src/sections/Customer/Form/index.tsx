@@ -21,6 +21,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { TranslationType } from "@/types/translation";
 import { ICustomerYup } from "./types";
+import useFormPersist from "@/components/hook-form/useFormPersist";
 
 interface FormProps {
     compact?: boolean;
@@ -101,8 +102,8 @@ const useCustomerForm = (customer?: ICustomer) => {
 
     const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
 
-    const methods = useForm<ICustomerYup>({
-        resolver: yupResolver(LoginSchema),
+    const methods = useFormPersist<ICustomerYup>("PPCustomerForm", {
+        resolver: yupResolver(LoginSchema) as any,
         values: defaultValues,
     });
 
