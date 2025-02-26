@@ -1,5 +1,5 @@
 import useCookie from "@/hooks/useCookie";
-import { useCallback, useLayoutEffect, useMemo } from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import {
     FieldValues,
     useForm,
@@ -8,6 +8,7 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
+import debugLog from "@/_private/debugLog";
 
 // Handle browser refresh/close with default prompt
 const useBeforeUnload = (cb: (e: BeforeUnloadEvent) => void) => {
@@ -31,26 +32,21 @@ const useOnRouteChange = (cb: (url: string) => void) => {
     }, [cb]);
 };
 
-const useUnsavedChangesWatcher = () => {
+const useUnsavedChangesWatcher = (onExit: VoidFunction) => {
     const { t } = useTranslation();
 
     const router = useRouter();
 
-    const handleBeforeUnload = useCallback(
-        (e: BeforeUnloadEvent) => {
-            e.preventDefault();
-            return "";
-        },
-        [t]
-    );
+    const handleBeforeUnload = useCallback(() => {
+        onExit();
+        return "";
+    }, [t]);
 
     const handleRouteChangeStart = useCallback(
         (url: string) => {
             // INFO: same page redirect
             if (url === router.asPath) return;
-
-            router.events.emit("routeChangeError");
-            throw "Abort route change";
+            onExit();
         },
         [router.asPath]
     );
@@ -66,6 +62,17 @@ type PropsWithoutDefaultValues<
     TFieldValues extends FieldValues = FieldValues,
     TContext = any
 > = Omit<UseFormProps<TFieldValues, TContext>, "defaultValues">;
+
+type TReturn<
+    TFieldValues extends FieldValues = FieldValues,
+    TContext = any,
+    TTransformedValues extends FieldValues | undefined = undefined
+> = [
+    UseFormReturn<TFieldValues, TContext, TTransformedValues>,
+    {
+        disablePersist: VoidFunction;
+    }
+];
 
 const EMPTY_FALLBACK = "EMPTY";
 
@@ -86,6 +93,8 @@ const EMPTY_FALLBACK = "EMPTY";
  *      If values are provided, it means we received an edit mode object so we will use that
  *
  * (INFO: defaultValues are ommitted for strict/cleaner use)
+ *
+ * !IMPORTANT!: If you would like to *prevent* the onExit persist operation call the disablePersist() before any route change or exit
  */
 function useFormPersist<
     TFieldValues extends FieldValues = FieldValues,
@@ -93,8 +102,8 @@ function useFormPersist<
     TTransformedValues extends FieldValues | undefined = undefined
 >(
     cookieKey: string,
-    props?: PropsWithoutDefaultValues
-): UseFormReturn<TFieldValues, TContext, TTransformedValues> {
+    props?: PropsWithoutDefaultValues<TFieldValues, TContext>
+): TReturn<TFieldValues, TContext, TTransformedValues> {
     const [cookie, setCookie] = useCookie<TFieldValues | typeof EMPTY_FALLBACK>(
         cookieKey,
         EMPTY_FALLBACK
@@ -105,16 +114,31 @@ function useFormPersist<
         return props?.values as TFieldValues;
     }, [cookie, props?.values]);
 
-    // TODO: fix this any ????
-    const formProps = { ...(props || {}), values } as any;
+    const formProps = { ...(props || {}), values };
 
     const methods = useForm<TFieldValues, TContext, TTransformedValues>(
         formProps
     );
 
-    useUnsavedChangesWatcher();
+    // ---------------------------------------------------------------------
 
-    return methods;
+    const shouldPersist = useRef(true);
+    const disablePersist = useCallback(() => {
+        shouldPersist.current = false;
+    }, []);
+
+    // ---------------------------------------------------------------------
+
+    const onExit = useCallback(() => {
+        if (!shouldPersist) return;
+        debugLog("persisting form...");
+        setCookie(methods.getValues());
+    }, []);
+    useUnsavedChangesWatcher(onExit);
+
+    // ---------------------------------------------------------------------
+
+    return [methods, { disablePersist }];
 }
 
 export default useFormPersist;

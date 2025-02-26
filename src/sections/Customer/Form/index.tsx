@@ -102,8 +102,8 @@ const useCustomerForm = (customer?: ICustomer) => {
 
     const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
 
-    const methods = useFormPersist<ICustomerYup>("PPCustomerForm", {
-        resolver: yupResolver(LoginSchema) as any,
+    const [methods] = useFormPersist<ICustomerYup>("PPCustomerForm", {
+        resolver: yupResolver(LoginSchema),
         values: defaultValues,
     });
 
