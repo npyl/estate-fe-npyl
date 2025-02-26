@@ -7,13 +7,23 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 interface TasksCountProps {
     count: number;
+    assignee: number;
 }
 
-const TasksCount: FC<TasksCountProps> = ({ count }) => {
+const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => {
     const { t } = useTranslation();
+    const router = useRouter();
+
+    const handleRedirectTasks = () => {
+        router.push({
+            pathname: "/tasks",
+            query: { assignee },
+        });
+    };
 
     return (
         <Typography
@@ -21,6 +31,8 @@ const TasksCount: FC<TasksCountProps> = ({ count }) => {
             bgcolor={(theme) => alpha(theme.palette.info.main, 0.3)}
             borderRadius="16px"
             px={1}
+            sx={{ cursor: "pointer", "&:hover": { opacity: 0.8 } }}
+            onClick={handleRedirectTasks}
         >
             {count} {t("_tasks_lowercase")}
         </Typography>
@@ -29,23 +41,41 @@ const TasksCount: FC<TasksCountProps> = ({ count }) => {
 
 interface PropertiesProgressProps {
     count: number;
+    assignee: number;
 }
 
-const PropertiesProgress: FC<PropertiesProgressProps> = ({ count }) => {
+const PropertiesProgress: FC<PropertiesProgressProps> = ({
+    count,
+    assignee,
+}) => {
     const { data } = useGetDashboardQuery();
 
     const all = data?.totalProperties ?? 1000;
 
     const percentage = Math.round((count / all) * 100);
+    const router = useRouter();
 
+    const handleRedirectProperties = () => {
+        router.push({
+            pathname: "/property",
+            query: { assignee },
+        });
+    };
     return (
-        <Stack direction="row" width="25%" spacing={1} alignItems="center">
+        <Stack
+            direction="row"
+            width="25%"
+            spacing={1}
+            alignItems="center"
+            sx={{ cursor: "pointer", "&:hover": { opacity: 0.8 } }}
+        >
             <Box
                 width="100%"
                 height="8px"
                 bgcolor="divider"
                 position="relative"
                 borderRadius="4px"
+                onClick={handleRedirectProperties}
             >
                 <Box
                     width={`${percentage}%`}
@@ -127,9 +157,9 @@ const UserRow: FC<UserRowProps> = ({ u, propertiesCount }) => (
     >
         <User u={u} />
 
-        <TasksCount count={u?.activeTasks} />
+        <TasksCount count={u?.activeTasks} assignee={u?.id} />
 
-        <PropertiesProgress count={propertiesCount} />
+        <PropertiesProgress count={propertiesCount} assignee={u?.id} />
     </Stack>
 );
 
