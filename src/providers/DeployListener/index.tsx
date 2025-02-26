@@ -1,25 +1,21 @@
-import { useGetVersionQuery } from "@/services/server";
-import { useEffect } from "react";
 import toast from "./Toast";
-import debugLog from "@/_private/debugLog";
+import useVersion from "./useVersion";
+import useVersionLive from "./useVersionLive";
 
 const localBuildId = process.env.NEXT_PUBLIC_BUILD_ID || "";
 
+const onBuildId = (id?: string) => {
+    if (!id || !localBuildId) return;
+
+    const mismatch = localBuildId !== id;
+    if (!mismatch) return;
+
+    toast();
+};
+
 const DeployListener = () => {
-    const { data } = useGetVersionQuery();
-    const { buildId } = data || {};
-
-    useEffect(() => {
-        debugLog("BUILD_ID: ", buildId, " LOCAL_BUILD_ID: ", localBuildId);
-
-        if (!buildId || !localBuildId) return;
-
-        const mismatch = localBuildId !== buildId;
-        if (!mismatch) return;
-
-        toast();
-    }, [buildId]);
-
+    useVersion(onBuildId);
+    useVersionLive(onBuildId);
     return null;
 };
 
