@@ -63,7 +63,7 @@ function useFormPersist<
     TContext = any,
     TTransformedValues extends FieldValues | undefined = undefined
 >(
-    cookieKey: string,
+    cookieKey: string | null,
     props?: PropsWithoutDefaultValues<TFieldValues, TContext>
 ): TReturn<TFieldValues, TContext, TTransformedValues> {
     const [cookie, setCookie, removeCookie] =
@@ -94,6 +94,8 @@ function useFormPersist<
                     }
 
                     if (res) {
+                        debugLog("removing cookie...");
+                        disablePersist();
                         removeCookie();
                     }
                 };
@@ -120,11 +122,13 @@ function useFormPersist<
     const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
 
     const onExit = useCallback(() => {
-        if (!shouldPersist) return;
+        if (!shouldPersist.current) return;
 
         debugLog("persisting form...");
 
-        const data = temporaryChanges.current as TFieldValues;
+        const data = temporaryChanges.current;
+        if (!data) return;
+
         setCookie(data);
         quickToast();
     }, []);

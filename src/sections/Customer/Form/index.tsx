@@ -21,7 +21,8 @@ interface FormProps {
     customer?: ICustomer;
     isLoading: boolean;
     isError: boolean;
-    onSave: (body: ICustomerPOST) => void;
+    onSave: (body: ICustomerPOST) => Promise<any | { error: "" }>;
+    onSaveSuccess?: VoidFunction;
     onCancel: () => void;
 }
 const COLUMN_GRID = (compact: boolean) =>
@@ -39,6 +40,7 @@ const Form: FC<FormProps> = ({
     isError,
 
     onSave,
+    onSaveSuccess = () => {},
     onCancel,
 }) => {
     const { t } = useTranslation();
@@ -47,20 +49,21 @@ const Form: FC<FormProps> = ({
     const isDirty = methods.formState.isDirty;
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
-    const handleSubmit = methods.handleSubmit((data: ICustomerYup) => {
-        try {
-            onSave({
-                ...(data as ICustomerPOST),
-                // TODO: see if this can be done cleaner (and change managedBy to just ?: number)
-                managedBy: (data?.managedBy as number) || undefined,
-                nationality: data?.nationality || undefined,
-                preferredLanguage: data?.preferredLanguage || undefined,
-                leadSource: data?.leadSource || undefined,
-            });
-        } catch (error) {
-            console.error(error);
-            methods.reset();
-        }
+    const handleSubmit = methods.handleSubmit(async (data: ICustomerYup) => {
+        const res = await onSave({
+            ...(data as ICustomerPOST),
+            // TODO: see if this can be done cleaner (and change managedBy to just ?: number)
+            managedBy: (data?.managedBy as number) || undefined,
+            nationality: data?.nationality || undefined,
+            preferredLanguage: data?.preferredLanguage || undefined,
+            leadSource: data?.leadSource || undefined,
+        });
+
+        if ("error" in res) return false;
+
+        onSaveSuccess();
+
+        return true;
     });
 
     const handleClear = useCallback(() => methods.reset(), []);

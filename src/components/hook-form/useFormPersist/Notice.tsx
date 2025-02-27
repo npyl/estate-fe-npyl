@@ -1,10 +1,10 @@
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import SoftTypography from "@/components/SoftLabel";
-import Button from "@mui/material/Button";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import Stack from "@mui/material/Stack";
 import { MutableRefObject, useCallback, useState } from "react";
+import IconButton from "@mui/material/IconButton";
 
 const useContentControl = <TFieldValues extends FieldValues>(
     values: TFieldValues | undefined,
@@ -44,32 +44,29 @@ const Notice = <TFieldValues extends FieldValues>({
         temporaryChangesRef
     );
 
-    const label0 = !isOriginal ? t("Persisted") : t("Original");
-    const label1 = isOriginal ? t("Persisted") : t("Original");
+    const label = !isOriginal ? t("Persisted") : t("Saved");
+    const color = isOriginal ? "primary" : "warning";
 
     return (
         <Stack
             direction="row"
             spacing={1}
             alignItems="center"
-            justifySelf="flex-end"
+            justifyContent="center"
         >
             <SoftTypography
                 width="fit-content"
                 p={1}
                 borderRadius={1}
                 textAlign="right"
+                color={color}
             >
-                {label0}
+                {label}
             </SoftTypography>
 
-            <Button
-                sx={{ ml: 1 }}
-                startIcon={<RestartAltIcon />}
-                onClick={onToggle}
-            >
-                {label1}
-            </Button>
+            <IconButton onClick={onToggle}>
+                <RestartAltIcon />
+            </IconButton>
         </Stack>
     );
 };

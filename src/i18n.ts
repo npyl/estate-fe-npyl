@@ -1249,7 +1249,7 @@ const resources = {
         translation: {
             Original: "Αρχική",
             Persisted: "Προσωρινή",
-            Saved: "Αποθηκεύτηκε",
+            Saved: "Αποθηκευμένη",
             Change: "Αλλαγή",
 
             Refresh: "Ανανέωση",
