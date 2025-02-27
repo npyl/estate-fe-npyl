@@ -44,6 +44,7 @@ const Form: FC<FormProps> = ({
     const { t } = useTranslation();
 
     const { methods, PersistNotice } = useCustomerForm(customer);
+    const isDirty = methods.formState.isDirty;
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
     const handleSubmit = methods.handleSubmit((data: ICustomerYup) => {
@@ -67,7 +68,7 @@ const Form: FC<FormProps> = ({
     return (
         <form>
             <FormProvider {...methods}>
-                {PersistNotice ? <PersistNotice /> : null}
+                {PersistNotice ? PersistNotice : null}
 
                 <Grid container paddingTop={1} paddingRight={1} spacing={1}>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
@@ -118,6 +119,7 @@ const Form: FC<FormProps> = ({
                     </Button>
 
                     <LoadingButton
+                        disabled={!isDirty}
                         loading={isLoading && !isError}
                         variant="contained"
                         startIcon={<SendIcon />}

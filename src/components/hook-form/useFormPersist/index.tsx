@@ -1,97 +1,18 @@
-import useCookie from "@/hooks/useCookie";
-import {
-    ComponentType,
-    FC,
-    useCallback,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-} from "react";
+import { ReactNode, useCallback, useMemo, useRef } from "react";
 import {
     FieldValues,
-    FormSubmitHandler,
-    SubmitErrorHandler,
     useForm,
     UseFormHandleSubmit,
     UseFormProps,
     UseFormReturn,
 } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import debugLog from "@/_private/debugLog";
-import SoftTypography from "../SoftLabel";
-import Button from "@mui/material/Button";
-import StartIcon from "@mui/icons-material/Start";
-import Stack from "@mui/material/Stack";
-
-// -----------------------------------------------------------------------------
-
-interface NoticeProps {}
-
-const Notice: FC<NoticeProps> = () => {
-    return (
-        <Stack direction="row" spacing={1} alignItems="center">
-            <SoftTypography
-                width="fit-content"
-                p={1}
-                borderRadius={1}
-                textAlign="right"
-            >
-                Persisted
-            </SoftTypography>
-            <Button sx={{ ml: 1 }} startIcon={<StartIcon />}>
-                Original
-            </Button>
-        </Stack>
-    );
-};
-
-// -----------------------------------------------------------------------------
-
-// Handle browser refresh/close with default prompt
-const useBeforeUnload = (cb: (e: BeforeUnloadEvent) => void) => {
-    useLayoutEffect(() => {
-        window.addEventListener("beforeunload", cb);
-        return () => {
-            window.removeEventListener("beforeunload", cb);
-        };
-    }, [cb]);
-};
-
-// Handle in-app navigation
-const useOnRouteChange = (cb: (url: string) => void) => {
-    const router = useRouter();
-
-    useLayoutEffect(() => {
-        router.events.on("routeChangeStart", cb);
-        return () => {
-            router.events.off("routeChangeStart", cb);
-        };
-    }, [cb]);
-};
-
-const useUnsavedChangesWatcher = (onExit: VoidFunction) => {
-    const { t } = useTranslation();
-
-    const router = useRouter();
-
-    const handleBeforeUnload = useCallback(() => {
-        onExit();
-        return "";
-    }, [t]);
-
-    const handleRouteChangeStart = useCallback(
-        (url: string) => {
-            // INFO: same page redirect
-            if (url === router.asPath) return;
-            onExit();
-        },
-        [router.asPath]
-    );
-
-    useBeforeUnload(handleBeforeUnload);
-    useOnRouteChange(handleRouteChangeStart);
-};
+import useUnsavedChangesWatcher from "./useUnsavedWatcher";
+import { EMPTY_FALLBACK, PROMISE_ERROR } from "./constant";
+import dynamic from "next/dynamic";
+import useFormCookie from "./useFormCookie";
+import quickToast from "./quickToast";
+const Notice = dynamic(() => import("./Notice"));
 
 // -----------------------------------------------------------------------------
 
@@ -110,17 +31,10 @@ type TReturn<
 > = [
     UseFormReturn<TFieldValues, TContext, TTransformedValues>,
     {
-        PersistNotice: ComponentType | null;
+        PersistNotice: ReactNode;
         disablePersist: VoidFunction;
     }
 ];
-
-// ....
-
-const EMPTY_FALLBACK = "EMPTY";
-
-const PROMISE_ERROR =
-    "useFormPersist: make sure handleSubmit's onValid callback is a promise returning true/false";
 
 /**
  * Hook for persisting a form to cookie
@@ -152,13 +66,12 @@ function useFormPersist<
     cookieKey: string,
     props?: PropsWithoutDefaultValues<TFieldValues, TContext>
 ): TReturn<TFieldValues, TContext, TTransformedValues> {
-    const [cookie, setCookie, removeCookie] = useCookie<
-        TFieldValues | typeof EMPTY_FALLBACK
-    >(cookieKey, EMPTY_FALLBACK);
+    const [cookie, setCookie, removeCookie] =
+        useFormCookie<TFieldValues>(cookieKey);
 
     const values = useMemo(() => {
         if (cookie !== EMPTY_FALLBACK) return cookie;
-        return props?.values as TFieldValues;
+        return props?.values;
     }, [cookie, props?.values]);
 
     const formProps = { ...(props || {}), values };
@@ -202,16 +115,30 @@ function useFormPersist<
 
     // ---------------------------------------------------------------------
 
+    // INFO: make sure cookie is not faulty
+    const safeCookie = cookie !== EMPTY_FALLBACK ? cookie : values;
+    const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
+
     const onExit = useCallback(() => {
         if (!shouldPersist) return;
+
         debugLog("persisting form...");
-        setCookie(methods.getValues());
+
+        const data = temporaryChanges.current as TFieldValues;
+        setCookie(data);
+        quickToast();
     }, []);
     useUnsavedChangesWatcher(onExit);
 
     // ---------------------------------------------------------------------
 
-    const PersistNotice = cookie !== EMPTY_FALLBACK ? Notice : null;
+    const PersistNotice =
+        cookie !== EMPTY_FALLBACK ? (
+            <Notice
+                values={props?.values}
+                temporaryChangesRef={temporaryChanges}
+            />
+        ) : null;
 
     return [
         { ...methods, handleSubmit },
