@@ -75,6 +75,7 @@ function useFormPersist<
         useFormCookie<TFieldValues>(cookieKey);
 
     const hasCookie = cookie !== EMPTY_FALLBACK;
+    console.log("HASCOOKIE: ", hasCookie);
 
     const values = useMemo(() => {
         if (hasCookie) return cookie;

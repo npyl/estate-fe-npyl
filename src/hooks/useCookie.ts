@@ -6,12 +6,10 @@ const LIBRARY_OPTIONS = {
     doNotUpdate: false /* Always update state after set/remove */,
 };
 
-// TODO: when we get to HTTPS this should be generalised to secure & strict
-const isSecure = process.env.NEXT_PUBLIC_SAFE_COOKIES === "1";
-
 const OPTIONS = {
-    sameSite: isSecure ? "strict" : "lax",
-    secure: isSecure,
+    sameSite: "strict",
+    secure: true,
+    path: "/",
 } as const;
 
 /**
