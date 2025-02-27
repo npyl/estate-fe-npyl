@@ -74,10 +74,12 @@ function useFormPersist<
     const [cookie, setCookie, removeCookie] =
         useFormCookie<TFieldValues>(cookieKey);
 
+    const hasCookie = cookie !== EMPTY_FALLBACK;
+
     const values = useMemo(() => {
-        if (cookie !== EMPTY_FALLBACK) return cookie;
+        if (hasCookie) return cookie;
         return props?.values;
-    }, [cookie, props?.values]);
+    }, [hasCookie, cookie, props?.values]);
 
     const formProps = { ...(props || {}), values };
 
@@ -128,10 +130,12 @@ function useFormPersist<
     // ---------------------------------------------------------------------
 
     // INFO: make sure cookie is not faulty
-    const safeCookie = cookie !== EMPTY_FALLBACK ? cookie : values;
+    const safeCookie = hasCookie ? cookie : values;
     const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
+    const isDirty = methods.formState.isDirty;
 
     const onExit = useCallback(() => {
+        if (!isDirty) return;
         if (!shouldPersist.current) return;
 
         debugLog("persisting form...");
@@ -141,18 +145,14 @@ function useFormPersist<
 
         setCookie(data);
         quickToast();
-    }, []);
+    }, [isDirty]);
     useUnsavedChangesWatcher(onExit);
 
     // ---------------------------------------------------------------------
 
-    const PersistNotice =
-        cookie !== EMPTY_FALLBACK ? (
-            <Notice
-                values={props?.values}
-                temporaryChangesRef={temporaryChanges}
-            />
-        ) : null;
+    const PersistNotice = hasCookie ? (
+        <Notice values={props?.values} temporaryChangesRef={temporaryChanges} />
+    ) : null;
 
     return [
         { ...methods, handleSubmit },

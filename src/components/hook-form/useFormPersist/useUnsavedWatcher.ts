@@ -32,7 +32,7 @@ const useUnsavedChangesWatcher = (onExit: VoidFunction) => {
     const handleBeforeUnload = useCallback(() => {
         onExit();
         return "";
-    }, [t]);
+    }, [t, onExit]);
 
     const handleRouteChangeStart = useCallback(
         (url: string) => {
@@ -40,7 +40,7 @@ const useUnsavedChangesWatcher = (onExit: VoidFunction) => {
             if (url === router.asPath) return;
             onExit();
         },
-        [router.asPath]
+        [router.asPath, onExit]
     );
 
     useBeforeUnload(handleBeforeUnload);

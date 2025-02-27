@@ -2,7 +2,8 @@ import { useCallback } from "react";
 import { useCookies } from "react-cookie";
 
 const LIBRARY_OPTIONS = {
-    doNotParse: false /* Make sure we always use JSON parser */,
+    doNotParse: false /* Always use JSON parser */,
+    doNotUpdate: false /* Always update state after set/remove */,
 };
 
 // TODO: when we get to HTTPS this should be generalised to secure & strict
