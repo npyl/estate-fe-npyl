@@ -73,14 +73,17 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
 const getCookieKey = (id: number = -1) =>
     id !== -1 ? `PPCustomerForm-${id}` : null;
 
-const useCustomerForm = (customer?: ICustomer) => {
+const useCustomerForm = (
+    customer: ICustomer | undefined,
+    onSaveSuccess: VoidFunction | null
+) => {
     const { t } = useTranslation();
 
     const defaultValues = useMemo(() => getDefaultValues(customer), [customer]);
     const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
 
     const cookieKey = getCookieKey(customer?.id);
-    const all = useFormPersist<ICustomerYup>(cookieKey, {
+    const all = useFormPersist<ICustomerYup>(cookieKey, onSaveSuccess, {
         resolver: yupResolver(LoginSchema),
         values: defaultValues,
     });

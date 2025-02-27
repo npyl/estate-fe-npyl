@@ -4,7 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 // Sections
 import AddressDetails from "./AddressDetails";
@@ -40,12 +40,13 @@ const Form: FC<FormProps> = ({
     isError,
 
     onSave,
-    onSaveSuccess = () => {},
+    onSaveSuccess = null,
     onCancel,
 }) => {
     const { t } = useTranslation();
 
-    const { methods, PersistNotice } = useCustomerForm(customer);
+    const { methods, PersistNotice } = useCustomerForm(customer, onSaveSuccess);
+
     const isDirty = methods.formState.isDirty;
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
@@ -60,8 +61,6 @@ const Form: FC<FormProps> = ({
         });
 
         if ("error" in res) return false;
-
-        onSaveSuccess();
 
         return true;
     });

@@ -57,6 +57,10 @@ type TReturn<
  * !IMPORTANT!: If you would like to *prevent* the onExit persist operation call the disablePersist() before any route change or exit
  *
  * !IMPORTANT!: the handleSubmit's onValid callback must be a Promise returning true/false (so that our code knows whether to remove the cookie or not!)
+ *
+ * @param cookieKey a valid string or null (which will immediately tell us to ignore it)
+ * @param onSaveSuccess a callback for the user to do whatever logic *AFTER* our custom submit's onValid has successfully completed!
+ *                      This is the proper method to implement things like redirects etc.
  */
 function useFormPersist<
     TFieldValues extends FieldValues = FieldValues,
@@ -64,6 +68,7 @@ function useFormPersist<
     TTransformedValues extends FieldValues | undefined = undefined
 >(
     cookieKey: string | null,
+    onSaveSuccess: VoidFunction | null,
     props?: PropsWithoutDefaultValues<TFieldValues, TContext>
 ): TReturn<TFieldValues, TContext, TTransformedValues> {
     const [cookie, setCookie, removeCookie] =
@@ -93,11 +98,16 @@ function useFormPersist<
                         throw new Error(PROMISE_ERROR);
                     }
 
-                    if (res) {
-                        debugLog("removing cookie...");
-                        disablePersist();
-                        removeCookie();
-                    }
+                    // INFO: do nothing on fail
+                    if (!res) return;
+
+                    // INFO: remove form's persisted verion
+                    debugLog("removing cookie...");
+                    disablePersist();
+                    removeCookie();
+
+                    // Do things like redirects etc.
+                    onSaveSuccess?.();
                 };
 
                 return methods.handleSubmit(
@@ -105,7 +115,7 @@ function useFormPersist<
                     onInvalid
                 )(e);
             },
-            [methods.handleSubmit]
+            [methods.handleSubmit, onSaveSuccess]
         );
 
     // ---------------------------------------------------------------------
