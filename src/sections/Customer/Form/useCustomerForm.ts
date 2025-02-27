@@ -70,7 +70,8 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     enableEmails: customer?.enableEmails || false,
 });
 
-const cookieKey = "PPCustomerForm";
+const getCookieKey = (id: number = -1) =>
+    id !== -1 ? `PPCustomerForm-${id}` : null;
 
 const useCustomerForm = (customer?: ICustomer) => {
     const { t } = useTranslation();
@@ -78,6 +79,7 @@ const useCustomerForm = (customer?: ICustomer) => {
     const defaultValues = useMemo(() => getDefaultValues(customer), [customer]);
     const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
 
+    const cookieKey = getCookieKey(customer?.id);
     const all = useFormPersist<ICustomerYup>(cookieKey, {
         resolver: yupResolver(LoginSchema),
         values: defaultValues,

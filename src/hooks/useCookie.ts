@@ -20,18 +20,22 @@ const OPTIONS = {
  * @returns res: useCookies()'s value or fallback, actualSet, actualRemove are wrappers for only changing specific cookie
  */
 const useCookie = <V extends string | number | object = string>(
-    cookieName: string,
+    cookieName: string | null,
     fallbackValue: V
 ) => {
+    const names = cookieName ? [cookieName] : [];
+
     const [value, set, remove] = useCookies<string, { [K in string]: V }>(
-        [cookieName],
+        names,
         LIBRARY_OPTIONS
     );
 
-    const actualSet = useCallback((v: V) => set(cookieName, v, OPTIONS), []);
-    const actualRemove = useCallback(() => remove(cookieName, OPTIONS), []);
+    const actualSet = useCallback((v: V) => set(cookieName!, v, OPTIONS), []);
+    const actualRemove = useCallback(() => remove(cookieName!, OPTIONS), []);
 
-    const res = value?.[cookieName] || fallbackValue;
+    const res = cookieName
+        ? value?.[cookieName] || fallbackValue
+        : fallbackValue;
 
     return [res, actualSet, actualRemove] as const;
 };

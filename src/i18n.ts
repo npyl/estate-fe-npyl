@@ -7,6 +7,7 @@ const resources = {
             Original: "Original",
             Persisted: "Persisted",
             Saved: "Saved",
+            Change: "Change",
 
             Refresh: "Refresh",
             _DEPLOY_VERSION_MISMATCH_0: "A newer version of PropertyPro is up",
@@ -1249,6 +1250,7 @@ const resources = {
             Original: "Αρχική",
             Persisted: "Προσωρινή",
             Saved: "Αποθηκεύτηκε",
+            Change: "Αλλαγή",
 
             Refresh: "Ανανέωση",
 
