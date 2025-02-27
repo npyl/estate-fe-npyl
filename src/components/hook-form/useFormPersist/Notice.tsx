@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import SoftTypography from "@/components/SoftLabel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import Stack from "@mui/material/Stack";
-import { MutableRefObject, useCallback, useState } from "react";
+import { MutableRefObject, useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
+import useToggle from "@/hooks/useToggle";
 
 const useContentControl = <TFieldValues extends FieldValues>(
     values: TFieldValues | undefined,
@@ -12,17 +13,11 @@ const useContentControl = <TFieldValues extends FieldValues>(
 ) => {
     const { reset, getValues } = useFormContext<TFieldValues>();
 
-    const [isOriginal, setOriginal] = useState(false);
+    const [isOriginal, toggleOriginal] = useToggle(false);
     const onToggle = useCallback(() => {
-        if (isOriginal) {
-            reset(temporaryChangesRef.current);
-            setOriginal(false);
-        } else {
-            // INFO: we are toggling a "Persisted" view; therefore make sure we save any temporary changes the user made
-            temporaryChangesRef.current = getValues();
-            reset(values);
-            setOriginal(true);
-        }
+        const data = isOriginal ? temporaryChangesRef.current : values;
+        reset(data);
+        toggleOriginal();
     }, [values, isOriginal, getValues]);
 
     return { isOriginal, onToggle };

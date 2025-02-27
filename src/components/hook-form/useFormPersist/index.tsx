@@ -2,19 +2,17 @@ import { ReactNode, useCallback, useMemo, useRef } from "react";
 import {
     FieldValues,
     useForm,
-    UseFormHandleSubmit,
     UseFormProps,
     UseFormReturn,
 } from "react-hook-form";
 import debugLog from "@/_private/debugLog";
 import useUnsavedChangesWatcher from "./useUnsavedWatcher";
-import { EMPTY_FALLBACK, PROMISE_ERROR } from "./constant";
+import { EMPTY_FALLBACK } from "./constant";
 import dynamic from "next/dynamic";
 import useFormCookie from "./useFormCookie";
 import quickToast from "./quickToast";
+import useFormMethods from "./useFormMethods";
 const Notice = dynamic(() => import("./Notice"));
-
-// -----------------------------------------------------------------------------
 
 /**
  * Omit 'defaultValues' from UseFormProps
@@ -75,7 +73,6 @@ function useFormPersist<
         useFormCookie<TFieldValues>(cookieKey);
 
     const hasCookie = cookie !== EMPTY_FALLBACK;
-    console.log("HASCOOKIE: ", hasCookie);
 
     const values = useMemo(() => {
         if (hasCookie) return cookie;
@@ -84,56 +81,25 @@ function useFormPersist<
 
     const formProps = { ...(props || {}), values };
 
-    const methods = useForm<TFieldValues, TContext, TTransformedValues>(
+    const methods0 = useForm<TFieldValues, TContext, TTransformedValues>(
         formProps
     );
-
-    const handleSubmit: UseFormHandleSubmit<TFieldValues, TTransformedValues> =
-        useCallback(
-            (onValid, onInvalid) => async (e) => {
-                /**
-                 * Wrapper around passed onValid to await-and-clear cookie after successful submit
-                 */
-                const onAwaitedValid = async (data: TFieldValues) => {
-                    const res = await onValid(data);
-
-                    if (typeof res !== "boolean") {
-                        throw new Error(PROMISE_ERROR);
-                    }
-
-                    // INFO: do nothing on fail
-                    if (!res) return;
-
-                    // INFO: remove form's persisted verion
-                    debugLog("removing cookie...");
-                    disablePersist();
-                    removeCookie();
-
-                    // Do things like redirects etc.
-                    onSaveSuccess?.();
-                };
-
-                return methods.handleSubmit(
-                    onAwaitedValid as any,
-                    onInvalid
-                )(e);
-            },
-            [methods.handleSubmit, onSaveSuccess]
-        );
 
     // ---------------------------------------------------------------------
 
     const shouldPersist = useRef(true);
-    const disablePersist = useCallback(() => {
-        shouldPersist.current = false;
-    }, []);
+    const disablePersist = useCallback(
+        () => (shouldPersist.current = false),
+        []
+    );
 
     // ---------------------------------------------------------------------
 
     // INFO: make sure cookie is not faulty
     const safeCookie = hasCookie ? cookie : values;
     const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
-    const isDirty = methods.formState.isDirty;
+
+    const isDirty = methods0.formState.isDirty;
 
     const onExit = useCallback(() => {
         if (!isDirty) return;
@@ -155,10 +121,24 @@ function useFormPersist<
         <Notice values={props?.values} temporaryChangesRef={temporaryChanges} />
     ) : null;
 
-    return [
-        { ...methods, handleSubmit },
-        { PersistNotice, disablePersist },
-    ] as const;
+    // ---------------------------------------------------------------------
+
+    const onChange = useCallback((key: string, value: any) => {
+        const old = temporaryChanges.current || props?.values;
+        temporaryChanges.current = { ...old, [key]: value } as TFieldValues;
+    }, []);
+    const onSubmitSuccess = useCallback(() => {
+        // INFO: remove form's persisted verion
+        debugLog("removing cookie...");
+        disablePersist();
+        removeCookie();
+
+        // Do things like redirects etc.
+        onSaveSuccess?.();
+    }, [onSaveSuccess]);
+    const methods = useFormMethods(methods0, onChange, onSubmitSuccess);
+
+    return [methods, { PersistNotice, disablePersist }] as const;
 }
 
 export default useFormPersist;
