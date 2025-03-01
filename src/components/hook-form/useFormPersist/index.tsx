@@ -99,6 +99,7 @@ function useFormPersist<
     const safeCookie = hasCookie ? cookie : values;
     const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
 
+    // INFO: it is important to grab isDirty from methods0 instead of methods
     const isDirty = methods0.formState.isDirty;
 
     const persistChanges = useCallback(() => {
@@ -140,7 +141,12 @@ function useFormPersist<
         // Do things like redirects etc.
         onSaveSuccess?.();
     }, [onSaveSuccess]);
-    const methods = useFormMethods(methods0, onChange, onSubmitSuccess);
+    const methods = useFormMethods(
+        hasCookie,
+        methods0,
+        onChange,
+        onSubmitSuccess
+    );
 
     return [methods, { PersistNotice, persistChanges }] as const;
 }

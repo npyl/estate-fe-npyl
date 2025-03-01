@@ -12,6 +12,7 @@ const useFormMethods = <
     TContext = any,
     TTransformedValues extends FieldValues | undefined = undefined
 >(
+    hasCookie: boolean,
     methods: UseFormReturn<TFieldValues, TContext, TTransformedValues>,
     onChange: (key: string, value: any) => void,
     onSubmitSuccess: VoidFunction
@@ -78,7 +79,11 @@ const useFormMethods = <
         return field as any;
     };
 
-    return { ...methods, setValue, handleSubmit };
+    // INFO: inject custom isDirty logic
+    const isDirty = methods.formState.isDirty || hasCookie;
+    const formState = { ...methods.formState, isDirty };
+
+    return { ...methods, formState, setValue, handleSubmit };
 };
 
 export default useFormMethods;
