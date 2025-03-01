@@ -30,7 +30,6 @@ type TReturn<
     UseFormReturn<TFieldValues, TContext, TTransformedValues>,
     {
         PersistNotice: ReactNode;
-        disablePersist: VoidFunction;
     }
 ];
 
@@ -142,7 +141,7 @@ function useFormPersist<
     }, [onSaveSuccess]);
     const methods = useFormMethods(methods0, onChange, onSubmitSuccess);
 
-    return [methods, { PersistNotice, disablePersist }] as const;
+    return [methods, { PersistNotice }] as const;
 }
 
 export default useFormPersist;

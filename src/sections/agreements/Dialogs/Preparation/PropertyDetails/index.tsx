@@ -53,6 +53,7 @@ const PropertyDetails: React.FC<Props> = ({ isCustomer, shouldAutofill }) => {
                 direction={{ xs: "column", sm: "row" }}
                 justifyContent="center"
                 spacing={1}
+                alignItems="center"
             >
                 {!isCustomer ? <RHFButtonGroup /> : null}
 
