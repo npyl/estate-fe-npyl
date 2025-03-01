@@ -6,6 +6,33 @@ import Stack from "@mui/material/Stack";
 import { MutableRefObject, useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
 import useToggle from "@/hooks/useToggle";
+import Button from "@mui/material/Button";
+import useFormCookie from "./useFormCookie";
+
+// -----------------------------------------------------------------------------
+
+interface ClearButtonProps<TFieldValues extends FieldValues> {
+    cookieKey: string | null;
+    temporaryChangesRef: MutableRefObject<TFieldValues | undefined>;
+}
+
+const ClearButton = <TFieldValues extends FieldValues>({
+    cookieKey,
+    temporaryChangesRef,
+}: ClearButtonProps<TFieldValues>) => {
+    const { t } = useTranslation();
+
+    const [_0, _1, remove] = useFormCookie(cookieKey);
+
+    const handleClick = useCallback(() => {
+        temporaryChangesRef.current = undefined;
+        remove();
+    }, [cookieKey]);
+
+    return <Button onClick={handleClick}>{t("Clear")}</Button>;
+};
+
+// -----------------------------------------------------------------------------
 
 const useContentControl = <TFieldValues extends FieldValues>(
     values: TFieldValues | undefined,
@@ -23,12 +50,16 @@ const useContentControl = <TFieldValues extends FieldValues>(
     return { isOriginal, onToggle };
 };
 
+// -----------------------------------------------------------------------------
+
 interface NoticeProps<TFieldValues extends FieldValues> {
+    cookieKey: string | null;
     values?: TFieldValues;
     temporaryChangesRef: MutableRefObject<TFieldValues | undefined>;
 }
 
 const Notice = <TFieldValues extends FieldValues>({
+    cookieKey,
     values,
     temporaryChangesRef,
 }: NoticeProps<TFieldValues>) => {
@@ -62,6 +93,11 @@ const Notice = <TFieldValues extends FieldValues>({
             <IconButton onClick={onToggle}>
                 <RestartAltIcon />
             </IconButton>
+
+            <ClearButton
+                cookieKey={cookieKey}
+                temporaryChangesRef={temporaryChangesRef}
+            />
         </Stack>
     );
 };

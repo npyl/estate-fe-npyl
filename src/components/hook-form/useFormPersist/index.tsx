@@ -105,10 +105,10 @@ function useFormPersist<
         if (!isDirty) return;
         if (!shouldPersist.current) return;
 
-        debugLog("persisting form...");
-
         const data = temporaryChanges.current;
         if (!data) return;
+
+        debugLog("persisting data: ", temporaryChanges);
 
         setCookie(data);
         quickToast();
@@ -118,7 +118,11 @@ function useFormPersist<
     // ---------------------------------------------------------------------
 
     const PersistNotice = hasCookie ? (
-        <Notice values={props?.values} temporaryChangesRef={temporaryChanges} />
+        <Notice
+            cookieKey={cookieKey}
+            values={props?.values}
+            temporaryChangesRef={temporaryChanges}
+        />
     ) : null;
 
     // ---------------------------------------------------------------------

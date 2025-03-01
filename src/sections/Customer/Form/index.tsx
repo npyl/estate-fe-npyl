@@ -4,7 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback } from "react";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 // Sections
 import AddressDetails from "./AddressDetails";
@@ -70,8 +70,6 @@ const Form: FC<FormProps> = ({
     return (
         <form>
             <FormProvider {...methods}>
-                {PersistNotice ? PersistNotice : null}
-
                 <Grid container paddingTop={1} paddingRight={1} spacing={1}>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
                         <CustomerInformation />
@@ -89,46 +87,50 @@ const Form: FC<FormProps> = ({
                 </Grid>
 
                 <Stack
-                    my={2}
-                    display="flex"
-                    justifyContent="flex-end"
-                    direction="row"
                     spacing={1}
-                    sx={{
-                        bgcolor: "background.neutral",
-                        width: "100%",
-                        p: 0.5,
-                        alignSelf: "flex-end",
-                        borderRadius: "10px",
-                        position: "sticky",
-                        zIndex: 1000,
-                        bottom: 0,
-                    }}
+                    borderRadius={1}
+                    bgcolor="background.neutral"
+                    width={1}
+                    p={1}
+                    position="sticky"
+                    zIndex={1000}
+                    bottom={0}
+                    // ...
+                    direction="row"
+                    alignItems="center"
+                    justifyContent={
+                        PersistNotice ? "space-between" : "flex-end"
+                    }
                 >
-                    <Button
-                        variant="outlined"
-                        startIcon={<CancelIcon />}
-                        onClick={onCancel}
-                    >
-                        {t("Cancel")}
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<DeleteIcon />}
-                        onClick={handleClear}
-                    >
-                        {t("Clear")}
-                    </Button>
+                    {PersistNotice ? PersistNotice : null}
 
-                    <LoadingButton
-                        disabled={!isDirty}
-                        loading={isLoading && !isError}
-                        variant="contained"
-                        startIcon={<SendIcon />}
-                        onClick={handleSubmit}
-                    >
-                        {t("Save")}
-                    </LoadingButton>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Button
+                            variant="outlined"
+                            startIcon={<CancelIcon />}
+                            onClick={onCancel}
+                        >
+                            {t("Cancel")}
+                        </Button>
+                        {!PersistNotice ? (
+                            <Button
+                                variant="outlined"
+                                startIcon={<DeleteIcon />}
+                                onClick={handleClear}
+                            >
+                                {t("Clear")}
+                            </Button>
+                        ) : null}
+                        <LoadingButton
+                            disabled={!isDirty}
+                            loading={isLoading && !isError}
+                            variant="contained"
+                            startIcon={<SendIcon />}
+                            onClick={handleSubmit}
+                        >
+                            {t("Save")}
+                        </LoadingButton>
+                    </Stack>
                 </Stack>
             </FormProvider>
         </form>
