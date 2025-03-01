@@ -16,7 +16,7 @@ const ErrorWatcher = dynamic(() => import("./ErrorWatcher"));
 interface IFormProps {
     property?: IProperties;
     onSubmitSuccess?: VoidFunction;
-    onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<void>;
+    onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<boolean>;
 }
 
 function Form({ property, onSubmit }: IFormProps) {
@@ -30,21 +30,14 @@ function Form({ property, onSubmit }: IFormProps) {
     const checkboxRef = useRef<GenerateCheckboxRef>(null);
     const handleSubmit = useCallback(
         async (data: IPropertyYup) => {
-            try {
-                const generate = checkboxRef.current?.getGenerate() || false;
+            const generate = checkboxRef.current?.getGenerate() || false;
 
-                const body = {
-                    ...(data as IPropertiesPOST),
-                    ...(fixDropdowns(
-                        data as IPropertiesPOST
-                    ) as IPropertiesPOST),
-                };
+            const body = {
+                ...(data as IPropertiesPOST),
+                ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
+            };
 
-                await onSubmit(body, generate);
-            } catch (error) {
-                console.error(error);
-                methods.reset();
-            }
+            return await onSubmit(body, generate);
         },
         [onSubmit]
     );
