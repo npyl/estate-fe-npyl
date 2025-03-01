@@ -24,6 +24,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
     padding: theme.spacing(3),
+    paddingTop: theme.spacing(1),
     boxShadow: theme.shadows[5],
 }));
 

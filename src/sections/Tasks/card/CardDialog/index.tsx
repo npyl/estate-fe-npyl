@@ -9,7 +9,7 @@ import {
 } from "./styled";
 import Content from "./Content";
 import Actions from "./Actions";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
 import {
@@ -18,6 +18,19 @@ import {
 } from "@/services/tasks";
 import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 import TaskTitle from "./TaskTitle";
+import useFormPersist from "@/components/hook-form/useFormPersist";
+
+// ------------------------------------------------------------------------------------------
+
+const getValues = (task: IKanbanCard | undefined, columnId: number) => ({
+    ...IKanbanCardRes2Req(task),
+    columnId,
+});
+
+// ------------------------------------------------------------------------------------------
+
+const getCookieKey = (id: number = -1) =>
+    id === -1 ? null : `PPTaskForm-${id}`;
 
 interface DetailsProps {
     task?: IKanbanCard;
@@ -28,13 +41,15 @@ interface DetailsProps {
 export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     const { name, uniqueCode } = task || {};
 
-    const methods = useForm<ICreateOrUpdateTaskReq>({
-        values: {
-            ...IKanbanCardRes2Req(task),
-            columnId,
-        },
-        resolver: yupResolver(schema),
-    });
+    const cookieKey = getCookieKey(task?.id);
+    const [methods, { PersistNotice }] = useFormPersist<ICreateOrUpdateTaskReq>(
+        cookieKey,
+        onClose,
+        {
+            resolver: yupResolver(schema),
+            values: getValues(task, columnId),
+        }
+    );
 
     // INFO: flag to know whether we are editing (w/ calendar);
     // Here, it is important to differenciate between a normal edit and an edit w/ calendar
@@ -42,13 +57,10 @@ export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
 
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
-    const handleSubmit = useCallback(
-        async (d: ICreateOrUpdateTaskReq) => {
-            await createOrUpdate(d);
-            onClose();
-        },
-        [onClose]
-    );
+    const handleSubmit = useCallback(async (d: ICreateOrUpdateTaskReq) => {
+        const res = await createOrUpdate(d);
+        return Boolean(res);
+    }, []);
 
     return (
         <FormProvider {...methods}>
@@ -73,7 +85,9 @@ export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                         haveEvent={haveEvent}
                     />
                 }
-                actions={<Actions onClose={onClose} />}
+                actions={
+                    <Actions PersistNotice={PersistNotice} onClose={onClose} />
+                }
             />
         </FormProvider>
     );
