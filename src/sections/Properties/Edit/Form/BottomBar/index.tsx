@@ -3,39 +3,31 @@ import ClearButton from "./ClearButton";
 import SubmitButton from "./SubmitButton";
 import CancelButton from "./CancelButton";
 import GenerateCheckbox, { GenerateCheckboxRef } from "./GenerateCheckbox";
-import { FC, RefObject } from "react";
+import { FC, ReactNode, RefObject } from "react";
 import Divider from "@mui/material/Divider";
+import FormBottomBar, { FormBottomBarProps } from "@/sections/FormBottomBar";
 
-interface BottomBarProps {
+interface BottomBarProps
+    extends Omit<FormBottomBarProps, "contentLeft" | "contentRight"> {
+    PersistNotice?: ReactNode;
     checkboxRef: RefObject<GenerateCheckboxRef>;
 }
 
-const BottomBar: FC<BottomBarProps> = ({ checkboxRef }) => (
-    <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        spacing={1}
-        mt={2}
-        sx={{
-            backgroundColor: "rgba(128, 128, 128, 0.1)",
-            width: "100%",
-            p: 0.5,
-            alignSelf: "flex-end",
-            borderRadius: "10px",
-            position: "sticky",
-            zIndex: 1000,
-            bottom: 1,
-        }}
-    >
-        <CancelButton />
-        <ClearButton />
+const BottomBar: FC<BottomBarProps> = ({ PersistNotice, checkboxRef }) => (
+    <FormBottomBar
+        contentLeft={PersistNotice}
+        contentRight={
+            <Stack direction="row" spacing={1} alignItems="center">
+                <CancelButton />
+                <ClearButton />
 
-        <Divider />
+                <Divider />
 
-        <GenerateCheckbox ref={checkboxRef} />
-        <SubmitButton />
-    </Stack>
+                <GenerateCheckbox ref={checkboxRef} />
+                <SubmitButton />
+            </Stack>
+        }
+    />
 );
 
 export default BottomBar;

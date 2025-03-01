@@ -12,17 +12,15 @@ const Land = dynamic(() => import("./forms/Land"));
 const Other = dynamic(() => import("./forms/Other"));
 // Watchers
 const ErrorWatcher = dynamic(() => import("./ErrorWatcher"));
-const UnsavedChangesWatcher = dynamic(() => import("./UnsavedChangesWatcher"));
 
 interface IFormProps {
     property?: IProperties;
-    isSuccess: boolean;
+    onSubmitSuccess?: VoidFunction;
     onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<void>;
 }
 
-function Form({ property, isSuccess, onSubmit }: IFormProps) {
-    const { methods } = usePropertyForm(property);
-    const isDirty = methods.formState.isDirty;
+function Form({ property, onSubmit }: IFormProps) {
+    const [methods, { PersistNotice }] = usePropertyForm(property);
 
     const haveError = useMemo(
         () => Object.keys(methods.formState.errors).length > 0,
@@ -62,12 +60,14 @@ function Form({ property, isSuccess, onSubmit }: IFormProps) {
                     {pc === "LAND" ? <Land /> : null}
                     {pc === "OTHER" ? <Other /> : null}
 
-                    <BottomBar checkboxRef={checkboxRef} />
+                    <BottomBar
+                        checkboxRef={checkboxRef}
+                        PersistNotice={PersistNotice}
+                    />
                 </FormProvider>
             </form>
 
             {/* Watchers w/ effects */}
-            {isDirty && !isSuccess ? <UnsavedChangesWatcher /> : null}
             {haveError ? <ErrorWatcher /> : null}
         </>
     );

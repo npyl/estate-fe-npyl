@@ -12,7 +12,7 @@ const EditById = () => {
     const router = useRouter();
     const { property, propertyId: id } = useGetProperty();
 
-    const [edit, { isSuccess }] = useEditPropertyMutation();
+    const [edit] = useEditPropertyMutation();
     const [generatePDF] = useGeneratePDFMutation();
 
     const handleSubmit = useCallback(
@@ -27,17 +27,19 @@ const EditById = () => {
                 const res1 = await generatePDF(id);
                 if ("error" in res1) return;
             }
-
-            router.push(`/property/${id}`);
         },
         [id]
     );
+
+    const onSubmitSuccess = useCallback(() => {
+        router.push(`/property/${id}`);
+    }, [id]);
 
     return (
         <Form
             property={property}
             onSubmit={handleSubmit}
-            isSuccess={isSuccess}
+            onSubmitSuccess={onSubmitSuccess}
         />
     );
 };

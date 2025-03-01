@@ -14,6 +14,7 @@ import NotesSection from "./NotesSection";
 import { FormProvider } from "react-hook-form";
 import { ICustomerYup } from "./types";
 import useCustomerForm from "./useCustomerForm";
+import FormBottomBar from "@/sections/FormBottomBar";
 
 interface FormProps {
     compact?: boolean;
@@ -86,52 +87,38 @@ const Form: FC<FormProps> = ({
                     </Grid>
                 </Grid>
 
-                <Stack
-                    spacing={1}
-                    borderRadius={1}
-                    bgcolor="background.neutral"
-                    width={1}
-                    p={1}
-                    position="sticky"
-                    zIndex={1000}
-                    bottom={0}
-                    // ...
-                    direction="row"
-                    alignItems="center"
-                    justifyContent={
-                        PersistNotice ? "space-between" : "flex-end"
-                    }
-                >
-                    {PersistNotice ? PersistNotice : null}
-
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <Button
-                            variant="outlined"
-                            startIcon={<CancelIcon />}
-                            onClick={onCancel}
-                        >
-                            {t("Cancel")}
-                        </Button>
-                        {!PersistNotice ? (
+                <FormBottomBar
+                    contentLeft={PersistNotice}
+                    contentRight={
+                        <Stack direction="row" spacing={1} alignItems="center">
                             <Button
                                 variant="outlined"
-                                startIcon={<DeleteIcon />}
-                                onClick={handleClear}
+                                startIcon={<CancelIcon />}
+                                onClick={onCancel}
                             >
-                                {t("Clear")}
+                                {t("Cancel")}
                             </Button>
-                        ) : null}
-                        <LoadingButton
-                            disabled={!isDirty}
-                            loading={isLoading && !isError}
-                            variant="contained"
-                            startIcon={<SendIcon />}
-                            onClick={handleSubmit}
-                        >
-                            {t("Save")}
-                        </LoadingButton>
-                    </Stack>
-                </Stack>
+                            {!PersistNotice ? (
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={handleClear}
+                                >
+                                    {t("Clear")}
+                                </Button>
+                            ) : null}
+                            <LoadingButton
+                                disabled={!isDirty}
+                                loading={isLoading && !isError}
+                                variant="contained"
+                                startIcon={<SendIcon />}
+                                onClick={handleSubmit}
+                            >
+                                {t("Save")}
+                            </LoadingButton>
+                        </Stack>
+                    }
+                />
             </FormProvider>
         </form>
     );
