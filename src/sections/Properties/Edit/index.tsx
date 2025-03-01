@@ -21,12 +21,14 @@ const EditById = () => {
             // Right now res0 triggers a revalidate and handleSubmit's await stops which means that the Submit button stops loading
 
             const res0 = await edit({ id, body });
-            if ("error" in res0) return;
+            if ("error" in res0) return false;
 
             if (generate) {
                 const res1 = await generatePDF(id);
-                if ("error" in res1) return;
+                if ("error" in res1) return false;
             }
+
+            return true;
         },
         [id]
     );
