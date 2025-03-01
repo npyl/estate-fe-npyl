@@ -1,40 +1,32 @@
-import { Button, ButtonGroup as MuiButtonGroup } from "@mui/material";
-import { FieldValues, UseFormSetValue } from "react-hook-form";
+import {
+    ToggleButton,
+    ToggleButtonGroup,
+    ToggleButtonGroupProps,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { IAgreementType } from "@/types/agreements";
+import { FC } from "react";
 
-type Option = { label: string; value: IAgreementType };
+type Option = { label: string; key: IAgreementType };
 
 const OPTIONS: Option[] = [
-    { label: "Basic", value: "BASIC" },
-    { label: "Basic Exclusive", value: "BASIC_EXCLUSIVE" },
+    { label: "Basic", key: "BASIC" },
+    { label: "Basic Exclusive", key: "BASIC_EXCLUSIVE" },
 ];
-
-const getVariant = (b: boolean) => (b ? "contained" : "outlined");
 
 // ------------------------------------------------------------------------
 
-interface ButtonGroupProps {
-    variant: IAgreementType;
-    setValue: UseFormSetValue<FieldValues>;
-}
-
-const ButtonGroup: React.FC<ButtonGroupProps> = ({ variant, setValue }) => {
+const ButtonGroup: FC<ToggleButtonGroupProps> = (props) => {
     const { t } = useTranslation();
 
     return (
-        <MuiButtonGroup>
-            {OPTIONS.map(({ label, value }) => (
-                <Button
-                    key={value}
-                    name="variant"
-                    variant={getVariant(variant === value)}
-                    onClick={() => setValue("variant", value)}
-                >
+        <ToggleButtonGroup exclusive {...props}>
+            {OPTIONS.map(({ label, key }) => (
+                <ToggleButton key={key} value={key}>
                     {t(label)}
-                </Button>
+                </ToggleButton>
             ))}
-        </MuiButtonGroup>
+        </ToggleButtonGroup>
     );
 };
 
