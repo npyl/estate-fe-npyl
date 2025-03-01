@@ -30,6 +30,7 @@ type TReturn<
     UseFormReturn<TFieldValues, TContext, TTransformedValues>,
     {
         PersistNotice: ReactNode;
+        persistChanges: VoidFunction;
     }
 ];
 
@@ -100,7 +101,7 @@ function useFormPersist<
 
     const isDirty = methods0.formState.isDirty;
 
-    const onExit = useCallback(() => {
+    const persistChanges = useCallback(() => {
         if (!isDirty) return;
         if (!shouldPersist.current) return;
 
@@ -112,7 +113,7 @@ function useFormPersist<
         setCookie(data);
         quickToast();
     }, [isDirty]);
-    useUnsavedChangesWatcher(onExit);
+    useUnsavedChangesWatcher(persistChanges);
 
     // ---------------------------------------------------------------------
 
@@ -141,7 +142,7 @@ function useFormPersist<
     }, [onSaveSuccess]);
     const methods = useFormMethods(methods0, onChange, onSubmitSuccess);
 
-    return [methods, { PersistNotice }] as const;
+    return [methods, { PersistNotice, persistChanges }] as const;
 }
 
 export default useFormPersist;

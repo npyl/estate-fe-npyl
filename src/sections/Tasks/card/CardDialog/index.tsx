@@ -38,18 +38,15 @@ interface DetailsProps {
     onClose: VoidFunction;
 }
 
-export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
+const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     const { name, uniqueCode } = task || {};
 
     const cookieKey = getCookieKey(task?.id);
-    const [methods, { PersistNotice }] = useFormPersist<ICreateOrUpdateTaskReq>(
-        cookieKey,
-        onClose,
-        {
+    const [methods, { PersistNotice, persistChanges }] =
+        useFormPersist<ICreateOrUpdateTaskReq>(cookieKey, onClose, {
             resolver: yupResolver(schema),
             values: getValues(task, columnId),
-        }
-    );
+        });
 
     // INFO: flag to know whether we are editing (w/ calendar);
     // Here, it is important to differenciate between a normal edit and an edit w/ calendar
@@ -61,6 +58,11 @@ export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
         const res = await createOrUpdate(d);
         return Boolean(res);
     }, []);
+
+    const handleClose = useCallback(() => {
+        persistChanges();
+        onClose();
+    }, [persistChanges, onClose]);
 
     return (
         <FormProvider {...methods}>
@@ -86,7 +88,10 @@ export const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
                     />
                 }
                 actions={
-                    <Actions PersistNotice={PersistNotice} onClose={onClose} />
+                    <Actions
+                        PersistNotice={PersistNotice}
+                        onClose={handleClose}
+                    />
                 }
             />
         </FormProvider>
@@ -109,4 +114,7 @@ const Wrapper: FC<WrapperProps> = ({ taskId, ...props }) => {
     return <Details {...props} />;
 };
 
+// ------------------------------------------------------------------
+
+export { Details };
 export default Wrapper;
