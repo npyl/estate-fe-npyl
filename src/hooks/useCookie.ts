@@ -29,8 +29,17 @@ const useCookie = <V extends string | number | object = string>(
         LIBRARY_OPTIONS
     );
 
-    const actualSet = useCallback((v: V) => set(cookieName!, v, OPTIONS), []);
-    const actualRemove = useCallback(() => remove(cookieName!, OPTIONS), []);
+    const actualSet = useCallback(
+        (v: V) => {
+            if (!cookieName) return;
+            set(cookieName, v, OPTIONS);
+        },
+        [cookieName, set]
+    );
+    const actualRemove = useCallback(() => {
+        if (!cookieName) return;
+        remove(cookieName, OPTIONS);
+    }, [cookieName, remove]);
 
     const res = cookieName
         ? value?.[cookieName] || fallbackValue

@@ -113,7 +113,7 @@ function useFormPersist<
 
         setCookie(data);
         quickToast();
-    }, [isDirty]);
+    }, [isDirty, setCookie]);
     useUnsavedChangesWatcher(persistChanges);
 
     // ---------------------------------------------------------------------
@@ -140,7 +140,7 @@ function useFormPersist<
 
         // Do things like redirects etc.
         onSaveSuccess?.();
-    }, [onSaveSuccess]);
+    }, [removeCookie, onSaveSuccess]);
     const methods = useFormMethods(
         hasCookie,
         methods0,

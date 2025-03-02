@@ -27,7 +27,7 @@ const ClearButton = <TFieldValues extends FieldValues>({
     const handleClick = useCallback(() => {
         temporaryChangesRef.current = undefined;
         remove();
-    }, [cookieKey]);
+    }, []);
 
     return <Button onClick={handleClick}>{t("Clear")}</Button>;
 };
