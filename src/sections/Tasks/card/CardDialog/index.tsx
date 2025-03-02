@@ -19,6 +19,7 @@ import {
 import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 import TaskTitle from "./TaskTitle";
 import useFormPersist from "@/components/hook-form/useFormPersist";
+import Pusher from "@/sections/Tasks/Pusher";
 
 // ------------------------------------------------------------------------------------------
 
@@ -65,36 +66,40 @@ const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
     }, [persistChanges, onClose]);
 
     return (
-        <FormProvider {...methods}>
-            <Dialog
-                open
-                submit
-                onSubmit={methods.handleSubmit(handleSubmit)}
-                // ...
-                sx={DialogSx}
-                DialogTitleComponent={StyledDialogTitle}
-                DialogContentComponent={StyledDialogContent}
-                DialogActionsComponent={StyledDialogActions}
-                // ...
-                title={<TaskTitle name={name} taskCode={uniqueCode} />}
-                content={
-                    <Content
-                        cardId={task?.id}
-                        // ...
-                        createdAt={task?.createdAt}
-                        updatedAt={task?.updatedAt}
-                        // ...
-                        haveEvent={haveEvent}
-                    />
-                }
-                actions={
-                    <Actions
-                        PersistNotice={PersistNotice}
-                        onClose={handleClose}
-                    />
-                }
-            />
-        </FormProvider>
+        <>
+            <Pusher taskId={task?.id} />
+
+            <FormProvider {...methods}>
+                <Dialog
+                    open
+                    submit
+                    onSubmit={methods.handleSubmit(handleSubmit)}
+                    // ...
+                    sx={DialogSx}
+                    DialogTitleComponent={StyledDialogTitle}
+                    DialogContentComponent={StyledDialogContent}
+                    DialogActionsComponent={StyledDialogActions}
+                    // ...
+                    title={<TaskTitle name={name} taskCode={uniqueCode} />}
+                    content={
+                        <Content
+                            cardId={task?.id}
+                            // ...
+                            createdAt={task?.createdAt}
+                            updatedAt={task?.updatedAt}
+                            // ...
+                            haveEvent={haveEvent}
+                        />
+                    }
+                    actions={
+                        <Actions
+                            PersistNotice={PersistNotice}
+                            onClose={handleClose}
+                        />
+                    }
+                />
+            </FormProvider>
+        </>
     );
 };
 
