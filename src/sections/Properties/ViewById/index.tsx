@@ -34,7 +34,7 @@ const GreenMap = dynamic(() => import("./(tabs)/Green"));
 const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
 const Tasks = dynamic(() => import("./(tabs)/Tasks"));
 const QuickView = dynamic(() => import("./(tabs)/QuickView"));
-const NotificationsTab = dynamic(() => import("./(tabs)/NotificationsTab"));
+const NotificationsTab = dynamic(() => import("./(tabs)/Notifications"));
 
 import { styled } from "@mui/material/styles";
 
