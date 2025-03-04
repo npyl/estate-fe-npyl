@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
     FieldValues,
     UseFormHandleSubmit,
@@ -80,8 +80,16 @@ const useFormMethods = <
     };
 
     // INFO: inject custom isDirty logic
-    const isDirty = methods.formState.isDirty || hasCookie;
-    const formState = { ...methods.formState, isDirty };
+    const formState = useMemo(
+        () =>
+            new Proxy(methods.formState, {
+                get(target, prop) {
+                    if (prop === "isDirty") return target.isDirty || hasCookie;
+                    return Reflect.get(target, prop);
+                },
+            }),
+        [methods.formState, hasCookie]
+    );
 
     return { ...methods, formState, setValue, handleSubmit };
 };
