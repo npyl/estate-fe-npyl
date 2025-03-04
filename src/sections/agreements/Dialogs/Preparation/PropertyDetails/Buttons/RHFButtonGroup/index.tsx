@@ -19,7 +19,10 @@ const RHFButtonGroup = () => {
 
                     {value !== "PURCHASE" ? (
                         <Stack spacing={1}>
-                            <ButtonGroup variant={value} setValue={onChange} />
+                            <ButtonGroup
+                                value={value}
+                                onChange={(_, v) => onChange(v)}
+                            />
 
                             {error ? (
                                 <FormHelperText error>

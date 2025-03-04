@@ -10,7 +10,7 @@ import { Z_INDEX } from "@/config";
 const PDFEditor = dynamic(() => import("./Editor"), { ssr: false });
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 
-interface Props extends Omit<DialogProps, "onClose"> {
+interface Props extends Omit<DialogProps, "open" | "onClose"> {
     suggestProperties: boolean;
     onClose: VoidFunction;
 }
@@ -28,37 +28,37 @@ const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
     };
 
     return (
-        <Box position="relative">
-            <Dialog {...props} fullScreen>
+        <Dialog open {...props} fullScreen>
+            <Box position="relative">
                 <PDFEditor>
                     {suggestProperties ? <SuggestProperties /> : null}
                 </PDFEditor>
-            </Dialog>
 
-            <ErrorTooltips />
+                <ErrorTooltips />
 
-            {/* Close */}
-            <Fab
-                sx={{
-                    position: "fixed",
-                    top: 30,
-                    right: 30,
-                    zIndex: Z_INDEX.AGREEMENT_FORM,
-                }}
-                onClick={props.onClose}
-            >
-                <CloseIcon />
-            </Fab>
+                {/* Close */}
+                <Fab
+                    sx={{
+                        position: "fixed",
+                        top: 30,
+                        right: 30,
+                        zIndex: Z_INDEX.AGREEMENT_FORM,
+                    }}
+                    onClick={props.onClose}
+                >
+                    <CloseIcon />
+                </Fab>
 
-            {/* Save */}
-            <SaveFab
-                position="fixed"
-                bottom={30}
-                right={30}
-                zIndex={Z_INDEX.AGREEMENT_FORM}
-                onClick={handleSave}
-            />
-        </Box>
+                {/* Save */}
+                <SaveFab
+                    position="fixed"
+                    bottom={30}
+                    right={30}
+                    zIndex={Z_INDEX.AGREEMENT_FORM}
+                    onClick={handleSave}
+                />
+            </Box>
+        </Dialog>
     );
 };
 

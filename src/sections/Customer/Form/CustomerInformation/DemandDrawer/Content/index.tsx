@@ -6,7 +6,7 @@ import {
     SxProps,
     Theme,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -30,8 +30,22 @@ interface Props {
 const Content: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
-    const { tabsRef, index, isIndexSafe, fields, changeTab, removeTab } =
-        useTabControl();
+    const {
+        tabsRef,
+        index,
+        isIndexSafe,
+        // ...
+        changeTab,
+        removeTab,
+        // ...
+        fields,
+    } = useTabControl();
+
+    useLayoutEffect(() => {
+        const isEmpty = fields.length === 0;
+        if (!isEmpty) return;
+        tabsRef.current?.add();
+    }, []);
 
     return (
         <>

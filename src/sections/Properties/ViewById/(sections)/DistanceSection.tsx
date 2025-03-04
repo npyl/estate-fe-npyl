@@ -1,14 +1,12 @@
-import React, { FC } from "react";
-import { IProperties, ParentCategory } from "src/types/properties";
+import { FC } from "react";
+import { ParentCategory } from "src/types/properties";
 import { Grid } from "@mui/material";
 import { List } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import DistanceListItem from "@/components/List/Items/distance";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface DistanceSectionProps {
-    data: IProperties;
-}
 interface DistancesItemProps {
     field: string;
 }
@@ -36,15 +34,15 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     OTHER: [],
 };
 
-const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
-    const { data } = props;
+const DistanceSection = () => {
+    const { property } = useGetProperty();
     const { t } = useTranslation();
 
-    const distances = data?.distances;
+    const distances = property?.distances;
 
     if (
-        data.parentCategory.key === "LAND" ||
-        data.parentCategory.key === "OTHER"
+        property?.parentCategory.key === "LAND" ||
+        property?.parentCategory.key === "OTHER"
     )
         return null;
 
@@ -134,7 +132,7 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
     };
     return (
         <PanelWithQuickView label="DistanceSection">
-            {renderDistances(data?.parentCategory.key as ParentCategory)}
+            {renderDistances(property?.parentCategory.key as ParentCategory)}
         </PanelWithQuickView>
     );
 };

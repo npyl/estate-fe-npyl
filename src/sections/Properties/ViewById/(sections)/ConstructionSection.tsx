@@ -1,11 +1,10 @@
-import { IProperties, ParentCategory } from "src/types/properties";
-
-import { Grid } from "@mui/material";
-
-import { List, ListBooleanItem, ListItem } from "src/components/List";
+import { IProperties, ParentCategory } from "@/types/properties";
+import Grid from "@mui/material/Grid";
+import { List, ListBooleanItem, ListItem } from "@/components/List";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
 interface ConstructionSectionProps {
     data: IProperties;
@@ -53,12 +52,14 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     ],
 };
 
-const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
+const ConstructionSection = () => {
     const { t } = useTranslation();
+
+    const { property: data } = useGetProperty();
 
     const construction = data?.construction;
 
-    if (data.parentCategory.key === "LAND") return null;
+    if (data?.parentCategory.key === "LAND") return null;
 
     const renderThirdOfFields = (
         fields: string[],

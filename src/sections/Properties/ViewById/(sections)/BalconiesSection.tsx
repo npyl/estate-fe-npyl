@@ -1,18 +1,13 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
-import { IProperties } from "src/types/properties";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface BalconiesSectionProps {
-    data: IProperties;
-}
-
-const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
-    const { data } = props;
+const BalconiesSection = () => {
+    const { property } = useGetProperty();
     const { t } = useTranslation();
-    const details = data?.details;
+    const details = property?.details;
     const balconies = details?.balconies || [];
 
     if (balconies.length === 0) return null;

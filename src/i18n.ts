@@ -4,6 +4,11 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Original: "Original",
+            Persisted: "Persisted",
+            Saved: "Saved",
+            Change: "Change",
+
             Refresh: "Refresh",
             _DEPLOY_VERSION_MISMATCH_0: "A newer version of PropertyPro is up",
             _DEPLOY_VERSION_MISMATCH_1:
@@ -42,6 +47,9 @@ const resources = {
 
             FIRST_NAME_ASC: "First Name (A-Z)",
             FIRST_NAME_DESC: "First Name (Z-A)",
+
+            LAST_NAME_ASC: "Last Name (A-Z)",
+            LAST_NAME_DESC: "Last Name (Z-A)",
 
             Registered: "Registered",
 
@@ -1244,6 +1252,11 @@ const resources = {
     },
     el: {
         translation: {
+            Original: "Αρχική",
+            Persisted: "Προσωρινή",
+            Saved: "Αποθηκευμένη",
+            Change: "Αλλαγή",
+
             Refresh: "Ανανέωση",
 
             _DEPLOY_VERSION_MISMATCH_0:
@@ -1279,6 +1292,9 @@ const resources = {
 
             FIRST_NAME_ASC: "Όνομα (Α-Ω)",
             FIRST_NAME_DESC: "Όνομα (Ω-Α)",
+
+            LAST_NAME_ASC: "Επώνυμο (A-Ω)",
+            LAST_NAME_DESC: "Επώνυμο (Ω-A)",
 
             "Update Demands": "Ενημέρωση Απαιτήσεων",
 

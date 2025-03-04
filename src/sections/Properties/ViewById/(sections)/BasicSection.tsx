@@ -8,15 +8,11 @@ import {
     ListLabelsItem,
     ListDateItem,
 } from "@/components/List";
-import { IProperties, ParentCategory } from "@/types/properties";
-import { IUser } from "@/types/user";
-import { ICustomer } from "@/types/customer";
+import { ParentCategory } from "@/types/properties";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface BasicSectionProps {
-    data: IProperties;
-}
 interface BasicDetailItemProps {
     field: string;
 }
@@ -126,12 +122,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     ],
 };
 
-const BasicSection: React.FC<BasicSectionProps> = (props) => {
-    const { data } = props;
+const BasicSection = () => {
+    const { property: data } = useGetProperty();
     const { t } = useTranslation();
 
-    const manager: IUser = data?.manager;
-    const owner: ICustomer = data?.owner;
+    const manager = data?.manager;
+    const owner = data?.owner;
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={12} sm={6}>
@@ -174,7 +170,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Parent Category")}
-                        value={t(data?.parentCategory.value) || "-"}
+                        value={data?.parentCategory.value || "-"}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -182,7 +178,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Category")}
-                        value={t(data?.category.value) || "-"}
+                        value={data?.category.value || "-"}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -198,7 +194,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Exclusive")}
-                        status={data?.exclusive ?? "-"}
+                        status={data?.exclusive}
                     />
                 );
             case "Plot Area":
@@ -329,7 +325,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 );
 
             case "Manager":
-                if (data.manager != null)
+                if (data?.manager != null)
                     return (
                         <ListManagerItem
                             managerId={manager?.id!}
@@ -349,7 +345,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("State")}
-                        value={t(data?.state.value) || "-"}
+                        value={data?.state.value || "-"}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -357,7 +353,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Rented")}
-                        status={data?.rented ?? "-"}
+                        status={data?.rented}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -365,7 +361,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Debatable Price")}
-                        status={data?.debatablePrice ?? "-"}
+                        status={data?.debatablePrice}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -373,7 +369,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Auction")}
-                        status={data?.auction ?? "-"}
+                        status={data?.auction}
                         sx={{ minHeight: "60px" }}
                     />
                 );
@@ -381,11 +377,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Buildable")}
-                        status={data?.buildable ?? "-"}
+                        status={data?.buildable}
                     />
                 );
             case "Owner":
-                if (data.owner != null)
+                if (data?.owner != null)
                     return (
                         <ListOwnerItem
                             ownerId={owner?.id!}

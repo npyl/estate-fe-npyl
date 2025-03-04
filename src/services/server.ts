@@ -4,15 +4,12 @@
  */
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-interface IVersionRes {
-    buildId: string;
-}
+import { IVersionRes } from "@/types/server";
 
 export const server = createApi({
     reducerPath: "server",
     baseQuery: fetchBaseQuery({
-        baseUrl: "/api",
+        baseUrl: "/api/server",
     }),
 
     endpoints: (builder) => ({

@@ -53,6 +53,8 @@ const useCreateOrUpdateTaskMutation = () => {
             // INFO: make sure we also update events
             if (b.withCalendar)
                 dispatch(calendar.util.invalidateTags(["Events"]));
+
+            return true;
         },
         [userId]
     );

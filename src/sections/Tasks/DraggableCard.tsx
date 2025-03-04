@@ -1,48 +1,36 @@
 import { Draggable } from "@hello-pangea/dnd";
-import useDialog from "@/hooks/useDialog";
 import Card, { TaskCardProps } from "./card";
-import dynamic from "next/dynamic";
-const CardDetails = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
+import { useCallback } from "react";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 // ----------------------------------------------------------------------
 
 interface DraggableCardProps extends TaskCardProps {
-    columnId: number;
     index: number;
 }
 
-export default function DraggableCard({
-    card,
-    index,
-    columnId,
-}: DraggableCardProps) {
-    const [isDetailsOpen, openDetails, closeDetails] = useDialog();
+const DraggableCard = ({ card, index }: DraggableCardProps) => {
+    const [_, setTaskId] = useQueryState("taskId", parseAsInteger);
+
+    const openDetails = useCallback(() => setTaskId(card?.id), [card?.id]);
 
     return (
-        <>
-            <Draggable
-                draggableId={`task-${card.id}`}
-                key={`task-${card.id}`}
-                index={index}
-            >
-                {(provided) => (
-                    <Card
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                        card={card}
-                        onClick={openDetails}
-                    />
-                )}
-            </Draggable>
-
-            {isDetailsOpen ? (
-                <CardDetails
-                    taskId={card.id}
-                    columnId={columnId}
-                    onClose={closeDetails}
+        <Draggable
+            draggableId={`task-${card.id}`}
+            key={`task-${card.id}`}
+            index={index}
+        >
+            {(provided) => (
+                <Card
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                    card={card}
+                    onClick={openDetails}
                 />
-            ) : null}
-        </>
+            )}
+        </Draggable>
     );
-}
+};
+
+export default DraggableCard;

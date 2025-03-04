@@ -5,10 +5,13 @@ import DoneIcon from "@mui/icons-material/Done";
 import ListItemProps from "../types";
 
 interface ListBooleanItemProps extends Omit<ListItemProps, "value"> {
-    status: boolean;
+    status?: boolean;
 }
 
-const ListBooleanItem: FC<ListBooleanItemProps> = ({ status, ...props }) => (
+const ListBooleanItem: FC<ListBooleanItemProps> = ({
+    status = false,
+    ...props
+}) => (
     <ListItem {...props}>
         {status ? (
             <DoneIcon sx={{ color: "success.main", fontSize: "inherit" }} />

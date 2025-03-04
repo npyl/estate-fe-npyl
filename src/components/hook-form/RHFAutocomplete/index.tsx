@@ -1,5 +1,4 @@
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
-import { ElementType, FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 interface RHFAutocompleteProps<

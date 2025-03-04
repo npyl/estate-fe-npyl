@@ -2,15 +2,14 @@ import { useCallback } from "react";
 import { useCookies } from "react-cookie";
 
 const LIBRARY_OPTIONS = {
-    doNotParse: false /* Make sure we always use JSON parser */,
+    doNotParse: false /* Always use JSON parser */,
+    doNotUpdate: false /* Always update state after set/remove */,
 };
 
-// TODO: when we get to HTTPS this should be generalised to secure & strict
-const isSecure = process.env.NEXT_PUBLIC_SAFE_COOKIES === "1";
-
 const OPTIONS = {
-    sameSite: isSecure ? "strict" : "lax",
-    secure: isSecure,
+    sameSite: "strict",
+    secure: true,
+    path: "/",
 } as const;
 
 /**
@@ -20,18 +19,31 @@ const OPTIONS = {
  * @returns res: useCookies()'s value or fallback, actualSet, actualRemove are wrappers for only changing specific cookie
  */
 const useCookie = <V extends string | number | object = string>(
-    cookieName: string,
+    cookieName: string | null,
     fallbackValue: V
 ) => {
+    const names = cookieName ? [cookieName] : [];
+
     const [value, set, remove] = useCookies<string, { [K in string]: V }>(
-        [cookieName],
+        names,
         LIBRARY_OPTIONS
     );
 
-    const actualSet = useCallback((v: V) => set(cookieName, v, OPTIONS), []);
-    const actualRemove = useCallback(() => remove(cookieName, OPTIONS), []);
+    const actualSet = useCallback(
+        (v: V) => {
+            if (!cookieName) return;
+            set(cookieName, v, OPTIONS);
+        },
+        [cookieName, set]
+    );
+    const actualRemove = useCallback(() => {
+        if (!cookieName) return;
+        remove(cookieName, OPTIONS);
+    }, [cookieName, remove]);
 
-    const res = value?.[cookieName] || fallbackValue;
+    const res = cookieName
+        ? value?.[cookieName] || fallbackValue
+        : fallbackValue;
 
     return [res, actualSet, actualRemove] as const;
 };

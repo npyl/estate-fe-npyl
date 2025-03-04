@@ -2,25 +2,19 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
-
 import { useTranslation } from "react-i18next";
-
 import { LoadingButton } from "@mui/lab";
-import { FC, useCallback, useEffect, useMemo } from "react";
-import { demandMapper } from "src/mappers/demand";
+import { FC, useCallback } from "react";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
-
 // Sections
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./NotesSection";
-
 // Forms
-import { yupResolver } from "@hookform/resolvers/yup";
-import { FormProvider, useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { TranslationType } from "@/types/translation";
+import { FormProvider } from "react-hook-form";
 import { ICustomerYup } from "./types";
+import useCustomerForm from "./useCustomerForm";
+import FormBottomBar from "@/sections/FormBottomBar";
 
 interface FormProps {
     compact?: boolean;
@@ -28,97 +22,10 @@ interface FormProps {
     customer?: ICustomer;
     isLoading: boolean;
     isError: boolean;
-    onSave: (body: ICustomerPOST) => void;
+    onSave: (body: ICustomerPOST) => Promise<any | { error: "" }>;
+    onSaveSuccess?: VoidFunction;
     onCancel: () => void;
 }
-
-const getLoginSchema = (t: TranslationType) =>
-    Yup.object().shape({
-        firstName: Yup.string().required(t<string>("First Name is required")),
-        lastName: Yup.string().required(t<string>("Last Name is required")),
-        email: Yup.string()
-            .email(t<string>("Email must be a valid email address"))
-            .optional(),
-        afm: Yup.string()
-            .test(
-                "length",
-                t<string>("VAT must be empty or exactly 9 digits"),
-                (value) => !value || value.length === 9
-            )
-            .optional(),
-    });
-
-const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
-    id: customer?.id,
-
-    firstName: customer?.firstName || "",
-    lastName: customer?.lastName || "",
-    email: customer?.email || "",
-    afm: customer?.afm || "",
-    managedBy: customer?.managedBy?.id || "",
-    mobilePhone: customer?.mobilePhone || "",
-
-    location: {
-        street: customer?.location?.street || "",
-        number: customer?.location?.number || "",
-        city: customer?.location?.city || "",
-    },
-
-    status: customer?.status || 0,
-
-    lessor: customer?.lessor || false,
-    leaser: customer?.leaser || false,
-    buyer: customer?.buyer || false,
-    seller: customer?.seller || false,
-
-    // prevent nulls:
-    homePhone: customer?.homePhone || "",
-    fax: customer?.fax || "",
-    idNumber: customer?.idNumber || "",
-    dateOfBirth: customer?.dateOfBirth,
-    passportNumber: customer?.passportNumber || "",
-
-    // WARN: BE crashes if these are: "" (therefore I have them required)
-    nationality: customer?.nationality?.key || "",
-    preferredLanguage: customer?.preferredLanguage?.key || "",
-    leadSource: customer?.leadSource?.key || "",
-
-    demands:
-        customer?.demands && customer?.demands?.length > 0
-            ? customer?.demands?.map(demandMapper)
-            : [],
-
-    // INFO: this field will only contain data on customer creation
-    notes: [],
-
-    enableEmails: customer?.enableEmails || false,
-});
-
-const useCustomerForm = (customer?: ICustomer) => {
-    const { t } = useTranslation();
-
-    const defaultValues = useMemo(() => getDefaultValues(customer), [customer]);
-
-    const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
-
-    const methods = useForm<ICustomerYup>({
-        resolver: yupResolver(LoginSchema),
-        values: defaultValues,
-    });
-
-    const haveError = useMemo(
-        () => Object.keys(methods.formState.errors).length > 0,
-        [methods.formState.errors]
-    );
-
-    // Scroll to top on error
-    useEffect(() => {
-        if (haveError) window.scrollTo(0, 0);
-    }, [haveError]);
-
-    return { methods };
-};
-
 const COLUMN_GRID = (compact: boolean) =>
     compact
         ? {
@@ -134,27 +41,29 @@ const Form: FC<FormProps> = ({
     isError,
 
     onSave,
+    onSaveSuccess = null,
     onCancel,
 }) => {
     const { t } = useTranslation();
 
-    const { methods } = useCustomerForm(customer);
+    const { methods, PersistNotice } = useCustomerForm(customer, onSaveSuccess);
+
+    const isDirty = methods.formState.isDirty;
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
-    const handleSubmit = methods.handleSubmit((data: ICustomerYup) => {
-        try {
-            onSave({
-                ...(data as ICustomerPOST),
-                // TODO: see if this can be done cleaner (and change managedBy to just ?: number)
-                managedBy: (data?.managedBy as number) || undefined,
-                nationality: data?.nationality || undefined,
-                preferredLanguage: data?.preferredLanguage || undefined,
-                leadSource: data?.leadSource || undefined,
-            });
-        } catch (error) {
-            console.error(error);
-            methods.reset();
-        }
+    const handleSubmit = methods.handleSubmit(async (data: ICustomerYup) => {
+        const res = await onSave({
+            ...(data as ICustomerPOST),
+            // TODO: see if this can be done cleaner (and change managedBy to just ?: number)
+            managedBy: (data?.managedBy as number) || undefined,
+            nationality: data?.nationality || undefined,
+            preferredLanguage: data?.preferredLanguage || undefined,
+            leadSource: data?.leadSource || undefined,
+        });
+
+        if ("error" in res) return false;
+
+        return true;
     });
 
     const handleClear = useCallback(() => methods.reset(), []);
@@ -178,47 +87,38 @@ const Form: FC<FormProps> = ({
                     </Grid>
                 </Grid>
 
-                <Stack
-                    my={2}
-                    display="flex"
-                    justifyContent="flex-end"
-                    direction="row"
-                    spacing={1}
-                    sx={{
-                        bgcolor: "background.neutral",
-                        width: "100%",
-                        p: 0.5,
-                        alignSelf: "flex-end",
-                        borderRadius: "10px",
-                        position: "sticky",
-                        zIndex: 1000,
-                        bottom: 0,
-                    }}
-                >
-                    <Button
-                        variant="outlined"
-                        startIcon={<CancelIcon />}
-                        onClick={onCancel}
-                    >
-                        {t("Cancel")}
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<DeleteIcon />}
-                        onClick={handleClear}
-                    >
-                        {t("Clear")}
-                    </Button>
-
-                    <LoadingButton
-                        loading={isLoading && !isError}
-                        variant="contained"
-                        startIcon={<SendIcon />}
-                        onClick={handleSubmit}
-                    >
-                        {t("Save")}
-                    </LoadingButton>
-                </Stack>
+                <FormBottomBar
+                    contentLeft={PersistNotice}
+                    contentRight={
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Button
+                                variant="outlined"
+                                startIcon={<CancelIcon />}
+                                onClick={onCancel}
+                            >
+                                {t("Cancel")}
+                            </Button>
+                            {!PersistNotice ? (
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={handleClear}
+                                >
+                                    {t("Clear")}
+                                </Button>
+                            ) : null}
+                            <LoadingButton
+                                disabled={!isDirty}
+                                loading={isLoading && !isError}
+                                variant="contained"
+                                startIcon={<SendIcon />}
+                                onClick={handleSubmit}
+                            >
+                                {t("Save")}
+                            </LoadingButton>
+                        </Stack>
+                    }
+                />
             </FormProvider>
         </form>
     );

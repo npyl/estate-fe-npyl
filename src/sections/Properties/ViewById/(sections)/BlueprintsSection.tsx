@@ -1,19 +1,16 @@
-import React from "react";
-import { IProperties } from "src/types/properties";
 import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
 import ICarouselImage from "@/components/Carousel/types";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface BlueprintsSectionProps {
-    data: IProperties;
-}
-
-const BlueprintsSection: React.FC<BlueprintsSectionProps> = ({
-    data: { blueprints },
-}) => (
-    <PanelWithQuickView label="BlueprintsSection">
-        <CarouselWithLightbox data={blueprints as ICarouselImage[]} />
-    </PanelWithQuickView>
-);
+const BlueprintsSection = () => {
+    const { property } = useGetProperty();
+    const { blueprints } = property || {};
+    return (
+        <PanelWithQuickView label="BlueprintsSection">
+            <CarouselWithLightbox data={blueprints as ICarouselImage[]} />
+        </PanelWithQuickView>
+    );
+};
 
 export default BlueprintsSection;

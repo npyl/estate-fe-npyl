@@ -50,6 +50,8 @@ interface ILogFilterPOST {
     resources?: string[];
     propertiesIds?: number[];
     customersIds?: number[];
+
+    search?: string;
 }
 
 export type { TLogAction, ILog, ILogFilter, ILogFilterPOST };

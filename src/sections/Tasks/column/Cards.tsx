@@ -4,11 +4,10 @@ import { Stack, StackProps } from "@mui/material";
 import DraggableCard from "@/sections/Tasks/DraggableCard";
 
 interface CardsProps extends StackProps {
-    columnId: number;
     ids: number[];
 }
 
-const Cards: FC<CardsProps> = ({ columnId, ids, ...props }) => {
+const Cards: FC<CardsProps> = ({ ids, ...props }) => {
     const { data: board } = useGetBoardQuery({});
     const cards = useMemo(() => board?.cards || [], [board]);
 
@@ -18,14 +17,7 @@ const Cards: FC<CardsProps> = ({ columnId, ids, ...props }) => {
                 const card = cards?.find((c) => c.id === id);
                 if (!card) return null;
 
-                return (
-                    <DraggableCard
-                        key={id}
-                        index={i}
-                        columnId={columnId}
-                        card={card}
-                    />
-                );
+                return <DraggableCard key={id} index={i} card={card} />;
             })}
         </Stack>
     );

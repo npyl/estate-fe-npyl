@@ -4,13 +4,14 @@ import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFieldArray, useWatch } from "react-hook-form";
 import Panel from "src/components/Panel";
-import { IPropertyDetailsParkingPOST } from "src/types/details";
 import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { KeyValue } from "src/types/KeyValue";
-import uuidv4 from "src/utils/uuidv4";
+import { IPropertyYup } from "../../hook";
+
+// ---------------------------------------------------------------------
 
 interface ParkingProps {
     options: KeyValue[];
@@ -41,6 +42,8 @@ const Parking = ({ options, index, onRemove }: ParkingProps) => {
     );
 };
 
+// ---------------------------------------------------------------------
+
 const useEnums = () => {
     const data = useGlobals();
     const details = useMemo(
@@ -54,54 +57,42 @@ const useEnums = () => {
     return { parkingType };
 };
 
+// ---------------------------------------------------------------------
+
+const nameKey = "details.parkings";
+
 const ParkingSection: React.FC = () => {
     const { t } = useTranslation();
-    const { setValue } = useFormContext();
+
     const { parkingType } = useEnums();
 
-    const parkings =
-        (useWatch({
-            name: "details.parkings",
-        }) as IPropertyDetailsParkingPOST[]) || [];
+    const { fields, append, remove } = useFieldArray<IPropertyYup>({
+        name: nameKey,
+    });
 
     const addParking = useCallback(
         () =>
-            setValue("details.parkings", [
-                ...parkings,
-                {
-                    parkingType: "",
-                    spots: 0,
-                },
-            ]),
-        [parkings]
-    );
-
-    const removeParking = useCallback(
-        (index: number) =>
-            setValue(
-                "details.parkings",
-                parkings?.filter((b, i) => i !== index)
-            ),
-        [parkings]
+            append({
+                parkingType: "",
+                spots: 0,
+            }),
+        []
     );
 
     const PARKINGS = useMemo(
         () =>
-            parkings?.map((b, i) => (
+            fields?.map((b, i) => (
                 <Parking
-                    key={uuidv4()}
+                    key={b.id}
                     index={i}
                     options={parkingType}
-                    onRemove={() => removeParking(i)}
+                    onRemove={() => remove(i)}
                 />
             )),
-        [parkings, removeParking]
+        [fields]
     );
 
-    const lastIndex = useMemo(
-        () => (parkings.length > 0 ? parkings.length - 1 : 0),
-        [parkings.length]
-    );
+    const lastIndex = fields.length > 0 ? fields.length - 1 : 0;
 
     const lastParkingType = useWatch({
         name: `details.parkings[${lastIndex}].parkingType`,
@@ -110,10 +101,7 @@ const ParkingSection: React.FC = () => {
         name: `details.parkings[${lastIndex}].spots`,
     });
 
-    const disabled = useMemo(
-        () => parkings.length > 0 && (!lastParkingType || !lastSpots),
-        [parkings.length, lastParkingType, lastSpots]
-    );
+    const disabled = fields.length > 0 && (!lastParkingType || !lastSpots);
 
     return (
         <Panel

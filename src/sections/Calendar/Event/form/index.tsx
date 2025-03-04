@@ -5,7 +5,7 @@ import {
     TCalendarEvent,
 } from "@/components/Calendar/types";
 import { useTranslation } from "react-i18next";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
@@ -35,6 +35,17 @@ const getDefault = (startDate?: string): CalendarEventReq => ({
 
 // ------------------------------------------------------------------------
 
+const PeopleLoader = () => {
+    const type = useWatch<CalendarEventReq>({ name: "type" });
+    const isNotTask = type !== "TASK";
+
+    if (isNotTask) return <People />;
+
+    return null;
+};
+
+// ------------------------------------------------------------------------
+
 const TextFieldSx = {
     px: 0.5,
 };
@@ -59,8 +70,6 @@ const CreateUpdateForm: FC<Props> = ({
     const methods = useForm<CalendarEventReq>({
         values: event || getDefault(startDate),
     });
-
-    const isNotTask = methods.watch("type") !== "TASK";
 
     const isDirty = methods.formState.isDirty;
     const isSubmitting = methods.formState.isSubmitting;
@@ -106,7 +115,7 @@ const CreateUpdateForm: FC<Props> = ({
                         <RHFTypeSelect />
                     </Stack>
 
-                    {isNotTask ? <People /> : null}
+                    <PeopleLoader />
 
                     <RHFMultilineTextField
                         label={t("Description")}

@@ -1,9 +1,9 @@
 import ICarouselImage from "@/components/Carousel/types";
 import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
-import { IProperties } from "src/types/properties";
 import PanelWithQuickView from "../PanelWithQuickView";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material";
+import { useGetProperty } from "@/hooks/property";
 
 const toggleSx: SxProps<Theme> = {
     ".ToggleButton": {
@@ -20,19 +20,18 @@ const toggleSx: SxProps<Theme> = {
     },
 };
 
-interface ImageSectionProps {
-    data: IProperties;
-}
+const ImageSection = () => {
+    const { property } = useGetProperty();
+    const { active, images } = property || {};
 
-const ImageSection: React.FC<ImageSectionProps> = ({
-    data: { active, images },
-}) => (
-    <PanelWithQuickView hideHeader label="ImageSection" toggleSx={toggleSx}>
-        <CarouselWithLightbox
-            isActive={active}
-            data={images as ICarouselImage[]}
-        />
-    </PanelWithQuickView>
-);
+    return (
+        <PanelWithQuickView hideHeader label="ImageSection" toggleSx={toggleSx}>
+            <CarouselWithLightbox
+                isActive={active}
+                data={images as ICarouselImage[]}
+            />
+        </PanelWithQuickView>
+    );
+};
 
 export default ImageSection;
