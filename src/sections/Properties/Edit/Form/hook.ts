@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { LocationDisplay } from "src/types/enums";
 import * as Yup from "yup";
 import dayjs from "dayjs";
@@ -9,6 +8,9 @@ import {
     codeIsUnique,
     keyCodeIsUnique,
 } from "@/sections/Properties/validators";
+import useFormPersist from "@/components/hook-form/useFormPersist";
+import { toNumberSafe } from "@/utils/toNumber";
+import { useRouter } from "next/router";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -331,7 +333,19 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
     };
 };
 
-const usePropertyForm = (property?: IProperties) => {
+const getCookieKey = (id: number = -1) =>
+    id === -1 ? null : `PPPropertyForm-${id}`;
+
+const usePropertyForm = (
+    property?: IProperties,
+    onSubmitSucces: VoidFunction | null = null
+) => {
+    const router = useRouter();
+    const { propertyId } = router.query;
+    const iPropertyId = toNumberSafe(propertyId);
+
+    const cookieKey = getCookieKey(iPropertyId);
+
     const values = useMemo(() => getDefaultValues(property), [property]);
 
     const LoginSchema = getLoginSchema(
@@ -339,12 +353,10 @@ const usePropertyForm = (property?: IProperties) => {
         property?.keyCode || null
     );
 
-    const methods = useForm<IPropertyYup>({
+    return useFormPersist<IPropertyYup>(cookieKey, onSubmitSucces, {
         resolver: yupResolver(LoginSchema),
         values,
     });
-
-    return { methods };
 };
 
 export default usePropertyForm;

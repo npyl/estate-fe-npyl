@@ -21,8 +21,7 @@ const CustomerEdit = () => {
     const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 
     const handleEdit = useCallback(
-        (body: ICustomerPOST) =>
-            edit({ ...body, id: +customerId! }).then(redirectToView),
+        (body: ICustomerPOST) => edit({ ...body, id: +customerId! }),
         [customerId]
     );
 
@@ -37,6 +36,7 @@ const CustomerEdit = () => {
             isLoading={isLoading}
             isError={isError}
             onSave={handleEdit}
+            onSaveSuccess={redirectToView}
             onCancel={redirectToView}
         />
     );

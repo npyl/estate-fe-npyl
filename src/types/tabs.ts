@@ -6,6 +6,7 @@ type TTabRenderer =
     | "PROPERTY_VIEW"
     | "PROPERTY_EDIT"
     | "AGREEMENT"
+    | "TASK"
     | "PROFILE"
     | "USER";
 

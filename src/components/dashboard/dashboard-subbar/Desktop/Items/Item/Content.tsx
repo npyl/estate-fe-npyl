@@ -10,6 +10,7 @@ import PropertyView from "./Renderers/PropertyView";
 import User from "./Renderers/User";
 import CustomerCreate from "./Renderers/CustomerCreate";
 import PropertyCreate from "./Renderers/PropertyCreate";
+import Task from "./Renderers/Task";
 
 // --------------------------------------------------------------------
 
@@ -25,6 +26,7 @@ const RENDERERS: TRenderers = {
     PROPERTY_EDIT: PropertyEdit,
     PROPERTY_VIEW: PropertyView,
     AGREEMENT: Agreement,
+    TASK: Task,
     PROFILE: Profile,
     USER: User,
 };

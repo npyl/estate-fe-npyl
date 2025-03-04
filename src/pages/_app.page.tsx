@@ -21,15 +21,12 @@ import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
-// DatePicker
-import DatePickerProvider from "@/providers/DatePicker";
-
 import Toaster from "@/components/Toaster";
-import NotificationsListener from "@/providers/NotificationsListener";
 
 // IMPORTANT
 import "@/_private/JSON";
-import DeployListener from "@/providers/DeployListener";
+
+import AuthenticatedProviders from "@/providers/Authenticated";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -83,18 +80,13 @@ const App: FC<EnhancedAppProps> = (props) => {
                                             !auth.isInitialized ? (
                                                 <SplashScreen />
                                             ) : (
-                                                <>
-                                                    <DeployListener />
-                                                    <NotificationsListener />
-
-                                                    <DatePickerProvider>
-                                                        {getLayout(
-                                                            <Component
-                                                                {...pageProps}
-                                                            />
-                                                        )}
-                                                    </DatePickerProvider>
-                                                </>
+                                                <AuthenticatedProviders>
+                                                    {getLayout(
+                                                        <Component
+                                                            {...pageProps}
+                                                        />
+                                                    )}
+                                                </AuthenticatedProviders>
                                             )
                                         }
                                     </AuthConsumer>

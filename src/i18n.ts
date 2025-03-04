@@ -4,6 +4,11 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Original: "Original",
+            Persisted: "Persisted",
+            Saved: "Saved",
+            Change: "Change",
+
             Refresh: "Refresh",
             _DEPLOY_VERSION_MISMATCH_0: "A newer version of PropertyPro is up",
             _DEPLOY_VERSION_MISMATCH_1:
@@ -1244,6 +1249,11 @@ const resources = {
     },
     el: {
         translation: {
+            Original: "Αρχική",
+            Persisted: "Προσωρινή",
+            Saved: "Αποθηκευμένη",
+            Change: "Αλλαγή",
+
             Refresh: "Ανανέωση",
 
             _DEPLOY_VERSION_MISMATCH_0:

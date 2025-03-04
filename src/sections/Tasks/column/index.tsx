@@ -34,12 +34,7 @@ export default function Column({ column }: Props) {
                         columnId={column.id}
                     />
 
-                    <Cards
-                        mt={1}
-                        spacing={2}
-                        ids={column.cardIds}
-                        columnId={column.id}
-                    />
+                    <Cards mt={1} spacing={2} ids={column.cardIds} />
 
                     {provided.placeholder}
                 </StyledPaper>

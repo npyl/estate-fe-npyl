@@ -12,7 +12,7 @@ const EditById = () => {
     const router = useRouter();
     const { property, propertyId: id } = useGetProperty();
 
-    const [edit, { isSuccess }] = useEditPropertyMutation();
+    const [edit] = useEditPropertyMutation();
     const [generatePDF] = useGeneratePDFMutation();
 
     const handleSubmit = useCallback(
@@ -21,23 +21,27 @@ const EditById = () => {
             // Right now res0 triggers a revalidate and handleSubmit's await stops which means that the Submit button stops loading
 
             const res0 = await edit({ id, body });
-            if ("error" in res0) return;
+            if ("error" in res0) return false;
 
             if (generate) {
                 const res1 = await generatePDF(id);
-                if ("error" in res1) return;
+                if ("error" in res1) return false;
             }
 
-            router.push(`/property/${id}`);
+            return true;
         },
         [id]
     );
+
+    const onSubmitSuccess = useCallback(() => {
+        router.push(`/property/${id}`);
+    }, [id]);
 
     return (
         <Form
             property={property}
             onSubmit={handleSubmit}
-            isSuccess={isSuccess}
+            onSubmitSuccess={onSubmitSuccess}
         />
     );
 };

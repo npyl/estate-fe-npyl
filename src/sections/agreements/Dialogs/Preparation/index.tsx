@@ -6,19 +6,17 @@ import { IAgreementReq } from "@/types/agreements";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
-import useDialog from "@/hooks/useDialog";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Schema from "./schema";
 import {
     useCreateAgreementMutation,
     useGetAgreementByIdQuery,
     useUpdateAgreementMutation,
 } from "@/services/agreements";
-import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { TLanguageType } from "@/types/translation";
 import { getValues } from "./mapper";
@@ -26,7 +24,9 @@ import { StyledActions } from "./styled";
 import SubmitButton from "./Buttons/Submit";
 import ExportButton from "./Buttons/Export";
 import EditPDFButton from "./Buttons/EditPDF";
-const PDFEditorDialog = dynamic(() => import("../PDFEditor"));
+import useFormPersist from "@/components/hook-form/useFormPersist";
+import { TForm } from "./types";
+import Divider from "@mui/material/Divider";
 
 // -------------------------------------------------------------------
 
@@ -53,14 +53,15 @@ const useInitialValues = (id?: number) => {
 
 // -------------------------------------------------------------------
 
-type Draft<T> = T | Partial<T>;
+const getCookieKey = (id: number = -1) =>
+    id === -1 ? null : `PPAgreementForm-${id}`;
 
 interface Props extends DialogProps {
     editedAgreementId?: number;
 }
 
 const PreparationDialog: React.FC<Props> = ({
-    editedAgreementId,
+    editedAgreementId = -1,
     ...props
 }) => {
     const { t } = useTranslation();
@@ -68,40 +69,45 @@ const PreparationDialog: React.FC<Props> = ({
     const [createAgreement] = useCreateAgreementMutation();
     const [updateAgreement] = useUpdateAgreementMutation();
 
-    const [isPDFOpen, openPDF, closePDF] = useDialog();
-
     const { values, isCustomer } = useInitialValues(editedAgreementId);
-    const shouldAutofill = !editedAgreementId || editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
+    const shouldAutofill = editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
-    const methods = useForm<Draft<IAgreementReq>>({
-        resolver: zodResolver(Schema),
-        values,
-    });
+    const cookieKey = getCookieKey(editedAgreementId);
+    const [methods, { PersistNotice }] = useFormPersist<TForm>(
+        cookieKey,
+        null,
+        {
+            resolver: zodResolver(Schema),
+            values,
+        }
+    );
 
-    const isPurchase = values.variant === "PURCHASE";
+    const handleSubmit = useCallback(
+        async ({ auto, property, ...d }: TForm) => {
+            // NOTE: we must not pass this to BE
+            auto;
 
-    const handleSubmit = async ({
-        auto,
-        property,
-        ...d
-    }: Draft<IAgreementReq>) => {
-        // NOTE: we must not pass this to BE
-        auto;
+            const cb =
+                editedAgreementId !== -1 ? updateAgreement : createAgreement;
 
-        const cb = !!editedAgreementId ? updateAgreement : createAgreement;
+            // NOTE: BE wants us to calculate signed
+            const { agentSignature, commissionerSignature } =
+                d?.additional || {};
+            const signed = !!agentSignature && !!commissionerSignature;
 
-        // NOTE: BE wants us to calculate signed
-        const { agentSignature, commissionerSignature } = d?.additional || {};
-        const signed = !!agentSignature && !!commissionerSignature;
+            const body = {
+                ...d,
+                ...(d.variant === "PURCHASE" ? {} : { property }),
+                signed,
+            } as IAgreementReq;
 
-        const body = {
-            ...d,
-            ...(d.variant === "PURCHASE" ? {} : { property }),
-            signed,
-        } as IAgreementReq;
+            const res = await cb(body);
+            if ("error" in res) return false;
 
-        await cb(body);
-    };
+            return true;
+        },
+        [editedAgreementId]
+    );
 
     return (
         <>
@@ -120,37 +126,39 @@ const PreparationDialog: React.FC<Props> = ({
                                 shouldAutofill={shouldAutofill}
                             />
 
-                            <EditPDFButton onClick={openPDF} />
+                            <EditPDFButton />
                         </Stack>
                     }
                     DialogActionsComponent={StyledActions}
                     actions={
-                        <>
-                            <FormControlLabel
-                                label={t("Agreement date")}
-                                labelPlacement="start"
-                                control={
-                                    <RHFDatePicker name="additional.date" />
-                                }
-                            />
+                        <Stack spacing={1} width={1}>
+                            {PersistNotice ? PersistNotice : null}
+                            {PersistNotice ? <Divider /> : null}
 
-                            <RHFCheckbox
-                                name="draft"
-                                label={t("Save as draft")}
-                            />
-                            <SubmitButton />
-                            <ExportButton />
-                        </>
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                                justifyContent="flex-end"
+                            >
+                                <FormControlLabel
+                                    label={t("Agreement date")}
+                                    labelPlacement="start"
+                                    control={
+                                        <RHFDatePicker name="additional.date" />
+                                    }
+                                />
+
+                                <RHFCheckbox
+                                    name="draft"
+                                    label={t("Save as draft")}
+                                />
+                                <SubmitButton />
+                                <ExportButton />
+                            </Stack>
+                        </Stack>
                     }
                 />
-
-                {isPDFOpen ? (
-                    <PDFEditorDialog
-                        open
-                        suggestProperties={isPurchase}
-                        onClose={closePDF}
-                    />
-                ) : null}
             </FormProvider>
         </>
     );

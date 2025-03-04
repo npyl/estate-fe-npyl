@@ -1,11 +1,11 @@
-import { TCalendarEventType } from "@/components/Calendar/types";
 import { useWatch } from "react-hook-form";
 const Tour = dynamic(() => import("./Tour"));
 const Meeting = dynamic(() => import("./Meeting"));
 import dynamic from "next/dynamic";
+import { CalendarEventReq } from "@/types/calendar";
 
 const People = () => {
-    const type = useWatch({ name: "type" }) as TCalendarEventType;
+    const type = useWatch<CalendarEventReq>({ name: "type" });
 
     return (
         <>
