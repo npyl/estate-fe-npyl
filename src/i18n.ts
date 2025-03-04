@@ -48,6 +48,9 @@ const resources = {
             FIRST_NAME_ASC: "First Name (A-Z)",
             FIRST_NAME_DESC: "First Name (Z-A)",
 
+            LAST_NAME_ASC: "Last Name (A-Z)",
+            LAST_NAME_DESC: "Last Name (Z-A)",
+
             Registered: "Registered",
 
             "Stay Updated": "Stay Updated",
@@ -1289,6 +1292,9 @@ const resources = {
 
             FIRST_NAME_ASC: "Όνομα (Α-Ω)",
             FIRST_NAME_DESC: "Όνομα (Ω-Α)",
+
+            LAST_NAME_ASC: "Επώνυμο (A-Ω)",
+            LAST_NAME_DESC: "Επώνυμο (Ω-A)",
 
             "Update Demands": "Ενημέρωση Απαιτήσεων",
 

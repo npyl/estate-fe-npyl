@@ -32,6 +32,25 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
     },
 
     {
+        value: "LAST_NAME_ASC",
+        label: t("LAST_NAME_ASC"),
+        sorting: {
+            sortBy: "lastName",
+            direction: "ASC",
+        },
+        icon: "mdi:sort-alphabetical-ascending",
+    },
+    {
+        value: "LAST_NAME_DESC",
+        label: t("LAST_NAME_DESC"),
+        sorting: {
+            sortBy: "lastName",
+            direction: "DESC",
+        },
+        icon: "mdi:sort-alphabetical-descending",
+    },
+
+    {
         value: "LAST_ENTRY",
         label: t("Last entry"),
         sorting: {
