@@ -17,6 +17,7 @@ const initialState: IFilterProps = {
         resources: [],
         actions: [],
         users: [],
+        search: "",
     },
     ids: [],
 };
@@ -47,6 +48,11 @@ const slice = createSlice({
             state.filters.toDate = payload;
             !state.ids.includes("toDate") && state.ids.push("toDate");
         },
+
+        setSearch(state, { payload }) {
+            state.filters.search = payload;
+        },
+
         // general delete
         deleteFilter(state, { payload }) {
             const key = payload;
@@ -76,17 +82,19 @@ export const {
     //start-end
     setFromDate,
     setToDate,
+    setSearch,
     // delete
     deleteFilter,
 } = slice.actions;
-//multiple
+
 export const selectResources = ({ logsFilters }: RootState) =>
     logsFilters.filters.resources;
 export const selectActions = ({ logsFilters }: RootState) =>
     logsFilters.filters.actions;
 export const selectUsers = ({ logsFilters }: RootState) =>
     logsFilters.filters.users;
-//single
+export const selectSearch = ({ logsFilters }: RootState) =>
+    logsFilters.filters.search;
 
 //start-end
 export const selectFromDate = ({ logsFilters }: RootState) =>

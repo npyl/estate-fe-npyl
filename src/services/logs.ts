@@ -25,25 +25,25 @@ export const logs = apiWithTranslation({
         customerHistoryPaginated: builder.query<IPage<ILog>, ILogsParams>({
             query: (params: ILogsParams) => ({
                 url: `/customer/${params.id}`,
-                params: params,
+                params,
             }),
             providesTags: ["CustomerByIdLogs"],
         }),
         propertyHistoryPaginated: builder.query<IPage<ILog>, ILogsParams>({
             query: (params: ILogsParams) => ({
                 url: `/property/${params.id}`,
-                params: params,
+                params,
             }),
             providesTags: ["PropertyByIdLogs"],
         }),
         filterLogs: builder.query<IPage<ILog>, ILogFilterProps>({
-            query: (props: ILogFilterProps) => ({
+            query: ({ filter, page, pageSize }: ILogFilterProps) => ({
                 url: "/filter",
                 method: "POST",
-                body: props.filter,
+                body: filter,
                 params: {
-                    page: props.page,
-                    pageSize: props.pageSize,
+                    page,
+                    pageSize,
                 },
             }),
             providesTags: ["Logs"],

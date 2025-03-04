@@ -8,6 +8,7 @@ import FilterActions from "./Filters/FilterActions";
 import DateSelect from "./Filters/FilterDate";
 import FilterLogManager from "./Filters/FilterManagers";
 import FilterResources from "./Filters/FilterResources";
+import Search from "./Filters/Search";
 
 export const FilterLogSection = () => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
@@ -16,11 +17,12 @@ export const FilterLogSection = () => {
     return (
         <>
             <Stack
-                flexWrap={"wrap"}
+                flexWrap="wrap"
                 direction={isMobile ? "column" : "row"}
                 gap={1}
                 alignItems={"center"}
             >
+                <Search />
                 <FilterActions />
                 <FilterResources />
                 <DateSelect />
