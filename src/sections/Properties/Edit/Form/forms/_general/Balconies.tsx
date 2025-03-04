@@ -1,16 +1,16 @@
 import { IconButton, Stack } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
-import * as React from "react";
-import { useGlobals } from "src/hooks/useGlobals";
-import { IGlobalPropertyDetails } from "src/types/global";
+import { useGlobals } from "@/hooks/useGlobals";
+import { IGlobalPropertyDetails } from "@/types/global";
 import { useTranslation } from "react-i18next";
-import { useFormContext, useWatch } from "react-hook-form";
-import Panel from "src/components/Panel";
-import { IPropertyDetailsBalconyPOST } from "src/types/details";
+import { useFieldArray, useWatch } from "react-hook-form";
+import Panel from "@/components/Panel";
 import { useCallback, useMemo } from "react";
-import { RHFOnlyNumbers, Select } from "src/components/hook-form";
-import { KeyValue } from "src/types/KeyValue";
-import uuidv4 from "src/utils/uuidv4";
+import { RHFOnlyNumbers, Select } from "@/components/hook-form";
+import { KeyValue } from "@/types/KeyValue";
+import { IPropertyYup } from "../../hook";
+
+// --------------------------------------------------------------------------
 
 interface BalconyProps {
     options: KeyValue[];
@@ -41,6 +41,8 @@ const Balcony = ({ options, index, onRemove }: BalconyProps) => {
     );
 };
 
+// --------------------------------------------------------------------------
+
 const useEnums = () => {
     const data = useGlobals();
     const details = useMemo(
@@ -54,64 +56,46 @@ const useEnums = () => {
     return { balconySide };
 };
 
+// --------------------------------------------------------------------------
+
 const nameKey = "details.balconies";
 
-const BalconiesSection: React.FC = () => {
+const BalconiesSection = () => {
     const { t } = useTranslation();
 
-    const { setValue } = useFormContext();
+    const { fields, append, remove } = useFieldArray<IPropertyYup>({
+        name: nameKey,
+    });
 
     const { balconySide } = useEnums();
 
-    const balconies =
-        (useWatch({ name: nameKey }) as IPropertyDetailsBalconyPOST[]) || [];
-
     const addBalcony = useCallback(
         () =>
-            setValue("details.balconies", [
-                ...balconies,
-                {
-                    side: "",
-                    area: 0,
-                },
-            ]),
-        [balconies]
-    );
-
-    const removeBalcony = useCallback(
-        (index: number) =>
-            setValue(
-                "details.balconies",
-                balconies?.filter((b, i) => i !== index)
-            ),
-        [balconies]
+            append({
+                side: "",
+                area: 0,
+            }),
+        []
     );
 
     const BALCONIES = useMemo(
         () =>
-            balconies?.map((b, i) => (
+            fields?.map((b, i) => (
                 <Balcony
-                    key={uuidv4()}
+                    key={b.id}
                     index={i}
                     options={balconySide}
-                    onRemove={() => removeBalcony(i)}
+                    onRemove={() => remove(i)}
                 />
             )),
-        [balconies, removeBalcony]
+        [fields]
     );
 
-    const lastIndex = useMemo(
-        () => (balconies.length > 0 ? balconies.length - 1 : 0),
-        [balconies.length]
-    );
+    const lastIndex = fields.length > 0 ? fields.length - 1 : 0;
 
     const lastArea = useWatch({ name: `details.balconies[${lastIndex}].area` });
     const lastSide = useWatch({ name: `details.balconies[${lastIndex}].side` });
-
-    const disabled = useMemo(
-        () => balconies.length > 0 && (!lastArea || !lastSide),
-        [balconies.length, lastArea, lastSide]
-    );
+    const disabled = fields.length > 0 && (!lastArea || !lastSide);
 
     return (
         <Panel
