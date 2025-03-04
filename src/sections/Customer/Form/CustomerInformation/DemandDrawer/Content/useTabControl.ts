@@ -16,7 +16,7 @@ const useTabControl = () => {
     const [index, setIndex] = useState(0);
     const changeTab = useCallback((_: any, v: number) => setIndex(v), []);
 
-    const handleAdd = useCallback(() => {
+    const addTab = useCallback(() => {
         append(EMTPY_DEMAND);
 
         // INFO: Normalise a negative value
@@ -43,13 +43,22 @@ const useTabControl = () => {
     };
 
     const tabsRef = useRef<TabsRef>({
-        add: handleAdd,
+        add: addTab,
     });
 
     const isIndexSafe =
         index > -1 && index < fields.length && fields.length > 0;
 
-    return { tabsRef, index, isIndexSafe, changeTab, removeTab, fields };
+    return {
+        tabsRef,
+        index,
+        isIndexSafe,
+        // ...
+        changeTab,
+        removeTab,
+        // ...
+        fields,
+    };
 };
 
 export default useTabControl;
