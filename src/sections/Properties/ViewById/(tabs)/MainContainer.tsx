@@ -33,19 +33,19 @@ const MainContainer: React.FC = () => {
             <Grid item xs={12} lg={8} order={"row"}>
                 <Grid container gap={1}>
                     <Grid item xs={12}>
-                        <ImageSection data={data} />
+                        <ImageSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <DetailsSection data={data} />
+                        <DetailsSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <ConstructionSection data={data} />
+                        <ConstructionSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <TechnicalFeatures data={data} />
+                        <TechnicalFeatures />
                     </Grid>
                     <Grid item xs={12}>
-                        <Features data={data} />
+                        <Features />
                     </Grid>
                     <Grid item xs={12}>
                         <DescriptionSection />
@@ -54,38 +54,38 @@ const MainContainer: React.FC = () => {
                         <AddressSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <VideoSection data={data} />
+                        <VideoSection />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12} lg={4} order={"row"}>
                 <Grid container gap={1}>
                     <Grid item xs={12}>
-                        <BasicSection data={data} />
+                        <BasicSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <HeatingSection data={data} />
+                        <HeatingSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <AreaSection data={data} />
+                        <AreaSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <DistanceSection data={data} />
+                        <DistanceSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <SuitableFor data={data} />
+                        <SuitableFor />
                     </Grid>
                     <Grid item xs={12}>
-                        <BalconiesSection data={data} />
+                        <BalconiesSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <ParkingsSection data={data} />
+                        <ParkingsSection />
                     </Grid>
                     <Grid item xs={12}>
                         <NotesSection />
                     </Grid>
                     <Grid item xs={12}>
-                        <BlueprintsSection data={data} />
+                        <BlueprintsSection />
                     </Grid>
                     <Grid item xs={12}>
                         <GoogleEarthSection />

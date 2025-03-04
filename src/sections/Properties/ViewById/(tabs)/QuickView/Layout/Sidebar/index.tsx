@@ -25,12 +25,13 @@ interface SidebarRef {
     setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-interface SidebarProps extends StackProps {
+interface SidebarProps extends Omit<StackProps, "children"> {
+    names: string[];
     initial?: string;
 }
 
 const Sidebar = forwardRef<SidebarRef, SidebarProps>(
-    ({ initial = "", children, ...props }, ref) => {
+    ({ initial = "", names, ...props }, ref) => {
         const [value, setValue] = useState<string>(initial);
 
         useImperativeHandle(ref, () => ({ setValue }), []);
@@ -55,7 +56,7 @@ const Sidebar = forwardRef<SidebarRef, SidebarProps>(
                     onChange={handleChange}
                     sx={TabSx}
                 >
-                    {React.Children.map(children, getTab)}
+                    {names.map(getTab)}
                 </ResponsiveTabs>
             </Stack>
         );

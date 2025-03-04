@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
 import { Grid } from "@mui/material";
 import { List, ListItem, ListBooleanItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
 interface HeatingSectionProps {
     data: IProperties;
@@ -41,14 +42,13 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Air-Coditioning",
     ],
 };
-const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
-    const { data } = props;
+const HeatingSection = () => {
+    const { property } = useGetProperty();
     const { t } = useTranslation();
 
-    if (!data) return null;
-    const heating = data?.heatingAndEnergy;
+    const heating = property?.heatingAndEnergy;
     if (!heating) return null;
-    if (data.parentCategory.key === "Land") return null;
+    if (property.parentCategory.key === "Land") return null;
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={12} sm={6}>
@@ -151,7 +151,9 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
 
     return (
         <PanelWithQuickView label="HeatingSection">
-            {propertyDescription(data?.parentCategory.key as ParentCategory)}
+            {propertyDescription(
+                property?.parentCategory.key as ParentCategory
+            )}
         </PanelWithQuickView>
     );
 };

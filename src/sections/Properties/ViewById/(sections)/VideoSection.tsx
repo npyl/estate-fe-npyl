@@ -1,10 +1,5 @@
-import React from "react";
-import { IProperties } from "src/types/properties";
 import PanelWithQuickView from "../PanelWithQuickView";
-
-interface VideoSectionProps {
-    data: IProperties;
-}
+import { useGetProperty } from "@/hooks/property";
 
 const getVideoId = (url: string) => {
     if (url.includes("youtu.be/")) {
@@ -22,12 +17,12 @@ const getVideoId = (url: string) => {
     return null;
 };
 
-const VideoSection: React.FC<VideoSectionProps> = (props) => {
-    const { data } = props;
+const VideoSection = () => {
+    const { property } = useGetProperty();
 
-    if (!data || !data.video) return null;
+    if (!property || !property.video) return null;
 
-    const videoId = getVideoId(data.video.trim());
+    const videoId = getVideoId(property.video.trim());
 
     if (!videoId) return null;
 

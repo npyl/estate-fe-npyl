@@ -1,13 +1,11 @@
-import React, { FC } from "react";
-import { IProperties, ParentCategory } from "src/types/properties";
+import { FC } from "react";
+import { ParentCategory } from "src/types/properties";
 import { Grid } from "@mui/material";
 import { List, ListBooleanItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface SuitableForProps {
-    data: IProperties;
-}
 interface SuitableForItemProps {
     field: string;
 }
@@ -27,10 +25,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     OTHER: ["Investment"],
 };
 
-const SuitableFor: React.FC<SuitableForProps> = (props) => {
-    const { data } = props;
+const SuitableFor = () => {
     const { t } = useTranslation();
-    const suitableFor = data?.suitableFor;
+
+    const { property } = useGetProperty();
+    const suitableFor = property?.suitableFor;
+
     const renderHalfOfFields = (fields: string[], from: number, to: number) => {
         return (
             <Grid item xs={12} sm={6}>
@@ -142,9 +142,11 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
         return null;
     };
 
+    const key = property?.parentCategory.key as ParentCategory;
+
     return (
         <PanelWithQuickView label="SuitableFor">
-            {renderSuitableFor(data?.parentCategory.key as ParentCategory)}
+            {renderSuitableFor(key)}
         </PanelWithQuickView>
     );
 };

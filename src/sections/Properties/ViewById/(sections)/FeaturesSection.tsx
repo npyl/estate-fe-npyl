@@ -1,13 +1,11 @@
 import { Grid } from "@mui/material";
-import React, { FC } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
-import { IProperties, ParentCategory } from "src/types/properties";
+import { ParentCategory } from "src/types/properties";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface FeaturesProps {
-    data: IProperties;
-}
 interface PropertyFeaturesItemProps {
     field: string;
 }
@@ -78,8 +76,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     OTHER: ["Panoramic View", "Facade", "Loading Dock", "Veranda", "View"],
 };
 
-const Features: React.FC<FeaturesProps> = (props) => {
-    const { data } = props;
+const Features = () => {
+    const { property: data } = useGetProperty();
     const { t } = useTranslation();
     const features = data?.features;
 

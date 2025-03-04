@@ -1,13 +1,11 @@
-import React, { FC } from "react";
-import { IProperties, ParentCategory } from "src/types/properties";
+import { FC } from "react";
+import { ParentCategory } from "src/types/properties";
 import { Grid } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface TechnicalFeaturesProps {
-    data: IProperties;
-}
 interface TechnicalFeaturesItemProps {
     field: string;
 }
@@ -73,8 +71,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Alarm System",
     ],
 };
-const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
-    const { data } = props;
+const TechnicalFeatures = () => {
+    const { property: data } = useGetProperty();
     const { t } = useTranslation();
     const technicalFeatures = data?.technicalFeatures;
 

@@ -1,20 +1,15 @@
-import { IProperties } from "src/types/properties";
 import { Grid } from "@mui/material";
 import { List, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { FC } from "react";
+import { useGetProperty } from "@/hooks/property";
 
-interface AreaSectionProps {
-    data: IProperties;
-}
-
-const AreaSection: FC<AreaSectionProps> = (props) => {
-    const { data } = props;
+const AreaSection = () => {
     const { t } = useTranslation();
-    if (!data) return null;
-    const areas = data?.areas;
-    const parentCategory = data?.parentCategory.key;
+
+    const { property } = useGetProperty();
+    const areas = property?.areas;
+    const parentCategory = property?.parentCategory.key;
     if (parentCategory === "LAND" || parentCategory === "OTHER") return null;
     if (!areas) return null;
 

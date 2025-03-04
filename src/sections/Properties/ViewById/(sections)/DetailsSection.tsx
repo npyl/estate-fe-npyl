@@ -4,10 +4,8 @@ import { Grid } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetProperty } from "@/hooks/property";
 
-interface DetailsSectionProps {
-    data: IProperties;
-}
 interface PropertyDescriptionItem {
     field: string;
 }
@@ -70,12 +68,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     ],
 };
 
-const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
-    const { data } = props;
+const DetailsSection = () => {
     const { t } = useTranslation();
 
-    const details = data?.details;
-    const distances = data?.distances;
+    const { property } = useGetProperty();
+    const details = property?.details;
+    const distances = property?.distances;
 
     const renderThirdOfFields = (
         fields: string[],
@@ -317,9 +315,11 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
         return null;
     };
 
+    const key = property?.parentCategory.key as ParentCategory;
+
     return (
         <PanelWithQuickView label="DetailsSection">
-            {propertyDescription(data?.parentCategory.key as ParentCategory)}
+            {propertyDescription(key)}
         </PanelWithQuickView>
     );
 };
