@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Language } from "@/components/Language/types";
 import useOpenAIDetails from "./useOpenAIDetails";
 import fixDropdowns from "./stupid";
 import useDialog from "@/hooks/useDialog";
@@ -12,6 +11,7 @@ import { PopoverProps } from "./style";
 import { useOperationsContext } from "../context/OperationsContext";
 import { HideText } from "@/components/styled";
 import { useEditorHandleContext } from "../context/EditorHandle";
+import { Language } from "@/components/LanguageButton/types";
 
 interface GenerateButtonProps {
     lang: Language;

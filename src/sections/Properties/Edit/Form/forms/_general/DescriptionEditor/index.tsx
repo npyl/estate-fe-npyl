@@ -2,7 +2,6 @@ import Typography from "@mui/material/Typography";
 import { CSSProperties, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Language } from "@/components/Language/types";
 import { RHFTextField } from "@/components/hook-form";
 import TabbedBox from "./TabbedBox";
 import { TABS } from "./constants";
@@ -17,6 +16,7 @@ import {
     EditorHandleProvider,
     useEditorHandleContext,
 } from "./context/EditorHandle";
+import { Language } from "@/components/LanguageButton/types";
 
 const EditorSx: CSSProperties = {
     minHeight: "200px",
