@@ -1,6 +1,5 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 import Button, { ButtonProps } from "@mui/material/Button";
-import { EditorState } from "draft-js";
 import useHistory from "./useHistory";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
@@ -12,8 +11,8 @@ const ButtonSx: SxProps<Theme> = {
 };
 
 export interface HistoryButtonRef {
-    push: (s: EditorState) => void;
-    initialise: (s: EditorState) => void;
+    push: (s: string) => void;
+    initialise: (s: string) => void;
     getSize: () => number;
 }
 
@@ -21,7 +20,7 @@ export interface HistoryButtonRef {
  * onRevert: can revert back and forth
  */
 interface HistoryButtonProps extends Omit<ButtonProps, "onClick"> {
-    onRevert: (s: EditorState) => void;
+    onRevert: (s: string) => void;
     onPastChange: (b: boolean) => void;
 }
 
@@ -31,7 +30,7 @@ const HistoryButton = forwardRef<HistoryButtonRef, HistoryButtonProps>(
         const buttonRedoRef = useRef<HTMLButtonElement>(null);
 
         const { initialise, push, previous, next, getSize } =
-            useHistory<EditorState>(buttonUndoRef, buttonRedoRef);
+            useHistory<string>(buttonUndoRef, buttonRedoRef);
 
         useImperativeHandle(
             ref,

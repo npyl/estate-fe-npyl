@@ -1,65 +1,31 @@
 import { Stack } from "@mui/material";
 import { Language } from "@/components/LanguageButton/types";
 import dynamic from "next/dynamic";
-import { EditorState } from "draft-js";
-import { textToEditorState } from "../util";
-import { useCallback, useMemo } from "react";
+import { FC } from "react";
+import { useWatch } from "react-hook-form";
+import useNames from "../useNames";
 const GenerateButton = dynamic(() => import("./GenerateButton"));
 const ImproveButton = dynamic(() => import("./ImproveButton"));
 const TranslateButton = dynamic(() => import("./TranslateButton"));
 
 interface UpperRightOptionsProps {
     lang: Language;
-    // ...
-    editorState: EditorState;
-    onContentChange: (e: EditorState) => void;
-    onTranslate: (translatedTexts: string[]) => void;
 }
 
-const UpperRightOptions = ({
-    onContentChange,
-    onTranslate,
-    lang,
-    editorState,
-}: UpperRightOptionsProps) => {
+const UpperRightOptions: FC<UpperRightOptionsProps> = ({ lang }) => {
     const canTranslate = lang === "en";
 
-    const isEmpty = useMemo(() => {
-        const contentState = editorState.getCurrentContent();
-        const plainText = contentState.getPlainText().trim();
-        return contentState.getBlockMap().size === 1 && plainText.length === 0;
-    }, [editorState]);
+    const { descriptionTextName } = useNames(lang);
 
-    const handleResult = useCallback(
-        (s: string, styling: boolean) => {
-            const editorState = textToEditorState(s, styling);
-            if (!editorState) return;
-            onContentChange(editorState);
-
-            // INFO: make sure we return the new state for history component
-            return editorState;
-        },
-        [onContentChange]
-    );
+    // TODO: make this faster!?
+    const isEmpty =
+        (useWatch({ name: descriptionTextName }) as string)?.length === 0;
 
     return (
         <Stack direction="row" spacing={1}>
-            {canTranslate ? (
-                <TranslateButton onTranslate={onTranslate} />
-            ) : null}
-
-            {isEmpty ? (
-                <GenerateButton lang={lang} onGenerate={handleResult} />
-            ) : null}
-
-            {!isEmpty ? (
-                <ImproveButton
-                    editorState={editorState}
-                    lang={lang}
-                    onImprove={handleResult}
-                    onRevert={onContentChange}
-                />
-            ) : null}
+            {canTranslate ? <TranslateButton /> : null}
+            {isEmpty ? <GenerateButton lang={lang} /> : null}
+            {!isEmpty ? <ImproveButton lang={lang} /> : null}
         </Stack>
     );
 };

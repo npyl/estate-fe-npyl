@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Language } from "@/components/LanguageButton/types";
-import { useOpenAIDetails } from "../hooks";
+import { Language } from "@/components/Language/types";
+import useOpenAIDetails from "./useOpenAIDetails";
 import fixDropdowns from "./stupid";
 import useDialog from "@/hooks/useDialog";
 import { MenuItem } from "@mui/material";
@@ -9,21 +9,22 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
 import OptionButton from "@/components/OptionButton";
 import { PopoverProps } from "./style";
-import { useOperationsContext } from "../context";
+import { useOperationsContext } from "../context/OperationsContext";
 import { HideText } from "@/components/styled";
+import { useEditorHandleContext } from "../context/EditorHandle";
 
 interface GenerateButtonProps {
     lang: Language;
-    onGenerate: (s: string, styling: boolean) => void;
 }
 
-const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
+const GenerateButton: FC<GenerateButtonProps> = ({ lang }) => {
     const { t } = useTranslation();
 
     const [styling, setStylingOn, setStylingOff] = useDialog();
 
     const { openAIDetails } = useOpenAIDetails(lang);
 
+    const { editorRef } = useEditorHandleContext();
     const { generateDescription, isLoading } = useOperationsContext();
 
     const handleGenerate = async () => {
@@ -34,7 +35,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang, onGenerate }) => {
                 ...fixDropdowns(openAIDetails),
             }).unwrap();
 
-            onGenerate(res, styling);
+            editorRef.current?.commands.setContent(res, true);
         } catch (ex) {}
     };
 

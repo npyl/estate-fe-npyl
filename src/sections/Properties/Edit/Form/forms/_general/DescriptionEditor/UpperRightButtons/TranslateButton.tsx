@@ -1,25 +1,24 @@
 import { Button } from "@mui/material";
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import TranslateIcon from "@mui/icons-material/Translate";
 import { HideText } from "@/components/styled";
-import { useOperationsContext } from "../context";
+import { useOperationsContext } from "../context/OperationsContext";
+import { useEditorHandleContext } from "../context/EditorHandle";
 
-interface TranslateButtonProps {
-    onTranslate: (translatedTexts: string[]) => void;
-}
-
-const TranslateButton: FC<TranslateButtonProps> = ({ onTranslate }) => {
+const TranslateButton = () => {
     const { t } = useTranslation();
 
-    const { watch } = useFormContext();
+    const { editorRef } = useEditorHandleContext();
+    const { setValue } = useFormContext();
+
+    const title = useWatch({ name: "descriptions[0].title" });
+    const description = useWatch({ name: "descriptions[0].descriptionText" });
+
     const { translate, isLoading } = useOperationsContext();
 
     const handleClick = useCallback(async () => {
-        const title = watch("descriptions[0].title");
-        const description = watch("descriptions[0].descriptionText");
-
         if (!title && !description) return;
 
         const body = {
@@ -31,7 +30,8 @@ const TranslateButton: FC<TranslateButtonProps> = ({ onTranslate }) => {
         const res = await translate(body).unwrap();
         const translatedTexts = res.translations.map(({ text }) => text);
 
-        onTranslate(translatedTexts);
+        setValue("descriptions[1].title", translatedTexts[0]);
+        editorRef.current?.commands.setContent(translatedTexts[1], true);
     }, []);
 
     return (

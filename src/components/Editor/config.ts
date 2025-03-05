@@ -1,0 +1,52 @@
+import Blockquote from "@tiptap/extension-blockquote";
+import Paragraph from "@tiptap/extension-paragraph";
+import Document from "@tiptap/extension-document";
+import Text from "@tiptap/extension-text";
+import Heading from "@tiptap/extension-heading";
+import ListItem from "@tiptap/extension-list-item";
+import BulletList from "@tiptap/extension-bullet-list";
+import HardBreak from "@tiptap/extension-hard-break";
+import OrderedList from "@tiptap/extension-ordered-list";
+import Bold from "@tiptap/extension-bold";
+import Italic from "@tiptap/extension-italic";
+import Strike from "@tiptap/extension-strike";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
+import Indent from "./extensions/Indent";
+import { Highlight } from "./extensions/Highlight";
+import { TextStyle } from "./extensions/TextStyle";
+import Link from "@tiptap/extension-link";
+
+const TEXT_TYPES = ["heading", "paragraph", "listItem"];
+
+const extensions = [
+    Document,
+    Paragraph,
+    Text,
+    Heading,
+    ListItem,
+    BulletList,
+    Blockquote,
+    HardBreak,
+    OrderedList,
+    Bold,
+    Italic,
+    Strike,
+    Underline,
+    TextAlign.configure({
+        alignments: ["left", "center", "right", "justify"],
+        types: TEXT_TYPES,
+        defaultAlignment: "left",
+    }),
+    Indent.configure({
+        types: TEXT_TYPES,
+        minLevel: 0,
+        maxLevel: 8,
+    }),
+    Link,
+    // ...
+    Highlight,
+    TextStyle,
+];
+
+export { extensions };

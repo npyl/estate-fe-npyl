@@ -1,17 +1,17 @@
 import { LoadingButton } from "@mui/lab";
-import { FC, useRef, useState } from "react";
+import { FC, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "@/components/LanguageButton/types";
 import ChatGPTIcon from "@/assets/icons/GPTIcon";
-import { useOpenAIDetails } from "../../hooks";
+import useOpenAIDetails from "../useOpenAIDetails";
 import { IOpenAIDetailsPOST } from "@/types/openai";
-import { EditorState } from "draft-js";
 import OptionButton from "@/components/OptionButton";
 import Options from "./Options";
 import { PopoverProps } from "../style";
-import { useOperationsContext } from "../../context";
+import { useOperationsContext } from "../../context/OperationsContext";
 import HistoryButtons, { HistoryButtonRef } from "./HistoryButton";
 import { HideText } from "@/components/styled";
+import { useEditorHandleContext } from "../../context/EditorHandle";
 
 const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
     return Object.fromEntries(
@@ -23,17 +23,9 @@ const sanitizePayload = (payload: IOpenAIDetailsPOST) => {
 
 interface ImproveButtonProps {
     lang: Language;
-    editorState: EditorState;
-    onImprove: (s: string, styling: boolean) => EditorState | undefined;
-    onRevert: (e: EditorState) => void; // INFO: revert back & forth
 }
 
-const ImproveButton: FC<ImproveButtonProps> = ({
-    editorState,
-    lang,
-    onImprove,
-    onRevert,
-}) => {
+const ImproveButton: FC<ImproveButtonProps> = ({ lang }) => {
     const { t } = useTranslation();
 
     const { openAIDetails } = useOpenAIDetails(lang);
@@ -44,19 +36,18 @@ const ImproveButton: FC<ImproveButtonProps> = ({
     const historyRef = useRef<HistoryButtonRef>(null);
     const [isPast, setPast] = useState(false); // INFO: this guard makes sure every push() happens when the user is looking at the latest improvement; avoid confusion
 
+    const { editorRef } = useEditorHandleContext();
     const { improveDescription, isLoading } = useOperationsContext();
 
     const handleImprove = async () => {
         try {
+            const oldDescription = editorRef.current?.getHTML();
+            if (!oldDescription) return;
+
             // INFO: we need an initial state
             if (historyRef.current?.getSize() === 0) {
-                historyRef.current.initialise(editorState);
+                historyRef.current.initialise(oldDescription);
             }
-
-            const oldDescription = editorState
-                .getCurrentContent()
-                .getPlainText();
-            if (!oldDescription) return;
 
             const sanitizedPayload = sanitizePayload({
                 ...openAIDetails,
@@ -67,12 +58,15 @@ const ImproveButton: FC<ImproveButtonProps> = ({
 
             const text = await improveDescription(sanitizedPayload).unwrap();
 
-            const newEditorState = onImprove(text, styling);
-            if (!newEditorState) return;
+            editorRef.current?.commands.setContent(text, true);
 
-            historyRef.current?.push(newEditorState);
+            historyRef.current?.push(text);
         } catch (ex) {}
     };
+
+    const onRevert = useCallback((s: string) => {
+        editorRef.current?.commands.setContent(s, true);
+    }, []);
 
     return (
         <>
