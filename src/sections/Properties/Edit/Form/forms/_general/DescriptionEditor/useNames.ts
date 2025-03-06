@@ -1,16 +1,9 @@
-import { useCallback, useMemo } from "react";
 import { TABS } from "./constants";
 
 const useNames = (lang: string) => {
-    const index = useMemo(
-        () => TABS.findIndex(({ value }) => lang === value),
-        [lang]
-    );
+    const index = TABS.findIndex(({ value }) => lang === value);
 
-    const name = useCallback(
-        (s: string) => `descriptions[${index}].${s}`,
-        [index]
-    );
+    const name = (s: string) => `descriptions[${index}].${s}`;
 
     const title = name("title");
     const descriptionName = name("description"); // encoded

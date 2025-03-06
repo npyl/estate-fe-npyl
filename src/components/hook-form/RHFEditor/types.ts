@@ -4,7 +4,7 @@
  */
 type TCommon = {
     debounced?: boolean;
-    onChange?: (value: string, plain: string) => void;
+    onPlainTextChange?: (plain: string) => void;
 };
 
 export type { TCommon };

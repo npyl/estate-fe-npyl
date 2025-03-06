@@ -34,7 +34,7 @@ const DescriptionSection = () => {
 
     const { isLoading } = useOperationsContext();
 
-    const handlePlainTextChange = (_: any, plain: string) =>
+    const handlePlainTextChange = (plain: string) =>
         setValue(descriptionTextName, plain);
 
     return (
@@ -58,7 +58,7 @@ const DescriptionSection = () => {
                 debounced
                 name={descriptionName}
                 tiptapStyle={EditorSx}
-                onChange={handlePlainTextChange}
+                onPlainTextChange={handlePlainTextChange}
             />
         </TabbedBox>
     );
