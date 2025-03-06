@@ -9,7 +9,7 @@ import {
     OperationsProvider,
     useOperationsContext,
 } from "./context/OperationsContext";
-import RHFEditor from "@/components/hook-form/RHFEditor";
+import RHFEditor from "@/components/hook-form/dynamic/RHFEditor";
 import useNames from "./useNames";
 import UpperRightButtons from "./UpperRightButtons";
 import {

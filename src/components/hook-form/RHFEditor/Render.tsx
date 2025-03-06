@@ -1,11 +1,6 @@
 import { forwardRef, useCallback, useLayoutEffect } from "react";
-import {
-    ControllerRenderProps,
-    FieldValues,
-    useFormContext,
-} from "react-hook-form";
+import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import Editor, { EditorProps, EditorRef } from "@/components/Editor";
-import sleep from "@/utils/sleep";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import { TCommon } from "./types";
 
@@ -26,16 +21,7 @@ const Render = forwardRef<EditorRef, RenderProps>(
 
         const editorRef = useForwardedLocalRef<EditorRef>(ref);
 
-        const { getValues } = useFormContext();
-        useLayoutEffect(() => {
-            const content = getValues(name);
-            editorRef.current?.commands.setContent(content);
-        }, [name]);
-
         const handleUpdate = useCallback(async () => {
-            // INFO: Make sure we debounce a bit (if enabled)
-            if (debounced) await sleep(200);
-
             const value = editorRef.current?.getHTML() || "";
             const plain = onChange ? editorRef.current?.getText() || "" : "";
 
