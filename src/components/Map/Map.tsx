@@ -88,6 +88,7 @@ const Map = ({
     onDraw,
     onShapeChange,
     onSearchSelect,
+    // ...
     markers,
     zoom,
     shape,
@@ -98,6 +99,7 @@ const Map = ({
     multipleShapes = false,
     drawing = true,
     search = false,
+    // ...
     children,
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
@@ -262,8 +264,7 @@ const Map = ({
                 scrollwheel: true,
                 disableDefaultUI: false,
                 zoomControl: true,
-
-                fullscreenControl: true, // Enable the built-in fullscreen control
+                fullscreenControl: true,
             }}
         >
             {map ? (
@@ -283,20 +284,20 @@ const Map = ({
                                     onShapeChange?.([], newShape)
                                 }
                             />
-                        ) : (
+                        ) : null}
+
+                        {multipleShapes ? (
                             <DrawMultiple
                                 map={map}
                                 drawing={drawing}
                                 shapes={shapes}
-                                onDraw={(shape) => onDraw && onDraw(shape)}
-                                onShapeChange={(oldShape, newShape) =>
-                                    onShapeChange &&
-                                    onShapeChange(oldShape, newShape)
-                                }
+                                onDraw={onDraw}
+                                onShapeChange={onShapeChange}
                             />
-                        )}
+                        ) : null}
                     </MapControl>
-                    {search && <Search onSearchSelect={onSearchSelect} />}
+
+                    {search ? <Search onSearchSelect={onSearchSelect} /> : null}
 
                     {/* Markers */}
                     {MARKERS}

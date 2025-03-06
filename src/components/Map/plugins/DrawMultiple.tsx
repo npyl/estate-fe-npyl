@@ -30,8 +30,8 @@ interface DrawMultipleProps {
     map?: google.maps.Map;
     drawing: boolean;
     shapes?: TShape[];
-    onDraw: (shape: DrawShape | StopDraw) => void;
-    onShapeChange: (oldShape: TShape, newShape: TShape) => void;
+    onDraw?: (shape: DrawShape | StopDraw) => void;
+    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
 }
 
 const DrawMultiple = ({
@@ -113,7 +113,7 @@ const DrawMultiple = ({
                     );
                 }
 
-                onDraw(shape);
+                onDraw?.(shape);
             }
         );
 
@@ -137,10 +137,14 @@ const DrawMultiple = ({
 
         // draw any imported shape
         shapes
-            .filter((shape) => !!shape)
+            .filter(Boolean)
             .map((shape) =>
                 shapeRefs.current?.push(
-                    drawShape(shape, map!, !!drawing ? onShapeChange : null)
+                    drawShape(
+                        shape,
+                        map!,
+                        !!drawing && onShapeChange ? onShapeChange : null
+                    )
                 )
             );
     }, [map, shapes]);
@@ -161,7 +165,7 @@ const DrawMultiple = ({
     const stopDrawing = () => {
         shapeRefs.current?.forEach((shape) => shape?.setMap(null));
         shapeRefs.current = [];
-        onDraw(null);
+        onDraw?.(null);
     };
 
     return drawing ? (
