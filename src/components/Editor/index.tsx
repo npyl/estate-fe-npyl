@@ -8,6 +8,7 @@ import { CSSProperties, forwardRef, useImperativeHandle } from "react";
 import { SxProps, Theme } from "@mui/material";
 import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
+import getBorderColor from "@/theme/borderColor";
 const MenuBar = dynamic(() => import("./MenuBar"));
 
 type EditorRef = TEditor | null;
@@ -71,12 +72,23 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='7']": { marginLeft: 7 },
                     "& [data-indent='8']": { marginLeft: 8 },
 
+                    "& .PPEditorContent": {
+                        border: "1px solid",
+                        borderColor: getBorderColor,
+                        borderRadius: 1,
+                    },
+
                     ...containerSx,
                 }}
                 {...containerProps}
             >
                 {editable && editor ? <MenuBar /> : undefined}
-                <EditorContent editor={editor} {...props} />
+
+                <EditorContent
+                    className="PPEditorContent"
+                    editor={editor}
+                    {...props}
+                />
             </Box>
         );
     }
