@@ -1,4 +1,4 @@
-import { Editor, useEditor } from "@tiptap/react";
+import { Content, Editor, EditorEvents, useEditor } from "@tiptap/react";
 import { createContext, FC, PropsWithChildren, useContext } from "react";
 import { extensions } from "./config";
 
@@ -19,13 +19,15 @@ export const useEditorContext = () => {
 };
 
 interface EditorProviderProps extends PropsWithChildren {
-    content?: string;
+    content?: Content;
     editable?: boolean;
+    onUpdate?: (props: EditorEvents["update"]) => void;
 }
 
 export const EditorProvider: FC<EditorProviderProps> = ({
     content,
     editable,
+    onUpdate,
     ...props
 }) => {
     const editor = useEditor({
@@ -33,6 +35,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
         content,
         editable,
         immediatelyRender: false, // INFO: documentation states that this needs to be false in Next.js applications to prevent Hydration errors
+        onUpdate,
     });
 
     return (

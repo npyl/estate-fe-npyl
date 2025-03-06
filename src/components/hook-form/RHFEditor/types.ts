@@ -3,7 +3,6 @@
  * onChange: if passed will expose value (HMTL) and plain (just plain content, no formatting) to the parent
  */
 type TCommon = {
-    debounced?: boolean;
     onPlainTextChange?: (plain: string) => void;
 };
 

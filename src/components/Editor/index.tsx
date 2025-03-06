@@ -2,26 +2,36 @@ import {
     Editor as TEditor,
     EditorContent,
     EditorContentProps,
+    EditorEvents,
 } from "@tiptap/react";
 import Box, { BoxProps } from "@mui/material/Box";
-import { CSSProperties, forwardRef, useImperativeHandle } from "react";
+import {
+    CSSProperties,
+    forwardRef,
+    useCallback,
+    useImperativeHandle,
+    useMemo,
+} from "react";
 import { SxProps, Theme } from "@mui/material";
 import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
-import getBorderColor from "@/theme/borderColor";
+import { debuglog } from "util";
 const MenuBar = dynamic(() => import("./MenuBar"));
 
 type EditorRef = TEditor | null;
 
 type EditorProps = Omit<
     EditorContentProps,
-    "editor" | "contentEditable" | "ref"
+    "editor" | "contentEditable" | "ref" | "onChange"
 > & {
     editable?: boolean;
 
     containerProps?: Omit<BoxProps, "sx">;
     containerSx?: SxProps<Theme>;
     tiptapStyle?: CSSProperties;
+
+    onUpdate?: (s: string) => void;
+    onPlainTextUpdate?: (s: string) => void;
 };
 
 const Editor = forwardRef<EditorRef, EditorProps>(
@@ -72,12 +82,6 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='7']": { marginLeft: 7 },
                     "& [data-indent='8']": { marginLeft: 8 },
 
-                    "& .PPEditorContent": {
-                        border: "1px solid",
-                        borderColor: getBorderColor,
-                        borderRadius: 1,
-                    },
-
                     ...containerSx,
                 }}
                 {...containerProps}
@@ -94,12 +98,44 @@ const Editor = forwardRef<EditorRef, EditorProps>(
     }
 );
 
+/**
+ * content: a string containing a JSON in TipTap-acceptable format
+ * onUpdate: provides the parent with the editor's content formatted in TipTap-acceptable JSON
+ */
 const ProviderWrap = forwardRef<EditorRef, EditorProps>(
-    ({ content, ...props }, ref) => (
-        <EditorProvider editable={props.editable} content={content}>
-            <Editor ref={ref} {...props} />
-        </EditorProvider>
-    )
+    ({ content: _content, onUpdate, onPlainTextUpdate, ...props }, ref) => {
+        const content = useMemo(
+            () => (_content ? JSON.parseSafe(_content) : ""),
+            [_content]
+        );
+
+        const handleUpdate = useCallback(
+            ({ editor }: EditorEvents["update"]) => {
+                try {
+                    const value = editor.getJSON();
+                    const sValue = JSON.stringify(value);
+                    onUpdate?.(sValue);
+
+                    if (!onPlainTextUpdate) return;
+                    const plain = editor.getText();
+                    onPlainTextUpdate(plain);
+                } catch (ex) {
+                    debuglog(ex);
+                }
+            },
+            [onUpdate, onPlainTextUpdate]
+        );
+
+        return (
+            <EditorProvider
+                editable={props.editable}
+                content={content}
+                onUpdate={handleUpdate}
+            >
+                <Editor ref={ref} {...props} />
+            </EditorProvider>
+        );
+    }
 );
 
 export type { EditorRef, EditorProps };

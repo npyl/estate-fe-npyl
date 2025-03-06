@@ -25,7 +25,6 @@ const EditorSx: CSSProperties = {
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
-    const { setValue } = useFormContext();
 
     const { editorRef } = useEditorHandleContext();
 
@@ -34,6 +33,7 @@ const DescriptionSection = () => {
 
     const { isLoading } = useOperationsContext();
 
+    const { setValue } = useFormContext();
     const handlePlainTextChange = (plain: string) =>
         setValue(descriptionTextName, plain);
 
@@ -55,7 +55,6 @@ const DescriptionSection = () => {
 
             <RHFEditor
                 ref={editorRef}
-                debounced
                 name={descriptionName}
                 tiptapStyle={EditorSx}
                 onPlainTextChange={handlePlainTextChange}
