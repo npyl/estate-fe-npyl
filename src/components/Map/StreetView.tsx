@@ -1,8 +1,6 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import useLoadApi from "./hook";
-import { Box } from "@mui/material";
 
 export interface IMapCoord {
     lat: number;

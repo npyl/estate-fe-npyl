@@ -1,2 +1,3 @@
-export { default as StreetViewMap } from "./StreetView";
-export { default as useLoadApi } from "./hook";
+import Main from "./Main";
+export type { IMapMarker } from "./types";
+export default Main;

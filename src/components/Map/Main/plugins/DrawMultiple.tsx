@@ -1,10 +1,10 @@
 import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useEffect, useRef } from "react";
-import { DrawShape, StopDraw } from "../types";
-import { drawingToPoints, drawShape } from "../util";
 import { TShape } from "@/types/shape";
-import setShapeEvents from "../util/draw/setShapeEvents";
+import { DrawShape, StopDraw } from "../../types";
+import { drawingToPoints, drawShape } from "../../util";
+import setShapeEvents from "../../util/draw/setShapeEvents";
 
 const StyledButton = styled(Button)({
     margin: "2px",
@@ -27,7 +27,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawMultipleProps {
-    map?: google.maps.Map;
+    map: google.maps.Map;
     drawing: boolean;
     shapes?: TShape[];
     onDraw?: (shape: DrawShape | StopDraw) => void;

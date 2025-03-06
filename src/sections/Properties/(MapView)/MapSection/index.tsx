@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from "react";
-import Map, { IMapMarker } from "src/components/Map/Map";
+import Map, { IMapMarker } from "@/components/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { drawingToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";

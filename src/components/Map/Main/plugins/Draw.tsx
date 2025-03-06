@@ -1,10 +1,10 @@
 import { ReactNode, useCallback, useEffect, useRef } from "react";
 import { Button, Stack, Typography } from "@mui/material";
-import { DrawShape, StopDraw } from "../types";
-import { drawingToPoints, drawShape } from "../util";
 import { styled } from "@mui/material/styles";
-import setShapeEvents from "../util/draw/setShapeEvents";
 import { TShape } from "@/types/shape";
+import { DrawShape, StopDraw } from "../../types";
+import setShapeEvents from "../../util/draw/setShapeEvents";
+import { drawingToPoints, drawShape } from "../../util";
 
 interface SvgIconProps {
     children: ReactNode;
@@ -32,7 +32,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawProps {
-    map?: google.maps.Map;
+    map: google.maps.Map;
     drawing: boolean;
     shape?: TShape;
     onDraw?: (shape: DrawShape | StopDraw) => void;
