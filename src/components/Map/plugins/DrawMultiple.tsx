@@ -1,8 +1,10 @@
 import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useEffect, useRef } from "react";
-import { DrawShape, ShapeData, StopDraw } from "../types";
-import { drawShape, encodeShape, setShapeEvents } from "../util";
+import { DrawShape, StopDraw } from "../types";
+import { drawingToPoints, drawShape } from "../util";
+import { TShape } from "@/types/shape";
+import setShapeEvents from "../util/draw/setShapeEvents";
 
 const StyledButton = styled(Button)({
     margin: "2px",
@@ -27,9 +29,9 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 interface DrawMultipleProps {
     map?: google.maps.Map;
     drawing: boolean;
-    shapes?: ShapeData[];
+    shapes?: TShape[];
     onDraw: (shape: DrawShape | StopDraw) => void;
-    onShapeChange: (oldEncodedShape: string, newEncodedShape: string) => void;
+    onShapeChange: (oldShape: TShape, newShape: TShape) => void;
 }
 
 const DrawMultiple = ({
@@ -96,21 +98,22 @@ const DrawMultiple = ({
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
-                const shape = event.overlay;
-                shapeRefs.current?.push(shape as DrawShape);
+                const shape = event.overlay as DrawShape;
+
+                shapeRefs.current?.push(shape);
+
                 drawingManagerRef.current.setDrawingMode(null);
 
                 /* catch drag/change events */
-                const oldEncodedShape = encodeShape(shape as DrawShape);
-                onShapeChange &&
-                    setShapeEvents(shape as DrawShape, () =>
-                        onShapeChange(
-                            oldEncodedShape,
-                            encodeShape(shape as DrawShape)
-                        )
-                    );
+                const oldEncodedShape = drawingToPoints(shape);
 
-                onDraw(shape as DrawShape);
+                if (onShapeChange) {
+                    setShapeEvents(shape, () =>
+                        onShapeChange(oldEncodedShape, drawingToPoints(shape))
+                    );
+                }
+
+                onDraw(shape);
             }
         );
 

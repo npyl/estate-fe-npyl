@@ -2,22 +2,16 @@ import { Box, Typography } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Map from "src/components/Map/Map";
-import { ShapeData } from "src/components/Map/types";
-import { decodeShape } from "src/components/Map/util";
 import { useGetMunicipalitiesQuery } from "src/services/location";
 import { IDemand } from "@/types/demand";
 import { toNumberSafe } from "@/utils/toNumber";
 import ViewLocationMini from "./ViewLocationMini";
 
-// TODO: reuse a general AreaOfPreference
-
 interface AreaOfPreferenceProps {
     demand?: IDemand;
 }
 
-const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
-    demand,
-}) => {
+const AreaOfPreferenceDemands: FC<AreaOfPreferenceProps> = ({ demand }) => {
     const { t } = useTranslation();
 
     const demandFilters = useMemo(
@@ -25,15 +19,9 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
         [demand?.filters]
     );
 
-    const shapes = useMemo(() => demand?.shapes || [], [demand?.shapes]);
-    const shapeData = useMemo(
-        () =>
-            shapes
-                ?.map((shape) => decodeShape(shape))
-                .filter((decoded) => !!decoded) as ShapeData[],
-        [shapes]
-    );
-    const shapeData0 = useMemo(() => shapeData[0], [shapeData[0]]); // take shapeData with index 0 as reference
+    const shapes = demand?.shapeList;
+
+    const shapeData0 = useMemo(() => shapes?.[0], [shapes?.[0]]);
 
     const regions = useMemo(
         () => demandFilters?.regions || [],
@@ -60,26 +48,26 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
         if (!map) return;
 
         if (shapeData0) {
-            // Center the map to the first point in the shape
-            if (shapeData0.type === "Polygon") {
-                if (
-                    shapeData0.paths.length > 0 &&
-                    shapeData0.paths[0].length > 0
-                ) {
-                    const [firstPath] = shapeData0.paths;
-                    const [firstCoord] = firstPath;
-                    const { lat, lng } = firstCoord;
-                    map.setCenter(new google.maps.LatLng(lat, lng));
-                }
-            } else if (shapeData0.type === "Circle") {
-                const { lat, lng } = shapeData0;
-                map.setCenter(new google.maps.LatLng(lat, lng));
-            } else if (shapeData0.type === "Rectangle") {
-                const { nelat, nelng } = shapeData0;
-                map.setCenter(new google.maps.LatLng(nelat, nelng));
-            } else if (!shapeData0) {
-                return;
-            }
+            // // Center the map to the first point in the shape
+            // if (shapeData0.type === "Polygon") {
+            //     if (
+            //         shapeData0.paths.length > 0 &&
+            //         shapeData0.paths[0].length > 0
+            //     ) {
+            //         const [firstPath] = shapeData0.paths;
+            //         const [firstCoord] = firstPath;
+            //         const { lat, lng } = firstCoord;
+            //         map.setCenter(new google.maps.LatLng(lat, lng));
+            //     }
+            // } else if (shapeData0.type === "Circle") {
+            //     const { lat, lng } = shapeData0;
+            //     map.setCenter(new google.maps.LatLng(lat, lng));
+            // } else if (shapeData0.type === "Rectangle") {
+            //     const { nelat, nelng } = shapeData0;
+            //     map.setCenter(new google.maps.LatLng(nelat, nelng));
+            // } else if (!shapeData0) {
+            //     return;
+            // }
         } else {
             if (!cities[0]) return;
             const city = municips?.filter((m) => m.areaID === +cities[0])[0];
@@ -111,11 +99,10 @@ const AreaOfPreferenceDemands: React.FC<AreaOfPreferenceProps> = ({
             />
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
-                    // key={demand.id}
                     zoom={12}
                     multipleShapes
                     drawing={false}
-                    shapes={shapeData}
+                    shapes={shapes}
                     onReady={setMap}
                 />
             </Box>

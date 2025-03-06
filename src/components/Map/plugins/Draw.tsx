@@ -1,8 +1,10 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useCallback, useEffect, useRef } from "react";
 import { Button, Stack, Typography } from "@mui/material";
-import { DrawShape, ShapeData, StopDraw } from "../types";
-import { drawShape, encodeShape, setShapeEvents } from "../util";
+import { DrawShape, StopDraw } from "../types";
+import { drawingToPoints, drawShape } from "../util";
 import { styled } from "@mui/material/styles";
+import setShapeEvents from "../util/draw/setShapeEvents";
+import { TShape } from "@/types/shape";
 
 interface SvgIconProps {
     children: ReactNode;
@@ -32,9 +34,9 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 interface DrawProps {
     map?: google.maps.Map;
     drawing: boolean;
-    shape?: ShapeData;
-    onDraw: (shape: DrawShape | StopDraw) => void;
-    onShapeChange?: (newEncodedShape: string) => void;
+    shape?: TShape;
+    onDraw?: (shape: DrawShape | StopDraw) => void;
+    onShapeChange?: (newShape: TShape) => void;
 }
 
 const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
@@ -94,26 +96,22 @@ const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
-                if (shapeRef.current) {
-                    // Remove the previous shape
+                // Remove any previous shape
+                shapeRef.current?.setMap(null);
 
-                    shapeRef.current.setMap(null);
-                }
+                const shape = event.overlay as DrawShape;
 
-                const shape = event.overlay;
-                shapeRef.current = shape as DrawShape;
+                shapeRef.current = shape;
 
                 drawingManagerRef.current.setDrawingMode(null);
 
-                setShapeEvents(
-                    shape as DrawShape,
-                    () =>
-                        onShapeChange &&
-                        shape &&
-                        onShapeChange(encodeShape(shape as DrawShape))
-                );
+                if (shape) {
+                    setShapeEvents(shape, () =>
+                        onShapeChange?.(drawingToPoints(shape))
+                    );
+                }
 
-                onDraw(shape as DrawShape);
+                onDraw?.(shape);
             }
         );
 
@@ -130,17 +128,14 @@ const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
     useEffect(() => {
         if (!drawingManagerRef.current) return;
 
+        const cb = (_: TShape, newShape: TShape) => {
+            if (!drawing || !onShapeChange) return;
+            onShapeChange(newShape);
+        };
+
         // draw any imported shape
         shapeRef.current?.setMap(null);
-        shapeRef.current = shape
-            ? drawShape(
-                  shape,
-                  map!,
-                  !!drawing && onShapeChange
-                      ? (old, newShape) => onShapeChange(newShape)
-                      : null
-              )
-            : null;
+        shapeRef.current = shape ? drawShape(shape, map!, cb) : null;
 
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
     }, [shape]);
@@ -167,10 +162,10 @@ const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
         );
     };
 
-    const stopDrawing = () => {
+    const stopDrawing = useCallback(() => {
         shapeRef.current?.setMap(null);
-        onDraw(null);
-    };
+        onDraw?.(null);
+    }, []);
 
     return drawing ? (
         <Stack

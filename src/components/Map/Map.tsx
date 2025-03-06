@@ -8,12 +8,13 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { DrawShape, IMapCoordinates, ShapeData, StopDraw } from "./types";
+import { DrawShape, IMapCoordinates, StopDraw } from "./types";
 import useLoadApi from "./hook";
 import dynamic from "next/dynamic";
 import getAddressComponent from "./util/getAddressComponent";
 import MapControl from "./MapControl";
 import debugLog from "@/_private/debugLog";
+import { TShape } from "@/types/shape";
 
 // plugins
 const Draw = dynamic(() => import("./plugins/Draw"));
@@ -45,7 +46,7 @@ interface IMapProps {
     // Shape
     //
     onDraw?: (shape: DrawShape | StopDraw) => void;
-    onShapeChange?: (encodedOldShape: string, encodedNewShape: string) => void;
+    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
     //
     // Search
     //
@@ -53,8 +54,8 @@ interface IMapProps {
 
     markers?: IMapMarker[];
     zoom?: number;
-    shape?: ShapeData;
-    shapes?: ShapeData[];
+    shape?: TShape;
+    shapes?: TShape[];
     mainMarker?: IMapMarker;
     activeMarker?: number;
     setActiveMarker?: any;
@@ -277,10 +278,9 @@ const Map = ({
                                 map={map}
                                 drawing={drawing}
                                 shape={shape}
-                                onDraw={(shape) => onDraw && onDraw(shape)}
-                                onShapeChange={(newEncodedShape) =>
-                                    onShapeChange &&
-                                    onShapeChange("", newEncodedShape)
+                                onDraw={onDraw}
+                                onShapeChange={(newShape) =>
+                                    onShapeChange?.([], newShape)
                                 }
                             />
                         ) : (

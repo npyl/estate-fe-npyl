@@ -16,19 +16,6 @@ const formatPrice = (price: any) => {
     return new Intl.NumberFormat("de-DE").format(price);
 };
 
-const isEmptyOrComma = (str: string | string[]): boolean => {
-    if (typeof str === "string") {
-        return !str || str.trim() === "" || str.trim() === ",";
-    } else if (Array.isArray(str)) {
-        return (
-            str.length === 0 ||
-            (str.length === 1 &&
-                (str[0].trim() === "" || str[0].trim() === ","))
-        );
-    }
-    return true;
-};
-
 const getRangeDisplayValueForYearOfConstruction = (
     min: number | null | undefined,
     max: number | null | undefined
@@ -85,7 +72,7 @@ const CustomerDemand: FC<CustomerDemandProps> = ({ demand }) => {
 
     const demandFilters = demand?.filters;
     const demandFilterLabelIDs = demandFilters?.labels;
-    const shapes = demand?.shapes;
+    const shapes = demand?.shapeList;
 
     const selectedLabels = useMemo(
         () =>
@@ -96,31 +83,6 @@ const CustomerDemand: FC<CustomerDemandProps> = ({ demand }) => {
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );
-
-    if (
-        !demandFilters?.minYearOfConstruction &&
-        !demandFilters?.maxYearOfConstruction &&
-        !demandFilters?.minBedrooms &&
-        !demandFilters?.maxBedrooms &&
-        !demandFilters?.minCovered &&
-        !demandFilters?.maxCovered &&
-        !demandFilters?.minPrice &&
-        !demandFilters?.maxPrice &&
-        !demandFilters?.minBathrooms &&
-        !demandFilters?.maxBathrooms &&
-        !demandFilters?.minPlot &&
-        !demandFilters?.maxPlot &&
-        !demandFilters?.minFloor &&
-        !demandFilters?.maxFloor &&
-        demandFilters?.labels.length === 0 &&
-        (!shapes || shapes?.length === 0) &&
-        !demand?.timeframe &&
-        isEmptyOrComma(demandFilters?.parentCategories.map((i) => i.key)) &&
-        isEmptyOrComma(demandFilters?.furnished.map((i) => i.key)) &&
-        isEmptyOrComma(demandFilters?.categories.map((i) => i.key)) &&
-        isEmptyOrComma(demandFilters?.states.map((i) => i.key))
-    )
-        return null;
 
     return (
         <>

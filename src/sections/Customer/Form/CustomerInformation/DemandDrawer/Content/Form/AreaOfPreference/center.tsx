@@ -1,12 +1,13 @@
-import { IMapCoordinates, ShapeData } from "@/components/Map/types";
+import { IMapCoordinates } from "@/components/Map/types";
 import { getShapeCenter } from "@/components/Map/util";
 import Iconify from "@/components/iconify";
+import { TShape } from "@/types/shape";
 import Button from "@mui/material/Button";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-    shapes: ShapeData[];
+    shapes: TShape[];
     onChange: (l: IMapCoordinates) => void;
 }
 

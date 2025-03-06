@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import Map, { IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
+import { drawingToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
 import { selectAll, setPoints, resetPoints } from "src/slices/filters";
@@ -10,6 +10,7 @@ import { MarkerF, MarkerProps } from "@react-google-maps/api";
 import getMarkerId from "../getMarkerId";
 import dynamic from "next/dynamic";
 import { useMarkerRefsContext } from "../context";
+import { TShape } from "@/types/shape";
 const PropertyInfoWindow = dynamic(() => import("./PropertyInfoWindow"));
 
 // ----------------------------------------------------------------------------------
@@ -65,16 +66,13 @@ const MapSection = () => {
         lng: 21.734573,
     });
 
-    const handleDraw = (shape: DrawShape | StopDraw) =>
-        dispatch(
-            shape
-                ? setPoints(convertShapeToPoints(encodeShape(shape)))
-                : resetPoints()
-        );
+    const handleDraw = useCallback((shape: DrawShape | StopDraw) => {
+        const cb = shape ? setPoints(drawingToPoints(shape)) : resetPoints();
+        dispatch(cb);
+    }, []);
 
     const handleChange = useDebouncedCallback(
-        (_: any, newEncodedShape: string) =>
-            dispatch(setPoints(convertShapeToPoints(newEncodedShape))),
+        (_: any, newShape: TShape) => dispatch(setPoints(newShape)),
         150
     );
 

@@ -68,7 +68,7 @@ const EMTPY_DEMAND: IDemandPOST = {
         withinCityPlan: false,
         loadingDock: false,
     },
-    shapes: [],
+    shapeList: [],
     timeframe: "",
 };
 
