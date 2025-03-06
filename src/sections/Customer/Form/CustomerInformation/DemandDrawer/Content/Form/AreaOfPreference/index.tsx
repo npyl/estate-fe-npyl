@@ -12,7 +12,7 @@ import { areShapesEqual, drawingToPoints } from "@/components/Map/util";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
-} from "src/services/location";
+} from "@/services/location";
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
 import { demandName, filterName } from "../util";
@@ -102,8 +102,10 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
     );
 
     const handleDraw = (s: DrawShape | StopDraw) => {
-        if (!s) setValue(shapesName, []); // clear
-        else {
+        if (!s) {
+            // clear
+            setValue(shapesName, []);
+        } else {
             const encoded = drawingToPoints(s);
             setValue(shapesName, [...watch(shapesName), encoded]); // add
         }
@@ -211,7 +213,6 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                         search
                         multipleShapes
                         mainMarker={mainMarker}
-                        shapes={shapeList}
                         onDraw={handleDraw}
                         onShapeChange={handleShapeChange}
                         onDragEnd={handleMarkerDragEnd}
