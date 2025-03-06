@@ -12,17 +12,17 @@ function getPolygonCentroid(shape: TShape): google.maps.LatLngLiteral {
         const next = shape[(i + 1) % shape.length]; // Wrap to first point if on last point
 
         // Skip any points with null coordinates (shouldn't happen for polygons, but just in case)
-        if (current[1] === null || next[1] === null) {
+        if (current.y === null || next.y === null) {
             continue;
         }
 
         // Calculate the "shoelace" formula components
-        const factor = current[0] * next[1] - next[0] * current[1];
+        const factor = current.x * next.y - next.x * current.y;
         area += factor;
 
         // Weighted sums for centroid calculation
-        sumLat += (current[0] + next[0]) * factor;
-        sumLng += (current[1] + next[1]) * factor;
+        sumLat += (current.x + next.x) * factor;
+        sumLng += (current.y + next.y) * factor;
     }
 
     // Finalize area calculation (taking absolute value as area may be negative depending on vertex order)
@@ -36,9 +36,9 @@ function getPolygonCentroid(shape: TShape): google.maps.LatLngLiteral {
         let totalLng = 0;
 
         for (const point of shape) {
-            if (point[1] !== null) {
-                totalLat += point[0];
-                totalLng += point[1];
+            if (point.y !== null) {
+                totalLat += point.x;
+                totalLng += point.y;
                 validPointCount++;
             }
         }
@@ -71,9 +71,9 @@ function getRectangleCenter(
 const getShapeCenter = (s: TShape) => {
     const type = getShapeType(s);
 
-    if (type === "Circle") return { lat: s[0][0], lng: s[0][1]! };
+    if (type === "Circle") return { lat: s[0].x, lng: s[0].y! };
     if (type === "Rectangle")
-        return getRectangleCenter(s[0][0], s[0][1]!, s[1][0], s[1][1]!);
+        return getRectangleCenter(s[0].x, s[0].y!, s[1].x, s[1].y!);
     if (type === "Polygon") return getPolygonCentroid(s);
 };
 

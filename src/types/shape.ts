@@ -3,7 +3,7 @@
  * [x, y]
  * IMPORTANT: Backend requires null for y on a circle
  */
-type TPoint = [number, number | null];
+type TPoint = { x: number; y: number | null };
 type TShape = TPoint[];
 
-export type { TShape };
+export type { TPoint, TShape };

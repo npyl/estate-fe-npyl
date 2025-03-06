@@ -1,5 +1,5 @@
 import { DrawShape } from "../../types";
-import { TShape } from "@/types/shape";
+import { TPoint, TShape } from "@/types/shape";
 import drawCircle from "./_circle";
 import drawRectangle from "./_rectangle";
 import drawPolygon from "./_polygon";
@@ -8,7 +8,7 @@ import drawPolygon from "./_polygon";
 
 type TShapeType = "Circle" | "Rectangle" | "Polygon";
 
-const isNullPoint = (p: [number | null, number | null]) => !p[0] || !p[1];
+const isNullPoint = (p: TPoint) => !p.x || !p.x;
 
 const isNonNullShape = (s: TShape) => {
     if (s.some(isNullPoint)) return false;
@@ -16,7 +16,7 @@ const isNonNullShape = (s: TShape) => {
 };
 
 const getShapeType = (s: TShape): TShapeType | null => {
-    if (s.length === 2 && s[1][1] === null) return "Circle";
+    if (s.length === 2 && s[1].y === null) return "Circle";
     if (s.length === 2 && isNonNullShape(s)) return "Rectangle";
     if (s.length > 2 && isNonNullShape(s)) return "Polygon";
     return null;
@@ -38,9 +38,9 @@ const drawShape = (
 
     if (type === "Circle") {
         // For circles: shape[0] is center point [x, y], shape[1] is [radius, null]
-        const centerLat = shape[0][1]; // y-coordinate is latitude
-        const centerLng = shape[0][0]; // x-coordinate is longitude
-        const radius = shape[1][0]; // radius is x-coordinate of second point
+        const centerLat = shape[0].y; // y-coordinate is latitude
+        const centerLng = shape[0].x; // x-coordinate is longitude
+        const radius = shape[1].x; // radius is x-coordinate of second point
 
         if (centerLat === null || !centerLng || !radius) return null;
 
@@ -55,8 +55,8 @@ const drawShape = (
             maxLng = -Infinity;
 
         for (const point of shape) {
-            const lat = point[1];
-            const lng = point[0];
+            const lat = point.y;
+            const lng = point.x;
 
             if (lat === null) return null; // All points in a rectangle must have valid lat
 
@@ -74,8 +74,8 @@ const drawShape = (
         const points: google.maps.LatLngLiteral[] = [];
 
         for (const point of shape) {
-            const lng = point[0];
-            const lat = point[1];
+            const lng = point.x;
+            const lat = point.y;
 
             // All points in a polygon must have valid lat
             if (lat === null) return null;
@@ -98,7 +98,41 @@ const drawShape = (
  * Converts a google.maps.{Shape} to TShape
  */
 function drawingToPoints(draw: DrawShape): TShape {
-    const pointsArray: any = [];
+    const pointsArray: TShape = [];
+
+    if (draw instanceof google.maps.Rectangle) {
+        // For a Rectangle, we need the bounds (northeast and southwest corners)
+        const bounds = draw.getBounds();
+        if (bounds) {
+            const ne = bounds.getNorthEast();
+            const sw = bounds.getSouthWest();
+
+            // Add the four corners of the rectangle
+            pointsArray.push({ x: sw.lng(), y: sw.lat() }); // southwest
+            pointsArray.push({ x: ne.lng(), y: sw.lat() }); // southeast
+            pointsArray.push({ x: ne.lng(), y: ne.lat() }); // northeast
+            pointsArray.push({ x: sw.lng(), y: ne.lat() }); // northwest
+        }
+    } else if (draw instanceof google.maps.Circle) {
+        // For a Circle, we need the center and radius
+        const center = draw.getCenter();
+        const radius = draw.getRadius();
+
+        if (center) {
+            // IMPORTANT: Backend requires null for y on a circle
+            pointsArray.push({ x: center.lng(), y: center.lat() }); // center
+            pointsArray.push({ x: radius, y: null }); // radius with null y as required
+        }
+    } else if (draw instanceof google.maps.Polygon) {
+        // For a Polygon, we need all path points
+        const path = draw.getPath();
+
+        for (let i = 0; i < path.getLength(); i++) {
+            const point = path.getAt(i);
+            pointsArray.push({ x: point.lng(), y: point.lat() });
+        }
+    }
+
     return pointsArray;
 }
 
@@ -122,21 +156,21 @@ const areShapesEqual = (s0: TShape, s1: TShape): boolean => {
     // For circles (points with null y-coordinate), we only compare x coordinates
     // which represent radius
     const isCircle =
-        s0.some((point) => point[1] === null) ||
-        s1.some((point) => point[1] === null);
+        s0.some((point) => point.y === null) ||
+        s1.some((point) => point.y === null);
 
     if (isCircle) {
         // For circles, make sure both shapes have null y values
-        const s0HasNullY = s0.some((point) => point[1] === null);
-        const s1HasNullY = s1.some((point) => point[1] === null);
+        const s0HasNullY = s0.some((point) => point.y === null);
+        const s1HasNullY = s1.some((point) => point.y === null);
 
         if (s0HasNullY !== s1HasNullY) {
             return false;
         }
 
         // For circles, we only need to compare the x values (radius)
-        const s0Radii = s0.map((point) => point[0]);
-        const s1Radii = s1.map((point) => point[0]);
+        const s0Radii = s0.map((point) => point.x);
+        const s1Radii = s1.map((point) => point.x);
 
         // Check if the arrays contain the same values
         return (
@@ -150,13 +184,13 @@ const areShapesEqual = (s0: TShape, s1: TShape): boolean => {
     return (
         s0.every((point0) => {
             return s1.some(
-                (point1) => point0[0] === point1[0] && point0[1] === point1[1]
+                (point1) => point0.x === point1.x && point0.y === point1.y
             );
         }) &&
         // And also check if each point in s1 exists in s0 (to ensure both directions)
         s1.every((point1) => {
             return s0.some(
-                (point0) => point1[0] === point0[0] && point1[1] === point0[1]
+                (point0) => point1.x === point0.x && point1.y === point0.y
             );
         })
     );
