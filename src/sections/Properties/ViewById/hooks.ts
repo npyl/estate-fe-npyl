@@ -25,9 +25,10 @@ export const useGetDescription = (editorRef: RefObject<EditorRef>) => {
         if (!selected) return;
 
         const { description, title } = selected;
+        const sDescription = JSON.parseSafe(description);
 
         setTitle(title);
-        editorRef.current?.commands.setContent(description);
+        editorRef.current?.commands.setContent(sDescription);
     }, []);
 
     useLayoutEffect(() => {
