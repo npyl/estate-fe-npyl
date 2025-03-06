@@ -13,8 +13,6 @@ import Strike from "@tiptap/extension-strike";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Indent from "./extensions/Indent";
-import { Highlight } from "./extensions/Highlight";
-import { TextStyle } from "./extensions/TextStyle";
 import Link from "@tiptap/extension-link";
 
 const TEXT_TYPES = ["heading", "paragraph", "listItem"];
@@ -44,9 +42,6 @@ const extensions = [
         maxLevel: 8,
     }),
     Link,
-    // ...
-    Highlight,
-    TextStyle,
 ];
 
 export { extensions };
