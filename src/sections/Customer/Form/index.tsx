@@ -23,9 +23,10 @@ interface FormProps {
     isLoading: boolean;
     isError: boolean;
     onSave: (body: ICustomerPOST) => Promise<any | { error: "" }>;
-    onSaveSuccess?: VoidFunction;
+    onSaveSuccess?: (res: any) => void;
     onCancel: () => void;
 }
+
 const COLUMN_GRID = (compact: boolean) =>
     compact
         ? {

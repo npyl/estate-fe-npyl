@@ -11,15 +11,6 @@ const getMarker =
     (m: IMapCoordinates, index: number) => {
         const key = `${m.lat}-${m.lng}-${m.propertyId}`;
 
-        // const animation =
-        //     m !== mainMarker && activeMarker === ind
-        //         ? google.maps.Animation.BOUNCE
-        //         : undefined; // Set to null when not active
-
-        // onMouseUp={() => setActiveMarker?.(index)}
-        // animation={animation}
-        // draggable={onDragEnd && m === mainMarker}
-
         return (
             <Marker
                 key={key}
