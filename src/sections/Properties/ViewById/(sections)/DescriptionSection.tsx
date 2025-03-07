@@ -1,25 +1,15 @@
-import { Box, Divider, Typography } from "@mui/material";
-import { EditorState, convertFromRaw } from "draft-js";
-import { useMemo } from "react";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import DraftEditor from "@/components/draft-editor";
+import Editor, { EditorRef } from "@/components/Editor";
 import { useGetDescription } from "../hooks";
 import PanelWithQuickView from "../PanelWithQuickView";
+import { useMemo, useRef } from "react";
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
 
-    const { description, title } = useGetDescription();
-
-    const editorState = useMemo(() => {
-        if (!description) return EditorState.createEmpty();
-
-        const json = JSON.parseSafe(description);
-        if (!json) return EditorState.createEmpty();
-
-        const contentState = convertFromRaw(json);
-        return EditorState.createWithContent(contentState);
-    }, [description]);
+    const editorRef = useRef<EditorRef>(null);
+    const { title } = useGetDescription(editorRef);
 
     return (
         <PanelWithQuickView hideHeader label="DescriptionSection">
@@ -46,12 +36,7 @@ const DescriptionSection = () => {
                 <Typography variant="h6">{t("DescriptionSection")}</Typography>
             </Box>
 
-            <DraftEditor
-                editorState={editorState}
-                readOnly
-                toolbarHidden
-                sx={{ border: "unset" }}
-            />
+            <Editor ref={editorRef} editable={false} />
         </PanelWithQuickView>
     );
 };

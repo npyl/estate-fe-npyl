@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Translate from greek": "Translate from greek",
+
             Original: "Original",
             Persisted: "Persisted",
             Saved: "Saved",

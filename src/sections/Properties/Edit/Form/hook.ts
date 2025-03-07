@@ -8,6 +8,7 @@ import {
     codeIsUnique,
     keyCodeIsUnique,
 } from "@/sections/Properties/validators";
+import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { toNumberSafe } from "@/utils/toNumber";
 import { useRouter } from "next/router";
@@ -85,44 +86,49 @@ export const fixDropdowns = (property?: IPropertiesPOST) => ({
     },
 });
 
+const DEFAULT_DESCRIPTION_EL: DescriptionEntryPOST = {
+    description: "",
+    descriptionText: "",
+    title: "",
+    language: "el",
+};
+
+const DEFAULT_DESCRIPTION_EN: DescriptionEntryPOST = {
+    description: "",
+    descriptionText: "",
+    title: "",
+    language: "en",
+};
+
+const DEFAULT_DESCRIPTIONS = [DEFAULT_DESCRIPTION_EL, DEFAULT_DESCRIPTION_EN];
+
+const getDescriptions = (
+    descriptions?: Record<string, DescriptionEntry>
+): DescriptionEntryPOST[] => {
+    if (!descriptions) return DEFAULT_DESCRIPTIONS;
+
+    return [
+        {
+            description: descriptions["el"]?.description || "",
+            descriptionText: "",
+            title: descriptions["el"]?.title || "",
+            language: "el",
+        },
+        {
+            description: descriptions["en"]?.description || "",
+            descriptionText: "",
+            title: descriptions["en"]?.title || "",
+            language: "en",
+        },
+    ];
+};
+
 const getDefaultValues = (property?: IProperties): IPropertyYup => {
-    const indexEN = property?.descriptions
-        ? Object.keys(property?.descriptions)?.findIndex((k) => k === "en")
-        : -1;
-    const indexGR = property?.descriptions
-        ? Object.keys(property?.descriptions)?.findIndex((k) => k === "el")
-        : -1;
-
-    const descriptionGR =
-        (indexEN && property?.descriptions[indexEN]?.description) || "";
-    const descriptionTextGR =
-        (indexEN && property?.descriptions[indexEN]?.descriptionText) || "";
-    const titleGR = (indexEN && property?.descriptions[indexEN]?.title) || "";
-
-    const descriptionEN =
-        (indexGR && property?.descriptions[indexGR]?.description) || "";
-    const descriptionTextEN =
-        (indexGR && property?.descriptions[indexGR]?.descriptionText) || "";
-    const titleEN = (indexGR && property?.descriptions[indexGR]?.title) || "";
-
     return {
         code: property?.code || "",
         state: property?.state?.key || "",
         keyCode: property?.keyCode || "",
-        descriptions: [
-            {
-                description: descriptionGR,
-                descriptionText: descriptionTextGR,
-                title: titleGR,
-                language: "el",
-            },
-            {
-                description: descriptionEN,
-                descriptionText: descriptionTextEN,
-                title: titleEN,
-                language: "en",
-            },
-        ],
+        descriptions: getDescriptions(property?.descriptions),
         managerId: property?.manager?.id || "",
         ownerId: property?.owner?.id || "",
         area: property?.area || undefined,

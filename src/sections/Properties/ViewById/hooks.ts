@@ -1,26 +1,39 @@
+import { EditorRef } from "@/components/Editor";
+import { useLazyGetPropertyByIdQuery } from "@/services/properties";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { RefObject, useCallback, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetPropertyByIdQuery } from "src/services/properties";
 
-export const useGetDescription = () => {
-    // TODO: maybe find a better way to do this...
-    // NOTE: we do not rely on watch() because it causes problem with our flow (useEffect & Draft Editor)
-    const router = useRouter();
+export const useGetDescription = (editorRef: RefObject<EditorRef>) => {
     const { i18n } = useTranslation();
+    const [title, setTitle] = useState("");
+
+    const router = useRouter();
     const { propertyId } = router.query;
+    const [getProperty] = useLazyGetPropertyByIdQuery();
 
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    const fetchAndFill = useCallback(async (lang: string) => {
+        const res = await getProperty(+propertyId!).unwrap();
+        if (!res) return;
 
-    return useMemo(() => {
-        // null object
-        if (!property?.descriptions) return { description: "", title: "" };
+        const { descriptions } = res;
+
         // no elements
-        if (Object.entries(property?.descriptions).length === 0)
-            return { description: "", title: "" };
+        if (Object.entries(descriptions).length === 0) return;
 
-        const selected = property?.descriptions[i18n.language];
+        const selected = descriptions[lang];
+        if (!selected) return;
 
-        return { description: selected.description, title: selected.title };
-    }, [i18n.language, property?.descriptions]);
+        const { description, title } = selected;
+        const sDescription = JSON.parseSafe(description);
+
+        setTitle(title);
+        editorRef.current?.commands.setContent(sDescription);
+    }, []);
+
+    useLayoutEffect(() => {
+        fetchAndFill(i18n.language);
+    }, [i18n.language]);
+
+    return { title };
 };

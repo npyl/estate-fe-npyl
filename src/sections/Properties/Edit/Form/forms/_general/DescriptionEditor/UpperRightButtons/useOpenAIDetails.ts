@@ -8,7 +8,7 @@ const joinWithComma = (...elements: (string | null | undefined)[]): string => {
     return elements.filter((el) => el !== "" && el != null).join(", ");
 };
 
-export const useOpenAIDetails = (
+const useOpenAIDetails = (
     lang: Language
 ): { openAIDetails: IOpenAIDetailsPOST } => {
     const region = useWatch({ name: "location.region" });
@@ -104,3 +104,5 @@ export const useOpenAIDetails = (
         },
     };
 };
+
+export default useOpenAIDetails;

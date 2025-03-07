@@ -2,7 +2,6 @@ import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import PriorityButtonGroup from "./Priority";
 import { FC } from "react";
-import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import Buttons from "./Buttons";
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
@@ -13,6 +12,7 @@ import PropertiesAutocomplete from "./Autocompletes/Properties";
 import CustomerSelect from "./Autocompletes/Customer";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import { AttachmentsProvider } from "./AttachmentsContext";
+import RHFEditor from "@/components/hook-form/RHFEditor";
 const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
@@ -53,12 +53,7 @@ const Content: FC<ContentProps> = ({
             <Divider />
 
             <RHFTextField name="name" label={t("Title")} />
-            <RHFMultilineTextField
-                name="description"
-                label={t("Description")}
-                multiline
-                rows={5}
-            />
+            <RHFEditor name="description" rows={5} />
 
             <PropertiesAutocomplete />
             <CustomerSelect />

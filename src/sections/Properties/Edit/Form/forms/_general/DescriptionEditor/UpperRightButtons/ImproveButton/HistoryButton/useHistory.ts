@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useRef } from "react";
 
-type TValue = object;
+type TValue = any;
 type TPastCb = (b: boolean) => void;
 
 const useHistory = <T extends TValue>(
