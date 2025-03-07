@@ -29,30 +29,44 @@ const Map: FC<IMapProps> = ({
     drawing = true,
     search = false,
     // ...
+    leftCenter,
+    centerTop,
+    // ...
     children,
     ...props
 }) => (
-    <MapContainer {...props}>
-        {!multipleShapes ? (
-            <Draw
-                drawing={drawing}
-                shape={shape}
-                onDraw={onDraw}
-                onShapeChange={(newShape) => onShapeChange?.([], newShape)}
-            />
-        ) : null}
+    <MapContainer
+        leftCenter={
+            <>
+                {drawing && !multipleShapes ? (
+                    <Draw
+                        shape={shape}
+                        onDraw={onDraw}
+                        onShapeChange={(newShape) =>
+                            onShapeChange?.([], newShape)
+                        }
+                    />
+                ) : null}
 
-        {multipleShapes ? (
-            <DrawMultiple
-                drawing={drawing}
-                shapes={shapes}
-                onDraw={onDraw}
-                onShapeChange={onShapeChange}
-            />
-        ) : null}
+                {drawing && multipleShapes ? (
+                    <DrawMultiple
+                        shapes={shapes}
+                        onDraw={onDraw}
+                        onShapeChange={onShapeChange}
+                    />
+                ) : null}
 
-        {search ? <Search onSearchSelect={onSearchSelect} /> : null}
-
+                {leftCenter}
+            </>
+        }
+        centerTop={
+            <>
+                {search ? <Search onSearchSelect={onSearchSelect} /> : null}
+                {centerTop}
+            </>
+        }
+        {...props}
+    >
         {children}
     </MapContainer>
 );

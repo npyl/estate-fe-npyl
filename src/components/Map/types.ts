@@ -1,5 +1,5 @@
 import { TShape } from "@/types/shape";
-import { PropsWithChildren } from "react";
+import { ReactNode } from "react";
 
 export type IMapMarker = IMapCoordinates;
 
@@ -22,7 +22,16 @@ export type DrawShape =
 
 export type StopDraw = null;
 
-interface IMapProps extends PropsWithChildren {
+interface IMapControls {
+    leftTop?: ReactNode;
+    leftCenter?: ReactNode;
+
+    rightTop?: ReactNode;
+
+    centerTop?: ReactNode;
+}
+
+interface IMapProps extends IMapControls {
     onReady?: (m: google.maps.Map) => void;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
     //
@@ -56,6 +65,9 @@ interface IMapProps extends PropsWithChildren {
     drawing?: boolean;
     multipleShapes?: boolean;
     search?: boolean;
+
+    // INFO: Only for e.g. custom markers. For controls use topLeft, centerLeft etc.
+    children?: ReactNode;
 }
 
-export type { IMapProps };
+export type { IMapControls, IMapProps };

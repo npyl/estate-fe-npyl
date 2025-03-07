@@ -28,18 +28,12 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawMultipleProps {
-    drawing: boolean;
     shapes?: TShape[];
     onDraw?: (shape: DrawShape | StopDraw) => void;
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
 }
 
-const DrawMultiple = ({
-    drawing,
-    shapes,
-    onDraw,
-    onShapeChange,
-}: DrawMultipleProps) => {
+const DrawMultiple = ({ shapes, onDraw, onShapeChange }: DrawMultipleProps) => {
     const { mapRef } = useMapContext();
 
     const drawingManagerRef = useRef<any>(null);
@@ -144,7 +138,7 @@ const DrawMultiple = ({
                     drawShape(
                         shape,
                         mapRef.current!,
-                        !!drawing && onShapeChange ? onShapeChange : null
+                        onShapeChange ? onShapeChange : null
                     )
                 )
             );
@@ -169,13 +163,13 @@ const DrawMultiple = ({
         onDraw?.(null);
     };
 
-    return drawing ? (
+    return (
         <Stack
             sx={{
                 padding: 0.5,
                 position: "absolute",
                 left: 10,
-
+                zIndex: 10000,
                 top: "15vh",
                 backgroundColor: "rgba(255, 255, 255, 0.7)", // White background with opacity
                 backdropFilter: "blur(10px)",
@@ -217,7 +211,7 @@ const DrawMultiple = ({
                 <Typography fontSize={10}>Clear</Typography>
             </StyledButton>
         </Stack>
-    ) : null;
+    );
 };
 
 export default DrawMultiple;

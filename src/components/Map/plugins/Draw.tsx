@@ -33,13 +33,12 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawProps {
-    drawing: boolean;
     shape?: TShape;
     onDraw?: (shape: DrawShape | StopDraw) => void;
     onShapeChange?: (newShape: TShape) => void;
 }
 
-const Draw = ({ drawing, shape, onDraw, onShapeChange }: DrawProps) => {
+const Draw = ({ shape, onDraw, onShapeChange }: DrawProps) => {
     const { mapRef } = useMapContext();
 
     const drawingManagerRef = useRef<any>(null);
@@ -131,8 +130,7 @@ const Draw = ({ drawing, shape, onDraw, onShapeChange }: DrawProps) => {
         if (!drawingManagerRef.current) return;
 
         const cb = (_: TShape, newShape: TShape) => {
-            if (!drawing || !onShapeChange) return;
-            onShapeChange(newShape);
+            onShapeChange?.(newShape);
         };
 
         // draw any imported shape
@@ -173,9 +171,6 @@ const Draw = ({ drawing, shape, onDraw, onShapeChange }: DrawProps) => {
         <Stack
             sx={{
                 padding: 0.5,
-                position: "absolute",
-                left: 10,
-                top: "15vh",
                 backgroundColor: "rgba(255, 255, 255, 0.7)", // White background with opacity
                 backdropFilter: "blur(10px)",
                 borderRadius: "5px", // Soften the edges

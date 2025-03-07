@@ -1,116 +1,17 @@
 import { GoogleMap } from "@react-google-maps/api";
-import {
-    CSSProperties,
-    FC,
-    MutableRefObject,
-    useCallback,
-    useRef,
-} from "react";
+import { CSSProperties, FC, useCallback, useRef } from "react";
 import useLoadApi from "../../hook";
 import getAddressFromLatLng from "./getAddressFromLatLng";
-import FullscreenPlugin from "../../plugins/Fullscreen";
-import {
-    IMapAddress,
-    IMapCoordinates,
-    IMapMarker,
-    IMapProps,
-} from "../../types";
-import Marker from "./Marker";
+import { IMapProps } from "../../types";
 import { MapProvider, useMapContext } from "../context";
+import Controls, { ControlsRef } from "./Controls";
+import dynamic from "next/dynamic";
+const Markers = dynamic(() => import("./Markers"));
 
 const containerStyle: CSSProperties = {
     width: "100%",
     height: "100%",
     position: "relative",
-};
-
-const getMarker =
-    (
-        onMarkerDragEnd: (latLng: any, index: number) => void,
-        onClick: (m: IMapCoordinates, index: number) => void
-    ) =>
-    (m: IMapCoordinates, index: number) => {
-        const key = `${m.lat}-${m.lng}-${m.propertyId}`;
-
-        // const animation =
-        //     m !== mainMarker && activeMarker === ind
-        //         ? google.maps.Animation.BOUNCE
-        //         : undefined; // Set to null when not active
-
-        // onMouseUp={() => setActiveMarker?.(index)}
-        // animation={animation}
-        // draggable={onDragEnd && m === mainMarker}
-
-        return (
-            <Marker
-                key={key}
-                m={m}
-                onClick={() => onClick(m, index)}
-                onDragEnd={(e) => onMarkerDragEnd(e.latLng, index)}
-            />
-        );
-    };
-
-interface MarkersProps {
-    geocoderRef: MutableRefObject<google.maps.Geocoder | undefined>;
-
-    onMarkerClick?: (marker: IMapMarker) => void;
-
-    setActiveMarker?: (index: number) => void;
-
-    onDragEnd?: (
-        marker: IMapMarker,
-        newLat: number,
-        newLng: number,
-        address: IMapAddress
-    ) => void;
-
-    markers: IMapMarker[];
-}
-
-const Markers: FC<MarkersProps> = ({
-    geocoderRef,
-    markers,
-    onMarkerClick,
-    setActiveMarker,
-    onDragEnd,
-}) => {
-    const handleClick = (m: IMapCoordinates, index: number) => {
-        onMarkerClick?.(m);
-        // Start the bounce animation, then stop after 2 seconds
-        setActiveMarker?.(index);
-    };
-
-    //
-    // 	Markers
-    //
-    const onMarkerDragEnd = useCallback(
-        async (latLng: any, index: number) => {
-            if (!onDragEnd) return;
-            if (!markers) return;
-
-            const lat = latLng.lat();
-            const lng = latLng.lng();
-
-            const response = await getAddressFromLatLng(
-                lat,
-                lng,
-                geocoderRef.current
-            );
-
-            if (!response) return;
-
-            onDragEnd(markers[index], lat, lng, response);
-        },
-        [markers, onDragEnd]
-    );
-
-    return (
-        <>
-            {/* Markers */}
-            {markers.map(getMarker(onMarkerDragEnd, handleClick))}
-        </>
-    );
 };
 
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
@@ -127,11 +28,17 @@ const MapContainer: FC<IMapProps> = ({
     activeMarker,
     setActiveMarker,
     // ...
+    leftTop,
+    leftCenter,
+    rightTop,
+    centerTop,
+    // ...
     children,
     ...props
 }) => {
     const { mapRef } = useMapContext();
     const geocoderRef = useRef<google.maps.Geocoder>();
+    const controlsRef = useRef<ControlsRef>(null);
 
     const { isLoaded } = useLoadApi();
 
@@ -140,11 +47,14 @@ const MapContainer: FC<IMapProps> = ({
         mainMarker?.lat && mainMarker?.lng ? mainMarker : athensLatLng;
 
     const onLoad = useCallback((map: google.maps.Map) => {
+        // geocoder
+        geocoderRef.current = new window.google.maps.Geocoder();
+
         // map
         mapRef.current = map;
 
-        // geocoder
-        geocoderRef.current = new window.google.maps.Geocoder();
+        // load controls
+        controlsRef.current?.load();
 
         onReady?.(map);
     }, []);
@@ -190,17 +100,26 @@ const MapContainer: FC<IMapProps> = ({
             }}
             {...props}
         >
-            <FullscreenPlugin />
+            <Controls
+                ref={controlsRef}
+                // ...
+                centerTop={centerTop}
+                leftCenter={leftCenter}
+                leftTop={leftTop}
+                rightTop={rightTop}
+            />
 
             {children}
 
-            <Markers
-                geocoderRef={geocoderRef}
-                markers={markers}
-                onMarkerClick={onMarkerClick}
-                onDragEnd={onDragEnd}
-                setActiveMarker={setActiveMarker}
-            />
+            {markers ? (
+                <Markers
+                    geocoderRef={geocoderRef}
+                    markers={markers}
+                    onMarkerClick={onMarkerClick}
+                    onDragEnd={onDragEnd}
+                    setActiveMarker={setActiveMarker}
+                />
+            ) : null}
         </GoogleMap>
     );
 };

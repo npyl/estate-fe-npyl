@@ -118,17 +118,18 @@ const LocationSection = () => {
                             search={!isPinLocked}
                             zoom={10}
                             drawing={false}
+                            rightTop={
+                                <PinLock
+                                    locked={isPinLocked}
+                                    onToggle={togglePinLock}
+                                />
+                            }
                             markers={[mainMarker]}
                             mainMarker={mainMarker}
                             onDragEnd={onDragMethod}
                             onClick={onClickMethod}
                             onSearchSelect={onSearchMethod}
-                        >
-                            <PinLock
-                                locked={isPinLocked}
-                                onToggle={togglePinLock}
-                            />
-                        </Map>
+                        />
                     </Box>
                 </Box>
 
