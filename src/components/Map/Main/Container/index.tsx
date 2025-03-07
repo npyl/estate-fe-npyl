@@ -31,7 +31,7 @@ const MapContainer: FC<IMapProps> = ({
     children,
     ...props
 }) => {
-    const { map, setMap } = useMapContext();
+    const { mapRef } = useMapContext();
     const geocoderRef = useRef<google.maps.Geocoder>();
     const controlsRef = useRef<ControlsRef>(null);
 
@@ -46,7 +46,7 @@ const MapContainer: FC<IMapProps> = ({
         geocoderRef.current = new window.google.maps.Geocoder();
 
         // map
-        setMap(map);
+        mapRef.current = map;
 
         // load controls
         controlsRef.current?.load();
