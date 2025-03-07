@@ -2,10 +2,9 @@ import { styled } from "@mui/material/styles";
 import PlacesAutocomplete from "./PlacesAutocomplete";
 
 const StyledAutocomplete = styled(PlacesAutocomplete)({
-    position: "absolute",
-    width: "30%",
-    top: 9,
+    width: "52%",
     left: "50%",
+    zIndex: 1,
     transform: "translateX(-50%)",
     backgroundColor: "white",
     borderRadius: "20px",

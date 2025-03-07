@@ -26,6 +26,7 @@ interface FormProps {
     onSaveSuccess?: VoidFunction;
     onCancel: () => void;
 }
+
 const COLUMN_GRID = (compact: boolean) =>
     compact
         ? {

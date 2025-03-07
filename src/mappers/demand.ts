@@ -33,10 +33,9 @@ const demandFiltersMapper = (
 });
 
 const demandMapper = (demand: IDemand): IDemandPOST => ({
+    ...demand,
     filters: demandFiltersMapper(demand.filters),
-    priorityFeatures: demand.priorityFeatures,
     timeframe: demand.timeframe.key,
-    shapes: demand.shapes,
 });
 
 export { demandMapper, demandFiltersMapper };

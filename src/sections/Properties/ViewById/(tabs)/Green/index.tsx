@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
-import { useLoadApi } from "src/components/Map";
+import { useLoadApi } from "@/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import Grid from "@mui/material/Grid";
 import ModesButtons from "./ModesButtons";

@@ -1,3 +1,14 @@
+import { TShape } from "@/types/shape";
+import { ReactNode } from "react";
+
+export type IMapMarker = IMapCoordinates;
+
+export interface IMapAddress {
+    street: string;
+    number: string;
+    zipCode: string;
+}
+
 export interface IMapCoordinates {
     lat: number;
     lng: number;
@@ -11,16 +22,49 @@ export type DrawShape =
 
 export type StopDraw = null;
 
-export type ShapeData =
-    | {
-          type: "Polygon";
-          paths: google.maps.LatLngLiteral[][];
-      }
-    | { type: "Circle"; lat: number; lng: number; radius: number }
-    | {
-          type: "Rectangle";
-          nelat: number;
-          nelng: number;
-          swlat: number;
-          swlng: number;
-      };
+interface IMapControls {
+    leftTop?: ReactNode;
+    leftCenter?: ReactNode;
+
+    rightTop?: ReactNode;
+
+    centerTop?: ReactNode;
+}
+
+interface IMapProps extends IMapControls {
+    onReady?: (m: google.maps.Map) => void;
+    onClick?: (lat: number, lng: number, address: IMapAddress) => void;
+    //
+    // Marker
+    //
+    onMarkerClick?: (marker: IMapMarker) => void;
+    onDragEnd?: (
+        marker: IMapMarker,
+        newLat: number,
+        newLng: number,
+        address: IMapAddress
+    ) => void;
+    //
+    // Shape
+    //
+    onDraw?: (shape: DrawShape | StopDraw) => void;
+    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
+    //
+    // Search
+    //
+    onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
+
+    zoom?: number;
+    shape?: TShape;
+    shapes?: TShape[];
+    mainMarker?: IMapMarker;
+
+    drawing?: boolean;
+    multipleShapes?: boolean;
+    search?: boolean;
+
+    // INFO: Only for e.g. custom markers. For controls use topLeft, centerLeft etc.
+    children?: ReactNode;
+}
+
+export type { IMapControls, IMapProps };

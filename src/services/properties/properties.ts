@@ -211,11 +211,11 @@ export const properties = apiWithTranslation({
         }),
 
         suggestForCustomer: builder.query<
-            IProperties[],
+            IPage<IProperties>,
             ISuggestForCustomerParams
         >({
             query: (params) => ({
-                url: "/customerSuggest-list",
+                url: "/customerSuggest",
                 params,
             }),
             providesTags: ["SuggestedProperties"],

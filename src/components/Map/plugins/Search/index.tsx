@@ -2,11 +2,11 @@ import { useRef, FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
-import { IMapAddress } from "../../Map";
-import getAddressComponent from "../../util/getAddressComponent";
 import dynamic from "next/dynamic";
 import { StyledAutocomplete } from "./styled";
 import { PlacesAutocompleteRef } from "./types";
+import { IMapAddress } from "@/components/Map/types";
+import getAddressComponent from "@/components/Map/util/getAddressComponent";
 const Popover = dynamic(() => import("./Popover"));
 
 interface SearchProps {

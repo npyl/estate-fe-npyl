@@ -1,31 +1,25 @@
 import { SpaceBetween } from "@/components/styled";
 import { Box, Grid, Typography } from "@mui/material";
-import {
-    FC,
-    Suspense,
-    lazy,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import MunicipSelectDemands from "./MunicipSelectDemands";
 import NeighbourSelectDemands from "./NeighbourSelectDemands";
 import RegionSelectDemands from "./RegionSelectDemands";
-import Map, { IMapMarker } from "src/components/Map/Map";
-import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
-import { decodeShape, encodeShape } from "src/components/Map/util";
+import Map, { IMapMarker } from "@/components/Map";
+import { DrawShape, StopDraw } from "@/components/Map/types";
+import { areShapesEqual, drawingToPoints } from "@/components/Map/util";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
-} from "src/services/location";
+} from "@/services/location";
 import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
 import { demandName, filterName } from "../util";
 import debugLog from "@/_private/debugLog";
-const NextShapeCenter = lazy(() => import("./center"));
+import dynamic from "next/dynamic";
+import { TShape } from "@/types/shape";
+const NextShapeCenter = dynamic(() => import("./center"));
 
 enum ZOOM_LEVELS {
     REGION = 10,
@@ -46,7 +40,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
             regionsName: filterName("regions", index),
             citiesName: filterName("cities", index),
             complexesName: filterName("complexes", index),
-            shapesName: demandName("shapes", index),
+            shapesName: demandName("shapeList", index),
         }),
         []
     );
@@ -54,35 +48,9 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
     const regions = (useWatch({ name: regionsName }) as string[]) || [];
     const cities = (useWatch({ name: citiesName }) as string[]) || [];
     const complexes = (useWatch({ name: complexesName }) as string[]) || [];
-    const shapes = (useWatch({ name: shapesName }) as string[]) || [];
-
-    // Initialize state from watched values to hold the actual valies of Regions , Municipalities and Neighbourhoods
-    const [selectedRegions, setSelectedRegions] = useState<string[]>(regions);
-    const [selectedMunicipalities, setSelectedMunicipalities] =
-        useState<string[]>(cities);
-    const [selectedNeighbours, setSelectedNeighbours] =
-        useState<string[]>(complexes);
-
-    useEffect(() => {
-        setSelectedRegions(regions);
-    }, [regions]);
-
-    useEffect(() => {
-        setSelectedMunicipalities(cities);
-    }, [cities]);
-
-    useEffect(() => {
-        setSelectedNeighbours(complexes);
-    }, [complexes]);
 
     // current demand's decoded shapes
-    const shapeData = useMemo(
-        () =>
-            shapes
-                .map(decodeShape)
-                .filter((decoded) => !!decoded) as ShapeData[],
-        [shapes]
-    );
+    const shapeList = (useWatch({ name: shapesName }) as TShape[]) || [];
 
     const [getClosestQuery] = useLazyGetClosestQuery();
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
@@ -134,24 +102,25 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
     );
 
     const handleDraw = (s: DrawShape | StopDraw) => {
-        if (!s) setValue(shapesName, []); // clear
-        else {
-            const encoded = encodeShape(s);
+        if (!s) {
+            // clear
+            setValue(shapesName, []);
+        } else {
+            const encoded = drawingToPoints(s);
             setValue(shapesName, [...watch(shapesName), encoded]); // add
         }
     };
+
     const handleShapeChange = useDebouncedCallback(
         useCallback(
-            (encodedOldShape: string, encodedNewShape: string) => {
-                const updatedShapes = shapes.map((shapeString) =>
-                    shapeString === encodedOldShape
-                        ? encodedNewShape
-                        : shapeString
+            (oldShape: TShape, newShape: TShape) => {
+                const updatedShapes = shapeList.map((shape) =>
+                    areShapesEqual(shape, oldShape) ? newShape : shape
                 );
 
                 setValue(shapesName, updatedShapes);
             },
-            [shapesName, shapes]
+            [shapesName, shapeList]
         ),
         100
     );
@@ -189,7 +158,6 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
 
     const handleRegionChange = useCallback(
         (regions: string[]) => {
-            setSelectedRegions(regions);
             setValue(regionsName, regions); // Update form value
         },
         [regionsName]
@@ -202,8 +170,6 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                 setZoom(ZOOM_LEVELS.MUNICIP);
             }
 
-            // update form value
-            setSelectedMunicipalities(municipCodes);
             setValue(citiesName, municipCodes);
         },
         [citiesName]
@@ -216,20 +182,9 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                 setZoom(ZOOM_LEVELS.NEIGHB);
             }
 
-            // update form value
-            setSelectedNeighbours(neighbourCodes);
             setValue(complexesName, neighbourCodes);
         },
         [complexesName]
-    );
-
-    const municipCodes = useMemo(
-        () => selectedMunicipalities,
-        [selectedMunicipalities]
-    );
-    const neighbourCodes = useMemo(
-        () => selectedNeighbours,
-        [selectedNeighbours]
     );
 
     return (
@@ -238,18 +193,16 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                 <Typography variant="h6">{t("Area of Preference")}</Typography>
 
                 {/* For many shapes center */}
-                {shapeData.length > 1 ? (
-                    <Suspense>
-                        <NextShapeCenter
-                            shapes={shapeData}
-                            onChange={setMainMarker}
-                        />
-                    </Suspense>
+                {shapeList.length > 1 ? (
+                    <NextShapeCenter
+                        shapes={shapeList}
+                        onChange={setMainMarker}
+                    />
                 ) : null}
             </SpaceBetween>
 
-            {shapeData.length > 0 ? (
-                <AutoCenter shape={shapeData[0]} onCenter={setMainMarker} />
+            {shapeList.length > 0 ? (
+                <AutoCenter shape={shapeList[0]} onCenter={setMainMarker} />
             ) : null}
 
             <Box>
@@ -260,7 +213,6 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                         search
                         multipleShapes
                         mainMarker={mainMarker}
-                        shapes={shapeData}
                         onDraw={handleDraw}
                         onShapeChange={handleShapeChange}
                         onDragEnd={handleMarkerDragEnd}
@@ -273,21 +225,21 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
             <Grid container spacing={2} p={1}>
                 <Grid item xs={4}>
                     <RegionSelectDemands
-                        selectedRegions={selectedRegions}
+                        selectedRegions={regions}
                         onChange={handleRegionChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
                     <MunicipSelectDemands
-                        regionCodes={selectedRegions}
-                        municipCodes={municipCodes || []}
+                        regionCodes={regions}
+                        municipCodes={cities}
                         onChange={handleMunicipChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
                     <NeighbourSelectDemands
-                        municipCodes={selectedMunicipalities}
-                        neighbourCodes={neighbourCodes || []}
+                        municipCodes={cities}
+                        neighbourCodes={complexes}
                         onChange={handleNeighbourChange}
                     />
                 </Grid>
