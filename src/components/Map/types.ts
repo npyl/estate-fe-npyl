@@ -54,13 +54,10 @@ interface IMapProps extends IMapControls {
     //
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
-    markers?: IMapMarker[];
     zoom?: number;
     shape?: TShape;
     shapes?: TShape[];
     mainMarker?: IMapMarker;
-    activeMarker?: number;
-    setActiveMarker?: any;
 
     drawing?: boolean;
     multipleShapes?: boolean;

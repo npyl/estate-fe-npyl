@@ -124,7 +124,6 @@ const LocationSection = () => {
                                     onToggle={togglePinLock}
                                 />
                             }
-                            markers={[mainMarker]}
                             mainMarker={mainMarker}
                             onDragEnd={onDragMethod}
                             onClick={onClickMethod}

@@ -5,8 +5,6 @@ import getAddressFromLatLng from "./getAddressFromLatLng";
 import { IMapProps } from "../../types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
-import dynamic from "next/dynamic";
-const Markers = dynamic(() => import("./Markers"));
 
 const containerStyle: CSSProperties = {
     width: "100%",
@@ -22,11 +20,8 @@ const MapContainer: FC<IMapProps> = ({
     onMarkerClick,
     onDragEnd,
     // ...
-    markers = [],
     zoom,
     mainMarker,
-    activeMarker,
-    setActiveMarker,
     // ...
     leftTop,
     leftCenter,
@@ -110,16 +105,6 @@ const MapContainer: FC<IMapProps> = ({
             />
 
             {children}
-
-            {markers ? (
-                <Markers
-                    geocoderRef={geocoderRef}
-                    markers={markers}
-                    onMarkerClick={onMarkerClick}
-                    onDragEnd={onDragEnd}
-                    setActiveMarker={setActiveMarker}
-                />
-            ) : null}
         </GoogleMap>
     );
 };
