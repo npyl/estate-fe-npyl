@@ -23,7 +23,7 @@ interface FormProps {
     isLoading: boolean;
     isError: boolean;
     onSave: (body: ICustomerPOST) => Promise<any | { error: "" }>;
-    onSaveSuccess?: (res: any) => void;
+    onSaveSuccess?: VoidFunction;
     onCancel: () => void;
 }
 
