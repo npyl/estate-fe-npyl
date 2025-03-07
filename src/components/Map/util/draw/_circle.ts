@@ -9,7 +9,8 @@ const drawCircle = (
     map: google.maps.Map,
     onChange: ((oldShape: TShape, newShape: TShape) => void) | null
 ) => {
-    const circleConfig = {
+    const circleConfig: google.maps.CircleOptions = {
+        map,
         clickable: true,
         editable: !!onChange,
         draggable: !!onChange,
@@ -21,14 +22,14 @@ const drawCircle = (
         zIndex: 1,
     };
 
-    const circle = new google.maps.Circle({ ...circleConfig, map });
-    const encodedOldShape = drawingToPoints(circle);
+    const circle = new google.maps.Circle(circleConfig);
+    const oldShape = drawingToPoints(circle);
 
     // Support shape drag/change
     if (onChange) {
-        setShapeEvents(circle, () =>
-            onChange(encodedOldShape, drawingToPoints(circle))
-        );
+        const shape = drawingToPoints(circle);
+        const cb = () => onChange(oldShape, shape);
+        setShapeEvents(circle, cb);
     }
 
     return circle;

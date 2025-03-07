@@ -4,9 +4,9 @@ import { IMapProps } from "../types";
 import MapContainer from "./Container";
 
 // plugins
-const Draw = dynamic(() => import("../plugins/Draw"));
+const Draw = dynamic(() => import("../plugins/Draw/Single"));
+const DrawMultiple = dynamic(() => import("../plugins/Draw/Multiple"));
 const Search = dynamic(() => import("../plugins/Search"));
-const DrawMultiple = dynamic(() => import("../plugins/DrawMultiple"));
 
 //--------------------------------------------------------
 //
@@ -23,7 +23,6 @@ const Map: FC<IMapProps> = ({
     onDraw,
     onShapeChange,
     onSearchSelect,
-    shape,
     shapes,
     multipleShapes = false,
     drawing = true,
@@ -40,11 +39,9 @@ const Map: FC<IMapProps> = ({
             <>
                 {drawing && !multipleShapes ? (
                     <Draw
-                        shape={shape}
+                        shape={shapes?.[0]}
                         onDraw={onDraw}
-                        onShapeChange={(newShape) =>
-                            onShapeChange?.([], newShape)
-                        }
+                        onShapeChange={onShapeChange}
                     />
                 ) : null}
 

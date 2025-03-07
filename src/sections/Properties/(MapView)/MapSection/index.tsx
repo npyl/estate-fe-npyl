@@ -4,7 +4,12 @@ import { DrawShape, StopDraw } from "src/components/Map/types";
 import { drawingToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
-import { selectAll, setPoints, resetPoints } from "src/slices/filters";
+import {
+    selectAll,
+    setPoints,
+    resetPoints,
+    selectPoints,
+} from "src/slices/filters";
 import { useDispatch, useSelector } from "react-redux";
 import { MarkerF, MarkerProps } from "@react-google-maps/api";
 import getMarkerId from "../getMarkerId";
@@ -86,10 +91,14 @@ const MapSection = () => {
         updateMainMarkerCoordinates(lat, lng);
     };
 
+    const shape = useSelector(selectPoints) as unknown as TShape;
+    console.log("shape: ", shape);
+
     return (
         <Map
-            mainMarker={mainMarker}
             drawing
+            shapes={[shape]}
+            mainMarker={mainMarker}
             onDraw={handleDraw}
             onShapeChange={handleChange}
             onSearchSelect={handleSearchSelect}
