@@ -1,21 +1,17 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { DrawShape, StopDraw } from "../../types";
 import setShapeEvents from "../../util/draw/setShapeEvents";
 import { drawingToPoints, drawShape } from "../../util";
 import { TShape } from "@/types/shape";
 import { useMapContext } from "../../Main/context";
+import { DrawProps } from "./types";
 
 const removeShape = (s: DrawShape | StopDraw) => s?.setMap(null);
 
 const drawShapes = (shapes: TShape[], map: google.maps.Map) =>
     shapes.map((s) => drawShape(s, map, null));
 
-const useDraw = (
-    mode: "SINGLE" | "MULTIPLE",
-    shapes: TShape[],
-    onDraw?: (shape: DrawShape | StopDraw) => void,
-    onShapeChange?: (oldShape: TShape, newShape: TShape) => void
-) => {
+const useDraw = ({ mode, shapes, onDraw, onShapeChange }: DrawProps) => {
     const { mapRef } = useMapContext();
     const shapesRef = useRef<DrawShape[] | StopDraw>(null);
     const drawingManagerRef = useRef<google.maps.drawing.DrawingManager>();
@@ -97,7 +93,9 @@ const useDraw = (
             onOverlayComplete
         );
 
-        shapesRef.current = drawShapes(shapes, mapRef.current) as any;
+        if (shapes) {
+            shapesRef.current = drawShapes(shapes, mapRef.current) as any;
+        }
 
         return () => {
             listener.remove();
