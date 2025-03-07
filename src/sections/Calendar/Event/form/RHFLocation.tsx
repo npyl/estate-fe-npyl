@@ -2,7 +2,7 @@
  * This component is used to fill in the location field just the way google calendar api wants it
  */
 
-import { useLoadApi } from "@/components/Map/Main";
+import { useLoadApi } from "@/components/Map";
 import PlacesAutocomplete from "@/components/Map/plugins/Search/PlacesAutocomplete";
 import Popover from "@/components/Map/plugins/Search/Popover";
 import { PlacesAutocompleteRef } from "@/components/Map/plugins/Search/types";

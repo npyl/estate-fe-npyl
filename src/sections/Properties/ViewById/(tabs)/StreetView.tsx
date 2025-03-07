@@ -1,6 +1,6 @@
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useRouter } from "next/router";
-import { StreetViewMap } from "@/components/Map/Main";
+import { StreetViewMap } from "@/components/Map";
 import MapUnavailable from "@/components/Map/MapUnavailable";
 import Box from "@mui/material/Box";
 

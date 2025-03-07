@@ -4,9 +4,9 @@ import { IMapProps } from "../types";
 import MapContainer from "./Container";
 
 // plugins
-const Draw = dynamic(() => import("./plugins/Draw"));
-const Search = dynamic(() => import("./plugins/Search"));
-const DrawMultiple = dynamic(() => import("./plugins/DrawMultiple"));
+const Draw = dynamic(() => import("../plugins/Draw"));
+const Search = dynamic(() => import("../plugins/Search"));
+const DrawMultiple = dynamic(() => import("../plugins/DrawMultiple"));
 
 //--------------------------------------------------------
 //

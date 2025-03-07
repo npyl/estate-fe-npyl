@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Map from "src/components/Map/Map";
-import { useGetMunicipalitiesQuery } from "src/services/location";
+import Map from "@/components/Map";
+import { useGetMunicipalitiesQuery } from "@/services/location";
 import { IDemand } from "@/types/demand";
 import { toNumberSafe } from "@/utils/toNumber";
 import ViewLocationMini from "./ViewLocationMini";

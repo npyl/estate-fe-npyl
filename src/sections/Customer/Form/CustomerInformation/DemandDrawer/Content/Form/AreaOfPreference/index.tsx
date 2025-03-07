@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import MunicipSelectDemands from "./MunicipSelectDemands";
 import NeighbourSelectDemands from "./NeighbourSelectDemands";
 import RegionSelectDemands from "./RegionSelectDemands";
-import Map, { IMapMarker } from "@/components/Map/Map";
+import Map, { IMapMarker } from "@/components/Map";
 import { DrawShape, StopDraw } from "@/components/Map/types";
 import { areShapesEqual, drawingToPoints } from "@/components/Map/util";
 import {

@@ -13,11 +13,10 @@ import {
     ToggleButtonGroup,
     useTheme,
     Typography,
-    Stack,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { useLoadApi } from "@/components/Map/Main";
+import { useLoadApi } from "@/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";

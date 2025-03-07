@@ -8,7 +8,7 @@ import {
 } from "react";
 import useLoadApi from "../../hook";
 import getAddressFromLatLng from "./getAddressFromLatLng";
-import FullscreenPlugin from "../plugins/Fullscreen";
+import FullscreenPlugin from "../../plugins/Fullscreen";
 import {
     IMapAddress,
     IMapCoordinates,
@@ -16,6 +16,7 @@ import {
     IMapProps,
 } from "../../types";
 import Marker from "./Marker";
+import { MapProvider, useMapContext } from "../context";
 
 const containerStyle: CSSProperties = {
     width: "100%",
@@ -36,14 +37,15 @@ const getMarker =
         //         ? google.maps.Animation.BOUNCE
         //         : undefined; // Set to null when not active
 
+        // onMouseUp={() => setActiveMarker?.(index)}
+        // animation={animation}
+        // draggable={onDragEnd && m === mainMarker}
+
         return (
             <Marker
                 key={key}
                 m={m}
-                // onMouseUp={() => setActiveMarker?.(index)}
-                // animation={animation}
                 onClick={() => onClick(m, index)}
-                // draggable={onDragEnd && m === mainMarker}
                 onDragEnd={(e) => onMarkerDragEnd(e.latLng, index)}
             />
         );
@@ -128,7 +130,7 @@ const MapContainer: FC<IMapProps> = ({
     children,
     ...props
 }) => {
-    const mapRef = useRef<google.maps.Map>();
+    const { mapRef } = useMapContext();
     const geocoderRef = useRef<google.maps.Geocoder>();
 
     const { isLoaded } = useLoadApi();
@@ -188,7 +190,7 @@ const MapContainer: FC<IMapProps> = ({
             }}
             {...props}
         >
-            <FullscreenPlugin mapRef={mapRef} />
+            <FullscreenPlugin />
 
             {children}
 
@@ -203,4 +205,10 @@ const MapContainer: FC<IMapProps> = ({
     );
 };
 
-export default MapContainer;
+const MapContainerWrapped: FC<IMapProps> = (props) => (
+    <MapProvider>
+        <MapContainer {...props} />
+    </MapProvider>
+);
+
+export default MapContainerWrapped;

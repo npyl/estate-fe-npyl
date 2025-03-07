@@ -1,10 +1,9 @@
-import { FC, MutableRefObject, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
+import { useMapContext } from "../Main/context";
 
-interface FullscreenPluginProps {
-    mapRef: MutableRefObject<google.maps.Map | undefined>;
-}
+const FullscreenPlugin = () => {
+    const { mapRef } = useMapContext();
 
-const FullscreenPlugin: FC<FullscreenPluginProps> = ({ mapRef }) => {
     // fullscreenElement;
 
     const toggleFullscreen = () => {};

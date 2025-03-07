@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Map from "src/components/Map/Map";
+import Map from "@/components/Map";
 import {
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,

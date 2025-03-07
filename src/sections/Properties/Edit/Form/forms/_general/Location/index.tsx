@@ -1,7 +1,7 @@
 import { Divider, Grid, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useCallback, useState } from "react";
-import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
+import Map, { IMapAddress, IMapMarker } from "@/components/Map";
 import { useTranslation } from "react-i18next";
 import { useFormContext, useWatch } from "react-hook-form";
 import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";

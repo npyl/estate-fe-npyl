@@ -1,10 +1,16 @@
-import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
+import { ReactNode, useCallback, useEffect, useRef } from "react";
+import { Button, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useEffect, useRef } from "react";
 import { TShape } from "@/types/shape";
-import { DrawShape, StopDraw } from "../../types";
-import { drawingToPoints, drawShape } from "../../util";
-import setShapeEvents from "../../util/draw/setShapeEvents";
+import { DrawShape, StopDraw } from "../types";
+import setShapeEvents from "../util/draw/setShapeEvents";
+import { drawingToPoints, drawShape } from "../util";
+import { useMapContext } from "../Main/context";
+
+interface SvgIconProps {
+    children: ReactNode;
+    [key: string]: any; // for other props you might want to pass
+}
 
 const StyledButton = styled(Button)({
     margin: "2px",
@@ -26,26 +32,21 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
     </svg>
 );
 
-interface DrawMultipleProps {
-    map: google.maps.Map;
+interface DrawProps {
     drawing: boolean;
-    shapes?: TShape[];
+    shape?: TShape;
     onDraw?: (shape: DrawShape | StopDraw) => void;
-    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
+    onShapeChange?: (newShape: TShape) => void;
 }
 
-const DrawMultiple = ({
-    map,
-    drawing,
-    shapes,
-    onDraw,
-    onShapeChange,
-}: DrawMultipleProps) => {
+const Draw = ({ drawing, shape, onDraw, onShapeChange }: DrawProps) => {
+    const { mapRef } = useMapContext();
+
     const drawingManagerRef = useRef<any>(null);
-    const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
+    const shapeRef = useRef<DrawShape | StopDraw>(null);
 
     useEffect(() => {
-        if (!map) {
+        if (!mapRef.current) {
             throw "Please DONT pass an undefined mapRef";
         }
 
@@ -56,7 +57,6 @@ const DrawMultiple = ({
                 position: google.maps.ControlPosition.TOP_CENTER,
                 drawingModes: [google.maps.drawing.OverlayType.POLYGON], // Customize the allowed drawing modes
             },
-
             polygonOptions: {
                 // Customize polygon options
                 fillColor: "cyan",
@@ -88,7 +88,7 @@ const DrawMultiple = ({
         });
 
         // Set the map for the DrawingManager
-        drawingManager.setMap(map);
+        drawingManager.setMap(mapRef.current);
 
         google.maps.event.addListener(
             drawingManager,
@@ -98,18 +98,18 @@ const DrawMultiple = ({
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
+                // Remove any previous shape
+                shapeRef.current?.setMap(null);
+
                 const shape = event.overlay as DrawShape;
 
-                shapeRefs.current?.push(shape);
+                shapeRef.current = shape;
 
                 drawingManagerRef.current.setDrawingMode(null);
 
-                /* catch drag/change events */
-                const oldEncodedShape = drawingToPoints(shape);
-
-                if (onShapeChange) {
+                if (shape) {
                     setShapeEvents(shape, () =>
-                        onShapeChange(oldEncodedShape, drawingToPoints(shape))
+                        onShapeChange?.(drawingToPoints(shape))
                     );
                 }
 
@@ -125,56 +125,56 @@ const DrawMultiple = ({
             drawingManagerRef.current = null;
             drawingManager.setMap(null);
         };
-    }, [map]);
+    }, []);
 
     useEffect(() => {
         if (!drawingManagerRef.current) return;
-        if (!shapes) return;
 
-        // clear map of any shape
-        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
-        shapeRefs.current = [];
+        const cb = (_: TShape, newShape: TShape) => {
+            if (!drawing || !onShapeChange) return;
+            onShapeChange(newShape);
+        };
 
         // draw any imported shape
-        shapes
-            .filter(Boolean)
-            .map((shape) =>
-                shapeRefs.current?.push(
-                    drawShape(
-                        shape,
-                        map!,
-                        !!drawing && onShapeChange ? onShapeChange : null
-                    )
-                )
-            );
-    }, [map, shapes]);
+        shapeRef.current?.setMap(null);
+        shapeRef.current = shape ? drawShape(shape, mapRef.current!, cb) : null;
 
-    const startDrawing = () =>
+        // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
+    }, [shape]);
+
+    const startDrawing = () => {
+        shapeRef.current?.setMap(null);
+
         drawingManagerRef.current?.setDrawingMode(
             google.maps.drawing.OverlayType.POLYGON
         );
-    const startDrawingRect = () =>
+    };
+    const startDrawingRect = () => {
+        shapeRef.current?.setMap(null);
+
         drawingManagerRef.current?.setDrawingMode(
             google.maps.drawing.OverlayType.RECTANGLE
         );
-    const startDrawingCircle = () =>
+    };
+    const startDrawingCircle = () => {
+        shapeRef.current?.setMap(null);
+
         drawingManagerRef.current?.setDrawingMode(
             google.maps.drawing.OverlayType.CIRCLE
         );
-
-    const stopDrawing = () => {
-        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
-        shapeRefs.current = [];
-        onDraw?.(null);
     };
 
-    return drawing ? (
+    const stopDrawing = useCallback(() => {
+        shapeRef.current?.setMap(null);
+        onDraw?.(null);
+    }, []);
+
+    return (
         <Stack
             sx={{
                 padding: 0.5,
                 position: "absolute",
                 left: 10,
-
                 top: "15vh",
                 backgroundColor: "rgba(255, 255, 255, 0.7)", // White background with opacity
                 backdropFilter: "blur(10px)",
@@ -216,7 +216,7 @@ const DrawMultiple = ({
                 <Typography fontSize={10}>Clear</Typography>
             </StyledButton>
         </Stack>
-    ) : null;
+    );
 };
 
-export default DrawMultiple;
+export default Draw;
