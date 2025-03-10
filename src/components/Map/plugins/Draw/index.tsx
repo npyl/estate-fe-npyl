@@ -10,16 +10,22 @@ const Draw: FC<DrawProps> = (props) => {
         drawRectangle,
         // ...
         clear,
+        // ...
+        Renderer,
     } = useDraw(props);
 
     return (
-        <Picker
-            drawCircle={drawCircle}
-            drawPolygon={drawPolygon}
-            drawRectangle={drawRectangle}
-            // ...
-            clear={clear}
-        />
+        <>
+            {Renderer}
+
+            <Picker
+                drawCircle={drawCircle}
+                drawPolygon={drawPolygon}
+                drawRectangle={drawRectangle}
+                // ...
+                clear={clear}
+            />
+        </>
     );
 };
 

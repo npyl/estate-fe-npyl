@@ -1,10 +1,8 @@
 import {
-    FC,
     forwardRef,
     useCallback,
     useEffect,
     useImperativeHandle,
-    useLayoutEffect,
     useRef,
 } from "react";
 import { DrawShape, StopDraw } from "../../types";
@@ -30,27 +28,36 @@ interface ShapesRendererRef {
 }
 
 interface ShapesRendererProps {
-    map: google.maps.Map;
     mode: TDrawMode;
     shapes: TShape[];
+    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
 }
 
 const ShapesRenderer = forwardRef<ShapesRendererRef, ShapesRendererProps>(
-    ({ map, mode, shapes }, ref) => {
+    ({ mode, shapes, onShapeChange }, ref) => {
+        const { mapRef } = useMapContext();
         const shapesRef = useRef<DrawShape[] | StopDraw>(null);
 
-        const render = useCallback(() => {
-            drawShapes(shapes, map);
-        }, [map, shapes]);
+        const render = useCallback(async () => {
+            if (!mapRef.current) return;
+            shapesRef.current = drawShapes(shapes, mapRef.current) as any;
+        }, [shapes]);
 
-        const draw = useCallback((ov: DrawShape) => {
-            if (mode === "MULTIPLE") {
-                shapesRef.current?.push(ov);
-            } else if (mode === "SINGLE") {
-                shapesRef.current?.forEach(removeShape);
-                shapesRef.current = [ov];
-            }
-        }, []);
+        const draw = useCallback(
+            (ov: DrawShape) => {
+                if (mode === "MULTIPLE") {
+                    shapesRef.current?.push(ov);
+                } else if (mode === "SINGLE") {
+                    shapesRef.current?.forEach(removeShape);
+                    shapesRef.current = [ov];
+                }
+
+                const shape = drawingToPoints(ov);
+                const cb = () => onShapeChange?.([], shape);
+                setShapeEvents(ov, cb);
+            },
+            [onShapeChange]
+        );
 
         const clear = useCallback(() => {
             shapesRef.current?.forEach(removeShape);
@@ -63,8 +70,16 @@ const ShapesRenderer = forwardRef<ShapesRendererRef, ShapesRendererProps>(
                 draw,
                 clear,
             }),
-            [render]
+            [render, draw, clear]
         );
+
+        // Unmount
+        useEffect(() => {
+            return () => {
+                clear();
+            };
+        }, []);
+
         return null;
     }
 );
@@ -80,17 +95,15 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
         (event: google.maps.drawing.OverlayCompleteEvent) => {
             if (!event.overlay) return null;
 
+            // disable drawing mode
+            drawingManagerRef.current?.setDrawingMode(null);
+
             const ov = event.overlay as DrawShape;
-
-            // drawingManagerRef.current?.setDrawingMode(null);
-
-            const shape = drawingToPoints(ov);
-            const cb = () => onShapeChange?.([], shape);
-            setShapeEvents(ov, cb);
+            shapesRendererRef.current?.draw(ov);
 
             onDraw?.(ov);
         },
-        []
+        [onDraw]
     );
 
     useEffect(() => {
@@ -151,7 +164,7 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
             drawingManagerRef.current?.setMap(null);
             drawingManagerRef.current = undefined;
         };
-    }, []);
+    }, [onOverlayComplete]);
 
     // ---------------------------------------------------------------------
 
@@ -176,7 +189,7 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
     const clear = useCallback(() => {
         shapesRendererRef.current?.clear();
         onDraw?.(null);
-    }, []);
+    }, [onDraw]);
 
     // ---------------------------------------------------------------------
 
@@ -184,8 +197,8 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
         <ShapesRenderer
             ref={shapesRendererRef}
             mode={mode}
-            map={mapRef.current!}
             shapes={shapes}
+            onShapeChange={onShapeChange}
         />
     );
 
