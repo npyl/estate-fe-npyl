@@ -47,7 +47,8 @@ interface IMapProps extends IMapControls {
     //
     // Shape
     //
-    onDraw?: (shape: DrawShape | StopDraw) => void;
+    onDraw?: (shape: DrawShape) => void;
+    onShapesClear?: VoidFunction;
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
     //
     // Search
@@ -59,7 +60,6 @@ interface IMapProps extends IMapControls {
     mainMarker?: IMapMarker;
 
     drawing?: boolean;
-    multipleShapes?: boolean;
     search?: boolean;
 
     // INFO: Only for e.g. custom markers. For controls use topLeft, centerLeft etc.

@@ -1,49 +1,30 @@
 import useDraw from "./useDraw";
 import Picker from "./Picker";
-import { forwardRef, useImperativeHandle } from "react";
+import { FC } from "react";
 import { DrawProps } from "./types";
+import getShape from "./getShape";
 
-interface DrawRef {
-    load: VoidFunction;
-}
-
-const Draw = forwardRef<DrawRef, DrawProps>((props, ref) => {
+const Draw: FC<DrawProps> = ({ shapes = [], onClear = () => {}, ...props }) => {
     const {
-        load,
         // ...
         drawCircle,
         drawPolygon,
         drawRectangle,
-        // ...
-        clear,
-        // ...
-        Renderer,
     } = useDraw(props);
-
-    useImperativeHandle(
-        ref,
-        () => ({
-            load,
-        }),
-        [load]
-    );
 
     return (
         <>
-            {Renderer}
+            {shapes.map(getShape(props?.onShapeChange))}
 
             <Picker
                 drawCircle={drawCircle}
                 drawPolygon={drawPolygon}
                 drawRectangle={drawRectangle}
                 // ...
-                clear={clear}
+                clear={onClear}
             />
         </>
     );
-});
+};
 
-Draw.displayName = "Draw";
-
-export type { DrawRef };
 export default Draw;

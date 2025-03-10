@@ -30,7 +30,7 @@ const getShapeType = (s: TShape): TShapeType | null => {
 const drawShape = (
     shape: TShape,
     map: google.maps.Map,
-    onChange?: (oldShape: TShape, newShape: TShape) => void
+    changeable: boolean
 ): DrawShape | null => {
     if (!shape || shape.length === 0) return null;
 
@@ -44,7 +44,7 @@ const drawShape = (
 
         if (centerLat === null || !centerLng || !radius) return null;
 
-        return drawCircle(centerLat, centerLng, radius, map, onChange);
+        return drawCircle(centerLat, centerLng, radius, map, changeable);
     }
     // Check if shape is a rectangle (4 points forming a rectangle)
     else if (type === "Rectangle") {
@@ -66,7 +66,7 @@ const drawShape = (
             maxLng = Math.max(maxLng, lng);
         }
 
-        return drawRectangle(maxLat, maxLng, minLat, minLng, map, onChange);
+        return drawRectangle(maxLat, maxLng, minLat, minLng, map, changeable);
     }
     // Otherwise, treat as polygon
     else if (type === "Polygon") {
@@ -88,7 +88,7 @@ const drawShape = (
         // Wrap points in an array to match google.maps.LatLngLiteral[][]
         const paths: google.maps.LatLngLiteral[][] = [points];
 
-        return drawPolygon(paths, map, onChange);
+        return drawPolygon(paths, map, changeable);
     } else {
         return null;
     }

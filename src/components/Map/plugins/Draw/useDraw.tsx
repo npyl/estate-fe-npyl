@@ -2,14 +2,14 @@ import { useCallback, useEffect, useRef } from "react";
 import { DrawShape } from "../../types";
 import { useMapContext } from "../../Main/context";
 import { DrawProps } from "./types";
-import ShapesRenderer, { ShapesRendererRef } from "./ShapesRenderer";
 
 // ---------------------------------------------------------------------------
 
-const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
+type TUseDraw = Omit<DrawProps, "shapes" | "onClear">;
+
+const useDraw = ({ onDraw, onShapeChange }: TUseDraw) => {
     const { mapRef } = useMapContext();
     const drawingManagerRef = useRef<google.maps.drawing.DrawingManager>();
-    const shapesRendererRef = useRef<ShapesRendererRef>(null);
 
     const onOverlayComplete = useCallback(
         (event: google.maps.drawing.OverlayCompleteEvent) => {
@@ -19,7 +19,9 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
             drawingManagerRef.current?.setDrawingMode(null);
 
             const ov = event.overlay as DrawShape;
-            shapesRendererRef.current?.draw(ov);
+
+            // INFO: this is important; we remove the google-generated shape so that all shapes are rendered based on our shapes state
+            ov.setMap(null);
 
             onDraw?.(ov);
         },
@@ -78,8 +80,6 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
             onOverlayComplete
         );
 
-        shapesRendererRef.current?.load();
-
         return () => {
             listener.remove();
             drawingManagerRef.current?.setMap(null);
@@ -107,36 +107,10 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
 
     // ---------------------------------------------------------------------
 
-    const clear = useCallback(() => {
-        shapesRendererRef.current?.clear();
-        onDraw?.(null);
-    }, [onDraw]);
-
-    // ---------------------------------------------------------------------
-
-    const Renderer = (
-        <ShapesRenderer
-            ref={shapesRendererRef}
-            mode={mode}
-            shapes={shapes}
-            onShapeChange={onShapeChange}
-        />
-    );
-
-    const load = useCallback(() => shapesRendererRef.current?.load(), []);
-
-    // ---------------------------------------------------------------------
-
     return {
-        load,
-        // ...
         drawPolygon,
         drawRectangle,
         drawCircle,
-        // ...
-        clear,
-        // ...
-        Renderer,
     };
 };
 

@@ -100,7 +100,6 @@ const AreaOfPreferenceDemands: FC<AreaOfPreferenceProps> = ({ demand }) => {
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
                     zoom={12}
-                    multipleShapes
                     drawing={false}
                     shapes={shapes}
                     onReady={setMap}

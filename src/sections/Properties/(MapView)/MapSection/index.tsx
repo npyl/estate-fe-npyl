@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import Map, { IMapMarker } from "@/components/Map";
-import { DrawShape, StopDraw } from "src/components/Map/types";
+import { DrawShape } from "src/components/Map/types";
 import { drawingToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
@@ -71,15 +71,15 @@ const MapSection = () => {
         lng: 21.734573,
     });
 
-    const handleDraw = useCallback((shape: DrawShape | StopDraw) => {
-        const cb = shape ? setPoints(drawingToPoints(shape)) : resetPoints();
-        dispatch(cb);
+    const handleDraw = useCallback((shape: DrawShape) => {
+        dispatch(setPoints(drawingToPoints(shape)));
     }, []);
 
-    const handleChange = useDebouncedCallback(
-        (_: any, newShape: TShape) => dispatch(setPoints(newShape)),
-        150
-    );
+    const handleClear = useCallback(() => dispatch(resetPoints()), []);
+
+    const handleChange = useDebouncedCallback((_: any, newShape: TShape) => {
+        dispatch(setPoints(newShape));
+    }, 150);
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         setMainMarker({ lat, lng });
@@ -99,6 +99,7 @@ const MapSection = () => {
             shapes={[shape]}
             mainMarker={mainMarker}
             onDraw={handleDraw}
+            onShapesClear={handleClear}
             onShapeChange={handleChange}
             onSearchSelect={handleSearchSelect}
         >

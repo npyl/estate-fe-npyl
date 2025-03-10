@@ -1,13 +1,11 @@
 import { TShape } from "@/types/shape";
-import { DrawShape, StopDraw } from "../../types";
-
-type TDrawMode = "SINGLE" | "MULTIPLE";
+import { DrawShape } from "../../types";
 
 interface DrawProps {
-    mode: TDrawMode;
     shapes?: TShape[];
-    onDraw?: (shape: DrawShape | StopDraw) => void;
+    onDraw?: (shape: DrawShape) => void;
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
+    onClear?: VoidFunction;
 }
 
-export type { TDrawMode, DrawProps };
+export type { DrawProps };

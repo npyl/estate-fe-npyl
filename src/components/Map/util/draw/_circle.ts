@@ -1,19 +1,15 @@
-import { TShape } from "@/types/shape";
-import { drawingToPoints } from ".";
-import setShapeEvents from "./setShapeEvents";
-
 const drawCircle = (
     lat: number,
     lng: number,
     radius: number,
     map: google.maps.Map,
-    onChange?: (oldShape: TShape, newShape: TShape) => void
+    changeable: boolean
 ) => {
     const circleConfig: google.maps.CircleOptions = {
         map,
         clickable: true,
-        editable: !!onChange,
-        draggable: !!onChange,
+        editable: changeable,
+        draggable: changeable,
         center: { lat, lng }, // Center of the circle
         radius: radius, // Radius (in meters)
         fillColor: "cyan",
@@ -22,17 +18,7 @@ const drawCircle = (
         zIndex: 1,
     };
 
-    const circle = new google.maps.Circle(circleConfig);
-    const oldShape = drawingToPoints(circle);
-
-    // Support shape drag/change
-    if (onChange) {
-        const shape = drawingToPoints(circle);
-        const cb = () => onChange(oldShape, shape);
-        setShapeEvents(circle, cb);
-    }
-
-    return circle;
+    return new google.maps.Circle(circleConfig);
 };
 
 export default drawCircle;

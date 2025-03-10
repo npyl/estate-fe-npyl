@@ -208,7 +208,6 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
             <Box height={`calc(100vh - 266px)`} width={1}>
                 <Map
                     search
-                    multipleShapes
                     zoom={zoom}
                     mainMarker={mainMarker}
                     onDraw={handleDraw}

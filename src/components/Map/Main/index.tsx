@@ -1,10 +1,10 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { FC } from "react";
 import dynamic from "next/dynamic";
 import { IMapProps } from "../types";
 import MapContainer from "./Container";
 
 // plugins
-import Draw, { DrawRef } from "../plugins/Draw/";
+const Draw = dynamic(() => import("../plugins/Draw/"));
 const Search = dynamic(() => import("../plugins/Search"));
 
 //--------------------------------------------------------
@@ -18,76 +18,46 @@ const Search = dynamic(() => import("../plugins/Search"));
 //
 //--------------------------------------------------------
 
-interface MapRef {
-    // INFO: shapes are only rendered once on mount so you are responsible for re-rendering them on change
-    refreshShapes: VoidFunction;
-}
+const Map: FC<IMapProps> = ({
+    onDraw,
+    onShapesClear,
+    onShapeChange,
+    onSearchSelect,
+    shapes,
+    drawing = true,
+    search = false,
+    // ...
+    leftCenter,
+    centerTop,
+    // ...
+    children,
+    ...props
+}) => (
+    <MapContainer
+        leftCenter={
+            <>
+                {drawing ? (
+                    <Draw
+                        shapes={shapes}
+                        onDraw={onDraw}
+                        onClear={onShapesClear}
+                        onShapeChange={onShapeChange}
+                    />
+                ) : null}
 
-const Map = forwardRef<MapRef, IMapProps>(
-    (
-        {
-            onDraw,
-            onShapeChange,
-            onSearchSelect,
-            shapes,
-            multipleShapes = false,
-            drawing = true,
-            search = false,
-            // ...
-            leftCenter,
-            centerTop,
-            // ...
-            children,
-            ...props
-        },
-        ref
-    ) => {
-        const drawRef = useRef<DrawRef>(null);
-
-        const refreshShapes = useCallback(() => drawRef.current?.load(), []);
-
-        useImperativeHandle(
-            ref,
-            () => ({
-                refreshShapes,
-            }),
-            []
-        );
-
-        return (
-            <MapContainer
-                leftCenter={
-                    <>
-                        {drawing ? (
-                            <Draw
-                                ref={drawRef}
-                                mode={multipleShapes ? "MULTIPLE" : "SINGLE"}
-                                shapes={shapes}
-                                onDraw={onDraw}
-                                onShapeChange={onShapeChange}
-                            />
-                        ) : null}
-
-                        {leftCenter}
-                    </>
-                }
-                centerTop={
-                    <>
-                        {search ? (
-                            <Search onSearchSelect={onSearchSelect} />
-                        ) : null}
-                        {centerTop}
-                    </>
-                }
-                {...props}
-            >
-                {children}
-            </MapContainer>
-        );
-    }
+                {leftCenter}
+            </>
+        }
+        centerTop={
+            <>
+                {search ? <Search onSearchSelect={onSearchSelect} /> : null}
+                {centerTop}
+            </>
+        }
+        {...props}
+    >
+        {children}
+    </MapContainer>
 );
 
-Map.displayName = "Map";
-
-export type { MapRef };
 export default Map;
