@@ -30,7 +30,7 @@ const getShapeType = (s: TShape): TShapeType | null => {
 const drawShape = (
     shape: TShape,
     map: google.maps.Map,
-    onChange: ((oldShape: TShape, newShape: TShape) => void) | null
+    onChange?: (oldShape: TShape, newShape: TShape) => void
 ): DrawShape | null => {
     if (!shape || shape.length === 0) return null;
 

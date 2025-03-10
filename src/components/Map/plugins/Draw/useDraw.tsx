@@ -1,88 +1,8 @@
-import {
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useRef,
-} from "react";
-import { DrawShape, StopDraw } from "../../types";
-import setShapeEvents from "../../util/draw/setShapeEvents";
-import { drawingToPoints, drawShape } from "../../util";
-import { TShape } from "@/types/shape";
+import { useCallback, useEffect, useRef } from "react";
+import { DrawShape } from "../../types";
 import { useMapContext } from "../../Main/context";
-import { DrawProps, TDrawMode } from "./types";
-
-// ---------------------------------------------------------------------------
-
-const removeShape = (s: DrawShape | StopDraw) => s?.setMap(null);
-
-const drawShapes = (shapes: TShape[], map: google.maps.Map) =>
-    shapes.map((s) => drawShape(s, map, null));
-
-// ---------------------------------------------------------------------------
-
-interface ShapesRendererRef {
-    render: VoidFunction;
-    draw: (ov: DrawShape) => void;
-    clear: VoidFunction;
-}
-
-interface ShapesRendererProps {
-    mode: TDrawMode;
-    shapes: TShape[];
-    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
-}
-
-const ShapesRenderer = forwardRef<ShapesRendererRef, ShapesRendererProps>(
-    ({ mode, shapes, onShapeChange }, ref) => {
-        const { mapRef } = useMapContext();
-        const shapesRef = useRef<DrawShape[] | StopDraw>(null);
-
-        const render = useCallback(async () => {
-            if (!mapRef.current) return;
-            shapesRef.current = drawShapes(shapes, mapRef.current) as any;
-        }, [shapes]);
-
-        const draw = useCallback(
-            (ov: DrawShape) => {
-                if (mode === "MULTIPLE") {
-                    shapesRef.current?.push(ov);
-                } else if (mode === "SINGLE") {
-                    shapesRef.current?.forEach(removeShape);
-                    shapesRef.current = [ov];
-                }
-
-                const shape = drawingToPoints(ov);
-                const cb = () => onShapeChange?.([], shape);
-                setShapeEvents(ov, cb);
-            },
-            [onShapeChange]
-        );
-
-        const clear = useCallback(() => {
-            shapesRef.current?.forEach(removeShape);
-        }, []);
-
-        useImperativeHandle(
-            ref,
-            () => ({
-                render,
-                draw,
-                clear,
-            }),
-            [render, draw, clear]
-        );
-
-        // Unmount
-        useEffect(() => {
-            return () => {
-                clear();
-            };
-        }, []);
-
-        return null;
-    }
-);
+import { DrawProps } from "./types";
+import ShapesRenderer, { ShapesRendererRef } from "./ShapesRenderer";
 
 // ---------------------------------------------------------------------------
 
@@ -157,7 +77,7 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
             onOverlayComplete
         );
 
-        shapesRendererRef.current?.render();
+        shapesRendererRef.current?.load();
 
         return () => {
             listener.remove();
@@ -202,9 +122,13 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
         />
     );
 
+    const load = useCallback(() => shapesRendererRef.current?.load(), []);
+
     // ---------------------------------------------------------------------
 
     return {
+        load,
+        // ...
         drawPolygon,
         drawRectangle,
         drawCircle,

@@ -7,7 +7,7 @@ const drawCircle = (
     lng: number,
     radius: number,
     map: google.maps.Map,
-    onChange: ((oldShape: TShape, newShape: TShape) => void) | null
+    onChange?: (oldShape: TShape, newShape: TShape) => void
 ) => {
     const circleConfig: google.maps.CircleOptions = {
         map,

@@ -5,7 +5,7 @@ import setShapeEvents from "./setShapeEvents";
 const drawPolygon = (
     paths: google.maps.LatLngLiteral[][],
     map: google.maps.Map,
-    onChange: ((oldShape: TShape, newShape: TShape) => void) | null
+    onChange?: (oldShape: TShape, newShape: TShape) => void
 ) => {
     const polygonConfig = {
         clickable: true,

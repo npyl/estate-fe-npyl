@@ -1,10 +1,16 @@
 import useDraw from "./useDraw";
 import Picker from "./Picker";
-import { FC } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import { DrawProps } from "./types";
 
-const Draw: FC<DrawProps> = (props) => {
+interface DrawRef {
+    load: VoidFunction;
+}
+
+const Draw = forwardRef<DrawRef, DrawProps>((props, ref) => {
     const {
+        load,
+        // ...
         drawCircle,
         drawPolygon,
         drawRectangle,
@@ -13,6 +19,14 @@ const Draw: FC<DrawProps> = (props) => {
         // ...
         Renderer,
     } = useDraw(props);
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            load,
+        }),
+        [load]
+    );
 
     return (
         <>
@@ -27,6 +41,9 @@ const Draw: FC<DrawProps> = (props) => {
             />
         </>
     );
-};
+});
 
+Draw.displayName = "Draw";
+
+export type { DrawRef };
 export default Draw;

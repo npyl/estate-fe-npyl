@@ -8,7 +8,7 @@ const drawRectangle = (
     swlat: number,
     swlng: number,
     map: google.maps.Map,
-    onChange: ((oldShape: TShape, newShape: TShape) => void) | null
+    onChange?: (oldShape: TShape, newShape: TShape) => void
 ) => {
     const rectangleBounds = {
         north: nelat,
