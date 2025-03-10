@@ -10,4 +10,4 @@ interface DrawProps {
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
 }
 
-export type { DrawProps };
+export type { TDrawMode, DrawProps };

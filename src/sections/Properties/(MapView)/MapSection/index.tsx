@@ -92,7 +92,6 @@ const MapSection = () => {
     };
 
     const shape = useSelector(selectPoints) as unknown as TShape;
-    console.log("shape: ", shape);
 
     return (
         <Map
