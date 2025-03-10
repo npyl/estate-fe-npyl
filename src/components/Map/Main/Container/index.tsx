@@ -41,18 +41,21 @@ const MapContainer: FC<IMapProps> = ({
     const center =
         mainMarker?.lat && mainMarker?.lng ? mainMarker : athensLatLng;
 
-    const onLoad = useCallback((map: google.maps.Map) => {
-        // geocoder
-        geocoderRef.current = new window.google.maps.Geocoder();
+    const onLoad = useCallback(
+        (map: google.maps.Map) => {
+            // map
+            mapRef.current = map;
 
-        // map
-        mapRef.current = map;
+            // geocoder
+            geocoderRef.current = new window.google.maps.Geocoder();
 
-        // load controls
-        controlsRef.current?.load();
+            // load controls
+            controlsRef.current?.load();
 
-        onReady?.(map);
-    }, []);
+            onReady?.(map);
+        },
+        [onReady]
+    );
 
     const handleMapClick = useCallback(
         async (event: google.maps.MapMouseEvent) => {

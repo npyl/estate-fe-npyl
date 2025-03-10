@@ -14,13 +14,21 @@ import { TDrawMode } from "./types";
 
 // ---------------------------------------------------------------------------
 
-const removeShape = (s: DrawShape | StopDraw) => s?.setMap(null);
+const nonNull = (a: any) => a !== null;
+
+const removeShape = (s: DrawShape | StopDraw) => {
+    // TODO: remove listeners
+    s?.setMap(null);
+};
 
 const drawShapes = (
     shapes: TShape[],
     map: google.maps.Map,
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void
-) => shapes.map((s) => drawShape(s, map, onShapeChange));
+): DrawShape[] =>
+    shapes
+        .map((s) => drawShape(s, map, onShapeChange))
+        .filter(nonNull) as DrawShape[];
 
 // ---------------------------------------------------------------------------
 
@@ -46,13 +54,14 @@ const ShapesRenderer = forwardRef<ShapesRendererRef, ShapesRendererProps>(
          */
         const load = useCallback(() => {
             if (!mapRef.current) return;
+
             clear();
 
             shapesRef.current = drawShapes(
                 shapes,
                 mapRef.current,
                 onShapeChange
-            ) as any;
+            );
         }, [shapes, onShapeChange]);
 
         /**
@@ -60,27 +69,15 @@ const ShapesRenderer = forwardRef<ShapesRendererRef, ShapesRendererProps>(
          */
         const draw = useCallback(
             (ov: DrawShape) => {
-                let old: TShape | undefined;
-                const shape = drawingToPoints(ov);
-
                 if (mode === "MULTIPLE") {
-                    old = drawingToPoints(ov);
-
                     shapesRef.current?.push(ov);
                 } else if (mode === "SINGLE") {
-                    const hasOld =
-                        Array.isArray(shapesRef.current) &&
-                        shapesRef.current.length === 1;
-
-                    old = hasOld
-                        ? drawingToPoints(shapesRef.current?.[0]!)
-                        : shape;
-
                     clear();
                     shapesRef.current = [ov];
                 }
 
-                const cb = () => onShapeChange?.(old!, shape);
+                const shape = drawingToPoints(ov);
+                const cb = () => onShapeChange?.([], shape);
                 setShapeEvents(ov, cb);
             },
             [onShapeChange]

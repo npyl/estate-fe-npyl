@@ -27,9 +27,10 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
     );
 
     useEffect(() => {
-        if (!mapRef.current) {
-            throw "Please DONT pass an undefined mapRef";
-        }
+        if (!mapRef.current) return;
+
+        const editable = Boolean(onShapeChange);
+        const draggable = Boolean(onShapeChange);
 
         const OPTIONS: google.maps.drawing.DrawingManagerOptions = {
             map: mapRef.current,
@@ -43,8 +44,8 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
                 fillOpacity: 0.15,
                 strokeWeight: 1,
                 clickable: true,
-                editable: true,
-                draggable: true,
+                editable,
+                draggable,
                 zIndex: 1,
             },
             rectangleOptions: {
@@ -52,8 +53,8 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
                 fillOpacity: 0.15,
                 strokeWeight: 1,
                 clickable: true,
-                editable: true,
-                draggable: true,
+                editable,
+                draggable,
                 zIndex: 1,
             },
             circleOptions: {
@@ -61,8 +62,8 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
                 fillOpacity: 0.15,
                 strokeWeight: 1,
                 clickable: true,
-                editable: true,
-                draggable: true,
+                editable,
+                draggable,
                 zIndex: 1,
             },
         };
@@ -84,7 +85,7 @@ const useDraw = ({ mode, shapes = [], onDraw, onShapeChange }: DrawProps) => {
             drawingManagerRef.current?.setMap(null);
             drawingManagerRef.current = undefined;
         };
-    }, [onOverlayComplete]);
+    }, [onShapeChange, onOverlayComplete]);
 
     // ---------------------------------------------------------------------
 

@@ -205,21 +205,18 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                 <AutoCenter shape={shapeList[0]} onCenter={setMainMarker} />
             ) : null}
 
-            <Box>
-                <Box height={`calc(100vh - 266px)`} width={1}>
-                    <Map
-                        key={index}
-                        zoom={zoom}
-                        search
-                        multipleShapes
-                        mainMarker={mainMarker}
-                        onDraw={handleDraw}
-                        onShapeChange={handleShapeChange}
-                        onDragEnd={handleMarkerDragEnd}
-                        onClick={handleMapClick}
-                        onSearchSelect={handleSearchSelect}
-                    />
-                </Box>
+            <Box height={`calc(100vh - 266px)`} width={1}>
+                <Map
+                    search
+                    multipleShapes
+                    zoom={zoom}
+                    mainMarker={mainMarker}
+                    onDraw={handleDraw}
+                    onShapeChange={handleShapeChange}
+                    onDragEnd={handleMarkerDragEnd}
+                    onClick={handleMapClick}
+                    onSearchSelect={handleSearchSelect}
+                />
             </Box>
 
             <Grid container spacing={2} p={1}>
