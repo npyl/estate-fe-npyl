@@ -38,8 +38,8 @@ const drawShape = (
 
     if (type === "Circle") {
         // For circles: shape[0] is center point [x, y], shape[1] is [radius, null]
-        const centerLat = shape[0].y; // y-coordinate is latitude
-        const centerLng = shape[0].x; // x-coordinate is longitude
+        const centerLat = shape[0].x; // y-coordinate is latitude
+        const centerLng = shape[0].y; // x-coordinate is longitude
         const radius = shape[1].x; // radius is x-coordinate of second point
 
         if (centerLat === null || !centerLng || !radius) return null;
@@ -55,10 +55,10 @@ const drawShape = (
             maxLng = -Infinity;
 
         for (const point of shape) {
-            const lat = point.y;
-            const lng = point.x;
+            const lat = point.x;
+            const lng = point.y;
 
-            if (lat === null) return null; // All points in a rectangle must have valid lat
+            if (lng === null) return null; // All points in a rectangle must have valid lat
 
             minLat = Math.min(minLat, lat);
             minLng = Math.min(minLng, lng);
@@ -74,11 +74,11 @@ const drawShape = (
         const points: google.maps.LatLngLiteral[] = [];
 
         for (const point of shape) {
-            const lng = point.x;
-            const lat = point.y;
+            const lat = point.x;
+            const lng = point.y;
 
             // All points in a polygon must have valid lat
-            if (lat === null) return null;
+            if (lng === null) return null;
 
             points.push({ lat, lng });
         }
@@ -108,10 +108,10 @@ function drawingToPoints(draw: DrawShape): TShape {
             const sw = bounds.getSouthWest();
 
             // Add the four corners of the rectangle with inverted coordinates
-            pointsArray.push({ x: sw.lng(), y: sw.lat() }); // southwest
-            pointsArray.push({ x: sw.lng(), y: ne.lat() }); // southeast
-            pointsArray.push({ x: ne.lng(), y: ne.lat() }); // northeast
-            pointsArray.push({ x: ne.lng(), y: sw.lat() }); // northwest
+            pointsArray.push({ x: sw.lat(), y: sw.lng() }); // southwest
+            pointsArray.push({ x: sw.lat(), y: ne.lng() }); // southeast
+            pointsArray.push({ x: ne.lat(), y: ne.lng() }); // northeast
+            pointsArray.push({ x: ne.lat(), y: sw.lng() }); // northwest
         }
     } else if (draw instanceof google.maps.Circle) {
         // For a Circle, we need the center and radius
@@ -120,7 +120,7 @@ function drawingToPoints(draw: DrawShape): TShape {
         if (center) {
             // IMPORTANT: Backend requires null for y on a circle
             // Note: For circle, y becomes x and x becomes null since we're inverting
-            pointsArray.push({ x: center.lng(), y: center.lat() }); // center
+            pointsArray.push({ x: center.lat(), y: center.lng() }); // center
             pointsArray.push({ x: radius, y: null }); // radius with null x as required
         }
     } else if (draw instanceof google.maps.Polygon) {
@@ -128,7 +128,7 @@ function drawingToPoints(draw: DrawShape): TShape {
         const path = draw.getPath();
         for (let i = 0; i < path.getLength(); i++) {
             const point = path.getAt(i);
-            pointsArray.push({ x: point.lng(), y: point.lat() });
+            pointsArray.push({ x: point.lat(), y: point.lng() });
         }
     }
     return pointsArray;
