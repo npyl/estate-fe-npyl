@@ -72,7 +72,6 @@ const CustomerDemand: FC<CustomerDemandProps> = ({ demand }) => {
 
     const demandFilters = demand?.filters;
     const demandFilterLabelIDs = demandFilters?.labels;
-    const shapes = demand?.shapeList;
 
     const selectedLabels = useMemo(
         () =>
