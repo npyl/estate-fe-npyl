@@ -47,8 +47,7 @@ interface IMapProps extends IMapControls {
     //
     // Shape
     //
-    onDraw?: (shape: DrawShape) => void;
-    onShapesClear?: VoidFunction;
+    onDraw?: (shape: DrawShape | StopDraw) => void;
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
     //
     // Search

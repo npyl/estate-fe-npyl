@@ -9,7 +9,8 @@ import WithDynamicName from "@/components/hook-form/dynamic/WithDynamicName";
 
 // -------------------------------------------------------------------------------------
 
-interface RenderProps extends Omit<IMapProps, "shapes" | "onShapeChange"> {
+interface RenderProps
+    extends Omit<IMapProps, "drawing" | "shapes" | "onShapeChange"> {
     value: TShape[];
     onChange: (s: TShape[]) => void;
 }
@@ -17,8 +18,9 @@ interface RenderProps extends Omit<IMapProps, "shapes" | "onShapeChange"> {
 const Render: FC<RenderProps> = ({ value, onChange, ...props }) => {
     const onDraw = useCallback(
         (s: DrawShape | StopDraw) => {
-            if (!s) onChange([]);
-            else {
+            if (!s) {
+                onChange([]);
+            } else {
                 const newS = drawingToPoints(s);
                 onChange([...value, newS]);
             }
@@ -39,6 +41,7 @@ const Render: FC<RenderProps> = ({ value, onChange, ...props }) => {
 
     return (
         <Map
+            drawing
             shapes={value as unknown as TShape[]}
             onDraw={onDraw}
             onShapeChange={onShapeChange}

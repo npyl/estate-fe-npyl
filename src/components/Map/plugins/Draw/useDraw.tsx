@@ -5,7 +5,7 @@ import { DrawProps } from "./types";
 
 // ---------------------------------------------------------------------------
 
-type TUseDraw = Omit<DrawProps, "shapes" | "onClear">;
+type TUseDraw = Omit<DrawProps, "shapes">;
 
 const useDraw = ({ onDraw, onShapeChange }: TUseDraw) => {
     const { mapRef } = useMapContext();

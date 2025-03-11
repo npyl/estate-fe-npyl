@@ -20,11 +20,10 @@ const Search = dynamic(() => import("../plugins/Search"));
 
 const Map: FC<IMapProps> = ({
     onDraw,
-    onShapesClear,
     onShapeChange,
     onSearchSelect,
     shapes = [],
-    drawing = true,
+    drawing = false,
     search = false,
     // ...
     leftCenter,
@@ -36,15 +35,12 @@ const Map: FC<IMapProps> = ({
     <MapContainer
         leftCenter={
             <>
-                {shapes.length > 0 ? (
-                    <Draw
-                        drawing={drawing}
-                        shapes={shapes}
-                        onDraw={onDraw}
-                        onClear={onShapesClear}
-                        onShapeChange={onShapeChange}
-                    />
-                ) : null}
+                <Draw
+                    drawing={drawing}
+                    shapes={shapes}
+                    onDraw={onDraw}
+                    onShapeChange={onShapeChange}
+                />
 
                 {leftCenter}
             </>
