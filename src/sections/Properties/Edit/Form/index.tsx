@@ -19,8 +19,11 @@ interface IFormProps {
     onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<boolean>;
 }
 
-function Form({ property, onSubmit }: IFormProps) {
-    const [methods, { PersistNotice }] = usePropertyForm(property);
+function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
+    const [methods, { PersistNotice }] = usePropertyForm(
+        property,
+        onSubmitSuccess
+    );
 
     const haveError = useMemo(
         () => Object.keys(methods.formState.errors).length > 0,
