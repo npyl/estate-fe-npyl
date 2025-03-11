@@ -96,7 +96,6 @@ const FloorSlider: FC<FloorSliderProps> = ({ index }) => {
                             name={minName}
                             label={t("Min")}
                             options={minFloors}
-                            value={minFloor !== null ? minFloor : ""}
                             onChange={handleChangeMin}
                         />
                     </Grid>
@@ -106,7 +105,6 @@ const FloorSlider: FC<FloorSliderProps> = ({ index }) => {
                             name={maxName}
                             label={t("Max")}
                             options={maxFloors}
-                            value={maxFloor !== null ? maxFloor : ""}
                             onChange={handleChangeMax}
                         />
                     </Grid>

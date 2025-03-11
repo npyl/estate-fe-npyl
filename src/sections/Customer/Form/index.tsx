@@ -53,14 +53,7 @@ const Form: FC<FormProps> = ({
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
     const handleSubmit = methods.handleSubmit(async (data: ICustomerYup) => {
-        const res = await onSave({
-            ...(data as ICustomerPOST),
-            // TODO: see if this can be done cleaner (and change managedBy to just ?: number)
-            managedBy: (data?.managedBy as number) || undefined,
-            nationality: data?.nationality || undefined,
-            preferredLanguage: data?.preferredLanguage || undefined,
-            leadSource: data?.leadSource || undefined,
-        });
+        const res = await onSave(data as ICustomerPOST);
 
         if ("error" in res) return false;
 
