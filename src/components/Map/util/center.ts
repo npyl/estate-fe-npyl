@@ -17,12 +17,14 @@ function getPolygonCentroid(shape: TShape): google.maps.LatLngLiteral {
         }
 
         // Calculate the "shoelace" formula components
-        const factor = current.x * next.y - next.x * current.y;
+        // Note: For geographic coordinates in the shoelace formula,
+        // we use lng (y) for x-coordinates and lat (x) for y-coordinates in the formula
+        const factor = current.y! * next.x - next.y! * current.x;
         area += factor;
 
         // Weighted sums for centroid calculation
         sumLat += (current.x + next.x) * factor;
-        sumLng += (current.y + next.y) * factor;
+        sumLng += (current.y! + next.y!) * factor;
     }
 
     // Finalize area calculation (taking absolute value as area may be negative depending on vertex order)
@@ -70,6 +72,7 @@ function getRectangleCenter(
 
 const getShapeCenter = (shape: TShape) => {
     const s = normaliseShape(shape);
+
     const type = getShapeType(s);
 
     if (type === "Circle") return { lat: s[0].x, lng: s[0].y! };

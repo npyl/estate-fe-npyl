@@ -17,8 +17,8 @@ const isNonNullShape = (s: TShape) => {
 
 const getShapeType = (s: TShape): TShapeType | null => {
     if (s.length === 2 && s[1].y === null) return "Circle";
-    if (s.length === 2 && isNonNullShape(s)) return "Rectangle";
-    if (s.length > 2 && isNonNullShape(s)) return "Polygon";
+    if (s.length === 4 && isNonNullShape(s)) return "Rectangle";
+    if (s.length > 4 && isNonNullShape(s)) return "Polygon";
     return null;
 };
 
