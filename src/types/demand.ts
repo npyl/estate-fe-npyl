@@ -39,8 +39,8 @@ export interface IDemandFiltersPOST {
     maxPlot: number;
     minYearOfConstruction: number;
     maxYearOfConstruction: number;
-    minFloor: string;
-    maxFloor: string;
+    minFloor: string | null;
+    maxFloor: string | null;
     states: string[];
     minPrice: number;
     maxPrice: number;
@@ -68,7 +68,7 @@ export interface IDemand {
 export interface IDemandPOST {
     filters: Partial<IDemandFiltersPOST>;
     priorityFeatures: IPriorityFeatures;
-    timeframe?: string;
+    timeframe: string | null;
     shapeList: TShape[];
 }
 
