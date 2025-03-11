@@ -6,19 +6,17 @@ import { useTranslation } from "react-i18next";
 import MunicipSelectDemands from "./MunicipSelectDemands";
 import NeighbourSelectDemands from "./NeighbourSelectDemands";
 import RegionSelectDemands from "./RegionSelectDemands";
-import Map, { IMapMarker } from "@/components/Map";
-import { DrawShape, StopDraw } from "@/components/Map/types";
-import { areShapesEqual, drawingToPoints } from "@/components/Map/util";
+import { IMapMarker } from "@/components/Map";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "@/services/location";
-import { useDebouncedCallback } from "use-debounce";
 import AutoCenter from "./auto";
 import { demandName, filterName } from "../util";
 import debugLog from "@/_private/debugLog";
 import dynamic from "next/dynamic";
 import { TShape } from "@/types/shape";
+import RHFShapeMap from "./RHFShapeMap";
 const NextShapeCenter = dynamic(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -32,7 +30,7 @@ interface Props {
 }
 
 const AreaOfPreference: FC<Props> = ({ index }) => {
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
     const { t } = useTranslation();
 
     const { regionsName, citiesName, complexesName, shapesName } = useMemo(
@@ -101,30 +99,6 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         [regionsName, citiesName, complexesName]
     );
 
-    const handleDraw = (s: DrawShape | StopDraw) => {
-        if (!s) {
-            // clear
-            setValue(shapesName, []);
-        } else {
-            const encoded = drawingToPoints(s);
-            setValue(shapesName, [...watch(shapesName), encoded]); // add
-        }
-    };
-
-    const handleShapeChange = useDebouncedCallback(
-        useCallback(
-            (oldShape: TShape, newShape: TShape) => {
-                const updatedShapes = shapeList.map((shape) =>
-                    areShapesEqual(shape, oldShape) ? newShape : shape
-                );
-
-                setValue(shapesName, updatedShapes);
-            },
-            [shapesName, shapeList]
-        ),
-        100
-    );
-
     const updateMainMarkerCoordinates = useCallback(
         (lat: number, lng: number) => setMainMarker({ lat, lng }),
         []
@@ -187,6 +161,8 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         [complexesName]
     );
 
+    const mapName = `demands.${index}.shapeList` as any;
+
     return (
         <>
             <SpaceBetween py={1} alignItems="center">
@@ -206,12 +182,11 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
             ) : null}
 
             <Box height={`calc(100vh - 266px)`} width={1}>
-                <Map
+                <RHFShapeMap
+                    name={mapName}
                     search
                     zoom={zoom}
-                    mainMarker={mainMarker}
-                    onDraw={handleDraw}
-                    onShapeChange={handleShapeChange}
+                    // mainMarker={mainMarker}
                     onDragEnd={handleMarkerDragEnd}
                     onClick={handleMapClick}
                     onSearchSelect={handleSearchSelect}
