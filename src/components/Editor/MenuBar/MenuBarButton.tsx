@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { IconButton, IconButtonProps } from "@mui/material";
-import { useEditorContext } from "./context";
+import { useEditorContext } from "../context";
 
 interface MenuBarButtonProps
     extends Omit<IconButtonProps, "color" | "size" | "children"> {

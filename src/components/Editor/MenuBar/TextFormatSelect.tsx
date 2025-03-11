@@ -1,7 +1,7 @@
 import { Level } from "@tiptap/extension-heading";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-import { useEditorContext } from "./context";
+import { useEditorContext } from "../context";
 
 const TextFormatSelect = () => {
     const { editor } = useEditorContext();
