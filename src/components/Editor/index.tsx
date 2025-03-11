@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
 import { debuglog } from "util";
 const MenuBar = dynamic(() => import("./MenuBar"));
+const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
 type EditorRef = TEditor | null;
 
@@ -43,6 +44,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
             containerSx,
             tiptapStyle,
             // ...
+            children,
             ...props
         },
         ref
@@ -92,7 +94,10 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     className="PPEditorContent"
                     editor={editor}
                     {...props}
-                />
+                >
+                    {editable && editor ? <BubbleMenu /> : null}
+                    {children}
+                </EditorContent>
             </Box>
         );
     }

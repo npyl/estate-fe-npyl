@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
@@ -10,7 +10,7 @@ import UnderlineIcon from "@mui/icons-material/FormatUnderlined";
 import TextFormatSelect from "./TextFormatSelect";
 import MenuBarButton from "./MenuBarButton";
 import TextAlignButton from "./TextAlignButton";
-import Stack from "@mui/material/Stack";
+import Stack, { StackProps } from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 
 import AddIndentIcon from "@mui/icons-material/FormatIndentIncrease";
@@ -65,7 +65,8 @@ const useCallbacks = () => {
         []
     );
 };
-const MenuBar = () => {
+
+const MenuBar: FC<StackProps> = (props) => {
     const { editor } = useEditorContext();
     const {
         toggleBold,
@@ -94,7 +95,7 @@ const MenuBar = () => {
     const strikeDisabled = !editor.can().chain().focus().toggleStrike().run();
 
     return (
-        <Stack alignItems="center" direction="row">
+        <Stack alignItems="center" direction="row" {...props}>
             <MenuBarButton
                 name="bold"
                 disabled={boldDisabled}
