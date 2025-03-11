@@ -31,6 +31,7 @@ const CategorySelect = () => {
 
     return (
         <Select
+            isEnum
             disabled={!parentCategory}
             label={t("Category")}
             name="category"

@@ -379,8 +379,10 @@ export interface IPropertiesPOST {
     availableAfter: string;
     keyCode: string;
     state?: string;
-    parentCategory?: string;
-    category?: string;
+
+    parentCategory: Enum<string>;
+    category: Enum<string>;
+
     video: string;
     descriptions: DescriptionEntryPOST[];
 

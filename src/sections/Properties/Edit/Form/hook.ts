@@ -49,8 +49,6 @@ const getEnumKey = (key?: string, fix?: boolean) => key || null;
 const notNot = (bool?: boolean) => !!bool;
 
 export const fixDropdowns = (property?: IPropertiesPOST) => ({
-    category: getEnumKey(property?.category, true),
-    parentCategory: getEnumKey(property?.parentCategory, true),
     details: {
         ...property?.details,
         orientation: getEnumKey(property?.details?.orientation, true),
