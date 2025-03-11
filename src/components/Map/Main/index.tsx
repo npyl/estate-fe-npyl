@@ -23,7 +23,7 @@ const Map: FC<IMapProps> = ({
     onShapesClear,
     onShapeChange,
     onSearchSelect,
-    shapes,
+    shapes = [],
     drawing = true,
     search = false,
     // ...
@@ -36,8 +36,9 @@ const Map: FC<IMapProps> = ({
     <MapContainer
         leftCenter={
             <>
-                {drawing ? (
+                {shapes.length > 0 ? (
                     <Draw
+                        drawing={drawing}
                         shapes={shapes}
                         onDraw={onDraw}
                         onClear={onShapesClear}

@@ -1,10 +1,16 @@
 import useDraw from "./useDraw";
-import Picker from "./Picker";
 import { FC } from "react";
 import { DrawProps } from "./types";
 import getShape from "./getShape";
+import dynamic from "next/dynamic";
+const Picker = dynamic(() => import("./Picker"));
 
-const Draw: FC<DrawProps> = ({ shapes = [], onClear = () => {}, ...props }) => {
+const Draw: FC<DrawProps> = ({
+    drawing = false,
+    shapes,
+    onClear = () => {},
+    ...props
+}) => {
     const {
         // ...
         drawCircle,
@@ -16,13 +22,15 @@ const Draw: FC<DrawProps> = ({ shapes = [], onClear = () => {}, ...props }) => {
         <>
             {shapes.map(getShape(props?.onShapeChange))}
 
-            <Picker
-                drawCircle={drawCircle}
-                drawPolygon={drawPolygon}
-                drawRectangle={drawRectangle}
-                // ...
-                clear={onClear}
-            />
+            {drawing ? (
+                <Picker
+                    drawCircle={drawCircle}
+                    drawPolygon={drawPolygon}
+                    drawRectangle={drawRectangle}
+                    // ...
+                    clear={onClear}
+                />
+            ) : null}
         </>
     );
 };
