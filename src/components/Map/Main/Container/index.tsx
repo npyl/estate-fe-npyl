@@ -5,14 +5,13 @@ import getAddressFromLatLng from "./getAddressFromLatLng";
 import { IMapProps } from "../../types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
+import { athensLatLng } from "../../constants";
 
 const containerStyle: CSSProperties = {
     width: "100%",
     height: "100%",
     position: "relative",
 };
-
-const athensLatLng = { lat: 37.98381, lng: 23.727539 };
 
 const MapContainer: FC<IMapProps> = ({
     onReady,

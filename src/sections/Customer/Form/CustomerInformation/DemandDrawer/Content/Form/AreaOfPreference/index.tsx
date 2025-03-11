@@ -17,6 +17,7 @@ import RHFShapeMap from "./RHFShapeMap";
 import RHFRegions from "./RHFRegions";
 import RHFNeighbour from "./RHFNeighbour";
 import RHFMunicips from "./RHFMunicips";
+import { athensLatLng } from "@/components/Map/constants";
 const NextShapeCenter = dynamic(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -54,10 +55,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
 
     const [zoom, setZoom] = useState<number>(ZOOM_LEVELS.REGION);
 
-    const [mainMarker, setMainMarker] = useState({
-        lat: 37.98381,
-        lng: 23.727539,
-    });
+    const [mainMarker, setMainMarker] = useState(athensLatLng);
 
     const getClosest = useCallback(
         async (lat: number, lng: number) => {
@@ -141,6 +139,8 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         setZoom(ZOOM_LEVELS.NEIGHB);
     }, []);
 
+    const onShapesClear = useCallback(() => setMainMarker(athensLatLng), []);
+
     return (
         <>
             <SpaceBetween py={1} alignItems="center">
@@ -168,6 +168,8 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                     onDragEnd={handleMarkerDragEnd}
                     onClick={handleMapClick}
                     onSearchSelect={handleSearchSelect}
+                    // ...
+                    onShapesClear={onShapesClear}
                 />
             </Box>
 

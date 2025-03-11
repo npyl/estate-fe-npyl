@@ -13,19 +13,26 @@ interface RenderProps
     extends Omit<IMapProps, "drawing" | "shapes" | "onShapeChange"> {
     value: TShape[];
     onChange: (s: TShape[]) => void;
+    onShapesClear: VoidFunction;
 }
 
-const Render: FC<RenderProps> = ({ value, onChange, ...props }) => {
+const Render: FC<RenderProps> = ({
+    value,
+    onChange,
+    onShapesClear,
+    ...props
+}) => {
     const onDraw = useCallback(
         (s: DrawShape | StopDraw) => {
             if (!s) {
                 onChange([]);
+                onShapesClear();
             } else {
                 const newS = drawingToPoints(s);
                 onChange([...value, newS]);
             }
         },
-        [onChange]
+        [onChange, onShapesClear]
     );
 
     const onShapeChange = useCallback(
