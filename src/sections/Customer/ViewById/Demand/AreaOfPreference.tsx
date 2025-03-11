@@ -1,11 +1,13 @@
-import { Box, Typography } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { Box } from "@mui/material";
+import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Map from "@/components/Map";
 import { useGetMunicipalitiesQuery } from "@/services/location";
 import { IDemand } from "@/types/demand";
 import { toNumberSafe } from "@/utils/toNumber";
 import ViewLocationMini from "./ViewLocationMini";
+import { getShapeCenter } from "@/components/Map/util";
+import Panel from "@/components/Panel";
 
 interface AreaOfPreferenceProps {
     demand?: IDemand;
@@ -42,70 +44,54 @@ const AreaOfPreferenceDemands: FC<AreaOfPreferenceProps> = ({ demand }) => {
         skip: iRegion0 !== -1,
     });
 
-    const [map, setMap] = useState<google.maps.Map>();
+    const onReady = useCallback(
+        (map: google.maps.Map) => {
+            if (!map) return;
 
-    useEffect(() => {
-        if (!map) return;
+            if (shapeData0) {
+                // Center the map to the first point in the shape
+                const center = getShapeCenter(shapeData0);
+                if (!center) return;
 
-        if (shapeData0) {
-            // // Center the map to the first point in the shape
-            // if (shapeData0.type === "Polygon") {
-            //     if (
-            //         shapeData0.paths.length > 0 &&
-            //         shapeData0.paths[0].length > 0
-            //     ) {
-            //         const [firstPath] = shapeData0.paths;
-            //         const [firstCoord] = firstPath;
-            //         const { lat, lng } = firstCoord;
-            //         map.setCenter(new google.maps.LatLng(lat, lng));
-            //     }
-            // } else if (shapeData0.type === "Circle") {
-            //     const { lat, lng } = shapeData0;
-            //     map.setCenter(new google.maps.LatLng(lat, lng));
-            // } else if (shapeData0.type === "Rectangle") {
-            //     const { nelat, nelng } = shapeData0;
-            //     map.setCenter(new google.maps.LatLng(nelat, nelng));
-            // } else if (!shapeData0) {
-            //     return;
-            // }
-        } else {
-            if (!cities[0]) return;
-            const city = municips?.filter((m) => m.areaID === +cities[0])[0];
+                const { lat, lng } = center;
 
-            map.setCenter(
-                new google.maps.LatLng(city?.latitude!, city?.longitude!)
-            );
+                // map.setCenter(new google.maps.LatLng(lat, lng));
+            } else {
+                if (!cities[0]) return;
+                const city = municips?.filter(
+                    (m) => m.areaID === +cities[0]
+                )[0];
 
-            map.setZoom(12);
-        }
-    }, [shapeData0, map]);
+                map.setCenter(
+                    new google.maps.LatLng(city?.latitude!, city?.longitude!)
+                );
+
+                map.setZoom(12);
+            }
+        },
+        [shapeData0]
+    );
 
     return (
-        <>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Area of Preference")}</Typography>
-            </Box>
+        <Panel
+            label={t("Area of Preference")}
+            paperSx={{ p: 0 }}
+            childrenSx={{ p: 0 }}
+        >
             <ViewLocationMini
                 regionCodes={regions}
                 cityCodes={cities}
                 complexCodes={complexes}
             />
-            <Box height={`calc(100vh - 266px)`} width={"100%"}>
+            <Box height={`calc(100vh - 266px)`} width={1}>
                 <Map
                     zoom={12}
                     drawing={false}
                     shapes={shapes}
-                    onReady={setMap}
+                    onReady={onReady}
                 />
             </Box>
-        </>
+        </Panel>
     );
 };
 
