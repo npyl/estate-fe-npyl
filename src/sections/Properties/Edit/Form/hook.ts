@@ -58,19 +58,6 @@ export const fixDropdowns = (property?: IPropertiesPOST) => ({
         zoneType: getEnumKey(property?.details?.zoneType, true),
         viewType: getEnumKey(property?.details?.viewType, true),
     },
-    heatingAndEnergy: {
-        ...property?.heatingAndEnergy,
-        electricityType: getEnumKey(
-            property?.heatingAndEnergy?.electricityType,
-            true
-        ),
-        heatingSystem: getEnumKey(
-            property?.heatingAndEnergy?.heatingSystem,
-            true
-        ),
-        energyClass: getEnumKey(property?.heatingAndEnergy?.energyClass, true),
-        heatingType: getEnumKey(property?.heatingAndEnergy?.heatingType, true),
-    },
 });
 
 const DEFAULT_DESCRIPTION_EL: DescriptionEntryPOST = {

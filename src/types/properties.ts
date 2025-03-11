@@ -339,10 +339,10 @@ export interface IPropertyHeatingAndEnergy {
 }
 
 export interface IPropertyHeatingAndEnergyPOST {
-    energyClass?: string;
-    heatingType?: string;
-    heatingSystem?: string;
-    electricityType?: string;
+    energyClass: Enum<string>;
+    heatingType: Enum<string>;
+    heatingSystem: Enum<string>;
+    electricityType: Enum<string>;
 
     floorHeating: boolean;
     airConditioning: boolean;
