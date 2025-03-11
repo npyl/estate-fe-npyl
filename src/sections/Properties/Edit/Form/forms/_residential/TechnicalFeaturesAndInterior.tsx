@@ -90,6 +90,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        isEnum
                         label={t("Furnished")}
                         name="technicalFeatures.furnished"
                         options={furnished}
@@ -97,6 +98,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        isEnum
                         label={t("Frame Type")}
                         name="technicalFeatures.frameType"
                         options={frameType}
@@ -104,6 +106,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        isEnum
                         label={t("Pane Glass Type")}
                         name="technicalFeatures.paneGlassType"
                         options={panelGlassType}
@@ -111,6 +114,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        isEnum
                         label={t("Floor Type")}
                         name="technicalFeatures.floorType"
                         options={floorType}

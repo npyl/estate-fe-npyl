@@ -29,22 +29,26 @@ const getFIELDS = (
     />,
 
     <Select
+        isEnum
         label={t("Furnished")}
         name="technicalFeatures.furnished"
         options={furnished}
     />,
     <Select
+        isEnum
         label={t("Frame Type")}
         name="technicalFeatures.frameType"
         options={frameType}
     />,
     <Select
+        isEnum
         label={t("Pane Glass Type")}
         name="technicalFeatures.paneGlassType"
         options={panelGlassType}
     />,
 
     <Select
+        isEnum
         fullWidth
         label={t("Floor Type")}
         name="technicalFeatures.floorType"

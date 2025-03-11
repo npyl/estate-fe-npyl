@@ -44,8 +44,8 @@ const getLoginSchema = (
         state: Yup.string().required(),
     });
 
-const getEnumKey = (key?: string, fix?: boolean) =>
-    key || (fix ? undefined : "");
+const getEnumKey = (key?: string, fix?: boolean) => key || null;
+
 const notNot = (bool?: boolean) => !!bool;
 
 export const fixDropdowns = (property?: IPropertiesPOST) => ({
@@ -72,17 +72,6 @@ export const fixDropdowns = (property?: IPropertiesPOST) => ({
         ),
         energyClass: getEnumKey(property?.heatingAndEnergy?.energyClass, true),
         heatingType: getEnumKey(property?.heatingAndEnergy?.heatingType, true),
-    },
-    technicalFeatures: {
-        ...property?.technicalFeatures,
-        floorType: getEnumKey(property?.technicalFeatures?.floorType, true),
-        frameType: getEnumKey(property?.technicalFeatures?.frameType, true),
-        furnished: getEnumKey(property?.technicalFeatures?.furnished, true),
-        paneGlassType: getEnumKey(
-            property?.technicalFeatures?.paneGlassType,
-            true
-        ),
-        inclination: getEnumKey(property?.technicalFeatures?.inclination, true),
     },
 });
 
@@ -221,6 +210,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
             windowScreens: notNot(property?.technicalFeatures?.windowScreens),
             wiring: notNot(property?.technicalFeatures?.wiring),
             withEquipment: notNot(property?.technicalFeatures?.withEquipment),
+            // ...
             floorType: getEnumKey(property?.technicalFeatures?.floorType?.key),
             frameType: getEnumKey(property?.technicalFeatures?.frameType?.key),
             furnished: getEnumKey(property?.technicalFeatures?.furnished?.key),

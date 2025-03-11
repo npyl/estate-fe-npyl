@@ -2,6 +2,7 @@ import { KeyValue } from "./KeyValue";
 import { ICustomer } from "./customer";
 import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
+import { Enum } from "./enums";
 import { IPropertyFeatures } from "./features";
 import {
     IPropertyBlueprint,
@@ -268,11 +269,11 @@ export interface IPropertyTechnicalFeaturesPOST {
     coverageFactor?: number;
     facadeLength?: number;
 
-    furnished?: string;
-    frameType?: string;
-    paneGlassType?: string;
-    floorType?: string;
-    inclination?: string;
+    furnished: Enum<string>;
+    frameType: Enum<string>;
+    paneGlassType: Enum<string>;
+    floorType: Enum<string>;
+    inclination: Enum<string>;
 
     windowScreens: boolean;
     fireplace: boolean;

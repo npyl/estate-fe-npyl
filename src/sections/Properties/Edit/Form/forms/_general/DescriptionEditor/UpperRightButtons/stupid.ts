@@ -5,10 +5,10 @@ const getEnumKey = (key?: string) => (key !== "" ? key : undefined);
 const fixDropdowns = (details?: IOpenAIDetailsPOST) => ({
     category: getEnumKey(details?.category),
     state: getEnumKey(details?.state),
-    furnished: getEnumKey(details?.furnished),
     floor: getEnumKey(details?.floor),
-    frameType: getEnumKey(details?.frameType),
-    floorType: getEnumKey(details?.floorType),
+    // furnished: getEnumKey(details?.furnished),
+    // frameType: getEnumKey(details?.frameType),
+    // floorType: getEnumKey(details?.floorType),
     energyClass: getEnumKey(details?.energyClass),
 });
 
