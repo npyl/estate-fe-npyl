@@ -72,7 +72,12 @@ const StateSelect = () => {
     const { stateEnum } = useEnums();
 
     return (
-        <Select name="state" label={t("State") + " *"} options={stateEnum} />
+        <Select
+            isEnum
+            name="state"
+            label={t("State") + " *"}
+            options={stateEnum}
+        />
     );
 };
 

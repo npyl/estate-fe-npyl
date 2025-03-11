@@ -55,6 +55,7 @@ const BasicSection: React.FC<any> = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        isEnum
                         name="state"
                         label={t("State") + " *"}
                         options={stateEnum}

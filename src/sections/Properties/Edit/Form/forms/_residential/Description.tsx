@@ -35,6 +35,7 @@ const Description: React.FC = () => {
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Floor")}
                         name="details.floor"
                         options={floors}

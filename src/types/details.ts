@@ -1,3 +1,4 @@
+import { Enum } from "./enums";
 import { KeyValue } from "./KeyValue";
 
 export interface IPropertyDetailsParking {
@@ -23,7 +24,6 @@ export interface IPropertyDetailsBalconyPOST {
 }
 
 export interface IPropertyDetailsPOST {
-    floor?: string;
     bedrooms?: number;
     kitchens?: number;
     wc?: number;
@@ -59,6 +59,8 @@ export interface IPropertyDetailsPOST {
     hasBuilding?: boolean;
 
     goldenVisa?: boolean;
+
+    floor: Enum<string>;
 }
 
 export interface IPropertyDetails {

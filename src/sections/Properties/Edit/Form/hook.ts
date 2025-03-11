@@ -54,7 +54,6 @@ export const fixDropdowns = (property?: IPropertiesPOST) => ({
         orientation: getEnumKey(property?.details?.orientation, true),
         accessibility: getEnumKey(property?.details?.accessibility, true),
         landUse: getEnumKey(property?.details?.landUse, true),
-        floor: getEnumKey(property?.details?.floor, true),
         zoneType: getEnumKey(property?.details?.zoneType, true),
         viewType: getEnumKey(property?.details?.viewType, true),
     },
