@@ -1,5 +1,5 @@
 import { TShape } from "@/types/shape";
-import { getShapeType } from "./draw";
+import { getShapeType, normaliseShape } from "./draw";
 
 function getPolygonCentroid(shape: TShape): google.maps.LatLngLiteral {
     let area = 0;
@@ -68,7 +68,8 @@ function getRectangleCenter(
     };
 }
 
-const getShapeCenter = (s: TShape) => {
+const getShapeCenter = (shape: TShape) => {
+    const s = normaliseShape(shape);
     const type = getShapeType(s);
 
     if (type === "Circle") return { lat: s[0].x, lng: s[0].y! };

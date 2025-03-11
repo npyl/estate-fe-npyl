@@ -7,19 +7,21 @@ import {
     Select,
     SelectChangeEvent,
     ListItemText,
-    Button,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetRegionsQuery } from "src/services/location";
-import React from "react";
+import { FC } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { IDemandForms } from "../../../Form";
+import WithDynamicName from "@/components/hook-form/dynamic/WithDynamicName";
 
 interface IRegionSelectProps {
-    selectedRegions: string[];
+    value: string[];
     onChange: (selectedRegions: string[]) => void;
 }
 
 const RegionSelect = (props: IRegionSelectProps) => {
-    const { selectedRegions, onChange } = props;
+    const { value, onChange } = props;
     const { t } = useTranslation();
     const regions = useGetRegionsQuery(undefined).data || [];
 
@@ -35,7 +37,7 @@ const RegionSelect = (props: IRegionSelectProps) => {
             <InputLabel>{t("Region")}</InputLabel>
             <Select
                 multiple
-                value={selectedRegions}
+                value={value}
                 onChange={handleChange}
                 renderValue={(selected) => {
                     const selectedRegions = regions.filter((region) =>
@@ -54,9 +56,7 @@ const RegionSelect = (props: IRegionSelectProps) => {
                         value={region.areaID.toString()}
                     >
                         <Checkbox
-                            checked={selectedRegions.includes(
-                                region.areaID.toString()
-                            )}
+                            checked={value.includes(region.areaID.toString())}
                         />
                         <ListItemText primary={region.nameGR} />
                     </MenuItem>
@@ -66,4 +66,24 @@ const RegionSelect = (props: IRegionSelectProps) => {
     );
 };
 
-export default RegionSelect;
+interface Props {
+    name: keyof IDemandForms;
+}
+
+const RHFRegions: FC<Props> = ({ name }) => {
+    const { control } = useFormContext<IDemandForms>();
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field: { value, onChange } }) => (
+                <RegionSelect
+                    value={value as unknown as string[]}
+                    onChange={onChange}
+                />
+            )}
+        />
+    );
+};
+
+export default WithDynamicName(RHFRegions);

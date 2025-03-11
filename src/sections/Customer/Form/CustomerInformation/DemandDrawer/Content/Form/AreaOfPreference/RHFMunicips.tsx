@@ -9,18 +9,22 @@ import {
     ListItemText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useLazyGetMunicipalitiesQuery } from "src/services/location";
 import { IGeoLocation } from "@/types/geolocation";
+import { Controller, useFormContext } from "react-hook-form";
+import { IDemandForms } from "../../../Form";
+import WithDynamicName from "@/components/hook-form/dynamic/WithDynamicName";
 
 interface IMunicipSelectProps {
     regionCodes: string[];
-    municipCodes: string[];
+    value: string[];
     onChange: (municipCodes: string[], lat?: number, lng?: number) => void;
 }
 
 const MunicipSelectDemands = (props: IMunicipSelectProps) => {
-    const { municipCodes, regionCodes, onChange } = props;
+    const { value, regionCodes, onChange } = props;
+
     const { t } = useTranslation();
     const [allMunicipalities, setAllMunicipalities] = useState<IGeoLocation[]>(
         []
@@ -42,7 +46,7 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
         };
 
         fetchAllMunicipalities();
-    }, [regionCodes, getMunicipalities]);
+    }, [regionCodes]);
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const selectedCodes = event.target.value as string[];
@@ -59,13 +63,6 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
         );
     };
 
-    // Clear cities and complexes if no region is selected
-    useEffect(() => {
-        if (regionCodes.length === 0) {
-            onChange([]);
-        }
-    }, [regionCodes, onChange]);
-
     if (!allMunicipalities.length) return null;
 
     return (
@@ -73,7 +70,7 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
             <InputLabel>{t("Municipality")}</InputLabel>
             <Select
                 multiple
-                value={municipCodes}
+                value={value}
                 onChange={handleChange}
                 renderValue={(selected) => {
                     const selectedMunicips = allMunicipalities.filter(
@@ -95,9 +92,7 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
                         value={option.areaID.toString()}
                     >
                         <Checkbox
-                            checked={municipCodes.includes(
-                                option.areaID.toString()
-                            )}
+                            checked={value.includes(option.areaID.toString())}
                         />
                         <ListItemText primary={option.nameGR} />
                     </MenuItem>
@@ -107,4 +102,32 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
     );
 };
 
-export default MunicipSelectDemands;
+// ------------------------------------------------------------------------------------------------
+
+interface Props {
+    regionCodes: string[];
+    name: keyof IDemandForms;
+    onChange: (lat?: number, lng?: number) => void;
+}
+
+const RHFMunicips: FC<Props> = ({ name, regionCodes, onChange: _onChange }) => {
+    const { control } = useFormContext<IDemandForms>();
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field: { value, onChange } }) => (
+                <MunicipSelectDemands
+                    regionCodes={regionCodes}
+                    value={value as unknown as string[]}
+                    onChange={(v: string[], lat?: number, lng?: number) => {
+                        onChange(v);
+                        _onChange(lat, lng);
+                    }}
+                />
+            )}
+        />
+    );
+};
+
+export default WithDynamicName(RHFMunicips);

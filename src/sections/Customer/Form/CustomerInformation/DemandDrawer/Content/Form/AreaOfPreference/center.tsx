@@ -35,7 +35,7 @@ const NextShapeCenter = ({ shapes, onChange }: Props) => {
         //
         // Get next shape's center
         //
-        setIndex((old) => old + 1);
+        setIndex(index + 1);
 
         const center = getShapeCenter(shapes[index + 1]);
         if (!center) return;

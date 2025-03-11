@@ -210,6 +210,8 @@ const areShapesEqual = (s0: TShape, s1: TShape): boolean => {
 };
 
 export {
+    normaliseShape,
+    // ...
     drawShape,
     getShapeType,
     // ...

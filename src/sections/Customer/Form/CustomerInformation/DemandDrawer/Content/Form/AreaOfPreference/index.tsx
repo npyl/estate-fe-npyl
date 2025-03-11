@@ -3,9 +3,6 @@ import { Box, Grid, Typography } from "@mui/material";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import MunicipSelectDemands from "./MunicipSelectDemands";
-import NeighbourSelectDemands from "./NeighbourSelectDemands";
-import RegionSelectDemands from "./RegionSelectDemands";
 import { IMapMarker } from "@/components/Map";
 import {
     useLazyGetClosestQuery,
@@ -17,6 +14,9 @@ import debugLog from "@/_private/debugLog";
 import dynamic from "next/dynamic";
 import { TShape } from "@/types/shape";
 import RHFShapeMap from "./RHFShapeMap";
+import RHFRegions from "./RHFRegions";
+import RHFNeighbour from "./RHFNeighbour";
+import RHFMunicips from "./RHFMunicips";
 const NextShapeCenter = dynamic(() => import("./center"));
 
 enum ZOOM_LEVELS {
@@ -40,12 +40,11 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
             complexesName: filterName("complexes", index),
             shapesName: demandName("shapeList", index),
         }),
-        []
+        [index]
     );
 
     const regions = (useWatch({ name: regionsName }) as string[]) || [];
     const cities = (useWatch({ name: citiesName }) as string[]) || [];
-    const complexes = (useWatch({ name: complexesName }) as string[]) || [];
 
     // current demand's decoded shapes
     const shapeList = (useWatch({ name: shapesName }) as TShape[]) || [];
@@ -130,38 +129,17 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         updateMainMarkerCoordinates(lat, lng);
     };
 
-    const handleRegionChange = useCallback(
-        (regions: string[]) => {
-            setValue(regionsName, regions); // Update form value
-        },
-        [regionsName]
-    );
+    const onMunicipChange = useCallback((lat?: number, lng?: number) => {
+        if (!(lat && lng)) return;
+        updateMainMarkerCoordinates(lat, lng);
+        setZoom(ZOOM_LEVELS.MUNICIP);
+    }, []);
 
-    const handleMunicipChange = useCallback(
-        (municipCodes: string[], lat?: number, lng?: number) => {
-            if (lat && lng) {
-                updateMainMarkerCoordinates(lat, lng);
-                setZoom(ZOOM_LEVELS.MUNICIP);
-            }
-
-            setValue(citiesName, municipCodes);
-        },
-        [citiesName]
-    );
-
-    const handleNeighbourChange = useCallback(
-        (neighbourCodes: string[], lat?: number, lng?: number) => {
-            if (lat && lng) {
-                updateMainMarkerCoordinates(lat, lng);
-                setZoom(ZOOM_LEVELS.NEIGHB);
-            }
-
-            setValue(complexesName, neighbourCodes);
-        },
-        [complexesName]
-    );
-
-    const mapName = `demands.${index}.shapeList` as any;
+    const onNeighbourChange = useCallback((lat?: number, lng?: number) => {
+        if (!(lat && lng)) return;
+        updateMainMarkerCoordinates(lat, lng);
+        setZoom(ZOOM_LEVELS.NEIGHB);
+    }, []);
 
     return (
         <>
@@ -183,10 +161,10 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
 
             <Box height={`calc(100vh - 266px)`} width={1}>
                 <RHFShapeMap
-                    name={mapName}
+                    name={shapesName as any}
                     search
                     zoom={zoom}
-                    // mainMarker={mainMarker}
+                    mainMarker={mainMarker}
                     onDragEnd={handleMarkerDragEnd}
                     onClick={handleMapClick}
                     onSearchSelect={handleSearchSelect}
@@ -195,23 +173,20 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
 
             <Grid container spacing={2} p={1}>
                 <Grid item xs={4}>
-                    <RegionSelectDemands
-                        selectedRegions={regions}
-                        onChange={handleRegionChange}
-                    />
+                    <RHFRegions name={regionsName as any} />
                 </Grid>
                 <Grid item xs={4}>
-                    <MunicipSelectDemands
+                    <RHFMunicips
+                        name={citiesName as any}
                         regionCodes={regions}
-                        municipCodes={cities}
-                        onChange={handleMunicipChange}
+                        onChange={onMunicipChange}
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <NeighbourSelectDemands
+                    <RHFNeighbour
+                        name={complexesName as any}
                         municipCodes={cities}
-                        neighbourCodes={complexes}
-                        onChange={handleNeighbourChange}
+                        onChange={onNeighbourChange}
                     />
                 </Grid>
             </Grid>

@@ -55,7 +55,7 @@ const AreaOfPreferenceDemands: FC<AreaOfPreferenceProps> = ({ demand }) => {
 
                 const { lat, lng } = center;
 
-                // map.setCenter(new google.maps.LatLng(lat, lng));
+                map.setCenter(new google.maps.LatLng(lat, lng));
             } else {
                 if (!cities[0]) return;
                 const city = municips?.filter(
