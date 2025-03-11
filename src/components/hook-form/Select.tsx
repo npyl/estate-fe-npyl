@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 import { RHFSelect } from "src/components/hook-form";
 import { KeyValue } from "src/types/KeyValue";
 import { RHFSelectProps } from "./RHFSelect";
-
-const NOT_SELECTED_VALUE = "";
+import { NOT_SELECTED_VALUE } from "@/constants/select";
 
 type SelectProps<T = string> = Omit<RHFSelectProps<T>, "children"> & {
     name: string;

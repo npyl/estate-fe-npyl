@@ -1,0 +1,3 @@
+const NOT_SELECTED_VALUE = "";
+
+export { NOT_SELECTED_VALUE };
