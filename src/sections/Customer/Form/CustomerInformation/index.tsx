@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import CustomerTypeSelect from "./TypeSelect";
@@ -10,7 +9,7 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import getFIELDS from "./getFields";
 
-const CustomerInformation: React.FC<any> = () => {
+const CustomerInformation = () => {
     const router = useRouter();
     const { t } = useTranslation();
 

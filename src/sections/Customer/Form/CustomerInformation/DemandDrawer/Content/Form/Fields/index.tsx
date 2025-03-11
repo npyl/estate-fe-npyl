@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+
 import { Grid } from "@mui/material";
 import { FC, useMemo } from "react";
 import LabelSelect from "./LabelSelect";
@@ -19,35 +21,30 @@ const getFIELDS = (
     stateEnum: KeyValue[],
     timeframeEnum: KeyValue[]
 ) => [
-    // eslint-disable-next-line react/jsx-key
     <DemandAutocomplete index={index} />,
 
-    // eslint-disable-next-line react/jsx-key
     <MultiSelect
         name={filterName("parentCategories", index)}
         label={t("Parent Category")}
         options={parentCategoryEnum}
     />,
 
-    // eslint-disable-next-line react/jsx-key
     <MultiSelect
         name={filterName("furnished", index)}
         label={t("Furnishing")}
         options={furnishingEnum}
     />,
 
-    // eslint-disable-next-line react/jsx-key
     <MultiSelect
         name={filterName("states", index)}
         label={t("State")}
         options={stateEnum}
     />,
 
-    // eslint-disable-next-line react/jsx-key
     <LabelSelect index={index} />,
 
-    // eslint-disable-next-line react/jsx-key
     <Select
+        isEnum
         name={demandName("timeframe", index)}
         label={t("Time Frame")}
         options={timeframeEnum}
