@@ -36,11 +36,6 @@ export interface IPropertyDetailsPOST {
     playroom?: boolean;
     floorApartment?: boolean;
     penthouse?: boolean;
-    orientation?: string;
-    viewType?: string;
-    accessibility?: string;
-    landUse?: string;
-    zoneType?: string;
     parkings: IPropertyDetailsParkingPOST[];
     balconies: IPropertyDetailsBalconyPOST[];
 
@@ -60,6 +55,11 @@ export interface IPropertyDetailsPOST {
 
     goldenVisa?: boolean;
 
+    viewType: Enum<string>;
+    zoneType: Enum<string>;
+    landUse: Enum<string>;
+    accessibility: Enum<string>;
+    orientation: Enum<string>;
     floor: Enum<string>;
 }
 

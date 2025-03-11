@@ -48,17 +48,6 @@ const getEnumKey = (key?: string, fix?: boolean) => key || null;
 
 const notNot = (bool?: boolean) => !!bool;
 
-export const fixDropdowns = (property?: IPropertiesPOST) => ({
-    details: {
-        ...property?.details,
-        orientation: getEnumKey(property?.details?.orientation, true),
-        accessibility: getEnumKey(property?.details?.accessibility, true),
-        landUse: getEnumKey(property?.details?.landUse, true),
-        zoneType: getEnumKey(property?.details?.zoneType, true),
-        viewType: getEnumKey(property?.details?.viewType, true),
-    },
-});
-
 const DEFAULT_DESCRIPTION_EL: DescriptionEntryPOST = {
     description: "",
     descriptionText: "",

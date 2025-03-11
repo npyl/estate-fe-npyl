@@ -53,12 +53,23 @@ const getFIELDS = (
         placeholder="1,2,3..."
     />,
     <Select
+        isEnum
         label={t("Accessibility")}
         name={"details.accessibility"}
         options={accessibility}
     />,
-    <Select label={t("Land Use")} name={"details.landUse"} options={landUse} />,
-    <Select label={t("Zone")} name="details.zoneType" options={zoneType} />,
+    <Select
+        isEnum
+        label={t("Land Use")}
+        name={"details.landUse"}
+        options={landUse}
+    />,
+    <Select
+        isEnum
+        label={t("Zone")}
+        name="details.zoneType"
+        options={zoneType}
+    />,
     <RHFOnlyNumbers
         fullWidth
         label={t("Rooms")}
