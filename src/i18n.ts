@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Text: "Text",
+            Background: "Background",
+
             Activities: "Activities",
             "Animals & Nature": "Animals & Nature",
             Flags: "Flags",
@@ -1262,6 +1265,9 @@ const resources = {
     },
     el: {
         translation: {
+            Text: "Κείμενο",
+            Background: "Φόντο",
+
             Activities: "Δραστηριότητες",
             "Animals & Nature": "Ζώα και Φύση",
             Flags: "Σημαίες",

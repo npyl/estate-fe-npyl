@@ -8,6 +8,7 @@ import TextStyles from "./TextStyles";
 import Lists from "./Lists";
 import Alignment from "./Alignment";
 import Emoji from "./Emoji";
+import Color from "./Color";
 
 const MenuBar: FC<StackProps> = (props) => (
     <Stack
@@ -21,6 +22,7 @@ const MenuBar: FC<StackProps> = (props) => (
         <TextFormatSelect />
         <Divider orientation="vertical" flexItem />
         <TextStyles />
+        <Color />
         <Divider orientation="vertical" flexItem />
         <Alignment />
         <Divider orientation="vertical" flexItem />
