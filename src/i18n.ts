@@ -4,6 +4,14 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Activities: "Activities",
+            "Animals & Nature": "Animals & Nature",
+            Flags: "Flags",
+            "Foods & Drinks": "Foods & Drinks",
+            Objects: "Objects",
+            Symbols: "Symbols",
+            "Travel Places": "Travel Places",
+
             "Translate from greek": "Translate from greek",
 
             Original: "Original",
@@ -1254,6 +1262,14 @@ const resources = {
     },
     el: {
         translation: {
+            Activities: "Δραστηριότητες",
+            "Animals & Nature": "Ζώα και Φύση",
+            Flags: "Σημαίες",
+            "Foods & Drinks": "Φαγητά και Ποτά",
+            Objects: "Αντικείμενα",
+            Symbols: "Σύμβολα",
+            "Travel Places": "Προορισμοί Ταξιδιού",
+
             Original: "Αρχική",
             Persisted: "Προσωρινή",
             Saved: "Αποθηκευμένη",
