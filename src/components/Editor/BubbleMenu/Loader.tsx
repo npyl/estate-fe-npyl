@@ -1,7 +1,7 @@
 import BubbleMenuPlugin, {
     BubbleMenuPluginProps,
 } from "@/components/Editor/extensions/BubbleMenu";
-import React, { useCallback, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useEditorContext } from "../context";
 
@@ -19,51 +19,47 @@ type BubbleMenuProps = Omit<
 
 const Loader = (props: BubbleMenuProps) => {
     const { editor } = useEditorContext();
+    const [element, setElement] = useState<HTMLDivElement | null>(null);
 
-    const onLoad = useCallback(
-        (element: HTMLDivElement | null) => {
-            if (!element) {
-                return;
-            }
+    useEffect(() => {
+        if (!element) {
+            return;
+        }
 
-            if (editor?.isDestroyed) {
-                return;
-            }
+        if (editor?.isDestroyed) {
+            return;
+        }
 
-            const {
-                pluginKey = PLUGIN_KEY,
-                updateDelay,
-                shouldShow = null,
-            } = props;
+        const {
+            pluginKey = PLUGIN_KEY,
+            updateDelay,
+            shouldShow = null,
+        } = props;
 
-            if (!editor) {
-                console.warn(
-                    "BubbleMenu component is not rendered inside of an editor component or does not have editor prop."
-                );
-                return;
-            }
+        if (!editor) {
+            console.warn(
+                "BubbleMenu component is not rendered inside of an editor component or does not have editor prop."
+            );
+            return;
+        }
 
-            const plugin = BubbleMenuPlugin({
-                updateDelay,
-                editor,
-                element,
-                pluginKey,
-                shouldShow,
-            });
+        const plugin = BubbleMenuPlugin({
+            updateDelay,
+            editor,
+            element,
+            pluginKey,
+            shouldShow,
+        });
 
-            editor.registerPlugin(plugin);
-        },
-        [editor]
-    );
+        editor.registerPlugin(plugin);
 
-    useLayoutEffect(() => {
         return () => {
             editor?.unregisterPlugin(PLUGIN_KEY);
         };
-    }, []);
+    }, [editor]);
 
     return (
-        <div ref={onLoad} style={{ visibility: "hidden" }}>
+        <div ref={setElement} style={{ visibility: "hidden" }}>
             {props.children}
         </div>
     );
