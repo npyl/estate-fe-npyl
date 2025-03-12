@@ -19,7 +19,6 @@ const BubbleMenu = () => (
         <MenuBar
             component={Paper}
             width="fit-content"
-            p={1}
             border="1px solid"
             borderColor={getBorderColor2}
         />

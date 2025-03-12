@@ -56,7 +56,7 @@ const Loader = (props: BubbleMenuProps) => {
         return () => {
             editor?.unregisterPlugin(PLUGIN_KEY);
         };
-    }, [editor]);
+    }, [editor, element]);
 
     return (
         <div ref={setElement} style={{ display: "none" }}>

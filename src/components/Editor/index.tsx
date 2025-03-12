@@ -58,11 +58,10 @@ const Editor = forwardRef<EditorRef, EditorProps>(
             <Stack
                 sx={{
                     "& .tiptap": {
-                        minHeight: "100px",
+                        minHeight: "200px",
 
-                        borderRadius: 1,
-                        border: "1px solid",
-                        borderColor: editable ? getBorderColor2 : undefined,
+                        borderTop: "1px solid",
+                        borderTopColor: editable ? getBorderColor2 : undefined,
 
                         px: 1.5,
 
@@ -87,7 +86,9 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='7']": { marginLeft: 7 },
                     "& [data-indent='8']": { marginLeft: 8 },
 
-                    gap: 1,
+                    borderRadius: 1,
+                    border: "1px solid",
+                    borderColor: editable ? getBorderColor2 : undefined,
 
                     ...containerSx,
                 }}
