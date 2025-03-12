@@ -6,7 +6,7 @@ import MuiTextField, {
 import SendIcon from "@mui/icons-material/Send";
 import { FC, useCallback, useRef, KeyboardEvent } from "react";
 import { SxProps, Theme } from "@mui/material";
-import EmojiPickerButton from "./EmojiPickerButton";
+import EmojiPickerButton from "@/components/EmojiPickerButton";
 import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
 
 const SendButton: FC<IconButtonProps> = (props) => (
