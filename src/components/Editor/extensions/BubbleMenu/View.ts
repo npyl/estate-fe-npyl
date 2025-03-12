@@ -4,74 +4,18 @@ import {
     isTextSelection,
     posToDOMRect,
 } from "@tiptap/core";
-import { EditorState, Plugin, PluginKey } from "@tiptap/pm/state";
+import { EditorState } from "@tiptap/pm/state";
 import { EditorView } from "@tiptap/pm/view";
-import tippy, { Instance, Props } from "tippy.js";
+import { BubbleMenuPluginProps, BubbleMenuViewProps } from "./types";
+import PopperHandler from "./Popper";
 
-export interface BubbleMenuPluginProps {
-    /**
-     * The plugin key.
-     * @type {PluginKey | string}
-     * @default 'bubbleMenu'
-     */
-    pluginKey: PluginKey | string;
-
-    /**
-     * The editor instance.
-     */
-    editor: Editor;
-
-    /**
-     * The DOM element that contains your menu.
-     * @type {HTMLElement}
-     * @default null
-     */
-    element: HTMLElement;
-
-    /**
-     * The delay in milliseconds before the menu should be updated.
-     * This can be useful to prevent performance issues.
-     * @type {number}
-     * @default 250
-     */
-    updateDelay?: number;
-
-    /**
-     * A function that determines whether the menu should be shown or not.
-     * If this function returns `false`, the menu will be hidden, otherwise it will be shown.
-     */
-    shouldShow?:
-        | ((props: {
-              editor: Editor;
-              element: HTMLElement;
-              view: EditorView;
-              state: EditorState;
-              oldState?: EditorState;
-              from: number;
-              to: number;
-          }) => boolean)
-        | null;
-}
-
-export type BubbleMenuViewProps = BubbleMenuPluginProps & {
-    view: EditorView;
-};
-
-export class BubbleMenuView {
+class BubbleMenuView {
     public editor: Editor;
-
     public element: HTMLElement;
-
     public view: EditorView;
-
     public preventHide = false;
-
-    public tippy: Instance | undefined;
-
-    public tippyOptions?: Partial<Props>;
-
     public updateDelay: number;
-
+    private popperHandler: PopperHandler;
     private updateDebounceTimer: number | undefined;
 
     public shouldShow: Exclude<BubbleMenuPluginProps["shouldShow"], null> = ({
@@ -115,29 +59,63 @@ export class BubbleMenuView {
         view,
         updateDelay = 250,
         shouldShow,
+        popperOptions,
     }: BubbleMenuViewProps) {
         this.editor = editor;
         this.element = element;
         this.view = view;
         this.updateDelay = updateDelay;
 
+        // Initialize the popper handler
+        this.popperHandler = new PopperHandler(editor, element, popperOptions);
+
         if (shouldShow) {
             this.shouldShow = shouldShow;
         }
 
+        // Setup element and event listeners
+        this.setupElement();
+        this.setupEventListeners();
+    }
+
+    // Setup Methods
+    // ============
+
+    private setupElement() {
+        // Detaches menu content from its current parent
+        this.element.remove();
+
+        // Setup element styling
+        this.element.style.visibility = "visible";
+        this.element.style.pointerEvents = "auto";
+    }
+
+    private setupEventListeners() {
         this.element.addEventListener("mousedown", this.mousedownHandler, {
             capture: true,
         });
         this.view.dom.addEventListener("dragstart", this.dragstartHandler);
         this.editor.on("focus", this.focusHandler);
         this.editor.on("blur", this.blurHandler);
-        // Detaches menu content from its current parent
-        this.element.remove();
-        this.element.style.visibility = "visible";
+        this.element.addEventListener("blur", this.popperBlurHandler, true);
     }
 
-    mousedownHandler = () => {
+    private removeEventListeners() {
+        this.element.removeEventListener("blur", this.popperBlurHandler, true);
+        this.element.removeEventListener("mousedown", this.mousedownHandler, {
+            capture: true,
+        });
+        this.view.dom.removeEventListener("dragstart", this.dragstartHandler);
+        this.editor.off("focus", this.focusHandler);
+        this.editor.off("blur", this.blurHandler);
+    }
+
+    // Event Handlers
+    // =============
+
+    mousedownHandler = (event: MouseEvent) => {
         this.preventHide = true;
+        // Don't prevent default to allow click events to propagate
     };
 
     dragstartHandler = () => {
@@ -152,7 +130,6 @@ export class BubbleMenuView {
     blurHandler = ({ event }: { event: FocusEvent }) => {
         if (this.preventHide) {
             this.preventHide = false;
-
             return;
         }
 
@@ -170,37 +147,12 @@ export class BubbleMenuView {
         this.hide();
     };
 
-    tippyBlurHandler = (event: FocusEvent) => {
+    popperBlurHandler = (event: FocusEvent) => {
         this.blurHandler({ event });
     };
 
-    createTooltip() {
-        const { element: editorElement } = this.editor.options;
-        const editorIsAttached = !!editorElement.parentElement;
-
-        if (this.tippy || !editorIsAttached) {
-            return;
-        }
-
-        this.tippy = tippy(editorElement, {
-            duration: 0,
-            getReferenceClientRect: null,
-            content: this.element,
-            interactive: true,
-            trigger: "manual",
-            placement: "top",
-            hideOnClick: "toggle",
-            ...this.tippyOptions,
-        });
-
-        // maybe we have to hide tippy on its own blur event as well
-        if (this.tippy.popper.firstChild) {
-            (this.tippy.popper.firstChild as HTMLElement).addEventListener(
-                "blur",
-                this.tippyBlurHandler
-            );
-        }
-    }
+    // Update Logic
+    // ===========
 
     update(view: EditorView, oldState?: EditorState) {
         const { state } = view;
@@ -249,7 +201,8 @@ export class BubbleMenuView {
             return;
         }
 
-        this.createTooltip();
+        // Initialize popper if needed
+        this.popperHandler.create();
 
         // support for CellSelections
         const { ranges } = selection;
@@ -268,73 +221,81 @@ export class BubbleMenuView {
 
         if (!shouldShow) {
             this.hide();
-
             return;
         }
 
-        this.tippy?.setProps({
-            getReferenceClientRect:
-                this.tippyOptions?.getReferenceClientRect ||
-                (() => {
-                    if (isNodeSelection(state.selection)) {
-                        let node = view.nodeDOM(from) as HTMLElement;
-
-                        if (node) {
-                            const nodeViewWrapper = node.dataset.nodeViewWrapper
-                                ? node
-                                : node.querySelector(
-                                      "[data-node-view-wrapper]"
-                                  );
-
-                            if (nodeViewWrapper) {
-                                node =
-                                    nodeViewWrapper.firstChild as HTMLElement;
-                            }
-
-                            if (node) {
-                                return node.getBoundingClientRect();
-                            }
-                        }
-                    }
-
-                    return posToDOMRect(view, from, to);
-                }),
-        });
+        // Update virtual reference position
+        const getReferenceRect = this.createReferenceRect(
+            view,
+            state,
+            from,
+            to
+        );
+        this.popperHandler.updatePosition(getReferenceRect);
 
         this.show();
     };
 
+    // Helper Methods
+    // =============
+
+    createReferenceRect(
+        view: EditorView,
+        state: EditorState,
+        from: number,
+        to: number
+    ) {
+        return () => {
+            if (isNodeSelection(state.selection)) {
+                let node = view.nodeDOM(from) as HTMLElement;
+
+                if (node) {
+                    const nodeViewWrapper = node.dataset.nodeViewWrapper
+                        ? node
+                        : node.querySelector("[data-node-view-wrapper]");
+
+                    if (nodeViewWrapper) {
+                        node = nodeViewWrapper.firstChild as HTMLElement;
+                    }
+
+                    if (node) {
+                        return node.getBoundingClientRect();
+                    }
+                }
+            }
+
+            return posToDOMRect(view, from, to);
+        };
+    }
+
+    // UI Control
+    // =========
+
     show() {
-        this.tippy?.show();
+        if (!this.element) return;
+        this.element.style.display = "";
+        this.element.setAttribute("data-show", "");
     }
 
     hide() {
-        this.tippy?.hide();
+        if (!this.element) return;
+        this.element.style.display = "none";
+        this.element.removeAttribute("data-show");
     }
 
+    // Lifecycle
+    // ========
+
     destroy() {
-        if (this.tippy?.popper.firstChild) {
-            (this.tippy.popper.firstChild as HTMLElement).removeEventListener(
-                "blur",
-                this.tippyBlurHandler
-            );
-        }
-        this.tippy?.destroy();
-        this.element.removeEventListener("mousedown", this.mousedownHandler, {
-            capture: true,
-        });
-        this.view.dom.removeEventListener("dragstart", this.dragstartHandler);
-        this.editor.off("focus", this.focusHandler);
-        this.editor.off("blur", this.blurHandler);
+        // Remove event listeners
+        this.removeEventListeners();
+
+        // Clean up DOM
+        this.element.remove();
+
+        // Destroy popper
+        this.popperHandler.destroy();
     }
 }
 
-export const BubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
-    return new Plugin({
-        key:
-            typeof options.pluginKey === "string"
-                ? new PluginKey(options.pluginKey)
-                : options.pluginKey,
-        view: (view) => new BubbleMenuView({ view, ...options }),
-    });
-};
+export default BubbleMenuView;
