@@ -15,6 +15,11 @@ import TextAlign from "@tiptap/extension-text-align";
 import Indent from "./extensions/Indent";
 import Link from "@tiptap/extension-link";
 
+const Z_INDEX = {
+    BUBBLE_MENU: 1,
+    EMOJI_PICKER: 2,
+};
+
 const TEXT_TYPES = ["heading", "paragraph", "listItem"];
 
 const extensions = [
@@ -44,4 +49,4 @@ const extensions = [
     Link,
 ];
 
-export { extensions };
+export { extensions, Z_INDEX };
