@@ -18,13 +18,13 @@ const MenuBar: FC<StackProps> = (props) => (
         overflow="auto hidden"
         {...props}
     >
-        <TextStyles />
-        <Divider orientation="vertical" flexItem />
         <TextFormatSelect />
         <Divider orientation="vertical" flexItem />
-        <Lists />
+        <TextStyles />
         <Divider orientation="vertical" flexItem />
         <Alignment />
+        <Divider orientation="vertical" flexItem />
+        <Lists />
         <Divider orientation="vertical" flexItem />
         <Indentation />
         <Divider orientation="vertical" flexItem />

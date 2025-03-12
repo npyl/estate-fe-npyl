@@ -20,6 +20,7 @@ const BubbleMenu = () => (
             component={Paper}
             width="fit-content"
             border="1px solid"
+            p={0.5}
             borderColor={getBorderColor2}
         />
     </Loader>
