@@ -7,8 +7,7 @@ import Indentation from "./Indentation";
 import TextStyles from "./TextStyles";
 import Lists from "./Lists";
 import Alignment from "./Alignment";
-
-const Emoji = () => null;
+import Emoji from "./Emoji";
 
 const MenuBar: FC<StackProps> = (props) => (
     <Stack alignItems="center" direction="row" spacing={1} {...props}>
