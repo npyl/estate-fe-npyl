@@ -1,7 +1,38 @@
 import { Level } from "@tiptap/extension-heading";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+    Typography,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    SxProps,
+    Theme,
+} from "@mui/material";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { useEditorContext } from "../context";
+import { FC } from "react";
+
+// ----------------------------------------------------------------------------
+
+const SelectSx: SxProps<Theme> = {
+    ".MuiOutlinedInput-notchedOutline": { border: 0 },
+};
+
+// ----------------------------------------------------------------------------
+
+interface RendeValueProps {
+    v: number;
+}
+
+const RenderValue: FC<RendeValueProps> = ({ v }) => {
+    const label = v === 0 ? "normal" : v === 7 ? "BlockQuote" : `H${v}`;
+    return <Typography>{label}</Typography>;
+};
+
+// ----------------------------------------------------------------------------
+
+const renderValue = (v: number) => <RenderValue v={v} />;
+
+// ----------------------------------------------------------------------------
 
 const TextFormatSelect = () => {
     const { editor } = useEditorContext();
@@ -41,14 +72,32 @@ const TextFormatSelect = () => {
     };
 
     return (
-        <Select size="small" value={getCurrentValue()} onChange={handleChange}>
+        <Select
+            sx={SelectSx}
+            size="small"
+            renderValue={renderValue}
+            value={getCurrentValue()}
+            onChange={handleChange}
+        >
             <MenuItem value={0}>Normal</MenuItem>
-            <MenuItem value={1}>H1</MenuItem>
-            <MenuItem value={2}>H2</MenuItem>
-            <MenuItem value={3}>H3</MenuItem>
-            <MenuItem value={4}>H4</MenuItem>
-            <MenuItem value={5}>H5</MenuItem>
-            <MenuItem value={6}>H6</MenuItem>
+            <MenuItem value={1}>
+                <Typography variant="h1">H1</Typography>
+            </MenuItem>
+            <MenuItem value={2}>
+                <Typography variant="h2">H2</Typography>
+            </MenuItem>
+            <MenuItem value={3}>
+                <Typography variant="h3">H3</Typography>
+            </MenuItem>
+            <MenuItem value={4}>
+                <Typography variant="h4">H4</Typography>
+            </MenuItem>
+            <MenuItem value={5}>
+                <Typography variant="h5">H5</Typography>
+            </MenuItem>
+            <MenuItem value={6}>
+                <Typography variant="h6">H6</Typography>
+            </MenuItem>
             <MenuItem value={7}>
                 <FormatQuoteIcon />
                 BlockQuote

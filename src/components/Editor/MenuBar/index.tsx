@@ -10,7 +10,14 @@ import Alignment from "./Alignment";
 import Emoji from "./Emoji";
 
 const MenuBar: FC<StackProps> = (props) => (
-    <Stack alignItems="center" direction="row" spacing={1} px={0.5} {...props}>
+    <Stack
+        alignItems="center"
+        direction="row"
+        spacing={1}
+        px={0.5}
+        overflow="auto hidden"
+        {...props}
+    >
         <TextStyles />
         <Divider orientation="vertical" flexItem />
         <TextFormatSelect />
