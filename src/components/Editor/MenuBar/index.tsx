@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import TextFormatSelect from "./TextFormatSelect";
+import TextFormat from "./TextFormat";
 import Stack, { StackProps } from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import Indentation from "./Indentation";
@@ -19,7 +19,7 @@ const MenuBar: FC<StackProps> = (props) => (
         overflow="auto hidden"
         {...props}
     >
-        <TextFormatSelect />
+        <TextFormat />
         <Divider orientation="vertical" flexItem />
         <TextStyles />
         <Color />
