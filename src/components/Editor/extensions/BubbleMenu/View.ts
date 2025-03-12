@@ -86,7 +86,6 @@ class BubbleMenuView {
         this.element.remove();
 
         // Setup element styling
-        this.element.style.visibility = "visible";
         this.element.style.pointerEvents = "auto";
     }
 

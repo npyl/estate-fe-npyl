@@ -59,7 +59,7 @@ const Loader = (props: BubbleMenuProps) => {
     }, [editor]);
 
     return (
-        <div ref={setElement} style={{ visibility: "hidden" }}>
+        <div ref={setElement} style={{ display: "none" }}>
             {props.children}
         </div>
     );
