@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography";
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RHFTextField } from "@/components/hook-form";
@@ -17,11 +17,7 @@ import {
     useEditorHandleContext,
 } from "./context/EditorHandle";
 import { Language } from "@/components/LanguageButton/types";
-
-const EditorSx: CSSProperties = {
-    minHeight: "200px",
-    height: "auto",
-};
+import Box from "@mui/material/Box";
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
@@ -45,20 +41,23 @@ const DescriptionSection = () => {
             endNode={<UpperRightButtons lang={lang} />}
             onSelect={setLang}
         >
-            <Typography variant="h6" flex={1}>
-                {`${t("Title")} (${lang})`}
-            </Typography>
-            <RHFTextField fullWidth key={title} name={title} />
-            <Typography variant="h6" flex={1}>
-                {`${t("Description")} (${lang})`}
-            </Typography>
+            <Box>
+                <Typography variant="h6" flex={1}>
+                    {`${t("Title")} (${lang})`}
+                </Typography>
+                <RHFTextField fullWidth key={title} name={title} />
+            </Box>
 
-            <RHFEditor
-                ref={editorRef}
-                name={descriptionName}
-                tiptapStyle={EditorSx}
-                onPlainTextChange={handlePlainTextChange}
-            />
+            <Box>
+                <Typography variant="h6" flex={1}>
+                    {`${t("Description")} (${lang})`}
+                </Typography>
+                <RHFEditor
+                    ref={editorRef}
+                    name={descriptionName}
+                    onPlainTextChange={handlePlainTextChange}
+                />
+            </Box>
         </TabbedBox>
     );
 };

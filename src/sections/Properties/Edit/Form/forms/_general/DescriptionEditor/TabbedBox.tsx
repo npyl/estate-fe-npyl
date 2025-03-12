@@ -1,4 +1,12 @@
-import { Box, Paper, Stack, Tab, TabProps } from "@mui/material";
+import {
+    Box,
+    Paper,
+    Stack,
+    SxProps,
+    Tab,
+    TabProps,
+    Theme,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useMemo } from "react";
 import getBorderColor from "src/theme/borderColor";
@@ -37,20 +45,23 @@ const StyledTab = styled(Tab)<StyledTabProps>(({ theme, selected }) => ({
     paddingBottom: theme.spacing(0),
 }));
 
-const Content = styled(Paper)(({ theme }) => ({
+const ContentSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "column",
-    gap: 2,
-    borderRadius: "15px",
+    gap: 1,
+
+    borderRadius: 1,
 
     borderLeft: "1px solid",
     borderRight: "1px solid",
     borderBottom: "1px solid",
 
-    borderLeftColor: getBorderColor(theme),
-    borderRightColor: getBorderColor(theme),
-    borderBottomColor: getBorderColor(theme),
-}));
+    borderLeftColor: getBorderColor,
+    borderRightColor: getBorderColor,
+    borderBottomColor: getBorderColor,
+
+    p: 1,
+};
 
 const LeftSpace = (
     <Box
@@ -59,6 +70,7 @@ const LeftSpace = (
         }}
     />
 );
+
 const RightSpace = styled(Stack)(({ theme }) => ({
     width: "100%",
     marginRight: theme.spacing(1.7),
@@ -114,13 +126,7 @@ const TabbedBox = <T extends unknown>({
                 {TABS}
                 <RightSpace>{endNode}</RightSpace>
             </Stack>
-            <Content
-                sx={{
-                    p: 1.5,
-                }}
-            >
-                {children}
-            </Content>
+            <Paper sx={ContentSx}>{children}</Paper>
         </Box>
     );
 };

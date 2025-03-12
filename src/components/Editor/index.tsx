@@ -4,7 +4,6 @@ import {
     EditorContentProps,
     EditorEvents,
 } from "@tiptap/react";
-import Box, { BoxProps } from "@mui/material/Box";
 import {
     CSSProperties,
     forwardRef,
@@ -13,9 +12,11 @@ import {
     useMemo,
 } from "react";
 import { SxProps, Theme } from "@mui/material";
+import Stack, { StackProps } from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
 import { debuglog } from "util";
+import { getBorderColor2 } from "@/theme/borderColor";
 const MenuBar = dynamic(() => import("./MenuBar"));
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
@@ -27,7 +28,7 @@ type EditorProps = Omit<
 > & {
     editable?: boolean;
 
-    containerProps?: Omit<BoxProps, "sx">;
+    containerProps?: Omit<StackProps, "sx">;
     containerSx?: SxProps<Theme>;
     tiptapStyle?: CSSProperties;
 
@@ -54,14 +55,16 @@ const Editor = forwardRef<EditorRef, EditorProps>(
         useImperativeHandle(ref, () => editor!, [editor]);
 
         return (
-            <Box
+            <Stack
                 sx={{
                     "& .tiptap": {
                         minHeight: "100px",
-                        borderBottomRightRadius: "16px",
-                        borderBottomLeftRadius: "16px",
-                        padding: "5px",
-                        paddingLeft: "10px",
+
+                        borderRadius: 1,
+                        border: "1px solid",
+                        borderColor: editable ? getBorderColor2 : undefined,
+
+                        px: 1.5,
 
                         ...(!editable
                             ? {
@@ -84,21 +87,19 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='7']": { marginLeft: 7 },
                     "& [data-indent='8']": { marginLeft: 8 },
 
+                    gap: 1,
+
                     ...containerSx,
                 }}
                 {...containerProps}
             >
                 {editable && editor ? <MenuBar /> : undefined}
 
-                <EditorContent
-                    className="PPEditorContent"
-                    editor={editor}
-                    {...props}
-                >
+                <EditorContent editor={editor} {...props}>
                     {editable && editor ? <BubbleMenu /> : null}
                     {children}
                 </EditorContent>
-            </Box>
+            </Stack>
         );
     }
 );
