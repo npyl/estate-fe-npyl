@@ -35,7 +35,6 @@ const PublicItem = ({ label, published, onClick }: PublicItemProps) => {
                     onChange={onClick}
                     name="checkedA"
                 />
-                j
             </Stack>
         </Item>
     );
