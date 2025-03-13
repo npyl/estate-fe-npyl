@@ -11,10 +11,11 @@ import Color from "./Color";
 import History from "./History";
 
 interface MenuBarProps extends Omit<StackProps, "onLoad"> {
+    bubble?: boolean; // Is it used inside bubble?
     onLoad?: (e: HTMLDivElement) => void;
 }
 
-const MenuBar: FC<MenuBarProps> = ({ onLoad, ...props }) => {
+const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
     const onRef = useCallback(
         (node: HTMLDivElement | null) => {
             if (!node) return;
@@ -33,8 +34,12 @@ const MenuBar: FC<MenuBarProps> = ({ onLoad, ...props }) => {
             overflow="auto hidden"
             {...props}
         >
-            <History />
-            <Divider orientation="vertical" flexItem />
+            <History bubble={bubble} />
+            <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ display: bubble ? "none" : "block" }}
+            />
             <TextFormat />
             <Divider orientation="vertical" flexItem />
             <TextStyles />

@@ -43,6 +43,7 @@ interface BubbleMenuProps {
 const BubbleMenu: FC<BubbleMenuProps> = ({ menubar }) => (
     <Loader shouldShow={isRange(menubar)}>
         <MenuBar
+            bubble
             component={Paper}
             width="fit-content"
             border="1px solid"

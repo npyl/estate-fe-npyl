@@ -3,9 +3,14 @@ import MenuBarButton from "./MenuBarButton";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useEditorContext } from "../context";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
+import { getBorderColor2 } from "@/theme/borderColor";
 
-const History = () => {
+interface HistoryProps {
+    bubble?: boolean;
+}
+
+const History: FC<HistoryProps> = ({ bubble }) => {
     const { editor } = useEditorContext();
 
     const disabled0 = !editor?.can().undo();
@@ -19,7 +24,19 @@ const History = () => {
     }, []);
 
     return (
-        <Stack direction="row" alignItems="center">
+        <Stack
+            direction="row"
+            alignItems="center"
+            // ...
+            position={bubble ? "absolute" : "unset"}
+            left={-85}
+            bgcolor={bubble ? "background.paper" : "transparent"}
+            border="1px solid"
+            borderColor={bubble ? getBorderColor2 : "transparent"}
+            borderRadius={5}
+            // ...
+            p={bubble ? 1 : 0}
+        >
             <MenuBarButton
                 icon={<UndoIcon />}
                 disabled={disabled0}
