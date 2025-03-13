@@ -4,6 +4,15 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Normal: "Normal",
+            Heading1: "Heading1",
+            Heading2: "Heading2",
+            Heading3: "Heading3",
+            Heading4: "Heading4",
+            Heading5: "Heading5",
+            Heading6: "Heading6",
+            BlockQuote: "BlockQuote",
+
             Text: "Text",
             Background: "Background",
 
@@ -1265,6 +1274,15 @@ const resources = {
     },
     el: {
         translation: {
+            Normal: "Κανονικό",
+            Heading1: "Κεφαλίδα1",
+            Heading2: "Κεφαλίδα2",
+            Heading3: "Κεφαλίδα3",
+            Heading4: "Κεφαλίδα4",
+            Heading5: "Κεφαλίδα5",
+            Heading6: "Κεφαλίδα6",
+            BlockQuote: "Σχόλιο",
+
             Text: "Κείμενο",
             Background: "Φόντο",
 
