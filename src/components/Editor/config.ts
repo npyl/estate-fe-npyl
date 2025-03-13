@@ -18,6 +18,7 @@ import Link from "@tiptap/extension-link";
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
+import History from "@tiptap/extension-history";
 
 const Z_INDEX = {
     BUBBLE_MENU: 1,
@@ -57,6 +58,8 @@ const extensions = [
     Highlight.configure({
         multicolor: true,
     }),
+    // ...
+    History,
 ];
 
 export { extensions, Z_INDEX };
