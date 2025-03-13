@@ -34,7 +34,11 @@ const extensions = [
     Heading,
     ListItem,
     BulletList,
-    Blockquote,
+    Blockquote.configure({
+        HTMLAttributes: {
+            class: "PPEditor-BlockQuote",
+        },
+    }),
     HardBreak,
     OrderedList,
     Bold,

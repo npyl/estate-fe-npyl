@@ -17,7 +17,7 @@ import Stack, { StackProps } from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
 import { debuglog } from "util";
-import { getBorderColor2 } from "@/theme/borderColor";
+import getBorderColor, { getBorderColor2 } from "@/theme/borderColor";
 const MenuBar = dynamic(() => import("./MenuBar"));
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
@@ -99,6 +99,15 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='6']": { marginLeft: 6 },
                     "& [data-indent='7']": { marginLeft: 7 },
                     "& [data-indent='8']": { marginLeft: 8 },
+
+                    // INFO: BlockQuote
+                    ".PPEditor-BlockQuote": {
+                        borderLeft: "3px solid",
+                        borderColor: getBorderColor,
+                        color: "text.secondary",
+                        marginX: 0.5,
+                        paddingLeft: 1,
+                    },
 
                     borderRadius: 1,
                     border: editable ? "1px solid" : undefined,
