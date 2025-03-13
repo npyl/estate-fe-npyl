@@ -165,7 +165,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
             >
                 <LabeledSwitch
                     checked={value}
-                    labelOn="Published"
+                    labelOn={t("Published")}
                     labelOff={t("Unpublished")}
                     onChange={handleChange}
                 />
