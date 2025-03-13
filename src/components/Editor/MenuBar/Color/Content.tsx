@@ -5,9 +5,9 @@ import Grid from "@mui/material/Grid";
 import { BACKGROUND_COLORS, TEXT_COLORS } from "./constants";
 import { FC, useCallback } from "react";
 import { IColor } from "./types";
-import { getBorderColor2 } from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material";
 import { useEditorContext } from "../../context";
+import { getBorderColor2 } from "@/theme/borderColor";
 
 // ------------------------------------------------------------------
 
@@ -21,16 +21,35 @@ const ItemSx: SxProps<Theme> = {
     },
 };
 
+const getBorderColor = (text: boolean, active: boolean, color: string) => {
+    if (text) {
+        if (color === "inherit") return "transparent";
+        if (active) return "black";
+        return color;
+    } else {
+        if (color === "transparent") return getBorderColor2;
+        if (active) return "black";
+        return color;
+    }
+};
+
 interface OptionProps {
     text?: boolean;
     color: string;
 }
 
 const ColorOption: FC<OptionProps> = ({ text = false, color }) => {
-    const borderColor = color === "transparent" ? getBorderColor2 : color;
+    const { editor } = useEditorContext();
+
+    const active = Boolean(
+        text
+            ? editor?.isActive("textStyle", { color })
+            : editor?.isActive("highlight", { color })
+    );
+
+    const borderColor = getBorderColor(text, active, color);
     const bgcolor = text ? "transparent" : color;
 
-    const { editor } = useEditorContext();
     const onClick = useCallback(() => {
         if (!editor) return;
 
