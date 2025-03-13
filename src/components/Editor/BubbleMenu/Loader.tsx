@@ -9,7 +9,7 @@ type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 const PLUGIN_KEY = "PPEditor-BubbleMenu";
 
-type BubbleMenuProps = Omit<
+type LoaderProps = Omit<
     Optional<BubbleMenuPluginProps, "pluginKey">,
     "element" | "editor"
 > & {
@@ -17,7 +17,7 @@ type BubbleMenuProps = Omit<
     updateDelay?: number;
 };
 
-const Loader = (props: BubbleMenuProps) => {
+const Loader = (props: LoaderProps) => {
     const { editor } = useEditorContext();
     const [element, setElement] = useState<HTMLDivElement | null>(null);
 
@@ -65,5 +65,4 @@ const Loader = (props: BubbleMenuProps) => {
     );
 };
 
-export type { BubbleMenuProps };
 export default Loader;

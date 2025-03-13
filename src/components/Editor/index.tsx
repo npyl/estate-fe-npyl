@@ -10,6 +10,7 @@ import {
     useCallback,
     useImperativeHandle,
     useMemo,
+    useRef,
 } from "react";
 import { SxProps, Theme } from "@mui/material";
 import Stack, { StackProps } from "@mui/material/Stack";
@@ -54,6 +55,12 @@ const Editor = forwardRef<EditorRef, EditorProps>(
 
         useImperativeHandle(ref, () => editor!, [editor]);
 
+        const menubarRef = useRef<HTMLDivElement>();
+        const setMenubarRef = useCallback(
+            (e: HTMLDivElement) => (menubarRef.current = e),
+            []
+        );
+
         return (
             <Stack
                 sx={{
@@ -94,10 +101,15 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                 }}
                 {...containerProps}
             >
-                {editable && editor ? <MenuBar /> : undefined}
+                {editable && editor ? (
+                    <MenuBar onLoad={setMenubarRef} />
+                ) : undefined}
 
                 <EditorContent editor={editor} {...props}>
-                    {editable && editor ? <BubbleMenu /> : null}
+                    {editable && editor && menubarRef.current ? (
+                        <BubbleMenu menubar={menubarRef.current} />
+                    ) : null}
+
                     {children}
                 </EditorContent>
             </Stack>
