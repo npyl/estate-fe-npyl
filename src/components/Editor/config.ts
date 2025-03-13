@@ -15,6 +15,10 @@ import TextAlign from "@tiptap/extension-text-align";
 import Indent from "./extensions/Indent";
 import Link from "@tiptap/extension-link";
 
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+
 const Z_INDEX = {
     BUBBLE_MENU: 1,
     EMOJI_PICKER: 2,
@@ -47,6 +51,12 @@ const extensions = [
         maxLevel: 8,
     }),
     Link,
+    // ...
+    TextStyle,
+    Color,
+    Highlight.configure({
+        multicolor: true,
+    }),
 ];
 
 export { extensions, Z_INDEX };

@@ -3,10 +3,11 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Grid from "@mui/material/Grid";
 import { BACKGROUND_COLORS, TEXT_COLORS } from "./constants";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { IColor } from "./types";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material";
+import { useEditorContext } from "../../context";
 
 // ------------------------------------------------------------------
 
@@ -29,6 +30,25 @@ const ColorOption: FC<OptionProps> = ({ text = false, color }) => {
     const borderColor = color === "transparent" ? getBorderColor2 : color;
     const bgcolor = text ? "transparent" : color;
 
+    const { editor } = useEditorContext();
+    const onClick = useCallback(() => {
+        if (!editor) return;
+
+        if (text && color === "transparent") {
+            // clear
+            editor.commands.unsetColor();
+        } else if (text) {
+            // text color
+            editor.commands.setColor(color);
+        } else if (color === "transparent") {
+            // clear
+            editor.commands.unsetHighlight();
+        } else {
+            // background color
+            editor.commands.setHighlight({ color });
+        }
+    }, [text, color]);
+
     return (
         <Grid
             item
@@ -44,6 +64,7 @@ const ColorOption: FC<OptionProps> = ({ text = false, color }) => {
             bgcolor={bgcolor}
             // ...
             sx={ItemSx}
+            onClick={onClick}
         >
             {text ? (
                 <Typography
