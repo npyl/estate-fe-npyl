@@ -43,6 +43,7 @@ const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
             <TextFormat />
             <Divider orientation="vertical" flexItem />
             <TextStyles />
+            <Divider orientation="vertical" flexItem />
             <Color />
             <Divider orientation="vertical" flexItem />
             <Alignment />
