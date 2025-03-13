@@ -21,6 +21,16 @@ import { getBorderColor2 } from "@/theme/borderColor";
 const MenuBar = dynamic(() => import("./MenuBar"));
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
+// ----------------------------------------------------------------------
+
+const getMenuBarSx = (editable: boolean): SxProps<Theme> => ({
+    borderBottom: editable ? "1px solid" : undefined,
+    borderBottomColor: editable ? getBorderColor2 : undefined,
+    boxShadow: ({ shadows }) => shadows[3],
+});
+
+// ----------------------------------------------------------------------
+
 type EditorRef = TEditor | null;
 
 type EditorProps = Omit<
@@ -67,9 +77,6 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& .tiptap": {
                         minHeight: "200px",
 
-                        borderTop: editable ? "1px solid" : undefined,
-                        borderTopColor: editable ? getBorderColor2 : undefined,
-
                         px: 1.5,
 
                         ...(!editable
@@ -102,7 +109,10 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                 {...containerProps}
             >
                 {editable && editor ? (
-                    <MenuBar onLoad={setMenubarRef} />
+                    <MenuBar
+                        onLoad={setMenubarRef}
+                        sx={getMenuBarSx(editable)}
+                    />
                 ) : undefined}
 
                 <EditorContent editor={editor} {...props}>

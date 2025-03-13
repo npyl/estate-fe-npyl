@@ -44,6 +44,12 @@ const getFontSize = (mini: boolean, v: number) => {
     }
 };
 
+const getFontWeight = (mini: boolean, v: number) => {
+    if (!mini) return;
+    if (v === 0 || v === 7) return;
+    return 700;
+};
+
 const getLabel = (t: TranslationType, mini: boolean, v: number) => {
     if (mini) return v === 0 || v === 7 ? null : `H${v}`;
     return v === 0 ? t("Normal") : v === 7 ? t("BlockQuote") : t(`Heading${v}`);
@@ -66,11 +72,16 @@ const RenderValue: FC<RendeValueProps> = ({ mini = false, v, ...props }) => {
         : undefined;
 
     const fontSize = getFontSize(mini, v);
+    const fontWeight = getFontWeight(mini, v);
 
     return (
-        <Typography variant={variant} style={{ fontSize }} {...props}>
+        <Typography
+            variant={variant}
+            style={{ fontSize, fontWeight }}
+            {...props}
+        >
             {label}
-            {v === 0 && mini ? <TextIcon width={20} height={20} /> : null}
+            {v === 0 && mini ? <TextIcon width={22} height={22} /> : null}
             {v === 7 ? <FormatQuoteIcon fontSize="small" /> : null}
         </Typography>
     );
