@@ -67,7 +67,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& .tiptap": {
                         minHeight: "200px",
 
-                        borderTop: "1px solid",
+                        borderTop: editable ? "1px solid" : undefined,
                         borderTopColor: editable ? getBorderColor2 : undefined,
 
                         px: 1.5,
@@ -94,7 +94,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='8']": { marginLeft: 8 },
 
                     borderRadius: 1,
-                    border: "1px solid",
+                    border: editable ? "1px solid" : undefined,
                     borderColor: editable ? getBorderColor2 : undefined,
 
                     ...containerSx,
