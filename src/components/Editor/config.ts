@@ -55,7 +55,9 @@ const extensions = [
         minLevel: 0,
         maxLevel: 8,
     }),
-    Link,
+    Link.configure({
+        openOnClick: false,
+    }),
     // ...
     TextStyle,
     Color,

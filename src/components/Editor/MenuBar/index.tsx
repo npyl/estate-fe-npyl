@@ -9,6 +9,7 @@ import Alignment from "./Alignment";
 import Emoji from "./Emoji";
 import Color from "./Color";
 import History from "./History";
+import Link from "./Link";
 
 interface MenuBarProps extends Omit<StackProps, "onLoad"> {
     bubble?: boolean; // Is it used inside bubble?
@@ -52,6 +53,7 @@ const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
             <Divider orientation="vertical" flexItem />
             <Indentation />
             <Divider orientation="vertical" flexItem />
+            <Link />
             <Emoji />
         </Stack>
     );

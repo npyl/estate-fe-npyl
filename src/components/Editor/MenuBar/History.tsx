@@ -4,10 +4,10 @@ import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useEditorContext } from "../context";
 import { FC, useCallback } from "react";
-import { getBorderColor2 } from "@/theme/borderColor";
+import { getBubbleSx } from "./styled";
 
 interface HistoryProps {
-    bubble?: boolean;
+    bubble: boolean;
 }
 
 const History: FC<HistoryProps> = ({ bubble }) => {
@@ -25,17 +25,11 @@ const History: FC<HistoryProps> = ({ bubble }) => {
 
     return (
         <Stack
+            left={-85}
             direction="row"
             alignItems="center"
-            // ...
             position={bubble ? "absolute" : "unset"}
-            left={-85}
-            bgcolor={bubble ? "background.paper" : "transparent"}
-            border="1px solid"
-            borderColor={bubble ? getBorderColor2 : "transparent"}
-            borderRadius={5}
-            // ...
-            p={bubble ? 1 : 0}
+            sx={getBubbleSx(bubble)}
         >
             <MenuBarButton
                 icon={<UndoIcon />}

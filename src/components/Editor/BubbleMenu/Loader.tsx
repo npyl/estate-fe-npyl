@@ -1,7 +1,7 @@
 import BubbleMenuPlugin, {
     BubbleMenuPluginProps,
 } from "@/components/Editor/extensions/BubbleMenu";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import { useEditorContext } from "../context";
 
@@ -14,12 +14,20 @@ type LoaderProps = Omit<
     "element" | "editor"
 > & {
     children: React.ReactNode;
+    pluginKey: string;
     updateDelay?: number;
 };
 
-const Loader = (props: LoaderProps) => {
+const Loader: FC<LoaderProps> = ({
+    pluginKey: _pluginKey,
+    updateDelay,
+    shouldShow = null,
+    ...props
+}) => {
     const { editor } = useEditorContext();
     const [element, setElement] = useState<HTMLDivElement | null>(null);
+
+    const pluginKey = `${PLUGIN_KEY}_${_pluginKey}`;
 
     useEffect(() => {
         if (!element) {
@@ -29,12 +37,6 @@ const Loader = (props: LoaderProps) => {
         if (editor?.isDestroyed) {
             return;
         }
-
-        const {
-            pluginKey = PLUGIN_KEY,
-            updateDelay,
-            shouldShow = null,
-        } = props;
 
         if (!editor) {
             console.warn(

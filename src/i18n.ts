@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Link: "Link",
+
             Published: "Published",
 
             Normal: "Normal",
@@ -1276,6 +1278,8 @@ const resources = {
     },
     el: {
         translation: {
+            Link: "Σύνδεσμος",
+
             Published: "Δημοσιευμένο",
 
             Normal: "Κανονικό",

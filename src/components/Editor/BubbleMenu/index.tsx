@@ -3,6 +3,21 @@ import { Paper } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
 import Loader from "./Loader";
 import { FC } from "react";
+import Link from "../MenuBar/Link";
+
+import { Editor } from "@tiptap/core";
+import { EditorState } from "@tiptap/pm/state";
+import { EditorView } from "@tiptap/pm/view";
+
+interface ShouldShowProps {
+    editor: Editor;
+    element: HTMLElement;
+    view: EditorView;
+    state: EditorState;
+    oldState?: EditorState;
+    from: number;
+    to: number;
+}
 
 // --------------------------------------------------------------------
 
@@ -19,20 +34,18 @@ const isInViewport = (element: HTMLDivElement): boolean => {
     );
 };
 
-interface IsRangeProps {
-    from: number;
-    to: number;
-}
+const isRange = (from: number, to: number) => from !== to;
+const isLink = (editor: Editor) => editor?.isActive("link");
 
-/**
- * Make sure we have selected a range AND the menubar is not inside view
- * @param menubar
- * @returns
- */
-const isRange =
+const shouldShow0 =
     (menubar: HTMLDivElement) =>
-    ({ from, to }: IsRangeProps) =>
-        from !== to && !isInViewport(menubar);
+    ({ from, to, editor }: ShouldShowProps) =>
+        isRange(from, to) && !isLink(editor) && !isInViewport(menubar);
+
+const shouldShow1 =
+    (menubar: HTMLDivElement) =>
+    ({ editor }: ShouldShowProps) =>
+        isLink(editor) && !isInViewport(menubar);
 
 // --------------------------------------------------------------------
 
@@ -41,16 +54,22 @@ interface BubbleMenuProps {
 }
 
 const BubbleMenu: FC<BubbleMenuProps> = ({ menubar }) => (
-    <Loader shouldShow={isRange(menubar)}>
-        <MenuBar
-            bubble
-            component={Paper}
-            width="fit-content"
-            border="1px solid"
-            p={0.5}
-            borderColor={getBorderColor2}
-        />
-    </Loader>
+    <>
+        <Loader pluginKey="BaseMenu" shouldShow={shouldShow0(menubar)}>
+            <MenuBar
+                bubble
+                component={Paper}
+                width="fit-content"
+                border="1px solid"
+                p={0.5}
+                borderColor={getBorderColor2}
+            />
+        </Loader>
+
+        <Loader pluginKey="LinkMenu" shouldShow={shouldShow1(menubar)}>
+            <Link bubble />
+        </Loader>
+    </>
 );
 
 export default BubbleMenu;
