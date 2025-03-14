@@ -25,9 +25,8 @@ const Loader: FC<LoaderProps> = ({
     ...props
 }) => {
     const { editor } = useEditorContext();
-
     const [open, setOpen] = useState(false);
-    const anchorPosition = useRef<DOMRect | null>(null);
+    const [anchorPosition, setAnchorPosition] = useState<DOMRect | null>(null);
     const elementRef = useRef<HTMLDivElement | null>(null);
 
     const pluginKey = `${PLUGIN_KEY}_${_pluginKey}`;
@@ -35,8 +34,7 @@ const Loader: FC<LoaderProps> = ({
     // Virtual anchor element for MUI Popper
     const virtualAnchorEl = {
         nodeType: 1,
-        getBoundingClientRect: () =>
-            anchorPosition.current || new DOMRect(0, 0, 0, 0),
+        getBoundingClientRect: () => anchorPosition || new DOMRect(0, 0, 0, 0),
         ownerDocument: {
             defaultView: window,
         },
@@ -55,6 +53,7 @@ const Loader: FC<LoaderProps> = ({
             return;
         }
 
+        // Create a custom shouldShow function that updates our state variables
         const wrappedShouldShow: BubbleMenuPluginProps["shouldShow"] = (
             params
         ) => {
@@ -97,8 +96,7 @@ const Loader: FC<LoaderProps> = ({
                     return posToDOMRect(view, from, to);
                 })();
 
-                anchorPosition.current = selectionRect;
-
+                setAnchorPosition(selectionRect);
                 setOpen(true);
             } else {
                 setOpen(false);
@@ -120,7 +118,7 @@ const Loader: FC<LoaderProps> = ({
         return () => {
             editor?.unregisterPlugin(pluginKey);
         };
-    }, []);
+    }, [editor, pluginKey, updateDelay]);
 
     return (
         <>
