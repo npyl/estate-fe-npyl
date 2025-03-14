@@ -83,7 +83,15 @@ const useTabState = () => {
         [tabState, tabs, userId, pathname]
     );
 
-    return { tabs, pushTab, removeTab };
+    const removeTabs = useCallback(
+        (p: string[]) => {
+            const res = tabs.filter(({ path }) => !p.includes(path));
+            setTabState({ ...tabState, [userId]: res });
+        },
+        [tabState, userId]
+    );
+
+    return { tabs, pushTab, removeTab, removeTabs };
 };
 
 export default useTabState;
