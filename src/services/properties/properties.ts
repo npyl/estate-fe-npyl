@@ -17,8 +17,13 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
-import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
 import { IPropertyFile } from "@/types/file";
+
+import {
+    apiWithTranslation,
+    createLanguageAwareHook as la,
+    createRemoveTabAwareHook as rt,
+} from "@/services/_util";
 
 interface JustData<T> {
     data: T;
@@ -434,11 +439,6 @@ export const {
     useBulkArchivePropertiesMutation,
     useBulkRestorePropertiesMutation,
 
-    useDeletePropertyMutation,
-    useDeletePermanentPropertyMutation,
-    useBulkDeletePropertiesMutation,
-    useBulkDeletePermanentPropertiesMutation,
-
     // ...
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
@@ -454,6 +454,24 @@ const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
 const useGetPDFQuery = la(properties.useGetPDFQuery);
+
+const useDeletePropertyMutation = rt(properties.useDeletePropertyMutation);
+const useDeletePermanentPropertyMutation = rt(
+    properties.useDeletePermanentPropertyMutation
+);
+const useBulkDeletePropertiesMutation = rt(
+    properties.useBulkDeletePropertiesMutation
+);
+const useBulkDeletePermanentPropertiesMutation = rt(
+    properties.useBulkDeletePermanentPropertiesMutation
+);
+
+export {
+    useDeletePropertyMutation,
+    useDeletePermanentPropertyMutation,
+    useBulkDeletePropertiesMutation,
+    useBulkDeletePermanentPropertiesMutation,
+};
 
 export {
     useSearchPropertyQuery,
