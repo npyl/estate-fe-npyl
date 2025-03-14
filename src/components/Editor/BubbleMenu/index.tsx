@@ -4,20 +4,8 @@ import { getBorderColor2 } from "@/theme/borderColor";
 import Loader from "./Loader";
 import { FC } from "react";
 import Link from "../MenuBar/Link";
-
 import { Editor } from "@tiptap/core";
-import { EditorState } from "@tiptap/pm/state";
-import { EditorView } from "@tiptap/pm/view";
-
-interface ShouldShowProps {
-    editor: Editor;
-    element: HTMLElement;
-    view: EditorView;
-    state: EditorState;
-    oldState?: EditorState;
-    from: number;
-    to: number;
-}
+import { ShouldShowProps } from "./types";
 
 // --------------------------------------------------------------------
 
@@ -52,7 +40,7 @@ interface BubbleMenuProps {
 
 const BubbleMenu: FC<BubbleMenuProps> = ({ menubar }) => (
     <>
-        <Loader pluginKey="BaseMenu" shouldShow={shouldShow0(menubar)}>
+        <Loader shouldShow={shouldShow0(menubar)}>
             <MenuBar
                 bubble
                 component={Paper}
@@ -63,7 +51,7 @@ const BubbleMenu: FC<BubbleMenuProps> = ({ menubar }) => (
             />
         </Loader>
 
-        <Loader pluginKey="LinkMenu" shouldShow={shouldShow1}>
+        <Loader shouldShow={shouldShow1}>
             <Link bubble menubar={isInViewport(menubar)} />
         </Loader>
     </>
