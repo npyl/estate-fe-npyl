@@ -1,13 +1,7 @@
-import {
-    Editor,
-    isNodeSelection,
-    isTextSelection,
-    posToDOMRect,
-} from "@tiptap/core";
+import { Editor, isTextSelection } from "@tiptap/core";
 import { EditorState } from "@tiptap/pm/state";
 import { EditorView } from "@tiptap/pm/view";
 import { BubbleMenuPluginProps, BubbleMenuViewProps } from "./types";
-import PopperHandler from "./Popper";
 
 class BubbleMenuView {
     public editor: Editor;
@@ -15,7 +9,6 @@ class BubbleMenuView {
     public view: EditorView;
     public preventHide = false;
     public updateDelay: number;
-    private popperHandler: PopperHandler;
     private updateDebounceTimer: number | undefined;
 
     public shouldShow: Exclude<BubbleMenuPluginProps["shouldShow"], null> = ({
@@ -59,15 +52,11 @@ class BubbleMenuView {
         view,
         updateDelay = 250,
         shouldShow,
-        popperOptions,
     }: BubbleMenuViewProps) {
         this.editor = editor;
         this.element = element;
         this.view = view;
         this.updateDelay = updateDelay;
-
-        // Initialize the popper handler
-        this.popperHandler = new PopperHandler(editor, element, popperOptions);
 
         if (shouldShow) {
             this.shouldShow = shouldShow;
@@ -200,9 +189,6 @@ class BubbleMenuView {
             return;
         }
 
-        // Initialize popper if needed
-        this.popperHandler.create();
-
         // support for CellSelections
         const { ranges } = selection;
         const from = Math.min(...ranges.map((range) => range.$from.pos));
@@ -223,49 +209,8 @@ class BubbleMenuView {
             return;
         }
 
-        // Update virtual reference position
-        const getReferenceRect = this.createReferenceRect(
-            view,
-            state,
-            from,
-            to
-        );
-        this.popperHandler.updatePosition(getReferenceRect);
-
         this.show();
     };
-
-    // Helper Methods
-    // =============
-
-    createReferenceRect(
-        view: EditorView,
-        state: EditorState,
-        from: number,
-        to: number
-    ) {
-        return () => {
-            if (isNodeSelection(state.selection)) {
-                let node = view.nodeDOM(from) as HTMLElement;
-
-                if (node) {
-                    const nodeViewWrapper = node.dataset.nodeViewWrapper
-                        ? node
-                        : node.querySelector("[data-node-view-wrapper]");
-
-                    if (nodeViewWrapper) {
-                        node = nodeViewWrapper.firstChild as HTMLElement;
-                    }
-
-                    if (node) {
-                        return node.getBoundingClientRect();
-                    }
-                }
-            }
-
-            return posToDOMRect(view, from, to);
-        };
-    }
 
     // UI Control
     // =========
@@ -291,9 +236,6 @@ class BubbleMenuView {
 
         // Clean up DOM
         this.element.remove();
-
-        // Destroy popper
-        this.popperHandler.destroy();
     }
 }
 
