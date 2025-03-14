@@ -20,10 +20,7 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import UpdatedAtIcon from "./icons/UpdatedAtIcon";
 import CommentIcon from "./icons/CommentIcon";
-import ColumnLabel from "./ColumnLabel";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
-
-const NoAssignee = () => null;
 
 const chipStyles: SxProps<Theme> = {
     backgroundColor: "rgba(0, 0, 0, 0.05) !important",
@@ -205,8 +202,6 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
                 width="25%"
             >
                 {isCompleted ? <CompletedLabel /> : null}
-                {!isCompleted && <ColumnLabel name={columnName} />}
-
                 {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
             </Stack>
         </SpaceBetween>
