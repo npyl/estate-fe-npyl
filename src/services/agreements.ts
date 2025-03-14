@@ -6,7 +6,11 @@ import {
 } from "@/types/agreements";
 import IPage from "@/types/page";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import {
+    apiWithTranslation,
+    createLanguageAwareHook as la,
+    createRemoveTabAwareHook as rt,
+} from "./_util";
 
 interface IAgreementSearchParams {
     search: string;
@@ -79,7 +83,6 @@ export const agreements = apiWithTranslation({
 export const {
     useCreateAgreementMutation,
     useUpdateAgreementMutation,
-    useDeleteAgreementMutation,
 
     useLazyGetAgreementByIdQuery,
 } = agreements;
@@ -88,8 +91,12 @@ const useFilterAgreementsQuery = la(agreements.useFilterAgreementsQuery);
 const useSearchAgreementsQuery = la(agreements.useSearchAgreementsQuery);
 const useGetAgreementByIdQuery = la(agreements.useGetAgreementByIdQuery);
 
+const useDeleteAgreementMutation = rt(agreements.useDeleteAgreementMutation);
+
 export {
     useFilterAgreementsQuery,
     useSearchAgreementsQuery,
     useGetAgreementByIdQuery,
+    // ...
+    useDeleteAgreementMutation,
 };
