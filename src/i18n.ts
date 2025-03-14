@@ -72,7 +72,7 @@ const resources = {
 
             _PDF_NOT_GENERATED_: "Not generated",
             Fullname: "Fullname",
-            _GENERATE_CHECKBOX_: "Generate PDF",
+            _GENERATE_CHECKBOX_: "Update PDF",
 
             FIRST_NAME_ASC: "First Name (A-Z)",
             FIRST_NAME_DESC: "First Name (Z-A)",
@@ -1346,7 +1346,7 @@ const resources = {
 
             _PDF_NOT_GENERATED_: "Δεν έχει παραχθεί",
             Fullname: "Ον/μο",
-            _GENERATE_CHECKBOX_: "Παραγωγή PDF",
+            _GENERATE_CHECKBOX_: "Ενημέρωση PDF",
 
             FIRST_NAME_ASC: "Όνομα (Α-Ω)",
             FIRST_NAME_DESC: "Όνομα (Ω-Α)",

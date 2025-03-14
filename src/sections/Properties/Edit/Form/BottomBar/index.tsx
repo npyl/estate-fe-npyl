@@ -21,10 +21,16 @@ const BottomBar: FC<BottomBarProps> = ({ PersistNotice, checkboxRef }) => (
                 <CancelButton />
                 <ClearButton />
 
-                <Divider />
-
-                <GenerateCheckbox ref={checkboxRef} />
-                <SubmitButton />
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1}
+                    bgcolor="background.neutral"
+                    borderRadius={1}
+                >
+                    <GenerateCheckbox ref={checkboxRef} />
+                    <SubmitButton />
+                </Stack>
             </Stack>
         }
     />
