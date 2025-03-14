@@ -22,7 +22,11 @@ const DeleteItem: FC<DeleteItemProps> = ({ taskId }) => {
 
     const [deleteTask] = useDeleteCardMutation();
 
-    const handleDelete = () => deleteTask({ cardId: taskId, filters });
+    const handleDelete = () =>
+        deleteTask({
+            props: { cardId: taskId, filters },
+            tabPaths: [`/tasks?taskId=${taskId}`],
+        });
 
     return (
         <>

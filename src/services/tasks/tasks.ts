@@ -29,6 +29,7 @@ import {
 } from "./optimistic";
 import errorToast from "@/components/Toaster/error";
 import { ILabel } from "@/types/label";
+import { createRemoveTabAwareHook as rt } from "@/services/_util";
 
 export const tasks = createApi({
     reducerPath: "tasks",
@@ -237,6 +238,9 @@ const useSetColumnDoneMutation = () => {
 
 export { useSetColumnDoneMutation };
 
+const useDeleteCardMutation = rt(tasks.useDeleteCardMutation);
+export { useDeleteCardMutation };
+
 export const {
     // Board
     useGetBoardQuery,
@@ -251,7 +255,6 @@ export const {
     useGetCardQuery,
     useMoveCardMutation,
     useReorderCardMutation,
-    useDeleteCardMutation,
 
     //Comments
     useGetCommentsForCardQuery,
