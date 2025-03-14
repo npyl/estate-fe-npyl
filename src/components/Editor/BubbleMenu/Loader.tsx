@@ -6,6 +6,7 @@ import BubbleMenuPlugin from "@/components/Editor/extensions/BubbleMenu";
 import { isNodeSelection, posToDOMRect } from "@tiptap/core";
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
 const PLUGIN_KEY = "PPEditor-BubbleMenu";
 
 type LoaderProps = Omit<
@@ -26,7 +27,7 @@ const Loader: FC<LoaderProps> = ({
     const { editor } = useEditorContext();
 
     const [open, setOpen] = useState(false);
-    const [anchorPosition, setAnchorPosition] = useState<DOMRect | null>(null);
+    const anchorPosition = useRef<DOMRect | null>(null);
     const elementRef = useRef<HTMLDivElement | null>(null);
 
     const pluginKey = `${PLUGIN_KEY}_${_pluginKey}`;
@@ -34,7 +35,8 @@ const Loader: FC<LoaderProps> = ({
     // Virtual anchor element for MUI Popper
     const virtualAnchorEl = {
         nodeType: 1,
-        getBoundingClientRect: () => anchorPosition || new DOMRect(0, 0, 0, 0),
+        getBoundingClientRect: () =>
+            anchorPosition.current || new DOMRect(0, 0, 0, 0),
         ownerDocument: {
             defaultView: window,
         },
@@ -50,13 +52,9 @@ const Loader: FC<LoaderProps> = ({
         }
 
         if (!editor) {
-            console.warn(
-                "BubbleMenu component is not rendered inside of an editor component or does not have editor prop."
-            );
             return;
         }
 
-        // Create a custom shouldShow function that updates our state variables
         const wrappedShouldShow: BubbleMenuPluginProps["shouldShow"] = (
             params
         ) => {
@@ -99,7 +97,8 @@ const Loader: FC<LoaderProps> = ({
                     return posToDOMRect(view, from, to);
                 })();
 
-                setAnchorPosition(selectionRect);
+                anchorPosition.current = selectionRect;
+
                 setOpen(true);
             } else {
                 setOpen(false);
@@ -108,7 +107,6 @@ const Loader: FC<LoaderProps> = ({
             return shouldDisplay;
         };
 
-        // Register the plugin, but we'll manage visibility with our Popper
         const plugin = BubbleMenuPlugin({
             updateDelay,
             editor,
@@ -122,7 +120,7 @@ const Loader: FC<LoaderProps> = ({
         return () => {
             editor?.unregisterPlugin(pluginKey);
         };
-    }, [editor, pluginKey, updateDelay]);
+    }, []);
 
     return (
         <>

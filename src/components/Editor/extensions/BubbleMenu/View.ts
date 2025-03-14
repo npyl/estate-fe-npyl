@@ -62,9 +62,8 @@ class BubbleMenuView {
             this.shouldShow = shouldShow;
         }
 
-        // Setup element and event listeners
+        // Setup element
         this.setupElement();
-        this.setupEventListeners();
     }
 
     // Setup Methods
@@ -77,67 +76,6 @@ class BubbleMenuView {
         // Setup element styling
         this.element.style.pointerEvents = "auto";
     }
-
-    private setupEventListeners() {
-        this.element.addEventListener("mousedown", this.mousedownHandler, {
-            capture: true,
-        });
-        this.view.dom.addEventListener("dragstart", this.dragstartHandler);
-        this.editor.on("focus", this.focusHandler);
-        this.editor.on("blur", this.blurHandler);
-        this.element.addEventListener("blur", this.popperBlurHandler, true);
-    }
-
-    private removeEventListeners() {
-        this.element.removeEventListener("blur", this.popperBlurHandler, true);
-        this.element.removeEventListener("mousedown", this.mousedownHandler, {
-            capture: true,
-        });
-        this.view.dom.removeEventListener("dragstart", this.dragstartHandler);
-        this.editor.off("focus", this.focusHandler);
-        this.editor.off("blur", this.blurHandler);
-    }
-
-    // Event Handlers
-    // =============
-
-    mousedownHandler = (event: MouseEvent) => {
-        this.preventHide = true;
-        // Don't prevent default to allow click events to propagate
-    };
-
-    dragstartHandler = () => {
-        this.hide();
-    };
-
-    focusHandler = () => {
-        // we use `setTimeout` to make sure `selection` is already updated
-        setTimeout(() => this.update(this.editor.view));
-    };
-
-    blurHandler = ({ event }: { event: FocusEvent }) => {
-        if (this.preventHide) {
-            this.preventHide = false;
-            return;
-        }
-
-        if (
-            event?.relatedTarget &&
-            this.element.parentNode?.contains(event.relatedTarget as Node)
-        ) {
-            return;
-        }
-
-        if (event?.relatedTarget === this.editor.view.dom) {
-            return;
-        }
-
-        this.hide();
-    };
-
-    popperBlurHandler = (event: FocusEvent) => {
-        this.blurHandler({ event });
-    };
 
     // Update Logic
     // ===========
@@ -231,10 +169,6 @@ class BubbleMenuView {
     // ========
 
     destroy() {
-        // Remove event listeners
-        this.removeEventListeners();
-
-        // Clean up DOM
         this.element.remove();
     }
 }
