@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { ITab } from "@/types/tabs";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
@@ -7,11 +7,51 @@ import { useAuth } from "@/hooks/use-auth";
 
 // -----------------------------------------------------------------------
 
+/**
+ * Helper method to check whether a questionedPath is contained inside a tabPath with respect to query param
+ * @param path
+ * @param questionedPath
+ * @returns Whether the path in question (questionedPath) is *NOT* contained inside a tabPath (exising tab's path)
+ */
+const isntContained =
+    (questionedPath: string) =>
+    ({ path }: ITab) => {
+        const tabUrl = new URL(path, window.location.href);
+        const queUrl = new URL(questionedPath, window.location.href);
+
+        // Compare pathnames
+        if (tabUrl.pathname !== queUrl.pathname) return true;
+
+        // Compare url params
+        const tabParams = new URLSearchParams(tabUrl.search);
+        const queParams = new URLSearchParams(queUrl.search);
+
+        for (const [key, value] of queParams) {
+            const test = tabParams.get(key);
+            if (test !== value) return true;
+        }
+
+        return false;
+    };
+
+// INFO: beauty wrapper
+const isntContainedWrap = (t: ITab) => (pn: string) => isntContained(pn)(t);
+
+/**
+ *
+ * @param p a list of paths in question
+ * @returns true if *NONE* of the paths is contained
+ */
+const isntContainedMultiple = (p: string[]) => (t: ITab) =>
+    p.every(isntContainedWrap(t));
+
+// -----------------------------------------------------------------------
+
 type TTabState = Record<number, ITab[]>;
 
 // -----------------------------------------------------------------------
 
-const pushOrUpdate = (old: ITab[], userId: number, t: ITab) => {
+const pushOrUpdate = (old: ITab[], t: ITab) => {
     // Update
     if (old.some(({ path }) => path === t.path)) {
         return old.map((ot) => (ot.path === t.path ? t : ot));
@@ -30,11 +70,17 @@ const useTabState = () => {
     const userId = user?.id!;
 
     const [tabState, setTabState] = useCookie<TTabState>(cookieName, {});
-    const tabs = tabState?.[userId] || [];
+    const tabs = useMemo(() => {
+        try {
+            return tabState?.[userId] || [];
+        } catch (ex) {
+            return [];
+        }
+    }, [tabState, userId]);
 
     const pushTab = useCallback(
         (t: ITab) => {
-            const res = pushOrUpdate(tabs, userId, t);
+            const res = pushOrUpdate(tabs, t);
             setTabState({ ...tabState, [userId]: res });
         },
         [tabState, tabs, userId]
@@ -45,7 +91,7 @@ const useTabState = () => {
 
     const removeTab = useCallback(
         (p: string) => {
-            const res = tabs.filter(({ path }) => path !== p);
+            const res = tabs.filter(isntContained(p));
             setTabState({ ...tabState, [userId]: res });
 
             // Case 1: we have no more tabs
@@ -85,10 +131,10 @@ const useTabState = () => {
 
     const removeTabs = useCallback(
         (p: string[]) => {
-            const res = tabs.filter(({ path }) => !p.includes(path));
+            const res = tabs.filter(isntContainedMultiple(p));
             setTabState({ ...tabState, [userId]: res });
         },
-        [tabState, userId]
+        [tabs, tabState, userId]
     );
 
     return { tabs, pushTab, removeTab, removeTabs };
