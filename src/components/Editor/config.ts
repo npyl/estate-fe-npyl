@@ -13,12 +13,32 @@ import Strike from "@tiptap/extension-strike";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Indent from "./extensions/Indent";
-import Link from "@tiptap/extension-link";
+import Link, { LinkOptions } from "@tiptap/extension-link";
 
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import History from "@tiptap/extension-history";
+import errorToast from "../Toaster/error";
+
+const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
+    try {
+        // INFO: allow only https
+        if (!url.includes("https://")) throw new Error("Not https");
+
+        const parsedUrl = new URL(url);
+
+        // use default validation
+        if (!ctx.defaultValidate(parsedUrl.href))
+            throw new Error("Base validation failed");
+
+        // all checks have passed
+        return true;
+    } catch {
+        errorToast("_PPEDITOR_LINK_INVALID0_", "_PPEDITOR_LINK_INVALID1_");
+        return false;
+    }
+};
 
 const Z_INDEX = {
     BUBBLE_MENU: 1,
@@ -57,6 +77,7 @@ const extensions = [
     }),
     Link.configure({
         openOnClick: false,
+        isAllowedUri,
     }),
     // ...
     TextStyle,

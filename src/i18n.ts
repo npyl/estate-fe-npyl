@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _PPEDITOR_LINK_INVALID0_: "Please use a valid url!",
+            _PPEDITOR_LINK_INVALID1_: "The url must be in format https://...",
+
             Link: "Link",
 
             Published: "Published",
@@ -1278,6 +1281,11 @@ const resources = {
     },
     el: {
         translation: {
+            _PPEDITOR_LINK_INVALID0_:
+                "Παρακαλώ χρησιμοποιήστε έγκυρο σύνδεσμο!",
+            _PPEDITOR_LINK_INVALID1_:
+                "Ο σύνδεσμος πρέπει ναναι στη μορφή https://...",
+
             Link: "Σύνδεσμος",
 
             Published: "Δημοσιευμένο",
