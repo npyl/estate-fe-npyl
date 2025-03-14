@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import getRatio from "./getRatio";
-import { WrapperWithRatioProps } from "../types";
+import { WrapperWithRatioProps } from "../../types";
 import { FC } from "react";
 
 const WrapperWithRatio: FC<WrapperWithRatioProps> = ({

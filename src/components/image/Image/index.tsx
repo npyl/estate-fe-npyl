@@ -1,58 +1,58 @@
-import { ImageProps } from "@/components/image/types";
-import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
-import NoImageIcon from "@/assets/icons/no-image";
-import WrapperWithRatio from "./WrapperWithRatio";
+//
+// Responds to different image sizes with different styling
+//
+// Three types of images (width x height):
+//  1. 2048x1365 (Horizontal)
+//  2. 1365x2048 (Vertical)
+//  3. 2048x1152 (Drone)
+//
+//  See https://www.notion.so/Images-226c376acb3445dfb7e7b0bed03e1f8e for more info
+//
 
-const Image = forwardRef<HTMLImageElement, ImageProps>(
-    ({ alt = "", src = "", imgStyle, ...props }, ref) => {
-        const fallbackRef = useRef<SVGSVGElement>(null);
+import { ImageProps, ImageRatio } from "@/components/image/types";
+import BaseImage from "./BaseImage";
+import { FC, useLayoutEffect, useRef, useState } from "react";
 
-        const handleError = useCallback(
-            (e: SyntheticEvent<HTMLImageElement>) => {
-                e.currentTarget.style.display = "none";
-                if (!fallbackRef || !fallbackRef.current) return;
-                fallbackRef.current.style.display = "block";
-            },
-            []
-        );
+const epsilon = 0.01; // floating-point imprecision
 
-        const handleLoad = useCallback(
-            (e: SyntheticEvent<HTMLImageElement>) => {
-                e.currentTarget.style.display = "block";
-                e.currentTarget.style.visibility = "visible";
-            },
-            []
-        );
+const isCloseToRatio = (actual: number, expected: number) =>
+    Math.abs(actual - expected) < epsilon;
 
-        return (
-            <WrapperWithRatio {...props}>
-                <NoImageIcon
-                    height="100%"
-                    width="100%"
-                    style={{ display: "none", padding: "10px", ...imgStyle }}
-                    ref={fallbackRef}
-                />
+interface SmartImageProps extends Omit<ImageProps, "size"> {}
 
-                <img
-                    ref={ref}
-                    className="PPImage-img"
-                    src={src!}
-                    alt={alt}
-                    loading="lazy"
-                    width="100%"
-                    height="100%"
-                    style={{
-                        visibility: "hidden",
-                        ...imgStyle,
-                    }}
-                    onLoad={handleLoad}
-                    onError={handleError}
-                />
-            </WrapperWithRatio>
-        );
-    }
-);
+const SmartImage: FC<SmartImageProps> = ({ src, ref: _, ...props }) => {
+    const [ratio, setRatio] = useState<ImageRatio>("4/3");
 
-Image.displayName = "Image";
+    const imageRef = useRef<HTMLImageElement>(null);
 
-export default Image;
+    useLayoutEffect(() => {
+        if (!imageRef.current || !imageRef.current.style) return;
+
+        const aspectRatio =
+            imageRef.current.naturalWidth / imageRef.current.naturalHeight;
+
+        // Horizontal (2048x1365)
+        if (isCloseToRatio(aspectRatio, 2048 / 1365)) {
+            return;
+        }
+
+        // Vertical (1365x2048)
+        if (isCloseToRatio(aspectRatio, 1365 / 2048)) {
+            setRatio("1/1");
+            imageRef.current.style.objectFit = "contain";
+            return;
+        }
+
+        // Drone (2048x1152)
+        if (isCloseToRatio(aspectRatio, 2048 / 1152)) {
+            setRatio("1/1");
+            imageRef.current.style.objectFit = "contain";
+            return;
+        }
+    }, []);
+
+    return <BaseImage ref={imageRef} src={src} ratio={ratio} {...props} />;
+};
+
+export type { SmartImageProps };
+export default SmartImage;
