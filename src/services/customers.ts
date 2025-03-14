@@ -10,6 +10,7 @@ import {
 import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import { IProperties } from "@/types/properties";
 
 export interface BulkEditRequest {
     customerIds: number[];
@@ -36,13 +37,20 @@ interface ICreateCustomerFromStayUpdatedReq {
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
 const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
+const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
 
 export const customers = apiWithTranslation({
     reducerPath: "customers",
     baseQuery: fetchBaseQuery({
         baseUrl,
     }),
-    tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels", "Tasks"],
+    tagTypes: [
+        "Customers",
+        "CustomerById",
+        "CustomerByIdLabels",
+        "SuggestedProperties",
+        "Tasks",
+    ],
 
     endpoints: (builder) => ({
         allCustomers: builder.query<ICustomer[], void>({
@@ -103,7 +111,11 @@ export const customers = apiWithTranslation({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Customers", "CustomerById"],
+            invalidatesTags: [
+                "Customers",
+                "CustomerById",
+                "SuggestedProperties",
+            ],
         }),
 
         bulkDeleteCustomers: builder.mutation<void, number[]>({
@@ -139,6 +151,16 @@ export const customers = apiWithTranslation({
                 method: "DELETE",
             }),
             invalidatesTags: ["Customers"],
+        }),
+
+        suggestForCustomer: builder.query<IPage<IProperties>, number>({
+            query: (customerId) => ({
+                url: `${propertiesBaseUrl}/customerSuggest`,
+                params: {
+                    customerId,
+                },
+            }),
+            providesTags: ["SuggestedProperties"],
         }),
 
         // ---------------------------------------------------
@@ -188,5 +210,6 @@ export const {
 } = customers;
 
 const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);
+const useSuggestForCustomerQuery = la(customers.useSuggestForCustomerQuery);
 
-export { useGetCustomerByIdQuery };
+export { useGetCustomerByIdQuery, useSuggestForCustomerQuery };

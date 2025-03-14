@@ -60,9 +60,7 @@ interface IPropertySearchParams {
     // INFO: narrows the search only to a specific customer's properties
     customer?: number;
 }
-interface ISuggestForCustomerParams {
-    customerId: number;
-}
+
 interface ISuggestForPropertyParams {
     propertyId: number;
     page: number;
@@ -85,7 +83,6 @@ export const properties = apiWithTranslation({
         "PropertyByIdListings",
         "FilterProperties",
         "FilterCounters",
-        "SuggestedProperties",
         "SuggestedCustomers",
 
         // attributes
@@ -210,16 +207,6 @@ export const properties = apiWithTranslation({
             providesTags: ["FilterCounters"],
         }),
 
-        suggestForCustomer: builder.query<
-            IPage<IProperties>,
-            ISuggestForCustomerParams
-        >({
-            query: (params) => ({
-                url: "/customerSuggest",
-                params,
-            }),
-            providesTags: ["SuggestedProperties"],
-        }),
         suggestForProperty: builder.query<
             IPage<ICustomer>,
             ISuggestForPropertyParams
@@ -463,8 +450,6 @@ const useGetPropertyByIdQuery = la(properties.useGetPropertyByIdQuery);
 const useGetPropertyCardByIdQuery = la(properties.useGetPropertyCardByIdQuery);
 const useGetPropertyByCodeQuery = la(properties.useGetPropertyByCodeQuery);
 
-const useSuggestForCustomerQuery = la(properties.useSuggestForCustomerQuery);
-
 const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
@@ -476,8 +461,6 @@ export {
     useGetPropertyByIdQuery,
     useGetPropertyCardByIdQuery,
     useGetPropertyByCodeQuery,
-    // ...
-    useSuggestForCustomerQuery,
     // ...
     useFilterPropertiesQuery,
     useFilterArchivedQuery,

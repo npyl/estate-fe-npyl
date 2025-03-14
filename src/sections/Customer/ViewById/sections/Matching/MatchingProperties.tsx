@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useSuggestForCustomerQuery } from "src/services/properties";
+import { useSuggestForCustomerQuery } from "@/services/customers";
 import Placeholder from "./Placeholder";
 import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
@@ -22,12 +22,9 @@ const MatchingPropertiesSection = () => {
     const { customerId } = router.query;
     const iCustomerId = toNumberSafe(customerId);
 
-    const { data, isLoading } = useSuggestForCustomerQuery(
-        {
-            customerId: iCustomerId,
-        },
-        { skip: iCustomerId === -1 }
-    );
+    const { data, isLoading } = useSuggestForCustomerQuery(iCustomerId, {
+        skip: iCustomerId === -1,
+    });
 
     const properties = data?.content || [];
 
