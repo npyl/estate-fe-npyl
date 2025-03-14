@@ -9,8 +9,12 @@ import {
 } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
-import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 import { IProperties } from "@/types/properties";
+import {
+    apiWithTranslation,
+    createLanguageAwareHook as la,
+    createRemoveTabAwareHook as rt,
+} from "./_util";
 
 export interface BulkEditRequest {
     customerIds: number[];
@@ -203,9 +207,7 @@ export const {
     useLazyFindByEmailQuery,
     useSearchCustomerQuery,
     useCreateOrUpdateCustomerMutation,
-    useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
-    useBulkDeleteCustomersMutation,
     useGetCustomerLabelsQuery,
     useLazyGetCustomerByIdQuery,
 
@@ -220,3 +222,10 @@ const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);
 const useSuggestForCustomerQuery = la(customers.useSuggestForCustomerQuery);
 
 export { useGetCustomerByIdQuery, useSuggestForCustomerQuery };
+
+const useDeleteCustomerMutation = rt(customers.useDeleteCustomerMutation);
+const useBulkDeleteCustomersMutation = rt(
+    customers.useBulkDeleteCustomersMutation
+);
+
+export { useDeleteCustomerMutation, useBulkDeleteCustomersMutation };

@@ -10,6 +10,12 @@ import ShareButton from "./Share";
 const BulkEdit = dynamic(() => import("./(BulkEdit)"));
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 
+// --------------------------------------------------------------------------------
+
+const getTabPath = (id: number) => `/customer/${id}`;
+
+// --------------------------------------------------------------------------------
+
 interface ToolbarProps {
     selectedRows: number[];
 }
@@ -24,7 +30,11 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
     const [bulkEdit, { isLoading: isEditing }] = useBulkEditCustomersMutation();
 
     const handleBulkDelete = useCallback(
-        () => bulkDelete(selectedRows),
+        () =>
+            bulkDelete({
+                tabPaths: selectedRows.map(getTabPath),
+                props: selectedRows,
+            }),
         [selectedRows]
     );
 
