@@ -11,7 +11,7 @@ import Pagination from "@/components/Pagination/client";
 import { useRouter } from "next/router";
 import { toNumberSafe } from "@/utils/toNumber";
 
-const pageSize = 5;
+const PAGE_SIZE = 5;
 
 const MatchingPropertiesSection = () => {
     const { t } = useTranslation();
@@ -22,9 +22,12 @@ const MatchingPropertiesSection = () => {
     const { customerId } = router.query;
     const iCustomerId = toNumberSafe(customerId);
 
-    const { data, isLoading } = useSuggestForCustomerQuery(iCustomerId, {
-        skip: iCustomerId === -1,
-    });
+    const { data, isLoading } = useSuggestForCustomerQuery(
+        { customerId: iCustomerId, page: pagination.page, pageSize: PAGE_SIZE },
+        {
+            skip: iCustomerId === -1,
+        }
+    );
 
     const properties = data?.content || [];
 
@@ -39,7 +42,7 @@ const MatchingPropertiesSection = () => {
             <Pagination
                 {...pagination}
                 isLoading={isLoading}
-                pageSize={pageSize}
+                pageSize={PAGE_SIZE}
                 Container={Grid}
                 ContainerProps={{
                     container: true,
@@ -65,11 +68,11 @@ const MatchingPropertiesSection = () => {
                 loading={isLoading}
                 // ...
                 rows={properties}
-                totalRows={properties.length ?? pageSize}
+                totalRows={properties.length ?? PAGE_SIZE}
                 // ...
                 paginationMode="client"
                 page={pagination.page}
-                pageSize={pageSize}
+                pageSize={PAGE_SIZE}
                 onPaginationModelChange={(m) =>
                     pagination.onChange(null, m.page)
                 }

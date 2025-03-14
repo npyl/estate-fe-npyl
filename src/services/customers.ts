@@ -35,6 +35,12 @@ interface ICreateCustomerFromStayUpdatedReq {
     body: ICustomerPOST;
 }
 
+interface SuggestPropertiesReq {
+    page: number;
+    pageSize: number;
+    customerId: number;
+}
+
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
 const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
 const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
@@ -153,12 +159,13 @@ export const customers = apiWithTranslation({
             invalidatesTags: ["Customers"],
         }),
 
-        suggestForCustomer: builder.query<IPage<IProperties>, number>({
-            query: (customerId) => ({
+        suggestForCustomer: builder.query<
+            IPage<IProperties>,
+            SuggestPropertiesReq
+        >({
+            query: (params) => ({
                 url: `${propertiesBaseUrl}/customerSuggest`,
-                params: {
-                    customerId,
-                },
+                params,
             }),
             providesTags: ["SuggestedProperties"],
         }),
