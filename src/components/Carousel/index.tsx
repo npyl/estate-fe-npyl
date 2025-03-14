@@ -15,7 +15,7 @@ import CarouselArrowIndex from "./CarouselArrowIndex";
 import { ImageRatio, LabeledImage } from "src/components/image";
 import ICarouselImage from "./types";
 import NoImageIcon from "@/assets/icons/no-image";
-import WrapperWithRatio from "../image/WrapperWithRatio";
+import WrapperWithRatio from "@/components/image/Image/WrapperWithRatio";
 
 const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
     color: theme.palette.neutral?.[100],

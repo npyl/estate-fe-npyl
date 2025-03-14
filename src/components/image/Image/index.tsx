@@ -1,4 +1,4 @@
-import { ImageProps } from "./types";
+import { ImageProps } from "@/components/image/types";
 import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
 import NoImageIcon from "@/assets/icons/no-image";
 import WrapperWithRatio from "./WrapperWithRatio";
