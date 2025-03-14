@@ -42,10 +42,7 @@ const shouldShow0 =
     ({ from, to, editor }: ShouldShowProps) =>
         isRange(from, to) && !isLink(editor) && !isInViewport(menubar);
 
-const shouldShow1 =
-    (menubar: HTMLDivElement) =>
-    ({ editor }: ShouldShowProps) =>
-        isLink(editor) && !isInViewport(menubar);
+const shouldShow1 = ({ editor }: ShouldShowProps) => isLink(editor);
 
 // --------------------------------------------------------------------
 
@@ -66,8 +63,8 @@ const BubbleMenu: FC<BubbleMenuProps> = ({ menubar }) => (
             />
         </Loader>
 
-        <Loader pluginKey="LinkMenu" shouldShow={shouldShow1(menubar)}>
-            <Link bubble />
+        <Loader pluginKey="LinkMenu" shouldShow={shouldShow1}>
+            <Link bubble menubar={isInViewport(menubar)} />
         </Loader>
     </>
 );

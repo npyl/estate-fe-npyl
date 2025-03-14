@@ -22,8 +22,8 @@ const OpenHrefButton = () => {
     if (!href) return null;
 
     return (
-        <IconButton onClick={onOpenHref}>
-            <OpenInNewIcon />
+        <IconButton size="small" onClick={onOpenHref}>
+            <OpenInNewIcon fontSize="small" />
         </IconButton>
     );
 };
@@ -51,7 +51,7 @@ const LinkButton = forwardRef<
     }, [editor?.state?.selection]);
 
     return (
-        <IconButton ref={ref} disabled={notRange} {...props}>
+        <IconButton ref={ref} disabled={notRange} size="small" {...props}>
             <InsertLinkIcon />
         </IconButton>
     );
@@ -60,10 +60,11 @@ const LinkButton = forwardRef<
 // ------------------------------------------------------------------
 
 interface LinkProps {
-    bubble?: boolean;
+    bubble?: boolean; // are we inside bubble menu?
+    menubar?: boolean; // main menubar visible?
 }
 
-const Link: FC<LinkProps> = ({ bubble = false }) => {
+const Link: FC<LinkProps> = ({ menubar = false, bubble = false }) => {
     const [isOpen, openPopover, closePopover] = useDialog();
     const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -76,7 +77,9 @@ const Link: FC<LinkProps> = ({ bubble = false }) => {
             // ...
             sx={getBubbleSx(bubble)}
         >
-            <LinkButton ref={anchorRef} onClick={openPopover} />
+            {!menubar ? (
+                <LinkButton ref={anchorRef} onClick={openPopover} />
+            ) : null}
 
             {bubble ? <OpenHrefButton /> : null}
 

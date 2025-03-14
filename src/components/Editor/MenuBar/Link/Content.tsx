@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useEditorContext } from "../../context";
 import { debuglog } from "util";
+import DoneIcon from "@mui/icons-material/Done";
 
 const Content = () => {
     const { t } = useTranslation();
@@ -56,7 +57,7 @@ const Content = () => {
             />
 
             <Button disabled={!href} variant="contained" onClick={onClick}>
-                Ok
+                <DoneIcon />
             </Button>
         </Stack>
     );
