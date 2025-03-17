@@ -1,7 +1,6 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
-    IPropertiesPOST,
     IPropertyCodeRes,
     IPropertyFilter,
     IPropertyFilterCounters,
@@ -43,10 +42,6 @@ export interface BulkEditRequest {
 interface ICreatePropertyParams {
     parentCategory: string;
     category: string;
-}
-interface IEditPropertyProps {
-    id: number;
-    body: IPropertiesPOST;
 }
 
 interface IPropertyFilterParams {
@@ -147,14 +142,6 @@ export const properties = apiWithTranslation({
         }),
 
         // mutations
-        editProperty: builder.mutation<number, IEditPropertyProps>({
-            query: ({ body, id }) => ({
-                url: `/edit/${id}`,
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Properties", "PropertyById"],
-        }),
         createProperty: builder.mutation<
             JustData<number>,
             ICreatePropertyParams
@@ -412,7 +399,6 @@ export const {
     useGetPropertyLocationMarkersQuery,
 
     // mutations
-    useEditPropertyMutation,
     useCreatePropertyMutation,
     useClonePropertyMutation,
     useSuggestForPropertyQuery,

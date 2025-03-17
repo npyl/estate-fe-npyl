@@ -415,6 +415,11 @@ export interface IPropertiesPOST {
     features: IPropertyFeatures;
 }
 
+interface IPropertyReq extends IPropertiesPOST {
+    id?: number;
+    generate: boolean;
+}
+
 export interface IProperties {
     code: string;
     rentalStart: string;
@@ -496,4 +501,4 @@ interface IPropertyCodeRes {
     parentCategory: ParentCategory;
 }
 
-export type { IPropertyCodeRes, IPropertyFilterExtras };
+export type { IPropertyCodeRes, IPropertyFilterExtras, IPropertyReq };
