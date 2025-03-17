@@ -15,12 +15,12 @@ import { TranslationType } from "src/types/translation";
 import Rent from "../../_general/Rent";
 import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 import { useGetPropertyByIdQuery } from "@/services/properties";
-import ManagerSelect from "./ManagerSelect";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
 import RHFCode from "../../_general/RHFCode";
 import RHFKeyCode from "../../_general/RHFKeyCode";
 import OwnerSelect from "../../_shared/OwnerSelect";
+import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
 
 const getCHECKBOXES = (t: TranslationType) => [
     { name: "debatablePrice", label: t("Debatable Price") },
@@ -102,7 +102,7 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <ManagerSelect />
+                    <RHFManagerAutocomplete name="managerId" />
                 </Grid>
 
                 <OwnerSelect />

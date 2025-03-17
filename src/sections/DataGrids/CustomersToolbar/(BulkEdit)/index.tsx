@@ -32,12 +32,6 @@ const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
         []
     );
 
-    const currentState: StateType = {
-        managerId,
-        labels,
-        enableEmails,
-    };
-
     const changed = useMemo(() => {
         const changedFields: Partial<StateType> = {};
 

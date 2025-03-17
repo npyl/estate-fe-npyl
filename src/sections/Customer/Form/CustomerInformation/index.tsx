@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
 import { useGlobals } from "src/hooks/useGlobals";
-import { useAllUsersQuery } from "src/services/user";
 import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
@@ -15,7 +14,6 @@ const CustomerInformation = () => {
 
     const { customerId } = router.query;
     const enums = useGlobals();
-    const managers = useAllUsersQuery().data || [];
     const leadSource = useWatch({ name: "leadSource" });
 
     const nationalitiesEnum = enums?.customer?.nationality || [];
@@ -25,13 +23,12 @@ const CustomerInformation = () => {
         () =>
             getFIELDS(
                 t,
-                managers,
                 nationalitiesEnum,
                 leadSourceEnum,
                 leadSource,
                 customerId as string
             ),
-        [t, managers, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
+        [t, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
     );
 
     return (

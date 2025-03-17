@@ -22,6 +22,7 @@ import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
 import Select from "@/components/hook-form/Select";
 import { useTranslation } from "react-i18next";
 import StayUpdated from "./StayUpdated";
+import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -64,7 +65,6 @@ const Rating = () => {
 
 const getFIELDS = (
     t: TranslationType,
-    managers: IUser[],
     nationalitiesEnum: KeyValue<string>[],
     leadSourceEnum: KeyValue<string>[],
     leadSource?: LeadSource,
@@ -79,17 +79,7 @@ const getFIELDS = (
         name="afm"
         label={t("VAT")}
     />,
-    <FormControl fullWidth variant="outlined">
-        <InputLabel>{t("Managed By")}</InputLabel>
-        <RHFSelect isEnum name="managedBy" label={t("Managed By")}>
-            <MenuItem value="">{t("Not selected")}</MenuItem>
-            {managers?.map(({ id, firstName, lastName }, i) => (
-                <MenuItem key={i} value={id}>
-                    {`${firstName} ${lastName}`}
-                </MenuItem>
-            ))}
-        </RHFSelect>
-    </FormControl>,
+    <RHFManagerAutocomplete name="managedBy" />,
     <RHFTextField fullWidth name="mobilePhone" label={t("Mobile Phone")} />,
     <RHFTextField fullWidth name="homePhone" label={t("Home Phone")} />,
     <RHFTextField fullWidth name="fax" label={t("Fax")} />,
