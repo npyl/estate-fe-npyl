@@ -77,11 +77,6 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
     const assignee = c.assignees?.[0];
     const isCompleted = c.completed;
 
-    const columnName =
-        c.columnName ||
-        columns?.find((col) => col.id === c.column)?.name ||
-        `Column ${c.column}`;
-
     const formatDate = (timestamp: string) => {
         const date = new Date(timestamp);
 

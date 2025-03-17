@@ -19,6 +19,7 @@ const IKanbanCardRes2Req = (
         customers,
         assignees,
         event,
+        columnId,
     } = task || { assignee: {} };
 
     return {
@@ -31,7 +32,7 @@ const IKanbanCardRes2Req = (
         properties: properties?.map(getId) || [],
         customers: customers?.map(getId) || [],
         userIds: assignees?.map(getId) || [],
-        columnId: -1,
+        columnId: columnId ?? -1,
         event: event || "",
         withCalendar: Boolean(event),
         labels: [],
