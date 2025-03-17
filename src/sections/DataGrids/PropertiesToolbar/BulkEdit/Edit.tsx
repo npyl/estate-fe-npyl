@@ -1,8 +1,7 @@
 import { Autocomplete, MenuItem } from "@mui/material";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAllCustomersQuery } from "src/services/customers";
-import { useAllUsersQuery } from "src/services/user";
 import {
     StyledOnlyNumbersInput,
     StyledTextField,
@@ -11,6 +10,8 @@ import {
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";
+import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import { toNumberSafe } from "@/utils/toNumber";
 
 interface Fullnames {
     [key: string]: string;
@@ -19,39 +20,16 @@ interface Fullnames {
 export const EditManager = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
-    const usersData = useAllUsersQuery().data || [];
-
-    const fullnames: Fullnames = useMemo(
-        () =>
-            usersData
-                ?.filter((manager) => manager.firstName && manager.lastName) // filter nulls
-                .reduce((acc, manager) => {
-                    const fullname = `${manager.firstName} ${manager.lastName}`;
-                    return { ...acc, [fullname]: `${manager.id}` };
-                }, {}),
-        [usersData]
-    );
-
-    const autocompleteChange = (_event: any, value: string | null) => {
-        if (value === null) return;
-        setData(fullnameToId(value) || "");
-    };
-
-    const fullnameToId = (fullname: string) => fullnames[fullname];
-    const idToFullname = (id: string) =>
-        Object.keys(fullnames).find((key) => fullnames[key] === id) || "";
+    const iValue = toNumberSafe(data);
+    const onChange = useCallback((v: number) => {
+        setData(v.toString());
+    }, []);
 
     const handleDisable = () => setData("");
 
     return (
         <DefaultOrEdit label={t("Manager")} onDisable={handleDisable}>
-            <Autocomplete
-                disablePortal
-                value={idToFullname(data) || ""}
-                onChange={autocompleteChange}
-                options={Object.keys(fullnames)}
-                renderInput={(params) => <StyledTextField {...params} />}
-            />
+            <ManagerAutocomplete value={iValue} onChange={onChange} />
         </DefaultOrEdit>
     );
 };
