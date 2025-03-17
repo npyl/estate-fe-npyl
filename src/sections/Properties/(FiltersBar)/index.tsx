@@ -31,6 +31,8 @@ import { useDispatch } from "react-redux";
 import { useFilterPropertiesQuery } from "@/services/properties";
 const FilterMore = dynamic(() => import("./FilterMore"));
 
+const PAGE_SIZE = 25;
+
 type viewOptionsType = {
     id: optionType;
     icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
@@ -67,7 +69,7 @@ const FilterMoreWrap = () => {
     const { data } = useFilterPropertiesQuery({
         filter: filters,
         page: 0,
-        pageSize: 1, // filters only one property just to get the totalProperties from the data
+        pageSize: PAGE_SIZE, // filters only one property just to get the totalProperties from the data
         sortBy: "modifiedAt",
         direction: "DESC",
     });

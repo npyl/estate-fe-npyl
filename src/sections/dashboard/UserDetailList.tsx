@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
+import Link from "@/components/Link";
 
 interface TasksCountProps {
     count: number;
@@ -16,26 +17,21 @@ interface TasksCountProps {
 
 const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => {
     const { t } = useTranslation();
-    const router = useRouter();
-
-    const handleRedirectTasks = () => {
-        router.push({
-            pathname: "/tasks",
-            query: { assignee },
-        });
-    };
-
     return (
-        <Typography
-            color="info.main"
-            bgcolor={(theme) => alpha(theme.palette.info.main, 0.3)}
-            borderRadius="16px"
-            px={1}
-            sx={{ cursor: "pointer", "&:hover": { opacity: 0.8 } }}
-            onClick={handleRedirectTasks}
-        >
-            {count} {t("_tasks_lowercase")}
-        </Typography>
+        <Link href={`/tasks?assignee=${assignee}`} passHref>
+            <Typography
+                color="info.main"
+                bgcolor={(theme) => alpha(theme.palette.info.main, 0.3)}
+                borderRadius="16px"
+                px={1}
+                sx={{
+                    cursor: "pointer",
+                    "&:hover": { opacity: 0.8 },
+                }}
+            >
+                {count} {t("_tasks_lowercase")}
+            </Typography>
+        </Link>
     );
 };
 
@@ -92,7 +88,6 @@ const PropertiesProgress: FC<PropertiesProgressProps> = ({
         </Stack>
     );
 };
-
 interface UserProps {
     u: IUserDetails;
 }

@@ -8,7 +8,8 @@ interface SearchHistoryItem {
 // Get search history from local storage
 const getSearchHistory = (): SearchHistoryItem[] => {
     const history = localStorage.getItem(SEARCH_HISTORY_KEY);
-    return history ? JSON.parse(history) : [];
+    const parsed = history ? JSON.parseSafe(history) : [];
+    return parsed ?? [];
 };
 
 const addSearchHistory = (searchTerm: string) => {

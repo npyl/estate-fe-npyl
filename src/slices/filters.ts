@@ -14,6 +14,7 @@ interface IFilterProps {
 const initialState: IFilterProps = {
     filters: {
         locationSearch: undefined,
+        managerId: undefined,
         parentCategories: [],
         categories: [],
         labels: [],

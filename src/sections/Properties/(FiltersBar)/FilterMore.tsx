@@ -35,7 +35,6 @@ export default function FilterMore({ onClose, totalProperties }: Props) {
 
     const clearAll = () => {
         dispatch(resetState());
-        dispatch(setManagerId(undefined));
 
         // Remove 'assignee' from URL  if exists
         const newQuery = { ...router.query };
