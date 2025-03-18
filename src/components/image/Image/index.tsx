@@ -9,9 +9,9 @@
 //  See https://www.notion.so/Images-226c376acb3445dfb7e7b0bed03e1f8e for more info
 //
 
-import { ImageProps, ImageRatio } from "@/components/image/types";
+import { ImageProps } from "@/components/image/types";
 import BaseImage from "./BaseImage";
-import { FC, useLayoutEffect, useRef, useState } from "react";
+import { FC, SyntheticEvent, useCallback } from "react";
 
 const epsilon = 0.01; // floating-point imprecision
 
@@ -21,15 +21,11 @@ const isCloseToRatio = (actual: number, expected: number) =>
 interface SmartImageProps extends Omit<ImageProps, "size"> {}
 
 const SmartImage: FC<SmartImageProps> = ({ src, ref: _, ...props }) => {
-    const [ratio, setRatio] = useState<ImageRatio>("4/3");
+    const onLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+        const el = e.currentTarget;
+        if (!el || !el.style) return;
 
-    const imageRef = useRef<HTMLImageElement>(null);
-
-    useLayoutEffect(() => {
-        if (!imageRef.current || !imageRef.current.style) return;
-
-        const aspectRatio =
-            imageRef.current.naturalWidth / imageRef.current.naturalHeight;
+        const aspectRatio = el.naturalWidth / el.naturalHeight;
 
         // Horizontal (2048x1365)
         if (isCloseToRatio(aspectRatio, 2048 / 1365)) {
@@ -38,20 +34,18 @@ const SmartImage: FC<SmartImageProps> = ({ src, ref: _, ...props }) => {
 
         // Vertical (1365x2048)
         if (isCloseToRatio(aspectRatio, 1365 / 2048)) {
-            setRatio("1/1");
-            imageRef.current.style.objectFit = "contain";
+            el.style.objectFit = "contain";
             return;
         }
 
         // Drone (2048x1152)
         if (isCloseToRatio(aspectRatio, 2048 / 1152)) {
-            setRatio("1/1");
-            imageRef.current.style.objectFit = "contain";
+            el.style.objectFit = "contain";
             return;
         }
     }, []);
 
-    return <BaseImage ref={imageRef} src={src} ratio={ratio} {...props} />;
+    return <BaseImage onLoad={onLoad} src={src} ratio="4/3" {...props} />;
 };
 
 export type { SmartImageProps };

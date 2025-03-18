@@ -1,40 +1,15 @@
-import {
-    ForwardedRef,
-    forwardRef,
-    MouseEvent,
-    useImperativeHandle,
-    useRef,
-} from "react";
+import { forwardRef, MouseEvent } from "react";
 import { Stack, StackProps } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
 import { TCalendarEvent } from "../../types";
-
-// ------------------------------------------------------------------------------------
-
-/**
- * This hook makes allows us to use a local ref and forward it as the `ref` of forwardRef()
- *
- * @param ref a forwarded ref coming from forwardRef()
- * @param initialValue initial value for local ref object (e.g. usually null)
- * @returns local ref object
- */
-const useForwardedLocalRef = <T extends HTMLElement = HTMLElement>(
-    ref: ForwardedRef<T>,
-    initialValue: T | null = null
-) => {
-    const localRef = useRef<T>(initialValue);
-
-    useImperativeHandle(ref, () => localRef.current!);
-
-    return localRef;
-};
+import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 
 // -------------------------------------------------------------------------------------
 
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
-export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
+interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
     overlapCount: number;
     onDragEnd?: (e: TCalendarEvent, startDate: string, endDate: string) => void;
@@ -42,7 +17,7 @@ export interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
     ({ event, overlapCount, sx, onClick, onDragEnd, ...props }, ref) => {
-        const elementRef = useForwardedLocalRef<HTMLDivElement>(ref);
+        const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
 
         const { cellsRef } = useResponsiveCellPositions();
 
@@ -79,4 +54,5 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
     }
 );
 
+export type { DraggableStackProps };
 export default DraggableStack;

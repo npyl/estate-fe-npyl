@@ -111,30 +111,20 @@ export const PropertySearchItem = ({
                 minHeight: isMobile ? "400px" : "195px",
             }}
         >
-            {" "}
-            <Box
-                sx={{
-                    width: isMobile ? 420 : 420,
-                    height: isMobile ? 220 : 175,
-                    borderColor: "1px solid red",
-                    borderRadius: 1,
-                    overflow: "hidden",
-                }}
+            <Stack
+                width={isMobile ? 420 : 420}
+                height={isMobile ? 220 : 175}
+                borderRadius={1}
+                overflow="hidden"
+                justifyContent="center"
+                alignItems="center"
             >
                 {option?.propertyImage ? (
-                    <Image
-                        padding={0}
-                        sx={{
-                            objectFit: "cover",
-                            width: "100%",
-                            height: "100%",
-                        }}
-                        src={option.propertyImage}
-                    />
+                    <Image src={option.propertyImage} />
                 ) : (
                     <PreviewImage padding={0} sx={{ borderRadius: 1 }} />
                 )}
-            </Box>
+            </Stack>
             <Stack direction={"column"} width="100%">
                 <Grid
                     container

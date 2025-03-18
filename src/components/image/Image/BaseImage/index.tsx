@@ -3,8 +3,10 @@ import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
 import NoImageIcon from "@/assets/icons/no-image";
 import WrapperWithRatio from "./WrapperWithRatio";
 
-const Image = forwardRef<HTMLImageElement, ImageProps>(
-    ({ alt = "", src = "", imgStyle, ...props }, ref) => {
+// --------------------------------------------------------------------------------
+
+const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
+    ({ alt = "", src = "", imgStyle, onLoad, ...props }, ref) => {
         const fallbackRef = useRef<SVGSVGElement>(null);
 
         const handleError = useCallback(
@@ -18,19 +20,21 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
 
         const handleLoad = useCallback(
             (e: SyntheticEvent<HTMLImageElement>) => {
+                onLoad?.(e);
+
                 e.currentTarget.style.display = "block";
                 e.currentTarget.style.visibility = "visible";
             },
-            []
+            [onLoad]
         );
 
         return (
             <WrapperWithRatio {...props}>
                 <NoImageIcon
+                    ref={fallbackRef}
                     height="100%"
                     width="100%"
                     style={{ display: "none", padding: "10px", ...imgStyle }}
-                    ref={fallbackRef}
                 />
 
                 <img
@@ -53,6 +57,6 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
     }
 );
 
-Image.displayName = "Image";
+BaseImage.displayName = "Image";
 
-export default Image;
+export default BaseImage;

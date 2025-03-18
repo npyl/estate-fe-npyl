@@ -2,6 +2,14 @@ import Box from "@mui/material/Box";
 import getRatio from "./getRatio";
 import { WrapperWithRatioProps } from "../../types";
 import { FC } from "react";
+import { Theme } from "@mui/material";
+
+// -------------------------------------------------------------------
+
+const getImageBackground = ({ palette: { mode } }: Theme) =>
+    mode === "light" ? "grey.100" : "neutral.800";
+
+// -------------------------------------------------------------------
 
 const WrapperWithRatio: FC<WrapperWithRatioProps> = ({
     ratio,
@@ -20,6 +28,11 @@ const WrapperWithRatio: FC<WrapperWithRatioProps> = ({
             overflow: "hidden",
             position: "relative",
             pt: getRatio(ratio),
+
+            ".PPImage-img": {
+                bgcolor: getImageBackground,
+            },
+
             ...containerSx,
         }}
     >
