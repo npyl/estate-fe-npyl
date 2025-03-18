@@ -77,7 +77,7 @@ function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
 
     return (
         <Stack width={1} height={1} alignItems="center" justifyContent="center">
-            <Typography fontSize="small" textAlign="center" whiteSpace="wrap">
+            <Typography fontSize="small" textAlign="left" whiteSpace="wrap">
                 {address}
             </Typography>
         </Stack>
@@ -97,7 +97,12 @@ function StatusColor(params: GridCellParams) {
     const color = getPropertyStatusColor(statusForColor);
 
     return (
-        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+        <Stack
+            width={1}
+            height={1}
+            justifyContent="center"
+            alignItems="flex-start"
+        >
             <Typography
                 bgcolor={color}
                 color="white"
@@ -171,7 +176,8 @@ const RenderCategoryCell = (params: GridCellParams) => {
     return (
         <Stack width={1} height={1} justifyContent="center" alignItems="center">
             <Typography
-                textAlign="center"
+                textAlign="left"
+                alignSelf="flex-start"
                 whiteSpace="normal"
                 fontSize="small"
                 sx={{
@@ -193,7 +199,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "propertyImage",
         headerName: t("Thumbnail") as string,
         align: "center",
-        headerAlign: "center",
+        headerAlign: "left",
         renderCell: RenderImage,
         flex: 1.2,
     },
@@ -216,15 +222,15 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
     {
         field: "category",
         align: "center",
-        headerAlign: "center",
+        headerAlign: "left",
         headerName: t("Category") as string,
         renderCell: RenderCategoryCell,
         flex: 1,
     },
     {
         field: "price",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("Price") as string,
         renderCell: (params: GridCellParams) => {
             const formattedPrice = formatNumberWithPeriod(params.value);
@@ -235,34 +241,34 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
     },
     {
         field: "state",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("State") as string,
         renderCell: StatusColor,
         flex: 1,
     },
     {
         field: "area",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("Area") as string,
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
-        flex: 0.7,
+        flex: 0.8,
     },
     {
         field: "labels",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
-        flex: 1.3,
+        flex: 1,
     },
     {
         field: "location",
-        headerAlign: "center",
-        align: "center",
+        headerAlign: "left",
+        align: "left",
         headerName: t("Location") as string,
         renderCell: RenderLocation,
         flex: 1,

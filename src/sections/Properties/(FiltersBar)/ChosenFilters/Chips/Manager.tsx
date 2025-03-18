@@ -6,9 +6,12 @@ import { useSelector } from "react-redux";
 import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 const ManagerChip = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
+
     const { t } = useTranslation();
 
     const userId = useSelector(selectManagerId);
@@ -21,7 +24,19 @@ const ManagerChip = () => {
         return `${u.firstName} ${u.lastName}`;
     }, [userId, users]);
 
-    const handleClear = () => dispatch(deleteFilter("managerId"));
+    const handleClear = () => {
+        dispatch(deleteFilter("managerId"));
+
+        // Remove 'assignee' from the URL if exists
+        const newQuery = { ...router.query };
+        delete newQuery.assignee;
+
+        router.replace(
+            { pathname: router.pathname, query: newQuery },
+            undefined,
+            { shallow: true } //prevent unnecessary page reload
+        );
+    };
 
     return (
         <Chip

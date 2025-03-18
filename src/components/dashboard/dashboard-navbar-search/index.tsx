@@ -88,7 +88,6 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
 
     const handleChangeCategory = (event: any) => {
         setSearchCategory(event.target.value as SearchCategory);
-        setSearchText("");
     };
 
     const handleKeyDown = (event: any) => {
@@ -115,7 +114,8 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
     }, []);
 
     const handleUpdateSearchHistory = useCallback(
-        (h: string[]) => historyRef.current?.setSearchHistory(h),
+        (h: { term: string; date: string }[]) =>
+            historyRef.current?.setSearchHistory(h),
         []
     );
 

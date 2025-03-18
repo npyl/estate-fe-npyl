@@ -55,7 +55,7 @@ export const TypeLabels = ({
             flexDirection="row"
             flexWrap="wrap"
             justifyContent="center"
-            gap={1}
+            gap={0.8}
             {...props}
         >
             {Object.entries(map).map(([type, { value, color }]) =>

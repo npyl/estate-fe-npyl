@@ -4,9 +4,11 @@ import {
     Dispatch,
     SetStateAction,
     useContext,
+    useEffect,
     useState,
 } from "react";
 import { TSorting } from "../Filters/SortBy/types";
+import { useRouter } from "next/router";
 
 type FiltersState = Omit<BoardFiltersReq, "search"> & {
     search: string; // INFO: required to avoid undefined as initial value
@@ -43,12 +45,24 @@ export const useFiltersContext = () => {
 export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
+    const router = useRouter();
+    const { isReady, query } = router;
+    const assignee = query.assignee;
+
     const [search, setSearch] = useState("");
-    const [assigneeId, setAssigneeId] = useState<number>();
+
+    const [assigneeId, setAssigneeId] = useState<number | undefined>(undefined);
+
     const [priority, setPriority] = useState<number>();
     const [labels, setLabels] = useState<number[]>([]);
 
     const [sorting, setSorting] = useState<TSorting>();
+
+    useEffect(() => {
+        if (isReady && assignee && !isNaN(Number(assignee))) {
+            setAssigneeId(Number(assignee));
+        }
+    }, [isReady, assignee]);
 
     return (
         <FiltersContext.Provider

@@ -5,6 +5,7 @@ import {
     ListItemButton,
     ListItemText,
     Stack,
+    Typography,
 } from "@mui/material";
 import {
     Dispatch,
@@ -17,21 +18,37 @@ import {
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { getSearchHistory, removeSearchHistoryItem } from "./history";
+import { format, isToday, isYesterday, isThisWeek, parseISO } from "date-fns";
+import { useTranslation } from "react-i18next";
+
+const formatHistoryDate = (dateString: string) => {
+    const date = parseISO(dateString);
+
+    if (isToday(date)) return "Today";
+    if (isYesterday(date)) return "Yesterday";
+    if (isThisWeek(date)) return format(date, "EEEE"); // Show day of the week (e.g. "Monday")
+
+    return format(date, "dd MMM yyyy"); // Default format for older dates (e.g. "12 Feb 2025")
+};
 
 interface HistoryListProps {
     onSelect: (s: string) => void;
 }
 
 export interface HistoryListRef {
-    setSearchHistory: Dispatch<SetStateAction<string[]>>;
+    setSearchHistory: Dispatch<
+        SetStateAction<{ term: string; date: string }[]>
+    >;
 }
 
 const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
     ({ onSelect }, ref) => {
-        // search history states
-        const [searchHistory, setSearchHistory] = useState<string[]>(
-            getSearchHistory()
-        );
+        const { t } = useTranslation();
+
+        // State for search history
+        const [searchHistory, setSearchHistory] = useState<
+            { term: string; date: string }[]
+        >(getSearchHistory());
 
         useImperativeHandle(
             ref,
@@ -62,9 +79,9 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
                     top: "50px", // Position below the input field
                 }}
             >
-                {searchHistory?.map((historyItem, index) => (
+                {searchHistory?.map(({ term, date }, index) => (
                     <ListItem key={index} disablePadding>
-                        <ListItemButton onClick={() => onSelect(historyItem)}>
+                        <ListItemButton onClick={() => onSelect(term)}>
                             <Stack
                                 direction="row"
                                 justifyContent="space-between"
@@ -82,49 +99,72 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
                                                 theme.palette.mode === "light"
                                                     ? theme.palette
                                                           .neutral?.[700] ||
-                                                      theme.palette.grey[700] // Fallback to grey if neutral is undefined
+                                                      theme.palette.grey[700]
                                                     : "white",
                                             width: "16px",
                                         }}
                                     />
-                                    <ListItemText
-                                        primary={historyItem}
-                                        sx={{
-                                            color: (theme) =>
-                                                theme.palette.mode === "light"
-                                                    ? theme.palette
-                                                          .neutral?.[700] ||
-                                                      theme.palette.grey[700] // Fallback to grey if neutral is undefined
-                                                    : "white",
-                                        }}
-                                    />
+                                    <Stack>
+                                        <ListItemText
+                                            primary={term}
+                                            sx={{
+                                                color: (theme) =>
+                                                    theme.palette.mode ===
+                                                    "light"
+                                                        ? theme.palette
+                                                              .neutral?.[700] ||
+                                                          theme.palette
+                                                              .grey[700]
+                                                        : "white",
+                                                flexDirection: "row",
+                                            }}
+                                        />
+                                    </Stack>
                                 </Stack>
-                                <IconButton
-                                    edge="end"
-                                    aria-label="delete"
-                                    onClick={(e) =>
-                                        handleDeleteHistoryItem(historyItem, e)
-                                    }
-                                    sx={{
-                                        borderRadius: "100%",
-                                        padding: "3px",
-
-                                        "&:hover": {
-                                            backgroundColor:
-                                                "rgba(0, 0, 0, 0.1)",
-                                            borderRadius: "100%",
-
-                                            padding: "3px",
-                                        },
-                                        mr: 0.5,
-                                    }}
+                                <Stack
+                                    direction="row"
+                                    gap={2}
+                                    alignItems="center"
                                 >
-                                    <ClearOutlinedIcon
+                                    {date && (
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: (theme) =>
+                                                    theme.palette.mode ===
+                                                    "light"
+                                                        ? theme.palette
+                                                              .grey[700]
+                                                        : "white",
+                                            }}
+                                        >
+                                            {t(formatHistoryDate(date))}
+                                        </Typography>
+                                    )}
+
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                        onClick={(e) =>
+                                            handleDeleteHistoryItem(term, e)
+                                        }
                                         sx={{
-                                            width: "16px",
+                                            borderRadius: "100%",
+                                            padding: "3px",
+                                            "&:hover": {
+                                                backgroundColor:
+                                                    "rgba(0, 0, 0, 0.1)",
+                                                borderRadius: "100%",
+                                                padding: "3px",
+                                            },
+                                            mr: 0.5,
                                         }}
-                                    />
-                                </IconButton>
+                                    >
+                                        <ClearOutlinedIcon
+                                            sx={{ width: "16px" }}
+                                        />
+                                    </IconButton>
+                                </Stack>
                             </Stack>
                         </ListItemButton>
                     </ListItem>

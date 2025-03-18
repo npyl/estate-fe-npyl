@@ -56,7 +56,7 @@ interface IPropertySearchParams {
     searchString: string;
     page: number;
     pageSize: number;
-
+    sortBy?: string;
     // INFO: narrows the search only to a specific customer's properties
     customer?: number;
 }
