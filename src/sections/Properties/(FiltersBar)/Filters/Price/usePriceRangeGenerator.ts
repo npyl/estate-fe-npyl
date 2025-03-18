@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const usePriceRangeGenerator = () => {
     const states = useSelector(selectStates);
 
-    // RENT & RENTED or (RENT or RENTED) or nothing -> 2, 1, 0 lengths, respectively
+    // (RENT & RENTED) or (RENT or RENTED) or nothing -> 2, 1, 0 lengths, respectively
     const rentLength =
         states.includes("RENT") && states.includes("RENTED")
             ? 2

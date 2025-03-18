@@ -17,18 +17,37 @@ const RENT_GENERATOR = () => {
 
 const SALE_GENERATOR = () => {
     const numbers = [];
-    for (let i = TEN_K; i <= TEN_M; i += HUNDRED_K - TEN_K) {
+
+    // 10,000 - 1,000,000 with a step of 10,000
+    for (let i = TEN_K; i <= 1 * 1000 * 1000; i += TEN_K) {
         numbers.push(i);
     }
+
+    // 1,000,000 - 3,000,000 with a step of 200,000
+    for (
+        let i = 1 * 1000 * 1000 + 200 * 1000;
+        i <= 3 * 1000 * 1000;
+        i += 200 * 1000
+    ) {
+        numbers.push(i);
+    }
+
+    // 3,000,000 - 5,000,000 with a step of 500,000
+    for (
+        let i = 3 * 1000 * 1000 + 500 * 1000;
+        i <= 5 * 1000 * 1000;
+        i += 500 * 1000
+    ) {
+        numbers.push(i);
+    }
+
     return numbers;
 };
 
 const RENT_AND_SALE_GENERATOR = () => {
-    const numbers = [...RENT_NUMBERS];
-    for (let i = TEN_K; i <= TEN_M; i += HUNDRED_K - TEN_K) {
-        numbers.push(i);
-    }
-    return numbers;
+    const sale = [...SALE_NUMBERS];
+    sale.shift();
+    return [...RENT_NUMBERS, ...sale];
 };
 
 // ---------------------------------------------------------------------------------------------
