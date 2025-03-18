@@ -12,10 +12,10 @@ const useTaskFromProperty = () => {
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
 
     const getTask = useCallback(() => {
-        const NAME = t("Task for property");
+        const NAME = t("Property");
         const TITLE = property?.descriptions?.[i18n.language]?.title || "";
 
-        const name = `${NAME} (${TITLE})`;
+        const name = `${NAME} ${property?.code || ""} (${TITLE})`;
 
         const propertyMini = {
             id: property?.id,

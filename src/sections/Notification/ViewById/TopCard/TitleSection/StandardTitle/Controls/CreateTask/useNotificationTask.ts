@@ -2,7 +2,11 @@ import { ContactNotificationExtended } from "@/types/notification";
 import { IKanbanCard } from "@/types/tasks";
 import { TranslationType } from "@/types/translation";
 import { ICustomerMini } from "@/types/customer";
-import { IPropertyForNotification } from "@/types/notification/notification";
+import {
+    IPropertyForNotification,
+    NotificationType,
+    TTourType,
+} from "@/types/notification/notification";
 import { IUser } from "@/types/user";
 import useGetNotification from "@/sections/Notification/useGetNotification";
 import { useLazyFindByEmailQuery } from "@/services/customers";
@@ -15,16 +19,21 @@ import plainTextToJSON from "@/components/Editor/util/plainText2JSON";
 
 const getDescription = (
     t: TranslationType,
+    // ...
     message: string | undefined = "",
     name: string | undefined = "",
     email: string | undefined = "",
-    mobile: string | undefined = ""
+    mobile: string | undefined = "",
+    // ...
+    tourType: TTourType | undefined
 ) => {
     const CONTACT_DETAILS = t("Contact Details");
     const FULLNAME = t("Full Name");
     const MOBILE = t("Mobile");
 
-    const raw = `${message}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
+    const TOUR_TYPE = tourType ? t(tourType) : "";
+
+    const raw = `${message}\n\n${TOUR_TYPE}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
 
     try {
         return plainTextToJSON(raw);
@@ -41,28 +50,33 @@ interface IPropertyMini {
     image: string;
 }
 
-const getName0 = (type: string) => {
+const getName0 = (type: NotificationType) => {
     switch (type) {
         case "TOUR":
-            return "Tour request for";
+            return "Tour request";
         case "REVIEW":
-            return "Review request for";
+            return "Review request";
         case "LISTING":
             return "Listing from";
         case "WORK_FOR_US":
             return "Work application by";
         case "AGREEMENT":
-            return "Agreement for";
+            return "Agreement";
+        case "STAY_UPDATED":
+            return "Stay Updated";
         default:
             return "Task";
     }
 };
 
 const getName1 = (
+    code: string | undefined,
     type: string,
     WORK_FOR_US_CASE: string,
     DEFAULT_CASE: string
 ) => {
+    if (code) return code;
+
     switch (type) {
         case "WORK_FOR_US":
         case "LISTING":
@@ -90,18 +104,20 @@ const getTaskForNotification = (
         message,
         // ...
         type,
+        tourType,
     }: ContactNotificationExtended,
     customer: ICustomerMini | undefined,
     manager: IUser | undefined
 ): Partial<IKanbanCard> => {
     const NAME_0 = t(getName0(type.key));
     const NAME_1 = getName1(
+        property?.code,
         type.key,
         customerName || "-",
         propertyTile || customerName || "-"
     );
 
-    const name = `${NAME_0} (${NAME_1})`;
+    const name = `${NAME_0} ${NAME_1}`;
 
     const description = getDescription(
         t,
@@ -109,7 +125,9 @@ const getTaskForNotification = (
         message,
         customerName,
         customerEmail,
-        customerMobile
+        customerMobile,
+        // ...
+        tourType
     );
 
     return {
