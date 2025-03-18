@@ -1,5 +1,4 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -92,15 +91,7 @@ const Form: FC<FormProps> = ({
                             >
                                 {t("Cancel")}
                             </Button>
-                            {!PersistNotice ? (
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={handleClear}
-                                >
-                                    {t("Clear")}
-                                </Button>
-                            ) : null}
+
                             <LoadingButton
                                 disabled={!isDirty}
                                 loading={isLoading && !isError}
