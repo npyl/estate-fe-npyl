@@ -9,6 +9,29 @@ import { useLazyFindByEmailQuery } from "@/services/customers";
 import { useLazyGetPropertyByCodeQuery } from "@/services/properties";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
+import plainTextToJSON from "@/components/Editor/util/plainText2JSON";
+
+// ------------------------------------------------------------------------
+
+const getDescription = (
+    t: TranslationType,
+    message: string | undefined = "",
+    name: string | undefined = "",
+    email: string | undefined = "",
+    mobile: string | undefined = ""
+) => {
+    const CONTACT_DETAILS = t("Contact Details");
+    const FULLNAME = t("Full Name");
+    const MOBILE = t("Mobile");
+
+    const raw = `${message}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
+
+    try {
+        return plainTextToJSON(raw);
+    } catch (ex) {
+        return undefined;
+    }
+};
 
 // ------------------------------------------------------------------------
 
@@ -77,15 +100,17 @@ const getTaskForNotification = (
         customerName || "-",
         propertyTile || customerName || "-"
     );
-    const CONTACT_DETAILS = t("Contact Details");
-    const FULLNAME = t("Full Name");
-    const MOBILE = t("Mobile");
 
     const name = `${NAME_0} (${NAME_1})`;
 
-    const description = customer
-        ? message
-        : `${message}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${customerName}\nEmail: \t${customerEmail}\n${MOBILE}: \t${customerMobile}`;
+    const description = getDescription(
+        t,
+        // ...
+        message,
+        customerName,
+        customerEmail,
+        customerMobile
+    );
 
     return {
         name,

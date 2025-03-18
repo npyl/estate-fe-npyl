@@ -10,7 +10,9 @@ const TaskDialog = dynamic(() =>
 );
 
 interface CreateFromResourceButtonProps {
-    taskGetter: () => Promise<IKanbanCard | undefined>;
+    taskGetter: () =>
+        | (IKanbanCard | undefined)
+        | Promise<IKanbanCard | undefined>;
 }
 
 const CreateFromResourceButton: FC<CreateFromResourceButtonProps> = ({
