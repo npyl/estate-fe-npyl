@@ -94,7 +94,7 @@ const BasicSection: React.FC<any> = () => {
                     <RHFOnlyNumbersForPrice
                         name="averageUtils"
                         label={t("Average Utils")}
-                        adornment="€/Month"
+                        adornment={t<string>("EURO_PER_MONTH")}
                         initialValue={data?.averageUtils}
                     />
                 </Grid>

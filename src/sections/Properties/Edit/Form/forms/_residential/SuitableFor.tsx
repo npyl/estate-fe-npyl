@@ -48,7 +48,7 @@ const SuitableFor: React.FC<any> = (props) => {
                 <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name="suitableFor.professionalUse"
-                        label={t("Professional use")}
+                        label={t("Professional Use")}
                     />
                 </Grid>
             </Grid>

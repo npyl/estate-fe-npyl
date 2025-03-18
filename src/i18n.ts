@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            EURO_PER_MONTH: "€/Month",
+            "Average Utils": "Average Utils",
+            "Satellite-TV": "Satellite-TV",
+
             _PPEDITOR_LINK_INVALID0_: "Please use a valid url!",
             _PPEDITOR_LINK_INVALID1_: "The url must be in format https://...",
 
@@ -1282,6 +1286,10 @@ const resources = {
     },
     el: {
         translation: {
+            EURO_PER_MONTH: "€/Μήνα",
+            "Average Utils": "Κοινόχρηστα",
+            "Satellite-TV": "Δορυφορική Τηλεόραση",
+
             _PPEDITOR_LINK_INVALID0_:
                 "Παρακαλώ χρησιμοποιήστε έγκυρο σύνδεσμο!",
             _PPEDITOR_LINK_INVALID1_:
