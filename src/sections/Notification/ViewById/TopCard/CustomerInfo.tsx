@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Chip, Stack, Typography } from "@mui/material";
+import { Chip, Stack, Typography } from "@mui/material";
 import { LocalPhone, Email } from "@mui/icons-material";
 import useGetNotification from "@/sections/Notification/useGetNotification";
 import { useTranslation } from "react-i18next";

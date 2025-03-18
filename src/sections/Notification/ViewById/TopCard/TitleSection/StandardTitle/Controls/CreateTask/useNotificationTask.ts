@@ -1,6 +1,6 @@
 import { ContactNotificationExtended } from "@/types/notification";
 import { IKanbanCard } from "@/types/tasks";
-import { TranslationType } from "@/types/translation";
+import { TLanguageType, TranslationType } from "@/types/translation";
 import { ICustomerMini } from "@/types/customer";
 import {
     IPropertyForNotification,
@@ -14,26 +14,46 @@ import { useLazyGetPropertyByCodeQuery } from "@/services/properties";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import plainTextToJSON from "@/components/Editor/util/plainText2JSON";
+import { format } from "date-fns";
 
 // ------------------------------------------------------------------------
 
+const getDate = (lang: TLanguageType, tourTime: string, tourDate: string) => {
+    if (!tourDate || !tourTime) return "";
+
+    // Format date with translation support
+    const formattedDate = format(new Date(tourDate), "d MMMM yyyy");
+
+    return `${formattedDate} ${tourTime}`;
+};
+
 const getDescription = (
     t: TranslationType,
+    lang: TLanguageType,
     // ...
     message: string | undefined = "",
     name: string | undefined = "",
     email: string | undefined = "",
     mobile: string | undefined = "",
     // ...
-    tourType: TTourType | undefined
+    tourType: TTourType | undefined,
+    tourTime: string | undefined,
+    tourDate: string | undefined
 ) => {
     const CONTACT_DETAILS = t("Contact Details");
     const FULLNAME = t("Full Name");
     const MOBILE = t("Mobile");
 
     const TOUR_TYPE = tourType ? t(tourType) : "";
+    const AT = t("at");
 
-    const raw = `${message}\n\n${TOUR_TYPE}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
+    const TOUR_DETAILS = `${TOUR_TYPE} ${AT} ${getDate(
+        lang,
+        tourTime,
+        tourDate
+    )}`;
+
+    const raw = `${message}\n\n${TOUR_DETAILS}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
 
     try {
         return plainTextToJSON(raw);
@@ -94,6 +114,7 @@ const IPropertiesToPropertyMini = ({ id, code }: IPropertyForNotification) => ({
 
 const getTaskForNotification = (
     t: TranslationType,
+    lang: TLanguageType,
     propertyTile: string | undefined,
     property: IPropertyMini | undefined,
     {
@@ -105,6 +126,9 @@ const getTaskForNotification = (
         // ...
         type,
         tourType,
+        // ...
+        tourTime,
+        tourDate,
     }: ContactNotificationExtended,
     customer: ICustomerMini | undefined,
     manager: IUser | undefined
@@ -121,13 +145,16 @@ const getTaskForNotification = (
 
     const description = getDescription(
         t,
+        lang,
         // ...
         message,
         customerName,
         customerEmail,
         customerMobile,
         // ...
-        tourType
+        tourType,
+        tourTime,
+        tourDate
     );
 
     return {
@@ -184,6 +211,7 @@ const useNotificationTask = () => {
         // TODO: this is supported by our Dialog; Probably find a better way though...
         return getTaskForNotification(
             t,
+            i18n.language,
             // ...
             propertyTitle,
             propertyMini,
