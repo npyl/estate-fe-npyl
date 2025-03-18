@@ -6,7 +6,7 @@ import {
     IconButton,
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
-import Image from "src/components/image";
+import Image from "@/components/image";
 
 interface BlueprintViewerProps {
     open: boolean;

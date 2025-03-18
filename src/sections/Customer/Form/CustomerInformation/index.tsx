@@ -1,7 +1,5 @@
 import { Grid } from "@mui/material";
-import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
-import { useAllUsersQuery } from "src/services/user";
 import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
@@ -10,13 +8,12 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import getFIELDS from "./getFields";
 
-const CustomerInformation: React.FC<any> = () => {
+const CustomerInformation = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
     const { customerId } = router.query;
     const enums = useGlobals();
-    const managers = useAllUsersQuery().data || [];
     const leadSource = useWatch({ name: "leadSource" });
 
     const nationalitiesEnum = enums?.customer?.nationality || [];
@@ -26,13 +23,12 @@ const CustomerInformation: React.FC<any> = () => {
         () =>
             getFIELDS(
                 t,
-                managers,
                 nationalitiesEnum,
                 leadSourceEnum,
                 leadSource,
                 customerId as string
             ),
-        [t, managers, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
+        [t, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
     );
 
     return (

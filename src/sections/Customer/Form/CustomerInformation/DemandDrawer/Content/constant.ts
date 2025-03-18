@@ -23,8 +23,8 @@ const EMTPY_DEMAND: IDemandPOST = {
         maxBedrooms: 0,
         minYearOfConstruction: 0,
         maxYearOfConstruction: 0,
-        minFloor: "",
-        maxFloor: "",
+        minFloor: null, // INFO: Backend works with this as unset
+        maxFloor: null, // INFO: Backend works with this as unset
     },
     priorityFeatures: {
         panoramicView: false,
@@ -68,8 +68,8 @@ const EMTPY_DEMAND: IDemandPOST = {
         withinCityPlan: false,
         loadingDock: false,
     },
-    shapes: [],
-    timeframe: "",
+    shapeList: [],
+    timeframe: null, // INFO: Backend works with this as unset
 };
 
 export { EMTPY_DEMAND };

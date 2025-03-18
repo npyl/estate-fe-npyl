@@ -1,5 +1,6 @@
 import { IPropertyFeatures } from "./features";
 import { KeyValue } from "./KeyValue";
+import { TShape } from "./shape";
 
 export interface IDemandFilters {
     minBedrooms: number;
@@ -38,8 +39,8 @@ export interface IDemandFiltersPOST {
     maxPlot: number;
     minYearOfConstruction: number;
     maxYearOfConstruction: number;
-    minFloor: string;
-    maxFloor: string;
+    minFloor: string | null;
+    maxFloor: string | null;
     states: string[];
     minPrice: number;
     maxPrice: number;
@@ -61,14 +62,14 @@ export interface IDemand {
     filters: IDemandFilters;
     priorityFeatures: IPriorityFeatures;
     timeframe: KeyValue;
-    shapes: string[]; // map shape
+    shapeList: TShape[];
 }
 
 export interface IDemandPOST {
     filters: Partial<IDemandFiltersPOST>;
     priorityFeatures: IPriorityFeatures;
-    timeframe?: string;
-    shapes: string[];
+    timeframe: string | null;
+    shapeList: TShape[];
 }
 
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";

@@ -6,7 +6,7 @@ import { sumOfChangedProperties } from "src/slices/log";
 import ChosenFiltersLogs from "./Filters/ChoosenFiltersLogs";
 import FilterActions from "./Filters/FilterActions";
 import DateSelect from "./Filters/FilterDate";
-import FilterLogManager from "./Filters/FilterManagers";
+import FilterLogManager from "./Filters/FilterManager";
 import FilterResources from "./Filters/FilterResources";
 import Search from "./Filters/Search";
 

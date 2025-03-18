@@ -13,11 +13,12 @@ interface ObjectWithId {
 
 type TMultiple = boolean;
 
-export interface AutocompleteProps<
+interface AutocompleteProps<
     T extends ObjectWithId,
-    Multiple extends TMultiple = false
+    Multiple extends boolean = false,
+    DisableClearable extends boolean = false
 > extends Omit<
-        MuiAutocompleteProps<T, Multiple, false, false>,
+        MuiAutocompleteProps<T, Multiple, DisableClearable, false>,
         "value" | "onChange" | "options"
     > {
     value?: Multiple extends true ? number[] : number; // id
@@ -72,9 +73,13 @@ const Autocomplete = <
 
 const WithRef = forwardRef(Autocomplete) as <
     T extends ObjectWithId,
-    Multiple extends TMultiple = false
+    Multiple extends TMultiple = false,
+    DisableClearable extends boolean = false
 >(
-    props: AutocompleteProps<T, Multiple> & { ref?: Ref<unknown> }
+    props: AutocompleteProps<T, Multiple, DisableClearable> & {
+        ref?: Ref<unknown>;
+    }
 ) => JSX.Element;
 
+export type { AutocompleteProps };
 export default WithRef;

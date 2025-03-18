@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
-import Image from "src/components/image";
+import Image from "@/components/image";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";

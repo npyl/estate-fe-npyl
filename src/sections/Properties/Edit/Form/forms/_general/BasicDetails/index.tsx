@@ -13,12 +13,12 @@ import {
 import Rent from "../Rent";
 import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 import { useGetPropertyByIdQuery } from "@/services/properties";
-import ManagerSelect from "./ManagerSelect";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
 import OwnerSelect from "../../_shared/OwnerSelect";
 import RHFCode from "../RHFCode";
 import RHFKeyCode from "../RHFKeyCode";
+import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
 
 const BasicSection: React.FC<any> = () => {
     const router = useRouter();
@@ -41,7 +41,7 @@ const BasicSection: React.FC<any> = () => {
                     <CategorySelect />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <ManagerSelect />
+                    <RHFManagerAutocomplete name="managerId" />
                 </Grid>
                 {/* OWNER */}
                 <OwnerSelect />
@@ -55,6 +55,7 @@ const BasicSection: React.FC<any> = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        isEnum
                         name="state"
                         label={t("State") + " *"}
                         options={stateEnum}

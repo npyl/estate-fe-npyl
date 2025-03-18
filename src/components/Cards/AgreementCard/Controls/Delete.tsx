@@ -16,9 +16,12 @@ interface DeleteDialogProps {
 const DeleteDialog: FC<DeleteDialogProps> = ({ agreementId, onClose }) => {
     const [deleteAgreement, { isLoading }] = useDeleteAgreementMutation();
     const handleDelete = useCallback(async () => {
-        await deleteAgreement(agreementId);
+        await deleteAgreement({
+            tabPaths: [`/agreements/${agreementId}`],
+            props: agreementId,
+        });
         onClose();
-    }, []);
+    }, [agreementId]);
 
     return (
         <BaseDeleteDialog

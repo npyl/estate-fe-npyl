@@ -9,7 +9,12 @@ import {
 } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
-import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import { IProperties } from "@/types/properties";
+import {
+    apiWithTranslation,
+    createLanguageAwareHook as la,
+    createRemoveTabAwareHook as rt,
+} from "./_util";
 
 export interface BulkEditRequest {
     customerIds: number[];
@@ -34,15 +39,28 @@ interface ICreateCustomerFromStayUpdatedReq {
     body: ICustomerPOST;
 }
 
+interface SuggestPropertiesReq {
+    page: number;
+    pageSize: number;
+    customerId: number;
+}
+
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
 const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
+const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
 
 export const customers = apiWithTranslation({
     reducerPath: "customers",
     baseQuery: fetchBaseQuery({
         baseUrl,
     }),
-    tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels", "Tasks"],
+    tagTypes: [
+        "Customers",
+        "CustomerById",
+        "CustomerByIdLabels",
+        "SuggestedProperties",
+        "Tasks",
+    ],
 
     endpoints: (builder) => ({
         allCustomers: builder.query<ICustomer[], void>({
@@ -103,7 +121,11 @@ export const customers = apiWithTranslation({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Customers", "CustomerById"],
+            invalidatesTags: [
+                "Customers",
+                "CustomerById",
+                "SuggestedProperties",
+            ],
         }),
 
         bulkDeleteCustomers: builder.mutation<void, number[]>({
@@ -141,6 +163,17 @@ export const customers = apiWithTranslation({
             invalidatesTags: ["Customers"],
         }),
 
+        suggestForCustomer: builder.query<
+            IPage<IProperties>,
+            SuggestPropertiesReq
+        >({
+            query: (params) => ({
+                url: `${propertiesBaseUrl}/customerSuggest`,
+                params,
+            }),
+            providesTags: ["SuggestedProperties"],
+        }),
+
         // ---------------------------------------------------
 
         getTasks: builder.query<IKanbanCardShort[], number>({
@@ -174,9 +207,7 @@ export const {
     useLazyFindByEmailQuery,
     useSearchCustomerQuery,
     useCreateOrUpdateCustomerMutation,
-    useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
-    useBulkDeleteCustomersMutation,
     useGetCustomerLabelsQuery,
     useLazyGetCustomerByIdQuery,
 
@@ -188,5 +219,13 @@ export const {
 } = customers;
 
 const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);
+const useSuggestForCustomerQuery = la(customers.useSuggestForCustomerQuery);
 
-export { useGetCustomerByIdQuery };
+export { useGetCustomerByIdQuery, useSuggestForCustomerQuery };
+
+const useDeleteCustomerMutation = rt(customers.useDeleteCustomerMutation);
+const useBulkDeleteCustomersMutation = rt(
+    customers.useBulkDeleteCustomersMutation
+);
+
+export { useDeleteCustomerMutation, useBulkDeleteCustomersMutation };

@@ -4,6 +4,33 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _PPEDITOR_LINK_INVALID0_: "Please use a valid url!",
+            _PPEDITOR_LINK_INVALID1_: "The url must be in format https://...",
+
+            Link: "Link",
+
+            Published: "Published",
+
+            Normal: "Normal",
+            Heading1: "Heading1",
+            Heading2: "Heading2",
+            Heading3: "Heading3",
+            Heading4: "Heading4",
+            Heading5: "Heading5",
+            Heading6: "Heading6",
+            BlockQuote: "BlockQuote",
+
+            Text: "Text",
+            Background: "Background",
+
+            Activities: "Activities",
+            "Animals & Nature": "Animals & Nature",
+            Flags: "Flags",
+            "Foods & Drinks": "Foods & Drinks",
+            Objects: "Objects",
+            Symbols: "Symbols",
+            "Travel Places": "Travel Places",
+
             "Translate from greek": "Translate from greek",
 
             Original: "Original",
@@ -45,7 +72,7 @@ const resources = {
 
             _PDF_NOT_GENERATED_: "Not generated",
             Fullname: "Fullname",
-            _GENERATE_CHECKBOX_: "Generate PDF",
+            _GENERATE_CHECKBOX_: "Update PDF",
 
             FIRST_NAME_ASC: "First Name (A-Z)",
             FIRST_NAME_DESC: "First Name (Z-A)",
@@ -1255,6 +1282,35 @@ const resources = {
     },
     el: {
         translation: {
+            _PPEDITOR_LINK_INVALID0_:
+                "Παρακαλώ χρησιμοποιήστε έγκυρο σύνδεσμο!",
+            _PPEDITOR_LINK_INVALID1_:
+                "Ο σύνδεσμος πρέπει ναναι στη μορφή https://...",
+
+            Link: "Σύνδεσμος",
+
+            Published: "Δημοσιευμένο",
+
+            Normal: "Κανονικό",
+            Heading1: "Κεφαλίδα1",
+            Heading2: "Κεφαλίδα2",
+            Heading3: "Κεφαλίδα3",
+            Heading4: "Κεφαλίδα4",
+            Heading5: "Κεφαλίδα5",
+            Heading6: "Κεφαλίδα6",
+            BlockQuote: "Σχόλιο",
+
+            Text: "Κείμενο",
+            Background: "Φόντο",
+
+            Activities: "Δραστηριότητες",
+            "Animals & Nature": "Ζώα και Φύση",
+            Flags: "Σημαίες",
+            "Foods & Drinks": "Φαγητά και Ποτά",
+            Objects: "Αντικείμενα",
+            Symbols: "Σύμβολα",
+            "Travel Places": "Προορισμοί Ταξιδιού",
+
             Original: "Αρχική",
             Persisted: "Προσωρινή",
             Saved: "Αποθηκευμένη",
@@ -1291,7 +1347,7 @@ const resources = {
 
             _PDF_NOT_GENERATED_: "Δεν έχει παραχθεί",
             Fullname: "Ον/μο",
-            _GENERATE_CHECKBOX_: "Παραγωγή PDF",
+            _GENERATE_CHECKBOX_: "Ενημέρωση PDF",
 
             FIRST_NAME_ASC: "Όνομα (Α-Ω)",
             FIRST_NAME_DESC: "Όνομα (Ω-Α)",

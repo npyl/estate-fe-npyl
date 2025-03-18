@@ -92,19 +92,19 @@ const FloorSlider: FC<FloorSliderProps> = ({ index }) => {
                 <Grid container direction="row" spacing={1.5}>
                     <Grid item xs={6}>
                         <Select
+                            isEnum
                             name={minName}
                             label={t("Min")}
                             options={minFloors}
-                            value={minFloor !== null ? minFloor : ""}
                             onChange={handleChangeMin}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <Select
+                            isEnum
                             name={maxName}
                             label={t("Max")}
                             options={maxFloors}
-                            value={maxFloor !== null ? maxFloor : ""}
                             onChange={handleChangeMax}
                         />
                     </Grid>

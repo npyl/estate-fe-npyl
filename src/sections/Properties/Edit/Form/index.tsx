@@ -1,4 +1,4 @@
-import usePropertyForm, { fixDropdowns, IPropertyYup } from "./hook";
+import usePropertyForm, { IPropertyYup } from "./hook";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
 import dynamic from "next/dynamic";
@@ -19,8 +19,11 @@ interface IFormProps {
     onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<boolean>;
 }
 
-function Form({ property, onSubmit }: IFormProps) {
-    const [methods, { PersistNotice }] = usePropertyForm(property);
+function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
+    const [methods, { PersistNotice }] = usePropertyForm(
+        property,
+        onSubmitSuccess
+    );
 
     const haveError = useMemo(
         () => Object.keys(methods.formState.errors).length > 0,
@@ -31,13 +34,7 @@ function Form({ property, onSubmit }: IFormProps) {
     const handleSubmit = useCallback(
         async (data: IPropertyYup) => {
             const generate = checkboxRef.current?.getGenerate() || false;
-
-            const body = {
-                ...(data as IPropertiesPOST),
-                ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
-            };
-
-            return await onSubmit(body, generate);
+            return await onSubmit(data as IPropertiesPOST, generate);
         },
         [onSubmit]
     );

@@ -54,10 +54,9 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     dateOfBirth: customer?.dateOfBirth,
     passportNumber: customer?.passportNumber || "",
 
-    // WARN: BE crashes if these are: "" (therefore I have them required)
-    nationality: customer?.nationality?.key || "",
-    preferredLanguage: customer?.preferredLanguage?.key || "",
-    leadSource: customer?.leadSource?.key || "",
+    nationality: customer?.nationality?.key || null,
+    preferredLanguage: customer?.preferredLanguage?.key || null,
+    leadSource: customer?.leadSource?.key || null,
 
     demands:
         customer?.demands && customer?.demands?.length > 0

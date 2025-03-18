@@ -1,78 +1,24 @@
-import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { selectManagerId, setManagerId } from "src/slices/filters";
-import { useAllUsersQuery } from "src/services/user";
-import { useTranslation } from "react-i18next";
-import { IUser } from "@/types/user";
 import { useSelector } from "react-redux";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
+import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
 
-interface IOption {
-    id: number;
-    label: string;
-}
-
-const getOption = ({ id, firstName, lastName }: IUser): IOption => ({
-    id,
-    label: `${firstName} ${lastName}`,
-});
-
-const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
-    option: IOption
-) => (
-    <li {...props} key={option.id}>
-        {option.label}
-    </li>
-);
-
-export default function ManagerSelect() {
+function ManagerSelect() {
     const dispatch = useDispatch();
-    const { t } = useTranslation();
-
-    const { data: options } = useAllUsersQuery(undefined, {
-        selectFromResult: ({ data }) => ({
-            data: data?.map(getOption) || [],
-        }),
-    });
 
     const managerId = useSelector(selectManagerId);
 
-    const value = useMemo(
-        () =>
-            options?.find(({ id }) => id === managerId) || {
-                // INFO: prevent uncontrolled state console error
-                id: -1,
-                label: "",
-            },
-        [options, managerId]
-    );
-
-    const handleChange = useCallback((_event: any, v: IOption | null) => {
-        if (!v) {
+    const handleChange = useCallback((id: number) => {
+        if (!id) {
             dispatch(setManagerId(undefined));
             return;
         }
 
-        dispatch(setManagerId(v.id));
+        dispatch(setManagerId(id));
     }, []);
 
-    return (
-        <Autocomplete
-            disableClearable
-            value={value}
-            onChange={handleChange}
-            options={options}
-            renderOption={RenderOption}
-            renderInput={(params) => (
-                <TextField
-                    label={t("Manager")}
-                    sx={{
-                        width: 180,
-                    }}
-                    {...params}
-                />
-            )}
-        />
-    );
+    return <ManagerAutocomplete value={managerId} onChange={handleChange} />;
 }
+
+export default ManagerSelect;

@@ -8,8 +8,10 @@ export const config = {
     runtime: "edge",
 };
 
-export default async function POST(req: NextRequest) {
+export default async function handler(req: NextRequest) {
     try {
+        if (req.method !== "POST") throw "Bad method";
+
         const { url } = (await req.json()) as IDownloadPropertyPDFReq;
         if (!url) throw new Error("Bad Url!");
 

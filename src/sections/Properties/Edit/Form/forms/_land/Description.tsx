@@ -31,6 +31,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = () => {
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Orientation")}
                         name="details.orientation"
                         options={orientation}
@@ -39,6 +40,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = () => {
 
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Accessibility")}
                         name="details.accessibility"
                         options={accessibility}
@@ -46,6 +48,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Land Use")}
                         name="details.landUse"
                         options={landUse}

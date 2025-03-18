@@ -35,6 +35,7 @@ const HeatingAndEnergy: React.FC = () => {
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         fullWidth
                         label={t("Heating Type")}
                         name="heatingAndEnergy.heatingType"
@@ -44,6 +45,7 @@ const HeatingAndEnergy: React.FC = () => {
 
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         fullWidth
                         label={t("Energy Class")}
                         name="heatingAndEnergy.energyClass"
@@ -53,6 +55,7 @@ const HeatingAndEnergy: React.FC = () => {
 
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         fullWidth
                         label={t("Heating System")}
                         name="heatingAndEnergy.heatingSystem"
@@ -62,6 +65,7 @@ const HeatingAndEnergy: React.FC = () => {
 
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         fullWidth
                         label={t("Electricity Type")}
                         name="heatingAndEnergy.electricityType"

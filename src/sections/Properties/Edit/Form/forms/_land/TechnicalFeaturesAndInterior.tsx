@@ -39,6 +39,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Inclination")}
                         name="technicalFeatures.inclination"
                         options={inclinationEnum}

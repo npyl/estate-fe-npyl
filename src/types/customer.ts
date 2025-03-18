@@ -1,5 +1,6 @@
 import { KeyValue } from "./KeyValue";
 import { IDemand, IDemandPOST } from "./demand";
+import { Enum } from "./enums";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
@@ -102,12 +103,9 @@ export interface ICustomerPOST {
     seller: boolean;
     buyer: boolean;
     fax: string;
-    nationality?: string;
     idNumber: string;
     passportNumber: string;
     dateOfBirth: string;
-    leadSource?: string;
-    preferredLanguage?: string;
     suggestedBy: string;
     location: ICustomerLocationPOST;
     ownedProperties: IProperties[];
@@ -116,6 +114,10 @@ export interface ICustomerPOST {
     notes: string[];
 
     enableEmails: boolean;
+
+    nationality: Enum<string>;
+    leadSource: Enum<string>;
+    preferredLanguage: Enum<string>;
 }
 
 export type { IDemand, ICustomerMini };

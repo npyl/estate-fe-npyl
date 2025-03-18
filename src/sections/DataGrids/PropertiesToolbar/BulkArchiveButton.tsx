@@ -4,6 +4,12 @@ import { useTranslation } from "react-i18next";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import { LoadingButton } from "@mui/lab";
 
+// ------------------------------------------------------------------------------
+
+const getTabPath = (id: number) => `/property/${id}`;
+
+// ------------------------------------------------------------------------------
+
 interface BulkArchiveButtonProps {
     selectedRows: number[];
 }
@@ -14,7 +20,11 @@ const BulkArchiveButton: FC<BulkArchiveButtonProps> = ({ selectedRows }) => {
     const [bulkArchive, { isLoading }] = useBulkDeletePropertiesMutation();
 
     const handleClick = useCallback(
-        () => bulkArchive(selectedRows),
+        () =>
+            bulkArchive({
+                props: selectedRows,
+                tabPaths: selectedRows.map(getTabPath),
+            }),
         [selectedRows]
     );
 

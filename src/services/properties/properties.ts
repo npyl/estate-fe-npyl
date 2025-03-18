@@ -1,7 +1,6 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
-    IPropertiesPOST,
     IPropertyCodeRes,
     IPropertyFilter,
     IPropertyFilterCounters,
@@ -17,8 +16,13 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
-import { apiWithTranslation, createLanguageAwareHook as la } from "../_util";
 import { IPropertyFile } from "@/types/file";
+
+import {
+    apiWithTranslation,
+    createLanguageAwareHook as la,
+    createRemoveTabAwareHook as rt,
+} from "@/services/_util";
 
 interface JustData<T> {
     data: T;
@@ -39,10 +43,6 @@ interface ICreatePropertyParams {
     parentCategory: string;
     category: string;
 }
-interface IEditPropertyProps {
-    id: number;
-    body: IPropertiesPOST;
-}
 
 interface IPropertyFilterParams {
     filter: IPropertyFilter;
@@ -60,9 +60,7 @@ interface IPropertySearchParams {
     // INFO: narrows the search only to a specific customer's properties
     customer?: number;
 }
-interface ISuggestForCustomerParams {
-    customerId: number;
-}
+
 interface ISuggestForPropertyParams {
     propertyId: number;
     page: number;
@@ -85,7 +83,6 @@ export const properties = apiWithTranslation({
         "PropertyByIdListings",
         "FilterProperties",
         "FilterCounters",
-        "SuggestedProperties",
         "SuggestedCustomers",
 
         // attributes
@@ -145,14 +142,6 @@ export const properties = apiWithTranslation({
         }),
 
         // mutations
-        editProperty: builder.mutation<number, IEditPropertyProps>({
-            query: ({ body, id }) => ({
-                url: `/edit/${id}`,
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Properties", "PropertyById"],
-        }),
         createProperty: builder.mutation<
             JustData<number>,
             ICreatePropertyParams
@@ -210,16 +199,6 @@ export const properties = apiWithTranslation({
             providesTags: ["FilterCounters"],
         }),
 
-        suggestForCustomer: builder.query<
-            IProperties[],
-            ISuggestForCustomerParams
-        >({
-            query: (params) => ({
-                url: "/customerSuggest-list",
-                params,
-            }),
-            providesTags: ["SuggestedProperties"],
-        }),
         suggestForProperty: builder.query<
             IPage<ICustomer>,
             ISuggestForPropertyParams
@@ -420,7 +399,6 @@ export const {
     useGetPropertyLocationMarkersQuery,
 
     // mutations
-    useEditPropertyMutation,
     useCreatePropertyMutation,
     useClonePropertyMutation,
     useSuggestForPropertyQuery,
@@ -447,11 +425,6 @@ export const {
     useBulkArchivePropertiesMutation,
     useBulkRestorePropertiesMutation,
 
-    useDeletePropertyMutation,
-    useDeletePermanentPropertyMutation,
-    useBulkDeletePropertiesMutation,
-    useBulkDeletePermanentPropertiesMutation,
-
     // ...
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
@@ -463,12 +436,28 @@ const useGetPropertyByIdQuery = la(properties.useGetPropertyByIdQuery);
 const useGetPropertyCardByIdQuery = la(properties.useGetPropertyCardByIdQuery);
 const useGetPropertyByCodeQuery = la(properties.useGetPropertyByCodeQuery);
 
-const useSuggestForCustomerQuery = la(properties.useSuggestForCustomerQuery);
-
 const useFilterPropertiesQuery = la(properties.useFilterPropertiesQuery);
 const useFilterArchivedQuery = la(properties.useFilterArchivedQuery);
 
 const useGetPDFQuery = la(properties.useGetPDFQuery);
+
+const useDeletePropertyMutation = rt(properties.useDeletePropertyMutation);
+const useDeletePermanentPropertyMutation = rt(
+    properties.useDeletePermanentPropertyMutation
+);
+const useBulkDeletePropertiesMutation = rt(
+    properties.useBulkDeletePropertiesMutation
+);
+const useBulkDeletePermanentPropertiesMutation = rt(
+    properties.useBulkDeletePermanentPropertiesMutation
+);
+
+export {
+    useDeletePropertyMutation,
+    useDeletePermanentPropertyMutation,
+    useBulkDeletePropertiesMutation,
+    useBulkDeletePermanentPropertiesMutation,
+};
 
 export {
     useSearchPropertyQuery,
@@ -476,8 +465,6 @@ export {
     useGetPropertyByIdQuery,
     useGetPropertyCardByIdQuery,
     useGetPropertyByCodeQuery,
-    // ...
-    useSuggestForCustomerQuery,
     // ...
     useFilterPropertiesQuery,
     useFilterArchivedQuery,

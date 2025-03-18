@@ -1,6 +1,6 @@
 import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
@@ -46,10 +46,14 @@ const ViewById = () => {
 
     const handleChange = (_: any, v: number) => setValue(v);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
-    const handleDelete = () =>
-        deleteCustomer(+customerId!).then(() => {
-            router.push("/customers");
+    const handleDelete = useCallback(async () => {
+        const res = await deleteCustomer({
+            tabPaths: [`/customer/${customerId}`],
+            props: +customerId!,
         });
+        if ("error" in res) return;
+        router.push("/customers");
+    }, [customerId]);
 
     const tabsConfig = [
         {

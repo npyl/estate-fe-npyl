@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
 
 const LIBRARY_OPTIONS = {
@@ -41,9 +41,18 @@ const useCookie = <V extends string | number | object = string>(
         remove(cookieName, OPTIONS);
     }, [cookieName, remove]);
 
-    const res = cookieName
-        ? value?.[cookieName] || fallbackValue
-        : fallbackValue;
+    const res = useMemo(() => {
+        try {
+            if (!cookieName) throw "Null cookieName";
+
+            const v = value?.[cookieName];
+            if (!v) throw "Undefined";
+
+            return v;
+        } catch (ex) {
+            return fallbackValue;
+        }
+    }, [cookieName, value]);
 
     return [res, actualSet, actualRemove] as const;
 };

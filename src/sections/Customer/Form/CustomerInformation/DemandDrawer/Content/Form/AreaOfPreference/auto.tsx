@@ -3,12 +3,13 @@
 //  A load happens when is parent (the demands drawer) becomes visible (this works with keepMounted aswell!)
 //
 
-import { IMapCoordinates, ShapeData } from "@/components/Map/types";
+import { IMapCoordinates } from "@/components/Map/types";
 import { getShapeCenter } from "@/components/Map/util";
+import { TShape } from "@/types/shape";
 import { useEffect } from "react";
 
 interface AutoCenterProps {
-    shape: ShapeData;
+    shape: TShape;
     onCenter: (l: IMapCoordinates) => void;
 }
 

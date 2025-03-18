@@ -12,10 +12,10 @@ import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 // components
 import Slick from "react-slick";
 import CarouselArrowIndex from "./CarouselArrowIndex";
-import { ImageRatio, LabeledImage } from "src/components/image";
+import { ImageRatio, LabeledImage } from "@/components/image";
 import ICarouselImage from "./types";
 import NoImageIcon from "@/assets/icons/no-image";
-import WrapperWithRatio from "../image/WrapperWithRatio";
+import WrapperWithRatio from "@/components/image/Image/BaseImage/WrapperWithRatio";
 
 const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
     color: theme.palette.neutral?.[100],

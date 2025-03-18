@@ -2,6 +2,7 @@ import { KeyValue } from "./KeyValue";
 import { ICustomer } from "./customer";
 import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
+import { Enum } from "./enums";
 import { IPropertyFeatures } from "./features";
 import {
     IPropertyBlueprint,
@@ -268,11 +269,11 @@ export interface IPropertyTechnicalFeaturesPOST {
     coverageFactor?: number;
     facadeLength?: number;
 
-    furnished?: string;
-    frameType?: string;
-    paneGlassType?: string;
-    floorType?: string;
-    inclination?: string;
+    furnished: Enum<string>;
+    frameType: Enum<string>;
+    paneGlassType: Enum<string>;
+    floorType: Enum<string>;
+    inclination: Enum<string>;
 
     windowScreens: boolean;
     fireplace: boolean;
@@ -338,10 +339,10 @@ export interface IPropertyHeatingAndEnergy {
 }
 
 export interface IPropertyHeatingAndEnergyPOST {
-    energyClass?: string;
-    heatingType?: string;
-    heatingSystem?: string;
-    electricityType?: string;
+    energyClass: Enum<string>;
+    heatingType: Enum<string>;
+    heatingSystem: Enum<string>;
+    electricityType: Enum<string>;
 
     floorHeating: boolean;
     airConditioning: boolean;
@@ -378,8 +379,10 @@ export interface IPropertiesPOST {
     availableAfter: string;
     keyCode: string;
     state?: string;
-    parentCategory?: string;
-    category?: string;
+
+    parentCategory: Enum<string>;
+    category: Enum<string>;
+
     video: string;
     descriptions: DescriptionEntryPOST[];
 
@@ -410,6 +413,11 @@ export interface IPropertiesPOST {
     details: IPropertyDetailsPOST;
     location: ILocationPOST;
     features: IPropertyFeatures;
+}
+
+interface IPropertyReq extends IPropertiesPOST {
+    id?: number;
+    generate: boolean;
 }
 
 export interface IProperties {
@@ -493,4 +501,4 @@ interface IPropertyCodeRes {
     parentCategory: ParentCategory;
 }
 
-export type { IPropertyCodeRes, IPropertyFilterExtras };
+export type { IPropertyCodeRes, IPropertyFilterExtras, IPropertyReq };

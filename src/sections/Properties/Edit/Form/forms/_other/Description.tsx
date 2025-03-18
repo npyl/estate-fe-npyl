@@ -36,6 +36,7 @@ const Description: React.FC = () => {
             <Grid container spacing={2}>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Floor")}
                         name="details.floor"
                         options={floors}
@@ -68,6 +69,7 @@ const Description: React.FC = () => {
 
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Orientation")}
                         name="details.orientation"
                         options={orientation}
@@ -75,6 +77,7 @@ const Description: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("View")}
                         name="details.viewType"
                         options={viewType}
@@ -82,6 +85,7 @@ const Description: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Zone")}
                         name="details.zoneType"
                         options={zoneType}
@@ -89,6 +93,7 @@ const Description: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Accessibility")}
                         name={"details.accessibility"}
                         options={accessibility}
@@ -96,6 +101,7 @@ const Description: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Select
+                        isEnum
                         label={t("Land Use")}
                         name={"details.landUse"}
                         options={landUse}

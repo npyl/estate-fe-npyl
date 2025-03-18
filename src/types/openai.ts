@@ -1,4 +1,5 @@
 export interface IOpenAIDetailsPOST extends Partial<IOpenAIDetails> {}
+
 export interface IOpenAIDetails {
     category: string;
     state: string;
@@ -7,14 +8,11 @@ export interface IOpenAIDetails {
     plotArea: number;
     yearOfConstruction: number;
     yearOfRenovation: number;
-    furnished: string;
     floor: string;
     layers: number;
     kitchens: number;
     bathrooms: number;
     livingrooms: number;
-    frameType: string;
-    floorType: string;
     energyClass: string;
     balconies: number;
     attic: boolean;
@@ -30,4 +28,8 @@ export interface IOpenAIDetails {
     improveOption?: string;
     oldDescription?: string;
     styling?: boolean;
+
+    frameType: string;
+    floorType: string;
+    furnished: string;
 }

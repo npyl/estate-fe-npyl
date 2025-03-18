@@ -10,6 +10,7 @@ import { ITab } from "@/types/tabs";
 type ITabState = {
     pushTab: (t: ITab) => void;
     removeTab: (identifier: string) => void;
+    removeTabs: (identifiers: string[]) => void;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
@@ -27,6 +28,7 @@ export const useTabsContext = () => {
 export type SubbarRef = {
     pushTab: (i: ITab) => void;
     removeTab: (p: string) => void;
+    removeTabs: (p: string[]) => void;
 };
 
 interface TabsProviderProps extends PropsWithChildren {
@@ -47,12 +49,18 @@ export const TabsProvider: FC<TabsProviderProps> = ({
             subbarRef?.current?.removeTab(p);
         } catch (ex) {}
     };
+    const removeTabs = (p: string[]) => {
+        try {
+            subbarRef?.current?.removeTabs(p);
+        } catch (ex) {}
+    };
 
     return (
         <TabsContext.Provider
             value={{
                 pushTab,
                 removeTab,
+                removeTabs,
             }}
             {...props}
         />

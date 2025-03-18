@@ -16,11 +16,10 @@ interface IDashboardTask {
     event: string;
     priority: number;
     uniqueCode: string;
-    createdAt: string;
-    updatedAt: string;
     reporter: IUserMini;
     commentsCount: number;
-    columnName: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface PropertiesDistribution {

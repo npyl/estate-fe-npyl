@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import useOpenAIDetails from "./useOpenAIDetails";
-import fixDropdowns from "./stupid";
 import useDialog from "@/hooks/useDialog";
 import { MenuItem } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -32,7 +31,6 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang }) => {
             const res = await generateDescription({
                 ...openAIDetails,
                 styling,
-                ...fixDropdowns(openAIDetails),
             }).unwrap();
 
             editorRef.current?.commands.setContent(res, true);

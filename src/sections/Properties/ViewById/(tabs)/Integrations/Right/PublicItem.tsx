@@ -28,10 +28,9 @@ const PublicItem = ({ label, published, onClick }: PublicItemProps) => {
                 <Typography sx={{ position: "relative", left: -7 }}>
                     {label}
                 </Typography>
-
                 <LabeledSwitch
                     checked={published}
-                    labelOn="Published"
+                    labelOn={t("Published")}
                     labelOff={t("Unpublished")}
                     onChange={onClick}
                     name="checkedA"

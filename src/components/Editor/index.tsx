@@ -4,19 +4,32 @@ import {
     EditorContentProps,
     EditorEvents,
 } from "@tiptap/react";
-import Box, { BoxProps } from "@mui/material/Box";
 import {
     CSSProperties,
     forwardRef,
     useCallback,
     useImperativeHandle,
     useMemo,
+    useRef,
 } from "react";
 import { SxProps, Theme } from "@mui/material";
+import Stack, { StackProps } from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
 import { debuglog } from "util";
+import getBorderColor, { getBorderColor2 } from "@/theme/borderColor";
 const MenuBar = dynamic(() => import("./MenuBar"));
+const BubbleMenu = dynamic(() => import("./BubbleMenu"));
+
+// ----------------------------------------------------------------------
+
+const getMenuBarSx = (editable: boolean): SxProps<Theme> => ({
+    borderBottom: editable ? "1px solid" : undefined,
+    borderBottomColor: editable ? getBorderColor2 : undefined,
+    boxShadow: ({ shadows }) => shadows[3],
+});
+
+// ----------------------------------------------------------------------
 
 type EditorRef = TEditor | null;
 
@@ -26,7 +39,7 @@ type EditorProps = Omit<
 > & {
     editable?: boolean;
 
-    containerProps?: Omit<BoxProps, "sx">;
+    containerProps?: Omit<StackProps, "sx">;
     containerSx?: SxProps<Theme>;
     tiptapStyle?: CSSProperties;
 
@@ -43,6 +56,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
             containerSx,
             tiptapStyle,
             // ...
+            children,
             ...props
         },
         ref
@@ -51,15 +65,19 @@ const Editor = forwardRef<EditorRef, EditorProps>(
 
         useImperativeHandle(ref, () => editor!, [editor]);
 
+        const menubarRef = useRef<HTMLDivElement>();
+        const setMenubarRef = useCallback(
+            (e: HTMLDivElement) => (menubarRef.current = e),
+            []
+        );
+
         return (
-            <Box
+            <Stack
                 sx={{
                     "& .tiptap": {
-                        minHeight: "100px",
-                        borderBottomRightRadius: "16px",
-                        borderBottomLeftRadius: "16px",
-                        padding: "5px",
-                        paddingLeft: "10px",
+                        minHeight: "200px",
+
+                        px: 1.5,
 
                         ...(!editable
                             ? {
@@ -82,18 +100,38 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='7']": { marginLeft: 7 },
                     "& [data-indent='8']": { marginLeft: 8 },
 
+                    // INFO: BlockQuote
+                    ".PPEditor-BlockQuote": {
+                        borderLeft: "3px solid",
+                        borderColor: getBorderColor,
+                        color: "text.secondary",
+                        marginX: 0.5,
+                        paddingLeft: 1,
+                    },
+
+                    borderRadius: 1,
+                    border: editable ? "1px solid" : undefined,
+                    borderColor: editable ? getBorderColor2 : undefined,
+
                     ...containerSx,
                 }}
                 {...containerProps}
             >
-                {editable && editor ? <MenuBar /> : undefined}
+                {editable && editor ? (
+                    <MenuBar
+                        onLoad={setMenubarRef}
+                        sx={getMenuBarSx(editable)}
+                    />
+                ) : undefined}
 
-                <EditorContent
-                    className="PPEditorContent"
-                    editor={editor}
-                    {...props}
-                />
-            </Box>
+                <EditorContent editor={editor} {...props}>
+                    {editable && editor && menubarRef.current ? (
+                        <BubbleMenu menubar={menubarRef.current} />
+                    ) : null}
+
+                    {children}
+                </EditorContent>
+            </Stack>
         );
     }
 );

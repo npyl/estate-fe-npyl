@@ -1,6 +1,6 @@
 import { Tab, TabProps, Tabs } from "@mui/material";
 import { useRouter } from "next/router";
-import { FC, Suspense, useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import {
     useClonePropertyMutation,
     useDeletePermanentPropertyMutation,
@@ -12,7 +12,6 @@ import TabPanel from "src/components/Tabs";
 import ViewHeader from "@/sections/ViewHeader";
 
 import { useTranslation } from "react-i18next";
-import { useTabsContext } from "src/contexts/tabs";
 const ConfirmationDialogBox = dynamic(
     () => import("@/sections/ConfirmationDialogBox")
 );
@@ -74,7 +73,6 @@ interface Props {
 const PropertyById: FC<Props> = ({ archived = false }) => {
     const router = useRouter();
     const { t } = useTranslation();
-    const { removeTab } = useTabsContext();
 
     const { propertyId } = router.query;
 
@@ -102,14 +100,20 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     };
 
     const handleArchive = useCallback(async () => {
-        const res = await deleteProperty(+propertyId!);
+        const res = await deleteProperty({
+            tabPaths: [`/property/${propertyId}`],
+            props: +propertyId!,
+        });
         if ("error" in res) return;
         router.push("/archived");
     }, []);
     const handleDelete = useCallback(async () => {
-        await deletePermanent(+propertyId!);
+        const res = await deletePermanent({
+            tabPaths: [`/property/${propertyId}`],
+            props: +propertyId!,
+        });
+        if ("error" in res) return;
         router.push("/property");
-        removeTab(propertyId as string);
     }, [propertyId]);
 
     return (

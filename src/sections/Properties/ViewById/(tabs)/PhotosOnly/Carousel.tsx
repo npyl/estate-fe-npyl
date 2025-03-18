@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 // @mui
 import { Box, Button, Divider, Grid, Stack, Tab, Tabs } from "@mui/material";
-import { LabeledImage } from "src/components/image";
-
+import { LabeledImage } from "@/components/image";
 import { useRouter } from "next/router";
 import { useDownloadImages } from "src/services/exports";
 import PreviewImage from "@/components/image/PreviewImage";

@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import Image from "./Image";
+import Image from "@/components/image";
 import { IPreviewImageProps } from ".";
 
 const PreviewImage = ({

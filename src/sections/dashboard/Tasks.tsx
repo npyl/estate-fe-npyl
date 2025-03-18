@@ -9,22 +9,26 @@ import Item from "../Tasks/ViewAll/List/Item";
 import { Box } from "@mui/material";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
+import { IKanbanCardShort } from "@/types/tasks";
 
 // ------------------------------------------------------------------------
+
+const IDashboardTaskToCardShort = (t: IDashboardTask): IKanbanCardShort => ({
+    ...t,
+    assignees: [],
+    attachmentsCount: 0,
+    commentsCount: t.commentsCount,
+    completed: false,
+    labels: [],
+    column: -1,
+});
 
 const getTaskRow = (onClick: (id: number) => void) => (t: IDashboardTask) =>
     (
         <Box key={t.id} position="relative" width={1}>
             <Item
                 onClick={() => onClick(t.id)}
-                c={{
-                    ...t,
-                    assignees: [],
-                    attachmentsCount: 0,
-                    commentsCount: t.commentsCount,
-                    columnName: t.columnName,
-                    completed: false,
-                }}
+                c={IDashboardTaskToCardShort(t)}
             />
 
             <Box

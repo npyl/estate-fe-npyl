@@ -23,10 +23,7 @@ import Pusher from "@/sections/Tasks/Pusher";
 
 // ------------------------------------------------------------------------------------------
 
-const getValues = (task: IKanbanCard | undefined, columnId: number) => ({
-    ...IKanbanCardRes2Req(task),
-    columnId,
-});
+const getValues = (task?: IKanbanCard) => IKanbanCardRes2Req(task);
 
 // ------------------------------------------------------------------------------------------
 
@@ -35,18 +32,17 @@ const getCookieKey = (id: number = -1) =>
 
 interface DetailsProps {
     task?: IKanbanCard;
-    columnId?: number;
     onClose: VoidFunction;
 }
 
-const Details: FC<DetailsProps> = ({ task, columnId = -1, onClose }) => {
+const Details: FC<DetailsProps> = ({ task, onClose }) => {
     const { name, uniqueCode } = task || {};
 
     const cookieKey = getCookieKey(task?.id);
     const [methods, { PersistNotice, persistChanges }] =
         useFormPersist<ICreateOrUpdateTaskReq>(cookieKey, onClose, {
             resolver: yupResolver(schema),
-            values: getValues(task, columnId),
+            values: getValues(task),
         });
 
     // INFO: flag to know whether we are editing (w/ calendar);

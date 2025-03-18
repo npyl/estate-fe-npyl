@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -15,15 +14,13 @@ const PinLock: FC<PinLockProps> = ({ locked, onToggle }) => {
     const { t } = useTranslation();
 
     return (
-        <Stack position="absolute" top={60} right={10}>
-            <Button
-                variant="contained"
-                onClick={onToggle}
-                endIcon={locked ? <LocationOffIcon /> : <LocationOnIcon />}
-            >
-                {locked ? t("Locked Pin") : t("Free Pin")}
-            </Button>
-        </Stack>
+        <Button
+            variant="contained"
+            onClick={onToggle}
+            endIcon={locked ? <LocationOffIcon /> : <LocationOnIcon />}
+        >
+            {locked ? t("Locked Pin") : t("Free Pin")}
+        </Button>
     );
 };
 

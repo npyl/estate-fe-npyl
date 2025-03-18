@@ -44,47 +44,9 @@ const getLoginSchema = (
         state: Yup.string().required(),
     });
 
-const getEnumKey = (key?: string, fix?: boolean) =>
-    key || (fix ? undefined : "");
-const notNot = (bool?: boolean) => !!bool;
+const getEnumKey = (key?: string, fix?: boolean) => key || null;
 
-export const fixDropdowns = (property?: IPropertiesPOST) => ({
-    category: getEnumKey(property?.category, true),
-    parentCategory: getEnumKey(property?.parentCategory, true),
-    details: {
-        ...property?.details,
-        orientation: getEnumKey(property?.details?.orientation, true),
-        accessibility: getEnumKey(property?.details?.accessibility, true),
-        landUse: getEnumKey(property?.details?.landUse, true),
-        floor: getEnumKey(property?.details?.floor, true),
-        zoneType: getEnumKey(property?.details?.zoneType, true),
-        viewType: getEnumKey(property?.details?.viewType, true),
-    },
-    heatingAndEnergy: {
-        ...property?.heatingAndEnergy,
-        electricityType: getEnumKey(
-            property?.heatingAndEnergy?.electricityType,
-            true
-        ),
-        heatingSystem: getEnumKey(
-            property?.heatingAndEnergy?.heatingSystem,
-            true
-        ),
-        energyClass: getEnumKey(property?.heatingAndEnergy?.energyClass, true),
-        heatingType: getEnumKey(property?.heatingAndEnergy?.heatingType, true),
-    },
-    technicalFeatures: {
-        ...property?.technicalFeatures,
-        floorType: getEnumKey(property?.technicalFeatures?.floorType, true),
-        frameType: getEnumKey(property?.technicalFeatures?.frameType, true),
-        furnished: getEnumKey(property?.technicalFeatures?.furnished, true),
-        paneGlassType: getEnumKey(
-            property?.technicalFeatures?.paneGlassType,
-            true
-        ),
-        inclination: getEnumKey(property?.technicalFeatures?.inclination, true),
-    },
-});
+const notNot = (bool?: boolean) => !!bool;
 
 const DEFAULT_DESCRIPTION_EL: DescriptionEntryPOST = {
     description: "",
@@ -221,6 +183,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
             windowScreens: notNot(property?.technicalFeatures?.windowScreens),
             wiring: notNot(property?.technicalFeatures?.wiring),
             withEquipment: notNot(property?.technicalFeatures?.withEquipment),
+            // ...
             floorType: getEnumKey(property?.technicalFeatures?.floorType?.key),
             frameType: getEnumKey(property?.technicalFeatures?.frameType?.key),
             furnished: getEnumKey(property?.technicalFeatures?.furnished?.key),

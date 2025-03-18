@@ -1,6 +1,6 @@
+import IOSSwitch from "@/components/iOSSwitch";
 import { useGetProperty } from "@/hooks/property";
 import useToggle from "@/hooks/useToggle";
-import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { forwardRef, useImperativeHandle } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,12 @@ const GenerateCheckbox = forwardRef<GenerateCheckboxRef, object>((_, ref) => {
     return (
         <FormControlLabel
             label={t("_GENERATE_CHECKBOX_")}
-            control={<Checkbox checked={generate} onClick={toggleGenerate} />}
+            labelPlacement="start"
+            sx={{
+                gap: 1,
+                pl: 1,
+            }}
+            control={<IOSSwitch checked={generate} onClick={toggleGenerate} />}
         />
     );
 });
