@@ -7,7 +7,7 @@ import { Theme } from "@mui/material";
 // -------------------------------------------------------------------
 
 const getImageBackground = ({ palette: { mode } }: Theme) =>
-    mode === "light" ? "grey.100" : "neutral.800";
+    mode === "light" ? "neutral.200" : "neutral.800";
 
 // -------------------------------------------------------------------
 
