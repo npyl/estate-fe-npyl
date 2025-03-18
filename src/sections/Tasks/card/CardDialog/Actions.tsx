@@ -9,11 +9,12 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
 interface ActionsProps {
+    quickCreate: boolean;
     PersistNotice: ReactNode;
     onClose: VoidFunction;
 }
 
-const Actions: FC<ActionsProps> = ({ PersistNotice, onClose }) => {
+const Actions: FC<ActionsProps> = ({ quickCreate, PersistNotice, onClose }) => {
     const { t } = useTranslation();
 
     const { formState } = useFormContext();
@@ -32,7 +33,7 @@ const Actions: FC<ActionsProps> = ({ PersistNotice, onClose }) => {
                 <Stack direction="row" alignItems="center" spacing={1}>
                     <Button onClick={onClose}>{t("Close")}</Button>
 
-                    {isDirty ? (
+                    {isDirty || quickCreate ? (
                         <LoadingButton
                             loading={isSubmitting}
                             disabled={isSubmitting}

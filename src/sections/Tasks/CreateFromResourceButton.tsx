@@ -10,7 +10,7 @@ const TaskDialog = dynamic(() =>
 );
 
 interface CreateFromResourceButtonProps {
-    taskGetter: () => IKanbanCard;
+    taskGetter: () => Promise<IKanbanCard | undefined>;
 }
 
 const CreateFromResourceButton: FC<CreateFromResourceButtonProps> = ({
@@ -20,10 +20,11 @@ const CreateFromResourceButton: FC<CreateFromResourceButtonProps> = ({
 
     const [task, setTask] = useState<IKanbanCard>();
 
-    const handleOpenDialog = useCallback(
-        () => setTask(taskGetter()),
-        [taskGetter]
-    );
+    const handleOpenDialog = useCallback(async () => {
+        const res = await taskGetter();
+        if (!res) return;
+        setTask(res);
+    }, [taskGetter]);
 
     const closeDialog = useCallback(() => setTask(undefined), []);
 
@@ -41,7 +42,9 @@ const CreateFromResourceButton: FC<CreateFromResourceButtonProps> = ({
                 {t("New Task")}
             </Button>
 
-            {task ? <TaskDialog task={task} onClose={closeDialog} /> : null}
+            {task ? (
+                <TaskDialog quickCreate task={task} onClose={closeDialog} />
+            ) : null}
         </>
     );
 };

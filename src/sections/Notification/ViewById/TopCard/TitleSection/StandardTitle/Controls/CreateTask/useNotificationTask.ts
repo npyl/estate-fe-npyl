@@ -1,18 +1,14 @@
-import { useTranslation } from "react-i18next";
-import { FC, useLayoutEffect, useState } from "react";
 import { ContactNotificationExtended } from "@/types/notification";
 import { IKanbanCard } from "@/types/tasks";
 import { TranslationType } from "@/types/translation";
-import { useLazyFindByEmailQuery } from "@/services/customers";
 import { ICustomerMini } from "@/types/customer";
 import { IPropertyForNotification } from "@/types/notification/notification";
-import dynamic from "next/dynamic";
 import { IUser } from "@/types/user";
+import useGetNotification from "@/sections/Notification/useGetNotification";
+import { useLazyFindByEmailQuery } from "@/services/customers";
 import { useLazyGetPropertyByCodeQuery } from "@/services/properties";
-
-const TaskDialog = dynamic(() =>
-    import("@/sections/Tasks/card/CardDialog").then(({ Details }) => Details)
-);
+import { useTranslation } from "react-i18next";
+import { useCallback } from "react";
 
 // ------------------------------------------------------------------------
 
@@ -101,72 +97,61 @@ const getTaskForNotification = (
     };
 };
 
-interface TaskDialogProps {
-    data: ContactNotificationExtended;
-    onClose: VoidFunction;
-}
+// --------------------------------------------------------------------------------------
 
-const TaskDialogForNotification: FC<TaskDialogProps> = ({ data, onClose }) => {
+const useNotificationTask = () => {
     const { t, i18n } = useTranslation();
+    const { notification } = useGetNotification();
 
     const [findByEmail] = useLazyFindByEmailQuery();
     const [propertyByCode] = useLazyGetPropertyByCodeQuery();
 
-    const [task, setTask] = useState<IKanbanCard>();
+    const getter = useCallback(async () => {
+        if (!notification) return;
 
-    useLayoutEffect(() => {
+        const { customerEmail, property, propertyCode } = notification;
+
         const lang = i18n.language === "en" ? "en" : "el";
-        const propertyTitle = data?.property?.descriptions?.[lang].title;
+        const propertyTitle =
+            notification?.property?.descriptions?.[lang].title;
 
-        const getTask = async () => {
-            const { customerEmail, property, propertyCode } = data;
+        let customer: ICustomerMini | undefined = undefined;
+        let manager: IUser | undefined = undefined;
 
-            let customer: ICustomerMini | undefined = undefined;
-            let manager: IUser | undefined = undefined;
+        const propertyMini = property
+            ? IPropertiesToPropertyMini(property)
+            : undefined;
 
-            const propertyMini = property
-                ? IPropertiesToPropertyMini(property)
-                : undefined;
-
-            try {
-                // INFO: attempt to find customer with this email!
-                if (customerEmail) {
-                    customer = await findByEmail(customerEmail).unwrap();
-                }
-
-                // INFO: attempt to get property by code, then find manager
-                if (propertyCode) {
-                    const property = await propertyByCode(
-                        propertyCode
-                    ).unwrap();
-
-                    manager = property?.manager;
-                }
-            } catch (ex) {
-                // ...
+        try {
+            // INFO: attempt to find customer with this email!
+            if (customerEmail) {
+                customer = await findByEmail(customerEmail).unwrap();
             }
 
-            // TODO: this is supported by our Dialog; Probably find a better way though...
-            return getTaskForNotification(
-                t,
-                // ...
-                propertyTitle,
-                propertyMini,
-                // ...
-                data,
-                customer,
-                manager
-            ) as IKanbanCard;
-        };
+            // INFO: attempt to get property by code, then find manager
+            if (propertyCode) {
+                const property = await propertyByCode(propertyCode).unwrap();
 
-        getTask().then(setTask);
-    }, [t, i18n.language]);
+                manager = property?.manager;
+            }
+        } catch (ex) {
+            // ...
+        }
 
-    if (!task) return null;
+        // TODO: this is supported by our Dialog; Probably find a better way though...
+        return getTaskForNotification(
+            t,
+            // ...
+            propertyTitle,
+            propertyMini,
+            // ...
+            notification,
+            customer,
+            manager
+        ) as IKanbanCard;
+    }, [t, i18n.language, notification]);
 
-    return <TaskDialog task={task} onClose={onClose} />;
+    return { getter };
 };
 
-// ------------------------------------------------------------------------
-
-export default TaskDialogForNotification;
+export default useNotificationTask;
