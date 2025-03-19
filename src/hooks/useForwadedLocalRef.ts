@@ -22,11 +22,15 @@ const useForwardedLocalRef = <
 
     useImperativeHandle(
         ref,
-        () =>
-            ({
-                ...localRef.current!,
-                ...props,
-            } as unknown as HTMLAttributes<Base> & Api),
+        () => {
+            if (!localRef.current) return null as any;
+
+            // IMPORTANT: attach props directly to the DOM element reference without creating a new object
+            // (This is important because we do not want to lose the original element's ref)
+            if (props) Object.assign(localRef.current, props);
+
+            return localRef.current;
+        },
         [props]
     );
 
