@@ -23,7 +23,6 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Accessibility",
         "Land Use",
         "Zone",
-
         "Rooms",
         "Orientation",
         "Attic",
@@ -48,7 +47,6 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Orientation",
         "Accessibility",
         "Land Use",
-        "Building Balance",
         "Distance From Sea",
         "Irrigation",
         "Water Supply",
@@ -176,13 +174,7 @@ const DetailsSection = () => {
                         value={details?.zoneType.value || "-"}
                     />
                 );
-            case "Building Balance":
-                return (
-                    <ListItem
-                        label={t("Building Balance")}
-                        value={details?.buildingBalance || "-"}
-                    />
-                );
+
             case "Land Use":
                 return (
                     <ListItem

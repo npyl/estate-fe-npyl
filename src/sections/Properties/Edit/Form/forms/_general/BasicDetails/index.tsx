@@ -88,6 +88,14 @@ const BasicSection: React.FC<any> = () => {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="details.buildingBalance"
+                        label={t("Building Balance")}
+                        adornment="m²"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                     <LabelCreate variant="property" resourceId={+propertyId!} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
