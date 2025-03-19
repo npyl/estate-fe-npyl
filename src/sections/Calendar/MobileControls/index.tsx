@@ -1,4 +1,4 @@
-import IsAuthenticatedIndicator from "@/sections/Google/IsAuthenticatedIndicator";
+import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import MonthSelect from "./MonthSelect";
