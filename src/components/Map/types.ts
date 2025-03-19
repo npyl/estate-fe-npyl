@@ -48,7 +48,7 @@ interface IMapProps extends IMapControls {
     //
     // Search
     //
-    onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
+    onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
 
     zoom?: number;
     shapes?: TShape[];

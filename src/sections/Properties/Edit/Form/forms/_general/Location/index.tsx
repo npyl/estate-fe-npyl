@@ -42,73 +42,43 @@ const LocationSection = () => {
 
     const { getClosest } = useClosest();
 
-    const updateMainMarkerCoords = useCallback((lat: number, lng: number) => {
-        setValue("location.lat", lat, { shouldDirty: true });
-        setValue("location.lng", lng, { shouldDirty: true });
-
-        setValue("distances", CLEAN_DISTANCES, { shouldDirty: true });
-    }, []);
-
-    //
-    // Map
-    //
-    const handleMapClick = useCallback(
-        (lat: number, lng: number, address: IMapAddress) => {
+    const generalUpdate = useCallback(
+        (lat: number, lng: number, address?: IMapAddress) => {
             if (!lat || !lng) return;
 
             getClosest(lat, lng);
-            updateMainMarkerCoords(lat, lng);
 
-            // update
-            setValue("location.street", address.street);
-            setValue("location.number", address.number);
-            setValue("location.zipCode", address.zipCode);
+            // Coordinates
+            setValue("location.lat", lat, { shouldDirty: true });
+            setValue("location.lng", lng, { shouldDirty: true });
 
-            // Lock pin for now on
-            setPinLocked(true);
-        },
-        []
-    );
+            // Address
+            if (address) {
+                setValue("location.street", address.street, {
+                    shouldDirty: true,
+                });
+                setValue("location.number", address.number, {
+                    shouldDirty: true,
+                });
+                setValue("location.zipCode", address.zipCode, {
+                    shouldDirty: true,
+                });
+            }
 
-    const handleMarkerDragEnd = useCallback(
-        (newLat: number, newLng: number, address: IMapAddress) => {
-            getClosest(newLat, newLng);
-            updateMainMarkerCoords(newLat, newLng);
+            // Distances
+            setValue("distances", CLEAN_DISTANCES, { shouldDirty: true });
 
-            // update
-            setValue("location.street", address.street);
-            setValue("location.number", address.number);
-            setValue("location.zipCode", address.zipCode);
-
-            // Lock pin for now on
-            setPinLocked(true);
-        },
-        []
-    );
-
-    const handleSearchSelect = useCallback(
-        (address: IMapAddress, lat: number, lng: number) => {
-            if (!lat || !lng) return;
-
-            getClosest(lat, lng);
-            updateMainMarkerCoords(lat, lng);
-
-            // update
-            setValue("location.street", address.street);
-            setValue("location.number", address.number);
-            setValue("location.zipCode", address.zipCode);
-
-            // Lock pin for now on
+            // Lock pin
             setPinLocked(true);
         },
         []
     );
 
     // INFO: when pin is locked pass undefined which skips unecessary calculations inside Map component
-    const onClickMethod = isPinLocked ? undefined : handleMapClick;
-    const onDragMethod = isPinLocked ? undefined : handleMarkerDragEnd;
-    const onSearchMethod = isPinLocked ? undefined : handleSearchSelect;
-    const onChangeMethod = isPinLocked ? undefined : updateMainMarkerCoords;
+    const onClickMethod = isPinLocked ? undefined : generalUpdate;
+    const onDragMethod = isPinLocked ? undefined : generalUpdate;
+    const onSearchMethod = isPinLocked ? undefined : generalUpdate;
+    const onChangeMethod = isPinLocked ? undefined : generalUpdate;
 
     return (
         <>

@@ -80,13 +80,8 @@ const MapSection = () => {
     }, 150);
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
-        setMainMarker({ lat, lng });
-    };
-
-    const handleSearchSelect = (_: any, lat: number, lng: number) => {
         if (!lat || !lng) return;
-
-        updateMainMarkerCoordinates(lat, lng);
+        setMainMarker({ lat, lng });
     };
 
     const shape = useSelector(selectPoints) as unknown as TShape;
@@ -98,7 +93,7 @@ const MapSection = () => {
             center={mainMarker}
             onDraw={handleDraw}
             onShapeChange={handleChange}
-            onSearchSelect={handleSearchSelect}
+            onSearchSelect={updateMainMarkerCoordinates}
         >
             <MarkerList />
         </Map>

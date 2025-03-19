@@ -110,7 +110,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         updateMainMarkerCoordinates(lat, lng);
     };
 
-    const handleSearchSelect = (_: any, lat: number, lng: number) => {
+    const handleSearchSelect = (lat: number, lng: number) => {
         if (!lat || !lng) return;
 
         getClosest(lat, lng);

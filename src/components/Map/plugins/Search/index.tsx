@@ -10,7 +10,7 @@ import getAddressComponent from "@/components/Map/util/getAddressComponent";
 const Popover = dynamic(() => import("./Popover"));
 
 interface SearchProps {
-    onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
+    onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
 }
 
 const Search: FC<SearchProps> = ({ onSearchSelect }) => {
@@ -43,11 +43,11 @@ const Search: FC<SearchProps> = ({ onSearchSelect }) => {
                     "postal_code"
                 ).replace(/\s/g, "");
 
-                onSearchSelect?.(
-                    { street, number, zipCode },
-                    latLng.lat,
-                    latLng.lng
-                );
+                onSearchSelect?.(latLng.lat, latLng.lng, {
+                    street,
+                    number,
+                    zipCode,
+                });
             } catch (ex) {}
         },
         [onSearchSelect]
