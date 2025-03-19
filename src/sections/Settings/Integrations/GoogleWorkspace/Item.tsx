@@ -10,6 +10,7 @@ import { LoadingButton } from "@mui/lab";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import OriginalGoogleLogo from "@/assets/logo/OriginalGoogleLogo";
+import { useAuth } from "@/hooks/use-auth";
 const ConfirmationDialog = dynamic(() => import("./ConfirmDialog"));
 
 interface RemoveButtonProps {
@@ -18,8 +19,14 @@ interface RemoveButtonProps {
 
 const RemoveButton: FC<RemoveButtonProps> = ({ domain }) => {
     const { t } = useTranslation();
+
+    const { user } = useAuth();
+
     const [deleteWorkspace, { isLoading }] = useDeleteGoogleWorkspaceMutation();
-    const handleDelete = useCallback(() => deleteWorkspace(), []);
+    const handleDelete = useCallback(
+        () => deleteWorkspace(user?.id!),
+        [user?.id]
+    );
 
     const [isDelete, openDelete, closeDelete] = useDialog();
 

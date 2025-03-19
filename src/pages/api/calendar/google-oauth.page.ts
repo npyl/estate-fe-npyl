@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import authService from "./_service/AuthService";
+import managerService from "./_service/ManagerService";
 
 export default async function handler(
     req: NextApiRequest,
@@ -25,7 +25,7 @@ export default async function handler(
     }
 
     try {
-        await authService.handleAuthCallback(code, state);
+        await managerService.handleAuthCallback(code, state);
 
         sendCloseWindowResponse(res, true);
     } catch (ex) {

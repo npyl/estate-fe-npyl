@@ -1,18 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import toNumber from "@/utils/toNumber";
-import authService from "../../calendar/_service/AuthService";
+import { toNumberSafe } from "@/utils/toNumber";
+import managerService from "../../calendar/_service/ManagerService";
+
+interface IParams {
+    userId: string;
+}
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     try {
-        const { userId } = req.query;
-        const iUserId = toNumber(userId);
+        const { userId } = req.query as unknown as IParams;
+        const iUserId = toNumberSafe(userId);
+        if (iUserId === -1) throw "Bad userId";
 
         // POST: authenticate user with id `userId`
         if (req.method === "POST") {
-            const authUrl = await authService.getAuthUrl(iUserId);
+            const authUrl = await managerService.getAuthUrl(iUserId);
             res.status(200).json({
                 authUrl,
             });
@@ -22,16 +27,16 @@ export default async function handler(
         if (req.method === "GET") {
             const Authorization = req.headers.authorization;
             if (!Authorization) throw new Error("Invalid headers");
-            authService.initialise(Authorization);
+            managerService.initialise(iUserId, Authorization);
 
-            const isAuthenticatedRes = await authService.isAuthenticated(
+            const isAuthenticatedRes = await managerService.isAuthenticated(
                 iUserId
             );
             res.status(200).json(isAuthenticatedRes);
         }
 
         if (req.method === "DELETE") {
-            await authService.revokeAuthentication(iUserId);
+            await managerService.revokeAuthentication(iUserId);
             res.status(200).json({});
         }
     } catch (error) {

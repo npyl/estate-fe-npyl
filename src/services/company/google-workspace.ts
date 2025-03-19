@@ -46,10 +46,13 @@ export const googleWorkspaceApi = createApi({
             invalidatesTags: ["GoogleWorkspace"],
         }),
 
-        deleteGoogleWorkspace: builder.mutation<void, void>({
-            query: () => ({
+        deleteGoogleWorkspace: builder.mutation<void, number>({
+            query: (userId) => ({
                 url: "",
                 method: "DELETE",
+                params: {
+                    userId,
+                },
             }),
             invalidatesTags: ["GoogleWorkspace"],
         }),

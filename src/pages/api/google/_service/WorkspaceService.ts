@@ -1,4 +1,4 @@
-import authService from "../../calendar/_service/AuthService";
+import managerService from "../../calendar/_service/ManagerService";
 import getCredentialsForUser, {
     GoogleWorkspaceKeys,
 } from "./getCredentialsForUser";
@@ -34,10 +34,10 @@ class WorkspaceService {
 
         if (!response.ok) throw await response.json();
 
-        await authService.setOauth2ClientForKeys(keys);
+        await managerService.updateKeys(Authorization, keys);
     }
 
-    async deleteIntegration(Authorization: string) {
+    async deleteIntegration(userId: number, Authorization: string) {
         const response = await fetch(baseUrl, {
             method: "DELETE",
             headers: {
@@ -48,7 +48,7 @@ class WorkspaceService {
 
         if (!response.ok) throw await response.json();
 
-        await authService.dropGoogleWorkspace();
+        await managerService.dropGoogleWorkspace(userId);
     }
 }
 

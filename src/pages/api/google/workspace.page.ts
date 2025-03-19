@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import workspaceService from "./_service/WorkspaceService";
+import { toNumberSafe } from "@/utils/toNumber";
 
 export default async function handler(
     req: NextApiRequest,
@@ -43,7 +44,12 @@ export default async function handler(
          * Remove
          */
         if (req.method === "DELETE") {
-            await workspaceService.deleteIntegration(Authorization);
+            const url = new URL(req.url!, `http://${req.headers.host}`);
+            const userId = url.searchParams.get("userId") as string;
+            const iUserId = toNumberSafe(userId);
+            if (iUserId === -1) throw "Bad userId";
+
+            await workspaceService.deleteIntegration(iUserId, Authorization);
             res.status(200).json({});
         }
     } catch (ex) {
