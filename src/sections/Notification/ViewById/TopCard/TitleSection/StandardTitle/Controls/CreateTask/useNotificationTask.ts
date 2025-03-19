@@ -32,6 +32,23 @@ const getDate = (
     return `${formattedDate} ${tourTime}`;
 };
 
+const getTourDetails = (
+    t: TranslationType,
+    lang: TLanguageType,
+    // ...
+    tourType: TTourType | undefined,
+    tourTime: string | undefined,
+    tourDate: string | undefined
+) => {
+    const TOUR_TYPE = tourType ? t(tourType) : "";
+    if (!TOUR_TYPE) return "";
+
+    const TOUR_TIME = getDate(lang, tourTime, tourDate);
+    if (!TOUR_TIME) return TOUR_TYPE;
+
+    return `${TOUR_TYPE}, ${TOUR_TIME}`;
+};
+
 const getDescription = (
     t: TranslationType,
     lang: TLanguageType,
@@ -49,9 +66,7 @@ const getDescription = (
     const FULLNAME = t("Full Name");
     const MOBILE = t("Mobile");
 
-    const TOUR_TYPE = tourType ? t(tourType) : "";
-
-    const TOUR_DETAILS = `${TOUR_TYPE}, ${getDate(lang, tourTime, tourDate)}`;
+    const TOUR_DETAILS = getTourDetails(t, lang, tourType, tourTime, tourDate);
 
     const raw = `${message}\n\n${TOUR_DETAILS}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
 
