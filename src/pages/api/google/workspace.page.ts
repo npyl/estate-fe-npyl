@@ -1,6 +1,37 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import workspaceService from "./_service/WorkspaceService";
 import { toNumberSafe } from "@/utils/toNumber";
+import { IGoogleWorkspaceIntegrationReq } from "@/services/company";
+
+import * as yup from "yup";
+import debugLog from "@/_private/debugLog";
+
+// -------------------------------------------------------------------------------------------
+
+const updateShema = yup.object({
+    clientId: yup.string().required(),
+    clientSecret: yup.string().required(),
+    domain: yup.string().required(),
+});
+
+const validateAndSanitise = (body: IGoogleWorkspaceIntegrationReq) => {
+    // INFO: this throws
+    updateShema.validateSync(body, { abortEarly: true });
+
+    const { clientId, clientSecret, domain } = body;
+
+    const validBody = {
+        clientId: clientId.trim(),
+        clientSecret: clientSecret.trim(),
+        domain: domain.trim(),
+    };
+
+    debugLog("sanitized: ", validBody);
+
+    return validBody;
+};
+
+// -------------------------------------------------------------------------------------------
 
 export default async function handler(
     req: NextApiRequest,
@@ -32,10 +63,12 @@ export default async function handler(
          * Update
          */
         if (req.method === "PUT") {
-            const body = await req.body;
+            const body = (await req.body) as IGoogleWorkspaceIntegrationReq;
             if (!body) throw new Error("Bad body");
 
-            await workspaceService.updateIntegration(Authorization, body);
+            const validBody = validateAndSanitise(body);
+
+            await workspaceService.updateIntegration(Authorization, validBody);
 
             res.status(200).json({});
         }
