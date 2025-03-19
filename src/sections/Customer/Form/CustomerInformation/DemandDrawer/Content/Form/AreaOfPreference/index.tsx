@@ -3,7 +3,6 @@ import { Box, Grid, Typography } from "@mui/material";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IMapMarker } from "@/components/Map";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
@@ -110,16 +109,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         getClosest(lat, lng);
         updateMainMarkerCoordinates(lat, lng);
     };
-    const handleMarkerDragEnd = (
-        marker: IMapMarker,
-        newLat: number,
-        newLng: number
-    ) => {
-        if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
-        getClosest(newLat, newLng);
-        updateMainMarkerCoordinates(newLat, newLng);
-    };
     const handleSearchSelect = (_: any, lat: number, lng: number) => {
         if (!lat || !lng) return;
 
@@ -164,8 +154,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                     name={shapesName as any}
                     search
                     zoom={zoom}
-                    mainMarker={mainMarker}
-                    onDragEnd={handleMarkerDragEnd}
+                    center={mainMarker}
                     onClick={handleMapClick}
                     onSearchSelect={handleSearchSelect}
                     // ...

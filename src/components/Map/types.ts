@@ -1,18 +1,17 @@
 import { TShape } from "@/types/shape";
 import { ReactNode } from "react";
 
-export type IMapMarker = IMapCoordinates;
+export interface IMapCoordinates {
+    lat: number;
+    lng: number;
+}
+
+export type IMapMarker = IMapCoordinates & { propertyId?: number };
 
 export interface IMapAddress {
     street: string;
     number: string;
     zipCode: string;
-}
-
-export interface IMapCoordinates {
-    lat: number;
-    lng: number;
-    propertyId?: number;
 }
 
 export type DrawShape =
@@ -34,16 +33,13 @@ interface IMapControls {
 interface IMapProps extends IMapControls {
     onReady?: (m: google.maps.Map) => void;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
-    //
-    // Marker
-    //
-    onMarkerClick?: (marker: IMapMarker) => void;
-    onDragEnd?: (
-        marker: IMapMarker,
+
+    onMainMarkerDrag?: (
         newLat: number,
         newLng: number,
         address: IMapAddress
     ) => void;
+
     //
     // Shape
     //
@@ -56,7 +52,8 @@ interface IMapProps extends IMapControls {
 
     zoom?: number;
     shapes?: TShape[];
-    mainMarker?: IMapMarker;
+    center?: IMapCoordinates;
+    mainMarker?: boolean;
 
     drawing?: boolean;
     search?: boolean;

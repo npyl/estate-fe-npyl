@@ -6,6 +6,8 @@ import { IMapProps } from "../../types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
 import { athensLatLng } from "../../constants";
+import dynamic from "next/dynamic";
+const MainMarker = dynamic(() => import("./MainMarker"));
 
 const containerStyle: CSSProperties = {
     width: "100%",
@@ -15,12 +17,13 @@ const containerStyle: CSSProperties = {
 
 const MapContainer: FC<IMapProps> = ({
     onReady,
+    // ...
     onClick,
-    onMarkerClick,
-    onDragEnd,
+    onMainMarkerDrag,
     // ...
     zoom,
-    mainMarker,
+    mainMarker = false,
+    center = athensLatLng,
     // ...
     leftTop,
     leftCenter,
@@ -35,10 +38,6 @@ const MapContainer: FC<IMapProps> = ({
     const controlsRef = useRef<ControlsRef>(null);
 
     const { isLoaded } = useLoadApi();
-
-    // center is based on mainMarker's latLng
-    const center =
-        mainMarker?.lat && mainMarker?.lng ? mainMarker : athensLatLng;
 
     const onLoad = useCallback(
         (map: google.maps.Map) => {
@@ -58,6 +57,7 @@ const MapContainer: FC<IMapProps> = ({
 
     const handleMapClick = useCallback(
         async (event: google.maps.MapMouseEvent) => {
+            if (!geocoderRef.current) return;
             if (!onClick) return;
 
             const latLng = event.latLng;
@@ -67,9 +67,9 @@ const MapContainer: FC<IMapProps> = ({
             if (lat === undefined || lng === undefined) return;
 
             const response = await getAddressFromLatLng(
+                geocoderRef.current,
                 lat,
-                lng,
-                geocoderRef.current
+                lng
             );
 
             if (!response) return;
@@ -105,6 +105,14 @@ const MapContainer: FC<IMapProps> = ({
                 leftTop={leftTop}
                 rightTop={rightTop}
             />
+
+            {mainMarker ? (
+                <MainMarker
+                    geocoderRef={geocoderRef}
+                    center={center}
+                    onMainMarkerDrag={onMainMarkerDrag}
+                />
+            ) : null}
 
             {children}
         </GoogleMap>

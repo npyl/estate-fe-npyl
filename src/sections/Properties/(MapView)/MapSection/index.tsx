@@ -11,25 +11,25 @@ import {
     selectPoints,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "react-redux";
-import { MarkerF, MarkerProps } from "@react-google-maps/api";
 import getMarkerId from "../getMarkerId";
 import dynamic from "next/dynamic";
 import { useMarkerRefsContext } from "../context";
 import { TShape } from "@/types/shape";
+import Marker, { MarkerProps } from "@/components/Map/Marker";
 const PropertyInfoWindow = dynamic(() => import("./PropertyInfoWindow"));
 
 // ----------------------------------------------------------------------------------
 
-interface ReferencableMarkerFProps extends MarkerProps {
+interface ReferencableMarkerProps extends MarkerProps {
     propertyId: number;
 }
 
-const ReferencableMarkerF: FC<ReferencableMarkerFProps> = ({
+const ReferencableMarker: FC<ReferencableMarkerProps> = ({
     propertyId,
     ...props
 }) => {
     const { onMarkerLoad } = useMarkerRefsContext();
-    return <MarkerF onLoad={(m) => onMarkerLoad(propertyId, m)} {...props} />;
+    return <Marker onLoad={(m) => onMarkerLoad(propertyId, m)} {...props} />;
 };
 
 // ----------------------------------------------------------------------------------
@@ -44,12 +44,11 @@ const MarkerList = () => {
     return (
         <>
             {markers?.map((marker, index) => (
-                <ReferencableMarkerF
+                <ReferencableMarker
                     key={getMarkerId(marker)}
                     propertyId={marker.propertyId}
                     position={{ lat: marker.lat, lng: marker.lng }}
                     onClick={() => setActiveMarker(index)}
-                    icon="/static/map/mapIcon.svg"
                 >
                     {activeMarker === index ? (
                         <PropertyInfoWindow
@@ -57,7 +56,7 @@ const MarkerList = () => {
                             setActiveMarker={setActiveMarker}
                         />
                     ) : null}
-                </ReferencableMarkerF>
+                </ReferencableMarker>
             ))}
         </>
     );
@@ -96,7 +95,7 @@ const MapSection = () => {
         <Map
             drawing
             shapes={[shape]}
-            mainMarker={mainMarker}
+            center={mainMarker}
             onDraw={handleDraw}
             onShapeChange={handleChange}
             onSearchSelect={handleSearchSelect}

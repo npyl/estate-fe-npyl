@@ -2,9 +2,9 @@ import { IMapAddress } from "../../types";
 import getAddressComponent from "../../util/getAddressComponent";
 
 const getAddressFromLatLng = async (
+    geocoder: google.maps.Geocoder,
     lat: number,
-    lng: number,
-    geocoder?: google.maps.Geocoder
+    lng: number
 ): Promise<IMapAddress | null> => {
     if (!geocoder) {
         console.error("Geocoder is not available!");

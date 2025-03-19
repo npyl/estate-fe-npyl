@@ -13,6 +13,17 @@ import useClosest from "./useClosest";
 import useToggle from "@/hooks/useToggle";
 import PinLock from "./PinLock";
 
+const CLEAN_DISTANCES = {
+    schools: "",
+    supermarket: "",
+    cafeRestaurant: "",
+    hospital: "",
+    airport: "",
+    sea: "",
+    publicTransport: "",
+    entertainment: "",
+};
+
 const LocationSection = () => {
     const { setValue } = useFormContext();
     const { t } = useTranslation();
@@ -24,7 +35,7 @@ const LocationSection = () => {
     const lat = useWatch({ name: "location.lat" });
     const lng = useWatch({ name: "location.lng" });
 
-    const mainMarker: IMapMarker = {
+    const center: IMapMarker = {
         lat,
         lng,
     };
@@ -32,19 +43,10 @@ const LocationSection = () => {
     const { getClosest } = useClosest();
 
     const updateMainMarkerCoords = useCallback((lat: number, lng: number) => {
-        setValue("location.lat", lat);
-        setValue("location.lng", lng);
+        setValue("location.lat", lat, { shouldDirty: true });
+        setValue("location.lng", lng, { shouldDirty: true });
 
-        setValue("distances", {
-            schools: "",
-            supermarket: "",
-            cafeRestaurant: "",
-            hospital: "",
-            airport: "",
-            sea: "",
-            publicTransport: "",
-            entertainment: "",
-        });
+        setValue("distances", CLEAN_DISTANCES, { shouldDirty: true });
     }, []);
 
     //
@@ -69,7 +71,7 @@ const LocationSection = () => {
     );
 
     const handleMarkerDragEnd = useCallback(
-        (_: any, newLat: number, newLng: number, address: IMapAddress) => {
+        (newLat: number, newLng: number, address: IMapAddress) => {
             getClosest(newLat, newLng);
             updateMainMarkerCoords(newLat, newLng);
 
@@ -124,8 +126,9 @@ const LocationSection = () => {
                                     onToggle={togglePinLock}
                                 />
                             }
-                            mainMarker={mainMarker}
-                            onDragEnd={onDragMethod}
+                            mainMarker
+                            center={center}
+                            onMainMarkerDrag={onDragMethod}
                             onClick={onClickMethod}
                             onSearchSelect={onSearchMethod}
                         />
