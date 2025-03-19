@@ -143,54 +143,6 @@ const RenderCodeCell = (params: GridCellParams) => {
     );
 };
 
-const RenderParentCategoryCell = (params: GridCellParams) => {
-    const { t } = useTranslation();
-
-    const key = (params.value as KeyValue)?.key;
-    const value = (params.value as KeyValue)?.value;
-
-    if (!key || !value) return null;
-
-    return (
-        <Stack alignItems="center" justifyContent="center" width={1} height={1}>
-            <Stack
-                direction="row"
-                spacing={0.8}
-                alignSelf="flex-start"
-                alignItems={"center"}
-            >
-                {getParentCategoriesIcons()[key]}
-                <Typography fontSize="small">{t(value)}</Typography>
-            </Stack>
-        </Stack>
-    );
-};
-
-const RenderCategoryCell = (params: GridCellParams) => {
-    const { t } = useTranslation();
-
-    const value = (params.value as KeyValue)?.value;
-
-    if (!value) return null;
-
-    return (
-        <Stack width={1} height={1} justifyContent="center" alignItems="center">
-            <Typography
-                textAlign="left"
-                alignSelf="flex-start"
-                whiteSpace="normal"
-                fontSize="small"
-                sx={{
-                    wordBreak: "break-word",
-                    maxWidth: "100%",
-                }}
-            >
-                {t(value)}
-            </Typography>
-        </Stack>
-    );
-};
-
 //
 //  View Properties
 //
@@ -212,21 +164,53 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
     },
     {
-        field: "parentCategory",
-        align: "center",
-        headerAlign: "left",
-        headerName: t("Parent Category") as string,
-        renderCell: RenderParentCategoryCell,
-        flex: 1.2,
-    },
-    {
         field: "category",
         align: "center",
         headerAlign: "left",
         headerName: t("Category") as string,
-        renderCell: RenderCategoryCell,
-        flex: 1,
+        renderCell: (params: GridCellParams) => {
+            const parentCategory = params.row?.parentCategory;
+            const category = params.row?.category;
+
+            return (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent={"flex-start"}
+                    width={1}
+                    height={1}
+                >
+                    {parentCategory && (
+                        <Stack
+                            direction="row"
+                            spacing={0.5}
+                            alignItems="center"
+                        >
+                            {getParentCategoriesIcons()[parentCategory.key]}
+                            <Typography fontSize="small">
+                                {t(parentCategory.value)},
+                            </Typography>
+                            {category && (
+                                <Typography
+                                    whiteSpace="normal"
+                                    fontSize="small"
+                                    sx={{
+                                        mt: 4,
+                                        wordBreak: "break-word",
+                                        maxWidth: "100%",
+                                    }}
+                                >
+                                    {t(category.value)}
+                                </Typography>
+                            )}
+                        </Stack>
+                    )}
+                </Stack>
+            );
+        },
+        flex: 2.2,
     },
+
     {
         field: "price",
         headerAlign: "left",
