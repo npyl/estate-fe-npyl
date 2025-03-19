@@ -50,6 +50,24 @@ class ManagerService {
         this.workspaces.set(domain, authService);
     }
 
+    /**
+     * initialise
+     * @param Authorization `Bearer ${...}`
+     * @returns Receive google workspace credentials from backend
+     */
+    private async initialise(userId: number, Authorization: string) {
+        const keys = await getCredentialsForUser(Authorization);
+        if (!keys) return null;
+
+        const { domain } = keys;
+
+        // Establish (user, domain) relationship; if not already
+        this.domains.set(userId, domain);
+
+        // Establish (domain, AuthService) relationship if not already
+        await this.establishDomainAuthServiceRelationship(domain, keys);
+    }
+
     // ------------------------------------------------------------------------------------------------------
     // USER RELATED
 
@@ -70,15 +88,21 @@ class ManagerService {
         );
     }
 
-    async getUserInfo(
-        userId: number
-    ): Promise<GoogleCalendarUserInfo | null | undefined> {
-        return await this.authServiceFor(userId)?.getUserInfo(userId);
+    async getUserInfo(userId: number): Promise<GoogleCalendarUserInfo | null> {
+        const res = await this.authServiceFor(userId)?.getUserInfo(userId);
+        if (!res) return null;
+        return res;
     }
 
-    async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
+    async isAuthenticated(
+        Authorization: string,
+        userId: number
+    ): Promise<IsAuthenticatedRes> {
+        await this.initialise(userId, Authorization);
+
         const res = await this.authServiceFor(userId)?.isAuthenticated(userId);
         if (!res) return { isAuthenticated: false };
+
         return res;
     }
 
@@ -104,26 +128,6 @@ class ManagerService {
         const { domain } = res;
 
         this.workspaces.get(domain)?.setOauth2ClientForKeys(keys);
-    }
-
-    // -------------------------------------------------------------------------------
-
-    /**
-     * initialise
-     * @param Authorization `Bearer ${...}`
-     * @returns Receive google workspace credentials from backend
-     */
-    async initialise(userId: number, Authorization: string) {
-        const keys = await getCredentialsForUser(Authorization);
-        if (!keys) return null;
-
-        const { domain } = keys;
-
-        // Establish (user, domain) relationship; if not already
-        this.domains.set(userId, domain);
-
-        // Establish (domain, AuthService) relationship if not already
-        await this.establishDomainAuthServiceRelationship(domain, keys);
     }
 }
 

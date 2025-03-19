@@ -27,11 +27,12 @@ export default async function handler(
         if (req.method === "GET") {
             const Authorization = req.headers.authorization;
             if (!Authorization) throw new Error("Invalid headers");
-            managerService.initialise(iUserId, Authorization);
 
             const isAuthenticatedRes = await managerService.isAuthenticated(
+                Authorization,
                 iUserId
             );
+
             res.status(200).json(isAuthenticatedRes);
         }
 
