@@ -87,7 +87,7 @@ interface INotificationShort {
     reviewDetails: ReviewDetails;
     tourDate: string;
     tourTime: string;
-    tourType: string;
+    tourType: TTourType;
     type: KeyValue<NotificationType>;
     viewed: boolean;
     workForUsDetails: IWorkForUs;

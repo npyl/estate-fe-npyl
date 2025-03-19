@@ -14,15 +14,20 @@ import { useLazyGetPropertyByCodeQuery } from "@/services/properties";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import plainTextToJSON from "@/components/Editor/util/plainText2JSON";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 // ------------------------------------------------------------------------
 
-const getDate = (lang: TLanguageType, tourTime: string, tourDate: string) => {
+const getDate = (
+    lang: TLanguageType,
+    tourTime: string | undefined,
+    tourDate: string | undefined
+) => {
     if (!tourDate || !tourTime) return "";
 
-    // Format date with translation support
-    const formattedDate = format(new Date(tourDate), "d MMMM yyyy");
+    const locale = lang === "en" ? "en" : "el";
+
+    const formattedDate = dayjs(tourDate).locale(locale).format("D/MM/YYYY");
 
     return `${formattedDate} ${tourTime}`;
 };
@@ -45,13 +50,8 @@ const getDescription = (
     const MOBILE = t("Mobile");
 
     const TOUR_TYPE = tourType ? t(tourType) : "";
-    const AT = t("at");
 
-    const TOUR_DETAILS = `${TOUR_TYPE} ${AT} ${getDate(
-        lang,
-        tourTime,
-        tourDate
-    )}`;
+    const TOUR_DETAILS = `${TOUR_TYPE}, ${getDate(lang, tourTime, tourDate)}`;
 
     const raw = `${message}\n\n${TOUR_DETAILS}\n\n${CONTACT_DETAILS}:\n${FULLNAME}: \t${name}\nEmail: \t${email}\n${MOBILE}: \t${mobile}`;
 
@@ -211,7 +211,7 @@ const useNotificationTask = () => {
         // TODO: this is supported by our Dialog; Probably find a better way though...
         return getTaskForNotification(
             t,
-            i18n.language,
+            i18n.language as TLanguageType,
             // ...
             propertyTitle,
             propertyMini,
