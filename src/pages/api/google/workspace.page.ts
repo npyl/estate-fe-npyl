@@ -22,6 +22,7 @@ export default async function handler(
          */
         if (req.method === "GET") {
             const creds = await workspaceService.isIntegrated(Authorization);
+            console.log("CREDS: ", creds);
             res.status(200).json({
                 isIntegrated: Boolean(creds),
                 domain: creds?.domain,

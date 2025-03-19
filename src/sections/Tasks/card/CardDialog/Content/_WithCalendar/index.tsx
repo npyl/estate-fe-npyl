@@ -10,8 +10,7 @@ import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 const IsAuthenticatedIndicator = dynamic(
-    () =>
-        import("@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator")
+    () => import("@/sections/Google/WorkspaceIndicator")
 );
 const Assignee = dynamic(() => import("./Assignee"));
 const Pickers = dynamic(() => import("./Pickers"));

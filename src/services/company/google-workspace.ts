@@ -28,9 +28,7 @@ export const googleWorkspaceApi = createApi({
     tagTypes: ["GoogleWorkspace"],
     endpoints: (builder) => ({
         isGoogleWorkspaceIntegrated: builder.query<IIsIntegratedRes, void>({
-            query: () => ({
-                url: "",
-            }),
+            query: () => "",
             providesTags: ["GoogleWorkspace"],
         }),
 
