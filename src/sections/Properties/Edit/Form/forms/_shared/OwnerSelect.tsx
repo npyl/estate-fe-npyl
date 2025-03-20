@@ -26,7 +26,7 @@ const OwnerSelect = () => {
             flexDirection="row"
             gap={1.5}
         >
-            <RHFCustomer fullWidth label={t("Owner")} name="ownerId" />
+            <RHFCustomer fullWidth label={t<string>("Owner")} name="ownerId" />
             <CreateTooltip onCreate={handleCreate} />
         </Grid>
     );

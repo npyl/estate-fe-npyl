@@ -43,7 +43,7 @@ const Assign = () => {
 
                     {resource === "customer" ? (
                         <RHFCustomerAutocomplete
-                            label={t("Customer")}
+                            label={t<string>("Customer")}
                             name="resourceId"
                         />
                     ) : null}
