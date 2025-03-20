@@ -36,7 +36,7 @@ const RenderOption = (
 
 interface CustomerAutocompleteProps
     extends Omit<
-        AutocompleteProps<ICustomerMini, false>,
+        AutocompleteProps<ICustomerMini, false, true>,
         "options" | "renderInput"
     > {
     label: string;
@@ -59,15 +59,16 @@ const CustomerAutocomplete = forwardRef<
     return (
         <Autocomplete
             ref={ref}
+            disableClearable
             loading={isLoading}
             renderOption={RenderOption}
             options={options}
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
-            renderInput={({ InputProps, ...props }) => (
+            renderInput={({ InputProps, ...params }) => (
                 <TextField
                     label={label}
-                    {...props}
+                    {...params}
                     error={error}
                     helperText={helperText}
                     InputProps={{
