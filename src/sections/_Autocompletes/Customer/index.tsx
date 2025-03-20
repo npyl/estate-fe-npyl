@@ -39,7 +39,7 @@ interface CustomerAutocompleteProps
         AutocompleteProps<ICustomerMini, false, true>,
         "options" | "renderInput"
     > {
-    label: string;
+    label?: string;
     error?: boolean;
     helperText?: string;
 }
