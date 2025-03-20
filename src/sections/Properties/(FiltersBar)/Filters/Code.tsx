@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCode } from "src/slices/filters";
 import { selectCode } from "src/slices/filters";
 import { useTranslation } from "react-i18next";
-import CodeSelect from "@/sections/_Autocompletes/PropertyCode";
+import CodeSelect from "@/sections/_Autocompletes/Code";
 import TextField from "@mui/material/TextField";
 import { useCallback } from "react";
 
