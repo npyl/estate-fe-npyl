@@ -1,12 +1,5 @@
-import { FC, forwardRef, MouseEvent, useCallback, useState } from "react";
-import {
-    Box,
-    Stack,
-    SxProps,
-    Theme,
-    Typography,
-    TypographyProps,
-} from "@mui/material";
+import { forwardRef, MouseEvent, useCallback, useState } from "react";
+import { Box, Stack, SxProps, Theme } from "@mui/material";
 import { DAY_CELL_HEIGHT, Z_INDEX } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import Title from "./_shared/Title";
@@ -40,6 +33,9 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
         zIndex,
 
         transition: "all 0.3s ease",
+
+        // IMPORTANT: prevent text selection because it causes loss of dragging flow
+        userSelect: "none",
 
         cursor: "pointer",
 
