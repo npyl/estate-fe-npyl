@@ -9,12 +9,13 @@ import { ICustomer, ICustomerPOST } from "@/types/customer";
  */
 interface ModalProps {
     customer?: ICustomer;
-
-    createCb: (body: ICustomerPOST) => Promise<number | void>;
     isLoading?: boolean;
     isError?: boolean;
 
     onCreate?: (id: number) => void;
+
+    createCb: (body: ICustomerPOST) => Promise<{ error: any } | { data: any }>;
+
     onClose: () => void;
 }
 
@@ -30,13 +31,16 @@ const CustomerModal: React.FC<ModalProps> = ({
 }) => {
     const handleSave = useCallback(
         async (body: ICustomerPOST) => {
-            const newOwnerId = await createCb(body);
+            const res = await createCb(body);
 
-            if (newOwnerId && onCreate) {
-                onCreate(newOwnerId);
+            // INFO: if we support onCreate and we have received an id
+            if (onCreate && !("error" in res) && typeof res.data === "number") {
+                onCreate(res.data);
             }
 
             onClose();
+
+            return res;
         },
         [createCb, onCreate]
     );

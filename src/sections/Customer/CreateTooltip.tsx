@@ -3,9 +3,8 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import useDialog from "@/hooks/useDialog";
 const CustomerModal = dynamic(() => import("@/sections/Customer/Modal"));
 import dynamic from "next/dynamic";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
-import { ICustomerPOST } from "@/types/customer";
 
 const IconSx: SxProps<Theme> = {
     color: "blue",
@@ -23,9 +22,6 @@ interface CreateTooltipProps {
 
 const CreateTooltip: FC<CreateTooltipProps> = ({ onCreate }) => {
     const [create, { isLoading }] = useCreateOrUpdateCustomerMutation();
-    const createCb = useCallback(async (d: ICustomerPOST) => {
-        return await create(d).unwrap();
-    }, []);
 
     const [isOpen, openModal, closeModal] = useDialog();
 
@@ -38,7 +34,7 @@ const CreateTooltip: FC<CreateTooltipProps> = ({ onCreate }) => {
             {isOpen ? (
                 <CustomerModal
                     isLoading={isLoading}
-                    createCb={createCb}
+                    createCb={create}
                     onCreate={onCreate}
                     onClose={closeModal}
                 />

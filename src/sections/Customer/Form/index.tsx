@@ -21,7 +21,7 @@ interface FormProps {
     customer?: ICustomer;
     isLoading: boolean;
     isError: boolean;
-    onSave: (body: ICustomerPOST) => Promise<any | { error: "" }>;
+    onSave: (body: ICustomerPOST) => Promise<{ data: number } | { error: any }>;
     onSaveSuccess?: VoidFunction;
     onCancel: () => void;
 }
@@ -58,8 +58,6 @@ const Form: FC<FormProps> = ({
 
         return true;
     });
-
-    const handleClear = useCallback(() => methods.reset(), []);
 
     return (
         <form>
