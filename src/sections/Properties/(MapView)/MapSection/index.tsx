@@ -1,7 +1,7 @@
-import { FC, useCallback, useState } from "react";
-import Map, { IMapMarker } from "@/components/Map";
+import { FC, useCallback, useMemo, useRef, useState } from "react";
+import Map from "@/components/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import { drawingToPoints } from "src/components/Map/util";
+import { drawingToPoints, getShapeCenter } from "@/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
 import {
@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import { useMarkerRefsContext } from "../context";
 import { TShape } from "@/types/shape";
 import Marker, { MarkerProps } from "@/components/Map/Marker";
+import { ZOOM_LEVELS } from "@/components/Map/constants";
 const PropertyInfoWindow = dynamic(() => import("./PropertyInfoWindow"));
 
 // ----------------------------------------------------------------------------------
@@ -62,13 +63,16 @@ const MarkerList = () => {
     );
 };
 
+// ------------------------------------------------------------------------------------
+
 const MapSection = () => {
     const dispatch = useDispatch();
 
-    const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: 38.246639,
-        lng: 21.734573,
-    });
+    const mapRef = useRef<google.maps.Map>();
+    const setRef = useCallback(
+        (m: google.maps.Map) => (mapRef.current = m),
+        []
+    );
 
     const handleDraw = useCallback((shape: DrawShape | StopDraw) => {
         const cb = shape ? setPoints(drawingToPoints(shape)) : resetPoints();
@@ -79,21 +83,19 @@ const MapSection = () => {
         dispatch(setPoints(newShape));
     }, 150);
 
-    const updateMainMarkerCoordinates = (lat: number, lng: number) => {
-        if (!lat || !lng) return;
-        setMainMarker({ lat, lng });
-    };
-
     const shape = useSelector(selectPoints) as unknown as TShape;
+    const center = useMemo(() => getShapeCenter(shape), [shape]);
+    const zoom = shape ? ZOOM_LEVELS.REGION : ZOOM_LEVELS.DEFAULT;
 
     return (
         <Map
+            onReady={setRef}
             drawing
+            zoom={zoom}
             shapes={[shape]}
-            center={mainMarker}
+            center={center}
             onDraw={handleDraw}
             onShapeChange={handleChange}
-            onSearchSelect={updateMainMarkerCoordinates}
         >
             <MarkerList />
         </Map>

@@ -5,7 +5,7 @@ import getAddressFromLatLng from "./getAddressFromLatLng";
 import { IMapProps } from "../../types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
-import { athensLatLng } from "../../constants";
+import { athensLatLng, ZOOM_LEVELS } from "../../constants";
 import dynamic from "next/dynamic";
 const MainMarker = dynamic(() => import("./MainMarker"));
 
@@ -85,7 +85,7 @@ const MapContainer: FC<IMapProps> = ({
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={zoom || 8}
+            zoom={zoom || ZOOM_LEVELS.DEFAULT}
             onClick={handleMapClick}
             onLoad={onLoad}
             options={{

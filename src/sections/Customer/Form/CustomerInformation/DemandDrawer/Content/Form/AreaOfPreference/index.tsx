@@ -16,14 +16,8 @@ import RHFShapeMap from "./RHFShapeMap";
 import RHFRegions from "./RHFRegions";
 import RHFNeighbour from "./RHFNeighbour";
 import RHFMunicips from "./RHFMunicips";
-import { athensLatLng } from "@/components/Map/constants";
+import { athensLatLng, ZOOM_LEVELS } from "@/components/Map/constants";
 const NextShapeCenter = dynamic(() => import("./center"));
-
-enum ZOOM_LEVELS {
-    REGION = 10,
-    MUNICIP = 13,
-    NEIGHB = 16,
-}
 
 interface Props {
     index: number;
