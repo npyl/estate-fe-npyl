@@ -1,10 +1,8 @@
-import { Autocomplete, MenuItem } from "@mui/material";
-import { useCallback, useMemo } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useAllCustomersQuery } from "src/services/customers";
 import {
     StyledOnlyNumbersInput,
-    StyledTextField,
     StyledSelect,
 } from "@/sections/DataGrids/BulkEditDrawer/style";
 import { EditProps } from "./types";
@@ -12,10 +10,7 @@ import { DefaultOrEdit } from "./DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";
 import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
 import { toNumberSafe } from "@/utils/toNumber";
-
-interface Fullnames {
-    [key: string]: string;
-}
+import CustomerAutocomplete from "@/sections/_Autocompletes/Customer";
 
 export const EditManager = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
@@ -37,39 +32,16 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
 export const EditOwner = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
-    const usersData = useAllCustomersQuery().data || [];
-
-    const fullnames: Fullnames = useMemo(
-        () =>
-            usersData
-                ?.filter((manager) => manager.firstName && manager.lastName) // filter nulls
-                .reduce((acc, manager) => {
-                    const fullname = `${manager.firstName} ${manager.lastName}`;
-                    return { ...acc, [fullname]: `${manager.id}` };
-                }, {}),
-        [usersData]
-    );
-
-    const autocompleteChange = (_event: any, value: string | null) => {
-        if (value === null) return;
-        setData(fullnameToId(value) || "");
-    };
-
-    const fullnameToId = (fullname: string) => fullnames[fullname];
-    const idToFullname = (id: string) =>
-        Object.keys(fullnames).find((key) => fullnames[key] === id) || "";
+    const iValue = toNumberSafe(data);
+    const onChange = useCallback((v: number) => {
+        setData(v.toString());
+    }, []);
 
     const handleDisable = () => setData("");
 
     return (
         <DefaultOrEdit label={t("Owner")} onDisable={handleDisable}>
-            <Autocomplete
-                disablePortal
-                value={idToFullname(data) || ""}
-                onChange={autocompleteChange}
-                options={Object.keys(fullnames)}
-                renderInput={(params) => <StyledTextField {...params} />}
-            />
+            <CustomerAutocomplete value={iValue} onChange={onChange} />
         </DefaultOrEdit>
     );
 };

@@ -1,6 +1,5 @@
 import { ICustomer } from "@/types/customer";
 import { Button, Skeleton } from "@mui/material";
-import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import PersonIcon from "@mui/icons-material/Person";
 import { HideText } from "@/components/styled";

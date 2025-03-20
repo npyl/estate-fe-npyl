@@ -25,14 +25,22 @@ const useClosest = () => {
 
         // update slice
         if (closest.level === 2) {
-            setValue("location.region", closest.parentID.toString());
-            setValue("location.city", closest.areaID.toString());
+            setValue("location.region", closest.parentID.toString(), {
+                shouldDirty: true,
+            });
+            setValue("location.city", closest.areaID.toString(), {
+                shouldDirty: true,
+            });
         } else if (closest.level === 3) {
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
-            setValue("location.complex", neighbId.toString());
-            setValue("location.city", municipId.toString());
+            setValue("location.complex", neighbId.toString(), {
+                shouldDirty: true,
+            });
+            setValue("location.city", municipId.toString(), {
+                shouldDirty: true,
+            });
 
             // For region
             getHierarchy(municipId)
@@ -41,7 +49,9 @@ const useClosest = () => {
                     const regionId = municipHierarchy.parentID;
                     if (!regionId) return;
 
-                    setValue("location.region", regionId.toString());
+                    setValue("location.region", regionId.toString(), {
+                        shouldDirty: true,
+                    });
                 })
                 .catch(debugLog);
         }

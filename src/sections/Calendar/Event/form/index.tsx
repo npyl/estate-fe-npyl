@@ -82,8 +82,6 @@ const CreateUpdateForm: FC<Props> = ({
         [onClose]
     );
 
-    const handleReset = useCallback(() => methods.reset(), []);
-
     const onRef = useCallback(
         (node: HTMLFormElement | null) => {
             if (!node) return;
@@ -130,10 +128,6 @@ const CreateUpdateForm: FC<Props> = ({
                         justifyContent="flex-end"
                         alignItems="center"
                     >
-                        {isDirty ? (
-                            <Button onClick={handleReset}>{t("Reset")}</Button>
-                        ) : null}
-
                         <Button onClick={onClose}>{t("Cancel")}</Button>
 
                         {isDirty ? (

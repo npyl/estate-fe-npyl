@@ -1,4 +1,4 @@
-import WorkspaceIndicator from "@/sections/Google/IsAuthenticatedIndicator";
+import WorkspaceIndicator from "@/sections/Google/WorkspaceIndicator";
 import Stack from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 const RHFAutocomplete = dynamic(() => import("./RHF"));

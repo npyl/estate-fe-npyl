@@ -4,7 +4,7 @@ import { AutocompleteRenderGetTagProps } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import ChipLink from "./ChipLink";
+import ChipLink from "@/components/ChipLink";
 import MultilineTextField from "@/components/MultilineTextField";
 import getIcons from "@/assets/icons/parent-categories";
 import { FC } from "react";

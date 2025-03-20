@@ -1,7 +1,7 @@
 import { TSorting } from "@/sections/Filters/SortBy/types";
 import { IUserMini } from "@/types/user";
 
-export interface BoardFiltersReq {
+interface BoardFiltersReq {
     search?: string;
     assigneeId?: number;
     priority?: number;
@@ -11,7 +11,7 @@ export interface BoardFiltersReq {
     direction?: TSorting["direction"];
 }
 
-export type IKanbanComment = {
+type IKanbanComment = {
     id: number;
     message: string;
     creator: IUserMini;
@@ -77,7 +77,7 @@ interface IKanbanCardShort {
 }
 
 // INFO: sent to Backend directly
-export type IKanbanCardPOST = {
+type IKanbanCardPOST = {
     id?: number;
     name: string;
     description?: string;
@@ -98,7 +98,7 @@ export type IKanbanCardPOST = {
 };
 
 // INFO: used in form
-export interface ICreateOrUpdateTaskReq extends IKanbanCardPOST {
+interface ICreateOrUpdateTaskReq extends IKanbanCardPOST {
     withCalendar: boolean;
     googleUserKey?: string; // INFO: google's worskpace user's primaryEmail used as a handle for creating a calendar event to him
 }
@@ -130,7 +130,11 @@ export type {
     // ...
     IKanbanCard,
     IKanbanCardShort,
+    IKanbanCardPOST,
+    IKanbanCardLabels,
+    ICreateOrUpdateTaskReq,
     // ...
+    IKanbanComment,
     IKanbanCommentPOST,
     // ...
     IKanbanAttachment,
@@ -138,4 +142,5 @@ export type {
     IKanbanAssigneeHistory,
     // ...
     IKanbanBoard,
+    BoardFiltersReq,
 };

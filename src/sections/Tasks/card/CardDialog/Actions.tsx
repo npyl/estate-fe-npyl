@@ -1,6 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import Button from "@mui/material/Button";
-import { FC, ReactNode, useCallback } from "react";
+import { FC, ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Reporter from "./Reporter";
@@ -9,19 +9,18 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
 interface ActionsProps {
+    quickCreate: boolean;
     PersistNotice: ReactNode;
     onClose: VoidFunction;
 }
 
-const Actions: FC<ActionsProps> = ({ PersistNotice, onClose }) => {
+const Actions: FC<ActionsProps> = ({ quickCreate, PersistNotice, onClose }) => {
     const { t } = useTranslation();
 
-    const { formState, reset } = useFormContext();
+    const { formState } = useFormContext();
 
     const isSubmitting = formState.isSubmitting;
     const isDirty = formState.isDirty;
-
-    const handleReset = useCallback(() => reset(), []);
 
     return (
         <Stack spacing={1} width={1}>
@@ -32,13 +31,9 @@ const Actions: FC<ActionsProps> = ({ PersistNotice, onClose }) => {
                 <Reporter />
 
                 <Stack direction="row" alignItems="center" spacing={1}>
-                    {isDirty ? (
-                        <Button onClick={handleReset}>{t("Reset")}</Button>
-                    ) : null}
-
                     <Button onClick={onClose}>{t("Close")}</Button>
 
-                    {isDirty ? (
+                    {isDirty || quickCreate ? (
                         <LoadingButton
                             loading={isSubmitting}
                             disabled={isSubmitting}

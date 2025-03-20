@@ -1,4 +1,4 @@
-import { IKanbanCardShort, IKanbanColumn } from "@/types/tasks";
+import { IKanbanCardShort } from "@/types/tasks";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
@@ -20,6 +20,8 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import UpdatedAtIcon from "./icons/UpdatedAtIcon";
 import CommentIcon from "./icons/CommentIcon";
+import { IDashboardTask } from "@/types/dashboard";
+import ColumnLabel from "./ColumnNameLabel";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 
 const chipStyles: SxProps<Theme> = {
@@ -65,17 +67,18 @@ const getSx = (isCompleted: boolean): SxProps<Theme> => ({
 });
 
 interface ItemProps {
-    c: IKanbanCardShort;
-    columns?: IKanbanColumn[];
+    c: IKanbanCardShort | IDashboardTask;
     onClick: VoidFunction;
 }
 
-const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
+const Item: FC<ItemProps> = ({ c, onClick }) => {
     const { t, i18n } = useTranslation();
+
     const isLargeScreen = useMediaQuery("(min-width:1900px)");
 
-    const assignee = c.assignees?.[0];
-    const isCompleted = c.completed;
+    const assignee = "assignees" in c && c.assignees?.[0];
+    const isCompleted = "completed" in c && c.completed;
+    const columnName = "columnName" in c ? c.columnName : "";
 
     const formatDate = (timestamp: string) => {
         const date = new Date(timestamp);
@@ -117,32 +120,23 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
             </Stack>
             {c.labels && c.labels.length > 0 && (
                 <Box position="absolute" left={isLargeScreen ? "43%" : "41%"}>
-                    {c.labels && c.labels.length > 0 && (
-                        <>
-                            {c.labels.slice(0, 1).map((label) => (
-                                <Chip
-                                    key={label.id}
-                                    label={
-                                        <Box
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                        >
-                                            <Box
-                                                sx={{
-                                                    ...colorCircleStyles,
-                                                    backgroundColor:
-                                                        label.color,
-                                                }}
-                                            />
-                                            {label.name}
-                                        </Box>
-                                    }
-                                    sx={chipStyles}
-                                />
-                            ))}
-                        </>
-                    )}
+                    {c.labels.slice(0, 1).map((label) => (
+                        <Chip
+                            key={label.id}
+                            label={
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <Box
+                                        sx={{
+                                            ...colorCircleStyles,
+                                            backgroundColor: label.color,
+                                        }}
+                                    />
+                                    {label.name}
+                                </Box>
+                            }
+                            sx={chipStyles}
+                        />
+                    ))}
                 </Box>
             )}
             <PriorityLabel
@@ -197,6 +191,7 @@ const Item: FC<ItemProps> = ({ c, columns, onClick }) => {
                 width="25%"
             >
                 {isCompleted ? <CompletedLabel /> : null}
+                {columnName ? <ColumnLabel name={columnName} /> : null}
                 {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
             </Stack>
         </SpaceBetween>

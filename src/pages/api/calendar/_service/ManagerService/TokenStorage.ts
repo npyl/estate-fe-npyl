@@ -8,7 +8,7 @@ interface StoredToken {
     refreshToken: string;
 }
 
-export class TokenStorage {
+class TokenStorage {
     private readonly tokenFilePath: string;
 
     constructor() {
@@ -99,3 +99,25 @@ export class TokenStorage {
         }
     }
 }
+
+// -----------------------------------------------------------------------------------
+
+const TokenStorageSingleton = () => {
+    return new TokenStorage();
+};
+
+declare global {
+    // eslint-disable-next-line no-var
+    var tokenServiceGlobal:
+        | undefined
+        | ReturnType<typeof TokenStorageSingleton>;
+}
+
+const tokenService = globalThis.tokenServiceGlobal ?? TokenStorageSingleton();
+
+if (process.env.NODE_ENV !== "production")
+    globalThis.tokenServiceGlobal = tokenService;
+
+// ------------------------------------------------------------------------------
+
+export default tokenService;

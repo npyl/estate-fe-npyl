@@ -1,11 +1,12 @@
 import { SxProps, Theme } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import ListItem from "@mui/material/ListItem";
+import InputAdornment from "@mui/material/InputAdornment";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import renderUserTags from "./renderUserTags";
 import { ICustomerMini } from "@/types/customer";
-import MultilineTextField from "@/components/MultilineTextField";
 import PlaceholderAvatar from "./PlaceholderAvatar";
 
 // ------------------------------------------------------------------
@@ -17,35 +18,32 @@ const getOptionLabel = (o: ICustomerMini | number) =>
 
 const OptionSx: SxProps<Theme> = {
     display: "flex",
-    flexDirection: "row",
+    alignItems: "center",
     gap: 1,
-    width: "100%",
 };
 
 const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: string },
+    props: React.HTMLAttributes<HTMLLIElement>,
     option: ICustomerMini
-) => {
-    const { key: _, ...otherProps } = props;
-    return (
-        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
-            <PlaceholderAvatar />
-            {option.firstName} {option.lastName}
-        </MenuItem>
-    );
-};
+) => (
+    <ListItem {...props} key={option.id} sx={OptionSx}>
+        <PlaceholderAvatar />
+        {option?.firstName || ""} {option?.lastName || ""}
+    </ListItem>
+);
 
 // -------------------------------------------------------------------
 
 interface CustomerAutocompleteProps
     extends Omit<
-        AutocompleteProps<ICustomerMini, true>,
+        AutocompleteProps<ICustomerMini, false, true>,
         "options" | "renderInput"
     > {
-    label: string;
-    error: boolean;
+    label?: string;
+    error?: boolean;
     helperText?: string;
 }
+
 const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteProps
@@ -53,21 +51,34 @@ const CustomerAutocomplete = forwardRef<
     const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
+    const selectedOwner = useMemo(
+        () => options?.find(({ id }) => id === props?.value),
+        [options, props?.value]
+    );
+
     return (
         <Autocomplete
             ref={ref}
+            disableClearable
             loading={isLoading}
             renderOption={RenderOption}
             options={options}
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
-            renderInput={(props) => (
-                <MultilineTextField
-                    multiline
+            renderInput={({ InputProps, ...params }) => (
+                <TextField
                     label={label}
-                    {...props}
+                    {...params}
                     error={error}
                     helperText={helperText}
+                    InputProps={{
+                        ...InputProps,
+                        startAdornment: selectedOwner ? (
+                            <InputAdornment position="start">
+                                <PlaceholderAvatar />
+                            </InputAdornment>
+                        ) : null,
+                    }}
                 />
             )}
             {...props}
@@ -77,4 +88,6 @@ const CustomerAutocomplete = forwardRef<
 
 CustomerAutocomplete.displayName = "CustomerAutocomplete";
 
+export { getOptionLabel, RenderOption };
+export type { CustomerAutocompleteProps };
 export default CustomerAutocomplete;

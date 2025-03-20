@@ -1,6 +1,6 @@
 import Dialog from "@/components/Dialog";
 import { ICreateOrUpdateTaskReq, IKanbanCard } from "@/types/tasks";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect } from "react";
 import {
     DialogSx,
     StyledDialogActions,
@@ -31,11 +31,12 @@ const getCookieKey = (id: number = -1) =>
     id === -1 ? null : `PPTaskForm-${id}`;
 
 interface DetailsProps {
+    quickCreate?: boolean; // INFO: (true) for when creating a task from another resource e.g. Property, Customer so that form is already dirty
     task?: IKanbanCard;
     onClose: VoidFunction;
 }
 
-const Details: FC<DetailsProps> = ({ task, onClose }) => {
+const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     const { name, uniqueCode } = task || {};
 
     const cookieKey = getCookieKey(task?.id);
@@ -89,6 +90,7 @@ const Details: FC<DetailsProps> = ({ task, onClose }) => {
                     }
                     actions={
                         <Actions
+                            quickCreate={quickCreate}
                             PersistNotice={PersistNotice}
                             onClose={handleClose}
                         />

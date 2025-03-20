@@ -1,7 +1,7 @@
-import { FC, useCallback, useState } from "react";
-import Map, { IMapMarker } from "@/components/Map";
+import { FC, useCallback, useMemo, useRef, useState } from "react";
+import Map from "@/components/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import { drawingToPoints } from "src/components/Map/util";
+import { drawingToPoints, getShapeCenter } from "@/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
 import {
@@ -11,25 +11,26 @@ import {
     selectPoints,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "react-redux";
-import { MarkerF, MarkerProps } from "@react-google-maps/api";
 import getMarkerId from "../getMarkerId";
 import dynamic from "next/dynamic";
 import { useMarkerRefsContext } from "../context";
 import { TShape } from "@/types/shape";
+import Marker, { MarkerProps } from "@/components/Map/Marker";
+import { ZOOM_LEVELS } from "@/components/Map/constants";
 const PropertyInfoWindow = dynamic(() => import("./PropertyInfoWindow"));
 
 // ----------------------------------------------------------------------------------
 
-interface ReferencableMarkerFProps extends MarkerProps {
+interface ReferencableMarkerProps extends MarkerProps {
     propertyId: number;
 }
 
-const ReferencableMarkerF: FC<ReferencableMarkerFProps> = ({
+const ReferencableMarker: FC<ReferencableMarkerProps> = ({
     propertyId,
     ...props
 }) => {
     const { onMarkerLoad } = useMarkerRefsContext();
-    return <MarkerF onLoad={(m) => onMarkerLoad(propertyId, m)} {...props} />;
+    return <Marker onLoad={(m) => onMarkerLoad(propertyId, m)} {...props} />;
 };
 
 // ----------------------------------------------------------------------------------
@@ -44,12 +45,11 @@ const MarkerList = () => {
     return (
         <>
             {markers?.map((marker, index) => (
-                <ReferencableMarkerF
+                <ReferencableMarker
                     key={getMarkerId(marker)}
                     propertyId={marker.propertyId}
                     position={{ lat: marker.lat, lng: marker.lng }}
                     onClick={() => setActiveMarker(index)}
-                    icon="/static/map/mapIcon.svg"
                 >
                     {activeMarker === index ? (
                         <PropertyInfoWindow
@@ -57,19 +57,22 @@ const MarkerList = () => {
                             setActiveMarker={setActiveMarker}
                         />
                     ) : null}
-                </ReferencableMarkerF>
+                </ReferencableMarker>
             ))}
         </>
     );
 };
 
+// ------------------------------------------------------------------------------------
+
 const MapSection = () => {
     const dispatch = useDispatch();
 
-    const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: 38.246639,
-        lng: 21.734573,
-    });
+    const mapRef = useRef<google.maps.Map>();
+    const setRef = useCallback(
+        (m: google.maps.Map) => (mapRef.current = m),
+        []
+    );
 
     const handleDraw = useCallback((shape: DrawShape | StopDraw) => {
         const cb = shape ? setPoints(drawingToPoints(shape)) : resetPoints();
@@ -80,26 +83,19 @@ const MapSection = () => {
         dispatch(setPoints(newShape));
     }, 150);
 
-    const updateMainMarkerCoordinates = (lat: number, lng: number) => {
-        setMainMarker({ lat, lng });
-    };
-
-    const handleSearchSelect = (_: any, lat: number, lng: number) => {
-        if (!lat || !lng) return;
-
-        updateMainMarkerCoordinates(lat, lng);
-    };
-
     const shape = useSelector(selectPoints) as unknown as TShape;
+    const center = useMemo(() => getShapeCenter(shape), [shape]);
+    const zoom = shape ? ZOOM_LEVELS.REGION : ZOOM_LEVELS.DEFAULT;
 
     return (
         <Map
+            onReady={setRef}
             drawing
+            zoom={zoom}
             shapes={[shape]}
-            mainMarker={mainMarker}
+            center={center}
             onDraw={handleDraw}
             onShapeChange={handleChange}
-            onSearchSelect={handleSearchSelect}
         >
             <MarkerList />
         </Map>

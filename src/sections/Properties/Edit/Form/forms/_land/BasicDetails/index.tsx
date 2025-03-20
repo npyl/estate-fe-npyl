@@ -130,20 +130,21 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        label={t("Building Balance")}
+                        name={"details.buildingBalance"}
+                        adornment="m²"
+                    />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbersForPrice
                         fullWidth
                         name="price"
                         label={t("Price")}
                         adornment="€"
                         initialValue={data?.price}
-                    />
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <RHFKeyCode
-                        fullWidth
-                        name="keyCode"
-                        label={t("Key Code")}
                     />
                 </Grid>
 
@@ -163,12 +164,11 @@ const BasicForLandSection: React.FC<any> = () => {
                         name={"details.plotFrontage"}
                     />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
-                    <RHFOnlyNumbers
-                        label={t("Building Balance")}
-                        name={"details.buildingBalance"}
-                    />
+                    <RHFKeyCode name="keyCode" label={t("Key Code")} />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Total Construction")}

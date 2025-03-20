@@ -15,9 +15,9 @@ interface StyledSearchProps
 }
 
 const StyledTextField = styled(TextField)<StyledSearchProps>(({ open }) => ({
-    minWidth: open ? "160px" : "50px",
-    width: open ? "160px" : "50px",
-    transition: "all 0.3s",
+    minWidth: open ? "200px" : "50px",
+    width: open ? "200px" : "50px",
+    transition: "all 0.2s ease-out",
 }));
 
 // --------------------------------------------------------------------
@@ -27,8 +27,10 @@ interface PoppingSearchProps extends Omit<StyledSearchProps, "open"> {
 }
 
 const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
-    ({ onClear, InputProps, ...props }, ref) => {
+    ({ onClear, InputProps, label: _label, ...props }, ref) => {
         const [isOpen, openSearch, closeSearch] = useDialog();
+
+        const label = isOpen ? _label : "";
 
         const handleClear = useCallback(() => {
             onClear();
@@ -39,7 +41,7 @@ const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
             <StyledTextField
                 ref={ref}
                 open={isOpen}
-                {...props}
+                label={label}
                 InputProps={{
                     ...InputProps,
                     startAdornment: InputProps?.startAdornment || (
@@ -58,6 +60,7 @@ const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
                             </InputAdornment>
                         ) : null,
                 }}
+                {...props}
             />
         );
     }

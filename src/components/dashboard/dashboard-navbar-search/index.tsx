@@ -73,6 +73,8 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
     const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
+    const isEmpty = searchText?.trim() === "";
+
     const handleInputChange = (event: any) => {
         setSearchText(event.target.value);
         // Set anchorEl to the parent container of the input same as the anchor element of the search history
@@ -164,7 +166,7 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
                         {...props}
                     />
 
-                    {open && searchText.trim() === "" ? (
+                    {open && isEmpty ? (
                         <HistoryList
                             ref={historyRef}
                             onSelect={handleSelectHistory}
@@ -173,9 +175,7 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
                 </div>
             </ClickAwayListener>
 
-            {anchorEl !== null &&
-            debouncedSearch &&
-            searchText.trim() !== "" ? (
+            {anchorEl !== null && debouncedSearch && !isEmpty ? (
                 <SearchList
                     open
                     anchorEl={anchorEl}

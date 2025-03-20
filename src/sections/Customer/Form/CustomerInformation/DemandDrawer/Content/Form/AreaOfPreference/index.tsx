@@ -3,7 +3,6 @@ import { Box, Grid, Typography } from "@mui/material";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IMapMarker } from "@/components/Map";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
@@ -17,14 +16,8 @@ import RHFShapeMap from "./RHFShapeMap";
 import RHFRegions from "./RHFRegions";
 import RHFNeighbour from "./RHFNeighbour";
 import RHFMunicips from "./RHFMunicips";
-import { athensLatLng } from "@/components/Map/constants";
+import { athensLatLng, ZOOM_LEVELS } from "@/components/Map/constants";
 const NextShapeCenter = dynamic(() => import("./center"));
-
-enum ZOOM_LEVELS {
-    REGION = 10,
-    MUNICIP = 13,
-    NEIGHB = 16,
-}
 
 interface Props {
     index: number;
@@ -110,17 +103,8 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         getClosest(lat, lng);
         updateMainMarkerCoordinates(lat, lng);
     };
-    const handleMarkerDragEnd = (
-        marker: IMapMarker,
-        newLat: number,
-        newLng: number
-    ) => {
-        if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
-        getClosest(newLat, newLng);
-        updateMainMarkerCoordinates(newLat, newLng);
-    };
-    const handleSearchSelect = (_: any, lat: number, lng: number) => {
+    const handleSearchSelect = (lat: number, lng: number) => {
         if (!lat || !lng) return;
 
         getClosest(lat, lng);
@@ -164,8 +148,7 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                     name={shapesName as any}
                     search
                     zoom={zoom}
-                    mainMarker={mainMarker}
-                    onDragEnd={handleMarkerDragEnd}
+                    center={mainMarker}
                     onClick={handleMapClick}
                     onSearchSelect={handleSearchSelect}
                     // ...

@@ -9,7 +9,7 @@ import WithCalendar from "./_WithCalendar";
 import MiscInfo from "./MiscInfo";
 import dynamic from "next/dynamic";
 import PropertiesAutocomplete from "./Autocompletes/Properties";
-import CustomerSelect from "./Autocompletes/Customer";
+import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import { AttachmentsProvider } from "./AttachmentsContext";
 import RHFEditor from "@/components/hook-form/RHFEditor";
@@ -56,7 +56,12 @@ const Content: FC<ContentProps> = ({
             <RHFEditor name="description" rows={5} />
 
             <PropertiesAutocomplete />
-            <CustomerSelect />
+
+            <CustomerAutocompleteMultiple
+                label={t("Customers")}
+                name="customers"
+            />
+
             <AssigneeSelect />
 
             <Stack alignItems="center">

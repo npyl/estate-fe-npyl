@@ -21,9 +21,7 @@ const useCreateCb = () => {
             const req: any =
                 type?.key === "STAY_UPDATED" ? { notificationId, body } : body;
 
-            const res = await cb(req).unwrap();
-
-            return res;
+            return await cb(req);
         },
         [notificationId, type?.key]
     );

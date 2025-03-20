@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import CustomerAutocomplete from "@/sections/CustomerAutocomplete";
+import CustomerAutocomplete from "@/sections/_Autocompletes/CustomerMultiple";
 import {
     Controller,
     ControllerFieldState,
@@ -8,7 +8,7 @@ import {
     UseFormStateReturn,
 } from "react-hook-form";
 import { peopleKey } from "../constants";
-import { FC, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { TCalendarEventPerson } from "@/components/Calendar/types";
 import { CalendarEventReq } from "@/types/calendar";
 

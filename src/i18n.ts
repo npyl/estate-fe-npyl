@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            inVideo: "In Video",
+
             EURO_PER_MONTH: "€/Month",
             "Average Utils": "Average Utils",
             "Satellite-TV": "Satellite-TV",
@@ -1210,11 +1212,10 @@ const resources = {
             People: "People",
             "out of": "out of",
             attachments: "attachments",
-            "Tour request for": "Tour request for",
-            "Review request for": "Review request for",
+            "Tour request": "Tour request",
+            "Review request": "Review request",
             "Listing from": "Listing from",
             "Work application by": "Work application by",
-            "Agreement for": "Agreement for",
             Task: "Task",
             "Contact Details": "Contact Details",
             "Full Name": "Full Name",
@@ -1241,9 +1242,6 @@ const resources = {
                 "Email must be a valid email address",
             "VAT must be empty or exactly 9 digits":
                 "VAT must be empty or exactly 9 digits",
-
-            "Task for property": "Task for property",
-            "Task for customer": "Task for customer",
 
             "You were assigned to a task": "You were assigned to a task",
             Dismiss: "Dismiss",
@@ -1286,6 +1284,8 @@ const resources = {
     },
     el: {
         translation: {
+            inVideo: "Σε Βίντεο",
+
             EURO_PER_MONTH: "€/Μήνα",
             "Average Utils": "Κοινόχρηστα",
             "Satellite-TV": "Δορυφορική Τηλεόραση",
@@ -1423,9 +1423,6 @@ const resources = {
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 
-            "Task for property": "Εργασία για το ακίνητο",
-            "Task for customer": "Εργασία για πελάτη",
-
             "First Name is required": "Το Όνομα είναι υποχρεωτικό",
             "Last Name is required": "Το Επώνυμο είναι υποχρεωτικό",
             "Email must be a valid email address": "Πρέπει να έχει μορφή email",
@@ -1449,12 +1446,10 @@ const resources = {
             Mobile: "Κινητό",
             "Full Name": "Ον/μο",
             "Contact Details": "Στοιχεία Επικοινωνίας",
-            "Tour request for": "Αίτημα ξενάγησης για",
-            "Review request for": "Αξιολόγηση για",
+            "Review request": "Αξιολόγηση",
             "Tour request": "Αίτημα ξενάγησης",
             "Listing from": "Καταχώρηση ακινήτου από",
             "Work application by": "Αίτηση εργασίας από",
-            "Agreement for": "Εντολή για",
             Task: "Εργασία",
             attachments: "συνημμένα",
             VAT: "ΑΦΜ",
@@ -1712,7 +1707,7 @@ const resources = {
             "Pool Size": "Μέγεθος Πισίνας",
             Frontage: "Πρόσοψη",
             "Plot Frontage": "Πρόσοψη Οικοπέδου",
-            "Building Balance": "Υπόλοιπο Δόμησησης",
+            "Building Balance": "Υπόλοιπο Δόμησης",
             "Total Construction": "Συνολική Δόμηση",
             "Permissible Building Height": "Επιτρεπόμενο Ύψος Δόμησης",
             "Permissible Floors": "Επιτρεπόμενοι Όροφοι",

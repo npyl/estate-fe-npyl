@@ -5,7 +5,9 @@ import dynamic from "next/dynamic";
 import { ILabelForm } from "../types";
 import { useState } from "react";
 const RHFPropertyAutocomplete = dynamic(() => import("./Property"));
-const RHFCustomerAutocomplete = dynamic(() => import("./Customer"));
+const RHFCustomerAutocomplete = dynamic(
+    () => import("@/sections/_Autocompletes/RHFCustomer")
+);
 
 const Assign = () => {
     const { t } = useTranslation();
@@ -38,8 +40,12 @@ const Assign = () => {
                     {resource === "property" ? (
                         <RHFPropertyAutocomplete />
                     ) : null}
+
                     {resource === "customer" ? (
-                        <RHFCustomerAutocomplete />
+                        <RHFCustomerAutocomplete
+                            label={t("Customer")}
+                            name="resourceId"
+                        />
                     ) : null}
 
                     {/* Add more to support ... */}

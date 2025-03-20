@@ -1,3 +1,4 @@
+import { IKanbanCardLabels } from "./tasks";
 import { IUserMini } from "./user";
 
 interface IDashboard {
@@ -18,8 +19,10 @@ interface IDashboardTask {
     uniqueCode: string;
     reporter: IUserMini;
     commentsCount: number;
+    columnName: string;
     createdAt: string;
     updatedAt: string;
+    labels: IKanbanCardLabels[];
 }
 
 interface PropertiesDistribution {

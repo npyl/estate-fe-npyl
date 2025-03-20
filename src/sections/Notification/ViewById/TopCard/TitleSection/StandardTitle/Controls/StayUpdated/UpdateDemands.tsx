@@ -5,8 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import useDialog from "@/hooks/useDialog";
 import CustomerModal from "@/sections/Customer/Modal";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
-import { FC, useCallback } from "react";
-import { ICustomerPOST } from "@/types/customer";
+import { FC } from "react";
 import useCustomerWithUpdatedDemands from "./useCustomerDemands";
 
 interface Props {
@@ -20,9 +19,6 @@ const UpdateDemandsButton: FC<Props> = ({ customerId }) => {
 
     const [create, { isLoading, isError }] =
         useCreateOrUpdateCustomerMutation();
-    const createCb = useCallback(async (d: ICustomerPOST) => {
-        return await create(d).unwrap();
-    }, []);
 
     const customer = useCustomerWithUpdatedDemands(customerId);
     const isDisabled = isLoading || !customer;
@@ -47,7 +43,7 @@ const UpdateDemandsButton: FC<Props> = ({ customerId }) => {
             {isOpen ? (
                 <CustomerModal
                     customer={customer}
-                    createCb={createCb}
+                    createCb={create}
                     isLoading={isLoading}
                     isError={isError}
                     onClose={closeModal}

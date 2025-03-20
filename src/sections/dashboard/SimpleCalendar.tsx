@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from "react";
 import React from "react";
 import Numbering from "@/components/Calendar/Views/Numbering";
 import CalendarGoogle from "@/components/CalendarGoogle";
-import IsAuthenticatedIndicator from "@/sections/Google/IsAuthenticatedIndicator";
+import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator";
 import CalendarGoogleDayView from "@/components/CalendarGoogle/Views/Day";
 import {
     CalendarCellProps,

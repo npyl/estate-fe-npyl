@@ -4,6 +4,8 @@ import { ListingNotification } from "./listing";
 import { IStayUpdatedDetails } from "./stayUpdated";
 import IWorkForUs from "./workForUs";
 
+type TTourType = "inPerson" | "inVideo" | "askQuestion";
+
 // TODO: "CONTACT" is removed ?
 export type NotificationType =
     | "LISTING"
@@ -61,7 +63,7 @@ export interface ContactNotification {
     propertyCode: string;
     tourDate: string;
     tourTime: string;
-    tourType: string;
+    tourType: TTourType;
     notificationDate: string;
     viewed: boolean;
     notificationType: NotificationType;
@@ -85,7 +87,7 @@ interface INotificationShort {
     reviewDetails: ReviewDetails;
     tourDate: string;
     tourTime: string;
-    tourType: string;
+    tourType: TTourType;
     type: KeyValue<NotificationType>;
     viewed: boolean;
     workForUsDetails: IWorkForUs;
@@ -148,4 +150,4 @@ interface ContactNotificationExtended extends ContactNotification {
     stayUpdatedDetails: IStayUpdatedDetails;
 }
 
-export type { INotificationShort, ContactNotificationExtended };
+export type { TTourType, INotificationShort, ContactNotificationExtended };

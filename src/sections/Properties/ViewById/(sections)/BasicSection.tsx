@@ -24,6 +24,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Category",
         "Area",
         "Plot Area",
+        "Building Balance",
         "Estimated Rend Price",
         "Available After",
         "Rental Period Start",
@@ -76,6 +77,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Category",
         "Area",
         "Plot Area",
+        "Building Balance",
         "Estimated Rend Price",
         "Available After",
         "Rental Period Start",
@@ -202,6 +204,18 @@ const BasicSection = () => {
                     <ListItem
                         label={t("Plot Size")}
                         value={data?.plotArea ? `${data?.plotArea}m²` : "-"}
+                        sx={{ minHeight: "60px" }}
+                    />
+                );
+            case "Building Balance":
+                return (
+                    <ListItem
+                        label={t("Building Balance")}
+                        value={
+                            data?.details?.buildingBalance
+                                ? `${data?.details?.buildingBalance}m²`
+                                : "-"
+                        }
                         sx={{ minHeight: "60px" }}
                     />
                 );

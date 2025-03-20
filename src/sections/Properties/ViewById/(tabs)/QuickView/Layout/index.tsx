@@ -53,7 +53,6 @@ const SECTIONS = {
 
 const getSection = (sectionName: string) => {
     try {
-        console.log("GOT: ", sectionName);
         const Section = SECTIONS[sectionName as keyof typeof SECTIONS] as any;
         const id = getSectionId(sectionName);
 

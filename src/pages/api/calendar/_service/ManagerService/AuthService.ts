@@ -3,10 +3,13 @@ import {
     GoogleCalendarUserInfo,
     IsAuthenticatedRes,
 } from "@/types/calendar/google";
-import { TokenStorage } from "./TokenStorage";
-import getCredentialsForUser, {
-    GoogleWorkspaceKeys,
-} from "@/pages/api/google/_service/getCredentialsForUser";
+import { GoogleWorkspaceKeys } from "@/pages/api/google/_service/getCredentialsForUser";
+import tokenService from "./TokenStorage";
+import { toNumberSafe } from "@/utils/toNumber";
+
+/**
+ * AuthService - OAuth & Users manager for a single workspace
+ */
 
 // ------------------------------------------------------------------------
 
@@ -47,14 +50,15 @@ function isTokenExpired(expiryDate: number): boolean {
 class AuthService {
     private userTokens: Map<number, UserToken> = new Map();
     private oauth2Client!: OAuth2Client;
-    private tokenStorage: TokenStorage;
 
     // e.g. npylarinos@digipath.gr -> digipath.gr
     WORKSPACE_DOMAIN: string | undefined;
 
-    constructor() {
-        this.tokenStorage = new TokenStorage();
-        this.tokenStorage.initialize();
+    constructor(keys: GoogleWorkspaceKeys) {
+        // Construct singleton
+        tokenService;
+
+        this.setOauth2ClientForKeys(keys);
     }
 
     async getAuthUrl(userId: number) {
@@ -67,7 +71,8 @@ class AuthService {
     }
 
     async handleAuthCallback(code: string, state: string) {
-        const userId = parseInt(state, 10);
+        const userId = toNumberSafe(state);
+
         const { tokens, res } = await this.oauth2Client.getToken(code);
 
         if (tokens.access_token && tokens.refresh_token && tokens.expiry_date) {
@@ -78,15 +83,14 @@ class AuthService {
             });
 
             // Store refresh token using TokenStorage
-            await this.tokenStorage.saveToken(userId, tokens.refresh_token);
+            await tokenService.saveToken(userId, tokens.refresh_token);
 
             return;
         }
 
         if (res?.data?.access_token && res?.data?.expiry_date) {
             // INFO: fetch refreshToken from our persistent storage so that we have up to date memory
-            const refreshToken =
-                (await this.tokenStorage.getToken(userId)) || "";
+            const refreshToken = (await tokenService.getToken(userId)) || "";
 
             // TODO: what should we do when we don't have refresh token but the user has an active oauth in his computer ??
 
@@ -140,24 +144,21 @@ class AuthService {
         }
     }
 
-    async getAuthForUser(userId: number): Promise<OAuth2Client | null> {
+    async getAuthForUser(userId: number): Promise<OAuth2Client | undefined> {
         let userTokens = this.userTokens.get(userId);
-        if (!userTokens) return null;
+        if (!userTokens) return;
 
         // Check if the current token is expired
         if (isTokenExpired(userTokens.expiryDate)) {
             try {
                 // Refresh the token
-                const updatedTokens = await this.refreshAccessToken(
-                    userId,
-                    userTokens.refreshToken
-                );
+                await this.refreshAccessToken(userId, userTokens.refreshToken);
             } catch (error) {
                 console.error("Token refresh failed:", error);
 
                 // If refresh fails, delete the tokens and return null
                 await this.revokeAuthentication(userId);
-                return null;
+                return;
             }
         } else {
             // Set credentials
@@ -174,37 +175,35 @@ class AuthService {
     /**
      * Receive profile of an authenticated user
      */
-    async getUserInfo(
-        auth: OAuth2Client
-    ): Promise<GoogleCalendarUserInfo | null> {
+    async getUserInfo(userId: number): Promise<GoogleCalendarUserInfo | null> {
         try {
-            const token = (await auth.getAccessToken()).token;
+            const tokens = this.userTokens.get(userId);
+            if (!tokens) throw "Could find token for userId";
+
+            const { accessToken } = tokens;
 
             const res = await fetch(
                 "https://www.googleapis.com/oauth2/v3/userinfo",
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${accessToken}`,
                     },
                     method: "GET",
                 }
             );
 
-            if (!res.ok) return null;
+            if (!res.ok) throw await res.json();
 
             return await res.json();
-        } catch (error) {
-            console.log("Error: ", error);
+        } catch (ex) {
+            console.log(ex);
             return null;
         }
     }
 
     async isAuthenticated(userId: number): Promise<IsAuthenticatedRes> {
         try {
-            const auth = await this.getAuthForUser(userId);
-            if (!auth) return { isAuthenticated: false };
-
-            const userInfo = await this.getUserInfo(auth);
+            const userInfo = await this.getUserInfo(userId);
             if (!userInfo) return { isAuthenticated: false };
 
             return { isAuthenticated: true, userInfo };
@@ -223,7 +222,7 @@ class AuthService {
         serviceLog("removing all user tokens (in-memory)");
         this.userTokens.clear();
         serviceLog("removing all user tokens (disk)");
-        await this.tokenStorage.deleteAllTokens();
+        await tokenService.deleteAllTokens();
     }
 
     private getRevokeUserPromise = async (tokens: UserToken, i: number) => {
@@ -259,7 +258,7 @@ class AuthService {
     async revokeAuthentication(userId: number) {
         try {
             await this.oauth2Client.revokeCredentials();
-            await this.tokenStorage.deleteToken(userId);
+            await tokenService.deleteToken(userId);
             this.userTokens.delete(userId);
         } catch (ex) {
             console.error(ex);
@@ -284,42 +283,11 @@ class AuthService {
         this.oauth2Client = res;
     };
 
-    /**
-     * getOauth2ClientForUser
-     * @param Authorization `Bearer ${...}`
-     * @returns Receive google workspace credentials from backend
-     */
-    generateOauth2ClientForUser = async (Authorization: string) => {
-        const data = await getCredentialsForUser(Authorization);
-        if (!data) return null;
-        await this.setOauth2ClientForKeys(data);
-    };
+    // ---------------------------------------------------------------------------------
 
-    async initialise(Authorization: string) {
-        if (this.oauth2Client) return;
-
-        serviceLog("getting oauth for logged-in pp user");
-
-        await this.generateOauth2ClientForUser(Authorization);
+    async initialise() {
+        await tokenService.initialize();
     }
 }
 
-// ---------------------------------------------------------------------
-
-// singleton.ts
-const AuthServiceSingleton = () => {
-    return new AuthService();
-};
-
-declare global {
-    // eslint-disable-next-line no-var
-    var authGlobal: undefined | ReturnType<typeof AuthServiceSingleton>;
-}
-
-const authService = globalThis.authGlobal ?? AuthServiceSingleton();
-
-if (process.env.NODE_ENV !== "production") globalThis.authGlobal = authService;
-
-// ------------------------------------------------------------------------------
-
-export default authService;
+export default AuthService;

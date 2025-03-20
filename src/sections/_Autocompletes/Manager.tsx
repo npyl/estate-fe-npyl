@@ -1,7 +1,7 @@
 import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
 import { useAllUsersQuery } from "src/services/user";
 import { IUserMini } from "@/types/user";
-import { FC, forwardRef, useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";

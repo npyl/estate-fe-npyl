@@ -1,28 +1,17 @@
-import { useGetCustomerByIdQuery } from "@/services/customers";
+import useGetCustomer from "@/hooks/customer";
 import { IKanbanCard } from "@/types/tasks";
-import { useRouter } from "next/router";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
 
 const useTaskFromCustomer = () => {
-    const { t } = useTranslation();
-
-    const router = useRouter();
-    const { customerId } = router.query;
-
-    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
+    const { customer } = useGetCustomer();
 
     const getTask = useCallback(() => {
-        const NAME = t("Task for customer");
+        const { id, firstName, lastName } = customer || {};
 
-        const fullname = `${customer?.firstName || ""} ${
-            customer?.lastName || ""
-        }`;
-
-        const name = `${NAME} (${fullname})`;
+        const name = `${firstName || ""} ${lastName || ""}`;
 
         const customerMini = {
-            id: customer?.id,
+            id,
             firstName: customer?.firstName || "",
             lastName: customer?.lastName || "",
         };
@@ -31,7 +20,7 @@ const useTaskFromCustomer = () => {
             name,
             customers: [customerMini],
         } as IKanbanCard;
-    }, [customer?.id, customerId]);
+    }, [customer]);
 
     return { getTask };
 };

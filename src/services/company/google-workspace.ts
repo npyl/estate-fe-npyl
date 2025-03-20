@@ -28,9 +28,7 @@ export const googleWorkspaceApi = createApi({
     tagTypes: ["GoogleWorkspace"],
     endpoints: (builder) => ({
         isGoogleWorkspaceIntegrated: builder.query<IIsIntegratedRes, void>({
-            query: () => ({
-                url: "",
-            }),
+            query: () => "",
             providesTags: ["GoogleWorkspace"],
         }),
 
@@ -46,10 +44,13 @@ export const googleWorkspaceApi = createApi({
             invalidatesTags: ["GoogleWorkspace"],
         }),
 
-        deleteGoogleWorkspace: builder.mutation<void, void>({
-            query: () => ({
+        deleteGoogleWorkspace: builder.mutation<void, number>({
+            query: (userId) => ({
                 url: "",
                 method: "DELETE",
+                params: {
+                    userId,
+                },
             }),
             invalidatesTags: ["GoogleWorkspace"],
         }),

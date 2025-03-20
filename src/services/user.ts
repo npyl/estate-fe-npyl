@@ -65,7 +65,7 @@ export const user = apiWithTranslation({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Users"],
+            invalidatesTags: ["Users", "User"],
         }),
         allUsers: builder.query<IUser[], void>({
             query: () => ({

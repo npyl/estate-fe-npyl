@@ -1,5 +1,4 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -22,7 +21,7 @@ interface FormProps {
     customer?: ICustomer;
     isLoading: boolean;
     isError: boolean;
-    onSave: (body: ICustomerPOST) => Promise<any | { error: "" }>;
+    onSave: (body: ICustomerPOST) => Promise<{ data: number } | { error: any }>;
     onSaveSuccess?: VoidFunction;
     onCancel: () => void;
 }
@@ -60,8 +59,6 @@ const Form: FC<FormProps> = ({
         return true;
     });
 
-    const handleClear = useCallback(() => methods.reset(), []);
-
     return (
         <form>
             <FormProvider {...methods}>
@@ -92,15 +89,7 @@ const Form: FC<FormProps> = ({
                             >
                                 {t("Cancel")}
                             </Button>
-                            {!PersistNotice ? (
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={handleClear}
-                                >
-                                    {t("Clear")}
-                                </Button>
-                            ) : null}
+
                             <LoadingButton
                                 disabled={!isDirty}
                                 loading={isLoading && !isError}
