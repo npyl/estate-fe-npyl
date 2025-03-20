@@ -4,7 +4,8 @@ import CustomerAutocomplete, {
 } from "@/sections/_Autocompletes/Customer";
 import { FC } from "react";
 
-interface RHFCustomerProps extends CustomerAutocompleteProps {
+interface RHFCustomerProps
+    extends Omit<CustomerAutocompleteProps, "value" | "onChange"> {
     name: string;
 }
 

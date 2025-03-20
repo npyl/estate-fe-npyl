@@ -1,7 +1,7 @@
 import { ICustomerMini } from "@/types/customer";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
-import ChipLink from "../ChipLink";
-import PlaceholderAvatar from "./PlaceholderAvatar";
+import ChipLink from "@/components/ChipLink";
+import PlaceholderAvatar from "@/sections/_Autocompletes/Customer/PlaceholderAvatar";
 
 const renderUserTags = (
     tagValue: ICustomerMini[],

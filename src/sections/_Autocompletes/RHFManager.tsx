@@ -2,7 +2,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import ManagerAutocomplete, { ManagerAutocompleteProps } from "./Manager";
 import { FC } from "react";
 
-interface RHFManagerProps extends ManagerAutocompleteProps {
+interface RHFManagerProps
+    extends Omit<ManagerAutocompleteProps, "value" | "onChange"> {
     name: string;
 }
 

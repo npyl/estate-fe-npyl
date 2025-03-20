@@ -2,10 +2,10 @@ import { Controller, useFormContext } from "react-hook-form";
 import { FC } from "react";
 import CustomerAutocompleteMultiple, {
     CustomerAutocompleteMultipleProps,
-} from "./CustomerMultiple";
+} from "@/sections/_Autocompletes/CustomerMultiple";
 
 interface RHFCustomerAutocompleteMultipleProps
-    extends CustomerAutocompleteMultipleProps {
+    extends Omit<CustomerAutocompleteMultipleProps, "value" | "onChange"> {
     name: string;
 }
 
