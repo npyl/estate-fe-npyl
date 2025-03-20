@@ -87,11 +87,22 @@ const BasicSection: React.FC<any> = () => {
                         adornment="m²"
                     />
                 </Grid>
+                {data?.parentCategory.key !== "COMMERCIAL" && (
+                    <Grid item xs={12} sm={6}>
+                        <RHFOnlyNumbers
+                            fullWidth
+                            name="details.buildingBalance"
+                            label={t("Building Balance")}
+                            adornment="m²"
+                        />
+                    </Grid>
+                )}
                 <Grid item xs={12} sm={6}>
                     <LabelCreate variant="property" resourceId={+propertyId!} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbersForPrice
+                        fullWidth
                         name="averageUtils"
                         label={t("Average Utils")}
                         adornment={t<string>("EURO_PER_MONTH")}

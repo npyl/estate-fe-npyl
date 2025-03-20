@@ -174,6 +174,7 @@ const DetailsSection = () => {
                         value={details?.zoneType.value || "-"}
                     />
                 );
+
             case "Land Use":
                 return (
                     <ListItem

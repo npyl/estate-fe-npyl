@@ -1707,7 +1707,7 @@ const resources = {
             "Pool Size": "Μέγεθος Πισίνας",
             Frontage: "Πρόσοψη",
             "Plot Frontage": "Πρόσοψη Οικοπέδου",
-            "Building Balance": "Υπόλοιπο Δόμησησης",
+            "Building Balance": "Υπόλοιπο Δόμησης",
             "Total Construction": "Συνολική Δόμηση",
             "Permissible Building Height": "Επιτρεπόμενο Ύψος Δόμησης",
             "Permissible Floors": "Επιτρεπόμενοι Όροφοι",

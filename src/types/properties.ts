@@ -318,7 +318,6 @@ export interface IPropertyTechnicalFeatures {
     withEquipment: boolean;
     doubleFrontage: boolean;
     consideration: boolean;
-
     furnished: KeyValue;
     frameType: KeyValue;
     paneGlassType: KeyValue;
