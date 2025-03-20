@@ -8,12 +8,12 @@ import { useTranslation } from "react-i18next";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
-import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import RHFTypeSelect from "./RHFTypeSelect";
 import Pickers from "./Pickers";
 import dynamic from "next/dynamic";
+import RHFEditor from "@/components/hook-form/RHFEditor";
 const Color = dynamic(() => import("./Color"), {
     loading: () => <Skeleton variant="circular" width="30px" height="30px" />,
 });
@@ -115,12 +115,7 @@ const CreateUpdateForm: FC<Props> = ({
 
                     <PeopleLoader />
 
-                    <RHFMultilineTextField
-                        label={t("Description")}
-                        name="description"
-                        multiline
-                        rows={5}
-                    />
+                    <RHFEditor name="description" rows={5} />
 
                     <Stack
                         flexDirection={{ xs: "column-reverse", sm: "row" }}

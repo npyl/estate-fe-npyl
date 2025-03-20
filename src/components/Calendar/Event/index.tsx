@@ -15,28 +15,9 @@ import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import DraggableStack from "./DraggableStack";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
+import Description from "./_shared/Description";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
-
-// ------------------------------------------------------------------------------------
-
-const DescriptionSx: SxProps<Theme> = {
-    px: 1,
-    height: "100%",
-    color: "text.secondary",
-    bgcolor: (theme) =>
-        theme.palette.mode === "light"
-            ? theme.palette.neutral?.[200]
-            : theme.palette.neutral?.[700],
-    borderRadius: "5px",
-
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-};
-
-const Description: FC<TypographyProps> = (props) => (
-    <Typography variant="subtitle2" sx={DescriptionSx} p={1} m={1} {...props} />
-);
 
 // ------------------------------------------------------------------------------------
 
@@ -132,7 +113,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
 
                 {!isMinimumHeight ? (
                     <>
-                        <Description>{event.description}</Description>
+                        <Description content={event.description} />
 
                         <Box flexGrow={1} />
 

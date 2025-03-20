@@ -1,4 +1,5 @@
-import { InputBase, InputBaseProps, SxProps, Theme } from "@mui/material";
+import Editor from "@/components/Editor";
+import { SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 
 // ---------------------------------------------------------------------------
@@ -15,8 +16,12 @@ const DescriptionSx: SxProps<Theme> = {
 
 // ---------------------------------------------------------------------------
 
-const Description: FC<InputBaseProps> = (props) => (
-    <InputBase sx={DescriptionSx} multiline rows={5} {...props} />
+interface Props {
+    content: string;
+}
+
+const Description: FC<Props> = ({ content }) => (
+    <Editor editable={false} content={content} containerSx={DescriptionSx} />
 );
 
 export default Description;
