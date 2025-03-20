@@ -1,52 +1,27 @@
-import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
-import renderUserTags from "./renderUserTags";
 import { ICustomerMini } from "@/types/customer";
+import {
+    getOptionLabel,
+    RenderOption,
+} from "@/sections/_Autocompletes/Customer";
+import renderUserTags from "@/sections/_Autocompletes/Customer/renderUserTags";
+import MultilineTextField from "@/components/MultilineTextField";
 
-// TODO: merge CustomerAutocomplete and CustomerAutocompleteSingle!
-
-// ------------------------------------------------------------------
-
-const getOptionLabel = (o: ICustomerMini | number) =>
-    typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
-
-// ------------------------------------------------------------------
-
-const OptionSx: SxProps<Theme> = {
-    display: "flex",
-    flexDirection: "row",
-    gap: 1,
-    width: "100%",
-};
-
-const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: string },
-    option: ICustomerMini
-) => {
-    const { key: _, ...otherProps } = props;
-    return (
-        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
-            {option.firstName} {option.lastName}
-        </MenuItem>
-    );
-};
-
-// -------------------------------------------------------------------
-
-interface CustomerAutocompleteProps
+interface CustomerAutocompleteMultipleProps
     extends Omit<
-        AutocompleteProps<ICustomerMini, false>,
+        AutocompleteProps<ICustomerMini, true>,
         "options" | "renderInput"
     > {
     label: string;
-    error: boolean;
+    error?: boolean;
     helperText?: string;
 }
+
 const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
-    CustomerAutocompleteProps
+    CustomerAutocompleteMultipleProps
 >(({ label, error, helperText, ...props }, ref) => {
     const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
@@ -60,7 +35,8 @@ const CustomerAutocomplete = forwardRef<
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
             renderInput={(props) => (
-                <TextField
+                <MultilineTextField
+                    multiline
                     label={label}
                     {...props}
                     error={error}
@@ -74,4 +50,5 @@ const CustomerAutocomplete = forwardRef<
 
 CustomerAutocomplete.displayName = "CustomerAutocomplete";
 
+export type { CustomerAutocompleteMultipleProps };
 export default CustomerAutocomplete;

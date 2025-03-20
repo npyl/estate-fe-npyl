@@ -1,9 +1,13 @@
-import { MenuItem, SxProps, TextField, Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import ListItem from "@mui/material/ListItem";
+import InputAdornment from "@mui/material/InputAdornment";
 import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import renderUserTags from "./renderUserTags";
 import { ICustomerMini } from "@/types/customer";
+import PlaceholderAvatar from "./PlaceholderAvatar";
 
 // ------------------------------------------------------------------
 
@@ -14,40 +18,43 @@ const getOptionLabel = (o: ICustomerMini | number) =>
 
 const OptionSx: SxProps<Theme> = {
     display: "flex",
-    flexDirection: "row",
+    alignItems: "center",
     gap: 1,
-    width: "100%",
 };
 
 const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: string },
+    props: React.HTMLAttributes<HTMLLIElement>,
     option: ICustomerMini
-) => {
-    const { key: _, ...otherProps } = props;
-    return (
-        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
-            {option.firstName} {option.lastName}
-        </MenuItem>
-    );
-};
+) => (
+    <ListItem {...props} key={option.id} sx={OptionSx}>
+        <PlaceholderAvatar />
+        {option?.firstName || ""} {option?.lastName || ""}
+    </ListItem>
+);
 
 // -------------------------------------------------------------------
 
 interface CustomerAutocompleteProps
     extends Omit<
-        AutocompleteProps<ICustomerMini, true>,
+        AutocompleteProps<ICustomerMini, false>,
         "options" | "renderInput"
     > {
     label: string;
-    error: boolean;
+    error?: boolean;
     helperText?: string;
 }
+
 const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteProps
 >(({ label, error, helperText, ...props }, ref) => {
     const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+
+    const selectedOwner = useMemo(
+        () => options?.find(({ id }) => id === props?.value),
+        [options, props?.value]
+    );
 
     return (
         <Autocomplete
@@ -57,12 +64,20 @@ const CustomerAutocomplete = forwardRef<
             options={options}
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
-            renderInput={(props) => (
+            renderInput={({ InputProps, ...props }) => (
                 <TextField
                     label={label}
                     {...props}
                     error={error}
                     helperText={helperText}
+                    InputProps={{
+                        ...InputProps,
+                        startAdornment: selectedOwner ? (
+                            <InputAdornment position="start">
+                                <PlaceholderAvatar />
+                            </InputAdornment>
+                        ) : null,
+                    }}
                 />
             )}
             {...props}
@@ -72,4 +87,6 @@ const CustomerAutocomplete = forwardRef<
 
 CustomerAutocomplete.displayName = "CustomerAutocomplete";
 
+export { getOptionLabel, RenderOption };
+export type { CustomerAutocompleteProps };
 export default CustomerAutocomplete;
