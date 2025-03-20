@@ -25,7 +25,7 @@ const StickyCalendar: FC<StickyCalendarProps> = ({ startRef }) => {
 
     return (
         <Box
-            width={{ xs: "100%", md: "50%" }}
+            width={{ xs: "100%", md: "40%" }}
             height="max-content"
             position={{ xs: "initial", md: "sticky" }}
             left="70%"
@@ -105,9 +105,10 @@ const Stats = () => {
     return (
         <Grid
             container
-            width={{ xs: "100%", md: "50%" }}
+            width={{ xs: "100%", md: "60%" }}
             spacing={1}
             maxHeight={{ xs: "100%", md: "calc(100vh - 178px)" }}
+            pr={{ xs: 0, md: 5 }}
         >
             <Cards />
 
