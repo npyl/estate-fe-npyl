@@ -1,14 +1,14 @@
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import PriorityButtonGroup from "./Priority";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import Buttons from "./Buttons";
 import Divider from "@mui/material/Divider";
 import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
 import MiscInfo from "./MiscInfo";
 import dynamic from "next/dynamic";
-import PropertiesAutocomplete from "./Autocompletes/Properties";
+import PropertiesAutocompleteMultiple from "@/sections/_Autocompletes/RHFCodeMultiple";
 import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import { AttachmentsProvider } from "./AttachmentsContext";
@@ -17,6 +17,36 @@ const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
 const Labels = dynamic(() => import("./Labels"));
+
+// -----------------------------------------------------------------
+
+const CustomerAutocomplete = () => {
+    const { t } = useTranslation();
+
+    const onCustomersChange = useCallback((v: number[]) => {}, []);
+
+    return (
+        <CustomerAutocompleteMultiple
+            label={t("Customers")}
+            name="customers"
+            onChange={onCustomersChange}
+        />
+    );
+};
+
+const PropertiesAutocomplete = () => {
+    const { t } = useTranslation();
+
+    const onPropertiesChange = useCallback((_: any, ids: number[]) => {}, []);
+
+    return (
+        <PropertiesAutocompleteMultiple
+            name="properties"
+            label={t<string>("Properties")}
+            onChange={onPropertiesChange}
+        />
+    );
+};
 
 // -----------------------------------------------------------------
 
@@ -56,12 +86,7 @@ const Content: FC<ContentProps> = ({
             <RHFEditor name="description" rows={5} />
 
             <PropertiesAutocomplete />
-
-            <CustomerAutocompleteMultiple
-                label={t("Customers")}
-                name="customers"
-            />
-
+            <CustomerAutocomplete />
             <AssigneeSelect />
 
             <Stack alignItems="center">
