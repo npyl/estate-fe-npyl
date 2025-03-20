@@ -1,10 +1,13 @@
 import { Grid } from "@mui/material";
-import Autocomplete from "../components/OwnerAutocomplete";
+import RHFCustomer from "@/sections/_Autocompletes/RHFCustomer";
 import CreateTooltip from "@/sections/Customer/CreateTooltip";
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const OwnerSelect = () => {
+    const { t } = useTranslation();
+
     const { setValue } = useFormContext();
 
     const handleCreate = useCallback((id: number) => {
@@ -23,7 +26,7 @@ const OwnerSelect = () => {
             flexDirection="row"
             gap={1.5}
         >
-            <Autocomplete />
+            <RHFCustomer fullWidth label={t("Owner")} name="ownerId" />
             <CreateTooltip onCreate={handleCreate} />
         </Grid>
     );
