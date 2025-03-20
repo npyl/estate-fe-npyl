@@ -1829,7 +1829,7 @@ const resources = {
             Fifth: "Πέμπτος όροφος",
             Mezzanine: "Ημιόροφος",
             Bedrooms: "Υπνοδωμάτια",
-            beds: "Υπνοδωμάτια",
+            beds: "υ/δ",
             baths: "Μπάνια",
             Layers: "Επίπεδα",
             Kitchens: "Κουζίνες",

@@ -1,5 +1,5 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { FC, useMemo } from "react";
 import CarouselSimple from "@/components/Carousel";
 import { useTranslation } from "react-i18next";
@@ -73,26 +73,28 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
             borderColor="divider"
             {...(props as any)}
         >
-            <Stack direction="row" spacing={1} alignItems="center">
-                <CarouselSimple
-                    data={convertedImages}
-                    ratio="4/3"
-                    isActive={item.active}
-                    borderRadius={1}
-                />
-
+            <Stack direction="row" spacing={1} alignItems="center" p={1}>
+                {/* //do not change the Box width */}
+                <Box width="35%">
+                    <CarouselSimple
+                        data={convertedImages}
+                        ratio="4/3"
+                        isActive={item.active}
+                        borderRadius={2}
+                    />
+                </Box>
                 <Stack
                     px={2}
                     py={2}
                     spacing={2}
                     justifyContent="space-around"
-                    minWidth="fit-content"
+                    minWidth="64%" //do not change
                     height="100%"
                 >
                     <Stack direction="row" spacing={1} alignItems="center">
                         <svg
-                            width="14px"
-                            height="14px"
+                            width="16px"
+                            height="16px"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -110,7 +112,12 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                             />
                         </svg>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography
+                            // variant="body1"
+                            fontSize={15}
+                            color="text.secondary"
+                            fontWeight="500"
+                        >
                             {address}
                         </Typography>
                     </Stack>
