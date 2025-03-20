@@ -104,25 +104,27 @@ function OnlyPhotosCarousel({ data }: Props) {
                     },
                 }}
             >
-                <Tabs
-                    value={selectedTab}
-                    onChange={handleTabChange}
-                    variant="fullWidth"
-                >
-                    <Tab label={t("All Photos")} />
-                    <Tab label={t("Public Photos")} />
-                    <Tab label={t("Private Photos")} />
-                </Tabs>
+                <Stack direction="row" justifyContent="space-between" px={2}>
+                    <Tabs value={selectedTab} onChange={handleTabChange}>
+                        <Tab label={t("All Photos")} />
+                        <Tab label={t("Public Photos")} />
+                        <Tab label={t("Private Photos")} />
+                    </Tabs>
+                    <Button
+                        onClick={openDialog}
+                        sx={{
+                            mt: 1,
+                        }}
+                    >
+                        {t("Download")}
+                    </Button>
+                </Stack>
 
                 <Grid container spacing={1} py={1}>
                     {IMAGES}
                 </Grid>
 
                 <Divider />
-
-                <Stack width={1} mt={1} alignItems="flex-end">
-                    <Button onClick={openDialog}>{t("Download")}</Button>
-                </Stack>
             </Box>
 
             {/* Lightbox */}
