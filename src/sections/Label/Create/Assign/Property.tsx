@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import CodeSelect from "@/sections/CodeSelect";
+import CodeSelect from "@/sections/_Autocompletes/PropertyCode";
 import { ILabelForm } from "../types";
 import { useTranslation } from "react-i18next";
 

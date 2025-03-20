@@ -1,4 +1,4 @@
-import CodeSelect from "@/sections/CodeSelect";
+import CodeSelect from "@/sections/_Autocompletes/PropertyCode";
 import { IPropertyCodeRes } from "@/types/properties";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
 import Stack from "@mui/material/Stack";
