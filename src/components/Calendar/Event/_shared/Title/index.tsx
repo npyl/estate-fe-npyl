@@ -23,17 +23,10 @@ interface TitleProps {
     // ...
 
     type: TCalendarEventType;
-    colorId: string;
 }
 
-const Title: FC<TitleProps> = ({
-    title,
-    colorId,
-    type,
-    startDate,
-    endDate,
-}) => (
-    <ColoredStack colorId={colorId} type={type} sx={TitleSx}>
+const Title: FC<TitleProps> = ({ title, type, startDate, endDate }) => (
+    <ColoredStack type={type} sx={TitleSx}>
         <Typography variant="h6" noWrap>
             {title}
         </Typography>

@@ -9,12 +9,14 @@ import useWidthObserver from "@/hooks/useWidthObserver";
 import DraggableStack from "./DraggableStack";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
 import Description from "./_shared/Description";
+import { useCalendarColorById } from "@/services/calendar";
+import { alpha } from "@mui/material/styles";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
 
 // ------------------------------------------------------------------------------------
 
-const getEventSx = (overlapCount?: number): SxProps<Theme> => {
+const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
 
     const marginLeft = 1 + c * LF;
@@ -22,7 +24,7 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const zIndex = Z_INDEX.EVENT + c;
 
     return {
-        backgroundColor: ({ palette }) => palette.background.paper,
+        backgroundColor: alpha(bgcolor, 0.4),
         borderRadius: 1,
         boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.4)",
 
@@ -52,6 +54,8 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             event.startDate,
             event.endDate
         );
+
+        const bgcolor = useCalendarColorById(event?.colorId);
 
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
@@ -91,7 +95,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         return (
             <DraggableStack
                 ref={onRef}
-                sx={getEventSx(overlapCount)}
+                sx={getEventSx(bgcolor, overlapCount)}
                 overlapCount={overlapCount}
                 top={top}
                 height={maxHeight}
@@ -104,7 +108,6 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                     startDate={event.startDate}
                     endDate={event.startDate}
                     type={event.type}
-                    colorId={event.colorId}
                 />
 
                 {!isMinimumHeight ? (
