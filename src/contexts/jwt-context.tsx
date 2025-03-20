@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import { useLoginMutation } from "../services/auth";
 import { IUser } from "src/types/user";
 import {
@@ -173,11 +173,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         });
     };
 
-    const logout = async (): Promise<void> => {
+    const logout = useCallback(async () => {
         await logoutCb();
         localStorage.removeItem("accessToken");
         dispatch({ type: ActionType.LOGOUT });
-    };
+    }, []);
 
     return (
         <AuthContext.Provider

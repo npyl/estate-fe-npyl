@@ -21,7 +21,6 @@ const Content = () => {
     const handleLogout = useCallback(async () => {
         try {
             await logout();
-            window.location.replace("/authentication/login");
         } catch (err) {
             console.error(err);
             errorToast("Unable to logout");
