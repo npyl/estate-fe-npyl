@@ -20,15 +20,13 @@ import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 import TaskTitle from "./TaskTitle";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import Pusher from "@/sections/Tasks/Pusher";
+import useCookieKey from "./useCookieKey";
 
 // ------------------------------------------------------------------------------------------
 
 const getValues = (task?: IKanbanCard) => IKanbanCardRes2Req(task);
 
 // ------------------------------------------------------------------------------------------
-
-const getCookieKey = (id: number = -1) =>
-    id === -1 ? `PPTaskForm-create` : `PPTaskForm-${id}`;
 
 interface DetailsProps {
     quickCreate?: boolean; // INFO: (true) for when creating a task from another resource e.g. Property, Customer so that form is already dirty
@@ -39,7 +37,7 @@ interface DetailsProps {
 const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     const { name, uniqueCode } = task || {};
 
-    const cookieKey = getCookieKey(task?.id);
+    const cookieKey = useCookieKey();
     const [methods, { PersistNotice, persistChanges }] =
         useFormPersist<ICreateOrUpdateTaskReq>(cookieKey, onClose, {
             dialog: true,
