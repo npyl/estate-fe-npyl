@@ -4,18 +4,22 @@ import { useEditPropertyMutation } from "@/services/properties";
 import { useCallback } from "react";
 import { IPropertiesPOST } from "@/types/properties";
 import { useRouter } from "next/router";
+import useTabUpdate from "./PropertyPusher/useTabUpdate";
 
 const EditById = () => {
     const router = useRouter();
     const { property, propertyId: id } = useGetProperty();
 
     const [edit] = useEditPropertyMutation();
+    const { updateTab } = useTabUpdate();
 
     const handleSubmit = useCallback(
         async (body: IPropertiesPOST, generate: boolean) => {
             const res = await edit({ id, generate, ...body });
 
             if ("error" in res) return false;
+
+            updateTab();
 
             return true;
         },

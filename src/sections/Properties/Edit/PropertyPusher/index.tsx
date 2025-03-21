@@ -1,14 +1,8 @@
 import { useRouter } from "next/router";
 import Pusher from "@/sections/Pusher";
-import { ITab } from "@/types/tabs";
 import { useGetPropertyByIdQuery } from "@/services/properties";
 import { toNumberSafe } from "@/utils/toNumber";
-
-const getTab = (resourceId: number, isFirstEdit: boolean): ITab => ({
-    path: `/property/edit/${resourceId}`,
-    renderer: isFirstEdit ? "PROPERTY_CREATE" : "PROPERTY_EDIT",
-    resourceId,
-});
+import getTab from "./getTab";
 
 const PropertyPusher = () => {
     const router = useRouter();
