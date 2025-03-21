@@ -49,8 +49,8 @@ const useForwardEditorRef = (
     editor: TEditor | null,
     ref: ForwardedRef<TEditor>
 ) => {
-    // INFO: precaution; the provider is responsible for loading this componenent *ONLY* when the object is ready
     useEffect(() => {
+        // INFO: precaution; the provider is responsible for loading this component *ONLY* when the object is ready
         if (!editor) return;
 
         if (typeof ref === "function") {
