@@ -70,7 +70,7 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
 });
 
 const getCookieKey = (id: number = -1) =>
-    id !== -1 ? `PPCustomerForm-${id}` : null;
+    id !== -1 ? `PPCustomerForm-${id}` : "PPCustomerForm-create";
 
 const useCustomerForm = (
     customer: ICustomer | undefined,
