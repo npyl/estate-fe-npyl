@@ -9,11 +9,9 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
     flexDirection: "row",
     gap: 1,
 
-    marginInline: 2,
-
     justifyContent: "space-between",
     alignItems: "center",
-
+    padding: "6px 10px",
     ...(current
         ? {
               color: (theme) => theme.palette.neutral?.[200],
@@ -37,11 +35,8 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
           }),
 
     boxShadow: (theme) => theme.shadows[5],
-
     transition: "all 0.3s ease",
-
     cursor: "pointer",
-
     width: "fit-content",
     maxWidth: "350px",
 });
