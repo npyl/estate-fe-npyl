@@ -54,9 +54,9 @@ const useInitialValues = (id?: number) => {
 // -------------------------------------------------------------------
 
 const getCookieKey = (id: number = -1) =>
-    id === -1 ? null : `PPAgreementForm-${id}`;
+    id === -1 ? "PPAgreementForm-create" : `PPAgreementForm-${id}`;
 
-interface Props extends DialogProps {
+interface Props extends Omit<DialogProps, "open"> {
     editedAgreementId?: number;
 }
 
@@ -113,7 +113,7 @@ const PreparationDialog: React.FC<Props> = ({
         <>
             <FormProvider {...methods}>
                 <Dialog
-                    {...props}
+                    open
                     maxWidth="lg"
                     submit
                     onSubmit={methods.handleSubmit(handleSubmit)}
@@ -158,6 +158,7 @@ const PreparationDialog: React.FC<Props> = ({
                             </Stack>
                         </Stack>
                     }
+                    {...props}
                 />
             </FormProvider>
         </>

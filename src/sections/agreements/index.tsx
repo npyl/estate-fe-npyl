@@ -2,9 +2,26 @@ import FiltersBar from "./FiltersBar";
 import { AgreementsFiltersProvider } from "./FiltersBar/FiltersContext";
 import Stack from "@mui/material/Stack";
 import CardsContent from "./Content";
-import { useState } from "react";
+import { FC, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
+import useDialog from "@/hooks/useDialog";
 const PreparationDialog = dynamic(() => import("./Dialogs/Preparation"));
+
+// --------------------------------------------------------------------------------
+
+interface CreateAgreementProps {
+    create?: boolean;
+}
+
+const CreateAgreement: FC<CreateAgreementProps> = ({ create = false }) => {
+    const [isOpen, _, closeDialog] = useDialog(create);
+
+    if (!isOpen) return null;
+
+    return <PreparationDialog onClose={closeDialog} />;
+};
+
+// --------------------------------------------------------------------------------
 
 interface Props {
     create?: boolean;
@@ -18,40 +35,18 @@ const AgreementsSection: React.FC<Props> = ({
     create = false,
     propertyId,
     customerId,
-}) => {
-    // -1: closed
-    // 0: create
-    // >0: edit with agreement id
-    const [dialogMode, setDialogMode] = useState(create ? 0 : -1);
-    const openCreateDialog = () => setDialogMode(0);
-    const openEditDialog = (id: number) => setDialogMode(id);
-    const closeDialog = () => setDialogMode(-1);
+}) => (
+    <>
+        <AgreementsFiltersProvider>
+            <Stack spacing={1}>
+                <FiltersBar customer={!!customerId} />
 
-    return (
-        <>
-            <AgreementsFiltersProvider>
-                <Stack spacing={1}>
-                    <FiltersBar
-                        customer={!!customerId}
-                        onClickNew={openCreateDialog}
-                    />
-                    <CardsContent
-                        propertyId={propertyId}
-                        customerId={customerId}
-                        onEditAgreement={openEditDialog}
-                    />
-                </Stack>
-            </AgreementsFiltersProvider>
+                <CardsContent propertyId={propertyId} customerId={customerId} />
+            </Stack>
+        </AgreementsFiltersProvider>
 
-            {dialogMode !== -1 ? (
-                <PreparationDialog
-                    open
-                    editedAgreementId={dialogMode}
-                    onClose={closeDialog}
-                />
-            ) : null}
-        </>
-    );
-};
+        <CreateAgreement create={create} />
+    </>
+);
 
 export default AgreementsSection;
