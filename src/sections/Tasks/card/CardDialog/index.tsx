@@ -28,7 +28,7 @@ const getValues = (task?: IKanbanCard) => IKanbanCardRes2Req(task);
 // ------------------------------------------------------------------------------------------
 
 const getCookieKey = (id: number = -1) =>
-    id === -1 ? null : `PPTaskForm-${id}`;
+    id === -1 ? `PPTaskForm-create` : `PPTaskForm-${id}`;
 
 interface DetailsProps {
     quickCreate?: boolean; // INFO: (true) for when creating a task from another resource e.g. Property, Customer so that form is already dirty
