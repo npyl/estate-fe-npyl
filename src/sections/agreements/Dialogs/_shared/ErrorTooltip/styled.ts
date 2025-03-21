@@ -1,7 +1,7 @@
 import { Tooltip, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { Z_INDEX } from "@/config";
+import { Z_INDEX } from "@/constants/config";
 
 const StyledErrorOutlineIcon = styled(ErrorOutlineIcon)(({ theme }) => ({
     padding: theme.spacing(0.1),

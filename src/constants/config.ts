@@ -1,4 +1,5 @@
 export const Z_INDEX = {
+    POPOVER: 1000,
     AGREEMENT_FORM: 1500,
 };
 
