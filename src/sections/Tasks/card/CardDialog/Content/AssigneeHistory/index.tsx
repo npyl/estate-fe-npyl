@@ -10,7 +10,6 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import { Stack, SxProps, Theme, Typography } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import AvatarGroup from "@/components/Avatar/Group";
-import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------
@@ -88,17 +87,15 @@ const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
 // ----------------------------------------------------------------------------
 
 const getHistoryItem =
-    (length: number) => (i: IKanbanAssigneeHistory, index: number) => {
-        const ids = i?.assignees?.map(({ id }) => id);
-        return (
+    (length: number) => (i: IKanbanAssigneeHistory, index: number) =>
+        (
             <HistoryItem
-                key={JSON.stringify(ids)}
+                key={index}
                 i={i}
                 last={index === length - 1}
                 updatedAt={i.createdAt}
             />
         );
-    };
 
 // -----------------------------------------------------------------
 
