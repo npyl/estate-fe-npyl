@@ -3,34 +3,22 @@ import { useTranslation } from "react-i18next";
 import SoftTypography from "@/components/SoftLabel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import Stack from "@mui/material/Stack";
-import { MutableRefObject, useCallback } from "react";
+import { MutableRefObject, useCallback, useState } from "react";
 import IconButton from "@mui/material/IconButton";
-import useToggle from "@/hooks/useToggle";
-import Button from "@mui/material/Button";
-import useFormCookie from "./useFormCookie";
+import Divider from "@mui/material/Divider";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // -----------------------------------------------------------------------------
 
-interface ClearButtonProps<TFieldValues extends FieldValues> {
-    cookieKey: string | null;
-    temporaryChangesRef: MutableRefObject<TFieldValues | undefined>;
+interface ClearButtonProps {
+    onRemove: VoidFunction;
 }
 
-const ClearButton = <TFieldValues extends FieldValues>({
-    cookieKey,
-    temporaryChangesRef,
-}: ClearButtonProps<TFieldValues>) => {
-    const { t } = useTranslation();
-
-    const [_0, _1, remove] = useFormCookie(cookieKey);
-
-    const handleClick = useCallback(() => {
-        temporaryChangesRef.current = undefined;
-        remove();
-    }, []);
-
-    return <Button onClick={handleClick}>{t("Clear")}</Button>;
-};
+const ClearButton = ({ onRemove }: ClearButtonProps) => (
+    <IconButton onClick={onRemove}>
+        <DeleteIcon />
+    </IconButton>
+);
 
 // -----------------------------------------------------------------------------
 
@@ -38,14 +26,14 @@ const useContentControl = <TFieldValues extends FieldValues>(
     values: TFieldValues | undefined,
     temporaryChangesRef: MutableRefObject<TFieldValues | undefined>
 ) => {
-    const { reset, getValues } = useFormContext<TFieldValues>();
+    const { reset } = useFormContext<TFieldValues>();
 
-    const [isOriginal, toggleOriginal] = useToggle(false);
+    const [isOriginal, setOriginal] = useState(false);
     const onToggle = useCallback(() => {
         const data = isOriginal ? temporaryChangesRef.current : values;
         reset(data);
-        toggleOriginal();
-    }, [values, isOriginal, getValues]);
+        setOriginal(!isOriginal);
+    }, [values, isOriginal]);
 
     return { isOriginal, onToggle };
 };
@@ -53,13 +41,13 @@ const useContentControl = <TFieldValues extends FieldValues>(
 // -----------------------------------------------------------------------------
 
 interface NoticeProps<TFieldValues extends FieldValues> {
-    cookieKey: string | null;
     values?: TFieldValues;
     temporaryChangesRef: MutableRefObject<TFieldValues | undefined>;
+    onRemove: VoidFunction;
 }
 
 const Notice = <TFieldValues extends FieldValues>({
-    cookieKey,
+    onRemove,
     values,
     temporaryChangesRef,
 }: NoticeProps<TFieldValues>) => {
@@ -90,14 +78,16 @@ const Notice = <TFieldValues extends FieldValues>({
                 {label}
             </SoftTypography>
 
+            {!isOriginal ? (
+                <>
+                    <ClearButton onRemove={onRemove} />
+                    <Divider orientation="vertical" flexItem />
+                </>
+            ) : null}
+
             <IconButton onClick={onToggle}>
                 <RestartAltIcon />
             </IconButton>
-
-            <ClearButton
-                cookieKey={cookieKey}
-                temporaryChangesRef={temporaryChangesRef}
-            />
         </Stack>
     );
 };

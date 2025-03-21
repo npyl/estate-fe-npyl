@@ -12,7 +12,7 @@ const useFormMethods = <
     TContext = any,
     TTransformedValues extends FieldValues | undefined = undefined
 >(
-    hasCookie: boolean,
+    hasStorage: boolean,
     methods: UseFormReturn<TFieldValues, TContext, TTransformedValues>,
     onChange: (key: string, value: any) => void,
     onSubmitSuccess: VoidFunction
@@ -84,11 +84,11 @@ const useFormMethods = <
         () =>
             new Proxy(methods.formState, {
                 get(target, prop) {
-                    if (prop === "isDirty") return target.isDirty || hasCookie;
+                    if (prop === "isDirty") return target.isDirty || hasStorage;
                     return Reflect.get(target, prop);
                 },
             }),
-        [methods.formState, hasCookie]
+        [methods.formState, hasStorage]
     );
 
     return { ...methods, formState, setValue, handleSubmit };

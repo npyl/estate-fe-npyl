@@ -9,10 +9,13 @@ import debugLog from "@/_private/debugLog";
 import useUnsavedChangesWatcher from "./useUnsavedWatcher";
 import { EMPTY_FALLBACK } from "./constant";
 import dynamic from "next/dynamic";
-import useFormCookie from "./useFormCookie";
+import useFormStorage from "./useFormStorage";
 import quickToast from "./quickToast";
 import useFormMethods from "./useFormMethods";
 const Notice = dynamic(() => import("./Notice"));
+
+// INFO: prevent state change before redirects
+const PASSIVE = true;
 
 /**
  * Omit 'defaultValues' from UseFormProps
@@ -35,12 +38,13 @@ type TReturn<
 ];
 
 /**
- * Hook for persisting a form to cookie
+ * Hook for persisting a form to some form of persistent storage (e.g. currently, localStorage)
  *
  * Useful for switching between draft versions (unsaved, e.g. not yet POSTed to Backend) of forms
+ * (From now on, everywhere it says 'cookie' we mean storage item)
  *
  * Uses
- * - useCookie
+ * - useLocalStorage
  * - useForm
  *
  * The source of truth for useForm is determined based on the following logic:
@@ -56,7 +60,7 @@ type TReturn<
  *
  * !IMPORTANT!: the handleSubmit's onValid callback must be a Promise returning true/false (so that our code knows whether to remove the cookie or not!)
  *
- * @param cookieKey a valid string or null (which will immediately tell us to ignore it)
+ * @param storageKey a valid string or null (which will immediately tell us to ignore it)
  * @param onSaveSuccess a callback for the user to do whatever logic *AFTER* our custom submit's onValid has successfully completed!
  *                      This is the proper method to implement things like redirects etc.
  */
@@ -65,19 +69,19 @@ function useFormPersist<
     TContext = any,
     TTransformedValues extends FieldValues | undefined = undefined
 >(
-    cookieKey: string | null,
+    storageKey: string | null,
     onSaveSuccess: VoidFunction | null,
     props?: PropsWithoutDefaultValues<TFieldValues, TContext>
 ): TReturn<TFieldValues, TContext, TTransformedValues> {
-    const [cookie, setCookie, removeCookie] =
-        useFormCookie<TFieldValues>(cookieKey);
+    const [cookie, setStorage, removeStorage] =
+        useFormStorage<TFieldValues>(storageKey);
 
-    const hasCookie = cookie !== EMPTY_FALLBACK;
+    const hasStorage = cookie !== EMPTY_FALLBACK;
 
     const values = useMemo(() => {
-        if (hasCookie) return cookie;
+        if (hasStorage) return cookie;
         return props?.values;
-    }, [hasCookie, cookie, props?.values]);
+    }, [hasStorage, cookie, props?.values]);
 
     const formProps = { ...(props || {}), values };
 
@@ -96,7 +100,7 @@ function useFormPersist<
     // ---------------------------------------------------------------------
 
     // INFO: make sure cookie is not faulty
-    const safeCookie = hasCookie ? cookie : values;
+    const safeCookie = hasStorage ? cookie : values;
     const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
 
     // INFO: it is important to grab isDirty from methods0 instead of methods
@@ -109,18 +113,23 @@ function useFormPersist<
         const data = temporaryChanges.current;
         if (!data) return;
 
-        debugLog("persisting data: ", temporaryChanges);
+        debugLog("persisting data: ", data);
 
-        setCookie(data);
+        setStorage(data, PASSIVE);
         quickToast();
-    }, [isDirty, setCookie]);
+    }, [isDirty, setStorage]);
     useUnsavedChangesWatcher(persistChanges);
 
     // ---------------------------------------------------------------------
 
-    const PersistNotice = hasCookie ? (
+    const onRemove = useCallback(() => {
+        temporaryChanges.current = undefined;
+        removeStorage();
+    }, [removeStorage]);
+
+    const PersistNotice = hasStorage ? (
         <Notice
-            cookieKey={cookieKey}
+            onRemove={onRemove}
             values={props?.values}
             temporaryChangesRef={temporaryChanges}
         />
@@ -134,15 +143,15 @@ function useFormPersist<
     }, []);
     const onSubmitSuccess = useCallback(() => {
         // INFO: remove form's persisted verion
-        debugLog("removing cookie...");
+        debugLog("removing storage...");
         disablePersist();
-        removeCookie();
+        removeStorage(PASSIVE);
 
         // Do things like redirects etc.
         onSaveSuccess?.();
-    }, [removeCookie, onSaveSuccess]);
+    }, [removeStorage, onSaveSuccess]);
     const methods = useFormMethods(
-        hasCookie,
+        hasStorage,
         methods0,
         onChange,
         onSubmitSuccess

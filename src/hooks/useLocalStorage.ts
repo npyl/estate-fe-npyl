@@ -12,10 +12,7 @@ const useLocalStorage = <V extends string | number | object = string>(
     const [value, setValue] = useState<V>(fallbackValue);
 
     useLayoutEffect(() => {
-        if (!key) {
-            setValue(fallbackValue);
-            return;
-        }
+        if (!key) return;
 
         const v = localStorage.getItem(key);
         if (!v) {
