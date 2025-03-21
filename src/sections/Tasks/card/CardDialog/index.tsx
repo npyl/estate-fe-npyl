@@ -1,6 +1,6 @@
 import Dialog from "@/components/Dialog";
 import { ICreateOrUpdateTaskReq, IKanbanCard } from "@/types/tasks";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback } from "react";
 import {
     DialogSx,
     StyledDialogActions,
@@ -42,6 +42,7 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     const cookieKey = getCookieKey(task?.id);
     const [methods, { PersistNotice, persistChanges }] =
         useFormPersist<ICreateOrUpdateTaskReq>(cookieKey, onClose, {
+            dialog: true,
             resolver: yupResolver(schema),
             values: getValues(task),
         });
@@ -67,6 +68,8 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
             <Pusher taskId={task?.id} />
 
             <FormProvider {...methods}>
+                {PersistNotice}
+
                 <Dialog
                     open
                     submit
@@ -91,7 +94,6 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
                     actions={
                         <Actions
                             quickCreate={quickCreate}
-                            PersistNotice={PersistNotice}
                             onClose={handleClose}
                         />
                     }

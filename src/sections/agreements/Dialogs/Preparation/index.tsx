@@ -26,7 +26,6 @@ import ExportButton from "./Buttons/Export";
 import EditPDFButton from "./Buttons/EditPDF";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { TForm } from "./types";
-import Divider from "@mui/material/Divider";
 
 // -------------------------------------------------------------------
 
@@ -77,6 +76,7 @@ const PreparationDialog: React.FC<Props> = ({
         cookieKey,
         null,
         {
+            dialog: true,
             resolver: zodResolver(Schema),
             values,
         }
@@ -112,6 +112,8 @@ const PreparationDialog: React.FC<Props> = ({
     return (
         <>
             <FormProvider {...methods}>
+                {PersistNotice}
+
                 <Dialog
                     open
                     maxWidth="lg"
@@ -132,9 +134,6 @@ const PreparationDialog: React.FC<Props> = ({
                     DialogActionsComponent={StyledActions}
                     actions={
                         <Stack spacing={1} width={1}>
-                            {PersistNotice ? PersistNotice : null}
-                            {PersistNotice ? <Divider /> : null}
-
                             <Stack
                                 direction="row"
                                 spacing={1}

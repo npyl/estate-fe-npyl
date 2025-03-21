@@ -23,7 +23,9 @@ const PASSIVE = true;
 type PropsWithoutDefaultValues<
     TFieldValues extends FieldValues = FieldValues,
     TContext = any
-> = Omit<UseFormProps<TFieldValues, TContext>, "defaultValues">;
+> = Omit<UseFormProps<TFieldValues, TContext>, "defaultValues"> & {
+    dialog?: boolean;
+};
 
 type TReturn<
     TFieldValues extends FieldValues = FieldValues,
@@ -71,8 +73,10 @@ function useFormPersist<
 >(
     storageKey: string | null,
     onSaveSuccess: VoidFunction | null,
-    props?: PropsWithoutDefaultValues<TFieldValues, TContext>
+    _props?: PropsWithoutDefaultValues<TFieldValues, TContext>
 ): TReturn<TFieldValues, TContext, TTransformedValues> {
+    const { dialog = false, ...props } = _props || {};
+
     const [cookie, setStorage, removeStorage] =
         useFormStorage<TFieldValues>(storageKey);
 
@@ -130,6 +134,8 @@ function useFormPersist<
 
     const PersistNotice = hasStorage ? (
         <Notice
+            dialog={dialog}
+            // ...
             onRemove={onRemove}
             values={props?.values}
             temporaryChangesRef={temporaryChanges}

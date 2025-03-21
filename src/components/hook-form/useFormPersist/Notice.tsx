@@ -2,11 +2,14 @@ import { FieldValues, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import SoftTypography from "@/components/SoftLabel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import Stack from "@mui/material/Stack";
-import { MutableRefObject, useCallback, useState } from "react";
+import Stack, { StackProps } from "@mui/material/Stack";
+import { FC, MutableRefObject, useCallback, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { SxProps, Theme } from "@mui/material";
+import { getBorderColor2 } from "@/theme/borderColor";
+import { Z_INDEX } from "@/constants/config";
 
 // -----------------------------------------------------------------------------
 
@@ -40,16 +43,46 @@ const useContentControl = <TFieldValues extends FieldValues>(
 
 // -----------------------------------------------------------------------------
 
+const getContainerSx = (dialog: boolean): SxProps<Theme> => ({
+    flexDirection: "row",
+    gap: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    //
+    position: dialog ? "fixed" : "unset",
+    top: 0,
+    right: 0,
+    zIndex: Z_INDEX.POPOVER,
+    bgcolor: dialog ? "background.paper" : "unset",
+    border: dialog ? "1px solid" : "none",
+    borderColor: getBorderColor2,
+    borderRadius: 1,
+    p: dialog ? 0.5 : 0,
+    m: dialog ? 1 : 0,
+});
+
+interface ContainerProps extends StackProps {
+    dialog: boolean;
+}
+
+const Container: FC<ContainerProps> = ({ dialog, sx, ...props }) => (
+    <Stack sx={{ ...(getContainerSx(dialog) as any), ...sx }} {...props} />
+);
+
+// -----------------------------------------------------------------------------
+
 interface NoticeProps<TFieldValues extends FieldValues> {
+    dialog: boolean;
     values?: TFieldValues;
     temporaryChangesRef: MutableRefObject<TFieldValues | undefined>;
     onRemove: VoidFunction;
 }
 
 const Notice = <TFieldValues extends FieldValues>({
-    onRemove,
+    dialog,
     values,
     temporaryChangesRef,
+    onRemove,
 }: NoticeProps<TFieldValues>) => {
     const { t } = useTranslation();
 
@@ -62,12 +95,7 @@ const Notice = <TFieldValues extends FieldValues>({
     const color = isOriginal ? "primary" : "warning";
 
     return (
-        <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="center"
-        >
+        <Container dialog={dialog}>
             <SoftTypography
                 width="fit-content"
                 p={1}
@@ -88,7 +116,7 @@ const Notice = <TFieldValues extends FieldValues>({
             <IconButton onClick={onToggle}>
                 <RestartAltIcon />
             </IconButton>
-        </Stack>
+        </Container>
     );
 };
 
