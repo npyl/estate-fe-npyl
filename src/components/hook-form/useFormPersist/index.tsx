@@ -109,6 +109,7 @@ function useFormPersist<
     const persistChanges = useCallback(() => {
         if (!isDirty) return;
         if (!shouldPersist.current) return;
+        if (!storageKey) return;
 
         const data = temporaryChanges.current;
         if (!data) return;
@@ -117,7 +118,7 @@ function useFormPersist<
 
         setStorage(data, PASSIVE);
         quickToast();
-    }, [isDirty, setStorage]);
+    }, [storageKey, isDirty, setStorage]);
     useUnsavedChangesWatcher(persistChanges);
 
     // ---------------------------------------------------------------------
