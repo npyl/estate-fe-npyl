@@ -14,7 +14,8 @@ const GenerateCheckbox = forwardRef<GenerateCheckboxRef, object>((_, ref) => {
 
     const { property } = useGetProperty();
     const { createdAt, updatedAt } = property || {};
-    const isFirstEdit = createdAt === updatedAt;
+    const isFirstEdit = createdAt?.toString() === updatedAt?.toString();
+
     const [generate, toggleGenerate] = useToggle(isFirstEdit);
 
     useImperativeHandle(

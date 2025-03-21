@@ -428,8 +428,6 @@ export interface IProperties {
     video: string;
     descriptions: Record<string, DescriptionEntry>;
     hidePrice: boolean;
-    createdAt: string;
-    updatedAt: string;
 
     id: number;
     area: number;
@@ -474,6 +472,9 @@ export interface IProperties {
     googleEarth: IPropertyFile;
 
     pdfGeneratedAt: string | null;
+
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface IPropertyMarker {

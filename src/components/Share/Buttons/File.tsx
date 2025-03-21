@@ -7,6 +7,7 @@ import errorToast from "@/components/Toaster/error";
 import CircularProgress from "@mui/material/CircularProgress";
 import useDialog from "@/hooks/useDialog";
 import { SxProps, Theme } from "@mui/material";
+import debugLog from "@/_private/debugLog";
 
 const ProgressSx: SxProps<Theme> = {
     color: "text.secondary",
@@ -70,7 +71,7 @@ const FileButton: FC<FileButtonProps> = ({ getter }) => {
                     files,
                 });
             } catch (ex) {
-                console.log(ex);
+                debugLog(ex);
                 errorToast("_ERROR_");
             }
         },
