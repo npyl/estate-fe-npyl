@@ -26,8 +26,8 @@ interface CustomerFormProps {
     compact?: boolean;
 
     customer?: ICustomer;
-    isLoading: boolean;
-    isError: boolean;
+    isLoading?: boolean;
+    isError?: boolean;
     onSave: (body: ICustomerPOST) => Promise<{ data: number } | { error: any }>;
     onSaveSuccess?: VoidFunction;
     onCancel: () => void;
@@ -38,8 +38,8 @@ const Form: FC<CustomerFormProps> = ({
     compact = false,
 
     customer,
-    isLoading,
-    isError,
+    isLoading = false,
+    isError = false,
 
     onSave,
     onSaveSuccess = null,
@@ -47,7 +47,11 @@ const Form: FC<CustomerFormProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const { methods, PersistNotice } = useCustomerForm(customer, onSaveSuccess);
+    const { methods, PersistNotice } = useCustomerForm(
+        quickCreate,
+        customer,
+        onSaveSuccess
+    );
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
     const handleSubmit = methods.handleSubmit(async (data: ICustomerYup) => {

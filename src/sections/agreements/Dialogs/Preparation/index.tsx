@@ -26,6 +26,7 @@ import ExportButton from "./Buttons/Export";
 import EditPDFButton from "./Buttons/EditPDF";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { TForm } from "./types";
+import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
 
 // -------------------------------------------------------------------
 
@@ -52,9 +53,6 @@ const useInitialValues = (id?: number) => {
 
 // -------------------------------------------------------------------
 
-const getCookieKey = (id: number = -1) =>
-    id === -1 ? "PPAgreementForm-create" : `PPAgreementForm-${id}`;
-
 interface Props extends Omit<DialogProps, "open"> {
     editedAgreementId?: number;
 }
@@ -71,7 +69,11 @@ const PreparationDialog: React.FC<Props> = ({
     const { values, isCustomer } = useInitialValues(editedAgreementId);
     const shouldAutofill = editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
-    const cookieKey = getCookieKey(editedAgreementId);
+    const cookieKey = useFormPersistStorageKey(
+        "PPAgreementForm",
+        editedAgreementId
+    );
+
     const [methods, { PersistNotice }] = useFormPersist<TForm>(
         cookieKey,
         null,

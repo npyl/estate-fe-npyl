@@ -1,7 +1,5 @@
+import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
 import { parseAsInteger, useQueryState } from "nuqs";
-
-const getCookieKey = (id: number = -1) =>
-    id === -1 ? `PPTaskForm-create` : `PPTaskForm-${id}`;
 
 /**
  * Read taskId from url param using nuqs;
@@ -9,7 +7,7 @@ const getCookieKey = (id: number = -1) =>
  */
 const useCookieKey = () => {
     const [taskId] = useQueryState("taskId", parseAsInteger.withDefault(-1));
-    return getCookieKey(taskId);
+    return useFormPersistStorageKey("PPTaskForm", taskId);
 };
 
 export default useCookieKey;

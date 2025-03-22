@@ -12,6 +12,7 @@ import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { toNumberSafe } from "@/utils/toNumber";
 import { useRouter } from "next/router";
+import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -302,9 +303,6 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
     };
 };
 
-const getCookieKey = (id: number = -1) =>
-    id === -1 ? null : `PPPropertyForm-${id}`;
-
 const usePropertyForm = (
     property?: IProperties,
     onSubmitSucces: VoidFunction | null = null
@@ -313,7 +311,7 @@ const usePropertyForm = (
     const { propertyId } = router.query;
     const iPropertyId = toNumberSafe(propertyId);
 
-    const cookieKey = getCookieKey(iPropertyId);
+    const cookieKey = useFormPersistStorageKey("PPPropertyForm", iPropertyId);
 
     const values = useMemo(() => getDefaultValues(property), [property]);
 

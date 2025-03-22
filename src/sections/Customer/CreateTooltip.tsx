@@ -33,6 +33,7 @@ const CreateTooltip: FC<CreateTooltipProps> = ({ onCreate }) => {
 
             {isOpen ? (
                 <CustomerModal
+                    quickCreate
                     isLoading={isLoading}
                     createCb={create}
                     onCreate={onCreate}
