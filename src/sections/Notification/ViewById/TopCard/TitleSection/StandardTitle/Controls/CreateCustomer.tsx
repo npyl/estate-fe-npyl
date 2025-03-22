@@ -52,6 +52,7 @@ const CreateButton = () => {
 
             {isOpen ? (
                 <CustomerModal
+                    quickCreate
                     customer={getCustomer()}
                     createCb={createCb}
                     isLoading={isLoading}

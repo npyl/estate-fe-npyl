@@ -1,9 +1,7 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { LoadingButton } from "@mui/lab";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 // Sections
 import AddressDetails from "./AddressDetails";
@@ -14,8 +12,17 @@ import { FormProvider } from "react-hook-form";
 import { ICustomerYup } from "./types";
 import useCustomerForm from "./useCustomerForm";
 import FormBottomBar from "@/sections/FormBottomBar";
+import SaveButton from "./SaveButton";
 
-interface FormProps {
+const COLUMN_GRID = (compact: boolean) =>
+    compact
+        ? {
+              lg: 12,
+          }
+        : {};
+
+interface CustomerFormProps {
+    quickCreate?: boolean;
     compact?: boolean;
 
     customer?: ICustomer;
@@ -26,14 +33,8 @@ interface FormProps {
     onCancel: () => void;
 }
 
-const COLUMN_GRID = (compact: boolean) =>
-    compact
-        ? {
-              lg: 12,
-          }
-        : {};
-
-const Form: FC<FormProps> = ({
+const Form: FC<CustomerFormProps> = ({
+    quickCreate = false,
     compact = false,
 
     customer,
@@ -47,8 +48,6 @@ const Form: FC<FormProps> = ({
     const { t } = useTranslation();
 
     const { methods, PersistNotice } = useCustomerForm(customer, onSaveSuccess);
-
-    const isDirty = methods.formState.isDirty;
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
     const handleSubmit = methods.handleSubmit(async (data: ICustomerYup) => {
@@ -90,15 +89,12 @@ const Form: FC<FormProps> = ({
                                 {t("Cancel")}
                             </Button>
 
-                            <LoadingButton
-                                disabled={!isDirty}
-                                loading={isLoading && !isError}
-                                variant="contained"
-                                startIcon={<SendIcon />}
+                            <SaveButton
+                                quickCreate={quickCreate}
+                                loading={isLoading}
+                                error={isError}
                                 onClick={handleSubmit}
-                            >
-                                {t("Save")}
-                            </LoadingButton>
+                            />
                         </Stack>
                     }
                 />
@@ -107,4 +103,5 @@ const Form: FC<FormProps> = ({
     );
 };
 
+export type { CustomerFormProps };
 export default Form;
