@@ -36,7 +36,10 @@ const useContentUpdate = (
     content: string | undefined
 ) => {
     useEffect(() => {
-        if (!content) return;
+        if (!content) {
+            editor?.commands?.clearContent();
+            return;
+        }
 
         const parsed = JSON.parseSafe(content);
         if (!parsed) return;
