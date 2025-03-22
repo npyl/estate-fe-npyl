@@ -1,7 +1,32 @@
 import debugLog from "@/_private/debugLog";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import useUpdateLayoutEffect from "@/hooks/useUpdateLayoutEffect";
+
+const getValue = <V extends string | number | object = string>(
+    key: string | null,
+    fallbackValue: V
+) => {
+    if (typeof window === "undefined") return fallbackValue;
+    if (!key) return fallbackValue;
+
+    const v = localStorage.getItem(key);
+    if (!v) return fallbackValue;
+
+    const parsed = JSON.parseSafe<V>(v);
+    if (!parsed) return fallbackValue;
+
+    return parsed;
+};
 
 /**
+ * Access to localStorage
+ *
+ * @param passive Do a set/remove on the localStorage item without updating the state
+ *
+ * TODO:
+ *  - Add events
+ *  - Maybe a provider?
+ *
  * @param key the entry key
  * @param fallbackValue fallback value for when the item isn't available
  */
@@ -9,24 +34,11 @@ const useLocalStorage = <V extends string | number | object = string>(
     key: string | null,
     fallbackValue: V
 ) => {
-    const [value, setValue] = useState<V>(fallbackValue);
+    const [value, setValue] = useState<V>(getValue(key, fallbackValue));
 
-    useLayoutEffect(() => {
-        if (!key) return;
-
-        const v = localStorage.getItem(key);
-        if (!v) {
-            setValue(fallbackValue);
-            return;
-        }
-
-        const parsed = JSON.parseSafe<V>(v);
-        if (!parsed) {
-            setValue(fallbackValue);
-            return;
-        }
-
-        setValue(parsed);
+    useUpdateLayoutEffect(() => {
+        if (!key || !fallbackValue) return;
+        setValue(getValue(key, fallbackValue));
     }, [key, fallbackValue]);
 
     const set = useCallback(
@@ -43,6 +55,7 @@ const useLocalStorage = <V extends string | number | object = string>(
         },
         [key]
     );
+
     const remove = useCallback(
         (passive?: boolean) => {
             if (!key) return;
