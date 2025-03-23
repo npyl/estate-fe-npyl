@@ -48,6 +48,7 @@ export interface IPropertyResultResponse {
 }
 
 export interface IPropertyFilter {
+    locationSearch?: string;
     filterName?: string;
     location?: ILocation;
     code?: string;
@@ -77,6 +78,8 @@ export interface IPropertyFilter {
     furnished: string[];
 
     extras: IPropertyFilterExtras;
+
+    [key: string]: any;
 }
 
 interface IPropertyFilterExtras {
