@@ -11,6 +11,9 @@ import { useEditorContext } from "../context";
 import { isNodeSelection, posToDOMRect } from "@tiptap/core";
 import { ShouldShowProps } from "./types";
 
+// TODO: fix popover moving on scroll;
+// IMPORTANT: Some attempts to fixing this caused nested popovers to lose anchor and load on the top left corner so beware! lets consider it a feature for now!
+
 interface LoaderProps extends PropsWithChildren {
     /**
      * A function that determines whether the menu should be shown or not.
@@ -96,26 +99,7 @@ const Loader: FC<LoaderProps> = ({ children, shouldShow }) => {
     }, []);
 
     return (
-        <Popper
-            open={open}
-            anchorEl={virtualAnchorEl}
-            placement="top"
-            modifiers={[
-                {
-                    name: "offset",
-                    options: {
-                        offset: [0, 10],
-                    },
-                },
-                {
-                    name: "preventOverflow",
-                    options: {
-                        boundary: editor?.options.element,
-                        padding: 8,
-                    },
-                },
-            ]}
-        >
+        <Popper open={open} anchorEl={virtualAnchorEl} placement="top">
             {children}
         </Popper>
     );
