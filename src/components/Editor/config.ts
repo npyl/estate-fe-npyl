@@ -40,11 +40,6 @@ const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
     }
 };
 
-const Z_INDEX = {
-    BUBBLE_MENU: 1,
-    EMOJI_PICKER: 2,
-};
-
 const TEXT_TYPES = ["heading", "paragraph", "listItem"];
 
 const extensions = [
@@ -89,4 +84,4 @@ const extensions = [
     History,
 ];
 
-export { extensions, Z_INDEX };
+export { extensions };

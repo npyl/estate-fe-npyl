@@ -10,6 +10,7 @@ import {
 import { useEditorContext } from "../context";
 import { isNodeSelection, posToDOMRect } from "@tiptap/core";
 import { ShouldShowProps } from "./types";
+import { Z_INDEX } from "@/constants/config";
 
 // TODO: fix popover moving on scroll;
 // IMPORTANT: Some attempts to fixing this caused nested popovers to lose anchor and load on the top left corner so beware! lets consider it a feature for now!
@@ -99,7 +100,12 @@ const Loader: FC<LoaderProps> = ({ children, shouldShow }) => {
     }, []);
 
     return (
-        <Popper open={open} anchorEl={virtualAnchorEl} placement="top">
+        <Popper
+            open={open}
+            anchorEl={virtualAnchorEl}
+            placement="top"
+            style={{ zIndex: Z_INDEX.POPOVER + 1 }}
+        >
             {children}
         </Popper>
     );
