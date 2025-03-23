@@ -226,6 +226,7 @@ const slice = createSlice({
 
         setPoints: (state, { payload }) => {
             state.filters.points = payload;
+            !state.ids.includes("points") && state.ids.push("points");
         },
 
         setSorting: (state, { payload }) => {
@@ -345,6 +346,7 @@ const slice = createSlice({
 
         resetPoints: (state) => {
             state.filters.points = initialState.filters.points;
+            state.ids = state.ids.filter((id) => id !== "points");
         },
 
         resetRegions: (state) => {

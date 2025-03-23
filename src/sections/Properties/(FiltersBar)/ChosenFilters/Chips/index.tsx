@@ -9,6 +9,7 @@ import getEnumLabel from "./util";
 import { TTags } from "../types";
 import dynamic from "next/dynamic";
 import { IPropertyFilter } from "@/types/properties";
+import Points from "./Points";
 
 // Chips
 const MinMaxChip = dynamic(() => import("./MinMax"));
@@ -150,6 +151,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
     }
     if (filterKey === "extras") {
         return <LifestyleChip />;
+    }
+
+    if (filterKey === "points") {
+        return <Points />;
     }
 
     let valuesToDisplay = values;

@@ -20,8 +20,8 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         {...props}
         component={Stack}
         p={1}
-        // NOTE: paddingTop must come from the components so that the label that shrinks on top is visible
-        pt={0}
+        pt={0} // NOTE: paddingTop must come from the components so that the label that shrinks on top is visible
+        spacing={1}
     >
         <SpaceBetween>
             <Stack

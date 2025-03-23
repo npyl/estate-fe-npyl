@@ -1,5 +1,5 @@
-import { Chip, Grid, GridProps, Stack, Typography } from "@mui/material";
-import { useCallback, useMemo } from "react";
+import { Chip, Stack, StackProps, Typography } from "@mui/material";
+import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
@@ -10,7 +10,7 @@ import {
     selectIds,
 } from "src/slices/customer/filters";
 
-const ChosenFilters = (props: GridProps) => {
+const ChosenFilters: FC<StackProps> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -105,11 +105,10 @@ const ChosenFilters = (props: GridProps) => {
     );
 
     return (
-        <Grid container direction="row" {...props}>
+        <Stack direction="row" spacing={1} {...props}>
             {ids.map((key, index) => {
                 const values = changedProps[key];
                 let label = filterTags[key].label;
-                let manager = filterTags[key].label;
                 if (!values || !label) return <></>;
 
                 const isRole =
@@ -137,7 +136,6 @@ const ChosenFilters = (props: GridProps) => {
                             key={index}
                             label={label}
                             onDelete={() => dispatch(deleteFilter(key))}
-                            sx={{ m: 0.5 }}
                         />
                     );
                 }
@@ -157,22 +155,10 @@ const ChosenFilters = (props: GridProps) => {
                             key={index}
                             label={
                                 <Stack direction="row">
-                                    <Typography
-                                        sx={{
-                                            fontWeight: "medium",
-                                            paddingRight: 1,
-                                        }}
-                                    >
+                                    <Typography fontWeight="medium">
                                         {label}:
                                     </Typography>
-                                    {/* <Typography
-                                        sx={{
-                                            fontWeight: "medium",
-                                            paddingRight: 1,
-                                        }}
-                                    >
-                                        {manager}:
-                                    </Typography> */}
+
                                     <Typography
                                         sx={{
                                             textTransform: "capitalize",
@@ -198,7 +184,6 @@ const ChosenFilters = (props: GridProps) => {
                                 dispatch(deleteFilter(`min${suffix}`));
                                 dispatch(deleteFilter(`max${suffix}`));
                             }}
-                            sx={{ m: 0.5 }}
                         />
                     );
                 } else if (suffix === "Price") {
@@ -210,12 +195,7 @@ const ChosenFilters = (props: GridProps) => {
                                 key={index}
                                 label={
                                     <Stack direction="row">
-                                        <Typography
-                                            sx={{
-                                                fontWeight: "medium",
-                                                paddingRight: 1,
-                                            }}
-                                        >
+                                        <Typography fontWeight="medium">
                                             {t("Minimum Price")}
                                             {" (€):"}
                                         </Typography>
@@ -239,12 +219,7 @@ const ChosenFilters = (props: GridProps) => {
                                 key={index}
                                 label={
                                     <Stack direction="row">
-                                        <Typography
-                                            sx={{
-                                                fontWeight: "medium",
-                                                paddingRight: 1,
-                                            }}
-                                        >
+                                        <Typography fontWeight="medium">
                                             {t("Maximum Price")}
                                             {` (€):`}
                                         </Typography>
@@ -269,13 +244,8 @@ const ChosenFilters = (props: GridProps) => {
                             key={index}
                             label={
                                 <Stack direction="row">
-                                    <Typography
-                                        sx={{
-                                            fontWeight: "medium",
-                                            paddingRight: 1,
-                                        }}
-                                    >
-                                        {label}:{/* {isRole ? "" : ":"} */}
+                                    <Typography fontWeight="medium">
+                                        {label}:
                                     </Typography>
                                     <Typography
                                         sx={{ textTransform: "capitalize" }}
@@ -289,12 +259,11 @@ const ChosenFilters = (props: GridProps) => {
                                 </Stack>
                             }
                             onDelete={() => dispatch(deleteFilter(key))}
-                            sx={{ m: 0.5 }}
                         />
                     );
                 }
             })}
-        </Grid>
+        </Stack>
     );
 };
 
