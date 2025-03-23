@@ -8,5 +8,6 @@ export const LAYOUT = {
 };
 
 export const NAV = {
-    W_DASHBOARD: 280,
+    W_TOPBAR: 75,
+    W_DASHBOARD: 200,
 };

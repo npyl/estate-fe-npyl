@@ -65,7 +65,7 @@ const Form: FC<CustomerFormProps> = ({
     return (
         <form>
             <FormProvider {...methods}>
-                <Grid container paddingTop={1} paddingRight={1} spacing={1}>
+                <Grid container spacing={1}>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
                         <CustomerInformation />
                     </Grid>
