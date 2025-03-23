@@ -17,14 +17,15 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     flex: "1 1 auto",
     maxWidth: "100%",
 
-    [theme.breakpoints.up("md")]: {
-        marginLeft: NAV.W_DASHBOARD,
-    },
-
     marginTop: NAV.W_TOPBAR,
     marginBottom: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+
+    [theme.breakpoints.up("md")]: {
+        marginLeft: NAV.W_DASHBOARD,
+        paddingLeft: theme.spacing(2),
+    },
 }));
 
 const Nav = () => {
