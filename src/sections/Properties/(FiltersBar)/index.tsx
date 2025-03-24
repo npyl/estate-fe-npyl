@@ -3,14 +3,6 @@ import { PaperProps } from "@mui/material/Paper";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Stack, SvgIconTypeMap } from "@mui/material";
-// redux
-import { useSelector } from "react-redux";
-import {
-    selectAll,
-    selectSorting,
-    setSorting,
-    sumOfChangedProperties,
-} from "src/slices/filters";
 // icons
 import { Menu } from "@/assets/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -20,15 +12,20 @@ import ChosenFilters from "./ChosenFilters";
 // components
 import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import useDialog from "@/hooks/useDialog";
 import FilterMoreButton from "@/sections/Filters/FilterMore/Button";
 import FilterSortBy from "@/sections/Filters/SortBy";
 import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
 import useSortingOptions from "./useSortingOptions";
-import { useDispatch } from "react-redux";
 import { useFilterPropertiesQuery } from "@/services/properties";
+import {
+    useAllFilters,
+    useFiltersContext,
+    useSorting,
+    useSumOfChangedProperties,
+} from "../FiltersContext";
 const FilterMore = dynamic(() => import("./FilterMore"));
 
 const PAGE_SIZE = 25;
@@ -60,14 +57,14 @@ const viewOptions: viewOptionsType[] = [
 ];
 
 const FilterMoreWrap = () => {
-    const changedPropertyFilters = useSelector(sumOfChangedProperties);
+    const changedPropertyFilters = useSumOfChangedProperties();
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
-    const filters = useSelector(selectAll);
+    const filter = useAllFilters();
 
     //See if can be done better so i do not call again the filterProperties
     const { data } = useFilterPropertiesQuery({
-        filter: filters,
+        filter,
         page: 0,
         pageSize: PAGE_SIZE, // filters only one property just to get the totalProperties from the data
         sortBy: "modifiedAt",
@@ -76,6 +73,7 @@ const FilterMoreWrap = () => {
     //See if can be done better so i do not call again the filterProperties
 
     const totalProperties = data?.totalElements ?? 0;
+
     return (
         <>
             <FilterMoreButton
@@ -107,7 +105,7 @@ const FilterBar: FC<Props> = ({
     belowLg,
     ...props
 }) => {
-    const changedPropertyFilters = useSelector(sumOfChangedProperties);
+    const changedPropertyFilters = useSumOfChangedProperties();
 
     const BUTTONS = useMemo(() => {
         const filtered = belowLg
@@ -125,13 +123,10 @@ const FilterBar: FC<Props> = ({
         ));
     }, [optionView, belowLg]);
 
-    const dispatch = useDispatch();
     const options = useSortingOptions();
-    const sorting = useSelector(selectSorting);
-    const handleSortingChange = useCallback(
-        (s: string) => dispatch(setSorting(s)),
-        []
-    );
+    const sorting = useSorting();
+
+    const { setSorting } = useFiltersContext();
 
     return (
         <FiltersBar
@@ -149,7 +144,7 @@ const FilterBar: FC<Props> = ({
                     <FilterSortBy
                         options={options}
                         sorting={sorting}
-                        onSortingChange={handleSortingChange}
+                        onSortingChange={setSorting}
                     />
 
                     <ButtonGroup

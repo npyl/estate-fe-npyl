@@ -1,14 +1,14 @@
 "use client";
-
 import { Grid, GridProps } from "@mui/material";
 import PropertyCard from "@/components/Cards/PropertyCard";
 import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useFilterPropertiesQuery } from "src/services/properties";
-import { selectAll, setManagerId } from "src/slices/filters";
 import useResponsive from "@/hooks/useResponsive";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useRouter } from "next/router";
+import { useAllFilters, useFiltersContext } from "../FiltersContext";
+import { toNumberSafe } from "@/utils/toNumber";
 
 // ----------------------------------------------------------------------
 
@@ -32,16 +32,19 @@ export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
 
     const pageSize = belowSm ? 5 : belowLg ? 10 : 25;
 
-    const allFilters = useSelector(selectAll);
+    const { setManagerId } = useFiltersContext();
+    const filter = useAllFilters();
 
+    // **Effect to update Redux store with managerId when URL changes**
     useEffect(() => {
         if (assignee) {
-            dispatch(setManagerId(Number(assignee)));
+            const iManagerId = toNumberSafe(assignee);
+            setManagerId(iManagerId);
         }
-    }, [assignee, dispatch]);
+    }, [assignee]);
 
     const { data, isLoading } = useFilterPropertiesQuery({
-        filter: allFilters,
+        filter,
         page: pagination.page,
         pageSize,
         sortBy,

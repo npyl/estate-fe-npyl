@@ -2,10 +2,9 @@ import { Grid } from "@mui/material";
 import Pagination, { usePagination } from "@/components/Pagination";
 import PropertiesList from "./PropertiesList";
 import useResponsive from "@/hooks/useResponsive";
-import { useSelector } from "react-redux";
-import { selectAll } from "@/slices/filters";
 import { useFilterPropertiesQuery } from "@/services/properties";
 import { FC } from "react";
+import { useAllFilters } from "../../FiltersContext";
 
 interface PropertiesSectionProps {
     sortBy: string;
@@ -22,10 +21,10 @@ const PropertiesSection: FC<PropertiesSectionProps> = ({
 
     const pageSize = belowSm ? 5 : belowLg ? 10 : 25;
 
-    const allFilters = useSelector(selectAll);
+    const filter = useAllFilters();
 
     const { data, isLoading } = useFilterPropertiesQuery({
-        filter: allFilters,
+        filter,
         page: pagination.page,
         pageSize,
         sortBy: sortBy,

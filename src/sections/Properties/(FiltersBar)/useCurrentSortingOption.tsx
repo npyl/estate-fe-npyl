@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectSorting } from "@/slices/filters";
+import { selectSorting } from "@/sections/Properties/filters";
 import { useMemo } from "react";
 import useSortingOptions from "./useSortingOptions";
 
