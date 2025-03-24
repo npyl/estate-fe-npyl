@@ -6,7 +6,7 @@ import { Props } from "./types";
 import formatNumber from "./formatNumber";
 
 const PriceSelect: FC<Props> = (props) => {
-    const { type, valueMin, valueMax } = props;
+    const { type, valueMin = 0, valueMax = 0 } = props;
 
     const { t } = useTranslation();
 
