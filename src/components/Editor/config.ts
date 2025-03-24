@@ -24,9 +24,9 @@ import errorToast from "../Toaster/error";
 const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
     try {
         // INFO: allow only https
-        const parsedUrl = url.startsWith("https:")
+        const parsedUrl = url.startsWith("https://")
             ? new URL(url)
-            : new URL(`https://${url}`);
+            : new URL(`${ctx.defaultProtocol}://${url}`);
 
         // use default validation
         if (!ctx.defaultValidate(parsedUrl.href))
@@ -71,6 +71,7 @@ const extensions = [
         maxLevel: 8,
     }),
     Link.configure({
+        defaultProtocol: "https",
         openOnClick: false,
         isAllowedUri,
     }),
