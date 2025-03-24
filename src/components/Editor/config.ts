@@ -24,9 +24,9 @@ import errorToast from "../Toaster/error";
 const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
     try {
         // INFO: allow only https
-        if (!url.includes("https://")) throw new Error("Not https");
-
-        const parsedUrl = new URL(url);
+        const parsedUrl = url.startsWith("https:")
+            ? new URL(url)
+            : new URL(`https://${url}`);
 
         // use default validation
         if (!ctx.defaultValidate(parsedUrl.href))
