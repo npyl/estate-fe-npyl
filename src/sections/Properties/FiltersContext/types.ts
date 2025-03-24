@@ -57,9 +57,6 @@ interface IFilterStateSetters {
     toggleLifestyleFilter: (key: keyof IPropertyFilterExtras) => void;
 
     // Delete operations
-    deleteSubCategory: (value: string) => void;
-    deleteState: (value: string) => void;
-    deleteLifestyle: (key: keyof IPropertyFilterExtras) => void;
     deleteFilter: (key: keyof IPropertyFilter) => void;
 
     // Reset operations

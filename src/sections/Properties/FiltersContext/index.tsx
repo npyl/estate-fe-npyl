@@ -42,7 +42,57 @@ const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
         []
     );
 
-    const setters = useSetters(updateFilter, setState);
+    const toggleFilterArray = useCallback(
+        (key: keyof IPropertyFilter, value: string) =>
+            setState((prevState) => {
+                // Safely get the current array
+                const currentArray = Array.isArray(prevState.filters[key])
+                    ? [...prevState.filters[key]]
+                    : [];
+
+                // Determine the new array state
+                let newArray;
+                if (currentArray.includes(value)) {
+                    // Remove value if it exists
+                    newArray = currentArray.filter((item) => item !== value);
+                } else {
+                    // Add value if it doesn't exist
+                    newArray = [...currentArray, value];
+                }
+
+                // Create a new filters object
+                const newFilters = {
+                    ...prevState.filters,
+                    [key]: newArray,
+                };
+
+                // Update IDs based on the new array state
+                let newIds;
+                if (newArray.length === 0 && prevState.ids.includes(key)) {
+                    // Remove from IDs if array is empty
+                    newIds = prevState.ids.filter((id) => id !== key);
+                } else if (
+                    newArray.length > 0 &&
+                    !prevState.ids.includes(key)
+                ) {
+                    // Add to IDs if array is not empty and ID isn't already included
+                    newIds = [...prevState.ids, key];
+                } else {
+                    // Keep the same IDs but create a new array
+                    newIds = [...prevState.ids];
+                }
+
+                // Return a completely new state object
+                return {
+                    ...prevState,
+                    filters: newFilters,
+                    ids: newIds,
+                };
+            }),
+        []
+    );
+
+    const setters = useSetters(updateFilter, toggleFilterArray, setState);
 
     // Computed values
     const sumOfChangedProperties = useMemo(() => {

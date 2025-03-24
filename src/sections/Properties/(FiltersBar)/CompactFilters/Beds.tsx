@@ -128,10 +128,9 @@ const Beds = () => {
     const { t } = useTranslation();
 
     const { resetBedrooms } = useFiltersContext();
-    const handleReset = () => resetBedrooms();
 
     return (
-        <ClearableSection title={t("Bedrooms")} onReset={handleReset}>
+        <ClearableSection title={t("Bedrooms")} onReset={resetBedrooms}>
             <ButtonGroup>
                 {BUTTONS.map((value) => (
                     <CustomButton key={value} value={value} />
