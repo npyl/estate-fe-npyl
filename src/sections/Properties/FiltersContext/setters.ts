@@ -6,10 +6,16 @@ import { IPropertyFilter } from "@/types/properties";
 type UseSetters = (
     updateFilter: TUpdateFilterCb,
     toggleFilterArray: (key: keyof IPropertyFilter, value: string) => void,
+    resetFilterArray: (key: keyof IPropertyFilter) => void,
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
-const useSetters: UseSetters = (updateFilter, toggleFilterArray, setState) =>
+const useSetters: UseSetters = (
+    updateFilter,
+    toggleFilterArray,
+    resetFilterArray,
+    setState
+) =>
     useMemo(
         () => ({
             setLocationSearch: (value) => updateFilter("locationSearch", value),
@@ -210,41 +216,9 @@ const useSetters: UseSetters = (updateFilter, toggleFilterArray, setState) =>
                     return newState;
                 }),
 
-            resetFrameType: () =>
-                setState((prevState) => ({
-                    ...prevState,
-                    filters: {
-                        ...prevState.filters,
-                        frameType: [...initialState.filters.frameType],
-                    },
-                    ids: prevState.ids.filter((id) => id !== "frameType"),
-                })),
-
-            resetFurnished: () =>
-                setState((prevState) => ({
-                    ...prevState,
-                    filters: {
-                        ...prevState.filters,
-                        furnished: Array.isArray(initialState.filters.furnished)
-                            ? [...initialState.filters.furnished]
-                            : initialState.filters.furnished,
-                    },
-                    ids: prevState.ids.filter((id) => id !== "furnished"),
-                })),
-
-            resetHeatingType: () =>
-                setState((prevState) => ({
-                    ...prevState,
-                    filters: {
-                        ...prevState.filters,
-                        heatingType: Array.isArray(
-                            initialState.filters.heatingType
-                        )
-                            ? [...initialState.filters.heatingType]
-                            : initialState.filters.heatingType,
-                    },
-                    ids: prevState.ids.filter((id) => id !== "heatingType"),
-                })),
+            resetFrameType: () => resetFilterArray("frameType"),
+            resetFurnished: () => resetFilterArray("furnished"),
+            resetHeatingType: () => resetFilterArray("heatingType"),
 
             resetConstructionYear: () =>
                 setState((prevState) => {
@@ -269,30 +243,19 @@ const useSetters: UseSetters = (updateFilter, toggleFilterArray, setState) =>
                     return newState;
                 }),
 
-            resetPoints: () =>
-                setState((prevState) => {
-                    const newState = {
-                        ...prevState,
-                        filters: {
-                            ...prevState.filters,
-                            points: [...initialState.filters.points],
-                        },
-                    };
-
-                    newState.ids = newState.ids.filter((id) => id !== "points");
-
-                    return newState;
-                }),
+            resetPoints: () => resetFilterArray("points"),
 
             resetState: () => setState(initialState),
 
             resetLocationSearch: () =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset locationSearch
-                    newState.filters.locationSearch =
-                        initialState.filters.locationSearch;
+                    const newState = {
+                        ...prevState,
+                        filters: {
+                            ...prevState.filters,
+                            locationSearch: initialState.filters.locationSearch,
+                        },
+                    };
 
                     // Remove from IDs
                     newState.ids = newState.ids.filter(
@@ -301,12 +264,16 @@ const useSetters: UseSetters = (updateFilter, toggleFilterArray, setState) =>
 
                     return newState;
                 }),
+
             resetActiveState: () =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset active state
-                    newState.filters.active = initialState.filters.active;
+                    const newState = {
+                        ...prevState,
+                        filters: {
+                            ...prevState.filters,
+                            active: initialState.filters.active,
+                        },
+                    };
 
                     // Remove from IDs
                     newState.ids = newState.ids.filter((id) => id !== "active");
@@ -330,50 +297,9 @@ const useSetters: UseSetters = (updateFilter, toggleFilterArray, setState) =>
                     return newState;
                 }),
 
-            resetStates: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset states
-                    newState.filters.states = initialState.filters.states;
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter((id) => id !== "states");
-
-                    return newState;
-                }),
-
-            resetCategories: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset categories
-                    newState.filters.categories =
-                        initialState.filters.categories;
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "categories"
-                    );
-
-                    return newState;
-                }),
-
-            resetParentCategories: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset parentCategories
-                    newState.filters.parentCategories =
-                        initialState.filters.parentCategories;
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "parentCategories"
-                    );
-
-                    return newState;
-                }),
+            resetStates: () => resetFilterArray("states"),
+            resetCategories: () => resetFilterArray("categories"),
+            resetParentCategories: () => resetFilterArray("parentCategories"),
 
             resetRegions: () =>
                 setState((prevState) => {

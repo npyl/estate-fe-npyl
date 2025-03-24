@@ -92,7 +92,27 @@ const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
         []
     );
 
-    const setters = useSetters(updateFilter, toggleFilterArray, setState);
+    const resetFilterArray = useCallback(
+        (key: keyof IPropertyFilter) =>
+            setState((prevState) => ({
+                ...prevState,
+                filters: {
+                    ...prevState.filters,
+                    [key]: Array.isArray(initialState.filters[key])
+                        ? [...initialState.filters[key]]
+                        : initialState.filters[key],
+                },
+                ids: prevState.ids.filter((id) => id !== key),
+            })),
+        []
+    );
+
+    const setters = useSetters(
+        updateFilter,
+        toggleFilterArray,
+        resetFilterArray,
+        setState
+    );
 
     // Computed values
     const sumOfChangedProperties = useMemo(() => {
