@@ -1,14 +1,18 @@
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
 import ChipLabel from "./ChipLabel";
-import { dispatch } from "@/store";
-import { deleteFilter, selectMaxPrice } from "@/slices/filters";
-import { useSelector } from "react-redux";
+import {
+    useFiltersContext,
+    useMaxPrice,
+} from "@/sections/Properties/FiltersContext";
 
 const MaxPriceChip = () => {
     const { t } = useTranslation();
-    const maxValue = useSelector(selectMaxPrice);
-    const handleClear = () => dispatch(deleteFilter("maxPrice"));
+
+    const maxValue = useMaxPrice();
+
+    const { deleteFilter } = useFiltersContext();
+    const handleClear = () => deleteFilter("maxPrice");
 
     return (
         <Chip

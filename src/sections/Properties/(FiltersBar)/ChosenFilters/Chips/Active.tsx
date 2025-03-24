@@ -1,16 +1,18 @@
-import { deleteFilter, selectActiveState } from "@/slices/filters";
+import {
+    useActiveState,
+    useFiltersContext,
+} from "@/sections/Properties/FiltersContext";
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 
 const ActiveChip = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const isActive = useSelector(selectActiveState);
+    const isActive = useActiveState();
     const activeLabel = isActive ? t("Active") : t("Inactive");
 
-    const handleDelete = () => dispatch(deleteFilter("active"));
+    const { deleteFilter } = useFiltersContext();
+    const handleDelete = () => deleteFilter("active");
 
     return <Chip label={activeLabel} onDelete={handleDelete} />;
 };

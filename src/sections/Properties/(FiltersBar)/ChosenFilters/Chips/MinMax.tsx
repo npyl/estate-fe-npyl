@@ -1,12 +1,14 @@
 import { FC } from "react";
 import { TTags } from "../types";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import useEnums from "../../useEnums";
-import { deleteFilter, getChangedFields } from "@/slices/filters";
 import Chip from "@mui/material/Chip";
 import ChipLabel from "./ChipLabel";
 import getEnumLabel from "./util";
+import {
+    useChangedFields,
+    useFiltersContext,
+} from "@/sections/Properties/FiltersContext";
 
 interface MinMaxChipProps {
     suffix: string;
@@ -14,20 +16,20 @@ interface MinMaxChipProps {
 }
 
 const MinMaxChip: FC<MinMaxChipProps> = ({ suffix, pairFilterTags }) => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const { minFloorEnum, maxFloorEnum } = useEnums();
-    const changedProps = useSelector(getChangedFields);
+    const changedProps = useChangedFields();
 
     const label = pairFilterTags[`minMax${suffix}`].label;
 
     const minValue = changedProps[`min${suffix}`];
     const maxValue = changedProps[`max${suffix}`];
 
+    const { deleteFilter } = useFiltersContext();
     const handleClear = () => {
-        dispatch(deleteFilter(`min${suffix}`));
-        dispatch(deleteFilter(`max${suffix}`));
+        deleteFilter(`min${suffix}`);
+        deleteFilter(`max${suffix}`);
     };
 
     if (suffix === "Floor") {

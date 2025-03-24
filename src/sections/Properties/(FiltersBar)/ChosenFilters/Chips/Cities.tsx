@@ -1,11 +1,10 @@
 import { useLazyGetMunicipalitiesQuery } from "@/services/location";
-import { selectCities, selectRegions } from "@/slices/filters";
 import Chip from "@mui/material/Chip";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import ChipLabel from "./ChipLabel";
 import { IGeoLocation } from "@/types/geolocation";
+import { useCities, useRegions } from "@/sections/Properties/FiltersContext";
 
 const getNames = async (
     promises: Promise<IGeoLocation[]>[],
@@ -31,8 +30,8 @@ const Cities = () => {
     const { t, i18n } = useTranslation();
     const [getMunicips] = useLazyGetMunicipalitiesQuery();
 
-    const regionIDs = useSelector(selectRegions) || [];
-    const cityIDs = useSelector(selectCities) || [];
+    const regionIDs = useRegions() || [];
+    const cityIDs = useCities() || [];
 
     const [names, setNames] = useState("");
 
