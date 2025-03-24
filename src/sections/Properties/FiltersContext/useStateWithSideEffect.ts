@@ -1,4 +1,4 @@
-import { useState, useCallback, Dispatch, SetStateAction } from "react";
+import { useState, useCallback, Dispatch, SetStateAction, useRef } from "react";
 
 /**
  * Calculates the next state value based on the input and current state.
@@ -30,17 +30,16 @@ function useStateWithEffect<T>(
     onUpdate: (next: T) => void
 ): [T, Dispatch<SetStateAction<T>>] {
     const [state, _setState] = useState<T>(initial);
+    const next = useRef<T>();
 
     const setStateEnhanced: Dispatch<SetStateAction<T>> = useCallback(
         (input) => {
-            let next: T;
-
             _setState((old) => {
-                next = calculateNext(input, old);
-                return next;
+                next.current = calculateNext(input, old);
+                return next.current;
             });
 
-            onUpdate(next!);
+            onUpdate(next.current!);
         },
         [onUpdate]
     );

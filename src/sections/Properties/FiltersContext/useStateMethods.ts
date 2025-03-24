@@ -5,11 +5,7 @@ import { initialState } from "./constant";
 
 const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
     const updateFilter = useCallback(
-        (
-            key: keyof IPropertyFilter,
-            value: any,
-            shouldAddToIds: boolean = true
-        ) => {
+        (key: keyof IPropertyFilter, value: any) => {
             setState((prevState) => {
                 const newState = { ...prevState };
 
@@ -20,7 +16,7 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
                 };
 
                 // Update IDs array if needed
-                if (shouldAddToIds && !newState.ids.includes(key)) {
+                if (!newState.ids.includes(key)) {
                     newState.ids = [...newState.ids, key];
                 }
 
@@ -34,9 +30,7 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
         (key: keyof IPropertyFilter, value: string) =>
             setState((prevState) => {
                 // Safely get the current array
-                const currentArray = Array.isArray(prevState.filters[key])
-                    ? [...prevState.filters[key]]
-                    : [];
+                const currentArray = [...prevState.filters[key]];
 
                 // Determine the new array state
                 let newArray;
@@ -86,9 +80,7 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
                 ...prevState,
                 filters: {
                     ...prevState.filters,
-                    [key]: Array.isArray(initialState.filters[key])
-                        ? [...initialState.filters[key]]
-                        : initialState.filters[key],
+                    [key]: [...initialState.filters[key]],
                 },
                 ids: prevState.ids.filter((id) => id !== key),
             })),

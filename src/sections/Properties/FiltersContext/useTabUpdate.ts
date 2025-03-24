@@ -5,7 +5,7 @@ import { IFilterProps } from "./types";
 const useTabUpdate = () => {
     const { pushTab } = useTabsContext();
 
-    const onUpdate = useCallback(({ filters }: IFilterProps) => {
+    const onUpdate = useCallback((a: IFilterProps) => {
         pushTab({
             path: "/property",
             renderer: "PROPERTY_CREATE",
