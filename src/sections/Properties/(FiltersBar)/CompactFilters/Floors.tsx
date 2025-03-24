@@ -1,18 +1,15 @@
 import { FC, useMemo } from "react";
 import { ButtonGroup, Button } from "@mui/material";
 import ClearableSection from "@/components/Filters/ClearableSection";
-import {
-    resetFloor,
-    selectMaxFloor,
-    selectMinFloor,
-    setMaxFloor,
-    setMinFloor,
-} from "@/slices/filters";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { KeyValue } from "@/types/KeyValue";
 import { useSelector } from "react-redux";
 import useEnums from "../useEnums";
+import {
+    useFiltersContext,
+    useMaxFloor,
+    useMinFloor,
+} from "../../FiltersContext";
 
 const specialFloors = [
     "BASEMENT",
@@ -27,14 +24,14 @@ interface CustomButtonProps {
 }
 
 const CustomButton: FC<CustomButtonProps> = ({ o: { key, value }, all }) => {
-    const dispatch = useDispatch();
+    const { setMinFloor, setMaxFloor } = useFiltersContext();
 
-    const minFloor = useSelector(selectMinFloor);
-    const maxFloor = useSelector(selectMaxFloor);
+    const minFloor = useMinFloor();
+    const maxFloor = useMaxFloor();
 
     const handleFloorClick = () => {
         if (specialFloors.includes(key)) {
-            dispatch(setMinFloor(key));
+            setMinFloor(key);
         } else {
             const clickedIndex = all.findIndex((option) => option.key === key);
             const currentMinIndex = all.findIndex(
@@ -43,14 +40,14 @@ const CustomButton: FC<CustomButtonProps> = ({ o: { key, value }, all }) => {
 
             if (minFloor === undefined || clickedIndex < currentMinIndex) {
                 // Set new min floor
-                dispatch(setMinFloor(key));
-                dispatch(setMaxFloor(undefined));
+                setMinFloor(key);
+                setMaxFloor(undefined);
             } else if (key === minFloor && maxFloor === undefined) {
                 // Deselect min floor if clicking it again and no max is set
-                dispatch(setMinFloor(undefined));
+                setMinFloor(undefined);
             } else {
                 // Set max floor
-                dispatch(setMaxFloor(key));
+                setMaxFloor(key);
             }
         }
     };
@@ -83,7 +80,6 @@ const CustomButton: FC<CustomButtonProps> = ({ o: { key, value }, all }) => {
 };
 
 const FloorSelector = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const { minFloorEnum } = useEnums();
@@ -92,17 +88,17 @@ const FloorSelector = () => {
         [minFloorEnum]
     );
 
-    const minFloor = useSelector(selectMinFloor);
-    const maxFloor = useSelector(selectMaxFloor);
+    const minFloor = useMinFloor();
+    const maxFloor = useMaxFloor();
 
     const anyVariant = !minFloor && !maxFloor ? "contained" : "outlined";
 
-    const handleClear = () => dispatch(resetFloor());
+    const { resetFloor } = useFiltersContext();
 
     return (
         <ClearableSection title={t("Floors")} reset={resetFloor}>
             <ButtonGroup variant="outlined">
-                <Button onClick={handleClear} variant={anyVariant}>
+                <Button onClick={resetFloor} variant={anyVariant}>
                     {t("Any")}
                 </Button>
                 {floorOptions.map((o) => (

@@ -2,20 +2,14 @@ import ClearableSection, {
     ClearableSectionProps,
 } from "@/components/Filters/ClearableSection";
 import { KeyValue } from "@/types/KeyValue";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { FC } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { RootState } from "@/store";
-import { useSelector } from "react-redux";
 import CounterChip from "../OptionCheckbox/CounterChip";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
 import Grid from "@mui/material/Grid";
-import { useDispatch } from "react-redux";
 import { TOptionMapper } from "../OptionCheckbox/types";
-
-type ToggleType = ActionCreatorWithPayload<any, string>;
-type SelectorType = ({ filters }: RootState) => string[];
+import { TToggleCb } from "./types";
 
 const mapper: TOptionMapper = (optionKey, counters) =>
     (counters?.[optionKey.toLowerCase()] as number) || 0;
@@ -24,20 +18,17 @@ const mapper: TOptionMapper = (optionKey, counters) =>
 
 interface OptionProps {
     o: KeyValue;
-    toggle: ToggleType;
-    selector: SelectorType;
+    toggle: TToggleCb;
+    values: string[];
 }
 
-const Option: FC<OptionProps> = ({ o: { key, value }, selector, toggle }) => {
-    const dispatch = useDispatch();
-
+const Option: FC<OptionProps> = ({ o: { key, value }, values, toggle }) => {
     const { counters } = useFilterCounters();
 
-    const values = useSelector(selector) || [];
     const isChecked = values.includes(key);
     const isDisabled = mapper(key, counters) === 0;
 
-    const handleToggle = () => dispatch(toggle(key));
+    const handleToggle = () => toggle(key);
 
     return (
         <Grid
@@ -65,21 +56,20 @@ const Option: FC<OptionProps> = ({ o: { key, value }, selector, toggle }) => {
 
 // ------------------------------------------------------------------------------
 
-const getOption =
-    (selector: SelectorType, toggle: ToggleType) => (o: KeyValue) =>
-        <Option key={o.key} o={o} toggle={toggle} selector={selector} />;
+const getOption = (values: string[], toggle: TToggleCb) => (o: KeyValue) =>
+    <Option key={o.key} o={o} toggle={toggle} values={values} />;
 
 // ------------------------------------------------------------------------------
 
 interface Props extends ClearableSectionProps {
     options: KeyValue[];
-    selector: SelectorType;
-    toggle: ToggleType;
+    values: string[];
+    toggle: TToggleCb;
 }
 
-const Section: FC<Props> = ({ options, selector, toggle, ...props }) => (
+const Section: FC<Props> = ({ options, values, toggle, ...props }) => (
     <ClearableSection {...props}>
-        <Grid container>{options.map(getOption(selector, toggle))}</Grid>
+        <Grid container>{options.map(getOption(values, toggle))}</Grid>
     </ClearableSection>
 );
 

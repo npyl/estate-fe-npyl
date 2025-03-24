@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {
-    resetExtras,
-    selectExtras,
-    toggleLifestyleFilter,
-} from "@/slices/filters";
+
 import ClearableSection from "@/components/Filters/ClearableSection";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
@@ -12,9 +8,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
 import { IPropertyFilterExtras } from "@/types/properties";
 import { FC, useCallback } from "react";
-import { dispatch } from "@/store";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import { TOptionMapper } from "./OptionCheckbox/types";
+import { useExtras, useFiltersContext } from "../../FiltersContext";
 
 interface IOption {
     key: keyof IPropertyFilterExtras;
@@ -50,12 +46,11 @@ const Option: FC<OptionProps> = ({ o: { key, label, value } }) => {
     const count = counters?.[value] || 0;
     const isDisabled = count === 0;
 
-    const extras = useSelector(selectExtras);
+    const extras = useExtras();
     const checked = extras[key];
-    const handleToggle = useCallback(
-        () => dispatch(toggleLifestyleFilter(key)),
-        []
-    );
+
+    const { toggleLifestyleFilter } = useFiltersContext();
+    const handleToggle = useCallback(() => toggleLifestyleFilter(key), []);
 
     return (
         <Grid item xs={6} sm={4} display="flex" alignItems="center" pr={1}>
@@ -80,13 +75,11 @@ const getOption = (o: IOption) => <Option key={o.key} o={o} />;
 
 const Lifestyle = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+
+    const { resetExtras } = useFiltersContext();
 
     return (
-        <ClearableSection
-            title={t("Lifestyle")}
-            reset={() => dispatch(resetExtras())}
-        >
+        <ClearableSection title={t("Lifestyle")} reset={resetExtras}>
             <Grid container>{lifestyleOptions.map(getOption)}</Grid>
         </ClearableSection>
     );

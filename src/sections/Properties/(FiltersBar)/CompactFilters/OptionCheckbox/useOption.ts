@@ -1,14 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { SelectorType, SetterType } from "./types";
+import { SetterType } from "./types";
 
-const useOption = (
-    filterKey: string,
-    selector: SelectorType,
-    setter: SetterType
-) => {
-    const dispatch = useDispatch();
-
-    const values = useSelector(selector) || [];
+const useOption = (filterKey: string, values: string[], setter: SetterType) => {
     const isChecked = values.includes(filterKey);
 
     const handleToggle = () => {
@@ -18,7 +10,7 @@ const useOption = (
             : [...values, filterKey];
 
         // update slice
-        dispatch(setter(newValues));
+        setter(newValues);
     };
 
     return { isChecked, handleToggle };

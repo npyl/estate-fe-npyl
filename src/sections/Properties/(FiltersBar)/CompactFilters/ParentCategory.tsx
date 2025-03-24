@@ -1,8 +1,3 @@
-import {
-    resetParentCategories,
-    selectParentCategories,
-    setParentCategories,
-} from "@/slices/filters";
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
@@ -17,6 +12,7 @@ import useOption from "./OptionCheckbox/useOption";
 import { TOptionMapper } from "./OptionCheckbox/types";
 import useFilterCounters from "@/hooks/property/useFilterCounters";
 import getIcons from "@/assets/icons/parent-categories";
+import { useFiltersContext, useParentCategories } from "../../FiltersContext";
 
 const FlexItem = styled.div`
     flex-basis: 100%;
@@ -38,9 +34,12 @@ interface IOption {
 }
 
 const Option: FC<IOption> = ({ option: { key, value } }) => {
+    const parentCategories = useParentCategories();
+    const { setParentCategories } = useFiltersContext();
+
     const { isChecked, handleToggle } = useOption(
         key,
-        selectParentCategories,
+        parentCategories,
         setParentCategories
     );
 
@@ -74,6 +73,9 @@ const ParentCategory = () => {
     const { t } = useTranslation();
     const data = useGlobals();
     const parentCategoryEnum = data?.property?.parentCategory || [];
+
+    const { resetParentCategories } = useFiltersContext();
+
     return (
         <ClearableSection
             title={t("Parent Category")}
