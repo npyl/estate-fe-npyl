@@ -13,6 +13,7 @@ import {
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
+import { TShape } from "./shape";
 import { IUser } from "./user";
 
 export interface IPropertyResultResponse {
@@ -72,7 +73,7 @@ export interface IPropertyFilter {
     categories: string[];
     parentCategories: string[];
     labels: number[];
-    points: [number, number][];
+    points: TShape;
     heatingType: string[];
     frameType: string[];
     furnished: string[];

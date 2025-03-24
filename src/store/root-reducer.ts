@@ -28,7 +28,6 @@ import { logout } from "@/services/logout";
 import { server } from "@/services/server";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
-import { reducer as filtersReducer } from "../slices/filters";
 import { reducer as logReducer } from "../slices/log";
 
 export const rootReducer = combineReducers({
@@ -65,8 +64,6 @@ export const rootReducer = combineReducers({
     // ...
     [server.reducerPath]: server.reducer,
 
-    // property
-    filters: filtersReducer,
     // customer
     customerFilters: customerFiltersReducer,
     // general
