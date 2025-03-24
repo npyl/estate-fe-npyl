@@ -1,4 +1,3 @@
-import { TShape } from "@/types/shape";
 import { useFiltersContext } from ".";
 
 const useLocationSearch = () => useFiltersContext().filters.locationSearch;

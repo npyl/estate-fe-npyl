@@ -4,16 +4,16 @@ import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 
 type UseSetters = (
-    updateFilter: TUpdateFilterCb,
-    toggleFilterArray: (key: keyof IPropertyFilter, value: string) => void,
-    resetFilterArray: (key: keyof IPropertyFilter) => void,
+    methods: {
+        updateFilter: TUpdateFilterCb;
+        toggleFilterArray: (key: keyof IPropertyFilter, value: string) => void;
+        resetFilterArray: (key: keyof IPropertyFilter) => void;
+    },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
 const useSetters: UseSetters = (
-    updateFilter,
-    toggleFilterArray,
-    resetFilterArray,
+    { updateFilter, toggleFilterArray, resetFilterArray },
     setState
 ) =>
     useMemo(
