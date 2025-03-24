@@ -57,132 +57,216 @@ const useSetters: UseSetters = (updateFilter, setState) =>
             setSubCategories: (value) => updateFilter("categories", value),
             setParentCategories: (value) =>
                 updateFilter("parentCategories", value),
-            setPoints: (value: any[]) => updateFilter("points", value),
+            setPoints: (value) => updateFilter("points", value),
 
-            // Toggle functions
             toggleFrameType: (value) =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-                    const frameTypes = [...newState.filters.frameType];
+                    // Make a safe copy of the frameType array
+                    const frameTypes = Array.isArray(
+                        prevState.filters.frameType
+                    )
+                        ? [...prevState.filters.frameType]
+                        : [];
 
+                    // Determine new frameType array based on inclusion of value
+                    let newFrameType;
                     if (frameTypes.includes(value)) {
                         // Remove value
-                        const filteredFrameTypes = frameTypes.filter(
-                            (ft) => ft !== value
-                        );
-                        newState.filters.frameType = filteredFrameTypes;
-
-                        // Remove from IDs if empty
-                        if (filteredFrameTypes.length === 0) {
-                            newState.ids = newState.ids.filter(
-                                (id) => id !== "frameType"
-                            );
-                        }
+                        newFrameType = frameTypes.filter((ft) => ft !== value);
                     } else {
                         // Add value
-                        newState.filters.frameType = [...frameTypes, value];
-
-                        // Add to IDs if not already there
-                        if (!newState.ids.includes("frameType")) {
-                            newState.ids = [...newState.ids, "frameType"];
-                        }
+                        newFrameType = [...frameTypes, value];
                     }
 
-                    return newState;
+                    // Create a completely new filters object
+                    const newFilters = {
+                        ...prevState.filters,
+                        frameType: newFrameType,
+                    };
+
+                    // Determine new IDs array
+                    let newIds;
+                    if (
+                        newFrameType.length === 0 &&
+                        prevState.ids.includes("frameType")
+                    ) {
+                        // Remove frameType from IDs if empty
+                        newIds = prevState.ids.filter(
+                            (id) => id !== "frameType"
+                        );
+                    } else if (
+                        newFrameType.length > 0 &&
+                        !prevState.ids.includes("frameType")
+                    ) {
+                        // Add frameType to IDs if not empty and not already included
+                        newIds = [...prevState.ids, "frameType"];
+                    } else {
+                        // Keep IDs the same, but create a new array
+                        newIds = [...prevState.ids];
+                    }
+
+                    // Return a completely new state object
+                    return {
+                        ...prevState,
+                        filters: newFilters,
+                        ids: newIds,
+                    };
                 }),
 
             toggleFurnished: (value) =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-                    const furnished = [...newState.filters.furnished];
+                    // Safely copy the furnished array
+                    const furnished = Array.isArray(prevState.filters.furnished)
+                        ? [...prevState.filters.furnished]
+                        : [];
 
+                    // Determine new furnished array based on inclusion of value
+                    let newFurnished;
                     if (furnished.includes(value)) {
                         // Remove value
-                        const filteredFurnished = furnished.filter(
-                            (f) => f !== value
-                        );
-                        newState.filters.furnished = filteredFurnished;
-
-                        // Remove from IDs if empty
-                        if (filteredFurnished.length === 0) {
-                            newState.ids = newState.ids.filter(
-                                (id) => id !== "furnished"
-                            );
-                        }
+                        newFurnished = furnished.filter((f) => f !== value);
                     } else {
                         // Add value
-                        newState.filters.furnished = [...furnished, value];
-
-                        // Add to IDs if not already there
-                        if (!newState.ids.includes("furnished")) {
-                            newState.ids = [...newState.ids, "furnished"];
-                        }
+                        newFurnished = [...furnished, value];
                     }
 
-                    return newState;
+                    // Create a completely new filters object
+                    const newFilters = {
+                        ...prevState.filters,
+                        furnished: newFurnished,
+                    };
+
+                    // Determine new IDs array
+                    let newIds;
+                    if (
+                        newFurnished.length === 0 &&
+                        prevState.ids.includes("furnished")
+                    ) {
+                        // Remove furnished from IDs if empty
+                        newIds = prevState.ids.filter(
+                            (id) => id !== "furnished"
+                        );
+                    } else if (
+                        newFurnished.length > 0 &&
+                        !prevState.ids.includes("furnished")
+                    ) {
+                        // Add furnished to IDs if not empty and not already included
+                        newIds = [...prevState.ids, "furnished"];
+                    } else {
+                        // Keep IDs the same but create a new array
+                        newIds = [...prevState.ids];
+                    }
+
+                    // Return a completely new state object
+                    return {
+                        ...prevState,
+                        filters: newFilters,
+                        ids: newIds,
+                    };
                 }),
+
             toggleHeatingType: (value) =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-                    const heatingTypes = [...newState.filters.heatingType];
+                    // Safely copy the heatingType array
+                    const heatingTypes = Array.isArray(
+                        prevState.filters.heatingType
+                    )
+                        ? [...prevState.filters.heatingType]
+                        : [];
 
+                    // Determine new heatingType array based on inclusion of value
+                    let newHeatingType;
                     if (heatingTypes.includes(value)) {
                         // Remove value
-                        const filteredHeatingTypes = heatingTypes.filter(
+                        newHeatingType = heatingTypes.filter(
                             (ht) => ht !== value
                         );
-                        newState.filters.heatingType = filteredHeatingTypes;
-
-                        // Remove from IDs if empty
-                        if (filteredHeatingTypes.length === 0) {
-                            newState.ids = newState.ids.filter(
-                                (id) => id !== "heatingType"
-                            );
-                        }
                     } else {
                         // Add value
-                        newState.filters.heatingType = [...heatingTypes, value];
-
-                        // Add to IDs if not already there
-                        if (!newState.ids.includes("heatingType")) {
-                            newState.ids = [...newState.ids, "heatingType"];
-                        }
+                        newHeatingType = [...heatingTypes, value];
                     }
 
-                    return newState;
+                    // Create a completely new filters object
+                    const newFilters = {
+                        ...prevState.filters,
+                        heatingType: newHeatingType,
+                    };
+
+                    // Determine new IDs array
+                    let newIds;
+                    if (
+                        newHeatingType.length === 0 &&
+                        prevState.ids.includes("heatingType")
+                    ) {
+                        // Remove heatingType from IDs if empty
+                        newIds = prevState.ids.filter(
+                            (id) => id !== "heatingType"
+                        );
+                    } else if (
+                        newHeatingType.length > 0 &&
+                        !prevState.ids.includes("heatingType")
+                    ) {
+                        // Add heatingType to IDs if not empty and not already included
+                        newIds = [...prevState.ids, "heatingType"];
+                    } else {
+                        // Keep IDs the same but create a new array
+                        newIds = [...prevState.ids];
+                    }
+
+                    // Return a completely new state object
+                    return {
+                        ...prevState,
+                        filters: newFilters,
+                        ids: newIds,
+                    };
                 }),
 
             toggleLifestyleFilter: (key) =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    if (newState.filters.extras.hasOwnProperty(key)) {
-                        newState.filters.extras = {
-                            ...newState.filters.extras,
-                            [key]: !newState.filters.extras[key],
+                    // Check if the key exists in extras
+                    if (prevState.filters.extras.hasOwnProperty(key)) {
+                        // Create a completely new state object with nested structure
+                        const newFilters = {
+                            ...prevState.filters,
+                            extras: {
+                                ...prevState.filters.extras,
+                                [key]: !prevState.filters.extras[key],
+                            },
                         };
 
-                        // Add or remove from IDs based on if any extras are active
+                        // Determine if any extras are active after the toggle
                         const anyExtrasActive = Object.values(
-                            newState.filters.extras
+                            newFilters.extras
                         ).some((v) => Boolean(v));
 
+                        // Create a new IDs array based on extras status
+                        let newIds;
                         if (
                             anyExtrasActive &&
-                            !newState.ids.includes("extras")
+                            !prevState.ids.includes("extras")
                         ) {
-                            newState.ids = [...newState.ids, "extras"];
+                            newIds = [...prevState.ids, "extras"];
                         } else if (
                             !anyExtrasActive &&
-                            newState.ids.includes("extras")
+                            prevState.ids.includes("extras")
                         ) {
-                            newState.ids = newState.ids.filter(
+                            newIds = prevState.ids.filter(
                                 (id) => id !== "extras"
                             );
+                        } else {
+                            newIds = [...prevState.ids]; // Create a new array but with same content
                         }
+
+                        // Return completely new state object
+                        return {
+                            ...prevState,
+                            filters: newFilters,
+                            ids: newIds,
+                        };
                     }
 
-                    return newState;
+                    // If key doesn't exist, return the previous state (but as a new object to be safe)
+                    return { ...prevState };
                 }),
 
             // Delete operations
@@ -409,18 +493,22 @@ const useSetters: UseSetters = (updateFilter, setState) =>
 
                     return newState;
                 }),
+
             resetPoints: () =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
+                    const newState = {
+                        ...prevState,
+                        filters: {
+                            ...prevState.filters,
+                            points: [...initialState.filters.points],
+                        },
+                    };
 
-                    // Reset points
-                    newState.filters.points = initialState.filters.points;
-
-                    // Remove from IDs
                     newState.ids = newState.ids.filter((id) => id !== "points");
 
                     return newState;
                 }),
+
             resetState: () => setState(initialState),
 
             resetLocationSearch: () =>
@@ -450,18 +538,23 @@ const useSetters: UseSetters = (updateFilter, setState) =>
 
                     return newState;
                 }),
+
             resetExtras: () =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset extras
-                    newState.filters.extras = initialState.filters.extras;
+                    const newState = {
+                        ...prevState,
+                        filters: {
+                            ...prevState.filters,
+                            extras: { ...initialState.filters.extras },
+                        },
+                    };
 
                     // Remove from IDs
                     newState.ids = newState.ids.filter((id) => id !== "extras");
 
                     return newState;
                 }),
+
             resetStates: () =>
                 setState((prevState) => {
                     const newState = { ...prevState };
@@ -474,6 +567,7 @@ const useSetters: UseSetters = (updateFilter, setState) =>
 
                     return newState;
                 }),
+
             resetCategories: () =>
                 setState((prevState) => {
                     const newState = { ...prevState };
@@ -489,6 +583,7 @@ const useSetters: UseSetters = (updateFilter, setState) =>
 
                     return newState;
                 }),
+
             resetParentCategories: () =>
                 setState((prevState) => {
                     const newState = { ...prevState };
@@ -507,11 +602,14 @@ const useSetters: UseSetters = (updateFilter, setState) =>
 
             resetRegions: () =>
                 setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset regions and cities
-                    newState.filters.regions = initialState.filters.regions;
-                    newState.filters.cities = initialState.filters.cities;
+                    const newState = {
+                        ...prevState,
+                        filters: {
+                            ...prevState.filters,
+                            regions: [...initialState.filters.regions],
+                            cities: [...initialState.filters.cities],
+                        },
+                    };
 
                     // Remove from IDs
                     newState.ids = newState.ids.filter(
