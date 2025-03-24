@@ -1,42 +1,33 @@
-import { IPropertyFilter, IPropertyFilterExtras } from "@/types/properties";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { IFilterProps, TUpdateFilterCb } from "./types";
+import { IFilterProps, IFilterStateSetters, TUpdateFilterCb } from "./types";
 import { initialState } from "./constant";
 
-const useSetters = (
+type UseSetters = (
     updateFilter: TUpdateFilterCb,
     setState: Dispatch<SetStateAction<IFilterProps>>
-) =>
+) => IFilterStateSetters;
+
+const useSetters: UseSetters = (updateFilter, setState) =>
     useMemo(
         () => ({
-            setLocationSearch: (value: string | undefined) =>
-                updateFilter("locationSearch", value),
-            setCode: (value: string | undefined) => updateFilter("code", value),
-            setManagerId: (value: string | undefined) =>
-                updateFilter("managerId", value),
-            setMaxArea: (value: number | undefined) =>
-                updateFilter("maxArea", value),
-            setMinArea: (value: number | undefined) =>
-                updateFilter("minArea", value),
-            setMaxBedrooms: (value: number | undefined) =>
-                updateFilter("maxBedrooms", value),
-            setMinBedrooms: (value: number | undefined) =>
-                updateFilter("minBedrooms", value),
-            setMaxConstructionYear: (value: number | undefined) =>
+            setLocationSearch: (value) => updateFilter("locationSearch", value),
+            setCode: (value) => updateFilter("code", value),
+            setManagerId: (value) => updateFilter("managerId", value),
+            setMaxArea: (value) => updateFilter("maxArea", value),
+            setMinArea: (value) => updateFilter("minArea", value),
+            setMaxBedrooms: (value) => updateFilter("maxBedrooms", value),
+            setMinBedrooms: (value) => updateFilter("minBedrooms", value),
+            setMaxConstructionYear: (value) =>
                 updateFilter("maxConstructionYear", value),
-            setMinConstructionYear: (value: number | undefined) =>
+            setMinConstructionYear: (value) =>
                 updateFilter("minConstructionYear", value),
-            setMaxFloor: (value: number | undefined) =>
-                updateFilter("maxFloor", value),
-            setMinFloor: (value: number | undefined) =>
-                updateFilter("minFloor", value),
-            setMaxPrice: (value: number | undefined) =>
-                updateFilter("maxPrice", value),
-            setMinPrice: (value: number | undefined) =>
-                updateFilter("minPrice", value),
+            setMaxFloor: (value) => updateFilter("maxFloor", value),
+            setMinFloor: (value) => updateFilter("minFloor", value),
+            setMaxPrice: (value) => updateFilter("maxPrice", value),
+            setMinPrice: (value) => updateFilter("minPrice", value),
 
             // Array setters
-            setRegions: (value: string[]) =>
+            setRegions: (value) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
 
@@ -60,17 +51,16 @@ const useSetters = (
 
                     return newState;
                 }),
-            setCities: (value: string[]) => updateFilter("cities", value),
-            setLabels: (value: string[]) => updateFilter("labels", value),
-            setStates: (value: string[]) => updateFilter("states", value),
-            setSubCategories: (value: string[]) =>
-                updateFilter("categories", value),
-            setParentCategories: (value: string[]) =>
+            setCities: (value) => updateFilter("cities", value),
+            setLabels: (value) => updateFilter("labels", value),
+            setStates: (value) => updateFilter("states", value),
+            setSubCategories: (value) => updateFilter("categories", value),
+            setParentCategories: (value) =>
                 updateFilter("parentCategories", value),
             setPoints: (value: any[]) => updateFilter("points", value),
 
             // Toggle functions
-            toggleFrameType: (value: string) =>
+            toggleFrameType: (value) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
                     const frameTypes = [...newState.filters.frameType];
@@ -101,7 +91,7 @@ const useSetters = (
                     return newState;
                 }),
 
-            toggleFurnished: (value: string) =>
+            toggleFurnished: (value) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
                     const furnished = [...newState.filters.furnished];
@@ -131,7 +121,7 @@ const useSetters = (
 
                     return newState;
                 }),
-            toggleHeatingType: (value: string) =>
+            toggleHeatingType: (value) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
                     const heatingTypes = [...newState.filters.heatingType];
@@ -162,7 +152,7 @@ const useSetters = (
                     return newState;
                 }),
 
-            toggleLifestyleFilter: (key: keyof IPropertyFilterExtras) =>
+            toggleLifestyleFilter: (key) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
 
@@ -196,7 +186,7 @@ const useSetters = (
                 }),
 
             // Delete operations
-            deleteSubCategory: (value: string) =>
+            deleteSubCategory: (value) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
                     const categories = [...newState.filters.categories];
@@ -216,7 +206,7 @@ const useSetters = (
                     return newState;
                 }),
 
-            deleteState: (value: string) =>
+            deleteState: (value) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
                     const states = [...newState.filters.states];
@@ -236,7 +226,7 @@ const useSetters = (
                     return newState;
                 }),
 
-            deleteLifestyle: (key: keyof IPropertyFilterExtras) =>
+            deleteLifestyle: (key) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
 
@@ -260,7 +250,7 @@ const useSetters = (
 
                     return newState;
                 }),
-            deleteFilter: (key: keyof IPropertyFilter) =>
+            deleteFilter: (key) =>
                 setState((prevState) => {
                     const newState = { ...prevState };
                     const filterValue = newState.filters[key];
@@ -301,7 +291,7 @@ const useSetters = (
                     ] as const;
 
                     const newState = { ...prevState };
-                    const newFilters = { ...newState.filters };
+                    const newFilters = { ...newState.filters } as any;
 
                     // Reset each field
                     fieldsToReset.forEach((field) => {
@@ -532,16 +522,15 @@ const useSetters = (
                 }),
 
             // Other state setters
-            setActiveState: (value: boolean | null) =>
-                updateFilter("active", value),
+            setActiveState: (value) => updateFilter("active", value),
 
-            setSorting: (value: string) =>
+            setSorting: (value) =>
                 setState((prevState) => ({
                     ...prevState,
                     sorting: value,
                 })),
 
-            setIds: (value: (keyof IPropertyFilter)[]) =>
+            setIds: (value) =>
                 setState((prevState) => ({
                     ...prevState,
                     ids: value,

@@ -12,7 +12,7 @@ interface IFilterProps {
     ids: (keyof IPropertyFilter)[];
 }
 
-type IFilterState = IFilterProps & {
+interface IFilterStateSetters {
     // Location
     setLocationSearch: (value: string | undefined) => void;
     setCode: (value: string | undefined) => void;
@@ -34,8 +34,8 @@ type IFilterState = IFilterProps & {
     setMinConstructionYear: (value: number | undefined) => void;
 
     // Floor
-    setMaxFloor: (value: number | undefined) => void;
-    setMinFloor: (value: number | undefined) => void;
+    setMaxFloor: (value: string | undefined) => void;
+    setMinFloor: (value: string | undefined) => void;
 
     // Price
     setMaxPrice: (value: number | undefined) => void;
@@ -44,7 +44,7 @@ type IFilterState = IFilterProps & {
     // Multiple selection
     setRegions: (value: string[]) => void;
     setCities: (value: string[]) => void;
-    setLabels: (value: string[]) => void;
+    setLabels: (value: number[]) => void;
     setStates: (value: string[]) => void;
     setSubCategories: (value: string[]) => void;
     setParentCategories: (value: string[]) => void;
@@ -85,10 +85,18 @@ type IFilterState = IFilterProps & {
 
     // Sorting
     setSorting: (value: string) => void;
+}
 
-    // Derived values
+interface IFilterStateCalculated {
     sumOfChangedProperties: number;
     changedFields: Partial<IPropertyFilter>;
-};
+}
 
-export type { TUpdateFilterCb, IFilterProps, IFilterState };
+type IFilterState = IFilterProps & IFilterStateSetters & IFilterStateCalculated;
+
+export type {
+    TUpdateFilterCb,
+    IFilterProps,
+    IFilterStateSetters,
+    IFilterState,
+};
