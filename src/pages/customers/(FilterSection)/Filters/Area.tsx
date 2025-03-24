@@ -8,16 +8,22 @@ import {
 import RangeSelect from "@/sections/Filters/Range";
 
 import areaRangeGenerator from "@/sections/Filters/areaRangeGenerator";
+import { useSelector } from "react-redux";
 
-const AreaSelect = () => (
-    <RangeSelect
-        type="area"
-        selectMin={selectMinArea}
-        selectMax={selectMaxArea}
-        setMin={setMinArea}
-        setMax={setMaxArea}
-        generateNumbers={areaRangeGenerator}
-    />
-);
+const AreaSelect = () => {
+    const minArea = useSelector(selectMinArea);
+    const maxArea = useSelector(selectMaxArea);
+
+    return (
+        <RangeSelect
+            type="area"
+            valueMin={minArea}
+            valueMax={maxArea}
+            setMin={setMinArea}
+            setMax={setMaxArea}
+            generateNumbers={areaRangeGenerator}
+        />
+    );
+};
 
 export default AreaSelect;

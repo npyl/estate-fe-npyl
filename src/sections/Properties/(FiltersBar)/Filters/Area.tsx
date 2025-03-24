@@ -1,23 +1,27 @@
-import {
-    selectMaxArea,
-    selectMinArea,
-    setMaxArea,
-    setMinArea,
-} from "@/slices/filters";
-
 import RangeSelect from "@/sections/Filters/Range";
-
 import areaRangeGenerator from "@/sections/Filters/areaRangeGenerator";
+import {
+    useFiltersContext,
+    useMaxArea,
+    useMinArea,
+} from "../../FiltersContext";
 
-const AreaSelect = () => (
-    <RangeSelect
-        type="area"
-        selectMin={selectMinArea}
-        selectMax={selectMaxArea}
-        setMin={setMinArea}
-        setMax={setMaxArea}
-        generateNumbers={areaRangeGenerator}
-    />
-);
+const AreaSelect = () => {
+    const { setMinArea, setMaxArea } = useFiltersContext();
+
+    const minArea = useMinArea();
+    const maxArea = useMaxArea();
+
+    return (
+        <RangeSelect
+            type="area"
+            valueMin={minArea}
+            valueMax={maxArea}
+            setMin={setMinArea}
+            setMax={setMaxArea}
+            generateNumbers={areaRangeGenerator}
+        />
+    );
+};
 
 export default AreaSelect;

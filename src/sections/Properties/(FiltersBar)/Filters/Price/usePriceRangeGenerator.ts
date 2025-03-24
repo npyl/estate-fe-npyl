@@ -1,10 +1,9 @@
 import generatePriceRange from "@/sections/Filters/priceRangeGenerator";
-import { selectStates } from "@/slices/filters";
+import { useStates } from "@/sections/Properties/FiltersContext";
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
 
 const usePriceRangeGenerator = () => {
-    const states = useSelector(selectStates);
+    const states = useStates();
 
     // (RENT & RENTED) or (RENT or RENTED) or nothing -> 2, 1, 0 lengths, respectively
     const rentLength =

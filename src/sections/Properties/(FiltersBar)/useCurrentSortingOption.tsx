@@ -1,12 +1,11 @@
-import { useSelector } from "react-redux";
-import { selectSorting } from "@/sections/Properties/filters";
+import { useSorting } from "@/sections/Properties/FiltersContext";
 import { useMemo } from "react";
 import useSortingOptions from "./useSortingOptions";
 
 const useCurrentSortingOption = () => {
     const sortingOptions = useSortingOptions();
 
-    const sorting = useSelector(selectSorting);
+    const sorting = useSorting();
 
     const option = useMemo(
         () => sortingOptions.find(({ value }) => value === sorting),

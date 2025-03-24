@@ -1,19 +1,18 @@
 import { useGetRegionsQuery } from "@/services/location";
 import CustomMenuItem from "./CustomMenuItem";
-import { useSelector } from "react-redux";
-import { selectRegions, setRegions } from "@/slices/filters";
 import Skeleton from "./Skeleton";
-import { useDispatch } from "react-redux";
 import React, { FC, useMemo } from "react";
 import withSearch from "./withSearch";
+import {
+    useFiltersContext,
+    useRegions,
+} from "@/sections/Properties/FiltersContext";
 
 interface Props {
     search: string;
 }
 
 const RegionsTab: FC<Props> = ({ search }) => {
-    const dispatch = useDispatch();
-
     const { data, isLoading } = useGetRegionsQuery();
 
     const regionsOptions = useMemo(
@@ -21,14 +20,15 @@ const RegionsTab: FC<Props> = ({ search }) => {
         [data, search]
     );
 
-    const regions = useSelector(selectRegions) || [];
+    const { setRegions } = useFiltersContext();
+    const regions = useRegions() || [];
 
     const handleClick = (areaID: number) => {
         const newValues = regions.includes(areaID.toString())
             ? regions.filter((id) => id !== areaID.toString())
             : [...regions, areaID.toString()];
 
-        dispatch(setRegions(newValues));
+        setRegions(newValues);
     };
 
     return (

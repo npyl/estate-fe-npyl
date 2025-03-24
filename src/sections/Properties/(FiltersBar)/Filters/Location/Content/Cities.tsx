@@ -2,30 +2,31 @@ import {
     useGetMunicipalitiesQuery,
     useGetRegionsQuery,
 } from "@/services/location";
-import { useSelector } from "react-redux";
-import { selectCities, selectRegions, setCities } from "@/slices/filters";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
 import { IGeoLocation } from "@/types/geolocation";
 import CustomMenuItem from "./CustomMenuItem";
 import Skeleton from "./Skeleton";
-import { useDispatch } from "react-redux";
 import React from "react";
 import withSearch from "./withSearch";
+import {
+    useCities,
+    useFiltersContext,
+    useRegions,
+} from "@/sections/Properties/FiltersContext";
 
 // --------------------------------------------------------------------
 
 const MunicipOption: FC<IGeoLocation> = (o) => {
-    const dispatch = useDispatch();
-
-    const cities = useSelector(selectCities);
+    const { setCities } = useFiltersContext();
+    const cities = useCities();
 
     const handleClick = (areaID: number) => {
         const newValues = cities.includes(areaID.toString())
             ? cities.filter((id) => id !== areaID.toString())
             : [...cities, areaID.toString()];
-        dispatch(setCities(newValues));
+        setCities(newValues);
     };
 
     return (
@@ -87,7 +88,7 @@ interface Props {
 }
 
 const CitiesTab: FC<Props> = ({ search }) => {
-    const regions = useSelector(selectRegions) || [];
+    const regions = useRegions() || [];
     return regions?.map(getMunicipalitiesSection(search));
 };
 

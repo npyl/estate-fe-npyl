@@ -11,22 +11,20 @@ import {
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-import {
-    selectParentCategories,
-    selectSubCategories,
-    setSubCategories,
-} from "src/slices/filters";
-import { useDispatch, useSelector } from "src/store";
 import { KeyValue } from "src/types/KeyValue";
+import {
+    useFiltersContext,
+    useParentCategories,
+    useSubCategories,
+} from "../../FiltersContext";
 
 export default function FilterCategory() {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const data = useGlobals();
 
-    const parentCategories = useSelector(selectParentCategories) || [];
-    const subCategories = useSelector(selectSubCategories);
+    const parentCategories = useParentCategories() || [];
+    const subCategories = useSubCategories() || [];
     const propertyEnums = data?.property;
 
     const subCategoriesMap: {
@@ -50,15 +48,14 @@ export default function FilterCategory() {
         }
     };
 
+    const { setSubCategories } = useFiltersContext();
     const handleChange = (event: SelectChangeEvent<typeof subCategories>) => {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setSubCategories(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+        setSubCategories(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
         );
     };
     const isDisabled = parentCategories.length === 0;
