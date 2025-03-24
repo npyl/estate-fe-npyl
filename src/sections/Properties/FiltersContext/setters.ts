@@ -209,49 +209,43 @@ const useSetters: UseSetters = (updateFilter, toggleFilterArray, setState) =>
 
                     return newState;
                 }),
+
             resetFrameType: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
+                setState((prevState) => ({
+                    ...prevState,
+                    filters: {
+                        ...prevState.filters,
+                        frameType: [...initialState.filters.frameType],
+                    },
+                    ids: prevState.ids.filter((id) => id !== "frameType"),
+                })),
 
-                    // Reset frameType
-                    newState.filters.frameType = initialState.filters.frameType;
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "frameType"
-                    );
-
-                    return newState;
-                }),
             resetFurnished: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
+                setState((prevState) => ({
+                    ...prevState,
+                    filters: {
+                        ...prevState.filters,
+                        furnished: Array.isArray(initialState.filters.furnished)
+                            ? [...initialState.filters.furnished]
+                            : initialState.filters.furnished,
+                    },
+                    ids: prevState.ids.filter((id) => id !== "furnished"),
+                })),
 
-                    // Reset furnished
-                    newState.filters.furnished = initialState.filters.furnished;
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "furnished"
-                    );
-
-                    return newState;
-                }),
             resetHeatingType: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
+                setState((prevState) => ({
+                    ...prevState,
+                    filters: {
+                        ...prevState.filters,
+                        heatingType: Array.isArray(
+                            initialState.filters.heatingType
+                        )
+                            ? [...initialState.filters.heatingType]
+                            : initialState.filters.heatingType,
+                    },
+                    ids: prevState.ids.filter((id) => id !== "heatingType"),
+                })),
 
-                    // Reset heatingType
-                    newState.filters.heatingType =
-                        initialState.filters.heatingType;
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "heatingType"
-                    );
-
-                    return newState;
-                }),
             resetConstructionYear: () =>
                 setState((prevState) => {
                     const newState = { ...prevState };
