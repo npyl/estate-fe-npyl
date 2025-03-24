@@ -11,6 +11,7 @@ import User from "./Renderers/User";
 import CustomerCreate from "./Renderers/CustomerCreate";
 import PropertyCreate from "./Renderers/PropertyCreate";
 import Task from "./Renderers/Task";
+import PropertyAll from "./Renderers/PropertyAll";
 
 // --------------------------------------------------------------------
 
@@ -22,6 +23,7 @@ const RENDERERS: TRenderers = {
     CUSTOMER_CREATE: CustomerCreate,
     CUSTOMER_EDIT: CustomerEdit,
     CUSTOMER_VIEW: CustomerView,
+    PROPERTIES: PropertyAll,
     PROPERTY_CREATE: PropertyCreate,
     PROPERTY_EDIT: PropertyEdit,
     PROPERTY_VIEW: PropertyView,
