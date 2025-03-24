@@ -2,6 +2,7 @@ type TTabRenderer =
     | "CUSTOMER_CREATE"
     | "CUSTOMER_VIEW"
     | "CUSTOMER_EDIT"
+    | "PROPERTIES"
     | "PROPERTY_CREATE"
     | "PROPERTY_VIEW"
     | "PROPERTY_EDIT"
@@ -14,6 +15,7 @@ interface ITab {
     path: string;
     renderer: TTabRenderer;
     resourceId?: number;
+    data?: object;
 }
 
 export type { TTabRenderer, ITab };

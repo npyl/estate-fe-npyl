@@ -3,6 +3,7 @@ import {
     FC,
     PropsWithChildren,
     RefObject,
+    useCallback,
     useContext,
 } from "react";
 import { ITab } from "@/types/tabs";
@@ -11,6 +12,7 @@ type ITabState = {
     pushTab: (t: ITab) => void;
     removeTab: (identifier: string) => void;
     removeTabs: (identifiers: string[]) => void;
+    getData: (identifier: string) => any;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
@@ -29,6 +31,7 @@ export type SubbarRef = {
     pushTab: (i: ITab) => void;
     removeTab: (p: string) => void;
     removeTabs: (p: string[]) => void;
+    getData: (p: string) => any;
 };
 
 interface TabsProviderProps extends PropsWithChildren {
@@ -54,6 +57,11 @@ export const TabsProvider: FC<TabsProviderProps> = ({
             subbarRef?.current?.removeTabs(p);
         } catch (ex) {}
     };
+    const getData = useCallback((p: string) => {
+        try {
+            return subbarRef?.current?.getData(p);
+        } catch (ex) {}
+    }, []);
 
     return (
         <TabsContext.Provider
@@ -61,6 +69,7 @@ export const TabsProvider: FC<TabsProviderProps> = ({
                 pushTab,
                 removeTab,
                 removeTabs,
+                getData,
             }}
             {...props}
         />

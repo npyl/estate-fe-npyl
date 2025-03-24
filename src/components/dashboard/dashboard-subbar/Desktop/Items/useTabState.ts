@@ -137,7 +137,12 @@ const useTabState = () => {
         [tabs, tabState, userId]
     );
 
-    return { tabs, pushTab, removeTab, removeTabs };
+    const getData = useCallback(
+        (p: string) => tabs?.find(({ path }) => path === p)?.data,
+        [tabs]
+    );
+
+    return [tabs, { pushTab, removeTab, removeTabs, getData }] as const;
 };
 
 export default useTabState;

@@ -4,16 +4,25 @@ import { initialState } from "./constant";
 import useSetters from "./setters";
 import useStateWithEffect from "./useStateWithSideEffect";
 import useStateMethods from "./useStateMethods";
-import useTabUpdate from "./useTabUpdate";
+import useTabState from "./useTabState";
 import useChangedFields from "./useChangedFields";
+import { IPropertyFilter } from "@/types/properties";
 
 const FiltersContext = createContext<IFilterState | undefined>(undefined);
 
+const getIdsForTabData = (tabData: object) => Object.keys(tabData);
+
+const getInitialState = (tabData: object) => ({
+    ...initialState,
+    filters: (tabData as IPropertyFilter) || initialState.filters,
+    ids: tabData ? getIdsForTabData(tabData) : [],
+});
+
 const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
-    const onUpdate = useTabUpdate();
+    const [tabData, onUpdate] = useTabState();
 
     const [state, setState] = useStateWithEffect<IFilterProps>(
-        initialState,
+        getInitialState(tabData),
         onUpdate
     );
 

@@ -13,17 +13,9 @@ const getTabItem: FC<ITab> = (t) => <TabItem key={t.path} t={t} />;
 // ----------------------------------------------------------------------
 
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
-    const { tabs, pushTab, removeTab, removeTabs } = useTabState();
+    const [tabs, methods] = useTabState();
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            pushTab,
-            removeTab,
-            removeTabs,
-        }),
-        [pushTab, removeTab, removeTabs]
-    );
+    useImperativeHandle(ref, () => methods, [methods]);
 
     return (
         <Stack

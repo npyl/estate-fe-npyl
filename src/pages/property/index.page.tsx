@@ -11,7 +11,6 @@ import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import useCurrentSortingOption from "@/sections/Properties/(FiltersBar)/useCurrentSortingOption";
 import { useQueryState } from "nuqs";
 import { FiltersProvider } from "@/sections/Properties/FiltersContext";
-import AllPropertiesPusher from "@/sections/Properties/ViewAll/Pusher";
 // modes
 const ViewAll = dynamic(() => import("@/sections/Properties/(ViewAll)"));
 const MediaCard = dynamic(() => import("@/sections/Properties/(MediaCard)"));
@@ -72,7 +71,6 @@ const Home: NextPage = () => {
 Home.getLayout = (page) => (
     <AuthGuard>
         <DashboardLayout>
-            <AllPropertiesPusher />
             <FiltersProvider>{page}</FiltersProvider>
         </DashboardLayout>
     </AuthGuard>
