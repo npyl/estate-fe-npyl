@@ -18,12 +18,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     useImperativeHandle(ref, () => methods, [methods]);
 
     return (
-        <Stack
-            direction="row"
-            spacing={1.5}
-            mb={tabs.length > 0 ? 1 : 0}
-            {...props}
-        >
+        <Stack direction="row" spacing={1.5} {...props}>
             {tabs.map(getTabItem)}
         </Stack>
     );

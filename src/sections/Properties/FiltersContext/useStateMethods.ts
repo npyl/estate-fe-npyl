@@ -3,6 +3,9 @@ import { IPropertyFilter } from "src/types/properties";
 import { IFilterProps } from "./types";
 import { initialState } from "./constant";
 
+const getInitialValue = (v: any) =>
+    Array.isArray(v) ? [...v] : typeof v === "object" ? { ...v } : v;
+
 const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
     const updateFilter = useCallback(
         (key: keyof IPropertyFilter, value: any) => {
@@ -74,20 +77,20 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
         []
     );
 
-    const resetFilterArray = useCallback(
+    const deleteFilter = useCallback(
         (key: keyof IPropertyFilter) =>
             setState((prevState) => ({
                 ...prevState,
                 filters: {
                     ...prevState.filters,
-                    [key]: [...initialState.filters[key]],
+                    [key]: getInitialValue(initialState.filters[key]),
                 },
                 ids: prevState.ids.filter((id) => id !== key),
             })),
         []
     );
 
-    return { updateFilter, toggleFilterArray, resetFilterArray };
+    return { updateFilter, deleteFilter, toggleFilterArray };
 };
 
 export default useStateMethods;

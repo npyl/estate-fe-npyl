@@ -7,13 +7,13 @@ type UseSetters = (
     methods: {
         updateFilter: TUpdateFilterCb;
         toggleFilterArray: (key: keyof IPropertyFilter, value: string) => void;
-        resetFilterArray: (key: keyof IPropertyFilter) => void;
+        deleteFilter: (key: keyof IPropertyFilter) => void;
     },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
 const useSetters: UseSetters = (
-    { updateFilter, toggleFilterArray, resetFilterArray },
+    { updateFilter, toggleFilterArray, deleteFilter },
     setState
 ) =>
     useMemo(
@@ -120,31 +120,13 @@ const useSetters: UseSetters = (
                     return { ...prevState };
                 }),
 
-            deleteFilter: (key) =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
-                    const filterValue = newState.filters[key];
+            deleteFilter,
 
-                    // Reset filter to initial value
-                    newState.filters = {
-                        ...newState.filters,
-                        [key]: initialState.filters[key],
-                    };
+            // --------------------------------------------------------------------------------------------
+            // Reset
+            // --------------------------------------------------------------------------------------------
+            resetState: () => setState(initialState),
 
-                    // Update IDs
-                    if (
-                        Array.isArray(filterValue) &&
-                        filterValue.length === 1
-                    ) {
-                        newState.ids = newState.ids.filter((id) => id !== key);
-                    } else {
-                        newState.ids = newState.ids.filter((id) => id !== key);
-                    }
-
-                    return newState;
-                }),
-
-            // Reset operations
             resetBasic: () =>
                 setState((prevState) => {
                     const fieldsToReset = [
@@ -179,146 +161,38 @@ const useSetters: UseSetters = (
 
                     return newState;
                 }),
-            resetBedrooms: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
 
-                    // Reset bedroom values
-                    newState.filters = {
-                        ...newState.filters,
-                        minBedrooms: initialState.filters.minBedrooms,
-                        maxBedrooms: initialState.filters.maxBedrooms,
-                    };
+            resetBedrooms: () => {
+                deleteFilter("minBedrooms");
+                deleteFilter("maxBedrooms");
+            },
 
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "minBedrooms" && id !== "maxBedrooms"
-                    );
+            resetFloor: () => {
+                deleteFilter("minFloor");
+                deleteFilter("maxFloor");
+            },
 
-                    return newState;
-                }),
-            resetFloor: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
+            resetFrameType: () => deleteFilter("frameType"),
+            resetFurnished: () => deleteFilter("furnished"),
+            resetHeatingType: () => deleteFilter("heatingType"),
 
-                    // Reset floor values
-                    newState.filters = {
-                        ...newState.filters,
-                        minFloor: initialState.filters.minFloor,
-                        maxFloor: initialState.filters.maxFloor,
-                    };
+            resetConstructionYear: () => {
+                deleteFilter("minConstructionYear");
+                deleteFilter("maxConstructionYear");
+            },
 
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "minFloor" && id !== "maxFloor"
-                    );
+            resetPoints: () => deleteFilter("points"),
+            resetLocationSearch: () => deleteFilter("locationSearch"),
+            resetActiveState: () => deleteFilter("active"),
+            resetExtras: () => deleteFilter("extras"),
+            resetStates: () => deleteFilter("states"),
+            resetCategories: () => deleteFilter("categories"),
+            resetParentCategories: () => deleteFilter("parentCategories"),
 
-                    return newState;
-                }),
-
-            resetFrameType: () => resetFilterArray("frameType"),
-            resetFurnished: () => resetFilterArray("furnished"),
-            resetHeatingType: () => resetFilterArray("heatingType"),
-
-            resetConstructionYear: () =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
-
-                    // Reset construction year values
-                    newState.filters = {
-                        ...newState.filters,
-                        minConstructionYear:
-                            initialState.filters.minConstructionYear,
-                        maxConstructionYear:
-                            initialState.filters.maxConstructionYear,
-                    };
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) =>
-                            id !== "minConstructionYear" &&
-                            id !== "maxConstructionYear"
-                    );
-
-                    return newState;
-                }),
-
-            resetPoints: () => resetFilterArray("points"),
-
-            resetState: () => setState(initialState),
-
-            resetLocationSearch: () =>
-                setState((prevState) => {
-                    const newState = {
-                        ...prevState,
-                        filters: {
-                            ...prevState.filters,
-                            locationSearch: initialState.filters.locationSearch,
-                        },
-                    };
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "locationSearch"
-                    );
-
-                    return newState;
-                }),
-
-            resetActiveState: () =>
-                setState((prevState) => {
-                    const newState = {
-                        ...prevState,
-                        filters: {
-                            ...prevState.filters,
-                            active: initialState.filters.active,
-                        },
-                    };
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter((id) => id !== "active");
-
-                    return newState;
-                }),
-
-            resetExtras: () =>
-                setState((prevState) => {
-                    const newState = {
-                        ...prevState,
-                        filters: {
-                            ...prevState.filters,
-                            extras: { ...initialState.filters.extras },
-                        },
-                    };
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter((id) => id !== "extras");
-
-                    return newState;
-                }),
-
-            resetStates: () => resetFilterArray("states"),
-            resetCategories: () => resetFilterArray("categories"),
-            resetParentCategories: () => resetFilterArray("parentCategories"),
-
-            resetRegions: () =>
-                setState((prevState) => {
-                    const newState = {
-                        ...prevState,
-                        filters: {
-                            ...prevState.filters,
-                            regions: [...initialState.filters.regions],
-                            cities: [...initialState.filters.cities],
-                        },
-                    };
-
-                    // Remove from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => id !== "regions" && id !== "cities"
-                    );
-
-                    return newState;
-                }),
+            resetRegions: () => {
+                deleteFilter("regions");
+                deleteFilter("cities");
+            },
 
             // Other state setters
             setActiveState: (value) => updateFilter("active", value),
