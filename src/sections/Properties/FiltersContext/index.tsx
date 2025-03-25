@@ -37,14 +37,17 @@ const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
         [changedFields]
     );
 
+    const { filters, ids, sorting } = state;
     const contextValue = useMemo(
         () => ({
-            ...state,
+            filters,
+            ids,
+            sorting,
             ...setters,
             sumOfChangedProperties,
             changedFields,
         }),
-        [state, sumOfChangedProperties, changedFields]
+        [filters, ids, sorting, sumOfChangedProperties, changedFields]
     );
 
     return (
