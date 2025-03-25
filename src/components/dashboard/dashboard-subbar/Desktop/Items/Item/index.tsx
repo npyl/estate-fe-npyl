@@ -33,10 +33,12 @@ const useIsCurrent = (path: string) => {
     const isCurrent = useMemo(() => {
         const url = new URL(path, window.location.href);
 
+        // Check if we are on the same pathname
         if (url.pathname !== currentPath) return false;
 
         const query = new URLSearchParams(url.search);
 
+        // Check whether *ALL* params of tab (a.k.a. from path) are contained in searchParams (a.k.a. current url)
         for (const [key, value] of query) {
             const test = searchParams.get(key);
             if (test !== value) return false;
