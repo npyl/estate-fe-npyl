@@ -30,7 +30,7 @@ const useOptionView = () => {
             const currentPath = `/property?view=${optionView}`;
             const newPath = `/property?view=${v}`;
 
-            setTabPath(currentPath, newPath);
+            // setTabPath(currentPath, newPath);
         },
         [optionView]
     );

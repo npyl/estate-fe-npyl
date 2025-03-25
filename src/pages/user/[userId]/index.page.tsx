@@ -5,8 +5,7 @@ import { useGetUserQuery } from "src/services/user";
 import ViewUser from "@/sections/User/View";
 import { useRouter } from "next/router";
 import { SecurityProvider } from "src/contexts/security";
-import AdminGuard from "src/components/authentication/admin-guard";
-import UserPusher from "@/sections/User/UserPusher";
+import AdminGuard from "@/components/authentication/admin-guard";
 
 const User: NextPage = () => {
     const router = useRouter();
@@ -23,10 +22,7 @@ const User: NextPage = () => {
 User.getLayout = (page) => (
     <DashboardLayout>
         <AdminGuard>
-            <SecurityProvider>
-                <UserPusher />
-                {page}
-            </SecurityProvider>
+            <SecurityProvider>{page}</SecurityProvider>
         </AdminGuard>
     </DashboardLayout>
 );
