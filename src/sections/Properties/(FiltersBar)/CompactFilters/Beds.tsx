@@ -130,7 +130,7 @@ const Beds = () => {
     const { resetBedrooms } = useFiltersContext();
 
     return (
-        <ClearableSection title={t("Bedrooms")} onReset={resetBedrooms}>
+        <ClearableSection title={t("Bedrooms")} reset={resetBedrooms}>
             <ButtonGroup>
                 {BUTTONS.map((value) => (
                     <CustomButton key={value} value={value} />
