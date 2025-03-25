@@ -12,7 +12,9 @@ type ITabState = {
     pushTab: (t: ITab) => void;
     removeTab: (identifier: string) => void;
     removeTabs: (identifiers: string[]) => void;
-    getData: (identifier: string) => any;
+
+    setTabPath: (p: string, newP: string) => void;
+    getTabData: (identifier: string) => any;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
@@ -27,12 +29,7 @@ export const useTabsContext = () => {
     return context;
 };
 
-export type SubbarRef = {
-    pushTab: (i: ITab) => void;
-    removeTab: (p: string) => void;
-    removeTabs: (p: string[]) => void;
-    getData: (p: string) => any;
-};
+export type SubbarRef = ITabState;
 
 interface TabsProviderProps extends PropsWithChildren {
     subbarRef?: RefObject<SubbarRef>;
@@ -57,9 +54,14 @@ export const TabsProvider: FC<TabsProviderProps> = ({
             subbarRef?.current?.removeTabs(p);
         } catch (ex) {}
     };
-    const getData = useCallback((p: string) => {
+    const setTabPath = useCallback((p: string, newP: string) => {
         try {
-            return subbarRef?.current?.getData(p);
+            subbarRef?.current?.setTabPath(p, newP);
+        } catch (ex) {}
+    }, []);
+    const getTabData = useCallback((p: string) => {
+        try {
+            return subbarRef?.current?.getTabData(p);
         } catch (ex) {}
     }, []);
 
@@ -69,7 +71,9 @@ export const TabsProvider: FC<TabsProviderProps> = ({
                 pushTab,
                 removeTab,
                 removeTabs,
-                getData,
+                // ...
+                setTabPath,
+                getTabData,
             }}
             {...props}
         />

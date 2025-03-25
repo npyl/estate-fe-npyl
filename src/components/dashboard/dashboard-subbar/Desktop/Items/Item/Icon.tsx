@@ -16,7 +16,7 @@ const ICONS: TIcons = {
     CUSTOMER_CREATE: CustomersCreateIcon,
     CUSTOMER_EDIT: CustomersEditIcon,
     CUSTOMER_VIEW: CustomersIcon,
-    PROPERTIES: HomeIcon,
+    PROPERTY_FITLERS: HomeIcon,
     PROPERTY_CREATE: HomeCreateIcon,
     PROPERTY_EDIT: HomeEditIcon,
     PROPERTY_VIEW: HomeIcon,

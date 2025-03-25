@@ -53,45 +53,53 @@ const areObjectsEqual = (
 };
 
 /**
+ * Utility to check if a filter value is different from its initial state
+ * @param entry - A key-value pair from the filters object
+ * @returns boolean indicating if the value has changed from initial state
+ */
+const isDifferent = (entry: [string, any]): boolean => {
+    const [key, value] = entry;
+    const initialValue = initialState.filters[key as keyof IPropertyFilter];
+
+    // If values are strictly equal, they're not different
+    if (value === initialValue) return false;
+
+    // Handle arrays comparison
+    if (Array.isArray(value) && Array.isArray(initialValue)) {
+        return !areArraysEqual(value, initialValue);
+    }
+
+    // Handle extras object (which contains booleans)
+    if (key === "extras" && typeof value === "object" && value !== null) {
+        const initialExtras = initialState.filters
+            .extras as IPropertyFilterExtras;
+        return !areObjectsEqual(value as object, initialExtras);
+    }
+
+    // For primitive values or other cases
+    return value !== initialValue;
+};
+
+/**
+ * Checks if any filters have changed from their initial state
+ */
+const didChangeFields = (filters: IPropertyFilter): boolean => {
+    const entries = Object.entries(filters);
+    return entries.some(isDifferent);
+};
+
+/**
  * Custom hook that calculates which filter properties have changed from their initial state
  */
 const useChangedFields = (filters: IPropertyFilter) => {
     return useMemo(() => {
         return Object.entries(filters).reduce(
-            (acc: Partial<IPropertyFilter>, [_key, value]) => {
+            (acc: Partial<IPropertyFilter>, entry) => {
+                const [_key, value] = entry;
                 const key = _key as keyof IPropertyFilter;
-                const initialValue = initialState.filters[key];
 
-                // Skip if undefined or null values match
-                if (value === initialValue) return acc;
-
-                // Special handling for arrays
-                if (Array.isArray(value) && Array.isArray(initialValue)) {
-                    // Only consider it changed if the arrays are different
-                    if (!areArraysEqual(value, initialValue)) {
-                        acc[key] = value;
-                    }
-                    return acc;
-                }
-
-                // Special handling for extras object with booleans
-                if (
-                    key === "extras" &&
-                    typeof value === "object" &&
-                    value !== null
-                ) {
-                    const initialExtras = initialState.filters
-                        .extras as IPropertyFilterExtras;
-
-                    if (!areObjectsEqual(value as object, initialExtras)) {
-                        // Only include if at least one property is different
-                        acc[key] = value;
-                    }
-                    return acc;
-                }
-
-                // For primitive values, only include if they're different
-                if (value !== initialValue) {
+                // Only include this field in the result if it's different from initial state
+                if (isDifferent(entry)) {
                     acc[key] = value;
                 }
 
@@ -102,4 +110,5 @@ const useChangedFields = (filters: IPropertyFilter) => {
     }, [filters]);
 };
 
+export { didChangeFields };
 export default useChangedFields;

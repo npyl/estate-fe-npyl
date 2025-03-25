@@ -2,7 +2,7 @@ type TTabRenderer =
     | "CUSTOMER_CREATE"
     | "CUSTOMER_VIEW"
     | "CUSTOMER_EDIT"
-    | "PROPERTIES"
+    | "PROPERTY_FITLERS"
     | "PROPERTY_CREATE"
     | "PROPERTY_VIEW"
     | "PROPERTY_EDIT"

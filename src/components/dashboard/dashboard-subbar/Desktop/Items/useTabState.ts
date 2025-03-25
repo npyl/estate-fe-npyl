@@ -51,15 +51,34 @@ type TTabState = Record<number, ITab[]>;
 
 // -----------------------------------------------------------------------
 
+const isSameTabOrg = (p0: string, p1: string) => {
+    const url0 = new URL(p0, window.location.href);
+    const url1 = new URL(p1, window.location.href);
+
+    return url0.pathname === url1.pathname;
+};
+
+const isSameTab =
+    (p: string) =>
+    ({ path }: ITab) =>
+        isSameTabOrg(path, p);
+
+// -----------------------------------------------------------------------
+
 const pushOrUpdate = (old: ITab[], t: ITab) => {
     // Update
-    if (old.some(({ path }) => path === t.path)) {
+    if (old.some(isSameTab(t.path))) {
         return old.map((ot) => (ot.path === t.path ? t : ot));
     }
 
     // Push
     return [...old, t];
 };
+
+// -----------------------------------------------------------------------
+
+const updatePath = (old: ITab[], p: string, newP: string) =>
+    old.map((ot) => (isSameTabOrg(ot.path, p) ? { ...ot, path: newP } : ot));
 
 // -----------------------------------------------------------------------
 
@@ -108,10 +127,8 @@ const useTabState = () => {
             }
             // Case 2: we have more tabs
             else {
-                const removeIdx = tabs.findIndex(({ path }) => path === p);
-                const currentIdx = tabs.findIndex(
-                    ({ path }) => path === pathname
-                );
+                const removeIdx = tabs.findIndex(isSameTab(p));
+                const currentIdx = tabs.findIndex(isSameTab(pathname));
 
                 // If we are removing a non-current tab, we mustn't redirect.
                 if (removeIdx !== currentIdx) return;
@@ -137,12 +154,34 @@ const useTabState = () => {
         [tabs, tabState, userId]
     );
 
-    const getData = useCallback(
-        (p: string) => tabs?.find(({ path }) => path === p)?.data,
+    // --------------------------------------------------------------------
+    // Tab Specific
+    // --------------------------------------------------------------------
+
+    const getTabData = useCallback(
+        (p: string) => tabs?.find(isSameTab(p))?.data,
         [tabs]
     );
 
-    return [tabs, { pushTab, removeTab, removeTabs, getData }] as const;
+    const setTabPath = useCallback(
+        (p: string, newP: string) => {
+            const newTabs = updatePath(tabs, p, newP) || [];
+            setTabState({ ...tabState, [userId]: newTabs });
+        },
+        [tabs, tabState, userId]
+    );
+
+    return [
+        tabs,
+        {
+            pushTab,
+            removeTab,
+            removeTabs,
+            // ...
+            setTabPath,
+            getTabData,
+        },
+    ] as const;
 };
 
 export default useTabState;

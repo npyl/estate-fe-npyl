@@ -23,7 +23,7 @@ const RENDERERS: TRenderers = {
     CUSTOMER_CREATE: CustomerCreate,
     CUSTOMER_EDIT: CustomerEdit,
     CUSTOMER_VIEW: CustomerView,
-    PROPERTIES: PropertyAll,
+    PROPERTY_FITLERS: PropertyAll,
     PROPERTY_CREATE: PropertyCreate,
     PROPERTY_EDIT: PropertyEdit,
     PROPERTY_VIEW: PropertyView,
@@ -43,6 +43,7 @@ interface ContentProps {
 const Content: FC<ContentProps> = ({ renderer, resourceId }) => {
     try {
         const Renderer = RENDERERS[renderer];
+        if (!Renderer) return null;
         return <Renderer resourceId={resourceId} />;
     } catch (ex) {
         return null;

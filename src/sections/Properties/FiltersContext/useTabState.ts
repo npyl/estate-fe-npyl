@@ -1,20 +1,27 @@
 import { useTabsContext } from "@/contexts/tabs";
 import { useCallback, useMemo } from "react";
 import { IFilterProps } from "./types";
+import { didChangeFields } from "./useChangedFields";
 
 const useTabState = () => {
-    const { getData, pushTab } = useTabsContext();
+    const { getTabData, pushTab, removeTab } = useTabsContext();
 
-    const tabData = useMemo(() => getData("/property"), [getData]);
+    const tabData = useMemo(() => getTabData("/property"), [getTabData]);
 
     const onUpdate = useCallback((state: IFilterProps) => {
         const { filters } = state || {};
 
-        pushTab({
-            path: "/property",
-            renderer: "PROPERTIES",
-            data: filters,
-        });
+        const didChange = didChangeFields(filters);
+
+        if (didChange) {
+            pushTab({
+                path: "/property",
+                renderer: "PROPERTY_FITLERS",
+                data: filters,
+            });
+        } else {
+            removeTab("/property");
+        }
     }, []);
 
     return [tabData, onUpdate] as const;
