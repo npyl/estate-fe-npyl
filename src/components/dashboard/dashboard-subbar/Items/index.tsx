@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "@mui/material";
+import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import { forwardRef, useImperativeHandle } from "react";
 import dynamic from "next/dynamic";
 import { SubbarRef } from "@/contexts/tabs";
@@ -8,7 +8,8 @@ import useTabPusher from "./useTabPusher";
 const TabItem = dynamic(() => import("./Item"));
 
 // ----------------------------------------------------------------------
-const subbarContainerStyles = {
+
+const subbarContainerStyles: SxProps<Theme> = {
     overflowX: "auto",
     flexWrap: "nowrap",
     whiteSpace: "nowrap",
@@ -19,6 +20,7 @@ const subbarContainerStyles = {
         borderRadius: "3px",
     },
 };
+
 // ----------------------------------------------------------------------
 
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
@@ -35,7 +37,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
         const [movedTab] = reorderedTabs.splice(result.source.index, 1);
         reorderedTabs.splice(result.destination.index, 0, movedTab);
 
-        setTabs(reorderedTabs); //  Update state with new order
+        methods.setTabs(reorderedTabs); //  Update state with new order
     };
 
     return (
@@ -45,7 +47,6 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
                     <Stack
                         direction="row"
                         spacing={0.5}
-                        mb={tabs.length > 0 ? 1 : 0}
                         sx={subbarContainerStyles}
                         ref={provided.innerRef}
                         {...provided.droppableProps}

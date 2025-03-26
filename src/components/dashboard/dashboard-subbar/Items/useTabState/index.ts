@@ -54,6 +54,12 @@ const useTabState = () => {
         [setTabState, userId]
     );
 
+    const setTabs = useCallback(
+        (newTabs: ITab[]) =>
+            setTabState((old) => ({ ...old, [userId]: newTabs })),
+        [setTabState, userId]
+    );
+
     const router = useRouter();
     const pathname = usePathname();
 
@@ -132,6 +138,7 @@ const useTabState = () => {
                 _tabs,
                 {
                     pushTab,
+                    setTabs,
                     removeTab,
                     removeTabs,
                     // ...
@@ -143,6 +150,7 @@ const useTabState = () => {
         [
             _tabs,
             pushTab,
+            setTabs,
             removeTab,
             removeTabs,
             // ...
