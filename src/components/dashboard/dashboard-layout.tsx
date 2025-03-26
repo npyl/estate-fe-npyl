@@ -5,6 +5,7 @@ import { DashboardSidebar } from "./dashboard-sidebar";
 import useDialog from "@/hooks/useDialog";
 import Subbar from "./dashboard-subbar";
 import { SubbarRef, TabsProvider } from "@/contexts/tabs";
+import { NAV } from "@/constants/config";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
@@ -15,15 +16,16 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     flexDirection: "column",
     flex: "1 1 auto",
     maxWidth: "100%",
-    marginTop: 75,
+
+    marginTop: NAV.W_TOPBAR,
     marginBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
 
     [theme.breakpoints.up("md")]: {
-        marginLeft: 200,
+        marginLeft: NAV.W_DASHBOARD,
+        paddingLeft: theme.spacing(2),
     },
-
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
 }));
 
 const Nav = () => {

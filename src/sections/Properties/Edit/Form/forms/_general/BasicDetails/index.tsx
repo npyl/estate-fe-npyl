@@ -1,5 +1,4 @@
 import { Grid, Stack } from "@mui/material";
-import * as React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import LabelCreate from "@/sections/LabelCreate";
@@ -11,7 +10,6 @@ import {
     RHFCheckbox,
 } from "src/components/hook-form";
 import Rent from "../Rent";
-import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 import { useGetPropertyByIdQuery } from "@/services/properties";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
@@ -20,7 +18,7 @@ import RHFCode from "../RHFCode";
 import RHFKeyCode from "../RHFKeyCode";
 import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
 
-const BasicSection: React.FC<any> = () => {
+const BasicSection = () => {
     const router = useRouter();
     const { t } = useTranslation();
     const { stateEnum } = useEnums();
@@ -64,12 +62,11 @@ const BasicSection: React.FC<any> = () => {
 
                 <Grid item xs={12} sm={6}>
                     <Stack direction="row" gap={3}>
-                        <RHFOnlyNumbersForPrice
+                        <RHFOnlyNumbers
                             fullWidth
                             name="price"
                             label={t("Price")}
                             adornment="€"
-                            initialValue={data?.price}
                         />
 
                         <RHFCheckbox
@@ -101,22 +98,20 @@ const BasicSection: React.FC<any> = () => {
                     <LabelCreate variant="property" resourceId={+propertyId!} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <RHFOnlyNumbersForPrice
+                    <RHFOnlyNumbers
                         fullWidth
                         name="averageUtils"
                         label={t("Average Utils")}
                         adornment={t<string>("EURO_PER_MONTH")}
-                        initialValue={data?.averageUtils}
                     />
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <RHFOnlyNumbersForPrice
+                    <RHFOnlyNumbers
                         fullWidth
                         name="estimatedRentPrice"
                         label={t("Estimated Rent Price")}
                         adornment="€"
-                        initialValue={data?.estimatedRentPrice}
                     />
                 </Grid>
 

@@ -6,10 +6,10 @@ import {
 } from "@tiptap/react";
 import {
     CSSProperties,
+    ForwardedRef,
     forwardRef,
     useCallback,
-    useImperativeHandle,
-    useMemo,
+    useEffect,
     useRef,
 } from "react";
 import { SxProps, Theme } from "@mui/material";
@@ -31,7 +31,42 @@ const getMenuBarSx = (editable: boolean): SxProps<Theme> => ({
 
 // ----------------------------------------------------------------------
 
-type EditorRef = TEditor | null;
+const useContentUpdate = (
+    editor: TEditor | null,
+    content: string | undefined
+) => {
+    useEffect(() => {
+        if (!content) {
+            editor?.commands?.clearContent();
+            return;
+        }
+
+        const parsed = JSON.parseSafe(content);
+        if (!parsed) return;
+
+        editor?.commands?.setContent(parsed);
+    }, [editor, content]);
+};
+
+const useForwardEditorRef = (
+    editor: TEditor | null,
+    ref: ForwardedRef<TEditor>
+) => {
+    useEffect(() => {
+        // INFO: precaution; the provider is responsible for loading this component *ONLY* when the object is ready
+        if (!editor) return;
+
+        if (typeof ref === "function") {
+            ref(editor);
+        } else if (ref) {
+            ref.current = editor;
+        }
+    }, []);
+};
+
+// ----------------------------------------------------------------------
+
+type EditorRef = TEditor;
 
 type EditorProps = Omit<
     EditorContentProps,
@@ -51,6 +86,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
     (
         {
             editable = true,
+            content,
             // ...
             containerProps,
             containerSx,
@@ -63,13 +99,14 @@ const Editor = forwardRef<EditorRef, EditorProps>(
     ) => {
         const { editor } = useEditorContext();
 
-        useImperativeHandle(ref, () => editor!, [editor]);
-
         const menubarRef = useRef<HTMLDivElement>();
         const setMenubarRef = useCallback(
             (e: HTMLDivElement) => (menubarRef.current = e),
             []
         );
+
+        useContentUpdate(editor, content);
+        useForwardEditorRef(editor, ref);
 
         return (
             <Stack
@@ -141,12 +178,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
  * onUpdate: provides the parent with the editor's content formatted in TipTap-acceptable JSON
  */
 const ProviderWrap = forwardRef<EditorRef, EditorProps>(
-    ({ content: _content, onUpdate, onPlainTextUpdate, ...props }, ref) => {
-        const content = useMemo(
-            () => (_content ? JSON.parseSafe(_content) : ""),
-            [_content]
-        );
-
+    ({ onUpdate, onPlainTextUpdate, ...props }, ref) => {
         const handleUpdate = useCallback(
             ({ editor }: EditorEvents["update"]) => {
                 try {
@@ -165,11 +197,7 @@ const ProviderWrap = forwardRef<EditorRef, EditorProps>(
         );
 
         return (
-            <EditorProvider
-                editable={props.editable}
-                content={content}
-                onUpdate={handleUpdate}
-            >
+            <EditorProvider editable={props.editable} onUpdate={handleUpdate}>
                 <Editor ref={ref} {...props} />
             </EditorProvider>
         );

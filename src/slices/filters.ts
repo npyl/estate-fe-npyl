@@ -2,13 +2,10 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import { IPropertyFilter, IPropertyFilterExtras } from "src/types/properties";
 
-interface Filters extends IPropertyFilter {
-    [key: string]: any;
-}
 interface IFilterProps {
-    filters: Filters;
+    filters: IPropertyFilter;
     sorting: string;
-    ids: string[];
+    ids: (keyof IPropertyFilter)[];
 }
 
 const initialState: IFilterProps = {
@@ -71,7 +68,7 @@ const slice = createSlice({
 
         setMaxConstructionYear(state, { payload }) {
             state.filters.maxConstructionYear = payload;
-            !state.ids.includes("maxConstuctionYear") &&
+            !state.ids.includes("maxConstructionYear") &&
                 state.ids.push("maxConstructionYear");
         },
 
@@ -86,7 +83,6 @@ const slice = createSlice({
         },
         setIds(state, { payload }) {
             state.ids = payload;
-            !state.ids.includes("ids") && state.ids.push("ids");
         },
         setMinArea(state, { payload }) {
             state.filters.minArea = payload;
@@ -132,15 +128,6 @@ const slice = createSlice({
         setLabels(state, { payload }) {
             state.filters.labels = payload;
             !state.ids.includes("labels") && state.ids.push("labels");
-        },
-        setParentLocation(state, { payload }) {
-            state.filters.parentLocation = payload;
-            !state.ids.includes("parentLocation") &&
-                state.ids.push("parentLocation");
-        },
-        setSubLocation(state, { payload }) {
-            state.filters.subLocation = payload;
-            !state.ids.includes("subLocation") && state.ids.push("subLocation");
         },
 
         setStates(state, { payload }) {
@@ -239,6 +226,7 @@ const slice = createSlice({
 
         setPoints: (state, { payload }) => {
             state.filters.points = payload;
+            !state.ids.includes("points") && state.ids.push("points");
         },
 
         setSorting: (state, { payload }) => {
@@ -266,7 +254,7 @@ const slice = createSlice({
             }
         },
 
-        deleteFilter(state, { payload }) {
+        deleteFilter(state, { payload }: { payload: keyof IPropertyFilter }) {
             const key = payload;
 
             if (Array.isArray(state.filters[key])) {
@@ -277,6 +265,7 @@ const slice = createSlice({
             } else state.ids = state.ids.filter((id) => id !== key);
 
             const initialValue = initialState.filters[payload];
+
             state.filters[key] = initialValue;
         },
 
@@ -357,6 +346,7 @@ const slice = createSlice({
 
         resetPoints: (state) => {
             state.filters.points = initialState.filters.points;
+            state.ids = state.ids.filter((id) => id !== "points");
         },
 
         resetRegions: (state) => {
@@ -411,8 +401,6 @@ export const {
 
     // multiple
     setLabels,
-    setParentLocation,
-    setSubLocation,
     setStates,
     setSubCategories,
     setParentCategories,
@@ -477,8 +465,7 @@ export const selectMinFloor = ({ filters }: RootState) =>
     filters.filters.minFloor;
 export const selectMinPrice = ({ filters }: RootState) =>
     filters.filters.minPrice;
-export const selectParentLocation = ({ filters }: RootState) =>
-    filters.filters.parentLocation;
+
 export const selectRegions = ({ filters }: RootState) =>
     filters.filters.regions;
 export const selectCities = ({ filters }: RootState) => filters.filters.cities;
@@ -532,8 +519,10 @@ export const sumOfChangedProperties = createSelector(
         ];
 
         return propertiesToInclude.reduce((acc, curr) => {
-            const currentFilterValue = filter.filters[curr];
-            const initialFilterValue = initialState.filters[curr];
+            const key = curr as keyof IPropertyFilter;
+
+            const currentFilterValue = filter.filters[key];
+            const initialFilterValue = initialState.filters[key];
 
             if (curr === "active") {
                 // Handle the "active" filter explicitly, considering null as "All"
@@ -562,10 +551,13 @@ export const getChangedFields = createSelector(
     (state: RootState) => state.filters,
     (filter) => {
         const changedFields = Object.entries(filter.filters).reduce(
-            (acc: any, [key, value]) => {
+            (acc: any, [_key, value]) => {
+                const key = _key as keyof IPropertyFilter;
+
                 if (value !== initialState.filters[key]) {
                     acc[key] = value;
                 }
+
                 return acc;
             },
             {}

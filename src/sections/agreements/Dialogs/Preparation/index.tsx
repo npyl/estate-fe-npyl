@@ -26,7 +26,7 @@ import ExportButton from "./Buttons/Export";
 import EditPDFButton from "./Buttons/EditPDF";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { TForm } from "./types";
-import Divider from "@mui/material/Divider";
+import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
 
 // -------------------------------------------------------------------
 
@@ -53,10 +53,7 @@ const useInitialValues = (id?: number) => {
 
 // -------------------------------------------------------------------
 
-const getCookieKey = (id: number = -1) =>
-    id === -1 ? null : `PPAgreementForm-${id}`;
-
-interface Props extends DialogProps {
+interface Props extends Omit<DialogProps, "open"> {
     editedAgreementId?: number;
 }
 
@@ -72,11 +69,16 @@ const PreparationDialog: React.FC<Props> = ({
     const { values, isCustomer } = useInitialValues(editedAgreementId);
     const shouldAutofill = editedAgreementId === -1; // Can autofill with property data *ONLY* when creating a NEW! agreement
 
-    const cookieKey = getCookieKey(editedAgreementId);
+    const cookieKey = useFormPersistStorageKey(
+        "PPAgreementForm",
+        editedAgreementId
+    );
+
     const [methods, { PersistNotice }] = useFormPersist<TForm>(
         cookieKey,
         null,
         {
+            dialog: true,
             resolver: zodResolver(Schema),
             values,
         }
@@ -112,8 +114,10 @@ const PreparationDialog: React.FC<Props> = ({
     return (
         <>
             <FormProvider {...methods}>
+                {PersistNotice}
+
                 <Dialog
-                    {...props}
+                    open
                     maxWidth="lg"
                     submit
                     onSubmit={methods.handleSubmit(handleSubmit)}
@@ -132,9 +136,6 @@ const PreparationDialog: React.FC<Props> = ({
                     DialogActionsComponent={StyledActions}
                     actions={
                         <Stack spacing={1} width={1}>
-                            {PersistNotice ? PersistNotice : null}
-                            {PersistNotice ? <Divider /> : null}
-
                             <Stack
                                 direction="row"
                                 spacing={1}
@@ -158,6 +159,7 @@ const PreparationDialog: React.FC<Props> = ({
                             </Stack>
                         </Stack>
                     }
+                    {...props}
                 />
             </FormProvider>
         </>

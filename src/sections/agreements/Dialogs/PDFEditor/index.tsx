@@ -6,7 +6,7 @@ import SaveFab from "./SaveFab";
 import ErrorTooltips from "./ErrorTooltips";
 import useValidatePDF from "./useValidatePDF";
 import dynamic from "next/dynamic";
-import { Z_INDEX } from "@/config";
+import { Z_INDEX } from "@/constants/config";
 const PDFEditor = dynamic(() => import("./Editor"), { ssr: false });
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
 

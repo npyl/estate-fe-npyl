@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer } from "src/types/customer";
+import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
 
 const getLoginSchema = (t: TranslationType) =>
     Yup.object().shape({
@@ -69,10 +70,8 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     enableEmails: customer?.enableEmails || false,
 });
 
-const getCookieKey = (id: number = -1) =>
-    id !== -1 ? `PPCustomerForm-${id}` : null;
-
 const useCustomerForm = (
+    quickCreate: boolean,
     customer: ICustomer | undefined,
     onSaveSuccess: VoidFunction | null
 ) => {
@@ -81,7 +80,12 @@ const useCustomerForm = (
     const defaultValues = useMemo(() => getDefaultValues(customer), [customer]);
     const LoginSchema = useMemo(() => getLoginSchema(t), [t]);
 
-    const cookieKey = getCookieKey(customer?.id);
+    const cookieKey = useFormPersistStorageKey(
+        "PPCustomerForm",
+        customer?.id,
+        quickCreate
+    );
+
     const all = useFormPersist<ICustomerYup>(cookieKey, onSaveSuccess, {
         resolver: yupResolver(LoginSchema),
         values: defaultValues,

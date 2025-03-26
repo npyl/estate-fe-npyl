@@ -13,7 +13,7 @@ import { LocationSearching } from "@mui/icons-material";
 import { SpaceBetween } from "@/components/styled";
 import DateInfo from "@/components/Calendar/Event/_shared/DateInfo";
 import PeopleSection from "./PeopleSection";
-import Description from "./Description";
+import Description from "@/components/Calendar/Event/_shared/Description";
 // ...
 const DeleteButton = dynamic(() => import("./DeleteButton"));
 const EditForm = dynamic(() => import("../form"));
@@ -63,7 +63,8 @@ const EventPopover: FC<Props> = ({
                         variant="h6"
                         textAlign="left"
                         noWrap
-                        width="calc(100% - 150px)"
+                        minWidth="fit-content"
+                        maxWidth="calc(100% - 150px)"
                     >
                         {title}
                     </Typography>
@@ -113,7 +114,7 @@ const EventPopover: FC<Props> = ({
                         </Typography>
                     </Stack>
 
-                    <Description value={event?.description} />
+                    <Description content={event?.description} />
 
                     <PeopleSection people={event?.people} type={event?.type} />
                 </Stack>

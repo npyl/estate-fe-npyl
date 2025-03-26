@@ -127,4 +127,5 @@ const CodeSelect = forwardRef(UnforwardedCodeSelect) as <
 
 UnforwardedCodeSelect.displayName = "CodeSelect";
 
+export type { CodeSelectProps };
 export default CodeSelect;

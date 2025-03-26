@@ -13,7 +13,6 @@ import {
 } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 import Rent from "../../_general/Rent";
-import RHFOnlyNumbersForPrice from "@/components/hook-form/RHFOnlyNumbersForPrice";
 import { useGetPropertyByIdQuery } from "@/services/properties";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
@@ -139,22 +138,20 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <RHFOnlyNumbersForPrice
+                    <RHFOnlyNumbers
                         fullWidth
                         name="price"
                         label={t("Price")}
                         adornment="€"
-                        initialValue={data?.price}
                     />
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <RHFOnlyNumbersForPrice
+                    <RHFOnlyNumbers
                         fullWidth
                         name="estimatedRentPrice"
                         label={t("Estimated Rent Price")}
                         adornment="€"
-                        initialValue={data?.estimatedRentPrice}
                     />
                 </Grid>
 

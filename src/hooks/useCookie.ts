@@ -1,6 +1,9 @@
 import { useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
 
+const getOneYearFromNow = () =>
+    new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+
 const LIBRARY_OPTIONS = {
     doNotParse: false /* Always use JSON parser */,
     doNotUpdate: false /* Always update state after set/remove */,
@@ -10,6 +13,7 @@ const OPTIONS = {
     sameSite: "strict",
     secure: true,
     path: "/",
+    expires: getOneYearFromNow(),
 } as const;
 
 /**

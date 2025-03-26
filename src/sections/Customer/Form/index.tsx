@@ -1,9 +1,7 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { LoadingButton } from "@mui/lab";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 // Sections
 import AddressDetails from "./AddressDetails";
@@ -14,17 +12,7 @@ import { FormProvider } from "react-hook-form";
 import { ICustomerYup } from "./types";
 import useCustomerForm from "./useCustomerForm";
 import FormBottomBar from "@/sections/FormBottomBar";
-
-interface FormProps {
-    compact?: boolean;
-
-    customer?: ICustomer;
-    isLoading: boolean;
-    isError: boolean;
-    onSave: (body: ICustomerPOST) => Promise<{ data: number } | { error: any }>;
-    onSaveSuccess?: VoidFunction;
-    onCancel: () => void;
-}
+import SaveButton from "./SaveButton";
 
 const COLUMN_GRID = (compact: boolean) =>
     compact
@@ -33,12 +21,25 @@ const COLUMN_GRID = (compact: boolean) =>
           }
         : {};
 
-const Form: FC<FormProps> = ({
+interface CustomerFormProps {
+    quickCreate?: boolean;
+    compact?: boolean;
+
+    customer?: ICustomer;
+    isLoading?: boolean;
+    isError?: boolean;
+    onSave: (body: ICustomerPOST) => Promise<{ data: number } | { error: any }>;
+    onSaveSuccess?: VoidFunction;
+    onCancel: () => void;
+}
+
+const Form: FC<CustomerFormProps> = ({
+    quickCreate = false,
     compact = false,
 
     customer,
-    isLoading,
-    isError,
+    isLoading = false,
+    isError = false,
 
     onSave,
     onSaveSuccess = null,
@@ -46,9 +47,11 @@ const Form: FC<FormProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const { methods, PersistNotice } = useCustomerForm(customer, onSaveSuccess);
-
-    const isDirty = methods.formState.isDirty;
+    const { methods, PersistNotice } = useCustomerForm(
+        quickCreate,
+        customer,
+        onSaveSuccess
+    );
 
     // INFO: this is a nested-form so make sure we do not use the type="submit" method because it triggers a submit event to the parent form aswell
     const handleSubmit = methods.handleSubmit(async (data: ICustomerYup) => {
@@ -62,7 +65,7 @@ const Form: FC<FormProps> = ({
     return (
         <form>
             <FormProvider {...methods}>
-                <Grid container paddingTop={1} paddingRight={1} spacing={1}>
+                <Grid container spacing={1}>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
                         <CustomerInformation />
                     </Grid>
@@ -90,15 +93,12 @@ const Form: FC<FormProps> = ({
                                 {t("Cancel")}
                             </Button>
 
-                            <LoadingButton
-                                disabled={!isDirty}
-                                loading={isLoading && !isError}
-                                variant="contained"
-                                startIcon={<SendIcon />}
+                            <SaveButton
+                                quickCreate={quickCreate}
+                                loading={isLoading}
+                                error={isError}
                                 onClick={handleSubmit}
-                            >
-                                {t("Save")}
-                            </LoadingButton>
+                            />
                         </Stack>
                     }
                 />
@@ -107,4 +107,5 @@ const Form: FC<FormProps> = ({
     );
 };
 
+export type { CustomerFormProps };
 export default Form;

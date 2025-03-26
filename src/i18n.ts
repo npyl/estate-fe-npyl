@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Shape: "Shape",
+
             inVideo: "In Video",
 
             EURO_PER_MONTH: "€/Month",
@@ -1284,6 +1286,8 @@ const resources = {
     },
     el: {
         translation: {
+            Shape: "Σχήμα",
+
             inVideo: "Σε Βίντεο",
 
             EURO_PER_MONTH: "€/Μήνα",

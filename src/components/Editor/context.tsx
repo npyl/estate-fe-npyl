@@ -38,6 +38,9 @@ export const EditorProvider: FC<EditorProviderProps> = ({
         onUpdate,
     });
 
+    // INFO: force a render ONLY when the object has initialised; this will trigger a correct onLoad on the child
+    if (!editor) return null;
+
     return (
         <EditorContext.Provider
             value={{

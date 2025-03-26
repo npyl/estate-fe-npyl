@@ -1,5 +1,5 @@
 import { GoogleMap } from "@react-google-maps/api";
-import { CSSProperties, FC, useCallback, useRef } from "react";
+import { CSSProperties, FC, useCallback, useMemo, useRef } from "react";
 import useLoadApi from "../../hook";
 import getAddressFromLatLng from "./getAddressFromLatLng";
 import { IMapProps } from "../../types";
@@ -7,6 +7,7 @@ import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
 import { athensLatLng, ZOOM_LEVELS } from "../../constants";
 import dynamic from "next/dynamic";
+import isPositionValid from "../../util/validation";
 const MainMarker = dynamic(() => import("./MainMarker"));
 
 const containerStyle: CSSProperties = {
@@ -23,7 +24,7 @@ const MapContainer: FC<IMapProps> = ({
     // ...
     zoom,
     mainMarker = false,
-    center = athensLatLng,
+    center: _center = athensLatLng,
     // ...
     leftTop,
     leftCenter,
@@ -38,6 +39,11 @@ const MapContainer: FC<IMapProps> = ({
     const controlsRef = useRef<ControlsRef>(null);
 
     const { isLoaded } = useLoadApi();
+
+    const center = useMemo(() => {
+        if (!isPositionValid(_center)) return athensLatLng;
+        return _center;
+    }, [_center]);
 
     const onLoad = useCallback(
         (map: google.maps.Map) => {

@@ -24,9 +24,9 @@ import errorToast from "../Toaster/error";
 const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
     try {
         // INFO: allow only https
-        if (!url.includes("https://")) throw new Error("Not https");
-
-        const parsedUrl = new URL(url);
+        const parsedUrl = url.startsWith("https://")
+            ? new URL(url)
+            : new URL(`${ctx.defaultProtocol}://${url}`);
 
         // use default validation
         if (!ctx.defaultValidate(parsedUrl.href))
@@ -38,11 +38,6 @@ const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
         errorToast("_PPEDITOR_LINK_INVALID0_", "_PPEDITOR_LINK_INVALID1_");
         return false;
     }
-};
-
-const Z_INDEX = {
-    BUBBLE_MENU: 1,
-    EMOJI_PICKER: 2,
 };
 
 const TEXT_TYPES = ["heading", "paragraph", "listItem"];
@@ -76,6 +71,7 @@ const extensions = [
         maxLevel: 8,
     }),
     Link.configure({
+        defaultProtocol: "https",
         openOnClick: false,
         isAllowedUri,
     }),
@@ -89,4 +85,4 @@ const extensions = [
     History,
 ];
 
-export { extensions, Z_INDEX };
+export { extensions };

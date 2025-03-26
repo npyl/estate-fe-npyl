@@ -48,6 +48,7 @@ export interface IPropertyResultResponse {
 }
 
 export interface IPropertyFilter {
+    locationSearch?: string;
     filterName?: string;
     location?: ILocation;
     code?: string;
@@ -77,6 +78,8 @@ export interface IPropertyFilter {
     furnished: string[];
 
     extras: IPropertyFilterExtras;
+
+    [key: string]: any;
 }
 
 interface IPropertyFilterExtras {
@@ -428,8 +431,6 @@ export interface IProperties {
     video: string;
     descriptions: Record<string, DescriptionEntry>;
     hidePrice: boolean;
-    createdAt: string;
-    updatedAt: string;
 
     id: number;
     area: number;
@@ -474,6 +475,9 @@ export interface IProperties {
     googleEarth: IPropertyFile;
 
     pdfGeneratedAt: string | null;
+
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface IPropertyMarker {

@@ -15,7 +15,7 @@ const Pusher: FC<PusherProps> = ({ tab }) => {
 
     useEffect(() => {
         pushTab(tab);
-    }, []);
+    }, [tab]);
 
     return null;
 };

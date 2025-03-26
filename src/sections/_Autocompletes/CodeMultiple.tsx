@@ -1,13 +1,13 @@
-import CodeSelect from "@/sections/CodeSelect";
+import CodeSelect, { CodeSelectProps } from "@/sections/_Autocompletes/Code";
 import { IPropertyCodeRes } from "@/types/properties";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { Controller, useFormContext } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import ChipLink from "@/components/ChipLink";
 import MultilineTextField from "@/components/MultilineTextField";
 import getIcons from "@/assets/icons/parent-categories";
-import { FC } from "react";
+import { FC, forwardRef } from "react";
+
+// ---------------------------------------------------------------------------
 
 const getOptionLabel = (o: IPropertyCodeRes | number) =>
     typeof o === "number" ? "" : o.code;
@@ -50,41 +50,38 @@ const RenderTags = (
         );
     });
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
-const PropertiesAutocomplete = () => {
-    const { t } = useTranslation();
+interface CodeAutocompleteMultipleProps
+    extends Omit<
+        CodeSelectProps<true>,
+        "getOptionLabel" | "renderTags" | "renderInput"
+    > {
+    label?: string;
+    error?: boolean;
+    helperText?: string;
+}
 
-    const { control } = useFormContext();
+const CodeAutocompleteMultiple = forwardRef<
+    HTMLElement,
+    CodeAutocompleteMultipleProps
+>(({ error, helperText, ...props }, ref) => (
+    <CodeSelect<true>
+        ref={ref}
+        multiple
+        getOptionLabel={getOptionLabel}
+        renderTags={RenderTags}
+        renderInput={(props) => (
+            <MultilineTextField
+                multiline
+                {...props}
+                error={error}
+                helperText={helperText}
+            />
+        )}
+        {...props}
+    />
+));
 
-    return (
-        <Controller
-            name="properties"
-            control={control}
-            render={({
-                field: { value, onChange, ...field },
-                fieldState: { error },
-            }) => (
-                <CodeSelect<true>
-                    multiple
-                    getOptionLabel={getOptionLabel}
-                    renderTags={RenderTags}
-                    renderInput={(props) => (
-                        <MultilineTextField
-                            multiline
-                            label={t("Properties")}
-                            {...props}
-                            error={Boolean(error)}
-                            helperText={error?.message}
-                        />
-                    )}
-                    {...field}
-                    idValue={value}
-                    onChange={(_, ids) => onChange(ids)}
-                />
-            )}
-        />
-    );
-};
-
-export default PropertiesAutocomplete;
+export type { CodeAutocompleteMultipleProps };
+export default CodeAutocompleteMultiple;

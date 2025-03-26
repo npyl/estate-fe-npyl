@@ -1,17 +1,13 @@
 import { Drawer } from "@mui/material";
-import CustomerForm from "@/sections/Customer/Form";
+import CustomerForm, { CustomerFormProps } from "@/sections/Customer/Form";
 import { useCallback } from "react";
-import { ICustomer, ICustomerPOST } from "@/types/customer";
+import { ICustomerPOST } from "@/types/customer";
 
 /**
  * createCb: provide your own create callback so that we can either use
  * e.g. the standard useCreaterOrUpdateCustomerMutation or the useCreateOrUpdateCustomerForStayUpdatedMutation or any other
  */
-interface ModalProps {
-    customer?: ICustomer;
-    isLoading?: boolean;
-    isError?: boolean;
-
+interface ModalProps extends Omit<CustomerFormProps, "onSave" | "onCancel"> {
     onCreate?: (id: number) => void;
 
     createCb: (body: ICustomerPOST) => Promise<{ error: any } | { data: any }>;
@@ -20,6 +16,7 @@ interface ModalProps {
 }
 
 const CustomerModal: React.FC<ModalProps> = ({
+    quickCreate = false,
     customer,
 
     createCb,
@@ -61,6 +58,7 @@ const CustomerModal: React.FC<ModalProps> = ({
         >
             <CustomerForm
                 compact
+                quickCreate={quickCreate}
                 customer={customer}
                 isLoading={isLoading}
                 isError={isError}

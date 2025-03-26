@@ -13,7 +13,7 @@ import { SpaceBetween } from "@/components/styled";
 import { useTranslation } from "react-i18next";
 import PopoverPaper from "./PopoverPaper";
 import { Modal } from "@mui/material";
-import { Z_INDEX } from "@/config";
+import { Z_INDEX } from "@/constants/config";
 
 interface ResultsPopperProps {
     anchorEl: HTMLInputElement;

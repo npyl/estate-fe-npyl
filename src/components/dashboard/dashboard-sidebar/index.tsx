@@ -10,6 +10,7 @@ import { FC, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import SidebarSkeleton from "./SidebarSkeleton";
+import { NAV } from "@/constants/config";
 const Sections = dynamic(() => import("./Sections"), {
     loading: () => <SidebarSkeleton />,
 });
@@ -56,7 +57,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                     textAlign="center"
                     color="text.secondary"
                 >
-                    v0.99.0
+                    v0.99.1
                 </Typography>
             </Stack>
         ),
@@ -75,7 +76,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                         backgroundColor: "#FFF",
                         border: 0,
                         color: "#FFFFFF",
-                        width: 200,
+                        width: NAV.W_DASHBOARD,
                     },
                 }}
                 variant="permanent"
@@ -93,7 +94,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
             PaperProps={{
                 sx: {
                     paddingTop: !open ? "100px" : 0,
-                    width: 200,
+                    width: NAV.W_DASHBOARD,
                 },
             }}
             sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}

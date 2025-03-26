@@ -5,25 +5,26 @@ import { useTranslation } from "react-i18next";
 import { IDemandFiltersPOST } from "src/types/demand";
 import { IProperties } from "src/types/properties";
 import { useFormContext } from "react-hook-form";
-import CodeSelect from "@/sections/CodeSelect";
+import CodeSelect from "@/sections/_Autocompletes/Code";
+import { IDemandForms } from "../../../Form";
 
 interface DemandAutocompleteProps {
     index: number;
 }
 
 const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
-    const { setValue } = useFormContext();
+    const { setValue } = useFormContext<IDemandForms>();
     const { t } = useTranslation();
 
     const [code, setCode] = useState("");
     const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
 
+    const setFilter = (key: keyof IDemandFiltersPOST, value: any) =>
+        setValue(`demands.${index}.filters.${key}`, value);
+
     const fillFromPropertyForCode = useCallback(
         (p: IProperties) => {
             if (!p) return;
-
-            const setFilter = (key: keyof IDemandFiltersPOST, value: any) =>
-                setValue(`demands[${index}].filters.${key}`, value);
 
             setFilter("parentCategories", [p.parentCategory.key]);
             setFilter("categories", [p.category.key]);

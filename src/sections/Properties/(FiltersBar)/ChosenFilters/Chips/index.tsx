@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
 import { TTags } from "../types";
 import dynamic from "next/dynamic";
+import { IPropertyFilter } from "@/types/properties";
+import Points from "./Points";
 
 // Chips
 const MinMaxChip = dynamic(() => import("./MinMax"));
@@ -27,7 +29,7 @@ const LifestyleChip = dynamic(() => import("./Lifestyle"));
 interface SimpleChipProps {
     title: string;
     values: string[];
-    filterKey: string;
+    filterKey: keyof IPropertyFilter;
 }
 
 const SimpleChip: FC<SimpleChipProps> = ({ values, title, filterKey }) => {
@@ -50,8 +52,16 @@ const SimpleChip: FC<SimpleChipProps> = ({ values, title, filterKey }) => {
 
 // --------------------------------------------------------------------------------
 
+const getSuffix = (_filterKey: keyof IPropertyFilter) => {
+    const filterKey = _filterKey as string;
+
+    return filterKey.includes("min") || filterKey.includes("max")
+        ? filterKey.slice(3)
+        : null;
+};
+
 interface GeneralChipProps {
-    filterKey: string;
+    filterKey: keyof IPropertyFilter;
     filterTags: TTags;
     pairFilterTags: TTags;
 }
@@ -74,10 +84,7 @@ const GeneralChip: FC<GeneralChipProps> = ({
     )
         return null;
 
-    const suffix =
-        filterKey.includes("min") || filterKey.includes("max")
-            ? filterKey.slice(3)
-            : null;
+    const suffix = getSuffix(filterKey);
 
     const hasMinMaxPair = (suffix: string | null): boolean => {
         if (!suffix) return false;
@@ -144,6 +151,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
     }
     if (filterKey === "extras") {
         return <LifestyleChip />;
+    }
+
+    if (filterKey === "points") {
+        return <Points />;
     }
 
     let valuesToDisplay = values;

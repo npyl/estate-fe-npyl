@@ -2,7 +2,7 @@ import EmojiPickerButton from "@/components/EmojiPickerButton";
 import { useCallback } from "react";
 import { useEditorContext } from "../context";
 import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
-import { Z_INDEX } from "../config";
+import { Z_INDEX } from "@/constants/config";
 
 const Emoji = () => {
     const { editor } = useEditorContext();
@@ -29,7 +29,7 @@ const Emoji = () => {
                 slotProps: {
                     root: {
                         style: {
-                            zIndex: Z_INDEX.EMOJI_PICKER,
+                            zIndex: Z_INDEX.POPOVER + 2,
                         },
                     },
                 },
