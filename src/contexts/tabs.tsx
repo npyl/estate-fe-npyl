@@ -1,20 +1,26 @@
 import {
     createContext,
+    Dispatch,
     FC,
     PropsWithChildren,
-    RefObject,
-    useCallback,
+    SetStateAction,
     useContext,
+    useState,
 } from "react";
 import { ITab } from "@/types/tabs";
 
-type ITabState = {
+type SubbarRef = {
     pushTab: (t: ITab) => void;
     removeTab: (identifier: string) => void;
     removeTabs: (identifiers: string[]) => void;
 
+    isTabExistent: (p: string) => boolean | null;
     setTabPath: (p: string, newP: string) => void;
     getTabData: (identifier: string) => any;
+};
+
+type ITabState = SubbarRef & {
+    setSubbar: Dispatch<SetStateAction<SubbarRef | undefined>>;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
@@ -29,41 +35,44 @@ export const useTabsContext = () => {
     return context;
 };
 
-export type SubbarRef = ITabState;
+const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
+    const [subbar, setSubbar] = useState<SubbarRef>();
 
-interface TabsProviderProps extends PropsWithChildren {
-    subbarRef?: RefObject<SubbarRef>;
-}
+    console.log("PALI!");
 
-export const TabsProvider: FC<TabsProviderProps> = ({
-    subbarRef,
-    ...props
-}) => {
     const pushTab = (i: ITab) => {
         try {
-            subbarRef?.current?.pushTab(i);
+            subbar?.pushTab(i);
         } catch (ex) {}
     };
     const removeTab = (p: string) => {
         try {
-            subbarRef?.current?.removeTab(p);
+            subbar?.removeTab(p);
         } catch (ex) {}
     };
     const removeTabs = (p: string[]) => {
         try {
-            subbarRef?.current?.removeTabs(p);
+            subbar?.removeTabs(p);
         } catch (ex) {}
     };
-    const setTabPath = useCallback((p: string, newP: string) => {
+
+    const isTabExistent = (p: string) => {
         try {
-            subbarRef?.current?.setTabPath(p, newP);
-        } catch (ex) {}
-    }, []);
-    const getTabData = useCallback((p: string) => {
+            return subbar?.isTabExistent(p) ?? null;
+        } catch (ex) {
+            return null;
+        }
+    };
+    const setTabPath = (p: string, newP: string) => {
         try {
-            return subbarRef?.current?.getTabData(p);
+            subbar?.setTabPath(p, newP);
         } catch (ex) {}
-    }, []);
+    };
+    const getTabData = (p: string) => {
+        try {
+            return subbar?.getTabData(p);
+        } catch (ex) {}
+    };
 
     return (
         <TabsContext.Provider
@@ -72,10 +81,17 @@ export const TabsProvider: FC<TabsProviderProps> = ({
                 removeTab,
                 removeTabs,
                 // ...
+                isTabExistent,
                 setTabPath,
                 getTabData,
+                // ...
+                setSubbar,
             }}
-            {...props}
-        />
+        >
+            {children}
+        </TabsContext.Provider>
     );
 };
+
+export type { SubbarRef };
+export default TabsProvider;

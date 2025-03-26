@@ -18,7 +18,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
 
     useImperativeHandle(ref, () => methods, [methods]);
 
-    useTabPusher(methods.pushTab, methods.setTabPath);
+    useTabPusher(methods.isTabExistent, methods.pushTab, methods.setTabPath);
 
     return (
         <Stack direction="row" spacing={1.5} {...props}>

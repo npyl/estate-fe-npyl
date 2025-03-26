@@ -36,6 +36,14 @@ const useTabState = () => {
         [tabState, userId]
     );
 
+    const isTabExistent = useCallback(
+        (p: string) => Boolean(_tabs.find(isSameTab(p))),
+        [_tabs]
+    );
+
+    /**
+     * Push a tab (If already exists with same path all rest fields will be overriden)
+     */
     const pushTab = useCallback(
         (t: ITab) =>
             setTabState((old) => {
@@ -118,17 +126,31 @@ const useTabState = () => {
         [setTabState, userId]
     );
 
-    return [
-        _tabs,
-        {
+    return useMemo(
+        () =>
+            [
+                _tabs,
+                {
+                    pushTab,
+                    removeTab,
+                    removeTabs,
+                    // ...
+                    isTabExistent,
+                    setTabPath,
+                    getTabData,
+                },
+            ] as const,
+        [
+            _tabs,
             pushTab,
             removeTab,
             removeTabs,
             // ...
+            isTabExistent,
             setTabPath,
             getTabData,
-        },
-    ] as const;
+        ]
+    );
 };
 
 export { isSameTabOrg };

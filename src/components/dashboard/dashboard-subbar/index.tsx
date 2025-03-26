@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import SubbarItems from "./Items";
-import { forwardRef } from "react";
-import { SubbarRef } from "@/contexts/tabs";
+import { useCallback } from "react";
+import { SubbarRef, useTabsContext } from "@/contexts/tabs";
 
-const DesktopBar = forwardRef<SubbarRef, object>(({}, ref) => {
+const Subbar = () => {
     const router = useRouter();
 
     //use these two specific paths so the subbar is sticky in edit and create property form
@@ -11,9 +11,15 @@ const DesktopBar = forwardRef<SubbarRef, object>(({}, ref) => {
         router.pathname.startsWith("/property/edit") ||
         router.pathname === "/property/create";
 
+    const { setSubbar } = useTabsContext();
+    const onRef = useCallback((s: SubbarRef | null) => {
+        if (!s) return;
+        setSubbar(s);
+    }, []);
+
     return (
         <SubbarItems
-            ref={ref}
+            ref={onRef}
             overflow="auto"
             width={1}
             sx={{
@@ -24,8 +30,6 @@ const DesktopBar = forwardRef<SubbarRef, object>(({}, ref) => {
             }}
         />
     );
-});
+};
 
-DesktopBar.displayName = "DesktopBar";
-
-export default DesktopBar;
+export default Subbar;
