@@ -1,30 +1,14 @@
 import { createContext, FC, PropsWithChildren, useMemo } from "react";
-import { IFilterProps, IFilterState } from "./types";
-import { initialState } from "./constant";
+import { IFilterState } from "./types";
 import useSetters from "./setters";
-import useStateWithEffect from "./useStateWithSideEffect";
 import useStateMethods from "./useStateMethods";
 import useTabState from "./useTabState";
 import useChangedFields from "./useChangedFields";
-import { IPropertyFilter } from "@/types/properties";
 
 const FiltersContext = createContext<IFilterState | undefined>(undefined);
 
-const getIdsForTabData = (tabData: object) => Object.keys(tabData);
-
-const getInitialState = (tabData: object) => ({
-    ...initialState,
-    filters: (tabData as IPropertyFilter) || initialState.filters,
-    ids: tabData ? getIdsForTabData(tabData) : [],
-});
-
 const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [tabData, onUpdate] = useTabState();
-
-    const [state, setState] = useStateWithEffect<IFilterProps>(
-        getInitialState(tabData),
-        onUpdate
-    );
+    const [state, setState] = useTabState();
 
     const methods = useStateMethods(setState);
 

@@ -38,8 +38,6 @@ export const useTabsContext = () => {
 const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
     const [subbar, setSubbar] = useState<SubbarRef>();
 
-    console.log("PALI!");
-
     const pushTab = (i: ITab) => {
         try {
             subbar?.pushTab(i);

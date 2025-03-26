@@ -45,11 +45,12 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
             <Droppable droppableId="subbar-tabs" direction="horizontal">
                 {(provided) => (
                     <Stack
+                        ref={provided.innerRef}
                         direction="row"
                         spacing={0.5}
                         sx={subbarContainerStyles}
-                        ref={provided.innerRef}
                         {...provided.droppableProps}
+                        {...props}
                     >
                         {tabs.map((t, index) => (
                             <Draggable

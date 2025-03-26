@@ -2,14 +2,28 @@ import { useTabsContext } from "@/contexts/tabs";
 import { useCallback, useMemo } from "react";
 import { IFilterProps } from "./types";
 import { didChangeFields } from "./useChangedFields";
+import { initialState } from "./constant";
+import { IPropertyFilter } from "@/types/properties";
+import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
+
+const getIdsForTabData = (tabData: object) => Object.keys(tabData);
+
+const tabDataToFilterState = (tabData: object): IFilterProps => ({
+    ...initialState,
+    filters: (tabData as IPropertyFilter) || initialState.filters,
+    ids: tabData ? getIdsForTabData(tabData) : [],
+});
 
 const useTabState = () => {
     const { getTabData, pushTab, removeTab } = useTabsContext();
 
-    const tabData = useMemo(() => getTabData("/property"), [getTabData]);
+    const state = useMemo(() => {
+        const tabData = getTabData("/property");
+        return tabDataToFilterState(tabData);
+    }, [getTabData]);
 
-    const onUpdate = useCallback((state: IFilterProps) => {
-        const { filters } = state || {};
+    const _setState = useCallback((p: IFilterProps) => {
+        const { filters } = p || {};
 
         const didChange = didChangeFields(filters);
 
@@ -24,7 +38,13 @@ const useTabState = () => {
         }
     }, []);
 
-    return [tabData, onUpdate] as const;
+    const getCurrentValue = useCallback(
+        () => getTabData("/property") || initialState,
+        [getTabData]
+    );
+    const setState = useCallbackSetter(getCurrentValue, _setState);
+
+    return [state, setState] as const;
 };
 
 export default useTabState;
