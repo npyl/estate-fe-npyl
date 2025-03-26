@@ -1,5 +1,5 @@
 import { Stack, StackProps, SxProps, Theme } from "@mui/material";
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import dynamic from "next/dynamic";
 import { SubbarRef } from "@/contexts/tabs";
 import useTabState from "./useTabState";

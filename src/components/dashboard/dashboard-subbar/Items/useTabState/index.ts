@@ -132,23 +132,18 @@ const useTabState = () => {
         [setTabState, userId]
     );
 
-    return useMemo(
-        () =>
-            [
-                _tabs,
-                {
-                    pushTab,
-                    setTabs,
-                    removeTab,
-                    removeTabs,
-                    // ...
-                    isTabExistent,
-                    setTabPath,
-                    getTabData,
-                },
-            ] as const,
+    const methods = useMemo(
+        () => ({
+            pushTab,
+            setTabs,
+            removeTab,
+            removeTabs,
+            // ...
+            isTabExistent,
+            setTabPath,
+            getTabData,
+        }),
         [
-            _tabs,
             pushTab,
             setTabs,
             removeTab,
@@ -159,6 +154,8 @@ const useTabState = () => {
             getTabData,
         ]
     );
+
+    return [_tabs, methods] as const;
 };
 
 export { isSameTabOrg };
