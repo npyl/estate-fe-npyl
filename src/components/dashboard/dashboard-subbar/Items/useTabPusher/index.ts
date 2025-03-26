@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { isSameTabOrg } from "../useTabState";
 
 const useTabPusher = (
+    isTabExistent: (p: string) => boolean | null,
     pushTabCb: (t: ITab) => void,
     setTabPath: (p: string, newP: string) => void
 ) => {
@@ -20,27 +21,19 @@ const useTabPusher = (
         (path: string) => {
             const isParamChangeOnly = isSameTabOrg(oldPath.current, path);
 
-            console.log(
-                "QP: ",
-                isParamChangeOnly,
-                " oldP: ",
-                oldPath.current,
-                " newP: ",
-                path
-            );
+            const shouldPush =
+                renderer && !isParamChangeOnly && !Boolean(isTabExistent(path));
 
             if (isParamChangeOnly) {
-                console.log("Updating path...");
                 setTabPath(oldPath.current, path);
-            } else if (renderer) {
-                console.log("Setting path...");
+            }
+
+            if (shouldPush) {
                 pushTabCb({
                     path,
                     renderer,
                     resourceId,
                 });
-            } else {
-                // do nothing ...
             }
 
             oldPath.current = path;
