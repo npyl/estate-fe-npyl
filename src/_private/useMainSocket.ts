@@ -19,14 +19,12 @@ const connectSocket = (userId: number): Promise<WebSocket> => {
          * INFO: without this message no communication can be established!*
          */
         socket.addEventListener("open", () => {
-            debugLog("WS_OPEN");
             const req = JSON.stringify({ type: "register", userId });
             socket.send(req);
             resolve(socket);
         });
 
         socket.addEventListener("close", () => {
-            debugLog("WS_CLOSE");
             globalThis.socketPromise = undefined;
         });
     });
