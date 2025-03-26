@@ -84,25 +84,32 @@ const updatePath = (old: ITab[], p: string, newP: string) =>
 
 const cookieName = "PPSubbarTabs";
 
+const getTabsSafe = (ts: TTabState, userId: number) => {
+    try {
+        return ts?.[userId] || [];
+    } catch (ex) {
+        return [];
+    }
+};
+
 const useTabState = () => {
     const { user } = useAuth();
     const userId = user?.id!;
 
     const [tabState, setTabState] = useCookie<TTabState>(cookieName, {});
-    const tabs = useMemo(() => {
-        try {
-            return tabState?.[userId] || [];
-        } catch (ex) {
-            return [];
-        }
-    }, [tabState, userId]);
+    const tabs = useMemo(
+        () => getTabsSafe(tabState, userId),
+        [tabState, userId]
+    );
 
     const pushTab = useCallback(
-        (t: ITab) => {
-            const res = pushOrUpdate(tabs, t);
-            setTabState({ ...tabState, [userId]: res });
-        },
-        [tabState, tabs, userId]
+        (t: ITab) =>
+            setTabState((old) => {
+                const tabs = getTabsSafe(tabState, userId);
+                const res = pushOrUpdate(tabs, t);
+                return { ...old, [userId]: res };
+            }),
+        [setTabState, userId]
     );
 
     const router = useRouter();
@@ -110,6 +117,8 @@ const useTabState = () => {
 
     const removeTab = useCallback(
         (p: string) => {
+            const tabs = getTabsSafe(tabState, userId);
+
             const res = tabs.filter(isntContained(p));
             setTabState({ ...tabState, [userId]: res });
 
@@ -143,15 +152,17 @@ const useTabState = () => {
                 router.push(newUrl);
             }
         },
-        [tabState, tabs, userId, pathname]
+        [tabState, userId, pathname]
     );
 
     const removeTabs = useCallback(
-        (p: string[]) => {
-            const res = tabs.filter(isntContainedMultiple(p));
-            setTabState({ ...tabState, [userId]: res });
-        },
-        [tabs, tabState, userId]
+        (p: string[]) =>
+            setTabState((old) => {
+                const tabs = getTabsSafe(tabState, userId);
+                const res = tabs.filter(isntContainedMultiple(p));
+                return { ...old, [userId]: res };
+            }),
+        [setTabState, userId]
     );
 
     // --------------------------------------------------------------------
@@ -164,11 +175,13 @@ const useTabState = () => {
     );
 
     const setTabPath = useCallback(
-        (p: string, newP: string) => {
-            const newTabs = updatePath(tabs, p, newP) || [];
-            setTabState({ ...tabState, [userId]: newTabs });
-        },
-        [tabs, tabState, userId]
+        (p: string, newP: string) =>
+            setTabState((old) => {
+                const tabs = getTabsSafe(tabState, userId);
+                const newTabs = updatePath(tabs, p, newP) || [];
+                return { ...old, [userId]: newTabs };
+            }),
+        [setTabState, userId]
     );
 
     return [
@@ -184,4 +197,5 @@ const useTabState = () => {
     ] as const;
 };
 
+export { isSameTabOrg };
 export default useTabState;
