@@ -7,6 +7,7 @@ const useTabState = () => {
     const { getTabData, pushTab, removeTab } = useTabsContext();
 
     const tabData = useMemo(() => getTabData("/property"), [getTabData]);
+    console.log("TABDATA: ", tabData);
 
     const onUpdate = useCallback((state: IFilterProps) => {
         const { filters } = state || {};

@@ -20,9 +20,20 @@ const useTabPusher = (
         (path: string) => {
             const isParamChangeOnly = isSameTabOrg(oldPath.current, path);
 
+            console.log(
+                "QP: ",
+                isParamChangeOnly,
+                " oldP: ",
+                oldPath.current,
+                " newP: ",
+                path
+            );
+
             if (isParamChangeOnly) {
+                console.log("Updating path...");
                 setTabPath(oldPath.current, path);
             } else if (renderer) {
+                console.log("Setting path...");
                 pushTabCb({
                     path,
                     renderer,
@@ -34,7 +45,7 @@ const useTabPusher = (
 
             oldPath.current = path;
         },
-        [resourceId, renderer, pushTabCb]
+        [resourceId, renderer, pushTabCb, setTabPath]
     );
 
     useOnRouteChange(onRouteChange);

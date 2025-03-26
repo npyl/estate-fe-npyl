@@ -6,6 +6,7 @@ import useDialog from "@/hooks/useDialog";
 import Subbar from "./dashboard-subbar";
 import { SubbarRef, TabsProvider } from "@/contexts/tabs";
 import { NAV } from "@/constants/config";
+import Box from "@mui/material/Box";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
@@ -46,6 +47,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
             <DashboardLayoutRoot>
                 <TabsProvider subbarRef={subbarRef}>
                     <Subbar ref={subbarRef} />
+                    <Box mb={1} />
                     {children}
                 </TabsProvider>
             </DashboardLayoutRoot>
