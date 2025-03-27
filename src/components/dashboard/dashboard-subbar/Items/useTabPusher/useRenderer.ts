@@ -31,10 +31,10 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
 
         // Other (w/ Id)
         if (path.startsWith("/agreements")) return "AGREEMENT";
-        if (path.startsWith("/task")) return "TASK";
+        if (path.startsWith("/tasks")) return "TASK";
         if (path.startsWith("/user")) return "USER";
         if (path.startsWith("/profile")) return "PROFILE";
-    }, [path, getTabData]);
+    }, [path, hasResourceId, getTabData]);
 
     return renderer;
 };
