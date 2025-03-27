@@ -8,9 +8,8 @@ import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
 
 const getIdsForTabData = (tabData: object) => Object.keys(tabData);
 
-const tabDataToFilterState = (tabData: object): IFilterProps => ({
-    ...initialState,
-    filters: (tabData as IPropertyFilter) || initialState.filters,
+const tabDataToFilterState = (tabData?: IPropertyFilter): IFilterProps => ({
+    filters: tabData || initialState.filters,
     ids: tabData ? getIdsForTabData(tabData) : [],
 });
 
@@ -38,11 +37,7 @@ const useTabState = () => {
         }
     }, []);
 
-    const getCurrentValue = useCallback(
-        () => getTabData("/property") || initialState,
-        [getTabData]
-    );
-    const setState = useCallbackSetter(getCurrentValue, _setState);
+    const setState = useCallbackSetter(state || initialState, _setState);
 
     return [state, setState] as const;
 };

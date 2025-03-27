@@ -197,12 +197,6 @@ const useSetters: UseSetters = (
             // Other state setters
             setActiveState: (value) => updateFilter("active", value),
 
-            setSorting: (value) =>
-                setState((prevState) => ({
-                    ...prevState,
-                    sorting: value,
-                })),
-
             setIds: (value) =>
                 setState((prevState) => ({
                     ...prevState,

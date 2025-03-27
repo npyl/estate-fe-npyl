@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 /**
  * Creates a setter function that supports both direct value assignment and callback-based updates
@@ -9,20 +9,31 @@ import { useCallback } from "react";
  * @returns A setter function that accepts either a new value or an updater function
  */
 const useCallbackSetter = <T>(
-    getValue: () => T,
-    setValue: (value: T) => void
-) =>
-    useCallback(
+    initialValue: T,
+    _setValue: (value: T) => void
+) => {
+    const valueRef = useRef<T>(initialValue);
+    const getCurrentValue = useCallback(() => valueRef.current, []);
+    const setValue = useCallback(
+        (v: T) => {
+            _setValue(v);
+            valueRef.current = v;
+        },
+        [_setValue]
+    );
+
+    return useCallback(
         (valueOrCb: T | ((prev: T) => T)) => {
             if (typeof valueOrCb === "function") {
-                const currentValue = getValue();
+                const currentValue = getCurrentValue();
                 const newValue = (valueOrCb as (prev: T) => T)(currentValue);
                 setValue(newValue);
             } else {
                 setValue(valueOrCb);
             }
         },
-        [getValue, setValue]
+        [setValue]
     );
+};
 
 export default useCallbackSetter;

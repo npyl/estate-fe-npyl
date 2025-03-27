@@ -8,7 +8,6 @@ type TUpdateFilterCb = (
 
 interface IFilterProps {
     filters: IPropertyFilter;
-    sorting: string;
     ids: (keyof IPropertyFilter)[];
 }
 
@@ -79,9 +78,6 @@ interface IFilterStateSetters {
 
     // Active state
     setActiveState: (value: boolean | null) => void;
-
-    // Sorting
-    setSorting: (value: string) => void;
 }
 
 interface IFilterStateCalculated {
@@ -89,7 +85,13 @@ interface IFilterStateCalculated {
     changedFields: Partial<IPropertyFilter>;
 }
 
-type IFilterState = IFilterProps & IFilterStateSetters & IFilterStateCalculated;
+type IFilterState = IFilterProps &
+    IFilterStateSetters &
+    IFilterStateCalculated & {
+        // Sorting
+        sorting: string;
+        setSorting: (value: string) => void;
+    };
 
 export type {
     TUpdateFilterCb,

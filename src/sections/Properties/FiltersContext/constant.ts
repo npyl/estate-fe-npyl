@@ -25,7 +25,6 @@ const initialState: IFilterProps = {
             goldenVisa: false,
         },
     },
-    sorting: "default",
     ids: [],
 };
 
