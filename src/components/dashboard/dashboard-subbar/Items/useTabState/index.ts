@@ -36,19 +36,14 @@ const useTabState = () => {
         [tabState, userId]
     );
 
-    const isTabExistent = useCallback(
-        (p: string) => Boolean(_tabs.find(isSameTab(p))),
-        [_tabs]
-    );
-
     /**
      * Push a tab (If already exists with same path all rest fields will be overriden)
      */
     const pushTab = useCallback(
-        (t: ITab) =>
+        (t: ITab, ud?: boolean) =>
             setTabState((old) => {
                 const tabs = getTabsSafe(old, userId);
-                const res = pushOrUpdate(tabs, t);
+                const res = pushOrUpdate(tabs, t, ud);
                 return { ...old, [userId]: res };
             }),
         [setTabState, userId]
@@ -139,7 +134,6 @@ const useTabState = () => {
             removeTab,
             removeTabs,
             // ...
-            isTabExistent,
             setTabPath,
             getTabData,
         }),
@@ -149,7 +143,6 @@ const useTabState = () => {
             removeTab,
             removeTabs,
             // ...
-            isTabExistent,
             setTabPath,
             getTabData,
         ]

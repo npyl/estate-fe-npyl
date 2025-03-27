@@ -43,10 +43,14 @@ const isntContainedMultiple = (p: string[]) => (t: ITab) =>
 
 // -----------------------------------------------------------------------
 
-const pushOrUpdate = (old: ITab[], t: ITab) => {
+const pushOrUpdate = (old: ITab[], t: ITab, ud: boolean = false) => {
     // Update
     if (old.some(isSameTab(t.path))) {
-        return old.map((ot) => (ot.path === t.path ? t : ot));
+        return old.map((ot) => ({
+            ...(ot.path === t.path ? t : ot),
+            // Update data *ONLY* if necessary
+            data: ud ? t.data : ot.data,
+        }));
     }
 
     // Push

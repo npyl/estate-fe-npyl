@@ -6,9 +6,10 @@ import useRenderer from "./useRenderer";
 import { useRouter } from "next/router";
 import { isSameTabOrg } from "../useTabState";
 
+const SHOULD_UPDATE_DATA = false;
+
 const useTabPusher = (
-    isTabExistent: (p: string) => boolean | null,
-    pushTabCb: (t: ITab) => void,
+    pushTabCb: (t: ITab, ud?: boolean) => void,
     setTabPath: (p: string, newP: string) => void
 ) => {
     const resourceId = useResourceId();
@@ -26,24 +27,26 @@ const useTabPusher = (
 
             const isParamChangeOnly = isSameTabOrg(oldPath.current, path);
 
-            const shouldPush =
-                !isParamChangeOnly && !Boolean(isTabExistent(path));
+            const shouldPush = !isParamChangeOnly;
 
             if (isParamChangeOnly) {
                 setTabPath(oldPath.current, path);
             }
 
             if (shouldPush) {
-                pushTabCb({
-                    path,
-                    renderer,
-                    resourceId,
-                });
+                pushTabCb(
+                    {
+                        path,
+                        renderer,
+                        resourceId,
+                    },
+                    SHOULD_UPDATE_DATA
+                );
             }
 
             oldPath.current = path;
         },
-        [resourceId, renderer, isTabExistent, pushTabCb, setTabPath]
+        [resourceId, renderer, pushTabCb, setTabPath]
     );
 
     useOnRouteChange(onRouteChange);

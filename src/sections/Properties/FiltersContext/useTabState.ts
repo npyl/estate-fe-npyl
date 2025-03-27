@@ -6,6 +6,8 @@ import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
 
+const SHOULD_UPDATE_DATA = true;
+
 const getIdsForTabData = (tabData: object) => Object.keys(tabData);
 
 const tabDataToFilterState = (tabData?: IPropertyFilter): IFilterProps => ({
@@ -27,11 +29,14 @@ const useTabState = () => {
         const didChange = didChangeFields(filters);
 
         if (didChange) {
-            pushTab({
-                path: "/property",
-                renderer: "PROPERTY_FITLERS",
-                data: filters,
-            });
+            pushTab(
+                {
+                    path: "/property",
+                    renderer: "PROPERTY_FITLERS",
+                    data: filters,
+                },
+                SHOULD_UPDATE_DATA
+            );
         } else {
             removeTab("/property");
         }

@@ -10,11 +10,10 @@ import {
 import { ITab } from "@/types/tabs";
 
 type SubbarRef = {
-    pushTab: (t: ITab) => void;
+    pushTab: (t: ITab, ud?: boolean) => void;
     removeTab: (identifier: string) => void;
     removeTabs: (identifiers: string[]) => void;
 
-    isTabExistent: (p: string) => boolean | null;
     setTabPath: (p: string, newP: string) => void;
     getTabData: (identifier: string) => any;
 };
@@ -38,9 +37,9 @@ export const useTabsContext = () => {
 const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
     const [subbar, setSubbar] = useState<SubbarRef>();
 
-    const pushTab = (i: ITab) => {
+    const pushTab = (i: ITab, ud?: boolean) => {
         try {
-            subbar?.pushTab(i);
+            subbar?.pushTab(i, ud);
         } catch (ex) {}
     };
     const removeTab = (p: string) => {
@@ -54,13 +53,6 @@ const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
         } catch (ex) {}
     };
 
-    const isTabExistent = (p: string) => {
-        try {
-            return subbar?.isTabExistent(p) ?? null;
-        } catch (ex) {
-            return null;
-        }
-    };
     const setTabPath = (p: string, newP: string) => {
         try {
             subbar?.setTabPath(p, newP);
@@ -79,7 +71,6 @@ const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
                 removeTab,
                 removeTabs,
                 // ...
-                isTabExistent,
                 setTabPath,
                 getTabData,
                 // ...

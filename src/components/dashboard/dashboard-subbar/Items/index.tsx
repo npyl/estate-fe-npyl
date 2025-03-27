@@ -28,7 +28,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
 
     useImperativeHandle(ref, () => methods, [methods]);
 
-    useTabPusher(methods.isTabExistent, methods.pushTab, methods.setTabPath);
+    useTabPusher(methods.pushTab, methods.setTabPath);
 
     const onDragEnd = (result: any) => {
         if (!result.destination) return; // If dropped outside of the d&d container, do nothing
