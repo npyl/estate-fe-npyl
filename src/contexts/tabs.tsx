@@ -1,11 +1,10 @@
 import {
     createContext,
-    Dispatch,
     FC,
     PropsWithChildren,
-    SetStateAction,
+    useCallback,
     useContext,
-    useState,
+    useRef,
 } from "react";
 import { ITab } from "@/types/tabs";
 
@@ -18,7 +17,7 @@ type SubbarRef = {
 };
 
 type ITabState = SubbarRef & {
-    setSubbar: Dispatch<SetStateAction<SubbarRef | undefined>>;
+    setSubbar: (s: SubbarRef) => void;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
@@ -34,37 +33,32 @@ export const useTabsContext = () => {
 };
 
 const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [subbar, setSubbar] = useState<SubbarRef>();
+    const subbar = useRef<SubbarRef>();
+    const setSubbar = useCallback((s: SubbarRef) => {
+        subbar.current = s;
+    }, []);
 
     const pushTab = (i: ITab, ud?: boolean) => {
         try {
-            subbar?.pushTab(i, ud);
+            subbar.current?.pushTab(i, ud);
         } catch (ex) {}
     };
     const removeTab = (p: string) => {
         try {
-            subbar?.removeTab(p);
+            subbar.current?.removeTab(p);
         } catch (ex) {}
     };
     const removeTabs = (p: string[]) => {
         try {
-            subbar?.removeTabs(p);
+            subbar.current?.removeTabs(p);
         } catch (ex) {}
     };
 
     const setTabPath = (p: string, newP: string) => {
         try {
-            subbar?.setTabPath(p, newP);
+            subbar.current?.setTabPath(p, newP);
         } catch (ex) {}
     };
-<<<<<<< Updated upstream
-    const getTabData = (p: string) => {
-        try {
-            return subbar?.getTabData(p);
-        } catch (ex) {}
-    };
-=======
->>>>>>> Stashed changes
 
     return (
         <TabsContext.Provider
