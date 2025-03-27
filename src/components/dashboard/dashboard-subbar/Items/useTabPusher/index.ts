@@ -19,10 +19,15 @@ const useTabPusher = (
 
     const onRouteChange = useCallback(
         (path: string) => {
+            if (!renderer) {
+                oldPath.current = path;
+                return;
+            }
+
             const isParamChangeOnly = isSameTabOrg(oldPath.current, path);
 
             const shouldPush =
-                renderer && !isParamChangeOnly && !Boolean(isTabExistent(path));
+                !isParamChangeOnly && !Boolean(isTabExistent(path));
 
             if (isParamChangeOnly) {
                 setTabPath(oldPath.current, path);
@@ -38,7 +43,7 @@ const useTabPusher = (
 
             oldPath.current = path;
         },
-        [resourceId, renderer, pushTabCb, setTabPath]
+        [resourceId, renderer, isTabExistent, pushTabCb, setTabPath]
     );
 
     useOnRouteChange(onRouteChange);

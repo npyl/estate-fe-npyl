@@ -25,7 +25,7 @@ const DeleteItem: FC<DeleteItemProps> = ({ taskId }) => {
     const handleDelete = () =>
         deleteTask({
             props: { cardId: taskId, filters },
-            tabPaths: [`/tasks?taskId=${taskId}`],
+            tabPaths: [`/tasks/${taskId}`],
         });
 
     return (

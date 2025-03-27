@@ -57,7 +57,7 @@ const Tasks = () => {
     const { data, isLoading } = useGetDashboardQuery();
     const { tasks } = data || {};
     const handleClick = useCallback(
-        (id: number) => router.push(`/tasks?taskId=${id}`),
+        (id: number) => router.push(`/tasks/${id}`),
         []
     );
 

@@ -1,7 +1,7 @@
 import { Draggable } from "@hello-pangea/dnd";
 import Card, { TaskCardProps } from "./card";
 import { useCallback } from "react";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { useRouter } from "next/router";
 
 // ----------------------------------------------------------------------
 
@@ -10,9 +10,12 @@ interface DraggableCardProps extends TaskCardProps {
 }
 
 const DraggableCard = ({ card, index }: DraggableCardProps) => {
-    const [_, setTaskId] = useQueryState("taskId", parseAsInteger);
+    const router = useRouter();
 
-    const openDetails = useCallback(() => setTaskId(card?.id), [card?.id]);
+    const openDetails = useCallback(
+        () => router.push(`/tasks/${card?.id}`),
+        [card?.id]
+    );
 
     return (
         <Draggable

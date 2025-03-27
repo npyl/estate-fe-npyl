@@ -1,9 +1,9 @@
 import Stack, { StackProps } from "@mui/material/Stack";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useMemo } from "react";
 import { useGetBoardQuery } from "@/services/tasks";
 import dynamic from "next/dynamic";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { useRouter } from "next/router";
 const Item = dynamic(() => import("./Item"));
 
 interface ItemsProps extends StackProps {
@@ -15,7 +15,11 @@ const Items: FC<ItemsProps> = ({ columnId, ids, ...props }) => {
     const { data: board } = useGetBoardQuery({});
     const cards = useMemo(() => board?.cards || [], [board]);
 
-    const [_, setTaskId] = useQueryState("taskId", parseAsInteger);
+    const router = useRouter();
+    const onClick = useCallback(
+        (id: number) => router.push(`/tasks/${id}`),
+        []
+    );
 
     return (
         <Stack {...props}>
@@ -23,7 +27,7 @@ const Items: FC<ItemsProps> = ({ columnId, ids, ...props }) => {
                 const card = cards?.find((c) => c.id === id);
                 if (!card) return null;
 
-                return <Item key={id} c={card} onClick={() => setTaskId(id)} />;
+                return <Item key={id} c={card} onClick={() => onClick(id)} />;
             })}
         </Stack>
     );

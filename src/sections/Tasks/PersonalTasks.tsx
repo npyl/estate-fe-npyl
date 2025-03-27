@@ -6,7 +6,7 @@ import Link from "@/components/Link";
 // -------------------------------------------------------------------
 
 const getCard = (c: IKanbanCardShort) => (
-    <Link href={`/tasks?taskId=${c.id}`}>
+    <Link href={`/tasks/${c.id}`}>
         <Card key={c.id} c={c} onClick={() => {}} />
     </Link>
 );
