@@ -54,13 +54,10 @@ const useCookie = <V extends string | number | object = string>(
         (v: V) => {
             if (!cookieName) return;
             _set(cookieName, v, OPTIONS);
-            valueRef.current = v;
         },
         [cookieName, _set]
     );
-    const valueRef = useRef<V>(value);
-    const getCurrentValue = useCallback(() => valueRef.current, []);
-    const actualSet = useCallbackSetter<V>(getCurrentValue, set);
+    const actualSet = useCallbackSetter<V>(value, set);
 
     //
     //  Remove
@@ -68,7 +65,6 @@ const useCookie = <V extends string | number | object = string>(
     const actualRemove = useCallback(() => {
         if (!cookieName) return;
         remove(cookieName, OPTIONS);
-        valueRef.current = fallbackValue;
     }, [cookieName, remove]);
 
     return [value, actualSet, actualRemove] as const;
