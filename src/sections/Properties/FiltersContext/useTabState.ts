@@ -38,7 +38,7 @@ const useTabState = () => {
         );
     }, []);
 
-    const setState = useCallbackSetter(state || initialState, _setState);
+    const setState = useCallbackSetter(state, _setState);
 
     return [state, setState] as const;
 };
