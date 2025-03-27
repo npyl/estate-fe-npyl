@@ -23,26 +23,29 @@ const useTabState = () => {
         return tabDataToFilterState(tabData);
     }, [getTabData]);
 
-    const _setState = useCallback((p: IFilterProps) => {
-        const { filters } = p || {};
+    const _setState = useCallback(
+        (p: IFilterProps) => {
+            const { filters } = p || {};
 
-        const didChange = didChangeFields(filters);
+            const didChange = didChangeFields(filters);
 
-        if (didChange) {
-            pushTab(
-                {
-                    path: "/property",
-                    renderer: "PROPERTY_FITLERS",
-                    data: filters,
-                },
-                SHOULD_UPDATE_DATA
-            );
-        } else {
-            removeTab("/property");
-        }
-    }, []);
+            if (didChange) {
+                pushTab(
+                    {
+                        path: "/property",
+                        renderer: "PROPERTY_FITLERS",
+                        data: filters,
+                    },
+                    SHOULD_UPDATE_DATA
+                );
+            } else {
+                removeTab("/property");
+            }
+        },
+        [pushTab, removeTab]
+    );
 
-    const setState = useCallbackSetter(state || initialState, _setState);
+    const setState = useCallbackSetter(state, _setState);
 
     return [state, setState] as const;
 };
