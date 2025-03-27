@@ -15,7 +15,6 @@ type SubbarRef = {
     removeTabs: (identifiers: string[]) => void;
 
     setTabPath: (p: string, newP: string) => void;
-    getTabData: (identifier: string) => any;
 };
 
 type ITabState = SubbarRef & {
@@ -58,11 +57,14 @@ const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
             subbar?.setTabPath(p, newP);
         } catch (ex) {}
     };
+<<<<<<< Updated upstream
     const getTabData = (p: string) => {
         try {
             return subbar?.getTabData(p);
         } catch (ex) {}
     };
+=======
+>>>>>>> Stashed changes
 
     return (
         <TabsContext.Provider
@@ -72,7 +74,6 @@ const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
                 removeTabs,
                 // ...
                 setTabPath,
-                getTabData,
                 // ...
                 setSubbar,
             }}

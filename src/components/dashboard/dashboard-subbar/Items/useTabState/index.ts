@@ -112,11 +112,6 @@ const useTabState = () => {
     // Tab Specific
     // --------------------------------------------------------------------
 
-    const getTabData = useCallback(
-        (p: string) => _tabs?.find(isSameTab(p))?.data,
-        [_tabs]
-    );
-
     const setTabPath = useCallback(
         (p: string, newP: string) =>
             setTabState((old) => {
@@ -135,7 +130,6 @@ const useTabState = () => {
             removeTabs,
             // ...
             setTabPath,
-            getTabData,
         }),
         [
             pushTab,
@@ -144,7 +138,6 @@ const useTabState = () => {
             removeTabs,
             // ...
             setTabPath,
-            getTabData,
         ]
     );
 

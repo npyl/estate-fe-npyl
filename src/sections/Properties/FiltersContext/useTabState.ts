@@ -4,7 +4,7 @@ import { IFilterProps } from "./types";
 import { didChangeFields } from "./useChangedFields";
 import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
-import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
+import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
 
 const SHOULD_UPDATE_DATA = true;
 
@@ -16,14 +16,13 @@ const tabDataToFilterState = (tabData?: IPropertyFilter): IFilterProps => ({
 });
 
 const useTabState = () => {
-    const { getTabData, pushTab, removeTab } = useTabsContext();
+    const { pushTab, removeTab } = useTabsContext();
 
-    const state = useMemo(() => {
-        const tabData = getTabData("/property");
-        return tabDataToFilterState(tabData);
-    }, [getTabData]);
+    const tabData = useTabData("/property") as IPropertyFilter | undefined;
 
-    const _setState = useCallback(
+    const state = useMemo(() => tabDataToFilterState(tabData), [tabData]);
+
+    const setState = useCallback(
         (p: IFilterProps) => {
             const { filters } = p || {};
 
@@ -44,8 +43,6 @@ const useTabState = () => {
         },
         [pushTab, removeTab]
     );
-
-    const setState = useCallbackSetter(state, _setState);
 
     return [state, setState] as const;
 };

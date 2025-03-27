@@ -1,19 +1,20 @@
-import { useTabsContext } from "@/contexts/tabs";
 import { TTabRenderer } from "@/types/tabs";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import useTabData from "../useTabData";
+import { IPropertyFilter } from "@/types/properties";
 
 const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
     const path = usePathname();
 
-    const { getTabData } = useTabsContext();
+    const tabData = useTabData("/property") as IPropertyFilter | undefined;
 
     const renderer = useMemo(() => {
         // Property
         if (path.startsWith("/property/edit")) return "PROPERTY_EDIT";
         if (path.startsWith("/property/create")) return "PROPERTY_CREATE";
         if (path.startsWith("/property")) {
-            const isFilters = Boolean(getTabData("/property"));
+            const isFilters = Boolean(tabData);
 
             return hasResourceId
                 ? "PROPERTY_VIEW"
@@ -34,7 +35,7 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
         if (path.startsWith("/tasks")) return "TASK";
         if (path.startsWith("/user")) return "USER";
         if (path.startsWith("/profile")) return "PROFILE";
-    }, [path, hasResourceId, getTabData]);
+    }, [path, hasResourceId, tabData]);
 
     return renderer;
 };
