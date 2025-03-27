@@ -27,7 +27,7 @@ const useTabData = (p: string) => {
         [tabState, userId]
     );
 
-    const data = useMemo(() => _tabs.find(isSameTab(p))?.data, []);
+    const data = useMemo(() => _tabs.find(isSameTab(p))?.data, [_tabs]);
 
     return data;
 };
