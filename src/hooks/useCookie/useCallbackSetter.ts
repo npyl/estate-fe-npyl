@@ -16,8 +16,8 @@ const useCallbackSetter = <T>(
     const getCurrentValue = useCallback(() => valueRef.current, []);
     const setValue = useCallback(
         (v: T) => {
-            _setValue(v);
             valueRef.current = v;
+            _setValue(v);
         },
         [_setValue]
     );
