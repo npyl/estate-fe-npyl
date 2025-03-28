@@ -1792,7 +1792,7 @@ const resources = {
             Sale: "Πωλείται",
             Rent: "Ενοικιάζεται",
             Sold: "Πωλήθηκε",
-            Rented: "Ενοικιάστηκε",
+            Rented: "Προς ενοικίαση",
             Unavailable: "Μη διαθέσιμο",
             Taken: "Μισθωμένο",
             "Under Construction": "Υπό Κατασκευή",
