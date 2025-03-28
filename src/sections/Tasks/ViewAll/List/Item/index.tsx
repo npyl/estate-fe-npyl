@@ -107,7 +107,7 @@ const Item: FC<ItemProps> = ({ c }) => {
     };
 
     return (
-        <Link sx={getItemSx(c.priority)} href={`/task/${c.id}`}>
+        <Link sx={getItemSx(c.priority)} href={`/tasks/${c.id}`}>
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
                 <Typography
