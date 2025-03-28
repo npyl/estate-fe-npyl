@@ -8,19 +8,24 @@ type UseSetters = (
         updateFilter: TUpdateFilterCb;
         toggleFilterArray: (key: keyof IPropertyFilter, value: string) => void;
         deleteFilter: (key: keyof IPropertyFilter) => void;
+        // ...
+        deleteAssigneeUrlParam: () => void;
     },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
 const useSetters: UseSetters = (
-    { updateFilter, toggleFilterArray, deleteFilter },
+    { updateFilter, toggleFilterArray, deleteFilter, deleteAssigneeUrlParam },
     setState
 ) =>
     useMemo(
         () => ({
             setLocationSearch: (value) => updateFilter("locationSearch", value),
             setCode: (value) => updateFilter("code", value),
-            setManagerId: (value) => updateFilter("managerId", value),
+            setManagerId: (value) => {
+                deleteAssigneeUrlParam();
+                updateFilter("managerId", value);
+            },
             setMaxArea: (value) => updateFilter("maxArea", value),
             setMinArea: (value) => updateFilter("minArea", value),
             setMaxBedrooms: (value) => updateFilter("maxBedrooms", value),
@@ -125,7 +130,11 @@ const useSetters: UseSetters = (
             // --------------------------------------------------------------------------------------------
             // Reset
             // --------------------------------------------------------------------------------------------
-            resetState: () => setState(initialState),
+
+            resetState: () => {
+                deleteAssigneeUrlParam();
+                setState(initialState);
+            },
 
             resetBasic: () =>
                 setState((prevState) => {
@@ -188,6 +197,11 @@ const useSetters: UseSetters = (
             resetStates: () => deleteFilter("states"),
             resetCategories: () => deleteFilter("categories"),
             resetParentCategories: () => deleteFilter("parentCategories"),
+
+            resetManagerId: () => {
+                deleteAssigneeUrlParam();
+                deleteFilter("managerId");
+            },
 
             resetRegions: () => {
                 deleteFilter("regions");

@@ -1,5 +1,4 @@
 import { FilterMoreDialog } from "@/sections/Filters/FilterMore";
-import { useRouter } from "next/router"; // Import useRouter
 import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./CompactFilters/Floors";
 import Fields from "./CompactFilters/Fields";
@@ -25,30 +24,14 @@ type Props = {
 };
 
 export default function FilterMore({ onClose, totalProperties }: Props) {
-    const router = useRouter(); // Use router to manipulate URL
-
     const { resetState } = useFiltersContext();
     const changedPropsCount = useSumOfChangedProperties();
-
-    const clearAll = () => {
-        resetState();
-
-        // Remove 'assignee' from URL  if exists
-        const newQuery = { ...router.query };
-        delete newQuery.assignee;
-
-        router.replace(
-            { pathname: router.pathname, query: newQuery },
-            undefined,
-            { shallow: true } // Prevent page reload
-        );
-    };
 
     return (
         <FilterMoreDialog
             open
             onClose={onClose}
-            onResetFilter={clearAll}
+            onResetFilter={resetState}
             totalProperties={totalProperties}
         >
             {changedPropsCount > 0 ? <ChosenFilters mb={1} /> : null}

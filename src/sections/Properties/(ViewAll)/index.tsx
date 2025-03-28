@@ -6,9 +6,7 @@ import DataGrid from "@/components/DataGrid/Property";
 import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
 import { IPropertyFilterParams } from "@/services/properties";
-import { useRouter } from "next/router";
-import { useAllFilters, useFiltersContext } from "../FiltersContext";
-import { toNumberSafe } from "@/utils/toNumber";
+import { useAllFilters } from "../FiltersContext";
 const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 
 interface ViewAllProps {
@@ -24,19 +22,7 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
-    const router = useRouter();
-    const { assignee } = router.query; // Read assignee from query param
-
-    const { setManagerId } = useFiltersContext();
     const filter = useAllFilters();
-
-    // **Effect to update Redux store with managerId when URL changes**
-    useEffect(() => {
-        if (assignee) {
-            const iManagerId = toNumberSafe(assignee);
-            setManagerId(iManagerId);
-        }
-    }, [assignee]);
 
     const req: IPropertyFilterParams = {
         filter,

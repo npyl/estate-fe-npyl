@@ -6,22 +6,71 @@ import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
 import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
+import { parseAsInteger, useQueryState } from "nuqs";
+
+// --------------------------------------------------------------------------------------
 
 const SHOULD_UPDATE_DATA = true;
 
+// --------------------------------------------------------------------------------------
+
 const getIdsForTabData = (tabData: object) => Object.keys(tabData);
 
-const tabDataToFilterState = (tabData?: IPropertyFilter): IFilterProps => ({
-    filters: tabData || initialState.filters,
-    ids: tabData ? getIdsForTabData(tabData) : [],
+interface Overrides {
+    managerId: number;
+}
+
+const getFiltersWithUrlParamOverrides = (
+    tabData: IPropertyFilter | undefined,
+    { managerId }: Overrides
+) => ({
+    ...(tabData || initialState.filters),
+    managerId: managerId !== -1 ? managerId : tabData?.managerId,
 });
+
+const tabDataToFilterState = (
+    tabData: IPropertyFilter | undefined,
+    managerId: number
+): IFilterProps => {
+    const filters = getFiltersWithUrlParamOverrides(tabData, { managerId });
+
+    return {
+        filters,
+        ids: filters ? getIdsForTabData(filters) : [],
+    };
+};
+
+const useCurrentState = () => {
+    //
+    //  Url Params
+    //
+    const [assignee] = useQueryState(
+        "assignee",
+        parseAsInteger.withDefault(-1)
+    );
+
+    //
+    //  Tab's Data
+    //
+    const tabData = useTabData("/property") as IPropertyFilter | undefined;
+
+    //
+    //  Merging of all
+    //
+    const state = useMemo(
+        () => tabDataToFilterState(tabData, assignee),
+        [tabData, assignee]
+    );
+
+    return state;
+};
+
+// --------------------------------------------------------------------------------------
 
 const useTabState = () => {
     const { pushTab } = useTabsContext();
 
-    const tabData = useTabData("/property") as IPropertyFilter | undefined;
-
-    const state = useMemo(() => tabDataToFilterState(tabData), [tabData]);
+    const state = useCurrentState();
 
     const _setState = useCallback((p: IFilterProps) => {
         const { filters } = p || {};

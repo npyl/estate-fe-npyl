@@ -3,15 +3,12 @@ import Chip from "@mui/material/Chip";
 import { useMemo } from "react";
 import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import {
     useFiltersContext,
     useManagerId,
 } from "@/sections/Properties/FiltersContext";
 
 const ManagerChip = () => {
-    const router = useRouter();
-
     const { t } = useTranslation();
 
     const userId = useManagerId();
@@ -24,20 +21,8 @@ const ManagerChip = () => {
         return `${u.firstName} ${u.lastName}`;
     }, [userId, users]);
 
-    const { deleteFilter } = useFiltersContext();
-    const handleClear = () => {
-        deleteFilter("managerId");
-
-        // Remove 'assignee' from the URL if exists
-        const newQuery = { ...router.query };
-        delete newQuery.assignee;
-
-        router.replace(
-            { pathname: router.pathname, query: newQuery },
-            undefined,
-            { shallow: true } //prevent unnecessary page reload
-        );
-    };
+    const { resetManagerId } = useFiltersContext();
+    const handleClear = () => resetManagerId();
 
     return (
         <Chip

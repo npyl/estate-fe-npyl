@@ -75,6 +75,7 @@ interface IFilterStateSetters {
     resetCategories: () => void;
     resetParentCategories: () => void;
     resetRegions: () => void;
+    resetManagerId: () => void;
 
     // Active state
     setActiveState: (value: boolean | null) => void;
