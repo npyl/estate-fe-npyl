@@ -48,6 +48,15 @@ const taskNameSx: SxProps<Theme> = {
 };
 
 const getItemSx = (priority: number): SxProps<Theme> => ({
+    display: "flex",
+    flexDirection: "row",
+
+    p: 1,
+    bgcolor: "background.paper",
+    border: "1px solid",
+    borderColor: "divider",
+    alignItems: "center",
+
     position: "relative",
     cursor: "pointer",
     borderLeft: "3px solid",
@@ -98,15 +107,7 @@ const Item: FC<ItemProps> = ({ c }) => {
     };
 
     return (
-        <Link
-            p={1}
-            bgcolor="background.paper"
-            border="1px solid"
-            borderColor="divider"
-            alignItems="center"
-            sx={getItemSx(c.priority)}
-            href={`/task/${c.id}`}
-        >
+        <Link sx={getItemSx(c.priority)} href={`/task/${c.id}`}>
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
                 <Typography
