@@ -98,6 +98,7 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
                     checkboxSelection
                     onRowSelectionModelChange={setSelectedRows as any}
                     disableColumnMenu
+                    disableColumnSorting={false}
                 />
             </Paper>
         </>
