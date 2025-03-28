@@ -45,14 +45,7 @@ const Home: NextPage = () => {
 
     return (
         <>
-            <FilterBar
-                {...optionViewProps}
-                sx={{
-                    position: "sticky",
-                    top: 64,
-                    zIndex: 1,
-                }}
-            />
+            <FilterBar {...optionViewProps} />
 
             {optionViewProps.optionView === "list" ? (
                 <ViewAll sortBy={sortBy} direction={direction} />

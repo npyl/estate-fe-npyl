@@ -97,16 +97,7 @@ const Customers: NextPage = () => {
 
     return (
         <>
-            <FilterSection
-                sx={{
-                    mb: 1,
-                    position: "sticky",
-                    top: 64,
-                    zIndex: 2,
-                    border: "1px solid rgba(255, 255, 255, 0.18)",
-                }}
-                sorting={sorting}
-            />
+            <FilterSection sorting={sorting} />
 
             {selectedRows && selectedRows.length > 0 ? (
                 <Toolbar selectedRows={selectedRows} />
