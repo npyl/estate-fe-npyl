@@ -5,7 +5,7 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
-import { Box, Tooltip } from "@mui/material";
+import CustomerAvatar from "@/sections/CustomerAvatar";
 
 const StatusColor = ({ row }: GridCellParams) => (
     <Stack width={1} height={1} justifyContent="center" alignItems="flex-start">
@@ -62,25 +62,13 @@ const renderDateCell = ({ row }: GridCellParams) => {
         <Typography variant="inherit">{`${day}/${month}/${year}`}</Typography>
     );
 };
-const RenderFullNameCell = ({ row }: GridCellParams) => {
-    const fullName = ` ${row.lastName ?? ""} ${row.firstName ?? ""}`.trim();
 
-    return (
-        <Box
-            sx={{
-                width: "100%",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                textAlign: "left",
-            }}
-        >
-            <Typography variant="inherit" noWrap>
-                {fullName}
-            </Typography>
-        </Box>
-    );
-};
+const RenderFullNameCell = ({ row }: GridCellParams) => (
+    <Stack width={1} height={1} justifyContent="center">
+        <CustomerAvatar firstName={row.firstName} lastName={row.lastName} />
+    </Stack>
+);
+
 const getColumns = (t: TranslationType): GridColDef[] => [
     {
         flex: 1.2,
