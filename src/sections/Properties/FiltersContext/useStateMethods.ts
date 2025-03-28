@@ -3,8 +3,11 @@ import { IPropertyFilter } from "src/types/properties";
 import { IFilterProps } from "./types";
 import { initialState } from "./constant";
 
-const getInitialValue = (v: any) =>
-    Array.isArray(v) ? [...v] : typeof v === "object" ? { ...v } : v;
+const getInitialValue = (v: any) => {
+    // INFO: explicitly support null and undefined values!
+    if (!v) return v;
+    return Array.isArray(v) ? [...v] : typeof v === "object" ? { ...v } : v;
+};
 
 const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
     const updateFilter = useCallback(
