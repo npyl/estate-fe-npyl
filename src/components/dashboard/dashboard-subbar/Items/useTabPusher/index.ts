@@ -25,7 +25,12 @@ const useTabPusher = (
                 return;
             }
 
-            const isParamChangeOnly = isSameTabOrg(oldPath.current, path);
+            // INFO: in the case where old and current path are equal, it probably means a full page reload happened that caused the ref's initial value to be reset to current.
+            //      This is very unlikely to have happened from a url param change so prevent tabPath change; rather do a push
+            const isFullReload = oldPath.current === path;
+
+            const isParamChangeOnly =
+                !isFullReload && isSameTabOrg(oldPath.current, path);
 
             const shouldPush = !isParamChangeOnly;
 
