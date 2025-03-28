@@ -14,7 +14,7 @@ const initialState: IFilterProps = {
         frameType: [],
         furnished: [],
         heatingType: [],
-        active: null,
+        active: undefined,
         extras: {
             student: false,
             seaFront: false,
