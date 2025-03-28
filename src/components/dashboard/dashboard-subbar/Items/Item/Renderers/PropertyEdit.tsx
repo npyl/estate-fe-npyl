@@ -6,7 +6,12 @@ const PropertyEdit: FC<ITabRendererProps> = ({ resourceId }) => {
     const { data } = useGetPropertyByIdQuery(resourceId!, {
         skip: !Boolean(resourceId),
     });
-    const { code } = data || {};
+    const { code, createdAt, updatedAt } = data || {};
+
+    const isFirstEdit = createdAt?.toString() === updatedAt?.toString();
+
+    if (isFirstEdit) return "";
+
     return code || "";
 };
 

@@ -11,8 +11,8 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
 
     const renderer = useMemo(() => {
         // Property
-        if (path.startsWith("/property/edit")) return "PROPERTY_EDIT";
         if (path.startsWith("/property/create")) return "PROPERTY_CREATE";
+        if (path.startsWith("/property/edit")) return "PROPERTY_EDIT";
         if (path.startsWith("/property")) {
             const isFilters = Boolean(tabData);
 

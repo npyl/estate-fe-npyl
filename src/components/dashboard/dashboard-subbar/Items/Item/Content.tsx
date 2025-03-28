@@ -3,15 +3,15 @@ import { ComponentType, FC } from "react";
 import { ITabRendererProps } from "./types";
 import CustomerEdit from "./Renderers/CustomerEdit";
 import CustomerView from "./Renderers/CustomerView";
-import PropertyEdit from "./Renderers/PropertyEdit";
 import Agreement from "./Renderers/Agreement";
 import Profile from "./Renderers/Profile";
 import PropertyView from "./Renderers/PropertyView";
 import User from "./Renderers/User";
 import CustomerCreate from "./Renderers/CustomerCreate";
-import PropertyCreate from "./Renderers/PropertyCreate";
 import Task from "./Renderers/Task";
 import PropertyAll from "./Renderers/PropertyAll";
+import PropertyEdit from "./Renderers/PropertyEdit";
+import PropertyCreate from "./Renderers/PropertyCreate";
 
 // --------------------------------------------------------------------
 
@@ -24,8 +24,8 @@ const RENDERERS: TRenderers = {
     CUSTOMER_EDIT: CustomerEdit,
     CUSTOMER_VIEW: CustomerView,
     PROPERTY_FITLERS: PropertyAll,
-    PROPERTY_CREATE: PropertyCreate,
     PROPERTY_EDIT: PropertyEdit,
+    PROPERTY_CREATE: PropertyCreate,
     PROPERTY_VIEW: PropertyView,
     AGREEMENT: Agreement,
     TASK: Task,

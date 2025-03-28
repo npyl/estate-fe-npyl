@@ -62,7 +62,7 @@ const TabItem: FC<TabItemProps> = ({ t: { path, renderer, resourceId } }) => {
             sx={getButtonSx(isCurrent)}
             endIcon={<ClearButton path={path} />}
         >
-            <Icon renderer={renderer} />
+            <Icon renderer={renderer} resourceId={resourceId} />
             <ResponsiveLabel>
                 <Content renderer={renderer} resourceId={resourceId} />
             </ResponsiveLabel>

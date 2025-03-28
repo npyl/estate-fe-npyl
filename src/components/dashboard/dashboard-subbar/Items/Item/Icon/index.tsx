@@ -4,11 +4,11 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@/assets/icons/home";
 import CustomersIcon from "@/assets/icons/customers";
-import HomeEditIcon from "@/assets/icons/home-edit";
 import CustomersEditIcon from "@/assets/icons/customers-edit";
 import CustomersCreateIcon from "@/assets/icons/customers-create";
 import HomeCreateIcon from "@/assets/icons/home-create";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import PropertyEditIcon from "./PropertEditIcon";
 
 type TIcons = Record<TTabRenderer, ComponentType<any>>;
 
@@ -17,8 +17,8 @@ const ICONS: TIcons = {
     CUSTOMER_EDIT: CustomersEditIcon,
     CUSTOMER_VIEW: CustomersIcon,
     PROPERTY_FITLERS: HomeIcon,
+    PROPERTY_EDIT: PropertyEditIcon,
     PROPERTY_CREATE: HomeCreateIcon,
-    PROPERTY_EDIT: HomeEditIcon,
     PROPERTY_VIEW: HomeIcon,
     AGREEMENT: HandshakeIcon,
     TASK: ConfirmationNumberIcon,
@@ -28,13 +28,18 @@ const ICONS: TIcons = {
 
 interface IconProps {
     renderer: TTabRenderer;
+    resourceId?: number;
 }
 
-const Icon: FC<IconProps> = ({ renderer }) => {
+const Icon: FC<IconProps> = ({ renderer, resourceId }) => {
     try {
         const Res = ICONS[renderer];
         if (!Res) return null;
-        return <Res fontSize="small" />;
+
+        const _resourceId =
+            renderer === "PROPERTY_EDIT" ? resourceId : undefined;
+
+        return <Res fontSize="small" resourceId={_resourceId} />;
     } catch (ex) {
         return null;
     }
