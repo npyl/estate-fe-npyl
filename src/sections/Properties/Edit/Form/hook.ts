@@ -16,12 +16,14 @@ import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
 
 type OmitList = "managerId" | "ownerId";
 
-export interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
+interface Overrides {
     code: string;
     state: string;
     managerId?: number | "";
     ownerId?: number | "";
 }
+
+export type IPropertyYup = Partial<Omit<IPropertiesPOST, OmitList>> & Overrides;
 
 const getLoginSchema = (
     initialCode: string | null,
@@ -45,7 +47,7 @@ const getLoginSchema = (
         state: Yup.string().required(),
     });
 
-const getEnumKey = (key?: string, fix?: boolean) => key || null;
+const getEnumKey = (key?: string) => key || null;
 
 const notNot = (bool?: boolean) => !!bool;
 
@@ -86,7 +88,14 @@ const getDescriptions = (
     ];
 };
 
+// INFO: prevent undefined values (react considers them uncontrolled)
+// TODO: currently, `any` is used to avoid type pollution, but it is necessary to allow non-undefined value
+const getNumber = (n?: number) => (n ?? "") as any;
+
 const getDefaultValues = (property?: IProperties): IPropertyYup => {
+    const { details, construction, distances, technicalFeatures, areas } =
+        property || {};
+
     return {
         code: property?.code || "",
         state: property?.state?.key || "",
@@ -94,13 +103,13 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
         descriptions: getDescriptions(property?.descriptions),
         managerId: property?.manager?.id || "",
         ownerId: property?.owner?.id || "",
-        area: property?.area || undefined,
-        price: property?.price || undefined,
+        area: getNumber(property?.area),
+        price: getNumber(property?.price),
         hidePrice: notNot(property?.hidePrice),
-        plotArea: property?.plotArea || undefined,
-        averageUtils: property?.averageUtils || undefined,
-        estimatedRentPrice: property?.estimatedRentPrice || undefined,
-        currentRentPrice: property?.currentRentPrice || undefined,
+        plotArea: getNumber(property?.plotArea),
+        averageUtils: getNumber(property?.averageUtils),
+        estimatedRentPrice: getNumber(property?.estimatedRentPrice),
+        currentRentPrice: getNumber(property?.currentRentPrice),
         category: getEnumKey(property?.category?.key),
         parentCategory: getEnumKey(property?.parentCategory?.key),
         rented: notNot(property?.rented),
@@ -145,92 +154,131 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
             ),
         },
         distances: {
-            ...property?.distances,
+            airport: getNumber(distances?.airport),
+            cafeRestaurant: getNumber(distances?.cafeRestaurant),
+            entertainment: getNumber(distances?.entertainment),
+            hospital: getNumber(distances?.hospital),
+            publicTransport: getNumber(distances?.publicTransport),
+            schools: getNumber(distances?.schools),
+            sea: getNumber(distances?.sea),
+            supermarket: getNumber(distances?.supermarket),
         },
-        areas: { ...property?.areas },
+        areas: {
+            attic: getNumber(areas?.attic),
+            balconies: getNumber(areas?.balconies),
+            basement: getNumber(areas?.basement),
+            covered: getNumber(areas?.covered),
+            fifth: getNumber(areas?.fifth),
+            first: getNumber(areas?.first),
+            fourth: getNumber(areas?.fourth),
+            garden: getNumber(areas?.garden),
+            groundFloor: getNumber(areas?.groundFloor),
+            plot: getNumber(areas?.plot),
+            second: getNumber(areas?.second),
+            storeroom: getNumber(areas?.storeroom),
+            third: getNumber(areas?.third),
+        },
         construction: {
-            ...property?.construction,
-            elevator: notNot(property?.construction?.elevator),
-            incomplete: notNot(property?.construction?.incomplete),
-            internalStairs: notNot(property?.construction?.internalStairs),
-            needsRenovation: notNot(property?.construction?.needsRenovation),
-            neoclassical: notNot(property?.construction?.neoclassical),
-            newlyBuilt: notNot(property?.construction?.newlyBuilt),
-            preserved: notNot(property?.construction?.preserved),
-            renovated: notNot(property?.construction?.renovated),
-            underConstruction: notNot(
-                property?.construction?.underConstruction
-            ),
+            elevator: notNot(construction?.elevator),
+            incomplete: notNot(construction?.incomplete),
+            internalStairs: notNot(construction?.internalStairs),
+            needsRenovation: notNot(construction?.needsRenovation),
+            neoclassical: notNot(construction?.neoclassical),
+            newlyBuilt: notNot(construction?.newlyBuilt),
+            preserved: notNot(construction?.preserved),
+            renovated: notNot(construction?.renovated),
+            underConstruction: notNot(construction?.underConstruction),
+            // ...
+            poolSize: getNumber(construction?.poolSize),
+            totalFloorNumber: getNumber(construction?.totalFloorNumber),
+            yearOfConstruction: getNumber(construction?.yearOfConstruction),
+            yearOfRenovation: getNumber(construction?.yearOfRenovation),
         },
         technicalFeatures: {
-            alarmSystem: notNot(property?.technicalFeatures?.alarmSystem),
-            bright: notNot(property?.technicalFeatures?.bright),
-            consideration: notNot(property?.technicalFeatures?.consideration),
-            doubleFrontage: notNot(property?.technicalFeatures?.doubleFrontage),
-            electricCarChargingFacilities: notNot(
-                property?.technicalFeatures?.electricCarChargingFacilities
+            coverageFactor: getNumber(technicalFeatures?.coverageFactor),
+            displayWindowsLength: getNumber(
+                technicalFeatures?.displayWindowsLength
             ),
-            falseCeiling: notNot(property?.technicalFeatures?.falseCeiling),
-            fireplace: notNot(property?.technicalFeatures?.fireplace),
-            loadingUnloadingElevator: notNot(
-                property?.technicalFeatures?.loadingUnloadingElevator
-            ),
-            luxurious: notNot(property?.technicalFeatures?.luxurious),
-            painted: notNot(property?.technicalFeatures?.painted),
-            petsAllowed: notNot(property?.technicalFeatures?.petsAllowed),
-            reception: notNot(property?.technicalFeatures?.reception),
-            safetyDoor: notNot(property?.technicalFeatures?.safetyDoor),
-            satelliteTV: notNot(property?.technicalFeatures?.satelliteTV),
-            windowScreens: notNot(property?.technicalFeatures?.windowScreens),
-            wiring: notNot(property?.technicalFeatures?.wiring),
-            withEquipment: notNot(property?.technicalFeatures?.withEquipment),
+            entrances: getNumber(technicalFeatures?.entrances),
+            facadeLength: getNumber(technicalFeatures?.facadeLength),
+            floorToAreaRatio: getNumber(technicalFeatures?.floorToAreaRatio),
             // ...
-            floorType: getEnumKey(property?.technicalFeatures?.floorType?.key),
-            frameType: getEnumKey(property?.technicalFeatures?.frameType?.key),
-            furnished: getEnumKey(property?.technicalFeatures?.furnished?.key),
-            paneGlassType: getEnumKey(
-                property?.technicalFeatures?.paneGlassType?.key
+            alarmSystem: notNot(technicalFeatures?.alarmSystem),
+            bright: notNot(technicalFeatures?.bright),
+            consideration: notNot(technicalFeatures?.consideration),
+            doubleFrontage: notNot(technicalFeatures?.doubleFrontage),
+            electricCarChargingFacilities: notNot(
+                technicalFeatures?.electricCarChargingFacilities
             ),
-            inclination: getEnumKey(
-                property?.technicalFeatures?.inclination?.key
+            falseCeiling: notNot(technicalFeatures?.falseCeiling),
+            fireplace: notNot(technicalFeatures?.fireplace),
+            loadingUnloadingElevator: notNot(
+                technicalFeatures?.loadingUnloadingElevator
             ),
+            luxurious: notNot(technicalFeatures?.luxurious),
+            painted: notNot(technicalFeatures?.painted),
+            petsAllowed: notNot(technicalFeatures?.petsAllowed),
+            reception: notNot(technicalFeatures?.reception),
+            safetyDoor: notNot(technicalFeatures?.safetyDoor),
+            satelliteTV: notNot(technicalFeatures?.satelliteTV),
+            windowScreens: notNot(technicalFeatures?.windowScreens),
+            wiring: notNot(technicalFeatures?.wiring),
+            withEquipment: notNot(technicalFeatures?.withEquipment),
+            // ...
+            floorType: getEnumKey(technicalFeatures?.floorType?.key),
+            frameType: getEnumKey(technicalFeatures?.frameType?.key),
+            furnished: getEnumKey(technicalFeatures?.furnished?.key),
+            paneGlassType: getEnumKey(technicalFeatures?.paneGlassType?.key),
+            inclination: getEnumKey(technicalFeatures?.inclination?.key),
         },
         details: {
-            attic: notNot(property?.details?.attic),
-            electricitySupply: notNot(property?.details?.electricitySupply),
-            floorApartment: notNot(property?.details?.floorApartment),
-            hasBuilding: notNot(property?.details?.hasBuilding),
-            hasBuildingPermit: notNot(property?.details?.hasBuildingPermit),
-            irrigation: notNot(property?.details?.irrigation),
-            legalAndTechnicalControl: notNot(
-                property?.details?.legalAndTechnicalControl
+            bedrooms: getNumber(details?.bedrooms),
+            buildingBalance: getNumber(details?.buildingBalance),
+            kitchens: getNumber(details?.kitchens),
+            livingrooms: getNumber(details?.livingrooms),
+            permissibleBuildingHeight: getNumber(
+                details?.permissibleBuildingHeight
             ),
-            penthouse: notNot(property?.details?.penthouse),
-            playroom: notNot(property?.details?.playroom),
-            storeroom: notNot(property?.details?.storeroom),
-            waterSupply: notNot(property?.details?.waterSupply),
-            goldenVisa: notNot(property?.details?.goldenVisa),
-            ...property?.details,
+            permissibleFloors: getNumber(details?.permissibleFloors),
+            plotFrontage: getNumber(details?.plotFrontage),
+            setbackCoefficient: getNumber(details?.setbackCoefficient),
+            totalConstruction: getNumber(details?.totalConstruction),
+            layers: getNumber(details?.layers),
+            wc: getNumber(details?.wc),
+            bathrooms: getNumber(details?.bathrooms),
+            rooms: getNumber(details?.rooms),
+            frontage: getNumber(details?.frontage),
+            // ...
+            attic: notNot(details?.attic),
+            electricitySupply: notNot(details?.electricitySupply),
+            floorApartment: notNot(details?.floorApartment),
+            hasBuilding: notNot(details?.hasBuilding),
+            hasBuildingPermit: notNot(details?.hasBuildingPermit),
+            irrigation: notNot(details?.irrigation),
+            legalAndTechnicalControl: notNot(details?.legalAndTechnicalControl),
+            penthouse: notNot(details?.penthouse),
+            playroom: notNot(details?.playroom),
+            storeroom: notNot(details?.storeroom),
+            waterSupply: notNot(details?.waterSupply),
+            goldenVisa: notNot(details?.goldenVisa),
             balconies:
-                property?.details?.balconies.map(({ id, area, side }) => ({
+                details?.balconies.map(({ id, area, side }) => ({
                     id,
-                    area,
+                    area: getNumber(area),
                     side: side?.key,
                 })) || [],
             parkings:
-                property?.details?.parkings?.map(
-                    ({ id, spots, parkingType }) => ({
-                        id,
-                        spots,
-                        parkingType: parkingType?.key,
-                    })
-                ) || [],
-            orientation: getEnumKey(property?.details?.orientation?.key),
-            accessibility: getEnumKey(property?.details?.accessibility?.key),
-            landUse: getEnumKey(property?.details?.landUse?.key),
-            floor: getEnumKey(property?.details?.floor?.key),
-            zoneType: getEnumKey(property?.details?.zoneType?.key),
-            viewType: getEnumKey(property?.details?.viewType?.key),
+                details?.parkings?.map(({ id, spots, parkingType }) => ({
+                    id,
+                    spots: getNumber(spots),
+                    parkingType: parkingType?.key,
+                })) || [],
+            orientation: getEnumKey(details?.orientation?.key),
+            accessibility: getEnumKey(details?.accessibility?.key),
+            landUse: getEnumKey(details?.landUse?.key),
+            floor: getEnumKey(details?.floor?.key),
+            zoneType: getEnumKey(details?.zoneType?.key),
+            viewType: getEnumKey(details?.viewType?.key),
         },
         location: {
             street: property?.location?.street || "",
@@ -244,7 +292,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
                 LocationDisplay.NOT_VISIBLE,
             lat: property?.location?.lat,
             lng: property?.location?.lng,
-            zipCode: property?.location?.zipCode,
+            zipCode: getNumber(property?.location?.zipCode),
         },
         features: {
             panoramicView: notNot(property?.features?.panoramicView),
