@@ -40,6 +40,7 @@ const FormBottomBar: FC<FormBottomBarProps> = ({
             <Stack height="54px" my={1} />
 
             <Stack
+                className="PPFormBottomBar-bar"
                 spacing={1}
                 boxShadow={getBoxShadow}
                 borderRadius={1}

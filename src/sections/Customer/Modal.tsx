@@ -1,7 +1,22 @@
-import { Drawer } from "@mui/material";
+import { Drawer, DrawerProps } from "@mui/material";
 import CustomerForm, { CustomerFormProps } from "@/sections/Customer/Form";
 import { useCallback } from "react";
 import { ICustomerPOST } from "@/types/customer";
+
+const PaperProps: DrawerProps["PaperProps"] = {
+    sx: {
+        width: {
+            xs: "100vw",
+            lg: "30vw",
+        },
+
+        ".PPFormBottomBar-bar": {
+            width: 1,
+            position: "sticky",
+            bottom: 0,
+        },
+    },
+};
 
 /**
  * createCb: provide your own create callback so that we can either use
@@ -43,19 +58,7 @@ const CustomerModal: React.FC<ModalProps> = ({
     );
 
     return (
-        <Drawer
-            open
-            anchor="right"
-            PaperProps={{
-                sx: {
-                    width: {
-                        xs: "100vw",
-                        lg: "30vw",
-                    },
-                },
-            }}
-            onClose={onClose}
-        >
+        <Drawer open anchor="right" PaperProps={PaperProps} onClose={onClose}>
             <CustomerForm
                 compact
                 quickCreate={quickCreate}
