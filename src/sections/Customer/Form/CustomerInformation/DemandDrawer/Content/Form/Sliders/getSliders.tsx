@@ -45,7 +45,7 @@ const getSLIDERS = (t: TranslationType, index: number, stepValue: number) => [
         options={sizeOptions}
     />,
     <DemandFormSlider
-        label={t("Size of Plot")}
+        label={t("Plot Size")}
         min="minPlot"
         max="maxPlot"
         defaultMin={0}

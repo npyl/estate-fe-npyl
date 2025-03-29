@@ -825,7 +825,6 @@ const resources = {
 
             Furnishing: "Furnishing",
             "Time Frame": "Time Frame",
-            "Size of Plot": "Size of Plot",
 
             Max: "Max",
             Min: "Min",
@@ -1683,7 +1682,6 @@ const resources = {
             Max: "Μεγ",
             Min: "Ελαχ",
 
-            "Size of Plot": "Μέγεθος Οικοπέδου",
             "Time Frame": "Χρονικό Περιθώριο",
             Furnishing: "Επίπλωση",
             "Add an existing label": "Προσθήκη υπάρχουσας ετικέτας",
