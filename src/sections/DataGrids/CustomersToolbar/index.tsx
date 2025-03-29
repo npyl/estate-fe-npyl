@@ -12,7 +12,12 @@ const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 
 // --------------------------------------------------------------------------------
 
-const getTabPath = (id: number) => `/customer/${id}`;
+const getTabPathsForId = (id: number) => [
+    `/customer/${id}`,
+    `/customer/edit/${id}`,
+];
+
+const getTabPaths = (ids: number[]) => ids.map(getTabPathsForId).flat();
 
 // --------------------------------------------------------------------------------
 
@@ -32,7 +37,7 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
     const handleBulkDelete = useCallback(
         () =>
             bulkDelete({
-                tabPaths: selectedRows.map(getTabPath),
+                tabPaths: getTabPaths(selectedRows),
                 props: selectedRows,
             }),
         [selectedRows]

@@ -22,6 +22,12 @@ import dynamic from "next/dynamic";
 const Tasks = dynamic(() => import("./sections/Tasks"));
 const DemandSection = dynamic(() => import("./sections/Demand"));
 
+// -------------------------------------------------------------------------------
+
+const getTabPaths = (id: number) => [`/customer/${id}`, `/customer/edit/${id}`];
+
+// -------------------------------------------------------------------------------
+
 type TabConfig = {
     label: string;
     content: JSX.Element;
@@ -48,7 +54,7 @@ const ViewById = () => {
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = useCallback(async () => {
         const res = await deleteCustomer({
-            tabPaths: [`/customer/${customerId}`],
+            tabPaths: getTabPaths(+customerId!),
             props: +customerId!,
         });
         if ("error" in res) return;

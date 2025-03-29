@@ -6,7 +6,12 @@ import { LoadingButton } from "@mui/lab";
 
 // ------------------------------------------------------------------------------
 
-const getTabPath = (id: number) => `/property/${id}`;
+const getTabPathsForId = (id: number) => [
+    `/property/${id}`,
+    `/property/edit/${id}`,
+];
+
+const getTabPaths = (ids: number[]) => ids.map(getTabPathsForId).flat();
 
 // ------------------------------------------------------------------------------
 
@@ -23,7 +28,7 @@ const BulkArchiveButton: FC<BulkArchiveButtonProps> = ({ selectedRows }) => {
         () =>
             bulkArchive({
                 props: selectedRows,
-                tabPaths: selectedRows.map(getTabPath),
+                tabPaths: getTabPaths(selectedRows),
             }),
         [selectedRows]
     );
