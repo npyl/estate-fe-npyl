@@ -1,7 +1,7 @@
 import AuthGuard from "@/components/authentication/auth-guard";
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewAll from "@/sections/Properties/(ViewAll)";
+import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 import { NextPage } from "next";
 
 const ArchivedPage: NextPage = () => (
@@ -10,7 +10,9 @@ const ArchivedPage: NextPage = () => (
 
 ArchivedPage.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <FiltersProvider>{page}</FiltersProvider>
+        </DashboardLayout>
     </AuthGuard>
 );
 
