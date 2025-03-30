@@ -14,6 +14,7 @@ const MenuButton: FC<Props> = ({ taskId }) => {
     const [isOpen, openMenu, closeMenu] = useDialog();
 
     const handleClick = useCallback((e: MouseEvent) => {
+        e.preventDefault();
         e.stopPropagation();
         openMenu();
     }, []);
