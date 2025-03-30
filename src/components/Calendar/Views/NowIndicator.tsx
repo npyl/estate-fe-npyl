@@ -3,9 +3,6 @@ import Stack from "@mui/material/Stack";
 import calculateTimePosition from "../calculateTimePosition";
 import { Z_INDEX } from "@/constants/calendar";
 
-// INFO: small offset to not drop on the divider
-const LINE_WIDTH = "calc(100% - 8px)";
-
 const NowIndicator = () => {
     const { top } = calculateTimePosition(new Date().toISOString(), "");
 
@@ -15,10 +12,10 @@ const NowIndicator = () => {
                 direction="row"
                 spacing={1}
                 position="absolute"
-                top={top}
-                width={LINE_WIDTH}
+                top={top - 3}
+                width={1}
                 height={0}
-                borderTop="5px solid red"
+                borderTop="2px solid red"
                 borderRadius={1}
                 zIndex={Z_INDEX.CURRENT_TIME_INDICATOR}
             />
@@ -26,8 +23,9 @@ const NowIndicator = () => {
             <Box
                 top={top - 7}
                 position="absolute"
-                width="20px"
-                height="20px"
+                left={-5}
+                width="10px"
+                height="10px"
                 bgcolor="red"
                 borderRadius="100%"
                 zIndex={Z_INDEX.CURRENT_TIME_INDICATOR}
