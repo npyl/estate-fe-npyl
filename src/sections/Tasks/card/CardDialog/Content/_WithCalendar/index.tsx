@@ -7,8 +7,10 @@ import { useWatch } from "react-hook-form";
 import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
 import { SxProps, Theme } from "@mui/material";
 import WorkspaceUserGuard from "./WorkspaceUserGuard";
+import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 const IsAuthenticatedIndicator = dynamic(
     () => import("@/sections/Google/WorkspaceIndicator")
 );
@@ -39,31 +41,46 @@ const EventOptionsSx: SxProps<Theme> = {
     px: 1,
 };
 
+const useIsAssigneeSelected = () => {
+    const userIds = useWatch<ICreateOrUpdateTaskReq>({ name: "userIds" });
+    const userId = Array.isArray(userIds) ? (userIds[0] as number) : -1;
+    return Boolean(userId);
+};
+
 const WithCalendar = () => {
     const { t } = useTranslation();
 
-    const isOpen = useWatch({ name: "withCalendar" });
+    const isAssigneeSelected = useIsAssigneeSelected();
+    const isOpen = useWatch<ICreateOrUpdateTaskReq>({ name: "withCalendar" });
+
+    if (!isAssigneeSelected) return null;
 
     return (
-        <Stack position="relative" spacing={1}>
-            <RHFIOSSwitch
-                name="withCalendar"
-                label={t("Connect with Calendar")}
-                labelPlacement="start"
-                sx={SwitchSx}
-            />
+        <>
+            <Divider />
 
-            {isOpen ? (
-                <IsAuthenticatedIndicator sx={OAuthButtonSx}>
-                    <WorkspaceUserGuard>
-                        <Stack spacing={1} sx={EventOptionsSx}>
-                            <Pickers />
-                            <Assignee />
-                        </Stack>
-                    </WorkspaceUserGuard>
-                </IsAuthenticatedIndicator>
-            ) : null}
-        </Stack>
+            <Stack position="relative" spacing={1}>
+                <RHFIOSSwitch
+                    name="withCalendar"
+                    label={t("Connect with Calendar")}
+                    labelPlacement="start"
+                    sx={SwitchSx}
+                />
+
+                {isOpen ? (
+                    <IsAuthenticatedIndicator sx={OAuthButtonSx}>
+                        <WorkspaceUserGuard>
+                            <Stack spacing={1} sx={EventOptionsSx}>
+                                <Pickers />
+                                <Assignee />
+                            </Stack>
+                        </WorkspaceUserGuard>
+                    </IsAuthenticatedIndicator>
+                ) : null}
+            </Stack>
+
+            <Divider />
+        </>
     );
 };
 

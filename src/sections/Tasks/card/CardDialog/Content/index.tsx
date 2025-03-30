@@ -74,9 +74,7 @@ const Content: FC<ContentProps> = ({ cardId, createdAt, updatedAt }) => {
             <CustomerAutocomplete />
             <AssigneeSelect />
 
-            <Divider />
             <WithCalendar />
-            <Divider />
 
             <Labels cardId={cardId} />
 
