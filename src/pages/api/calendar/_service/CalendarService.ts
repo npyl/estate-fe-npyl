@@ -5,6 +5,8 @@ import { OAuth2Client } from "google-auth-library";
 import { TCalendarIdFilter } from "@/types/calendar";
 import managerService from "./ManagerService";
 
+const DEFAULT_CALENDAR_ID = "primary";
+
 // --------------------------------------------------------------------------------------
 
 enum ERRORS {
@@ -288,20 +290,20 @@ class CalendarService {
      * createEvent
      * @param userId propertypro user id
      * @param body google calendar event
-     * @param userKey google workspace user's email (used to denote a calendar). Leave undefined if you want to create an event for your own calendar
+     * @param calendarId google workspace user's email (used to denote a calendar). Leave undefined if you want to create an event for your own calendar
      * @returns created event's id
      */
     async createEvent(
         userId: number,
         body: calendar_v3.Schema$Event,
-        userKey?: string
+        calendarId: string = DEFAULT_CALENDAR_ID
     ) {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
         const res = await this.calendar.events.insert({
             auth,
-            calendarId: userKey || "primary",
+            calendarId,
             requestBody: body,
         });
 
@@ -311,18 +313,47 @@ class CalendarService {
         return res.data.id;
     }
 
-    async updateEvent(userId: number, body: calendar_v3.Schema$Event) {
+    /**
+     * updateEvent
+     * @param userId
+     * @param body calendar event body
+     * @param oldCalendarId calendarId to which the event was before calling this update
+     * @param newCalendarId provided for ability to move to a different calendar
+     */
+    async updateEvent(
+        userId: number,
+        body: calendar_v3.Schema$Event,
+        oldCalendarId: string = DEFAULT_CALENDAR_ID,
+        newCalendarId?: string
+    ) {
         if (!body.id) throw new Error("Event ID is required!");
 
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw new Error("Could not find user!");
 
-        return await this.calendar.events.update({
+        //
+        //  Update
+        //
+        await this.calendar.events.update({
             auth,
-            calendarId: "primary",
+            calendarId: oldCalendarId,
             eventId: body.id,
             requestBody: body,
         });
+
+        //
+        //  Move
+        //
+        if (Boolean(newCalendarId) && newCalendarId !== oldCalendarId) {
+            console.log("Moving from: ", oldCalendarId, " to: ", newCalendarId);
+
+            await this.calendar.events.move({
+                auth,
+                calendarId: oldCalendarId,
+                eventId: body.id,
+                destination: newCalendarId,
+            });
+        }
     }
 
     async deleteEvent(userId: number, eventId: string) {

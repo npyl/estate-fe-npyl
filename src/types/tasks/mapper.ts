@@ -22,6 +22,9 @@ const IKanbanCardRes2Req = (
         columnId,
     } = task || { assignee: {} };
 
+    const userIds = assignees?.map(getId) || [];
+    const oldUserId = userIds.length > 0 ? userIds[0] : undefined;
+
     return {
         id: id || -1,
         priority: priority || 0,
@@ -31,11 +34,12 @@ const IKanbanCardRes2Req = (
         attachments: [],
         properties: properties?.map(getId) || [],
         customers: customers?.map(getId) || [],
-        userIds: assignees?.map(getId) || [],
+        userIds,
         columnId: columnId ?? -1,
         event: event || "",
         withCalendar: Boolean(event),
         labels: [],
+        oldUserId,
     };
 };
 

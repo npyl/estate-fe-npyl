@@ -100,7 +100,7 @@ type IKanbanCardPOST = {
 // INFO: used in form
 interface ICreateOrUpdateTaskReq extends IKanbanCardPOST {
     withCalendar: boolean;
-    googleUserKey?: string; // INFO: google's worskpace user's primaryEmail used as a handle for creating a calendar event to him
+    oldUserId?: number; // INFO: assignee's id; must be passed on task w/ calendar update to facilitate moving to a different calendarId
 }
 
 type IKanbanColumn = {
