@@ -5,6 +5,29 @@ import { OAuth2Client } from "google-auth-library";
 import { TCalendarIdFilter } from "@/types/calendar";
 import managerService from "./ManagerService";
 
+// --------------------------------------------------------------------------------------
+
+enum ERRORS {
+    NOT_AUTHORIZED = "Not Authorized to access this resource/api",
+}
+
+interface Error {
+    message: ERRORS;
+}
+
+const isNotAuthorizedError = ({ message }: Error) =>
+    message === ERRORS.NOT_AUTHORIZED;
+
+const logIsAdminException = (ex: any) => {
+    const isUnauthorizedError =
+        ex && "errors" in ex && ex.errors.some(isNotAuthorizedError);
+
+    if (isUnauthorizedError) console.log("Not an admin");
+    if (!isUnauthorizedError) console.log(ex);
+};
+
+// --------------------------------------------------------------------------------------
+
 interface CalendarService$IsAdminRes {
     isAdmin: boolean;
     user?: admin_directory_v1.Schema$User;
@@ -44,7 +67,7 @@ class CalendarService {
 
             return { isAdmin, user: res?.data };
         } catch (ex) {
-            console.error("Error checking admin status:", ex);
+            logIsAdminException(ex);
             return { isAdmin: false, userInfo };
         }
     }
