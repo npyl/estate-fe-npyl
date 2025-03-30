@@ -6,7 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import useUploadAttachment from "./useUploadAttachment";
 import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
-import { useAttachmentsContext } from "../AttachmentsContext";
+import { useAttachmentsContext } from "./Context";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 import { HideText } from "@/components/styled";
 
@@ -32,11 +32,11 @@ const OpenerButton: FC<OpenerBaseProps> = ({ loading, onClick }) => {
 
 // ------------------------------------------------------------------
 
-interface AttachmentsProps {
+interface AttachmentsButtonProps {
     cardId?: number;
 }
 
-const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
+const AttachmentsButton: FC<AttachmentsButtonProps> = ({ cardId }) => {
     const { setAttachments } = useAttachmentsContext();
 
     const handleAdd = useCallback((res: IAddAttachmentRes[]) => {
@@ -78,4 +78,4 @@ const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
     );
 };
 
-export default Attachments;
+export default AttachmentsButton;

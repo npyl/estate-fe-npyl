@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
-import { useAttachmentsContext } from "../AttachmentsContext";
+import { useAttachmentsContext } from "../Context";
 import { IKanbanAttachment } from "@/types/tasks";
 import Attachment from "./Attachment";
 

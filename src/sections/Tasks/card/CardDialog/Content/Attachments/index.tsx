@@ -1,18 +1,17 @@
 import { FC } from "react";
-import dynamic from "next/dynamic";
-const View = dynamic(() => import("./view"));
-const Create = dynamic(() => import("./create"));
+import { AttachmentsProvider } from "./Context";
+import AttachmentsButton from "./Button";
+import Attachments from "./Attachments";
 
 interface AttachmentsProps {
     cardId?: number;
 }
 
-const Attachments: FC<AttachmentsProps> = ({ cardId }) => {
-    if (cardId) {
-        return <View cardId={cardId} />;
-    }
+const AttachmentsSection: FC<AttachmentsProps> = ({ cardId }) => (
+    <AttachmentsProvider>
+        <AttachmentsButton cardId={cardId} />
+        <Attachments cardId={cardId} />
+    </AttachmentsProvider>
+);
 
-    return <Create />;
-};
-
-export default Attachments;
+export default AttachmentsSection;

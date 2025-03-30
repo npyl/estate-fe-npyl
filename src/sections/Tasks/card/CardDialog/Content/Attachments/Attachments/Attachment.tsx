@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Stack, styled, SxProps, Theme, Typography } from "@mui/material";
 import { useDeleteAttachmentMutation } from "@/services/tasks";
 import { IKanbanAttachment } from "@/types/tasks";
-import { useAttachmentsContext } from "../AttachmentsContext";
+import { useAttachmentsContext } from "../Context";
 import DocumentIcon from "@/components/upload/preview/DocumentIcon";
 import Image from "@/components/image";
 import useDialog from "@/hooks/useDialog";
