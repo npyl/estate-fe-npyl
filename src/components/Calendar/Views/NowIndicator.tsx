@@ -6,7 +6,7 @@ import { Z_INDEX } from "@/constants/calendar";
 // INFO: small offset to not drop on the divider
 const LINE_WIDTH = "calc(100% - 8px)";
 
-const TodayIndicator = () => {
+const NowIndicator = () => {
     const { top } = calculateTimePosition(new Date().toISOString(), "");
 
     return (
@@ -36,4 +36,4 @@ const TodayIndicator = () => {
     );
 };
 
-export default TodayIndicator;
+export default NowIndicator;

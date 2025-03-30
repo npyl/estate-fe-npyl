@@ -2,7 +2,7 @@ import { CSSProperties, FC } from "react";
 import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
-import TodayIndicator from "../TodayIndicator";
+import NowIndicator from "../NowIndicator";
 
 // -------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
             {EVENTS}
 
             {/* Today Indicator */}
-            {isToday ? <TodayIndicator /> : null}
+            {isToday ? <NowIndicator /> : null}
         </div>
     );
 };

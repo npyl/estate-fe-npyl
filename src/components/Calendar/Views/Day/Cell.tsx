@@ -3,7 +3,7 @@ import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
-const TodayIndicator = dynamic(() => import("../TodayIndicator"));
+const NowIndicator = dynamic(() => import("../NowIndicator"));
 
 // ------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
             {EVENTS}
 
             {/* Today Indicator */}
-            {isToday ? <TodayIndicator /> : null}
+            {isToday ? <NowIndicator /> : null}
         </div>
     );
 };
