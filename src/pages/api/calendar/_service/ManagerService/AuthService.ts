@@ -66,6 +66,7 @@ class AuthService {
             access_type: "offline",
             scope: SCOPES,
             state: userId.toString(),
+            prompt: "select_account",
         });
         return authUrl;
     }
