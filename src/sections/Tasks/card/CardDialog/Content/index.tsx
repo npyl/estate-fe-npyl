@@ -54,17 +54,9 @@ interface ContentProps {
     cardId?: number;
     createdAt?: string;
     updatedAt?: string;
-    // ...
-    haveEvent: boolean;
 }
 
-const Content: FC<ContentProps> = ({
-    cardId,
-    createdAt,
-    updatedAt,
-    // ...
-    haveEvent,
-}) => {
+const Content: FC<ContentProps> = ({ cardId, createdAt, updatedAt }) => {
     const { t } = useTranslation();
 
     const isEdit = Boolean(cardId);
@@ -79,7 +71,7 @@ const Content: FC<ContentProps> = ({
             {/* ------------------------ */}
 
             <Divider />
-            <WithCalendar edit={haveEvent} />
+            <WithCalendar />
             <Divider />
 
             <RHFTextField name="name" label={t("Title")} />

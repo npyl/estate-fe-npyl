@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _NOT_GOOGLE_WORKSPACE_USER_:
+                "Make sure to assign a Google Workspace email to the assignee",
+
             Shape: "Shape",
 
             inVideo: "In Video",
@@ -1285,6 +1288,9 @@ const resources = {
     },
     el: {
         translation: {
+            _NOT_GOOGLE_WORKSPACE_USER_:
+                "Βεβαιωθείτε ότι έχει καταχωρηθεί Google Workspace email για τον διαχειριστή",
+
             Shape: "Σχήμα",
 
             inVideo: "Σε Βίντεο",
