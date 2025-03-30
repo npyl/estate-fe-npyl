@@ -14,7 +14,6 @@ import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 const IsAuthenticatedIndicator = dynamic(
     () => import("@/sections/Google/WorkspaceIndicator")
 );
-const Assignee = dynamic(() => import("./Assignee"));
 const Pickers = dynamic(() => import("./Pickers"));
 
 const SwitchSx: SxProps<Theme> = {
@@ -72,7 +71,6 @@ const WithCalendar = () => {
                         <WorkspaceUserGuard>
                             <Stack spacing={1} sx={EventOptionsSx}>
                                 <Pickers />
-                                <Assignee />
                             </Stack>
                         </WorkspaceUserGuard>
                     </IsAuthenticatedIndicator>
