@@ -10,6 +10,9 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
     const tabData = useTabData("/property") as IPropertyFilter | undefined;
 
     const renderer = useMemo(() => {
+        // INFO: race-condition?
+        if (!path) return;
+
         // Property
         if (path.startsWith("/property/create")) return "PROPERTY_CREATE";
         if (path.startsWith("/property/edit")) return "PROPERTY_EDIT";
