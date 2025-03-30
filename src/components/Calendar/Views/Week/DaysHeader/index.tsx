@@ -1,25 +1,15 @@
 import { FC } from "react";
-import { Box, Divider } from "@mui/material";
 import useWeekUtils from "@/components/BaseCalendar/useWeekUtils";
 import { gridStyle, StyledStack } from "./styled";
 import Day from "./Day";
-import { Z_INDEX } from "@/constants/calendar";
 import ModeToggle from "./ModeToggle";
+import VerticalDividers from "./VerticalDividers";
 
-const getDay = (date: Date) => (
-    <Box key={date.toDateString()}>
-        <Day date={date} />
+// ------------------------------------------------------------------------------
 
-        <Divider
-            orientation="vertical"
-            sx={{
-                position: "absolute",
-                height: "100vh",
-                zIndex: Z_INDEX.DIVIDER,
-            }}
-        />
-    </Box>
-);
+const getDay = (date: Date) => <Day key={date.toDateString()} date={date} />;
+
+// ------------------------------------------------------------------------------
 
 interface DaysHeaderProps {
     date: Date;
@@ -37,10 +27,14 @@ const DaysHeader: FC<DaysHeaderProps> = ({ date }) => {
     });
 
     return (
-        <StyledStack>
-            <ModeToggle />
-            <div style={gridStyle}>{weekDays.map(getDay)}</div>
-        </StyledStack>
+        <>
+            <StyledStack>
+                <ModeToggle />
+                <div style={gridStyle}>{weekDays.map(getDay)}</div>
+            </StyledStack>
+
+            <VerticalDividers weekDays={weekDays} />
+        </>
     );
 };
 
