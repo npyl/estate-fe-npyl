@@ -10,7 +10,14 @@ const MiscCell = dynamic(() => import("../MiscCell"));
 
 // -------------------------------------------------------------------------
 
-const CellStyle: CSSProperties = { position: "relative", height: "100%" };
+const CellStyle: CSSProperties = {
+    position: "relative",
+    height: "100%",
+};
+
+const ContainerStyle: CSSProperties = {
+    position: "relative",
+};
 
 // -------------------------------------------------------------------------
 
@@ -18,8 +25,9 @@ const VerticalDivider = () => (
     <Divider
         orientation="vertical"
         sx={{
-            position: "absolute",
+            top: 0,
             height: "100vh",
+            position: "absolute",
             zIndex: Z_INDEX.DIVIDER,
         }}
     />
@@ -42,7 +50,7 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     const isToday = TODAY.toDateString() === date.toDateString();
 
     return (
-        <>
+        <div style={ContainerStyle}>
             {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
 
             <div
@@ -56,10 +64,10 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
 
                 {/* Today Indicator */}
                 {isToday ? <NowIndicator /> : null}
-
-                <VerticalDivider />
             </div>
-        </>
+
+            <VerticalDivider />
+        </div>
     );
 };
 

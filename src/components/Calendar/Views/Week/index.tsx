@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
 import { Stack } from "@mui/material";
 import { CalendarWeekViewProps } from "../../types";
@@ -10,10 +10,6 @@ const CalendarWeekViewCell = dynamic(() => import("./Cell"));
 
 // -----------------------------------------------------------------------
 
-const ViewStyle: CSSProperties = {
-    position: "relative", // INFO: for Numbering
-};
-
 const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     date,
     events = [],
@@ -24,14 +20,13 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
-    style,
     ...props
 }) => {
     const Cell = PassedCell || CalendarWeekViewCell;
     const Numbering = PassedNumbering || DefaultNumbering;
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} height={1}>
             <DaysHeader date={date} />
 
             <WeekView
@@ -45,7 +40,6 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
                     />
                 )}
                 Numbering={Numbering}
-                style={{ ...ViewStyle, ...style }}
                 {...props}
             />
         </Stack>

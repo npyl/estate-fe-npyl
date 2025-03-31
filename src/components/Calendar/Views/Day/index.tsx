@@ -15,7 +15,6 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
     getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
-    style,
     ...props
 }) => {
     const Cell = PassedCell || CalendarDayViewCell;
