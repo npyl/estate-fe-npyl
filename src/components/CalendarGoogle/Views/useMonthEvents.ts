@@ -2,23 +2,28 @@ import { useAuth } from "@/hooks/use-auth";
 import { useGetEventsQuery } from "@/services/calendar";
 
 const getMonthStartEndDates = (date: Date) => {
+    // Create a new date object to avoid modifying the original
+    const inputDate = new Date(date);
+
+    // Set to first day of the current month
     const startDate = new Date(
-        date.getFullYear(),
-        date.getMonth(),
+        inputDate.getFullYear(),
+        inputDate.getMonth(),
         1
     ).toISOString();
 
+    // Set to first day of next month, then subtract 1 millisecond
+    // This ensures we get the last moment of the current month
     const endDate = new Date(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        0
-    ).toISOString();
+        inputDate.getFullYear(),
+        inputDate.getMonth() + 1,
+        1
+    );
+    endDate.setMilliseconds(-1);
 
     return {
-        // Get the first day of the month
         startDate,
-        // Get the last day of the month
-        endDate,
+        endDate: endDate.toISOString(),
     };
 };
 
