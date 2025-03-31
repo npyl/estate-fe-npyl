@@ -11,6 +11,7 @@ const NowIndicator = dynamic(() => import("../NowIndicator"));
 const ViewStyle: CSSProperties = {
     height: "100%",
     position: "relative",
+    overflowX: "hidden", // INFO: NowIndicator overflows a bit on this view, because it is configured based on WeekView
 };
 
 const CalendarDayViewCell: FC<CalendarCellProps> = ({

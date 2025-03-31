@@ -2,35 +2,52 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import calculateTimePosition from "../calculateTimePosition";
 import { Z_INDEX } from "@/constants/calendar";
+import { Theme } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+
+const getWidth = ({ spacing }: Theme) => `calc(100% + ${spacing(2)})`;
+
+const useEvery5Minutes = (cb: VoidFunction) => {
+    useEffect(() => {
+        cb();
+
+        const intervalId = setInterval(cb, 5 * 60 * 1000);
+
+        return () => clearInterval(intervalId);
+    }, [cb]);
+};
 
 const NowIndicator = () => {
-    const { top } = calculateTimePosition(new Date().toISOString(), "");
+    const [top, setTop] = useState(0);
+
+    const updatePosition = useCallback(() => {
+        const { top } = calculateTimePosition(new Date().toISOString(), "");
+        setTop(top);
+    }, []);
+
+    useEvery5Minutes(updatePosition);
 
     return (
-        <>
+        <Stack
+            direction="row"
+            alignItems="center"
+            position="absolute"
+            top={top}
+            left={2}
+            right={0}
+            zIndex={Z_INDEX.CURRENT_TIME_INDICATOR}
+            width={getWidth}
+            spacing={-0.1}
+        >
+            <Box width="12px" height="12px" bgcolor="red" borderRadius="100%" />
+
             <Stack
-                direction="row"
-                spacing={1}
-                position="absolute"
-                top={top - 3}
                 width={1}
                 height={0}
-                borderTop="2px solid red"
-                borderRadius={1}
-                zIndex={Z_INDEX.CURRENT_TIME_INDICATOR}
+                border="1px solid red"
+                borderRadius={5}
             />
-
-            <Box
-                top={top - 7}
-                position="absolute"
-                left={-5}
-                width="10px"
-                height="10px"
-                bgcolor="red"
-                borderRadius="100%"
-                zIndex={Z_INDEX.CURRENT_TIME_INDICATOR}
-            />
-        </>
+        </Stack>
     );
 };
 
