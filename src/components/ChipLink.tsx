@@ -25,6 +25,8 @@ const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
             [onDelete]
         );
 
+        const deleteCb = onDelete ? handleDelete : undefined;
+
         return (
             <Link
                 ref={ref}
@@ -32,11 +34,7 @@ const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                <Chip
-                    onDelete={handleDelete}
-                    sx={{ ...Sx, ...sx }}
-                    {...props}
-                />
+                <Chip onDelete={deleteCb} sx={{ ...Sx, ...sx }} {...props} />
             </Link>
         );
     }
