@@ -1,13 +1,16 @@
-import { Checkbox, FormControlLabel, Stack, StackProps } from "@mui/material";
+import {
+    Checkbox,
+    FormControlLabel,
+    Stack,
+    StackProps,
+    Typography,
+} from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import RHFDateTimePicker from "@/components/hook-form/RHFDateTimePicker";
-import dayjs, { Dayjs } from "dayjs";
-import { END_HOUR, START_HOUR } from "@/constants/calendar";
-import { DatePickerProps } from "@mui/lab";
 import { RHFDatePicker } from "@/components/hook-form";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
+import RHFTimePicker from "@/components/hook-form/RHFTimePicker";
 
 // ----------------------------------------------------------------------
 
@@ -30,30 +33,6 @@ const AllDayPicker: FC<AllDayPickerProps> = ({ startDateKey, endDateKey }) => {
 };
 
 // ----------------------------------------------------------------------
-
-const shouldDisableTime = (
-    time: Dayjs,
-    type: "hours" | "minutes" | "seconds"
-) => {
-    if (type === "hours") {
-        const hour = time.hour();
-        return hour < START_HOUR || hour > END_HOUR;
-    }
-
-    return false;
-};
-
-const TODAY = dayjs();
-const MIN_TIME = TODAY.hour(START_HOUR);
-const MAX_TIME = TODAY.hour(END_HOUR);
-
-const DatePickerConstraints: DatePickerProps<Dayjs> = {
-    ampm: false,
-    skipDisabled: true,
-    minTime: MIN_TIME,
-    maxTime: MAX_TIME,
-    shouldDisableTime,
-};
 
 const CheckboxSx = {
     width: "fit-content",
@@ -107,20 +86,13 @@ const EventDates: FC<EventDatesProps> = ({
                         sm: "row",
                     }}
                 >
-                    <RHFDateTimePicker
-                        defaultValue={MIN_TIME}
-                        label={t("Start")}
-                        name={startDateKey}
-                        // ...
-                        {...DatePickerConstraints}
-                    />
-                    <RHFDateTimePicker
-                        defaultValue={TODAY.hour(START_HOUR + 1)}
-                        label={t("End")}
-                        name={endDateKey}
-                        //  ...
-                        {...DatePickerConstraints}
-                    />
+                    <RHFDatePicker name={startDateKey} />
+
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <RHFTimePicker name={startDateKey} />
+                        <Typography>-</Typography>
+                        <RHFTimePicker name={endDateKey} />
+                    </Stack>
                 </Stack>
             ) : null}
         </Stack>
