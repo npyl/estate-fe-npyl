@@ -31,15 +31,6 @@ const OAuthButtonSx: SxProps<Theme> = {
     top: -20,
 };
 
-const EventOptionsSx: SxProps<Theme> = {
-    bgcolor: ({ palette: { mode } }) =>
-        mode === "light" ? "neutral.200" : "neutral.800",
-    borderRadius: "10px",
-    mt: 2,
-    py: 2,
-    px: 1,
-};
-
 const useIsAssigneeSelected = () => {
     const userIds = useWatch<ICreateOrUpdateTaskReq>({ name: "userIds" });
     const userId = Array.isArray(userIds) ? (userIds[0] as number) : -1;
@@ -69,9 +60,7 @@ const WithCalendar = () => {
                 {isOpen ? (
                     <IsAuthenticatedIndicator sx={OAuthButtonSx}>
                         <WorkspaceUserGuard>
-                            <Stack spacing={1} sx={EventOptionsSx}>
-                                <Pickers />
-                            </Stack>
+                            <Pickers />
                         </WorkspaceUserGuard>
                     </IsAuthenticatedIndicator>
                 ) : null}

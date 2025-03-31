@@ -59,8 +59,17 @@ const EventDates: FC<EventDatesProps> = ({
     const { t } = useTranslation();
 
     return (
-        <Stack {...props}>
+        <Stack spacing={1} {...props}>
             <Stack direction="row" spacing={1} alignItems="center">
+                {allDay ? (
+                    <AllDayPicker
+                        startDateKey={startDateKey}
+                        endDateKey={endDateKey}
+                    />
+                ) : null}
+
+                {!allDay ? <RHFDatePicker name={startDateKey} /> : null}
+
                 <FormControlLabel
                     label={t("All day")}
                     control={<Checkbox />}
@@ -68,31 +77,13 @@ const EventDates: FC<EventDatesProps> = ({
                     onChange={onAllDayChange}
                     sx={CheckboxSx}
                 />
-
-                {allDay ? (
-                    <AllDayPicker
-                        startDateKey={startDateKey}
-                        endDateKey={endDateKey}
-                    />
-                ) : null}
             </Stack>
 
             {!allDay ? (
-                <Stack
-                    direction="row"
-                    gap={1}
-                    flexDirection={{
-                        xs: "column",
-                        sm: "row",
-                    }}
-                >
-                    <RHFDatePicker name={startDateKey} />
-
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <RHFTimePicker name={startDateKey} />
-                        <Typography>-</Typography>
-                        <RHFTimePicker name={endDateKey} />
-                    </Stack>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <RHFTimePicker name={startDateKey} />
+                    <Typography>-</Typography>
+                    <RHFTimePicker name={endDateKey} />
                 </Stack>
             ) : null}
         </Stack>
