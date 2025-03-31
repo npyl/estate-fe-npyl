@@ -4,7 +4,7 @@ import { BaseCalendarCellProps } from "@/components/BaseCalendar/types";
 import MonthView from "@/components/BaseCalendar/View/Month";
 import { SxProps, Theme, Typography } from "@mui/material";
 import { CalendarMonthViewProps } from "../../types";
-import { _getTodaysEvents } from "../util";
+import { _getTodaysEvents, _getMiscCellEvents } from "../util";
 import dynamic from "next/dynamic";
 import useCalendarLocale from "../../../../hooks/useDateLocale";
 const CalendarMonthViewCell = dynamic(() => import("./Cell"));
@@ -67,7 +67,7 @@ const CalendarMonthView: FC<CalendarMonthViewProps> = ({
     date,
     // ...
     getCellEvents = _getTodaysEvents,
-    getMiscCellEvents: _1,
+    getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
     ...props
@@ -82,6 +82,7 @@ const CalendarMonthView: FC<CalendarMonthViewProps> = ({
                 <Cell
                     {...other}
                     events={getCellEvents(events, other.date)}
+                    getMiscCellEvents={getMiscCellEvents}
                     onEventClick={onEventClick}
                 />
             )}

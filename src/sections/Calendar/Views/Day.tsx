@@ -1,6 +1,9 @@
-import { CalendarDayViewProps } from "@/components/Calendar/types";
+import {
+    CalendarCellProps,
+    CalendarDayViewProps,
+} from "@/components/Calendar/types";
 import CalendarGoogleDayView from "@/components/CalendarGoogle/Views/Day";
-import { FC } from "react";
+import { ComponentType, FC } from "react";
 import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
 import useFilteredEvents from "./useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";

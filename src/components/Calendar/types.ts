@@ -89,6 +89,8 @@ interface CalendarCellProps extends BaseCalendarCellProps {
         startDate: string,
         endDate: string
     ) => void;
+
+    getMiscCellEvents: TGetMiscCellEventsCb;
 }
 
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
@@ -125,25 +127,11 @@ interface ViewEvents {
     onEventClick?: (e: CalendarMouseEvent) => void;
 }
 
-// --------------------------------------------------------------
-// CELL
-// --------------------------------------------------------------
-
-interface CalendarDayViewCellProps extends CalendarCellProps {
-    getMiscCellEvents: TGetMiscCellEventsCb;
-}
-
-interface CalendarWeekViewCellProps extends CalendarCellProps {
-    getMiscCellEvents: TGetMiscCellEventsCb;
-}
-
-// --------------------------------------------------------------
-
 type CalendarDayViewProps<
-    CellProps extends CalendarDayViewCellProps = CalendarDayViewCellProps
+    CellProps extends CalendarCellProps = CalendarCellProps
 > = BaseCalendarDayViewProps<CellProps> & ViewEvents;
 type CalendarWeekViewProps<
-    CellProps extends CalendarWeekViewCellProps = CalendarWeekViewCellProps
+    CellProps extends CalendarCellProps = CalendarCellProps
 > = BaseCalendarWeekViewProps<CellProps> & ViewEvents;
 type CalendarMonthViewProps<
     CellProps extends CalendarCellProps = CalendarCellProps
@@ -193,8 +181,6 @@ export type {
     TGetMiscCellEventsCb,
     CalendarNumberingProps,
     // ...
-    CalendarDayViewCellProps,
-    CalendarWeekViewCellProps,
     CalendarCellProps,
     // ...
     CalendarDayViewProps,

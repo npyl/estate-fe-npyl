@@ -71,6 +71,7 @@ export const CalendarYearViewCell: FC<CalendarCellProps> = ({
     date,
     events,
     onEventClick,
+    getMiscCellEvents: _0,
     ...props
 }) => (
     <Stack sx={CellSx} {...props}>

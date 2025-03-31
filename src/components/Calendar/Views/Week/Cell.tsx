@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { CalendarWeekViewCellProps } from "../../types";
+import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../NowIndicator";
@@ -12,7 +12,7 @@ const CellStyle: CSSProperties = { position: "relative" };
 
 // -------------------------------------------------------------------------
 
-const CalendarWeekViewCell: FC<CalendarWeekViewCellProps> = ({
+const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     date,
     events: _events,
     getMiscCellEvents,

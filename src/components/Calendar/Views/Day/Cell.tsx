@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { CalendarDayViewCellProps } from "../../types";
+import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
@@ -15,7 +15,7 @@ const ViewStyle: CSSProperties = {
     overflowX: "hidden", // INFO: NowIndicator overflows a bit on this view, because it is configured based on WeekView
 };
 
-const CalendarDayViewCell: FC<CalendarDayViewCellProps> = ({
+const CalendarDayViewCell: FC<CalendarCellProps> = ({
     date,
     events: _events,
     getMiscCellEvents,

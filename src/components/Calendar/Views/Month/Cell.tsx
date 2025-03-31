@@ -30,6 +30,7 @@ const CalendarMonthViewCell: FC<CalendarCellProps> = ({
     date,
     events,
     onEventClick,
+    getMiscCellEvents: _,
     ...props
 }) => {
     const isToday = TODAY.toDateString() === date.toDateString();
