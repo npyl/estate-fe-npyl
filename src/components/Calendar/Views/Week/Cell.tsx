@@ -4,11 +4,26 @@ import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../NowIndicator";
 import dynamic from "next/dynamic";
+import Divider from "@mui/material/Divider";
+import { Z_INDEX } from "@/constants/calendar";
 const MiscCell = dynamic(() => import("../MiscCell"));
 
 // -------------------------------------------------------------------------
 
-const CellStyle: CSSProperties = { position: "relative" };
+const CellStyle: CSSProperties = { position: "relative", height: "100%" };
+
+// -------------------------------------------------------------------------
+
+const VerticalDivider = () => (
+    <Divider
+        orientation="vertical"
+        sx={{
+            position: "absolute",
+            height: "100vh",
+            zIndex: Z_INDEX.DIVIDER,
+        }}
+    />
+);
 
 // -------------------------------------------------------------------------
 
@@ -41,6 +56,8 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
 
                 {/* Today Indicator */}
                 {isToday ? <NowIndicator /> : null}
+
+                <VerticalDivider />
             </div>
         </>
     );

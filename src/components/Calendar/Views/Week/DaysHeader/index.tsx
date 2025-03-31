@@ -3,7 +3,6 @@ import useWeekUtils from "@/components/BaseCalendar/useWeekUtils";
 import { gridStyle, StyledStack } from "./styled";
 import Day from "./Day";
 import ModeToggle from "./ModeToggle";
-import VerticalDividers from "./VerticalDividers";
 
 // ------------------------------------------------------------------------------
 
@@ -27,14 +26,10 @@ const DaysHeader: FC<DaysHeaderProps> = ({ date }) => {
     });
 
     return (
-        <>
-            <StyledStack>
-                <ModeToggle />
-                <div style={gridStyle}>{weekDays.map(getDay)}</div>
-            </StyledStack>
-
-            <VerticalDividers weekDays={weekDays} />
-        </>
+        <StyledStack>
+            <ModeToggle />
+            <div style={gridStyle}>{weekDays.map(getDay)}</div>
+        </StyledStack>
     );
 };
 

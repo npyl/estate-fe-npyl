@@ -74,7 +74,11 @@ const columnStyle: CSSProperties = {
 };
 
 const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (
-    <div style={{ ...columnStyle, ...style }} {...props}>
+    <div
+        className="PPCalendar-Numbering"
+        style={{ ...columnStyle, ...style }}
+        {...props}
+    >
         {/* Rows */}
         {hours.map(getRow)}
     </div>

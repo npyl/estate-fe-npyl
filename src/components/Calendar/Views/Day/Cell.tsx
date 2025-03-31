@@ -9,7 +9,7 @@ const NowIndicator = dynamic(() => import("../NowIndicator"));
 // ------------------------------------------------------------------
 
 // INFO: this is important to act as a full-height container
-const ViewStyle: CSSProperties = {
+const CellStyle: CSSProperties = {
     height: "100%",
     position: "relative",
     overflowX: "hidden", // INFO: NowIndicator overflows a bit on this view, because it is configured based on WeekView
@@ -36,7 +36,7 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
             <div
                 className="PPCell"
                 data-date={date.toISOString()}
-                style={{ ...ViewStyle, ...style }}
+                style={{ ...CellStyle, ...style }}
                 {...props}
             >
                 {/* Events */}

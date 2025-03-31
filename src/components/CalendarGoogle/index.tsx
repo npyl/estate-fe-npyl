@@ -9,10 +9,12 @@ const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
 
 import { CalendarGoogleProps } from "./types";
 import { FC } from "react";
+import CalendarView from "./View";
 
 const CalendarGoogle: FC<CalendarGoogleProps> = ({
     HeaderSlots,
     ViewSlots,
+    slots,
     ...props
 }) => (
     <Calendar
@@ -26,6 +28,10 @@ const CalendarGoogle: FC<CalendarGoogleProps> = ({
         HeaderSlots={{
             ViewButtonGroup: CalendarGoogleButtonGroup,
             ...HeaderSlots,
+        }}
+        slots={{
+            View: CalendarView,
+            ...slots,
         }}
         {...props}
     />
