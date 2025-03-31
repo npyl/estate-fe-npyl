@@ -1,8 +1,9 @@
 import { CSSProperties, FC } from "react";
-import { CalendarCellProps } from "../../types";
+import { CalendarDayViewCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
+import MiscCell from "../MiscCell";
 const NowIndicator = dynamic(() => import("../NowIndicator"));
 
 // ------------------------------------------------------------------
@@ -14,29 +15,37 @@ const ViewStyle: CSSProperties = {
     overflowX: "hidden", // INFO: NowIndicator overflows a bit on this view, because it is configured based on WeekView
 };
 
-const CalendarDayViewCell: FC<CalendarCellProps> = ({
+const CalendarDayViewCell: FC<CalendarDayViewCellProps> = ({
     date,
-    events,
+    events: _events,
+    getMiscCellEvents,
     onEventClick,
     onEventDragEnd,
     style,
     ...props
 }) => {
+    const [events, miscEvents] = getMiscCellEvents(_events);
+
     const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
     const isToday = TODAY.toDateString() === date.toDateString();
-    return (
-        <div
-            className="PPCell"
-            data-date={date.toISOString()}
-            style={{ ...ViewStyle, ...style }}
-            {...props}
-        >
-            {/* Events */}
-            {EVENTS}
 
-            {/* Today Indicator */}
-            {isToday ? <NowIndicator /> : null}
-        </div>
+    return (
+        <>
+            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+
+            <div
+                className="PPCell"
+                data-date={date.toISOString()}
+                style={{ ...ViewStyle, ...style }}
+                {...props}
+            >
+                {/* Events */}
+                {EVENTS}
+
+                {/* Today Indicator */}
+                {isToday ? <NowIndicator /> : null}
+            </div>
+        </>
     );
 };
 

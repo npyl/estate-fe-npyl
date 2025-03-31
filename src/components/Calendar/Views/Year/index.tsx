@@ -9,10 +9,12 @@ const CalendarYearViewCell = dynamic(() => import("./Cell"));
 
 const Year: FC<CalendarYearViewProps> = ({
     events = [],
+    miscEvents: _0,
     Cell: PassedCell,
     date,
     // ...
     getCellEvents = _getTodaysEvents,
+    getMiscCellEvents: _1,
     onEventClick,
     // ...
     ...props

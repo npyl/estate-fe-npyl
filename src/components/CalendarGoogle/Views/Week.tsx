@@ -1,11 +1,12 @@
-import { CalendarDayViewProps } from "@/components/Calendar/types";
+import { CalendarWeekViewProps } from "@/components/Calendar/types";
 import CalendarWeekView from "@/components/Calendar/Views/Week";
 import { FC } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import useWeekUtils from "@/components/BaseCalendar/useWeekUtils";
 import { useGetEventsQuery } from "@/services/calendar";
+import useEventsSplitter from "../useEventsSplitter";
 
-const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
+const CalendarGoogleWeekView: FC<CalendarWeekViewProps> = ({
     events = [],
     filters,
     ...props
@@ -24,7 +25,15 @@ const CalendarGoogleWeekView: FC<CalendarDayViewProps> = ({
         filters,
     });
 
-    return <CalendarWeekView {...props} events={data || []} />;
+    const splitter = useEventsSplitter();
+
+    return (
+        <CalendarWeekView
+            {...props}
+            events={data || []}
+            getMiscCellEvents={splitter}
+        />
+    );
 };
 
 export default CalendarGoogleWeekView;

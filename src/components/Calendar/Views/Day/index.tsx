@@ -2,7 +2,7 @@ import { FC } from "react";
 import { CalendarDayViewProps } from "../../types";
 import dynamic from "next/dynamic";
 import DayView from "@/components/BaseCalendar/View/Day";
-import { _getTodaysEvents } from "../util";
+import { _getMiscCellEvents, _getTodaysEvents } from "../util";
 const DefaultNumbering = dynamic(() => import("../Numbering"));
 const CalendarDayViewCell = dynamic(() => import("./Cell"));
 
@@ -12,6 +12,7 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
     Numbering: PassedNumbering,
     // ...
     getCellEvents = _getTodaysEvents,
+    getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
     style,
@@ -22,10 +23,11 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
 
     return (
         <DayView
-            Cell={(props) => (
+            Cell={(other) => (
                 <Cell
-                    {...props}
-                    events={getCellEvents(events, props.date)}
+                    {...other}
+                    events={getCellEvents(events, other.date)}
+                    getMiscCellEvents={getMiscCellEvents}
                     onEventClick={onEventClick}
                 />
             )}

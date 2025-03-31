@@ -62,10 +62,12 @@ const HeadCell: FC<BaseCalendarCellProps> = ({ date }) => {
 
 const CalendarMonthView: FC<CalendarMonthViewProps> = ({
     events = [],
+    miscEvents: _0,
     Cell: PassedCell,
     date,
     // ...
     getCellEvents = _getTodaysEvents,
+    getMiscCellEvents: _1,
     onEventClick,
     // ...
     ...props
@@ -76,10 +78,10 @@ const CalendarMonthView: FC<CalendarMonthViewProps> = ({
         <MonthView
             date={date}
             HeadCell={HeadCell}
-            Cell={(props) => (
+            Cell={(other) => (
                 <Cell
-                    {...props}
-                    events={getCellEvents(events, props.date)}
+                    {...other}
+                    events={getCellEvents(events, other.date)}
                     onEventClick={onEventClick}
                 />
             )}

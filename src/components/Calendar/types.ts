@@ -108,18 +108,42 @@ type TGetCellEventsCb = (
     date: Date
 ) => TCalendarEvent[];
 
+type TGetMiscCellEventsCb = (
+    events: TCalendarEvent[]
+) => [TCalendarEvent[], TCalendarEvent[]];
+
+/**
+ * @param miscEvents events shown at the top of the cell; they are compact and can represent allDay events or notes or anything of general manner
+ */
 interface ViewEvents {
     events?: TCalendarEvent[];
+    miscEvents?: TCalendarEvent[];
     filters?: object;
     getCellEvents?: TGetCellEventsCb;
+    getMiscCellEvents?: TGetMiscCellEventsCb;
+
     onEventClick?: (e: CalendarMouseEvent) => void;
 }
 
+// --------------------------------------------------------------
+// CELL
+// --------------------------------------------------------------
+
+interface CalendarDayViewCellProps extends CalendarCellProps {
+    getMiscCellEvents: TGetMiscCellEventsCb;
+}
+
+interface CalendarWeekViewCellProps extends CalendarCellProps {
+    getMiscCellEvents: TGetMiscCellEventsCb;
+}
+
+// --------------------------------------------------------------
+
 type CalendarDayViewProps<
-    CellProps extends CalendarCellProps = CalendarCellProps
+    CellProps extends CalendarDayViewCellProps = CalendarDayViewCellProps
 > = BaseCalendarDayViewProps<CellProps> & ViewEvents;
 type CalendarWeekViewProps<
-    CellProps extends CalendarCellProps = CalendarCellProps
+    CellProps extends CalendarWeekViewCellProps = CalendarWeekViewCellProps
 > = BaseCalendarWeekViewProps<CellProps> & ViewEvents;
 type CalendarMonthViewProps<
     CellProps extends CalendarCellProps = CalendarCellProps
@@ -166,8 +190,12 @@ export type {
 
     // ...
     TGetCellEventsCb,
-    CalendarCellProps,
+    TGetMiscCellEventsCb,
     CalendarNumberingProps,
+    // ...
+    CalendarDayViewCellProps,
+    CalendarWeekViewCellProps,
+    CalendarCellProps,
     // ...
     CalendarDayViewProps,
     CalendarWeekViewProps,

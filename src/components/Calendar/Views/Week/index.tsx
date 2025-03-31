@@ -1,11 +1,11 @@
 import { CSSProperties, FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
-const DefaultNumbering = dynamic(() => import("../Numbering"));
 import { Stack } from "@mui/material";
 import { CalendarWeekViewProps } from "../../types";
-import { _getTodaysEvents } from "../util";
+import { _getMiscCellEvents, _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
 import DaysHeader from "./DaysHeader";
+const DefaultNumbering = dynamic(() => import("../Numbering"));
 const CalendarWeekViewCell = dynamic(() => import("./Cell"));
 
 // -----------------------------------------------------------------------
@@ -21,6 +21,7 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     Numbering: PassedNumbering,
     // ...
     getCellEvents = _getTodaysEvents,
+    getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
     style,
@@ -35,10 +36,11 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
 
             <WeekView
                 date={date}
-                Cell={(props) => (
+                Cell={(other) => (
                     <Cell
-                        {...props}
-                        events={getCellEvents(events, props.date)}
+                        {...other}
+                        events={getCellEvents(events, other.date)}
+                        getMiscCellEvents={getMiscCellEvents}
                         onEventClick={onEventClick}
                     />
                 )}

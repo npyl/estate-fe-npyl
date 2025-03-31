@@ -7,7 +7,10 @@ import {
     TCalendarEventType,
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
-import { getAllDayStartEnd } from "@/components/Calendar/util";
+import {
+    getAllDayStartEnd,
+    isAllDay as getIsAllDay,
+} from "@/components/Calendar/util";
 import { TCalendarColor } from "@/components/Calendar/types";
 import { toNumberSafe } from "@/utils/toNumber";
 import toLocalDate from "@/utils/toLocalDate";
@@ -137,11 +140,6 @@ const preparePeople = (
             : people?.filter(withoutGwEmail);
 
     return JSON.stringify(filtered);
-};
-
-const getIsAllDay = (startDate: string, endDate: string) => {
-    const [_, e] = getAllDayStartEnd(startDate);
-    return e === endDate;
 };
 
 const TCalendarEventToGCalendarEvent = ({
