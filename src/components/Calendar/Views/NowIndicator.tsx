@@ -3,12 +3,12 @@ import Stack from "@mui/material/Stack";
 import calculateTimePosition from "../calculateTimePosition";
 import { Z_INDEX } from "@/constants/calendar";
 import { Theme } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 
 const getWidth = ({ spacing }: Theme) => `calc(100% + ${spacing(2)})`;
 
 const useEvery5Minutes = (cb: VoidFunction) => {
-    useEffect(() => {
+    useLayoutEffect(() => {
         cb();
 
         const intervalId = setInterval(cb, 5 * 60 * 1000);
