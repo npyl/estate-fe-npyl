@@ -1,17 +1,15 @@
-import { deleteFilter, selectLocationSearch } from "@/slices/filters";
+import {
+    useFiltersContext,
+    useLocationSearch,
+} from "@/sections/Properties/FiltersContext";
 import Chip from "@mui/material/Chip";
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 const LocationChip = () => {
-    const dispatch = useDispatch();
+    const location = useLocationSearch();
 
-    const location = useSelector(selectLocationSearch);
-
-    const handleDelete = useCallback(
-        () => dispatch(deleteFilter("locationSearch")),
-        []
-    );
+    const { deleteFilter } = useFiltersContext();
+    const handleDelete = useCallback(() => deleteFilter("locationSearch"), []);
 
     return <Chip label={location} onDelete={handleDelete} />;
 };

@@ -2,19 +2,18 @@ import MuiTabs from "@mui/material/Tabs";
 import MuiTab from "@mui/material/Tab";
 import { useTranslation } from "react-i18next";
 import { ChangeEvent, useState } from "react";
-import { useSelector } from "react-redux";
-import { selectRegions } from "@/slices/filters";
 import Content from "./Content";
 import { TTab } from "./types";
 import TextField from "@mui/material/TextField";
 import { useDebounce } from "use-debounce";
+import { useRegions } from "@/sections/Properties/FiltersContext";
 
 const Tabs = () => {
     const { t } = useTranslation();
 
     const [tab, setTab] = useState<TTab>("REGIONS");
 
-    const regions = useSelector(selectRegions) || [];
+    const regions = useRegions() || [];
     const notHaveRegions = regions.length === 0;
 
     const [search, setSearch] = useState("");

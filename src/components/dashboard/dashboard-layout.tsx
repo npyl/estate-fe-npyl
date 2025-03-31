@@ -1,11 +1,12 @@
 import { styled } from "@mui/material/styles";
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode } from "react";
 import DashboardNavbar from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import useDialog from "@/hooks/useDialog";
 import Subbar from "./dashboard-subbar";
-import { SubbarRef, TabsProvider } from "@/contexts/tabs";
+import TabsProvider from "@/contexts/tabs";
 import { NAV } from "@/constants/config";
+import Box from "@mui/material/Box";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
@@ -38,18 +39,15 @@ const Nav = () => {
     );
 };
 
-export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
-    const subbarRef = useRef<SubbarRef>(null);
-
-    return (
-        <>
-            <DashboardLayoutRoot>
-                <TabsProvider subbarRef={subbarRef}>
-                    <Subbar ref={subbarRef} />
-                    {children}
-                </TabsProvider>
-            </DashboardLayoutRoot>
-            <Nav />
-        </>
-    );
-};
+export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => (
+    <>
+        <DashboardLayoutRoot>
+            <TabsProvider>
+                <Subbar />
+                <Box mb={1} />
+                {children}
+            </TabsProvider>
+        </DashboardLayoutRoot>
+        <Nav />
+    </>
+);

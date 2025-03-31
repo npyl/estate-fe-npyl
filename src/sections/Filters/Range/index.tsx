@@ -1,13 +1,12 @@
 import { FormControl, InputLabel, Select } from "@mui/material";
 import { FC, useMemo } from "react";
-import { useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import Content from "./Content";
 import { Props } from "./types";
 import formatNumber from "./formatNumber";
 
 const PriceSelect: FC<Props> = (props) => {
-    const { type, selectMin, selectMax } = props;
+    const { type, valueMin = 0, valueMax = 0 } = props;
 
     const { t } = useTranslation();
 
@@ -25,21 +24,18 @@ const PriceSelect: FC<Props> = (props) => {
         [type]
     );
 
-    const valueMin = useSelector(selectMin) || 0;
-    const valueMax = useSelector(selectMax) || 0;
-
     const value = useMemo(() => {
         if (valueMin === 0 && valueMax === 0) {
             return "";
         }
         if (valueMin && valueMax === 0) {
-            return t("From") + " " + formatNumber(+valueMin) + symbol;
+            return t("From") + " " + formatNumber(valueMin) + symbol;
         }
         if (valueMin === 0 && valueMax) {
-            return t("Until") + " " + formatNumber(+valueMax) + symbol;
+            return t("Until") + " " + formatNumber(valueMax) + symbol;
         }
 
-        return formatNumber(+valueMin) + "-" + formatNumber(+valueMax) + symbol;
+        return formatNumber(valueMin) + "-" + formatNumber(valueMax) + symbol;
     }, [valueMax, valueMin, t]);
 
     return (

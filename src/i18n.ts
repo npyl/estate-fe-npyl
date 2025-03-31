@@ -825,7 +825,6 @@ const resources = {
 
             Furnishing: "Furnishing",
             "Time Frame": "Time Frame",
-            "Size of Plot": "Size of Plot",
 
             Max: "Max",
             Min: "Min",
@@ -1683,7 +1682,6 @@ const resources = {
             Max: "Μεγ",
             Min: "Ελαχ",
 
-            "Size of Plot": "Μέγεθος Οικοπέδου",
             "Time Frame": "Χρονικό Περιθώριο",
             Furnishing: "Επίπλωση",
             "Add an existing label": "Προσθήκη υπάρχουσας ετικέτας",
@@ -1792,7 +1790,7 @@ const resources = {
             Sale: "Πωλείται",
             Rent: "Ενοικιάζεται",
             Sold: "Πωλήθηκε",
-            Rented: "Ενοικιάστηκε",
+            Rented: "Προς ενοικίαση",
             Unavailable: "Μη διαθέσιμο",
             Taken: "Μισθωμένο",
             "Under Construction": "Υπό Κατασκευή",
@@ -1829,7 +1827,7 @@ const resources = {
             Fifth: "Πέμπτος όροφος",
             Mezzanine: "Ημιόροφος",
             Bedrooms: "Υπνοδωμάτια",
-            beds: "Υπνοδωμάτια",
+            beds: "υ/δ",
             baths: "Μπάνια",
             Layers: "Επίπεδα",
             Kitchens: "Κουζίνες",

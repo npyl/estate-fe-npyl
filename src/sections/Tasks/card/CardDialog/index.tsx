@@ -19,7 +19,6 @@ import {
 import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 import TaskTitle from "./TaskTitle";
 import useFormPersist from "@/components/hook-form/useFormPersist";
-import Pusher from "@/sections/Tasks/Pusher";
 import useCookieKey from "./useCookieKey";
 
 // ------------------------------------------------------------------------------------------
@@ -62,42 +61,35 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     }, [persistChanges, onClose]);
 
     return (
-        <>
-            <Pusher taskId={task?.id} />
+        <FormProvider {...methods}>
+            {PersistNotice}
 
-            <FormProvider {...methods}>
-                {PersistNotice}
-
-                <Dialog
-                    open
-                    submit
-                    onSubmit={methods.handleSubmit(handleSubmit)}
-                    // ...
-                    sx={DialogSx}
-                    DialogTitleComponent={StyledDialogTitle}
-                    DialogContentComponent={StyledDialogContent}
-                    DialogActionsComponent={StyledDialogActions}
-                    // ...
-                    title={<TaskTitle name={name} taskCode={uniqueCode} />}
-                    content={
-                        <Content
-                            cardId={task?.id}
-                            // ...
-                            createdAt={task?.createdAt}
-                            updatedAt={task?.updatedAt}
-                            // ...
-                            haveEvent={haveEvent}
-                        />
-                    }
-                    actions={
-                        <Actions
-                            quickCreate={quickCreate}
-                            onClose={handleClose}
-                        />
-                    }
-                />
-            </FormProvider>
-        </>
+            <Dialog
+                open
+                submit
+                onSubmit={methods.handleSubmit(handleSubmit)}
+                // ...
+                sx={DialogSx}
+                DialogTitleComponent={StyledDialogTitle}
+                DialogContentComponent={StyledDialogContent}
+                DialogActionsComponent={StyledDialogActions}
+                // ...
+                title={<TaskTitle name={name} taskCode={uniqueCode} />}
+                content={
+                    <Content
+                        cardId={task?.id}
+                        // ...
+                        createdAt={task?.createdAt}
+                        updatedAt={task?.updatedAt}
+                        // ...
+                        haveEvent={haveEvent}
+                    />
+                }
+                actions={
+                    <Actions quickCreate={quickCreate} onClose={handleClose} />
+                }
+            />
+        </FormProvider>
     );
 };
 

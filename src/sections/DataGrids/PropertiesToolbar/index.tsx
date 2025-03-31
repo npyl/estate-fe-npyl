@@ -16,7 +16,12 @@ const BulkRestoreButton = dynamic(() => import("./BulkRestoreButton"));
 
 // ------------------------------------------------------------------------------
 
-const getTabPath = (id: number) => `/property/${id}`;
+const getTabPathForId = (id: number) => [
+    `/property/${id}`,
+    `/property/edit/${id}`,
+];
+
+const getTabPaths = (ids: number[]) => ids.map(getTabPathForId).flat();
 
 // ------------------------------------------------------------------------------
 
@@ -47,7 +52,7 @@ const PropertiesToolbar: FC<ToolbarProps> = ({
     const handleBulkDelete = useCallback(
         () =>
             bulkDeletePermanent({
-                tabPaths: selectedRows.map(getTabPath),
+                tabPaths: getTabPaths(selectedRows),
                 props: selectedRows,
             }),
         [selectedRows]

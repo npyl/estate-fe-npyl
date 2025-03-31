@@ -1,14 +1,12 @@
 import ClearableSection from "@/components/Filters/ClearableSection";
-import {
-    resetConstructionYear,
-    selectMaxConstructionYear,
-    selectMinConstructionYear,
-    setMaxConstructionYear,
-    setMinConstructionYear,
-} from "@/slices/filters";
 import Slider from "@mui/material/Slider";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import {
+    useFiltersContext,
+    useMaxConstructionYear,
+    useMinConstructionYear,
+} from "../../FiltersContext";
+import { useCallback } from "react";
 
 const MIN_YEAR = 1960;
 const MAX_YEAR = new Date().getFullYear();
@@ -24,17 +22,21 @@ const MARKS = [
 const ConstructionYear = () => {
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const minYear = useMinConstructionYear() || 0;
+    const maxYear = useMaxConstructionYear() || 0;
 
-    const minYear = useSelector(selectMinConstructionYear) || 0;
-    const maxYear = useSelector(selectMaxConstructionYear) || 0;
+    const {
+        setMinConstructionYear,
+        setMaxConstructionYear,
+        resetConstructionYear,
+    } = useFiltersContext();
 
-    const handleChange = (_: any, v: number | number[]) => {
+    const handleChange = useCallback((_: any, v: number | number[]) => {
         if (Array.isArray(v)) {
-            dispatch(setMinConstructionYear(v[0]));
-            dispatch(setMaxConstructionYear(v[1]));
+            setMinConstructionYear(v[0]);
+            setMaxConstructionYear(v[1]);
         }
-    };
+    }, []);
 
     return (
         <ClearableSection

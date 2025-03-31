@@ -1,13 +1,12 @@
-import { selectCities, selectRegions } from "@/slices/filters";
+import { useCities, useRegions } from "@/sections/Properties/FiltersContext";
 import { Chip } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 
 const RenderValues = () => {
     const { t } = useTranslation();
 
-    const regions = useSelector(selectRegions) || [];
-    const cities = useSelector(selectCities) || [];
+    const regions = useRegions() || [];
+    const cities = useCities() || [];
 
     const count = regions.length + cities.length;
     const label = `${count} ${t("choices")}`;

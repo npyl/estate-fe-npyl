@@ -24,7 +24,7 @@ export const StyledLink = styled(Link, {
     shouldForwardProp: (prop) => prop !== "isActive",
 })<StyledBoxProps>(({ isActive, theme }) => ({
     display: "block", // INFO: without it the onHover css is not applied
-    borderRadius: "12px",
+    borderRadius: "20px",
     cursor: "pointer",
     "&:hover": {
         ...getCss(theme),
@@ -39,7 +39,7 @@ interface PriceBadgeProps extends BoxProps {
 
 export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
     <Box {...props}>
-        <Typography variant="body2">
+        <Typography variant="body2" fontWeight={500}>
             {`${price ? price?.toLocaleString("de-DE") : "-"} €`}
         </Typography>
     </Box>
@@ -47,12 +47,12 @@ export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
     paddingLeft: theme.spacing(1.5),
     paddingRight: theme.spacing(1.5),
     paddingTop: theme.spacing(0.4),
-    paddingBottom: theme.spacing(0.4),
+    paddingBottom: theme.spacing(0.2),
 
     textAlign: "center",
 
     borderRadius: "10px",
-    border: "2px solid",
+    border: "2.5px solid",
     borderColor:
         theme.palette.mode === "light"
             ? theme.palette.grey?.[600]

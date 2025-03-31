@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Checkbox,
     FormControl,
@@ -8,14 +7,14 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "src/store";
 import { StyledInputLabel } from "@/components/Filters";
-import { selectActiveState, setActiveState } from "@/slices/filters";
+import { useActiveState, useFiltersContext } from "../../FiltersContext";
 
 export default function ActiveSelect() {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
-    const activeState = useSelector(selectActiveState);
+
+    const { setActiveState } = useFiltersContext();
+    const activeState = useActiveState();
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         let value: boolean | null = null;
@@ -24,7 +23,7 @@ export default function ActiveSelect() {
         } else if (event.target.value === "false") {
             value = activeState === false ? null : false;
         }
-        dispatch(setActiveState(value));
+        setActiveState(value);
     };
 
     return (

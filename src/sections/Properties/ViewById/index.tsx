@@ -66,6 +66,10 @@ const GREEN_MAP_INDEX = 12;
 
 // -----------------------------------------------------------------
 
+const getTabPaths = (id: number) => [`/property/${id}`, `/property/edit/${id}`];
+
+// -----------------------------------------------------------------
+
 interface Props {
     archived?: boolean;
 }
@@ -101,7 +105,7 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
 
     const handleArchive = useCallback(async () => {
         const res = await deleteProperty({
-            tabPaths: [`/property/${propertyId}`],
+            tabPaths: getTabPaths(+propertyId!),
             props: +propertyId!,
         });
         if ("error" in res) return;
@@ -109,7 +113,7 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     }, []);
     const handleDelete = useCallback(async () => {
         const res = await deletePermanent({
-            tabPaths: [`/property/${propertyId}`],
+            tabPaths: getTabPaths(+propertyId!),
             props: +propertyId!,
         });
         if ("error" in res) return;

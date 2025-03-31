@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import AuthGuard from "@/components/authentication/auth-guard";
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useEffect } from "react";
 import useResponsive from "@/hooks/useResponsive";
@@ -10,6 +9,7 @@ import FilterBar from "@/sections/Properties/(FiltersBar)";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import useCurrentSortingOption from "@/sections/Properties/(FiltersBar)/useCurrentSortingOption";
 import { useQueryState } from "nuqs";
+import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 // modes
 const ViewAll = dynamic(() => import("@/sections/Properties/(ViewAll)"));
 const MediaCard = dynamic(() => import("@/sections/Properties/(MediaCard)"));
@@ -45,14 +45,7 @@ const Home: NextPage = () => {
 
     return (
         <>
-            <FilterBar
-                {...optionViewProps}
-                sx={{
-                    position: "sticky",
-                    top: 64,
-                    zIndex: 1,
-                }}
-            />
+            <FilterBar {...optionViewProps} />
 
             {optionViewProps.optionView === "list" ? (
                 <ViewAll sortBy={sortBy} direction={direction} />
@@ -69,7 +62,9 @@ const Home: NextPage = () => {
 
 Home.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <FiltersProvider>{page}</FiltersProvider>
+        </DashboardLayout>
     </AuthGuard>
 );
 

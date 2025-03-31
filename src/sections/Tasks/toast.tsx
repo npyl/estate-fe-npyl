@@ -50,7 +50,7 @@ const TaskToast: FC<TaskToastProps> = ({ p, ...other }) => {
                 <Button
                     LinkComponent={Link}
                     variant="text"
-                    href={`/tasks?taskId=${p.taskId}`}
+                    href={`/tasks/${p.taskId}`}
                 >
                     {label}
                 </Button>

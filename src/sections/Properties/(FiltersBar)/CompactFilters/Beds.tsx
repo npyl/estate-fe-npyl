@@ -1,16 +1,13 @@
 import ClearableSection from "@/components/Filters/ClearableSection";
-import {
-    resetBedrooms,
-    selectMaxBedrooms,
-    selectMinBedrooms,
-    setMaxBedrooms,
-    setMinBedrooms,
-} from "@/slices/filters";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+import {
+    useFiltersContext,
+    useMaxBedrooms,
+    useMinBedrooms,
+} from "../../FiltersContext";
 
 const MAX_VALUE = 5;
 
@@ -65,18 +62,20 @@ interface CustomButtonProps {
 }
 
 const CustomButton: FC<CustomButtonProps> = ({ value }) => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const minBeds = useSelector(selectMinBedrooms);
-    const maxBeds = useSelector(selectMaxBedrooms);
+    const minBeds = useMinBedrooms();
+    const maxBeds = useMaxBedrooms();
+
+    const { resetBedrooms, setMinBedrooms, setMaxBedrooms } =
+        useFiltersContext();
 
     const handleClick = (value: string) => {
         if (value === "Any") {
-            dispatch(resetBedrooms());
+            resetBedrooms();
         } else if (value === "5+") {
-            dispatch(setMinBedrooms(5));
-            dispatch(setMaxBedrooms(undefined));
+            setMinBedrooms(5);
+            setMaxBedrooms(undefined);
         } else {
             const numValue = parseInt(value, 10);
 
@@ -87,8 +86,8 @@ const CustomButton: FC<CustomButtonProps> = ({ value }) => {
                 MAX_VALUE
             );
 
-            dispatch(setMinBedrooms(newMin));
-            dispatch(setMaxBedrooms(newMax));
+            setMinBedrooms(newMin);
+            setMaxBedrooms(newMax);
         }
     };
 
@@ -125,14 +124,13 @@ const CustomButton: FC<CustomButtonProps> = ({ value }) => {
     );
 };
 
-const Beds: FC = () => {
+const Beds = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const handleReset = () => dispatch(resetBedrooms());
+    const { resetBedrooms } = useFiltersContext();
 
     return (
-        <ClearableSection title={t("Bedrooms")} onReset={handleReset}>
+        <ClearableSection title={t("Bedrooms")} reset={resetBedrooms}>
             <ButtonGroup>
                 {BUTTONS.map((value) => (
                     <CustomButton key={value} value={value} />

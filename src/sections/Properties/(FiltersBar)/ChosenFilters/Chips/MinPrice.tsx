@@ -1,15 +1,17 @@
 import { useTranslation } from "react-i18next";
 import ChipLabel from "./ChipLabel";
-import { useSelector } from "react-redux";
-import { deleteFilter, selectMinPrice } from "@/slices/filters";
-import { useDispatch } from "react-redux";
 import Chip from "@mui/material/Chip";
+import {
+    useFiltersContext,
+    useMinPrice,
+} from "@/sections/Properties/FiltersContext";
 
 const MinPriceChip = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
-    const minValue = useSelector(selectMinPrice);
-    const handleClear = () => dispatch(deleteFilter("minPrice"));
+    const minValue = useMinPrice();
+
+    const { deleteFilter } = useFiltersContext();
+    const handleClear = () => deleteFilter("minPrice");
 
     return (
         <Chip

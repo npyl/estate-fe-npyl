@@ -5,8 +5,6 @@ import {
     StackProps,
     Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
@@ -42,7 +40,7 @@ interface StyledStackProps extends Omit<StackProps, "divider"> {}
 
 export interface ClearableSectionProps extends StyledStackProps {
     title: string;
-    reset?: (() => void) | ActionCreatorWithoutPayload<string>;
+    reset?: VoidFunction;
 }
 
 const ClearableSection: FC<ClearableSectionProps> = ({
@@ -50,30 +48,18 @@ const ClearableSection: FC<ClearableSectionProps> = ({
     reset,
     children,
     ...props
-}) => {
-    const dispatch = useDispatch();
-
-    const handleClear = () => {
-        if (!reset) return;
-        const action = reset(); // Call reset function to get action
-        if (action) {
-            dispatch(action); // Dispatch Redux action if applicable
-        }
-    };
-
-    return (
-        <Stack spacing={1} pb={3} {...props}>
-            <SpaceBetween>
-                <Typography variant="h6" fontWeight="600">
-                    {title}
-                </Typography>
-                <StyledIconButton size="small" onClick={handleClear}>
-                    <CloseIcon />
-                </StyledIconButton>
-            </SpaceBetween>
-            {children}
-        </Stack>
-    );
-};
+}) => (
+    <Stack spacing={1} pb={3} {...props}>
+        <SpaceBetween>
+            <Typography variant="h6" fontWeight="600">
+                {title}
+            </Typography>
+            <StyledIconButton size="small" onClick={reset}>
+                <CloseIcon />
+            </StyledIconButton>
+        </SpaceBetween>
+        {children}
+    </Stack>
+);
 
 export default ClearableSection;

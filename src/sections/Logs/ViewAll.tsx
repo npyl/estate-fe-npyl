@@ -1,9 +1,9 @@
-import { Paper, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useFilterLogsQuery } from "src/services/logs";
-import { selectAll } from "@/slices/log";
+import { selectAll, sumOfChangedProperties } from "@/slices/log";
 import { FilterLogSection } from "./components/FilterSection";
 const FilterMore = dynamic(
     () => import("@/sections/Filters/FilterMore/Dialog")
@@ -14,8 +14,18 @@ import Pagination, { usePagination } from "@/components/Pagination";
 import useDialog from "@/hooks/useDialog";
 import NoLogsPlaceholder from "./components/NoLogs";
 import dynamic from "next/dynamic";
+import FiltersBar from "@/components/Filters/FiltersBar";
+import ChosenFiltersLogs from "./components/Filters/ChoosenFiltersLogs";
 
 const pageSize = 15;
+
+const ChosenFilters = () => {
+    const changed = useSelector(sumOfChangedProperties);
+
+    if (changed === 0) return null;
+
+    return <ChosenFiltersLogs />;
+};
 
 const ViewAll = () => {
     const { i18n } = useTranslation();
@@ -51,17 +61,10 @@ const ViewAll = () => {
                 }}
             />
 
-            <Stack
-                spacing={1}
-                component={Paper}
-                p={1}
-                display={{
-                    xs: "none",
-                    lg: "block",
-                }}
-            >
-                <FilterLogSection />
-            </Stack>
+            <FiltersBar
+                filters={<FilterLogSection />}
+                bottomContent={<ChosenFilters />}
+            />
 
             {content.length === 0 ? <NoLogsPlaceholder /> : null}
 

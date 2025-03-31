@@ -1,24 +1,20 @@
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import InfoIcon from "@mui/icons-material/Info";
+import Stack from "@mui/material/Stack";
 
 const Placeholder = () => {
     const { t } = useTranslation();
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "column", // Changed to 'column' to stack icon and text
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 3, // Increased padding for more space
-                backgroundColor: "background.default", // Use theme background color
-                textAlign: "center",
-                height: "100%", // Full height of the parent container
-                gap: 2, // space between icon and text
-            }}
+        <Stack
+            justifyContent="center"
+            alignItems="center"
+            p={3}
+            textAlign="center"
+            width={1}
+            height={1}
+            spacing={2}
         >
             <InfoIcon
                 sx={{
@@ -36,7 +32,7 @@ const Placeholder = () => {
             >
                 {t("Draw on a location with markers")}
             </Typography>
-        </Box>
+        </Stack>
     );
 };
 

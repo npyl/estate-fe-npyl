@@ -1,14 +1,12 @@
 import { Paper } from "@mui/material";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
-import { selectAll, setManagerId } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
 import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
 import { IPropertyFilterParams } from "@/services/properties";
-import { useRouter } from "next/router";
+import { useAllFilters } from "../FiltersContext";
 const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 
 interface ViewAllProps {
@@ -24,18 +22,7 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
-    const dispatch = useDispatch();
-    const router = useRouter();
-    const { assignee } = router.query; // Read assignee from query param
-
-    const filter = useSelector(selectAll);
-
-    // **Effect to update Redux store with managerId when URL changes**
-    useEffect(() => {
-        if (assignee) {
-            dispatch(setManagerId(Number(assignee))); // Set the managerId in Redux store
-        }
-    }, [assignee, dispatch]);
+    const filter = useAllFilters();
 
     const req: IPropertyFilterParams = {
         filter,
@@ -97,6 +84,7 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
                     checkboxSelection
                     onRowSelectionModelChange={setSelectedRows as any}
                     disableColumnMenu
+                    disableColumnSorting={false}
                 />
             </Paper>
         </>

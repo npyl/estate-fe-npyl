@@ -1,4 +1,3 @@
-import { resetStates, selectStates, setStates } from "@/slices/filters";
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
@@ -8,6 +7,7 @@ import { FC } from "react";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import OptionCheckbox from "./OptionCheckbox";
 import { TOptionMapper } from "./OptionCheckbox/types";
+import { useFiltersContext, useStates } from "../../FiltersContext";
 
 // -----------------------------------------------------------------
 
@@ -18,19 +18,24 @@ interface IOption {
     option: KeyValue;
 }
 
-const Option: FC<IOption> = ({ option: { key, value } }) => (
-    <Grid item xs={6} sm={4} display="flex" alignItems="center" pr={1}>
-        <OptionCheckbox
-            optionKey={key}
-            label={value}
-            selector={selectStates}
-            setter={setStates}
-            mapper={mapper}
-        />
+const Option: FC<IOption> = ({ option: { key, value } }) => {
+    const values = useStates();
+    const { setStates } = useFiltersContext();
 
-        <CounterChip optionKey={key} mapper={mapper} />
-    </Grid>
-);
+    return (
+        <Grid item xs={6} sm={4} display="flex" alignItems="center" pr={1}>
+            <OptionCheckbox
+                optionKey={key}
+                label={value}
+                values={values}
+                setter={setStates}
+                mapper={mapper}
+            />
+
+            <CounterChip optionKey={key} mapper={mapper} />
+        </Grid>
+    );
+};
 
 // -----------------------------------------------------------------
 
@@ -44,6 +49,8 @@ const State = () => {
     const data = useGlobals();
 
     const stateEnum = data?.property?.state || [];
+
+    const { resetStates } = useFiltersContext();
 
     return (
         <ClearableSection title={t("State")} reset={resetStates}>

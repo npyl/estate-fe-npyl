@@ -9,18 +9,16 @@ import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { useDispatch } from "src/store";
 import { StyledInputLabel } from "@/components/Filters";
-import { useSelector } from "react-redux";
-import { selectLabels, setLabels } from "@/slices/filters";
 import { ILabel } from "@/types/label";
+import { useFiltersContext, useLabels } from "../../FiltersContext";
 
 interface IOption {
     l: ILabel;
 }
 
 const Option: FC<IOption> = ({ l: { id, color, name } }) => {
-    const labels = useSelector(selectLabels) || [];
+    const labels = useLabels() || [];
     return (
         <>
             <Checkbox checked={labels.indexOf(id!) > -1} />
@@ -37,9 +35,9 @@ const getOption = (l: ILabel) => (
 
 export default function FilterLabels() {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const labels = useSelector(selectLabels) || [];
+    const labels = useLabels() || [];
+    const { setLabels } = useFiltersContext();
 
     const { data } = useGetLabelsQuery();
 
@@ -64,7 +62,7 @@ export default function FilterLabels() {
         const {
             target: { value },
         } = event;
-        dispatch(setLabels(value));
+        setLabels(value as number[]);
     }, []);
 
     return (

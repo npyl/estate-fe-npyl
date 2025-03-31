@@ -8,16 +8,16 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-import { selectStates, setStates } from "src/slices/filters";
-import { useDispatch, useSelector } from "src/store";
 import { StyledInputLabel } from "@/components/Filters";
+import { useFiltersContext, useStates } from "../../FiltersContext";
 
 export default function SaleSelect() {
-    const dispatch = useDispatch();
-    const data = useGlobals();
     const { t } = useTranslation();
 
-    const states = useSelector(selectStates);
+    const data = useGlobals();
+
+    const states = useStates();
+    const { setStates } = useFiltersContext();
 
     const stateEnum = data?.property?.state || [];
 
@@ -25,11 +25,10 @@ export default function SaleSelect() {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setStates(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+
+        setStates(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
         );
     };
 

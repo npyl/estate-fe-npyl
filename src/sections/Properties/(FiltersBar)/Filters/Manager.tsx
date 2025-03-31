@@ -1,21 +1,18 @@
-import { useDispatch } from "react-redux";
-import { selectManagerId, setManagerId } from "src/slices/filters";
-import { useSelector } from "react-redux";
 import { useCallback } from "react";
 import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import { useFiltersContext, useManagerId } from "../../FiltersContext";
 
 function ManagerSelect() {
-    const dispatch = useDispatch();
-
-    const managerId = useSelector(selectManagerId);
+    const managerId = useManagerId();
+    const { setManagerId } = useFiltersContext();
 
     const handleChange = useCallback((id: number) => {
         if (!id) {
-            dispatch(setManagerId(undefined));
+            setManagerId(undefined);
             return;
         }
 
-        dispatch(setManagerId(id));
+        setManagerId(id);
     }, []);
 
     return <ManagerAutocomplete value={managerId} onChange={handleChange} />;

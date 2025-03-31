@@ -1,8 +1,3 @@
-import {
-    resetCategories,
-    selectSubCategories,
-    setSubCategories,
-} from "@/slices/filters";
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
@@ -13,6 +8,7 @@ import { Stack, Typography } from "@mui/material";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import OptionCheckbox from "./OptionCheckbox";
 import { TOptionMapper } from "./OptionCheckbox/types";
+import { useFiltersContext, useSubCategories } from "../../FiltersContext";
 
 // -----------------------------------------------------------------
 
@@ -23,19 +19,24 @@ interface IOption {
     option: KeyValue;
 }
 
-const Option: FC<IOption> = ({ option: { key, value } }) => (
-    <Stack direction="row" alignItems="center">
-        <OptionCheckbox
-            optionKey={key}
-            label={value}
-            selector={selectSubCategories}
-            setter={setSubCategories}
-            mapper={mapper}
-        />
+const Option: FC<IOption> = ({ option: { key, value } }) => {
+    const values = useSubCategories();
+    const { setSubCategories } = useFiltersContext();
 
-        <CounterChip optionKey={key} mapper={mapper} />
-    </Stack>
-);
+    return (
+        <Stack direction="row" alignItems="center">
+            <OptionCheckbox
+                optionKey={key}
+                label={value}
+                values={values}
+                setter={setSubCategories}
+                mapper={mapper}
+            />
+
+            <CounterChip optionKey={key} mapper={mapper} />
+        </Stack>
+    );
+};
 
 // -----------------------------------------------------------------
 
@@ -59,11 +60,14 @@ const Column: FC<ColumnProps> = ({ title, options }) => (
 
 const Category = () => {
     const { t } = useTranslation();
+
     const data = useGlobals();
     const residentialEnum = data?.property?.residentialCategory || [];
     const commercialEnum = data?.property?.commercialCategory || [];
     const landEnum = data?.property?.landCategory || [];
     const otherEnum = data?.property?.otherCategory || [];
+
+    const { resetCategories } = useFiltersContext();
 
     return (
         <ClearableSection title={t("Category")} reset={resetCategories}>

@@ -1,15 +1,19 @@
+import { toNumberSafe } from "@/utils/toNumber";
 import dynamic from "next/dynamic";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { useRouter } from "next/router";
 import { useCallback } from "react";
 const TaskDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
 
 const ParamLooker = () => {
-    const [taskId, setTaskId] = useQueryState("taskId", parseAsInteger);
-    const handleClose = useCallback(() => setTaskId(null), []);
+    const router = useRouter();
+    const { taskId } = router.query;
+    const iTaskId = toNumberSafe(taskId);
 
-    if (taskId === null) return null;
+    const handleClose = useCallback(() => router.push("/tasks"), []);
 
-    return <TaskDialog taskId={taskId} onClose={handleClose} />;
+    if (iTaskId === -1) return null;
+
+    return <TaskDialog taskId={iTaskId} onClose={handleClose} />;
 };
 
 export default ParamLooker;

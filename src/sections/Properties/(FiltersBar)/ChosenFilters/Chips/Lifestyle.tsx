@@ -1,10 +1,12 @@
-import { useSelector, useDispatch } from "react-redux";
-import { resetExtras, selectExtras } from "@/slices/filters";
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
 import { IPropertyFilterExtras } from "@/types/properties";
 import { useCallback, useMemo } from "react";
 import ChipLabel from "./ChipLabel";
+import {
+    useExtras,
+    useFiltersContext,
+} from "@/sections/Properties/FiltersContext";
 
 type LifestyleKeys = keyof IPropertyFilterExtras;
 
@@ -21,8 +23,7 @@ const lifestyleLabels: Record<LifestyleKeys, string> = {
 const LifestyleChip = () => {
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
-    const extras = useSelector(selectExtras);
+    const extras = useExtras();
 
     const value = useMemo(
         () =>
@@ -33,7 +34,8 @@ const LifestyleChip = () => {
         [t, extras]
     );
 
-    const handleDelete = useCallback(() => dispatch(resetExtras()), []);
+    const { resetExtras } = useFiltersContext();
+    const handleDelete = useCallback(() => resetExtras(), []);
 
     return (
         <Chip

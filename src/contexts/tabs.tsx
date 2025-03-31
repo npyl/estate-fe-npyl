@@ -2,15 +2,22 @@ import {
     createContext,
     FC,
     PropsWithChildren,
-    RefObject,
+    useCallback,
     useContext,
+    useRef,
 } from "react";
 import { ITab } from "@/types/tabs";
 
-type ITabState = {
-    pushTab: (t: ITab) => void;
+type SubbarRef = {
+    pushTab: (t: ITab, ud?: boolean) => void;
     removeTab: (identifier: string) => void;
     removeTabs: (identifiers: string[]) => void;
+
+    setTabPath: (p: string, newP: string) => void;
+};
+
+type ITabState = SubbarRef & {
+    setSubbar: (s: SubbarRef) => void;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
@@ -25,33 +32,32 @@ export const useTabsContext = () => {
     return context;
 };
 
-export type SubbarRef = {
-    pushTab: (i: ITab) => void;
-    removeTab: (p: string) => void;
-    removeTabs: (p: string[]) => void;
-};
+const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
+    const subbar = useRef<SubbarRef>();
+    const setSubbar = useCallback((s: SubbarRef) => {
+        subbar.current = s;
+    }, []);
 
-interface TabsProviderProps extends PropsWithChildren {
-    subbarRef?: RefObject<SubbarRef>;
-}
-
-export const TabsProvider: FC<TabsProviderProps> = ({
-    subbarRef,
-    ...props
-}) => {
-    const pushTab = (i: ITab) => {
+    const pushTab = (i: ITab, ud?: boolean) => {
         try {
-            subbarRef?.current?.pushTab(i);
+            console.log("SUBBAR?: ", subbar.current);
+            subbar.current?.pushTab(i, ud);
         } catch (ex) {}
     };
     const removeTab = (p: string) => {
         try {
-            subbarRef?.current?.removeTab(p);
+            subbar.current?.removeTab(p);
         } catch (ex) {}
     };
     const removeTabs = (p: string[]) => {
         try {
-            subbarRef?.current?.removeTabs(p);
+            subbar.current?.removeTabs(p);
+        } catch (ex) {}
+    };
+
+    const setTabPath = (p: string, newP: string) => {
+        try {
+            subbar.current?.setTabPath(p, newP);
         } catch (ex) {}
     };
 
@@ -61,8 +67,16 @@ export const TabsProvider: FC<TabsProviderProps> = ({
                 pushTab,
                 removeTab,
                 removeTabs,
+                // ...
+                setTabPath,
+                // ...
+                setSubbar,
             }}
-            {...props}
-        />
+        >
+            {children}
+        </TabsContext.Provider>
     );
 };
+
+export type { SubbarRef };
+export default TabsProvider;

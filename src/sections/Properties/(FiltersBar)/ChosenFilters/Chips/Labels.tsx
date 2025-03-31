@@ -1,12 +1,13 @@
-import { useSelector } from "react-redux";
 import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
-import { deleteFilter, selectLabels } from "@/slices/filters";
 import { useGetLabelsQuery } from "@/services/labels";
 import { useMemo } from "react";
 import { ILabel } from "@/types/label";
 import { Chip } from "@mui/material";
-import { useDispatch } from "react-redux";
+import {
+    useFiltersContext,
+    useLabels,
+} from "@/sections/Properties/FiltersContext";
 
 const idToLabelName =
     (all: ILabel[]) =>
@@ -14,10 +15,9 @@ const idToLabelName =
         all.find(({ id }) => id === labelId)?.name || "";
 
 const LabelsChip = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const ids = useSelector(selectLabels);
+    const ids = useLabels();
     const { data: labels } = useGetLabelsQuery();
 
     const names = useMemo(() => {
@@ -25,7 +25,8 @@ const LabelsChip = () => {
         return ids.map(idToLabelName(all)).join(", ");
     }, [ids, labels?.propertyLabels]);
 
-    const handleClear = () => dispatch(deleteFilter("labels"));
+    const { deleteFilter } = useFiltersContext();
+    const handleClear = () => deleteFilter("labels");
 
     return (
         <Chip

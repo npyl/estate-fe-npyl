@@ -6,22 +6,17 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    selectParentCategories,
-    setParentCategories,
-} from "src/slices/filters";
-
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { StyledInputLabel } from "@/components/Filters";
+import { useFiltersContext, useParentCategories } from "../../FiltersContext";
 
 export default function FilterParentCategory() {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
 
-    const categories = useSelector(selectParentCategories);
+    const categories = useParentCategories();
+    const { setParentCategories } = useFiltersContext();
 
     const propertyEnums = data?.property;
     const categoryEnums = propertyEnums?.parentCategory || [];
@@ -30,11 +25,9 @@ export default function FilterParentCategory() {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setParentCategories(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+        setParentCategories(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
         );
     };
 

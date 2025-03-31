@@ -55,8 +55,8 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     dateOfBirth: customer?.dateOfBirth,
     passportNumber: customer?.passportNumber || "",
 
-    nationality: customer?.nationality?.key || null,
-    preferredLanguage: customer?.preferredLanguage?.key || null,
+    nationality: customer?.nationality?.key || "GREEK", // NICK: just for now, before the Guatemala tour
+    preferredLanguage: customer?.preferredLanguage?.key || "GREEK", // just for now, before the Guatemala tour
     leadSource: customer?.leadSource?.key || null,
 
     demands:

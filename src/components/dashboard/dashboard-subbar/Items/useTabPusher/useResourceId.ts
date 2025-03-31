@@ -1,0 +1,20 @@
+import { useRouter } from "next/router";
+import { toNumberSafe } from "@/utils/toNumber";
+
+const useResourceId = () => {
+    const router = useRouter();
+
+    const { agreementId, propertyId, customerId, taskId, userId } =
+        router.query;
+
+    if (Boolean(agreementId)) return toNumberSafe(agreementId);
+    if (Boolean(propertyId)) return toNumberSafe(propertyId);
+    if (Boolean(customerId)) return toNumberSafe(customerId);
+    if (Boolean(userId)) return toNumberSafe(userId);
+    if (Boolean(taskId)) return toNumberSafe(taskId);
+
+    // INFO: it is ok to return nothing if we found nothing!
+    return;
+};
+
+export default useResourceId;

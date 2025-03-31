@@ -1,11 +1,12 @@
 import { IKanbanCardShort } from "@/types/tasks";
-import { StyledPaper } from "./styled";
+import { getPaperSx } from "./styled";
 import Header from "./Header";
 import Box from "@mui/material/Box";
 import Footer from "./Footer";
 import Content from "./Content";
-import { PaperProps } from "@mui/material";
+import { Paper, PaperProps } from "@mui/material";
 import { forwardRef } from "react";
+import Link from "@/components/Link";
 
 // ----------------------------------------------------------------------
 
@@ -14,10 +15,17 @@ export type TaskCardProps = PaperProps & {
 };
 
 const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
-    ({ card, ...props }, ref) => {
+    ({ card, sx, ...props }, ref) => {
         const { name, completed, priority, assignees, uniqueCode } = card || {};
         return (
-            <StyledPaper ref={ref} priority={priority} elevation={8} {...props}>
+            <Paper
+                ref={ref}
+                elevation={8}
+                component={Link}
+                href={`/tasks/${card.id}`}
+                sx={{ ...(getPaperSx(priority) as any), ...sx }}
+                {...props}
+            >
                 <Header
                     taskId={card.id}
                     assignee={assignees[0]}
@@ -33,7 +41,7 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
                     commentsCount={card.commentsCount}
                     createdAt={card.createdAt}
                 />
-            </StyledPaper>
+            </Paper>
         );
     }
 );

@@ -1,6 +1,5 @@
 import { Grid, List, ListItemText } from "@mui/material";
 import { FC, useState } from "react";
-import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/Filters/styled";
 import DebouncedInput from "./DebouncedInput";
@@ -9,19 +8,15 @@ import formatNumber from "./formatNumber";
 
 const Content: FC<Props> = ({
     type,
-    selectMin,
-    selectMax,
+    valueMin,
+    valueMax,
     setMin,
     setMax,
     generateNumbers,
 }) => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const symbol = type === "price" ? "€" : "m²";
-
-    const valueMin = useSelector(selectMin) || 0;
-    const valueMax = useSelector(selectMax) || 0;
 
     const [options] = useState(generateNumbers());
 
@@ -34,7 +29,7 @@ const Content: FC<Props> = ({
                     label={`${symbol} ${t("from")}`}
                     max={MAX_OPTION}
                     setter={setMin}
-                    selector={selectMin}
+                    value={valueMin}
                 />
 
                 <List
@@ -43,16 +38,16 @@ const Content: FC<Props> = ({
                         overflowY: "scroll",
                     }}
                 >
-                    <ListItem onClick={() => dispatch(setMin(undefined))}>
+                    <ListItem onClick={() => setMin(undefined)}>
                         <ListItemText primary={t("Indifferent")} />
                     </ListItem>
                     {options.map((option) => (
                         <ListItem
                             key={option}
                             onClick={() =>
-                                option > valueMax && valueMax !== 0
-                                    ? dispatch(setMax(option))
-                                    : dispatch(setMin(option))
+                                valueMax && option > valueMax && valueMax !== 0
+                                    ? setMax(option)
+                                    : setMin(option)
                             }
                         >
                             <ListItemText primary={formatNumber(option)} />
@@ -66,7 +61,7 @@ const Content: FC<Props> = ({
                     label={`${symbol} ${t("to")}`}
                     max={MAX_OPTION}
                     setter={setMax}
-                    selector={selectMax}
+                    value={valueMax}
                 />
 
                 <List
@@ -75,16 +70,16 @@ const Content: FC<Props> = ({
                         overflowY: "scroll",
                     }}
                 >
-                    <ListItem onClick={() => dispatch(setMax(undefined))}>
+                    <ListItem onClick={() => setMax(undefined)}>
                         <ListItemText primary={t("Indifferent")} />
                     </ListItem>
                     {options.map((option) => (
                         <ListItem
                             key={option}
                             onClick={() =>
-                                option < valueMin
-                                    ? dispatch(setMin(option))
-                                    : dispatch(setMax(option))
+                                valueMin && option < valueMin
+                                    ? setMin(option)
+                                    : setMax(option)
                             }
                         >
                             <ListItemText primary={formatNumber(option)} />

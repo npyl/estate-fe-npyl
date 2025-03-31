@@ -2,7 +2,6 @@ import { IKanbanCardShort } from "@/types/tasks";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
-import { SpaceBetween } from "@/components/styled";
 import TaskLabel from "@/sections/Tasks/card/CardDialog/TaskLabel";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 import {
@@ -22,6 +21,7 @@ import UpdatedAtIcon from "./icons/UpdatedAtIcon";
 import CommentIcon from "./icons/CommentIcon";
 import { IDashboardTask } from "@/types/dashboard";
 import ColumnLabel from "./ColumnNameLabel";
+import Link from "@/components/Link";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
 
 const chipStyles: SxProps<Theme> = {
@@ -48,6 +48,15 @@ const taskNameSx: SxProps<Theme> = {
 };
 
 const getItemSx = (priority: number): SxProps<Theme> => ({
+    display: "flex",
+    flexDirection: "row",
+
+    p: 1,
+    bgcolor: "background.paper",
+    border: "1px solid",
+    borderColor: "divider",
+    alignItems: "center",
+
     position: "relative",
     cursor: "pointer",
     borderLeft: "3px solid",
@@ -68,10 +77,9 @@ const getSx = (isCompleted: boolean): SxProps<Theme> => ({
 
 interface ItemProps {
     c: IKanbanCardShort | IDashboardTask;
-    onClick: VoidFunction;
 }
 
-const Item: FC<ItemProps> = ({ c, onClick }) => {
+const Item: FC<ItemProps> = ({ c }) => {
     const { t, i18n } = useTranslation();
 
     const isLargeScreen = useMediaQuery("(min-width:1900px)");
@@ -99,15 +107,7 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
     };
 
     return (
-        <SpaceBetween
-            p={1}
-            bgcolor="background.paper"
-            border="1px solid"
-            borderColor="divider"
-            alignItems="center"
-            sx={getItemSx(c.priority)}
-            onClick={onClick}
-        >
+        <Link sx={getItemSx(c.priority)} href={`/tasks/${c.id}`}>
             <Stack direction="row" spacing={1} alignItems="center">
                 <TaskLabel taskCode={c?.uniqueCode} sx={getSx(isCompleted)} />
                 <Typography
@@ -194,7 +194,7 @@ const Item: FC<ItemProps> = ({ c, onClick }) => {
                 {columnName ? <ColumnLabel name={columnName} /> : null}
                 {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
             </Stack>
-        </SpaceBetween>
+        </Link>
     );
 };
 

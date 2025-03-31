@@ -22,7 +22,7 @@ const ShareItem: FC<ShareItemProps> = ({ taskId }) => {
     const anchorRef = useRef(null);
     const [isOpen, openDialog, closeDialog] = useDialog();
 
-    const shareUrls = [`${window.location.href}?taskId=${taskId}`];
+    const shareUrls = [`${window.location.href}/${taskId}`];
 
     return (
         <>

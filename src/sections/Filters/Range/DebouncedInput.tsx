@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { RootState, useDispatch, useSelector } from "src/store";
 import OnlyNumbersInput, {
     OnlyNumbersInputProps,
 } from "@/components/OnlyNumbers";
@@ -7,26 +6,23 @@ import { useDebouncedCallback } from "use-debounce";
 
 interface DebouncedInputProps
     extends Omit<OnlyNumbersInputProps, "value" | "onChange"> {
-    selector: (s: RootState) => number | undefined;
+    value?: number;
     setter: any;
 }
 
 const DebouncedInput: FC<DebouncedInputProps> = ({
-    selector,
+    value: _value,
     setter,
     ...props
 }) => {
-    const dispatch = useDispatch();
-
-    const actualValue = useSelector(selector);
     const [value, setValue] = useState("");
 
     useEffect(() => {
-        setValue(actualValue ? actualValue.toString() : "");
-    }, [actualValue]);
+        setValue(_value ? _value.toString() : "");
+    }, [_value]);
 
     const debouncedChange = useDebouncedCallback((v: string) => {
-        dispatch(setter(v));
+        setter(v);
     }, 300);
 
     const handleChange = useCallback((v: string) => {

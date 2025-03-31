@@ -1,11 +1,13 @@
 import { Chip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { deleteFilter, selectMinFloor } from "src/slices/filters";
 import useEnums from "../../useEnums";
 import ChipLabel from "./ChipLabel";
-import { useSelector } from "react-redux";
 import getEnumLabel from "./util";
+import {
+    useFiltersContext,
+    useMinFloor,
+} from "@/sections/Properties/FiltersContext";
 
 const MinFloorChip = () => {
     const dispatch = useDispatch();
@@ -13,10 +15,11 @@ const MinFloorChip = () => {
 
     const { minFloorEnum } = useEnums();
 
-    const minValue = useSelector(selectMinFloor);
+    const minValue = useMinFloor();
     const minLabel = getEnumLabel(minValue, minFloorEnum);
 
-    const handleClear = () => dispatch(deleteFilter("minFloor"));
+    const { deleteFilter } = useFiltersContext();
+    const handleClear = () => deleteFilter("minFloor");
 
     return (
         <Chip

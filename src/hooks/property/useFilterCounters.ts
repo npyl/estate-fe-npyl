@@ -1,11 +1,12 @@
 import { useGetFilterCountersQuery } from "@/services/properties";
-import { selectAll } from "@/slices/filters";
-import { useSelector } from "react-redux";
+import { useAllFilters } from "@/sections/Properties/FiltersContext";
 
 const useFilterCounters = () => {
-    const filters = useSelector(selectAll);
+    const filters = useAllFilters();
+
     const { data: counters, isLoading: isCountersLoading } =
         useGetFilterCountersQuery(filters);
+
     return { counters, isCountersLoading };
 };
 

@@ -1,14 +1,10 @@
-"use client";
-
 import { Grid, GridProps } from "@mui/material";
 import PropertyCard from "@/components/Cards/PropertyCard";
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
 import { useFilterPropertiesQuery } from "src/services/properties";
-import { selectAll, setManagerId } from "src/slices/filters";
 import useResponsive from "@/hooks/useResponsive";
 import Pagination, { usePagination } from "@/components/Pagination";
-import { useRouter } from "next/router";
+import { useAllFilters } from "../FiltersContext";
 
 // ----------------------------------------------------------------------
 
@@ -22,26 +18,16 @@ interface Props extends Omit<GridProps, "direction"> {
 export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
     // pagination
     const pagination = usePagination();
-    const dispatch = useDispatch();
-    const router = useRouter();
-
-    const { assignee } = router.query;
 
     const belowSm = useResponsive("down", "sm");
     const belowLg = useResponsive("down", "lg");
 
     const pageSize = belowSm ? 5 : belowLg ? 10 : 25;
 
-    const allFilters = useSelector(selectAll);
-
-    useEffect(() => {
-        if (assignee) {
-            dispatch(setManagerId(Number(assignee)));
-        }
-    }, [assignee, dispatch]);
+    const filter = useAllFilters();
 
     const { data, isLoading } = useFilterPropertiesQuery({
-        filter: allFilters,
+        filter,
         page: pagination.page,
         pageSize,
         sortBy,

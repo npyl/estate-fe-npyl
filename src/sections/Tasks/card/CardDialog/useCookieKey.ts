@@ -1,4 +1,6 @@
 import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
+import { toNumberSafe } from "@/utils/toNumber";
+import { useRouter } from "next/router";
 import { parseAsInteger, useQueryState } from "nuqs";
 
 /**
@@ -6,8 +8,12 @@ import { parseAsInteger, useQueryState } from "nuqs";
  * This is faster than waiting for useGetCardQuery() and reading data?.id which means PersistNotice is calculated faster
  */
 const useCookieKey = () => {
-    const [taskId] = useQueryState("taskId", parseAsInteger.withDefault(-1));
-    return useFormPersistStorageKey("PPTaskForm", taskId);
+    const router = useRouter();
+    const { taskId } = router.query;
+
+    const iTaskId = toNumberSafe(taskId);
+
+    return useFormPersistStorageKey("PPTaskForm", iTaskId);
 };
 
 export default useCookieKey;

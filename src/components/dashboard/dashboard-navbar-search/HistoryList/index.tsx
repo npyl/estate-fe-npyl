@@ -150,12 +150,12 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
                                         }
                                         sx={{
                                             borderRadius: "100%",
-                                            padding: "3px",
+                                            paddingInline: "3px",
+                                            py: "0.5px",
                                             "&:hover": {
                                                 backgroundColor:
                                                     "rgba(0, 0, 0, 0.1)",
                                                 borderRadius: "100%",
-                                                padding: "3px",
                                             },
                                             mr: 0.5,
                                         }}

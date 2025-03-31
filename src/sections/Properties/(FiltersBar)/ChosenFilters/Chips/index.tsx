@@ -1,8 +1,6 @@
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import useEnums from "../../useEnums";
 import Chip from "@mui/material/Chip";
-import { deleteFilter, getChangedFields } from "@/slices/filters";
 import ChipLabel from "./ChipLabel";
 import { useTranslation } from "react-i18next";
 import getEnumLabel from "./util";
@@ -10,6 +8,10 @@ import { TTags } from "../types";
 import dynamic from "next/dynamic";
 import { IPropertyFilter } from "@/types/properties";
 import Points from "./Points";
+import {
+    useChangedFields,
+    useFiltersContext,
+} from "@/sections/Properties/FiltersContext";
 
 // Chips
 const MinMaxChip = dynamic(() => import("./MinMax"));
@@ -24,6 +26,7 @@ const Regions = dynamic(() => import("./Regions"));
 const Cities = dynamic(() => import("./Cities"));
 const LocationChip = dynamic(() => import("./Location"));
 const LifestyleChip = dynamic(() => import("./Lifestyle"));
+
 // --------------------------------------------------------------------------------
 
 interface SimpleChipProps {
@@ -34,13 +37,13 @@ interface SimpleChipProps {
 
 const SimpleChip: FC<SimpleChipProps> = ({ values, title, filterKey }) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const label = Array.isArray(values)
         ? values.map((v) => t(v)).join(", ")
         : t(values);
 
-    const handleClear = () => dispatch(deleteFilter(filterKey));
+    const { deleteFilter } = useFiltersContext();
+    const handleClear = () => deleteFilter(filterKey);
 
     return (
         <Chip
@@ -73,7 +76,7 @@ const GeneralChip: FC<GeneralChipProps> = ({
 }) => {
     const { frameTypeEnum, furnishedEnum, heatingTypeEnum } = useEnums();
 
-    const changedProps = useSelector(getChangedFields);
+    const changedProps = useChangedFields();
     const values = changedProps[filterKey];
     const label = filterTags[filterKey]?.label;
 
