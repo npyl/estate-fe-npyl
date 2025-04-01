@@ -7,6 +7,7 @@ import {
     useLazyGetProfileQuery,
 } from "src/services/user";
 import { useLogoutMutation } from "@/services/logout";
+import { debuglog } from "util";
 
 interface State {
     platform: "JWT";
@@ -160,10 +161,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
         // INFO: chat token
         try {
+            const { messagingEnabled } = user;
+            if (!messagingEnabled)
+                throw "Abort generating chat token; messaging is disabled for this user";
+
             const { token } = await generateChatToken(loginRes.token).unwrap();
             if (!token) throw new Error("");
             localStorage.setItem("chatToken", token);
-        } catch (ex) {}
+        } catch (ex) {
+            debuglog(ex);
+        }
 
         dispatch({
             type: ActionType.LOGIN,

@@ -2,7 +2,7 @@ import { useWatch } from "react-hook-form";
 import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
-import { SxProps, Theme } from "@mui/material";
+import { SxProps, Theme, Typography } from "@mui/material";
 import WorkspaceUserGuard from "./WorkspaceUserGuard";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 import WithCalendarSwitch from "./WithCalendarSwitch";

@@ -66,7 +66,7 @@ const Header: FC<HeaderProps> = ({ firstName, lastName, createdAt }) => (
 
 const MessageSx: SxProps<Theme> = {
     backgroundColor: ({ palette: { mode, neutral } }) =>
-        mode === "light" ? neutral?.[250] : neutral?.[800],
+        mode === "light" ? "#FCE9A4" : neutral?.[800],
     borderRadius: "16px",
     borderTopLeftRadius: 0,
     p: 1,
@@ -119,7 +119,12 @@ const List: FC<ListProps> = ({ cardId }) => {
     const { data: comments } = useGetCommentsForCardQuery(cardId!, {
         skip: cardId === undefined,
     });
-    return <Stack spacing={1}>{comments?.map(getComment)}</Stack>;
+    const sortedComments = [...(comments ?? [])].sort(
+        (olderComment, newerComment) =>
+            new Date(olderComment.createdAt).getTime() -
+            new Date(newerComment.createdAt).getTime()
+    );
+    return <Stack spacing={1}>{sortedComments?.map(getComment)}</Stack>;
 };
 
 export default List;

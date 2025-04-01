@@ -1501,7 +1501,8 @@ const resources = {
             Updated: "Ενημερώθηκε",
             _Task_: "Εργασία",
             "Connect with Calendar": "Σύνδεση με Ημερολόγιο",
-
+            "There will be an event creation in google calendar as well":
+                "Θα υπάρξει δημιουργία συμβάντος στο google ημερολόγιο",
             "Please upload a file of size <3MB":
                 "Παρακαλώ ανεβάστε αρχείο μεγέθους <3MB",
             "Delete task?": "Διαγραφή εργασίας?",
@@ -1988,6 +1989,8 @@ const resources = {
             "Delete section": "Διαγραφή Τμήματος",
             "Rename section": "Μετονομασία Τμήματος",
             "Task name": "Όνομα Εργασίας",
+            "Click to upload": "Κλικ για επισύναψη",
+            "or drag and drop": "ή μεταφορά και απόθεση",
             "Mark Complete": "Σήμανση Ολοκληρωμένου",
             Completed: "Ολοκληρώθηκε",
             Assignee: "Ανάθεση",

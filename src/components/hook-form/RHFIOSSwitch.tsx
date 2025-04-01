@@ -17,7 +17,6 @@ const RHFIOSSwitch: FC<RHFIOSSwitch> = ({
     ...props
 }) => {
     const { control } = useFormContext();
-
     return (
         <Controller
             name={name}

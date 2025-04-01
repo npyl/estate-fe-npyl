@@ -76,7 +76,7 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
                     boxShadow: 1,
                     width: { xs: "65vw", sm: "40vw" },
                     zIndex: 1500, // Ensure it appears above other elements
-                    top: "50px", // Position below the input field
+                    top: "67px", // Position below the input field
                 }}
             >
                 {searchHistory?.map(({ term, date }, index) => (
