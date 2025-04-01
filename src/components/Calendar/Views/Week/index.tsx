@@ -1,6 +1,5 @@
 import { FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
-import { Stack } from "@mui/material";
 import { CalendarWeekViewProps } from "../../types";
 import { _getMiscCellEvents, _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
@@ -26,7 +25,7 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     const Numbering = PassedNumbering || DefaultNumbering;
 
     return (
-        <Stack spacing={2} height={1}>
+        <>
             <DaysHeader date={date} />
 
             <WeekView
@@ -42,7 +41,7 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
                 Numbering={Numbering}
                 {...props}
             />
-        </Stack>
+        </>
     );
 };
 
