@@ -10,6 +10,7 @@ import { useAttachmentsContext } from "./Context";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 import { HideText } from "@/components/styled";
 import UploadTaskAttachment from "@/components/upload/UploadTaskAttachment";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 // ------------------------------------------------------------------
 
@@ -66,10 +67,23 @@ const AttachmentsButton: FC<AttachmentsButtonProps> = ({ cardId }) => {
 
     return (
         <>
-            <UploadTaskAttachment
-                onDropAccepted={handleFiles}
-                disabled={isUploading}
-            />
+            {isUploading ? (
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={2}
+                    minHeight={120}
+                >
+                    <Typography>Loading...</Typography>
+                    <CircularProgress color="primary" size={28} thickness={4} />
+                </Box>
+            ) : (
+                <UploadTaskAttachment
+                    onDropAccepted={handleFiles}
+                    disabled={isUploading}
+                />
+            )}
         </>
     );
 };
