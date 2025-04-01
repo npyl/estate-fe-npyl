@@ -1,29 +1,39 @@
 import { forwardRef, MouseEvent } from "react";
-import { Stack, StackProps } from "@mui/material";
+import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
 import { TCalendarEvent } from "../../types";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
+import { Z_INDEX } from "@/constants/calendar";
 
 // -------------------------------------------------------------------------------------
+
+const StackSx: SxProps<Theme> = {
+    position: "absolute",
+    cursor: "grab",
+    transition: "transform 0.2s ease",
+
+    "&:active": {
+        cursor: "grabbing",
+        zIndex: Z_INDEX.HEADER,
+    },
+};
 
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
-    overlapCount: number;
     onDragEnd?: (e: TCalendarEvent, startDate: string, endDate: string) => void;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
-    ({ event, overlapCount, sx, onClick, onDragEnd, ...props }, ref) => {
+    ({ event, sx, onClick, onDragEnd, ...props }, ref) => {
         const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
 
         const { cellsRef } = useResponsiveCellPositions();
 
         const { onMouseDown, onMouseMove, onMouseUp } = useDraggable(
             event,
-            overlapCount,
             // ...
             elementRef,
             cellsRef,
@@ -38,12 +48,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
         return (
             <Stack
                 ref={elementRef}
-                sx={{
-                    position: "absolute",
-                    cursor: "grab",
-                    transition: "transform 0.2s ease",
-                    ...sx,
-                }}
+                sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
                 onMouseMove={onMouseMove}
                 onMouseUp={onMouseUp}

@@ -96,7 +96,6 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             <DraggableStack
                 ref={onRef}
                 sx={getEventSx(bgcolor, overlapCount)}
-                overlapCount={overlapCount}
                 top={top}
                 height={maxHeight}
                 event={event}
