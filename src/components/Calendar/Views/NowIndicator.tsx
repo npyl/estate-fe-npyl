@@ -5,7 +5,7 @@ import { Z_INDEX } from "@/constants/calendar";
 import { Theme } from "@mui/material";
 import { useCallback, useLayoutEffect, useState } from "react";
 
-const getWidth = ({ spacing }: Theme) => `calc(100% + ${spacing(2)})`;
+const getWidth = ({ spacing }: Theme) => `calc(100% + ${spacing(1)})`;
 
 const useEvery5Minutes = (cb: VoidFunction) => {
     useLayoutEffect(() => {
@@ -33,7 +33,7 @@ const NowIndicator = () => {
             alignItems="center"
             position="absolute"
             top={top}
-            left={2}
+            left={-5}
             right={0}
             zIndex={Z_INDEX.CURRENT_TIME_INDICATOR}
             width={getWidth}
