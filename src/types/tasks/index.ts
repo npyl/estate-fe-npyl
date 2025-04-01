@@ -47,7 +47,7 @@ type IKanbanCard = {
     properties: { id: number; code: string; image: string }[];
     customers: Omit<IUserMini, "avatar">[];
     reporter: IUserMini;
-
+    updatedBy?: IUserMini;
     event: string; // INFO: Calendar Event Id -> Google Calendar Event Id
 
     createdAt: string;

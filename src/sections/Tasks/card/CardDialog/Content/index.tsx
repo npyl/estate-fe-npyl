@@ -48,15 +48,25 @@ const PropertiesAutocomplete = () => {
 
 // -----------------------------------------------------------------
 
+interface Reporter {
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+}
+
+interface UpdatedBy {
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+}
+
 interface ContentProps {
     cardId?: number;
     createdAt?: string;
     updatedAt?: string;
-    reporter?: {
-        firstName: string;
-        lastName: string;
-        avatar?: string;
-    };
+    reporter?: Reporter;
+
+    updatedBy?: UpdatedBy;
 }
 
 const Content: FC<ContentProps> = ({
@@ -64,6 +74,7 @@ const Content: FC<ContentProps> = ({
     createdAt,
     updatedAt,
     reporter,
+    updatedBy,
 }) => {
     const { t } = useTranslation();
 
@@ -97,6 +108,7 @@ const Content: FC<ContentProps> = ({
                         createdAt={createdAt}
                         updatedAt={updatedAt}
                         reporter={reporter} //not working yet
+                        updatedBy={updatedBy}
                     />
                 </>
             ) : null}

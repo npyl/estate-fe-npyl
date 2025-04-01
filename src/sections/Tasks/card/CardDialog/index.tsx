@@ -77,6 +77,8 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
                         // ...
                         createdAt={task?.createdAt}
                         updatedAt={task?.updatedAt}
+                        reporter={task?.reporter}
+                        updatedBy={task?.updatedBy}
                     />
                 }
                 actions={
