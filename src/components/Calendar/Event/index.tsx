@@ -105,7 +105,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                 <Title
                     title={event.title}
                     startDate={event.startDate}
-                    endDate={event.startDate}
+                    endDate={event.endDate}
                     type={event.type}
                 />
 
