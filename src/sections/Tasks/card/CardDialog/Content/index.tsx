@@ -88,13 +88,14 @@ const Content: FC<ContentProps> = ({
             {/* ------------------------ */}
 
             <Attachments cardId={cardId} />
-            <WithCalendar />
 
             <RHFEditor name="description" rows={5} />
 
             <PropertiesAutocomplete />
             <CustomerAutocomplete />
             <AssigneeSelect />
+
+            <WithCalendar />
 
             <Labels cardId={cardId} />
 
