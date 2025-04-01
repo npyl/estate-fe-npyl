@@ -1,12 +1,11 @@
 import { CSSProperties, FC } from "react";
-import { CalendarCellProps } from "../../types";
-import useTimemappedEvents from "../useTimemappedEvents";
+import { CalendarCellProps } from "../../../types";
+import useTimemappedEvents from "../../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
-import NowIndicator from "../NowIndicator";
+import NowIndicator from "../../NowIndicator";
 import dynamic from "next/dynamic";
-import Divider from "@mui/material/Divider";
-import { Z_INDEX } from "@/constants/calendar";
-const MiscCell = dynamic(() => import("../MiscCell"));
+import VerticalDivider from "./VerticalDivider";
+const MiscCell = dynamic(() => import("../../MiscCell"));
 
 // -------------------------------------------------------------------------
 
@@ -18,20 +17,6 @@ const CellStyle: CSSProperties = {
 const ContainerStyle: CSSProperties = {
     position: "relative",
 };
-
-// -------------------------------------------------------------------------
-
-const VerticalDivider = () => (
-    <Divider
-        orientation="vertical"
-        sx={{
-            top: 0,
-            height: "100vh",
-            position: "absolute",
-            zIndex: Z_INDEX.DIVIDER,
-        }}
-    />
-);
 
 // -------------------------------------------------------------------------
 

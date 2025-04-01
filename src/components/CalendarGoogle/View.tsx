@@ -6,6 +6,10 @@ const CalendarView = styled(BaseView)({
     "&:has(.PPCalendar-MiscCell) .PPCalendar-Numbering": {
         marginTop: DAY_CELL_HEIGHT,
     },
+
+    "&:has(.PPCalendar-MiscCell) .PPCalendar-VerticalDivider": {
+        marginTop: DAY_CELL_HEIGHT,
+    },
 });
 
 export default CalendarView;
