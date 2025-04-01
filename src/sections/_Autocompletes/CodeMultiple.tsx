@@ -67,7 +67,7 @@ const CodeAutocompleteMultiple = forwardRef<
     CodeAutocompleteMultipleProps
 >(({ label, error, helperText, ...props }, ref) => (
     <CodeSelect<true>
-        ref={ref}
+        ref={ref as any}
         multiple
         getOptionLabel={getOptionLabel}
         renderTags={RenderTags}

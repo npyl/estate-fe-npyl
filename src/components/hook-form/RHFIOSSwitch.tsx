@@ -11,7 +11,6 @@ interface RHFIOSSwitch extends Omit<FormControlLabelProps, "control"> {
 
 const RHFIOSSwitch: FC<RHFIOSSwitch> = ({ name, ...props }) => {
     const { control } = useFormContext();
-
     return (
         <Controller
             name={name}

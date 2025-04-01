@@ -52,29 +52,38 @@ interface ContentProps {
     cardId?: number;
     createdAt?: string;
     updatedAt?: string;
+    reporter?: {
+        firstName: string;
+        lastName: string;
+        avatar?: string;
+    };
 }
 
-const Content: FC<ContentProps> = ({ cardId, createdAt, updatedAt }) => {
+const Content: FC<ContentProps> = ({
+    cardId,
+    createdAt,
+    updatedAt,
+    reporter,
+}) => {
     const { t } = useTranslation();
 
     const isEdit = Boolean(cardId);
-
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
+            <RHFTextField name="name" label={t("Title")} />
+
             <Buttons />
             {/* ------------------------ */}
 
-            <RHFTextField name="name" label={t("Title")} />
-            <RHFEditor name="description" rows={5} />
-
             <Attachments />
+            <WithCalendar />
+
+            <RHFEditor name="description" rows={5} />
 
             <PropertiesAutocomplete />
             <CustomerAutocomplete />
             <AssigneeSelect />
-
-            <WithCalendar />
 
             <Labels cardId={cardId} />
 
@@ -84,7 +93,11 @@ const Content: FC<ContentProps> = ({ cardId, createdAt, updatedAt }) => {
                 <>
                     <Divider />
                     {isEdit ? <AssigneeHistory cardId={cardId!} /> : null}
-                    <MiscInfo createdAt={createdAt} updatedAt={updatedAt} />
+                    <MiscInfo
+                        createdAt={createdAt}
+                        updatedAt={updatedAt}
+                        reporter={reporter} //not working yet
+                    />
                 </>
             ) : null}
         </Stack>

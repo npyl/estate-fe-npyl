@@ -8,7 +8,7 @@ import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
-import { SxProps, Theme } from "@mui/material";
+import { SxProps, Theme, Typography } from "@mui/material";
 import WorkspaceUserGuard from "./WorkspaceUserGuard";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 const IsAuthenticatedIndicator = dynamic(
@@ -17,7 +17,7 @@ const IsAuthenticatedIndicator = dynamic(
 const Pickers = dynamic(() => import("./Pickers"));
 
 const SwitchSx: SxProps<Theme> = {
-    gap: 1,
+    gap: 1.5,
     ml: 0,
     "& .MuiFormControlLabel-label": {
         color: "text.secondary",
@@ -58,14 +58,23 @@ const WithCalendar = () => {
         <>
             <Divider />
 
-            <Stack position="relative" spacing={1}>
+            <Stack position="relative" spacing={1} pb={1}>
                 <RHFIOSSwitch
                     name="withCalendar"
                     label={t("Connect with Calendar")}
-                    labelPlacement="start"
+                    labelPlacement="end"
                     sx={SwitchSx}
                 />
-
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    position={"absolute"}
+                    sx={{ top: 11, left: 54 }}
+                >
+                    {t(
+                        "There will be an event creation in google calendar as well"
+                    )}
+                </Typography>
                 {isOpen ? (
                     <IsAuthenticatedIndicator sx={OAuthButtonSx}>
                         <WorkspaceUserGuard>
