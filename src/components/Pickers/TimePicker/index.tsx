@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useRef } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import { TimeField, TimeFieldProps } from "@mui/x-date-pickers";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
@@ -6,6 +6,7 @@ import dayjs, { Dayjs } from "dayjs";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Box from "@mui/material/Box";
 import { DEFAULT_MAX_TIME, DEFAULT_MIN_TIME } from "./constants";
+import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 const Menu = dynamic(() => import("./Menu"));
 
 interface TimePickerProps
@@ -20,77 +21,85 @@ interface TimePickerProps
     maxTime?: number;
 }
 
-const TimePicker: FC<TimePickerProps> = ({
-    value: _value,
-    minTime: _minTime,
-    maxTime: _maxTime,
-    onChange,
-    ...props
-}) => {
-    const value = useMemo(() => dayjs(_value), [_value]);
-
-    const minTime = useMemo(
-        () =>
-            dayjs()
-                .hour(_minTime ?? DEFAULT_MIN_TIME)
-                .minute(0)
-                .second(0),
-        [_minTime]
-    );
-    const maxTime = useMemo(
-        () =>
-            dayjs()
-                .hour(_maxTime ?? DEFAULT_MAX_TIME)
-                .minute(0)
-                .second(0),
-        [_maxTime]
-    );
-
-    const [isOpen, openMenu, closeMenu] = useDialog();
-    const anchorRef = useRef<HTMLDivElement>(null);
-
-    const handleSelect = useCallback(
-        (d: string) => {
-            onChange(d);
-            closeMenu();
+const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
+    (
+        {
+            value: _value,
+            minTime: _minTime,
+            maxTime: _maxTime,
+            onChange,
+            ...props
         },
-        [onChange]
-    );
+        ref
+    ) => {
+        const value = useMemo(() => dayjs(_value), [_value]);
 
-    const handleChange = useCallback(
-        (d: Dayjs | null) => {
-            if (!d) return;
-            onChange(d.toISOString());
-            closeMenu();
-        },
-        [onChange]
-    );
+        const minTime = useMemo(
+            () =>
+                dayjs()
+                    .hour(_minTime ?? DEFAULT_MIN_TIME)
+                    .minute(0)
+                    .second(0),
+            [_minTime]
+        );
+        const maxTime = useMemo(
+            () =>
+                dayjs()
+                    .hour(_maxTime ?? DEFAULT_MAX_TIME)
+                    .minute(0)
+                    .second(0),
+            [_maxTime]
+        );
 
-    return (
-        <ClickAwayListener onClickAway={closeMenu}>
-            <Box>
-                <TimeField
-                    ref={anchorRef}
-                    value={value}
-                    minTime={minTime}
-                    maxTime={maxTime}
-                    onChange={handleChange}
-                    onClick={openMenu}
-                    {...props}
-                />
+        const [isOpen, openMenu, closeMenu] = useDialog();
 
-                {isOpen && anchorRef.current ? (
-                    <Menu
-                        minTime={_minTime}
-                        maxTime={_maxTime}
-                        anchorEl={anchorRef.current}
-                        onSelect={handleSelect}
+        const anchorRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
+
+        const handleSelect = useCallback(
+            (d: string) => {
+                onChange(d);
+                closeMenu();
+            },
+            [onChange]
+        );
+
+        const handleChange = useCallback(
+            (d: Dayjs | null) => {
+                if (!d) return;
+                onChange(d.toISOString());
+                closeMenu();
+            },
+            [onChange]
+        );
+
+        return (
+            <ClickAwayListener onClickAway={closeMenu}>
+                <Box>
+                    <TimeField
+                        ref={anchorRef}
+                        value={value}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                        onChange={handleChange}
+                        onClick={openMenu}
+                        {...props}
                     />
-                ) : null}
-            </Box>
-        </ClickAwayListener>
-    );
-};
+
+                    {isOpen && anchorRef.current ? (
+                        <Menu
+                            minTime={_minTime}
+                            maxTime={_maxTime}
+                            anchorEl={anchorRef.current}
+                            onSelect={handleSelect}
+                        />
+                    ) : null}
+                </Box>
+            </ClickAwayListener>
+        );
+    }
+);
+
+TimePicker.displayName = "TimePicker";
 
 export type { TimePickerProps };
 export default TimePicker;
