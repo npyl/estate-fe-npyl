@@ -5,11 +5,17 @@ import { Controller, useFormContext } from "react-hook-form";
 import IOSSwitch from "@/components/iOSSwitch";
 import { FC } from "react";
 
-interface RHFIOSSwitch extends Omit<FormControlLabelProps, "control"> {
+interface RHFIOSSwitch
+    extends Omit<FormControlLabelProps, "control" | "onChange"> {
     name: string;
+    onChange?: (b: boolean) => void;
 }
 
-const RHFIOSSwitch: FC<RHFIOSSwitch> = ({ name, ...props }) => {
+const RHFIOSSwitch: FC<RHFIOSSwitch> = ({
+    name,
+    onChange: _onChange,
+    ...props
+}) => {
     const { control } = useFormContext();
 
     return (
@@ -20,7 +26,10 @@ const RHFIOSSwitch: FC<RHFIOSSwitch> = ({ name, ...props }) => {
                 <FormControlLabel
                     labelPlacement="start"
                     checked={value}
-                    onChange={(_, b) => onChange(b)}
+                    onChange={(_, b) => {
+                        onChange(b);
+                        _onChange?.(b);
+                    }}
                     control={<IOSSwitch />}
                     {...field}
                     {...props}

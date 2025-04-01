@@ -1,29 +1,15 @@
-/**
- * integration with Calendar's DatePickers
- */
-
-import { useTranslation } from "react-i18next";
 import { useWatch } from "react-hook-form";
-import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import dynamic from "next/dynamic";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import { SxProps, Theme } from "@mui/material";
 import WorkspaceUserGuard from "./WorkspaceUserGuard";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import WithCalendarSwitch from "./WithCalendarSwitch";
 const IsAuthenticatedIndicator = dynamic(
     () => import("@/sections/Google/WorkspaceIndicator")
 );
 const Pickers = dynamic(() => import("./Pickers"));
-
-const SwitchSx: SxProps<Theme> = {
-    gap: 1,
-    ml: 0,
-    "& .MuiFormControlLabel-label": {
-        color: "text.secondary",
-    },
-    alignSelf: "start",
-};
 
 const OAuthButtonSx: SxProps<Theme> = {
     position: "absolute",
@@ -38,8 +24,6 @@ const useIsAssigneeSelected = () => {
 };
 
 const WithCalendar = () => {
-    const { t } = useTranslation();
-
     const isAssigneeSelected = useIsAssigneeSelected();
     const isOpen = useWatch<ICreateOrUpdateTaskReq>({ name: "withCalendar" });
 
@@ -50,12 +34,7 @@ const WithCalendar = () => {
             <Divider />
 
             <Stack position="relative" spacing={1}>
-                <RHFIOSSwitch
-                    name="withCalendar"
-                    label={t("Connect with Calendar")}
-                    labelPlacement="start"
-                    sx={SwitchSx}
-                />
+                <WithCalendarSwitch />
 
                 {isOpen ? (
                     <IsAuthenticatedIndicator sx={OAuthButtonSx}>
