@@ -25,46 +25,54 @@ const useDraggable = (
 ) => {
     const dragRef = useRef({
         isDragging: false,
-        startPos: { x: 0, y: 0 },
-        elementPos: { x: 0, y: 0 },
-        movement: 0,
+        lastX: 0,
+        lastY: 0,
+        startX: 0,
+        startY: 0,
+        initialTransform: { x: 0, y: 0 },
     });
 
     const handleMouseMove = useCallback((e: globalThis.MouseEvent) => {
         const drag = dragRef.current;
         if (!drag.isDragging || !elementRef.current) return;
 
-        const deltaX = e.clientX - drag.startPos.x;
-        const deltaY = e.clientY - drag.startPos.y;
+        // Calculate delta directly from last position
+        const deltaX = e.clientX - drag.lastX;
+        const deltaY = e.clientY - drag.lastY;
 
-        // Update movement tracking
-        drag.movement += Math.hypot(deltaX, deltaY);
+        // Skip tiny movements for performance
+        if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) return;
 
-        // Update element position
-        const newPos = {
-            x: drag.elementPos.x + deltaX,
-            y: drag.elementPos.y + deltaY,
-        };
-        elementRef.current.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
+        // Update element position directly - no need to store intermediate position
+        const newX = drag.initialTransform.x + (e.clientX - drag.startX);
+        const newY = drag.initialTransform.y + (e.clientY - drag.startY);
 
-        drag.startPos = { x: e.clientX, y: e.clientY };
-        drag.elementPos = newPos;
+        elementRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
+
+        // Only save the last mouse position
+        drag.lastX = e.clientX;
+        drag.lastY = e.clientY;
 
         updateDurationLabelAsync(elementRef.current, cellsRef);
     }, []);
 
     const findSnapTarget = useCallback(() => {
-        if (!elementRef.current) return null;
+        if (!elementRef.current || !cellsRef.current?.length) return null;
 
         const elementRect = elementRef.current.getBoundingClientRect();
+        let bestCell = null;
+        let bestOverlap = 0;
 
-        return cellsRef.current?.reduce((best, cell) => {
+        // Manual loop is more efficient than reduce for this case
+        for (const cell of cellsRef.current) {
             const overlap = getOverlapRatio(elementRect, cell);
+            if (overlap > bestOverlap && overlap >= SNAP_THRESHOLD) {
+                bestOverlap = overlap;
+                bestCell = cell.element;
+            }
+        }
 
-            return overlap > (best?.overlap ?? 0) && overlap >= SNAP_THRESHOLD
-                ? { cell: cell.element, overlap }
-                : best;
-        }, null as { cell: HTMLElement; overlap: number } | null);
+        return bestCell ? { cell: bestCell, overlap: bestOverlap } : null;
     }, []);
 
     const handleMouseUp = useCallback(
@@ -75,61 +83,62 @@ const useDraggable = (
             if (!drag.isDragging) return;
             drag.isDragging = false;
 
+            // Calculate total movement to determine if this was a click or drag
+            const totalMovement = Math.hypot(
+                e.clientX - drag.startX,
+                e.clientY - drag.startY
+            );
+
             // Handle click vs drag
-            if (drag.movement <= DRAG_THRESHOLD) {
+            if (totalMovement <= DRAG_THRESHOLD) {
                 onClick?.(e as unknown as MouseEvent<HTMLDivElement>);
                 return;
             }
 
             // Handle snap
             const target = findSnapTarget();
-            if (target && elementRef.current) {
-                const elementRect = elementRef.current.getBoundingClientRect();
-                const cellRect = target.cell.getBoundingClientRect();
+            if (!target || !elementRef.current) return;
 
-                const newX =
-                    cellRect.left -
-                    elementRect.left +
-                    drag.elementPos.x +
-                    (cellRect.width - elementRect.width) / 2;
+            const elementRect = elementRef.current.getBoundingClientRect();
+            const cellRect = target.cell.getBoundingClientRect();
 
-                elementRef.current.style.transform = `translate(${newX}px, ${drag.elementPos.y}px)`;
-                drag.elementPos.x = newX;
+            // Center element horizontally in the cell
+            const newX =
+                drag.initialTransform.x +
+                (cellRect.left - elementRect.left + drag.initialTransform.x) +
+                (cellRect.width - elementRect.width) / 2;
 
-                //
-                // Calculate new date with time
-                //
+            elementRef.current.style.transform = `translate(${newX}px, ${
+                drag.initialTransform.y + (e.clientY - drag.startY)
+            }px)`;
 
-                if (!onDragEnd) return;
+            if (!onDragEnd) return;
 
-                const { startDate, endDate } =
-                    calculateNewDates(target.cell, elementRect) || {};
+            const result = calculateNewDates(target.cell, elementRect);
+            if (!result) return;
 
-                // TODO: maybe reset event's position to the one before drag!
-                if (!startDate || !endDate) return;
-
-                onDragEnd(event, startDate, endDate);
-            }
+            const { startDate, endDate } = result;
+            onDragEnd(event, startDate, endDate);
         },
         [onClick, onDragEnd, findSnapTarget]
     );
 
     const onMouseDown = useCallback((e: MouseEvent) => {
         e.stopPropagation();
+        if (!elementRef.current) return;
 
+        // Get current transform once
+        const transform = window.getComputedStyle(elementRef.current).transform;
+        const matrix = new DOMMatrix(transform);
+
+        // Store only what we need
         const drag = dragRef.current;
         drag.isDragging = true;
-        drag.startPos = { x: e.clientX, y: e.clientY };
-        drag.movement = 0;
-
-        // Store initial element position
-        if (elementRef.current) {
-            const transform = window.getComputedStyle(
-                elementRef.current
-            ).transform;
-            const matrix = new DOMMatrix(transform);
-            drag.elementPos = { x: matrix.m41, y: matrix.m42 };
-        }
+        drag.startX = e.clientX;
+        drag.startY = e.clientY;
+        drag.lastX = e.clientX;
+        drag.lastY = e.clientY;
+        drag.initialTransform = { x: matrix.m41, y: matrix.m42 };
     }, []);
 
     useLayoutEffect(() => {
