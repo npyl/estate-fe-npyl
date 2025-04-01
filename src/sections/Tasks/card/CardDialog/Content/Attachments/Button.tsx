@@ -1,7 +1,7 @@
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useTranslation } from "react-i18next";
-import { ChangeEvent, FC, useCallback } from "react";
-import FileInput, { OpenerBaseProps } from "@/components/FileInput";
+import { FC, useCallback } from "react";
+import { OpenerBaseProps } from "@/components/FileInput";
 import { LoadingButton } from "@mui/lab";
 import useUploadAttachment from "./useUploadAttachment";
 import { attachmentsKey } from "../_constants";
@@ -9,6 +9,7 @@ import { useFormContext } from "react-hook-form";
 import { useAttachmentsContext } from "./Context";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 import { HideText } from "@/components/styled";
+import UploadTaskAttachment from "@/components/upload/UploadTaskAttachment";
 
 // ------------------------------------------------------------------
 
@@ -47,34 +48,29 @@ const AttachmentsButton: FC<AttachmentsButtonProps> = ({ cardId }) => {
 
     const { setValue, watch } = useFormContext();
 
-    const handleChange = useCallback(
-        async (event: ChangeEvent<HTMLInputElement>) => {
-            const fileList = event.target.files;
-            if (!fileList) return;
-
-            const files = Array.from(fileList);
+    const handleFiles = useCallback(
+        async (files: File[]) => {
+            // BE
             const ids = await upload(files);
 
-            const attachmentIds = watch(attachmentsKey);
-
-            // Create mode: Add id
+            //  update form attachments
+            const existingIds = watch(attachmentsKey) || [];
             if (cardId === undefined) {
-                setValue(attachmentsKey, [...attachmentIds, ...ids], {
+                setValue(attachmentsKey, [...existingIds, ...ids], {
                     shouldDirty: true,
                 });
             }
         },
-        [cardId]
+        [upload, cardId, watch, setValue]
     );
 
     return (
-        <FileInput
-            loading={isUploading}
-            Opener={OpenerButton}
-            multiple
-            accept="image/*,application/pdf"
-            onChange={handleChange}
-        />
+        <>
+            <UploadTaskAttachment
+                onDropAccepted={handleFiles}
+                disabled={isUploading}
+            />
+        </>
     );
 };
 

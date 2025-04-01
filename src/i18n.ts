@@ -1989,6 +1989,8 @@ const resources = {
             "Delete section": "Διαγραφή Τμήματος",
             "Rename section": "Μετονομασία Τμήματος",
             "Task name": "Όνομα Εργασίας",
+            "Click to upload": "Κλικ για επισύναψη",
+            "or drag and drop": "ή μεταφορά και απόθεση",
             "Mark Complete": "Σήμανση Ολοκληρωμένου",
             Completed: "Ολοκληρώθηκε",
             Assignee: "Ανάθεση",

@@ -76,7 +76,7 @@ const Content: FC<ContentProps> = ({
             <Buttons />
             {/* ------------------------ */}
 
-            <Attachments />
+            <Attachments cardId={cardId} />
             <WithCalendar />
 
             <RHFEditor name="description" rows={5} />
