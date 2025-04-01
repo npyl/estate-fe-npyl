@@ -1,10 +1,10 @@
 import { CalendarCellProps, TCalendarEvent } from "@/components/Calendar/types";
 import dynamic from "next/dynamic";
 import { ComponentType, useCallback, useState } from "react";
-import useTimeFromOffset from "./useTimeFromOffset";
-import useAuthenticatedClick from "./useAuthenticatedClick";
+import useTimeFromOffset from "../_hooks/useTimeFromOffset";
+import useAuthenticatedClick from "../_hooks/useAuthenticatedClick";
 
-const CreateEventDialog = dynamic(() => import("../Event/Create"));
+const CreateEventDialog = dynamic(() => import("../../Event/Create"));
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 

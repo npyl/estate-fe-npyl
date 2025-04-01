@@ -1,5 +1,5 @@
 import { TGetCellEventsCb } from "@/components/Calendar/types";
-import { useFiltersContext } from "../Filters/context";
+import { useFiltersContext } from "../../Filters/context";
 import { useCallback } from "react";
 import { _getTodaysEvents } from "@/components/Calendar/Views/util";
 

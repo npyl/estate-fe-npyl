@@ -2,11 +2,11 @@ import { CalendarWeekViewProps } from "@/components/Calendar/types";
 import CalendarGoogleWeekView from "@/components/CalendarGoogle/Views/Week";
 import { FC } from "react";
 import CalendarWeekViewCell from "@/components/Calendar/Views/Week/Cell";
-import useFilteredEvents from "./useFilteredEvents";
+import useFilteredEvents from "./_hooks/useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
-import WithEventClick from "./WithEventClick";
-import WithTimeOffsetClick from "./WithTimeOffsetClick";
-import WithDragEnd from "./WithDragEnd";
+import WithEventClick from "./_hocs/WithEventClick";
+import WithTimeOffsetClick from "./_hocs/WithTimeOffsetClick";
+import WithDragEnd from "./_hocs/WithDragEnd";
 
 // --------------------------------------------------------------------------
 

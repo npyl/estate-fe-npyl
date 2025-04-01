@@ -5,11 +5,11 @@ import {
 import CalendarGoogleDayView from "@/components/CalendarGoogle/Views/Day";
 import { ComponentType, FC } from "react";
 import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
-import useFilteredEvents from "./useFilteredEvents";
+import useFilteredEvents from "./_hooks/useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
-import WithEventClick from "./WithEventClick";
-import WithTimeOffsetClick from "./WithTimeOffsetClick";
-import WithDragEnd from "./WithDragEnd";
+import WithEventClick from "./_hocs/WithEventClick";
+import WithTimeOffsetClick from "./_hocs/WithTimeOffsetClick";
+import WithDragEnd from "./_hocs/WithDragEnd";
 
 // --------------------------------------------------------------------------
 
