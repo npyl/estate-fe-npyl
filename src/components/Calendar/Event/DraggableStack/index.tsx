@@ -32,7 +32,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
 
         const { cellsRef } = useResponsiveCellPositions();
 
-        const { onMouseDown, onMouseMove, onMouseUp } = useDraggable(
+        const { onMouseDown } = useDraggable(
             event,
             // ...
             elementRef,
@@ -50,8 +50,6 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
                 ref={elementRef}
                 sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
-                onMouseMove={onMouseMove}
-                onMouseUp={onMouseUp}
                 onClick={stopPropagation}
                 {...props}
             />

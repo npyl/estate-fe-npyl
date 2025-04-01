@@ -1,4 +1,10 @@
-import { MouseEvent, RefObject, useCallback, useRef } from "react";
+import {
+    MouseEvent,
+    RefObject,
+    useCallback,
+    useRef,
+    useLayoutEffect,
+} from "react";
 import getOverlapRatio from "./getOverlapRatio";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
@@ -24,7 +30,7 @@ const useDraggable = (
         movement: 0,
     });
 
-    const onMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    const handleMouseMove = useCallback((e: globalThis.MouseEvent) => {
         const drag = dragRef.current;
         if (!drag.isDragging || !elementRef.current) return;
 
@@ -44,7 +50,7 @@ const useDraggable = (
         drag.startPos = { x: e.clientX, y: e.clientY };
         drag.elementPos = newPos;
 
-        updateDurationLabelAsync(e.currentTarget, cellsRef);
+        updateDurationLabelAsync(elementRef.current, cellsRef);
     }, []);
 
     const findSnapTarget = useCallback(() => {
@@ -61,19 +67,8 @@ const useDraggable = (
         }, null as { cell: HTMLElement; overlap: number } | null);
     }, []);
 
-    const onMouseDown = useCallback((e: MouseEvent) => {
-        e.stopPropagation();
-
-        const drag = dragRef.current;
-
-        drag.isDragging = true;
-        drag.startPos = { x: e.clientX, y: e.clientY };
-        drag.movement = 0;
-    }, []);
-
-    const onMouseUp = useCallback(
-        (e: MouseEvent<HTMLDivElement>) => {
-            e.stopPropagation();
+    const handleMouseUp = useCallback(
+        (e: globalThis.MouseEvent) => {
             if (!elementRef.current) return;
 
             const drag = dragRef.current;
@@ -82,7 +77,7 @@ const useDraggable = (
 
             // Handle click vs drag
             if (drag.movement <= DRAG_THRESHOLD) {
-                onClick?.(e);
+                onClick?.(e as unknown as MouseEvent<HTMLDivElement>);
                 return;
             }
 
@@ -116,10 +111,38 @@ const useDraggable = (
                 onDragEnd(event, startDate, endDate);
             }
         },
-        [onClick, onDragEnd]
+        [onClick, onDragEnd, findSnapTarget]
     );
 
-    return { onMouseDown, onMouseMove, onMouseUp };
+    const onMouseDown = useCallback((e: MouseEvent) => {
+        e.stopPropagation();
+
+        const drag = dragRef.current;
+        drag.isDragging = true;
+        drag.startPos = { x: e.clientX, y: e.clientY };
+        drag.movement = 0;
+
+        // Store initial element position
+        if (elementRef.current) {
+            const transform = window.getComputedStyle(
+                elementRef.current
+            ).transform;
+            const matrix = new DOMMatrix(transform);
+            drag.elementPos = { x: matrix.m41, y: matrix.m42 };
+        }
+    }, []);
+
+    useLayoutEffect(() => {
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        };
+    }, [handleMouseMove, handleMouseUp]);
+
+    return { onMouseDown };
 };
 
 export default useDraggable;
