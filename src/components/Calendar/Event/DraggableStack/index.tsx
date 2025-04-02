@@ -38,7 +38,6 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
             elementRef,
             cellsRef,
             // ...
-            onClick,
             onDragEnd
         );
 
@@ -50,7 +49,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
                 ref={elementRef}
                 sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
-                onClick={stopPropagation}
+                onClick={onClick}
                 {...props}
             />
         );

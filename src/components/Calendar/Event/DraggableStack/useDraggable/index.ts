@@ -1,10 +1,4 @@
-import {
-    MouseEvent,
-    RefObject,
-    useCallback,
-    useRef,
-    useLayoutEffect,
-} from "react";
+import { type MouseEvent, RefObject, useCallback, useRef } from "react";
 import getOverlapRatio from "./getOverlapRatio";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
@@ -18,7 +12,6 @@ const useDraggable = (
     event: TCalendarEvent,
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
-    onClick: ((e: MouseEvent<HTMLDivElement>) => void) | undefined,
     onDragEnd:
         | ((event: TCalendarEvent, startDate: string, endDate: string) => void)
         | undefined
@@ -79,6 +72,8 @@ const useDraggable = (
         (e: globalThis.MouseEvent) => {
             if (!elementRef.current) return;
 
+            unregisterMovement();
+
             const drag = dragRef.current;
             if (!drag.isDragging) return;
             drag.isDragging = false;
@@ -91,7 +86,16 @@ const useDraggable = (
 
             // Handle click vs drag
             if (totalMovement <= DRAG_THRESHOLD) {
-                onClick?.(e as unknown as MouseEvent<HTMLDivElement>);
+                // Create a synthetic event using React's SyntheticEvent pattern
+                const syntheticEvent = new MouseEvent("click", {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window,
+                });
+
+                // Dispatch the click event on the element
+                elementRef.current.dispatchEvent(syntheticEvent);
+
                 return;
             }
 
@@ -120,7 +124,7 @@ const useDraggable = (
             const { startDate, endDate } = result;
             onDragEnd(event, startDate, endDate);
         },
-        [onClick, onDragEnd, findSnapTarget]
+        [onDragEnd, findSnapTarget]
     );
 
     const onMouseDown = useCallback((e: MouseEvent) => {
@@ -139,17 +143,19 @@ const useDraggable = (
         drag.lastX = e.clientX;
         drag.lastY = e.clientY;
         drag.initialTransform = { x: matrix.m41, y: matrix.m42 };
+
+        registerMovement();
     }, []);
 
-    useLayoutEffect(() => {
+    const registerMovement = useCallback(() => {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
+    }, []);
 
-        return () => {
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseup", handleMouseUp);
-        };
-    }, [handleMouseMove, handleMouseUp]);
+    const unregisterMovement = useCallback(() => {
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+    }, []);
 
     return { onMouseDown };
 };
