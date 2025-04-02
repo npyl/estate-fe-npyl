@@ -3,9 +3,9 @@ import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import updateDurationLabelAsync from "./updateDuration";
+import getOverlapRatio from "./getOverlapRatio";
 
 const DRAG_THRESHOLD = 5; // pixels
-const UPDATE_INTERVAL = 16; // ~60fps
 
 const useDraggable = (
     event: TCalendarEvent,
@@ -17,48 +17,26 @@ const useDraggable = (
 ) => {
     const dragRef = useRef({
         isDragging: false,
-        lastX: 0,
-        lastY: 0,
-        startX: 0,
-        startY: 0,
+        startPosition: { x: 0, y: 0 },
         initialTransform: { x: 0, y: 0 },
         rafId: 0,
-        lastUpdate: 0,
     });
 
     const updatePosition = useCallback((e: globalThis.MouseEvent) => {
         const drag = dragRef.current;
         if (!drag.isDragging || !elementRef.current) return;
 
-        const now = performance.now();
-        if (now - drag.lastUpdate < UPDATE_INTERVAL) return;
-
-        // Calculate delta directly from last position
-        const deltaX = e.clientX - drag.lastX;
-        const deltaY = e.clientY - drag.lastY;
-
-        // Skip tiny movements for performance
-        if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) return;
-
         // Update element position using requestAnimationFrame
         drag.rafId = requestAnimationFrame(() => {
             if (!elementRef.current) return;
 
-            const newX = drag.initialTransform.x + (e.clientX - drag.startX);
-            const newY = drag.initialTransform.y + (e.clientY - drag.startY);
+            const newX =
+                drag.initialTransform.x + (e.clientX - drag.startPosition.x);
+            const newY =
+                drag.initialTransform.y + (e.clientY - drag.startPosition.y);
 
             elementRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
-
-            // Update duration label less frequently
-            if (now - drag.lastUpdate > UPDATE_INTERVAL * 2) {
-                updateDurationLabelAsync(elementRef.current, cellsRef);
-                drag.lastUpdate = now;
-            }
         });
-
-        // Only save the last mouse position
-        drag.lastX = e.clientX;
-        drag.lastY = e.clientY;
     }, []);
 
     const handleMouseUp = useCallback(
@@ -73,8 +51,8 @@ const useDraggable = (
 
             // Calculate total movement to determine if this was a click or drag
             const totalMovement = Math.hypot(
-                e.clientX - drag.startX,
-                e.clientY - drag.startY
+                e.clientX - drag.startPosition.x,
+                e.clientY - drag.startPosition.y
             );
 
             // Handle click vs drag
@@ -128,10 +106,7 @@ const useDraggable = (
         // Store only what we need
         const drag = dragRef.current;
         drag.isDragging = true;
-        drag.startX = e.clientX;
-        drag.startY = e.clientY;
-        drag.lastX = e.clientX;
-        drag.lastY = e.clientY;
+        drag.startPosition = { x: e.clientX, y: e.clientY };
         drag.initialTransform = { x: matrix.m41, y: matrix.m42 };
 
         registerMovement();

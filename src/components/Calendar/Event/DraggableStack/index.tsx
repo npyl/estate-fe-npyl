@@ -4,6 +4,7 @@ import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
 import { TCalendarEvent } from "../../types";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
+import DurationUpdateStack from "./DurationUpdateStack";
 
 // -------------------------------------------------------------------------------------
 
@@ -12,26 +13,14 @@ const StackSx: SxProps<Theme> = {
     cursor: "grab",
 
     userSelect: "none",
-    touchAction: "none",
-    willChange: "transform",
-    transform: "translate(0, 0)",
-    transition: "transform 0.1s ease-out",
-
-    // CSS-based snapping
-    scrollSnapType: "x mandatory",
-    scrollSnapAlign: "center",
-
-    // Snap points based on PPCell width
-    scrollSnapPointsX: "repeat(auto-fill, minmax(0, 1fr))",
-
-    // Ensure smooth snapping
-    scrollBehavior: "smooth",
 
     // Prevent text selection during drag
     "&:active": {
         cursor: "grabbing",
     },
 };
+
+// ------------------------------------------------------------------------------
 
 interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
@@ -55,8 +44,9 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
         if (!onDragEnd) return <Stack ref={elementRef} sx={sx} {...props} />;
 
         return (
-            <Stack
+            <DurationUpdateStack
                 ref={elementRef}
+                cellsRef={cellsRef}
                 sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
                 onClick={onClick}
