@@ -7,6 +7,7 @@ import updateDurationLabelAsync from "./updateDuration";
 
 const DRAG_THRESHOLD = 5; // pixels
 const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
+const UPDATE_INTERVAL = 16; // ~60fps
 
 const useDraggable = (
     event: TCalendarEvent,
@@ -23,11 +24,16 @@ const useDraggable = (
         startX: 0,
         startY: 0,
         initialTransform: { x: 0, y: 0 },
+        rafId: 0,
+        lastUpdate: 0,
     });
 
-    const handleMouseMove = useCallback((e: globalThis.MouseEvent) => {
+    const updatePosition = useCallback((e: globalThis.MouseEvent) => {
         const drag = dragRef.current;
         if (!drag.isDragging || !elementRef.current) return;
+
+        const now = performance.now();
+        if (now - drag.lastUpdate < UPDATE_INTERVAL) return;
 
         // Calculate delta directly from last position
         const deltaX = e.clientX - drag.lastX;
@@ -36,17 +42,25 @@ const useDraggable = (
         // Skip tiny movements for performance
         if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) return;
 
-        // Update element position directly - no need to store intermediate position
-        const newX = drag.initialTransform.x + (e.clientX - drag.startX);
-        const newY = drag.initialTransform.y + (e.clientY - drag.startY);
+        // Update element position using requestAnimationFrame
+        drag.rafId = requestAnimationFrame(() => {
+            if (!elementRef.current) return;
 
-        elementRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
+            const newX = drag.initialTransform.x + (e.clientX - drag.startX);
+            const newY = drag.initialTransform.y + (e.clientY - drag.startY);
+
+            elementRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
+
+            // Update duration label less frequently
+            if (now - drag.lastUpdate > UPDATE_INTERVAL * 2) {
+                updateDurationLabelAsync(elementRef.current, cellsRef);
+                drag.lastUpdate = now;
+            }
+        });
 
         // Only save the last mouse position
         drag.lastX = e.clientX;
         drag.lastY = e.clientY;
-
-        updateDurationLabelAsync(elementRef.current, cellsRef);
     }, []);
 
     const findSnapTarget = useCallback(() => {
@@ -148,13 +162,14 @@ const useDraggable = (
     }, []);
 
     const registerMovement = useCallback(() => {
-        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mousemove", updatePosition);
         document.addEventListener("mouseup", handleMouseUp);
     }, []);
 
     const unregisterMovement = useCallback(() => {
-        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mousemove", updatePosition);
         document.removeEventListener("mouseup", handleMouseUp);
+        cancelAnimationFrame(dragRef.current.rafId);
     }, []);
 
     return { onMouseDown };
