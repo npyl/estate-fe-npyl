@@ -1,12 +1,10 @@
 import { type MouseEvent, RefObject, useCallback, useRef } from "react";
-import getOverlapRatio from "./getOverlapRatio";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import updateDurationLabelAsync from "./updateDuration";
 
 const DRAG_THRESHOLD = 5; // pixels
-const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
 const UPDATE_INTERVAL = 16; // ~60fps
 
 const useDraggable = (
@@ -63,25 +61,6 @@ const useDraggable = (
         drag.lastY = e.clientY;
     }, []);
 
-    const findSnapTarget = useCallback(() => {
-        if (!elementRef.current || !cellsRef.current?.length) return null;
-
-        const elementRect = elementRef.current.getBoundingClientRect();
-        let bestCell = null;
-        let bestOverlap = 0;
-
-        // Manual loop is more efficient than reduce for this case
-        for (const cell of cellsRef.current) {
-            const overlap = getOverlapRatio(elementRect, cell);
-            if (overlap > bestOverlap && overlap >= SNAP_THRESHOLD) {
-                bestOverlap = overlap;
-                bestCell = cell.element;
-            }
-        }
-
-        return bestCell ? { cell: bestCell, overlap: bestOverlap } : null;
-    }, []);
-
     const handleMouseUp = useCallback(
         (e: globalThis.MouseEvent) => {
             if (!elementRef.current) return;
@@ -109,36 +88,33 @@ const useDraggable = (
 
                 // Dispatch the click event on the element
                 elementRef.current.dispatchEvent(syntheticEvent);
-
                 return;
             }
 
-            // Handle snap
-            const target = findSnapTarget();
-            if (!target || !elementRef.current) return;
-
+            // Find the PPCell that contains the center of the draggable element
             const elementRect = elementRef.current.getBoundingClientRect();
-            const cellRect = target.cell.getBoundingClientRect();
+            const elementCenter = elementRect.left + elementRect.width / 2;
+            const cells = document.getElementsByClassName("PPCell");
 
-            // Center element horizontally in the cell
-            const newX =
-                drag.initialTransform.x +
-                (cellRect.left - elementRect.left + drag.initialTransform.x) +
-                (cellRect.width - elementRect.width) / 2;
+            for (const cell of cells) {
+                const cellRect = cell.getBoundingClientRect();
+                if (
+                    elementCenter >= cellRect.left &&
+                    elementCenter <= cellRect.right
+                ) {
+                    const result = calculateNewDates(
+                        cell as HTMLElement,
+                        elementRect
+                    );
+                    if (!result || !onDragEnd) return;
 
-            elementRef.current.style.transform = `translate(${newX}px, ${
-                drag.initialTransform.y + (e.clientY - drag.startY)
-            }px)`;
-
-            if (!onDragEnd) return;
-
-            const result = calculateNewDates(target.cell, elementRect);
-            if (!result) return;
-
-            const { startDate, endDate } = result;
-            onDragEnd(event, startDate, endDate);
+                    const { startDate, endDate } = result;
+                    onDragEnd(event, startDate, endDate);
+                    return;
+                }
+            }
         },
-        [onDragEnd, findSnapTarget]
+        [onDragEnd]
     );
 
     const onMouseDown = useCallback((e: MouseEvent) => {

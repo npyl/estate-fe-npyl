@@ -1,25 +1,37 @@
-import { forwardRef, MouseEvent } from "react";
+import { forwardRef } from "react";
 import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
 import { TCalendarEvent } from "../../types";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import { Z_INDEX } from "@/constants/calendar";
 
 // -------------------------------------------------------------------------------------
 
 const StackSx: SxProps<Theme> = {
     position: "absolute",
     cursor: "grab",
-    transition: "transform 0.2s ease",
 
+    userSelect: "none",
+    touchAction: "none",
+    willChange: "transform",
+    transform: "translate(0, 0)",
+    transition: "transform 0.1s ease-out",
+
+    // CSS-based snapping
+    scrollSnapType: "x mandatory",
+    scrollSnapAlign: "center",
+
+    // Snap points based on PPCell width
+    scrollSnapPointsX: "repeat(auto-fill, minmax(0, 1fr))",
+
+    // Ensure smooth snapping
+    scrollBehavior: "smooth",
+
+    // Prevent text selection during drag
     "&:active": {
         cursor: "grabbing",
-        zIndex: Z_INDEX.HEADER,
     },
 };
-
-const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
 interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
@@ -34,10 +46,8 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
 
         const { onMouseDown } = useDraggable(
             event,
-            // ...
             elementRef,
             cellsRef,
-            // ...
             onDragEnd
         );
 
