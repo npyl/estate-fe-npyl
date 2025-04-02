@@ -25,6 +25,10 @@ import FilterSortBy from "@/sections/Filters/SortBy";
 import { useDispatch } from "react-redux";
 import PriceSelect from "./Filters/Price";
 import AreaSelect from "./Filters/Area";
+import BasicFilters from "./Filters/BasicFilters";
+import FilterBuyerLeaserAndMoreInMoreSection from "./Filters/BuyerLeaserAndMoreInMoreSection";
+import ParentCategoryInMore from "./Filters/ParentCategoryInMore";
+import FilterCategoryInMore from "./Filters/CategoryInMore";
 const FilterMore = dynamic(
     () => import("@/sections/Filters/FilterMore/Dialog")
 );
@@ -56,6 +60,16 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <AreaSelect />
             <FilterManager />
         </>
+    );
+
+    const filterMoreContent = (
+        <Stack gap={1}>
+            <ChosenFilters />
+            <BasicFilters />
+            <FilterBuyerLeaserAndMoreInMoreSection />
+            <ParentCategoryInMore />
+            <FilterCategoryInMore />
+        </Stack>
     );
 
     const belowLg = useResponsive("down", "lg");
@@ -99,8 +113,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     onResetFilter={handleResetAll}
                 >
                     <Stack width={1} spacing={1} px={6} mt={1}>
-                        {filterContent}
-                        <FilterStatus />
+                        {filterMoreContent}
                     </Stack>
                 </FilterMore>
             ) : null}

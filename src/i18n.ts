@@ -132,6 +132,7 @@ const resources = {
 
             Clear: "Clear",
             Customers: "Customers",
+            customers: "customer",
             "Label Keys": "Label Keys",
             Create: "Create",
             "Create Property": "Create Property",
@@ -394,6 +395,8 @@ const resources = {
             "Add Task": "Add task",
             "Delete section": "Delete section",
             "Rename section": "Rename section",
+            "Click to upload": "Click to upload",
+            "or drag and drop": "or drag and drop",
             "Task name": "Task name",
             "Last Updated Date": "Last Updated Date",
             "Total Comments for this task": "Total Comments for this task",
@@ -1178,6 +1181,8 @@ const resources = {
                 "Please upload a file of size <3MB",
 
             "Connect with Calendar": "Connect with Calendar",
+            "There will be an event creation in google calendar as well":
+                "There will be an event creation in google calendar as well",
             _Task_: "Task",
             Created: "Created",
             Updated: "Updated",
@@ -1744,6 +1749,7 @@ const resources = {
 
             Clear: "Καθαρισμός",
             Customers: "Πελάτες",
+            customers: "πελάτες",
             "Label Keys": "Κλειδιά ετικετών",
             Create: "Δημιουργία",
             "Create Property": "Δημιουργία Ακινήτου",
