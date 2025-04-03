@@ -1,5 +1,5 @@
 import { IconButton, Stack, SxProps, Theme, Typography } from "@mui/material";
-import Popover from "./Popover";
+import Popover from "../Popover";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
 import { FC } from "react";
@@ -14,7 +14,6 @@ import { SpaceBetween } from "@/components/styled";
 import DateInfo from "@/components/Calendar/Event/_shared/DateInfo";
 import PeopleSection from "./PeopleSection";
 import Description from "@/components/Calendar/Event/_shared/Description";
-import usePopoverPosition from "./usePopoverPosition";
 // ...
 const DeleteButton = dynamic(() => import("./DeleteButton"));
 const EditForm = dynamic(() => import("../form"));
@@ -54,16 +53,8 @@ const EventPopover: FC<Props> = ({
         onClose();
     };
 
-    const { actionsRef, onPaperRef } = usePopoverPosition();
-
     return (
-        <Popover
-            open
-            anchorEl={anchorEl}
-            paperRef={onPaperRef}
-            action={actionsRef}
-            onClose={onClose}
-        >
+        <Popover open anchorEl={anchorEl} onClose={onClose}>
             <SpaceBetween width={1} direction="row" alignItems="center">
                 {!isEdit ? (
                     <Typography

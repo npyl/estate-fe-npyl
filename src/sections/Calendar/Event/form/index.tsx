@@ -53,7 +53,6 @@ const TextFieldSx = {
 interface Props {
     startDate?: string; // INFO: on Create mode, this dialog always needs a startDate!
     event?: TCalendarEvent; // INFO: on Edit mode, we use this
-    onLoad?: VoidFunction;
     onSubmit: (e: CalendarEventReq) => Promise<any>;
     onClose: VoidFunction;
 }
@@ -61,7 +60,6 @@ interface Props {
 const CreateUpdateForm: FC<Props> = ({
     startDate,
     event,
-    onLoad,
     onSubmit,
     onClose,
 }) => {

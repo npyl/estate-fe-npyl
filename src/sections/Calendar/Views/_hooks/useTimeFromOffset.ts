@@ -1,5 +1,5 @@
 import { DAY_CELL_HEIGHT, START_HOUR, TOTAL_HOURS } from "@/constants/calendar";
-import { useCallback } from "react";
+import { useCallback, MouseEvent } from "react";
 
 interface HourMinureRes {
     hour: number;
@@ -32,8 +32,11 @@ const getTimeFromOffset = (offsetY: number): HourMinureRes => {
     return { hour, minute };
 };
 
-const useTimeFromOffset = (date: Date, callback: (date: string) => void) => {
-    const onClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+const useTimeFromOffset = (
+    date: Date,
+    callback: (e: MouseEvent<HTMLDivElement>, date: string) => void
+) => {
+    const onClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
         // Get the target element and its bounding rectangle
         const element = e.currentTarget;
         const rect = element.getBoundingClientRect();
@@ -47,7 +50,7 @@ const useTimeFromOffset = (date: Date, callback: (date: string) => void) => {
         date.setHours(res.hour);
         date.setMinutes(res.minute);
 
-        callback(date.toISOString());
+        callback(e, date.toISOString());
     }, []);
 
     return { onClick };

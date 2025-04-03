@@ -1,48 +1,28 @@
-import Dialog from "@/components/Dialog";
 import Form from "./form";
-import {
-    StyledDialogActions,
-    StyledDialogContent,
-    StyledDialogTitle,
-} from "./styled";
 import { FC } from "react";
-import { SxProps, Theme } from "@mui/material/styles";
-import useEventMutations from "./View/useEventMutations";
-
-// -----------------------------------------------------------------
-
-const DialogSx: SxProps<Theme> = {
-    "& .MuiDialogTitle-root": {
-        display: "none",
-    },
-};
+import useEventMutations from "@/sections/Calendar/Event/View/useEventMutations";
+import Popover from "@/sections/Calendar/Event/Popover";
 
 // -----------------------------------------------------------------
 
 interface Props {
-    onClose: VoidFunction;
     startDate: string;
+    anchorEl: HTMLDivElement;
+    onClose: VoidFunction;
 }
 
-const CreateEventDialog: FC<Props> = ({ startDate, onClose }) => {
+const CreateEventPopover: FC<Props> = ({ startDate, anchorEl, onClose }) => {
     const { createEvent } = useEventMutations();
 
     return (
-        <Dialog
-            open
-            sx={DialogSx}
-            DialogTitleComponent={StyledDialogTitle}
-            DialogContentComponent={StyledDialogContent}
-            DialogActionsComponent={StyledDialogActions}
-            content={
-                <Form
-                    startDate={startDate}
-                    onSubmit={createEvent}
-                    onClose={onClose}
-                />
-            }
-        />
+        <Popover open anchorEl={anchorEl} onClose={onClose}>
+            <Form
+                startDate={startDate}
+                onSubmit={createEvent}
+                onClose={onClose}
+            />
+        </Popover>
     );
 };
 
-export default CreateEventDialog;
+export default CreateEventPopover;

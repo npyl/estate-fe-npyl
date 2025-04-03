@@ -23,7 +23,7 @@ const usePopoverPosition = () => {
 
         // Create a ResizeObserver to monitor height changes
         resizeObserver.current = new ResizeObserver((entries) => {
-            for (const entry of entries) {
+            for (const _ of entries) {
                 updatePositioning();
             }
         });
