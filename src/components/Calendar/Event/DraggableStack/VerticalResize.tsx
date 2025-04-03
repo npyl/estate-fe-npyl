@@ -7,6 +7,8 @@ import {
 } from "react";
 import { Box, SxProps, Theme } from "@mui/material";
 import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
+import { CellPosition } from "./types";
+import updateDurationLabelAsync from "./useDraggable/updateDuration";
 
 const ResizeHandleSx: SxProps<Theme> = {
     position: "absolute",
@@ -21,12 +23,14 @@ const ResizeHandleSx: SxProps<Theme> = {
 
 interface VerticalResizeProps extends PropsWithChildren {
     targetRef: MutableRefObject<HTMLDivElement | null>;
+    cellsRef: MutableRefObject<CellPosition[]>;
     event: TCalendarEvent;
     onResizeEnd?: TOnEventResizeEnd;
 }
 
 const VerticalResize: FC<VerticalResizeProps> = ({
     targetRef,
+    cellsRef,
     event,
     onResizeEnd,
     children,
@@ -64,6 +68,9 @@ const VerticalResize: FC<VerticalResizeProps> = ({
 
             // Simply set the new height without constraints
             targetRef.current.style.height = `${newHeight}px`;
+
+            // Update duration
+            updateDurationLabelAsync(targetRef.current, cellsRef);
         },
         [targetRef]
     );

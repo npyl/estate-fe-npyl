@@ -63,6 +63,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
             >
                 <VerticalResize
                     event={event}
+                    cellsRef={cellsRef}
                     targetRef={elementRef}
                     onResizeEnd={onResizeEnd}
                 >
