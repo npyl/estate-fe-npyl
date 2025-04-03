@@ -1,4 +1,4 @@
-import { CalendarCellProps, TCalendarEvent } from "@/components/Calendar/types";
+import { CalendarCellProps } from "@/components/Calendar/types";
 import dynamic from "next/dynamic";
 import { ComponentType, useCallback, useState } from "react";
 import useTimeFromOffset from "../_hooks/useTimeFromOffset";
@@ -31,9 +31,7 @@ const WithTimeOffsetClick = (Cell: AnyCalendarCell) => {
         );
     };
 
-    WrappedComponent.displayName = `WithTimeOffsetClick(${
-        Cell.displayName || Cell.name || "Component"
-    })`;
+    WrappedComponent.displayName = `WithTimeOffsetClick(Cell)`;
 
     return WrappedComponent;
 };

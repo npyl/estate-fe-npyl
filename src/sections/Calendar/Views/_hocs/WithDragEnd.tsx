@@ -22,9 +22,7 @@ const WithDragEnd = (Cell: AnyCalendarCell) => {
         return <Cell {...props} onEventDragEnd={handleDragEnd} />;
     };
 
-    WrappedComponent.displayName = `WithDragEnd(${
-        Cell.displayName || Cell.name || "Component"
-    })`;
+    WrappedComponent.displayName = `WithDragEnd(Cell)`;
 
     return WrappedComponent;
 };

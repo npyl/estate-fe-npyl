@@ -75,13 +75,11 @@ type TCalendarEvent = {
 
 // ------------------------------------------------------------------------
 
-type CalendarMouseEvent = MouseEvent<
-    HTMLDivElement & { event: TCalendarEvent }
->;
+type TOnEventClick = (
+    ce: TCalendarEvent,
+    me: MouseEvent<HTMLDivElement>
+) => void;
 
-// ------------------------------------------------------------------------
-
-type TOnEventClick = (e: CalendarMouseEvent) => void;
 type TOnEventDragEnd = (
     e: TCalendarEvent,
     startDate: string,
@@ -172,9 +170,6 @@ interface CalendarProps {
 export { isTCalendarEventType, CALENDAR_COLOR_FALLBACK };
 
 export type {
-    // ...
-    CalendarMouseEvent,
-
     // ...
     TCalendarEvent,
     TCalendarEventType,

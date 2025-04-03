@@ -1,19 +1,14 @@
 import { FC } from "react";
 import { Stack, SxProps, Theme } from "@mui/material";
-import {
-    CalendarCellProps,
-    CalendarMouseEvent,
-    TCalendarEvent,
-} from "../../types";
+import { CalendarCellProps, TCalendarEvent, TOnEventClick } from "../../types";
 import CompactCalendarEvent from "../../Event/Compact";
 import HighlightTypography from "../../HighlightTypography";
 import { TODAY } from "@/components/BaseCalendar/constants";
 
 // ------------------------------------------------------------------
 
-const getEvent =
-    (onClick?: (e: CalendarMouseEvent) => void) => (e: TCalendarEvent) =>
-        <CompactCalendarEvent key={e.id} event={e} onClick={onClick} />;
+const getEvent = (onClick?: TOnEventClick) => (e: TCalendarEvent) =>
+    <CompactCalendarEvent key={e.id} event={e} onClick={onClick} />;
 
 // ------------------------------------------------------------------
 

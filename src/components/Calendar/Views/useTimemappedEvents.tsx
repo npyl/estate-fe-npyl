@@ -1,7 +1,6 @@
 import { ComponentType, useMemo } from "react";
 import dynamic from "next/dynamic";
 import {
-    CalendarMouseEvent,
     TCalendarEvent,
     TOnEventClick,
     TOnEventDragEnd,
