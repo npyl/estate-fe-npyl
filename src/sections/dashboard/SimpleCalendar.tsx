@@ -1,5 +1,5 @@
 import { Paper, styled } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback } from "react";
 import React from "react";
 import Numbering from "@/components/Calendar/Views/Numbering";
 import CalendarGoogle from "@/components/CalendarGoogle";
@@ -8,16 +8,11 @@ import CalendarGoogleDayView from "@/components/CalendarGoogle/Views/Day";
 import {
     CalendarCellProps,
     CalendarDayViewProps,
-    CalendarMouseEvent,
 } from "@/components/Calendar/types";
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
-import dynamic from "next/dynamic";
 import { DAY_CELL_HEIGHT } from "@/constants/calendar";
 import useTimemappedEvents from "@/components/Calendar/Views/useTimemappedEvents";
-const EventDialog = dynamic(() => import("@/sections/Calendar/Event/View"), {
-    ssr: false,
-});
 
 // ------------------------------------------------------------------------
 
@@ -84,8 +79,8 @@ interface DayCell extends CalendarCellProps {
 
 const Cell: FC<DayCell> = ({
     events,
-    onEventClick,
-    onEventDragEnd: _,
+    onEventClick: _0,
+    onEventDragEnd: _1,
     onFirstEventLoad,
 }) => {
     const getEventProps = useCallback(
@@ -96,7 +91,7 @@ const Cell: FC<DayCell> = ({
     const EVENTS = useTimemappedEvents(
         events,
         // ...
-        onEventClick,
+        undefined,
         undefined,
         undefined,
         // ...
@@ -115,9 +110,6 @@ const Cell: FC<DayCell> = ({
 // -----------------------------------------------------------------------------------
 
 const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
-    const [mouseEvent, setMouseEvent] = useState<CalendarMouseEvent>();
-    const closeDialog = useCallback(() => setMouseEvent(undefined), []);
-
     // Scroll to first event on load
     const handleFirstLoad = useCallback((top: number) => {
         const element = document.getElementById("simple-calendar-day-view");
@@ -129,29 +121,14 @@ const CustomDayView: FC<CalendarDayViewProps> = ({ events = [], ...props }) => {
     }, []);
 
     return (
-        <>
-            <StyledDayView
-                id="simple-calendar-day-view"
-                Numbering={StyledNumbering}
-                Cell={(props) => (
-                    <Cell
-                        {...props}
-                        onEventClick={setMouseEvent}
-                        onFirstEventLoad={handleFirstLoad}
-                    />
-                )}
-                {...props}
-            />
-
-            {mouseEvent ? (
-                <EventDialog
-                    actions={false}
-                    anchorEl={mouseEvent.currentTarget}
-                    event={mouseEvent.currentTarget.event}
-                    onClose={closeDialog}
-                />
-            ) : null}
-        </>
+        <StyledDayView
+            id="simple-calendar-day-view"
+            Numbering={StyledNumbering}
+            Cell={(props) => (
+                <Cell {...props} onFirstEventLoad={handleFirstLoad} />
+            )}
+            {...props}
+        />
     );
 };
 
