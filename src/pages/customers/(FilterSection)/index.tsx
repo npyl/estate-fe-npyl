@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { PaperProps, Stack } from "@mui/material";
+import { Box, PaperProps, Stack } from "@mui/material";
 import {
     resetState,
     setSorting,
@@ -64,7 +64,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 
     const filterMoreContent = (
         <Stack gap={1}>
-            <ChosenFilters />
+            <Box width={"100%"} mb={1}>
+                <ChosenFilters sx={{ flexWrap: "wrap", gap: 0.5 }} />
+            </Box>
             <BasicFilters />
             <FilterBuyerLeaserAndMoreInMoreSection />
             <ParentCategoryInMore />
@@ -95,7 +97,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     </>
                 }
                 bottomContent={
-                    changedCustomerFilters > 0 ? <ChosenFilters /> : null
+                    changedCustomerFilters > 0 ? (
+                        <ChosenFilters sx={{ flexWrap: "wrap", gap: 0.5 }} />
+                    ) : null
                 }
                 controls={
                     <FilterSortBy

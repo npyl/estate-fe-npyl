@@ -67,7 +67,7 @@ export default function FilterMore({
         : "";
 
     return (
-        <Dialog maxWidth="xl" onClose={onClose} {...props}>
+        <Dialog maxWidth="lg" onClose={onClose} {...props}>
             <StyledDialogTitle textAlign="center">
                 {t("Filters")}
             </StyledDialogTitle>
