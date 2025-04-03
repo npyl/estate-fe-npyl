@@ -1,11 +1,12 @@
 import {
     forwardRef,
-    useState,
     useRef,
     useCallback,
     MutableRefObject,
+    PropsWithChildren,
+    FC,
 } from "react";
-import { Stack, StackProps, Box, SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
 
 const ResizeHandleSx: SxProps<Theme> = {
@@ -16,111 +17,78 @@ const ResizeHandleSx: SxProps<Theme> = {
     zIndex: 10,
 };
 
-const ResizableStackSx: SxProps<Theme> = {
-    position: "relative",
-    overflow: "visible",
-};
-
-interface VerticalResizeProps extends Omit<StackProps, "onResize"> {
+interface VerticalResizeProps extends PropsWithChildren {
     targetRef: MutableRefObject<HTMLDivElement | null>;
-
     event: TCalendarEvent;
     onResizeEnd?: TOnEventResizeEnd;
 }
 
-const VerticalResize = forwardRef<HTMLDivElement, VerticalResizeProps>(
-    (
-        {
-            children,
-            sx,
-            targetRef,
-            minHeight = 40,
-            maxHeight = "none",
-            event,
-            onResizeEnd,
-            ...props
+const VerticalResize: FC<VerticalResizeProps> = ({
+    targetRef,
+    event,
+    onResizeEnd,
+    children,
+}) => {
+    const isResizing = useRef(false);
+
+    const startYRef = useRef(0);
+    const startHeightRef = useRef(0);
+
+    const onResizeStart = useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+
+            if (!targetRef.current) return;
+
+            isResizing.current = true;
+
+            startYRef.current = e.clientY;
+            startHeightRef.current = targetRef.current.offsetHeight;
+
+            document.addEventListener("mousemove", handleResizeMove);
+            document.addEventListener("mouseup", handleResizeEnd);
         },
-        ref
-    ) => {
-        const isResizing = useRef(false);
+        [targetRef]
+    );
 
-        const startYRef = useRef(0);
-        const startHeightRef = useRef(0);
+    const handleResizeMove = useCallback(
+        (e: MouseEvent) => {
+            e.stopPropagation();
 
-        const onResizeStart = useCallback(
-            (e: React.MouseEvent<HTMLDivElement>) => {
-                e.stopPropagation();
+            if (!isResizing.current || !targetRef.current) return;
 
-                if (!targetRef.current) return;
+            const deltaY = e.clientY - startYRef.current;
+            const newHeight = startHeightRef.current + deltaY;
 
-                isResizing.current = true;
+            // Simply set the new height without constraints
+            targetRef.current.style.height = `${newHeight}px`;
+        },
+        [targetRef]
+    );
 
-                startYRef.current = e.clientY;
-                startHeightRef.current = targetRef.current.offsetHeight;
+    const handleResizeEnd = useCallback(
+        (e: MouseEvent) => {
+            e.stopPropagation();
 
-                document.addEventListener("mousemove", handleResizeMove);
-                document.addEventListener("mouseup", handleResizeEnd);
-            },
-            [targetRef]
-        );
+            isResizing.current = false;
 
-        const handleResizeMove = useCallback(
-            (e: MouseEvent) => {
-                e.stopPropagation();
+            document.removeEventListener("mousemove", handleResizeMove);
+            document.removeEventListener("mouseup", handleResizeEnd);
 
-                if (!isResizing.current || !targetRef.current) return;
+            if (!onResizeEnd || !targetRef.current) return;
 
-                const deltaY = e.clientY - startYRef.current;
-                const newHeight = startHeightRef.current + deltaY;
+            onResizeEnd(event, targetRef.current.offsetHeight);
+        },
+        [event, onResizeEnd]
+    );
 
-                // Apply constraints if minHeight and maxHeight are numbers
-                const constrainedHeight =
-                    typeof minHeight === "number" && newHeight < minHeight
-                        ? minHeight
-                        : typeof maxHeight === "number" && newHeight > maxHeight
-                        ? maxHeight
-                        : newHeight;
-
-                targetRef.current.style.height = `${constrainedHeight}px`;
-            },
-            [targetRef, minHeight, maxHeight]
-        );
-
-        const handleResizeEnd = useCallback(
-            (e: MouseEvent) => {
-                e.stopPropagation();
-
-                isResizing.current = false;
-
-                document.removeEventListener("mousemove", handleResizeMove);
-                document.removeEventListener("mouseup", handleResizeEnd);
-
-                if (!onResizeEnd || !targetRef.current) return;
-
-                onResizeEnd(event, targetRef.current.offsetHeight);
-            },
-            [event, onResizeEnd]
-        );
-
-        return (
-            <Stack
-                ref={ref}
-                sx={{
-                    ...ResizableStackSx,
-                    minHeight,
-                    maxHeight,
-                    height: "auto",
-                    ...sx,
-                }}
-                {...props}
-            >
-                {children}
-
-                <Box sx={ResizeHandleSx} onMouseDown={onResizeStart} />
-            </Stack>
-        );
-    }
-);
+    return (
+        <>
+            {children}
+            <Box sx={ResizeHandleSx} onMouseDown={onResizeStart} />
+        </>
+    );
+};
 
 VerticalResize.displayName = "VerticalResize";
 

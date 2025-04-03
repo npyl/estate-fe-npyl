@@ -1,4 +1,11 @@
-import { IconButton, PopoverActions, Stack, Typography } from "@mui/material";
+import {
+    IconButton,
+    PopoverActions,
+    Stack,
+    SxProps,
+    Theme,
+    Typography,
+} from "@mui/material";
 import Popover from "./Popover";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
@@ -19,6 +26,13 @@ const DeleteButton = dynamic(() => import("./DeleteButton"));
 const EditForm = dynamic(() => import("../form"));
 
 // ---------------------------------------------------------------------------
+
+const DescriptionSx: SxProps<Theme> = {
+    bgcolor: (theme) =>
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[700],
+};
 
 interface Props {
     anchorEl: any;
@@ -114,7 +128,10 @@ const EventPopover: FC<Props> = ({
                         </Typography>
                     </Stack>
 
-                    <Description content={event?.description} />
+                    <Description
+                        content={event?.description}
+                        containerSx={DescriptionSx}
+                    />
 
                     <PeopleSection people={event?.people} type={event?.type} />
                 </Stack>

@@ -1,4 +1,4 @@
-import Editor from "@/components/Editor";
+import Editor, { EditorProps } from "@/components/Editor";
 import { SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 
@@ -7,21 +7,24 @@ import { FC } from "react";
 const DescriptionSx: SxProps<Theme> = {
     px: 1,
     height: "100%",
-    bgcolor: (theme) =>
-        theme.palette.mode === "light"
-            ? theme.palette.neutral?.[200]
-            : theme.palette.neutral?.[700],
+    bgcolor: "transparent",
     borderRadius: "5px",
 };
 
 // ---------------------------------------------------------------------------
 
-interface Props {
+interface Props extends EditorProps {
     content: string;
 }
 
-const Description: FC<Props> = ({ content }) => (
-    <Editor editable={false} content={content} containerSx={DescriptionSx} />
+const Description: FC<Props> = ({ content, containerSx, ...props }) => (
+    <Editor
+        className="PPEvent-Description"
+        editable={false}
+        content={content}
+        containerSx={{ ...DescriptionSx, ...containerSx }}
+        {...props}
+    />
 );
 
 export default Description;
