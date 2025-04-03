@@ -6,17 +6,16 @@ import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
-import DraggableStack from "./DraggableStack";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
 import Description from "./_shared/Description";
 import { useCalendarColorById } from "@/services/calendar";
-import { alpha } from "@mui/material/styles";
+import ColoredContainer from "./ColoredContainer";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
 
 // ------------------------------------------------------------------------------------
 
-const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
+const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
 
     const marginLeft = 1 + c * LF;
@@ -24,7 +23,7 @@ const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
     const zIndex = Z_INDEX.EVENT + c;
 
     return {
-        backgroundColor: alpha(bgcolor, 0.4),
+        backgroundColor: "background.paper",
         borderRadius: 1,
         boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.4)",
 
@@ -40,6 +39,9 @@ const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
         userSelect: "none",
 
         cursor: "pointer",
+
+        // INFO: prevent editor from overflowing
+        overflowY: "hidden",
 
         "&:hover": {
             zIndex: Z_INDEX.HEADER - 1,
@@ -93,9 +95,10 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         }
 
         return (
-            <DraggableStack
+            <ColoredContainer
                 ref={onRef}
-                sx={getEventSx(bgcolor, overlapCount)}
+                bgcolor={bgcolor as any}
+                sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
                 event={event}
@@ -122,7 +125,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                         ) : null}
                     </>
                 ) : null}
-            </DraggableStack>
+            </ColoredContainer>
         );
     }
 );

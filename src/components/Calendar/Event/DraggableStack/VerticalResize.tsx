@@ -1,5 +1,4 @@
 import {
-    forwardRef,
     useRef,
     useCallback,
     MutableRefObject,
@@ -10,6 +9,9 @@ import { Box, SxProps, Theme } from "@mui/material";
 import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
 
 const ResizeHandleSx: SxProps<Theme> = {
+    position: "absolute",
+    bottom: -5,
+
     width: "100%",
     height: "10px",
     cursor: "ns-resize",
