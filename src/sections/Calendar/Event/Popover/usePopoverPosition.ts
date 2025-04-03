@@ -1,14 +1,14 @@
-import { PopoverActions } from "@mui/material";
 import { useCallback, useEffect, useRef } from "react";
+import { Instance } from "@popperjs/core";
 
 const usePopoverPosition = () => {
     // INFO: when EditForm loads, it causes a big shift to the popover's height
     // which makes the (previous) optimal position (calculated by popper.js internally) wrong!
     // Make sure we get a good positioning after EditForm load!
-    const actionsRef = useRef<PopoverActions>(null);
+    const actionsRef = useRef<Instance>(null);
 
     const updatePositioning = useCallback(
-        () => actionsRef.current?.updatePosition(),
+        () => actionsRef.current?.update(),
         []
     );
 

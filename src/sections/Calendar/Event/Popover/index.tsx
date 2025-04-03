@@ -1,43 +1,64 @@
 import getBorderColor from "@/theme/borderColor";
-import Popover, { PopoverProps } from "@mui/material/Popover";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import usePopoverPosition from "./usePopoverPosition";
+import {
+    ClickAwayListener,
+    Paper,
+    Popper,
+    PopperProps,
+    SxProps,
+    Theme,
+} from "@mui/material";
+import { Z_INDEX } from "@/constants/config";
 
-interface EventPopoverProps
+const PaperSx: SxProps<Theme> = {
+    minWidth: "300px",
+    maxWidth: "500px",
+    height: "fit-content",
+    p: 1,
+    boxShadow: 20,
+    borderColor: getBorderColor,
+};
+
+interface EventPopperProps
     extends Omit<
-        PopoverProps,
-        "action" | "anchorOrigin" | "transformOrigin" | "slotProps"
-    > {}
+        PopperProps,
+        | "action"
+        | "anchorOrigin"
+        | "transformOrigin"
+        | "slotProps"
+        | "children"
+        | "onClose"
+    > {
+    children: ReactNode;
+    onClose: VoidFunction;
+}
 
-const EventPopover: FC<EventPopoverProps> = (props) => {
+const EventPopover: FC<EventPopperProps> = ({
+    children,
+    sx,
+    onClose,
+    ...props
+}) => {
     const { actionsRef, onPaperRef } = usePopoverPosition();
 
     return (
-        <Popover
-            action={actionsRef}
-            anchorOrigin={{ horizontal: "right", vertical: "center" }}
-            transformOrigin={{ horizontal: "left", vertical: "center" }}
-            slotProps={{
-                paper: {
-                    sx: {
-                        minWidth: "300px",
-                        maxWidth: "500px",
-                        height: "fit-content",
-                        p: 1,
-                        boxShadow: 20,
-                        borderColor: getBorderColor,
-                    },
-                    variant: "outlined",
-                    ref: onPaperRef,
-                },
-                root: {
-                    sx: {
-                        ml: 0.5,
-                    },
-                },
-            }}
-            {...props}
-        />
+        <ClickAwayListener onClickAway={onClose}>
+            <Popper
+                popperRef={actionsRef}
+                placement="right"
+                sx={{
+                    m: 1,
+                    zIndex: Z_INDEX.POPOVER,
+                    ...sx,
+                }}
+                {...props}
+            >
+                <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">
+                    {children}
+                </Paper>
+            </Popper>
+        </ClickAwayListener>
     );
 };
 
