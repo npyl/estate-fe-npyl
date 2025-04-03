@@ -1,6 +1,12 @@
 import { ComponentType, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { CalendarMouseEvent, TCalendarEvent } from "../types";
+import {
+    CalendarMouseEvent,
+    TCalendarEvent,
+    TOnEventClick,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+} from "../types";
 import { EventProps } from "../Event/types";
 const CalendarEvent = dynamic(() => import("../Event"));
 
@@ -52,17 +58,19 @@ const getOverlapCount = (
  * Returns an array of pre-rendered Events with calculated overlap counts
  * @template TCustomProps - Additional props that can be passed to the EventComponent
  * @param events - Array of calendar events
+ *
  * @param onEventClick - Optional click handler for events
  * @param onEventDragEnd - Optional drag end handler for events
+ * @param onEventDragEnd - Optional drag end handler for events
+ *
  * @param EventComponent - (for customisation) This should be used if you want to implement a custom component (must conform to Event's props)
  * @param EventProps - (for customisation) pass some props to this custom element
  */
 function useTimemappedEvents<TCustomProps extends object = object>(
     events: TCalendarEvent[],
-    onEventClick: ((e: CalendarMouseEvent) => void) | undefined,
-    onEventDragEnd:
-        | ((e: TCalendarEvent, startDate: string, endDate: string) => void)
-        | undefined,
+    onEventClick: TOnEventClick | undefined,
+    onEventDragEnd: TOnEventDragEnd | undefined,
+    onEventResizeEnd: TOnEventResizeEnd | undefined,
     EventComponent: ComponentType<
         EventProps & TCustomProps
     > = CalendarEvent as ComponentType<EventProps & TCustomProps>,
@@ -94,6 +102,7 @@ function useTimemappedEvents<TCustomProps extends object = object>(
                     overlapCount={overlapCount}
                     onClick={onEventClick}
                     onDragEnd={onEventDragEnd}
+                    onResizeEnd={onEventResizeEnd}
                     {...(EventProps?.(i) || ({} as TCustomProps))}
                 />
             );
@@ -102,7 +111,13 @@ function useTimemappedEvents<TCustomProps extends object = object>(
         }
 
         return results;
-    }, [timestampedEvents, onEventClick, onEventDragEnd, EventProps]);
+    }, [
+        timestampedEvents,
+        onEventClick,
+        onEventDragEnd,
+        onEventResizeEnd,
+        EventProps,
+    ]);
 }
 
 export default useTimemappedEvents;

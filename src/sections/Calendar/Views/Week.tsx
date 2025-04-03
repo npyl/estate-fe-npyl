@@ -7,11 +7,12 @@ import { useFiltersContext } from "../Filters/context";
 import WithEventClick from "./_hocs/WithEventClick";
 import WithTimeOffsetClick from "./_hocs/WithTimeOffsetClick";
 import WithDragEnd from "./_hocs/WithDragEnd";
+import WithResize from "./_hocs/WithResize";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithDragEnd(
-    WithTimeOffsetClick(WithEventClick(CalendarWeekViewCell))
+const Cell = WithResize(
+    WithDragEnd(WithTimeOffsetClick(WithEventClick(CalendarWeekViewCell)))
 );
 
 // --------------------------------------------------------------------------

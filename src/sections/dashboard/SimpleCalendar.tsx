@@ -95,7 +95,9 @@ const Cell: FC<DayCell> = ({
 
     const EVENTS = useTimemappedEvents(
         events,
+        // ...
         onEventClick,
+        undefined,
         undefined,
         // ...
         CustomCalendarEvent,

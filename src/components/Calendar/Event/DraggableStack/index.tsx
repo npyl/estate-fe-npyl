@@ -2,9 +2,14 @@ import { forwardRef } from "react";
 import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
-import { TCalendarEvent } from "../../types";
+import {
+    TCalendarEvent,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+} from "../../types";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import DurationUpdateStack from "./DurationUpdateStack";
+import VerticalResize from "./VerticalResize";
 
 // -------------------------------------------------------------------------------------
 
@@ -24,11 +29,15 @@ const StackSx: SxProps<Theme> = {
 
 interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
-    onDragEnd?: (e: TCalendarEvent, startDate: string, endDate: string) => void;
+    onDragEnd?: TOnEventDragEnd;
+    onResizeEnd?: TOnEventResizeEnd;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
-    ({ event, sx, onClick, onDragEnd, ...props }, ref) => {
+    (
+        { event, sx, onClick, onDragEnd, onResizeEnd, children, ...props },
+        ref
+    ) => {
         const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
 
         const { cellsRef } = useResponsiveCellPositions();
@@ -51,7 +60,15 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
                 onMouseDown={onMouseDown}
                 onClick={onClick}
                 {...props}
-            />
+            >
+                <VerticalResize
+                    event={event}
+                    targetRef={elementRef}
+                    onResizeEnd={onResizeEnd}
+                >
+                    {children}
+                </VerticalResize>
+            </DurationUpdateStack>
         );
     }
 );

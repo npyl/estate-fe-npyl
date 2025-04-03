@@ -81,14 +81,20 @@ type CalendarMouseEvent = MouseEvent<
 
 // ------------------------------------------------------------------------
 
+type TOnEventClick = (e: CalendarMouseEvent) => void;
+type TOnEventDragEnd = (
+    e: TCalendarEvent,
+    startDate: string,
+    endDate: string
+) => void;
+type TOnEventResizeEnd = (e: TCalendarEvent, h: number) => void;
+
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
-    onEventClick?: (e: CalendarMouseEvent) => void;
-    onEventDragEnd?: (
-        e: TCalendarEvent,
-        startDate: string,
-        endDate: string
-    ) => void;
+
+    onEventClick?: TOnEventClick;
+    onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeEnd?: TOnEventResizeEnd;
 
     getMiscCellEvents: TGetMiscCellEventsCb;
 }
@@ -124,7 +130,7 @@ interface ViewEvents {
     getCellEvents?: TGetCellEventsCb;
     getMiscCellEvents?: TGetMiscCellEventsCb;
 
-    onEventClick?: (e: CalendarMouseEvent) => void;
+    onEventClick?: TOnEventClick;
 }
 
 type CalendarDayViewProps<
@@ -180,6 +186,12 @@ export type {
     TGetCellEventsCb,
     TGetMiscCellEventsCb,
     CalendarNumberingProps,
+
+    // ...
+    TOnEventClick,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+
     // ...
     CalendarCellProps,
     // ...
