@@ -1,4 +1,4 @@
-import { CalendarCellProps } from "@/components/Calendar/types";
+import { CalendarCellProps, TCalendarEvent } from "@/components/Calendar/types";
 import dynamic from "next/dynamic";
 import {
     ComponentType,
@@ -6,17 +6,40 @@ import {
     useRef,
     useState,
     MouseEvent,
+    useMemo,
 } from "react";
 import useTimeFromOffset from "../_hooks/useTimeFromOffset";
 import useAuthenticatedClick from "../_hooks/useAuthenticatedClick";
+import uuidv4 from "@/utils/uuidv4";
 
 const CreateEventPopover = dynamic(() => import("../../Event/Create"));
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
+const getEndDate = (startDate: string) => {
+    const endDate = new Date(startDate);
+    endDate.setHours(endDate.getHours() + 1);
+    return endDate.toISOString();
+};
+
+const getEventWith = (startDate: string): TCalendarEvent => ({
+    id: uuidv4(),
+    startDate,
+    endDate: getEndDate(startDate),
+    title: "",
+    type: "TASK",
+    colorId: "",
+    description: "",
+    location: "",
+    people: [],
+});
+
 const WithTimeOffsetClick = (Cell: AnyCalendarCell) => {
     // INFO: Make sure to return a named component instead of an anonymous function
-    const WrappedComponent = (props: CalendarCellProps) => {
+    const WrappedComponent = ({
+        events: _events,
+        ...props
+    }: CalendarCellProps) => {
         const anchorRef = useRef<HTMLDivElement>();
 
         const [startDate, setStartDate] = useState("");
@@ -32,9 +55,18 @@ const WithTimeOffsetClick = (Cell: AnyCalendarCell) => {
         const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);
         const { onAuthenticatedClick } = useAuthenticatedClick(onClick);
 
+        const events = useMemo(
+            () => (startDate ? [..._events, getEventWith(startDate)] : _events),
+            [_events, startDate]
+        );
+
         return (
             <>
-                <Cell {...props} onClick={onAuthenticatedClick} />
+                <Cell
+                    events={events}
+                    {...props}
+                    onClick={onAuthenticatedClick}
+                />
 
                 {startDate && anchorRef.current ? (
                     <CreateEventPopover

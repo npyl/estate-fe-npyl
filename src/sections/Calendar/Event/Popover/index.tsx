@@ -20,6 +20,11 @@ const PaperSx: SxProps<Theme> = {
     borderColor: getBorderColor,
 };
 
+const PopperSx: SxProps<Theme> = {
+    m: 1,
+    zIndex: Z_INDEX.POPOVER,
+};
+
 interface EventPopperProps
     extends Omit<
         PopperProps,
@@ -47,11 +52,7 @@ const EventPopover: FC<EventPopperProps> = ({
             <Popper
                 popperRef={actionsRef}
                 placement="right"
-                sx={{
-                    m: 1,
-                    zIndex: Z_INDEX.POPOVER,
-                    ...sx,
-                }}
+                sx={{ ...PopperSx, ...sx }}
                 {...props}
             >
                 <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">

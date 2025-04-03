@@ -90,8 +90,6 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             );
         }
 
-        console.log("EFTASA!");
-
         return (
             <ColoredContainer
                 ref={onRef}
