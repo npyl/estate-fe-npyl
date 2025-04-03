@@ -19,4 +19,5 @@ const ColoredContainer = forwardRef<HTMLDivElement, ColoredContainerProps>(
 
 ColoredContainer.displayName = "ColoredContainer";
 
+export type { ColoredContainerProps };
 export default ColoredContainer;

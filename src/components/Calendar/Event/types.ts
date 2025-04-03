@@ -1,8 +1,11 @@
 import { TOnEventClick } from "../types";
-import { DraggableStackProps } from "./DraggableStack";
+import { ColoredContainerProps } from "./ColoredContainer";
 
 interface EventProps
-    extends Omit<DraggableStackProps, "ref" | "onClick" | "overlapCount"> {
+    extends Omit<
+        ColoredContainerProps,
+        "ref" | "bgcolor" | "onClick" | "overlapCount"
+    > {
     overlapCount?: number;
     onClick?: TOnEventClick;
 }

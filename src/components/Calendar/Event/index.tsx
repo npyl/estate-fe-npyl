@@ -90,10 +90,12 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             );
         }
 
+        console.log("EFTASA!");
+
         return (
             <ColoredContainer
                 ref={onRef}
-                bgcolor={bgcolor as any}
+                bgcolor={bgcolor}
                 sx={getEventSx(overlapCount)}
                 top={top}
                 height={maxHeight}
