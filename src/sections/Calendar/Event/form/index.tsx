@@ -44,7 +44,7 @@ const PeopleLoader = () => {
     return null;
 };
 
-// ------------------------------------------------------------------------
+// ------------------------------------------------------------------
 
 const TextFieldSx = {
     px: 0.5,
@@ -82,16 +82,8 @@ const CreateUpdateForm: FC<Props> = ({
         [onClose]
     );
 
-    const onRef = useCallback(
-        (node: HTMLFormElement | null) => {
-            if (!node) return;
-            onLoad?.();
-        },
-        [onLoad]
-    );
-
     return (
-        <form ref={onRef} onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <FormProvider {...methods}>
                 <Stack spacing={2} minHeight="400px">
                     <RHFTextField

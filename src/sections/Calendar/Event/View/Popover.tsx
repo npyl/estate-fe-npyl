@@ -1,14 +1,16 @@
 import getBorderColor from "@/theme/borderColor";
 import Popover, { PopoverProps } from "@mui/material/Popover";
-import { FC } from "react";
+import { FC, ForwardedRef } from "react";
 
 interface EventPopoverProps
     extends Omit<
         PopoverProps,
         "anchorOrigin" | "transformOrigin" | "slotProps"
-    > {}
+    > {
+    paperRef?: ForwardedRef<HTMLDivElement>;
+}
 
-const EventPopover: FC<EventPopoverProps> = (props) => (
+const EventPopover: FC<EventPopoverProps> = ({ paperRef, ...props }) => (
     <Popover
         anchorOrigin={{ horizontal: "right", vertical: "center" }}
         transformOrigin={{ horizontal: "left", vertical: "center" }}
@@ -17,12 +19,13 @@ const EventPopover: FC<EventPopoverProps> = (props) => (
                 sx: {
                     minWidth: "300px",
                     maxWidth: "500px",
-                    minHeight: "fit-content",
+                    height: "fit-content",
                     p: 1,
                     boxShadow: 20,
                     borderColor: getBorderColor,
                 },
                 variant: "outlined",
+                ref: paperRef,
             },
             root: {
                 sx: {
