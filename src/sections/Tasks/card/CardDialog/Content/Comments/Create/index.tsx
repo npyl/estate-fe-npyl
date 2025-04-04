@@ -1,23 +1,8 @@
-import { SxProps, Theme } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import { ChangeEvent, FC, useCallback, useState } from "react";
-import SaveButton from "./SaveButton";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-
-const TextFieldSx: SxProps<Theme> = {
-    "& .MuiOutlinedInput-root": {
-        height: "48px",
-        borderRadius: "16px",
-
-        input: {
-            "&::placeholder": {
-                fontSize: "15px",
-            },
-        },
-    },
-};
-
-// -------------------------------------------------------------------------
+import { FormProvider, useForm } from "react-hook-form";
+import SaveButton from "./SaveButton";
+import RHFEditor from "@/components/hook-form/RHFEditor";
 
 interface CreateProps {
     cardId: number;
@@ -26,29 +11,30 @@ interface CreateProps {
 const Create: FC<CreateProps> = ({ cardId }) => {
     const { t } = useTranslation();
 
-    const [message, setMessage] = useState("");
-    const handleChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value),
-        []
-    );
-    const handleClear = useCallback(() => setMessage(""), []);
+    const methods = useForm({
+        defaultValues: { message: "" },
+        mode: "onChange",
+    });
+
+    const { reset, watch } = methods;
+    const message = watch("message");
+
+    const handleClear = () => {
+        reset();
+    };
 
     return (
-        <TextField
-            value={message}
-            onChange={handleChange}
-            placeholder={t<string>("Comment") + "..."}
-            sx={TextFieldSx}
-            InputProps={{
-                endAdornment: (
-                    <SaveButton
-                        cardId={cardId}
-                        message={message}
-                        onCreate={handleClear}
-                    />
-                ),
-            }}
-        />
+        <FormProvider {...methods}>
+            <RHFEditor
+                name="message"
+                placeholder={t<string>("Comment") + "..."}
+            />
+            <SaveButton
+                onCreate={handleClear}
+                cardId={cardId}
+                message={message}
+            />
+        </FormProvider>
     );
 };
 

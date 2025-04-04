@@ -4,6 +4,7 @@ import { SxProps, Theme } from "@mui/material/styles";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateCommentMutation } from "@/services/tasks";
+import { Box } from "@mui/material";
 
 const SaveButtonSx: SxProps<Theme> = {
     borderRadius: "12px",
@@ -28,7 +29,7 @@ const SaveButton: FC<SaveButtonProps> = ({ cardId, message, onCreate }) => {
     }, [message]);
 
     return (
-        <InputAdornment position="end">
+        <Box display="flex" justifyContent="flex-end" mt={1.5} mb={1}>
             <Button
                 disabled={!message}
                 variant="contained"
@@ -37,7 +38,7 @@ const SaveButton: FC<SaveButtonProps> = ({ cardId, message, onCreate }) => {
             >
                 {t("Add")}
             </Button>
-        </InputAdornment>
+        </Box>
     );
 };
 
