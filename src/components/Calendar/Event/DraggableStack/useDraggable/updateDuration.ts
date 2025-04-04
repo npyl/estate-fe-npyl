@@ -13,7 +13,7 @@ const updateDurationLabelAsync = async (
 ) => {
     await sleep(300);
 
-    const duration = el.getElementsByClassName("PPEvent-Duration")[0];
+    const duration = el?.getElementsByClassName("PPEvent-Duration")?.[0];
     if (!duration) return;
 
     const elementRect = el.getBoundingClientRect();

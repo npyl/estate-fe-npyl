@@ -1,10 +1,6 @@
 import { Stack, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
-import {
-    CalendarCellProps,
-    CalendarMouseEvent,
-    TCalendarEvent,
-} from "../../types";
+import { CalendarCellProps, TCalendarEvent, TOnEventClick } from "../../types";
 import CompactCalendarEvent from "../../Event/Compact";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import HighlightTypography from "../../HighlightTypography";
@@ -28,16 +24,8 @@ const CellSx: SxProps<Theme> = {
 
 // ------------------------------------------------------------
 
-const getEvent =
-    (onClick?: (e: CalendarMouseEvent) => void) => (e: TCalendarEvent) =>
-        (
-            <CompactCalendarEvent
-                key={e.id}
-                event={e}
-                withDate
-                onClick={onClick}
-            />
-        );
+const getEvent = (onClick?: TOnEventClick) => (e: TCalendarEvent) =>
+    <CompactCalendarEvent key={e.id} event={e} withDate onClick={onClick} />;
 
 // ------------------------------------------------------------
 
@@ -71,6 +59,7 @@ export const CalendarYearViewCell: FC<CalendarCellProps> = ({
     date,
     events,
     onEventClick,
+    getMiscCellEvents: _0,
     ...props
 }) => (
     <Stack sx={CellSx} {...props}>

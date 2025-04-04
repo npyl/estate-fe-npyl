@@ -9,7 +9,7 @@ import Avatar from "@/components/Avatar";
 // ------------------------------------------------------------------
 
 const TextFieldSx: SxProps<Theme> = {
-    minWidth: 180,
+    minWidth: 220,
 };
 
 const AvatarSx: SxProps<Theme> = {
@@ -28,7 +28,7 @@ const getOptionLabel = (o: IUserMini | number) =>
 const OptionSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
-    gap: 1,
+    gap: 0.5,
     width: "100%",
 };
 
@@ -43,7 +43,12 @@ const RenderOption = (
 
     return (
         <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
-            <Avatar src={avatar} firstName={firstName} lastName={lastName} />
+            <Avatar
+                src={avatar}
+                firstName={firstName}
+                lastName={lastName}
+                sx={{ width: 22, height: 22 }}
+            />
             <Typography>{fullname}</Typography>
         </MenuItem>
     );

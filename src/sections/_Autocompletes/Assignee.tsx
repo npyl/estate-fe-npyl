@@ -39,7 +39,7 @@ const AssigneeAutocomplete = forwardRef<
 
     return (
         <Box>
-            <ManagerAutocomplete ref={ref} {...props} />
+            <ManagerAutocomplete ref={ref as any} {...props} />
 
             {assignToMe && user ? (
                 <Button

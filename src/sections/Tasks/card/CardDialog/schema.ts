@@ -30,12 +30,6 @@ const schema = yup.object<IKanbanCardPOST>().shape({
             then: (schema) => schema.required(),
             otherwise: (schema) => schema.transform(() => undefined),
         }),
-
-    googleUserKey: yup.string().when("withCalendar", {
-        is: true,
-        then: (schema) => schema.required(),
-        otherwise: (schema) => schema.transform(() => undefined),
-    }),
 });
 
 export default schema;

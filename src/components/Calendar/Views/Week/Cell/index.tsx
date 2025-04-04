@@ -1,0 +1,66 @@
+import { CSSProperties, FC } from "react";
+import { CalendarCellProps } from "../../../types";
+import useTimemappedEvents from "../../useTimemappedEvents";
+import { TODAY } from "@/components/BaseCalendar/constants";
+import NowIndicator from "../../NowIndicator";
+import dynamic from "next/dynamic";
+import VerticalDivider from "./VerticalDivider";
+import { CELL_CLASSNAME } from "@/components/Calendar/Event/DraggableStack/useDraggable";
+const MiscCell = dynamic(() => import("../../MiscCell"));
+
+// -------------------------------------------------------------------------
+
+const CellStyle: CSSProperties = {
+    position: "relative",
+    height: "100%",
+};
+
+const ContainerStyle: CSSProperties = {
+    position: "relative",
+};
+
+// -------------------------------------------------------------------------
+
+const CalendarWeekViewCell: FC<CalendarCellProps> = ({
+    date,
+    events: _events,
+    getMiscCellEvents,
+    onEventClick,
+    onEventDragEnd,
+    onEventResizeEnd,
+    style,
+    ...props
+}) => {
+    const [events, miscEvents] = getMiscCellEvents(_events);
+
+    const EVENTS = useTimemappedEvents(
+        events,
+        onEventClick,
+        onEventDragEnd,
+        onEventResizeEnd
+    );
+    const isToday = TODAY.toDateString() === date.toDateString();
+
+    return (
+        <div style={ContainerStyle}>
+            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+
+            <div
+                className={CELL_CLASSNAME}
+                data-date={date.toISOString()}
+                style={{ ...CellStyle, ...style }}
+                {...props}
+            >
+                {/* Events */}
+                {EVENTS}
+
+                {/* Today Indicator */}
+                {isToday ? <NowIndicator /> : null}
+            </div>
+
+            <VerticalDivider />
+        </div>
+    );
+};
+
+export default CalendarWeekViewCell;

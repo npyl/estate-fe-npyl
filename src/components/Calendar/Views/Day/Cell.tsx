@@ -3,39 +3,56 @@ import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
-const TodayIndicator = dynamic(() => import("../TodayIndicator"));
+import MiscCell from "../MiscCell";
+import { CELL_CLASSNAME } from "@/components/Calendar/Event/DraggableStack/useDraggable";
+const NowIndicator = dynamic(() => import("../NowIndicator"));
 
 // ------------------------------------------------------------------
 
 // INFO: this is important to act as a full-height container
-const ViewStyle: CSSProperties = {
+const CellStyle: CSSProperties = {
     height: "100%",
     position: "relative",
 };
 
 const CalendarDayViewCell: FC<CalendarCellProps> = ({
     date,
-    events,
+    events: _events,
+    getMiscCellEvents,
     onEventClick,
     onEventDragEnd,
+    onEventResizeEnd,
     style,
     ...props
 }) => {
-    const EVENTS = useTimemappedEvents(events, onEventClick, onEventDragEnd);
-    const isToday = TODAY.toDateString() === date.toDateString();
-    return (
-        <div
-            className="PPCell"
-            data-date={date.toISOString()}
-            style={{ ...ViewStyle, ...style }}
-            {...props}
-        >
-            {/* Events */}
-            {EVENTS}
+    const [events, miscEvents] = getMiscCellEvents(_events);
 
-            {/* Today Indicator */}
-            {isToday ? <TodayIndicator /> : null}
-        </div>
+    const EVENTS = useTimemappedEvents(
+        events,
+        // ...
+        onEventClick,
+        onEventDragEnd,
+        onEventResizeEnd
+    );
+    const isToday = TODAY.toDateString() === date.toDateString();
+
+    return (
+        <>
+            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+
+            <div
+                className={CELL_CLASSNAME}
+                data-date={date.toISOString()}
+                style={{ ...CellStyle, ...style }}
+                {...props}
+            >
+                {/* Events */}
+                {EVENTS}
+
+                {/* Today Indicator */}
+                {isToday ? <NowIndicator /> : null}
+            </div>
+        </>
     );
 };
 

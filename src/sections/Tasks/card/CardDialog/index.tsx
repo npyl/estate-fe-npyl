@@ -44,10 +44,6 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
             values: getValues(task),
         });
 
-    // INFO: flag to know whether we are editing (w/ calendar);
-    // Here, it is important to differenciate between a normal edit and an edit w/ calendar
-    const haveEvent = Boolean(task?.event);
-
     const [createOrUpdate] = useCreateOrUpdateTaskMutation();
 
     const handleSubmit = useCallback(async (d: ICreateOrUpdateTaskReq) => {
@@ -81,8 +77,8 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
                         // ...
                         createdAt={task?.createdAt}
                         updatedAt={task?.updatedAt}
-                        // ...
-                        haveEvent={haveEvent}
+                        reporter={task?.reporter}
+                        updatedBy={task?.updatedBy}
                     />
                 }
                 actions={

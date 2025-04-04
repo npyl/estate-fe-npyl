@@ -1,48 +1,44 @@
-import Dialog from "@/components/Dialog";
-import Form from "./form";
+import Form, { FormRef } from "./form";
+import { FC, useCallback, useLayoutEffect, useRef } from "react";
+import useEventMutations from "@/sections/Calendar/Event/View/useEventMutations";
+import Popover from "@/sections/Calendar/Event/Popover";
 import {
-    StyledDialogActions,
-    StyledDialogContent,
-    StyledDialogTitle,
-} from "./styled";
-import { FC } from "react";
-import { SxProps, Theme } from "@mui/material/styles";
-import useEventMutations from "./View/useEventMutations";
-
-// -----------------------------------------------------------------
-
-const DialogSx: SxProps<Theme> = {
-    "& .MuiDialogTitle-root": {
-        display: "none",
-    },
-};
-
-// -----------------------------------------------------------------
+    DatesDetail,
+    UPDATE_DATES_NAME,
+} from "../View/PopperContext/updateDates";
 
 interface Props {
-    onClose: VoidFunction;
     startDate: string;
+    anchorEl: HTMLDivElement;
+    onClose: VoidFunction;
 }
 
-const CreateEventDialog: FC<Props> = ({ startDate, onClose }) => {
+const CreateEventPopover: FC<Props> = ({ startDate, anchorEl, onClose }) => {
     const { createEvent } = useEventMutations();
 
+    const formRef = useRef<FormRef>(null);
+    const updateDates = useCallback((e: CustomEventInit<DatesDetail>) => {
+        const { startDate, endDate } = e.detail || {};
+        if (!startDate || !endDate) return;
+        formRef.current?.updateDates(startDate, endDate);
+    }, []);
+    useLayoutEffect(() => {
+        document.addEventListener(UPDATE_DATES_NAME, updateDates);
+        return () => {
+            document.removeEventListener(UPDATE_DATES_NAME, updateDates);
+        };
+    }, []);
+
     return (
-        <Dialog
-            open
-            sx={DialogSx}
-            DialogTitleComponent={StyledDialogTitle}
-            DialogContentComponent={StyledDialogContent}
-            DialogActionsComponent={StyledDialogActions}
-            content={
-                <Form
-                    startDate={startDate}
-                    onSubmit={createEvent}
-                    onClose={onClose}
-                />
-            }
-        />
+        <Popover open anchorEl={anchorEl}>
+            <Form
+                ref={formRef}
+                startDate={startDate}
+                onSubmit={createEvent}
+                onClose={onClose}
+            />
+        </Popover>
     );
 };
 
-export default CreateEventDialog;
+export default CreateEventPopover;

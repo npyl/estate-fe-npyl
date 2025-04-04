@@ -1,8 +1,8 @@
-import { IconButton, PopoverActions, Stack, Typography } from "@mui/material";
-import Popover from "./Popover";
+import { IconButton, Stack, SxProps, Theme, Typography } from "@mui/material";
+import Popover from "../Popover";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
-import { FC, useCallback, useRef } from "react";
+import { FC } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import Duration from "@/components/Calendar/Event/_shared/Duration";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,6 +19,13 @@ const DeleteButton = dynamic(() => import("./DeleteButton"));
 const EditForm = dynamic(() => import("../form"));
 
 // ---------------------------------------------------------------------------
+
+const DescriptionSx: SxProps<Theme> = {
+    bgcolor: (theme) =>
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[700],
+};
 
 interface Props {
     anchorEl: any;
@@ -46,17 +53,8 @@ const EventPopover: FC<Props> = ({
         onClose();
     };
 
-    // INFO: when EditForm loads, it causes a big shift to the popover's height
-    // which makes the (previous) optimal position (calculated by popper.js internally) wrong!
-    // Make sure we get a good positioning after EditForm load!
-    const popoverRef = useRef<PopoverActions>(null);
-    const updatePositioning = useCallback(
-        () => popoverRef.current?.updatePosition(),
-        []
-    );
-
     return (
-        <Popover open anchorEl={anchorEl} action={popoverRef} onClose={onClose}>
+        <Popover open anchorEl={anchorEl}>
             <SpaceBetween width={1} direction="row" alignItems="center">
                 {!isEdit ? (
                     <Typography
@@ -83,7 +81,6 @@ const EventPopover: FC<Props> = ({
             {isEdit ? (
                 <EditForm
                     event={event}
-                    onLoad={updatePositioning}
                     onSubmit={handleEdit}
                     onClose={closeEdit}
                 />
@@ -114,7 +111,10 @@ const EventPopover: FC<Props> = ({
                         </Typography>
                     </Stack>
 
-                    <Description content={event?.description} />
+                    <Description
+                        content={event?.description}
+                        containerSx={DescriptionSx}
+                    />
 
                     <PeopleSection people={event?.people} type={event?.type} />
                 </Stack>

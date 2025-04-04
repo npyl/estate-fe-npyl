@@ -1,9 +1,11 @@
 import {
     BaseCalendarCellProps,
     BaseCalendarDayViewProps,
+    BaseCalendarHeaderProps,
     BaseCalendarHeaderSlots,
     BaseCalendarMonthViewProps,
     BaseCalendarSlots,
+    BaseCalendarViewProps,
     BaseCalendarWeekViewProps,
     BaseCalendarYearViewProps,
     TCalendarView,
@@ -75,27 +77,39 @@ type TCalendarEvent = {
 
 // ------------------------------------------------------------------------
 
-type CalendarMouseEvent = MouseEvent<
-    HTMLDivElement & { event: TCalendarEvent }
->;
+type TOnEventClick = (
+    ce: TCalendarEvent,
+    me: MouseEvent<HTMLDivElement>
+) => void;
 
-// ------------------------------------------------------------------------
+type TOnEventDragEnd = (
+    e: TCalendarEvent,
+    startDate: string,
+    endDate: string
+) => void;
+type TOnEventResizeEnd = (e: TCalendarEvent, h: number) => void;
 
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
-    onEventClick?: (e: CalendarMouseEvent) => void;
-    onEventDragEnd?: (
-        e: TCalendarEvent,
-        startDate: string,
-        endDate: string
-    ) => void;
+
+    onEventClick?: TOnEventClick;
+    onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeEnd?: TOnEventResizeEnd;
+
+    getMiscCellEvents: TGetMiscCellEventsCb;
 }
 
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
 
 // ------------------------------------------------------------------------
 
-interface CalendarSlots extends BaseCalendarSlots {}
+interface CalendarHeaderProps extends BaseCalendarHeaderProps {}
+interface CalendarViewProps extends BaseCalendarViewProps {}
+
+interface CalendarSlots<
+    H extends CalendarHeaderProps = CalendarHeaderProps,
+    V extends CalendarViewProps = CalendarViewProps
+> extends BaseCalendarSlots<H, V> {}
 
 // ------------------------------------------------------------------------
 
@@ -108,11 +122,21 @@ type TGetCellEventsCb = (
     date: Date
 ) => TCalendarEvent[];
 
+type TGetMiscCellEventsCb = (
+    events: TCalendarEvent[]
+) => [TCalendarEvent[], TCalendarEvent[]];
+
+/**
+ * @param miscEvents events shown at the top of the cell; they are compact and can represent allDay events or notes or anything of general manner
+ */
 interface ViewEvents {
     events?: TCalendarEvent[];
+    miscEvents?: TCalendarEvent[];
     filters?: object;
     getCellEvents?: TGetCellEventsCb;
-    onEventClick?: (e: CalendarMouseEvent) => void;
+    getMiscCellEvents?: TGetMiscCellEventsCb;
+
+    onEventClick?: TOnEventClick;
 }
 
 type CalendarDayViewProps<
@@ -155,9 +179,6 @@ export { isTCalendarEventType, CALENDAR_COLOR_FALLBACK };
 
 export type {
     // ...
-    CalendarMouseEvent,
-
-    // ...
     TCalendarEvent,
     TCalendarEventType,
     TCalendarEventPerson,
@@ -166,8 +187,18 @@ export type {
 
     // ...
     TGetCellEventsCb,
-    CalendarCellProps,
+    TGetMiscCellEventsCb,
     CalendarNumberingProps,
+
+    // ...
+    TOnEventClick,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+
+    // ...
+    CalendarHeaderProps,
+    CalendarViewProps,
+    CalendarCellProps,
     // ...
     CalendarDayViewProps,
     CalendarWeekViewProps,

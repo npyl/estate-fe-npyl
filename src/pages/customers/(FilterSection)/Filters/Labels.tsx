@@ -51,7 +51,7 @@ export default function FilterLabels() {
     return (
         <FormControl
             sx={{
-                minWidth: "130px",
+                width: "220px",
                 maxHeight: "38px",
 
                 display: {

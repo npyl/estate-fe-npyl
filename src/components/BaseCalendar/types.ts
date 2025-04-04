@@ -92,9 +92,12 @@ interface BaseCalendarViewProps extends HTMLAttributes<HTMLDivElement> {
 
 // --------------------------------------------------------------
 
-interface BaseCalendarSlots {
-    Header: ComponentType<BaseCalendarHeaderProps>;
-    View: ComponentType<BaseCalendarViewProps>;
+interface BaseCalendarSlots<
+    H extends BaseCalendarHeaderProps = BaseCalendarHeaderProps,
+    V extends BaseCalendarViewProps = BaseCalendarViewProps
+> {
+    Header: ComponentType<H>;
+    View: ComponentType<V>;
 }
 
 interface BaseCalendarProps extends HTMLAttributes<HTMLDivElement> {

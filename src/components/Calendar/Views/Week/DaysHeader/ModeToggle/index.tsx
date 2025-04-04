@@ -4,6 +4,7 @@ import SundayIcon from "./Sunday";
 import IconButton from "@mui/material/IconButton";
 import { useCallback } from "react";
 import useModeCookie from "@/components/BaseCalendar/useModeCookie";
+import { MODE_TOGGLE_WIDTH } from "../constants";
 
 const ModeToggle = () => {
     const [mode, set] = useModeCookie();
@@ -14,7 +15,11 @@ const ModeToggle = () => {
     }, [mode]);
 
     return (
-        <Stack width="50px" justifyContent="center" alignItems="center">
+        <Stack
+            width={MODE_TOGGLE_WIDTH}
+            justifyContent="center"
+            alignItems="center"
+        >
             <IconButton onClick={handleToggle}>
                 {mode === "monToSun" ? <SundayIcon /> : <MondayIcon />}
             </IconButton>

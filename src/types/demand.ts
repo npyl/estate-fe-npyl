@@ -1,3 +1,4 @@
+import { Nullable } from "./common";
 import { IPropertyFeatures } from "./features";
 import { KeyValue } from "./KeyValue";
 import { TShape } from "./shape";
@@ -28,22 +29,23 @@ export interface IDemandFilters {
 }
 
 export interface IDemandFiltersPOST {
-    minBedrooms: number;
-    maxBedrooms: number;
-    minBathrooms: number;
-    maxBathrooms: number;
+    minBedrooms: Nullable<number>;
+    maxBedrooms: Nullable<number>;
+    minBathrooms: Nullable<number>;
+    maxBathrooms: Nullable<number>;
+    maxCovered: Nullable<number>;
+    minCovered: Nullable<number>;
+    minPlot: Nullable<number>;
+    maxPlot: Nullable<number>;
+    minYearOfConstruction: Nullable<number>;
+    maxYearOfConstruction: Nullable<number>;
+    minFloor: Nullable<string>;
+    maxFloor: Nullable<string>;
+    minPrice: Nullable<number>;
+    maxPrice: Nullable<number>;
+
     furnished: string[];
-    maxCovered: number;
-    minCovered: number;
-    minPlot: number;
-    maxPlot: number;
-    minYearOfConstruction: number;
-    maxYearOfConstruction: number;
-    minFloor: string | null;
-    maxFloor: string | null;
     states: string[];
-    minPrice: number;
-    maxPrice: number;
     labels: number[];
     cities: string[];
     regions: string[];

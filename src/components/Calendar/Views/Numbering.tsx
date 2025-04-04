@@ -18,9 +18,9 @@ const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 const DividerSx: CSSProperties = {
     position: "absolute",
     width: "100%",
-    zIndex: Z_INDEX.DIVIDER,
     left: 0,
     right: 0,
+    zIndex: Z_INDEX.DIVIDER,
 };
 
 interface NumberItemProps {
@@ -68,13 +68,15 @@ const getRow = (hour: number) => <NumberItem key={hour} hour={hour} />;
 // ------------------------------------------------------------------------------------------
 
 const columnStyle: CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
     height: "max-content", // INFO: this is important!
 };
 
 const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (
-    <div style={{ ...columnStyle, ...style }} {...props}>
+    <div
+        className="PPCalendar-Numbering"
+        style={{ ...columnStyle, ...style }}
+        {...props}
+    >
         {/* Rows */}
         {hours.map(getRow)}
     </div>

@@ -109,7 +109,14 @@ const ChosenFilters: FC<StackProps> = (props) => {
             {ids.map((key, index) => {
                 const values = changedProps[key];
                 let label = filterTags[key].label;
-                if (!values || !label) return <></>;
+                if (
+                    values === undefined ||
+                    values === null ||
+                    (Array.isArray(values) && values.length === 0) ||
+                    !label
+                ) {
+                    return null;
+                }
 
                 const isRole =
                     key === "leaser" ||

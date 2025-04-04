@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { PaperProps, Stack } from "@mui/material";
+import { Box, PaperProps, Stack } from "@mui/material";
 import {
     resetState,
     setSorting,
@@ -25,6 +25,10 @@ import FilterSortBy from "@/sections/Filters/SortBy";
 import { useDispatch } from "react-redux";
 import PriceSelect from "./Filters/Price";
 import AreaSelect from "./Filters/Area";
+import BasicFilters from "./Filters/BasicFilters";
+import FilterBuyerLeaserAndMoreInMoreSection from "./Filters/BuyerLeaserAndMoreInMoreSection";
+import ParentCategoryInMore from "./Filters/ParentCategoryInMore";
+import FilterCategoryInMore from "./Filters/CategoryInMore";
 const FilterMore = dynamic(
     () => import("@/sections/Filters/FilterMore/Dialog")
 );
@@ -58,6 +62,18 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
         </>
     );
 
+    const filterMoreContent = (
+        <Stack gap={1}>
+            <Box width={"100%"} mb={1}>
+                <ChosenFilters sx={{ flexWrap: "wrap", gap: 0.5 }} />
+            </Box>
+            <BasicFilters />
+            <FilterBuyerLeaserAndMoreInMoreSection />
+            <ParentCategoryInMore />
+            <FilterCategoryInMore />
+        </Stack>
+    );
+
     const belowLg = useResponsive("down", "lg");
 
     const options = useMemo(() => getOptions(t), [t]);
@@ -81,7 +97,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     </>
                 }
                 bottomContent={
-                    changedCustomerFilters > 0 ? <ChosenFilters /> : null
+                    changedCustomerFilters > 0 ? (
+                        <ChosenFilters sx={{ flexWrap: "wrap", gap: 0.5 }} />
+                    ) : null
                 }
                 controls={
                     <FilterSortBy
@@ -99,8 +117,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
                     onResetFilter={handleResetAll}
                 >
                     <Stack width={1} spacing={1} px={6} mt={1}>
-                        {filterContent}
-                        <FilterStatus />
+                        {filterMoreContent}
                     </Stack>
                 </FilterMore>
             ) : null}

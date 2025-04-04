@@ -23,11 +23,11 @@ const DayView: FC<BaseCalendarDayViewProps> = ({
     ...props
 }) => (
     <div
-        {...props}
         style={{
             ...defaultStyle,
             ...style,
         }}
+        {...props}
     >
         <Numbering />
 

@@ -65,16 +65,17 @@ interface CodeAutocompleteMultipleProps
 const CodeAutocompleteMultiple = forwardRef<
     HTMLElement,
     CodeAutocompleteMultipleProps
->(({ error, helperText, ...props }, ref) => (
+>(({ label, error, helperText, ...props }, ref) => (
     <CodeSelect<true>
-        ref={ref}
+        ref={ref as any}
         multiple
         getOptionLabel={getOptionLabel}
         renderTags={RenderTags}
-        renderInput={(props) => (
+        renderInput={(other) => (
             <MultilineTextField
                 multiline
-                {...props}
+                label={label}
+                {...other}
                 error={error}
                 helperText={helperText}
             />

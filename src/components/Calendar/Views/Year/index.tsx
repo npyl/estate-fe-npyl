@@ -1,7 +1,7 @@
 import YearView from "@/components/BaseCalendar/View/Year";
 import { FC } from "react";
 import { CalendarYearViewProps } from "../../types";
-import { _getTodaysEvents } from "../util";
+import { _getMiscCellEvents, _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
 const CalendarYearViewCell = dynamic(() => import("./Cell"));
 
@@ -9,10 +9,12 @@ const CalendarYearViewCell = dynamic(() => import("./Cell"));
 
 const Year: FC<CalendarYearViewProps> = ({
     events = [],
+    miscEvents: _0,
     Cell: PassedCell,
     date,
     // ...
     getCellEvents = _getTodaysEvents,
+    getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
     ...props
@@ -26,6 +28,7 @@ const Year: FC<CalendarYearViewProps> = ({
                 <Cell
                     {...props}
                     events={getCellEvents(events, props.date)}
+                    getMiscCellEvents={getMiscCellEvents}
                     onEventClick={onEventClick}
                 />
             )}

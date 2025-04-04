@@ -1,5 +1,4 @@
 import CalendarGoogle from "@/components/CalendarGoogle";
-import StyledHeader from "./Header";
 
 import dynamic from "next/dynamic";
 
@@ -14,6 +13,8 @@ const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
 import useResponsive from "@/hooks/useResponsive";
 import { useState } from "react";
 import { TODAY } from "@/components/BaseCalendar/constants";
+import View from "./View";
+import Header from "./Header";
 
 const MobileControls = dynamic(() => import("./MobileControls"));
 
@@ -43,7 +44,8 @@ const CalendarSection = () => {
                     YearView: CalendarGoogleYearView,
                 }}
                 slots={{
-                    Header: StyledHeader,
+                    Header,
+                    View,
                 }}
                 HeaderSlots={{
                     // disable on mobile

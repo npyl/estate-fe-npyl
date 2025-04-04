@@ -1,6 +1,5 @@
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
-import PriorityButtonGroup from "./Priority";
 import { FC, useCallback } from "react";
 import Buttons from "./Buttons";
 import Divider from "@mui/material/Divider";
@@ -11,7 +10,6 @@ import dynamic from "next/dynamic";
 import PropertiesAutocompleteMultiple from "@/sections/_Autocompletes/RHFCodeMultiple";
 import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
 import AssigneeSelect from "./Autocompletes/Assignee";
-import { AttachmentsProvider } from "./AttachmentsContext";
 import RHFEditor from "@/components/hook-form/RHFEditor";
 const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
@@ -50,48 +48,54 @@ const PropertiesAutocomplete = () => {
 
 // -----------------------------------------------------------------
 
+interface Reporter {
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+}
+
+interface UpdatedBy {
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+}
+
 interface ContentProps {
     cardId?: number;
     createdAt?: string;
     updatedAt?: string;
-    // ...
-    haveEvent: boolean;
+    reporter?: Reporter;
+
+    updatedBy?: UpdatedBy;
 }
 
 const Content: FC<ContentProps> = ({
     cardId,
     createdAt,
     updatedAt,
-    // ...
-    haveEvent,
+    reporter,
+    updatedBy,
 }) => {
     const { t } = useTranslation();
 
     const isEdit = Boolean(cardId);
-
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
-            <AttachmentsProvider>
-                <Buttons cardId={cardId} />
-                <Attachments cardId={cardId} />
-            </AttachmentsProvider>
+            <RHFTextField name="name" label={t("Title")} />
+
+            <Buttons />
             {/* ------------------------ */}
 
-            <Divider />
-            <WithCalendar edit={haveEvent} />
-            <Divider />
+            <Attachments cardId={cardId} />
 
-            <RHFTextField name="name" label={t("Title")} />
             <RHFEditor name="description" rows={5} />
 
             <PropertiesAutocomplete />
             <CustomerAutocomplete />
             <AssigneeSelect />
 
-            <Stack alignItems="center">
-                <PriorityButtonGroup />
-            </Stack>
+            <WithCalendar />
 
             <Labels cardId={cardId} />
 
@@ -101,7 +105,12 @@ const Content: FC<ContentProps> = ({
                 <>
                     <Divider />
                     {isEdit ? <AssigneeHistory cardId={cardId!} /> : null}
-                    <MiscInfo createdAt={createdAt} updatedAt={updatedAt} />
+                    <MiscInfo
+                        createdAt={createdAt}
+                        updatedAt={updatedAt}
+                        reporter={reporter} //not working yet
+                        updatedBy={updatedBy}
+                    />
                 </>
             ) : null}
         </Stack>

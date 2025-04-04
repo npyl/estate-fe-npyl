@@ -71,7 +71,19 @@ const Popover: FC<PopoverProps> = ({
     );
 
     return (
-        <MuiPopover open anchorEl={anchorEl} onClose={onClose}>
+        <MuiPopover
+            open
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                horizontal: "right",
+                vertical: "bottom",
+            }}
+            transformOrigin={{
+                horizontal: "center",
+                vertical: "top",
+            }}
+            onClose={onClose}
+        >
             <ToggleButtonGroup
                 exclusive
                 orientation="vertical"

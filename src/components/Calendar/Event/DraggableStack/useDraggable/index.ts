@@ -1,138 +1,131 @@
-import { MouseEvent, RefObject, useCallback, useRef } from "react";
-import getOverlapRatio from "./getOverlapRatio";
+import { type MouseEvent, RefObject, useCallback, useRef } from "react";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import updateDurationLabelAsync from "./updateDuration";
-import { Z_INDEX } from "@/constants/calendar";
+import getOverlapRatio from "./getOverlapRatio";
 
 const DRAG_THRESHOLD = 5; // pixels
-const SNAP_THRESHOLD = 0.5; // 50% overlap required for snapping
+const CELL_CLASSNAME = "PPCalendar-Cell";
 
 const useDraggable = (
     event: TCalendarEvent,
-    overlapCount: number,
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
-    onClick: ((e: MouseEvent<HTMLDivElement>) => void) | undefined,
     onDragEnd:
         | ((event: TCalendarEvent, startDate: string, endDate: string) => void)
         | undefined
 ) => {
     const dragRef = useRef({
         isDragging: false,
-        startPos: { x: 0, y: 0 },
-        elementPos: { x: 0, y: 0 },
-        movement: 0,
+        startPosition: { x: 0, y: 0 },
+        initialTransform: { x: 0, y: 0 },
+        rafId: 0,
     });
 
-    const onMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    const updatePosition = useCallback((e: globalThis.MouseEvent) => {
         const drag = dragRef.current;
         if (!drag.isDragging || !elementRef.current) return;
 
-        const deltaX = e.clientX - drag.startPos.x;
-        const deltaY = e.clientY - drag.startPos.y;
-
-        // Update movement tracking
-        drag.movement += Math.hypot(deltaX, deltaY);
-
-        // Update element position
-        const newPos = {
-            x: drag.elementPos.x + deltaX,
-            y: drag.elementPos.y + deltaY,
-        };
-        elementRef.current.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
-
-        drag.startPos = { x: e.clientX, y: e.clientY };
-        drag.elementPos = newPos;
-
-        updateDurationLabelAsync(e.currentTarget, cellsRef);
-    }, []);
-
-    const findSnapTarget = useCallback(() => {
-        if (!elementRef.current) return null;
-
-        const elementRect = elementRef.current.getBoundingClientRect();
-
-        return cellsRef.current?.reduce((best, cell) => {
-            const overlap = getOverlapRatio(elementRect, cell);
-
-            return overlap > (best?.overlap ?? 0) && overlap >= SNAP_THRESHOLD
-                ? { cell: cell.element, overlap }
-                : best;
-        }, null as { cell: HTMLElement; overlap: number } | null);
-    }, []);
-
-    const onMouseDown = useCallback((e: MouseEvent) => {
-        e.stopPropagation();
-        const drag = dragRef.current;
-
-        drag.isDragging = true;
-        drag.startPos = { x: e.clientX, y: e.clientY };
-        drag.movement = 0;
-
-        if (elementRef.current) {
-            elementRef.current.style.transition = "none";
-            elementRef.current.style.cursor = "grabbing";
-            elementRef.current.style.zIndex = String(Z_INDEX.HEADER); // Add this line
-        }
-    }, []);
-
-    const onMouseUp = useCallback(
-        (e: MouseEvent<HTMLDivElement>) => {
-            e.stopPropagation();
+        // Update element position using requestAnimationFrame
+        drag.rafId = requestAnimationFrame(() => {
             if (!elementRef.current) return;
+
+            const newX =
+                drag.initialTransform.x + (e.clientX - drag.startPosition.x);
+            const newY =
+                drag.initialTransform.y + (e.clientY - drag.startPosition.y);
+
+            elementRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
+        });
+    }, []);
+
+    const handleMouseUp = useCallback(
+        (e: globalThis.MouseEvent) => {
+            if (!elementRef.current) return;
+
+            unregisterMovement();
 
             const drag = dragRef.current;
             if (!drag.isDragging) return;
             drag.isDragging = false;
 
-            elementRef.current.style.transition = "transform 0.2s ease";
-            elementRef.current.style.cursor = "grab";
-            elementRef.current.style.zIndex = String(
-                Z_INDEX.EVENT + (overlapCount || 0)
+            // Calculate total movement to determine if this was a click or drag
+            const totalMovement = Math.hypot(
+                e.clientX - drag.startPosition.x,
+                e.clientY - drag.startPosition.y
             );
 
             // Handle click vs drag
-            if (drag.movement <= DRAG_THRESHOLD) {
-                onClick?.(e);
+            if (totalMovement <= DRAG_THRESHOLD) {
+                // Create a synthetic event using React's SyntheticEvent pattern
+                const syntheticEvent = new MouseEvent("click", {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window,
+                });
+
+                // Dispatch the click event on the element
+                elementRef.current.dispatchEvent(syntheticEvent);
                 return;
             }
 
-            // Handle snap
-            const target = findSnapTarget();
-            if (target && elementRef.current) {
-                const elementRect = elementRef.current.getBoundingClientRect();
-                const cellRect = target.cell.getBoundingClientRect();
+            // Find the PPCell that contains the center of the draggable element
+            const elementRect = elementRef.current.getBoundingClientRect();
+            const elementCenter = elementRect.left + elementRect.width / 2;
+            const cells = document.getElementsByClassName(CELL_CLASSNAME);
 
-                const newX =
-                    cellRect.left -
-                    elementRect.left +
-                    drag.elementPos.x +
-                    (cellRect.width - elementRect.width) / 2;
+            for (const cell of cells) {
+                const cellRect = cell.getBoundingClientRect();
+                if (
+                    elementCenter >= cellRect.left &&
+                    elementCenter <= cellRect.right
+                ) {
+                    const result = calculateNewDates(
+                        cell as HTMLElement,
+                        elementRect
+                    );
+                    if (!result || !onDragEnd) return;
 
-                elementRef.current.style.transform = `translate(${newX}px, ${drag.elementPos.y}px)`;
-                drag.elementPos.x = newX;
-
-                //
-                // Calculate new date with time
-                //
-
-                if (!onDragEnd) return;
-
-                const { startDate, endDate } =
-                    calculateNewDates(target.cell, elementRect) || {};
-
-                // TODO: maybe reset event's position to the one before drag!
-                if (!startDate || !endDate) return;
-
-                onDragEnd(event, startDate, endDate);
+                    const { startDate, endDate } = result;
+                    onDragEnd(event, startDate, endDate);
+                    return;
+                }
             }
         },
-        [onClick, onDragEnd]
+        [onDragEnd]
     );
 
-    return { onMouseDown, onMouseMove, onMouseUp };
+    const onMouseDown = useCallback((e: MouseEvent) => {
+        e.stopPropagation();
+        if (!elementRef.current) return;
+
+        // Get current transform once
+        const transform = window.getComputedStyle(elementRef.current).transform;
+        const matrix = new DOMMatrix(transform);
+
+        // Store only what we need
+        const drag = dragRef.current;
+        drag.isDragging = true;
+        drag.startPosition = { x: e.clientX, y: e.clientY };
+        drag.initialTransform = { x: matrix.m41, y: matrix.m42 };
+
+        registerMovement();
+    }, []);
+
+    const registerMovement = useCallback(() => {
+        document.addEventListener("mousemove", updatePosition);
+        document.addEventListener("mouseup", handleMouseUp);
+    }, []);
+
+    const unregisterMovement = useCallback(() => {
+        document.removeEventListener("mousemove", updatePosition);
+        document.removeEventListener("mouseup", handleMouseUp);
+        cancelAnimationFrame(dragRef.current.rafId);
+    }, []);
+
+    return { onMouseDown };
 };
 
+export { CELL_CLASSNAME };
 export default useDraggable;

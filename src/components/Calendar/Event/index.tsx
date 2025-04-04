@@ -6,17 +6,16 @@ import Title from "./_shared/Title";
 import { EventProps } from "./types";
 import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
-import DraggableStack from "./DraggableStack";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
 import Description from "./_shared/Description";
 import { useCalendarColorById } from "@/services/calendar";
-import { alpha } from "@mui/material/styles";
+import ColoredContainer from "./ColoredContainer";
 const Bullet = dynamic(() => import("./Bullet"));
 const People = dynamic(() => import("./_shared/People"));
 
 // ------------------------------------------------------------------------------------
 
-const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
+const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
 
     const marginLeft = 1 + c * LF;
@@ -24,7 +23,7 @@ const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
     const zIndex = Z_INDEX.EVENT + c;
 
     return {
-        backgroundColor: alpha(bgcolor, 0.4),
+        backgroundColor: "background.paper",
         borderRadius: 1,
         boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.4)",
 
@@ -41,6 +40,9 @@ const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
 
         cursor: "pointer",
 
+        // INFO: prevent editor from overflowing
+        overflowY: "hidden",
+
         "&:hover": {
             zIndex: Z_INDEX.HEADER - 1,
             boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.55)",
@@ -49,7 +51,7 @@ const getEventSx = (bgcolor: string, overlapCount?: number): SxProps<Theme> => {
 };
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
-    ({ event, overlapCount = 0, onClick, ...props }, ref) => {
+    ({ event, overlapCount = 0, onClick, sx, ...props }, ref) => {
         const { top, height } = calculateTimePosition(
             event.startDate,
             event.endDate
@@ -65,11 +67,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         const handleClick = useCallback(
             (e: MouseEvent<HTMLDivElement>) => {
                 e.stopPropagation();
-
-                onClick?.({
-                    ...e,
-                    currentTarget: { ...e.currentTarget, event },
-                });
+                onClick?.(event, e);
             },
             [onClick, event]
         );
@@ -93,10 +91,10 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         }
 
         return (
-            <DraggableStack
+            <ColoredContainer
                 ref={onRef}
-                sx={getEventSx(bgcolor, overlapCount)}
-                overlapCount={overlapCount}
+                bgcolor={bgcolor}
+                sx={{ ...(getEventSx(overlapCount) as any), ...sx }}
                 top={top}
                 height={maxHeight}
                 event={event}
@@ -106,7 +104,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                 <Title
                     title={event.title}
                     startDate={event.startDate}
-                    endDate={event.startDate}
+                    endDate={event.endDate}
                     type={event.type}
                 />
 
@@ -123,7 +121,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
                         ) : null}
                     </>
                 ) : null}
-            </DraggableStack>
+            </ColoredContainer>
         );
     }
 );

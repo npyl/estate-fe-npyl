@@ -7,12 +7,11 @@ import CalendarGoogleYearView from "@/components/CalendarGoogle/Views/Year";
 import useMonthEvents from "@/components/CalendarGoogle/Views/useMonthEvents";
 import CalendarYearViewCell from "@/components/Calendar/Views/Year/Cell";
 import { useFiltersContext } from "../Filters/context";
-import WithEventClick from "./WithEventClick";
-import WithTimeOffsetClick from "./WithTimeOffsetClick";
+import WithClick from "./_hocs/WithClick";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithTimeOffsetClick(WithEventClick(CalendarYearViewCell));
+const Cell = WithClick(CalendarYearViewCell);
 
 // --------------------------------------------------------------------------
 

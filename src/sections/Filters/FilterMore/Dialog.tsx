@@ -9,6 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { StyledDialogContent } from "./styled";
+import { usePathname } from "next/navigation";
 
 // ----------------------------------------------------------------------
 
@@ -55,9 +56,18 @@ export default function FilterMore({
     ...props
 }: Props) {
     const { t } = useTranslation();
+    const pathname = usePathname();
+    const isPropertyPage = pathname?.includes("property");
+    const isCustomerPage = pathname?.includes("customer");
+
+    const buttonLabel = isPropertyPage
+        ? `${t("See")} ${totalProperties} ${t("properties")}`
+        : isCustomerPage
+        ? `${t("See")} ${t("customers")}`
+        : "";
 
     return (
-        <Dialog maxWidth="md" onClose={onClose} {...props}>
+        <Dialog maxWidth="lg" onClose={onClose} {...props}>
             <StyledDialogTitle textAlign="center">
                 {t("Filters")}
             </StyledDialogTitle>
@@ -73,7 +83,7 @@ export default function FilterMore({
                     onClick={onClose}
                     sx={totalPropertiesButtonSx}
                 >
-                    {t("See")} {totalProperties} {t("properties")}
+                    {buttonLabel}
                 </Button>
             </StyledDialogActions>
         </Dialog>

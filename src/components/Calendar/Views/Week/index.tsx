@@ -1,18 +1,13 @@
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 import WeekView from "@/components/BaseCalendar/View/Week";
-const DefaultNumbering = dynamic(() => import("../Numbering"));
-import { Stack } from "@mui/material";
 import { CalendarWeekViewProps } from "../../types";
-import { _getTodaysEvents } from "../util";
+import { _getMiscCellEvents, _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
 import DaysHeader from "./DaysHeader";
+const DefaultNumbering = dynamic(() => import("../Numbering"));
 const CalendarWeekViewCell = dynamic(() => import("./Cell"));
 
 // -----------------------------------------------------------------------
-
-const ViewStyle: CSSProperties = {
-    position: "relative", // INFO: for Numbering
-};
 
 const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     date,
@@ -21,32 +16,32 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     Numbering: PassedNumbering,
     // ...
     getCellEvents = _getTodaysEvents,
+    getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
     // ...
-    style,
     ...props
 }) => {
     const Cell = PassedCell || CalendarWeekViewCell;
     const Numbering = PassedNumbering || DefaultNumbering;
 
     return (
-        <Stack spacing={2}>
+        <>
             <DaysHeader date={date} />
 
             <WeekView
                 date={date}
-                Cell={(props) => (
+                Cell={(other) => (
                     <Cell
-                        {...props}
-                        events={getCellEvents(events, props.date)}
+                        {...other}
+                        events={getCellEvents(events, other.date)}
+                        getMiscCellEvents={getMiscCellEvents}
                         onEventClick={onEventClick}
                     />
                 )}
                 Numbering={Numbering}
-                style={{ ...ViewStyle, ...style }}
                 {...props}
             />
-        </Stack>
+        </>
     );
 };
 

@@ -1,34 +1,51 @@
-import { forwardRef, MouseEvent } from "react";
-import { Stack, StackProps } from "@mui/material";
+import { forwardRef } from "react";
+import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
-import { TCalendarEvent } from "../../types";
+import {
+    TCalendarEvent,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+} from "../../types";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
+import DurationUpdateStack from "./DurationUpdateStack";
+import VerticalResize from "./VerticalResize";
 
 // -------------------------------------------------------------------------------------
 
-const stopPropagation = (e: MouseEvent) => e.stopPropagation();
+const StackSx: SxProps<Theme> = {
+    position: "absolute",
+    cursor: "grab",
+
+    userSelect: "none",
+
+    // Prevent text selection during drag
+    "&:active": {
+        cursor: "grabbing",
+    },
+};
+
+// ------------------------------------------------------------------------------
 
 interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
     event: TCalendarEvent;
-    overlapCount: number;
-    onDragEnd?: (e: TCalendarEvent, startDate: string, endDate: string) => void;
+    onDragEnd?: TOnEventDragEnd;
+    onResizeEnd?: TOnEventResizeEnd;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
-    ({ event, overlapCount, sx, onClick, onDragEnd, ...props }, ref) => {
+    (
+        { event, sx, onClick, onDragEnd, onResizeEnd, children, ...props },
+        ref
+    ) => {
         const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
 
         const { cellsRef } = useResponsiveCellPositions();
 
-        const { onMouseDown, onMouseMove, onMouseUp } = useDraggable(
+        const { onMouseDown } = useDraggable(
             event,
-            overlapCount,
-            // ...
             elementRef,
             cellsRef,
-            // ...
-            onClick,
             onDragEnd
         );
 
@@ -36,20 +53,23 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
         if (!onDragEnd) return <Stack ref={elementRef} sx={sx} {...props} />;
 
         return (
-            <Stack
+            <DurationUpdateStack
                 ref={elementRef}
-                sx={{
-                    position: "absolute",
-                    cursor: "grab",
-                    transition: "transform 0.2s ease",
-                    ...sx,
-                }}
+                cellsRef={cellsRef}
+                sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
-                onMouseMove={onMouseMove}
-                onMouseUp={onMouseUp}
-                onClick={stopPropagation}
+                onClick={onClick}
                 {...props}
-            />
+            >
+                <VerticalResize
+                    event={event}
+                    cellsRef={cellsRef}
+                    targetRef={elementRef}
+                    onResizeEnd={onResizeEnd}
+                >
+                    {children}
+                </VerticalResize>
+            </DurationUpdateStack>
         );
     }
 );

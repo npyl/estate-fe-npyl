@@ -1,6 +1,6 @@
 import {
     CalendarCellProps,
-    CalendarDayViewProps,
+    CalendarYearViewProps,
 } from "@/components/Calendar/types";
 import { FC } from "react";
 import CalendarYearView from "@/components/Calendar/Views/Year";
@@ -24,7 +24,7 @@ export const CalendarGoogleYearViewCell: FC<YearCellProps> = ({
 
 // --------------------------------------------------------------------
 
-const CalendarGoogleYearView: FC<CalendarDayViewProps> = ({
+const CalendarGoogleYearView: FC<CalendarYearViewProps> = ({
     events = [],
     filters,
     // ...

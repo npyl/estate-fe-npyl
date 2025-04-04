@@ -8,9 +8,9 @@ import {
 import { PROMISE_ERROR } from "./constant";
 
 const useFormMethods = <
-    TFieldValues extends FieldValues,
+    TFieldValues extends FieldValues = FieldValues,
     TContext = any,
-    TTransformedValues extends FieldValues | undefined = undefined
+    TTransformedValues = TFieldValues
 >(
     hasStorage: boolean,
     methods: UseFormReturn<TFieldValues, TContext, TTransformedValues>,
@@ -32,7 +32,7 @@ const useFormMethods = <
                 /**
                  * Wrapper around passed onValid to await-and-clear cookie after successful submit
                  */
-                const onAwaitedValid = async (data: TFieldValues) => {
+                const onAwaitedValid = async (data: TTransformedValues) => {
                     const res = await onValid(data);
 
                     if (typeof res !== "boolean") {
@@ -45,10 +45,7 @@ const useFormMethods = <
                     onSubmitSuccess();
                 };
 
-                return methods.handleSubmit(
-                    onAwaitedValid as any,
-                    onInvalid
-                )(e);
+                return methods.handleSubmit(onAwaitedValid, onInvalid)(e);
             },
             [methods.handleSubmit, onSubmitSuccess]
         );

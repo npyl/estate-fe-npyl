@@ -11,9 +11,30 @@ import { RHFSelect } from "@/components/hook-form";
 
 const useBoardColumns = () => {
     const { data } = useGetBoardQuery({});
-    return data?.columns;
-};
+    const allColumns = data?.columns || [];
 
+    // Define the priority column names in desired order
+    const prioritizedNames = ["To do", "In progress", "Completed"];
+
+    const sortedColumns = allColumns.slice().sort((columnA, columnB) => {
+        const indexA = prioritizedNames.indexOf(columnA.name);
+        const indexB = prioritizedNames.indexOf(columnB.name);
+
+        const isAInPriority = indexA !== -1;
+        const isBInPriority = indexB !== -1;
+
+        if (isAInPriority && isBInPriority) {
+            return indexA - indexB;
+        }
+
+        if (isAInPriority) return -1;
+        if (isBInPriority) return 1;
+
+        return 0; //keep default order
+    });
+
+    return sortedColumns;
+};
 const getOption = ({ id, name }: IKanbanColumn) => (
     <MenuItem key={id} value={id}>
         {name}

@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { calendar } from "@/services/calendar";
 import { properties } from "@/services/properties";
 import { customers } from "@/services/customers";
+import errorToast from "@/components/Toaster/error";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 
@@ -22,39 +23,47 @@ const useCreateOrUpdateTaskMutation = () => {
         async (b: ICreateOrUpdateTaskReq) => {
             startLoading();
 
-            const res = await fetch(`${baseUrl}/${userId}/tasks`, {
-                headers: {
-                    Authorization: `Bearer  ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
-                },
-                body: JSON.stringify(b),
-                method: "POST",
-            });
+            try {
+                const res = await fetch(`${baseUrl}/${userId}/tasks`, {
+                    headers: {
+                        Authorization: `Bearer  ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                    body: JSON.stringify(b),
+                    method: "POST",
+                });
 
-            stopLoading();
+                if (!res.ok) throw await res.json();
 
-            if (!res.ok) return null;
+                dispatch(
+                    tasks.util.invalidateTags(
+                        Boolean(b.id)
+                            ? ["Board", "Card", "AssigneeHistory"]
+                            : ["Board", "Card"]
+                    )
+                );
 
-            dispatch(
-                tasks.util.invalidateTags(
-                    Boolean(b.id)
-                        ? ["Board", "Card", "AssigneeHistory"]
-                        : ["Board", "Card"]
-                )
-            );
+                if (b.properties?.length && b.properties.length > 0)
+                    dispatch(properties.util.invalidateTags(["Tasks"]));
 
-            if (b.properties?.length && b.properties.length > 0)
-                dispatch(properties.util.invalidateTags(["Tasks"]));
+                if (b.customers?.length && b.customers.length > 0)
+                    dispatch(customers.util.invalidateTags(["Tasks"]));
 
-            if (b.customers?.length && b.customers.length > 0)
-                dispatch(customers.util.invalidateTags(["Tasks"]));
+                // INFO: make sure we also update events
+                if (b.withCalendar)
+                    dispatch(calendar.util.invalidateTags(["Events"]));
 
-            // INFO: make sure we also update events
-            if (b.withCalendar)
-                dispatch(calendar.util.invalidateTags(["Events"]));
+                stopLoading();
 
-            return true;
+                return true;
+            } catch (ex) {
+                errorToast("_ERROR_");
+
+                stopLoading();
+
+                return false;
+            }
         },
         [userId]
     );

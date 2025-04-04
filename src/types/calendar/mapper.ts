@@ -7,9 +7,13 @@ import {
     TCalendarEventType,
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
-import { getAllDayStartEnd } from "@/components/Calendar/util";
+import {
+    getAllDayStartEnd,
+    isAllDay as getIsAllDay,
+} from "@/components/Calendar/util";
 import { TCalendarColor } from "@/components/Calendar/types";
 import { toNumberSafe } from "@/utils/toNumber";
+import toLocalDate from "@/utils/toLocalDate";
 
 type TColorDefinition = calendar_v3.Schema$ColorDefinition;
 type TColorEntry = [string, TColorDefinition];
@@ -152,16 +156,20 @@ const TCalendarEventToGCalendarEvent = ({
 }: TCalendarEventReq): calendar_v3.Schema$Event => {
     const preparedPeople = preparePeople(people, type);
 
+    const isAllDay = getIsAllDay(startDate, endDate);
+
     return {
         id,
         summary: title,
         description,
         start: {
-            dateTime: startDate,
+            date: isAllDay ? toLocalDate(startDate) : undefined,
+            dateTime: !isAllDay ? startDate : undefined,
             timeZone: "UTC",
         },
         end: {
-            dateTime: endDate,
+            date: isAllDay ? toLocalDate(endDate) : undefined,
+            dateTime: !isAllDay ? endDate : undefined,
             timeZone: "UTC",
         },
         location,

@@ -37,11 +37,11 @@ const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
 
     return (
         <div
-            {...props}
             style={{
                 ...defaultStyle,
                 ...style,
             }}
+            {...props}
         >
             <Numbering />
 
