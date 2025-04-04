@@ -1,5 +1,5 @@
 import { Button, Skeleton, Stack } from "@mui/material";
-import { FC, useCallback } from "react";
+import { FC, forwardRef, useCallback, useImperativeHandle } from "react";
 import {
     CALENDAR_COLOR_FALLBACK,
     TCalendarEvent,
@@ -57,78 +57,95 @@ interface Props {
     onClose: VoidFunction;
 }
 
-const CreateUpdateForm: FC<Props> = ({
-    startDate,
-    event,
-    onSubmit,
-    onClose,
-}) => {
-    const { t } = useTranslation();
+interface FormRef {
+    updateDates: (startDate: string, endDate: string) => void;
+}
 
-    const methods = useForm<CalendarEventReq>({
-        values: event || getDefault(startDate),
-    });
+const CreateUpdateForm = forwardRef<FormRef, Props>(
+    ({ startDate, event, onSubmit, onClose }, ref) => {
+        const { t } = useTranslation();
 
-    const isDirty = methods.formState.isDirty;
-    const isSubmitting = methods.formState.isSubmitting;
+        const methods = useForm<CalendarEventReq>({
+            values: event || getDefault(startDate),
+        });
 
-    const handleSubmit = useCallback(
-        async (e: CalendarEventReq) => {
-            await onSubmit(e);
-            onClose();
-        },
-        [onClose]
-    );
+        const updateDates = useCallback(
+            (startDate: string, endDate: string) => {
+                methods.setValue("startDate", startDate, { shouldDirty: true });
+                methods.setValue("endDate", endDate, { shouldDirty: true });
+            },
+            []
+        );
+        useImperativeHandle(
+            ref,
+            () => ({
+                updateDates,
+            }),
+            []
+        );
 
-    return (
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
-            <FormProvider {...methods}>
-                <Stack spacing={2} minHeight="400px">
-                    <RHFTextField
-                        variant="standard"
-                        name="title"
-                        placeholder={t<string>("Title")}
-                        sx={TextFieldSx}
-                    />
+        const isDirty = methods.formState.isDirty;
+        const isSubmitting = methods.formState.isSubmitting;
 
-                    <Pickers
-                        startDate={startDate || event?.startDate}
-                        endDate={startDate || event?.endDate}
-                    />
+        const handleSubmit = useCallback(
+            async (e: CalendarEventReq) => {
+                await onSubmit(e);
+                onClose();
+            },
+            [onClose]
+        );
 
-                    <RHFLocation />
+        return (
+            <form onSubmit={methods.handleSubmit(handleSubmit)}>
+                <FormProvider {...methods}>
+                    <Stack spacing={2} minHeight="400px">
+                        <RHFTextField
+                            variant="standard"
+                            name="title"
+                            placeholder={t<string>("Title")}
+                            sx={TextFieldSx}
+                        />
 
-                    <Stack direction="row" spacing={1}>
-                        <Color />
-                        <RHFTypeSelect />
+                        <Pickers
+                            startDate={startDate || event?.startDate}
+                            endDate={startDate || event?.endDate}
+                        />
+
+                        <RHFLocation />
+
+                        <Stack direction="row" spacing={1}>
+                            <Color />
+                            <RHFTypeSelect />
+                        </Stack>
+
+                        <PeopleLoader />
+
+                        <RHFEditor name="description" rows={5} />
+
+                        <Stack
+                            flexDirection={{ xs: "column-reverse", sm: "row" }}
+                            gap={1}
+                            justifyContent="flex-end"
+                            alignItems="center"
+                        >
+                            <Button onClick={onClose}>{t("Cancel")}</Button>
+
+                            {isDirty ? (
+                                <LoadingButton
+                                    type="submit"
+                                    variant="contained"
+                                    loading={isSubmitting}
+                                >
+                                    {t(event ? "Update" : "Create")}
+                                </LoadingButton>
+                            ) : null}
+                        </Stack>
                     </Stack>
+                </FormProvider>
+            </form>
+        );
+    }
+);
 
-                    <PeopleLoader />
-
-                    <RHFEditor name="description" rows={5} />
-
-                    <Stack
-                        flexDirection={{ xs: "column-reverse", sm: "row" }}
-                        gap={1}
-                        justifyContent="flex-end"
-                        alignItems="center"
-                    >
-                        <Button onClick={onClose}>{t("Cancel")}</Button>
-
-                        {isDirty ? (
-                            <LoadingButton
-                                type="submit"
-                                variant="contained"
-                                loading={isSubmitting}
-                            >
-                                {t(event ? "Update" : "Create")}
-                            </LoadingButton>
-                        ) : null}
-                    </Stack>
-                </Stack>
-            </FormProvider>
-        </form>
-    );
-};
-
+export type { FormRef };
 export default CreateUpdateForm;

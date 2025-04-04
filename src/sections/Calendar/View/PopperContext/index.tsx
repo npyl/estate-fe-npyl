@@ -8,8 +8,11 @@ import {
 } from "react";
 import Renderer, { RendererRef } from "./Renderer";
 import { TCalendarEvent } from "@/components/Calendar/types";
+import { dispatchUpdateDates } from "./updateDates";
 
 type IState = {
+    updateDates: (startDate: string, endDate: string) => void;
+
     setEvent: (el: HTMLDivElement, v: TCalendarEvent) => void;
     setStartDate: (el: HTMLDivElement, v: string) => void;
 };
@@ -43,6 +46,7 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     return (
         <PopperContext.Provider
             value={{
+                updateDates: dispatchUpdateDates,
                 setEvent,
                 setStartDate,
             }}

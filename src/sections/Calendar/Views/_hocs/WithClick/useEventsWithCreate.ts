@@ -65,4 +65,5 @@ const useEventsWithCreate = (cellDate: Date, _events: TCalendarEvent[]) => {
     return events;
 };
 
+export { CREATE_EVENT_ID };
 export default useEventsWithCreate;

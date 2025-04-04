@@ -5,11 +5,15 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { useUpdateEventMutation } from "@/services/calendar";
 import { ComponentType, useCallback } from "react";
+import { CREATE_EVENT_ID } from "./WithClick/useEventsWithCreate";
+import { usePopperContext } from "../../View/PopperContext";
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
 const WithResize = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
+        const { updateDates } = usePopperContext();
+
         const { user } = useAuth();
         const [updateEvent] = useUpdateEventMutation();
 
@@ -26,10 +30,14 @@ const WithResize = (Cell: AnyCalendarCell) => {
             // Convert endDate back to ISO string format
             const endDate = end.toISOString();
 
-            updateEvent({
-                body: { ...e, endDate },
-                userId: user?.id!,
-            });
+            if (e.id === CREATE_EVENT_ID) {
+                updateDates(e.startDate, endDate);
+            } else {
+                updateEvent({
+                    body: { ...e, endDate },
+                    userId: user?.id!,
+                });
+            }
         }, []);
 
         return <Cell {...props} onEventResizeEnd={onEventResizeEnd} />;
