@@ -27,12 +27,8 @@ type PropsWithoutDefaultValues<
     dialog?: boolean;
 };
 
-type TReturn<
-    TFieldValues extends FieldValues = FieldValues,
-    TContext = any,
-    TTransformedValues extends FieldValues | undefined = undefined
-> = [
-    UseFormReturn<TFieldValues, TContext, TTransformedValues>,
+type TReturn<TFieldValues extends FieldValues = FieldValues, TContext = any> = [
+    UseFormReturn<TFieldValues, TContext>,
     {
         PersistNotice: ReactNode;
         persistChanges: VoidFunction;
@@ -68,13 +64,12 @@ type TReturn<
  */
 function useFormPersist<
     TFieldValues extends FieldValues = FieldValues,
-    TContext = any,
-    TTransformedValues extends FieldValues | undefined = undefined
+    TContext = any
 >(
     storageKey: string | null,
     onSaveSuccess: VoidFunction | null,
     _props?: PropsWithoutDefaultValues<TFieldValues, TContext>
-): TReturn<TFieldValues, TContext, TTransformedValues> {
+): TReturn<TFieldValues, TContext> {
     const { dialog = false, ...props } = _props || {};
 
     const [cookie, setStorage, removeStorage] =
@@ -89,9 +84,7 @@ function useFormPersist<
 
     const formProps = { ...(props || {}), values };
 
-    const methods0 = useForm<TFieldValues, TContext, TTransformedValues>(
-        formProps
-    );
+    const methods0 = useForm<TFieldValues, TContext>(formProps);
 
     // ---------------------------------------------------------------------
 
