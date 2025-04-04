@@ -30,11 +30,13 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     const rendererRef = useRef<RendererRef>(null);
 
     const setEvent = useCallback(
-        (a: any, b: any) => rendererRef.current?.setEvent(a, b),
+        (el: HTMLDivElement, v: TCalendarEvent) =>
+            rendererRef.current?.setEvent(el, v),
         []
     );
     const setStartDate = useCallback(
-        (a: any, b: any) => rendererRef.current?.setStartDate(a, b),
+        (el: HTMLDivElement, v: string) =>
+            rendererRef.current?.setStartDate(el, v),
         []
     );
 
