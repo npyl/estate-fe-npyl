@@ -4,12 +4,11 @@ import CalendarGoogleMonthView from "@/components/CalendarGoogle/Views/Month";
 import CalendarMonthViewCell from "@/components/Calendar/Views/Month/Cell";
 import useFilteredEvents from "./_hooks/useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
-import WithEventClick from "./_hocs/WithEventClick";
-import WithTimeOffsetClick from "./_hocs/WithTimeOffsetClick";
+import WithClick from "./_hocs/WithClick";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithTimeOffsetClick(WithEventClick(CalendarMonthViewCell));
+const Cell = WithClick(CalendarMonthViewCell);
 
 // --------------------------------------------------------------------------
 

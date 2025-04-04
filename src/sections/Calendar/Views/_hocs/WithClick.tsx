@@ -1,4 +1,9 @@
-import { CalendarCellProps, TCalendarEvent } from "@/components/Calendar/types";
+import {
+    CalendarCellProps,
+    TCalendarEvent,
+    TOnEventClick,
+} from "@/components/Calendar/types";
+import uuidv4 from "@/utils/uuidv4";
 import dynamic from "next/dynamic";
 import {
     ComponentType,
@@ -10,9 +15,9 @@ import {
 } from "react";
 import useTimeFromOffset from "../_hooks/useTimeFromOffset";
 import useAuthenticatedClick from "../_hooks/useAuthenticatedClick";
-import uuidv4 from "@/utils/uuidv4";
 
-const CreateEventPopover = dynamic(() => import("../../Event/Create"));
+const EventPopper = dynamic(() => import("@/sections/Calendar/Event/View"));
+const CreatePopper = dynamic(() => import("@/sections/Calendar/Event/Create"));
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
@@ -34,31 +39,49 @@ const getEventWith = (startDate: string): TCalendarEvent => ({
     people: [],
 });
 
-const WithTimeOffsetClick = (Cell: AnyCalendarCell) => {
-    // INFO: Make sure to return a named component instead of an anonymous function
+const WithClick = (Cell: AnyCalendarCell) => {
     const WrappedComponent = ({
         events: _events,
         ...props
     }: CalendarCellProps) => {
         const anchorRef = useRef<HTMLDivElement>();
 
+        //
+        //  View / Edit
+        //
+        const [event, setEvent] = useState<TCalendarEvent>();
+        const onEventClick: TOnEventClick = useCallback((ce, me) => {
+            closePopper();
+            anchorRef.current = me.currentTarget;
+            setEvent(ce);
+        }, []);
+
+        //
+        //  Create
+        //
         const [startDate, setStartDate] = useState("");
-        const closePopover = useCallback(() => setStartDate(""), []);
         const onClickWithOffset = useCallback(
             (e: MouseEvent<HTMLDivElement>, date: string) => {
+                closePopper();
                 anchorRef.current = e.currentTarget;
                 setStartDate(date);
             },
             []
         );
-
         const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);
         const { onAuthenticatedClick } = useAuthenticatedClick(onClick);
 
+        //
+        // General
+        //
         const events = useMemo(
             () => (startDate ? [..._events, getEventWith(startDate)] : _events),
             [_events, startDate]
         );
+        const closePopper = useCallback(() => {
+            setEvent(undefined);
+            setStartDate("");
+        }, []);
 
         return (
             <>
@@ -66,22 +89,31 @@ const WithTimeOffsetClick = (Cell: AnyCalendarCell) => {
                     events={events}
                     {...props}
                     onClick={onAuthenticatedClick}
+                    onEventClick={onEventClick}
                 />
 
+                {event ? (
+                    <EventPopper
+                        anchorEl={anchorRef.current}
+                        event={event}
+                        onClose={closePopper}
+                    />
+                ) : null}
+
                 {startDate && anchorRef.current ? (
-                    <CreateEventPopover
+                    <CreatePopper
                         anchorEl={anchorRef.current}
                         startDate={startDate}
-                        onClose={closePopover}
+                        onClose={closePopper}
                     />
                 ) : null}
             </>
         );
     };
 
-    WrappedComponent.displayName = `WithTimeOffsetClick(Cell)`;
+    WrappedComponent.displayName = `WithClick(Cell)`;
 
     return WrappedComponent;
 };
 
-export default WithTimeOffsetClick;
+export default WithClick;

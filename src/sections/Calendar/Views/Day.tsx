@@ -4,16 +4,13 @@ import { FC } from "react";
 import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
 import useFilteredEvents from "./_hooks/useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
-import WithEventClick from "./_hocs/WithEventClick";
-import WithTimeOffsetClick from "./_hocs/WithTimeOffsetClick";
+import WithClick from "./_hocs/WithClick";
 import WithDragEnd from "./_hocs/WithDragEnd";
 import WithResize from "./_hocs/WithResize";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithResize(
-    WithDragEnd(WithTimeOffsetClick(WithEventClick(CalendarDayViewCell)))
-);
+const Cell = WithResize(WithDragEnd(WithClick(CalendarDayViewCell)));
 
 // --------------------------------------------------------------------------
 

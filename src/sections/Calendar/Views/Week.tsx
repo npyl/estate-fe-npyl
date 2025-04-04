@@ -4,16 +4,13 @@ import { FC } from "react";
 import CalendarWeekViewCell from "@/components/Calendar/Views/Week/Cell";
 import useFilteredEvents from "./_hooks/useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
-import WithEventClick from "./_hocs/WithEventClick";
-import WithTimeOffsetClick from "./_hocs/WithTimeOffsetClick";
 import WithDragEnd from "./_hocs/WithDragEnd";
 import WithResize from "./_hocs/WithResize";
+import WithClick from "./_hocs/WithClick";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithResize(
-    WithDragEnd(WithTimeOffsetClick(WithEventClick(CalendarWeekViewCell)))
-);
+const Cell = WithResize(WithDragEnd(WithClick(CalendarWeekViewCell)));
 
 // --------------------------------------------------------------------------
 
