@@ -1,14 +1,7 @@
 import getBorderColor from "@/theme/borderColor";
 import { FC, ReactNode } from "react";
 import usePopoverPosition from "./usePopoverPosition";
-import {
-    ClickAwayListener,
-    Paper,
-    Popper,
-    PopperProps,
-    SxProps,
-    Theme,
-} from "@mui/material";
+import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/config";
 
 const PaperSx: SxProps<Theme> = {
@@ -36,30 +29,22 @@ interface EventPopperProps
         | "onClose"
     > {
     children: ReactNode;
-    onClose: VoidFunction;
 }
 
-const EventPopover: FC<EventPopperProps> = ({
-    children,
-    sx,
-    onClose,
-    ...props
-}) => {
+const EventPopover: FC<EventPopperProps> = ({ children, sx, ...props }) => {
     const { actionsRef, onPaperRef } = usePopoverPosition();
 
     return (
-        <ClickAwayListener onClickAway={onClose}>
-            <Popper
-                popperRef={actionsRef}
-                placement="right"
-                sx={{ ...PopperSx, ...sx }}
-                {...props}
-            >
-                <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">
-                    {children}
-                </Paper>
-            </Popper>
-        </ClickAwayListener>
+        <Popper
+            popperRef={actionsRef}
+            placement="right"
+            sx={{ ...PopperSx, ...sx }}
+            {...props}
+        >
+            <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">
+                {children}
+            </Paper>
+        </Popper>
     );
 };
 

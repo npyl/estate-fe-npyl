@@ -30,7 +30,7 @@ const CreateEventPopover: FC<Props> = ({ startDate, anchorEl, onClose }) => {
     }, []);
 
     return (
-        <Popover open anchorEl={anchorEl} onClose={onClose}>
+        <Popover open anchorEl={anchorEl}>
             <Form
                 ref={formRef}
                 startDate={startDate}

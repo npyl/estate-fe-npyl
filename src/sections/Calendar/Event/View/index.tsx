@@ -54,7 +54,7 @@ const EventPopover: FC<Props> = ({
     };
 
     return (
-        <Popover open anchorEl={anchorEl} onClose={onClose}>
+        <Popover open anchorEl={anchorEl}>
             <SpaceBetween width={1} direction="row" alignItems="center">
                 {!isEdit ? (
                     <Typography
