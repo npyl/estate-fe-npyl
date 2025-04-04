@@ -2,7 +2,7 @@ import { styled } from "@mui/material";
 import BaseView from "../BaseCalendar/View";
 import { DAY_CELL_HEIGHT } from "@/constants/calendar";
 
-const CalendarView = styled(BaseView)({
+const CalendarGoogleView = styled(BaseView)({
     "&:has(.PPCalendar-MiscCell) .PPCalendar-Numbering": {
         marginTop: DAY_CELL_HEIGHT,
     },
@@ -12,4 +12,4 @@ const CalendarView = styled(BaseView)({
     },
 });
 
-export default CalendarView;
+export default CalendarGoogleView;
