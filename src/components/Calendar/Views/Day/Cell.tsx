@@ -4,6 +4,7 @@ import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
 import MiscCell from "../MiscCell";
+import { CELL_CLASSNAME } from "@/components/Calendar/Event/DraggableStack/useDraggable";
 const NowIndicator = dynamic(() => import("../NowIndicator"));
 
 // ------------------------------------------------------------------
@@ -40,7 +41,7 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
             {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
 
             <div
-                className="PPCell"
+                className={CELL_CLASSNAME}
                 data-date={date.toISOString()}
                 style={{ ...CellStyle, ...style }}
                 {...props}

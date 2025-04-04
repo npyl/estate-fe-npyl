@@ -5,6 +5,7 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../../NowIndicator";
 import dynamic from "next/dynamic";
 import VerticalDivider from "./VerticalDivider";
+import { CELL_CLASSNAME } from "@/components/Calendar/Event/DraggableStack/useDraggable";
 const MiscCell = dynamic(() => import("../../MiscCell"));
 
 // -------------------------------------------------------------------------
@@ -45,7 +46,7 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
             {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
 
             <div
-                className="PPCell"
+                className={CELL_CLASSNAME}
                 data-date={date.toISOString()}
                 style={{ ...CellStyle, ...style }}
                 {...props}

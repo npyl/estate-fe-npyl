@@ -6,6 +6,7 @@ import updateDurationLabelAsync from "./updateDuration";
 import getOverlapRatio from "./getOverlapRatio";
 
 const DRAG_THRESHOLD = 5; // pixels
+const CELL_CLASSNAME = "PPCalendar-Cell";
 
 const useDraggable = (
     event: TCalendarEvent,
@@ -72,7 +73,7 @@ const useDraggable = (
             // Find the PPCell that contains the center of the draggable element
             const elementRect = elementRef.current.getBoundingClientRect();
             const elementCenter = elementRect.left + elementRect.width / 2;
-            const cells = document.getElementsByClassName("PPCell");
+            const cells = document.getElementsByClassName(CELL_CLASSNAME);
 
             for (const cell of cells) {
                 const cellRect = cell.getBoundingClientRect();
@@ -126,4 +127,5 @@ const useDraggable = (
     return { onMouseDown };
 };
 
+export { CELL_CLASSNAME };
 export default useDraggable;
