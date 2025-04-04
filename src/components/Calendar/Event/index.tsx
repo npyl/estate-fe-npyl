@@ -51,7 +51,7 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
 };
 
 const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
-    ({ event, overlapCount = 0, onClick, ...props }, ref) => {
+    ({ event, overlapCount = 0, onClick, sx, ...props }, ref) => {
         const { top, height } = calculateTimePosition(
             event.startDate,
             event.endDate
@@ -94,7 +94,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
             <ColoredContainer
                 ref={onRef}
                 bgcolor={bgcolor}
-                sx={getEventSx(overlapCount)}
+                sx={{ ...(getEventSx(overlapCount) as any), ...sx }}
                 top={top}
                 height={maxHeight}
                 event={event}
