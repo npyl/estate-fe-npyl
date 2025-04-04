@@ -11,6 +11,7 @@ import PropertiesAutocompleteMultiple from "@/sections/_Autocompletes/RHFCodeMul
 import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import RHFEditor from "@/components/hook-form/RHFEditor";
+import { Box, Typography } from "@mui/material";
 const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
@@ -24,11 +25,13 @@ const CustomerAutocomplete = () => {
     const onCustomersChange = useCallback((v: number[]) => {}, []);
 
     return (
-        <CustomerAutocompleteMultiple
-            label={t("Customers")}
-            name="customers"
-            onChange={onCustomersChange}
-        />
+        <>
+            <CustomerAutocompleteMultiple
+                label={t("Customers")}
+                name="customers"
+                onChange={onCustomersChange}
+            />
+        </>
     );
 };
 
@@ -38,11 +41,16 @@ const PropertiesAutocomplete = () => {
     const onPropertiesChange = useCallback((_: any, ids: number[]) => {}, []);
 
     return (
-        <PropertiesAutocompleteMultiple
-            name="properties"
-            label={t<string>("Properties")}
-            onChange={onPropertiesChange}
-        />
+        <Box>
+            <Typography fontWeight={"bold"} pb={0.5}>
+                {t("Details")}{" "}
+            </Typography>
+            <PropertiesAutocompleteMultiple
+                name="properties"
+                label={t<string>("Properties")}
+                onChange={onPropertiesChange}
+            />
+        </Box>
     );
 };
 
@@ -82,14 +90,14 @@ const Content: FC<ContentProps> = ({
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
-            <RHFTextField name="name" label={t("Title")} />
 
             <Buttons />
+            <RHFTextField name="name" label={t("Title")} />
             {/* ------------------------ */}
 
-            <Attachments cardId={cardId} />
-
             <RHFEditor name="description" rows={5} />
+
+            <Attachments cardId={cardId} />
 
             <PropertiesAutocomplete />
             <CustomerAutocomplete />
@@ -108,7 +116,7 @@ const Content: FC<ContentProps> = ({
                     <MiscInfo
                         createdAt={createdAt}
                         updatedAt={updatedAt}
-                        reporter={reporter} //not working yet
+                        reporter={reporter}
                         updatedBy={updatedBy}
                     />
                 </>

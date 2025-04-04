@@ -38,14 +38,25 @@ interface CreationDateProps {
 }
 
 const CreationDate: FC<CreationDateProps> = ({ createdAt }) => {
-    const { i18n } = useTranslation();
-    const loc = i18n.language === "en" ? "en-US" : "el-GR";
+    if (!createdAt) return null;
 
-    const date = createdAt
-        ? new Date(createdAt).toLocaleDateString(loc, OPTIONS)
-        : "";
+    const date = new Date(createdAt);
 
-    return <Typography>{date}</Typography>;
+    // Force 2-digit hour & minute, numeric day/month/year
+    const formatted = date.toLocaleString("el-GR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour12: false,
+    });
+
+    return (
+        <Typography variant="caption" color="text.secondary">
+            {formatted}
+        </Typography>
+    );
 };
 
 // ----------------------------------------------------------------------
@@ -68,11 +79,12 @@ const Header: FC<HeaderProps> = ({ firstName, lastName, createdAt }) => (
 const MessageSx: SxProps<Theme> = {
     backgroundColor: ({ palette: { mode, neutral } }) =>
         mode === "light" ? "#FCE9A4" : neutral?.[800],
-    borderRadius: "16px",
-    borderTopLeftRadius: 0,
-    padding: "7px 14px",
+    borderRadius: "7px",
+    // borderTopLeftRadius: 0,
+    padding: "7px 7px",
     lineHeight: 1.4,
     fontSize: "0.95rem",
+    color: "text.secondary",
     whiteSpace: "pre-wrap",
     "& p": { margin: 0 },
 };
@@ -96,14 +108,21 @@ const Comment: FC<CommentProps> = ({ c }) => {
     const { message, createdAt } = c;
 
     return (
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="flex-start">
+            {/* Avatar on the left, outside the message box */}
             <Avatar src={avatar} firstName={firstName} lastName={lastName} />
-            <Stack width={1}>
-                <Header
-                    firstName={firstName}
-                    lastName={lastName}
-                    createdAt={createdAt}
-                />
+
+            {/* Yellow message box */}
+            <Stack sx={MessageSx} width={1}>
+                {/* Name + Date row */}
+                <SpaceBetween alignItems="center" px={0.7}>
+                    <Typography fontWeight="bold" color={"black"}>
+                        {firstName || ""} {lastName || ""}
+                    </Typography>
+                    <CreationDate createdAt={createdAt} />
+                </SpaceBetween>
+
+                {/* Message content */}
                 <Message m={message} />
             </Stack>
         </Stack>

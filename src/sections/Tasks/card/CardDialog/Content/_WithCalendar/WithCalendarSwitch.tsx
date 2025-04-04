@@ -1,26 +1,23 @@
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
-import { SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 import { useCallback } from "react";
 import dayjs from "dayjs";
 import { START_HOUR } from "@/constants/calendar";
+import GoogleCalendarIcon from "@/assets/GoogleCalendar";
 
 const Label = () => {
     const { t } = useTranslation();
 
     return (
-        <Stack spacing={0.1}>
-            <Typography>{t("Connect with Calendar")}</Typography>
+        <Stack spacing={0.1} direction={"row"}>
+            <Typography>{t("Connect with Google Calendar")}</Typography>
 
-            <Typography variant="caption" color="text.secondary">
-                {t(
-                    "There will be an event creation in google calendar as well"
-                )}
-            </Typography>
+            <GoogleCalendarIcon sx={{ fontSize: 28 }} />
         </Stack>
     );
 };
