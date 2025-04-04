@@ -1,11 +1,13 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
 import useDialog from "@/hooks/useDialog";
 import { useCallback, useRef } from "react";
-
-const UpdateEvent = "onUpdateCreateEvent";
+import { notifyCells } from "./notifyCells";
 
 const useExclusivePopper = () => {
     const anchorRef = useRef<HTMLDivElement | undefined>(undefined);
+    const updateAnchor = useCallback((e: HTMLDivElement) => {
+        anchorRef.current = e;
+    }, []);
 
     const state0 = useRef<TCalendarEvent>();
     const state1 = useRef<string>();
@@ -14,17 +16,12 @@ const useExclusivePopper = () => {
 
     const closePopper = useCallback(() => {
         // INFO: remove all "create"-events
-        notifyUpdate("");
+        notifyCells("", "");
 
         state0.current = undefined;
         state1.current = "";
 
         _closePopper();
-    }, []);
-
-    const notifyUpdate = useCallback((detail?: string) => {
-        const CE = new CustomEvent(UpdateEvent, { detail });
-        document.dispatchEvent(CE);
     }, []);
 
     const set0 = useCallback((el: HTMLDivElement, v?: TCalendarEvent) => {
@@ -47,7 +44,7 @@ const useExclusivePopper = () => {
         state1.current = v;
 
         // INFO: Notify all cells to update "create"-events (if any)
-        notifyUpdate(v);
+        notifyCells(v || "", "");
 
         openPopper();
     }, []);
@@ -55,6 +52,7 @@ const useExclusivePopper = () => {
     return [
         isOpen,
         anchorRef.current,
+        updateAnchor,
         // ...
         state0.current,
         state1.current,
@@ -66,5 +64,4 @@ const useExclusivePopper = () => {
     ] as const;
 };
 
-export { UpdateEvent };
 export default useExclusivePopper;

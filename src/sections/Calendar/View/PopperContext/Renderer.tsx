@@ -1,7 +1,10 @@
 import dynamic from "next/dynamic";
 import useExclusivePopper from "./useExclusivePopper";
 import { TCalendarEvent } from "@/components/Calendar/types";
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useCallback, useImperativeHandle } from "react";
+import { dispatchUpdateDates } from "./updateDates";
+import { notifyCells } from "./notifyCells";
+import sleep from "@/utils/sleep";
 
 const EventPopper = dynamic(() => import("@/sections/Calendar/Event/View"));
 const CreatePopper = dynamic(() => import("@/sections/Calendar/Event/Create"));
@@ -9,6 +12,7 @@ const CreatePopper = dynamic(() => import("@/sections/Calendar/Event/Create"));
 interface RendererProps {}
 
 interface RendererRef {
+    updateDates: (startDate: string, endDate: string) => void;
     setEvent: (el: HTMLDivElement, v: TCalendarEvent) => void;
     setStartDate: (el: HTMLDivElement, v: string) => void;
 }
@@ -17,6 +21,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
     const [
         isOpen,
         anchorEl,
+        updateAnchor,
         // ...
         event,
         startDate,
@@ -27,9 +32,19 @@ const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
         closePopper,
     ] = useExclusivePopper();
 
+    const updateDates = useCallback(
+        async (startDate: string, endDate: string) => {
+            dispatchUpdateDates(startDate, endDate);
+            await sleep(500);
+            notifyCells(startDate, endDate);
+        },
+        []
+    );
+
     useImperativeHandle(
         ref,
         () => ({
+            updateDates,
             setEvent,
             setStartDate,
         }),

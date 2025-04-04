@@ -1,7 +1,8 @@
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { useCallback, useMemo, useState, useLayoutEffect } from "react";
-import { UpdateEvent } from "@/sections/Calendar/View/PopperContext/useExclusivePopper";
 import { isSameDay } from "@/components/Calendar/util";
+import { UpdateEvent } from "@/sections/Calendar/View/PopperContext/notifyCells";
+import { DatesDetail } from "@/sections/Calendar/View/PopperContext/updateDates";
 
 const CREATE_EVENT_ID = "PPEvent-Create";
 
@@ -11,10 +12,14 @@ const getEndDate = (startDate: string) => {
     return endDate.toISOString();
 };
 
-const getEventWith = (startDate: string): TCalendarEvent => ({
+/**
+ * @param startDate -||-
+ * @param endDate can be undefined (eg. when first clicking) Supports resize
+ */
+const getEventWith = (startDate: string, endDate?: string): TCalendarEvent => ({
     id: CREATE_EVENT_ID,
     startDate,
-    endDate: getEndDate(startDate),
+    endDate: !endDate ? getEndDate(startDate) : endDate,
     title: "",
     type: "TASK",
     colorId: "",
@@ -25,31 +30,38 @@ const getEventWith = (startDate: string): TCalendarEvent => ({
 
 const useEventsWithCreate = (cellDate: Date, _events: TCalendarEvent[]) => {
     const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     const events = useMemo(
-        () => (startDate ? [..._events, getEventWith(startDate)] : _events),
-        [_events, startDate]
+        () =>
+            startDate
+                ? [..._events, getEventWith(startDate, endDate)]
+                : _events,
+        [_events, startDate, endDate]
     );
 
     const onUpdate = useCallback(
-        (e: CustomEventInit<string>) => {
+        (e: CustomEventInit<DatesDetail>) => {
             try {
-                const s = e.detail;
-                if (!s) {
+                const { startDate, endDate } = e.detail || {};
+                if (!startDate) {
                     // INFO: eg. on popper close
                     setStartDate("");
+                    setEndDate("");
                     return;
                 }
 
                 // INFO: make sure we are updating the current cell only
                 const isCurrentCell = isSameDay(
-                    new Date(s),
+                    new Date(startDate),
                     new Date(cellDate)
                 );
 
-                const res = isCurrentCell ? s : "";
+                const res0 = isCurrentCell ? startDate : "";
+                const res1 = isCurrentCell ? endDate || "" : "";
 
-                setStartDate(res);
+                setStartDate(res0);
+                setEndDate(res1);
             } catch (ex) {}
         },
         [cellDate]

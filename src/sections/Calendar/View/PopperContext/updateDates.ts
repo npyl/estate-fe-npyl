@@ -10,6 +10,9 @@ const getEvent = (startDate: string, endDate: string) =>
         detail: { startDate, endDate },
     });
 
+/**
+ * Sends a custom event to the Create Event Popper to update dates after a drag or resize
+ */
 const dispatchUpdateDates = (startDate: string, endDate: string) => {
     const EV = getEvent(startDate, endDate);
     document.dispatchEvent(EV);
