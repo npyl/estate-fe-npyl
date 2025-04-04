@@ -2,10 +2,13 @@ import {
     CalendarDayViewProps,
     CalendarMonthViewProps,
     CalendarProps,
+    CalendarViewProps,
     CalendarWeekViewProps,
     CalendarYearViewProps,
 } from "@/components/Calendar/types";
 import { ComponentType } from "react";
+
+type CalendarGoogleViewProps = CalendarViewProps;
 
 type CalendarGoogleDayViewProps = CalendarDayViewProps;
 type CalendarGoogleWeekViewProps = CalendarWeekViewProps;
@@ -23,4 +26,4 @@ interface CalendarGoogleProps extends Omit<CalendarProps, "ViewSlots"> {
     ViewSlots?: Partial<CalendarGoogleViewSlots>;
 }
 
-export type { CalendarGoogleProps };
+export type { CalendarGoogleProps, CalendarGoogleViewProps };

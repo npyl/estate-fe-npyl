@@ -1,9 +1,11 @@
 import {
     BaseCalendarCellProps,
     BaseCalendarDayViewProps,
+    BaseCalendarHeaderProps,
     BaseCalendarHeaderSlots,
     BaseCalendarMonthViewProps,
     BaseCalendarSlots,
+    BaseCalendarViewProps,
     BaseCalendarWeekViewProps,
     BaseCalendarYearViewProps,
     TCalendarView,
@@ -101,7 +103,13 @@ interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
 
 // ------------------------------------------------------------------------
 
-interface CalendarSlots extends BaseCalendarSlots {}
+interface CalendarHeaderProps extends BaseCalendarHeaderProps {}
+interface CalendarViewProps extends BaseCalendarViewProps {}
+
+interface CalendarSlots<
+    H extends CalendarHeaderProps = CalendarHeaderProps,
+    V extends CalendarViewProps = CalendarViewProps
+> extends BaseCalendarSlots<H, V> {}
 
 // ------------------------------------------------------------------------
 
@@ -188,6 +196,8 @@ export type {
     TOnEventResizeEnd,
 
     // ...
+    CalendarHeaderProps,
+    CalendarViewProps,
     CalendarCellProps,
     // ...
     CalendarDayViewProps,
