@@ -6,9 +6,6 @@ import { forwardRef, useImperativeHandle } from "react";
 const EventPopper = dynamic(() => import("@/sections/Calendar/Event/View"));
 const CreatePopper = dynamic(() => import("@/sections/Calendar/Event/Create"));
 
-const EVENT_POPPER_CLOSED = undefined;
-const CREATE_POPPER_CLOSED = "";
-
 interface RendererProps {}
 
 interface RendererRef {
@@ -28,10 +25,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
         setStartDate,
         // ...
         closePopper,
-    ] = useExclusivePopper<TCalendarEvent, string>(
-        EVENT_POPPER_CLOSED,
-        CREATE_POPPER_CLOSED
-    );
+    ] = useExclusivePopper();
 
     useImperativeHandle(
         ref,

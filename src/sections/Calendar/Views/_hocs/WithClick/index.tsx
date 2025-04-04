@@ -3,11 +3,14 @@ import { ComponentType, useCallback, MouseEvent } from "react";
 import useTimeFromOffset from "./useTimeFromOffset";
 import useAuthenticatedClick from "./useAuthenticatedClick";
 import { usePopperContext } from "@/sections/Calendar/View/PopperContext";
+import useEventsWithCreate from "./useEventsWithCreate";
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
 const WithClick = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
+        const events = useEventsWithCreate(props.date, props.events);
+
         const { setEvent, setStartDate } = usePopperContext();
 
         //
@@ -22,9 +25,8 @@ const WithClick = (Cell: AnyCalendarCell) => {
         //  Create
         //
         const onClickWithOffset = useCallback(
-            (e: MouseEvent<HTMLDivElement>, date: string) => {
-                setStartDate(e.currentTarget, date);
-            },
+            (e: MouseEvent<HTMLDivElement>, date: string) =>
+                setStartDate(e.currentTarget, date),
             []
         );
         const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);
@@ -33,6 +35,7 @@ const WithClick = (Cell: AnyCalendarCell) => {
         return (
             <Cell
                 {...props}
+                events={events}
                 onClick={onAuthenticatedClick}
                 onEventClick={onEventClick}
             />
