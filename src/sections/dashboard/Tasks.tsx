@@ -28,7 +28,7 @@ const getTaskRow = (t: IDashboardTask) => (
         <Box
             sx={{
                 position: "absolute",
-                right: 5,
+                right: 10,
                 top: "50%",
                 transform: "translateY(-50%)",
             }}

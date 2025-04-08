@@ -14,7 +14,7 @@ const useBoardColumns = () => {
     const allColumns = data?.columns || [];
 
     // Define the priority column names in desired order
-    const prioritizedNames = ["To do", "In progress", "Completed"];
+    const prioritizedNames = ["To do", "Long term tasks", "Completed"];
 
     const sortedColumns = allColumns.slice().sort((columnA, columnB) => {
         const indexA = prioritizedNames.indexOf(columnA.name);
