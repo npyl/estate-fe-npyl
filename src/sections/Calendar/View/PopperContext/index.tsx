@@ -125,10 +125,10 @@ const useMachine = (
                             // INFO: remove all "create"-events
                             notifyCells("", "");
                             break;
-                        default:
-                            rendererRef.current?.closePopper();
-                            state.current = STATES.IDLE;
                     }
+
+                    rendererRef.current?.closePopper();
+                    state.current = STATES.IDLE;
                 },
             }),
         []
