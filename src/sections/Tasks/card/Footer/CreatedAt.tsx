@@ -57,17 +57,13 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
         const label = createdAt
             ? isToday
                 ? t("today")
-                : isSmall
-                ? new Date(createdAt).toLocaleDateString(loc, {
-                      year: "2-digit",
-                      month: "2-digit",
-                      day: "2-digit",
-                  })
-                : new Date(createdAt).toLocaleDateString(loc, {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                  })
+                : new Date(createdAt)
+                      .toLocaleDateString(loc, {
+                          year: "numeric",
+                          month: "numeric",
+                          day: "numeric",
+                      })
+                      .replaceAll("/", ".")
             : "-";
 
         return (
@@ -87,7 +83,7 @@ interface Props {
 }
 
 const CreatedAt: FC<Props> = ({ createdAt }) => (
-    <Stack direction="row" alignItems="center" spacing={1}>
+    <Stack direction="row" alignItems="center" spacing={0.5}>
         <CreatedAtIcon />
         <ResponsiveTypography createdAt={createdAt} />
     </Stack>

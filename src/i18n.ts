@@ -1187,7 +1187,10 @@ const resources = {
                 "There will be an event creation in google calendar as well",
             _Task_: "Task",
             Created: "Created",
+            "Created by": "Created by",
             Updated: "Updated",
+            "Updated by": "Updated by",
+
             Activity: "Activity",
             // ...
             "=Task=": "Task",
@@ -1507,7 +1510,9 @@ const resources = {
 
             Activity: "Δραστηριότητα",
             Created: "Δημιουργήθηκε",
+            "Created by": "Δημιουργήθηκε από ",
             Updated: "Ενημερώθηκε",
+            "Updated by": "Ενημερώθηκε από",
             _Task_: "Εργασία",
             "Connect with Google Calendar": "Ενημέρωση Ημερολογίου Google",
             "There will be an event creation in google calendar as well":
@@ -2002,7 +2007,7 @@ const resources = {
             "Click to upload": "Κλικ για επισύναψη",
             "or drag and drop": "ή μεταφορά και απόθεση",
             "Drop files to attach or": "Σύρετε αρχεία για επισύναψη ή",
-            Browse: "Ψάξτε",
+            Browse: "Αναζήτηση",
             "Mark Complete": "Σήμανση Ολοκληρωμένου",
             Completed: "Ολοκληρώθηκε",
             Assignee: "Ανάθεση",

@@ -74,6 +74,7 @@ interface IKanbanCardShort {
     labels: IKanbanCardLabels[];
     createdAt: string;
     updatedAt: string;
+    event?: string;
 }
 
 // INFO: sent to Backend directly
@@ -119,9 +120,15 @@ type IKanbanBoard = {
     columns: IKanbanColumn[];
 };
 
+export interface Reporter {
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+}
 interface IKanbanAssigneeHistory {
     assignees: IUserMini[];
     createdAt: string;
+    reporter: Reporter;
 }
 
 export type {

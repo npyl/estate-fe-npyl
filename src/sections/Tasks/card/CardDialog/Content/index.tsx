@@ -112,7 +112,9 @@ const Content: FC<ContentProps> = ({
             {createdAt || updatedAt ? (
                 <>
                     <Divider />
-                    {isEdit ? <AssigneeHistory cardId={cardId!} /> : null}
+                    {isEdit ? (
+                        <AssigneeHistory cardId={cardId!} reporter={reporter} />
+                    ) : null}
                     <MiscInfo
                         createdAt={createdAt}
                         updatedAt={updatedAt}
