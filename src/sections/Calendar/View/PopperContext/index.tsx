@@ -75,7 +75,7 @@ const useMachine = (el: HTMLElement | null) => {
     const MACHINE = useMemo(() => getMACHINE(), []);
 
     const handleEvent: TPopperEventCb = useCallback(({ detail }) => {
-        const { me, event, other } = detail || {};
+        const { event, other } = detail || {};
         if (!event) return;
 
         const cb = MACHINE[state.current][event];

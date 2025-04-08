@@ -83,17 +83,12 @@ type TOnEventClick = (
 ) => void;
 
 type TOnEventDragEnd = (
-    me: MouseEvent<HTMLDivElement>,
     ce: TCalendarEvent,
     startDate: string,
     endDate: string
 ) => void;
 
-type TOnEventResizeEnd = (
-    me: MouseEvent<HTMLDivElement>,
-    ce: TCalendarEvent,
-    h: number
-) => void;
+type TOnEventResizeEnd = (ce: TCalendarEvent, h: number) => void;
 
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];

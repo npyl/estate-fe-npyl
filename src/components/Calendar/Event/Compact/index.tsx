@@ -20,7 +20,7 @@ const CompactCalendarEvent: FC<CompactEventProps> = ({
     const handleClick = useCallback(
         (e: MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
-            onClick?.(event, e);
+            onClick?.(e, event);
         },
         [onClick, event]
     );

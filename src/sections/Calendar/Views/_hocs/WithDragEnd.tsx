@@ -12,10 +12,9 @@ const WithDragEnd = (Cell: AnyCalendarCell) => {
         const { dispatch } = usePopperContext();
 
         const handleDragEnd: TOnEventDragEnd = useCallback(
-            (me, ce, startDate, endDate) =>
+            (ce, startDate, endDate) =>
                 dispatch({
                     event: EVENTS.DRAG_END,
-                    me,
                     // ...
                     other: {
                         ce,

@@ -21,7 +21,7 @@ const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
     const [event, setEvent] = useState<TCalendarEvent>();
     const closeDialog = useCallback(() => setEvent(undefined), []);
 
-    const onEventClick: TOnEventClick = useCallback((ce, me) => {
+    const onEventClick: TOnEventClick = useCallback((me, ce) => {
         anchorRef.current = me.currentTarget;
         setEvent(ce);
     }, []);

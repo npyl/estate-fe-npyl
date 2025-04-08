@@ -1,9 +1,7 @@
 import { type MouseEvent, RefObject, useCallback, useRef } from "react";
 import { CellPosition } from "../types";
 import calculateNewDates from "./calculateNewDates";
-import { TCalendarEvent } from "@/components/Calendar/types";
-import updateDurationLabelAsync from "./updateDuration";
-import getOverlapRatio from "./getOverlapRatio";
+import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
 
 const DRAG_THRESHOLD = 5; // pixels
 const CELL_CLASSNAME = "PPCalendar-Cell";
@@ -12,9 +10,7 @@ const useDraggable = (
     event: TCalendarEvent,
     elementRef: RefObject<HTMLDivElement>,
     cellsRef: RefObject<CellPosition[]>,
-    onDragEnd:
-        | ((event: TCalendarEvent, startDate: string, endDate: string) => void)
-        | undefined
+    onDragEnd?: TOnEventDragEnd
 ) => {
     const dragRef = useRef({
         isDragging: false,

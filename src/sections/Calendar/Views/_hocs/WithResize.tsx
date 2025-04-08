@@ -12,10 +12,9 @@ const WithResize = (Cell: AnyCalendarCell) => {
         const { dispatch } = usePopperContext();
 
         const onEventResizeEnd: TOnEventResizeEnd = useCallback(
-            (me, ce, h) =>
+            (ce, h) =>
                 dispatch({
                     event: EVENTS.RESIZE_END,
-                    me,
                     // ...
                     other: {
                         ce,

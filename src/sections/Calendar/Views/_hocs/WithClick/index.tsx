@@ -23,9 +23,9 @@ const WithClick = (Cell: AnyCalendarCell) => {
             (me, ce) =>
                 dispatch({
                     event: EVENTS.CLICK_EVENT,
-                    me,
                     // ...
                     other: {
+                        me,
                         ce,
                     },
                 }),
@@ -39,9 +39,9 @@ const WithClick = (Cell: AnyCalendarCell) => {
             (me: MouseEvent<HTMLDivElement>, date: string) =>
                 dispatch({
                     event: EVENTS.CLICK,
-                    me,
                     // ...
                     other: {
+                        me,
                         date,
                     },
                 }),

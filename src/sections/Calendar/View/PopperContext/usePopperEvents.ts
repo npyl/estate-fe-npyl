@@ -19,7 +19,6 @@ enum EVENTS {
 interface PopperEventDataOther {}
 
 interface PopperEventData {
-    me: MouseEvent<HTMLDivElement>;
     event: EVENTS;
     other: PopperEventDataOther;
 }
