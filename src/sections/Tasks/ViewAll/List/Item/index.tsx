@@ -188,7 +188,7 @@ const Item: FC<ItemProps> = ({ c }) => {
                 spacing={1}
                 alignItems="center"
                 justifyContent="flex-end"
-                width="25%"
+                width="100%"
             >
                 {isCompleted ? <CompletedLabel /> : null}
                 {columnName ? <ColumnLabel name={columnName} /> : null}

@@ -57,13 +57,11 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
         const label = createdAt
             ? isToday
                 ? t("today")
-                : new Date(createdAt)
-                      .toLocaleDateString(loc, {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                      })
-                      .replaceAll("/", ".")
+                : new Date(createdAt).toLocaleDateString(loc, {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                  })
             : "-";
 
         return (
