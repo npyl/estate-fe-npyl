@@ -54,15 +54,7 @@ const useDraggable = (
 
             // Handle click vs drag
             if (totalMovement <= DRAG_THRESHOLD) {
-                // Create a synthetic event using React's SyntheticEvent pattern
-                const syntheticEvent = new MouseEvent("click", {
-                    bubbles: true,
-                    cancelable: true,
-                    view: window,
-                });
-
-                // Dispatch the click event on the element
-                elementRef.current.dispatchEvent(syntheticEvent);
+                // Let onClick handle it
                 return;
             }
 

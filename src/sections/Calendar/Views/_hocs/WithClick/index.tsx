@@ -22,7 +22,7 @@ const WithClick = (Cell: AnyCalendarCell) => {
         const onEventClick: TOnEventClick = useCallback(
             (me, ce) =>
                 dispatch({
-                    event: EVENTS.CLICK_EVENT,
+                    event: EVENTS.CLICK,
                     // ...
                     other: {
                         me,
@@ -36,13 +36,13 @@ const WithClick = (Cell: AnyCalendarCell) => {
         //  Create
         //
         const onClickWithOffset = useCallback(
-            (me: MouseEvent<HTMLDivElement>, date: string) =>
+            (me: MouseEvent<HTMLDivElement>, startDate: string) =>
                 dispatch({
-                    event: EVENTS.CLICK,
+                    event: EVENTS.CLICK_EVENT,
                     // ...
                     other: {
                         me,
-                        date,
+                        startDate,
                     },
                 }),
             []

@@ -1,25 +1,29 @@
 import dynamic from "next/dynamic";
 import useExclusivePopper from "./useExclusivePopper";
 import { TCalendarEvent } from "@/components/Calendar/types";
-import { forwardRef, useCallback, useImperativeHandle } from "react";
+import { forwardRef, RefObject, useCallback, useImperativeHandle } from "react";
 import { dispatchUpdateDates } from "./updateDates";
 import { notifyCells } from "./notifyCells";
 import sleep from "@/utils/sleep";
+import { usePopperContext } from ".";
+import { EVENTS, STATES } from "./usePopperEvents";
 
 const EventPopper = dynamic(() => import("@/sections/Calendar/Event/View"));
 const CreatePopper = dynamic(() => import("@/sections/Calendar/Event/Create"));
 
-interface RendererProps {}
+interface RendererProps {
+    onClose: VoidFunction;
+}
 
 interface RendererRef {
     updateDates: (startDate: string, endDate: string) => void;
     setEvent: (el: HTMLDivElement, v: TCalendarEvent) => void;
     setStartDate: (el: HTMLDivElement, v: string) => void;
+    closePopper: VoidFunction;
 }
 
-const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
+const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
     const [
-        isOpen,
         anchorEl,
         updateAnchor,
         // ...
@@ -47,11 +51,10 @@ const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
             updateDates,
             setEvent,
             setStartDate,
+            closePopper,
         }),
         []
     );
-
-    if (!isOpen) return null;
 
     return (
         <>
@@ -59,7 +62,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
                 <EventPopper
                     anchorEl={anchorEl}
                     event={event}
-                    onClose={closePopper}
+                    onClose={onClose}
                 />
             ) : null}
 
@@ -67,7 +70,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>((props, ref) => {
                 <CreatePopper
                     anchorEl={anchorEl}
                     startDate={startDate}
-                    onClose={closePopper}
+                    onClose={onClose}
                 />
             ) : null}
         </>
