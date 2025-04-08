@@ -6,11 +6,7 @@ import { FC } from "react";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import OptionCheckbox from "./OptionCheckbox";
 import { TOptionMapper } from "./OptionCheckbox/types";
-import {
-    useFiltersContext,
-    useIntegrationSites,
-    useStates,
-} from "../../FiltersContext";
+import { useFiltersContext, useIntegrationSites } from "../../FiltersContext";
 import { IntegrationSite } from "@/types/listings";
 
 // -----------------------------------------------------------------

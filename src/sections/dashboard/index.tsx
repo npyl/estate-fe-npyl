@@ -1,41 +1,11 @@
-import { Box, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useGetDashboardQuery } from "src/services/dashboard";
 import { useGetProfileQuery } from "src/services/user";
-import CardWithIcon from "./CardWithIcon";
-// import AppConversionRates from "./app-conversion-rates";
-// import TotalProperties from "./total-properties";
-import dynamic from "next/dynamic";
-import { FC, RefObject, useRef } from "react";
+import { useRef } from "react";
 import Tasks from "./Tasks";
-import useStickyPoint from "./useStickyPoint";
 import UserDetailList from "./UserDetailList";
-const SimpleCalendar = dynamic(() => import("./SimpleCalendar"));
-
-// ----------------------------------------------------------------------
-
-interface StickyCalendarProps {
-    startRef: RefObject<HTMLDivElement>;
-}
-
-const StickyCalendar: FC<StickyCalendarProps> = ({ startRef }) => {
-    const targetRef = useRef<HTMLDivElement>(null);
-    useStickyPoint(startRef, targetRef);
-
-    return (
-        <Box
-            width={{ xs: "100%", md: "40%" }}
-            height="max-content"
-            position={{ xs: "initial", md: "sticky" }}
-            left="70%"
-            zIndex={1}
-            ref={targetRef}
-        >
-            <SimpleCalendar />
-        </Box>
-    );
-};
+import StickyCalendar from "./StickyCalendar";
+import Stats from "./Stats";
 
 // ----------------------------------------------------------------------
 
@@ -55,77 +25,6 @@ const Title = () => {
                 {t("_WELCOME_")}
             </Typography>
         </Stack>
-    );
-};
-
-// ----------------------------------------------------------------------
-
-const Cards = () => {
-    const { t } = useTranslation();
-    const { data } = useGetDashboardQuery();
-
-    return (
-        <>
-            <Grid xs={12} sm={6}>
-                <CardWithIcon
-                    title={data?.totalProperties.toString() ?? ""}
-                    subtitle={t("Total Properties")}
-                />
-            </Grid>
-            <Grid xs={12} sm={6}>
-                <CardWithIcon
-                    title={data?.totalSoldProperties.toString() ?? ""}
-                    subtitle={t("Total Sold Properties")}
-                />
-            </Grid>
-            <Grid xs={12} sm={6}>
-                <CardWithIcon
-                    title={data?.totalActiveProperties.toString() ?? ""}
-                    subtitle={t("Total Active Properties")}
-                    info={
-                        t(
-                            "The active properties are published in public sites."
-                        ) as string
-                    }
-                />
-            </Grid>
-            <Grid xs={12} sm={6}>
-                <CardWithIcon
-                    title={data?.totalRentedProperties.toString() ?? ""}
-                    subtitle={t("Total Rented Properties")}
-                />
-            </Grid>
-        </>
-    );
-};
-
-const Stats = () => {
-    const { t } = useTranslation();
-
-    return (
-        <Grid
-            container
-            width={{ xs: "100%", md: "60%" }}
-            spacing={1}
-            maxHeight={{ xs: "100%", md: "calc(100vh - 178px)" }}
-            pr={{ xs: 0, md: 5 }}
-        >
-            <Cards />
-
-            {/* <Grid xs={12}>
-                <TotalProperties
-                    title={t("Total Properties")}
-                    subheader={t("Properties Distribution")}
-                />
-            </Grid>
-
-            <Grid xs={12}>
-                <AppConversionRates
-                    title={t("Total Properties per User")}
-                    subheader=""
-                />
-            </Grid> */}
-        </Grid>
     );
 };
 

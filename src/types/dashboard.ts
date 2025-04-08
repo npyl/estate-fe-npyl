@@ -1,5 +1,11 @@
+import { IntegrationSite } from "./listings";
 import { IKanbanCardLabels } from "./tasks";
 import { IUserMini } from "./user";
+
+interface PropertyIntegrations {
+    properties: number;
+    site: IntegrationSite;
+}
 
 interface IDashboard {
     totalProperties: number;
@@ -8,6 +14,7 @@ interface IDashboard {
     totalRentedProperties: number;
     propertiesDistribution: PropertiesDistribution;
     propertiesPerUserList: PropertiesPerUserList[];
+    integrations: PropertyIntegrations[];
     tasks: IDashboardTask[];
 }
 
@@ -48,5 +55,6 @@ export type {
     IDashboardTask,
     PropertiesDistribution,
     PropertiesPerUserList,
+    PropertyIntegrations,
     IUserDetails,
 };
