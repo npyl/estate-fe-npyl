@@ -65,8 +65,11 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         const [isBullet, setBullet] = useState(false);
 
         const handleClick = useCallback(
-            (e: MouseEvent<HTMLDivElement>) => {
+            (e: MouseEvent<HTMLDivElement>, isReal: boolean) => {
+                // INFO: The following prevent an onClick propagation (due to mouse up) to the containing view (e.g. DayView)
                 e.stopPropagation();
+                if (!isReal) return;
+
                 onClick?.(e, event);
             },
             [onClick, event]

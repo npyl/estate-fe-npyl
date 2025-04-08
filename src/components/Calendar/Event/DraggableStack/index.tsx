@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, MouseEvent, useCallback } from "react";
 import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import useDraggable from "./useDraggable";
@@ -27,15 +27,22 @@ const StackSx: SxProps<Theme> = {
 
 // ------------------------------------------------------------------------------
 
-interface DraggableStackProps extends Omit<StackProps, "onDragEnd"> {
+interface DraggableStackProps
+    extends Omit<StackProps, "onClick" | "onDragEnd"> {
     event: TCalendarEvent;
+
+    /**
+     * @param isReal used to differenciate between propagated or "real" onClick events
+     */
+    onClick?: (e: MouseEvent<HTMLDivElement>, isReal: boolean) => void;
+
     onDragEnd?: TOnEventDragEnd;
     onResizeEnd?: TOnEventResizeEnd;
 }
 
 const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
     (
-        { event, sx, onClick, onDragEnd, onResizeEnd, children, ...props },
+        { event, sx, onDragEnd, onResizeEnd, onClick, children, ...props },
         ref
     ) => {
         const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
@@ -49,8 +56,21 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
             onDragEnd
         );
 
+        const handleClick = useCallback(
+            (e: MouseEvent<HTMLDivElement>) => onClick?.(e, true),
+            [onClick]
+        );
+
         // If no drag handling needed, return simple Stack
-        if (!onDragEnd) return <Stack ref={elementRef} sx={sx} {...props} />;
+        if (!onDragEnd)
+            return (
+                <Stack
+                    ref={elementRef}
+                    sx={sx}
+                    onClick={handleClick}
+                    {...props}
+                />
+            );
 
         return (
             <DurationUpdateStack
@@ -58,7 +78,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
                 cellsRef={cellsRef}
                 sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
-                onClick={onClick}
+                onClick={handleClick}
                 {...props}
             >
                 <VerticalResize

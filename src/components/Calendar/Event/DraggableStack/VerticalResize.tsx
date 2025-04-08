@@ -9,6 +9,7 @@ import { Box, SxProps, Theme } from "@mui/material";
 import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
 import { CellPosition } from "./types";
 import updateDurationLabelAsync from "./useDraggable/updateDuration";
+import stopPropagation from "@/utils/stopPropagation";
 
 const ResizeHandleSx: SxProps<Theme> = {
     position: "absolute",
@@ -94,7 +95,12 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     return (
         <>
             {children}
-            <Box sx={ResizeHandleSx} onMouseDown={onResizeStart} />
+
+            <Box
+                sx={ResizeHandleSx}
+                onMouseDown={onResizeStart}
+                onClick={stopPropagation}
+            />
         </>
     );
 };
