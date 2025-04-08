@@ -12,6 +12,7 @@ import {
     useChangedFields,
     useFiltersContext,
 } from "@/sections/Properties/FiltersContext";
+import IntegrationsChip from "./Integrationts";
 
 // Chips
 const MinMaxChip = dynamic(() => import("./MinMax"));
@@ -112,6 +113,10 @@ const GeneralChip: FC<GeneralChipProps> = ({
     //
     //  Single Chips
     //
+    if (filterKey === "integrationSites") {
+        return <IntegrationsChip />;
+    }
+
     if (filterKey === "locationSearch") {
         return <LocationChip />;
     }

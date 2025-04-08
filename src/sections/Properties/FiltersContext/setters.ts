@@ -71,6 +71,7 @@ const useSetters: UseSetters = (
             setParentCategories: (value) =>
                 updateFilter("parentCategories", value),
             setPoints: (value) => updateFilter("points", value),
+            setIntegrationSites: (v) => updateFilter("integrationSites", v),
 
             toggleFrameType: (value) => toggleFilterArray("frameType", value),
             toggleFurnished: (value) => toggleFilterArray("furnished", value),
@@ -207,6 +208,8 @@ const useSetters: UseSetters = (
                 deleteFilter("regions");
                 deleteFilter("cities");
             },
+
+            resetIntegrationSites: () => deleteFilter("integrationSites"),
 
             // Other state setters
             setActiveState: (value) => updateFilter("active", value),

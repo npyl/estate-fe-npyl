@@ -1,3 +1,4 @@
+import { IntegrationSite } from "@/types/listings";
 import { IPropertyFilter, IPropertyFilterExtras } from "@/types/properties";
 
 type TUpdateFilterCb = (
@@ -48,6 +49,7 @@ interface IFilterStateSetters {
     setSubCategories: (value: string[]) => void;
     setParentCategories: (value: string[]) => void;
     setPoints: (value: any[]) => void;
+    setIntegrationSites: (v: IntegrationSite[]) => void;
 
     // Togglers
     toggleFrameType: (value: string) => void;
@@ -76,6 +78,7 @@ interface IFilterStateSetters {
     resetParentCategories: () => void;
     resetRegions: () => void;
     resetManagerId: () => void;
+    resetIntegrationSites: VoidFunction;
 
     // Active state
     setActiveState: (value: boolean | null) => void;
