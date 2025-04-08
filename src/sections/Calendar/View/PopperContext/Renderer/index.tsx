@@ -1,12 +1,10 @@
 import dynamic from "next/dynamic";
 import useExclusivePopper from "./useExclusivePopper";
 import { TCalendarEvent } from "@/components/Calendar/types";
-import { forwardRef, RefObject, useCallback, useImperativeHandle } from "react";
+import { forwardRef, useCallback, useImperativeHandle } from "react";
 import { dispatchUpdateDates } from "./updateDates";
-import { notifyCells } from "./notifyCells";
+import { notifyCells } from "../notifyCells";
 import sleep from "@/utils/sleep";
-import { usePopperContext } from ".";
-import { EVENTS, STATES } from "./usePopperEvents";
 
 const EventPopper = dynamic(() => import("@/sections/Calendar/Event/View"));
 const CreatePopper = dynamic(() => import("@/sections/Calendar/Event/Create"));

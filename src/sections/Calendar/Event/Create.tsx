@@ -5,7 +5,7 @@ import Popover from "@/sections/Calendar/Event/Popover";
 import {
     DatesDetail,
     UPDATE_DATES_NAME,
-} from "../View/PopperContext/updateDates";
+} from "../View/PopperContext/Renderer/updateDates";
 
 interface Props {
     startDate: string;

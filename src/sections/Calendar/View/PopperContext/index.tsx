@@ -16,6 +16,7 @@ import usePopperEvents, {
     TPopperEventCb,
 } from "./usePopperEvents";
 import { notifyCells } from "./notifyCells";
+import Saver, { SaverRef } from "./Saver";
 
 type IState = {
     dispatch: ReturnType<typeof usePopperEvents>[0];
@@ -46,17 +47,11 @@ interface MachineMethods {
     OpenEvent: TMachineMethod<EVENTS.CLICK>;
     OpenEventCreate: TMachineMethod<EVENTS.CLICK_EVENT>;
 
-    // Drag & Resize (w/o save)
     Drag: TMachineMethod<EVENTS.DRAG_END>;
     Resize: TMachineMethod<EVENTS.RESIZE_END>;
 
-    // Drag & Resize (w/ save)
-    DragSave: TMachineMethod<EVENTS.DRAG_END>;
-    ResizeSave: TMachineMethod<EVENTS.RESIZE_END>;
-
     // Close any popper
     Close: TMachineMethod<EVENTS.CLOSE>;
-    CloseCreate: TMachineMethod<EVENTS.CLOSE_CREATE>;
 }
 
 const NO_OP = () => {};
@@ -65,31 +60,29 @@ const getMACHINE = (methods: MachineMethods) => ({
     [STATES.IDLE]: {
         [EVENTS.CLICK]: methods.OpenEvent,
         [EVENTS.CLICK_EVENT]: methods.OpenEventCreate,
-        [EVENTS.DRAG_END]: methods.DragSave, // -
-        [EVENTS.RESIZE_END]: methods.ResizeSave, // -
-        [EVENTS.CLOSE]: NO_OP,
-        [EVENTS.CLOSE_CREATE]: NO_OP,
-    },
-    [STATES.POPPER]: {
-        [EVENTS.CLICK]: methods.Close, // -
-        [EVENTS.CLICK_EVENT]: methods.Close, // -
-        [EVENTS.DRAG_END]: methods.DragSave, // -
-        [EVENTS.RESIZE_END]: methods.ResizeSave, // -
-        [EVENTS.CLOSE]: methods.Close, // -
-        [EVENTS.CLOSE_CREATE]: NO_OP,
-    },
-    [STATES.POPPER_CREATE]: {
-        [EVENTS.CLICK]: methods.CloseCreate, // -
-        [EVENTS.CLICK_EVENT]: methods.CloseCreate, // -
         [EVENTS.DRAG_END]: methods.Drag, // -
         [EVENTS.RESIZE_END]: methods.Resize, // -
         [EVENTS.CLOSE]: NO_OP,
-        [EVENTS.CLOSE_CREATE]: methods.CloseCreate,
+    },
+    [STATES.POPPER]: {
+        [EVENTS.CLICK]: methods.Close,
+        [EVENTS.CLICK_EVENT]: methods.Close,
+        [EVENTS.DRAG_END]: methods.Drag, // -
+        [EVENTS.RESIZE_END]: methods.Resize, // -
+        [EVENTS.CLOSE]: methods.Close,
+    },
+    [STATES.POPPER_CREATE]: {
+        [EVENTS.CLICK]: methods.Close,
+        [EVENTS.CLICK_EVENT]: methods.Close,
+        [EVENTS.DRAG_END]: methods.Drag, // -
+        [EVENTS.RESIZE_END]: methods.Resize, // -
+        [EVENTS.CLOSE]: methods.Close,
     },
 });
 
 const useMachine = (
     el: HTMLElement | null,
+    saverRef: RefObject<SaverRef>,
     rendererRef: RefObject<RendererRef>
 ) => {
     const state = useRef<STATES>(STATES.IDLE);
@@ -107,21 +100,35 @@ const useMachine = (
                     state.current = STATES.POPPER_CREATE;
                 },
 
-                Drag: () => {},
-                Resize: () => {},
+                Drag: ({}) => {
+                    switch (state.current) {
+                        case STATES.POPPER:
+                            break;
+                        case STATES.POPPER_CREATE:
+                            break;
+                    }
+                },
 
-                DragSave: () => {},
-                ResizeSave: () => {},
+                Resize: ({ ce, h }) => {
+                    switch (state.current) {
+                        case STATES.POPPER:
+                            saverRef.current?.resize(ce, h);
+                            break;
+                        case STATES.POPPER_CREATE:
+                            break;
+                    }
+                },
 
                 Close: () => {
-                    rendererRef.current?.closePopper();
-                    state.current = STATES.IDLE;
-                },
-                CloseCreate: () => {
-                    // INFO: remove all "create"-events
-                    notifyCells("", "");
-                    rendererRef.current?.closePopper();
-                    state.current = STATES.IDLE;
+                    switch (state.current) {
+                        case STATES.POPPER_CREATE:
+                            // INFO: remove all "create"-events
+                            notifyCells("", "");
+                            break;
+                        default:
+                            rendererRef.current?.closePopper();
+                            state.current = STATES.IDLE;
+                    }
                 },
             }),
         []
@@ -131,9 +138,8 @@ const useMachine = (
         const { event, other } = detail || {};
         if (event === undefined) return;
 
-        // INFO: support no data only for EVENTS.CLOSE or EVENTS.CLOSE_CREATE
-        if (!other && event !== EVENTS.CLOSE && event !== EVENTS.CLOSE_CREATE)
-            return;
+        // INFO: support no data only for EVENTS.CLOSE
+        if (!other && event !== EVENTS.CLOSE) return;
 
         const cb = MACHINE[state.current][event!];
 
@@ -152,24 +158,23 @@ const useMachine = (
 
 const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     const ref = useRef<HTMLDivElement>(null);
+    const saverRef = useRef<SaverRef>(null);
     const rendererRef = useRef<RendererRef>(null);
 
-    const { state, dispatch } = useMachine(ref.current, rendererRef);
+    const { dispatch } = useMachine(ref.current, saverRef, rendererRef);
 
-    const onClose = useCallback(() => {
-        const event =
-            state.current === STATES.POPPER
-                ? EVENTS.CLOSE
-                : EVENTS.CLOSE_CREATE;
-
-        dispatch({
-            event,
-            other: undefined,
-        });
-    }, [dispatch]);
+    const onClose = useCallback(
+        () =>
+            dispatch({
+                event: EVENTS.CLOSE,
+                other: undefined,
+            }),
+        [dispatch]
+    );
 
     return (
         <PopperContext.Provider value={{ dispatch }}>
+            <Saver ref={saverRef} />
             <div ref={ref}>
                 {children}
                 <Renderer ref={rendererRef} onClose={onClose} />

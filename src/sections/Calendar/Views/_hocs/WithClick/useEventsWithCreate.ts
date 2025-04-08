@@ -2,7 +2,7 @@ import { TCalendarEvent } from "@/components/Calendar/types";
 import { useCallback, useMemo, useState, useLayoutEffect } from "react";
 import { isSameDay } from "@/components/Calendar/util";
 import { UpdateEvent } from "@/sections/Calendar/View/PopperContext/notifyCells";
-import { DatesDetail } from "@/sections/Calendar/View/PopperContext/updateDates";
+import { DatesDetail } from "@/sections/Calendar/View/PopperContext/Renderer/updateDates";
 
 const CREATE_EVENT_ID = "PPEvent-Create";
 

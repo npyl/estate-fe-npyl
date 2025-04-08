@@ -16,7 +16,6 @@ enum EVENTS {
     DRAG_END,
     RESIZE_END,
     CLOSE,
-    CLOSE_CREATE,
 }
 
 // ---------------------------------------------------------------
@@ -49,7 +48,6 @@ type PopperEventDataMap = {
     [EVENTS.RESIZE_END]: ResizeEndEventData;
 
     [EVENTS.CLOSE]: undefined;
-    [EVENTS.CLOSE_CREATE]: undefined;
 };
 
 // ---------------------------------------------------------------
