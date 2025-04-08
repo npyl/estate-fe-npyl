@@ -11,14 +11,16 @@ const getEvent = <T>(name: string, detail: T) =>
 
 // --------------------------------------------------------------------------------
 
-const getUseListener = <T>(name: string, element: HTMLElement, cb: TCb<T>) => {
-    useLayoutEffect(() => {
-        element.addEventListener(name, cb);
-        return () => {
-            element.removeEventListener(name, cb);
-        };
-    }, []);
-};
+const getUseListener =
+    <T>(name: string, element: HTMLElement, cb: TCb<T>) =>
+    () => {
+        useLayoutEffect(() => {
+            element.addEventListener(name, cb);
+            return () => {
+                element.removeEventListener(name, cb);
+            };
+        }, []);
+    };
 
 // --------------------------------------------------------------------------------
 

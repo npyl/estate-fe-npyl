@@ -76,14 +76,20 @@ const useMachine = (el: HTMLElement | null) => {
 
     const handleEvent: TPopperEventCb = useCallback(({ detail }) => {
         const { event, other } = detail || {};
-        if (!event) return;
+        if (event === undefined) return;
 
-        const cb = MACHINE[state.current][event];
+        console.log(`[${event}]:`, other);
+
+        const cb = MACHINE[state.current][event!];
 
         // cb(me, ...other);
     }, []);
 
-    return usePopperEvents(handleEvent, el);
+    const [dispatch, useListener] = usePopperEvents(handleEvent, el);
+
+    useListener();
+
+    return dispatch;
 };
 
 // ---------------------------------------------------------------------------------
@@ -92,7 +98,7 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     const ref = useRef<HTMLDivElement>(null);
     const rendererRef = useRef<RendererRef>(null);
 
-    const [dispatch] = useMachine(ref.current);
+    const dispatch = useMachine(ref.current);
 
     return (
         <PopperContext.Provider value={{ dispatch }}>
