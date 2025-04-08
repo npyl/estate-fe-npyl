@@ -4,18 +4,23 @@ import {
     PropsWithChildren,
     useCallback,
     useContext,
+    useMemo,
     useRef,
 } from "react";
 import Renderer, { RendererRef } from "./Renderer";
-import { TCalendarEvent } from "@/components/Calendar/types";
+import usePopperEvents, {
+    EVENTS,
+    STATES,
+    TPopperEventCb,
+} from "./usePopperEvents";
 
 type IState = {
-    updateDates: (startDate: string, endDate: string) => void;
-    setEvent: (el: HTMLDivElement, v: TCalendarEvent) => void;
-    setStartDate: (el: HTMLDivElement, v: string) => void;
+    dispatch: ReturnType<typeof usePopperEvents>[0];
 };
 
 const PopperContext = createContext<IState | undefined>(undefined);
+
+// ---------------------------------------------------------------------------------
 
 export const usePopperContext = () => {
     const context = useContext(PopperContext);
@@ -27,36 +32,77 @@ export const usePopperContext = () => {
     return context;
 };
 
-const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
-    const rendererRef = useRef<RendererRef>(null);
+// ---------------------------------------------------------------------------------
 
-    const setEvent = useCallback(
-        (el: HTMLDivElement, v: TCalendarEvent) =>
-            rendererRef.current?.setEvent(el, v),
-        []
-    );
-    const setStartDate = useCallback(
-        (el: HTMLDivElement, v: string) =>
-            rendererRef.current?.setStartDate(el, v),
-        []
-    );
+// Open an existing event (e.g. view / edit), open a create event popper
+const OpenEvent = () => {};
+const OpenEventCreate = () => {};
 
-    const updateDates = useCallback((startDate: string, endDate: string) => {
-        rendererRef.current?.updateDates(startDate, endDate);
+// Drag & Resize (w/o save)
+const Drag = () => {};
+const Resize = () => {};
+
+// Drag & Resize (w/ save)
+const DragSave = () => {};
+const ResizeSave = () => {};
+
+// Close any popper
+const Close = () => {};
+
+const getMACHINE = () => ({
+    [STATES.IDLE]: {
+        [EVENTS.CLICK]: OpenEvent,
+        [EVENTS.CLICK_EVENT]: OpenEventCreate,
+        [EVENTS.DRAG_END]: DragSave,
+        [EVENTS.RESIZE_END]: ResizeSave,
+    },
+    [STATES.POPPER]: {
+        [EVENTS.CLICK]: Close,
+        [EVENTS.CLICK_EVENT]: Close,
+        [EVENTS.DRAG_END]: DragSave,
+        [EVENTS.RESIZE_END]: ResizeSave,
+    },
+    [STATES.POPPER_CREATE]: {
+        [EVENTS.CLICK]: Close,
+        [EVENTS.CLICK_EVENT]: Close,
+        [EVENTS.DRAG_END]: Drag,
+        [EVENTS.RESIZE_END]: Resize,
+    },
+});
+
+const useMachine = (el: HTMLElement | null) => {
+    const state = useRef<STATES>(STATES.IDLE);
+    const MACHINE = useMemo(() => getMACHINE(), []);
+
+    const handleEvent: TPopperEventCb = useCallback(({ detail }) => {
+        const { me, event, other } = detail || {};
+        if (!event) return;
+
+        const cb = MACHINE[state.current][event];
+
+        // cb(me, ...other);
     }, []);
 
+    return usePopperEvents(handleEvent, el);
+};
+
+// ---------------------------------------------------------------------------------
+
+const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const rendererRef = useRef<RendererRef>(null);
+
+    const [dispatch] = useMachine(ref.current);
+
     return (
-        <PopperContext.Provider
-            value={{
-                updateDates,
-                setEvent,
-                setStartDate,
-            }}
-        >
-            {children}
-            <Renderer ref={rendererRef} />
+        <PopperContext.Provider value={{ dispatch }}>
+            <div ref={ref}>
+                {children}
+                <Renderer ref={rendererRef} />
+            </div>
         </PopperContext.Provider>
     );
 };
 
+export { EVENTS };
 export default PopperProvider;
