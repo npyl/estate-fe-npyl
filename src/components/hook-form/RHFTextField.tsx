@@ -29,7 +29,6 @@ export default function RHFTextField({ name, ...other }: RHFTextFieldProps) {
                     error={!!error}
                     helperText={error?.message ?? ""}
                     {...other}
-                    sx={{ pb: 3 }}
                 />
             )}
         />
