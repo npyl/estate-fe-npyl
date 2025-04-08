@@ -1,5 +1,6 @@
 import { useCallback, useRef, useLayoutEffect } from "react";
 import { CellPosition } from "./types";
+import { CELL_CLASSNAME } from "./useDraggable";
 
 const useResponsiveCellPositions = () => {
     const cellsRef = useRef<CellPosition[]>([]);
@@ -7,7 +8,7 @@ const useResponsiveCellPositions = () => {
     // Update cells positions cache
     const updateCellsPositions = useCallback(() => {
         const cells = Array.from(
-            document.getElementsByClassName("PPCell")
+            document.getElementsByClassName(CELL_CLASSNAME)
         ) as HTMLElement[];
 
         cellsRef.current = cells.map((cell) => {
