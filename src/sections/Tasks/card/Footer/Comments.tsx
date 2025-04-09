@@ -22,46 +22,14 @@ const CommentIcon = () => (
     </svg>
 );
 
-// -------------------------------------------------------------
-
-interface Props {
-    count: number;
-}
-
-const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
-    ({ count }, ref) => {
-        const { t } = useTranslation();
-
-        const [isSmall, setSmall] = useState(false);
-
-        const handleWidth = useCallback((w: number) => {
-            if (w < 60) setSmall(true);
-        }, []);
-
-        const { onRef } = useWidthObserver(ref, handleWidth);
-
-        const label = isSmall ? count : `${count} ${t("Comments")}`;
-
-        return (
-            <Typography ref={onRef} variant="body2">
-                {label}
-            </Typography>
-        );
-    }
-);
-
-ResponsiveTypography.displayName = "CommentsResponsiveTypography";
-
-// -------------------------------------------------------------
-
 interface CommentsProps {
     count: number;
 }
 
 const Comments: FC<CommentsProps> = ({ count }) => (
-    <Stack direction="row" alignItems="center" spacing={1}>
+    <Stack direction="row" alignItems="center" spacing={0.5}>
         <CommentIcon />
-        <ResponsiveTypography count={count} />
+        <Typography variant="body2">{count}</Typography>
     </Stack>
 );
 

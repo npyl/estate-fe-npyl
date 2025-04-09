@@ -39,7 +39,9 @@ const PriceSelect: FC<Props> = (props) => {
     }, [valueMax, valueMin, t]);
 
     return (
-        <FormControl sx={{ width: "175px", textWrap: "nowrap" }}>
+        <FormControl
+            sx={{ minWidth: "175px", maxWidth: "175px", textWrap: "nowrap" }}
+        >
             <InputLabel>{t(label)}</InputLabel>
             <Select
                 label={t(label)}
