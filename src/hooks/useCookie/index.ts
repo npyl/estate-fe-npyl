@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import useCallbackSetter from "./useCallbackSetter";
 
