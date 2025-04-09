@@ -8,7 +8,7 @@ import {
     TOnEventResizeEnd,
 } from "../../types";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import DurationUpdateStack from "./DurationUpdateStack";
+import DurationUpdater from "./DurationUpdater";
 import VerticalResize from "./VerticalResize";
 
 // -------------------------------------------------------------------------------------
@@ -73,14 +73,15 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
             );
 
         return (
-            <DurationUpdateStack
+            <Stack
                 ref={elementRef}
-                cellsRef={cellsRef}
                 sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
                 onClick={handleClick}
                 {...props}
             >
+                <DurationUpdater elementRef={elementRef} cellsRef={cellsRef} />
+
                 <VerticalResize
                     event={event}
                     cellsRef={cellsRef}
@@ -89,7 +90,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
                 >
                     {children}
                 </VerticalResize>
-            </DurationUpdateStack>
+            </Stack>
         );
     }
 );
