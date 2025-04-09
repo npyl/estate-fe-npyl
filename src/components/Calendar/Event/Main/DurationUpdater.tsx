@@ -1,5 +1,5 @@
 import { FC, RefObject, useCallback, useEffect } from "react";
-import updateDurationLabelAsync from "./useDraggable/updateDuration";
+import updateDurationLabelAsync from "./updateDuration";
 import { CellPosition } from "./types";
 
 interface DurationUpdaterProps {

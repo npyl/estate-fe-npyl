@@ -1,13 +1,19 @@
-import { TOnEventClick } from "../types";
-import { ColoredContainerProps } from "./ColoredContainer";
+import { StackProps } from "@mui/material";
+import {
+    TCalendarEvent,
+    TOnEventClick,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+} from "../types";
 
 interface EventProps
-    extends Omit<
-        ColoredContainerProps,
-        "ref" | "bgcolor" | "onClick" | "overlapCount"
-    > {
+    extends Omit<StackProps, "onClick" | "onMouseUp" | "onMouseDown"> {
+    event: TCalendarEvent;
     overlapCount?: number;
-    onClick?: TOnEventClick;
+
+    onEventClick?: TOnEventClick;
+    onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeEnd?: TOnEventResizeEnd;
 }
 
 export type { EventProps };

@@ -5,7 +5,7 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../../NowIndicator";
 import dynamic from "next/dynamic";
 import VerticalDivider from "./VerticalDivider";
-import { CELL_CLASSNAME } from "@/components/Calendar/Event/DraggableStack/useDraggable";
+import { CELL_CLASSNAME } from "@/components/Calendar/Event/Main/useDraggable";
 const MiscCell = dynamic(() => import("../../MiscCell"));
 
 // -------------------------------------------------------------------------

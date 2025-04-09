@@ -1,5 +1,5 @@
 import { type MouseEvent, RefObject, useCallback, useRef } from "react";
-import { CellPosition } from "../types";
+import { CellPosition } from "../../Main/types";
 import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
 

@@ -99,9 +99,9 @@ function useTimemappedEvents<TCustomProps extends object = object>(
                     key={event.id}
                     event={event}
                     overlapCount={overlapCount}
-                    onClick={onEventClick}
-                    onDragEnd={onEventDragEnd}
-                    onResizeEnd={onEventResizeEnd}
+                    onEventClick={onEventClick}
+                    onEventDragEnd={onEventDragEnd}
+                    onEventResizeEnd={onEventResizeEnd}
                     {...(EventProps?.(i) || ({} as TCustomProps))}
                 />
             );

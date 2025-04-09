@@ -1,15 +1,9 @@
-import {
-    useRef,
-    useCallback,
-    MutableRefObject,
-    PropsWithChildren,
-    FC,
-} from "react";
+import { useRef, useCallback, MutableRefObject, FC } from "react";
 import { Box, SxProps, Theme } from "@mui/material";
-import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
 import { CellPosition } from "./types";
-import updateDurationLabelAsync from "./useDraggable/updateDuration";
+import updateDurationLabelAsync from "./updateDuration";
 import stopPropagation from "@/utils/stopPropagation";
+import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
 
 const ResizeHandleSx: SxProps<Theme> = {
     position: "absolute",
@@ -22,7 +16,7 @@ const ResizeHandleSx: SxProps<Theme> = {
     zIndex: 10,
 };
 
-interface VerticalResizeProps extends PropsWithChildren {
+interface VerticalResizeProps {
     targetRef: MutableRefObject<HTMLDivElement | null>;
     cellsRef: MutableRefObject<CellPosition[]>;
     event: TCalendarEvent;
@@ -34,7 +28,6 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     cellsRef,
     event,
     onResizeEnd,
-    children,
 }) => {
     const isResizing = useRef(false);
 
@@ -93,15 +86,13 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     );
 
     return (
-        <>
-            {children}
-
-            <Box
-                sx={ResizeHandleSx}
-                onMouseDown={onResizeStart}
-                onClick={stopPropagation}
-            />
-        </>
+        <Box
+            sx={ResizeHandleSx}
+            onMouseDown={onResizeStart}
+            // ...
+            onMouseUp={stopPropagation}
+            onClick={stopPropagation}
+        />
     );
 };
 

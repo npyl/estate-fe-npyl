@@ -71,7 +71,7 @@ interface BulletProps {
     type: TCalendarEventType;
     overlapCount?: number;
     top?: number;
-    onClick: (e: MouseEvent<HTMLDivElement>, isReal: boolean) => void;
+    onClick: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
 const Bullet: FC<BulletProps> = ({
@@ -81,7 +81,7 @@ const Bullet: FC<BulletProps> = ({
     top,
     onClick,
 }) => (
-    <Tooltip title={title} onClick={(e) => onClick(e, true)}>
+    <Tooltip title={title} onClick={onClick}>
         <Box sx={getBulletContainerSx(overlapCount, top)}>
             <Box
                 bgcolor={getTypeColor(type)}

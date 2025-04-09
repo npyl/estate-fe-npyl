@@ -1,79 +1,49 @@
 import { forwardRef, MouseEvent, useCallback, useState } from "react";
-import { Box, Stack, SxProps, Theme } from "@mui/material";
-import { DAY_CELL_HEIGHT, Z_INDEX } from "@/constants/calendar";
+import { DAY_CELL_HEIGHT } from "@/constants/calendar";
 import dynamic from "next/dynamic";
-import Title from "./_shared/Title";
-import { EventProps } from "./types";
-import { LF } from "./_constants";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
-import Description from "./_shared/Description";
-import { useCalendarColorById } from "@/services/calendar";
-import ColoredContainer from "./ColoredContainer";
+import { EventContainerProps } from "./Container";
+import {
+    TCalendarEvent,
+    TOnEventClick,
+    TOnEventDragEnd,
+    TOnEventResizeEnd,
+} from "../types";
+import Main from "./Main";
 const Bullet = dynamic(() => import("./Bullet"));
-const People = dynamic(() => import("./_shared/People"));
 
 // ------------------------------------------------------------------------------------
 
-const getEventSx = (overlapCount?: number): SxProps<Theme> => {
-    const c = overlapCount ?? 0;
+interface CalendarEventProps
+    extends Omit<EventContainerProps, "bgcolor" | "onClick"> {
+    event: TCalendarEvent;
+    onEventClick?: TOnEventClick;
+    onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeEnd?: TOnEventResizeEnd;
+}
 
-    const marginLeft = 1 + c * LF;
-    const width = ({ spacing }: Theme) => `calc(100% - ${spacing(2 + c * LF)})`;
-    const zIndex = Z_INDEX.EVENT + c;
-
-    return {
-        backgroundColor: "background.paper",
-        borderRadius: 1,
-        boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.4)",
-
-        marginLeft,
-        width,
-
-        position: "absolute",
-        zIndex,
-
-        transition: "all 0.3s ease",
-
-        // IMPORTANT: prevent text selection because it causes loss of dragging flow
-        userSelect: "none",
-
-        cursor: "pointer",
-
-        // INFO: prevent editor from overflowing
-        overflowY: "hidden",
-
-        "&:hover": {
-            zIndex: Z_INDEX.HEADER - 1,
-            boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.55)",
+const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
+    (
+        {
+            event,
+            overlapCount = 0,
+            onEventClick,
+            onEventDragEnd,
+            onEventResizeEnd,
+            ...props
         },
-    };
-};
-
-const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
-    ({ event, overlapCount = 0, onClick, sx, ...props }, ref) => {
+        ref
+    ) => {
         const { top, height } = calculateTimePosition(
             event.startDate,
             event.endDate
         );
 
-        const bgcolor = useCalendarColorById(event?.colorId);
-
         const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
         const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
 
         const [isBullet, setBullet] = useState(false);
-
-        const handleClick = useCallback(
-            (e: MouseEvent<HTMLDivElement>, isReal: boolean) => {
-                // INFO: The following prevent an onClick propagation (due to mouse up) to the containing view (e.g. DayView)
-                e.stopPropagation();
-                if (!isReal) return;
-
-                onClick?.(e, event);
-            },
-            [onClick, event]
-        );
 
         const handleWidth = useCallback(
             (width: number) => setBullet(width <= 60),
@@ -81,6 +51,14 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         );
 
         const { onRef } = useWidthObserver(ref, handleWidth);
+
+        const handleClick = useCallback(
+            (e: MouseEvent<HTMLDivElement>) => {
+                e.stopPropagation();
+                onEventClick?.(e, event);
+            },
+            [onEventClick, event]
+        );
 
         if (isBullet) {
             return (
@@ -94,37 +72,15 @@ const CalendarEvent = forwardRef<HTMLDivElement, EventProps>(
         }
 
         return (
-            <ColoredContainer
+            <Main
                 ref={onRef}
-                bgcolor={bgcolor}
-                sx={{ ...(getEventSx(overlapCount) as any), ...sx }}
+                isMinimumHeight={isMinimumHeight}
                 top={top}
                 height={maxHeight}
                 event={event}
                 onClick={handleClick}
                 {...props}
-            >
-                <Title
-                    title={event.title}
-                    startDate={event.startDate}
-                    endDate={event.endDate}
-                    type={event.type}
-                />
-
-                {!isMinimumHeight ? (
-                    <>
-                        <Description content={event.description} />
-
-                        <Box flexGrow={1} />
-
-                        {event.type !== "TASK" ? (
-                            <Stack p={1}>
-                                <People p={event.people} />
-                            </Stack>
-                        ) : null}
-                    </>
-                ) : null}
-            </ColoredContainer>
+            />
         );
     }
 );
