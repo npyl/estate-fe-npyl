@@ -8,6 +8,7 @@ import {
 } from "src/services/user";
 import { useLogoutMutation } from "@/services/logout";
 import { debuglog } from "util";
+import { clearAllApiCaches } from "@/store";
 
 interface State {
     platform: "JWT";
@@ -182,6 +183,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const logout = useCallback(async () => {
         await logoutCb();
+
+        clearAllApiCaches();
+
         localStorage.removeItem("accessToken");
         dispatch({ type: ActionType.LOGOUT });
     }, []);

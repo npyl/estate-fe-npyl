@@ -34,6 +34,48 @@ import { logout } from "@/services/logout";
 import { server } from "@/services/server";
 import { rootReducer } from "./root-reducer";
 
+const services = [
+    auth,
+    user,
+    properties,
+    customers,
+    global,
+    note,
+    labels,
+    location,
+    notification,
+    security,
+    tasks,
+    logs,
+    dashboard,
+    publicDashboard,
+    company,
+    // listings
+    generalListing,
+    publicListing,
+    // ...
+    translation,
+    solar,
+    airQuality,
+    integrations,
+    agreements,
+    calendar,
+    googleWorkspaceApi,
+    googleOAuth,
+    messages,
+    logout,
+    // ...
+    server,
+];
+
+export const clearAllApiCaches = () => {
+    services.forEach((api) => {
+        if (api.util && typeof api.util.resetApiState === "function") {
+            dispatch(api.util.resetApiState());
+        }
+    });
+};
+
 export const createStore = (
     options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -47,37 +89,7 @@ export const createStore = (
                     ignoredActionPaths: ["payload", "meta"],
                 },
             }).concat(
-                auth.middleware,
-                user.middleware,
-                properties.middleware,
-                customers.middleware,
-                global.middleware,
-                note.middleware,
-                labels.middleware,
-                location.middleware,
-                notification.middleware,
-                security.middleware,
-                tasks.middleware,
-                logs.middleware,
-                dashboard.middleware,
-                publicDashboard.middleware,
-                company.middleware,
-                // listings
-                generalListing.middleware,
-                publicListing.middleware,
-                // ...
-                translation.middleware,
-                solar.middleware,
-                airQuality.middleware,
-                integrations.middleware,
-                agreements.middleware,
-                calendar.middleware,
-                googleWorkspaceApi.middleware,
-                googleOAuth.middleware,
-                messages.middleware,
-                logout.middleware,
-                // ...
-                server.middleware,
+                ...services.map((api) => api.middleware),
                 rtkQueryErrorLogger
             ),
         ...options,
