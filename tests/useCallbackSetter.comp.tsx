@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import useCallbackSetter from "../src/hooks/useCookie/useCallbackSetter";
+import useCallbackSetter from "../src/hooks/useCallbackSetter";
 import React from "react";
 
 const VALUE_ID = "value";

@@ -5,7 +5,7 @@ import { didChangeFields } from "./useChangedFields";
 import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
-import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
+import useCallbackSetter from "@/hooks/useCallbackSetter";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { IntegrationSite } from "@/types/listings";
 
