@@ -406,6 +406,7 @@ const resources = {
             Completed: "Completed",
             "Type a message": "Type a message",
             Comment: "Comment",
+            "Comment...": "Comment...",
             "Search...": "Search ...",
             "Are you sure want to delete": "Are you sure you want to delete",
             "Delete task": "Delete task",
@@ -2016,6 +2017,7 @@ const resources = {
             Attachments: "Συνημμένα",
             "Type a message": "Πληκτρολογήστε ένα μήνυμα",
             Comment: "Σχόλιο",
+            "Comment...": "Σχόλιο...",
             "Search...": "Αναζήτηση ...",
             "Are you sure want to delete":
                 "Είστε σίγουροι ότι θέλετε να διαγράψετε την εργασία;",

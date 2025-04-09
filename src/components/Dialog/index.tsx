@@ -60,7 +60,12 @@ const Dialog = ({
             open={open}
             onClose={onClose}
             fullWidth
-            maxWidth="sm"
+            maxWidth={false}
+            PaperProps={{
+                sx: {
+                    width: 700, // custom width
+                },
+            }}
             // INFO: make the dialog work as a <form> component
             component={submit ? DialogForm : undefined}
             // ...

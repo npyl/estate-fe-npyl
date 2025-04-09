@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import ColumnSelect from "./Column";
 import PriorityButtonGroup from "./Priority";
 
-const ColumnSelectSx = { width: "300px" };
+const ColumnSelectSx = { width: "350px" };
 
 const Buttons = () => {
     const { t } = useTranslation();
