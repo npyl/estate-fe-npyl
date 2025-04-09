@@ -29,8 +29,8 @@ const RHFPropertyCodeMultiple: FC<RHFPropertyCodeMultiple> = ({
                     {...field}
                     idValue={value}
                     onChange={(e, ids, codes) => {
-                        onChange(ids);
                         _onChange?.(e, ids, codes);
+                        onChange(ids);
                     }}
                     error={Boolean(error)}
                     helperText={error?.message}

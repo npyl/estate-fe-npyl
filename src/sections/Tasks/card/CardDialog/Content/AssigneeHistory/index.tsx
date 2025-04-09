@@ -45,7 +45,6 @@ interface HistoryItemProps {
 }
 
 const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
-    console.log(i);
     const { t, i18n } = useTranslation();
     const loc = i18n.language === "en" ? "en-US" : "el-GR";
 

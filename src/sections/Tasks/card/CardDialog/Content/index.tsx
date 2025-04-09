@@ -12,6 +12,10 @@ import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerM
 import AssigneeSelect from "./Autocompletes/Assignee";
 import RHFEditor from "@/components/hook-form/RHFEditor";
 import { Box, Typography } from "@mui/material";
+import { useGetOwnedPropertiesMutation } from "@/services/customers";
+import { useFormContext } from "react-hook-form";
+import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import { useGetOwnersMutation } from "@/services/properties";
 const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
@@ -19,26 +23,59 @@ const Labels = dynamic(() => import("./Labels"));
 
 // -----------------------------------------------------------------
 
+const getDiffedIds = (ids0: number[], ids1: number[]) =>
+    ids1.filter((id) => !ids0.includes(id));
+
 const CustomerAutocomplete = () => {
     const { t } = useTranslation();
 
-    const onCustomersChange = useCallback((v: number[]) => {}, []);
+    const { getValues, setValue } = useFormContext<ICreateOrUpdateTaskReq>();
+    const [get] = useGetOwnedPropertiesMutation();
+    const onCustomersChange = useCallback(
+        async (newIds: number[]) => {
+            const oldIds = getValues("customers") || [];
+            const diffed = getDiffedIds(oldIds, newIds);
+
+            const res = await get(diffed);
+            if ("error" in res) return;
+
+            const old = getValues("properties") || [];
+            const dataIds = res.data?.map(({ id }) => id) || [];
+
+            setValue("properties", [...old, ...dataIds]);
+        },
+        [getValues]
+    );
 
     return (
-        <>
-            <CustomerAutocompleteMultiple
-                label={t("Customers")}
-                name="customers"
-                onChange={onCustomersChange}
-            />
-        </>
+        <CustomerAutocompleteMultiple
+            label={t("Customers")}
+            name="customers"
+            onChange={onCustomersChange}
+        />
     );
 };
 
 const PropertiesAutocomplete = () => {
     const { t } = useTranslation();
 
-    const onPropertiesChange = useCallback((_: any, ids: number[]) => {}, []);
+    const { getValues, setValue } = useFormContext<ICreateOrUpdateTaskReq>();
+    const [get] = useGetOwnersMutation();
+    const onPropertiesChange = useCallback(
+        async (_: any, newIds: number[]) => {
+            const oldIds = getValues("properties") || [];
+            const diffed = getDiffedIds(oldIds, newIds);
+
+            const res = await get(diffed);
+            if ("error" in res) return;
+
+            const old = getValues("customers") || [];
+            const dataIds = res.data?.map(({ id }) => id) || [];
+
+            setValue("customers", [...old, ...dataIds]);
+        },
+        [getValues]
+    );
 
     return (
         <Box>

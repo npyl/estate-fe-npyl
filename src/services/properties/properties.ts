@@ -10,7 +10,7 @@ import {
 import IPage from "src/types/page";
 
 import { ILabel } from "src/types/label";
-import { ICustomer } from "src/types/customer";
+import { ICustomer, ICustomerMini } from "src/types/customer";
 
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
@@ -133,6 +133,13 @@ export const properties = apiWithTranslation({
         getPropertyCardById: builder.query<IPropertyResultResponse, number>({
             query: (propertyId) => `card/${propertyId}`,
             providesTags: ["Properties"],
+        }),
+        getOwners: builder.mutation<ICustomerMini[], number[]>({
+            query: (body) => ({
+                url: "/owners",
+                body,
+                method: "POST",
+            }),
         }),
 
         // Attributes
@@ -404,6 +411,7 @@ export const {
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
     useEditLocationDisplayMutation,
+    useGetOwnersMutation,
 
     // check
     useLazyCheckCodeExistsQuery,

@@ -45,6 +45,12 @@ interface SuggestPropertiesReq {
     customerId: number;
 }
 
+interface IOwnedProperties {
+    id: number;
+    code: string;
+    parentCategory: string;
+}
+
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
 const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
 const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
@@ -85,6 +91,14 @@ export const customers = apiWithTranslation({
         getCustomerLabels: builder.query<ILabel[], number>({
             query: (customerId: number) => `/${customerId}/labels`,
             providesTags: ["CustomerByIdLabels"],
+        }),
+
+        getOwnedProperties: builder.mutation<IOwnedProperties[], number[]>({
+            query: (body) => ({
+                url: "/owned-properties",
+                body,
+                method: "POST",
+            }),
         }),
 
         filterCustomers: builder.query<
@@ -210,6 +224,8 @@ export const {
     useBulkEditCustomersMutation,
     useGetCustomerLabelsQuery,
     useLazyGetCustomerByIdQuery,
+
+    useGetOwnedPropertiesMutation,
 
     // ...
     useGetTasksQuery,

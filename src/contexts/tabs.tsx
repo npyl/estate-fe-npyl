@@ -40,7 +40,6 @@ const TabsProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const pushTab = (i: ITab, ud?: boolean) => {
         try {
-            console.log("SUBBAR?: ", subbar.current);
             subbar.current?.pushTab(i, ud);
         } catch (ex) {}
     };
