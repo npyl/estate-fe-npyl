@@ -46,7 +46,7 @@ test("useCookie.Multiple", async ({ mount }) => {
 
     await component.getByTestId(SET_MULTIPLE_ID).click();
 
-    await expect(valueLocator).toHaveText("initial with callback");
+    await expect(valueLocator).toHaveText("initial then second");
 });
 
 test("useCookie.Remove", async ({ mount }) => {

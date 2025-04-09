@@ -2,16 +2,11 @@ import { useCallback, useRef } from "react";
 
 /**
  * Creates a setter function that supports both direct value assignment and callback-based updates
- * similar to React's useState setter.
+ * similar to React's useState setter, but ensures that multiple sequential updates in the same
+ * call stack operate on the same initial value.
  *
- * TODO: update for multiple updates? e.g.:
- * () => {
- *      set(value);
- *      set((old) => `${old} something`);
- * }
- *
- * @param getValue Function that returns the current value
- * @param setValue Function that sets the new value
+ * @param initialValue The initial value to store
+ * @param _setValue Function that sets the new value externally (e.g. state setter)
  * @returns A setter function that accepts either a new value or an updater function
  */
 const useCallbackSetter = <T>(
@@ -19,27 +14,52 @@ const useCallbackSetter = <T>(
     _setValue: (value: T) => void
 ) => {
     const valueRef = useRef<T>(initialValue);
-    const getCurrentValue = useCallback(() => valueRef.current, []);
-    const setValue = useCallback(
-        (v: T) => {
-            valueRef.current = v;
-            _setValue(v);
+
+    const isBatchingRef = useRef<boolean>(false);
+    const originalValueRef = useRef<T | null>(null);
+    const finalValueRef = useRef<T | null>(null);
+
+    const flushBatch = useCallback(() => {
+        if (isBatchingRef.current && finalValueRef.current !== null) {
+            valueRef.current = finalValueRef.current;
+            _setValue(finalValueRef.current);
+
+            // Reset batching state
+            isBatchingRef.current = false;
+            originalValueRef.current = null;
+            finalValueRef.current = null;
+        }
+    }, [_setValue]);
+
+    const setter = useCallback(
+        (valueOrCb: T | ((prev: T) => T)) => {
+            // Start a new batch if not already batching
+            if (!isBatchingRef.current) {
+                isBatchingRef.current = true;
+                originalValueRef.current = valueRef.current;
+                finalValueRef.current = valueRef.current;
+            }
+
+            // Calculate the new value based on the original value at batch start
+            if (typeof valueOrCb === "function") {
+                const updater = valueOrCb as (prev: T) => T;
+                // Always use the original value at the start of the batch for callbacks
+                const newValue = updater(originalValueRef.current as T);
+                finalValueRef.current = newValue;
+            } else {
+                // Direct value assignment
+                finalValueRef.current = valueOrCb;
+            }
+
+            // Schedule a microtask to flush the batch
+            Promise.resolve().then(flushBatch);
+
+            return finalValueRef.current;
         },
-        [_setValue]
+        [flushBatch]
     );
 
-    return useCallback(
-        (valueOrCb: T | ((prev: T) => T)) => {
-            if (typeof valueOrCb === "function") {
-                const currentValue = getCurrentValue();
-                const newValue = (valueOrCb as (prev: T) => T)(currentValue);
-                setValue(newValue);
-            } else {
-                setValue(valueOrCb);
-            }
-        },
-        [setValue]
-    );
+    return setter;
 };
 
 export default useCallbackSetter;
