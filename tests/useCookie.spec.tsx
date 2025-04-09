@@ -7,12 +7,14 @@ import {
     SET_MULTIPLE_ID,
     VALUE_ID,
 } from "./useCookie.comp";
-import { BasicTester } from "./useCookie.comp";
+import Tester from "./useCookie.comp";
 
+// ---------------------------------------------------------------------------------------------------
+//          BASIC
 // ---------------------------------------------------------------------------------------------------
 
 test("useCookie.DirectUpdate", async ({ mount }) => {
-    const component = await mount(<BasicTester />);
+    const component = await mount(<Tester />);
 
     // Check initial value
     const valueLocator = component.getByTestId(VALUE_ID);
@@ -26,7 +28,7 @@ test("useCookie.DirectUpdate", async ({ mount }) => {
 });
 
 test("useCookie.UpdateWithCallback", async ({ mount }) => {
-    const component = await mount(<BasicTester />);
+    const component = await mount(<Tester />);
 
     const valueLocator = component.getByTestId(VALUE_ID);
     await expect(valueLocator).toHaveText("initial");
@@ -37,7 +39,7 @@ test("useCookie.UpdateWithCallback", async ({ mount }) => {
 });
 
 test("useCookie.Multiple", async ({ mount }) => {
-    const component = await mount(<BasicTester />);
+    const component = await mount(<Tester />);
 
     const valueLocator = component.getByTestId(VALUE_ID);
     await expect(valueLocator).toHaveText("initial");
@@ -48,7 +50,7 @@ test("useCookie.Multiple", async ({ mount }) => {
 });
 
 test("useCookie.Remove", async ({ mount }) => {
-    const component = await mount(<BasicTester />);
+    const component = await mount(<Tester />);
 
     const valueLocator = component.getByTestId(VALUE_ID);
     await expect(valueLocator).toHaveText("initial");
@@ -59,3 +61,30 @@ test("useCookie.Remove", async ({ mount }) => {
 });
 
 // ---------------------------------------------------------------------------------------------------
+//          COMPLEX
+// ---------------------------------------------------------------------------------------------------
+
+test("useCookie.Complex", async ({ mount }) => {
+    let valueLocator;
+
+    const component = await mount(<Tester />);
+
+    // initial value
+    valueLocator = component.getByTestId(VALUE_ID);
+    await expect(valueLocator).toHaveText("initial");
+
+    // Direct set
+    await component.getByTestId(SET_DIRECT_ID).click();
+    valueLocator = component.getByTestId(VALUE_ID);
+    await expect(valueLocator).toHaveText("direct update");
+
+    // Callback set
+    await component.getByTestId(SET_CALLBACK_ID).click();
+    valueLocator = component.getByTestId(VALUE_ID);
+    await expect(valueLocator).toHaveText("direct update with callback");
+
+    // Remove
+    await component.getByTestId(COOKIE_REMOVE_ID).click();
+    valueLocator = component.getByTestId(VALUE_ID);
+    await expect(valueLocator).toHaveText("initial");
+});

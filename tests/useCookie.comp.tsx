@@ -12,7 +12,7 @@ const COOKIE_REMOVE_ID = "cookie-remove-id";
 
 const cookieName = "test-cookie";
 
-const BasicTester = () => {
+const Tester = () => {
     const [cookie, setCookie, removeCookie] = useCookie<string>(
         cookieName,
         "initial"
@@ -44,14 +44,7 @@ const BasicTester = () => {
     );
 };
 
-const ComplexTester = () => {
-    return null;
-};
-
 export {
-    BasicTester,
-    ComplexTester,
-    // ...
     VALUE_ID,
     SET_DIRECT_ID,
     SET_CALLBACK_ID,
@@ -59,3 +52,4 @@ export {
     // ..
     COOKIE_REMOVE_ID,
 };
+export default Tester;
