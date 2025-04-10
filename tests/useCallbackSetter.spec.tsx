@@ -50,6 +50,6 @@ test("Multiple", async ({ mount }) => {
         component,
         SET_MULTIPLE_ID,
         VALUE_ID,
-        "initial then second"
+        "test then second"
     );
 });

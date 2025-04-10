@@ -100,7 +100,7 @@ test("Multiple", async ({ mount, page }) => {
         page,
         SET_MULTIPLE_ID,
         VALUE_ID,
-        "initial then second"
+        "test then second"
     );
 });
 
@@ -154,7 +154,7 @@ test("Complex", async ({ mount, page }) => {
         page,
         SET_MULTIPLE_ID,
         VALUE_ID,
-        "direct update with callback then second"
+        "test then second"
     );
 
     // Remove
