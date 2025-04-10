@@ -40,30 +40,13 @@ const useSetters: UseSetters = (
             setMinPrice: (value) => updateFilter("minPrice", value),
 
             // Array setters
-            setRegions: (value) =>
-                setState((prevState) => {
-                    const newState = { ...prevState };
+            setRegions: (value) => {
+                updateFilter("regions", value);
 
-                    newState.filters = {
-                        ...newState.filters,
-                        regions: value,
-                    };
+                if (Array.isArray(value) && value.length === 0)
+                    deleteFilter("cities");
+            },
 
-                    // Add to IDs if not already there
-                    if (!newState.ids.includes("regions")) {
-                        newState.ids = [...newState.ids, "regions"];
-                    }
-
-                    // Clear cities if regions is cleared
-                    if (Array.isArray(value) && value.length === 0) {
-                        newState.filters.cities = initialState.filters.cities;
-                        newState.ids = newState.ids.filter(
-                            (id) => id !== "cities"
-                        );
-                    }
-
-                    return newState;
-                }),
             setCities: (value) => updateFilter("cities", value),
             setLabels: (value) => updateFilter("labels", value),
             setStates: (value) => updateFilter("states", value),
@@ -205,8 +188,8 @@ const useSetters: UseSetters = (
             },
 
             resetRegions: () => {
-                deleteFilter("regions");
                 deleteFilter("cities");
+                deleteFilter("regions");
             },
 
             resetIntegrationSites: () => deleteFilter("integrationSites"),

@@ -1,7 +1,7 @@
 import { useTabsContext } from "@/contexts/tabs";
 import { useCallback, useMemo } from "react";
 import { IFilterProps } from "./types";
-import { didChangeFields } from "./useChangedFields";
+import { didChangeFields, getChangedFields } from "./useChangedFields";
 import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
@@ -15,7 +15,11 @@ const SHOULD_UPDATE_DATA = true;
 
 // --------------------------------------------------------------------------------------
 
-const getIdsForTabData = (tabData: object) => Object.keys(tabData);
+const getIdsForTabData = (tabData: IPropertyFilter) => {
+    const changed = getChangedFields(tabData);
+    if (!changed) return [];
+    return Object.keys(changed);
+};
 
 interface Overrides {
     managerId: number;

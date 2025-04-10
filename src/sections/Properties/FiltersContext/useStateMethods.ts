@@ -17,17 +17,25 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
                 const newState = { ...prevState };
 
                 // Update filter value
-                newState.filters = {
+                const newFilters = {
                     ...newState.filters,
                     [key]: value,
                 };
 
-                // Update IDs array if needed
-                if (!newState.ids.includes(key)) {
-                    newState.ids = [...newState.ids, key];
+                let newIds;
+                if (Array.isArray(value) && value.length === 0) {
+                    newIds = prevState.ids.filter((id) => id !== key);
+                } else {
+                    const isIncluded = prevState.ids.includes(key);
+
+                    newIds = isIncluded
+                        ? prevState.ids
+                        : [...prevState.ids, key];
                 }
 
-                return newState;
+                console.log("NEW_IDS: ", newIds);
+
+                return { ...prevState, filters: newFilters, ids: newIds };
             });
         },
         []
@@ -57,17 +65,20 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
 
                 // Update IDs based on the new array state
                 let newIds;
-                if (newArray.length === 0 && prevState.ids.includes(key)) {
+                if (newArray.length === 0) {
                     // Remove from IDs if array is empty
+                    console.log("Removing key from ids...");
                     newIds = prevState.ids.filter((id) => id !== key);
                 } else if (
                     newArray.length > 0 &&
                     !prevState.ids.includes(key)
                 ) {
                     // Add to IDs if array is not empty and ID isn't already included
+                    console.log("Adding key to ids...");
                     newIds = [...prevState.ids, key];
                 } else {
                     // Keep the same IDs but create a new array
+                    console.log("No change to ids...");
                     newIds = [...prevState.ids];
                 }
 
