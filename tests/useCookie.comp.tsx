@@ -45,6 +45,8 @@ const Tester = () => {
 };
 
 export {
+    cookieName,
+    // ...
     VALUE_ID,
     SET_DIRECT_ID,
     SET_CALLBACK_ID,

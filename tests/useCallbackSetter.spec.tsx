@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/experimental-ct-react";
+import { test, expect, MountResult } from "@playwright/experimental-ct-react";
 import React from "react";
 import {
     SET_CALLBACK_ID,
@@ -7,39 +7,49 @@ import {
     VALUE_ID,
 } from "./useCallbackSetter.comp";
 import Tester from "./useCallbackSetter.comp";
+import clickAndExpect from "./_util/clickAndExpect";
+
+/**
+ * Checks state initial value
+ */
+const checkInitial = async (component: MountResult) => {
+    const valueLocator = component.getByTestId(VALUE_ID);
+    await expect(valueLocator).toHaveText("initial");
+};
+
+// ------------------------------------------------------------------------------
 
 test("useCallbackSetter.DirectUpdate", async ({ mount }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
-    const valueLocator = component.getByTestId(VALUE_ID);
-    await expect(valueLocator).toHaveText("initial");
+    await checkInitial(component);
 
-    // Perform locator click. This will trigger the event.
-    await component.getByTestId(SET_DIRECT_ID).click();
-
-    // Check that the value has been updated correctly
-    await expect(valueLocator).toHaveText("direct update");
+    await clickAndExpect(component, SET_DIRECT_ID, VALUE_ID, "direct update");
 });
 
 test("useCallbackSetter.UpdateWithCallback", async ({ mount }) => {
     const component = await mount(<Tester />);
 
-    const valueLocator = component.getByTestId(VALUE_ID);
-    await expect(valueLocator).toHaveText("initial");
+    await checkInitial(component);
 
-    await component.getByTestId(SET_CALLBACK_ID).click();
-
-    await expect(valueLocator).toHaveText("initial with callback");
+    await clickAndExpect(
+        component,
+        SET_CALLBACK_ID,
+        VALUE_ID,
+        "initial with callback"
+    );
 });
 
 test("useCallbackSetter.Multiple", async ({ mount }) => {
     const component = await mount(<Tester />);
 
-    const valueLocator = component.getByTestId(VALUE_ID);
-    await expect(valueLocator).toHaveText("initial");
+    await checkInitial(component);
 
-    await component.getByTestId(SET_MULTIPLE_ID).click();
-
-    await expect(valueLocator).toHaveText("initial then second");
+    await clickAndExpect(
+        component,
+        SET_MULTIPLE_ID,
+        VALUE_ID,
+        "initial then second"
+    );
 });
