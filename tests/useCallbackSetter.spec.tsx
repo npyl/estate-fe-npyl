@@ -19,7 +19,7 @@ const checkInitial = async (component: MountResult) => {
 
 // ------------------------------------------------------------------------------
 
-test("useCallbackSetter.DirectUpdate", async ({ mount }) => {
+test("DirectUpdate", async ({ mount }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
@@ -28,7 +28,7 @@ test("useCallbackSetter.DirectUpdate", async ({ mount }) => {
     await clickAndExpect(component, SET_DIRECT_ID, VALUE_ID, "direct update");
 });
 
-test("useCallbackSetter.UpdateWithCallback", async ({ mount }) => {
+test("UpdateWithCallback", async ({ mount }) => {
     const component = await mount(<Tester />);
 
     await checkInitial(component);
@@ -41,7 +41,7 @@ test("useCallbackSetter.UpdateWithCallback", async ({ mount }) => {
     );
 });
 
-test("useCallbackSetter.Multiple", async ({ mount }) => {
+test("Multiple", async ({ mount }) => {
     const component = await mount(<Tester />);
 
     await checkInitial(component);

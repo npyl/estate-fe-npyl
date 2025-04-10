@@ -59,7 +59,7 @@ const checkInitial = async (component: MountResult) => {
 //          BASIC
 // ---------------------------------------------------------------------------------------------------
 
-test("useCookie.DirectUpdate", async ({ mount, page }) => {
+test("DirectUpdate", async ({ mount, page }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
@@ -74,7 +74,7 @@ test("useCookie.DirectUpdate", async ({ mount, page }) => {
     );
 });
 
-test("useCookie.UpdateWithCallback", async ({ mount, page }) => {
+test("UpdateWithCallback", async ({ mount, page }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
@@ -89,7 +89,7 @@ test("useCookie.UpdateWithCallback", async ({ mount, page }) => {
     );
 });
 
-test("useCookie.Multiple", async ({ mount, page }) => {
+test("Multiple", async ({ mount, page }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
@@ -104,7 +104,7 @@ test("useCookie.Multiple", async ({ mount, page }) => {
     );
 });
 
-test("useCookie.Remove", async ({ mount, page }) => {
+test("Remove", async ({ mount, page }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
@@ -124,7 +124,7 @@ test("useCookie.Remove", async ({ mount, page }) => {
 //          COMPLEX
 // ---------------------------------------------------------------------------------------------------
 
-test("useCookie.Complex", async ({ mount, page }) => {
+test("Complex", async ({ mount, page }) => {
     const component = await mount(<Tester />);
 
     // Check initial value
