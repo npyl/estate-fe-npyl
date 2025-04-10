@@ -41,7 +41,7 @@ const Nav = () => {
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => (
     <>
-        <DashboardLayoutRoot>
+        <DashboardLayoutRoot data-testid="dashboard">
             <TabsProvider>
                 <Subbar />
                 <Box mb={1} />
