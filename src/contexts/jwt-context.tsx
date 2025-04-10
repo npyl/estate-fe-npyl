@@ -7,7 +7,7 @@ import {
     useLazyGetProfileQuery,
 } from "src/services/user";
 import { useLogoutMutation } from "@/services/logout";
-import { debuglog } from "util";
+import debugLog from "@/_private/debugLog";
 import { clearAllApiCaches } from "@/store";
 
 interface State {
@@ -170,7 +170,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             if (!token) throw new Error("");
             localStorage.setItem("chatToken", token);
         } catch (ex) {
-            debuglog(ex);
+            debugLog(ex);
         }
 
         dispatch({
