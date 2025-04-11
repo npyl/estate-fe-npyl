@@ -21,6 +21,7 @@ const useDraggable = (
 
     const updatePosition = useCallback((e: globalThis.MouseEvent) => {
         const drag = dragRef.current;
+
         if (!drag.isDragging || !elementRef.current) return;
 
         // Update element position using requestAnimationFrame
@@ -102,6 +103,7 @@ const useDraggable = (
     }, []);
 
     const registerMovement = useCallback(() => {
+        if (!onDragEnd) return;
         document.addEventListener("mousemove", updatePosition);
         document.addEventListener("mouseup", handleMouseUp);
     }, []);

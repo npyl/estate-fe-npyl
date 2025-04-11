@@ -18,8 +18,10 @@ import {
 } from "../../types";
 import useDraggable from "./useDraggable";
 import stopPropagation from "@/utils/stopPropagation";
+import useNoDragClick from "../../useNoDragClick";
 
-interface MainProps extends Omit<EventContainerProps, "bgcolor" | "onClick"> {
+interface MainProps
+    extends Omit<EventContainerProps, "bgcolor" | "onClick" | "onMouseDown"> {
     event: TCalendarEvent;
     isMinimumHeight: boolean;
 
@@ -36,6 +38,8 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             onEventClick,
             onEventResizeEnd,
             onEventDragEnd,
+            // ...
+            onMouseMove,
             ...props
         },
         ref
@@ -53,8 +57,6 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             onEventDragEnd
         );
 
-        // if (!onEventDragEnd) return <Stack onClick={handleClick} {...props} />;
-
         const handleClick = useCallback(
             (me: MouseEvent<HTMLDivElement>) => {
                 me.stopPropagation();
@@ -63,13 +65,14 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             [onEventClick, event]
         );
 
+        const methods = useNoDragClick(handleClick, onMouseDown, onMouseMove);
+
         return (
             <Container
                 ref={ref}
                 bgcolor={bgcolor}
-                onMouseDown={onMouseDown}
                 onMouseUp={stopPropagation}
-                onClick={handleClick}
+                {...methods}
                 {...props}
             >
                 <Title
