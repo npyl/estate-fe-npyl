@@ -9,6 +9,7 @@ import ParentCategory from "./CompactFilters/ParentCategory";
 import dynamic from "next/dynamic";
 import Beds from "./CompactFilters/Beds";
 import Lifestyle from "./CompactFilters/Lifestyle";
+import Integration from "./CompactFilters/Integration";
 import {
     useFiltersContext,
     useSumOfChangedProperties,
@@ -37,6 +38,8 @@ export default function FilterMore({ onClose, totalProperties }: Props) {
             {changedPropsCount > 0 ? <ChosenFilters mb={1} /> : null}
 
             <Basic />
+
+            <Integration />
 
             <State />
             <Lifestyle />

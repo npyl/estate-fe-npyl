@@ -88,27 +88,24 @@ const didChangeFields = (filters: IPropertyFilter): boolean => {
     return entries.some(isDifferent);
 };
 
+const getChangedFields = (filters: IPropertyFilter) =>
+    Object.entries(filters).reduce((acc: Partial<IPropertyFilter>, entry) => {
+        const [_key, value] = entry;
+        const key = _key as keyof IPropertyFilter;
+
+        // Only include this field in the result if it's different from initial state
+        if (isDifferent(entry)) {
+            acc[key] = value;
+        }
+
+        return acc;
+    }, {});
+
 /**
  * Custom hook that calculates which filter properties have changed from their initial state
  */
-const useChangedFields = (filters: IPropertyFilter) => {
-    return useMemo(() => {
-        return Object.entries(filters).reduce(
-            (acc: Partial<IPropertyFilter>, entry) => {
-                const [_key, value] = entry;
-                const key = _key as keyof IPropertyFilter;
+const useChangedFields = (filters: IPropertyFilter) =>
+    useMemo(() => getChangedFields(filters), [filters]);
 
-                // Only include this field in the result if it's different from initial state
-                if (isDifferent(entry)) {
-                    acc[key] = value;
-                }
-
-                return acc;
-            },
-            {}
-        );
-    }, [filters]);
-};
-
-export { didChangeFields };
+export { didChangeFields, getChangedFields };
 export default useChangedFields;

@@ -171,12 +171,21 @@ export default function ViewsChart() {
     return (
         <div ref={ref}>
             <Stack position="relative">
-                <Stack direction="column" spacing={-1.5}>
-                    <Typography variant="body1" p={1}>
+                <Stack direction="row" alignItems="center" spacing={-1} pb={2}>
+                    {/* <Typography variant="body1" p={1}>
                         {currentDate}
+                    </Typography> */}
+                    <Typography variant="h5" fontWeight="bold" p={2} pt={1}>
+                        {t("Day Views in progress")}:{" "}
                     </Typography>
-                    <Typography variant="body1" p={1}>
-                        {t("Property Views")} : {data?.totalViews ?? 0}
+                    <Typography
+                        variant="h5"
+                        color={"primary.main"}
+                        fontWeight={"bold"}
+                        pb={0.5}
+                    >
+                        {" "}
+                        {data?.totalViews ?? 0}
                     </Typography>
                 </Stack>
 
@@ -197,6 +206,7 @@ export default function ViewsChart() {
                         style={{
                             display: "block",
                             paddingTop: "auto",
+
                             width: "35px",
                         }}
                     />

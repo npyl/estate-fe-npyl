@@ -12,15 +12,13 @@ const EllipsisSx = {
 
 interface ContentProps {
     name: string;
-    priority: number;
 }
 
-const Content: FC<ContentProps> = ({ name, priority }) => (
+const Content: FC<ContentProps> = ({ name }) => (
     <Stack direction="row" spacing={1}>
         <Typography sx={EllipsisSx} variant="body2">
             {name}
         </Typography>
-        <PriorityLabel priority={priority} />
     </Stack>
 );
 

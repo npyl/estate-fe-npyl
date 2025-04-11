@@ -66,6 +66,7 @@ export const JWTLogin: FC = (props) => {
                     margin="normal"
                     name="email"
                     type="email"
+                    data-testid="email"
                 />
                 <RHFTextField
                     fullWidth
@@ -73,6 +74,7 @@ export const JWTLogin: FC = (props) => {
                     margin="normal"
                     name="password"
                     type="password"
+                    data-testid="password"
                 />
                 <Button
                     disabled={methods.formState.isSubmitting}
@@ -80,6 +82,7 @@ export const JWTLogin: FC = (props) => {
                     size="large"
                     type="submit"
                     variant="contained"
+                    data-testid="submit"
                 >
                     {t("Log In")}
                 </Button>

@@ -7,7 +7,8 @@ import {
     useLazyGetProfileQuery,
 } from "src/services/user";
 import { useLogoutMutation } from "@/services/logout";
-import { debuglog } from "util";
+import debugLog from "@/_private/debugLog";
+import { clearAllApiCaches } from "@/store";
 
 interface State {
     platform: "JWT";
@@ -169,7 +170,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             if (!token) throw new Error("");
             localStorage.setItem("chatToken", token);
         } catch (ex) {
-            debuglog(ex);
+            debugLog(ex);
         }
 
         dispatch({
@@ -182,6 +183,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const logout = useCallback(async () => {
         await logoutCb();
+
+        clearAllApiCaches();
+
         localStorage.removeItem("accessToken");
         dispatch({ type: ActionType.LOGOUT });
     }, []);

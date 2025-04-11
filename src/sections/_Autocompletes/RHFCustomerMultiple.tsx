@@ -27,8 +27,8 @@ const RHFCustomer: FC<RHFCustomerAutocompleteMultipleProps> = ({
                 <CustomerAutocompleteMultiple
                     ref={ref as any}
                     onChange={(v) => {
-                        onChange(v);
                         _onChange?.(v);
+                        onChange(v);
                     }}
                     {...field}
                     {...props}

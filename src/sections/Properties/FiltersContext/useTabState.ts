@@ -1,12 +1,13 @@
 import { useTabsContext } from "@/contexts/tabs";
 import { useCallback, useMemo } from "react";
 import { IFilterProps } from "./types";
-import { didChangeFields } from "./useChangedFields";
+import { didChangeFields, getChangedFields } from "./useChangedFields";
 import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
-import useCallbackSetter from "@/hooks/useCookie/useCallbackSetter";
-import { parseAsInteger, useQueryState } from "nuqs";
+import useCallbackSetter from "@/hooks/useCallbackSetter";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { IntegrationSite } from "@/types/listings";
 
 // --------------------------------------------------------------------------------------
 
@@ -14,25 +15,34 @@ const SHOULD_UPDATE_DATA = true;
 
 // --------------------------------------------------------------------------------------
 
-const getIdsForTabData = (tabData: object) => Object.keys(tabData);
+const getIdsForTabData = (tabData: IPropertyFilter) => {
+    const changed = getChangedFields(tabData);
+    if (!changed) return [];
+    return Object.keys(changed);
+};
 
 interface Overrides {
     managerId: number;
+    integrationSite: IntegrationSite;
 }
 
 const getFiltersWithUrlParamOverrides = (
     tabData: IPropertyFilter | undefined,
-    { managerId }: Overrides
-) => ({
+    { managerId, integrationSite }: Overrides
+): IPropertyFilter => ({
     ...(tabData || initialState.filters),
+    // ...
     managerId: managerId !== -1 ? managerId : tabData?.managerId,
+    integrationSites: integrationSite
+        ? [integrationSite]
+        : tabData?.integrationSites ?? initialState.filters.integrationSites,
 });
 
 const tabDataToFilterState = (
     tabData: IPropertyFilter | undefined,
-    managerId: number
+    overrides: Overrides
 ): IFilterProps => {
-    const filters = getFiltersWithUrlParamOverrides(tabData, { managerId });
+    const filters = getFiltersWithUrlParamOverrides(tabData, overrides);
 
     return {
         filters,
@@ -44,10 +54,16 @@ const useCurrentState = () => {
     //
     //  Url Params
     //
-    const [assignee] = useQueryState(
+    const [managerId] = useQueryState(
         "assignee",
         parseAsInteger.withDefault(-1)
     );
+
+    const [_integrationSite] = useQueryState(
+        "integrationSite",
+        parseAsString.withDefault("")
+    );
+    const integrationSite = _integrationSite as IntegrationSite;
 
     //
     //  Tab's Data
@@ -58,8 +74,8 @@ const useCurrentState = () => {
     //  Merging of all
     //
     const state = useMemo(
-        () => tabDataToFilterState(tabData, assignee),
-        [tabData, assignee]
+        () => tabDataToFilterState(tabData, { managerId, integrationSite }),
+        [tabData, managerId]
     );
 
     return state;

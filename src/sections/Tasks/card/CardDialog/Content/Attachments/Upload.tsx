@@ -2,14 +2,14 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { styled, alpha } from "@mui/material/styles";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 interface UploadAttachmentProps {
     disabled?: boolean;
     onDropAccepted: (files: File[]) => void;
 }
-import UploadIcon from "@mui/icons-material/CloudUploadOutlined";
 import { useTranslation } from "react-i18next";
+import { UploadIllustration } from "@/assets/illustrations";
 
 const StyledDropZone = styled("div")(({ theme }) => ({
     outline: "none",
@@ -53,21 +53,24 @@ const UploadTaskAttachment = ({
         <Box sx={{ mb: 2 }}>
             <StyledDropZone {...getRootProps()}>
                 <input {...getInputProps()} />
-                <Stack alignItems="center" spacing={0.5} pb={1}>
-                    <UploadIcon sx={{ fontSize: 30, color: "primary.main" }} />
-                    <Typography variant="body2">
-                        <Box
-                            component="span"
-                            sx={{
-                                color: "primary.main",
-                                fontWeight: 500,
-                                cursor: "pointer",
-                            }}
-                        >
-                            {t("Click to upload")}
-                        </Box>{" "}
-                        {t("or drag and drop")}
-                    </Typography>
+                <Stack
+                    alignItems="center"
+                    gap={1}
+                    direction="row"
+                    justifyContent={"center"}
+                >
+                    <UploadIllustration sx={{ width: 100 }} />
+                    {/* <Typography variant="body1"> */}
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: "600",
+                            cursor: "pointer",
+                            fontSize: 20,
+                        }}
+                    >
+                        {t("Drop or Select files")}
+                    </Box>{" "}
                 </Stack>
             </StyledDropZone>
         </Box>

@@ -11,6 +11,7 @@ import {
     IPropertyImage,
 } from "./file";
 import { ILabel } from "./label";
+import { IntegrationSite } from "./listings";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
 import { TShape } from "./shape";
@@ -79,6 +80,8 @@ export interface IPropertyFilter {
     furnished: string[];
 
     extras: IPropertyFilterExtras;
+
+    integrationSites: IntegrationSite[];
 
     [key: string]: any;
 }

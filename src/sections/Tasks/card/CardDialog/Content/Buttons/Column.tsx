@@ -14,7 +14,7 @@ const useBoardColumns = () => {
     const allColumns = data?.columns || [];
 
     // Define the priority column names in desired order
-    const prioritizedNames = ["To do", "In progress", "Completed"];
+    const prioritizedNames = ["To do", "Long term tasks", "Completed"];
 
     const sortedColumns = allColumns.slice().sort((columnA, columnB) => {
         const indexA = prioritizedNames.indexOf(columnA.name);
@@ -45,7 +45,7 @@ const ColumnSelect: FC<SelectProps> = (props) => {
     const { t } = useTranslation();
     const columns = useBoardColumns();
     return (
-        <FormControl>
+        <FormControl fullWidth>
             <InputLabel>{props.label}</InputLabel>
             <RHFSelect name="columnId" defaultValue={-1} {...props}>
                 <MenuItem value={-1}>{t("Not selected")}</MenuItem>

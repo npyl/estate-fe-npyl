@@ -30,8 +30,7 @@ const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
             ref={onRef}
             alignItems="center"
             direction="row"
-            spacing={1}
-            px={0.5}
+            spacing={0.2}
             overflow="auto hidden"
             {...props}
         >

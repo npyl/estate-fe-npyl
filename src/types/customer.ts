@@ -4,12 +4,16 @@ import { Enum } from "./enums";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
-import { IOwnedProperties } from "./ownedProperties";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
 interface ICustomerLocationPOST
     extends Omit<ILocationPOST, "locationDisplay"> {}
+
+interface IOwnedProperties {
+    id: number;
+    code: number;
+}
 
 export interface ICustomerResultResponse {
     id: number;

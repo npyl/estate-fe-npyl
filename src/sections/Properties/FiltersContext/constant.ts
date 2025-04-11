@@ -24,6 +24,7 @@ const initialState: IFilterProps = {
             investment: false,
             goldenVisa: false,
         },
+        integrationSites: [],
     },
     ids: [],
 };

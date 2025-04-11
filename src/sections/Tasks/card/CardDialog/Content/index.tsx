@@ -11,6 +11,11 @@ import PropertiesAutocompleteMultiple from "@/sections/_Autocompletes/RHFCodeMul
 import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import RHFEditor from "@/components/hook-form/RHFEditor";
+import { Box, Typography } from "@mui/material";
+import { useGetOwnedPropertiesMutation } from "@/services/customers";
+import { useFormContext } from "react-hook-form";
+import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import { useGetOwnersMutation } from "@/services/properties";
 const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
@@ -18,10 +23,29 @@ const Labels = dynamic(() => import("./Labels"));
 
 // -----------------------------------------------------------------
 
+const getDiffedIds = (ids0: number[], ids1: number[]) =>
+    ids1.filter((id) => !ids0.includes(id));
+
 const CustomerAutocomplete = () => {
     const { t } = useTranslation();
 
-    const onCustomersChange = useCallback((v: number[]) => {}, []);
+    const { getValues, setValue } = useFormContext<ICreateOrUpdateTaskReq>();
+    const [get] = useGetOwnedPropertiesMutation();
+    const onCustomersChange = useCallback(
+        async (newIds: number[]) => {
+            const oldIds = getValues("customers") || [];
+            const diffed = getDiffedIds(oldIds, newIds);
+
+            const res = await get(diffed);
+            if ("error" in res) return;
+
+            const old = getValues("properties") || [];
+            const dataIds = res.data?.map(({ id }) => id) || [];
+
+            setValue("properties", [...old, ...dataIds]);
+        },
+        [getValues]
+    );
 
     return (
         <CustomerAutocompleteMultiple
@@ -35,14 +59,35 @@ const CustomerAutocomplete = () => {
 const PropertiesAutocomplete = () => {
     const { t } = useTranslation();
 
-    const onPropertiesChange = useCallback((_: any, ids: number[]) => {}, []);
+    const { getValues, setValue } = useFormContext<ICreateOrUpdateTaskReq>();
+    const [get] = useGetOwnersMutation();
+    const onPropertiesChange = useCallback(
+        async (_: any, newIds: number[]) => {
+            const oldIds = getValues("properties") || [];
+            const diffed = getDiffedIds(oldIds, newIds);
+
+            const res = await get(diffed);
+            if ("error" in res) return;
+
+            const old = getValues("customers") || [];
+            const dataIds = res.data?.map(({ id }) => id) || [];
+
+            setValue("customers", [...old, ...dataIds]);
+        },
+        [getValues]
+    );
 
     return (
-        <PropertiesAutocompleteMultiple
-            name="properties"
-            label={t<string>("Properties")}
-            onChange={onPropertiesChange}
-        />
+        <Box>
+            <Typography fontWeight={"bold"} pb={0.5}>
+                {t("Details")}{" "}
+            </Typography>
+            <PropertiesAutocompleteMultiple
+                name="properties"
+                label={t<string>("Properties")}
+                onChange={onPropertiesChange}
+            />
+        </Box>
     );
 };
 
@@ -82,14 +127,14 @@ const Content: FC<ContentProps> = ({
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
-            <RHFTextField name="name" label={t("Title")} />
 
             <Buttons />
+            <RHFTextField name="name" label={t("Title")} />
             {/* ------------------------ */}
 
-            <Attachments cardId={cardId} />
-
             <RHFEditor name="description" rows={5} />
+
+            <Attachments cardId={cardId} />
 
             <PropertiesAutocomplete />
             <CustomerAutocomplete />
@@ -103,12 +148,13 @@ const Content: FC<ContentProps> = ({
 
             {createdAt || updatedAt ? (
                 <>
-                    <Divider />
-                    {isEdit ? <AssigneeHistory cardId={cardId!} /> : null}
+                    {isEdit ? (
+                        <AssigneeHistory cardId={cardId!} reporter={reporter} />
+                    ) : null}
                     <MiscInfo
                         createdAt={createdAt}
                         updatedAt={updatedAt}
-                        reporter={reporter} //not working yet
+                        reporter={reporter}
                         updatedBy={updatedBy}
                     />
                 </>

@@ -10,6 +10,7 @@ import {
     forwardRef,
     useCallback,
     useEffect,
+    useLayoutEffect,
     useRef,
 } from "react";
 import { SxProps, Theme } from "@mui/material";
@@ -31,31 +32,47 @@ const getMenuBarSx = (editable: boolean): SxProps<Theme> => ({
 
 // ----------------------------------------------------------------------
 
-const useContentUpdate = (
-    editor: TEditor | null,
-    content: string | undefined
-) => {
+const useInternalUpdate = (editor: TEditor) => {
+    const isInternalUpdate = useRef(false);
+
+    const handleUpdate = useCallback(() => {
+        isInternalUpdate.current = true;
+
+        setTimeout(() => {
+            isInternalUpdate.current = false;
+        }, 50);
+    }, []);
+
+    useLayoutEffect(() => {
+        editor.on("update", handleUpdate);
+        return () => {
+            editor.off("update", handleUpdate);
+        };
+    }, []);
+
+    return isInternalUpdate;
+};
+
+/**
+ * Support controlled (vs. uncontrolled default) usage with setContent() based on content prop
+ * *Only* update content with setContent() when change is not happening from typing...
+ */
+const useContentUpdate = (editor: TEditor, content: string | undefined) => {
+    const isInternalUpdate = useInternalUpdate(editor);
+
+    // Only update content from props if it's not from internal typing
     useEffect(() => {
-        if (!content) {
-            editor?.commands?.clearContent();
-            return;
-        }
+        if (!content || isInternalUpdate.current) return;
 
         const parsed = JSON.parseSafe(content);
         if (!parsed) return;
 
-        editor?.commands?.setContent(parsed);
-    }, [editor, content]);
+        editor.commands?.setContent(parsed);
+    }, [content]);
 };
 
-const useForwardEditorRef = (
-    editor: TEditor | null,
-    ref: ForwardedRef<TEditor>
-) => {
+const useForwardEditorRef = (editor: TEditor, ref: ForwardedRef<TEditor>) => {
     useEffect(() => {
-        // INFO: precaution; the provider is responsible for loading this component *ONLY* when the object is ready
-        if (!editor) return;
-
         if (typeof ref === "function") {
             ref(editor);
         } else if (ref) {

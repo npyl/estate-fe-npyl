@@ -30,6 +30,8 @@ const useExtras = () => useFiltersContext().filters.extras;
 const useSorting = () => useFiltersContext().sorting;
 const useAllFilters = () => useFiltersContext().filters;
 const useActiveState = () => useFiltersContext().filters.active;
+const useIntegrationSites = () => useFiltersContext().filters.integrationSites;
+
 const useSumOfChangedProperties = () =>
     useFiltersContext().sumOfChangedProperties;
 const useChangedFields = () => useFiltersContext().changedFields;
@@ -63,6 +65,8 @@ export {
     useSorting,
     useAllFilters,
     useActiveState,
+    useIntegrationSites,
+    // ...
     useSumOfChangedProperties,
     useChangedFields,
 };

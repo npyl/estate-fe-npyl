@@ -397,6 +397,8 @@ const resources = {
             "Rename section": "Rename section",
             "Click to upload": "Click to upload",
             "or drag and drop": "or drag and drop",
+            "Drop files to attach or": "Drop files to attach or",
+            Browse: "Browse",
             "Task name": "Task name",
             "Last Updated Date": "Last Updated Date",
             "Total Comments for this task": "Total Comments for this task",
@@ -404,6 +406,7 @@ const resources = {
             Completed: "Completed",
             "Type a message": "Type a message",
             Comment: "Comment",
+            "Comment...": "Comment...",
             "Search...": "Search ...",
             "Are you sure want to delete": "Are you sure you want to delete",
             "Delete task": "Delete task",
@@ -826,6 +829,7 @@ const resources = {
 
             Views: "Views",
             "Property Views": "Property Views",
+            "Day Views in progress": "Day Views in progress",
             "Views of Properties": "Views of Properties",
             "Category Views": "Category Views",
 
@@ -1180,12 +1184,15 @@ const resources = {
             "Please upload a file of size <3MB":
                 "Please upload a file of size <3MB",
 
-            "Connect with Calendar": "Connect with Calendar",
+            "Connect with Google Calendar": "Connect with Google Calendar",
             "There will be an event creation in google calendar as well":
                 "There will be an event creation in google calendar as well",
             _Task_: "Task",
             Created: "Created",
+            "Created by": "Created by",
             Updated: "Updated",
+            "Updated by": "Updated by",
+
             Activity: "Activity",
             // ...
             "=Task=": "Task",
@@ -1227,6 +1234,7 @@ const resources = {
             "Work application by": "Work application by",
             Task: "Task",
             "Contact Details": "Contact Details",
+            Details: "Details",
             "Full Name": "Full Name",
             Mobile: "Mobile",
             VAT: "VAT",
@@ -1460,6 +1468,7 @@ const resources = {
             Mobile: "Κινητό",
             "Full Name": "Ον/μο",
             "Contact Details": "Στοιχεία Επικοινωνίας",
+            Details: "Λεπτομέρειες",
             "Review request": "Αξιολόγηση",
             "Tour request": "Αίτημα ξενάγησης",
             "Listing from": "Καταχώρηση ακινήτου από",
@@ -1503,9 +1512,11 @@ const resources = {
 
             Activity: "Δραστηριότητα",
             Created: "Δημιουργήθηκε",
+            "Created by": "Δημιουργήθηκε από ",
             Updated: "Ενημερώθηκε",
+            "Updated by": "Ενημερώθηκε από",
             _Task_: "Εργασία",
-            "Connect with Calendar": "Σύνδεση με Ημερολόγιο",
+            "Connect with Google Calendar": "Ενημέρωση Ημερολογίου Google",
             "There will be an event creation in google calendar as well":
                 "Θα υπάρξει δημιουργία συμβάντος στο google ημερολόγιο",
             "Please upload a file of size <3MB":
@@ -1683,6 +1694,7 @@ const resources = {
 
             Views: "Προβολές",
             "Property Views": "Προβολές Ακινήτων",
+            "Day Views in progress": "Προβολές ημέρας σε εξέλιξη",
             "Views of Properties": "Προβολές Ακινήτων",
 
             "Category Views": "Προβολές ανά Κατηγορία",
@@ -1997,6 +2009,8 @@ const resources = {
             "Task name": "Όνομα Εργασίας",
             "Click to upload": "Κλικ για επισύναψη",
             "or drag and drop": "ή μεταφορά και απόθεση",
+            "Drop files to attach or": "Σύρετε αρχεία για επισύναψη ή",
+            Browse: "Αναζήτηση",
             "Mark Complete": "Σήμανση Ολοκληρωμένου",
             Completed: "Ολοκληρώθηκε",
             Assignee: "Ανάθεση",
@@ -2005,6 +2019,7 @@ const resources = {
             Attachments: "Συνημμένα",
             "Type a message": "Πληκτρολογήστε ένα μήνυμα",
             Comment: "Σχόλιο",
+            "Comment...": "Σχόλιο...",
             "Search...": "Αναζήτηση ...",
             "Are you sure want to delete":
                 "Είστε σίγουροι ότι θέλετε να διαγράψετε την εργασία;",

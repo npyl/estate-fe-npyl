@@ -14,7 +14,9 @@ const Comments: FC<CommentsProps> = ({ cardId }) => {
 
     return (
         <Stack spacing={1} width={1}>
-            <Typography fontWeight="bold">{t("Activity")}</Typography>
+            {cardId ? (
+                <Typography fontWeight="bold">{t("Notes")}</Typography>
+            ) : null}
             <List cardId={cardId} />
             {cardId ? <Create cardId={cardId} /> : null}
         </Stack>

@@ -7,6 +7,7 @@ import { styled, SxProps, Theme } from "@mui/material/styles";
 const DialogSx: SxProps<Theme> = {
     "& .MuiPaper-root": {
         borderRadius: "16px",
+        maxWidth: 700,
     },
 };
 

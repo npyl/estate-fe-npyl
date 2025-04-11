@@ -1,6 +1,7 @@
 import debugLog from "@/_private/debugLog";
-import { useCallback, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import useUpdateLayoutEffect from "@/hooks/useUpdateLayoutEffect";
+import useCallbackSetter from "./useCallbackSetter";
 
 const getValue = <V extends string | number | object = string>(
     key: string | null,
@@ -18,56 +19,84 @@ const getValue = <V extends string | number | object = string>(
     return parsed;
 };
 
+function dispatchStorageEvent(key: string, newValue: string | null) {
+    window.dispatchEvent(new StorageEvent("storage", { key, newValue }));
+}
+
+const getLocalStorageItem = (key: string) => {
+    return window.localStorage.getItem(key);
+};
+
+const removeLocalStorageItem = (key: string, passive?: boolean) => {
+    window.localStorage.removeItem(key);
+    if (passive) return;
+    dispatchStorageEvent(key, null);
+};
+
+const useLocalStorageSubscribe = (callback: VoidFunction) => {
+    window.addEventListener("storage", callback);
+    return () => window.removeEventListener("storage", callback);
+};
+
+const setLocalStorageItem = <V extends string | number | object = string>(
+    key: string,
+    value: V,
+    passive?: boolean
+) => {
+    try {
+        const stringifiedValue = JSON.stringify(value);
+        window.localStorage.setItem(key, stringifiedValue);
+
+        if (passive) return;
+        dispatchStorageEvent(key, stringifiedValue);
+    } catch (ex) {
+        debugLog(ex);
+    }
+};
+
 /**
  * Access to localStorage
  *
  * @param passive Do a set/remove on the localStorage item without updating the state
- *
- * TODO:
- *  - Add events
- *  - Maybe a provider?
- *
  * @param key the entry key
  * @param fallbackValue fallback value for when the item isn't available
  */
-const useLocalStorage = <V extends string | number | object = string>(
+
+function useLocalStorage<V extends string | number | object = string>(
     key: string | null,
     fallbackValue: V
-) => {
-    const [value, setValue] = useState<V>(getValue(key, fallbackValue));
+) {
+    const getSnapshot = () => (key ? getLocalStorageItem(key) : null);
 
-    useUpdateLayoutEffect(() => {
-        if (!key || !fallbackValue) return;
-        setValue(getValue(key, fallbackValue));
-    }, [key, fallbackValue]);
+    const store = useSyncExternalStore(useLocalStorageSubscribe, getSnapshot);
 
-    const set = useCallback(
+    const _set = useCallback(
         (v: V, passive?: boolean) => {
-            try {
-                if (!key) throw "Null key";
-                localStorage.setItem(key, JSON.stringify(v));
-
-                if (passive) return;
-                setValue(v);
-            } catch (ex) {
-                debugLog(ex);
-            }
+            if (!key) throw "Null key";
+            setLocalStorageItem(key, v, passive);
         },
         [key]
     );
+    const set = useCallbackSetter(getValue(key, fallbackValue), _set);
 
     const remove = useCallback(
         (passive?: boolean) => {
             if (!key) return;
-            localStorage.removeItem(key);
-
-            if (passive) return;
-            setValue(fallbackValue);
+            removeLocalStorageItem(key, passive);
         },
-        [key, fallbackValue]
+        [key]
     );
 
-    return [value, set, remove] as const;
-};
+    useUpdateLayoutEffect(() => {
+        if (!key) return;
+        setLocalStorageItem(key, fallbackValue);
+    }, [key, fallbackValue]);
+
+    return [
+        store ? JSON.parseSafe<V>(store) || fallbackValue : fallbackValue,
+        set,
+        remove,
+    ] as const;
+}
 
 export default useLocalStorage;

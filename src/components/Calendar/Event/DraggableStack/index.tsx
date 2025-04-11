@@ -50,7 +50,12 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
         );
 
         // If no drag handling needed, return simple Stack
-        if (!onDragEnd) return <Stack ref={elementRef} sx={sx} {...props} />;
+        if (!onDragEnd)
+            return (
+                <Stack ref={elementRef} sx={sx} {...props}>
+                    {children}
+                </Stack>
+            );
 
         return (
             <DurationUpdateStack

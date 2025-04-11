@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 const OPTIONS: Intl.DateTimeFormatOptions = {
     year: "numeric",
-    month: "long",
+    month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
@@ -43,7 +43,19 @@ const Localized: FC<LocalizedProps> = ({
     const { t, i18n } = useTranslation();
 
     const loc = i18n.language === "en" ? "en-US" : "el-GR";
+    const isEnglish = i18n.language === "en";
+    const dateObj = new Date(date);
 
+    const formattedDate = dateObj.toLocaleDateString(loc, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+    });
+    const formattedTime = dateObj.toLocaleTimeString(loc, {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+    });
     const fullName = reporter
         ? `${reporter.firstName || ""} ${reporter.lastName || ""}`.trim()
         : null;
@@ -51,11 +63,27 @@ const Localized: FC<LocalizedProps> = ({
         ? `${updatedBy.firstName || ""} ${updatedBy.lastName || ""}`.trim()
         : null;
     return (
-        <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="body2" color="text.secondary" {...props}>
-                {t(prefix)} {new Date(date).toLocaleDateString(loc, OPTIONS)}
-                {reporter && " -"}
-                {updatedBy && " -"}
+        <Stack
+            direction="row"
+            spacing={0.5}
+            alignItems="center"
+            pl={5.5}
+            position={"relative"}
+        >
+            <Typography
+                variant="body2"
+                color="primary.main"
+                fontWeight={600}
+                {...props}
+            >
+                {formattedDate}{" "}
+                <Typography component="span" variant="body2" fontWeight={600}>
+                    - {formattedTime}
+                </Typography>{" "}
+            </Typography>
+            <Typography variant="body2" color={"text.secondary"}>
+                {" "}
+                {t(prefix)}
             </Typography>
             {reporter && (
                 <Stack direction="row" spacing={1} alignItems="center">
@@ -72,7 +100,12 @@ const Localized: FC<LocalizedProps> = ({
                 </Stack>
             )}
             {updatedBy && (
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    sx={{ position: "absolute", left: isEnglish ? 269 : 319 }}
+                >
                     {updatedBy.avatar && (
                         <Avatar
                             src={updatedBy.avatar}
@@ -115,16 +148,16 @@ const MiscInfo: FC<MiscInfoProps> = ({
 }) => {
     return (
         <Stack spacing={1}>
-            {createdAt && (
+            {/* {createdAt && (
                 <Localized
                     prefix="Created"
                     date={createdAt}
                     reporter={reporter}
                 />
-            )}
+            )} */}
             {updatedAt && (
                 <Localized
-                    prefix="Updated"
+                    prefix="Updated by"
                     date={updatedAt}
                     updatedBy={updatedBy}
                 />

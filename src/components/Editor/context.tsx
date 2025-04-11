@@ -3,7 +3,7 @@ import { createContext, FC, PropsWithChildren, useContext } from "react";
 import { extensions } from "./config";
 
 type EditorState = {
-    editor: Editor | null;
+    editor: Editor;
 };
 
 const EditorContext = createContext<EditorState | undefined>(undefined);

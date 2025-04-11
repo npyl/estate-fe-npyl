@@ -1,10 +1,9 @@
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { FC, MouseEvent, useCallback, useRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 const Menu = dynamic(() => import("./Menu"));
-
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 interface Props {
     taskId: number;
 }
@@ -25,8 +24,12 @@ const MenuButton: FC<Props> = ({ taskId }) => {
                 className="TaskCard-HeaderControls"
                 ref={anchorRef}
                 onClick={handleClick}
+                sx={{
+                    backgroundColor: "transparent",
+                    ":hover": { backgroundColor: "transparent" },
+                }}
             >
-                <MoreHorizIcon />
+                <MoreVertOutlinedIcon />
             </IconButton>
 
             {isOpen && anchorRef.current ? (
