@@ -7,7 +7,7 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import { Stack, SxProps, Theme, Typography } from "@mui/material";
+import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";
@@ -47,6 +47,7 @@ interface HistoryItemProps {
 const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
     const { t, i18n } = useTranslation();
     const loc = i18n.language === "en" ? "en-US" : "el-GR";
+    const isEnglish = i18n.language === "en";
 
     const assignee = i.assignees[0]; // use the assignee
     const fullName = `${assignee.firstName} ${assignee.lastName}`;
@@ -72,7 +73,12 @@ const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
                 {!last && <TimelineConnector sx={ConnectorSx} />}
             </TimelineSeparator>
             <TimelineContent sx={TimelineContentSx}>
-                <Stack direction="row" alignItems="flex-start" gap={0.5}>
+                <Stack
+                    direction="row"
+                    alignItems="flex-start"
+                    gap={0.5}
+                    position={"relative"}
+                >
                     <Typography
                         variant="body2"
                         fontWeight="600"
@@ -89,18 +95,28 @@ const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
                         >
                             {t("Assigned to")}
                         </Typography>
-                        <Avatar
-                            src={assignee.avatar}
-                            alt={fullName || ""}
-                            sx={{ width: 24, height: 24 }}
-                        />
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ textWrap: "nowrap" }}
+                        <Box
+                            position={"absolute"}
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: 1,
+                                left: isEnglish ? 230 : 280,
+                            }}
                         >
-                            {fullName}
-                        </Typography>{" "}
+                            <Avatar
+                                src={assignee.avatar}
+                                alt={fullName || ""}
+                                sx={{ width: 24, height: 24 }}
+                            />
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ textWrap: "nowrap" }}
+                            >
+                                {fullName}
+                            </Typography>{" "}
+                        </Box>
                     </Stack>
                 </Stack>
             </TimelineContent>
@@ -114,6 +130,8 @@ const CreatedHistoryItem: FC<{
 }> = ({ createdAt, reporter }) => {
     const { t, i18n } = useTranslation();
     const loc = i18n.language === "en" ? "en-US" : "el-GR";
+    const isEnglish = i18n.language === "en";
+
     const fullName = `${reporter?.firstName} ${reporter?.lastName}`;
     const dateObj = new Date(createdAt);
     const formattedDate = dateObj.toLocaleDateString(loc, {
@@ -139,6 +157,7 @@ const CreatedHistoryItem: FC<{
                     alignItems="flex-start"
                     gap={0.5}
                     flexWrap={"nowrap"}
+                    position={"relative"}
                 >
                     <Typography
                         variant="body2"
@@ -159,18 +178,28 @@ const CreatedHistoryItem: FC<{
                         <Typography variant="body2" color={"text.secondary"}>
                             {t("Created by")}
                         </Typography>
-                        <Avatar
-                            src={reporter?.avatar}
-                            alt={fullName || ""}
-                            sx={{ width: 24, height: 24 }}
-                        />
-                        <Typography
-                            color={"text.secondary"}
-                            variant="body2"
-                            sx={{ textWrap: "nowrap" }}
+                        <Box
+                            position={"absolute"}
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: 1,
+                                left: isEnglish ? 230 : 280,
+                            }}
                         >
-                            {fullName}
-                        </Typography>
+                            <Avatar
+                                src={reporter?.avatar}
+                                alt={fullName || ""}
+                                sx={{ width: 24, height: 24 }}
+                            />
+                            <Typography
+                                color={"text.secondary"}
+                                variant="body2"
+                                sx={{ textWrap: "nowrap" }}
+                            >
+                                {fullName}
+                            </Typography>
+                        </Box>
                     </Stack>
                 </Stack>
             </TimelineContent>

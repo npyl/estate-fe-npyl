@@ -31,8 +31,6 @@ const WithCalendar = () => {
 
     return (
         <>
-            <Divider />
-
             <Stack position="relative" spacing={1}>
                 <WithCalendarSwitch />
 
@@ -44,8 +42,6 @@ const WithCalendar = () => {
                     </IsAuthenticatedIndicator>
                 ) : null}
             </Stack>
-
-            <Divider />
         </>
     );
 };

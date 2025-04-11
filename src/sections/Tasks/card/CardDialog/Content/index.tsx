@@ -148,7 +148,6 @@ const Content: FC<ContentProps> = ({
 
             {createdAt || updatedAt ? (
                 <>
-                    <Divider />
                     {isEdit ? (
                         <AssigneeHistory cardId={cardId!} reporter={reporter} />
                     ) : null}
