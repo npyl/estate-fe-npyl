@@ -33,8 +33,6 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
                         : [...prevState.ids, key];
                 }
 
-                console.log("NEW_IDS: ", newIds);
-
                 return { ...prevState, filters: newFilters, ids: newIds };
             });
         },
