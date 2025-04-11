@@ -37,7 +37,12 @@ const Header: FC<HeaderProps> = ({
 
     return (
         <SpaceBetween alignItems="center">
-            <Stack justifyContent="flex-start" direction="row" gap={2}>
+            <Stack justifyContent="flex-start" direction="row" gap={1}>
+                {completed ? <CheckIcon color="success" /> : null}
+                <TaskLabel taskCode={uniqueCode} sx={TaskLabelSx} />
+            </Stack>
+
+            <Stack spacing={0} direction="row" alignItems="center">
                 <Tooltip title={fullname}>
                     <Avatar
                         firstName={assignee?.firstName}
@@ -46,11 +51,6 @@ const Header: FC<HeaderProps> = ({
                         sx={AvatarSx}
                     />
                 </Tooltip>
-                <TaskLabel taskCode={uniqueCode} sx={TaskLabelSx} />
-            </Stack>
-
-            <Stack spacing={1} direction="row" alignItems="center">
-                {completed ? <CheckIcon color="success" /> : null}
                 <MenuButton taskId={taskId} />
             </Stack>
         </SpaceBetween>

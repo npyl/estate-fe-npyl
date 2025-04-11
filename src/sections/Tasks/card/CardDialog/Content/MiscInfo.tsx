@@ -43,6 +43,7 @@ const Localized: FC<LocalizedProps> = ({
     const { t, i18n } = useTranslation();
 
     const loc = i18n.language === "en" ? "en-US" : "el-GR";
+    const isEnglish = i18n.language === "en";
     const dateObj = new Date(date);
 
     const formattedDate = dateObj.toLocaleDateString(loc, {
@@ -51,7 +52,7 @@ const Localized: FC<LocalizedProps> = ({
         day: "numeric",
     });
     const formattedTime = dateObj.toLocaleTimeString(loc, {
-        hour: "2-digit",
+        hour: "numeric",
         minute: "2-digit",
         hour12: true,
     });
@@ -62,7 +63,13 @@ const Localized: FC<LocalizedProps> = ({
         ? `${updatedBy.firstName || ""} ${updatedBy.lastName || ""}`.trim()
         : null;
     return (
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack
+            direction="row"
+            spacing={0.5}
+            alignItems="center"
+            pl={5.5}
+            position={"relative"}
+        >
             <Typography
                 variant="body2"
                 color="primary.main"
@@ -93,7 +100,12 @@ const Localized: FC<LocalizedProps> = ({
                 </Stack>
             )}
             {updatedBy && (
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    sx={{ position: "absolute", left: isEnglish ? 269 : 319 }}
+                >
                     {updatedBy.avatar && (
                         <Avatar
                             src={updatedBy.avatar}

@@ -2,14 +2,14 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { styled, alpha } from "@mui/material/styles";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 interface UploadAttachmentProps {
     disabled?: boolean;
     onDropAccepted: (files: File[]) => void;
 }
-import UploadIcon from "@mui/icons-material/CloudUploadOutlined";
 import { useTranslation } from "react-i18next";
+import { UploadIllustration } from "@/assets/illustrations";
 
 const StyledDropZone = styled("div")(({ theme }) => ({
     outline: "none",
@@ -22,7 +22,7 @@ const StyledDropZone = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     textAlign: "center",
     "&:hover": {
-        opacity: 0.88,
+        opacity: 0.72,
     },
 }));
 
@@ -56,37 +56,21 @@ const UploadTaskAttachment = ({
                 <Stack
                     alignItems="center"
                     gap={1}
-                    // spacing={0.5}
-                    // pb={1}
                     direction="row"
                     justifyContent={"center"}
                 >
-                    <UploadIcon sx={{ fontSize: 26, color: "primary.main" }} />
-                    <Typography variant="body2">
-                        <Box
-                            component="span"
-                            sx={{
-                                color: "text.secondary",
-                                fontWeight: 500,
-                                cursor: "pointer",
-                            }}
-                        >
-                            {t("Drop files to attach or")}
-                        </Box>{" "}
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                ml: 0.5,
-                                backgroundColor: "neutral.150",
-                                color: "primary.main",
-                                ":hover": {
-                                    backgroundColor: "neutral.200",
-                                },
-                            }}
-                        >
-                            {t("Browse")}
-                        </Button>
-                    </Typography>
+                    <UploadIllustration sx={{ width: 100 }} />
+                    {/* <Typography variant="body1"> */}
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: "600",
+                            cursor: "pointer",
+                            fontSize: 20,
+                        }}
+                    >
+                        {t("Drop or Select files")}
+                    </Box>{" "}
                 </Stack>
             </StyledDropZone>
         </Box>
