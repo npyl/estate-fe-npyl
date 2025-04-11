@@ -829,6 +829,7 @@ const resources = {
 
             Views: "Views",
             "Property Views": "Property Views",
+            "Day Views in progress": "Day Views in progress",
             "Views of Properties": "Views of Properties",
             "Category Views": "Category Views",
 
@@ -1693,6 +1694,7 @@ const resources = {
 
             Views: "Προβολές",
             "Property Views": "Προβολές Ακινήτων",
+            "Day Views in progress": "Προβολές ημέρας σε εξέλιξη",
             "Views of Properties": "Προβολές Ακινήτων",
 
             "Category Views": "Προβολές ανά Κατηγορία",
