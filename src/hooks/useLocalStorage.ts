@@ -92,8 +92,6 @@ function useLocalStorage<V extends string | number | object = string>(
         setLocalStorageItem(key, fallbackValue);
     }, [key, fallbackValue]);
 
-    console.log("store: ", store);
-
     return [
         store ? JSON.parseSafe<V>(store) || fallbackValue : fallbackValue,
         set,
