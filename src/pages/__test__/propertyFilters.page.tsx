@@ -6,6 +6,14 @@ import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 import { NextPage } from "next";
 
+// INFO: prevent from showing up on production
+export const getStaticProps = async () => {
+    if (process.env.NODE_ENV === "production") {
+        return { notFound: true };
+    }
+    return { props: {} };
+};
+
 const TestComponent: NextPage = () => {
     const [state, setState] = useTabState();
     const methods = useStateMethods(setState);
