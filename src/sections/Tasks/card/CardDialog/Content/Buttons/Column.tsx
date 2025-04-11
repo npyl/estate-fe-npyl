@@ -45,7 +45,7 @@ const ColumnSelect: FC<SelectProps> = (props) => {
     const { t } = useTranslation();
     const columns = useBoardColumns();
     return (
-        <FormControl>
+        <FormControl fullWidth>
             <InputLabel>{props.label}</InputLabel>
             <RHFSelect name="columnId" defaultValue={-1} {...props}>
                 <MenuItem value={-1}>{t("Not selected")}</MenuItem>
