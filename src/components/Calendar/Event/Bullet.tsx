@@ -1,6 +1,6 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useCallback } from "react";
 import { Box, SxProps, Theme, Tooltip } from "@mui/material";
-import { TCalendarEventType } from "../types";
+import { TCalendarEvent, TCalendarEventType, TOnEventClick } from "../types";
 import { Z_INDEX } from "@/constants/calendar";
 import getTypeColor from "./_shared/getTypeColor";
 import { LF } from "./_constants";
@@ -67,30 +67,42 @@ const getBulletContainerSx = (c: number = 0, t: number = 0): SxProps<Theme> => {
 // ------------------------------------------------------------------------------------
 
 interface BulletProps {
+    event: TCalendarEvent;
     title: string;
     type: TCalendarEventType;
     overlapCount?: number;
     top?: number;
-    onClick: (e: MouseEvent<HTMLDivElement>) => void;
+    onEventClick?: TOnEventClick;
 }
 
 const Bullet: FC<BulletProps> = ({
+    event,
     title,
     type,
     overlapCount,
     top,
-    onClick,
-}) => (
-    <Tooltip title={title} onClick={onClick}>
-        <Box sx={getBulletContainerSx(overlapCount, top)}>
-            <Box
-                bgcolor={getTypeColor(type)}
-                width={15}
-                height={15}
-                borderRadius="100%"
-            />
-        </Box>
-    </Tooltip>
-);
+    onEventClick,
+}) => {
+    const handleClick = useCallback(
+        (e: MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            onEventClick?.(e, event);
+        },
+        [onEventClick, event]
+    );
+
+    return (
+        <Tooltip title={title} onClick={handleClick}>
+            <Box sx={getBulletContainerSx(overlapCount, top)}>
+                <Box
+                    bgcolor={getTypeColor(type)}
+                    width={15}
+                    height={15}
+                    borderRadius="100%"
+                />
+            </Box>
+        </Tooltip>
+    );
+};
 
 export default Bullet;

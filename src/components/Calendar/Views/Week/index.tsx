@@ -18,6 +18,8 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     getCellEvents = _getTodaysEvents,
     getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
+    onEventDragEnd,
+    onEventResizeEnd,
     // ...
     ...props
 }) => {
@@ -36,6 +38,8 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
                         events={getCellEvents(events, other.date)}
                         getMiscCellEvents={getMiscCellEvents}
                         onEventClick={onEventClick}
+                        onEventDragEnd={onEventDragEnd}
+                        onEventResizeEnd={onEventResizeEnd}
                     />
                 )}
                 Numbering={Numbering}

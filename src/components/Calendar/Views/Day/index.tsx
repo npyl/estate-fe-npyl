@@ -14,6 +14,8 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
     getCellEvents = _getTodaysEvents,
     getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
+    onEventDragEnd,
+    onEventResizeEnd,
     // ...
     ...props
 }) => {
@@ -28,6 +30,8 @@ const CalendarDayView: FC<CalendarDayViewProps> = ({
                     events={getCellEvents(events, other.date)}
                     getMiscCellEvents={getMiscCellEvents}
                     onEventClick={onEventClick}
+                    onEventDragEnd={onEventDragEnd}
+                    onEventResizeEnd={onEventResizeEnd}
                 />
             )}
             Numbering={Numbering}

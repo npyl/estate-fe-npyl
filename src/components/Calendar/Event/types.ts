@@ -6,8 +6,7 @@ import {
     TOnEventResizeEnd,
 } from "../types";
 
-interface EventProps
-    extends Omit<StackProps, "onClick" | "onMouseUp" | "onMouseDown"> {
+interface EventProps extends StackProps {
     event: TCalendarEvent;
     overlapCount?: number;
 

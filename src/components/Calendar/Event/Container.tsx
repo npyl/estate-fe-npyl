@@ -1,7 +1,6 @@
-import { forwardRef, MouseEvent } from "react";
+import { forwardRef } from "react";
 import { Stack, SxProps, Theme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import stopPropagation from "@/utils/stopPropagation";
 import { EventProps } from "./types";
 import { LF } from "./_constants";
 import { Z_INDEX } from "@/constants/calendar";
@@ -46,20 +45,8 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     };
 };
 
-interface EventContainerProps
-    extends Omit<
-        EventProps,
-        | "bgcolor"
-        | "event"
-        | "onEventClick"
-        | "onEventDragEnd"
-        | "onEventResizeEnd"
-    > {
+interface EventContainerProps extends Omit<EventProps, "bgcolor" | "event"> {
     bgcolor: string;
-
-    onClick?: (e: MouseEvent<HTMLDivElement>) => void;
-    onMouseUp?: (e: MouseEvent<HTMLDivElement>) => void;
-    onMouseDown?: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
 const EventContainer = forwardRef<HTMLDivElement, EventContainerProps>(

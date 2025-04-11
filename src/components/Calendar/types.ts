@@ -138,6 +138,8 @@ interface ViewEvents {
     getMiscCellEvents?: TGetMiscCellEventsCb;
 
     onEventClick?: TOnEventClick;
+    onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeEnd?: TOnEventResizeEnd;
 }
 
 type CalendarDayViewProps<

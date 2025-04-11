@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent } from "react";
+import { forwardRef, MouseEvent, useCallback } from "react";
 import { Box, Stack } from "@mui/material";
 import Title from "../_shared/Title";
 import Description from "../_shared/Description";
@@ -19,7 +19,7 @@ import {
 import useDraggable from "./useDraggable";
 import stopPropagation from "@/utils/stopPropagation";
 
-interface MainProps extends Omit<EventContainerProps, "bgcolor"> {
+interface MainProps extends Omit<EventContainerProps, "bgcolor" | "onClick"> {
     event: TCalendarEvent;
     isMinimumHeight: boolean;
 
@@ -30,7 +30,14 @@ interface MainProps extends Omit<EventContainerProps, "bgcolor"> {
 
 const Main = forwardRef<HTMLDivElement, MainProps>(
     (
-        { event, isMinimumHeight, onEventResizeEnd, onEventDragEnd, ...props },
+        {
+            event,
+            isMinimumHeight,
+            onEventClick,
+            onEventResizeEnd,
+            onEventDragEnd,
+            ...props
+        },
         ref
     ) => {
         const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
@@ -48,12 +55,21 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
 
         // if (!onEventDragEnd) return <Stack onClick={handleClick} {...props} />;
 
+        const handleClick = useCallback(
+            (me: MouseEvent<HTMLDivElement>) => {
+                me.stopPropagation();
+                onEventClick?.(me, event);
+            },
+            [onEventClick, event]
+        );
+
         return (
             <Container
                 ref={ref}
                 bgcolor={bgcolor}
                 onMouseDown={onMouseDown}
                 onMouseUp={stopPropagation}
+                onClick={handleClick}
                 {...props}
             >
                 <Title

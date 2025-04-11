@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent, useCallback, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { DAY_CELL_HEIGHT } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import useWidthObserver from "@/hooks/useWidthObserver";
@@ -52,21 +52,14 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
         const { onRef } = useWidthObserver(ref, handleWidth);
 
-        const handleClick = useCallback(
-            (e: MouseEvent<HTMLDivElement>) => {
-                e.stopPropagation();
-                onEventClick?.(e, event);
-            },
-            [onEventClick, event]
-        );
-
         if (isBullet) {
             return (
                 <Bullet
+                    event={event}
                     top={top}
                     title={event?.title}
                     type={event?.type}
-                    onClick={handleClick}
+                    onEventClick={onEventClick}
                 />
             );
         }
@@ -78,7 +71,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
                 top={top}
                 height={maxHeight}
                 event={event}
-                onClick={handleClick}
+                onEventClick={onEventClick}
                 {...props}
             />
         );
