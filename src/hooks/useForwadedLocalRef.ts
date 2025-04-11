@@ -1,6 +1,7 @@
 import {
     ForwardedRef,
     HTMLAttributes,
+    useCallback,
     useImperativeHandle,
     useRef,
 } from "react";
@@ -20,21 +21,27 @@ const useForwardedLocalRef = <
 ) => {
     const localRef = useRef<Base>(null);
 
-    useImperativeHandle(
-        ref,
-        () => {
-            if (!localRef.current) return null as any;
+    // Create a callback ref that updates both the forwarded ref and local ref
+    const onRef = useCallback(
+        (node: Base | null) => {
+            // Update local ref
+            if (localRef.current !== node) {
+                localRef.current = node;
+            }
 
-            // IMPORTANT: attach props directly to the DOM element reference without creating a new object
-            // (This is important because we do not want to lose the original element's ref)
-            if (props) Object.assign(localRef.current, props);
-
-            return localRef.current;
+            // Update forwarded ref if it's a function
+            if (typeof ref === "function") {
+                ref(node);
+            }
+            // Update forwarded ref if it's an object
+            else if (ref) {
+                ref.current = node;
+            }
         },
-        [props]
+        [ref]
     );
 
-    return localRef;
+    return [localRef, { onRef }] as const;
 };
 
 export default useForwardedLocalRef;

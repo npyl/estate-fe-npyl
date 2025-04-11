@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent, useCallback } from "react";
+import { forwardRef, MouseEvent, useCallback, useRef } from "react";
 import { Box, Stack } from "@mui/material";
 import Title from "../_shared/Title";
 import Description from "../_shared/Description";
@@ -44,7 +44,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
         },
         ref
     ) => {
-        const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
+        const [elementRef, { onRef }] = useForwardedLocalRef(ref as any);
 
         const bgcolor = useCalendarColorById(event?.colorId);
 
@@ -59,6 +59,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
 
         const handleClick = useCallback(
             (me: MouseEvent<HTMLDivElement>) => {
+                console.log("ELEMENT:REF_ ", elementRef.current);
                 me.stopPropagation();
                 onEventClick?.(me, event);
             },
@@ -69,7 +70,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
 
         return (
             <Container
-                ref={ref}
+                ref={onRef}
                 bgcolor={bgcolor}
                 onMouseUp={stopPropagation}
                 {...methods}
