@@ -2,34 +2,34 @@ import { useCallback, useRef } from "react";
 
 /**
  * Creates a setter function that supports both direct value assignment and callback-based updates
- * similar to React's useState setter.
+ * similar to React's useState setter, with optional additional arguments.
  *
- * @param getValue Function that returns the current value
- * @param setValue Function that sets the new value
- * @returns A setter function that accepts either a new value or an updater function
+ * @param initialValue Initial value for the setter
+ * @param _setValue Function that sets the new value, with support for additional arguments
+ * @returns A setter function that accepts either a new value or an updater function, plus optional additional arguments
  */
-const useCallbackSetter = <T>(
+const useCallbackSetter = <T, Args extends any[] = any[]>(
     initialValue: T,
-    _setValue: (value: T) => void
+    _setValue: (value: T, ...args: Args) => void
 ) => {
     const valueRef = useRef<T>(initialValue);
     const getCurrentValue = useCallback(() => valueRef.current, []);
     const setValue = useCallback(
-        (v: T) => {
+        (v: T, ...args: Args) => {
             valueRef.current = v;
-            _setValue(v);
+            _setValue(v, ...args);
         },
         [_setValue]
     );
 
     return useCallback(
-        (valueOrCb: T | ((prev: T) => T)) => {
+        (valueOrCb: T | ((prev: T) => T), ...args: Args) => {
             if (typeof valueOrCb === "function") {
                 const currentValue = getCurrentValue();
                 const newValue = (valueOrCb as (prev: T) => T)(currentValue);
-                setValue(newValue);
+                setValue(newValue, ...args);
             } else {
-                setValue(valueOrCb);
+                setValue(valueOrCb, ...args);
             }
         },
         [setValue]

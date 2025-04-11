@@ -2,7 +2,6 @@ import { useCallback, useMemo } from "react";
 import { ITab } from "@/types/tabs";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
-import useCookie from "@/hooks/useCookie";
 import { useAuth } from "@/hooks/use-auth";
 import { isSameTab, isSameTabOrg } from "./util";
 import {
@@ -11,30 +10,14 @@ import {
     pushOrUpdate,
     updatePath,
 } from "./methods";
+import useTabStorage, { getTabsSafe } from "../useTabStorage";
 
 // -----------------------------------------------------------------------
-
-type TTabState = Record<number, ITab[]>;
-
-const cookieName = "PPSubbarTabs";
-
-const getTabsSafe = (ts: TTabState, userId: number) => {
-    try {
-        return ts?.[userId] || [];
-    } catch (ex) {
-        return [];
-    }
-};
 
 const useTabState = () => {
     const { user } = useAuth();
     const userId = user?.id!;
-
-    const [tabState, setTabState] = useCookie<TTabState>(cookieName, {});
-    const _tabs = useMemo(
-        () => getTabsSafe(tabState, userId),
-        [tabState, userId]
-    );
+    const { tabState, tabs, setTabState } = useTabStorage();
 
     /**
      * Push a tab (If already exists with same path all rest fields will be overriden)
@@ -141,7 +124,7 @@ const useTabState = () => {
         ]
     );
 
-    return [_tabs, methods] as const;
+    return [tabs, methods] as const;
 };
 
 export { isSameTabOrg };
