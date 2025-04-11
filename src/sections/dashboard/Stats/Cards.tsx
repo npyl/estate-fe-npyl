@@ -9,19 +9,19 @@ const Cards = () => {
 
     return (
         <>
-            <Grid xs={12} sm={6}>
+            <Grid xs={12} sm={6} md={12} lg={3}>
                 <CardWithIcon
                     title={data?.totalProperties.toString() ?? ""}
                     subtitle={t("Total Properties")}
                 />
             </Grid>
-            <Grid xs={12} sm={6}>
+            <Grid xs={12} sm={6} md={12} lg={3}>
                 <CardWithIcon
                     title={data?.totalSoldProperties.toString() ?? ""}
                     subtitle={t("Total Sold Properties")}
                 />
             </Grid>
-            <Grid xs={12} sm={6}>
+            <Grid xs={12} sm={6} md={12} lg={3}>
                 <CardWithIcon
                     title={data?.totalActiveProperties.toString() ?? ""}
                     subtitle={t("Total Active Properties")}
@@ -32,7 +32,7 @@ const Cards = () => {
                     }
                 />
             </Grid>
-            <Grid xs={12} sm={6}>
+            <Grid xs={12} sm={6} md={12} lg={3}>
                 <CardWithIcon
                     title={data?.totalRentedProperties.toString() ?? ""}
                     subtitle={t("Total Rented Properties")}

@@ -4,6 +4,8 @@ import useStickyPoint from "./useStickyPoint";
 import dynamic from "next/dynamic";
 const SimpleCalendar = dynamic(() => import("./SimpleCalendar"));
 
+const MD_WIDTH = "530px";
+
 interface StickyCalendarProps {
     startRef: RefObject<HTMLDivElement>;
 }
@@ -14,10 +16,10 @@ const StickyCalendar: FC<StickyCalendarProps> = ({ startRef }) => {
 
     return (
         <Box
-            width={{ xs: "100%", md: "40%" }}
+            width={{ xs: "100%", md: MD_WIDTH }}
             height="max-content"
             position={{ xs: "initial", md: "sticky" }}
-            left="70%"
+            left="80%"
             zIndex={1}
             ref={targetRef}
         >
@@ -26,4 +28,5 @@ const StickyCalendar: FC<StickyCalendarProps> = ({ startRef }) => {
     );
 };
 
+export { MD_WIDTH };
 export default StickyCalendar;
