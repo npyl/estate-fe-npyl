@@ -31,7 +31,7 @@ const OptionCheckbox: FC<OptionCheckboxProps> = ({
     return (
         <FormControlLabel
             control={<Checkbox />}
-            disabled={false}
+            disabled={isDisabled}
             checked={isChecked}
             label={label}
             onChange={handleToggle}
