@@ -44,7 +44,8 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
         },
         ref
     ) => {
-        const [elementRef, { onRef }] = useForwardedLocalRef(ref as any);
+        const [elementRef, { onRef }] =
+            useForwardedLocalRef<HTMLDivElement>(ref);
 
         const bgcolor = useCalendarColorById(event?.colorId);
 

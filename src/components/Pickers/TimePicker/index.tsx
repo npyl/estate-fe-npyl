@@ -53,9 +53,8 @@ const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
 
         const [isOpen, openMenu, closeMenu] = useDialog();
 
-        const [anchorRef, { onRef }] = useForwardedLocalRef<HTMLDivElement>(
-            ref as any
-        );
+        const [anchorRef, { onRef }] =
+            useForwardedLocalRef<HTMLDivElement>(ref);
 
         const handleSelect = useCallback(
             (d: string) => {
