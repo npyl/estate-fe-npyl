@@ -21,9 +21,9 @@ const CreateEventPopper = forwardRef<
     const { createEvent } = useEventMutations();
 
     const formRef = useRef<FormRef>(null);
-    const updateDates = useCallback((startDate: string, endDate: string) => {
-        if (!startDate || !endDate) return;
-        formRef.current?.updateDates(startDate, endDate);
+    const updateDates = useCallback((s: string, e: string) => {
+        if (!s || !e) return;
+        formRef.current?.updateDates(s, e);
     }, []);
 
     const [_, { onRef }] = useForwardedLocalRef<any>(ref, {

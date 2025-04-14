@@ -2,6 +2,7 @@ import { TOnEventResizeEndAsync } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { useUpdateEventMutation } from "@/services/calendar";
 import { forwardRef, useCallback, useImperativeHandle } from "react";
+import getEndDateForDuration from "./getEndDateForDuration";
 
 interface SaverRef {
     resize: TOnEventResizeEndAsync;
@@ -14,17 +15,7 @@ const Saver = forwardRef<SaverRef, SaverProps>(({}, ref) => {
     const [updateEvent] = useUpdateEventMutation();
 
     const resize: TOnEventResizeEndAsync = useCallback(async (e, h) => {
-        // Convert h (pixel height) to hours
-        const hoursDelta = h / 60;
-
-        // Parse the startDate ISO string to a Date object
-        const start = new Date(e.startDate);
-
-        // Create a new Date for endDate by adding the calculated hours
-        const end = new Date(start.getTime() + hoursDelta * 60 * 60 * 1000);
-
-        // Convert endDate back to ISO string format
-        const endDate = end.toISOString();
+        const endDate = getEndDateForDuration(e.startDate, h);
 
         const res = await updateEvent({
             body: { ...e, endDate },

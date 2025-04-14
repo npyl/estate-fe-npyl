@@ -1,7 +1,6 @@
 import useExclusivePopper from "./useExclusivePopper";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
-import { notifyCells } from "../notifyCells";
 
 import EventPopper, {
     ViewEventPopperRef,
@@ -58,9 +57,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
     const updateDates = useCallback(
         async (s: string, e: string) => {
             if (!startDate) return;
-
             createPopperRef.current?.updateDates(s, e);
-            notifyCells(s, e);
         },
         [startDate]
     );

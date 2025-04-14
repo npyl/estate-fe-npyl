@@ -17,6 +17,7 @@ import usePopperEvents, {
 } from "./usePopperEvents";
 import { notifyCells } from "./notifyCells";
 import Saver, { SaverRef } from "./Saver";
+import getEndDateForDuration from "./getEndDateForDuration";
 
 type IState = {
     dispatch: ReturnType<typeof usePopperEvents>[0];
@@ -61,21 +62,21 @@ const getMACHINE = (methods: MachineMethods) => ({
         [EVENTS.CLICK]: methods.OpenEvent,
         [EVENTS.CLICK_EVENT]: methods.OpenEventCreate,
         [EVENTS.DRAG_END]: methods.Drag, // -
-        [EVENTS.RESIZE_END]: methods.Resize, // -
+        [EVENTS.RESIZE_END]: methods.Resize,
         [EVENTS.CLOSE]: NO_OP,
     },
     [STATES.POPPER]: {
         [EVENTS.CLICK]: methods.Close,
         [EVENTS.CLICK_EVENT]: methods.Close,
         [EVENTS.DRAG_END]: methods.Drag, // -
-        [EVENTS.RESIZE_END]: methods.Resize, // -
+        [EVENTS.RESIZE_END]: methods.Resize,
         [EVENTS.CLOSE]: methods.Close,
     },
     [STATES.POPPER_CREATE]: {
         [EVENTS.CLICK]: methods.Close,
         [EVENTS.CLICK_EVENT]: methods.Close,
         [EVENTS.DRAG_END]: methods.Drag, // -
-        [EVENTS.RESIZE_END]: methods.Resize, // -
+        [EVENTS.RESIZE_END]: methods.Resize,
         [EVENTS.CLOSE]: methods.Close,
     },
 });
@@ -117,7 +118,9 @@ const useMachine = (
                             saverRef.current?.resize(ce, h);
                             break;
                         case STATES.POPPER_CREATE:
-                            const { startDate, endDate } = ce;
+                            const { startDate } = ce;
+
+                            const endDate = getEndDateForDuration(startDate, h);
 
                             rendererRef.current?.updateDates(
                                 startDate,
