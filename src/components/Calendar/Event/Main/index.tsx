@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent, useCallback, useRef } from "react";
+import { forwardRef, MouseEvent, useCallback } from "react";
 import { Box, Stack } from "@mui/material";
 import Title from "../_shared/Title";
 import Description from "../_shared/Description";
@@ -17,7 +17,6 @@ import {
     TOnEventResizeEnd,
 } from "../../types";
 import useDraggable from "./useDraggable";
-import stopPropagation from "@/utils/stopPropagation";
 import useNoDragClick from "../../useNoDragClick";
 
 interface MainProps
@@ -70,13 +69,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
         const methods = useNoDragClick(handleClick, onMouseDown, onMouseMove);
 
         return (
-            <Container
-                ref={onRef}
-                bgcolor={bgcolor}
-                onMouseUp={stopPropagation}
-                {...methods}
-                {...props}
-            >
+            <Container ref={onRef} bgcolor={bgcolor} {...methods} {...props}>
                 <Title
                     title={event.title}
                     startDate={event.startDate}
