@@ -1,11 +1,10 @@
 import orgToast from "react-hot-toast";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
-import successToast from "./success";
+import { errorToast, successToast } from "@/components/Toaster";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
-import errorToast from "./error";
-import instantDismiss from "./instantDismiss";
+import instantDismiss from "../instantDismiss";
 import { useTranslation } from "react-i18next";
 
 interface UploadMessageProps {

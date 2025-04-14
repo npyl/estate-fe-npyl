@@ -1,3 +1,3 @@
-import successToast from "@/components/Toaster/success";
+import { successToast } from "@/components/Toaster";
 const quickToast = () => successToast("Saved", undefined, { duration: 1 });
 export default quickToast;

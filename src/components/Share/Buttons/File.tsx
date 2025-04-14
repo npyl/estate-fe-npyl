@@ -3,7 +3,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { StyledStack } from "./styled";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 import CircularProgress from "@mui/material/CircularProgress";
 import useDialog from "@/hooks/useDialog";
 import { SxProps, Theme } from "@mui/material";

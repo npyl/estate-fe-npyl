@@ -1,4 +1,5 @@
-import successToast from "@/components/Toaster/success";
+import { successToast } from "@/components/Toaster";
+
 import MenuItem from "@mui/material/MenuItem";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";

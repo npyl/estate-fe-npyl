@@ -1,4 +1,4 @@
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 import {
     Middleware,
     MiddlewareAPI,

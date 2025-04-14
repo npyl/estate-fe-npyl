@@ -19,7 +19,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import History from "@tiptap/extension-history";
-import errorToast from "../Toaster/error";
+import { errorToast } from "@/components/Toaster";
 
 const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
     try {

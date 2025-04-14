@@ -1,6 +1,6 @@
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
 import { SpaceBetween } from "@/components/styled";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 import { IPropertyFile } from "@/types/file";
 import DownloadIcon from "@mui/icons-material/Download";
 import InfoIcon from "@mui/icons-material/Info";

@@ -1,5 +1,5 @@
 import orgToast, { ToastOptions } from "react-hot-toast";
-import Message from "./Message";
+import Message from "../Message";
 
 const successToast = (
     main: string,
