@@ -19,10 +19,20 @@ import clickAndExpectOrg from "./_util/clickAndExpect";
  * @param value
  */
 const expectItem = async (page: Page, value?: string) => {
-    // const encoded = value ? encodeURIComponent(value) : undefined;
-    // const cookies = await page.context().cookies();
-    // const initialCookie = cookies.find(({ name }) => name === cookieName);
-    // expect(initialCookie?.value).toBe(encoded);
+    // Use Playwright's page.evaluate to execute JavaScript in the browser context
+    // and retrieve the localStorage item value
+    const storedValue = await page.evaluate((key) => {
+        return window.localStorage.getItem(key);
+    }, itemName);
+
+    if (value === undefined) {
+        // If we expect no value (item was removed), the localStorage should return null
+        expect(storedValue).toBeNull();
+    } else {
+        // Values in localStorage are JSON-stringified, so we need to parse them
+        const parsedValue = storedValue ? JSON.parse(storedValue) : storedValue;
+        expect(parsedValue).toBe(value);
+    }
 };
 
 /**
