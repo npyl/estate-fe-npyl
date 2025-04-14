@@ -61,21 +61,21 @@ const getMACHINE = (methods: MachineMethods) => ({
     [STATES.IDLE]: {
         [EVENTS.CLICK]: methods.OpenEvent,
         [EVENTS.CLICK_EVENT]: methods.OpenEventCreate,
-        [EVENTS.DRAG_END]: methods.Drag, // -
+        [EVENTS.DRAG_END]: methods.Drag,
         [EVENTS.RESIZE_END]: methods.Resize,
         [EVENTS.CLOSE]: NO_OP,
     },
     [STATES.POPPER]: {
         [EVENTS.CLICK]: methods.Close,
         [EVENTS.CLICK_EVENT]: methods.Close,
-        [EVENTS.DRAG_END]: methods.Drag, // -
+        [EVENTS.DRAG_END]: methods.Drag,
         [EVENTS.RESIZE_END]: methods.Resize,
         [EVENTS.CLOSE]: methods.Close,
     },
     [STATES.POPPER_CREATE]: {
         [EVENTS.CLICK]: methods.Close,
         [EVENTS.CLICK_EVENT]: methods.Close,
-        [EVENTS.DRAG_END]: methods.Drag, // -
+        [EVENTS.DRAG_END]: methods.Drag,
         [EVENTS.RESIZE_END]: methods.Resize,
         [EVENTS.CLOSE]: methods.Close,
     },
@@ -101,12 +101,28 @@ const useMachine = (
                     state.current = STATES.POPPER_CREATE;
                 },
 
-                Drag: ({}) => {
+                Drag: async ({ ce, startDate, endDate }) => {
                     switch (state.current) {
                         case STATES.IDLE:
                         case STATES.POPPER:
+                            const ok = await saverRef.current?.drag(
+                                ce,
+                                startDate,
+                                endDate
+                            );
+                            if (!ok) return;
+
+                            const el = document.getElementById(ce.id);
+                            if (!el) return;
+
+                            // TODO: this isn't actually working...
+                            rendererRef.current?.updatePopperPosition(el);
                             break;
                         case STATES.POPPER_CREATE:
+                            rendererRef.current?.updateDates(
+                                startDate,
+                                endDate
+                            );
                             break;
                     }
                 },

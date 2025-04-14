@@ -88,11 +88,13 @@ type TOnEventDragEnd = (
     endDate: string
 ) => void;
 
-type TOnEventResizeEnd = (ce: TCalendarEvent, h: number) => void;
-type TOnEventResizeEndAsync = (
+type TOnEventDragEndAsync = (
     ce: TCalendarEvent,
-    h: number
+    startDate: string,
+    endDate: string
 ) => Promise<boolean>;
+
+type TOnEventResizeEnd = (ce: TCalendarEvent, h: number) => void;
 
 interface CalendarCellProps extends BaseCalendarCellProps {
     events: TCalendarEvent[];
@@ -200,8 +202,8 @@ export type {
     // ...
     TOnEventClick,
     TOnEventDragEnd,
+    TOnEventDragEndAsync,
     TOnEventResizeEnd,
-    TOnEventResizeEndAsync,
 
     // ...
     CalendarHeaderProps,
