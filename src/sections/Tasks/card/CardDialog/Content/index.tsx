@@ -1,95 +1,19 @@
 import Stack from "@mui/material/Stack";
-import { useTranslation } from "react-i18next";
-import { FC, useCallback } from "react";
+import { FC, useRef } from "react";
 import Buttons from "./Buttons";
-import Divider from "@mui/material/Divider";
-import { RHFTextField } from "@/components/hook-form";
 import WithCalendar from "./_WithCalendar";
 import MiscInfo from "./MiscInfo";
 import dynamic from "next/dynamic";
-import PropertiesAutocompleteMultiple from "@/sections/_Autocompletes/RHFCodeMultiple";
-import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
 import AssigneeSelect from "./Autocompletes/Assignee";
 import RHFEditor from "@/components/hook-form/RHFEditor";
-import { Box, Typography } from "@mui/material";
-import { useGetOwnedPropertiesMutation } from "@/services/customers";
-import { useFormContext } from "react-hook-form";
-import { ICreateOrUpdateTaskReq } from "@/types/tasks";
-import { useGetOwnersMutation } from "@/services/properties";
+import Title from "./Title";
+import PropertiesAutocomplete from "./Autocompletes/Properties";
+import CustomerAutocomplete from "./Autocompletes/Customers";
+import { Editor } from "@tiptap/react";
 const Attachments = dynamic(() => import("./Attachments"));
 const AssigneeHistory = dynamic(() => import("./AssigneeHistory"));
 const Comments = dynamic(() => import("./Comments"));
 const Labels = dynamic(() => import("./Labels"));
-
-// -----------------------------------------------------------------
-
-const getDiffedIds = (ids0: number[], ids1: number[]) =>
-    ids1.filter((id) => !ids0.includes(id));
-
-const CustomerAutocomplete = () => {
-    const { t } = useTranslation();
-
-    const { getValues, setValue } = useFormContext<ICreateOrUpdateTaskReq>();
-    const [get] = useGetOwnedPropertiesMutation();
-    const onCustomersChange = useCallback(
-        async (newIds: number[]) => {
-            const oldIds = getValues("customers") || [];
-            const diffed = getDiffedIds(oldIds, newIds);
-
-            const res = await get(diffed);
-            if ("error" in res) return;
-
-            const old = getValues("properties") || [];
-            const dataIds = res.data?.map(({ id }) => id) || [];
-
-            setValue("properties", [...old, ...dataIds]);
-        },
-        [getValues]
-    );
-
-    return (
-        <CustomerAutocompleteMultiple
-            label={t("Customers")}
-            name="customers"
-            onChange={onCustomersChange}
-        />
-    );
-};
-
-const PropertiesAutocomplete = () => {
-    const { t } = useTranslation();
-
-    const { getValues, setValue } = useFormContext<ICreateOrUpdateTaskReq>();
-    const [get] = useGetOwnersMutation();
-    const onPropertiesChange = useCallback(
-        async (_: any, newIds: number[]) => {
-            const oldIds = getValues("properties") || [];
-            const diffed = getDiffedIds(oldIds, newIds);
-
-            const res = await get(diffed);
-            if ("error" in res) return;
-
-            const old = getValues("customers") || [];
-            const dataIds = res.data?.map(({ id }) => id) || [];
-
-            setValue("customers", [...old, ...dataIds]);
-        },
-        [getValues]
-    );
-
-    return (
-        <Box>
-            <Typography fontWeight={"bold"} pb={0.5}>
-                {t("Details")}{" "}
-            </Typography>
-            <PropertiesAutocompleteMultiple
-                name="properties"
-                label={t<string>("Properties")}
-                onChange={onPropertiesChange}
-            />
-        </Box>
-    );
-};
 
 // -----------------------------------------------------------------
 
@@ -121,18 +45,19 @@ const Content: FC<ContentProps> = ({
     reporter,
     updatedBy,
 }) => {
-    const { t } = useTranslation();
-
     const isEdit = Boolean(cardId);
+
+    const editorRef = useRef<Editor>(null);
+
     return (
         <Stack spacing={2} mt={3}>
             {/* ------------------------ */}
 
             <Buttons />
-            <RHFTextField name="name" label={t("Title")} />
+            <Title editorRef={editorRef} />
             {/* ------------------------ */}
 
-            <RHFEditor name="description" rows={5} />
+            <RHFEditor ref={editorRef} name="description" rows={5} />
 
             <Attachments cardId={cardId} />
 

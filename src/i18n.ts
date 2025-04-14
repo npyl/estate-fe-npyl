@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Empty description",
+            _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
+                "Please fill-in a description before generating a title",
+
             _NOT_GOOGLE_WORKSPACE_USER_:
                 "Make sure to assign a Google Workspace email to the assignee",
 
@@ -1301,6 +1305,10 @@ const resources = {
     },
     el: {
         translation: {
+            _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Άδεια περιγραφή",
+            _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
+                "Παρακαλώ συμπληρώστε την περιγραφή πριν την παραγωγή τίτλου",
+
             _NOT_GOOGLE_WORKSPACE_USER_:
                 "Βεβαιωθείτε ότι έχει καταχωρηθεί Google Workspace email για τον διαχειριστή",
 
