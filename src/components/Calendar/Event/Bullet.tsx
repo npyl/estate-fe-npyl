@@ -67,6 +67,7 @@ const getBulletContainerSx = (c: number = 0, t: number = 0): SxProps<Theme> => {
 // ------------------------------------------------------------------------------------
 
 interface BulletProps {
+    id: string;
     event: TCalendarEvent;
     title: string;
     type: TCalendarEventType;
@@ -76,6 +77,7 @@ interface BulletProps {
 }
 
 const Bullet: FC<BulletProps> = ({
+    id,
     event,
     title,
     type,
@@ -92,7 +94,7 @@ const Bullet: FC<BulletProps> = ({
     );
 
     return (
-        <Tooltip title={title} onClick={handleClick}>
+        <Tooltip id={id} title={title} onClick={handleClick}>
             <Box sx={getBulletContainerSx(overlapCount, top)}>
                 <Box
                     bgcolor={getTypeColor(type)}

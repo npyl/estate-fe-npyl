@@ -54,6 +54,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         if (isBullet) {
             return (
                 <Bullet
+                    id={event.id}
                     event={event}
                     top={top}
                     title={event?.title}
@@ -65,6 +66,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
         return (
             <Main
+                id={event.id}
                 ref={onRef}
                 isMinimumHeight={isMinimumHeight}
                 top={top}
