@@ -1,10 +1,10 @@
-import { TOnEventResizeEnd } from "@/components/Calendar/types";
+import { TOnEventResizeEndAsync } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { useUpdateEventMutation } from "@/services/calendar";
 import { forwardRef, useCallback, useImperativeHandle } from "react";
 
 interface SaverRef {
-    resize: TOnEventResizeEnd;
+    resize: TOnEventResizeEndAsync;
 }
 
 interface SaverProps {}
@@ -13,7 +13,7 @@ const Saver = forwardRef<SaverRef, SaverProps>(({}, ref) => {
     const { user } = useAuth();
     const [updateEvent] = useUpdateEventMutation();
 
-    const resize: TOnEventResizeEnd = useCallback((e, h) => {
+    const resize: TOnEventResizeEndAsync = useCallback(async (e, h) => {
         // Convert h (pixel height) to hours
         const hoursDelta = h / 60;
 
@@ -26,10 +26,12 @@ const Saver = forwardRef<SaverRef, SaverProps>(({}, ref) => {
         // Convert endDate back to ISO string format
         const endDate = end.toISOString();
 
-        updateEvent({
+        const res = await updateEvent({
             body: { ...e, endDate },
             userId: user?.id!,
         });
+
+        return !("error" in res);
     }, []);
 
     useImperativeHandle(
