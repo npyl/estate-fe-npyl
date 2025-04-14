@@ -21,7 +21,8 @@ const DurationUpdateStack = forwardRef<
         },
         ref
     ) => {
-        const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
+        const [elementRef, { onRef }] =
+            useForwardedLocalRef<HTMLDivElement>(ref);
 
         const onMouseMove = useCallback(
             () => updateDurationLabelAsync(elementRef.current!, cellsRef),
@@ -47,7 +48,7 @@ const DurationUpdateStack = forwardRef<
 
         return (
             <Stack
-                ref={elementRef}
+                ref={onRef}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
                 {...props}

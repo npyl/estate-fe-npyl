@@ -38,7 +38,8 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
         { event, sx, onClick, onDragEnd, onResizeEnd, children, ...props },
         ref
     ) => {
-        const elementRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
+        const [elementRef, { onRef }] =
+            useForwardedLocalRef<HTMLDivElement>(ref);
 
         const { cellsRef } = useResponsiveCellPositions();
 
@@ -59,7 +60,7 @@ const DraggableStack = forwardRef<HTMLDivElement, DraggableStackProps>(
 
         return (
             <DurationUpdateStack
-                ref={elementRef}
+                ref={onRef}
                 cellsRef={cellsRef}
                 sx={{ ...StackSx, ...sx }}
                 onMouseDown={onMouseDown}
