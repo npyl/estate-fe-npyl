@@ -102,6 +102,7 @@ const useMachine = (
 
                 Drag: ({}) => {
                     switch (state.current) {
+                        case STATES.IDLE:
                         case STATES.POPPER:
                             break;
                         case STATES.POPPER_CREATE:
@@ -111,6 +112,7 @@ const useMachine = (
 
                 Resize: ({ ce, h }) => {
                     switch (state.current) {
+                        case STATES.IDLE:
                         case STATES.POPPER:
                             saverRef.current?.resize(ce, h);
                             break;
