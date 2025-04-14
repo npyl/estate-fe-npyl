@@ -90,7 +90,6 @@ const VerticalResize: FC<VerticalResizeProps> = ({
             sx={ResizeHandleSx}
             onMouseDown={onResizeStart}
             // ...
-            onMouseUp={stopPropagation}
             onClick={stopPropagation}
         />
     );
