@@ -59,7 +59,6 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
 
         const handleClick = useCallback(
             (me: MouseEvent<HTMLDivElement>) => {
-                console.log("ELEMENT:REF_ ", elementRef.current);
                 me.stopPropagation();
                 onEventClick?.(me, event);
             },

@@ -1,6 +1,6 @@
 import { useCallback, useRef, useLayoutEffect } from "react";
 import { CellPosition } from "./types";
-import { CELL_CLASSNAME } from "./useDraggable";
+import { CELL_CLASSNAME } from "../_constants";
 
 const useResponsiveCellPositions = () => {
     const cellsRef = useRef<CellPosition[]>([]);

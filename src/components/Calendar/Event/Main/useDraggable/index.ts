@@ -1,10 +1,9 @@
 import { type MouseEvent, RefObject, useCallback, useRef } from "react";
 import { CellPosition } from "../../Main/types";
-import calculateNewDates from "./calculateNewDates";
 import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
+import calculateNewDates from "./calculateNewDates";
 
 const DRAG_THRESHOLD = 5; // pixels
-const CELL_CLASSNAME = "PPCalendar-Cell";
 
 const useDraggable = (
     event: TCalendarEvent,
@@ -43,6 +42,8 @@ const useDraggable = (
 
             unregisterMovement();
 
+            if (!onDragEnd) return;
+
             const drag = dragRef.current;
             if (!drag.isDragging) return;
             drag.isDragging = false;
@@ -59,10 +60,10 @@ const useDraggable = (
                 return;
             }
 
-            // Find the PPCell that contains the center of the draggable element
+            // Find the cell that contains the center of the draggable element
             const elementRect = elementRef.current.getBoundingClientRect();
             const elementCenter = elementRect.left + elementRect.width / 2;
-            const cells = document.getElementsByClassName(CELL_CLASSNAME);
+            const cells = cellsRef.current?.map(({ element }) => element) || [];
 
             for (const cell of cells) {
                 const cellRect = cell.getBoundingClientRect();
@@ -70,11 +71,8 @@ const useDraggable = (
                     elementCenter >= cellRect.left &&
                     elementCenter <= cellRect.right
                 ) {
-                    const result = calculateNewDates(
-                        cell as HTMLElement,
-                        elementRect
-                    );
-                    if (!result || !onDragEnd) return;
+                    const result = calculateNewDates(cell, elementRect);
+                    if (!result) return;
 
                     const { startDate, endDate } = result;
                     onDragEnd(event, startDate, endDate);
@@ -82,7 +80,7 @@ const useDraggable = (
                 }
             }
         },
-        [onDragEnd]
+        [onDragEnd, event]
     );
 
     const onMouseDown = useCallback((e: MouseEvent) => {
@@ -117,5 +115,4 @@ const useDraggable = (
     return { onMouseDown };
 };
 
-export { CELL_CLASSNAME };
 export default useDraggable;

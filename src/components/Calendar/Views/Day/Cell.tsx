@@ -4,7 +4,7 @@ import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
 import MiscCell from "../MiscCell";
-import { CELL_CLASSNAME } from "../../Event/Main/useDraggable";
+import { CELL_CLASSNAME } from "@/components/Calendar/Event/_constants";
 import useNoDragClick from "@/components/Calendar/useNoDragClick";
 const NowIndicator = dynamic(() => import("../NowIndicator"));
 
