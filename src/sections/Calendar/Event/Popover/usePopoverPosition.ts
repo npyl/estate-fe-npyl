@@ -13,13 +13,10 @@ const usePopoverPosition = () => {
     );
 
     const resizeObserver = useRef<ResizeObserver>();
-    const popoverRef = useRef<HTMLDivElement>();
 
     const onPaperRef = useCallback((e: HTMLDivElement | null) => {
         if (!e) return;
         if (resizeObserver.current) return;
-
-        popoverRef.current = e;
 
         // Create a ResizeObserver to monitor height changes
         resizeObserver.current = new ResizeObserver((entries) => {
