@@ -1,36 +1,37 @@
 import Form, { FormRef } from "./form";
-import { FC, useCallback, useLayoutEffect, useRef } from "react";
+import { forwardRef, useCallback, useRef } from "react";
 import useEventMutations from "@/sections/Calendar/Event/View/useEventMutations";
-import Popover from "@/sections/Calendar/Event/Popover";
-import {
-    DatesDetail,
-    UPDATE_DATES_NAME,
-} from "../View/PopperContext/Renderer/updateDates";
+import Popover, { EventPopperRef } from "@/sections/Calendar/Event/Popover";
+import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 
-interface Props {
+interface CreateEventPopperRef extends EventPopperRef {
+    updateDates: (s: string, e: string) => void;
+}
+
+interface CreateEventPopperProps {
     startDate: string;
-    anchorEl: HTMLDivElement;
+    anchorEl: HTMLElement;
     onClose: VoidFunction;
 }
 
-const CreateEventPopover: FC<Props> = ({ startDate, anchorEl, onClose }) => {
+const CreateEventPopper = forwardRef<
+    CreateEventPopperRef,
+    CreateEventPopperProps
+>(({ startDate, anchorEl, onClose }, ref) => {
     const { createEvent } = useEventMutations();
 
     const formRef = useRef<FormRef>(null);
-    const updateDates = useCallback((e: CustomEventInit<DatesDetail>) => {
-        const { startDate, endDate } = e.detail || {};
+    const updateDates = useCallback((startDate: string, endDate: string) => {
         if (!startDate || !endDate) return;
         formRef.current?.updateDates(startDate, endDate);
     }, []);
-    useLayoutEffect(() => {
-        document.addEventListener(UPDATE_DATES_NAME, updateDates);
-        return () => {
-            document.removeEventListener(UPDATE_DATES_NAME, updateDates);
-        };
-    }, []);
+
+    const [_, { onRef }] = useForwardedLocalRef<any>(ref, {
+        updateDates,
+    });
 
     return (
-        <Popover open anchorEl={anchorEl}>
+        <Popover ref={onRef} open anchorEl={anchorEl}>
             <Form
                 ref={formRef}
                 startDate={startDate}
@@ -39,6 +40,7 @@ const CreateEventPopover: FC<Props> = ({ startDate, anchorEl, onClose }) => {
             />
         </Popover>
     );
-};
+});
 
-export default CreateEventPopover;
+export type { CreateEventPopperRef };
+export default CreateEventPopper;

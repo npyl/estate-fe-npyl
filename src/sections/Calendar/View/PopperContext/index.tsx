@@ -117,6 +117,12 @@ const useMachine = (
                             saverRef.current?.resize(ce, h);
                             break;
                         case STATES.POPPER_CREATE:
+                            const { startDate, endDate } = ce;
+
+                            rendererRef.current?.updateDates(
+                                startDate,
+                                endDate
+                            );
                             break;
                     }
                 },

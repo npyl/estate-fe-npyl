@@ -7,8 +7,12 @@ import { ForwardedRef, useCallback, useRef } from "react";
  * @param ref a forwarded ref coming from forwardRef()
  * @returns tuple of [localRef, { ref callback }] to be used in your component
  */
-const useForwardedLocalRef = <Base extends HTMLElement = HTMLElement>(
-    ref: ForwardedRef<Base>
+const useForwardedLocalRef = <
+    Base extends HTMLElement = HTMLElement,
+    More extends any = any
+>(
+    ref: ForwardedRef<Base>,
+    more?: More
 ) => {
     const localRef = useRef<Base | null>(null);
 
@@ -18,13 +22,17 @@ const useForwardedLocalRef = <Base extends HTMLElement = HTMLElement>(
             // Update local ref
             localRef.current = node;
 
+            // IMPORTANT: attach props directly to the DOM element reference without creating a new object
+            // (This is important because we do not want to lose the original element's ref)
+            if (localRef.current && more) Object.assign(localRef.current, more);
+
             if (typeof ref === "function") {
                 ref(node);
             } else if (ref && "current" in ref) {
                 ref.current = node;
             }
         },
-        [ref]
+        [ref, more]
     );
 
     return [localRef, { onRef }] as const;

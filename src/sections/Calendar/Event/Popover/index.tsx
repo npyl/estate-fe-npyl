@@ -1,5 +1,11 @@
 import getBorderColor from "@/theme/borderColor";
-import { FC, ReactNode, useMemo } from "react";
+import {
+    forwardRef,
+    ReactNode,
+    useCallback,
+    useImperativeHandle,
+    useMemo,
+} from "react";
 import usePopoverPosition from "./usePopoverPosition";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/config";
@@ -19,6 +25,10 @@ const PopperSx: SxProps<Theme> = {
     zIndex: Z_INDEX.POPOVER,
 };
 
+interface EventPopperRef {
+    updatePosition: VoidFunction;
+}
+
 interface EventPopperProps
     extends Omit<
         PopperProps,
@@ -32,39 +42,49 @@ interface EventPopperProps
     children: ReactNode;
 }
 
-const EventPopover: FC<EventPopperProps> = ({
-    children,
-    sx,
-    anchorEl,
-    ...props
-}) => {
-    const { actionsRef, onPaperRef } = usePopoverPosition();
+const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
+    ({ children, sx, anchorEl, ...props }, ref) => {
+        const { actionsRef, onPaperRef } = usePopoverPosition();
 
-    const virtualAnchorEl = useMemo<VirtualElement | null>(() => {
-        if (!anchorEl) return null;
-        if (typeof anchorEl !== "object") return null;
-        if (!("getBoundingClientRect" in anchorEl)) return null;
+        const virtualAnchorEl = useMemo<VirtualElement | null>(() => {
+            if (!anchorEl) return null;
+            if (typeof anchorEl !== "object") return null;
+            if (!("getBoundingClientRect" in anchorEl)) return null;
 
-        const position = anchorEl.getBoundingClientRect();
+            const position = anchorEl.getBoundingClientRect();
 
-        return {
-            getBoundingClientRect: () => position,
-        };
-    }, [anchorEl]);
+            return {
+                getBoundingClientRect: () => position,
+            };
+        }, [anchorEl]);
 
-    return (
-        <Popper
-            popperRef={actionsRef}
-            placement="right"
-            anchorEl={virtualAnchorEl}
-            sx={{ ...PopperSx, ...sx }}
-            {...props}
-        >
-            <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">
-                {children}
-            </Paper>
-        </Popper>
-    );
-};
+        const updatePosition = useCallback(
+            () => actionsRef.current?.update(),
+            []
+        );
+        useImperativeHandle(
+            ref,
+            () => ({
+                updatePosition,
+            }),
+            []
+        );
 
-export default EventPopover;
+        return (
+            <Popper
+                popperRef={actionsRef}
+                placement="right"
+                anchorEl={virtualAnchorEl}
+                sx={{ ...PopperSx, ...sx }}
+                {...props}
+            >
+                <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">
+                    {children}
+                </Paper>
+            </Popper>
+        );
+    }
+);
+
+export type { EventPopperRef };
+export default EventPopper;

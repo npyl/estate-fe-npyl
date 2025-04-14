@@ -1,4 +1,7 @@
-import { DatesDetail } from "./Renderer/updateDates";
+interface DatesDetail {
+    startDate: string;
+    endDate: string;
+}
 
 const UpdateEvent = "onUpdateCreateEvent";
 

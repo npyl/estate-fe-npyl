@@ -2,8 +2,8 @@ import { TCalendarEvent } from "@/components/Calendar/types";
 import { useCallback, useRef, useState } from "react";
 
 const useExclusivePopper = () => {
-    const anchorRef = useRef<HTMLDivElement | undefined>(undefined);
-    const updateAnchor = useCallback((e: HTMLDivElement) => {
+    const anchorRef = useRef<HTMLElement | undefined>(undefined);
+    const updateAnchor = useCallback((e: HTMLElement) => {
         anchorRef.current = e;
     }, []);
 
