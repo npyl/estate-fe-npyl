@@ -43,6 +43,7 @@ const Agreements = ({ filter, searchText }: any) => {
 
     const handlePageChange = (event: any, newPage: any) => {
         setPage(newPage);
+        window.scrollTo(0, 0); //scroll to top on page change
     };
 
     const handleRowsPerPageChange = (event: any) => {
