@@ -72,19 +72,37 @@ const NoteCreate: FC<INoteCreate> = ({
 
     const scrollRef = useRef<ScrollContainerRef>(null);
 
-    const seenPropertyCodes = useMemo(() => {
+    const NOTES = useMemo(() => {
         const seen = new Set<string>();
-        return notes.map((note) => {
+
+        return notes.map((note, idx) => {
             const propertyCode = note.propertyCode;
 
-            if (propertyCode && !seen.has(propertyCode)) {
-                seen.add(propertyCode);
-                return { ...note, showChip: true };
-            }
-            // Otherwise, hide the chip
-            return { ...note, showChip: false };
+            const isFirst = propertyCode && !seen.has(propertyCode);
+
+            if (isFirst) seen.add(propertyCode);
+
+            const display = chip && isFirst ? "block" : "none";
+
+            return (
+                <Note
+                    key={note.id}
+                    onRemove={() => onRemove(idx)}
+                    note={note}
+                    sx={{
+                        [`.${PROPERTY_CHIP_CLASSNAME}`]: {
+                            display,
+
+                            my: 1,
+                            position: "sticky",
+                            top: 0,
+                            zIndex: 50000,
+                        },
+                    }}
+                />
+            );
         });
-    }, [notes]);
+    }, [chip, notes, onRemove]);
 
     const handleAdd = useCallback(
         async (m: string) => {
@@ -107,31 +125,10 @@ const NoteCreate: FC<INoteCreate> = ({
                 sx={{
                     ...ContainerSx,
 
-                    // INFO: overrides the one below
-                    [`.${PROPERTY_CHIP_CLASSNAME}`]: {
-                        display: chip ? "block" : "none",
-                    },
-
                     ...sx,
                 }}
             >
-                {seenPropertyCodes.map((note, index) => (
-                    <Note
-                        key={note.id}
-                        onRemove={() => onRemove(index)}
-                        note={note}
-                        sx={{
-                            [`.${PROPERTY_CHIP_CLASSNAME}`]: {
-                                display: note.showChip ? "block" : "none",
-
-                                my: 1,
-                                position: "sticky",
-                                top: 0,
-                                zIndex: 50000,
-                            },
-                        }}
-                    />
-                ))}
+                {NOTES}
             </ScrollContainer>
             <AddNote onAdd={handleAdd} />
         </Panel>
