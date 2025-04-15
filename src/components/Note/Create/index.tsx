@@ -52,32 +52,18 @@ const ContainerSx: SxProps<Theme> = {
     },
 };
 
-interface INoteCreate {
-    notes: INote[];
-    chip?: boolean;
-    onAdd: (message: string) => Promise<boolean>;
-    onRemove: (index: number) => void;
-
-    sx?: SxProps<Theme>;
-}
-
-const NoteCreate: FC<INoteCreate> = ({
-    notes,
-    chip = false,
-    sx,
-    onAdd,
-    onRemove,
-}) => {
-    const { t } = useTranslation();
-
-    const scrollRef = useRef<ScrollContainerRef>(null);
-
+const useNotes = (
+    notes: INote[],
+    chip: boolean,
+    onRemove: (idx: number) => void
+) => {
     const NOTES = useMemo(() => {
         const seen = new Set<string>();
 
         return notes.map((note, idx) => {
             const propertyCode = note.propertyCode;
 
+            // INFO: only the first occurrence of each property chip should appear
             const isFirst = propertyCode && !seen.has(propertyCode);
 
             if (isFirst) seen.add(propertyCode);
@@ -103,6 +89,31 @@ const NoteCreate: FC<INoteCreate> = ({
             );
         });
     }, [chip, notes, onRemove]);
+
+    return NOTES;
+};
+
+interface INoteCreate {
+    notes: INote[];
+    chip?: boolean;
+    onAdd: (message: string) => Promise<boolean>;
+    onRemove: (index: number) => void;
+
+    sx?: SxProps<Theme>;
+}
+
+const NoteCreate: FC<INoteCreate> = ({
+    notes,
+    chip = false,
+    sx,
+    onAdd,
+    onRemove,
+}) => {
+    const { t } = useTranslation();
+
+    const scrollRef = useRef<ScrollContainerRef>(null);
+
+    const NOTES = useNotes(notes, chip, onRemove);
 
     const handleAdd = useCallback(
         async (m: string) => {
