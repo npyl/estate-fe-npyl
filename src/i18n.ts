@@ -725,8 +725,11 @@ const resources = {
             Inactive: "Inactive",
             Greek: "Greek",
             English: "English",
+            Αγγλικά: "English",
             "United States": "United States",
+            "Ηνωμένων Πολιτειών": "United States",
             "Modern Greek": "Modern Greek",
+            "Ελληνικά (Σύγχρονα)": "Modern Greek",
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.":
                 "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.",
             "Reset Password": "Reset Password",
@@ -1301,6 +1304,10 @@ const resources = {
             Disconnected: "Disconnected",
 
             "Update Demands": "Update Demands",
+
+            "Log In": "Log In",
+            "Sign in on the internal platform":
+                "Sign in on the internal platform",
         },
     },
     el: {
@@ -2574,6 +2581,10 @@ const resources = {
 
             From: "Από",
             Until: "Έως",
+
+            "Log In": "Σύνδεση",
+            "Sign in on the internal platform":
+                "Συνδεθείτε στην εσωτερική πλατφόρμα",
         },
     },
 };

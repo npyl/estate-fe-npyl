@@ -23,9 +23,6 @@ export default function RHFTextField({ name, ...other }: RHFTextFieldProps) {
                             ? ""
                             : field.value || ""
                     }
-                    inputProps={{
-                        autoComplete: "new-password",
-                    }}
                     error={!!error}
                     helperText={error?.message ?? ""}
                     {...other}

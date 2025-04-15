@@ -48,11 +48,11 @@ const Localized: FC<LocalizedProps> = ({
 
     const formattedDate = dateObj.toLocaleDateString(loc, {
         year: "numeric",
-        month: "numeric",
-        day: "numeric",
+        month: "2-digit",
+        day: "2-digit",
     });
     const formattedTime = dateObj.toLocaleTimeString(loc, {
-        hour: "numeric",
+        hour: "2-digit",
         minute: "2-digit",
         hour12: true,
     });
@@ -104,7 +104,7 @@ const Localized: FC<LocalizedProps> = ({
                     direction="row"
                     spacing={1}
                     alignItems="center"
-                    sx={{ position: "absolute", left: isEnglish ? 269 : 319 }}
+                    sx={{ position: "absolute", left: isEnglish ? 290 : 344 }}
                 >
                     {updatedBy.avatar && (
                         <Avatar
