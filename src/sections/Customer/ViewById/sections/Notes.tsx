@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { NoteCreate } from "src/components/Note";
 import {
     useAddNoteToCustomerWithIdMutation,
@@ -19,8 +19,17 @@ const NotesCustomerSection: React.FC = () => {
     const [addNote] = useAddNoteToCustomerWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
 
-    const handleAddNote = (message: string) =>
-        addNote({ id: +customerId!, dataToSend: { content: message } });
+    const handleAddNote = useCallback(
+        async (content: string) => {
+            const res = await addNote({
+                id: +customerId!,
+                dataToSend: { content },
+            });
+
+            return !("error" in res);
+        },
+        [customerId]
+    );
 
     const hadleRemove = (index: number) =>
         notes && notes[index].id && deleteNote(notes[index].id!);

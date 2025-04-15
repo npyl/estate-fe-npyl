@@ -22,9 +22,11 @@ const RHFNoteSection = () => {
         [contents]
     );
 
-    const handleAdd = useCallback((s: string) => {
+    const handleAdd = useCallback(async (s: string) => {
         const old = (watch("notes") || []) as string[];
         setValue("notes", [...old, s]);
+
+        return true;
     }, []);
 
     const handleRemove = useCallback((i: number) => {
