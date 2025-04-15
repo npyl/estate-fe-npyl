@@ -123,6 +123,11 @@ const NoteCreate: FC<INoteCreate> = ({
                         sx={{
                             [`.${PROPERTY_CHIP_CLASSNAME}`]: {
                                 display: note.showChip ? "block" : "none",
+
+                                my: 1,
+                                position: "sticky",
+                                top: 0,
+                                zIndex: 50000,
                             },
                         }}
                     />

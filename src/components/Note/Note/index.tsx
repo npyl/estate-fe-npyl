@@ -15,7 +15,9 @@ import { FC, useMemo } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import CreatedAt from "./CreatedAt";
 
-const NOTE_CLASSNAME = "message";
+const NOTE_CLASSNAME = "pp-note";
+const AVATAR_CLASSNAME = "pp-note-avatar";
+const FULLNAME_CLASSNAME = "pp-note-fullname";
 
 const PaperSx: SxProps<Theme> = {
     backgroundColor: ({ palette: { mode, neutral } }) =>
@@ -23,6 +25,11 @@ const PaperSx: SxProps<Theme> = {
     p: 1.5,
     position: "relative",
     minHeight: "75px",
+};
+
+const ButtonSx: SxProps<Theme> = {
+    width: "fit-content",
+    alignSelf: "flex-end",
 };
 
 interface NoteProps extends StackProps {
@@ -60,7 +67,7 @@ const Note: FC<NoteProps> = ({ note, onRemove, ...props }) => {
             {...props}
         >
             <Avatar
-                className="pp-note-avatar"
+                className={AVATAR_CLASSNAME}
                 src={creator?.avatar}
                 firstName={creator?.firstName}
                 lastName={creator?.lastName}
@@ -69,7 +76,7 @@ const Note: FC<NoteProps> = ({ note, onRemove, ...props }) => {
             <Stack width={1}>
                 <Stack direction="row" spacing={1}>
                     <Typography
-                        className="pp-note-fullname"
+                        className={FULLNAME_CLASSNAME}
                         variant="subtitle2"
                     >
                         {username}
@@ -84,13 +91,7 @@ const Note: FC<NoteProps> = ({ note, onRemove, ...props }) => {
                     <Stack position="absolute" top={10} right={15}>
                         <CreatedAt createdAt={note.createdAt} />
 
-                        <IconButton
-                            sx={{
-                                width: "fit-content",
-                                alignSelf: "flex-end",
-                            }}
-                            onClick={onRemove}
-                        >
+                        <IconButton sx={ButtonSx} onClick={onRemove}>
                             <Iconify
                                 icon="eva:trash-2-outline"
                                 fontSize="20px"
@@ -103,7 +104,7 @@ const Note: FC<NoteProps> = ({ note, onRemove, ...props }) => {
                         color="text.secondary"
                         width={`calc(100% - 90px)`}
                     >
-                        {note.content.toString()}
+                        {note.content}
                     </Typography>
                 </Paper>
             </Stack>
