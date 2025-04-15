@@ -37,14 +37,14 @@ const Note: React.FC<NoteProps> = (props) => {
     }`;
 
     return (
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} width={1}>
             <Avatar
                 src={creator?.avatar}
                 firstName={creator?.firstName}
                 lastName={creator?.lastName}
             />
 
-            <Stack spacing={1}>
+            <Stack spacing={1} width={1}>
                 {Boolean(propertyCode) && Boolean(propertyId) ? (
                     <PropertyLabel id={propertyId!} code={propertyCode!} />
                 ) : null}

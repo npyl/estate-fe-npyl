@@ -38,19 +38,16 @@ const ScrollContainer = forwardRef<ScrollContainerRef, StackProps>(
                 block: "end",
             });
 
-            // Restore the body scroll position
-            setTimeout(() => {
-                window.scrollTo({
-                    top: bodyScrollPos,
-                    behavior: "auto", // Use 'auto' to avoid another smooth scroll
-                });
-            }, 0);
+            window.scrollTo({
+                top: bodyScrollPos,
+                behavior: "auto", // Use 'auto' to avoid another smooth scroll
+            });
         }, []);
 
         useImperativeHandle(ref, () => ({ scroll }), []);
 
         return (
-            <Stack ref={localRef} {...props}>
+            <Stack ref={localRef} pr={2} mr={-2} {...props}>
                 {children}
                 <Box ref={endBoxRef} />
             </Stack>
@@ -86,7 +83,7 @@ const NoteCreate = ({ notes, onAdd, onRemove }: INoteCreate) => {
             <ScrollContainer
                 ref={scrollRef}
                 overflow="hidden auto"
-                maxHeight="400px"
+                height="400px"
                 spacing={1}
                 py={1}
             >
