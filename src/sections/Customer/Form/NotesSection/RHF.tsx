@@ -38,7 +38,12 @@ const RHFNoteSection = () => {
     }, []);
 
     return (
-        <NoteCreate notes={notes} onAdd={handleAdd} onRemove={handleRemove} />
+        <NoteCreate
+            chip
+            notes={notes}
+            onAdd={handleAdd}
+            onRemove={handleRemove}
+        />
     );
 };
 

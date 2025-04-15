@@ -38,6 +38,7 @@ const NormalNoteSection: React.FC = () => {
 
     return (
         <NoteCreate
+            chip
             notes={notes || []}
             onAdd={handleAddNote}
             onRemove={hadleRemove}

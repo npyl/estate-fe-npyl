@@ -9,6 +9,7 @@ import { INote } from "src/types/note";
 import Iconify from "src/components/iconify/Iconify";
 import Avatar from "@/components/Avatar";
 import { PropertyLabel } from "./Extra";
+import { FC } from "react";
 
 const Paper = styled(MuiPaper)(({ theme }) => ({
     backgroundColor:
@@ -22,8 +23,7 @@ interface NoteProps {
     onRemove: () => void;
 }
 
-const Note: React.FC<NoteProps> = (props) => {
-    const { note, onRemove } = props;
+const Note: FC<NoteProps> = ({ note, onRemove }) => {
     const { creator, propertyId, propertyCode } = note || {};
 
     const createdAt = new Date(note.createdAt);
@@ -36,6 +36,8 @@ const Note: React.FC<NoteProps> = (props) => {
         note.creator.lastName || ""
     }`;
 
+    const withChip = Boolean(propertyCode) && Boolean(propertyId);
+
     return (
         <Stack direction="row" spacing={1} width={1}>
             <Avatar
@@ -45,7 +47,7 @@ const Note: React.FC<NoteProps> = (props) => {
             />
 
             <Stack spacing={1} width={1}>
-                {Boolean(propertyCode) && Boolean(propertyId) ? (
+                {withChip ? (
                     <PropertyLabel id={propertyId!} code={propertyCode!} />
                 ) : null}
 
