@@ -1,95 +1,115 @@
 import {
     Stack,
-    Paper as MuiPaper,
     Typography,
     IconButton,
+    StackProps,
+    SxProps,
+    Theme,
+    Paper,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { INote } from "src/types/note";
 import Iconify from "src/components/iconify/Iconify";
 import Avatar from "@/components/Avatar";
 import { PropertyLabel } from "./Extra";
-import { FC } from "react";
+import { FC, useMemo } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import CreatedAt from "./CreatedAt";
 
-const Paper = styled(MuiPaper)(({ theme }) => ({
-    backgroundColor:
-        theme.palette.mode === "light"
-            ? "#fce9a4"
-            : theme.palette.neutral?.[700],
-}));
+const NOTE_CLASSNAME = "message";
 
-interface NoteProps {
+const PaperSx: SxProps<Theme> = {
+    backgroundColor: ({ palette: { mode, neutral } }) =>
+        mode === "light" ? "#fce9a4" : neutral?.[700],
+    p: 1.5,
+    position: "relative",
+    minHeight: "75px",
+};
+
+interface NoteProps extends StackProps {
     note: INote;
     onRemove: () => void;
 }
 
-const Note: FC<NoteProps> = ({ note, onRemove }) => {
+const Note: FC<NoteProps> = ({ note, onRemove, ...props }) => {
     const { creator, propertyId, propertyCode } = note || {};
-
-    const createdAt = new Date(note.createdAt);
-
-    const formattedDate = `${createdAt.getHours()}:${createdAt.getMinutes()} ${createdAt.getDate()}/${
-        createdAt.getMonth() + 1
-    }/${createdAt.getFullYear()}`;
 
     const username = `${creator?.firstName || ""}  ${
         note.creator.lastName || ""
     }`;
 
+    const { user } = useAuth();
     const withChip = Boolean(propertyCode) && Boolean(propertyId);
 
+    const className = useMemo(() => {
+        let res = NOTE_CLASSNAME;
+
+        const isCurrentUser = creator.id === user?.id;
+
+        if (isCurrentUser) res = `${res} current-user`;
+        if (withChip) res = `${res} with-chip-${propertyCode}`;
+
+        return res;
+    }, [user?.id, creator?.id, withChip, propertyCode]);
+
     return (
-        <Stack direction="row" spacing={1} width={1}>
+        <Stack
+            className={className}
+            direction="row"
+            spacing={1}
+            width={1}
+            {...props}
+        >
             <Avatar
+                className="pp-note-avatar"
                 src={creator?.avatar}
                 firstName={creator?.firstName}
                 lastName={creator?.lastName}
             />
 
-            <Stack spacing={1} width={1}>
-                {withChip ? (
-                    <PropertyLabel id={propertyId!} code={propertyCode!} />
-                ) : null}
-
-                <Paper
-                    sx={{
-                        p: 1.5,
-                        flexGrow: 1,
-                    }}
-                >
-                    <Stack
-                        justifyContent="space-between"
-                        direction={{ xs: "column", sm: "row" }}
-                        alignItems={{ sm: "center" }}
+            <Stack width={1}>
+                <Stack direction="row" spacing={1}>
+                    <Typography
+                        className="pp-note-fullname"
+                        variant="subtitle2"
                     >
-                        <Typography variant="subtitle2">{username}</Typography>
-                        <Typography
-                            variant="caption"
-                            sx={{ color: "text.disabled" }}
+                        {username}
+                    </Typography>
+
+                    {withChip ? (
+                        <PropertyLabel id={propertyId!} code={propertyCode!} />
+                    ) : null}
+                </Stack>
+
+                <Paper className="pp-note-content" sx={PaperSx}>
+                    <Stack position="absolute" top={10} right={15}>
+                        <CreatedAt createdAt={note.createdAt} />
+
+                        <IconButton
+                            sx={{
+                                width: "fit-content",
+                                alignSelf: "flex-end",
+                            }}
+                            onClick={onRemove}
                         >
-                            {formattedDate}
-                        </Typography>
-                    </Stack>
-
-                    <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        mt={1}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            {note.content.toString()}
-                        </Typography>
-                        <IconButton onClick={onRemove}>
                             <Iconify
                                 icon="eva:trash-2-outline"
                                 fontSize="20px"
                             />
                         </IconButton>
                     </Stack>
+
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        width={`calc(100% - 90px)`}
+                    >
+                        {note.content.toString()}
+                    </Typography>
                 </Paper>
             </Stack>
         </Stack>
     );
 };
 
+export { NOTE_CLASSNAME };
 export default Note;

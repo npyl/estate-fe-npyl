@@ -42,4 +42,5 @@ const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
 
 ChipLink.displayName = "ChipLink";
 
+export type { ChipLinkProps };
 export default ChipLink;
