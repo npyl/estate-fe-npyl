@@ -1,96 +1,49 @@
 import { SxProps, Theme } from "@mui/material";
 import AddNote from "../AddNote";
-import { Note } from "src/components/Note";
 import { INote } from "src/types/note";
 import { useTranslation } from "react-i18next";
 import Panel from "../../Panel";
-import { FC, useCallback, useRef, useMemo } from "react";
-import { PROPERTY_CHIP_CLASSNAME } from "../Note/Extra";
+import { FC, useCallback, useRef } from "react";
 import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
-import { NOTE_CLASSNAME } from "../Note";
+import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "../Note";
+import useNotes from "./useNotes";
 
 const ContainerSx: SxProps<Theme> = {
-    // Remove default margins
     "& > *": { margin: "0 !important" },
 
-    gap: 0.2,
-    p: 2,
+    gap: 0.1,
 
     [`& .${NOTE_CLASSNAME}`]: {
         alignSelf: "flex-start",
+    },
 
-        "& .pp-note-content": {
-            borderRadius: "20px",
-        },
-
-        // First in group
-        "&:has(+ .current-user)": {
-            "& .pp-note-content": {
-                borderRadius: "20px 20px 4px 4px",
-            },
-        },
-
-        // Middle messages
-        "& + .current-user": {
-            paddingLeft: "40px",
-
-            "& .pp-note-avatar, .pp-note-fullname": {
-                display: "none",
-            },
-
-            "& .pp-note-content": {
-                borderRadius: "4px",
-            },
-        },
-
-        // Last message in group
-        "&:not(:has(+ .current-user))": {
-            "& .pp-note-content": {
-                borderRadius: "4px 4px 20px 20px",
-            },
+    // First in group - full rounded top
+    [`& .${NOTE_CLASSNAME}.first-in-group:not(.standalone)`]: {
+        [`.${CONTENT_CLASSNAME}`]: {
+            borderRadius: "20px 20px 4px 4px",
         },
     },
-};
 
-const useNotes = (
-    notes: INote[],
-    chip: boolean,
-    onRemove: (idx: number) => void
-) => {
-    const NOTES = useMemo(() => {
-        const seen = new Set<string>();
+    // Middle in group - flat top and bottom
+    [`& .${NOTE_CLASSNAME}.middle-in-group`]: {
+        [`.${CONTENT_CLASSNAME}`]: {
+            borderRadius: "4px",
+        },
+    },
 
-        return notes.map((note, idx) => {
-            const propertyCode = note.propertyCode;
+    // Last in group - full rounded bottom
+    [`& .${NOTE_CLASSNAME}.last-in-group`]: {
+        [`.${CONTENT_CLASSNAME}`]: {
+            borderRadius: "4px 4px 20px 20px",
+        },
+    },
 
-            // INFO: only the first occurrence of each property chip should appear
-            const isFirst = propertyCode && !seen.has(propertyCode);
-
-            if (isFirst) seen.add(propertyCode);
-
-            const display = chip && isFirst ? "block" : "none";
-
-            return (
-                <Note
-                    key={note.id}
-                    onRemove={() => onRemove(idx)}
-                    note={note}
-                    sx={{
-                        [`.${PROPERTY_CHIP_CLASSNAME}`]: {
-                            display,
-
-                            my: 1,
-                            position: "sticky",
-                            top: 0,
-                            zIndex: 50000,
-                        },
-                    }}
-                />
-            );
-        });
-    }, [chip, notes, onRemove]);
-
-    return NOTES;
+    // Standalone message - fully rounded
+    [`& .${NOTE_CLASSNAME}.standalone`]: {
+        [`.${CONTENT_CLASSNAME}`]: {
+            borderRadius: "20px",
+        },
+    },
 };
 
 interface INoteCreate {
@@ -98,7 +51,6 @@ interface INoteCreate {
     chip?: boolean;
     onAdd: (message: string) => Promise<boolean>;
     onRemove: (index: number) => void;
-
     sx?: SxProps<Theme>;
 }
 
@@ -110,7 +62,6 @@ const NoteCreate: FC<INoteCreate> = ({
     onRemove,
 }) => {
     const { t } = useTranslation();
-
     const scrollRef = useRef<ScrollContainerRef>(null);
 
     const NOTES = useNotes(notes, chip, onRemove);
@@ -119,7 +70,6 @@ const NoteCreate: FC<INoteCreate> = ({
         async (m: string) => {
             const ok = await onAdd(m);
             if (!ok) return;
-
             scrollRef.current?.scroll();
         },
         [onAdd]
@@ -133,11 +83,7 @@ const NoteCreate: FC<INoteCreate> = ({
                 height="400px"
                 py={1}
                 mb={2}
-                sx={{
-                    ...ContainerSx,
-
-                    ...sx,
-                }}
+                sx={{ ...ContainerSx, ...sx }}
             >
                 {NOTES}
             </ScrollContainer>

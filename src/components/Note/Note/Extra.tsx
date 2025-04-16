@@ -15,6 +15,10 @@ const PropertyLabel: FC<PropertyLabelProps> = ({ id, code }) => (
         href={`/property/${id}`}
         label={code}
         icon={<HomeIcon fontSize="small" />}
+        sx={{
+            ml: "40px",
+            my: 1,
+        }}
     />
 );
 
