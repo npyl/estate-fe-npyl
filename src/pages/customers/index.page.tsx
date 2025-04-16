@@ -84,6 +84,8 @@ const Customers: NextPage = () => {
         setPageSize(model.pageSize);
         setPage(model.page);
 
+        window.scrollTo(0, 0); //on page change scoll to top
+
         const paginationState = { page: model.page };
         localStorage.setItem(
             "customerPaginationState",

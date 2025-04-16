@@ -55,6 +55,8 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
         setPageSize(model.pageSize);
         setPage(model.page);
 
+        window.scrollTo(0, 0);
+
         const paginationState = { page: model.page };
         localStorage.setItem(
             "propertyPaginationState",

@@ -5,6 +5,7 @@ import { JWTLogin } from "@/components/authentication/jwt-login";
 import LogoVertical from "@/assets/logo/vertical/light";
 import { useAuth } from "@/hooks/use-auth";
 import { useTranslation } from "react-i18next";
+import { LanguageButtonAuth } from "@/components/language/LanguageButtonAuth";
 
 type Platform = "JWT";
 
@@ -44,6 +45,17 @@ const Login: NextPage = () => {
                     type="video/mp4"
                 />
             </video>
+            <Box
+                sx={{
+                    position: "absolute",
+                    top: 16,
+                    right: 10,
+                    transform: "translateX(-50%)",
+                    zIndex: 10,
+                }}
+            >
+                <LanguageButtonAuth />
+            </Box>{" "}
             <Container maxWidth="sm">
                 <Card
                     elevation={16}

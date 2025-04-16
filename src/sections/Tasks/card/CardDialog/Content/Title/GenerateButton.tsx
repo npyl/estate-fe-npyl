@@ -57,7 +57,7 @@ const GenerateButton: FC<GenerateButtonProps> = ({ editorRef }) => {
             sx={ButtonSx}
             onClick={onClick}
         >
-            {t("Generate")}
+            {t("Generate title AI")}
         </LoadingButton>
     );
 };

@@ -22,9 +22,11 @@ interface PriorityLabelProps extends TypographyProps {
 
 const PriorityLabel: FC<PriorityLabelProps> = ({ priority, ...props }) => {
     const { t } = useTranslation();
+    const label = t(getLabel(priority));
+    const capitalizedLabel = label.charAt(0).toUpperCase() + label.slice(1);
     return (
         <Typography sx={getSx(priority)} {...props} variant="body2">
-            {t(getLabel(priority))}
+            {t(capitalizedLabel)}
         </Typography>
     );
 };

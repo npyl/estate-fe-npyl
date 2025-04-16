@@ -21,6 +21,10 @@ const Pagination = <C extends React.ElementType = "div">({
     const totalPages = Math.ceil(totalItems / pageSize);
 
     useEffect(() => {
+        window.scrollTo(0, 0); // This scrolls to the top on page change
+    }, [page]);
+
+    useEffect(() => {
         if (isLoading) return;
         if (page + 1 > totalPages && onPageExceedTotal) onPageExceedTotal();
     }, [isLoading, page, totalPages]);

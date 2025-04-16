@@ -59,7 +59,7 @@ const UploadTaskAttachment = ({
                     direction="row"
                     justifyContent={"center"}
                 >
-                    <UploadIllustration sx={{ width: 100 }} />
+                    <UploadIllustration sx={{ width: 80 }} />
                     {/* <Typography variant="body1"> */}
                     <Box
                         component="span"

@@ -57,70 +57,77 @@ const HistoryItem: FC<HistoryItemProps> = ({ i, last, updatedAt }) => {
 
     const formattedDate = dateObj.toLocaleDateString(loc, {
         year: "numeric",
-        month: "numeric",
-        day: "numeric",
+        month: "2-digit",
+        day: "2-digit",
     });
     const formattedTime = dateObj.toLocaleTimeString(loc, {
-        hour: "numeric",
+        hour: "2-digit",
         minute: "2-digit",
         hour12: true,
     });
 
     return (
-        <TimelineItem sx={{ minHeight: "40px" }}>
-            <TimelineSeparator>
-                <TimelineDot sx={DotSx} />
-                {!last && <TimelineConnector sx={ConnectorSx} />}
-            </TimelineSeparator>
-            <TimelineContent sx={TimelineContentSx}>
-                <Stack
-                    direction="row"
-                    alignItems="flex-start"
-                    gap={0.5}
-                    position={"relative"}
-                >
-                    <Typography
-                        variant="body2"
-                        fontWeight="600"
-                        color="primary.main"
-                        sx={{ textWrap: "nowrap" }}
+        <>
+            <TimelineItem sx={{ minHeight: "40px" }}>
+                <TimelineSeparator>
+                    <TimelineDot sx={DotSx} />
+                    {!last && <TimelineConnector sx={ConnectorSx} />}
+                </TimelineSeparator>
+                <TimelineContent sx={TimelineContentSx}>
+                    <Stack
+                        direction="row"
+                        alignItems="flex-start"
+                        gap={0.5}
+                        position={"relative"}
                     >
-                        {formattedDate} - {formattedTime}
-                    </Typography>
-                    <Stack direction="row" gap={0.6} flexWrap="nowrap" mb={1}>
                         <Typography
                             variant="body2"
-                            color={"text.secondary"}
+                            fontWeight="600"
+                            color="primary.main"
                             sx={{ textWrap: "nowrap" }}
                         >
-                            {t("Assigned to")}
+                            {formattedDate} - {formattedTime}
                         </Typography>
-                        <Box
-                            position={"absolute"}
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                gap: 1,
-                                left: isEnglish ? 230 : 280,
-                            }}
+                        <Stack
+                            direction="row"
+                            gap={0.6}
+                            flexWrap="nowrap"
+                            mb={1}
                         >
-                            <Avatar
-                                src={assignee.avatar}
-                                alt={fullName || ""}
-                                sx={{ width: 24, height: 24 }}
-                            />
                             <Typography
                                 variant="body2"
-                                color="text.secondary"
+                                color={"text.secondary"}
                                 sx={{ textWrap: "nowrap" }}
                             >
-                                {fullName}
-                            </Typography>{" "}
-                        </Box>
+                                {t("Assigned to")}
+                            </Typography>
+                            <Box
+                                position={"absolute"}
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    gap: 1,
+                                    left: isEnglish ? 250 : 304.5,
+                                }}
+                            >
+                                <Avatar
+                                    src={assignee.avatar}
+                                    alt={fullName || ""}
+                                    sx={{ width: 24, height: 24 }}
+                                />
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{ textWrap: "nowrap" }}
+                                >
+                                    {fullName}
+                                </Typography>{" "}
+                            </Box>
+                        </Stack>
                     </Stack>
-                </Stack>
-            </TimelineContent>
-        </TimelineItem>
+                </TimelineContent>
+            </TimelineItem>
+        </>
     );
 };
 
@@ -136,74 +143,79 @@ const CreatedHistoryItem: FC<{
     const dateObj = new Date(createdAt);
     const formattedDate = dateObj.toLocaleDateString(loc, {
         year: "numeric",
-        month: "numeric",
-        day: "numeric",
+        month: "2-digit",
+        day: "2-digit",
     });
     const formattedTime = dateObj.toLocaleTimeString(loc, {
-        hour: "numeric",
+        hour: "2-digit",
         minute: "2-digit",
         hour12: true,
     });
 
     return (
-        <TimelineItem sx={{ minHeight: "40px", width: 1, flex: 1 }}>
-            <TimelineSeparator>
-                <TimelineDot sx={DotSx} />
-                <TimelineConnector sx={ConnectorSx} />
-            </TimelineSeparator>
-            <TimelineContent sx={TimelineContentSx}>
-                <Stack
-                    direction="row"
-                    alignItems="flex-start"
-                    gap={0.5}
-                    flexWrap={"nowrap"}
-                    position={"relative"}
-                >
-                    <Typography
-                        variant="body2"
-                        fontWeight="600"
-                        color="primary.main"
-                        sx={{
-                            textWrap: "nowrap",
-                        }}
-                    >
-                        {formattedDate} - {formattedTime}
-                    </Typography>
+        <>
+            <TimelineItem sx={{ minHeight: "40px", width: 1, flex: 1 }}>
+                <TimelineSeparator>
+                    <TimelineDot sx={DotSx} />
+                    <TimelineConnector sx={ConnectorSx} />
+                </TimelineSeparator>
+                <TimelineContent sx={TimelineContentSx}>
                     <Stack
                         direction="row"
-                        gap={0.6}
                         alignItems="flex-start"
-                        flexWrap="nowrap"
+                        gap={0.5}
+                        flexWrap={"nowrap"}
+                        position={"relative"}
                     >
-                        <Typography variant="body2" color={"text.secondary"}>
-                            {t("Created by")}
-                        </Typography>
-                        <Box
-                            position={"absolute"}
+                        <Typography
+                            variant="body2"
+                            fontWeight="600"
+                            color="primary.main"
                             sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                gap: 1,
-                                left: isEnglish ? 230 : 280,
+                                textWrap: "nowrap",
                             }}
                         >
-                            <Avatar
-                                src={reporter?.avatar}
-                                alt={fullName || ""}
-                                sx={{ width: 24, height: 24 }}
-                            />
+                            {formattedDate} - {formattedTime}
+                        </Typography>
+                        <Stack
+                            direction="row"
+                            gap={0.6}
+                            alignItems="flex-start"
+                            flexWrap="nowrap"
+                        >
                             <Typography
-                                color={"text.secondary"}
                                 variant="body2"
-                                sx={{ textWrap: "nowrap" }}
+                                color={"text.secondary"}
                             >
-                                {fullName}
+                                {t("Created by")}
                             </Typography>
-                        </Box>
+                            <Box
+                                position={"absolute"}
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    gap: 1,
+                                    left: isEnglish ? 250 : 304.5,
+                                }}
+                            >
+                                <Avatar
+                                    src={reporter?.avatar}
+                                    alt={fullName || ""}
+                                    sx={{ width: 24, height: 24 }}
+                                />
+                                <Typography
+                                    color={"text.secondary"}
+                                    variant="body2"
+                                    sx={{ textWrap: "nowrap" }}
+                                >
+                                    {fullName}
+                                </Typography>
+                            </Box>
+                        </Stack>
                     </Stack>
-                </Stack>
-            </TimelineContent>
-        </TimelineItem>
+                </TimelineContent>
+            </TimelineItem>
+        </>
     );
 };
 
@@ -213,6 +225,7 @@ interface AssigneeHistoryProps {
 }
 
 const AssigneeHistory: FC<AssigneeHistoryProps> = ({ cardId, reporter }) => {
+    const { t } = useTranslation();
     const { data, isLoading } = useGetAssigneeHistoryQuery(cardId);
 
     if (isLoading) return <Skeleton width="150px" height="58px" />;
@@ -222,23 +235,26 @@ const AssigneeHistory: FC<AssigneeHistoryProps> = ({ cardId, reporter }) => {
     const first = data[0];
 
     return (
-        <Timeline sx={TimelineSx}>
-            {/* Created by */}
-            <CreatedHistoryItem
-                createdAt={first.createdAt}
-                reporter={reporter}
-            />
-
-            {/* Assignee changes */}
-            {data.map((i, index) => (
-                <HistoryItem
-                    key={index}
-                    i={i}
-                    updatedAt={i.createdAt}
-                    last={index === data.length - 1}
+        <>
+            <Typography fontWeight={"bold"}>{t("Activity")}</Typography>
+            <Timeline sx={TimelineSx}>
+                {/* Created by */}
+                <CreatedHistoryItem
+                    createdAt={first.createdAt}
+                    reporter={reporter}
                 />
-            ))}
-        </Timeline>
+
+                {/* Assignee changes */}
+                {data.map((i, index) => (
+                    <HistoryItem
+                        key={index}
+                        i={i}
+                        updatedAt={i.createdAt}
+                        last={index === data.length - 1}
+                    />
+                ))}
+            </Timeline>
+        </>
     );
 };
 
