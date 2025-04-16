@@ -50,7 +50,12 @@ const Body: FC<BodyProps> = ({
         <Typography
             variant="body2"
             color="text.secondary"
-            width={`calc(100% - 90px)`}
+            width={`calc(100% - 110px)`}
+            sx={{
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
+                whiteSpace: "pre-wrap",
+            }}
         >
             {content}
         </Typography>
