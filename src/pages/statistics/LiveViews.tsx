@@ -175,7 +175,7 @@ export default function ViewsChart() {
                     {/* <Typography variant="body1" p={1}>
                         {currentDate}
                     </Typography> */}
-                    <Typography variant="h5" fontWeight="bold" p={2} pt={1}>
+                    <Typography variant="h5" fontWeight={600} p={2} pt={1}>
                         {t("Day Views in progress")}:{" "}
                     </Typography>
                     <Typography
