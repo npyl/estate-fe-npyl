@@ -107,11 +107,17 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
     const [_, setAssignee] = useQueryState("assignee");
     const deleteAssigneeUrlParam = useCallback(() => setAssignee(null), []);
 
+    const setSorting = useCallback(
+        (sorting: string) => setState((old) => ({ ...old, sorting })),
+        []
+    );
+
     return {
         updateFilter,
         deleteFilter,
         toggleFilterArray,
         // ...
+        setSorting,
         deleteAssigneeUrlParam,
     };
 };

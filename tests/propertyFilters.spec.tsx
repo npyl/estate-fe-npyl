@@ -1,5 +1,10 @@
 import { test, expect, Page } from "@playwright/test";
 
+import {
+    ASCENDING_PRICE,
+    DESCENDING_PRICE,
+} from "../src/sections/Properties/(FiltersBar)/constants";
+
 const STATE_SELECTOR = '[data-testid="current-state"] pre';
 
 const getState = async (page: Page) => {
@@ -83,4 +88,22 @@ test("should handle complex sequence of operations", async ({ page }) => {
     expect(state.ids).toContain("minPrice");
     expect(state.ids).toContain("maxPrice");
     expect(state.ids).not.toContain("regions");
+});
+
+// New test for sorting functionality
+test("sorting", async ({ page }) => {
+    // Check the initial sorting value
+    let state = await getState(page);
+    const initialSorting = state.sorting;
+
+    // Update sorting to price asc
+    await page.click('[data-testid="sort-price-asc"]');
+    state = await getState(page);
+    expect(state.sorting).toBe(ASCENDING_PRICE);
+    expect(state.sorting).not.toBe(initialSorting);
+
+    // Update sorting to price desc
+    await page.click('[data-testid="sort-price-desc"]');
+    state = await getState(page);
+    expect(state.sorting).toBe(DESCENDING_PRICE);
 });

@@ -1,7 +1,10 @@
 import { TSortByOptions } from "@/sections/Filters/SortBy";
 import { TranslationType } from "@/types/translation";
 
-export const getOptions = (t: TranslationType): TSortByOptions => [
+const ASCENDING_PRICE = "Ascending_Price";
+const DESCENDING_PRICE = "Descending_Price";
+
+const getOptions = (t: TranslationType): TSortByOptions => [
     {
         value: "default",
         label: t("Last update"),
@@ -12,7 +15,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         icon: "mdi:clock-outline",
     },
     {
-        value: "Ascending_Price",
+        value: ASCENDING_PRICE,
         label: t("Price (cheap first)"),
         sorting: {
             sortBy: "price",
@@ -21,7 +24,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         icon: "ant-design:euro-outlined",
     },
     {
-        value: "Descending_Price",
+        value: DESCENDING_PRICE,
         label: t("Price (expensive first)"),
         sorting: {
             sortBy: "price",
@@ -93,3 +96,5 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         icon: "icon-park-outline:sort",
     },
 ];
+
+export { ASCENDING_PRICE, DESCENDING_PRICE, getOptions };

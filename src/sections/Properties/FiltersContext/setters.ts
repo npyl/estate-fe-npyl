@@ -9,13 +9,20 @@ type UseSetters = (
         toggleFilterArray: (key: keyof IPropertyFilter, value: string) => void;
         deleteFilter: (key: keyof IPropertyFilter) => void;
         // ...
+        setSorting: (s: string) => void;
         deleteAssigneeUrlParam: () => void;
     },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
 const useSetters: UseSetters = (
-    { updateFilter, toggleFilterArray, deleteFilter, deleteAssigneeUrlParam },
+    {
+        updateFilter,
+        toggleFilterArray,
+        deleteFilter,
+        setSorting,
+        deleteAssigneeUrlParam,
+    },
     setState
 ) =>
     useMemo(
@@ -197,11 +204,7 @@ const useSetters: UseSetters = (
             // Other state setters
             setActiveState: (value) => updateFilter("active", value),
 
-            setIds: (value) =>
-                setState((prevState) => ({
-                    ...prevState,
-                    ids: value,
-                })),
+            setSorting,
         }),
         []
     );

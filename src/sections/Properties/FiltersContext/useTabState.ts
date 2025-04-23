@@ -3,7 +3,11 @@ import { useCallback, useMemo } from "react";
 import { IFilterProps } from "./types";
 import { didChangeFields, getChangedFields } from "./useChangedFields";
 import { initialState } from "./constant";
-import { IPropertyFilter } from "@/types/properties";
+import {
+    IPropertyFilter,
+    PropertyFilterExtended2Base,
+    TPropertyFilterExtended,
+} from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
 import useCallbackSetter from "@/hooks/useCallbackSetter";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
@@ -35,18 +39,20 @@ const getFiltersWithUrlParamOverrides = (
     managerId: managerId !== -1 ? managerId : tabData?.managerId,
     integrationSites: integrationSite
         ? [integrationSite]
-        : tabData?.integrationSites ?? initialState.filters.integrationSites,
+        : (tabData?.integrationSites ?? initialState.filters.integrationSites),
 });
 
 const tabDataToFilterState = (
-    tabData: IPropertyFilter | undefined,
+    tabData: TPropertyFilterExtended | undefined,
     overrides: Overrides
 ): IFilterProps => {
-    const filters = getFiltersWithUrlParamOverrides(tabData, overrides);
+    const _filters = tabData ? PropertyFilterExtended2Base(tabData) : undefined;
+    const filters = getFiltersWithUrlParamOverrides(_filters, overrides);
 
     return {
         filters,
         ids: filters ? getIdsForTabData(filters) : [],
+        sorting: tabData?.sorting || initialState.sorting,
     };
 };
 
@@ -68,7 +74,7 @@ const useCurrentState = () => {
     //
     //  Tab's Data
     //
-    const tabData = useTabData("/property") as IPropertyFilter | undefined;
+    const tabData = useTabData("/property");
 
     //
     //  Merging of all
@@ -89,15 +95,17 @@ const useTabState = () => {
     const state = useCurrentState();
 
     const _setState = useCallback((p: IFilterProps) => {
-        const { filters } = p || {};
+        const { filters, sorting } = p || {};
 
-        const didChange = didChangeFields(filters);
+        const didChange = sorting !== "default" || didChangeFields(filters);
+
+        const data = didChange ? { ...filters, sorting } : undefined;
 
         pushTab(
             {
                 path: "/property",
                 renderer: "PROPERTY_FITLERS",
-                data: didChange ? filters : undefined,
+                data,
             },
             SHOULD_UPDATE_DATA
         );

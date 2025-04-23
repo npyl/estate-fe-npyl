@@ -1,4 +1,4 @@
-import { createContext, FC, PropsWithChildren, useMemo, useState } from "react";
+import { createContext, FC, PropsWithChildren, useMemo } from "react";
 import { IFilterState } from "./types";
 import useSetters from "./setters";
 import useStateMethods from "./useStateMethods";
@@ -8,7 +8,6 @@ import useChangedFields from "./useChangedFields";
 const FiltersContext = createContext<IFilterState | undefined>(undefined);
 
 const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [sorting, setSorting] = useState("default");
     const [state, setState] = useTabState();
 
     const methods = useStateMethods(setState);
@@ -22,13 +21,12 @@ const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
         [changedFields]
     );
 
-    const { filters, ids } = state;
+    const { filters, ids, sorting } = state;
     const contextValue = useMemo(
         () => ({
             filters,
             ids,
             sorting,
-            setSorting,
             ...setters,
             sumOfChangedProperties,
             changedFields,

@@ -12,6 +12,8 @@ const ChosenFilters: FC<StackProps> = (props) => {
     const filterTags = useMemo(() => getFilterTags(t), [t]);
     const pairFilterTags = useMemo(() => getPairFilterTags(t), [t]);
 
+    console.log("IDS: ", ids);
+
     return (
         <Stack direction="row" gap={0.3} flexWrap="wrap" {...props}>
             {ids.map((key) => (

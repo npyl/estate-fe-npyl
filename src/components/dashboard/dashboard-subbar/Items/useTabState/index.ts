@@ -53,10 +53,10 @@ const useTabState = () => {
                 const basePath = p.startsWith("/property")
                     ? "/property"
                     : p.startsWith("/customer")
-                    ? "/customers"
-                    : p.startsWith("/agreements")
-                    ? "/agreements"
-                    : "/";
+                      ? "/customers"
+                      : p.startsWith("/agreements")
+                        ? "/agreements"
+                        : "/";
 
                 router.push(basePath);
             }
