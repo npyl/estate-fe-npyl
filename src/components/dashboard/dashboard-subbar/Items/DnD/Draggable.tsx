@@ -10,7 +10,7 @@ interface DraggableTabProps {
 }
 
 const DraggableTab: FC<DraggableTabProps> = ({ t, index }) => (
-    <Draggable key={t.path} draggableId={t.path} index={index}>
+    <Draggable draggableId={t.path} index={index}>
         {(provided, snapshot) => (
             <div
                 ref={provided.innerRef}
@@ -30,7 +30,9 @@ const DraggableTab: FC<DraggableTabProps> = ({ t, index }) => (
 
 // -------------------------------------------------------------------------------
 
-const getTab = (t: ITab, index: number) => <DraggableTab t={t} index={index} />;
+const getTab = (t: ITab, index: number) => (
+    <DraggableTab key={t.path} t={t} index={index} />
+);
 
 // -------------------------------------------------------------------------------
 
