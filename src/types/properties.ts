@@ -88,17 +88,6 @@ interface IPropertyFilter {
 
 type TPropertyFilterExtended = IPropertyFilter & { sorting: string };
 
-const PropertyFilterExtended2Base = (
-    f: TPropertyFilterExtended
-): IPropertyFilter => {
-    // @ts-ignore
-    let res: IPropertyFilter = {};
-
-    if (f) Object.assign(res, f);
-
-    return res;
-};
-
 interface IPropertyFilterExtras {
     student: boolean;
     seaFront: boolean;
@@ -530,5 +519,3 @@ export type {
     // ...
     IPropertyReq,
 };
-
-export { PropertyFilterExtended2Base };

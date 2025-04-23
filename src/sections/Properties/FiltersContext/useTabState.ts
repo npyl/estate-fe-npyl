@@ -3,11 +3,7 @@ import { useCallback, useMemo } from "react";
 import { IFilterProps } from "./types";
 import { didChangeFields, getChangedFields } from "./useChangedFields";
 import { initialState } from "./constant";
-import {
-    IPropertyFilter,
-    PropertyFilterExtended2Base,
-    TPropertyFilterExtended,
-} from "@/types/properties";
+import { IPropertyFilter, TPropertyFilterExtended } from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
 import useCallbackSetter from "@/hooks/useCallbackSetter";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
@@ -46,13 +42,15 @@ const tabDataToFilterState = (
     tabData: TPropertyFilterExtended | undefined,
     overrides: Overrides
 ): IFilterProps => {
-    const _filters = tabData ? PropertyFilterExtended2Base(tabData) : undefined;
+    const { sorting, ...other } = tabData || {};
+
+    const _filters = tabData ? (other as IPropertyFilter) : undefined;
     const filters = getFiltersWithUrlParamOverrides(_filters, overrides);
 
     return {
         filters,
         ids: filters ? getIdsForTabData(filters) : [],
-        sorting: tabData?.sorting || initialState.sorting,
+        sorting: sorting || initialState.sorting,
     };
 };
 
