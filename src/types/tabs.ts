@@ -20,7 +20,7 @@ interface BaseTab {
 
 interface GenericTab extends BaseTab {
     renderer: Exclude<TTabRenderer, "PROPERTY_FITLERS">;
-    data?: object;
+    data?: any;
 }
 
 interface PropertyFiltersTab extends BaseTab {
