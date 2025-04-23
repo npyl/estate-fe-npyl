@@ -5,7 +5,11 @@ const usePopoverPosition = () => {
     // INFO: when EditForm loads, it causes a big shift to the popover's height
     // which makes the (previous) optimal position (calculated by popper.js internally) wrong!
     // Make sure we get a good positioning after EditForm load!
-    const actionsRef = useRef<Instance>(null);
+    const actionsRef = useRef<Instance>();
+    const onPopperRef = useCallback((i: Instance) => {
+        if (!i) return;
+        actionsRef.current = i;
+    }, []);
 
     const updatePositioning = useCallback(
         () => actionsRef.current?.update(),
@@ -35,7 +39,7 @@ const usePopoverPosition = () => {
         };
     }, []);
 
-    return { actionsRef, onPaperRef };
+    return { actionsRef, onPopperRef, onPaperRef };
 };
 
 export default usePopoverPosition;

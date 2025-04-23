@@ -44,7 +44,7 @@ interface EventPopperProps
 
 const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
     ({ children, sx, anchorEl, ...props }, ref) => {
-        const { actionsRef, onPaperRef } = usePopoverPosition();
+        const { actionsRef, onPopperRef, onPaperRef } = usePopoverPosition();
 
         const virtualAnchorEl = useMemo<VirtualElement | null>(() => {
             if (!anchorEl) return null;
@@ -72,7 +72,7 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
 
         return (
             <Popper
-                popperRef={actionsRef}
+                popperRef={onPopperRef}
                 placement="right"
                 anchorEl={virtualAnchorEl}
                 sx={{ ...PopperSx, ...sx }}
