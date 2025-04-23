@@ -49,7 +49,7 @@ export interface IPropertyResultResponse {
     bathrooms?: number;
 }
 
-export interface IPropertyFilter {
+interface IPropertyFilter {
     locationSearch?: string;
     filterName?: string;
     location?: ILocation;
@@ -85,6 +85,19 @@ export interface IPropertyFilter {
 
     [key: string]: any;
 }
+
+type TPropertyFilterExtended = IPropertyFilter & { sorting: string };
+
+const PropertyFilterExtended2Base = (
+    f: TPropertyFilterExtended
+): IPropertyFilter => {
+    // @ts-ignore
+    let res: IPropertyFilter = {};
+
+    if (f) Object.assign(res, f);
+
+    return res;
+};
 
 interface IPropertyFilterExtras {
     student: boolean;
@@ -508,4 +521,14 @@ interface IPropertyCodeRes {
     parentCategory: ParentCategory;
 }
 
-export type { IPropertyCodeRes, IPropertyFilterExtras, IPropertyReq };
+export type {
+    IPropertyCodeRes,
+    // ...
+    IPropertyFilter,
+    TPropertyFilterExtended,
+    IPropertyFilterExtras,
+    // ...
+    IPropertyReq,
+};
+
+export { PropertyFilterExtended2Base };
