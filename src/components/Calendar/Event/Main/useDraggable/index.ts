@@ -3,7 +3,7 @@ import { CellPosition } from "../../Main/types";
 import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
 import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
 import calculateNewDates from "./calculateNewDates";
-import { CELL_CLASSNAME } from "../../_constants";
+import { CELL_CLASSNAME } from "@/components/Calendar/constants";
 import { BASE_VIEW_ID } from "@/components/BaseCalendar/View";
 
 const INTERVAL_HEIGHT = CELL_HOUR_HEIGHT / 4; // 4 * 15min intervals per hour (15px each)

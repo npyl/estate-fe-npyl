@@ -47,8 +47,8 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
             const target = event
                 ? viewPopperRef
                 : startDate
-                ? createPopperRef
-                : undefined;
+                  ? createPopperRef
+                  : undefined;
             target?.current?.updatePosition();
         },
         [event, startDate]

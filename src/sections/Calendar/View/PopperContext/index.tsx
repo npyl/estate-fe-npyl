@@ -40,7 +40,7 @@ export const usePopperContext = () => {
 // ---------------------------------------------------------------------------------
 
 type TMachineMethod<
-    T extends keyof PopperEventDataMap = keyof PopperEventDataMap
+    T extends keyof PopperEventDataMap = keyof PopperEventDataMap,
 > = (o: PopperEventDataMap[T]) => void;
 
 interface MachineMethods {
@@ -115,7 +115,6 @@ const useMachine = (
                             const el = document.getElementById(ce.id);
                             if (!el) return;
 
-                            // TODO: this isn't actually working...
                             rendererRef.current?.updatePopperPosition(el);
                             break;
                         case STATES.POPPER_CREATE:
