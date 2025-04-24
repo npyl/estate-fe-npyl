@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent, useCallback, useEffect, useRef } from "react";
+import { forwardRef, MouseEvent, useCallback } from "react";
 import { Box, Stack } from "@mui/material";
 import Title from "../_shared/Title";
 import Description from "../_shared/Description";
@@ -18,6 +18,7 @@ import {
 } from "../../types";
 import useDraggable from "./useDraggable";
 import useNoDragClick from "../../useNoDragClick";
+import updateDurationLabelAsync from "./updateDuration";
 
 interface MainProps
     extends Omit<EventContainerProps, "bgcolor" | "onClick" | "onMouseDown"> {
@@ -50,18 +51,15 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
 
         const { cellsRef } = useResponsiveCellPositions();
 
-        const gridRef = useRef<HTMLElement>();
-        useEffect(() => {
-            const el = document.getElementById("BaseCalendarView");
-            if (!el) return;
-            gridRef.current = el;
+        const onPositionUpdate = useCallback(() => {
+            updateDurationLabelAsync(elementRef.current, cellsRef);
         }, []);
 
         const { onMouseDown } = useDraggable(
             event,
             elementRef,
-            gridRef as any,
             cellsRef,
+            onPositionUpdate,
             onEventDragEnd
         );
 

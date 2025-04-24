@@ -1,4 +1,4 @@
-import { RefObject, useCallback } from "react";
+import { RefObject, useCallback, useLayoutEffect, useRef } from "react";
 import { CellPosition } from "../../Main/types";
 import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
 import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
@@ -14,44 +14,66 @@ const totalIntervals = hoursTotal * intervalsPerHour;
 const useDraggable = (
     event: TCalendarEvent,
     eventRef: RefObject<HTMLDivElement | null>,
-    gridRef: RefObject<HTMLDivElement | null>,
     cellsRef: RefObject<CellPosition[]>,
+    onPositionUpdate: () => void,
     onEventDragEnd?: TOnEventDragEnd
 ) => {
-    const handleMouseMove = useCallback((e: globalThis.MouseEvent) => {
-        const grid = gridRef.current;
-        const event = eventRef.current;
-        if (!grid || !event) return;
-
-        const gridRect = grid.getBoundingClientRect();
-
-        // Get cell width information
-        const dayWidth = cellsRef.current?.at(0)?.width ?? 100;
-        const daysCount = cellsRef.current?.length ?? 1;
-
-        // Calculate new position relative to grid
-        const newX = e.clientX - gridRect.left + grid.scrollLeft;
-        const newY = e.clientY - gridRect.top + grid.scrollTop;
-
-        // Snap to days (horizontal) - REMOVED the Math.max(0, ...) to allow negative values
-        const newDay = Math.floor(newX / dayWidth);
-
-        // For vertical snapping, we need to ensure we're truly aligning to 15-minute intervals
-        // Force snapping to exact multiples of INTERVAL_HEIGHT (15px)
-        const rawInterval = newY / INTERVAL_HEIGHT;
-        const newInterval = Math.max(
-            0,
-            Math.min(totalIntervals - 1, Math.floor(rawInterval + 0.5)) // Proper rounding
-        );
-
-        // Calculate new position with snapping
-        const newLeft = newDay * dayWidth;
-        const newTop = newInterval * INTERVAL_HEIGHT; // This must be exactly divisible by 15
-
-        // Update DOM element position
-        event.style.left = `${newLeft}px`;
-        event.style.top = `${newTop}px`;
+    const gridRef = useRef<HTMLElement>();
+    useLayoutEffect(() => {
+        const el = document.getElementById("BaseCalendarView");
+        if (!el) return;
+        gridRef.current = el;
     }, []);
+
+    // Add mouseOffset ref to track the initial click position relative to the element
+    const mouseOffset = useRef({ x: 0, y: 0 });
+
+    const handleMouseMove = useCallback(
+        (e: globalThis.MouseEvent) => {
+            const grid = gridRef.current;
+            const element = eventRef.current;
+            if (!grid || !element) return;
+
+            const gridRect = grid.getBoundingClientRect();
+
+            // Get cell width information
+            const dayWidth = cellsRef.current?.at(0)?.width ?? 100;
+
+            // Calculate new position relative to grid, accounting for the initial offset
+            const newX =
+                e.clientX -
+                gridRect.left +
+                grid.scrollLeft -
+                mouseOffset.current.x;
+            const newY =
+                e.clientY -
+                gridRect.top +
+                grid.scrollTop -
+                mouseOffset.current.y;
+
+            // Snap to days (horizontal)
+            const newDay = Math.floor(newX / dayWidth);
+
+            // For vertical snapping, we need to ensure we're truly aligning to 15-minute intervals
+            // Force snapping to exact multiples of INTERVAL_HEIGHT (15px)
+            const rawInterval = newY / INTERVAL_HEIGHT;
+            const newInterval = Math.max(
+                0,
+                Math.min(totalIntervals - 1, Math.floor(rawInterval + 0.5)) // Proper rounding
+            );
+
+            // Calculate new position with snapping
+            const newLeft = newDay * dayWidth;
+            const newTop = newInterval * INTERVAL_HEIGHT; // This must be exactly divisible by 15
+
+            // Update DOM element position
+            element.style.left = `${newLeft}px`;
+            element.style.top = `${newTop}px`;
+
+            onPositionUpdate();
+        },
+        [onPositionUpdate]
+    );
 
     const handleMouseUp = useCallback(() => {
         document.removeEventListener("mousemove", handleMouseMove);
@@ -79,16 +101,28 @@ const useDraggable = (
                 return;
             }
         }
-    }, [event, onEventDragEnd]);
+    }, [event, handleMouseMove, onEventDragEnd]);
 
     const onMouseDown = useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
+            const element = eventRef.current;
+            if (!element) return;
+
+            // Calculate and store the initial mouse position relative to the element
+            const elementRect = element.getBoundingClientRect();
+
+            // INFO: Store the offset where the mouse clicked within the element
+            // (This will help prevent jumps)
+            mouseOffset.current = {
+                x: e.clientX - elementRect.left,
+                y: e.clientY - elementRect.top,
+            };
 
             document.addEventListener("mousemove", handleMouseMove);
             document.addEventListener("mouseup", handleMouseUp);
         },
-        [handleMouseUp]
+        [handleMouseMove, handleMouseUp]
     );
 
     return { onMouseDown };

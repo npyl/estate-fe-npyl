@@ -8,7 +8,7 @@ import calculateNewDates from "./useDraggable/calculateNewDates";
 const NO_OP = ((s: string) => s) as any;
 
 const updateDurationLabelAsync = async (
-    el: HTMLDivElement,
+    el: HTMLDivElement | null,
     cellsRef: RefObject<CellPosition[]>
 ) => {
     await sleep(300);
@@ -19,13 +19,16 @@ const updateDurationLabelAsync = async (
     const elementRect = el.getBoundingClientRect();
 
     // Find the cell with maximum overlap
-    const target = cellsRef.current?.reduce((best, cell) => {
-        const overlap = getOverlapRatio(elementRect, cell);
+    const target = cellsRef.current?.reduce(
+        (best, cell) => {
+            const overlap = getOverlapRatio(elementRect, cell);
 
-        return overlap > (best?.overlap ?? 0)
-            ? { cell: cell.element, overlap }
-            : best;
-    }, null as { cell: HTMLElement; overlap: number } | null);
+            return overlap > (best?.overlap ?? 0)
+                ? { cell: cell.element, overlap }
+                : best;
+        },
+        null as { cell: HTMLElement; overlap: number } | null
+    );
 
     if (!target) return;
 
