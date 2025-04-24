@@ -5,12 +5,12 @@ import CalendarDayViewCell from "@/components/Calendar/Views/Day/Cell";
 import useFilteredEvents from "./_hooks/useFilteredEvents";
 import { useFiltersContext } from "../Filters/context";
 import WithClick from "./_hocs/WithClick";
-import WithDragEnd from "./_hocs/WithDragEnd";
+import WithDrag from "./_hocs/WithDrag";
 import WithResize from "./_hocs/WithResize";
 
 // --------------------------------------------------------------------------
 
-const Cell = WithResize(WithDragEnd(WithClick(CalendarDayViewCell)));
+const Cell = WithResize(WithDrag(WithClick(CalendarDayViewCell)));
 
 // --------------------------------------------------------------------------
 

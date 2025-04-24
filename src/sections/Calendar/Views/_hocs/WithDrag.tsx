@@ -7,9 +7,9 @@ import { EVENTS, usePopperContext } from "../../View/PopperContext";
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
-const WithDragEnd = (Cell: AnyCalendarCell) => {
+const WithDrag = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
-        const { dispatch } = usePopperContext();
+        const { hidePopper, dispatch } = usePopperContext();
 
         const handleDragEnd: TOnEventDragEnd = useCallback(
             (ce, startDate, endDate) =>
@@ -25,12 +25,18 @@ const WithDragEnd = (Cell: AnyCalendarCell) => {
             []
         );
 
-        return <Cell {...props} onEventDragEnd={handleDragEnd} />;
+        return (
+            <Cell
+                {...props}
+                onEventDragStart={hidePopper}
+                onEventDragEnd={handleDragEnd}
+            />
+        );
     };
 
-    WrappedComponent.displayName = `WithDragEnd(Cell)`;
+    WrappedComponent.displayName = `WithDrag(Cell)`;
 
     return WrappedComponent;
 };
 
-export default WithDragEnd;
+export default WithDrag;

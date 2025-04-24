@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Instance } from "@popperjs/core";
 
-const usePopoverPosition = () => {
+const usePopperControl = () => {
     // INFO: when EditForm loads, it causes a big shift to the popover's height
     // which makes the (previous) optimal position (calculated by popper.js internally) wrong!
     // Make sure we get a good positioning after EditForm load!
@@ -17,10 +17,13 @@ const usePopoverPosition = () => {
     );
 
     const resizeObserver = useRef<ResizeObserver>();
+    const paperRef = useRef<HTMLDivElement>();
 
     const onPaperRef = useCallback((e: HTMLDivElement | null) => {
         if (!e) return;
         if (resizeObserver.current) return;
+
+        paperRef.current = e;
 
         // Create a ResizeObserver to monitor height changes
         resizeObserver.current = new ResizeObserver((entries) => {
@@ -33,13 +36,27 @@ const usePopoverPosition = () => {
         resizeObserver.current.observe(e);
     }, []);
 
+    const show = useCallback(() => {
+        paperRef.current!.style.visibility = "visible";
+    }, []);
+    const hide = useCallback(() => {
+        paperRef.current!.style.visibility = "hidden";
+    }, []);
+
     useEffect(() => {
         return () => {
             resizeObserver.current?.disconnect();
         };
     }, []);
 
-    return { actionsRef, onPopperRef, onPaperRef };
+    return {
+        onPopperRef,
+        onPaperRef,
+        // ...
+        actionsRef,
+        show,
+        hide,
+    };
 };
 
-export default usePopoverPosition;
+export default usePopperControl;

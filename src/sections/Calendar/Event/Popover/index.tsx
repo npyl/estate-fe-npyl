@@ -6,7 +6,7 @@ import {
     useImperativeHandle,
     useMemo,
 } from "react";
-import usePopoverPosition from "./usePopoverPosition";
+import usePopoverPosition from "./usePopperControl";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/config";
 import { VirtualElement } from "@popperjs/core";
@@ -26,6 +26,8 @@ const PopperSx: SxProps<Theme> = {
 };
 
 interface EventPopperRef {
+    show: VoidFunction;
+    hide: VoidFunction;
     updatePosition: VoidFunction;
 }
 
@@ -44,7 +46,14 @@ interface EventPopperProps
 
 const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
     ({ children, sx, anchorEl, ...props }, ref) => {
-        const { actionsRef, onPopperRef, onPaperRef } = usePopoverPosition();
+        const {
+            onPopperRef,
+            onPaperRef,
+            // ...
+            actionsRef,
+            show,
+            hide,
+        } = usePopoverPosition();
 
         const virtualAnchorEl = useMemo<VirtualElement | null>(() => {
             if (!anchorEl) return null;
@@ -65,6 +74,8 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
         useImperativeHandle(
             ref,
             () => ({
+                show,
+                hide,
                 updatePosition,
             }),
             []

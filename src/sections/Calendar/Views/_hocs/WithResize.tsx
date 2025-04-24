@@ -9,7 +9,7 @@ type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
 const WithResize = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
-        const { dispatch } = usePopperContext();
+        const { hidePopper, dispatch } = usePopperContext();
 
         const onEventResizeEnd: TOnEventResizeEnd = useCallback(
             (ce, h) =>
@@ -24,7 +24,13 @@ const WithResize = (Cell: AnyCalendarCell) => {
             []
         );
 
-        return <Cell {...props} onEventResizeEnd={onEventResizeEnd} />;
+        return (
+            <Cell
+                {...props}
+                onEventResizeStart={hidePopper}
+                onEventResizeEnd={onEventResizeEnd}
+            />
+        );
     };
 
     WrappedComponent.displayName = `WithResize(Cell)`;

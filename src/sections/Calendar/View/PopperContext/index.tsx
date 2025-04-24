@@ -20,6 +20,7 @@ import Saver, { SaverRef } from "./Saver";
 import getEndDateForDuration from "./getEndDateForDuration";
 
 type IState = {
+    hidePopper: VoidFunction;
     dispatch: ReturnType<typeof usePopperEvents>[0];
 };
 
@@ -116,6 +117,8 @@ const useMachine = (
                             if (!el) return;
 
                             rendererRef.current?.updatePopperPosition(el);
+
+                            rendererRef.current?.showPopper();
                             break;
                         case STATES.POPPER_CREATE:
                             rendererRef.current?.updateDates(
@@ -189,6 +192,8 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const { dispatch } = useMachine(ref.current, saverRef, rendererRef);
 
+    const hidePopper = useCallback(() => rendererRef.current?.hidePopper(), []);
+
     const onClose = useCallback(
         () =>
             dispatch({
@@ -199,7 +204,7 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     );
 
     return (
-        <PopperContext.Provider value={{ dispatch }}>
+        <PopperContext.Provider value={{ hidePopper, dispatch }}>
             <Saver ref={saverRef} />
             <div ref={ref}>
                 {children}

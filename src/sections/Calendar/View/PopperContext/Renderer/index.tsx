@@ -19,6 +19,8 @@ interface RendererRef {
     setStartDate: (el: HTMLDivElement, v: string) => void;
 
     updatePopperPosition: (el: HTMLElement) => void;
+    showPopper: VoidFunction;
+    hidePopper: VoidFunction;
     closePopper: VoidFunction;
 }
 
@@ -35,6 +37,25 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
         // ...
         closePopper,
     ] = useExclusivePopper();
+
+    const showPopper = useCallback(() => {
+        const target = event
+            ? viewPopperRef
+            : startDate
+              ? createPopperRef
+              : undefined;
+        target?.current?.show();
+    }, []);
+
+    const hidePopper = useCallback(() => {
+        const target = event
+            ? viewPopperRef
+            : startDate
+              ? createPopperRef
+              : undefined;
+
+        target?.current?.hide();
+    }, []);
 
     //
     //  Refresh Position
@@ -70,6 +91,8 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
             setStartDate,
             // ...
             updatePopperPosition,
+            showPopper,
+            hidePopper,
             closePopper,
         }),
         [updatePopperPosition, updateDates]
