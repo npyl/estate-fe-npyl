@@ -4,7 +4,9 @@ import {
     TCalendarEvent,
     TOnEventClick,
     TOnEventDragEnd,
+    TOnEventDragStart,
     TOnEventResizeEnd,
+    TOnEventResizeStart,
 } from "../types";
 import { EventProps } from "../Event/types";
 const CalendarEvent = dynamic(() => import("../Event"));
@@ -68,7 +70,9 @@ const getOverlapCount = (
 function useTimemappedEvents<TCustomProps extends object = object>(
     events: TCalendarEvent[],
     onEventClick: TOnEventClick | undefined,
+    onEventDragStart: TOnEventDragStart | undefined,
     onEventDragEnd: TOnEventDragEnd | undefined,
+    onEventResizeStart: TOnEventResizeStart | undefined,
     onEventResizeEnd: TOnEventResizeEnd | undefined,
     EventComponent: ComponentType<
         EventProps & TCustomProps
@@ -100,7 +104,9 @@ function useTimemappedEvents<TCustomProps extends object = object>(
                     event={event}
                     overlapCount={overlapCount}
                     onEventClick={onEventClick}
+                    onEventDragStart={onEventDragStart}
                     onEventDragEnd={onEventDragEnd}
+                    onEventResizeStart={onEventResizeStart}
                     onEventResizeEnd={onEventResizeEnd}
                     {...(EventProps?.(i) || ({} as TCustomProps))}
                 />

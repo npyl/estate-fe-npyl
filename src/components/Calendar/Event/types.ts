@@ -1,18 +1,9 @@
 import { StackProps } from "@mui/material";
-import {
-    TCalendarEvent,
-    TOnEventClick,
-    TOnEventDragEnd,
-    TOnEventResizeEnd,
-} from "../types";
+import { TCalendarEvent, TCalendarEventEvents } from "../types";
 
-interface EventProps extends StackProps {
+interface EventProps extends StackProps, TCalendarEventEvents {
     event: TCalendarEvent;
     overlapCount?: number;
-
-    onEventClick?: TOnEventClick;
-    onEventDragEnd?: TOnEventDragEnd;
-    onEventResizeEnd?: TOnEventResizeEnd;
 }
 
 export type { EventProps };

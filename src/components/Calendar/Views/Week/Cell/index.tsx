@@ -27,7 +27,9 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     events: _events,
     getMiscCellEvents,
     onEventClick,
+    onEventDragStart,
     onEventDragEnd,
+    onEventResizeStart,
     onEventResizeEnd,
     style,
     onClick,
@@ -40,7 +42,9 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     const EVENTS = useTimemappedEvents(
         events,
         onEventClick,
+        onEventDragStart,
         onEventDragEnd,
+        onEventResizeStart,
         onEventResizeEnd
     );
     const isToday = TODAY.toDateString() === date.toDateString();

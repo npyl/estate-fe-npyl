@@ -3,7 +3,11 @@ import { Box, SxProps, Theme } from "@mui/material";
 import { CellPosition } from "./types";
 import updateDurationLabelAsync from "./updateDuration";
 import stopPropagation from "@/utils/stopPropagation";
-import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
+import {
+    TCalendarEvent,
+    TOnEventResizeEnd,
+    TOnEventResizeStart,
+} from "../../types";
 
 const ResizeHandleSx: SxProps<Theme> = {
     position: "absolute",
@@ -20,6 +24,7 @@ interface VerticalResizeProps {
     targetRef: MutableRefObject<HTMLDivElement | null>;
     cellsRef: MutableRefObject<CellPosition[]>;
     event: TCalendarEvent;
+    onResizeStart?: TOnEventResizeStart;
     onResizeEnd?: TOnEventResizeEnd;
 }
 
@@ -27,6 +32,7 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     targetRef,
     cellsRef,
     event,
+    onResizeStart,
     onResizeEnd,
 }) => {
     const isResizing = useRef(false);
@@ -34,7 +40,13 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     const startYRef = useRef(0);
     const startHeightRef = useRef(0);
 
-    const onResizeStart = useCallback(
+    // INFO: if after 300ms we are still resizing (a.k.a. it wasn't a click) fire the onResizeStart event
+    const evaluateResizeStart = useCallback(() => {
+        if (!isResizing.current) return;
+        onResizeStart?.();
+    }, [onResizeStart]);
+
+    const handleResizeStart = useCallback(
         (e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
 
@@ -47,8 +59,10 @@ const VerticalResize: FC<VerticalResizeProps> = ({
 
             document.addEventListener("mousemove", handleResizeMove);
             document.addEventListener("mouseup", handleResizeEnd);
+
+            setTimeout(evaluateResizeStart, 300);
         },
-        [targetRef]
+        [targetRef, evaluateResizeStart]
     );
 
     const handleResizeMove = useCallback(
@@ -88,7 +102,7 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     return (
         <Box
             sx={ResizeHandleSx}
-            onMouseDown={onResizeStart}
+            onMouseDown={handleResizeStart}
             // ...
             onClick={stopPropagation}
         />

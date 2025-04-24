@@ -94,6 +94,8 @@ const Cell: FC<DayCell> = ({
         undefined,
         undefined,
         undefined,
+        undefined,
+        undefined,
         // ...
         CustomCalendarEvent,
         getEventProps

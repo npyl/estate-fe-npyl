@@ -1,7 +1,11 @@
 import { RefObject, useCallback, useLayoutEffect, useRef } from "react";
 import { CellPosition } from "../../Main/types";
 import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
-import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
+import {
+    TCalendarEvent,
+    TOnEventDragEnd,
+    TOnEventDragStart,
+} from "@/components/Calendar/types";
 import calculateNewDates from "./calculateNewDates";
 import { CELL_CLASSNAME } from "@/components/Calendar/constants";
 import { BASE_VIEW_ID } from "@/components/BaseCalendar/View";
@@ -18,10 +22,12 @@ const useDraggable = (
     eventRef: RefObject<HTMLDivElement | null>,
     cellsRef: RefObject<CellPosition[]>,
     onPositionUpdate: VoidFunction,
+    onEventDragStart?: TOnEventDragStart,
     onEventDragEnd?: TOnEventDragEnd
 ) => {
     const mouseOffset = useRef({ x: 0, y: 0 });
     const dragInfo = useRef({
+        isDragging: false,
         startPosition: { x: 0, y: 0 },
         initialTransform: { x: 0, y: 0 },
     });
@@ -32,6 +38,12 @@ const useDraggable = (
         if (!el) return;
         gridRef.current = el;
     }, []);
+
+    // INFO: if after 300ms we are still dragging (a.k.a. it wasn't a click) fire the onEventDragStart event
+    const evaluateDragStart = useCallback(() => {
+        if (!dragInfo.current.isDragging) return;
+        onEventDragStart?.();
+    }, [onEventDragStart]);
 
     const handleMouseMove = useCallback(
         async (e: globalThis.MouseEvent) => {
@@ -85,6 +97,7 @@ const useDraggable = (
         (e: globalThis.MouseEvent) => {
             document.removeEventListener("mousemove", handleMouseMove, true);
             document.removeEventListener("mouseup", handleMouseUp, true);
+            dragInfo.current.isDragging = false;
 
             if (!eventRef.current) return;
 
@@ -153,8 +166,11 @@ const useDraggable = (
 
             document.addEventListener("mousemove", handleMouseMove, true);
             document.addEventListener("mouseup", handleMouseUp, true);
+
+            dragInfo.current.isDragging = true;
+            setTimeout(evaluateDragStart, 300);
         },
-        [handleMouseMove, handleMouseUp]
+        [handleMouseMove, handleMouseUp, evaluateDragStart]
     );
 
     return { onMouseDown };

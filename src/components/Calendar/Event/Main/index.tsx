@@ -15,6 +15,7 @@ import {
     TOnEventClick,
     TOnEventDragEnd,
     TOnEventResizeEnd,
+    TOnEventResizeStart,
 } from "../../types";
 import useDraggable from "./useDraggable";
 import useNoDragClick from "../../useNoDragClick";
@@ -26,6 +27,7 @@ interface MainProps
     isMinimumHeight: boolean;
 
     onEventClick?: TOnEventClick;
+    onEventResizeStart?: TOnEventResizeStart;
     onEventDragEnd?: TOnEventDragEnd;
     onEventResizeEnd?: TOnEventResizeEnd;
 }
@@ -36,7 +38,9 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             event,
             isMinimumHeight,
             onEventClick,
+            onEventResizeStart,
             onEventResizeEnd,
+            onEventDragStart,
             onEventDragEnd,
             // ...
             onMouseMove,
@@ -60,6 +64,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             elementRef,
             cellsRef,
             onPositionUpdate,
+            onEventDragStart,
             onEventDragEnd
         );
 
@@ -100,6 +105,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
                     event={event}
                     cellsRef={cellsRef}
                     targetRef={elementRef}
+                    onResizeStart={onEventResizeStart}
                     onResizeEnd={onEventResizeEnd}
                 />
             </Container>

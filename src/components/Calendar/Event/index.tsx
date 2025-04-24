@@ -8,7 +8,9 @@ import {
     TCalendarEvent,
     TOnEventClick,
     TOnEventDragEnd,
+    TOnEventDragStart,
     TOnEventResizeEnd,
+    TOnEventResizeStart,
 } from "../types";
 import Main from "./Main";
 const Bullet = dynamic(() => import("./Bullet"));
@@ -19,7 +21,9 @@ interface CalendarEventProps
     extends Omit<EventContainerProps, "bgcolor" | "onClick"> {
     event: TCalendarEvent;
     onEventClick?: TOnEventClick;
+    onEventDragStart?: TOnEventDragStart;
     onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeStart?: TOnEventResizeStart;
     onEventResizeEnd?: TOnEventResizeEnd;
 }
 

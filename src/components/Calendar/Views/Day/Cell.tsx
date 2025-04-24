@@ -21,7 +21,9 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
     events: _events,
     getMiscCellEvents,
     onEventClick,
+    onEventDragStart,
     onEventDragEnd,
+    onEventResizeStart,
     onEventResizeEnd,
     style,
     onClick,
@@ -35,7 +37,9 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
         events,
         // ...
         onEventClick,
+        onEventDragStart,
         onEventDragEnd,
+        onEventResizeStart,
         onEventResizeEnd
     );
     const isToday = TODAY.toDateString() === date.toDateString();
