@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useRef } from "react";
+import { RefObject, useCallback } from "react";
 import { CellPosition } from "../../Main/types";
 import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
 import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
@@ -18,16 +18,11 @@ const useDraggable = (
     cellsRef: RefObject<CellPosition[]>,
     onEventDragEnd?: TOnEventDragEnd
 ) => {
-    const dragState = useRef({
-        dragOffset: { x: 0, y: 0 },
-    });
-
     const handleMouseMove = useCallback((e: globalThis.MouseEvent) => {
         const grid = gridRef.current;
         const event = eventRef.current;
         if (!grid || !event) return;
 
-        const { dragOffset } = dragState.current;
         const gridRect = grid.getBoundingClientRect();
 
         // Get cell width information
@@ -35,8 +30,8 @@ const useDraggable = (
         const daysCount = cellsRef.current?.length ?? 1;
 
         // Calculate new position relative to grid
-        const newX = e.clientX - gridRect.left - dragOffset.x + grid.scrollLeft;
-        const newY = e.clientY - gridRect.top - dragOffset.y + grid.scrollTop;
+        const newX = e.clientX - gridRect.left + grid.scrollLeft;
+        const newY = e.clientY - gridRect.top + grid.scrollTop;
 
         // Snap to days (horizontal)
         const newDay = Math.max(
@@ -99,14 +94,6 @@ const useDraggable = (
 
             // Get current positions
             const eventRect = event.getBoundingClientRect();
-
-            // Store initial state with snapped values
-            dragState.current = {
-                dragOffset: {
-                    x: e.clientX - eventRect.left,
-                    y: e.clientY - eventRect.top,
-                },
-            };
 
             document.addEventListener("mousemove", handleMouseMove);
             document.addEventListener("mouseup", handleMouseUp);
