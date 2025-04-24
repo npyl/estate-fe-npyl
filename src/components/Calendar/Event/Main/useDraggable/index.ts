@@ -81,48 +81,52 @@ const useDraggable = (
         [onPositionUpdate]
     );
 
-    const handleMouseUp = useCallback(() => {
-        document.removeEventListener("mousemove", handleMouseMove, true);
-        document.removeEventListener("mouseup", handleMouseUp, true);
+    const handleMouseUp = useCallback(
+        (e: globalThis.MouseEvent) => {
+            document.removeEventListener("mousemove", handleMouseMove, true);
+            document.removeEventListener("mouseup", handleMouseUp, true);
 
-        if (!eventRef.current) return;
+            if (!eventRef.current) return;
 
-        // Calculate total movement to determine if this was a click or drag
-        const totalMovement = Math.hypot(
-            eventRef.current.clientTop - dragInfo.current.startPosition.x,
-            eventRef.current.clientLeft - dragInfo.current.startPosition.y
-        );
+            // Calculate total movement to determine if this was a click or drag
+            const totalMovement = Math.hypot(
+                e.clientX - dragInfo.current.startPosition.x,
+                e.clientY - dragInfo.current.startPosition.y
+            );
 
-        // If it's just a click (under threshold), don't proceed with the drag end logic
-        if (totalMovement <= DRAG_THRESHOLD) {
-            return;
-        }
-
-        // Find the PPCell that contains the center of the draggable element
-        const elementRect = eventRef.current.getBoundingClientRect();
-        if (!elementRect) return;
-        const elementCenter = elementRect.left + elementRect.width / 2;
-        const cells = document.getElementsByClassName(CELL_CLASSNAME);
-
-        for (const cell of cells) {
-            const cellRect = cell.getBoundingClientRect();
-            if (
-                elementCenter >= cellRect.left &&
-                elementCenter <= cellRect.right
-            ) {
-                const { startDate, endDate } =
-                    calculateNewDates(cell as HTMLElement, elementRect) || {};
-
-                if (!startDate || !endDate) return;
-
-                console.log("UPDATE...");
-
-                onEventDragEnd?.(event, startDate, endDate);
-
+            // If it's just a click (under threshold), don't proceed with the drag end logic
+            if (totalMovement <= DRAG_THRESHOLD) {
                 return;
             }
-        }
-    }, [event, onEventDragEnd]);
+
+            // Find the PPCell that contains the center of the draggable element
+            const elementRect = eventRef.current.getBoundingClientRect();
+            if (!elementRect) return;
+            const elementCenter = elementRect.left + elementRect.width / 2;
+            const cells = document.getElementsByClassName(CELL_CLASSNAME);
+
+            for (const cell of cells) {
+                const cellRect = cell.getBoundingClientRect();
+                if (
+                    elementCenter >= cellRect.left &&
+                    elementCenter <= cellRect.right
+                ) {
+                    const { startDate, endDate } =
+                        calculateNewDates(cell as HTMLElement, elementRect) ||
+                        {};
+
+                    if (!startDate || !endDate) return;
+
+                    console.log("UPDATE...");
+
+                    onEventDragEnd?.(event, startDate, endDate);
+
+                    return;
+                }
+            }
+        },
+        [event, onEventDragEnd]
+    );
 
     const onMouseDown = useCallback(
         (e: React.MouseEvent) => {
