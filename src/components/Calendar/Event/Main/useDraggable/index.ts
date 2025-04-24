@@ -33,11 +33,8 @@ const useDraggable = (
         const newX = e.clientX - gridRect.left + grid.scrollLeft;
         const newY = e.clientY - gridRect.top + grid.scrollTop;
 
-        // Snap to days (horizontal)
-        const newDay = Math.max(
-            0,
-            Math.min(daysCount - 1, Math.floor(newX / dayWidth))
-        );
+        // Snap to days (horizontal) - REMOVED the Math.max(0, ...) to allow negative values
+        const newDay = Math.floor(newX / dayWidth);
 
         // For vertical snapping, we need to ensure we're truly aligning to 15-minute intervals
         // Force snapping to exact multiples of INTERVAL_HEIGHT (15px)
@@ -72,14 +69,13 @@ const useDraggable = (
                 elementCenter >= cellRect.left &&
                 elementCenter <= cellRect.right
             ) {
-                const result = calculateNewDates(
-                    cell as HTMLElement,
-                    elementRect
-                );
-                if (!result || !onEventDragEnd) return;
+                const { startDate, endDate } =
+                    calculateNewDates(cell as HTMLElement, elementRect) || {};
 
-                const { startDate, endDate } = result;
+                if (!startDate || !endDate) return;
+
                 onEventDragEnd?.(event, startDate, endDate);
+
                 return;
             }
         }
@@ -88,12 +84,6 @@ const useDraggable = (
     const onMouseDown = useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
-
-            const event = eventRef.current;
-            if (!event) return;
-
-            // Get current positions
-            const eventRect = event.getBoundingClientRect();
 
             document.addEventListener("mousemove", handleMouseMove);
             document.addEventListener("mouseup", handleMouseUp);
