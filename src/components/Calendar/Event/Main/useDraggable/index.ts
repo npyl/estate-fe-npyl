@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useLayoutEffect, useRef } from "react";
+import { RefObject, useCallback, useEffect, useRef } from "react";
 import { CellPosition } from "../../Main/types";
 import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
 import { TCalendarEvent, TOnEventDragEnd } from "@/components/Calendar/types";
@@ -15,24 +15,23 @@ const useDraggable = (
     event: TCalendarEvent,
     eventRef: RefObject<HTMLDivElement | null>,
     cellsRef: RefObject<CellPosition[]>,
-    onPositionUpdate: () => void,
+    onPositionUpdate: VoidFunction,
     onEventDragEnd?: TOnEventDragEnd
 ) => {
+    const mouseOffset = useRef({ x: 0, y: 0 });
+
     const gridRef = useRef<HTMLElement>();
-    useLayoutEffect(() => {
+    useEffect(() => {
         const el = document.getElementById("BaseCalendarView");
         if (!el) return;
         gridRef.current = el;
     }, []);
 
-    // Add mouseOffset ref to track the initial click position relative to the element
-    const mouseOffset = useRef({ x: 0, y: 0 });
-
     const handleMouseMove = useCallback(
         (e: globalThis.MouseEvent) => {
             const grid = gridRef.current;
-            const element = eventRef.current;
-            if (!grid || !element) return;
+            const event = eventRef.current;
+            if (!grid || !event) return;
 
             const gridRect = grid.getBoundingClientRect();
 
@@ -51,7 +50,7 @@ const useDraggable = (
                 grid.scrollTop -
                 mouseOffset.current.y;
 
-            // Snap to days (horizontal)
+            // Snap to days (horizontal) - REMOVED the Math.max(0, ...) to allow negative values
             const newDay = Math.floor(newX / dayWidth);
 
             // For vertical snapping, we need to ensure we're truly aligning to 15-minute intervals
@@ -67,8 +66,8 @@ const useDraggable = (
             const newTop = newInterval * INTERVAL_HEIGHT; // This must be exactly divisible by 15
 
             // Update DOM element position
-            element.style.left = `${newLeft}px`;
-            element.style.top = `${newTop}px`;
+            event.style.left = `${newLeft}px`;
+            event.style.top = `${newTop}px`;
 
             onPositionUpdate();
         },
@@ -101,22 +100,22 @@ const useDraggable = (
                 return;
             }
         }
-    }, [event, handleMouseMove, onEventDragEnd]);
+    }, [event, onEventDragEnd]);
 
     const onMouseDown = useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
-            const element = eventRef.current;
-            if (!element) return;
+
+            const event = eventRef.current;
+            if (!event) return;
 
             // Calculate and store the initial mouse position relative to the element
-            const elementRect = element.getBoundingClientRect();
+            const eventRect = event.getBoundingClientRect();
 
-            // INFO: Store the offset where the mouse clicked within the element
-            // (This will help prevent jumps)
+            // Store the offset where the mouse clicked within the element
             mouseOffset.current = {
-                x: e.clientX - elementRect.left,
-                y: e.clientY - elementRect.top,
+                x: e.clientX - eventRect.left,
+                y: e.clientY - eventRect.top,
             };
 
             document.addEventListener("mousemove", handleMouseMove);
