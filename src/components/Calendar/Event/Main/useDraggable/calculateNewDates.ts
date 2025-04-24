@@ -1,4 +1,4 @@
-import { DAY_CELL_HEIGHT, START_HOUR } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT, START_HOUR } from "@/constants/calendar";
 
 const calculateNewDates = (targetCell: HTMLElement, elementRect: DOMRect) => {
     const cellDate = targetCell.getAttribute("data-date");
@@ -11,14 +11,14 @@ const calculateNewDates = (targetCell: HTMLElement, elementRect: DOMRect) => {
 
     // Calculate start time from top position
     const relativeTop = elementRect.top - cellRect.top;
-    const hoursFromTop = relativeTop / DAY_CELL_HEIGHT;
+    const hoursFromTop = relativeTop / CELL_HOUR_HEIGHT;
 
     const startTotalHours = START_HOUR + hoursFromTop;
     const startHours = Math.floor(startTotalHours);
     const startMinutes = Math.round((startTotalHours - startHours) * 60);
 
     // Calculate end time based on element height
-    const durationHours = elementRect.height / DAY_CELL_HEIGHT;
+    const durationHours = elementRect.height / CELL_HOUR_HEIGHT;
     const endTotalHours = startTotalHours + durationHours;
     const endHours = Math.floor(endTotalHours);
     const endMinutes = Math.round((endTotalHours - endHours) * 60);

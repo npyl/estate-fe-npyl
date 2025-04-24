@@ -1,14 +1,14 @@
 import { styled } from "@mui/material";
 import BaseView from "../BaseCalendar/View";
-import { DAY_CELL_HEIGHT } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 
 const CalendarGoogleView = styled(BaseView)({
     "&:has(.PPCalendar-MiscCell) .PPCalendar-Numbering": {
-        marginTop: DAY_CELL_HEIGHT,
+        marginTop: CELL_HOUR_HEIGHT,
     },
 
     "&:has(.PPCalendar-MiscCell) .PPCalendar-VerticalDivider": {
-        marginTop: DAY_CELL_HEIGHT,
+        marginTop: CELL_HOUR_HEIGHT,
     },
 });
 

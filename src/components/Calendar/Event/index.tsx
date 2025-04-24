@@ -1,5 +1,5 @@
 import { forwardRef, useCallback, useState } from "react";
-import { DAY_CELL_HEIGHT } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
@@ -39,8 +39,8 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
             event.endDate
         );
 
-        const maxHeight = Math.max(height, DAY_CELL_HEIGHT);
-        const isMinimumHeight = maxHeight === DAY_CELL_HEIGHT;
+        const maxHeight = Math.max(height, CELL_HOUR_HEIGHT);
+        const isMinimumHeight = maxHeight === CELL_HOUR_HEIGHT;
 
         const [isBullet, setBullet] = useState(false);
 
