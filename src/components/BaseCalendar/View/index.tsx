@@ -21,7 +21,7 @@ const BaseView: FC<BaseCalendarViewProps> = ({
     } = slots || {};
 
     return (
-        <div {...props}>
+        <div id="BaseCalendarView" {...props}>
             {view === "day" ? <DayView date={date} /> : null}
             {view === "week" ? <WeekView date={date} /> : null}
             {view === "month" ? <MonthView date={date} /> : null}
