@@ -166,7 +166,9 @@ const useMachine = (
                     rendererRef.current?.showPopper();
                 },
 
-                ResizeStart: () => {},
+                ResizeStart: () => {
+                    rendererRef.current?.hidePopper();
+                },
 
                 ResizeEnd: ({ ce, h }) => {
                     switch (state.current) {
@@ -185,6 +187,8 @@ const useMachine = (
                             );
                             break;
                     }
+
+                    rendererRef.current?.showPopper();
                 },
 
                 Close: () => {
