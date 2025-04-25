@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo } from "react";
+import { RefObject, useCallback, useLayoutEffect, useMemo } from "react";
 
 // --------------------------------------------------------------------------------
 
@@ -11,13 +11,26 @@ const getEvent = <T>(name: string, detail: T) =>
 
 // --------------------------------------------------------------------------------
 
+const getUseDispatcher =
+    <T>(name: string, targetRef: RefObject<HTMLElement | null>) =>
+    () => {
+        const dispatch = useCallback((v: T) => {
+            const el = targetRef.current || window.document.body;
+            el.dispatchEvent(getEvent(name, v));
+        }, []);
+
+        return { dispatch };
+    };
+
 const getUseListener =
-    <T>(name: string, element: HTMLElement, cb: TCb<T>) =>
+    <T>(name: string, targetRef: RefObject<HTMLElement | null>, cb: TCb<T>) =>
     () => {
         useLayoutEffect(() => {
-            element.addEventListener(name, cb);
+            const el = targetRef.current || window.document.body;
+
+            el.addEventListener(name, cb);
             return () => {
-                element.removeEventListener(name, cb);
+                el.removeEventListener(name, cb);
             };
         }, []);
     };
@@ -27,18 +40,19 @@ const getUseListener =
 const useCustomEvent = <T>(
     name: string,
     cb: TCb<T>,
-    element: HTMLElement = window.document.body
+    targetRef: RefObject<HTMLElement | null>
 ) => {
-    const dispatch = useCallback((v: T) => {
-        element.dispatchEvent(getEvent(name, v));
-    }, []);
-
-    const useListener = useMemo(
-        () => getUseListener<T>(name, element, cb),
-        [name, element, cb]
+    const useDispatcher = useMemo(
+        () => getUseDispatcher<T>(name, targetRef),
+        [name]
     );
 
-    return [dispatch, useListener] as const;
+    const useListener = useMemo(
+        () => getUseListener<T>(name, targetRef, cb),
+        [name, cb]
+    );
+
+    return [useDispatcher, useListener] as const;
 };
 
 // --------------------------------------------------------------------------------

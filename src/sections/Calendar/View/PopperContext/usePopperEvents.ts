@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { MouseEvent, RefObject } from "react";
 import useCustomEvent, { TCb } from "@/hooks/useCustomEvent";
 import { TCalendarEvent } from "@/components/Calendar/types";
 
@@ -66,8 +66,10 @@ interface PopperEventData<E extends EVENTS = EVENTS> {
 }
 type TPopperEventCb = TCb<PopperEventData>;
 
-const usePopperEvents = (cb: TCb<PopperEventData>, el: HTMLElement | null) =>
-    useCustomEvent<PopperEventData>(name, cb, el || undefined);
+const usePopperEvents = (
+    cb: TCb<PopperEventData>,
+    targetRef: RefObject<HTMLElement | null>
+) => useCustomEvent<PopperEventData>(name, cb, targetRef);
 
 export { STATES, EVENTS };
 export type { TPopperEventCb, PopperEventData, PopperEventDataMap };

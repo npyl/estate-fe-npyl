@@ -25,7 +25,7 @@ import {
 } from "@/components/Calendar/Event/util";
 
 type IState = {
-    dispatch: ReturnType<typeof usePopperEvents>[0];
+    dispatch: ReturnType<ReturnType<typeof usePopperEvents>[0]>["dispatch"];
 };
 
 const PopperContext = createContext<IState | undefined>(undefined);
@@ -102,7 +102,7 @@ const NO_DATA_EVENTS: EVENTS[] = [
 ];
 
 const useMachine = (
-    el: HTMLElement | null,
+    ref: RefObject<HTMLElement | null>,
     saverRef: RefObject<SaverRef>,
     rendererRef: RefObject<RendererRef>
 ) => {
@@ -205,8 +205,9 @@ const useMachine = (
         cb(other as never);
     }, []);
 
-    const [dispatch, useListener] = usePopperEvents(handleEvent, el);
+    const [useDispatcher, useListener] = usePopperEvents(handleEvent, ref);
 
+    const { dispatch } = useDispatcher();
     useListener();
 
     return { state, dispatch };
@@ -219,7 +220,7 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     const saverRef = useRef<SaverRef>(null);
     const rendererRef = useRef<RendererRef>(null);
 
-    const { dispatch } = useMachine(ref.current, saverRef, rendererRef);
+    const { dispatch } = useMachine(ref, saverRef, rendererRef);
 
     const onClose = useCallback(
         () =>
