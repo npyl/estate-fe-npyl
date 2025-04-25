@@ -18,9 +18,13 @@ import usePopperEvents, {
 import { notifyCells } from "./notifyCells";
 import Saver, { SaverRef } from "./Saver";
 import getEndDateForDuration from "./getEndDateForDuration";
+import {
+    lockAllEvents,
+    lockAllEventsExcept,
+    unlockAllEvents,
+} from "@/components/Calendar/Event/util";
 
 type IState = {
-    hidePopper: VoidFunction;
     dispatch: ReturnType<typeof usePopperEvents>[0];
 };
 
@@ -49,8 +53,11 @@ interface MachineMethods {
     OpenEvent: TMachineMethod<EVENTS.CLICK>;
     OpenEventCreate: TMachineMethod<EVENTS.CLICK_EVENT>;
 
-    Drag: TMachineMethod<EVENTS.DRAG_END>;
-    Resize: TMachineMethod<EVENTS.RESIZE_END>;
+    DragStart: TMachineMethod<EVENTS.DRAG_START>;
+    DragEnd: TMachineMethod<EVENTS.DRAG_END>;
+
+    ResizeStart: TMachineMethod<EVENTS.RESIZE_START>;
+    ResizeEnd: TMachineMethod<EVENTS.RESIZE_END>;
 
     // Close any popper
     Close: TMachineMethod<EVENTS.CLOSE>;
@@ -62,22 +69,28 @@ const getMACHINE = (methods: MachineMethods) => ({
     [STATES.IDLE]: {
         [EVENTS.CLICK]: methods.OpenEvent,
         [EVENTS.CLICK_EVENT]: methods.OpenEventCreate,
-        [EVENTS.DRAG_END]: methods.Drag,
-        [EVENTS.RESIZE_END]: methods.Resize,
+        [EVENTS.DRAG_START]: methods.DragStart,
+        [EVENTS.DRAG_END]: methods.DragEnd,
+        [EVENTS.RESIZE_START]: methods.ResizeStart,
+        [EVENTS.RESIZE_END]: methods.ResizeEnd,
         [EVENTS.CLOSE]: NO_OP,
     },
     [STATES.POPPER]: {
         [EVENTS.CLICK]: methods.Close,
         [EVENTS.CLICK_EVENT]: methods.Close,
-        [EVENTS.DRAG_END]: methods.Drag,
-        [EVENTS.RESIZE_END]: methods.Resize,
+        [EVENTS.DRAG_START]: methods.DragStart,
+        [EVENTS.DRAG_END]: methods.DragEnd,
+        [EVENTS.RESIZE_START]: methods.ResizeStart,
+        [EVENTS.RESIZE_END]: methods.ResizeEnd,
         [EVENTS.CLOSE]: methods.Close,
     },
     [STATES.POPPER_CREATE]: {
         [EVENTS.CLICK]: methods.Close,
         [EVENTS.CLICK_EVENT]: methods.Close,
-        [EVENTS.DRAG_END]: methods.Drag,
-        [EVENTS.RESIZE_END]: methods.Resize,
+        [EVENTS.DRAG_START]: methods.DragStart,
+        [EVENTS.DRAG_END]: methods.DragEnd,
+        [EVENTS.RESIZE_START]: methods.ResizeStart,
+        [EVENTS.RESIZE_END]: methods.ResizeEnd,
         [EVENTS.CLOSE]: methods.Close,
     },
 });
@@ -93,16 +106,20 @@ const useMachine = (
         () =>
             getMACHINE({
                 OpenEvent: ({ me: { currentTarget }, ce }) => {
+                    lockAllEventsExcept(ce.id);
                     rendererRef.current?.setEvent(currentTarget, ce);
                     state.current = STATES.POPPER;
                 },
                 OpenEventCreate: ({ me: { currentTarget }, startDate }) => {
+                    lockAllEvents();
                     notifyCells(startDate, "");
                     rendererRef.current?.setStartDate(currentTarget, startDate);
                     state.current = STATES.POPPER_CREATE;
                 },
 
-                Drag: async ({ ce, startDate, endDate }) => {
+                DragStart: () => {},
+
+                DragEnd: async ({ ce, startDate, endDate }) => {
                     switch (state.current) {
                         case STATES.IDLE:
                         case STATES.POPPER:
@@ -129,7 +146,9 @@ const useMachine = (
                     }
                 },
 
-                Resize: ({ ce, h }) => {
+                ResizeStart: () => {},
+
+                ResizeEnd: ({ ce, h }) => {
                     switch (state.current) {
                         case STATES.IDLE:
                         case STATES.POPPER:
@@ -149,6 +168,8 @@ const useMachine = (
                 },
 
                 Close: () => {
+                    unlockAllEvents();
+
                     switch (state.current) {
                         case STATES.POPPER_CREATE:
                             // INFO: remove all "create"-events
@@ -192,8 +213,6 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const { dispatch } = useMachine(ref.current, saverRef, rendererRef);
 
-    const hidePopper = useCallback(() => rendererRef.current?.hidePopper(), []);
-
     const onClose = useCallback(
         () =>
             dispatch({
@@ -204,7 +223,7 @@ const PopperProvider: FC<PropsWithChildren> = ({ children }) => {
     );
 
     return (
-        <PopperContext.Provider value={{ hidePopper, dispatch }}>
+        <PopperContext.Provider value={{ dispatch }}>
             <Saver ref={saverRef} />
             <div ref={ref}>
                 {children}

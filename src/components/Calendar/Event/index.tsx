@@ -15,6 +15,8 @@ import {
 import Main from "./Main";
 const Bullet = dynamic(() => import("./Bullet"));
 
+const EVENT_CLASSNAME = "PPCalendar-Event";
+
 // ------------------------------------------------------------------------------------
 
 interface CalendarEventProps
@@ -70,6 +72,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
         return (
             <Main
+                className={EVENT_CLASSNAME}
                 id={event.id}
                 ref={onRef}
                 isMinimumHeight={isMinimumHeight}
@@ -83,4 +86,5 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
     }
 );
 
+export { EVENT_CLASSNAME };
 export default CalendarEvent;

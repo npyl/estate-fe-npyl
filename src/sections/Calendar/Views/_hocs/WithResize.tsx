@@ -1,6 +1,7 @@
 import {
     CalendarCellProps,
     TOnEventResizeEnd,
+    TOnEventResizeStart,
 } from "@/components/Calendar/types";
 import { ComponentType, useCallback } from "react";
 import { EVENTS, usePopperContext } from "../../View/PopperContext";
@@ -9,7 +10,16 @@ type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
 const WithResize = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
-        const { hidePopper, dispatch } = usePopperContext();
+        const { dispatch } = usePopperContext();
+
+        const onEventResizeStart: TOnEventResizeStart = useCallback(
+            () =>
+                dispatch({
+                    event: EVENTS.RESIZE_START,
+                    other: undefined,
+                }),
+            []
+        );
 
         const onEventResizeEnd: TOnEventResizeEnd = useCallback(
             (ce, h) =>
@@ -27,7 +37,7 @@ const WithResize = (Cell: AnyCalendarCell) => {
         return (
             <Cell
                 {...props}
-                onEventResizeStart={hidePopper}
+                onEventResizeStart={onEventResizeStart}
                 onEventResizeEnd={onEventResizeEnd}
             />
         );

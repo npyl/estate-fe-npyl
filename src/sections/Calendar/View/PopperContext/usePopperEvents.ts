@@ -13,7 +13,9 @@ enum STATES {
 enum EVENTS {
     CLICK,
     CLICK_EVENT,
+    DRAG_START,
     DRAG_END,
+    RESIZE_START,
     RESIZE_END,
     CLOSE,
 }
@@ -30,6 +32,10 @@ interface ClickEventCreateData {
     startDate: string;
 }
 
+interface DragResizeStartData {
+    eventId: string;
+}
+
 interface DragEndEventData {
     ce: TCalendarEvent;
     startDate: string;
@@ -44,7 +50,9 @@ interface ResizeEndEventData {
 type PopperEventDataMap = {
     [EVENTS.CLICK]: ClickEventData;
     [EVENTS.CLICK_EVENT]: ClickEventCreateData;
+    [EVENTS.DRAG_START]: DragResizeStartData;
     [EVENTS.DRAG_END]: DragEndEventData;
+    [EVENTS.RESIZE_START]: DragResizeStartData;
     [EVENTS.RESIZE_END]: ResizeEndEventData;
 
     [EVENTS.CLOSE]: undefined;
