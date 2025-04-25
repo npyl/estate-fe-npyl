@@ -6,7 +6,6 @@ import Container, { EventContainerProps } from "../Container";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import dynamic from "next/dynamic";
 const People = dynamic(() => import("../_shared/People"));
-
 import { useCalendarColorById } from "@/services/calendar";
 import VerticalResize from "./VerticalResize";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
@@ -20,6 +19,7 @@ import {
 import useDraggable from "./useDraggable";
 import useNoDragClick from "../../useNoDragClick";
 import updateDurationLabelAsync from "./updateDuration";
+import useGhost from "./useGhost";
 
 interface MainProps
     extends Omit<EventContainerProps, "bgcolor" | "onClick" | "onMouseDown"> {
@@ -39,9 +39,9 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             isMinimumHeight,
             onEventClick,
             onEventResizeStart,
-            onEventResizeEnd,
+            onEventResizeEnd: _onEventResizeEnd,
             onEventDragStart,
-            onEventDragEnd,
+            onEventDragEnd: _onEventDragEnd,
             // ...
             onMouseMove,
             ...props
@@ -59,12 +59,17 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
             updateDurationLabelAsync(elementRef.current, cellsRef);
         }, []);
 
+        const { onGhostAdd, onGhostRemove, onEventDragEnd, onEventResizeEnd } =
+            useGhost(event.id, _onEventDragEnd, _onEventResizeEnd);
+
         const { onMouseDown } = useDraggable(
             event,
             elementRef,
             cellsRef,
             onPositionUpdate,
+            onGhostAdd,
             onEventDragStart,
+            onGhostRemove,
             onEventDragEnd
         );
 
@@ -105,6 +110,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
                     event={event}
                     cellsRef={cellsRef}
                     targetRef={elementRef}
+                    onResizeEarlyStart={onGhostAdd}
                     onResizeStart={onEventResizeStart}
                     onResizeEnd={onEventResizeEnd}
                 />

@@ -22,7 +22,9 @@ const useDraggable = (
     eventRef: RefObject<HTMLDivElement | null>,
     cellsRef: RefObject<CellPosition[]>,
     onPositionUpdate: VoidFunction,
+    onEventDragEarlyStart?: VoidFunction,
     onEventDragStart?: TOnEventDragStart,
+    onEventDragEarlyEnd?: VoidFunction,
     onEventDragEnd?: TOnEventDragEnd
 ) => {
     const mouseOffset = useRef({ x: 0, y: 0 });
@@ -109,6 +111,7 @@ const useDraggable = (
 
             // If it's just a click (under threshold), don't proceed with the drag end logic
             if (totalMovement <= DRAG_THRESHOLD) {
+                onEventDragEarlyEnd?.();
                 return;
             }
 
@@ -136,7 +139,7 @@ const useDraggable = (
                 }
             }
         },
-        [event, onEventDragEnd]
+        [event, onEventDragEarlyEnd, onEventDragEnd]
     );
 
     const onMouseDown = useCallback(
@@ -162,13 +165,20 @@ const useDraggable = (
             const currentLeft = parseFloat(event.style.left || "0");
             dragInfo.current.initialTransform = { x: currentLeft, y: 0 };
 
+            onEventDragEarlyStart?.();
+
             document.addEventListener("mousemove", handleMouseMove, true);
             document.addEventListener("mouseup", handleMouseUp, true);
 
             dragInfo.current.isDragging = true;
             setTimeout(evaluateDragStart, 100);
         },
-        [handleMouseMove, handleMouseUp, evaluateDragStart]
+        [
+            handleMouseMove,
+            handleMouseUp,
+            onEventDragEarlyStart,
+            evaluateDragStart,
+        ]
     );
 
     return { onMouseDown };

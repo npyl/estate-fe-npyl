@@ -24,6 +24,7 @@ interface VerticalResizeProps {
     targetRef: MutableRefObject<HTMLDivElement | null>;
     cellsRef: MutableRefObject<CellPosition[]>;
     event: TCalendarEvent;
+    onResizeEarlyStart?: VoidFunction; // equivalent to onResizeStart but fires earlier, before we are sure it is actually a resize start
     onResizeStart?: TOnEventResizeStart;
     onResizeEnd?: TOnEventResizeEnd;
 }
@@ -32,6 +33,7 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     targetRef,
     cellsRef,
     event,
+    onResizeEarlyStart,
     onResizeStart,
     onResizeEnd,
 }) => {
@@ -52,6 +54,8 @@ const VerticalResize: FC<VerticalResizeProps> = ({
 
             if (!targetRef.current) return;
 
+            onResizeEarlyStart?.();
+
             isResizing.current = true;
 
             startYRef.current = e.clientY;
@@ -62,7 +66,7 @@ const VerticalResize: FC<VerticalResizeProps> = ({
 
             setTimeout(evaluateResizeStart, 100);
         },
-        [targetRef, evaluateResizeStart]
+        [targetRef, onResizeEarlyStart, evaluateResizeStart]
     );
 
     const handleResizeMove = useCallback(
