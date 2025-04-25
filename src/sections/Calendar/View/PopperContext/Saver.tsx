@@ -1,6 +1,6 @@
 import {
     TOnEventDragEndAsync,
-    TOnEventResizeEnd,
+    TOnEventResizeEndAsync,
 } from "@/components/Calendar/types";
 import { useAuth } from "@/hooks/use-auth";
 import { useUpdateEventMutation } from "@/services/calendar";
@@ -9,7 +9,7 @@ import getEndDateForDuration from "./getEndDateForDuration";
 
 interface SaverRef {
     drag: TOnEventDragEndAsync;
-    resize: TOnEventResizeEnd;
+    resize: TOnEventResizeEndAsync;
 }
 
 interface SaverProps {}
@@ -30,13 +30,15 @@ const Saver = forwardRef<SaverRef, SaverProps>(({}, ref) => {
         []
     );
 
-    const resize: TOnEventResizeEnd = useCallback((e, h) => {
+    const resize: TOnEventResizeEndAsync = useCallback(async (e, h) => {
         const endDate = getEndDateForDuration(e.startDate, h);
 
-        updateEvent({
+        const res = await updateEvent({
             body: { ...e, endDate },
             userId: user?.id!,
         });
+
+        return !("error" in res);
     }, []);
 
     useImperativeHandle(

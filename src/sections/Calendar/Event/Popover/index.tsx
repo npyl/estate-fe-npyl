@@ -1,15 +1,9 @@
 import getBorderColor from "@/theme/borderColor";
-import {
-    forwardRef,
-    ReactNode,
-    useCallback,
-    useImperativeHandle,
-    useMemo,
-} from "react";
+import { forwardRef, ReactNode, useCallback, useImperativeHandle } from "react";
 import usePopoverPosition from "./usePopperControl";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/config";
-import { State, VirtualElement } from "@popperjs/core";
+import { State } from "@popperjs/core";
 
 const PaperSx: SxProps<Theme> = {
     minWidth: "300px",
@@ -55,18 +49,6 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
             hide,
         } = usePopoverPosition();
 
-        const virtualAnchorEl = useMemo<VirtualElement | null>(() => {
-            if (!anchorEl) return null;
-            if (typeof anchorEl !== "object") return null;
-            if (!("getBoundingClientRect" in anchorEl)) return null;
-
-            const position = anchorEl.getBoundingClientRect();
-
-            return {
-                getBoundingClientRect: () => position,
-            };
-        }, [anchorEl]);
-
         const updatePosition = useCallback(async () => {
             const res = await actionsRef.current?.update();
             if (!res) return;
@@ -86,7 +68,7 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
             <Popper
                 popperRef={onPopperRef}
                 placement="right"
-                anchorEl={virtualAnchorEl}
+                anchorEl={anchorEl}
                 sx={{ ...PopperSx, ...sx }}
                 {...props}
             >

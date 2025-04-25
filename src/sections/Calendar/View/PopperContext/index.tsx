@@ -24,7 +24,6 @@ import {
     unlockAllEvents,
 } from "@/components/Calendar/Event/util";
 import { CREATE_EVENT_ID } from "../../Views/_hocs/WithClick/useEventsWithCreate";
-import sleep from "@/utils/sleep";
 
 type IState = {
     dispatch: ReturnType<ReturnType<typeof usePopperEvents>[0]>["dispatch"];
@@ -170,11 +169,17 @@ const useMachine = (
                     rendererRef.current?.hidePopper();
                 },
 
-                ResizeEnd: ({ ce, h }) => {
+                ResizeEnd: async ({ ce, h }) => {
+                    let id = "";
+
                     switch (state.current) {
                         case STATES.IDLE:
                         case STATES.POPPER:
-                            saverRef.current?.resize(ce, h);
+                            const ok = await saverRef.current?.resize(ce, h);
+                            if (!ok) return;
+
+                            id = ce.id;
+
                             break;
                         case STATES.POPPER_CREATE:
                             const { startDate } = ce;
@@ -185,8 +190,18 @@ const useMachine = (
                                 startDate,
                                 endDate
                             );
+
+                            id = CREATE_EVENT_ID;
+
                             break;
                     }
+
+                    if (!id) return;
+
+                    const el = document.getElementById(id);
+                    if (!el) return;
+
+                    await rendererRef.current?.updatePopperPosition(el);
 
                     rendererRef.current?.showPopper();
                 },

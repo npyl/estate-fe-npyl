@@ -83,13 +83,11 @@ type TOnEventClick = (
 ) => void;
 
 type TOnEventDragStart = VoidFunction;
-
 type TOnEventDragEnd = (
     ce: TCalendarEvent,
     startDate: string,
     endDate: string
 ) => void;
-
 type TOnEventDragEndAsync = (
     ce: TCalendarEvent,
     startDate: string,
@@ -98,6 +96,10 @@ type TOnEventDragEndAsync = (
 
 type TOnEventResizeStart = VoidFunction;
 type TOnEventResizeEnd = (ce: TCalendarEvent, h: number) => void;
+type TOnEventResizeEndAsync = (
+    ce: TCalendarEvent,
+    h: number
+) => Promise<boolean>;
 
 type TCalendarEventEvents = {
     onEventClick?: TOnEventClick;
@@ -210,6 +212,7 @@ export type {
     TOnEventDragEndAsync,
     TOnEventResizeStart,
     TOnEventResizeEnd,
+    TOnEventResizeEndAsync,
 
     // ...
     CalendarHeaderProps,
