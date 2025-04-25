@@ -23,6 +23,8 @@ import {
     lockAllEventsExcept,
     unlockAllEvents,
 } from "@/components/Calendar/Event/util";
+import { CREATE_EVENT_ID } from "../../Views/_hocs/WithClick/useEventsWithCreate";
+import sleep from "@/utils/sleep";
 
 type IState = {
     dispatch: ReturnType<ReturnType<typeof usePopperEvents>[0]>["dispatch"];
@@ -128,6 +130,8 @@ const useMachine = (
                 },
 
                 DragEnd: async ({ ce, startDate, endDate }) => {
+                    let id = "";
+
                     switch (state.current) {
                         case STATES.IDLE:
                         case STATES.POPPER:
@@ -138,19 +142,26 @@ const useMachine = (
                             );
                             if (!ok) return;
 
+                            id = ce.id;
+
                             break;
                         case STATES.POPPER_CREATE:
                             rendererRef.current?.updateDates(
                                 startDate,
                                 endDate
                             );
+
+                            id = CREATE_EVENT_ID;
+
                             break;
                     }
 
-                    // TODO: support create... (eg. id PPCalendarEventCreate)
-                    // const el = document.getElementById(ce.id);
-                    // if (!el) return;
-                    // rendererRef.current?.updatePopperPosition(el);
+                    if (!id) return;
+
+                    const el = document.getElementById(id);
+                    if (!el) return;
+
+                    await rendererRef.current?.updatePopperPosition(el);
 
                     rendererRef.current?.showPopper();
                 },

@@ -18,7 +18,7 @@ interface RendererRef {
     setEvent: (el: HTMLDivElement, v: TCalendarEvent) => void;
     setStartDate: (el: HTMLDivElement, v: string) => void;
 
-    updatePopperPosition: (el: HTMLElement) => void;
+    updatePopperPosition: (el: HTMLElement) => Promise<void>;
     showPopper: VoidFunction;
     hidePopper: VoidFunction;
     closePopper: VoidFunction;
@@ -63,14 +63,14 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
     const viewPopperRef = useRef<ViewEventPopperRef>(null);
     const createPopperRef = useRef<CreateEventPopperRef>(null);
     const updatePopperPosition = useCallback(
-        (el: HTMLElement) => {
+        async (el: HTMLElement) => {
             updateAnchor(el);
             const target = event
                 ? viewPopperRef
                 : startDate
                   ? createPopperRef
                   : undefined;
-            target?.current?.updatePosition();
+            await target?.current?.updatePosition();
         },
         [event, startDate]
     );

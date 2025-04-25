@@ -9,7 +9,7 @@ import {
 import usePopoverPosition from "./usePopperControl";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/config";
-import { VirtualElement } from "@popperjs/core";
+import { State, VirtualElement } from "@popperjs/core";
 
 const PaperSx: SxProps<Theme> = {
     minWidth: "300px",
@@ -28,7 +28,7 @@ const PopperSx: SxProps<Theme> = {
 interface EventPopperRef {
     show: VoidFunction;
     hide: VoidFunction;
-    updatePosition: VoidFunction;
+    updatePosition: () => Promise<Partial<State> | undefined>;
 }
 
 interface EventPopperProps
@@ -67,10 +67,11 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
             };
         }, [anchorEl]);
 
-        const updatePosition = useCallback(
-            () => actionsRef.current?.update(),
-            []
-        );
+        const updatePosition = useCallback(async () => {
+            const res = await actionsRef.current?.update();
+            if (!res) return;
+            return res;
+        }, []);
         useImperativeHandle(
             ref,
             () => ({
