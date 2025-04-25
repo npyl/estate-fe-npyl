@@ -1,5 +1,5 @@
 import { MouseEvent } from "react";
-import useCustomEvent, { TCb } from "./useCustomEvent";
+import useCustomEvent, { TCb } from "@/hooks/useCustomEvent";
 import { TCalendarEvent } from "@/components/Calendar/types";
 
 const name = "onPPCalendar-PopperEvent";
