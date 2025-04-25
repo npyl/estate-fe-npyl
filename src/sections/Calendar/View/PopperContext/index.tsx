@@ -95,6 +95,12 @@ const getMACHINE = (methods: MachineMethods) => ({
     },
 });
 
+const NO_DATA_EVENTS: EVENTS[] = [
+    EVENTS.CLOSE,
+    EVENTS.DRAG_START,
+    EVENTS.RESIZE_START,
+];
+
 const useMachine = (
     el: HTMLElement | null,
     saverRef: RefObject<SaverRef>,
@@ -117,7 +123,9 @@ const useMachine = (
                     state.current = STATES.POPPER_CREATE;
                 },
 
-                DragStart: () => {},
+                DragStart: () => {
+                    rendererRef.current?.hidePopper();
+                },
 
                 DragEnd: async ({ ce, startDate, endDate }) => {
                     switch (state.current) {
@@ -168,8 +176,6 @@ const useMachine = (
                 },
 
                 Close: () => {
-                    unlockAllEvents();
-
                     switch (state.current) {
                         case STATES.POPPER_CREATE:
                             // INFO: remove all "create"-events
@@ -179,6 +185,8 @@ const useMachine = (
 
                     rendererRef.current?.closePopper();
                     state.current = STATES.IDLE;
+
+                    unlockAllEvents();
                 },
             }),
         []
@@ -188,8 +196,8 @@ const useMachine = (
         const { event, other } = detail || {};
         if (event === undefined) return;
 
-        // INFO: support no data only for EVENTS.CLOSE
-        if (!other && event !== EVENTS.CLOSE) return;
+        // INFO: support no data only for specific events
+        if (!other && !NO_DATA_EVENTS.includes(event)) return;
 
         const cb = MACHINE[state.current][event!];
 
