@@ -2,7 +2,7 @@ import { FC } from "react";
 import { TCalendarEvent } from "../types";
 import CompactCalendarEvent from "../Event/Compact";
 import Box from "@mui/material/Box";
-import { DAY_CELL_HEIGHT } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import { SxProps, Theme } from "@mui/material";
 
 const getEvent = (e: TCalendarEvent) => (
@@ -21,7 +21,7 @@ const MiscCell: FC<MiscCellProps> = ({ events }) => (
     <Box
         py={1}
         className="PPCalendar-MiscCell"
-        height={DAY_CELL_HEIGHT}
+        height={CELL_HOUR_HEIGHT}
         sx={BoxSx}
     >
         {events.map(getEvent)}

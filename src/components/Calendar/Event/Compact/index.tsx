@@ -5,24 +5,26 @@ import Duration from "../_shared/Duration";
 import { EventProps } from "../types";
 import DateInfo from "../_shared/DateInfo";
 import StyledStack from "./StyledStack";
+import { TCalendarEvent, TOnEventClick } from "../../types";
 
 interface CompactEventProps extends EventProps {
+    event: TCalendarEvent;
     withDate?: boolean;
+    onEventClick?: TOnEventClick;
 }
 
 const CompactCalendarEvent: FC<CompactEventProps> = ({
     event,
     withDate = false,
-    onClick,
-    onDragEnd: _ /* INFO: relevant only for the normal Event */,
+    onEventClick,
     ...props
 }) => {
     const handleClick = useCallback(
         (e: MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
-            onClick?.(event, e);
+            onEventClick?.(e, event);
         },
-        [onClick, event]
+        [onEventClick, event]
     );
 
     return (

@@ -1,4 +1,4 @@
-import { DAY_CELL_HEIGHT, START_HOUR } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT, START_HOUR } from "@/constants/calendar";
 
 const calculateTimePosition = (startDate: string, endDate: string) => {
     const startHour = new Date(startDate).getHours();
@@ -6,10 +6,10 @@ const calculateTimePosition = (startDate: string, endDate: string) => {
     const endHour = new Date(endDate).getHours();
     const endMinutes = new Date(endDate).getMinutes();
 
-    const top = (startHour - START_HOUR + startMinutes / 60) * DAY_CELL_HEIGHT;
+    const top = (startHour - START_HOUR + startMinutes / 60) * CELL_HOUR_HEIGHT;
     const height =
         (endHour - startHour + (endMinutes - startMinutes) / 60) *
-        DAY_CELL_HEIGHT;
+        CELL_HOUR_HEIGHT;
 
     return {
         top,

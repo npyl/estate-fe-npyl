@@ -24,8 +24,15 @@ const CellSx: SxProps<Theme> = {
 
 // ------------------------------------------------------------
 
-const getEvent = (onClick?: TOnEventClick) => (e: TCalendarEvent) =>
-    <CompactCalendarEvent key={e.id} event={e} withDate onClick={onClick} />;
+const getEvent = (onEventClick?: TOnEventClick) => (e: TCalendarEvent) =>
+    (
+        <CompactCalendarEvent
+            key={e.id}
+            event={e}
+            withDate
+            onEventClick={onEventClick}
+        />
+    );
 
 // ------------------------------------------------------------
 

@@ -3,7 +3,7 @@ import {
     START_HOUR,
     TOTAL_HOURS,
     Z_INDEX,
-    DAY_CELL_HEIGHT,
+    CELL_HOUR_HEIGHT,
 } from "@/constants/calendar";
 import Typography from "@mui/material/Typography";
 import { CalendarNumberingProps } from "../types";
@@ -35,7 +35,7 @@ const NumberItem: FC<NumberItemProps> = ({ hour }) => {
     const lang = i18n.language;
 
     return (
-        <Box width={50} height={DAY_CELL_HEIGHT}>
+        <Box width={50} height={CELL_HOUR_HEIGHT}>
             <Typography
                 variant="caption"
                 textAlign="right"

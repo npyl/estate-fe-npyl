@@ -1,4 +1,7 @@
-import { DatesDetail } from "./updateDates";
+interface DatesDetail {
+    startDate: string;
+    endDate: string;
+}
 
 const UpdateEvent = "onUpdateCreateEvent";
 
@@ -13,3 +16,4 @@ const notifyCells = (startDate: string, endDate: string = "") => {
 };
 
 export { UpdateEvent, notifyCells };
+export type { DatesDetail };

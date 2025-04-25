@@ -5,7 +5,8 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../../NowIndicator";
 import dynamic from "next/dynamic";
 import VerticalDivider from "./VerticalDivider";
-import { CELL_CLASSNAME } from "@/components/Calendar/Event/DraggableStack/useDraggable";
+import { CELL_CLASSNAME } from "@/components/Calendar/constants";
+import useNoDragClick from "@/components/Calendar/useNoDragClick";
 const MiscCell = dynamic(() => import("../../MiscCell"));
 
 // -------------------------------------------------------------------------
@@ -26,9 +27,14 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     events: _events,
     getMiscCellEvents,
     onEventClick,
+    onEventDragStart,
     onEventDragEnd,
+    onEventResizeStart,
     onEventResizeEnd,
     style,
+    onClick,
+    onMouseDown,
+    onMouseMove,
     ...props
 }) => {
     const [events, miscEvents] = getMiscCellEvents(_events);
@@ -36,10 +42,14 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     const EVENTS = useTimemappedEvents(
         events,
         onEventClick,
+        onEventDragStart,
         onEventDragEnd,
+        onEventResizeStart,
         onEventResizeEnd
     );
     const isToday = TODAY.toDateString() === date.toDateString();
+
+    const methods = useNoDragClick(onClick, onMouseDown, onMouseMove);
 
     return (
         <div style={ContainerStyle}>
@@ -49,6 +59,7 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
                 className={CELL_CLASSNAME}
                 data-date={date.toISOString()}
                 style={{ ...CellStyle, ...style }}
+                {...methods}
                 {...props}
             >
                 {/* Events */}

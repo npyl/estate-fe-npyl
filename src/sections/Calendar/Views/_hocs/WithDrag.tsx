@@ -1,34 +1,35 @@
 import {
     CalendarCellProps,
-    TOnEventResizeEnd,
-    TOnEventResizeStart,
+    TOnEventDragEnd,
+    TOnEventDragStart,
 } from "@/components/Calendar/types";
 import { ComponentType, useCallback } from "react";
 import { EVENTS, usePopperContext } from "../../View/PopperContext";
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
 
-const WithResize = (Cell: AnyCalendarCell) => {
+const WithDrag = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
         const { dispatch } = usePopperContext();
 
-        const onEventResizeStart: TOnEventResizeStart = useCallback(
+        const onDragStart: TOnEventDragStart = useCallback(
             () =>
                 dispatch({
-                    event: EVENTS.RESIZE_START,
+                    event: EVENTS.DRAG_START,
                     other: undefined,
                 }),
             []
         );
 
-        const onEventResizeEnd: TOnEventResizeEnd = useCallback(
-            (ce, h) =>
+        const onDragEnd: TOnEventDragEnd = useCallback(
+            (ce, startDate, endDate) =>
                 dispatch({
-                    event: EVENTS.RESIZE_END,
+                    event: EVENTS.DRAG_END,
                     // ...
                     other: {
                         ce,
-                        h,
+                        startDate,
+                        endDate,
                     },
                 }),
             []
@@ -37,15 +38,15 @@ const WithResize = (Cell: AnyCalendarCell) => {
         return (
             <Cell
                 {...props}
-                onEventResizeStart={onEventResizeStart}
-                onEventResizeEnd={onEventResizeEnd}
+                onEventDragStart={onDragStart}
+                onEventDragEnd={onDragEnd}
             />
         );
     };
 
-    WrappedComponent.displayName = `WithResize(Cell)`;
+    WrappedComponent.displayName = `WithDrag(Cell)`;
 
     return WrappedComponent;
 };
 
-export default WithResize;
+export default WithDrag;

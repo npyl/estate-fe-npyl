@@ -11,7 +11,7 @@ import {
 } from "@/components/Calendar/types";
 import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
-import { DAY_CELL_HEIGHT } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import useTimemappedEvents from "@/components/Calendar/Views/useTimemappedEvents";
 
 // ------------------------------------------------------------------------
@@ -41,7 +41,7 @@ const StyledDayView = styled(CalendarGoogleDayView)(({ theme }) => ({
             ? theme.palette.grey[100]
             : theme.palette.neutral?.[800],
 
-    height: `${11 * DAY_CELL_HEIGHT}px`, // 7am - 5pm
+    height: `${11 * CELL_HOUR_HEIGHT}px`, // 7am - 5pm
     borderBottomLeftRadius: "15px",
     borderBottomRightRadius: "15px",
 
@@ -91,6 +91,8 @@ const Cell: FC<DayCell> = ({
     const EVENTS = useTimemappedEvents(
         events,
         // ...
+        undefined,
+        undefined,
         undefined,
         undefined,
         undefined,

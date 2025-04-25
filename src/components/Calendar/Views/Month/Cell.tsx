@@ -7,8 +7,8 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 
 // ------------------------------------------------------------------
 
-const getEvent = (onClick?: TOnEventClick) => (e: TCalendarEvent) =>
-    <CompactCalendarEvent key={e.id} event={e} onClick={onClick} />;
+const getEvent = (onEventClick?: TOnEventClick) => (e: TCalendarEvent) =>
+    <CompactCalendarEvent key={e.id} event={e} onEventClick={onEventClick} />;
 
 // ------------------------------------------------------------------
 

@@ -1,14 +1,13 @@
-import {
-    useRef,
-    useCallback,
-    MutableRefObject,
-    PropsWithChildren,
-    FC,
-} from "react";
+import { useRef, useCallback, MutableRefObject, FC } from "react";
 import { Box, SxProps, Theme } from "@mui/material";
-import { TCalendarEvent, TOnEventResizeEnd } from "../../types";
 import { CellPosition } from "./types";
-import updateDurationLabelAsync from "./useDraggable/updateDuration";
+import updateDurationLabelAsync from "./updateDuration";
+import stopPropagation from "@/utils/stopPropagation";
+import {
+    TCalendarEvent,
+    TOnEventResizeEnd,
+    TOnEventResizeStart,
+} from "../../types";
 
 const ResizeHandleSx: SxProps<Theme> = {
     position: "absolute",
@@ -21,10 +20,12 @@ const ResizeHandleSx: SxProps<Theme> = {
     zIndex: 10,
 };
 
-interface VerticalResizeProps extends PropsWithChildren {
+interface VerticalResizeProps {
     targetRef: MutableRefObject<HTMLDivElement | null>;
     cellsRef: MutableRefObject<CellPosition[]>;
     event: TCalendarEvent;
+    onResizeEarlyStart?: VoidFunction; // equivalent to onResizeStart but fires earlier, before we are sure it is actually a resize start
+    onResizeStart?: TOnEventResizeStart;
     onResizeEnd?: TOnEventResizeEnd;
 }
 
@@ -32,19 +33,28 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     targetRef,
     cellsRef,
     event,
+    onResizeEarlyStart,
+    onResizeStart,
     onResizeEnd,
-    children,
 }) => {
     const isResizing = useRef(false);
 
     const startYRef = useRef(0);
     const startHeightRef = useRef(0);
 
-    const onResizeStart = useCallback(
+    // INFO: if after 100ms we are still resizing (a.k.a. it wasn't a click) fire the onResizeStart event
+    const evaluateResizeStart = useCallback(() => {
+        if (!isResizing.current) return;
+        onResizeStart?.();
+    }, [onResizeStart]);
+
+    const handleResizeStart = useCallback(
         (e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
 
             if (!targetRef.current) return;
+
+            onResizeEarlyStart?.();
 
             isResizing.current = true;
 
@@ -53,8 +63,10 @@ const VerticalResize: FC<VerticalResizeProps> = ({
 
             document.addEventListener("mousemove", handleResizeMove);
             document.addEventListener("mouseup", handleResizeEnd);
+
+            setTimeout(evaluateResizeStart, 100);
         },
-        [targetRef]
+        [targetRef, onResizeEarlyStart, evaluateResizeStart]
     );
 
     const handleResizeMove = useCallback(
@@ -92,10 +104,12 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     );
 
     return (
-        <>
-            {children}
-            <Box sx={ResizeHandleSx} onMouseDown={onResizeStart} />
-        </>
+        <Box
+            sx={ResizeHandleSx}
+            onMouseDown={handleResizeStart}
+            // ...
+            onClick={stopPropagation}
+        />
     );
 };
 
