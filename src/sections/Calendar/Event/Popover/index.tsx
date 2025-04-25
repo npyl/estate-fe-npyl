@@ -2,7 +2,7 @@ import getBorderColor from "@/theme/borderColor";
 import { forwardRef, ReactNode, useCallback, useImperativeHandle } from "react";
 import usePopoverPosition from "./usePopperControl";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
-import { Z_INDEX } from "@/constants/config";
+import { Z_INDEX } from "@/constants/calendar";
 import { State } from "@popperjs/core";
 
 const PaperSx: SxProps<Theme> = {
@@ -16,7 +16,7 @@ const PaperSx: SxProps<Theme> = {
 
 const PopperSx: SxProps<Theme> = {
     m: 1,
-    zIndex: Z_INDEX.POPOVER,
+    zIndex: Z_INDEX.HEADER + 1,
 };
 
 interface EventPopperRef {
