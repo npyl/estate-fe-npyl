@@ -138,12 +138,6 @@ const useMachine = (
                             );
                             if (!ok) return;
 
-                            const el = document.getElementById(ce.id);
-                            if (!el) return;
-
-                            rendererRef.current?.updatePopperPosition(el);
-
-                            rendererRef.current?.showPopper();
                             break;
                         case STATES.POPPER_CREATE:
                             rendererRef.current?.updateDates(
@@ -152,6 +146,13 @@ const useMachine = (
                             );
                             break;
                     }
+
+                    // TODO: support create... (eg. id PPCalendarEventCreate)
+                    // const el = document.getElementById(ce.id);
+                    // if (!el) return;
+                    // rendererRef.current?.updatePopperPosition(el);
+
+                    rendererRef.current?.showPopper();
                 },
 
                 ResizeStart: () => {},

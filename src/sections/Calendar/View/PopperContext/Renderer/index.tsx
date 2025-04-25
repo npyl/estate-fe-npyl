@@ -45,7 +45,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
               ? createPopperRef
               : undefined;
         target?.current?.show();
-    }, []);
+    }, [event, startDate]);
 
     const hidePopper = useCallback(() => {
         const target = event
@@ -55,7 +55,7 @@ const Renderer = forwardRef<RendererRef, RendererProps>(({ onClose }, ref) => {
               : undefined;
 
         target?.current?.hide();
-    }, []);
+    }, [event, startDate]);
 
     //
     //  Refresh Position

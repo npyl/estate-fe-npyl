@@ -39,7 +39,7 @@ const useDraggable = (
         gridRef.current = el;
     }, []);
 
-    // INFO: if after 300ms we are still dragging (a.k.a. it wasn't a click) fire the onEventDragStart event
+    // INFO: if after 100ms we are still dragging (a.k.a. it wasn't a click) fire the onEventDragStart event
     const evaluateDragStart = useCallback(() => {
         if (!dragInfo.current.isDragging) return;
         onEventDragStart?.();
@@ -130,8 +130,6 @@ const useDraggable = (
 
                     if (!startDate || !endDate) return;
 
-                    console.log("UPDATE...");
-
                     onEventDragEnd?.(event, startDate, endDate);
 
                     return;
@@ -168,7 +166,7 @@ const useDraggable = (
             document.addEventListener("mouseup", handleMouseUp, true);
 
             dragInfo.current.isDragging = true;
-            setTimeout(evaluateDragStart, 300);
+            setTimeout(evaluateDragStart, 100);
         },
         [handleMouseMove, handleMouseUp, evaluateDragStart]
     );

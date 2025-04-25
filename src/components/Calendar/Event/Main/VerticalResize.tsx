@@ -40,7 +40,7 @@ const VerticalResize: FC<VerticalResizeProps> = ({
     const startYRef = useRef(0);
     const startHeightRef = useRef(0);
 
-    // INFO: if after 300ms we are still resizing (a.k.a. it wasn't a click) fire the onResizeStart event
+    // INFO: if after 100ms we are still resizing (a.k.a. it wasn't a click) fire the onResizeStart event
     const evaluateResizeStart = useCallback(() => {
         if (!isResizing.current) return;
         onResizeStart?.();
@@ -60,7 +60,7 @@ const VerticalResize: FC<VerticalResizeProps> = ({
             document.addEventListener("mousemove", handleResizeMove);
             document.addEventListener("mouseup", handleResizeEnd);
 
-            setTimeout(evaluateResizeStart, 300);
+            setTimeout(evaluateResizeStart, 100);
         },
         [targetRef, evaluateResizeStart]
     );
