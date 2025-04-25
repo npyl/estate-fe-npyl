@@ -12,7 +12,7 @@ const getEvent = <T>(name: string, detail: T) =>
 // --------------------------------------------------------------------------------
 
 const getUseDispatcher =
-    <T>(name: string, targetRef: RefObject<HTMLDivElement | null>) =>
+    <T>(name: string, targetRef: RefObject<HTMLElement | null>) =>
     () => {
         const dispatch = useCallback((v: T) => {
             const el = targetRef.current || window.document.body;
@@ -23,15 +23,9 @@ const getUseDispatcher =
     };
 
 const getUseListener =
-    <T>(
-        name: string,
-        targetRef: RefObject<HTMLDivElement | null>,
-        cb: TCb<T>
-    ) =>
+    <T>(name: string, targetRef: RefObject<HTMLElement | null>, cb: TCb<T>) =>
     () => {
         useLayoutEffect(() => {
-            console.log("LISTENING TO: ", targetRef.current);
-
             const el = targetRef.current || window.document.body;
 
             el.addEventListener(name, cb);
@@ -46,7 +40,7 @@ const getUseListener =
 const useCustomEvent = <T>(
     name: string,
     cb: TCb<T>,
-    targetRef: RefObject<HTMLDivElement | null>
+    targetRef: RefObject<HTMLElement | null>
 ) => {
     const useDispatcher = useMemo(
         () => getUseDispatcher<T>(name, targetRef),

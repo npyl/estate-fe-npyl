@@ -69,7 +69,13 @@ const Tester = () => {
     const [useDispatcher0] = useEvent({});
     const d0 = useDispatcher0();
 
-    const targetRef = useRef<HTMLDivElement>(null);
+    const targetRef = useRef<HTMLDivElement | null>(null);
+    const [isOpen, setOpen] = useState(false);
+    const onRef = useCallback((el: HTMLDivElement | null) => {
+        if (!el) return;
+        targetRef.current = el;
+        setOpen(true);
+    }, []);
     const [useDispatcher1] = useEvent({ targetRef });
     const d1 = useDispatcher1();
 
@@ -83,8 +89,8 @@ const Tester = () => {
 
             <Listener0 />
 
-            <div ref={targetRef}>
-                <Listener1 targetRef={targetRef} />
+            <div ref={onRef}>
+                {isOpen ? <Listener1 targetRef={targetRef} /> : null}
             </div>
         </div>
     );
