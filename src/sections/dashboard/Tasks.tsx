@@ -14,10 +14,10 @@ import { IKanbanCardShort } from "@/types/tasks";
 const IDashboardTaskToCardShort = (t: IDashboardTask): IKanbanCardShort => ({
     ...t,
     assignees: [],
-    attachmentsCount: 0,
+    attachmentsCount: t.attachmentCount,
     commentsCount: t.commentsCount,
     completed: false,
-    labels: [],
+    labels: t.labels,
     column: -1,
 });
 

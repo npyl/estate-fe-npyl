@@ -30,6 +30,7 @@ interface IDashboardTask {
     createdAt: string;
     updatedAt: string;
     labels: IKanbanCardLabels[];
+    attachmentCount: number;
 }
 
 interface PropertiesDistribution {

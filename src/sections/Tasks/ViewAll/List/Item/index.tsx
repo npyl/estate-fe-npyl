@@ -23,6 +23,10 @@ import { IDashboardTask } from "@/types/dashboard";
 import ColumnLabel from "./ColumnNameLabel";
 import Link from "@/components/Link";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
+import LabelImportantOutlinedIcon from "@mui/icons-material/LabelImportantOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import GoogleCalendarIcon from "@/assets/GoogleCalendar";
+import { usePathname } from "next/navigation";
 
 const chipStyles: SxProps<Theme> = {
     backgroundColor: "rgba(0, 0, 0, 0.05) !important",
@@ -47,16 +51,19 @@ const taskNameSx: SxProps<Theme> = {
     maxWidth: "100%",
 };
 
+const iconsSx: SxProps<Theme> = {
+    width: 16,
+    height: 16,
+    color: "text.secondary",
+};
 const getItemSx = (priority: number): SxProps<Theme> => ({
     display: "flex",
     flexDirection: "row",
-
     p: 1,
     bgcolor: "background.paper",
     border: "1px solid",
     borderColor: "divider",
     alignItems: "center",
-
     position: "relative",
     cursor: "pointer",
     borderLeft: "3px solid",
@@ -81,6 +88,8 @@ interface ItemProps {
 
 const Item: FC<ItemProps> = ({ c }) => {
     const { t, i18n } = useTranslation();
+    const pathname = usePathname();
+    const isTasksPage = pathname.includes("tasks");
 
     const isLargeScreen = useMediaQuery("(min-width:1900px)");
 
@@ -141,7 +150,7 @@ const Item: FC<ItemProps> = ({ c }) => {
             )}
             <PriorityLabel
                 position="absolute"
-                left={isLargeScreen ? "59%" : "58%"}
+                left={isLargeScreen ? "59%" : "57%"}
                 priority={c?.priority}
                 display={{
                     xs: "none",
@@ -152,7 +161,7 @@ const Item: FC<ItemProps> = ({ c }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={isLargeScreen ? "68%" : "66%"}
+                left={isLargeScreen ? "68%" : "64.5%"}
                 position="absolute"
             >
                 <UpdatedAtIcon />
@@ -167,21 +176,33 @@ const Item: FC<ItemProps> = ({ c }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={isLargeScreen ? "84%" : "82%"}
+                left={isLargeScreen ? "82%" : "80.5%"}
                 position="absolute"
             >
-                <Tooltip
-                    placement="top"
-                    title={t("Total Comments for this task")}
-                >
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <CommentIcon />
+                <Box display="flex" alignItems="center" gap={0.6}>
+                    {/* Comments */}
+                    <CommentIcon />
 
-                        <Typography variant="body2">
-                            {c.commentsCount}
-                        </Typography>
-                    </Box>
-                </Tooltip>
+                    <Typography variant="body2">{c.commentsCount}</Typography>
+                    {/* Attachments */}
+                    <AttachFileOutlinedIcon sx={iconsSx} />
+                    <Typography variant="body2">
+                        {isTasksPage
+                            ? (c as IKanbanCardShort).attachmentsCount
+                            : (c as IDashboardTask).attachmentCount}{" "}
+                    </Typography>
+                    {/* Labels */}
+                    <LabelImportantOutlinedIcon sx={iconsSx} />
+                    <Typography variant="body2">{c.labels.length}</Typography>
+                    {/* Calendar Icon */}
+                    {c.event !== "" ? (
+                        <GoogleCalendarIcon
+                            sx={{
+                                fontSize: 27,
+                            }}
+                        />
+                    ) : null}
+                </Box>
             </Stack>
             <Stack
                 direction="row"
