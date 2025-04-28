@@ -27,6 +27,8 @@ import LabelImportantOutlinedIcon from "@mui/icons-material/LabelImportantOutlin
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import GoogleCalendarIcon from "@/assets/GoogleCalendar";
 import { usePathname } from "next/navigation";
+import LabelTooltip from "./LabelTooltip";
+import InfoTooltipBox from "./InfoTooltipBox";
 
 const chipStyles: SxProps<Theme> = {
     backgroundColor: "rgba(0, 0, 0, 0.05) !important",
@@ -129,23 +131,7 @@ const Item: FC<ItemProps> = ({ c }) => {
             </Stack>
             {c.labels && c.labels.length > 0 && (
                 <Box position="absolute" left={isLargeScreen ? "43%" : "41%"}>
-                    {c.labels.slice(0, 1).map((label) => (
-                        <Chip
-                            key={label.id}
-                            label={
-                                <Box display="flex" alignItems="center" gap={1}>
-                                    <Box
-                                        sx={{
-                                            ...colorCircleStyles,
-                                            backgroundColor: label.color,
-                                        }}
-                                    />
-                                    {label.name}
-                                </Box>
-                            }
-                            sx={chipStyles}
-                        />
-                    ))}
+                    <LabelTooltip labels={c.labels} chipStyles={chipStyles} />
                 </Box>
             )}
             <PriorityLabel
@@ -179,30 +165,44 @@ const Item: FC<ItemProps> = ({ c }) => {
                 left={isLargeScreen ? "82%" : "80.5%"}
                 position="absolute"
             >
-                <Box display="flex" alignItems="center" gap={0.6}>
-                    {/* Comments */}
-                    <CommentIcon />
+                {/* Comments */}
+                <InfoTooltipBox
+                    title={t("Total Comments for this task")}
+                    icon={<CommentIcon />}
+                    value={c.commentsCount}
+                />
 
-                    <Typography variant="body2">{c.commentsCount}</Typography>
-                    {/* Attachments */}
-                    <AttachFileOutlinedIcon sx={iconsSx} />
-                    <Typography variant="body2">
-                        {isTasksPage
+                {/* Attachments */}
+                <InfoTooltipBox
+                    title={t("Total Attachments for this task")}
+                    icon={<AttachFileOutlinedIcon sx={iconsSx} />}
+                    value={
+                        isTasksPage
                             ? (c as IKanbanCardShort).attachmentsCount
-                            : (c as IDashboardTask).attachmentCount}{" "}
-                    </Typography>
-                    {/* Labels */}
-                    <LabelImportantOutlinedIcon sx={iconsSx} />
-                    <Typography variant="body2">{c.labels.length}</Typography>
-                    {/* Calendar Icon */}
-                    {c.event !== "" ? (
-                        <GoogleCalendarIcon
-                            sx={{
-                                fontSize: 27,
-                            }}
-                        />
-                    ) : null}
-                </Box>
+                            : (c as IDashboardTask).attachmentCount
+                    }
+                />
+                {/* Tasks */}
+                <InfoTooltipBox
+                    title={t("Total Labels for this task")}
+                    icon={<LabelImportantOutlinedIcon sx={iconsSx} />}
+                    value={c.labels.length}
+                />
+                {/* Calendar Icon */}
+                {c.event !== "" ? (
+                    <>
+                        <Tooltip
+                            title={t("Calendar connected task")}
+                            placement="top"
+                        >
+                            <GoogleCalendarIcon
+                                sx={{
+                                    fontSize: 27,
+                                }}
+                            />
+                        </Tooltip>
+                    </>
+                ) : null}
             </Stack>
             <Stack
                 direction="row"
