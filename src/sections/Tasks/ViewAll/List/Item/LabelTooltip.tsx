@@ -1,4 +1,3 @@
-// LabelTooltip.tsx
 import { Box, Chip, SxProps, Theme, Tooltip, Typography } from "@mui/material";
 import { FC } from "react";
 

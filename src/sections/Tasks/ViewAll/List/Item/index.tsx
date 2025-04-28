@@ -39,13 +39,6 @@ const chipStyles: SxProps<Theme> = {
     borderRadius: "16px",
 };
 
-const colorCircleStyles: SxProps<Theme> = {
-    width: 10,
-    height: 10,
-    borderRadius: "50%",
-    display: "inline-block",
-};
-
 const taskNameSx: SxProps<Theme> = {
     whiteSpace: "nowrap !important",
     overflow: "hidden !important",

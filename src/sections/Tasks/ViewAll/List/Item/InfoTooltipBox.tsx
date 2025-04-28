@@ -9,8 +9,19 @@ interface InfoTooltipBoxProps {
 
 const InfoTooltipBox: FC<InfoTooltipBoxProps> = ({ title, icon, value }) => (
     <Tooltip title={title} placement="top">
-        <Box display="flex" flexDirection="row" alignItems="center" gap={0.6}>
-            {icon}
+        <Box display="flex" flexDirection="row" alignItems="center" gap={0.5}>
+            <Box
+                component="span"
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 16,
+                    height: 16,
+                }}
+            >
+                {icon}
+            </Box>
             <Typography variant="body2">{value}</Typography>
         </Box>
     </Tooltip>
