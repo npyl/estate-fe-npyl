@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
 import { useGetDashboardQuery } from "@/services/dashboard";
 import { IUserDetails } from "@/types/dashboard";
-import { alpha, Box, SxProps, Theme } from "@mui/material";
+import { alpha, Box, Grid, SxProps, Theme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -26,6 +26,9 @@ const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => {
                 px={1}
                 sx={{
                     cursor: "pointer",
+                    width: "110px",
+                    textWrap: "nowrap",
+                    textAlign: "center",
                     "&:hover": { opacity: 0.8 },
                 }}
             >
@@ -60,7 +63,6 @@ const PropertiesProgress: FC<PropertiesProgressProps> = ({
     return (
         <Stack
             direction="row"
-            width="25%"
             spacing={1}
             alignItems="center"
             sx={{ cursor: "pointer", "&:hover": { opacity: 0.8 } }}
@@ -139,23 +141,45 @@ const UserRowSx: SxProps<Theme> = {
 interface UserRowProps {
     u: IUserDetails;
     propertiesCount: number;
+    activeProperties?: number;
+    inactiveProperties?: number;
+    customers: number;
 }
 
-const UserRow: FC<UserRowProps> = ({ u, propertiesCount }) => (
-    <Stack
-        width={1}
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        px={1}
-        sx={UserRowSx}
-    >
-        <User u={u} />
-
-        <TasksCount count={u?.activeTasks} assignee={u?.id} />
-
-        <PropertiesProgress count={propertiesCount} assignee={u?.id} />
-    </Stack>
+const UserRow: FC<UserRowProps> = ({
+    u,
+    propertiesCount,
+    activeProperties,
+    inactiveProperties,
+    customers,
+}) => (
+    <Grid container alignItems="center" px={1} sx={UserRowSx}>
+        <Grid item xs={2.7}>
+            <User u={u} />
+        </Grid>
+        <Grid item xs={1.3}>
+            <TasksCount count={u?.activeTasks} assignee={u?.id} />
+        </Grid>
+        <Grid item xs={1}>
+            <Typography textAlign="center">{propertiesCount}</Typography>
+        </Grid>
+        <Grid item xs={1}>
+            <Typography textAlign="center">
+                {activeProperties ?? "-"}
+            </Typography>
+        </Grid>
+        <Grid item xs={1}>
+            <Typography textAlign="center">
+                {inactiveProperties ?? "-"}
+            </Typography>
+        </Grid>
+        <Grid item xs={1}>
+            <Typography textAlign="center">{customers ?? "-"}</Typography>
+        </Grid>
+        <Grid item xs={4}>
+            <PropertiesProgress count={propertiesCount} assignee={u?.id} />
+        </Grid>
+    </Grid>
 );
 
 // -----------------------------------------------------------------------------------
@@ -163,32 +187,100 @@ const UserRow: FC<UserRowProps> = ({ u, propertiesCount }) => (
 interface UserRow {
     properties: number;
     userDetails: IUserDetails;
+    activeProperties: number;
+    inactiveProperties: number;
+    customers: number;
 }
 
-const getUserRow = ({ properties, userDetails }: UserRow) => (
+const getUserRow = ({
+    properties,
+    userDetails,
+    activeProperties,
+    inactiveProperties,
+    customers,
+}: UserRow) => (
     <UserRow
         key={userDetails.id}
         u={userDetails}
         propertiesCount={properties}
+        activeProperties={activeProperties}
+        inactiveProperties={inactiveProperties}
+        customers={customers}
     />
 );
 
 // -----------------------------------------------------------------------------------
 
-const Head = () => {
+interface HeadProps {
+    totalTasks: number;
+    totalProperties: number;
+}
+
+const Head: FC<HeadProps> = ({ totalTasks, totalProperties }) => {
     const { t } = useTranslation();
     return (
-        <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            p={1}
-            py={2}
-        >
-            <Typography width="20%">{t("Users")}</Typography>
-            <Typography>{t("Active Tasks")}</Typography>
-            <Typography width="25%">{t("Total Properties")}</Typography>
-        </Stack>
+        <Grid container alignItems="center" spacing={1} p={1} py={2}>
+            <Grid item xs={2.7}>
+                <Typography variant="subtitle2" fontWeight={"bold"}>
+                    {t("Users")}
+                </Typography>{" "}
+            </Grid>
+            <Grid item xs={1.3}>
+                <Typography
+                    variant="subtitle2"
+                    textAlign="left"
+                    fontWeight={600}
+                >
+                    {t("Tasks")} ({totalTasks})
+                </Typography>
+            </Grid>
+            <Grid item xs={1}>
+                <Typography
+                    variant="subtitle2"
+                    textAlign="center"
+                    fontWeight={600}
+                    sx={{ textWrap: "nowrap" }}
+                >
+                    {t("Properties")} ({totalProperties})
+                </Typography>
+            </Grid>
+            <Grid item xs={1}>
+                <Typography
+                    variant="subtitle2"
+                    textAlign="center"
+                    fontWeight={600}
+                >
+                    {t("Active")}{" "}
+                </Typography>
+            </Grid>
+            <Grid item xs={1}>
+                <Typography
+                    variant="subtitle2"
+                    textAlign="center"
+                    fontWeight={600}
+                >
+                    {t("Inactive")}
+                </Typography>
+            </Grid>
+            <Grid item xs={1}>
+                <Typography
+                    variant="subtitle2"
+                    textAlign="center"
+                    fontWeight={600}
+                >
+                    {t("Customers")}
+                </Typography>
+            </Grid>
+            <Grid item xs={4}>
+                <Typography
+                    variant="subtitle2"
+                    textAlign="left"
+                    fontWeight={600}
+                >
+                    {t("Attribution")}
+                </Typography>
+            </Grid>
+        </Grid>
     );
 };
 
@@ -197,16 +289,35 @@ const UserDetailList = () => {
 
     const users = useMemo(
         () =>
-            data?.propertiesPerUserList?.map(({ userDetails, properties }) => ({
-                properties,
-                userDetails,
-            })),
+            data?.propertiesPerUserList?.map(
+                ({
+                    userDetails,
+                    properties,
+                    activeProperties,
+                    inactiveProperties,
+                    customers,
+                }) => ({
+                    properties,
+                    activeProperties,
+                    inactiveProperties,
+                    userDetails,
+                    customers,
+                })
+            ),
         [data?.propertiesPerUserList]
     );
-
+    const totalTasks = useMemo(() => {
+        return (
+            data?.propertiesPerUserList?.reduce(
+                (sum, user) => sum + (user.userDetails.activeTasks || 0),
+                0
+            ) ?? 0
+        );
+    }, [data?.propertiesPerUserList]);
+    const totalProperties = data?.totalProperties ?? 0;
     return (
         <Paper variant="outlined">
-            <Head />
+            <Head totalTasks={totalTasks} totalProperties={totalProperties} />
             {users?.map(getUserRow)}
         </Paper>
     );

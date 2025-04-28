@@ -123,7 +123,7 @@ const resources = {
 
             ID: "ID",
             Properties: "Properties",
-
+            Attribution: "Attribution",
             Dashboard: "Dashboard",
             Notifications: "Notifications",
             Mail: "Mail",
@@ -1771,6 +1771,7 @@ const resources = {
 
             ID: "Κωδικός Ακινήτου",
             Properties: "Ακίνητα",
+            Attribution: "Απόδοση",
             Notifications: "Ενημερώσεις",
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",

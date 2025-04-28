@@ -49,6 +49,9 @@ interface PropertiesPerUserList {
     properties: number;
     user: string;
     userDetails: IUserDetails;
+    activeProperties: number;
+    inactiveProperties: number;
+    customers: number;
 }
 
 export type {
