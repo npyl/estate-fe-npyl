@@ -10,6 +10,8 @@ const CONTENT_CLASSNAME = "pp-message-content";
 const AVATAR_CLASSNAME = "pp-message-avatar";
 const FULLNAME_CLASSNAME = "pp-message-fullname";
 
+const getNoteId = (id: number) => `PPNote-${id}`;
+
 interface NoteProps extends StackProps {
     note: INote;
     onRemove: VoidFunction;
@@ -24,7 +26,12 @@ const Note: FC<NoteProps> = ({ note, onRemove, className = "", ...props }) => {
     const fullClassName = `${NOTE_CLASSNAME} user-${creator.id} ${className}`;
 
     return (
-        <Stack className={fullClassName} width={1} {...props}>
+        <Stack
+            id={getNoteId(note.id)}
+            className={fullClassName}
+            width={1}
+            {...props}
+        >
             <Stack direction="row" spacing={1} alignItems="center">
                 <Avatar
                     className={AVATAR_CLASSNAME}
@@ -53,6 +60,7 @@ const Note: FC<NoteProps> = ({ note, onRemove, className = "", ...props }) => {
 };
 
 export {
+    getNoteId,
     NOTE_CLASSNAME,
     CONTENT_CLASSNAME,
     AVATAR_CLASSNAME,

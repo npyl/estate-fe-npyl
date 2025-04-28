@@ -10,12 +10,15 @@ const useNotes = (
     onRemove: (idx: number) => void
 ) => {
     return useMemo(() => {
+        const ids: number[] = [];
         const seen = new Set<string>();
         let lastUserId: number | null = null;
 
-        return notes.map((note, idx) => {
+        const NOTES = notes.map((note, idx) => {
             const userId = note.creator.id;
             const propertyCode = note.propertyCode;
+
+            ids.push(note.id);
 
             // Check if this is the first occurrence of a property
             const isFirstProperty = propertyCode && !seen.has(propertyCode);
@@ -72,6 +75,8 @@ const useNotes = (
                 />
             );
         });
+
+        return [NOTES, ids] as const;
     }, [notes, chip]);
 };
 

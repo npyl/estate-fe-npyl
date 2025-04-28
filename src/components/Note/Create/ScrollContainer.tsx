@@ -1,28 +1,36 @@
 import Stack, { StackProps } from "@mui/material/Stack";
 import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
-import sleep from "@/utils/sleep";
+import { getNoteId } from "../Note";
+
+const CUSHION_OFFSET = 10;
 
 interface ScrollContainerRef {
-    scroll: VoidFunction;
+    scroll: (id: number) => void;
 }
 
 const ScrollContainer = forwardRef<ScrollContainerRef, StackProps>(
     ({ children, ...props }, ref) => {
         const containerRef = useRef<HTMLDivElement>(null);
 
-        const scroll = useCallback(async () => {
+        const scroll = useCallback(async (id: number) => {
             if (!containerRef.current) return;
 
-            // Wait for rerenders to finish
-            await sleep(100);
+            const el = document.getElementById(getNoteId(id));
+            if (!el) return;
 
-            // Direct DOM manipulation approach - this should work in any browser
-            const container = containerRef.current;
+            // INFO: calculate the element's position relative to the scroll container
+            const containerRect = containerRef.current.getBoundingClientRect();
+            const elementRect = el.getBoundingClientRect();
+            const top =
+                elementRect.top -
+                containerRect.top +
+                containerRef.current.scrollTop -
+                CUSHION_OFFSET;
 
-            // Check if we need to scroll
-            if (container.scrollHeight <= container.clientHeight) return;
-
-            container.scrollTop = container.scrollHeight;
+            containerRef.current.scrollTo({
+                top,
+                behavior: "smooth",
+            });
         }, []);
 
         useImperativeHandle(ref, () => ({ scroll }), [scroll]);

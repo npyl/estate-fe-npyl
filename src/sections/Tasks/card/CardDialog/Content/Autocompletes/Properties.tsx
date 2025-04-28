@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 import { useGetOwnersMutation } from "@/services/properties";
-import getDiffedIds from "./getDiffedIds";
+import getDiffedIds from "@/utils/getDiffedIds";
 
 const PropertiesAutocomplete = () => {
     const { t } = useTranslation();

@@ -4,7 +4,7 @@ import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerM
 import { useGetOwnedPropertiesMutation } from "@/services/customers";
 import { useFormContext } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
-import getDiffedIds from "./getDiffedIds";
+import getDiffedIds from "@/utils/getDiffedIds";
 
 const CustomerAutocomplete = () => {
     const { t } = useTranslation();

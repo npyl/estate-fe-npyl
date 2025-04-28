@@ -3,10 +3,11 @@ import AddNote from "../AddNote";
 import { INote } from "src/types/note";
 import { useTranslation } from "react-i18next";
 import Panel from "../../Panel";
-import { FC, useCallback, useRef } from "react";
+import { FC, useRef } from "react";
 import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
 import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "../Note";
 import useNotes from "./useNotes";
+import useOnAddEffect from "./useOnAddEffect";
 
 const ContainerSx: SxProps<Theme> = {
     "& > *": { margin: "0 !important" },
@@ -64,16 +65,10 @@ const NoteCreate: FC<INoteCreate> = ({
     const { t } = useTranslation();
     const scrollRef = useRef<ScrollContainerRef>(null);
 
-    const NOTES = useNotes(notes, chip, onRemove);
-
-    const handleAdd = useCallback(
-        async (m: string) => {
-            const ok = await onAdd(m);
-            if (!ok) return;
-            scrollRef.current?.scroll();
-        },
-        [onAdd]
-    );
+    const [NOTES, ids] = useNotes(notes, chip, onRemove);
+    useOnAddEffect(ids, (id) => {
+        scrollRef.current?.scroll(id);
+    });
 
     return (
         <Panel label={t("Notes")} headerSx={{ boxShadow: 3 }}>
@@ -87,7 +82,7 @@ const NoteCreate: FC<INoteCreate> = ({
             >
                 {NOTES}
             </ScrollContainer>
-            <AddNote onAdd={handleAdd} />
+            <AddNote onAdd={onAdd} />
         </Panel>
     );
 };
