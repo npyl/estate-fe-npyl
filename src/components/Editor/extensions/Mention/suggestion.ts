@@ -1,26 +1,10 @@
 import type { MentionOptions } from "@tiptap/extension-mention";
 import { ReactRenderer } from "@tiptap/react";
-import { createPopper, Instance as PopperInstance } from "@popperjs/core";
 import SuggestionList, { type SuggestionListRef } from "./SuggestionList";
 
 export type MentionSuggestion = {
     id: string;
     mentionLabel: string;
-};
-
-// Default DOMRect for positioning fallback
-const DOM_RECT_FALLBACK: DOMRect = {
-    bottom: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-    x: 0,
-    y: 0,
-    toJSON() {
-        return {};
-    },
 };
 
 const suggestion: MentionOptions["suggestion"] = {
@@ -67,8 +51,6 @@ const suggestion: MentionOptions["suggestion"] = {
 
     render: () => {
         let component: ReactRenderer<SuggestionListRef>;
-        let popperInstance: PopperInstance;
-        let virtualReference: { getBoundingClientRect: () => DOMRect };
 
         return {
             onStart: (props) => {
@@ -78,37 +60,13 @@ const suggestion: MentionOptions["suggestion"] = {
                     editor: props.editor,
                 });
 
-                // Create virtual reference for positioning
-                virtualReference = {
-                    getBoundingClientRect: () =>
-                        props.clientRect?.() ?? DOM_RECT_FALLBACK,
-                };
-
                 // Append to DOM and setup popper
                 document.body.appendChild(component.element);
-
-                popperInstance = createPopper(
-                    virtualReference,
-                    component.element as HTMLElement,
-                    {
-                        placement: "bottom-start",
-                        modifiers: [
-                            { name: "offset", options: { offset: [0, 8] } },
-                            {
-                                name: "preventOverflow",
-                                options: { padding: 8 },
-                            },
-                        ],
-                    }
-                );
             },
 
             onUpdate(props) {
-                // Update props and position
                 component?.updateProps(props);
-                virtualReference.getBoundingClientRect = () =>
-                    props.clientRect?.() ?? DOM_RECT_FALLBACK;
-                popperInstance?.update();
+                // TODO: not sure if this needs a popperRef.current?.update() call
             },
 
             onKeyDown(props) {
@@ -121,7 +79,6 @@ const suggestion: MentionOptions["suggestion"] = {
 
             onExit() {
                 // Clean up
-                popperInstance?.destroy();
                 component?.element?.remove();
                 component?.destroy();
             },

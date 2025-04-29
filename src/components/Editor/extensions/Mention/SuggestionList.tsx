@@ -1,9 +1,24 @@
-import { List, ListItem, ListItemButton, Paper } from "@mui/material";
+import { List, ListItem, ListItemButton, Paper, Popper } from "@mui/material";
 import type { SuggestionOptions, SuggestionProps } from "@tiptap/suggestion";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import type { MentionSuggestion } from "./suggestion";
 
-export type SuggestionListRef = {
+// Default DOMRect for positioning fallback
+const DOM_RECT_FALLBACK: DOMRect = {
+    bottom: 0,
+    height: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+    width: 0,
+    x: 0,
+    y: 0,
+    toJSON() {
+        return {};
+    },
+};
+
+type SuggestionListRef = {
     // For convenience using this SuggestionList from within the
     // mentionSuggestionOptions, we'll match the signature of SuggestionOptions's
     // `onKeyDown` returned in its `render` function
@@ -23,7 +38,7 @@ interface MentionNodeAttrs {
     label?: string | null;
 }
 
-export type SuggestionListProps = SuggestionProps<MentionSuggestion>;
+type SuggestionListProps = SuggestionProps<MentionSuggestion>;
 
 const SuggestionList = forwardRef<SuggestionListRef, SuggestionListProps>(
     (props, ref) => {
@@ -99,39 +114,58 @@ const SuggestionList = forwardRef<SuggestionListRef, SuggestionListProps>(
             },
         }));
 
-        return props.items.length > 0 ? (
-            <Paper
-                elevation={5}
-                sx={{
-                    // Set styles for the popup container
-                    zIndex: 1000, // Ensure it appears above other elements
-                }}
+        const virtualReference = {
+            getBoundingClientRect: () =>
+                props.clientRect?.() ?? DOM_RECT_FALLBACK,
+        };
+
+        return (
+            <Popper
+                open
+                anchorEl={virtualReference}
+                placement="bottom-start"
+                modifiers={[
+                    { name: "offset", options: { offset: [0, 8] } },
+                    {
+                        name: "preventOverflow",
+                        options: { padding: 8 },
+                    },
+                ]}
             >
-                <List
-                    dense
+                <Paper
+                    elevation={5}
                     sx={{
-                        // In case there are contiguous stretches of long text that can't wrap:
-                        overflow: "hidden",
-                        maxHeight: "300px",
-                        overflowY: "auto",
+                        // Set styles for the popup container
+                        zIndex: 1000, // Ensure it appears above other elements
                     }}
                 >
-                    {props.items.map((item, index) => (
-                        <ListItem key={item.id} disablePadding>
-                            <ListItemButton
-                                selected={index === selectedIndex}
-                                onClick={() => selectItem(index)}
-                            >
-                                {item.mentionLabel}
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Paper>
-        ) : null;
+                    <List
+                        dense
+                        sx={{
+                            // In case there are contiguous stretches of long text that can't wrap:
+                            overflow: "hidden",
+                            maxHeight: "300px",
+                            overflowY: "auto",
+                        }}
+                    >
+                        {props.items.map((item, index) => (
+                            <ListItem key={item.id} disablePadding>
+                                <ListItemButton
+                                    selected={index === selectedIndex}
+                                    onClick={() => selectItem(index)}
+                                >
+                                    {item.mentionLabel}
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
+            </Popper>
+        );
     }
 );
 
 SuggestionList.displayName = "SuggestionList";
 
+export type { SuggestionListRef };
 export default SuggestionList;
