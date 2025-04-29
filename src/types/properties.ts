@@ -49,7 +49,7 @@ export interface IPropertyResultResponse {
     bathrooms?: number;
 }
 
-export interface IPropertyFilter {
+interface IPropertyFilter {
     locationSearch?: string;
     filterName?: string;
     location?: ILocation;
@@ -85,6 +85,8 @@ export interface IPropertyFilter {
 
     [key: string]: any;
 }
+
+type TPropertyFilterExtended = IPropertyFilter & { sorting: string };
 
 interface IPropertyFilterExtras {
     student: boolean;
@@ -508,4 +510,12 @@ interface IPropertyCodeRes {
     parentCategory: ParentCategory;
 }
 
-export type { IPropertyCodeRes, IPropertyFilterExtras, IPropertyReq };
+export type {
+    IPropertyCodeRes,
+    // ...
+    IPropertyFilter,
+    TPropertyFilterExtended,
+    IPropertyFilterExtras,
+    // ...
+    IPropertyReq,
+};

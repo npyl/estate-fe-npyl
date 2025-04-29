@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { NoteCreate } from "src/components/Note";
 import {
     useAddNoteToPropertyWithIdMutation,
@@ -19,8 +19,16 @@ const NotesSection: React.FC<any> = () => {
     const [addNote] = useAddNoteToPropertyWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
 
-    const handleAddNote = (message: string) =>
-        addNote({ id: +propertyId!, dataToSend: { content: message } });
+    const handleAddNote = useCallback(
+        async (content: string) => {
+            const res = await addNote({
+                id: +propertyId!,
+                dataToSend: { content },
+            });
+            return !("error" in res);
+        },
+        [propertyId]
+    );
 
     const hadleRemove = (index: number) =>
         notes && notes[index].id && deleteNote(notes[index].id!);

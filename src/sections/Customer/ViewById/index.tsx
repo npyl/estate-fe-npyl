@@ -69,15 +69,17 @@ const ViewById = () => {
                     <Grid item xs={12} lg={6}>
                         <Information />
                     </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <Grid container direction="column" spacing={1}>
-                            <Grid item>
-                                <Address />
-                            </Grid>
-                            <Grid item>
-                                <Notes />
-                            </Grid>
-                        </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        lg={6}
+                        // ...
+                        display="flex"
+                        flexDirection="column"
+                        gap={1}
+                    >
+                        <Address />
+                        <Notes />
                     </Grid>
                 </Grid>
             ),

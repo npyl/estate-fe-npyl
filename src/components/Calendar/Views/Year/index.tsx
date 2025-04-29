@@ -16,6 +16,10 @@ const Year: FC<CalendarYearViewProps> = ({
     getCellEvents = _getTodaysEvents,
     getMiscCellEvents = _getMiscCellEvents,
     onEventClick,
+    onEventDragStart: _1,
+    onEventDragEnd: _2,
+    onEventResizeStart: _3,
+    onEventResizeEnd: _4,
     // ...
     ...props
 }) => {

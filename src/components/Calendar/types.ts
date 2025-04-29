@@ -78,26 +78,42 @@ type TCalendarEvent = {
 // ------------------------------------------------------------------------
 
 type TOnEventClick = (
-    ce: TCalendarEvent,
-    me: MouseEvent<HTMLDivElement>
+    me: MouseEvent<HTMLDivElement>,
+    ce: TCalendarEvent
 ) => void;
 
+type TOnEventDragStart = VoidFunction;
 type TOnEventDragEnd = (
-    e: TCalendarEvent,
+    ce: TCalendarEvent,
     startDate: string,
     endDate: string
 ) => void;
-type TOnEventResizeEnd = (e: TCalendarEvent, h: number) => void;
+type TOnEventDragEndAsync = (
+    ce: TCalendarEvent,
+    startDate: string,
+    endDate: string
+) => Promise<boolean>;
 
-interface CalendarCellProps extends BaseCalendarCellProps {
-    events: TCalendarEvent[];
+type TOnEventResizeStart = VoidFunction;
+type TOnEventResizeEnd = (ce: TCalendarEvent, h: number) => void;
+type TOnEventResizeEndAsync = (
+    ce: TCalendarEvent,
+    h: number
+) => Promise<boolean>;
 
+type TCalendarEventEvents = {
     onEventClick?: TOnEventClick;
+    onEventDragStart?: TOnEventDragStart;
     onEventDragEnd?: TOnEventDragEnd;
+    onEventResizeStart?: TOnEventResizeStart;
     onEventResizeEnd?: TOnEventResizeEnd;
+};
 
-    getMiscCellEvents: TGetMiscCellEventsCb;
-}
+type CalendarCellProps = BaseCalendarCellProps &
+    TCalendarEventEvents & {
+        events: TCalendarEvent[];
+        getMiscCellEvents: TGetMiscCellEventsCb;
+    };
 
 interface CalendarNumberingProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -108,7 +124,7 @@ interface CalendarViewProps extends BaseCalendarViewProps {}
 
 interface CalendarSlots<
     H extends CalendarHeaderProps = CalendarHeaderProps,
-    V extends CalendarViewProps = CalendarViewProps
+    V extends CalendarViewProps = CalendarViewProps,
 > extends BaseCalendarSlots<H, V> {}
 
 // ------------------------------------------------------------------------
@@ -129,27 +145,25 @@ type TGetMiscCellEventsCb = (
 /**
  * @param miscEvents events shown at the top of the cell; they are compact and can represent allDay events or notes or anything of general manner
  */
-interface ViewEvents {
+interface ViewEvents extends TCalendarEventEvents {
     events?: TCalendarEvent[];
     miscEvents?: TCalendarEvent[];
     filters?: object;
     getCellEvents?: TGetCellEventsCb;
     getMiscCellEvents?: TGetMiscCellEventsCb;
-
-    onEventClick?: TOnEventClick;
 }
 
 type CalendarDayViewProps<
-    CellProps extends CalendarCellProps = CalendarCellProps
+    CellProps extends CalendarCellProps = CalendarCellProps,
 > = BaseCalendarDayViewProps<CellProps> & ViewEvents;
 type CalendarWeekViewProps<
-    CellProps extends CalendarCellProps = CalendarCellProps
+    CellProps extends CalendarCellProps = CalendarCellProps,
 > = BaseCalendarWeekViewProps<CellProps> & ViewEvents;
 type CalendarMonthViewProps<
-    CellProps extends CalendarCellProps = CalendarCellProps
+    CellProps extends CalendarCellProps = CalendarCellProps,
 > = BaseCalendarMonthViewProps<CellProps> & ViewEvents;
 type CalendarYearViewProps<
-    CellProps extends CalendarCellProps = CalendarCellProps
+    CellProps extends CalendarCellProps = CalendarCellProps,
 > = BaseCalendarYearViewProps<CellProps> & ViewEvents;
 
 interface CalendarViewSlots {
@@ -180,6 +194,7 @@ export { isTCalendarEventType, CALENDAR_COLOR_FALLBACK };
 export type {
     // ...
     TCalendarEvent,
+    TCalendarEventEvents,
     TCalendarEventType,
     TCalendarEventPerson,
     TCalendarEventExtendedProperties,
@@ -192,8 +207,12 @@ export type {
 
     // ...
     TOnEventClick,
+    TOnEventDragStart,
     TOnEventDragEnd,
+    TOnEventDragEndAsync,
+    TOnEventResizeStart,
     TOnEventResizeEnd,
+    TOnEventResizeEndAsync,
 
     // ...
     CalendarHeaderProps,

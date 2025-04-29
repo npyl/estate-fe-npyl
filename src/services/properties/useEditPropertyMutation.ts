@@ -1,4 +1,4 @@
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 import { IPropertyReq } from "@/types/properties";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";

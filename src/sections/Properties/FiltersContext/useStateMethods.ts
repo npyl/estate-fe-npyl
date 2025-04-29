@@ -2,7 +2,6 @@ import { useCallback, Dispatch, SetStateAction } from "react";
 import { IPropertyFilter } from "src/types/properties";
 import { IFilterProps } from "./types";
 import { initialState } from "./constant";
-import { useQueryState } from "nuqs";
 
 const getInitialValue = (v: any) => {
     // INFO: explicitly support null and undefined values!
@@ -65,18 +64,15 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
                 let newIds;
                 if (newArray.length === 0) {
                     // Remove from IDs if array is empty
-                    console.log("Removing key from ids...");
                     newIds = prevState.ids.filter((id) => id !== key);
                 } else if (
                     newArray.length > 0 &&
                     !prevState.ids.includes(key)
                 ) {
                     // Add to IDs if array is not empty and ID isn't already included
-                    console.log("Adding key to ids...");
                     newIds = [...prevState.ids, key];
                 } else {
                     // Keep the same IDs but create a new array
-                    console.log("No change to ids...");
                     newIds = [...prevState.ids];
                 }
 
@@ -103,19 +99,17 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
         []
     );
 
-    //
-    //  Url params
-    //
-
-    const [_, setAssignee] = useQueryState("assignee");
-    const deleteAssigneeUrlParam = useCallback(() => setAssignee(null), []);
+    const setSorting = useCallback(
+        (sorting: string) => setState((old) => ({ ...old, sorting })),
+        []
+    );
 
     return {
         updateFilter,
         deleteFilter,
         toggleFilterArray,
         // ...
-        deleteAssigneeUrlParam,
+        setSorting,
     };
 };
 

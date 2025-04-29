@@ -42,7 +42,6 @@
         "@pdfme/generator": "3.4.3",
         "@pdfme/schemas": "3.4.3",
         "@pdfme/ui": "3.4.3",
-        "@rc-component/color-picker": "^2.0.1",
         "@react-google-maps/api": "^2.18.1",
         "@reduxjs/toolkit": "^1.9.3",
         "@tiptap/core": "^2.11.0",
@@ -58,6 +57,7 @@
         "@tiptap/extension-italic": "^2.11.0",
         "@tiptap/extension-link": "^2.11.0",
         "@tiptap/extension-list-item": "^2.11.0",
+        "@tiptap/extension-mention": "^2.11.0",
         "@tiptap/extension-ordered-list": "^2.11.0",
         "@tiptap/extension-paragraph": "^2.11.0",
         "@tiptap/extension-strike": "^2.11.0",
@@ -66,6 +66,7 @@
         "@tiptap/extension-text-style": "^2.11.5",
         "@tiptap/extension-underline": "^2.11.0",
         "@tiptap/react": "^2.11.0",
+        "@tiptap/suggestion": "^2.11.0",
         "chart.js": "^4.4.3",
         "date-fns": "^3.6.0",
         "dayjs": "^1.11.10",
@@ -117,6 +118,7 @@
         "@types/yup": "^0.29.14",
         "eslint": "^8.56.0",
         "eslint-config-next": "^14.2.12",
+        "prettier": "^3.5.3",
         "typescript": "^5.0.2"
     }
 }

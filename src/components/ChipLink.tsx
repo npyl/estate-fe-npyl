@@ -16,7 +16,7 @@ interface ChipLinkProps extends ChipProps {
 }
 
 const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
-    ({ href, onDelete, sx, ...props }, ref) => {
+    ({ className, href, onDelete, sx, ...props }, ref) => {
         const handleDelete = useCallback(
             (e: Event) => {
                 e.preventDefault();
@@ -30,6 +30,7 @@ const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
         return (
             <Link
                 ref={ref}
+                className={className}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -42,4 +43,5 @@ const ChipLink = forwardRef<HTMLAnchorElement, ChipLinkProps>(
 
 ChipLink.displayName = "ChipLink";
 
+export type { ChipLinkProps };
 export default ChipLink;

@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { calendar } from "@/services/calendar";
 import { properties } from "@/services/properties";
 import { customers } from "@/services/customers";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 

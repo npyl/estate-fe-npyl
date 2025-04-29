@@ -1,9 +1,15 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
 import CustomRow from "./Row";
 import renderSkeletonCell from "./renderSkeletonCell";
 import { useTranslation } from "react-i18next";
+import { GridPaginationModel, GridCallbackDetails } from "@mui/x-data-grid";
+
+type TOnChangeCb = (
+    model: GridPaginationModel,
+    details: GridCallbackDetails<"pagination">
+) => void;
 
 // ------------------------------------------------------------------------
 
@@ -21,6 +27,7 @@ const DataGridTable: FC<GridProps> = ({
     pageSize,
     totalRows,
     resource = "property",
+    onPaginationModelChange: _onPaginationModelChange,
     ...props
 }) => {
     const { t } = useTranslation();
@@ -37,6 +44,11 @@ const DataGridTable: FC<GridProps> = ({
     );
 
     const rows = loading ? skeletonRows : _rows || [];
+
+    const onPaginationModelChange: TOnChangeCb = useCallback((m, d) => {
+        window.scrollTo(0, 0);
+        _onPaginationModelChange?.(m, d);
+    }, []);
 
     return (
         <StyledDataGrid
@@ -75,6 +87,7 @@ const DataGridTable: FC<GridProps> = ({
             columns={columns}
             pageSizeOptions={[25, 50, 100]}
             // ...
+            onPaginationModelChange={onPaginationModelChange}
             {...props}
         />
     );

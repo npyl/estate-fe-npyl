@@ -2,7 +2,10 @@ import { CalendarCellProps, TOnEventClick } from "@/components/Calendar/types";
 import { ComponentType, useCallback, MouseEvent } from "react";
 import useTimeFromOffset from "./useTimeFromOffset";
 import useAuthenticatedClick from "./useAuthenticatedClick";
-import { usePopperContext } from "@/sections/Calendar/View/PopperContext";
+import {
+    EVENTS,
+    usePopperContext,
+} from "@/sections/Calendar/View/PopperContext";
 import useEventsWithCreate from "./useEventsWithCreate";
 
 type AnyCalendarCell = ComponentType<CalendarCellProps>;
@@ -11,13 +14,21 @@ const WithClick = (Cell: AnyCalendarCell) => {
     const WrappedComponent = (props: CalendarCellProps) => {
         const events = useEventsWithCreate(props.date, props.events);
 
-        const { setEvent, setStartDate } = usePopperContext();
+        const { dispatch } = usePopperContext();
 
         //
         //  View / Edit
         //
         const onEventClick: TOnEventClick = useCallback(
-            (ce, me) => setEvent(me.currentTarget, ce),
+            (me, ce) =>
+                dispatch({
+                    event: EVENTS.CLICK,
+                    // ...
+                    other: {
+                        me,
+                        ce,
+                    },
+                }),
             []
         );
 
@@ -25,8 +36,15 @@ const WithClick = (Cell: AnyCalendarCell) => {
         //  Create
         //
         const onClickWithOffset = useCallback(
-            (e: MouseEvent<HTMLDivElement>, date: string) =>
-                setStartDate(e.currentTarget, date),
+            (me: MouseEvent<HTMLDivElement>, startDate: string) =>
+                dispatch({
+                    event: EVENTS.CLICK_EVENT,
+                    // ...
+                    other: {
+                        me,
+                        startDate,
+                    },
+                }),
             []
         );
         const { onClick } = useTimeFromOffset(props.date, onClickWithOffset);

@@ -1,40 +1,41 @@
-import {
-    ForwardedRef,
-    HTMLAttributes,
-    useImperativeHandle,
-    useRef,
-} from "react";
+import { ForwardedRef, useCallback, useRef } from "react";
 
 /**
- * This hook makes allows us to use a local ref and forward it as the `ref` of forwardRef()
+ * This hook allows us to use a local ref and forward it as the `ref` of forwardRef()
+ * It works with both function and object refs
  *
  * @param ref a forwarded ref coming from forwardRef()
- * @returns local ref object
+ * @returns tuple of [localRef, { onRef }] to be used in your component
  */
 const useForwardedLocalRef = <
     Base extends HTMLElement = HTMLElement,
-    Api extends object | undefined = undefined
+    More extends any = any,
 >(
-    ref: ForwardedRef<HTMLAttributes<Base> & Api>,
-    props?: Api
+    ref: ForwardedRef<Base>,
+    more?: More
 ) => {
-    const localRef = useRef<Base>(null);
+    const localRef = useRef<Base | null>(null);
 
-    useImperativeHandle(
-        ref,
-        () => {
-            if (!localRef.current) return null as any;
+    // Create a callback ref that updates both the forwarded ref and local ref
+    const onRef = useCallback(
+        (node: Base | null) => {
+            // Update local ref
+            localRef.current = node;
 
             // IMPORTANT: attach props directly to the DOM element reference without creating a new object
             // (This is important because we do not want to lose the original element's ref)
-            if (props) Object.assign(localRef.current, props);
+            if (localRef.current && more) Object.assign(localRef.current, more);
 
-            return localRef.current;
+            if (typeof ref === "function") {
+                ref(node);
+            } else if (ref && "current" in ref) {
+                ref.current = node;
+            }
         },
-        [props]
+        [ref, more]
     );
 
-    return localRef;
+    return [localRef, { onRef }] as const;
 };
 
 export default useForwardedLocalRef;

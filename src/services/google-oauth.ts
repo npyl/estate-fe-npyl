@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { calendar } from "./calendar";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 
 type UserId = number;
 

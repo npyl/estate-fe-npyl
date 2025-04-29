@@ -1,69 +1,68 @@
 import SendIcon from "@mui/icons-material/Send";
-import { Grid, IconButton, InputAdornment, InputBase } from "@mui/material";
+import { IconButton, InputAdornment, InputBase } from "@mui/material";
 import { alpha } from "@mui/material";
-
-import { useRef, useState } from "react";
+import { KeyboardEvent, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 interface AddNoteProps {
     onAdd(message: string): void;
 }
 
-const AddNote = (props: AddNoteProps) => {
+const AddNote = ({ onAdd }: AddNoteProps) => {
     const { t } = useTranslation();
 
     const commentInputRef = useRef<HTMLInputElement>(null);
-    const [message, setMessage] = useState("");
+    const onKeyDown = useCallback(
+        (e: KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+                e.preventDefault(); // Prevent form submission
+                e.stopPropagation(); // Stop event propagation
 
-    const { onAdd } = props;
+                if (!commentInputRef.current) return;
 
-    const handleChangeMessage = (value: string) => {
-        setMessage(value);
-    };
-    const handleKeyPress = (event: { key: string }) => {
-        if (event.key === "Enter") {
-            onAdd(message);
-            setMessage("");
-        }
-    };
-    const handleOnClick = () => {
+                const message = commentInputRef.current.value || "";
+                if (!message.trim()) return;
+
+                onAdd(message);
+
+                commentInputRef.current.value = ""; // Clear input after adding
+            }
+        },
+        [onAdd]
+    );
+
+    const handleOnClick = useCallback(() => {
+        if (!commentInputRef.current) return;
+
+        const message = commentInputRef.current?.value || "";
+        if (!message.trim()) return;
+
         onAdd(message);
-        setMessage("");
-    };
+
+        commentInputRef.current.value = "";
+    }, [onAdd]);
 
     return (
-        <Grid
-            container
-            spacing={0}
-            direction="row"
-            alignItems="center"
+        <InputBase
+            fullWidth
+            inputRef={commentInputRef}
+            placeholder={t<string>("Write a note...")}
+            onKeyDown={onKeyDown}
+            endAdornment={
+                <InputAdornment position="end">
+                    <IconButton size="small" onClick={handleOnClick}>
+                        <SendIcon />
+                    </IconButton>
+                </InputAdornment>
+            }
             sx={{
-                p: (theme) => theme.spacing(0, 3, 3, 3),
+                pl: 1.5,
+                height: 40,
+                borderRadius: 1,
+                border: (theme) =>
+                    `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
             }}
-        >
-            <InputBase
-                fullWidth
-                value={message}
-                inputRef={commentInputRef}
-                placeholder={t("Write a note...").toString()}
-                onChange={(event) => handleChangeMessage(event.target.value)}
-                onKeyPress={handleKeyPress}
-                endAdornment={
-                    <InputAdornment position="end" sx={{ mr: 1 }}>
-                        <IconButton size="small" onClick={handleOnClick}>
-                            <SendIcon />
-                        </IconButton>
-                    </InputAdornment>
-                }
-                sx={{
-                    pl: 1.5,
-                    height: 40,
-                    borderRadius: 1,
-                    border: (theme) =>
-                        `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
-                }}
-            />
-        </Grid>
+        />
     );
 };
 

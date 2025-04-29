@@ -15,7 +15,7 @@ import {
     useRemoveAvatarMutation,
     useUploadAvatarMutation,
 } from "@/services/user";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 
 // ----------------------------------------------------------------------------
 

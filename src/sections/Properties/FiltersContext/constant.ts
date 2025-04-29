@@ -27,6 +27,7 @@ const initialState: IFilterProps = {
         integrationSites: [],
     },
     ids: [],
+    sorting: "default",
 };
 
 export { initialState };

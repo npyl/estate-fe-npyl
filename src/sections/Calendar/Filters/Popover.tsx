@@ -6,8 +6,14 @@ import Stack from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 const EventDialog = dynamic(() => import("../Event/View"));
 
-const getEvent = (onClick: TOnEventClick) => (event: TCalendarEvent) =>
-    <CompactCalendarEvent key={event.id} event={event} onClick={onClick} />;
+const getEvent = (onEventClick: TOnEventClick) => (event: TCalendarEvent) =>
+    (
+        <CompactCalendarEvent
+            key={event.id}
+            event={event}
+            onEventClick={onEventClick}
+        />
+    );
 
 interface PopoverProps {
     anchorEl: HTMLElement;
@@ -21,7 +27,7 @@ const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
     const [event, setEvent] = useState<TCalendarEvent>();
     const closeDialog = useCallback(() => setEvent(undefined), []);
 
-    const onEventClick: TOnEventClick = useCallback((ce, me) => {
+    const onEventClick: TOnEventClick = useCallback((me, ce) => {
         anchorRef.current = me.currentTarget;
         setEvent(ce);
     }, []);

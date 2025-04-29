@@ -5,7 +5,7 @@ import { useUploadCompanyImageMutation } from "@/services/company";
 import { useUploadPropertyFileMutation } from "@/services/properties";
 import { Typography } from "@mui/material";
 import FileInput from "@/components/FileInput";
-import uploadToast from "@/components/Toaster/upload";
+import uploadToast from "@/components/Toaster/toasts/upload";
 import useDialog from "@/hooks/useDialog";
 import Opener from "./Opener";
 

@@ -3,7 +3,8 @@ import {
     useCreateAssignLabelForResourceIdMutation,
     useCreateLabelForResourceMutation,
 } from "@/services/labels";
-import successToast from "@/components/Toaster/success";
+import { successToast } from "@/components/Toaster";
+
 import { ILabelForm } from "./types";
 
 const useCreateLabel = () => {

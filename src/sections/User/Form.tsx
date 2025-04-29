@@ -34,7 +34,7 @@ import { IUser, IUserPOST } from "src/types/user";
 import { Schema } from "./validation";
 import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
 import { useAuth } from "@/hooks/use-auth";
-import successToast from "@/components/Toaster/success";
+import { successToast } from "@/components/Toaster";
 
 interface UserFormProps {
     open: boolean;

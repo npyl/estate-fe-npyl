@@ -1,5 +1,5 @@
 const HEADER_HEIGHT = 64;
-const DAY_CELL_HEIGHT = 60;
+const CELL_HOUR_HEIGHT = 60;
 
 // START, END hours correspond to calendar rows
 const START_HOUR = 7;
@@ -18,7 +18,7 @@ export {
     Z_INDEX,
     // ...
     HEADER_HEIGHT,
-    DAY_CELL_HEIGHT,
+    CELL_HOUR_HEIGHT,
     // ...
     START_HOUR,
     END_HOUR,

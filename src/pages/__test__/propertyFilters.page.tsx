@@ -5,6 +5,10 @@ import AuthGuard from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 import { NextPage } from "next";
+import {
+    ASCENDING_PRICE,
+    DESCENDING_PRICE,
+} from "@/sections/Properties/(FiltersBar)/constants";
 
 // INFO: prevent from showing up on production
 export const getStaticProps = async () => {
@@ -86,6 +90,20 @@ const TestComponent: NextPage = () => {
                     >
                         Delete Regions
                     </button>
+                </div>
+
+                {/* New section for sorting controls */}
+                <div>
+                    <h2>Sorting</h2>
+                    <button
+                        data-testid="sort-price-asc"
+                        onClick={() => methods.setSorting(ASCENDING_PRICE)}
+                    />
+
+                    <button
+                        data-testid="sort-price-desc"
+                        onClick={() => methods.setSorting(DESCENDING_PRICE)}
+                    />
                 </div>
             </section>
 

@@ -27,7 +27,7 @@ import {
     optimisticReorderColumn,
     optimisticDeleteColumn,
 } from "./optimistic";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 import { ILabel } from "@/types/label";
 import { createRemoveTabAwareHook as rt } from "@/services/_util";
 
@@ -135,6 +135,17 @@ export const tasks = createApi({
             }),
             onQueryStarted: optimisticDeleteCard,
             invalidatesTags: ["Board"],
+        }),
+        generateTitle: builder.mutation<string, string>({
+            query: (body) => ({
+                url: `/card/generate-title`,
+                body,
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/html",
+                },
+                responseHandler: "text",
+            }),
         }),
 
         // Comments
@@ -255,6 +266,7 @@ export const {
     useGetCardQuery,
     useMoveCardMutation,
     useReorderCardMutation,
+    useGenerateTitleMutation,
 
     //Comments
     useGetCommentsForCardQuery,

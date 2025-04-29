@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { SERVICES } from "./constants";
 import { TService } from "./types";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 
 type TExtendedService = TService & { location: google.maps.LatLng };
 

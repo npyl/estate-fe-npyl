@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Empty description",
+            _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
+                "Please fill-in a description before generating a title",
+
             _NOT_GOOGLE_WORKSPACE_USER_:
                 "Make sure to assign a Google Workspace email to the assignee",
 
@@ -119,7 +123,7 @@ const resources = {
 
             ID: "ID",
             Properties: "Properties",
-
+            Attribution: "Attribution",
             Dashboard: "Dashboard",
             Notifications: "Notifications",
             Mail: "Mail",
@@ -402,6 +406,10 @@ const resources = {
             "Task name": "Task name",
             "Last Updated Date": "Last Updated Date",
             "Total Comments for this task": "Total Comments for this task",
+            "Total Attachments for this task":
+                "Total Attachments for this task",
+            "Total Labels for this task": "Total Labels for this task",
+            "Calendar connected task": "Calendar connected task",
             "Mark Complete": "Mark Complete",
             Completed: "Completed",
             "Type a message": "Type a message",
@@ -721,8 +729,11 @@ const resources = {
             Inactive: "Inactive",
             Greek: "Greek",
             English: "English",
+            Αγγλικά: "English",
             "United States": "United States",
+            "Ηνωμένων Πολιτειών": "United States",
             "Modern Greek": "Modern Greek",
+            "Ελληνικά (Σύγχρονα)": "Modern Greek",
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.":
                 "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters.",
             "Reset Password": "Reset Password",
@@ -778,6 +789,7 @@ const resources = {
             "Calculate (within": "Calculate (within",
 
             Generate: "Generate",
+            "Generate title AI": "Generate title AI",
             "Generate (RTF)": "Generate (RTF)",
             "Generating...": "Generating...",
             Improve: "Improve",
@@ -1297,10 +1309,18 @@ const resources = {
             Disconnected: "Disconnected",
 
             "Update Demands": "Update Demands",
+
+            "Log In": "Log In",
+            "Sign in on the internal platform":
+                "Sign in on the internal platform",
         },
     },
     el: {
         translation: {
+            _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Άδεια περιγραφή",
+            _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
+                "Παρακαλώ συμπληρώστε την περιγραφή πριν την παραγωγή τίτλου",
+
             _NOT_GOOGLE_WORKSPACE_USER_:
                 "Βεβαιωθείτε ότι έχει καταχωρηθεί Google Workspace email για τον διαχειριστή",
 
@@ -1441,7 +1461,12 @@ const resources = {
             "View Task": "Δείτε την εργασία",
             "Last Updated Date": "Τελευταία ενημέρωση εργασίας",
             "Total Comments for this task":
-                "Συνολικά σχόλια για αυτή την εργασία",
+                "Συνολικά Σχόλια για αυτή την εργασία",
+            "Total Attachments for this task":
+                "Συνολικά Συνημμένα για αυτή την εργασία",
+            "Total Labels for this task":
+                "Συνολικές Ετικέτες για αυτή την εργασία",
+            "Calendar connected task": "Εργασία συνδεδεμένη με το ημερολόγιο",
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 
@@ -1677,7 +1702,7 @@ const resources = {
 
             "Date of Entry": "Ημ/νία Καταχώρησης",
 
-            "Drop or Select files": "Ρίξτε ή Επιλέξτε αρχεία",
+            "Drop or Select files": "Σύρετε ή Επιλέξτε αρχεία",
             images: "εικόνες",
             "Download Photos": "Λήψη Εικόνων",
             "Please select between All or only Public photos":
@@ -1746,6 +1771,7 @@ const resources = {
 
             ID: "Κωδικός Ακινήτου",
             Properties: "Ακίνητα",
+            Attribution: "Απόδοση",
             Notifications: "Ενημερώσεις",
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",
@@ -2297,6 +2323,7 @@ const resources = {
             DescriptionSection: "Περιγραφή",
             Description: "Περιγραφή",
             Generate: "Παραγωγή",
+            "Generate title AI": "Δημιουργία Τίτλου AI",
             "Generate (RTF)": "Παραγωγή (RTF)",
             "Generating...": "Παραγωγή...",
             Improve: "Βελτίωση",
@@ -2566,6 +2593,10 @@ const resources = {
 
             From: "Από",
             Until: "Έως",
+
+            "Log In": "Σύνδεση",
+            "Sign in on the internal platform":
+                "Συνδεθείτε στην εσωτερική πλατφόρμα",
         },
     },
 };

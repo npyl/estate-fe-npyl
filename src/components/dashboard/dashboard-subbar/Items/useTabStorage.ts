@@ -22,14 +22,17 @@ const useTabStorage = () => {
     const { user } = useAuth();
     const userId = user?.id!;
 
-    const [tabState, setTabState] = useLocalStorage<TTabState>(cookieName, {});
+    const [tabState, setTabState, clearTabState] = useLocalStorage<TTabState>(
+        cookieName,
+        {}
+    );
 
     const tabs = useMemo(
         () => getTabsSafe(tabState, userId),
         [tabState, userId]
     );
 
-    return { tabState, tabs, setTabState };
+    return { tabState, tabs, setTabState, clearTabState };
 };
 
 export { getTabsSafe };

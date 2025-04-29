@@ -1,5 +1,5 @@
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 import { IPropertyFile } from "@/types/file";
 import IconButton from "@mui/material/IconButton";
 import { FC, useCallback } from "react";

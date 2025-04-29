@@ -1,8 +1,8 @@
 import { IconButton, Stack, SxProps, Theme, Typography } from "@mui/material";
-import Popover from "../Popover";
+import Popover, { EventPopperRef } from "../Popover";
 import dynamic from "next/dynamic";
 import useEventMutations from "./useEventMutations";
-import { FC } from "react";
+import { forwardRef } from "react";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import Duration from "@/components/Calendar/Event/_shared/Duration";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,19 +27,19 @@ const DescriptionSx: SxProps<Theme> = {
             : theme.palette.neutral?.[700],
 };
 
-interface Props {
+interface ViewEventPopperRef extends EventPopperRef {}
+
+interface ViewEventPopperProps {
     anchorEl: any;
     event: TCalendarEvent;
     actions?: boolean;
     onClose: VoidFunction;
 }
 
-const EventPopover: FC<Props> = ({
-    anchorEl,
-    event,
-    actions = true,
-    onClose,
-}) => {
+const ViewEventPopper = /* ... */ forwardRef<
+    ViewEventPopperRef,
+    ViewEventPopperProps
+>(({ anchorEl, event, actions = true, onClose }, ref) => {
     const { t } = useTranslation();
 
     const { editEvent } = useEventMutations();
@@ -54,7 +54,7 @@ const EventPopover: FC<Props> = ({
     };
 
     return (
-        <Popover open anchorEl={anchorEl}>
+        <Popover ref={ref} open anchorEl={anchorEl}>
             <SpaceBetween width={1} direction="row" alignItems="center">
                 {!isEdit ? (
                     <Typography
@@ -121,6 +121,9 @@ const EventPopover: FC<Props> = ({
             )}
         </Popover>
     );
-};
+});
 
-export default EventPopover;
+ViewEventPopper.displayName = "ViewEventPopper";
+
+export type { ViewEventPopperRef };
+export default ViewEventPopper;

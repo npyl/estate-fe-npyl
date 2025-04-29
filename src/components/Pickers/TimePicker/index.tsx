@@ -53,7 +53,8 @@ const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
 
         const [isOpen, openMenu, closeMenu] = useDialog();
 
-        const anchorRef = useForwardedLocalRef<HTMLDivElement>(ref as any);
+        const [anchorRef, { onRef }] =
+            useForwardedLocalRef<HTMLDivElement>(ref);
 
         const handleSelect = useCallback(
             (d: string) => {
@@ -76,7 +77,7 @@ const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
             <ClickAwayListener onClickAway={closeMenu}>
                 <Box>
                     <TimeField
-                        ref={anchorRef}
+                        ref={onRef}
                         value={value}
                         minTime={minTime}
                         maxTime={maxTime}

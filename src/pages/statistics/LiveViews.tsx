@@ -8,6 +8,8 @@ import {
     ResponsiveContainer,
     Rectangle,
     TooltipProps,
+    ReferenceLine,
+    ReferenceDot,
 } from "recharts";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Box, Stack } from "@mui/material";
@@ -57,15 +59,6 @@ export const useVisibility = (): [
     return [ref, isVisible];
 };
 
-const formatHour = (hour: number) => {
-    const date = new Date();
-    date.setHours(hour);
-    return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        hour12: true,
-    });
-};
-
 export default function ViewsChart() {
     const { t, i18n } = useTranslation();
 
@@ -90,6 +83,17 @@ export default function ViewsChart() {
             ),
         [i18n.language]
     );
+
+    const formatHour = (hour: number) => {
+        const date = new Date();
+        date.setHours(hour, 0, 0, 0);
+        const locale = i18n.language === "el" ? "el-GR" : "en-US";
+
+        return date.toLocaleTimeString(locale, {
+            hour: "2-digit",
+            hour12: true,
+        });
+    };
 
     const renderTooltipContent = ({
         payload,
@@ -167,7 +171,8 @@ export default function ViewsChart() {
     };
 
     const belowMd = useResponsive("down", "md");
-
+    const now = new Date();
+    const currentHour = now.getHours();
     return (
         <div ref={ref}>
             <Stack position="relative">
@@ -175,7 +180,7 @@ export default function ViewsChart() {
                     {/* <Typography variant="body1" p={1}>
                         {currentDate}
                     </Typography> */}
-                    <Typography variant="h5" fontWeight="bold" p={2} pt={1}>
+                    <Typography variant="h5" fontWeight={600} p={2} pt={1}>
                         {t("Day Views in progress")}:{" "}
                     </Typography>
                     <Typography
@@ -235,6 +240,20 @@ export default function ViewsChart() {
                         fill="#3366FF"
                         barSize={50}
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
+                    />
+                    <ReferenceLine
+                        x={currentHour}
+                        stroke="red"
+                        strokeWidth={3}
+                        isFront
+                    />
+                    <ReferenceDot
+                        x={currentHour}
+                        y={0}
+                        r={5}
+                        fill="red"
+                        stroke="red"
+                        isFront
                     />
                 </BarChart>
             </ResponsiveContainer>

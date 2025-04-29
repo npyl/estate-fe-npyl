@@ -1,3 +1,5 @@
+import { TPropertyFilterExtended } from "./properties";
+
 type TTabRenderer =
     | "CUSTOMER_CREATE"
     | "CUSTOMER_VIEW"
@@ -11,11 +13,21 @@ type TTabRenderer =
     | "PROFILE"
     | "USER";
 
-interface ITab {
+interface BaseTab {
     path: string;
-    renderer: TTabRenderer;
     resourceId?: number;
-    data?: object;
 }
+
+interface GenericTab extends BaseTab {
+    renderer: Exclude<TTabRenderer, "PROPERTY_FITLERS">;
+    data?: any;
+}
+
+interface PropertyFiltersTab extends BaseTab {
+    renderer: "PROPERTY_FITLERS";
+    data?: TPropertyFilterExtended;
+}
+
+type ITab = GenericTab | PropertyFiltersTab;
 
 export type { TTabRenderer, ITab };

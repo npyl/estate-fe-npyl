@@ -2,6 +2,14 @@ import { Content, Editor, EditorEvents, useEditor } from "@tiptap/react";
 import { createContext, FC, PropsWithChildren, useContext } from "react";
 import { extensions } from "./config";
 
+// INFO: the mention extention checks for editable's value
+// but does not consider undefined as true like we do,
+// so explicitly set a default
+const EDITABLE_DEFAULT = true;
+
+// INFO: documentation states that this needs to be false in Next.js applications to prevent Hydration errors
+const IMMEDIATELY_RENDER_DEFAULT = false;
+
 type EditorState = {
     editor: Editor;
 };
@@ -26,7 +34,7 @@ interface EditorProviderProps extends PropsWithChildren {
 
 export const EditorProvider: FC<EditorProviderProps> = ({
     content,
-    editable,
+    editable = EDITABLE_DEFAULT,
     onUpdate,
     ...props
 }) => {
@@ -34,7 +42,7 @@ export const EditorProvider: FC<EditorProviderProps> = ({
         extensions,
         content,
         editable,
-        immediatelyRender: false, // INFO: documentation states that this needs to be false in Next.js applications to prevent Hydration errors
+        immediatelyRender: IMMEDIATELY_RENDER_DEFAULT,
         onUpdate,
     });
 

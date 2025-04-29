@@ -2,7 +2,8 @@ import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import LinkIcon from "./LinkIcon";
 import { FC, useCallback } from "react";
-import successToast from "@/components/Toaster/success";
+import { successToast } from "@/components/Toaster";
+
 import { StyledStack } from "../styled";
 
 interface CopyLinkButtonProps {

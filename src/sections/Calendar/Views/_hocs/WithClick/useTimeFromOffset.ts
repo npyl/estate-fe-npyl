@@ -1,4 +1,8 @@
-import { DAY_CELL_HEIGHT, START_HOUR, TOTAL_HOURS } from "@/constants/calendar";
+import {
+    CELL_HOUR_HEIGHT,
+    START_HOUR,
+    TOTAL_HOURS,
+} from "@/constants/calendar";
 import { useCallback, MouseEvent } from "react";
 
 interface HourMinureRes {
@@ -9,7 +13,7 @@ interface HourMinureRes {
 const getTimeFromOffset = (offsetY: number): HourMinureRes => {
     // Calculate total minutes from midnight based on pixel position
     const totalMinutes =
-        Math.floor((offsetY / DAY_CELL_HEIGHT) * 60) + START_HOUR * 60;
+        Math.floor((offsetY / CELL_HOUR_HEIGHT) * 60) + START_HOUR * 60;
 
     // Extract hours and minutes
     const hour = Math.floor(totalMinutes / 60);

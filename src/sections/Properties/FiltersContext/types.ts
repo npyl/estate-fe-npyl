@@ -10,6 +10,7 @@ type TUpdateFilterCb = (
 interface IFilterProps {
     filters: IPropertyFilter;
     ids: (keyof IPropertyFilter)[];
+    sorting: string;
 }
 
 interface IFilterStateSetters {
@@ -19,7 +20,6 @@ interface IFilterStateSetters {
 
     // IDs and Manager
     setManagerId: (value: number | undefined) => void;
-    setIds: (value: (keyof IPropertyFilter)[]) => void;
 
     // Area
     setMaxArea: (value: number | undefined) => void;
@@ -82,6 +82,8 @@ interface IFilterStateSetters {
 
     // Active state
     setActiveState: (value: boolean | null) => void;
+
+    setSorting: (v: string) => void;
 }
 
 interface IFilterStateCalculated {
@@ -89,13 +91,7 @@ interface IFilterStateCalculated {
     changedFields: Partial<IPropertyFilter>;
 }
 
-type IFilterState = IFilterProps &
-    IFilterStateSetters &
-    IFilterStateCalculated & {
-        // Sorting
-        sorting: string;
-        setSorting: (value: string) => void;
-    };
+type IFilterState = IFilterProps & IFilterStateSetters & IFilterStateCalculated;
 
 export type {
     TUpdateFilterCb,

@@ -1,23 +1,27 @@
-import { DependencyList, EffectCallback, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
-/**
- * Layout Effect that skips initial render and as a result runs *ONLY* on props *UPDATE*
- * See: https://ahooks.js.org/hooks/use-update-effect/
- */
-const useUpdateLayoutEffect = (
-    effect: EffectCallback,
-    deps?: DependencyList
-) => {
-    const isFirstRun = useRef(true);
+// https://github.com/alibaba/hooks
 
-    useLayoutEffect(() => {
-        if (isFirstRun) {
-            isFirstRun.current = false;
-            return;
-        }
+type EffectHookType = typeof useLayoutEffect;
 
-        return effect();
-    }, [deps]);
-};
+const createUpdateEffect: (hook: EffectHookType) => EffectHookType =
+    (hook) => (effect, deps) => {
+        const isMounted = useRef(false);
 
-export default useUpdateLayoutEffect;
+        // for react-refresh
+        hook(() => {
+            return () => {
+                isMounted.current = false;
+            };
+        }, []);
+
+        hook(() => {
+            if (!isMounted.current) {
+                isMounted.current = true;
+            } else {
+                return effect();
+            }
+        }, deps);
+    };
+
+export default createUpdateEffect(useLayoutEffect);

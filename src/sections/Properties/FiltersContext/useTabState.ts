@@ -1,12 +1,17 @@
 import { useTabsContext } from "@/contexts/tabs";
-import { useCallback, useMemo } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { IFilterProps } from "./types";
 import { didChangeFields, getChangedFields } from "./useChangedFields";
 import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
 import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
 import useCallbackSetter from "@/hooks/useCallbackSetter";
-import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import {
+    parseAsBoolean,
+    parseAsInteger,
+    parseAsString,
+    useQueryState,
+} from "nuqs";
 import { IntegrationSite } from "@/types/listings";
 
 // --------------------------------------------------------------------------------------
@@ -24,40 +29,36 @@ const getIdsForTabData = (tabData: IPropertyFilter) => {
 interface Overrides {
     managerId: number;
     integrationSite: IntegrationSite;
+    active: boolean | null;
 }
 
-const getFiltersWithUrlParamOverrides = (
-    tabData: IPropertyFilter | undefined,
-    { managerId, integrationSite }: Overrides
-): IPropertyFilter => ({
-    ...(tabData || initialState.filters),
+const getFiltersWithUrlParamOverrides = ({
+    managerId,
+    integrationSite,
+    active,
+}: Overrides): IPropertyFilter => ({
+    ...initialState.filters,
     // ...
-    managerId: managerId !== -1 ? managerId : tabData?.managerId,
+    managerId: managerId !== -1 ? managerId : initialState.filters.managerId,
     integrationSites: integrationSite
         ? [integrationSite]
-        : tabData?.integrationSites ?? initialState.filters.integrationSites,
+        : initialState.filters.integrationSites,
+    active: active ?? initialState.filters.active,
 });
 
-const tabDataToFilterState = (
-    tabData: IPropertyFilter | undefined,
-    overrides: Overrides
-): IFilterProps => {
-    const filters = getFiltersWithUrlParamOverrides(tabData, overrides);
+const hasOverrides = (
+    managerId: number,
+    active: boolean | null,
+    integrationSite: string
+) => managerId !== -1 || Boolean(active) || Boolean(integrationSite);
 
-    return {
-        filters,
-        ids: filters ? getIdsForTabData(filters) : [],
-    };
-};
-
-const useCurrentState = () => {
-    //
-    //  Url Params
-    //
+const useURLParams = () => {
     const [managerId] = useQueryState(
         "assignee",
         parseAsInteger.withDefault(-1)
     );
+
+    const [active] = useQueryState("active", parseAsBoolean);
 
     const [_integrationSite] = useQueryState(
         "integrationSite",
@@ -65,20 +66,49 @@ const useCurrentState = () => {
     );
     const integrationSite = _integrationSite as IntegrationSite;
 
+    const [params] = useState<Overrides>({
+        managerId,
+        active,
+        integrationSite,
+    });
+
+    const [overrides] = useState(
+        hasOverrides(managerId, active, integrationSite)
+    );
+
+    return [params, overrides] as const;
+};
+
+const useCurrentState = (setState: (p: IFilterProps) => void): IFilterProps => {
+    //
+    //  Url Params
+    //
+    const [overrides, hasOverrides] = useURLParams();
+    useLayoutEffect(() => {
+        if (!hasOverrides) return;
+        const filters = getFiltersWithUrlParamOverrides(overrides);
+        setState({
+            filters,
+            ids: getIdsForTabData(filters),
+            sorting: "default",
+        });
+    }, [hasOverrides, overrides]);
+
     //
     //  Tab's Data
     //
-    const tabData = useTabData("/property") as IPropertyFilter | undefined;
+    const tabData = useTabData("/property");
+    const { sorting, ..._filters } = tabData || {};
+    const filters = tabData
+        ? (_filters as IPropertyFilter)
+        : initialState.filters;
+    const ids = tabData ? getIdsForTabData(filters) : [];
 
-    //
-    //  Merging of all
-    //
-    const state = useMemo(
-        () => tabDataToFilterState(tabData, { managerId, integrationSite }),
-        [tabData, managerId]
-    );
-
-    return state;
+    return {
+        filters,
+        ids,
+        sorting: sorting || "default",
+    };
 };
 
 // --------------------------------------------------------------------------------------
@@ -86,23 +116,24 @@ const useCurrentState = () => {
 const useTabState = () => {
     const { pushTab } = useTabsContext();
 
-    const state = useCurrentState();
-
     const _setState = useCallback((p: IFilterProps) => {
-        const { filters } = p || {};
+        const { filters, sorting } = p || {};
 
-        const didChange = didChangeFields(filters);
+        const didChange = sorting !== "default" || didChangeFields(filters);
+
+        const data = didChange ? { ...filters, sorting } : undefined;
 
         pushTab(
             {
                 path: "/property",
                 renderer: "PROPERTY_FITLERS",
-                data: didChange ? filters : undefined,
+                data,
             },
             SHOULD_UPDATE_DATA
         );
     }, []);
 
+    const state = useCurrentState(_setState);
     const setState = useCallbackSetter(state, _setState);
 
     return [state, setState] as const;

@@ -1,4 +1,5 @@
 import { Chip, Stack, StackProps, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,7 @@ import {
 const ChosenFilters: FC<StackProps> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const router = useRouter();
 
     const { data: labelsQuery } = useGetLabelsQuery();
     const { data: users } = useAllUsersQuery();
@@ -265,7 +267,23 @@ const ChosenFilters: FC<StackProps> = (props) => {
                                     </Typography>
                                 </Stack>
                             }
-                            onDelete={() => dispatch(deleteFilter(key))}
+                            onDelete={() => {
+                                dispatch(deleteFilter(key));
+
+                                if (key === "managerId") {
+                                    const newQuery = { ...router.query };
+                                    delete newQuery.managerId;
+
+                                    router.replace(
+                                        {
+                                            pathname: router.pathname,
+                                            query: newQuery,
+                                        },
+                                        undefined,
+                                        { shallow: true }
+                                    );
+                                }
+                            }}
                         />
                     );
                 }

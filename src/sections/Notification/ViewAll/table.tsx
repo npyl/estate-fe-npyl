@@ -13,6 +13,7 @@ import WorkApplicationRow from "./row/workApplication";
 import ReviewRow from "./row/review";
 import AgreementRow from "./row/agreement";
 import { useMediaQuery } from "@mui/material";
+import { useCallback } from "react";
 
 interface TableProps {
     variant: NotificationType;
@@ -38,7 +39,7 @@ const Table = ({
     filter,
     page,
     pageSize,
-    onPageChange,
+    onPageChange: _onPageChange,
     onRowsPerPageChange,
     totalRows,
     hidePagination = false,
@@ -55,6 +56,14 @@ const Table = ({
             : TourRow;
 
     const isMobile = useMediaQuery("(max-width:600px)");
+
+    const onPageChange = useCallback(
+        (e: unknown, p: number) => {
+            window.scrollTo(0, 0);
+            _onPageChange?.(e, p);
+        },
+        [_onPageChange]
+    );
 
     return (
         <TableContainer
@@ -95,7 +104,7 @@ const Table = ({
                     count={totalRows}
                     rowsPerPage={pageSize ?? 10}
                     page={page ?? 0}
-                    onPageChange={onPageChange ?? (() => {})}
+                    onPageChange={onPageChange}
                     onRowsPerPageChange={onRowsPerPageChange ?? (() => {})}
                 />
             )}

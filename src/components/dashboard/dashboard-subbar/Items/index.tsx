@@ -1,27 +1,12 @@
-import { Stack, StackProps, SxProps, Theme } from "@mui/material";
-import { forwardRef, useEffect, useImperativeHandle } from "react";
-import dynamic from "next/dynamic";
+import { StackProps } from "@mui/material";
+import { forwardRef, useImperativeHandle } from "react";
 import { SubbarRef } from "@/contexts/tabs";
 import useTabState from "./useTabState";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import { DragDropContext } from "@hello-pangea/dnd";
 import useTabPusher from "./useTabPusher";
-const TabItem = dynamic(() => import("./Item"));
-
-// ----------------------------------------------------------------------
-
-const subbarContainerStyles: SxProps<Theme> = {
-    overflowX: "auto",
-    flexWrap: "nowrap",
-    whiteSpace: "nowrap",
-    scrollbarWidth: "thin",
-    "&::-webkit-scrollbar": { height: "6px" },
-    "&::-webkit-scrollbar-thumb": {
-        background: "#ccc",
-        borderRadius: "3px",
-    },
-};
-
-// ----------------------------------------------------------------------
+import DroppableContainer from "./DnD/Droppable";
+import getTab from "./DnD/Draggable";
+import ClearButton from "./ClearButton";
 
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     const [tabs, methods] = useTabState();
@@ -42,44 +27,10 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="subbar-tabs" direction="horizontal">
-                {(provided) => (
-                    <Stack
-                        ref={provided.innerRef}
-                        direction="row"
-                        spacing={0.5}
-                        sx={subbarContainerStyles}
-                        {...provided.droppableProps}
-                        {...props}
-                    >
-                        {tabs.map((t, index) => (
-                            <Draggable
-                                key={t.path}
-                                draggableId={t.path}
-                                index={index}
-                            >
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={{
-                                            ...provided.draggableProps.style,
-                                            opacity: snapshot.isDragging
-                                                ? 0.8
-                                                : 1,
-                                            cursor: "grab",
-                                        }}
-                                    >
-                                        <TabItem t={t} />
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </Stack>
-                )}
-            </Droppable>
+            <DroppableContainer {...props}>
+                {tabs.map(getTab)}
+                {tabs.length > 0 ? <ClearButton /> : null}
+            </DroppableContainer>
         </DragDropContext>
     );
 });

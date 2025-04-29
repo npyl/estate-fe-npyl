@@ -3,7 +3,7 @@ import { IProperties } from "@/types/properties";
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useLazyGetCustomerByIdQuery } from "@/services/customers";
-import errorToast from "@/components/Toaster/error";
+import { errorToast } from "@/components/Toaster";
 
 const join = (v0: string | undefined, v1: string | undefined, sep: string) =>
     [v0, v1].filter((s) => !!s).join(sep) || "";

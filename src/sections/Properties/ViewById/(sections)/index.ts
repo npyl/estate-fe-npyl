@@ -8,7 +8,7 @@ export { default as BlueprintsSection } from "./BlueprintsSection";
 export { default as HeatingSection } from "./HeatingSection";
 export { default as ImageSection } from "./ImageSection";
 export { default as ParkingsSection } from "./ParkingsSection";
-export { default as NotesSection } from "./NotesSection";
+export { default as NotesSection } from "./Notes";
 export { default as VideoSection } from "./VideoSection";
 export { default as SuitableFor } from "./SuitableFor";
 export { default as TechnicalFeatures } from "./TechnicalFeatures";
