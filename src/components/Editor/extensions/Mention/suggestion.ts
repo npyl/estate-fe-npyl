@@ -1,6 +1,6 @@
 import type { MentionOptions } from "@tiptap/extension-mention";
 import { ReactRenderer } from "@tiptap/react";
-import tippy, { type Instance as TippyInstance } from "tippy.js";
+import { createPopper, Instance as PopperInstance } from "@popperjs/core";
 import SuggestionList, { type SuggestionListRef } from "./SuggestionList";
 
 export type MentionSuggestion = {
@@ -8,15 +8,7 @@ export type MentionSuggestion = {
     mentionLabel: string;
 };
 
-/**
- * Workaround for the current typing incompatibility between Tippy.js and Tiptap
- * Suggestion utility.
- *
- * @see https://github.com/ueberdosis/tiptap/issues/2795#issuecomment-1160623792
- *
- * Adopted from
- * https://github.com/Doist/typist/blob/a1726a6be089e3e1452def641dfcfc622ac3e942/stories/typist-editor/constants/suggestions.ts#L169-L186
- */
+// Default DOMRect for positioning fallback
 const DOM_RECT_FALLBACK: DOMRect = {
     bottom: 0,
     height: 0,
@@ -32,114 +24,106 @@ const DOM_RECT_FALLBACK: DOMRect = {
 };
 
 const suggestion: MentionOptions["suggestion"] = {
-    // Replace this `items` code with a call to your API that returns suggestions
-    // of whatever sort you like (including potentially additional data beyond
-    // just an ID and a label). It need not be async but is written that way for
-    // the sake of example.
-    items: async ({ query }): Promise<MentionSuggestion[]> =>
-        Promise.resolve(
-            [
-                "Lea Thompson",
-                "Cyndi Lauper",
-                "Tom Cruise",
-                "Madonna",
-                "Jerry Hall",
-                "Joan Collins",
-                "Winona Ryder",
-                "Christina Applegate",
-                "Alyssa Milano",
-                "Molly Ringwald",
-                "Ally Sheedy",
-                "Debbie Harry",
-                "Olivia Newton-John",
-                "Elton John",
-                "Michael J. Fox",
-                "Axl Rose",
-                "Emilio Estevez",
-                "Ralph Macchio",
-                "Rob Lowe",
-                "Jennifer Grey",
-                "Mickey Rourke",
-                "John Cusack",
-                "Matthew Broderick",
-                "Justine Bateman",
-                "Lisa Bonet",
-                "Benicio Monserrate Rafael del Toro Sánchez",
-            ]
-                // Typically we'd be getting this data from an API where we'd have a
-                // definitive "id" to use for each suggestion item, but for the sake of
-                // example, we'll just set the index within this hardcoded list as the
-                // ID of each item.
-                .map((name, index) => ({
-                    mentionLabel: name,
-                    id: index.toString(),
-                }))
-                // Find matching entries based on what the user has typed so far (after
-                // the @ symbol)
-                .filter((item) =>
-                    item.mentionLabel
-                        .toLowerCase()
-                        .startsWith(query.toLowerCase())
-                )
-                .slice(0, 5)
-        ),
+    items: async ({ query }): Promise<MentionSuggestion[]> => {
+        const names = [
+            "Lea Thompson",
+            "Cyndi Lauper",
+            "Tom Cruise",
+            "Madonna",
+            "Jerry Hall",
+            "Joan Collins",
+            "Winona Ryder",
+            "Christina Applegate",
+            "Alyssa Milano",
+            "Molly Ringwald",
+            "Ally Sheedy",
+            "Debbie Harry",
+            "Olivia Newton-John",
+            "Elton John",
+            "Michael J. Fox",
+            "Axl Rose",
+            "Emilio Estevez",
+            "Ralph Macchio",
+            "Rob Lowe",
+            "Jennifer Grey",
+            "Mickey Rourke",
+            "John Cusack",
+            "Matthew Broderick",
+            "Justine Bateman",
+            "Lisa Bonet",
+            "Benicio Monserrate Rafael del Toro Sánchez",
+        ];
+
+        return names
+            .map((name, index) => ({
+                mentionLabel: name,
+                id: index.toString(),
+            }))
+            .filter((item) =>
+                item.mentionLabel.toLowerCase().startsWith(query.toLowerCase())
+            )
+            .slice(0, 5);
+    },
 
     render: () => {
-        let component: ReactRenderer<SuggestionListRef> | undefined;
-        let popup: TippyInstance | undefined;
+        let component: ReactRenderer<SuggestionListRef>;
+        let popperInstance: PopperInstance;
+        let virtualReference: { getBoundingClientRect: () => DOMRect };
 
         return {
             onStart: (props) => {
+                // Create component
                 component = new ReactRenderer(SuggestionList, {
                     props,
                     editor: props.editor,
                 });
 
-                popup = tippy("body", {
-                    getReferenceClientRect: () =>
+                // Create virtual reference for positioning
+                virtualReference = {
+                    getBoundingClientRect: () =>
                         props.clientRect?.() ?? DOM_RECT_FALLBACK,
-                    appendTo: () => document.body,
-                    content: component.element,
-                    showOnCreate: true,
-                    interactive: true,
-                    trigger: "manual",
-                    placement: "bottom-start",
-                })[0];
+                };
+
+                // Append to DOM and setup popper
+                document.body.appendChild(component.element);
+
+                popperInstance = createPopper(
+                    virtualReference,
+                    component.element as HTMLElement,
+                    {
+                        placement: "bottom-start",
+                        modifiers: [
+                            { name: "offset", options: { offset: [0, 8] } },
+                            {
+                                name: "preventOverflow",
+                                options: { padding: 8 },
+                            },
+                        ],
+                    }
+                );
             },
 
             onUpdate(props) {
+                // Update props and position
                 component?.updateProps(props);
-
-                popup?.setProps({
-                    getReferenceClientRect: () =>
-                        props.clientRect?.() ?? DOM_RECT_FALLBACK,
-                });
+                virtualReference.getBoundingClientRect = () =>
+                    props.clientRect?.() ?? DOM_RECT_FALLBACK;
+                popperInstance?.update();
             },
 
             onKeyDown(props) {
                 if (props.event.key === "Escape") {
-                    popup?.hide();
+                    (component.element as HTMLElement).style.display = "none";
                     return true;
                 }
-
-                if (!component?.ref) {
-                    return false;
-                }
-
-                return component.ref.onKeyDown(props);
+                return component?.ref?.onKeyDown(props) || false;
             },
 
             onExit() {
-                popup?.destroy();
+                // Clean up
+                popperInstance?.destroy();
+                component?.element?.remove();
                 component?.destroy();
-
-                // Remove references to the old popup and component upon destruction/exit.
-                // (This should prevent redundant calls to `popup.destroy()`, which Tippy
-                // warns in the console is a sign of a memory leak, as the `suggestion`
-                // plugin seems to call `onExit` both when a suggestion menu is closed after
-                // a user chooses an option, *and* when the editor itself is destroyed.)
-                popup = undefined;
-                component = undefined;
             },
         };
     },

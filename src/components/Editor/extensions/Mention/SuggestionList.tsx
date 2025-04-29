@@ -100,12 +100,20 @@ const SuggestionList = forwardRef<SuggestionListRef, SuggestionListProps>(
         }));
 
         return props.items.length > 0 ? (
-            <Paper elevation={5}>
+            <Paper
+                elevation={5}
+                sx={{
+                    // Set styles for the popup container
+                    zIndex: 1000, // Ensure it appears above other elements
+                }}
+            >
                 <List
                     dense
                     sx={{
                         // In case there are contiguous stretches of long text that can't wrap:
                         overflow: "hidden",
+                        maxHeight: "300px",
+                        overflowY: "auto",
                     }}
                 >
                     {props.items.map((item, index) => (
