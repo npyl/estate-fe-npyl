@@ -13,12 +13,14 @@ import {
     useLayoutEffect,
     useRef,
 } from "react";
-import { SxProps, Theme } from "@mui/material";
+import { alpha, SxProps, Theme } from "@mui/material";
 import Stack, { StackProps } from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 import { EditorProvider, useEditorContext } from "./context";
 import { debuglog } from "util";
 import getBorderColor, { getBorderColor2 } from "@/theme/borderColor";
+import { CLASSNAMES } from "./constants";
+import { primary } from "@/theme/light-theme-options";
 const MenuBar = dynamic(() => import("./MenuBar"));
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
@@ -155,12 +157,20 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     "& [data-indent='8']": { marginLeft: 8 },
 
                     // INFO: BlockQuote
-                    ".PPEditor-BlockQuote": {
+                    [`.${CLASSNAMES.BlockQuote}`]: {
                         borderLeft: "3px solid",
                         borderColor: getBorderColor,
                         color: "text.secondary",
                         marginX: 0.5,
                         paddingLeft: 1,
+                    },
+
+                    // INFO: Mention
+                    [`.${CLASSNAMES.Mention}`]: {
+                        color: "primary.main",
+                        bgcolor: alpha(primary.light, 0.2),
+                        px: 0.5,
+                        borderRadius: 1,
                     },
 
                     borderRadius: 1,

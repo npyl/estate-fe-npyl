@@ -20,6 +20,7 @@ import History from "@tiptap/extension-history";
 import Indent from "./extensions/Indent";
 import Mention from "./extensions/Mention";
 import { errorToast } from "@/components/Toaster";
+import { CLASSNAMES } from "./constants";
 
 const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
     try {
@@ -51,7 +52,7 @@ const extensions = [
     BulletList,
     Blockquote.configure({
         HTMLAttributes: {
-            class: "PPEditor-BlockQuote",
+            class: CLASSNAMES.BlockQuote,
         },
     }),
     HardBreak,
