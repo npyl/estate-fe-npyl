@@ -30,6 +30,7 @@ interface IDashboardTask {
     createdAt: string;
     updatedAt: string;
     labels: IKanbanCardLabels[];
+    attachmentCount: number;
 }
 
 interface PropertiesDistribution {
@@ -48,6 +49,9 @@ interface PropertiesPerUserList {
     properties: number;
     user: string;
     userDetails: IUserDetails;
+    activeProperties: number;
+    inactiveProperties: number;
+    customers: number;
 }
 
 export type {

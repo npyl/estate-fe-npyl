@@ -11,6 +11,7 @@ type UseSetters = (
         // ...
         setSorting: (s: string) => void;
         deleteAssigneeUrlParam: () => void;
+        deleteActiveStateUrlParam: () => void;
     },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
@@ -22,6 +23,7 @@ const useSetters: UseSetters = (
         deleteFilter,
         setSorting,
         deleteAssigneeUrlParam,
+        deleteActiveStateUrlParam
     },
     setState
 ) =>
@@ -124,6 +126,7 @@ const useSetters: UseSetters = (
 
             resetState: () => {
                 deleteAssigneeUrlParam();
+                deleteActiveStateUrlParam();
                 setState(initialState);
             },
 
@@ -183,7 +186,10 @@ const useSetters: UseSetters = (
 
             resetPoints: () => deleteFilter("points"),
             resetLocationSearch: () => deleteFilter("locationSearch"),
-            resetActiveState: () => deleteFilter("active"),
+            resetActiveState: () => {
+                deleteActiveStateUrlParam();
+                deleteFilter("active");
+            },
             resetExtras: () => deleteFilter("extras"),
             resetStates: () => deleteFilter("states"),
             resetCategories: () => deleteFilter("categories"),

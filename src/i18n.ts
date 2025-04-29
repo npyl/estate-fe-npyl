@@ -123,7 +123,7 @@ const resources = {
 
             ID: "ID",
             Properties: "Properties",
-
+            Attribution: "Attribution",
             Dashboard: "Dashboard",
             Notifications: "Notifications",
             Mail: "Mail",
@@ -406,6 +406,10 @@ const resources = {
             "Task name": "Task name",
             "Last Updated Date": "Last Updated Date",
             "Total Comments for this task": "Total Comments for this task",
+            "Total Attachments for this task":
+                "Total Attachments for this task",
+            "Total Labels for this task": "Total Labels for this task",
+            "Calendar connected task": "Calendar connected task",
             "Mark Complete": "Mark Complete",
             Completed: "Completed",
             "Type a message": "Type a message",
@@ -1457,7 +1461,12 @@ const resources = {
             "View Task": "Δείτε την εργασία",
             "Last Updated Date": "Τελευταία ενημέρωση εργασίας",
             "Total Comments for this task":
-                "Συνολικά σχόλια για αυτή την εργασία",
+                "Συνολικά Σχόλια για αυτή την εργασία",
+            "Total Attachments for this task":
+                "Συνολικά Συνημμένα για αυτή την εργασία",
+            "Total Labels for this task":
+                "Συνολικές Ετικέτες για αυτή την εργασία",
+            "Calendar connected task": "Εργασία συνδεδεμένη με το ημερολόγιο",
             Dismiss: "Απόκρυψη",
             "You were assigned to a task": "Ανατεθήκατε σε εργασία",
 
@@ -1762,6 +1771,7 @@ const resources = {
 
             ID: "Κωδικός Ακινήτου",
             Properties: "Ακίνητα",
+            Attribution: "Απόδοση",
             Notifications: "Ενημερώσεις",
             Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",

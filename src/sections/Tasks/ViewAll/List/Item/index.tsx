@@ -23,6 +23,12 @@ import { IDashboardTask } from "@/types/dashboard";
 import ColumnLabel from "./ColumnNameLabel";
 import Link from "@/components/Link";
 const CompletedLabel = dynamic(() => import("./CompletedLabel"));
+import LabelImportantOutlinedIcon from "@mui/icons-material/LabelImportantOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import GoogleCalendarIcon from "@/assets/GoogleCalendar";
+import { usePathname } from "next/navigation";
+import LabelTooltip from "./LabelTooltip";
+import InfoTooltipBox from "./InfoTooltipBox";
 
 const chipStyles: SxProps<Theme> = {
     backgroundColor: "rgba(0, 0, 0, 0.05) !important",
@@ -33,13 +39,6 @@ const chipStyles: SxProps<Theme> = {
     borderRadius: "16px",
 };
 
-const colorCircleStyles: SxProps<Theme> = {
-    width: 10,
-    height: 10,
-    borderRadius: "50%",
-    display: "inline-block",
-};
-
 const taskNameSx: SxProps<Theme> = {
     whiteSpace: "nowrap !important",
     overflow: "hidden !important",
@@ -47,16 +46,19 @@ const taskNameSx: SxProps<Theme> = {
     maxWidth: "100%",
 };
 
+const iconsSx: SxProps<Theme> = {
+    width: 16,
+    height: 16,
+    color: "text.secondary",
+};
 const getItemSx = (priority: number): SxProps<Theme> => ({
     display: "flex",
     flexDirection: "row",
-
     p: 1,
     bgcolor: "background.paper",
     border: "1px solid",
     borderColor: "divider",
     alignItems: "center",
-
     position: "relative",
     cursor: "pointer",
     borderLeft: "3px solid",
@@ -81,6 +83,8 @@ interface ItemProps {
 
 const Item: FC<ItemProps> = ({ c }) => {
     const { t, i18n } = useTranslation();
+    const pathname = usePathname();
+    const isTasksPage = pathname.includes("tasks");
 
     const isLargeScreen = useMediaQuery("(min-width:1900px)");
 
@@ -120,28 +124,12 @@ const Item: FC<ItemProps> = ({ c }) => {
             </Stack>
             {c.labels && c.labels.length > 0 && (
                 <Box position="absolute" left={isLargeScreen ? "43%" : "41%"}>
-                    {c.labels.slice(0, 1).map((label) => (
-                        <Chip
-                            key={label.id}
-                            label={
-                                <Box display="flex" alignItems="center" gap={1}>
-                                    <Box
-                                        sx={{
-                                            ...colorCircleStyles,
-                                            backgroundColor: label.color,
-                                        }}
-                                    />
-                                    {label.name}
-                                </Box>
-                            }
-                            sx={chipStyles}
-                        />
-                    ))}
+                    <LabelTooltip labels={c.labels} chipStyles={chipStyles} />
                 </Box>
             )}
             <PriorityLabel
                 position="absolute"
-                left={isLargeScreen ? "59%" : "58%"}
+                left={isLargeScreen ? "59%" : "57%"}
                 priority={c?.priority}
                 display={{
                     xs: "none",
@@ -152,7 +140,7 @@ const Item: FC<ItemProps> = ({ c }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={isLargeScreen ? "68%" : "66%"}
+                left={isLargeScreen ? "68%" : "64.5%"}
                 position="absolute"
             >
                 <UpdatedAtIcon />
@@ -167,21 +155,47 @@ const Item: FC<ItemProps> = ({ c }) => {
                 direction="row"
                 spacing={1}
                 alignItems="center"
-                left={isLargeScreen ? "84%" : "82%"}
+                left={isLargeScreen ? "82%" : "80.5%"}
                 position="absolute"
             >
-                <Tooltip
-                    placement="top"
+                {/* Comments */}
+                <InfoTooltipBox
                     title={t("Total Comments for this task")}
-                >
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <CommentIcon />
+                    icon={<CommentIcon />}
+                    value={c.commentsCount}
+                />
 
-                        <Typography variant="body2">
-                            {c.commentsCount}
-                        </Typography>
-                    </Box>
-                </Tooltip>
+                {/* Attachments */}
+                <InfoTooltipBox
+                    title={t("Total Attachments for this task")}
+                    icon={<AttachFileOutlinedIcon sx={iconsSx} />}
+                    value={
+                        isTasksPage
+                            ? (c as IKanbanCardShort).attachmentsCount
+                            : (c as IDashboardTask).attachmentCount
+                    }
+                />
+                {/* Tasks */}
+                <InfoTooltipBox
+                    title={t("Total Labels for this task")}
+                    icon={<LabelImportantOutlinedIcon sx={iconsSx} />}
+                    value={c.labels.length}
+                />
+                {/* Calendar Icon */}
+                {c.event !== "" ? (
+                    <>
+                        <Tooltip
+                            title={t("Calendar connected task")}
+                            placement="top"
+                        >
+                            <GoogleCalendarIcon
+                                sx={{
+                                    fontSize: 27,
+                                }}
+                            />
+                        </Tooltip>
+                    </>
+                ) : null}
             </Stack>
             <Stack
                 direction="row"
@@ -192,7 +206,11 @@ const Item: FC<ItemProps> = ({ c }) => {
             >
                 {isCompleted ? <CompletedLabel /> : null}
                 {columnName ? <ColumnLabel name={columnName} /> : null}
-                {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
+                {assignee ? (
+                    <TooltipAvatar u={assignee} />
+                ) : (
+                    <Avatar sx={{ width: 34, height: 34 }} />
+                )}
             </Stack>
         </Link>
     );

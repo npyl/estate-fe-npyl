@@ -59,15 +59,6 @@ export const useVisibility = (): [
     return [ref, isVisible];
 };
 
-const formatHour = (hour: number) => {
-    const date = new Date();
-    date.setHours(hour);
-    return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        hour12: true,
-    });
-};
-
 export default function ViewsChart() {
     const { t, i18n } = useTranslation();
 
@@ -92,6 +83,17 @@ export default function ViewsChart() {
             ),
         [i18n.language]
     );
+
+    const formatHour = (hour: number) => {
+        const date = new Date();
+        date.setHours(hour, 0, 0, 0);
+        const locale = i18n.language === "el" ? "el-GR" : "en-US";
+
+        return date.toLocaleTimeString(locale, {
+            hour: "2-digit",
+            hour12: true,
+        });
+    };
 
     const renderTooltipContent = ({
         payload,

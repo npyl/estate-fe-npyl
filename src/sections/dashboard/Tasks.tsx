@@ -14,10 +14,10 @@ import { IKanbanCardShort } from "@/types/tasks";
 const IDashboardTaskToCardShort = (t: IDashboardTask): IKanbanCardShort => ({
     ...t,
     assignees: [],
-    attachmentsCount: 0,
+    attachmentsCount: t.attachmentCount,
     commentsCount: t.commentsCount,
     completed: false,
-    labels: [],
+    labels: t.labels,
     column: -1,
 });
 
@@ -30,7 +30,7 @@ const getTaskRow = (t: IDashboardTask) => {
             <Box
                 sx={{
                     position: "absolute",
-                    right: 10,
+                    right: 9,
                     top: "50%",
                     transform: "translateY(-50%)",
                 }}
@@ -40,6 +40,10 @@ const getTaskRow = (t: IDashboardTask) => {
                         src={t?.reporter?.avatar}
                         firstName={t?.reporter?.firstName}
                         lastName={t?.reporter?.lastName}
+                        sx={{
+                            width: 34,
+                            height: 34,
+                        }}
                     />
                 </Tooltip>
             </Box>
