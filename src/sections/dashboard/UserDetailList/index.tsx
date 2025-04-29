@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
 import { useGetDashboardQuery } from "@/services/dashboard";
 import { IUserDetails } from "@/types/dashboard";
-import { alpha, Box, Grid, SxProps, Theme } from "@mui/material";
+import { Box, Grid, SxProps, Theme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -9,36 +9,29 @@ import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import Link from "@/components/Link";
-import CustomTypography from "./components/CustomTypography";
+import CustomTypography from "./CustomTypography";
 
 interface TasksCountProps {
     count: number;
     assignee: number;
 }
 
-const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => {
-    const { t } = useTranslation();
-    return (
-        <Link href={`/tasks?assignee=${assignee}`} passHref>
-            <Typography
-                // color="info.main"
-                // bgcolor={(theme) => alpha(theme.palette.info.main, 0.3)}
-                borderRadius="16px"
-                // px={1}
-                sx={{
-                    cursor: "pointer",
-                    width: "90px",
-                    textWrap: "nowrap",
-                    textAlign: "center",
-                    "&:hover": { opacity: 0.8 },
-                }}
-            >
-                {count}
-                {/* {t("_tasks_lowercase")} */}
-            </Typography>
-        </Link>
-    );
-};
+const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => (
+    <Link href={`/tasks?assignee=${assignee}`} passHref>
+        <Typography
+            borderRadius="16px"
+            sx={{
+                cursor: "pointer",
+                width: "90px",
+                textWrap: "nowrap",
+                textAlign: "center",
+                "&:hover": { opacity: 0.8 },
+            }}
+        >
+            {count}
+        </Typography>
+    </Link>
+);
 
 interface PropertiesProgressProps {
     count: number;
