@@ -12,13 +12,13 @@ import Italic from "@tiptap/extension-italic";
 import Strike from "@tiptap/extension-strike";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
-import Indent from "./extensions/Indent";
 import Link, { LinkOptions } from "@tiptap/extension-link";
-
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import History from "@tiptap/extension-history";
+import Indent from "./extensions/Indent";
+import Mention from "./extensions/Mention";
 import { errorToast } from "@/components/Toaster";
 
 const isAllowedUri: LinkOptions["isAllowedUri"] = (url, ctx) => {
@@ -83,6 +83,7 @@ const extensions = [
     }),
     // ...
     History,
+    Mention,
 ];
 
 export { extensions };
