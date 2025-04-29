@@ -161,14 +161,14 @@ const UserRow: FC<UserRowProps> = ({
     const handleRedirectActiveProperties = () => {
         router.push({
             pathname: "/property",
-            query: { assignee: u.id, activeState: "active" },
+            query: { assignee: u.id, active: true },
         });
     };
 
     const handleRedirectInactiveProperties = () => {
         router.push({
             pathname: "/property",
-            query: { assignee: u.id, activeState: "inactive" },
+            query: { assignee: u.id, active: false },
         });
     };
     const handleRedirectCustomers = () => {

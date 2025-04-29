@@ -10,31 +10,19 @@ type UseSetters = (
         deleteFilter: (key: keyof IPropertyFilter) => void;
         // ...
         setSorting: (s: string) => void;
-        deleteAssigneeUrlParam: () => void;
-        deleteActiveStateUrlParam: () => void;
     },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
 const useSetters: UseSetters = (
-    {
-        updateFilter,
-        toggleFilterArray,
-        deleteFilter,
-        setSorting,
-        deleteAssigneeUrlParam,
-        deleteActiveStateUrlParam
-    },
+    { updateFilter, toggleFilterArray, deleteFilter, setSorting },
     setState
 ) =>
     useMemo(
         () => ({
             setLocationSearch: (value) => updateFilter("locationSearch", value),
             setCode: (value) => updateFilter("code", value),
-            setManagerId: (value) => {
-                deleteAssigneeUrlParam();
-                updateFilter("managerId", value);
-            },
+            setManagerId: (value) => updateFilter("managerId", value),
             setMaxArea: (value) => updateFilter("maxArea", value),
             setMinArea: (value) => updateFilter("minArea", value),
             setMaxBedrooms: (value) => updateFilter("maxBedrooms", value),
@@ -124,11 +112,7 @@ const useSetters: UseSetters = (
             // Reset
             // --------------------------------------------------------------------------------------------
 
-            resetState: () => {
-                deleteAssigneeUrlParam();
-                deleteActiveStateUrlParam();
-                setState(initialState);
-            },
+            resetState: () => setState(initialState),
 
             resetBasic: () =>
                 setState((prevState) => {
@@ -186,20 +170,12 @@ const useSetters: UseSetters = (
 
             resetPoints: () => deleteFilter("points"),
             resetLocationSearch: () => deleteFilter("locationSearch"),
-            resetActiveState: () => {
-                deleteActiveStateUrlParam();
-                deleteFilter("active");
-            },
+            resetActiveState: () => deleteFilter("active"),
             resetExtras: () => deleteFilter("extras"),
             resetStates: () => deleteFilter("states"),
             resetCategories: () => deleteFilter("categories"),
             resetParentCategories: () => deleteFilter("parentCategories"),
-
-            resetManagerId: () => {
-                deleteAssigneeUrlParam();
-                deleteFilter("managerId");
-            },
-
+            resetManagerId: () => deleteFilter("managerId"),
             resetRegions: () => {
                 deleteFilter("cities");
                 deleteFilter("regions");
