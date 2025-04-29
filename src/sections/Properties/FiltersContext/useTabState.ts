@@ -24,11 +24,12 @@ const getIdsForTabData = (tabData: IPropertyFilter) => {
 interface Overrides {
     managerId: number;
     integrationSite: IntegrationSite;
+    activeState: "active" | "inactive" | undefined;
 }
 
 const getFiltersWithUrlParamOverrides = (
     tabData: IPropertyFilter | undefined,
-    { managerId, integrationSite }: Overrides
+    { managerId, integrationSite, activeState }: Overrides
 ): IPropertyFilter => ({
     ...(tabData || initialState.filters),
     // ...
@@ -36,6 +37,12 @@ const getFiltersWithUrlParamOverrides = (
     integrationSites: integrationSite
         ? [integrationSite]
         : tabData?.integrationSites ?? initialState.filters.integrationSites,
+    active:
+        activeState === "active"
+            ? true
+            : activeState === "inactive"
+            ? false
+            : tabData?.active ?? initialState.filters.active,
 });
 
 const tabDataToFilterState = (
@@ -59,6 +66,15 @@ const useCurrentState = () => {
         parseAsInteger.withDefault(-1)
     );
 
+    const [activeStateRaw] = useQueryState("activeState", parseAsString);
+
+    const activeState = useMemo(() => {
+        if (activeStateRaw === "active" || activeStateRaw === "inactive") {
+            return activeStateRaw;
+        }
+        return undefined;
+    }, [activeStateRaw]);
+
     const [_integrationSite] = useQueryState(
         "integrationSite",
         parseAsString.withDefault("")
@@ -74,8 +90,13 @@ const useCurrentState = () => {
     //  Merging of all
     //
     const state = useMemo(
-        () => tabDataToFilterState(tabData, { managerId, integrationSite }),
-        [tabData, managerId]
+        () =>
+            tabDataToFilterState(tabData, {
+                managerId,
+                integrationSite,
+                activeState,
+            }),
+        [tabData, managerId, activeState]
     );
 
     return state;

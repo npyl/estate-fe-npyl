@@ -8,7 +8,11 @@ import AuthGuard from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import { useFilterCustomersQuery } from "src/services/customers";
-import { selectAll, selectSorting } from "src/slices/customer/filters";
+import {
+    selectAll,
+    selectSorting,
+    setManagerId,
+} from "src/slices/customer/filters";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/Cards/CustomerCard";
@@ -17,11 +21,16 @@ import { getOptions } from "./(FilterSection)/constants";
 import Pagination, { usePagination } from "@/components/Pagination";
 import Toolbar from "@/sections/DataGrids/CustomersToolbar";
 import { FilterSection } from "./(FilterSection)";
+import { useRouter } from "next/router";
+import { dispatch } from "@/store";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
 
     const allFilters = useSelector(selectAll);
+
+    const router = useRouter();
+    const { query } = router;
 
     const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
@@ -43,8 +52,16 @@ const Customers: NextPage = () => {
         [sortingOptions, sorting]
     );
 
+    const managerId = query.managerId ? Number(query.managerId) : undefined;
+    const filters = useMemo(() => {
+        if (managerId !== undefined) {
+            return { ...allFilters, managerId: managerId };
+        }
+        return allFilters;
+    }, [allFilters, managerId]);
+
     const { isLoading, data } = useFilterCustomersQuery({
-        filter: allFilters,
+        filter: filters,
         page,
         pageSize,
         sortBy,
@@ -96,6 +113,12 @@ const Customers: NextPage = () => {
     const belowMd = useResponsive("down", "md");
 
     const handlePageChange = (_: any, newPage: number) => setPage(newPage);
+
+    useEffect(() => {
+        if (managerId !== undefined) {
+            dispatch(setManagerId(managerId));
+        }
+    }, [managerId]);
 
     return (
         <>

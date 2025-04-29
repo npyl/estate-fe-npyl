@@ -4,6 +4,7 @@ import {
     IconButton,
     Stack,
     Toolbar,
+    Typography,
     useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -71,6 +72,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                         height: 64,
                         left: 0,
                         px: 2,
+                        pl: 4,
                         justifyContent: "space-between",
                     }}
                 >
@@ -90,7 +92,16 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             flexDirection="row"
                             alignItems="center"
                         >
-                            <Logo />
+                            {/* <Logo /> */}
+
+                            <Typography
+                                color={"primary.main"}
+                                variant="h5"
+                                fontWeight={"bold"}
+                            >
+                                property-pro.
+                                <span style={{ color: "#0380fc" }}>gr</span>
+                            </Typography>
                         </Link>
                     </Stack>
 

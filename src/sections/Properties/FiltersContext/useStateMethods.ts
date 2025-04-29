@@ -2,7 +2,7 @@ import { useCallback, Dispatch, SetStateAction } from "react";
 import { IPropertyFilter } from "src/types/properties";
 import { IFilterProps } from "./types";
 import { initialState } from "./constant";
-import { useQueryState } from "nuqs";
+import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 
 const getInitialValue = (v: any) => {
     // INFO: explicitly support null and undefined values!
@@ -107,12 +107,21 @@ const useStateMethods = (setState: Dispatch<SetStateAction<IFilterProps>>) => {
     const [_, setAssignee] = useQueryState("assignee");
     const deleteAssigneeUrlParam = useCallback(() => setAssignee(null), []);
 
+    const [activeStateRaw, setActiveState] = useQueryState(
+        "activeState",
+        parseAsString
+    );
+    const deleteActiveStateUrlParam = useCallback(
+        () => setActiveState(null),
+        []
+    );
     return {
         updateFilter,
         deleteFilter,
         toggleFilterArray,
         // ...
         deleteAssigneeUrlParam,
+        deleteActiveStateUrlParam,
     };
 };
 

@@ -10,12 +10,19 @@ type UseSetters = (
         deleteFilter: (key: keyof IPropertyFilter) => void;
         // ...
         deleteAssigneeUrlParam: () => void;
+        deleteActiveStateUrlParam: () => void;
     },
     setState: Dispatch<SetStateAction<IFilterProps>>
 ) => IFilterStateSetters;
 
 const useSetters: UseSetters = (
-    { updateFilter, toggleFilterArray, deleteFilter, deleteAssigneeUrlParam },
+    {
+        updateFilter,
+        toggleFilterArray,
+        deleteFilter,
+        deleteAssigneeUrlParam,
+        deleteActiveStateUrlParam,
+    },
     setState
 ) =>
     useMemo(
@@ -117,6 +124,7 @@ const useSetters: UseSetters = (
 
             resetState: () => {
                 deleteAssigneeUrlParam();
+                deleteActiveStateUrlParam();
                 setState(initialState);
             },
 
@@ -176,7 +184,10 @@ const useSetters: UseSetters = (
 
             resetPoints: () => deleteFilter("points"),
             resetLocationSearch: () => deleteFilter("locationSearch"),
-            resetActiveState: () => deleteFilter("active"),
+            resetActiveState: () => {
+                deleteActiveStateUrlParam();
+                deleteFilter("active");
+            },
             resetExtras: () => deleteFilter("extras"),
             resetStates: () => deleteFilter("states"),
             resetCategories: () => deleteFilter("categories"),

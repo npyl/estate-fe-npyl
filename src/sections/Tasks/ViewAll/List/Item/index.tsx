@@ -206,7 +206,11 @@ const Item: FC<ItemProps> = ({ c }) => {
             >
                 {isCompleted ? <CompletedLabel /> : null}
                 {columnName ? <ColumnLabel name={columnName} /> : null}
-                {assignee ? <TooltipAvatar u={assignee} /> : <Avatar />}
+                {assignee ? (
+                    <TooltipAvatar u={assignee} />
+                ) : (
+                    <Avatar sx={{ width: 34, height: 34 }} />
+                )}
             </Stack>
         </Link>
     );
