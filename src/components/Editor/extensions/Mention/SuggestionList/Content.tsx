@@ -1,10 +1,18 @@
-import { MenuItem } from "@mui/material";
+import { MenuItem, SxProps, Theme, Typography } from "@mui/material";
 import { FC, useMemo } from "react";
 import { useAllUsersQuery } from "@/services/user";
 import { MentionNodeAttrs } from "./types";
 import { IUser } from "@/types/user";
+import Avatar from "@/components/Avatar";
 
 // -------------------------------------------------------------------------
+
+const OptionSx: SxProps<Theme> = {
+    display: "flex",
+    flexDirection: "row",
+    gap: 0.5,
+    width: "100%",
+};
 
 interface ItemProps {
     u: IUser;
@@ -12,11 +20,22 @@ interface ItemProps {
     onSelect: (idx: number) => void;
 }
 
-const Item: FC<ItemProps> = ({ u, idx, onSelect }) => (
-    <MenuItem value={u.id.toString()} onClick={() => onSelect(idx)}>
-        {u.firstName} {u.lastName}
-    </MenuItem>
-);
+const Item: FC<ItemProps> = ({ u, idx, onSelect }) => {
+    const { avatar, firstName, lastName } = u;
+    const fullname = `${firstName || ""} ${lastName || ""}`;
+
+    return (
+        <MenuItem sx={OptionSx} key={u.id} onClick={() => onSelect(idx)}>
+            <Avatar
+                src={avatar}
+                firstName={firstName}
+                lastName={lastName}
+                sx={{ width: 22, height: 22 }}
+            />
+            <Typography>{fullname}</Typography>
+        </MenuItem>
+    );
+};
 
 const getItem =
     (onSelect: (idx: number) => void) => (u: IUser, idx: number) => (
