@@ -106,14 +106,16 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
                     </>
                 ) : null}
 
-                <VerticalResize
-                    event={event}
-                    cellsRef={cellsRef}
-                    targetRef={elementRef}
-                    onResizeEarlyStart={onGhostAdd}
-                    onResizeStart={onEventResizeStart}
-                    onResizeEnd={onEventResizeEnd}
-                />
+                {_onEventResizeEnd ? (
+                    <VerticalResize
+                        event={event}
+                        cellsRef={cellsRef}
+                        targetRef={elementRef}
+                        onResizeEarlyStart={onGhostAdd}
+                        onResizeStart={onEventResizeStart}
+                        onResizeEnd={onEventResizeEnd}
+                    />
+                ) : null}
             </Container>
         );
     }

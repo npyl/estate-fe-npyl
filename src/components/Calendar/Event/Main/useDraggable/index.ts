@@ -146,6 +146,8 @@ const useDraggable = (
         (e: React.MouseEvent) => {
             e.stopPropagation();
 
+            if (!onEventDragStart) return;
+
             const event = eventRef.current;
             if (!event) return;
 
@@ -176,6 +178,7 @@ const useDraggable = (
         [
             handleMouseMove,
             handleMouseUp,
+            onEventDragStart,
             onEventDragEarlyStart,
             evaluateDragStart,
         ]
