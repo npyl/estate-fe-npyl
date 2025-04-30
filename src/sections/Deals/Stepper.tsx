@@ -5,19 +5,35 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { FC } from "react";
 import { SxProps, Theme } from "@mui/material";
 import VIEWS from "./Views";
+import getBorderColor from "@/theme/borderColor";
 
 const StepperSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
     px: 10,
+
+    "& .MuiStepIcon-root:not(.Mui-active, .Mui-completed)": {
+        "& .MuiStepIcon-text": {
+            fill: ({ palette: { mode } }) =>
+                mode === "light" ? "grey" : "white",
+        },
+
+        color: "transparent",
+        border: "2px solid",
+        borderColor: getBorderColor,
+        borderRadius: "50%",
+    },
 };
 
 const getStep = (_: any, idx: number) => (
     <Step key={idx}>
         <StepLabel
             StepIconProps={{
-                sx: { width: 60, height: 60 },
+                sx: {
+                    width: 60,
+                    height: 60,
+                },
             }}
         />
     </Step>

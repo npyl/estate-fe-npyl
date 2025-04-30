@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import VIEWS from "./Views";
+import { useTranslation } from "react-i18next";
 
 interface ControlsProps {
     activeStep: number;
@@ -11,12 +12,16 @@ interface ControlsProps {
 }
 
 const Controls: FC<ControlsProps> = ({ activeStep, onBack, onNext }) => {
+    const { t } = useTranslation();
+
     if (activeStep === VIEWS.length)
         return (
             <Typography sx={{ mt: 2, mb: 1 }}>
                 All steps completed - you&apos;re finished
             </Typography>
         );
+
+    const nextLabel = activeStep === VIEWS.length - 1 ? "Finish" : "Next";
 
     return (
         <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
@@ -28,12 +33,10 @@ const Controls: FC<ControlsProps> = ({ activeStep, onBack, onNext }) => {
                     visibility: activeStep === 0 ? "hidden" : "visible",
                 }}
             >
-                Back
+                {t("Back")}
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={onNext}>
-                {activeStep === VIEWS.length - 1 ? "Finish" : "Next"}
-            </Button>
+            <Button onClick={onNext}>{t(nextLabel)}</Button>
         </Box>
     );
 };
