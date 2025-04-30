@@ -95,12 +95,12 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             {/* <Logo /> */}
 
                             <Typography
-                                color={"primary.main"}
-                                variant="h5"
+                                color={"#3366FF"}
+                                variant="h6"
                                 fontWeight={"bold"}
                             >
-                                property-pro.
-                                <span style={{ color: "#0380fc" }}>gr</span>
+                                property-pro
+                                <span style={{ color: "#0380fc" }}>.gr</span>
                             </Typography>
                         </Link>
                     </Stack>
