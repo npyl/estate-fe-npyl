@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            _Deals_Choose: "Choose your property",
+
             _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Empty description",
             _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
                 "Please fill-in a description before generating a title",
@@ -1317,6 +1319,8 @@ const resources = {
     },
     el: {
         translation: {
+            _Deals_Choose: "Επίλεξε το ακίνητό σου",
+
             _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Άδεια περιγραφή",
             _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
                 "Παρακαλώ συμπληρώστε την περιγραφή πριν την παραγωγή τίτλου",
