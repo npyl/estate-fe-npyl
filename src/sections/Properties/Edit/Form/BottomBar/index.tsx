@@ -4,14 +4,20 @@ import CancelButton from "./CancelButton";
 import GenerateCheckbox, { GenerateCheckboxRef } from "./GenerateCheckbox";
 import { FC, ReactNode, RefObject } from "react";
 import FormBottomBar, { FormBottomBarProps } from "@/sections/FormBottomBar";
+import SubmitWithoutRedirectButton from "./SubmitWithoutRedirectButton";
 
 interface BottomBarProps
     extends Omit<FormBottomBarProps, "contentLeft" | "contentRight"> {
     PersistNotice?: ReactNode;
     checkboxRef: RefObject<GenerateCheckboxRef>;
+    onSubmitWithoutRedirect: () => void;
 }
 
-const BottomBar: FC<BottomBarProps> = ({ PersistNotice, checkboxRef }) => (
+const BottomBar: FC<BottomBarProps> = ({
+    PersistNotice,
+    checkboxRef,
+    onSubmitWithoutRedirect,
+}) => (
     <FormBottomBar
         contentLeft={PersistNotice}
         contentRight={
@@ -26,6 +32,9 @@ const BottomBar: FC<BottomBarProps> = ({ PersistNotice, checkboxRef }) => (
                     borderRadius={1}
                 >
                     <GenerateCheckbox ref={checkboxRef} />
+                    <SubmitWithoutRedirectButton
+                        onClick={onSubmitWithoutRedirect}
+                    />
                     <SubmitButton />
                 </Stack>
             </Stack>

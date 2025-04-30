@@ -618,6 +618,7 @@ const resources = {
             Delete: "Delete",
             Cancel: "Cancel",
             Save: "Save",
+            "Save Without Redirect": "Save Without Redirect",
             "Available After": "Available After",
             "Rental Period Start": "Rental Period Start",
             "Rental Period End": "Rental Period End",
@@ -1020,7 +1021,8 @@ const resources = {
             _main_: "Main",
             Success: "Success",
             "Unable to logout": "Unable to logout",
-
+            "Changes saved successfully!": "Changes saved successfully!",
+            "Failed to save changes.": "Failed to save changes.",
             "Locked Pin": "Locked Pin",
             "Free Pin": "Free Pin",
             "Bulk Edit": "Bulk Edit",
@@ -1578,7 +1580,10 @@ const resources = {
             "Free Pin": "Ελεύθερη Πινέζα",
             "You have unsaved changes.  All your progress will be lost if you leave without saving. Are you sure you want to leave this page?":
                 "Έχετε αλλαγές που δεν είναι αποθηκευμένες. Όλες οι αλλαγές σας θα χαθούν αν αφήσετε τη σελίδα χωρίς αποθήκευση. Είστε σίγουροι ότι θέλετε να φύγετε από αυτή τη σελίδα; ",
+            "Changes saved successfully!": "Οι αλλαγές αποθηκεύτηκαν επιτυχώς!",
+            "Failed to save changes.": "Αποτυχία αποθήκευσης αλλαγών",
             Confirm: "Επικύρωση",
+
             Yes: "Ναι",
             No: "Όχι",
             "Unsaved Changes": "Μη αποθηκευμένες αλλαγές",
@@ -2368,6 +2373,7 @@ const resources = {
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
+            "Save Without Redirect": "Αποθήκευση Χωρίς Ανακατεύθυνση",
             All: "Όλα",
             "Open in": "Άνοιγμα σε ",
             Clone: "Κλωνοποίηση",
