@@ -10,7 +10,7 @@ const StepperSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
-    py: 2,
+    px: 10,
 };
 
 const getStep = (_: any, idx: number) => (

@@ -5,6 +5,7 @@ const resources = {
     en: {
         translation: {
             _Deals_Choose: "Choose your property",
+            _Deals_Floors: "Floors",
 
             _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Empty description",
             _TITLE_GENERATE_EMPTY_DESCRIPTION1_:
@@ -1320,6 +1321,7 @@ const resources = {
     el: {
         translation: {
             _Deals_Choose: "Επίλεξε το ακίνητό σου",
+            _Deals_Floors: "Όροφοι",
 
             _TITLE_GENERATE_EMPTY_DESCRIPTION0_: "Άδεια περιγραφή",
             _TITLE_GENERATE_EMPTY_DESCRIPTION1_:

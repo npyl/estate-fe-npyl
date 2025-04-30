@@ -1,10 +1,17 @@
 import { useCallback, useState } from "react";
 import Container from "@mui/material/Container";
-import { Paper } from "@mui/material";
+import { Paper, SxProps, Theme } from "@mui/material";
 import Form from "./Form";
 import Controls from "./Controls";
 import View from "./View";
 import Stepper from "./Stepper";
+
+const PaperSx: SxProps<Theme> = {
+    p: 2,
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+};
 
 const Deals = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -14,7 +21,7 @@ const Deals = () => {
 
     return (
         <Container maxWidth="sm">
-            <Paper sx={{ p: 1 }}>
+            <Paper sx={PaperSx}>
                 <Stepper activeStep={activeStep} />
 
                 <Form>

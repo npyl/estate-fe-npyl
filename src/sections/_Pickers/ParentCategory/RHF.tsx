@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import ParentCategoryPicker from "./ParentCategoryPicker";
+import ParentCategoryPicker from ".";
 import { FC } from "react";
 
 interface Props {
