@@ -32,7 +32,7 @@ const Tours = ({ filter, searchText }: any) => {
                       ? false
                       : undefined,
         };
-    }, [filter, searchText]);
+    }, [filter, searchText, user]);
 
     const { data: tours } = useFilterNotificationsQuery({
         filter: filterBody,

@@ -28,6 +28,7 @@ import { useDebounce } from "use-debounce";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import getBorderColor from "@/theme/borderColor";
+import ManagerSelect from "./ManagerSelect";
 
 const SearchInputSx: SxProps<Theme> = {
     minWidth: 350,
@@ -165,6 +166,7 @@ const ViewAllNotifications = () => {
                             ),
                         }}
                     />
+                    {tab === 0 && <ManagerSelect />}
                 </Box>
             </Box>
             {/* ------------------------------------------------ */}
