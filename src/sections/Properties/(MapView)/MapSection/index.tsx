@@ -1,20 +1,11 @@
-import { FC, useCallback, useMemo, useRef, useState } from "react";
-import Map from "@/components/Map";
-import { DrawShape, StopDraw } from "src/components/Map/types";
-import { drawingToPoints, getShapeCenter } from "@/components/Map/util";
-import { useDebouncedCallback } from "use-debounce";
+import { FC, useState } from "react";
 import { useGetPropertyLocationMarkersQuery } from "src/services/properties";
 import getMarkerId from "../getMarkerId";
 import dynamic from "next/dynamic";
 import { useMarkerRefsContext } from "../context";
-import { TShape } from "@/types/shape";
 import Marker, { MarkerProps } from "@/components/Map/Marker";
-import { ZOOM_LEVELS } from "@/components/Map/constants";
-import {
-    useAllFilters,
-    useFiltersContext,
-    usePoints,
-} from "../../FiltersContext";
+import { useAllFilters } from "@/sections/Properties/FiltersContext";
+import MapFilter from "@/sections/Properties/(FiltersBar)/Filters/Map";
 const PropertyInfoWindow = dynamic(() => import("./PropertyInfoWindow"));
 
 // ----------------------------------------------------------------------------------
@@ -61,46 +52,10 @@ const MarkerList = () => {
     );
 };
 
-// ------------------------------------------------------------------------------------
-
-const MapSection = () => {
-    const mapRef = useRef<google.maps.Map>();
-    const setRef = useCallback(
-        (m: google.maps.Map) => (mapRef.current = m),
-        []
-    );
-
-    const { setPoints, resetPoints } = useFiltersContext();
-
-    const handleDraw = useCallback((shape: DrawShape | StopDraw) => {
-        if (shape) {
-            setPoints(drawingToPoints(shape));
-        } else {
-            resetPoints();
-        }
-    }, []);
-
-    const handleChange = useDebouncedCallback((_: any, newShape: TShape) => {
-        setPoints(newShape);
-    }, 150);
-
-    const shape = usePoints();
-    const center = useMemo(() => getShapeCenter(shape), [shape]);
-    const zoom = shape ? ZOOM_LEVELS.REGION : ZOOM_LEVELS.DEFAULT;
-
-    return (
-        <Map
-            onReady={setRef}
-            drawing
-            zoom={zoom}
-            shapes={[shape]}
-            center={center}
-            onDraw={handleDraw}
-            onShapeChange={handleChange}
-        >
-            <MarkerList />
-        </Map>
-    );
-};
+const MapSection = () => (
+    <MapFilter>
+        <MarkerList />
+    </MapFilter>
+);
 
 export default MapSection;
