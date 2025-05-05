@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import VIEWS from "./Views";
 import { useTranslation } from "react-i18next";
+import Stack from "@mui/material/Stack";
 
 interface ControlsProps {
     activeStep: number;
@@ -14,30 +14,30 @@ interface ControlsProps {
 const Controls: FC<ControlsProps> = ({ activeStep, onBack, onNext }) => {
     const { t } = useTranslation();
 
-    if (activeStep === VIEWS.length)
-        return (
-            <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you&apos;re finished
-            </Typography>
-        );
+    const isFirst = activeStep === 0;
+    const isLast = activeStep === VIEWS.length - 1;
+    const isOverLast = activeStep > VIEWS.length - 1;
 
-    const nextLabel = activeStep === VIEWS.length - 1 ? "Finish" : "Next";
+    const nextLabel = isLast ? "Finish" : "Next";
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-                color="inherit"
-                onClick={onBack}
-                sx={{
-                    mr: 1,
-                    visibility: activeStep === 0 ? "hidden" : "visible",
-                }}
-            >
-                {t("Back")}
-            </Button>
+        <Stack direction="row" spacing={1}>
+            {!isFirst ? (
+                <Button
+                    color="inherit"
+                    onClick={onBack}
+                    sx={{
+                        mr: 1,
+                    }}
+                >
+                    {t("Back")}
+                </Button>
+            ) : null}
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={onNext}>{t(nextLabel)}</Button>
-        </Box>
+            {!isOverLast ? (
+                <Button onClick={onNext}>{t(nextLabel)}</Button>
+            ) : null}
+        </Stack>
     );
 };
 
