@@ -12,28 +12,31 @@ export const useGetDescription = (editorRef: RefObject<EditorRef>) => {
     const { propertyId } = router.query;
     const [getProperty] = useLazyGetPropertyByIdQuery();
 
-    const fetchAndFill = useCallback(async (lang: string) => {
-        const res = await getProperty(+propertyId!).unwrap();
-        if (!res) return;
+    const fetchAndFill = useCallback(
+        async (lang: string) => {
+            const res = await getProperty(+propertyId!).unwrap();
+            if (!res) return;
 
-        const { descriptions } = res;
+            const { descriptions } = res;
 
-        // no elements
-        if (Object.entries(descriptions).length === 0) return;
+            // no elements
+            if (Object.entries(descriptions).length === 0) return;
 
-        const selected = descriptions[lang];
-        if (!selected) return;
+            const selected = descriptions[lang];
+            if (!selected) return;
 
-        const { description, title } = selected;
-        const sDescription = JSON.parseSafe(description);
+            const { description, title } = selected;
+            const sDescription = JSON.parseSafe(description);
 
-        setTitle(title);
-        editorRef.current?.commands.setContent(sDescription);
-    }, []);
+            setTitle(title);
+            editorRef.current?.commands.setContent(sDescription);
+        },
+        [propertyId]
+    );
 
     useLayoutEffect(() => {
         fetchAndFill(i18n.language);
-    }, [i18n.language]);
+    }, [i18n.language, propertyId]); //here must be the tab change propertyId...
 
     return { title };
 };
