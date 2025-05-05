@@ -1,21 +1,21 @@
-import { KeyValue } from "./KeyValue";
-import { ICustomer } from "./customer";
-import { DescriptionEntry, DescriptionEntryPOST } from "./description";
-import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
-import { Enum } from "./enums";
-import { IPropertyFeatures } from "./features";
+import { KeyValue } from "@/types/KeyValue";
+import { ICustomer } from "@/types/customer";
+import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
+import { IPropertyDetails, IPropertyDetailsPOST } from "@/types/details";
+import { Enum } from "@/types/enums";
+import { IPropertyFeatures } from "@/types/features";
 import {
     IPropertyBlueprint,
     IPropertyDocument,
     IPropertyFile,
     IPropertyImage,
-} from "./file";
-import { ILabel } from "./label";
-import { IntegrationSite } from "./listings";
-import { ILocation, ILocationPOST } from "./location";
-import { INote } from "./note";
-import { TShape } from "./shape";
-import { IUser } from "./user";
+} from "@/types/file";
+import { ILabel } from "@/types/label";
+import { IntegrationSite } from "@/types/listings";
+import { ILocation, ILocationPOST } from "@/types/location";
+import { INote } from "@/types/note";
+import { TShape } from "@/types/shape";
+import { IUser } from "@/types/user";
 
 export interface IPropertyResultResponse {
     id: number;
@@ -519,3 +519,5 @@ export type {
     // ...
     IPropertyReq,
 };
+
+export type * from "./valuation";

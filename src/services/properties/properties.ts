@@ -6,13 +6,12 @@ import {
     IPropertyFilterCounters,
     IPropertyMarker,
     IPropertyResultResponse,
-} from "src/types/properties";
-import IPage from "src/types/page";
-
-import { ILabel } from "src/types/label";
-import { ICustomer, ICustomerMini } from "src/types/customer";
-
-import { LocationDisplay } from "src/types/enums";
+    IValuationRes,
+} from "@/types/properties";
+import IPage from "@/types/page";
+import { ILabel } from "@/types/label";
+import { ICustomer, ICustomerMini } from "@/types/customer";
+import { LocationDisplay } from "@/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
@@ -393,6 +392,15 @@ export const properties = apiWithTranslation({
             }),
             invalidatesTags: ["PDF"],
         }),
+
+        valuationByFilters: builder.query<IValuationRes, IPropertyFilter>({
+            query: (body) => ({
+                url: "/valuate",
+                method: "POST",
+                body,
+            }),
+            providesTags: ["Properties"],
+        }),
     }),
 });
 
@@ -436,6 +444,8 @@ export const {
     // ...
     useGetPDFGeneratedAtQuery,
     useGeneratePDFMutation,
+
+    useValuationByFiltersQuery,
 } = properties;
 
 const useSearchPropertyQuery = la(properties.useSearchPropertyQuery);
