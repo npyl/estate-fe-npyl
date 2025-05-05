@@ -4,7 +4,7 @@ interface IValuationRes {
         mid: number;
         max: number;
     };
-    bySquareMeter: {
+    perSqm: {
         min: number;
         mid: number;
         max: number;

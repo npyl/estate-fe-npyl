@@ -2,21 +2,22 @@ import { useAllFilters } from "@/sections/Properties/FiltersContext";
 import { useValuationByFiltersQuery } from "@/services/properties";
 import { IValuationRes } from "@/types/properties";
 import Skeleton from "@mui/material/Skeleton";
-import Grid from "@mui/material/Unstable_Grid2";
-import { FC } from "react";
+import Stack from "@mui/material/Stack";
+import Content from "./Content";
 
-const RadiusPlaceholder = () => null;
-
-interface ContentProps {
-    valuation?: IValuationRes;
-}
-
-const Content: FC<ContentProps> = ({ valuation }) => (
-    <Grid container>
-        <Grid xs={12} sm={6}></Grid>
-        <Grid xs={12} sm={6}></Grid>
-    </Grid>
-);
+const FakeData: IValuationRes = {
+    normal: {
+        min: 10,
+        mid: 15,
+        max: 20,
+    },
+    perSqm: {
+        min: 10,
+        mid: 15,
+        max: 20,
+    },
+    smallSample: false,
+};
 
 const Final = () => {
     const filters = useAllFilters();
@@ -25,11 +26,15 @@ const Final = () => {
     if (isLoading)
         return <Skeleton variant="circular" width="50px" height="50px" />;
 
-    if (!data) return null;
+    // if (!data) return null;
 
-    if (data?.smallSample) return <RadiusPlaceholder />;
+    // if (data?.smallSample) return <RadiusPlaceholder />;
 
-    return <Content valuation={data} />;
+    return (
+        <Stack width={1}>
+            <Content valuation={FakeData} />
+        </Stack>
+    );
 };
 
 export default Final;

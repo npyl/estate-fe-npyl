@@ -4,10 +4,16 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
-            Valuation: "Valuation",
+            General: "General",
+            Minimum: "Minimum",
+            Median: "Median",
+            Maximum: "Maximum",
+            "Per (m²)": "Per (m²)",
 
-            _Deals_Choose: "Choose your property",
-            _Deals_Floors: "Floors",
+            Valuation: "Valuation",
+            VALUATION_SMALL_SAMPLE_:
+                "Really small sample. Try growing the area of interest.",
+
             Next: "Next",
             Finish: "Finish",
 
@@ -1327,10 +1333,16 @@ const resources = {
     },
     el: {
         translation: {
-            Valuation: "Εκτίμηση",
+            General: "Γενική",
+            Minimum: "Ελάχιστη",
+            Median: "Μέση",
+            Maximum: "Μέγιστη",
+            "Per (m²)": "Ανά (m²)",
 
-            _Deals_Choose: "Επίλεξε το ακίνητό σου",
-            _Deals_Floors: "Όροφοι",
+            Valuation: "Εκτίμηση",
+            VALUATION_SMALL_SAMPLE_:
+                "Πολύ μικρό δείγμα. Δοκιμάστε να μεγαλώσετε την περιοχή ενδιαφέροντος.",
+
             Next: "Επόμενο",
             Finish: "Ολοκλήρωση",
 
