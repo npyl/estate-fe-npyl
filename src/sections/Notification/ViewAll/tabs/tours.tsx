@@ -6,6 +6,7 @@ import Table from "../table";
 import { Box } from "@mui/material";
 import { useMemo, useState } from "react";
 import { NotificationType } from "@/types/notification";
+import router from "next/router";
 
 const Tours = ({ filter, searchText }: any) => {
     const [page, setPage] = useState(0);
@@ -15,18 +16,21 @@ const Tours = ({ filter, searchText }: any) => {
 
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
+    const { user } = router.query;
+
     const filterBody = useMemo(() => {
         return {
             fromDate: null,
             toDate: null,
             search: searchText || "",
             types: ["TOUR"] as NotificationType[],
+            user: user ? Number(user) : undefined,
             viewed:
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, searchText]);
 

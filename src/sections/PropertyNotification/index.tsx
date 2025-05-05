@@ -92,8 +92,8 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, debouncedSearchText, propertyId]);
 
@@ -164,7 +164,6 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                     </Select>
                 </FormControl>
             </Stack>
-            {/* ) : null} */}
 
             {notifications?.content?.length ? (
                 <Table

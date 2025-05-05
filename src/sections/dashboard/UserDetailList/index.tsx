@@ -119,19 +119,15 @@ const User: FC<UserProps> = ({ u }) => {
 const UserRowSx: SxProps<Theme> = {
     border: "1px solid",
     borderColor: "divider",
-
     "&:nth-of-type(even)": {
         bgcolor: ({ palette: { mode, neutral } }) =>
             mode === "light" ? neutral?.[200] : neutral?.[800],
     },
-
     ":not(last-of-type)": {
         borderBottom: 0,
     },
-
     borderLeft: 0,
     borderRight: 0,
-
     py: 0.5,
 };
 
@@ -141,6 +137,7 @@ interface UserRowProps {
     activeProperties?: number;
     inactiveProperties?: number;
     customers: number;
+    notifications: number;
 }
 
 const UserRow: FC<UserRowProps> = ({
@@ -149,6 +146,7 @@ const UserRow: FC<UserRowProps> = ({
     activeProperties,
     inactiveProperties,
     customers,
+    notifications,
 }) => {
     const router = useRouter();
     const handleRedirectProperties = () => {
@@ -175,6 +173,13 @@ const UserRow: FC<UserRowProps> = ({
         router.push({
             pathname: "/customers",
             query: { managerId: u.id },
+        });
+    };
+
+    const handleRedirectNotifications = () => {
+        router.push({
+            pathname: "/notification",
+            query: { user: u.id },
         });
     };
 
@@ -230,7 +235,19 @@ const UserRow: FC<UserRowProps> = ({
                     {customers ?? "-"}
                 </Typography>
             </Grid>
-            <Grid item xs={4}>
+
+            <Grid item xs={1.2}>
+                <Typography
+                    textAlign="center"
+                    sx={{
+                        "&:hover": { opacity: 0.8, cursor: "pointer" },
+                    }}
+                    onClick={handleRedirectNotifications}
+                >
+                    {notifications ?? "-"}
+                </Typography>
+            </Grid>
+            <Grid item xs={2.8}>
                 <PropertiesProgress count={propertiesCount} assignee={u?.id} />
             </Grid>
         </Grid>
@@ -245,6 +262,7 @@ interface UserRow {
     activeProperties: number;
     inactiveProperties: number;
     customers: number;
+    notifications: number;
 }
 
 const getUserRow = ({
@@ -253,6 +271,7 @@ const getUserRow = ({
     activeProperties,
     inactiveProperties,
     customers,
+    notifications,
 }: UserRow) => (
     <UserRow
         key={userDetails.id}
@@ -261,6 +280,7 @@ const getUserRow = ({
         activeProperties={activeProperties}
         inactiveProperties={inactiveProperties}
         customers={customers}
+        notifications={notifications}
     />
 );
 
@@ -269,9 +289,20 @@ const getUserRow = ({
 interface HeadProps {
     totalTasks: number;
     totalProperties: number;
+    totalActiveProperties: number;
+    totalInactiveProperties: number;
+    totalCustomers: number;
+    totalNotifications: number;
 }
 
-const Head: FC<HeadProps> = ({ totalTasks, totalProperties }) => {
+const Head: FC<HeadProps> = ({
+    totalTasks,
+    totalProperties,
+    totalActiveProperties,
+    totalInactiveProperties,
+    totalCustomers,
+    totalNotifications,
+}) => {
     const { t } = useTranslation();
     return (
         <Grid container alignItems="center" spacing={1} p={1} py={2}>
@@ -296,15 +327,30 @@ const Head: FC<HeadProps> = ({ totalTasks, totalProperties }) => {
                 />
             </Grid>
             <Grid item xs={1}>
-                <CustomTypography label={t("Active")} />
+                <CustomTypography
+                    label={t("Active")}
+                    count={totalActiveProperties}
+                />
             </Grid>
             <Grid item xs={1}>
-                <CustomTypography label={t("Inactive")} />
+                <CustomTypography
+                    label={t("Inactive")}
+                    count={totalInactiveProperties}
+                />
             </Grid>
             <Grid item xs={1}>
-                <CustomTypography label={t("Customers")} />
+                <CustomTypography
+                    label={t("Customers")}
+                    count={totalCustomers}
+                />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={1.2}>
+                <CustomTypography
+                    label={t("Notifications")}
+                    count={totalNotifications}
+                />
+            </Grid>
+            <Grid item xs={2.8}>
                 <CustomTypography label={t("Attribution")} textAlign="left" />
             </Grid>
         </Grid>
@@ -323,16 +369,19 @@ const UserDetailList = () => {
                     activeProperties,
                     inactiveProperties,
                     customers,
+                    notifications = 100,
                 }) => ({
                     properties,
                     activeProperties,
                     inactiveProperties,
                     userDetails,
                     customers,
+                    notifications,
                 })
             ),
         [data?.propertiesPerUserList]
     );
+
     const totalTasks = useMemo(() => {
         return (
             data?.propertiesPerUserList?.reduce(
@@ -341,10 +390,44 @@ const UserDetailList = () => {
             ) ?? 0
         );
     }, [data?.propertiesPerUserList]);
+
+    const totalActiveProperties = useMemo(() => {
+        return data?.totalActiveProperties ?? 0;
+    }, [data?.totalActiveProperties]);
+
     const totalProperties = data?.totalProperties ?? 0;
+
+    const totalInactiveProperties = useMemo(() => {
+        return data?.totalInactiveProperties ?? 0;
+    }, [data?.totalInactiveProperties]);
+
+    const totalCustomers = useMemo(() => {
+        return (
+            data?.propertiesPerUserList?.reduce(
+                (sum, user) => sum + (user.customers || 0),
+                0
+            ) ?? 0
+        );
+    }, [data?.propertiesPerUserList]);
+
+    const totalNotifications = useMemo(() => {
+        return (
+            data?.propertiesPerUserList?.reduce(
+                (sum, user) => sum + (user.notifications || 0),
+                0
+            ) ?? 0
+        );
+    }, [data?.propertiesPerUserList]);
     return (
         <Paper variant="outlined">
-            <Head totalTasks={totalTasks} totalProperties={totalProperties} />
+            <Head
+                totalTasks={totalTasks}
+                totalProperties={totalProperties}
+                totalActiveProperties={totalActiveProperties}
+                totalInactiveProperties={totalInactiveProperties}
+                totalCustomers={totalCustomers}
+                totalNotifications={totalNotifications}
+            />
             {users?.map(getUserRow)}
         </Paper>
     );
