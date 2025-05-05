@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useCallback, useMemo, useRef } from "react";
 import { GenerateCheckboxRef } from "./BottomBar/GenerateCheckbox";
 import BottomBar from "./BottomBar";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 // ...
 const Residential = dynamic(() => import("./forms/Residential"));
 const Commercial = dynamic(() => import("./forms/Commercial"));
@@ -20,6 +22,7 @@ interface IFormProps {
 }
 
 function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
+    const { t } = useTranslation();
     const [methods, { PersistNotice }] = usePropertyForm(
         property,
         onSubmitSuccess
@@ -32,18 +35,47 @@ function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
 
     const checkboxRef = useRef<GenerateCheckboxRef>(null);
     const handleSubmit = useCallback(
-        async (data: IPropertyYup) => {
-            const generate = checkboxRef.current?.getGenerate() || false;
-            return await onSubmit(data as IPropertiesPOST, generate);
+        async (
+            data: IPropertiesPOST,
+            generate: boolean,
+            shouldRedirect: boolean
+        ) => {
+            const res = await onSubmit(data, generate);
+
+            if (res && shouldRedirect && onSubmitSuccess) {
+                onSubmitSuccess();
+            }
+
+            return res;
         },
-        [onSubmit]
+        [onSubmit, onSubmitSuccess]
     );
 
     const pc = property?.parentCategory?.key;
 
+    const handleSubmitWithoutRedirect = useCallback(
+        async (data: IPropertiesPOST, generate: boolean) => {
+            const isSuccess = await handleSubmit(data, generate, false); // Don't redirect
+
+            if (isSuccess) {
+                toast.success(t("Changes saved successfully!"));
+            } else {
+                toast.error(t("Failed to save changes."));
+            }
+        },
+        [handleSubmit]
+    );
     return (
         <>
-            <form onSubmit={methods.handleSubmit(handleSubmit)}>
+            <form
+                onSubmit={methods.handleSubmit((data) =>
+                    handleSubmit(
+                        data as IPropertiesPOST,
+                        checkboxRef.current?.getGenerate() || false,
+                        true
+                    )
+                )}
+            >
                 <FormProvider {...methods}>
                     {pc === "RESIDENTIAL" ? <Residential /> : null}
                     {pc === "COMMERCIAL" ? <Commercial /> : null}
@@ -53,6 +85,12 @@ function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
                     <BottomBar
                         checkboxRef={checkboxRef}
                         PersistNotice={PersistNotice}
+                        onSubmitWithoutRedirect={() =>
+                            handleSubmitWithoutRedirect(
+                                methods.getValues() as IPropertiesPOST,
+                                checkboxRef.current?.getGenerate() || false
+                            )
+                        }
                     />
                 </FormProvider>
             </form>

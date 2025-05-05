@@ -85,7 +85,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const { t } = useTranslation();
 
     const { propertyId } = router.query;
-    const { data } = useGetPropertyByIdQuery(+propertyId!);
 
     return (
         <Panel

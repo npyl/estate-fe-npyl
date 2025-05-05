@@ -10,6 +10,7 @@ interface PropertyIntegrations {
 interface IDashboard {
     totalProperties: number;
     totalActiveProperties: number;
+    totalInactiveProperties: number;
     totalSoldProperties: number;
     totalRentedProperties: number;
     propertiesDistribution: PropertiesDistribution;
@@ -51,6 +52,7 @@ interface PropertiesPerUserList {
     userDetails: IUserDetails;
     activeProperties: number;
     inactiveProperties: number;
+    notifications: number;
     customers: number;
 }
 

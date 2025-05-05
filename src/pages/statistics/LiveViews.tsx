@@ -10,6 +10,8 @@ import {
     TooltipProps,
     ReferenceLine,
     ReferenceDot,
+    ComposedChart,
+    Line,
 } from "recharts";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Box, Stack } from "@mui/material";
@@ -22,11 +24,12 @@ import {
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import useResponsive from "@/hooks/useResponsive";
+import CustomActiveDot from "./CustomActiveDot";
 
 // Code for Skip Get daily-views endpoint if the chart is not visible
 export const useVisibility = (): [
     MutableRefObject<HTMLDivElement | null>,
-    boolean
+    boolean,
 ] => {
     const [isVisible, setIsVisible] = useState(false);
     const ref = useRef<HTMLDivElement | null>(null);
@@ -173,6 +176,9 @@ export default function ViewsChart() {
     const belowMd = useResponsive("down", "md");
     const now = new Date();
     const currentHour = now.getHours();
+
+    const currentDecimalTime = now.getHours() + now.getMinutes() / 60 - 0.5;
+
     return (
         <div ref={ref}>
             <Stack position="relative">
@@ -222,40 +228,53 @@ export default function ViewsChart() {
             </Stack>
 
             <ResponsiveContainer height={300}>
-                <BarChart data={chartData} margin={{ left: 30, right: 30 }}>
+                <ComposedChart
+                    data={chartData}
+                    margin={{ left: 30, right: 30 }}
+                >
                     <CartesianGrid vertical={false} />
                     <XAxis
                         visibility={belowMd ? "hidden" : "visible"}
                         dataKey="hour"
                         tickFormatter={formatHour}
-                        interval={2}
+                        type="number"
+                        interval={0}
                     />
                     <YAxis dataKey="views" width={20} />
-                    <Tooltip
-                        cursor={<StyledCursor />}
-                        content={renderTooltipContent}
-                    />
+
                     <Bar
                         dataKey="views"
                         fill="#3366FF"
-                        barSize={50}
+                        barSize={71}
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
+                    <Tooltip cursor={false} content={renderTooltipContent} />
+                    {/* Invisible Line component to show the currentDecimalTime ReferenceLine */}
+                    <Line
+                        dataKey="views"
+                        stroke="transparent"
+                        dot={false}
+                        isAnimationActive={false}
+                        xAxisId={0}
+                        activeDot={<CustomActiveDot />}
+                    />
+
+                    {/* Reference Line */}
                     <ReferenceLine
-                        x={currentHour}
+                        x={currentDecimalTime}
                         stroke="red"
-                        strokeWidth={3}
+                        strokeWidth={2}
                         isFront
                     />
                     <ReferenceDot
-                        x={currentHour}
+                        x={currentDecimalTime}
                         y={0}
-                        r={5}
+                        r={3}
                         fill="red"
                         stroke="red"
                         isFront
                     />
-                </BarChart>
+                </ComposedChart>
             </ResponsiveContainer>
         </div>
     );

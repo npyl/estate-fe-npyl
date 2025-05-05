@@ -1,9 +1,9 @@
-import { Box, Divider, Paper, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Editor, { EditorRef } from "@/components/Editor";
 import { useGetDescription } from "../hooks";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
