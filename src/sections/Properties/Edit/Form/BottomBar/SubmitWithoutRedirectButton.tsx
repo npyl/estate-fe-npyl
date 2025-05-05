@@ -20,7 +20,7 @@ const SubmitWithoutRedirectButton = ({
             disabled={isSubmitting}
             variant="contained"
             startIcon={<SaveAsOutlinedIcon />}
-            onClick={onClick} //submit without redirect
+            onClick={onClick}
         >
             {t("Save Without Redirect")}
         </LoadingButton>

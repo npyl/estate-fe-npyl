@@ -36,7 +36,7 @@ export const useGetDescription = (editorRef: RefObject<EditorRef>) => {
 
     useLayoutEffect(() => {
         fetchAndFill(i18n.language);
-    }, [i18n.language, propertyId]); //here must be the tab change propertyId...
+    }, [i18n.language, propertyId]);
 
     return { title };
 };
