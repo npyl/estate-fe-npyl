@@ -12,6 +12,7 @@ import TasksIconWithCounter from "./TasksIconWithCounter";
 import ArchivedIcon from "./ArchivedIcon";
 import NotificationsIcon from "./NotificationsIcon";
 import ChatIcon from "@mui/icons-material/Chat";
+import EuroIcon from "@mui/icons-material/Euro";
 
 interface Item {
     title: string;
@@ -131,6 +132,15 @@ const getSections = (
                     icon: <ChatIcon />,
                 },
                 messages
+            ),
+
+            ...WITH(
+                {
+                    title: t("Valuation"),
+                    path: "/valuation",
+                    icon: <EuroIcon />,
+                },
+                isAdmin
             ),
         ],
     },

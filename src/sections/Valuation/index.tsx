@@ -1,12 +1,26 @@
 import { useCallback, useState } from "react";
 import Container from "@mui/material/Container";
-import { Paper } from "@mui/material";
+import { Paper, SxProps, Theme } from "@mui/material";
 import Form from "./Form";
 import Controls from "./Controls";
 import View from "./View";
 import Stepper from "./Stepper";
+import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 
-const Deals = () => {
+const PaperSx: SxProps<Theme> = {
+    display: "flex",
+    flexDirection: "column",
+    gap: 1,
+
+    p: 1,
+};
+
+const FormSx: SxProps<Theme> = {
+    display: "flex",
+    gap: 1,
+};
+
+const Valuation = () => {
     const [activeStep, setActiveStep] = useState(0);
 
     const onNext = useCallback(() => setActiveStep((s) => s + 1), []);
@@ -14,12 +28,14 @@ const Deals = () => {
 
     return (
         <Container maxWidth="sm">
-            <Paper sx={{ p: 1 }}>
+            <Paper sx={PaperSx}>
                 <Stepper activeStep={activeStep} />
 
-                <Form>
-                    <View idx={activeStep} />
-                </Form>
+                <FiltersProvider>
+                    <Form sx={FormSx}>
+                        <View idx={activeStep} />
+                    </Form>
+                </FiltersProvider>
 
                 <Controls
                     activeStep={activeStep}
@@ -31,4 +47,4 @@ const Deals = () => {
     );
 };
 
-export default Deals;
+export default Valuation;

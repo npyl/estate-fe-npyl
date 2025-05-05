@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Valuation: "Valuation",
+
             _Deals_Choose: "Choose your property",
             _Deals_Floors: "Floors",
             Next: "Next",
@@ -1322,6 +1324,8 @@ const resources = {
     },
     el: {
         translation: {
+            Valuation: "Εκτίμηση",
+
             _Deals_Choose: "Επίλεξε το ακίνητό σου",
             _Deals_Floors: "Όροφοι",
             Next: "Επόμενο",
