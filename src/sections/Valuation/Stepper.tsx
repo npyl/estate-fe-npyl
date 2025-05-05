@@ -10,8 +10,13 @@ import getBorderColor from "@/theme/borderColor";
 const StepperSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
-    px: 10,
+
+    alignSelf: "center",
+    justifyContent: "center",
+
+    py: 2,
+
+    width: "50%",
 
     "& .MuiStepIcon-root:not(.Mui-active, .Mui-completed)": {
         "& .MuiStepIcon-text": {

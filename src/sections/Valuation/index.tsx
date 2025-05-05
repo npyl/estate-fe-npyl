@@ -27,7 +27,7 @@ const Valuation = () => {
     const onBack = useCallback(() => setActiveStep((s) => s - 1), []);
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
             <Paper sx={PaperSx}>
                 <Stepper activeStep={activeStep} />
 
