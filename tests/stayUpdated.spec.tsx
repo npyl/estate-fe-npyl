@@ -1,27 +1,84 @@
 import { test, expect, Page } from "@playwright/test";
+import {
+    VIEW_BY_ID_TEST_ID,
+    FILTERS_TEST_ID,
+    SHAPELIST_TEST_ID,
+} from "../src/pages/__test__/stayUpdated.page";
 
-// const baseUrl = "https://kopanitsanos.gr/en/properties";
-const baseUrl = "http://127.0.0.1:3001/en/properties";
-const filters = `?states=SALE&parentCategories=RESIDENTIAL&categories=APARTMENT&extras=luxury&minPrice=10000&maxPrice=510000&points=%5B%7B"x"%3A38.2704%2C"y"%3A21.7749%7D%2C%7B"x"%3A15760.4346%2C"y"%3Anull%7D%5D`;
-const publicUrl = `${baseUrl}${filters}`;
+const SHAPE = JSON.stringify([
+    { x: 38.2704, y: 21.7749 },
+    { x: 15760.4346, y: null },
+]);
 
-// Opens modal
-const STAY_UPDATED_TEST_ID = "StayUpdatedTestId";
+const FILTERS = {
+    states: ["SALE"],
+    parentCategories: ["RESIDENTIAL"],
+    categories: ["APARTMENT"],
+    extras: ["luxury"],
+    minPrice: 10000,
+    maxPrice: 510000,
+};
 
-// Inside modal
+const getFilters = () => {
+    // Create an object to hold all parameters
+    const filterParams = new URLSearchParams();
+    filterParams.append("states", FILTERS.states.toString());
+    filterParams.append(
+        "parentCategories",
+        FILTERS.parentCategories.toString()
+    );
+    filterParams.append("categories", FILTERS.categories.toString());
+    filterParams.append("extras", FILTERS.extras.toString());
+    filterParams.append("minPrice", FILTERS.minPrice.toString());
+    filterParams.append("maxPrice", FILTERS.maxPrice.toString());
+    return filterParams.toString();
+};
+
+const getPublicUrl = () => {
+    const points = encodeURIComponent(SHAPE);
+    const filters = getFilters();
+
+    // const baseUrl = "http://127.0.0.1:3001/en/properties";
+    const baseUrl = "https://kopanitsanos.gr/en/properties";
+
+    return `${baseUrl}?${filters}&points=${points}`;
+};
+
+const publicUrl = getPublicUrl();
+const crmUrl = "http://127.0.0.1:3000/__test__/stayUpdated";
+
+// ---------------------------------- START -------------------------------------------
+// IMPORTANT: the following constants defined in PUBLIC aswell so make sure to update in both places
+const STAY_UPDATED_TEST_ID = "StayUpdatedTestId"; // Opens modal
 const FIRSTNAME_TEST_ID = "FirstnameTestId";
 const LASTNAME_TEST_ID = "LastnameTestId";
 const MOBILEPHONE_TEST_ID = "MobilePhoneTestId";
 const EMAIL_TEST_ID = "EmailTestId";
 const SAVE_BUTTON_TEST_ID = "SaveButtonTestId";
-
 const MODAL_TEST_ID = "ModalTestId";
+// ---------------------------------- END ---------------------------------------------
 
 const VALUES = {
     firstName: "John",
     lastName: "Doe",
     email: "propertypro-crm-tester@digipath.gr",
     mobilePhone: "6912345678",
+};
+
+const expectFilter = ([key, value]: [any, any]) => {
+    if (Array.isArray(FILTERS[key]) && Array.isArray(value)) {
+        // For arrays, check that all elements match
+        expect(value).toEqual(expect.arrayContaining(FILTERS[key]));
+        expect(FILTERS[key]).toEqual(expect.arrayContaining(value));
+        expect(value.length).toBe(FILTERS[key].length);
+    } else {
+        // For non-array values, use direct comparison
+        expect(value).toBe(FILTERS[key]);
+    }
+};
+
+const expectFilters = async (content: string) => {
+    Object.entries(JSON.parse(content)).forEach(expectFilter);
 };
 
 const fillAndExpect = async (page: Page, FIELD_ID: string, value: string) => {
@@ -33,6 +90,9 @@ const fillAndExpect = async (page: Page, FIELD_ID: string, value: string) => {
  * This should test whether filters applied from public are passed correctly to CRM
  */
 test("Filters", async ({ page }) => {
+    //
+    //  Public
+    //
     await page.goto(publicUrl);
 
     // Open Modal
@@ -51,4 +111,12 @@ test("Filters", async ({ page }) => {
     await expect(page.getByTestId(MODAL_TEST_ID)).toBeHidden({
         timeout: 10000,
     });
+
+    //
+    // Now go to crm's notification page
+    //
+    await page.goto(crmUrl);
+    await page.getByTestId(VIEW_BY_ID_TEST_ID).waitFor({ state: "visible" });
+    await expectFilters(await page.getByTestId(FILTERS_TEST_ID).innerHTML());
+    await expect(page.getByTestId(SHAPELIST_TEST_ID)).toHaveText(SHAPE);
 });
