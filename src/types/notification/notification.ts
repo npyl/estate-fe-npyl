@@ -102,6 +102,12 @@ interface INotificationShort {
 export interface INotificationFilter {
     types: NotificationType[];
     viewed?: boolean;
+
+    fromDate: string | null;
+    toDate: string | null;
+    search?: string;
+    property?: number;
+    user?: number;
 }
 
 // -----------------------------------------------------------------------------------
