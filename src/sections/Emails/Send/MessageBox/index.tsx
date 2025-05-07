@@ -1,11 +1,12 @@
 import Editor from "@/components/Editor";
 import { MENUBAR_CLASSNAME } from "@/components/Editor/MenuBar";
 import { SpaceBetween } from "@/components/styled";
-import { Paper, SxProps, TextField, Theme } from "@mui/material";
+import { Paper, Stack, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import CloseButton from "./CloseButton";
 import SendButton from "./SendButton";
+import InputField from "./InputField";
 
 const MessageBoxSx: SxProps<Theme> = {
     position: "absolute",
@@ -29,6 +30,8 @@ const EditorContainerSx: SxProps<Theme> = {
     zIndex: 1,
     mb: 5,
 
+    px: 0.5,
+
     [`.${MENUBAR_CLASSNAME}`]: {
         position: "absolute",
         bottom: 0,
@@ -49,8 +52,13 @@ const MessageBox: FC<Props> = ({ onClose }) => {
                 <SendButton />
             </SpaceBetween>
 
-            <TextField label={t("To:")} fullWidth variant="standard" />
-            <TextField fullWidth variant="standard" />
+            <Stack p={1} spacing={1}>
+                <InputField
+                    label={t("To:")}
+                    placeholder={t<string>("Recipients")}
+                />
+                <InputField placeholder={t<string>("Subject")} />
+            </Stack>
 
             <Editor containerSx={EditorContainerSx} />
         </Paper>

@@ -1,3 +1,4 @@
+import getBorderColor from "@/theme/borderColor";
 import SendIcon from "@mui/icons-material/Send";
 import { IconButton, IconButtonProps, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
@@ -10,10 +11,16 @@ const SendButtonSx: SxProps<Theme> = {
     "&:hover": {
         bgcolor: "background.paper",
     },
+    border: "1px solid",
+    borderColor: getBorderColor,
 };
 
 const SendButton: FC<IconButtonProps> = ({ sx, ...props }) => (
-    <IconButton color="primary" sx={{ ...SendButtonSx, ...sx }} {...props}>
+    <IconButton
+        color="primary"
+        sx={{ ...(SendButtonSx as any), ...sx }}
+        {...props}
+    >
         <SendIcon />
     </IconButton>
 );
