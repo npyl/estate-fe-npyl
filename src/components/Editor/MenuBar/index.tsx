@@ -11,6 +11,8 @@ import Color from "./Color";
 import History from "./History";
 import Link from "./Link";
 
+const MENUBAR_CLASSNAME = "PPEditor-MenuBar";
+
 interface MenuBarProps extends Omit<StackProps, "onLoad"> {
     bubble?: boolean; // Is it used inside bubble?
     onLoad?: (e: HTMLDivElement) => void;
@@ -28,6 +30,7 @@ const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
     return (
         <Stack
             ref={onRef}
+            className={MENUBAR_CLASSNAME}
             alignItems="center"
             direction="row"
             spacing={0.2}
@@ -58,4 +61,5 @@ const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
     );
 };
 
+export { MENUBAR_CLASSNAME };
 export default MenuBar;
