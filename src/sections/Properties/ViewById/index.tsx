@@ -1,6 +1,6 @@
-import { Tab, TabProps, Tabs } from "@mui/material";
+import MuiTab, { TabProps } from "@mui/material/Tab";
 import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
+import { ComponentType, FC, useCallback, useMemo, useState } from "react";
 import {
     useClonePropertyMutation,
     useDeletePermanentPropertyMutation,
@@ -34,10 +34,13 @@ const AgreementsTab = dynamic(() => import("./(tabs)/Agreements"));
 const Tasks = dynamic(() => import("./(tabs)/Tasks"));
 const QuickView = dynamic(() => import("./(tabs)/QuickView"));
 const NotificationsTab = dynamic(() => import("./(tabs)/Notifications"));
+const Emails = dynamic(() => import("./(tabs)/Emails"));
 
 import { styled } from "@mui/material/styles";
+import { TranslationType } from "@/types/translation";
+import Tabs from "@mui/material/Tabs";
 
-const StyledTab = styled(Tab)(({ theme }) => ({
+const StyledTab = styled(MuiTab)(({ theme }) => ({
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
     "&.Mui-selected": { color: "#00b32d" },
@@ -62,11 +65,47 @@ const GreenMapTab: React.FC<TabProps> = (props) => (
     />
 );
 
-const GREEN_MAP_INDEX = 12;
-
 // -----------------------------------------------------------------
 
 const getTabPaths = (id: number) => [`/property/${id}`, `/property/edit/${id}`];
+
+// -----------------------------------------------------------------
+
+interface ITab {
+    label: string;
+    View: ComponentType;
+    Tab?: ComponentType;
+}
+
+const getTABS = (t: TranslationType): ITab[] => [
+    { label: t("Overview"), View: MainContainer },
+    { label: t("Quick View"), View: QuickView },
+    { label: t("Tasks"), View: Tasks },
+    { label: t("Matching Customers"), View: MatchingCustomersSection },
+    { label: t("Photos"), View: PhotosOnly },
+    { label: t("Integrations"), View: Integrations },
+    { label: t("Logs"), View: PropertyLogs },
+    { label: t("Documents"), View: Documents },
+    { label: t("Map"), View: Map },
+    { label: t("Street View"), View: StreetView },
+    { label: t("Notifications"), View: NotificationsTab },
+    { label: t("Emails"), View: Emails },
+    { label: t("Agreements"), View: AgreementsTab },
+    { label: t("Eco Map"), View: GreenMap, Tab: GreenMapTab },
+];
+
+const getTab = ({ label, Tab }: ITab, idx: number) => {
+    const TabComponent = Boolean(Tab) ? Tab! : MuiTab;
+    return <TabComponent key={idx} label={label} />;
+};
+
+const getTabView =
+    (value: number) =>
+    ({ View }: ITab, idx: number) => (
+        <TabPanel value={value} index={idx}>
+            <View />
+        </TabPanel>
+    );
 
 // -----------------------------------------------------------------
 
@@ -79,6 +118,9 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const { t } = useTranslation();
 
     const { propertyId } = router.query;
+
+    const TABS = useMemo(() => getTABS(t), [t]);
+    const GREEN_MAP_INDEX = TABS.length - 1;
 
     const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
@@ -143,61 +185,11 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                         },
                     }}
                 >
-                    <Tab label={t("Overview")} />
-                    <Tab label={t("Quick View")} />
-                    <Tab label={t("Tasks")} />
-                    <Tab label={t("Matching Customers")} />
-                    <Tab label={t("Photos")} />
-                    <Tab label={t("Integrations")} />
-                    <Tab label={t("Logs")} />
-                    <Tab label={t("Documents")} />
-                    <Tab label={t("Map")} />
-                    <Tab label={t("Street View")} />
-                    <Tab label={t("Notifications")} />
-
-                    <Tab label={t("Agreements")} />
-                    <GreenMapTab label={t("Eco Map")} />
+                    {TABS.map(getTab)}
                 </Tabs>
             </ViewHeader>
-            <TabPanel value={value} index={0}>
-                <MainContainer />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <QuickView />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <Tasks />
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                <MatchingCustomersSection />
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                <PhotosOnly />
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                <Integrations />
-            </TabPanel>
-            <TabPanel value={value} index={6}>
-                <PropertyLogs />
-            </TabPanel>
-            <TabPanel value={value} index={7}>
-                <Documents />
-            </TabPanel>
-            <TabPanel value={value} index={8}>
-                <Map />
-            </TabPanel>
-            <TabPanel value={value} index={9}>
-                <StreetView />
-            </TabPanel>
-            <TabPanel value={value} index={10}>
-                <NotificationsTab />
-            </TabPanel>
-            <TabPanel value={value} index={11}>
-                <AgreementsTab />
-            </TabPanel>
-            <TabPanel value={value} index={GREEN_MAP_INDEX}>
-                <GreenMap />
-            </TabPanel>
+
+            {TABS.map(getTabView(value))}
 
             {cloneConfirmDialogOpen ? (
                 <ConfirmationDialogBox
