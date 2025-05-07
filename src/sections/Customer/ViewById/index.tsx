@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import Agreements from "@/sections/agreements";
 import dynamic from "next/dynamic";
 import { TranslationType } from "@/types/translation";
+const Emails = dynamic(() => import("./sections/Emails"));
 const Tasks = dynamic(() => import("./sections/Tasks"));
 const DemandSection = dynamic(() => import("./sections/Demand"));
 
@@ -74,6 +75,10 @@ const getTABS = (
     {
         label: t("Agreements"),
         View: AgreementsTab,
+    },
+    {
+        label: t("Emails"),
+        View: Emails,
     },
     {
         label: t("Logs"),
