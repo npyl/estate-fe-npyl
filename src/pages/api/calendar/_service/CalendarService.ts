@@ -3,7 +3,7 @@ import { admin, admin_directory_v1 } from "@googleapis/admin";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";
 import { OAuth2Client } from "google-auth-library";
 import { TCalendarIdFilter } from "@/types/calendar";
-import managerService from "./ManagerService";
+import managerService from "@/pages/api/google/_service/ManagerService";
 
 const DEFAULT_CALENDAR_ID = "primary";
 

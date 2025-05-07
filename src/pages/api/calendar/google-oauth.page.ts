@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import managerService from "./_service/ManagerService";
+import managerService from "@/pages/api/google/_service/ManagerService";
 
 export default async function handler(
     req: NextApiRequest,

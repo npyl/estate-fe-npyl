@@ -1,4 +1,4 @@
-import managerService from "../../calendar/_service/ManagerService";
+import managerService from "@/pages/api/google/_service/ManagerService";
 import getCredentialsForUser, {
     GoogleWorkspaceKeys,
 } from "./getCredentialsForUser";

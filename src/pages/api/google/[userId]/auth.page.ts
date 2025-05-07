@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import { toNumberSafe } from "@/utils/toNumber";
-import managerService from "../../calendar/_service/ManagerService";
+import managerService from "@/pages/api/google/_service/ManagerService";
 
 interface IParams {
     userId: string;
