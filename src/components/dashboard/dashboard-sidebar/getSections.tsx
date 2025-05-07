@@ -13,6 +13,7 @@ import ArchivedIcon from "./ArchivedIcon";
 import NotificationsIcon from "./NotificationsIcon";
 import ChatIcon from "@mui/icons-material/Chat";
 import EuroIcon from "@mui/icons-material/Euro";
+import EmailIcon from "@mui/icons-material/Email";
 
 interface Item {
     title: string;
@@ -139,6 +140,15 @@ const getSections = (
                     title: t("Valuation"),
                     path: "/valuation",
                     icon: <EuroIcon />,
+                },
+                isAdmin
+            ),
+
+            ...WITH(
+                {
+                    title: t("Emails"),
+                    path: "/emails",
+                    icon: <EmailIcon />,
                 },
                 isAdmin
             ),

@@ -1,4 +1,7 @@
 import { FC } from "react";
+import Send from "./Send";
+import List from "./List";
+import Filters from "./Filters";
 
 interface Props {
     customerId?: number;
@@ -6,7 +9,13 @@ interface Props {
 }
 
 const ViewAll: FC<Props> = ({ customerId, propertyId }) => {
-    return null;
+    return (
+        <>
+            <Filters />
+            <List />
+            <Send />
+        </>
+    );
 };
 
 export default ViewAll;

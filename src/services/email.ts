@@ -1,7 +1,5 @@
+import { IEmailFilters, IEmailReq, IEmailRes } from "@/types/email";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-interface IEmail {}
-interface IEmailFilters {}
 
 export const emails = createApi({
     reducerPath: "emails",
@@ -12,9 +10,17 @@ export const emails = createApi({
     tagTypes: [],
 
     endpoints: (builder) => ({
-        filterEmails: builder.mutation<IEmail, IEmailFilters>({
+        sendEmail: builder.mutation<void, IEmailReq>({
             query: (body) => ({
-                url: "",
+                url: "/",
+                method: "POST",
+                body,
+            }),
+        }),
+
+        filterEmails: builder.mutation<IEmailRes[], IEmailFilters>({
+            query: (body) => ({
+                url: "/filter",
                 method: "POST",
                 body,
             }),
@@ -22,4 +28,4 @@ export const emails = createApi({
     }),
 });
 
-export const { useFilterEmailsMutation } = emails;
+export const { useSendEmailMutation, useFilterEmailsMutation } = emails;
