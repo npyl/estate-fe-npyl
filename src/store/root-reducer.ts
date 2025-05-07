@@ -26,6 +26,7 @@ import { googleOAuth } from "@/services/google-oauth";
 import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { server } from "@/services/server";
+import { emails } from "@/services/email";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as logReducer } from "../slices/log";
@@ -63,6 +64,7 @@ export const rootReducer = combineReducers({
     [logout.reducerPath]: logout.reducer,
     // ...
     [server.reducerPath]: server.reducer,
+    [emails.reducerPath]: emails.reducer,
 
     // customer
     customerFilters: customerFiltersReducer,

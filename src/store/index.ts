@@ -32,6 +32,7 @@ import { googleOAuth } from "@/services/google-oauth";
 import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { server } from "@/services/server";
+import { emails } from "@/services/email";
 import { rootReducer } from "./root-reducer";
 
 const services = [
@@ -64,6 +65,7 @@ const services = [
     googleOAuth,
     messages,
     logout,
+    emails,
     // ...
     server,
 ];
