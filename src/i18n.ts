@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            EMAILS_CUSTOMER_WITHOUT_EMAIL: "Customer without email assigned",
+            EMAILS_MANAGER_WITHOUT_GWEMAIL:
+                "Manager without google workspace email assigned",
+
             General: "General",
             Minimum: "Minimum",
             Median: "Median",
@@ -1333,6 +1337,10 @@ const resources = {
     },
     el: {
         translation: {
+            EMAILS_CUSTOMER_WITHOUT_EMAIL: "Πελάτης χωρίς συνδεδεμένο email",
+            EMAILS_MANAGER_WITHOUT_GWEMAIL:
+                "Διαχειριστής χωρίς συνδεδεμένο email στο Google Workspace",
+
             General: "Γενική",
             Minimum: "Ελάχιστη",
             Median: "Μέση",

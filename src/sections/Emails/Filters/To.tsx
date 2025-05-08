@@ -1,3 +1,4 @@
+import { errorToast } from "@/components/Toaster";
 import CustomerAutocomplete from "@/sections/_Autocompletes/Customer";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import {
@@ -29,7 +30,10 @@ const ToFilter = () => {
             if ("error" in found) return;
 
             const email = found?.data?.email;
-            if (!email) return;
+            if (!email) {
+                errorToast("EMAILS_CUSTOMER_WITHOUT_EMAIL");
+                return;
+            }
 
             setTo(email);
         },

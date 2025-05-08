@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import gmailService from "../_service";
 import { toNumberSafe } from "@/utils/toNumber";
+import { IEmailFilters } from "@/types/email";
 
 export default async function handler(
     req: NextApiRequest,
@@ -25,8 +26,15 @@ export default async function handler(
         // PageToken
         const pageToken = url.searchParams.get("pageToken") ?? undefined;
 
+        const filters = req.body as IEmailFilters;
+
         // Data
-        const data = await gmailService.filter(iUserId, iPageSize, pageToken);
+        const data = await gmailService.filter(
+            iUserId,
+            filters,
+            iPageSize,
+            pageToken
+        );
         const ret = data ?? [];
 
         res.status(200).json(ret);
