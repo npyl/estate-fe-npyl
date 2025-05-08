@@ -2,6 +2,7 @@ import { FC } from "react";
 import Send from "./Send";
 import List from "./List";
 import Filters from "./Filters";
+import FiltersProvider from "@/sections/Emails/Filters/Context";
 
 interface Props {
     customerId?: number;
@@ -9,10 +10,14 @@ interface Props {
 }
 
 const ViewAll: FC<Props> = ({ customerId, propertyId }) => {
+    // TODO: customerId, propertyId, ...
+
     return (
         <>
-            <Filters />
-            <List />
+            <FiltersProvider>
+                <Filters />
+                <List />
+            </FiltersProvider>
             <Send />
         </>
     );
