@@ -3,7 +3,7 @@ import Send from "./Send";
 import List from "./List";
 import Filters from "./Filters";
 import FiltersProvider from "@/sections/Emails/Filters/Context";
-import IsAuthenticatedGuard from "./IsAuthenticatedGuard";
+import IsAuthenticatedGuard from "../Google/IsAuthenticatedGuard";
 
 interface Props {
     customerId?: number;

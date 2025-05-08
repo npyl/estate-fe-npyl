@@ -10,11 +10,11 @@ import {
 
 type State = {
     from: string;
-    to: string;
+    to?: number;
     propertyIds: number[];
 
     setFrom: Dispatch<SetStateAction<string>>;
-    setTo: Dispatch<SetStateAction<string>>;
+    setTo: Dispatch<SetStateAction<number | undefined>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
 };
 
@@ -32,7 +32,7 @@ export const useFiltersContext = () => {
 
 const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
     const [from, setFrom] = useState("");
-    const [to, setTo] = useState("");
+    const [to, setTo] = useState<number>();
     const [propertyIds, setPropertyIds] = useState<number[]>([]);
 
     return (
