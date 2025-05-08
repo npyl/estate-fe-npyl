@@ -2,15 +2,18 @@
 // WARN: MUI pagination starts from index 1; datagrids start from 0 (=> Let's say that outside of this component we use 0)
 
 import React, { useCallback, useEffect } from "react";
-import StyledPagination from "./styled";
 import Box from "@mui/material/Box";
 import { PaginationProps } from "./types";
+const StyledPagination = dynamic(() => import("./styled"));
+const TablePagination = dynamic(() => import("@mui/material/TablePagination"));
+import dynamic from "next/dynamic";
 
 const Pagination = <C extends React.ElementType = "div">({
     children,
     Container,
     pageSize,
     totalItems,
+    table = false,
     isLoading = false,
     ContainerProps,
     page,
@@ -33,6 +36,10 @@ const Pagination = <C extends React.ElementType = "div">({
         (_: any, p: number) => onChange?.(_, p - 1), // INFO: normalise index
         []
     );
+    const handleTablePageChange = useCallback(
+        (_: any, p: number) => onChange?.(_, p), // INFO: this does not need normalisation
+        []
+    );
 
     return (
         <>
@@ -40,14 +47,25 @@ const Pagination = <C extends React.ElementType = "div">({
                 {children}
             </Box>
 
-            <StyledPagination
-                {...props}
-                page={page + 1}
-                onChange={handlePageChange}
-                variant="outlined"
-                color="primary"
-                count={totalPages}
-            />
+            {table ? (
+                <TablePagination
+                    count={totalItems}
+                    page={page}
+                    rowsPerPage={pageSize}
+                    onPageChange={handleTablePageChange}
+                />
+            ) : null}
+
+            {!table ? (
+                <StyledPagination
+                    {...props}
+                    page={page + 1}
+                    onChange={handlePageChange}
+                    variant="outlined"
+                    color="primary"
+                    count={totalPages}
+                />
+            ) : null}
         </>
     );
 };

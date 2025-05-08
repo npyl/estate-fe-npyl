@@ -5,7 +5,7 @@ import getEmail from "./getEmail";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import useGmailPagination, { FIRST_PAGE_TOKEN } from "./useGmailPagination";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 const PAGE_SIZE = 10;
 
@@ -34,19 +34,34 @@ const List = () => {
     const pagination = useGmailPagination(nextPageToken, setPageToken);
 
     return (
-        <Pagination
-            pageSize={PAGE_SIZE}
-            totalItems={totalItems}
-            isLoading={isLoading}
-            Container={Stack}
-            ContainerProps={{
-                mt: 1,
-                boxShadow: 20,
+        <Stack
+            sx={{
+                ".MuiTablePagination-selectLabel": {
+                    display: "none",
+                },
+                ".MuiTablePagination-select": {
+                    display: "none",
+                },
+                ".MuiInputBase-root": {
+                    display: "none",
+                },
             }}
-            {...pagination}
         >
-            {messages?.map(getEmail)}
-        </Pagination>
+            <Pagination
+                table
+                pageSize={PAGE_SIZE}
+                totalItems={totalItems}
+                isLoading={isLoading}
+                Container={Stack}
+                ContainerProps={{
+                    mt: 1,
+                    boxShadow: 20,
+                }}
+                {...pagination}
+            >
+                {messages?.map(getEmail)}
+            </Pagination>
+        </Stack>
     );
 };
 

@@ -1,5 +1,9 @@
-import { PaginationProps as MuiPaginationProps } from "@mui/material";
+import {
+    PaginationProps as MuiPaginationProps,
+    TablePagination,
+} from "@mui/material";
 import { ReactNode } from "react";
+import StyledPagination from "./styled";
 
 export type PaginationHookProps = {
     page: number;
@@ -14,6 +18,9 @@ export interface PaginationProps<C extends React.ElementType> extends Mixup {
     totalItems: number;
     isLoading: boolean; // external data is loading (use to prevent page exceed effect from firing)
     children: ReactNode;
+
+    table?: boolean;
+
     Container?: C;
     ContainerProps?: React.ComponentProps<C>;
 }
