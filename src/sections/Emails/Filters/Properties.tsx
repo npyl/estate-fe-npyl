@@ -11,7 +11,8 @@ const Sx: SxProps<Theme> = {
 const PropertyFilter = () => {
     const { t } = useTranslation();
 
-    const { propertyIds, setPropertyIds } = useFiltersContext();
+    const { filters, setPropertyIds } = useFiltersContext();
+    const { propertyIds } = filters;
 
     return (
         <CodeSelect

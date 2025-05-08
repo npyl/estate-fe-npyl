@@ -5,22 +5,30 @@ import getEmail from "./getEmail";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import useGmailPagination, { FIRST_PAGE_TOKEN } from "./useGmailPagination";
-import { Box, Stack } from "@mui/material";
+import { Stack, SxProps, Theme } from "@mui/material";
 
 const PAGE_SIZE = 10;
+
+const StackSx: SxProps<Theme> = {
+    ".MuiTablePagination-selectLabel": {
+        display: "none",
+    },
+    ".MuiTablePagination-select": {
+        display: "none",
+    },
+    ".MuiInputBase-root": {
+        display: "none",
+    },
+};
 
 const List = () => {
     const { user } = useAuth();
 
-    const { from, to, propertyIds } = useFiltersContext();
+    const { filters: body } = useFiltersContext();
     const [pageToken, setPageToken] = useState(FIRST_PAGE_TOKEN);
 
     const { data, isLoading } = useFilterEmailsQuery({
-        body: {
-            from,
-            to,
-            propertyIds,
-        },
+        body,
         pageSize: PAGE_SIZE,
         pageToken,
         userId: user?.id!,
@@ -34,19 +42,7 @@ const List = () => {
     const pagination = useGmailPagination(nextPageToken, setPageToken);
 
     return (
-        <Stack
-            sx={{
-                ".MuiTablePagination-selectLabel": {
-                    display: "none",
-                },
-                ".MuiTablePagination-select": {
-                    display: "none",
-                },
-                ".MuiInputBase-root": {
-                    display: "none",
-                },
-            }}
-        >
+        <Stack sx={StackSx}>
             <Pagination
                 table
                 pageSize={PAGE_SIZE}

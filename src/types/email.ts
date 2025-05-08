@@ -4,6 +4,10 @@ interface IEmailReq {}
 
 type TEmailRes = Required<gmail_v1.Schema$Message>;
 
-interface IEmailFilters {}
+interface IEmailFilters {
+    from: string;
+    to?: string;
+    propertyIds: number[];
+}
 
 export type { IEmailReq, TEmailRes, IEmailFilters };

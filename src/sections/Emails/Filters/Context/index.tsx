@@ -1,3 +1,4 @@
+import { IEmailFilters } from "@/types/email";
 import {
     createContext,
     Dispatch,
@@ -9,9 +10,7 @@ import {
 } from "react";
 
 type State = {
-    from: string;
-    to?: string;
-    propertyIds: number[];
+    filters: IEmailFilters;
 
     setFrom: Dispatch<SetStateAction<string>>;
     setTo: Dispatch<SetStateAction<string>>;
@@ -46,12 +45,16 @@ const FiltersProvider: FC<ProviderProps> = ({
     const [to, setTo] = useState(_to);
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
+    const filters: IEmailFilters = {
+        from,
+        to,
+        propertyIds,
+    };
+
     return (
         <FiltersContext.Provider
             value={{
-                from,
-                to,
-                propertyIds,
+                filters,
                 // ...
                 setFrom,
                 setTo,

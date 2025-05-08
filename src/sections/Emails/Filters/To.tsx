@@ -15,7 +15,8 @@ const Sx: SxProps<Theme> = {
 const ToFilter = () => {
     const { t } = useTranslation();
 
-    const { to, setTo } = useFiltersContext();
+    const { filters, setTo } = useFiltersContext();
+    const { to } = filters;
 
     const { data } = useFindByEmailQuery(to!, { skip: !to });
     const value = data?.id;

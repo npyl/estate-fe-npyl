@@ -11,7 +11,8 @@ const Sx: SxProps<Theme> = {
 };
 
 const Filter = () => {
-    const { from, setFrom } = useFiltersContext();
+    const { filters, setFrom } = useFiltersContext();
+    const { from } = filters;
 
     const { data, isLoading } = useAllUsersQuery();
 
