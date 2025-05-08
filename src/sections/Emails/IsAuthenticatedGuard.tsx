@@ -5,14 +5,17 @@ import { useAuth } from "@/hooks/use-auth";
 
 const IsAuthenticatedGuard: FC<PropsWithChildren> = ({ children }) => {
     const { user } = useAuth();
+    const isReady = Boolean(user?.id);
 
     // Workspace
-    const { data: data0 } = useIsGoogleWorkspaceIntegratedQuery();
-    if (!data0?.isIntegrated) return null;
+    const { data: data0 } = useIsGoogleWorkspaceIntegratedQuery(undefined, {
+        skip: !isReady,
+    });
+    const isIntegrated = data0?.isIntegrated;
 
     // Authenticated
     const { data: data1 } = useIsAuthenticatedQuery(user?.id!, {
-        skip: !user?.id,
+        skip: !isIntegrated,
     });
     if (!data1?.isAuthenticated) return null;
 
