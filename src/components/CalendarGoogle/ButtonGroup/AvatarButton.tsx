@@ -52,7 +52,7 @@ const AvatarButton: FC<Props> = ({ userInfo, ...props }) => {
 
     return (
         <>
-            <IconButton ref={ref} onClick={openPopover} {...props}>
+            <IconButton ref={ref} size="small" onClick={openPopover} {...props}>
                 <Avatar src={userInfo?.picture} sx={AvatarSx} />
             </IconButton>
 

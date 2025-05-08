@@ -5,6 +5,7 @@ import getEmail from "./getEmail";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import useGmailPagination, { FIRST_PAGE_TOKEN } from "./useGmailPagination";
+import { Stack } from "@mui/material";
 
 const PAGE_SIZE = 10;
 
@@ -37,6 +38,11 @@ const List = () => {
             pageSize={PAGE_SIZE}
             totalItems={totalItems}
             isLoading={isLoading}
+            Container={Stack}
+            ContainerProps={{
+                mt: 1,
+                boxShadow: 20,
+            }}
             {...pagination}
         >
             {messages?.map(getEmail)}
