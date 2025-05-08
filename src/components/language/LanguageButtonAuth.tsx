@@ -38,7 +38,7 @@ export const LanguageButtonAuth = ({
         }
         onLanguageChange?.(language);
     };
-    console.log(i18n.language);
+
     return (
         <>
             <Box
