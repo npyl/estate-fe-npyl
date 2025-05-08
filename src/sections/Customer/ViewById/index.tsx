@@ -41,7 +41,8 @@ const getTABS = (
     t: TranslationType,
     hasDemands: boolean,
     isSellerOrLessor: boolean,
-    isBuyerOrLeaser: boolean
+    isBuyerOrLeaser: boolean,
+    hasEmail: boolean
 ): ITab[] => [
     {
         label: t("Customer Information"),
@@ -76,10 +77,13 @@ const getTABS = (
         label: t("Agreements"),
         View: AgreementsTab,
     },
-    {
-        label: t("Emails"),
-        View: Emails,
-    },
+    ...WITH(
+        {
+            label: t("Emails"),
+            View: Emails,
+        },
+        hasEmail
+    ),
     {
         label: t("Logs"),
         View: Logs,
@@ -155,9 +159,11 @@ const ViewById = () => {
     const isBuyerOrLeaser = (data?.buyer || data?.leaser) ?? false;
     const hasDemands =
         Boolean(data?.demands?.length) && data!.demands!.length > 0;
+    const hasEmail = Boolean(data?.email);
 
     const TABS = useMemo(
-        () => getTABS(t, hasDemands, isSellerOrLessor, isBuyerOrLeaser),
+        () =>
+            getTABS(t, hasDemands, isSellerOrLessor, isBuyerOrLeaser, hasEmail),
         [t, hasDemands, isSellerOrLessor, isBuyerOrLeaser]
     );
 

@@ -1,7 +1,7 @@
 import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
 import useIsOfficeAdmin from "@/sections/Google/useIsOfficeAdmin";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import { SxProps, Theme } from "@mui/material";
+import { Skeleton, SxProps, Theme } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useAllUsersQuery } from "@/services/user";
@@ -13,7 +13,7 @@ const Sx: SxProps<Theme> = {
 const Filter = () => {
     const { from, setFrom } = useFiltersContext();
 
-    const { data } = useAllUsersQuery();
+    const { data, isLoading } = useAllUsersQuery();
 
     const { user } = useAuth();
     const value = useMemo(() => {
@@ -30,11 +30,14 @@ const Filter = () => {
         [data]
     );
 
+    if (isLoading) return <Skeleton width="100px" height="58px" />;
+
     return <ManagerAutocomplete sx={Sx} value={value} onChange={onChange} />;
 };
 
 const FromFilter = () => {
-    const { gwIsAdmin } = useIsOfficeAdmin();
+    const { gwIsAdmin, isChecking } = useIsOfficeAdmin();
+    if (isChecking) return <Skeleton width="100px" height="58px" />;
     if (!gwIsAdmin) return null;
     return <Filter />;
 };

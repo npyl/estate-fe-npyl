@@ -6,24 +6,20 @@ import FiltersProvider from "@/sections/Emails/Filters/Context";
 import IsAuthenticatedGuard from "../Google/IsAuthenticatedGuard";
 
 interface Props {
-    customerId?: number;
+    to?: string;
     propertyId?: number;
 }
 
-const ViewAll: FC<Props> = ({ customerId, propertyId }) => {
-    // TODO: customerId, propertyId, ...
-
-    return (
-        <>
-            <FiltersProvider>
-                <Filters />
-                <IsAuthenticatedGuard>
-                    <List />
-                </IsAuthenticatedGuard>
-            </FiltersProvider>
-            <Send />
-        </>
-    );
-};
+const ViewAll: FC<Props> = ({ to, propertyId }) => (
+    <>
+        <FiltersProvider to={to} propertyId={propertyId}>
+            <Filters />
+            <IsAuthenticatedGuard>
+                <List />
+            </IsAuthenticatedGuard>
+        </FiltersProvider>
+        <Send />
+    </>
+);
 
 export default ViewAll;

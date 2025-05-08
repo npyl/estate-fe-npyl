@@ -10,11 +10,11 @@ import {
 
 type State = {
     from: string;
-    to?: number;
+    to?: string;
     propertyIds: number[];
 
     setFrom: Dispatch<SetStateAction<string>>;
-    setTo: Dispatch<SetStateAction<number | undefined>>;
+    setTo: Dispatch<SetStateAction<string>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
 };
 
@@ -30,10 +30,21 @@ export const useFiltersContext = () => {
     return context;
 };
 
-const FiltersProvider: FC<PropsWithChildren> = ({ children }) => {
+interface ProviderProps extends PropsWithChildren {
+    to?: string;
+    propertyId?: number;
+}
+
+const FiltersProvider: FC<ProviderProps> = ({
+    to: _to = "",
+    propertyId,
+    children,
+}) => {
+    const _propertyIds = Boolean(propertyId) ? [propertyId!] : [];
+
     const [from, setFrom] = useState("");
-    const [to, setTo] = useState<number>();
-    const [propertyIds, setPropertyIds] = useState<number[]>([]);
+    const [to, setTo] = useState(_to);
+    const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
     return (
         <FiltersContext.Provider

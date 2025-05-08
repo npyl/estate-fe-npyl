@@ -34,6 +34,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     >
         <SpaceBetween>
             <Stack
+                alignItems="center"
                 direction="row"
                 spacing={0.3}
                 pt={1}
