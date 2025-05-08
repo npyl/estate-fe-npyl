@@ -6,6 +6,7 @@ import {
 import { GoogleWorkspaceKeys } from "@/pages/api/google/_service/getCredentialsForUser";
 import tokenService from "./TokenStorage";
 import { toNumberSafe } from "@/utils/toNumber";
+import SCOPE from "./SCOPE";
 
 /**
  * AuthService - OAuth & Users manager for a single workspace
@@ -22,17 +23,6 @@ interface UserToken {
     refreshToken: string;
     expiryDate: number;
 }
-
-const SCOPES = [
-    // calendar
-    "https://www.googleapis.com/auth/calendar.readonly",
-    "https://www.googleapis.com/auth/calendar.events",
-    // profile (w/ email)
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/userinfo.email",
-    // office users list
-    "https://www.googleapis.com/auth/admin.directory.user.readonly",
-];
 
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
@@ -64,7 +54,7 @@ class AuthService {
     async getAuthUrl(userId: number) {
         const authUrl = this.oauth2Client.generateAuthUrl({
             access_type: "offline",
-            scope: SCOPES,
+            scope: SCOPE,
             state: userId.toString(),
             prompt: "select_account",
         });

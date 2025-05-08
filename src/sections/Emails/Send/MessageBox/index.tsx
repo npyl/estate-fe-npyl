@@ -53,10 +53,7 @@ const MessageBox: FC<Props> = ({ onClose }) => {
             </SpaceBetween>
 
             <Stack p={1} spacing={1}>
-                <InputField
-                    label={t("To:")}
-                    placeholder={t<string>("Recipients")}
-                />
+                <InputField placeholder={t<string>("Recipients")} />
                 <InputField placeholder={t<string>("Subject")} />
             </Stack>
 
