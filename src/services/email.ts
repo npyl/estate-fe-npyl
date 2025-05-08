@@ -1,4 +1,4 @@
-import { IEmailFilters, IEmailReq } from "@/types/email";
+import { IEmailFilters, IEmailReq, TEmailRes } from "@/types/email";
 import { gmail_v1 } from "@googleapis/gmail";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -15,7 +15,12 @@ interface IEmailFilterReq {
     pageToken?: string; // INFO: tell gmail api to fetch next page
 }
 
-type TEmailFilterRes = gmail_v1.Schema$ListMessagesResponse;
+type TEmailFilterRes = Omit<
+    gmail_v1.Schema$ListMessagesResponse,
+    "messages"
+> & {
+    messages: TEmailRes[];
+};
 
 export const emails = createApi({
     reducerPath: "emails",

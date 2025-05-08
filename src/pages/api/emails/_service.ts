@@ -1,5 +1,8 @@
 import { gmail_v1, gmail } from "@googleapis/gmail";
+import { OAuth2Client } from "google-auth-library";
 import managerService from "@/pages/api/google/_service/ManagerService";
+
+type TMessage = gmail_v1.Schema$Message;
 
 class GmailService {
     private gmail: gmail_v1.Gmail;
@@ -7,6 +10,17 @@ class GmailService {
     constructor() {
         this.gmail = gmail({ version: "v1" });
     }
+
+    // -------------------------------------------------------------------------------------
+
+    private messagePromise =
+        (auth: OAuth2Client) => (acc: Promise<TMessage>[], m: TMessage) => {
+            const { id } = m || {};
+            if (!Boolean(id)) return acc;
+
+            acc.push(this._getEmail(auth, id!));
+            return acc;
+        };
 
     async filter(userId: number, maxResults: number, pageToken?: string) {
         const auth = await managerService.getAuthForUser(userId);
@@ -19,7 +33,24 @@ class GmailService {
             pageToken,
         });
 
-        return res?.data;
+        const promises =
+            res?.data?.messages?.reduce(this.messagePromise(auth), []) || [];
+
+        const messages = await Promise.all(promises);
+
+        return { ...(res?.data || {}), messages };
+    }
+
+    // -------------------------------------------------------------------------------------
+
+    private async _getEmail(auth: OAuth2Client, id: string) {
+        const res = await this.gmail.users.messages.get({
+            auth,
+            userId: "me",
+            id,
+        });
+
+        return res.data;
     }
 }
 
