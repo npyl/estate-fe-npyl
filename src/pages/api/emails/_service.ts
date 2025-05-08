@@ -8,17 +8,18 @@ class GmailService {
         this.gmail = gmail({ version: "v1" });
     }
 
-    async filter(userId: number) {
+    async filter(userId: number, maxResults: number, pageToken?: string) {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) return [];
 
         const res = await this.gmail.users.messages.list({
             auth,
             userId: "me",
-            // maxResults: 10, // TODO: pagination
+            maxResults,
+            pageToken,
         });
 
-        return res?.data?.messages ?? [];
+        return res?.data;
     }
 }
 

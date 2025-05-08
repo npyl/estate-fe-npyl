@@ -3,9 +3,17 @@
 import { useCallback, useState } from "react";
 import { PaginationHookProps } from "./types";
 
-const usePagination = (): PaginationHookProps => {
+type UsePagination = (_onChange?: (p: number) => void) => PaginationHookProps;
+
+const usePagination: UsePagination = (_onChange) => {
     const [page, setPage] = useState(0);
-    const onChange = useCallback((_: any, p: number) => setPage(p), []);
+    const onChange = useCallback(
+        (_: any, p: number) => {
+            setPage(p);
+            _onChange?.(p);
+        },
+        [_onChange]
+    );
     const onPageExceedTotal = useCallback(() => setPage(0), []);
 
     return {

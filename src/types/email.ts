@@ -1,8 +1,9 @@
+import { gmail_v1 } from "@googleapis/gmail";
+
 interface IEmailReq {}
-interface IEmailRes {
-    id: string;
-    threadId: string;
-}
+
+type TEmailRes = gmail_v1.Schema$Message;
+
 interface IEmailFilters {}
 
 export type { IEmailReq, IEmailRes, IEmailFilters };

@@ -9,11 +9,24 @@ export default async function handler(
     try {
         if (req.method !== "POST") throw "Bad method";
 
+        // UserId
         const { userId } = req.query;
         const iUserId = toNumberSafe(userId);
         if (iUserId === -1) throw "Bad userId";
 
-        const data = await gmailService.filter(iUserId);
+        const url = new URL(req.url!, `http://${req.headers.host}`);
+
+        // PageSize
+        const pageSize = url.searchParams.get("pageSize");
+        if (!pageSize) throw "Bad pageSize";
+        const iPageSize = toNumberSafe(pageSize);
+        if (iPageSize === -1) throw "PageSize is not a number";
+
+        // PageToken
+        const pageToken = url.searchParams.get("pageToken") ?? undefined;
+
+        // Data
+        const data = await gmailService.filter(iUserId, iPageSize, pageToken);
         const ret = data ?? [];
 
         res.status(200).json(ret);
