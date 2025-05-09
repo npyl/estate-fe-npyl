@@ -1,6 +1,6 @@
 import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
 import { useAllUsersQuery } from "src/services/user";
-import { IUserMini } from "@/types/user";
+import { IUser, IUserMini } from "@/types/user";
 import { forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { useTranslation } from "react-i18next";
@@ -59,16 +59,22 @@ const RenderOption = (
 type ManagerAutocompleteProps = Omit<
     AutocompleteProps<IUserMini, false, true>,
     "options" | "renderOption" | "renderInput"
->;
+> & {
+    optionFilter?: (u: IUser) => boolean;
+};
 
 const ManagerAutocomplete = forwardRef<
     HTMLDivElement,
     ManagerAutocompleteProps
->((props, ref) => {
+>(({ optionFilter, ...props }, ref) => {
     const { t } = useTranslation();
 
     const { data, isLoading } = useAllUsersQuery();
-    const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+    const options = useMemo(() => {
+        if (!Array.isArray(data)) return [];
+        if (optionFilter) return data.filter(optionFilter);
+        return data;
+    }, [data, optionFilter]);
 
     const selectedUser = useMemo(
         () => options?.find(({ id }) => id === props?.value),

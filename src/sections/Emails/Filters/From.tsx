@@ -5,6 +5,9 @@ import { Skeleton, SxProps, Theme } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useAllUsersQuery } from "@/services/user";
+import { IUser } from "@/types/user";
+
+const onlyWithEmail = ({ workspaceEmail }: IUser) => Boolean(workspaceEmail);
 
 const Sx: SxProps<Theme> = {
     width: "300px",
@@ -33,7 +36,14 @@ const Filter = () => {
 
     if (isLoading) return <Skeleton width="100px" height="58px" />;
 
-    return <ManagerAutocomplete sx={Sx} value={value} onChange={onChange} />;
+    return (
+        <ManagerAutocomplete
+            sx={Sx}
+            value={value}
+            onChange={onChange}
+            optionFilter={onlyWithEmail}
+        />
+    );
 };
 
 const FromFilter = () => {
