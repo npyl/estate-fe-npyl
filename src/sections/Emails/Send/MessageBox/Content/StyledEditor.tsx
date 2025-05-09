@@ -14,6 +14,9 @@ const EditorContainerSx: SxProps<Theme> = {
     [`.${MENUBAR_CLASSNAME}`]: {
         position: "absolute",
         bottom: 0,
+        width: 1,
+        bgcolor: "background.paper",
+        zIndex: EDITOR_ZINDEX,
     },
 };
 
