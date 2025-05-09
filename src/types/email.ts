@@ -1,7 +1,10 @@
 import { gmail_v1 } from "@googleapis/gmail";
 
-interface IEmailReq {}
-
+interface IEmailReq {
+    to: string[];
+    body: string;
+    propertyIds: number[];
+}
 type TEmailRes = Required<gmail_v1.Schema$Message>;
 
 interface IEmailFilters {

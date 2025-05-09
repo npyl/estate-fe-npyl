@@ -1,64 +1,44 @@
-import Editor from "@/components/Editor";
-import { MENUBAR_CLASSNAME } from "@/components/Editor/MenuBar";
-import { SpaceBetween } from "@/components/styled";
-import { Paper, Stack, SxProps, Theme } from "@mui/material";
-import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import CloseButton from "./CloseButton";
-import SendButton from "./SendButton";
-import InputField from "./InputField";
+import { FC, useCallback } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { IEmailReq } from "@/types/email";
+import { useSendEmailMutation } from "@/services/email";
+import { useAuth } from "@/hooks/use-auth";
+import Content from "./Content";
 
-const MessageBoxSx: SxProps<Theme> = {
-    position: "absolute",
-    bottom: 30,
-    right: 30,
-
-    width: "700px",
-
-    backgroundColor: "background.paper",
-
-    boxShadow: 20,
-
-    zIndex: 2,
-};
-
-const EditorContainerSx: SxProps<Theme> = {
-    border: 0,
-    flexDirection: "column-reverse",
-    maxHeight: "60vh",
-    overflowY: "auto",
-    zIndex: 1,
-    mb: 5,
-
-    px: 0.5,
-
-    [`.${MENUBAR_CLASSNAME}`]: {
-        position: "absolute",
-        bottom: 0,
-    },
-};
-
-interface Props {
+interface MessageBoxProps {
+    to?: string;
+    propertyIds?: number[];
     onClose: VoidFunction;
 }
 
-const MessageBox: FC<Props> = ({ onClose }) => {
-    const { t } = useTranslation();
+const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
+    const { user } = useAuth();
+    const [sendEmail] = useSendEmailMutation();
+
+    const onSubmit = useCallback(
+        async (body: IEmailReq) => {
+            await sendEmail({
+                body,
+                userId: user?.id!,
+            });
+        },
+        [user?.id!]
+    );
+
+    const methods = useForm<IEmailReq>({
+        values: {
+            body: "",
+            to: [],
+            propertyIds: [],
+        },
+    });
 
     return (
-        <Paper sx={MessageBoxSx} variant="outlined">
-            <SpaceBetween>
-                <CloseButton onClick={onClose} />
-                <SendButton />
-            </SpaceBetween>
-
-            <Stack p={1} spacing={1}>
-                <InputField placeholder={t<string>("Recipients")} />
-                <InputField placeholder={t<string>("Subject")} />
-            </Stack>
-
-            <Editor containerSx={EditorContainerSx} />
-        </Paper>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <FormProvider {...methods}>
+                <Content onClose={onClose} />
+            </FormProvider>
+        </form>
     );
 };
 

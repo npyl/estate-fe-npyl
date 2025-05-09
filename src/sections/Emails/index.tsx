@@ -11,15 +11,13 @@ interface Props {
 }
 
 const ViewAll: FC<Props> = ({ to, propertyId }) => (
-    <>
-        <FiltersProvider to={to} propertyId={propertyId}>
-            <Filters />
-            <IsAuthenticatedGuard>
-                <List />
-            </IsAuthenticatedGuard>
-        </FiltersProvider>
+    <FiltersProvider to={to} propertyId={propertyId}>
+        <Filters />
+        <IsAuthenticatedGuard>
+            <List />
+        </IsAuthenticatedGuard>
         <Send />
-    </>
+    </FiltersProvider>
 );
 
 export default ViewAll;
