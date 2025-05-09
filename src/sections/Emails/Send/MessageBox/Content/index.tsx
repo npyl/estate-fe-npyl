@@ -1,66 +1,50 @@
-import Editor from "@/components/Editor";
-import { MENUBAR_CLASSNAME } from "@/components/Editor/MenuBar";
 import { SpaceBetween } from "@/components/styled";
-import { Paper, Stack, SxProps, Theme } from "@mui/material";
+import { Box, Paper, Stack, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import CloseButton from "./CloseButton";
+import CancelButton from "./CancelButton";
 import SendButton from "./SendButton";
-import InputField from "./InputField";
 import Recipients from "./Recipients";
+import getBorderColor from "@/theme/borderColor";
+import StyledEditor, { EDITOR_ZINDEX } from "./StyledEditor";
+import RHFSubject from "./RHFSubject";
 
 const MessageBoxSx: SxProps<Theme> = {
     position: "absolute",
     bottom: 30,
     right: 30,
-
+    zIndex: EDITOR_ZINDEX + 1,
     width: "700px",
-
     backgroundColor: "background.paper",
-
     boxShadow: 20,
 
-    zIndex: 2,
-};
-
-const EditorContainerSx: SxProps<Theme> = {
-    border: 0,
-    flexDirection: "column-reverse",
-    maxHeight: "60vh",
-    overflowY: "auto",
-    zIndex: 1,
-    mb: 5,
-
-    px: 0.5,
-
-    [`.${MENUBAR_CLASSNAME}`]: {
-        position: "absolute",
-        bottom: 0,
-    },
+    border: "1px solid",
+    borderColor: getBorderColor,
 };
 
 interface ContentProps {
     onClose: VoidFunction;
 }
 
-const Content: FC<ContentProps> = ({ onClose }) => {
-    const { t } = useTranslation();
-
-    return (
-        <Paper sx={MessageBoxSx} variant="outlined">
-            <SpaceBetween>
-                <CloseButton onClick={onClose} />
-                <SendButton />
-            </SpaceBetween>
-
-            <Stack p={1} spacing={1}>
+const Content: FC<ContentProps> = ({ onClose }) => (
+    <Paper sx={MessageBoxSx} variant="outlined">
+        <Box position="relative">
+            <Stack p={1} spacing={1} position="relative">
                 <Recipients />
-                <InputField placeholder={t<string>("Subject")} />
+                <RHFSubject />
             </Stack>
+            <StyledEditor />
+        </Box>
 
-            <Editor containerSx={EditorContainerSx} />
-        </Paper>
-    );
-};
+        <SpaceBetween
+            alignItems="center"
+            p={1}
+            bgcolor="background.neutral"
+            borderRadius={1}
+        >
+            <CancelButton onClick={onClose} />
+            <SendButton />
+        </SpaceBetween>
+    </Paper>
+);
 
 export default Content;

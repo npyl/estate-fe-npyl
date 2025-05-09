@@ -2,6 +2,7 @@ import { gmail_v1 } from "@googleapis/gmail";
 
 interface IEmailReq {
     to: string[];
+    subject: string;
     body: string;
     propertyIds: number[];
 }

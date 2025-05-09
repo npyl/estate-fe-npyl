@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Send: "Send",
+            Subject: "Subject",
             To: "To",
             EMAILS_CUSTOMER_WITHOUT_EMAIL: "Customer without email assigned",
             EMAILS_MANAGER_WITHOUT_GWEMAIL:
@@ -1338,6 +1340,8 @@ const resources = {
     },
     el: {
         translation: {
+            Send: "Αποστολή",
+            Subject: "Τίτλος",
             To: "Προς",
             EMAILS_CUSTOMER_WITHOUT_EMAIL: "Πελάτης χωρίς συνδεδεμένο email",
             EMAILS_MANAGER_WITHOUT_GWEMAIL:

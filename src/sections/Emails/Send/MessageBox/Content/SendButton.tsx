@@ -1,38 +1,23 @@
-import LoadingIconButton, {
-    LoadingIconButtonProps,
-} from "@/components/LoadingIconButton";
-import getBorderColor from "@/theme/borderColor";
-import SendIcon from "@mui/icons-material/Send";
-import { SxProps, Theme } from "@mui/material";
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { FC } from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
-const SendButtonSx: SxProps<Theme> = {
-    position: "absolute",
-    top: -50,
-    right: 0,
-    bgcolor: "background.paper",
-    "&:hover": {
-        bgcolor: "background.paper",
-    },
-    border: "1px solid",
-    borderColor: getBorderColor,
-};
+const SendButton: FC<LoadingButtonProps> = ({ ...props }) => {
+    const { t } = useTranslation();
 
-const SendButton: FC<LoadingIconButtonProps> = ({ sx, ...props }) => {
     const { formState } = useFormContext();
     const isLoading = formState.isLoading;
 
     return (
-        <LoadingIconButton
+        <LoadingButton
             type="submit"
             loading={isLoading}
-            color="primary"
-            sx={{ ...(SendButtonSx as any), ...sx }}
+            variant="contained"
             {...props}
         >
-            <SendIcon />
-        </LoadingIconButton>
+            {t("Send")}
+        </LoadingButton>
     );
 };
 
