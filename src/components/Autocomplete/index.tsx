@@ -7,8 +7,9 @@ import MuiAutocomplete, {
 } from "@mui/material/Autocomplete";
 import { forwardRef, Ref, useCallback, useMemo } from "react";
 import { ObjectWithId } from "./types";
-import useTagRenderer from "./useTagRenderer";
 import useOnChange from "./useOnChange";
+import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
+import useFreeSoloRenderer from "./useFreeSoloRenderer";
 
 interface AutocompleteProps<
     T extends ObjectWithId,
@@ -44,7 +45,6 @@ const Autocomplete = <
         freeSoloed = [],
         onChange: _onChange,
         onFreeSoloed,
-        renderTags: _renderTags,
         ...rest
     } = props;
 
@@ -70,14 +70,14 @@ const Autocomplete = <
         onFreeSoloed
     );
 
-    const renderTags = useTagRenderer(_renderTags, freeSoloed, onFreeSoloed);
+    const [localRef, { onRef }] = useForwardedLocalRef(ref);
+    useFreeSoloRenderer(localRef, freeSoloed, onFreeSoloed);
 
     return (
         <MuiAutocomplete
-            ref={ref}
+            ref={onRef}
             value={calculated as OneOrMany<T, Multiple>}
             isOptionEqualToValue={isOptionEqualToValue}
-            renderTags={renderTags}
             onChange={onChange}
             {...rest}
         />
