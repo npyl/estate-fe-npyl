@@ -2,19 +2,31 @@ import { Typography } from "@mui/material";
 import { FC, useCallback } from "react";
 import { SpaceBetween } from "../../styled";
 import GMailIcon from "@/assets/logo/Gmail";
+import { useAuth } from "@/hooks/use-auth";
 
-const getUrl = (url: string) =>
-    `https://mail.google.com/mail/?view=cm&body=${encodeURIComponent(url)}`;
+/**
+ * Get Gmail-acceptable url
+ * @param url is a url (or urls joined by \n) that will be made into email's body
+ * @param from the email of the sender; this determines the correct Google Workspace
+ */
+const getUrl = (url: string, from: string = "0") => {
+    const body = encodeURIComponent(url);
+    return `https://mail.google.com/mail/u/${from}/?tf=cm&body=${body}`;
+};
 
 interface Props {
     shareUrl: string;
 }
 
 const GmailButton: FC<Props> = ({ shareUrl }) => {
+    const { user } = useAuth();
+    const { workspaceEmail } = user || {};
+
     const handleClick = useCallback(() => {
-        const url = getUrl(shareUrl);
+        if (!workspaceEmail) return;
+        const url = getUrl(shareUrl, workspaceEmail);
         window.open(url, "_blank");
-    }, [shareUrl]);
+    }, [shareUrl, workspaceEmail]);
 
     return (
         <SpaceBetween
