@@ -42,14 +42,20 @@ interface CustomerAutocompleteProps
     label?: string;
     error?: boolean;
     helperText?: string;
+
+    optionFilter?: (c: ICustomerMini) => boolean;
 }
 
 const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteProps
->(({ label, error, helperText, ...props }, ref) => {
+>(({ label, error, helperText, optionFilter, ...props }, ref) => {
     const { data, isLoading } = useGetNamesQuery();
-    const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+    const options = useMemo(() => {
+        if (!Array.isArray(data)) return [];
+        if (optionFilter) return data.filter(optionFilter);
+        return data;
+    }, [data, optionFilter]);
 
     const selectedOwner = useMemo(
         () => options?.find(({ id }) => id === props?.value),

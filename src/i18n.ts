@@ -7,7 +7,6 @@ const resources = {
             Send: "Send",
             Subject: "Subject",
             To: "To",
-            EMAILS_CUSTOMER_WITHOUT_EMAIL: "Customer without email assigned",
             EMAILS_MANAGER_WITHOUT_GWEMAIL:
                 "Manager without google workspace email assigned",
 
@@ -1343,7 +1342,6 @@ const resources = {
             Send: "Αποστολή",
             Subject: "Τίτλος",
             To: "Προς",
-            EMAILS_CUSTOMER_WITHOUT_EMAIL: "Πελάτης χωρίς συνδεδεμένο email",
             EMAILS_MANAGER_WITHOUT_GWEMAIL:
                 "Διαχειριστής χωρίς συνδεδεμένο email στο Google Workspace",
 

@@ -27,6 +27,7 @@ const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
 
     const methods = useForm<IEmailReq>({
         values: {
+            subject: "",
             body: "",
             to: [],
             propertyIds: [],

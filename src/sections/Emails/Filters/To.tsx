@@ -1,4 +1,3 @@
-import { errorToast } from "@/components/Toaster";
 import CustomerAutocomplete from "@/sections/_Autocompletes/Customer";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import {
@@ -8,6 +7,9 @@ import {
 import { SxProps, Theme } from "@mui/material";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { ICustomerMini } from "@/types/customer";
+
+const onlyWithEmail = ({ email }: ICustomerMini) => Boolean(email);
 
 const Sx: SxProps<Theme> = {
     width: "200px",
@@ -30,10 +32,7 @@ const ToFilter = () => {
             if ("error" in found) return;
 
             const email = found?.data?.email;
-            if (!email) {
-                errorToast("EMAILS_CUSTOMER_WITHOUT_EMAIL");
-                return;
-            }
+            if (!email) return;
 
             setTo(email);
         },
@@ -44,6 +43,7 @@ const ToFilter = () => {
         <CustomerAutocomplete
             sx={Sx}
             label={t<string>("Customer")}
+            optionFilter={onlyWithEmail}
             value={value}
             onChange={onChange}
         />

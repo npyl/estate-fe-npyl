@@ -39,6 +39,8 @@ interface CustomerAutocompleteMultipleProps
     error?: boolean;
     helperText?: string;
 
+    optionFilter?: (c: ICustomerMini) => boolean;
+
     // INFO: make optional
     renderInput?: AutocompleteProps<ICustomerMini, true, true>["renderInput"];
 }
@@ -46,9 +48,13 @@ interface CustomerAutocompleteMultipleProps
 const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteMultipleProps
->(({ label, error, helperText, renderInput, ...props }, ref) => {
+>(({ label, error, helperText, optionFilter, renderInput, ...props }, ref) => {
     const { data, isLoading } = useGetNamesQuery();
-    const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+    const options = useMemo(() => {
+        if (!Array.isArray(data)) return [];
+        if (optionFilter) return data.filter(optionFilter);
+        return data;
+    }, [data, optionFilter]);
 
     const defaultRenderInput = useMemo(
         () => getDefaultRenderInput(label, error, helperText),

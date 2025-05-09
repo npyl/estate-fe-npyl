@@ -5,7 +5,6 @@ import { Skeleton, SxProps, Theme } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useAllUsersQuery } from "@/services/user";
-import { errorToast } from "@/components/Toaster";
 
 const Sx: SxProps<Theme> = {
     width: "300px",
@@ -26,10 +25,7 @@ const Filter = () => {
     const onChange = useCallback(
         (v: number) => {
             const found = data?.find(({ id }) => id === v)?.workspaceEmail;
-            if (!found) {
-                errorToast("EMAILS_MANAGER_WITHOUT_GWEMAIL");
-                return;
-            }
+            if (!found) return;
             setFrom(found);
         },
         [data]
