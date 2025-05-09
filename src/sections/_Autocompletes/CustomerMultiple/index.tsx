@@ -50,14 +50,17 @@ interface CustomerAutocompleteMultipleProps<FreeSolo extends boolean = false>
     >["renderInput"];
 }
 
-const UnforwardedCustomerAutocomplete = <FreeSolo extends boolean = false>({
-    label,
-    error,
-    helperText,
-    optionFilter,
-    renderInput,
-    ...props
-}: CustomerAutocompleteMultipleProps<FreeSolo>) => {
+function UnforwardedCustomerAutocomplete<FreeSolo extends boolean = false>(
+    {
+        label,
+        error,
+        helperText,
+        optionFilter,
+        renderInput,
+        ...props
+    }: CustomerAutocompleteMultipleProps<FreeSolo>,
+    ref: ForwardedRef<HTMLElement>
+) {
     const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => {
         if (!Array.isArray(data)) return [];
@@ -72,6 +75,7 @@ const UnforwardedCustomerAutocomplete = <FreeSolo extends boolean = false>({
 
     return (
         <Autocomplete
+            ref={ref}
             multiple
             disableClearable
             loading={isLoading}
@@ -83,7 +87,7 @@ const UnforwardedCustomerAutocomplete = <FreeSolo extends boolean = false>({
             {...props}
         />
     );
-};
+}
 
 const CustomerAutocomplete = forwardRef(UnforwardedCustomerAutocomplete) as <
     FreeSolo extends boolean = false,
