@@ -3,12 +3,12 @@
  */
 
 import MuiAutocomplete, {
-    AutocompleteValue,
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
 import { forwardRef, Ref, useCallback, useMemo } from "react";
 import { ObjectWithId } from "./types";
 import useTagRenderer from "./useTagRenderer";
+import useOnChange from "./useOnChange";
 
 interface AutocompleteProps<
     T extends ObjectWithId,
@@ -30,9 +30,6 @@ interface AutocompleteProps<
 
 type OneOrMany<T, Multiple> = Multiple extends true ? T[] : T;
 
-const isString = (value: ObjectWithId | string) => typeof value === "string";
-const notString = (value: ObjectWithId | string) => typeof value !== "string";
-
 const Autocomplete = <
     T extends ObjectWithId,
     Multiple extends boolean = false,
@@ -45,7 +42,7 @@ const Autocomplete = <
     const {
         value,
         freeSoloed = [],
-        onChange,
+        onChange: _onChange,
         onFreeSoloed,
         renderTags: _renderTags,
         ...rest
@@ -55,38 +52,6 @@ const Autocomplete = <
         ({ id }: ObjectWithId) =>
             Array.isArray(value) ? value.includes(id) : id === value,
         [value]
-    );
-
-    const handleChange = useCallback(
-        (
-            _: any,
-            v: AutocompleteValue<T, Multiple, DisableClearable, FreeSolo>
-        ) => {
-            if (!v) return;
-
-            const isArray = Array.isArray(v);
-
-            const filtered = isArray
-                ? (v.filter(notString) as ObjectWithId[]).map(({ id }) => id)
-                : v;
-
-            onChange?.(filtered as any);
-
-            //
-            //  Notify for a freeSolo value receival
-            //
-            if (!onFreeSoloed) return;
-
-            const freeSoloed = isArray
-                ? v.filter(isString)
-                : typeof v === "string"
-                  ? [v]
-                  : [];
-            if (!freeSoloed) return;
-
-            onFreeSoloed?.(freeSoloed as string[]);
-        },
-        [onChange]
     );
 
     const calculated = useMemo(() => {
@@ -99,6 +64,12 @@ const Autocomplete = <
         return props.options?.find(({ id }) => value === id) || null!;
     }, [props.options, value]);
 
+    const onChange = useOnChange<T, Multiple, DisableClearable, FreeSolo>(
+        _onChange,
+        freeSoloed,
+        onFreeSoloed
+    );
+
     const renderTags = useTagRenderer(_renderTags, freeSoloed, onFreeSoloed);
 
     return (
@@ -107,7 +78,7 @@ const Autocomplete = <
             value={calculated as OneOrMany<T, Multiple>}
             isOptionEqualToValue={isOptionEqualToValue}
             renderTags={renderTags}
-            onChange={handleChange}
+            onChange={onChange}
             {...rest}
         />
     );

@@ -4,6 +4,7 @@ import { IEmailReq } from "@/types/email";
 import { useSendEmailMutation } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
 import Content from "./Content";
+import { TMessageBoxValues } from "./types";
 
 interface MessageBoxProps {
     to?: string;
@@ -16,7 +17,14 @@ const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
     const [sendEmail] = useSendEmailMutation();
 
     const onSubmit = useCallback(
-        async (body: IEmailReq) => {
+        async (d: TMessageBoxValues) => {
+            const { toFreeSoloed, ...rest } = d;
+
+            const body = {
+                ...rest,
+                to: [...rest.to, ...toFreeSoloed],
+            } as IEmailReq;
+
             await sendEmail({
                 body,
                 userId: user?.id!,
@@ -25,11 +33,12 @@ const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
         [user?.id!]
     );
 
-    const methods = useForm<IEmailReq>({
+    const methods = useForm<TMessageBoxValues>({
         values: {
             subject: "",
             body: "",
             to: [],
+            toFreeSoloed: [],
             propertyIds: [],
         },
     });

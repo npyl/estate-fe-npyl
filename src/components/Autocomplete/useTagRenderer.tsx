@@ -38,7 +38,7 @@ const useTagRenderer = <
         | TRenderTags<T, Multiple, DisableClearable, FreeSolo>
         | undefined,
     freeSoloed: string[],
-    onFreeSoloed: ((v: string[]) => void) | undefined
+    onFreeSoloed?: (v: string[]) => void
 ) => {
     const onDeleteFreeSolo = useCallback(
         (idx: number) => {
@@ -51,7 +51,7 @@ const useTagRenderer = <
         useCallback(
             (...args) => {
                 // The result from the original renderTags or an empty array if it's not provided
-                const _0 = renderTags?.(...args) ?? [];
+                const _0 = _renderTags?.(...args) ?? [];
 
                 // Convert _0 to an array if it's not already one
                 const _0Array = Array.isArray(_0) ? _0 : [_0];
