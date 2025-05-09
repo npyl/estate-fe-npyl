@@ -3,6 +3,7 @@
  */
 
 import MuiAutocomplete, {
+    AutocompleteValue,
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
 import { forwardRef, Ref, useCallback, useMemo } from "react";
@@ -11,29 +12,36 @@ interface ObjectWithId {
     id: number;
 }
 
-type TMultiple = boolean;
-
 interface AutocompleteProps<
     T extends ObjectWithId,
     Multiple extends boolean = false,
-    DisableClearable extends boolean = false
+    DisableClearable extends boolean = false,
+    FreeSolo extends boolean = false,
 > extends Omit<
-        MuiAutocompleteProps<T, Multiple, DisableClearable, false>,
+        MuiAutocompleteProps<T, Multiple, DisableClearable, FreeSolo>,
         "value" | "onChange" | "options"
     > {
     value?: Multiple extends true ? number[] : number; // id
     options: T[];
     onChange?: (value: Multiple extends true ? number[] : number) => void;
+    onFreeSoloed?: (v: string) => void;
 }
+
+type OneOrMany<T, Multiple> = Multiple extends true ? T[] : T;
+
+const isString = (value: ObjectWithId | string) => typeof value === "string";
+const notString = (value: ObjectWithId | string) => typeof value !== "string";
 
 const Autocomplete = <
     T extends ObjectWithId,
-    Multiple extends TMultiple = false
+    Multiple extends boolean = false,
+    DisableClearable extends boolean = false,
+    FreeSolo extends boolean = false,
 >(
-    props: AutocompleteProps<T, Multiple>,
+    props: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo>,
     ref: Ref<HTMLDivElement>
 ) => {
-    const { value, onChange, ...rest } = props;
+    const { value, onChange, onFreeSoloed, ...rest } = props;
 
     const isOptionEqualToValue = useCallback(
         ({ id }: ObjectWithId) =>
@@ -42,10 +50,33 @@ const Autocomplete = <
     );
 
     const handleChange = useCallback(
-        (_: any, v: T | T[] | null) => {
+        (
+            _: any,
+            v: AutocompleteValue<T, Multiple, DisableClearable, FreeSolo>
+        ) => {
             if (!v) return;
-            const ids = Array.isArray(v) ? v.map(({ id }) => id) : v.id;
-            onChange?.(ids as any);
+
+            const isArray = Array.isArray(v);
+
+            const filtered = isArray
+                ? (v.filter(notString) as ObjectWithId[]).map(({ id }) => id)
+                : v;
+
+            onChange?.(filtered as any);
+
+            //
+            //  Notify for a freeSolo value receival
+            //
+            if (!onFreeSoloed) return;
+
+            const freeSoloed = isArray
+                ? v.filter(isString).at(0)
+                : typeof v === "string"
+                  ? v
+                  : undefined;
+            if (!freeSoloed) return;
+
+            onFreeSoloed?.(freeSoloed as string);
         },
         [onChange]
     );
@@ -63,7 +94,7 @@ const Autocomplete = <
     return (
         <MuiAutocomplete
             ref={ref}
-            value={calculated as any} // TODO: fix this!
+            value={calculated as OneOrMany<T, Multiple>}
             isOptionEqualToValue={isOptionEqualToValue}
             onChange={handleChange}
             {...rest}
@@ -73,10 +104,11 @@ const Autocomplete = <
 
 const WithRef = forwardRef(Autocomplete) as <
     T extends ObjectWithId,
-    Multiple extends TMultiple = false,
-    DisableClearable extends boolean = false
+    Multiple extends boolean = false,
+    DisableClearable extends boolean = false,
+    FreeSolo extends boolean = false,
 >(
-    props: AutocompleteProps<T, Multiple, DisableClearable> & {
+    props: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo> & {
         ref?: Ref<unknown>;
     }
 ) => JSX.Element;
