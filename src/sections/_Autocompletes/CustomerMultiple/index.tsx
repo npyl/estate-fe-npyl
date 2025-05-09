@@ -8,23 +8,52 @@ import {
 } from "@/sections/_Autocompletes/Customer";
 import MultilineTextField from "@/components/MultilineTextField";
 import renderUserTags from "./renderUserTags";
+import { AutocompleteRenderInputParams } from "@mui/material";
+
+// -----------------------------------------------------------------------------
+
+const getDefaultRenderInput =
+    (
+        label: string | undefined,
+        error: boolean | undefined,
+        helperText: string | undefined
+    ) =>
+    (params: AutocompleteRenderInputParams): React.ReactNode => (
+        <MultilineTextField
+            multiline
+            label={label}
+            {...params}
+            error={error}
+            helperText={helperText}
+        />
+    );
+
+// -----------------------------------------------------------------------------
 
 interface CustomerAutocompleteMultipleProps
     extends Omit<
         AutocompleteProps<ICustomerMini, true, true>,
         "options" | "renderInput"
     > {
-    label: string;
+    label?: string;
     error?: boolean;
     helperText?: string;
+
+    // INFO: make optional
+    renderInput?: AutocompleteProps<ICustomerMini, true, true>["renderInput"];
 }
 
 const CustomerAutocomplete = forwardRef<
     HTMLDivElement,
     CustomerAutocompleteMultipleProps
->(({ label, error, helperText, ...props }, ref) => {
+>(({ label, error, helperText, renderInput, ...props }, ref) => {
     const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+
+    const defaultRenderInput = useMemo(
+        () => getDefaultRenderInput(label, error, helperText),
+        [label, error, helperText]
+    );
 
     return (
         <Autocomplete
@@ -36,15 +65,7 @@ const CustomerAutocomplete = forwardRef<
             options={options}
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
-            renderInput={(params) => (
-                <MultilineTextField
-                    multiline
-                    label={label}
-                    {...params}
-                    error={error}
-                    helperText={helperText}
-                />
-            )}
+            renderInput={renderInput ?? defaultRenderInput}
             {...props}
         />
     );

@@ -29,7 +29,7 @@ const CustomerAutocomplete = () => {
 
     return (
         <CustomerAutocompleteMultiple
-            label={t("Customers")}
+            label={t<string>("Customers")}
             name="customers"
             onChange={onCustomersChange}
         />

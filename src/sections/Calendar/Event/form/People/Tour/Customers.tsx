@@ -48,7 +48,7 @@ const Render = ({
     return (
         <CustomerAutocomplete
             multiple
-            label={t("Customers")}
+            label={t<string>("Customers")}
             value={value}
             onChange={handleChange}
             {...field}
