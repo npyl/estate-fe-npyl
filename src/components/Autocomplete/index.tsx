@@ -7,10 +7,8 @@ import MuiAutocomplete, {
     AutocompleteProps as MuiAutocompleteProps,
 } from "@mui/material/Autocomplete";
 import { forwardRef, Ref, useCallback, useMemo } from "react";
-
-interface ObjectWithId {
-    id: number;
-}
+import { ObjectWithId } from "./types";
+import useTagRenderer from "./useTagRenderer";
 
 interface AutocompleteProps<
     T extends ObjectWithId,
@@ -24,7 +22,10 @@ interface AutocompleteProps<
     value?: Multiple extends true ? number[] : number; // id
     options: T[];
     onChange?: (value: Multiple extends true ? number[] : number) => void;
-    onFreeSoloed?: (v: string) => void;
+
+    // freeSolo'ed values
+    freeSoloed?: string[];
+    onFreeSoloed?: (v: string[]) => void;
 }
 
 type OneOrMany<T, Multiple> = Multiple extends true ? T[] : T;
@@ -41,7 +42,14 @@ const Autocomplete = <
     props: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo>,
     ref: Ref<HTMLDivElement>
 ) => {
-    const { value, onChange, onFreeSoloed, ...rest } = props;
+    const {
+        value,
+        freeSoloed = [],
+        onChange,
+        onFreeSoloed,
+        renderTags: _renderTags,
+        ...rest
+    } = props;
 
     const isOptionEqualToValue = useCallback(
         ({ id }: ObjectWithId) =>
@@ -70,13 +78,13 @@ const Autocomplete = <
             if (!onFreeSoloed) return;
 
             const freeSoloed = isArray
-                ? v.filter(isString).at(0)
+                ? v.filter(isString)
                 : typeof v === "string"
-                  ? v
-                  : undefined;
+                  ? [v]
+                  : [];
             if (!freeSoloed) return;
 
-            onFreeSoloed?.(freeSoloed as string);
+            onFreeSoloed?.(freeSoloed as string[]);
         },
         [onChange]
     );
@@ -91,11 +99,14 @@ const Autocomplete = <
         return props.options?.find(({ id }) => value === id) || null!;
     }, [props.options, value]);
 
+    const renderTags = useTagRenderer(_renderTags, freeSoloed, onFreeSoloed);
+
     return (
         <MuiAutocomplete
             ref={ref}
             value={calculated as OneOrMany<T, Multiple>}
             isOptionEqualToValue={isOptionEqualToValue}
+            renderTags={renderTags}
             onChange={handleChange}
             {...rest}
         />
