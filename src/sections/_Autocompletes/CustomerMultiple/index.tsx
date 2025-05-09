@@ -1,4 +1,4 @@
-import { forwardRef, useMemo } from "react";
+import { ForwardedRef, forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { ICustomerMini } from "@/types/customer";
@@ -30,10 +30,10 @@ const getDefaultRenderInput =
 
 // -----------------------------------------------------------------------------
 
-interface CustomerAutocompleteMultipleProps
+interface CustomerAutocompleteMultipleProps<FreeSolo extends boolean = false>
     extends Omit<
-        AutocompleteProps<ICustomerMini, true, true>,
-        "options" | "renderInput"
+        AutocompleteProps<ICustomerMini, true, true, FreeSolo>,
+        "options" | "renderInput" | "renderOption" | "renderTags"
     > {
     label?: string;
     error?: boolean;
@@ -42,13 +42,22 @@ interface CustomerAutocompleteMultipleProps
     optionFilter?: (c: ICustomerMini) => boolean;
 
     // INFO: make optional
-    renderInput?: AutocompleteProps<ICustomerMini, true, true>["renderInput"];
+    renderInput?: AutocompleteProps<
+        ICustomerMini,
+        true,
+        true,
+        FreeSolo
+    >["renderInput"];
 }
 
-const CustomerAutocomplete = forwardRef<
-    HTMLDivElement,
-    CustomerAutocompleteMultipleProps
->(({ label, error, helperText, optionFilter, renderInput, ...props }, ref) => {
+const UnforwardedCustomerAutocomplete = <FreeSolo extends boolean = false>({
+    label,
+    error,
+    helperText,
+    optionFilter,
+    renderInput,
+    ...props
+}: CustomerAutocompleteMultipleProps<FreeSolo>) => {
     const { data, isLoading } = useGetNamesQuery();
     const options = useMemo(() => {
         if (!Array.isArray(data)) return [];
@@ -63,21 +72,28 @@ const CustomerAutocomplete = forwardRef<
 
     return (
         <Autocomplete
-            ref={ref}
             multiple
             disableClearable
             loading={isLoading}
             renderOption={RenderOption}
             options={options}
-            getOptionLabel={getOptionLabel}
+            getOptionLabel={getOptionLabel as any}
             renderTags={renderUserTags}
             renderInput={renderInput ?? defaultRenderInput}
             {...props}
         />
     );
-});
+};
 
-CustomerAutocomplete.displayName = "CustomerAutocomplete";
+const CustomerAutocomplete = forwardRef(UnforwardedCustomerAutocomplete) as <
+    FreeSolo extends boolean = false,
+>(
+    props: CustomerAutocompleteMultipleProps<FreeSolo> & {
+        ref?: ForwardedRef<HTMLElement>;
+    }
+) => JSX.Element;
+
+UnforwardedCustomerAutocomplete.displayName = "CustomerAutocomplete";
 
 export type { CustomerAutocompleteMultipleProps };
 export default CustomerAutocomplete;

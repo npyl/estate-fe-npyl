@@ -1,19 +1,18 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { FC } from "react";
 import CustomerAutocompleteMultiple, {
     CustomerAutocompleteMultipleProps,
 } from "@/sections/_Autocompletes/CustomerMultiple";
 
-interface RHFCustomerAutocompleteMultipleProps
-    extends Omit<CustomerAutocompleteMultipleProps, "value"> {
+interface RHFCustomerAutocompleteMultipleProps<FreeSolo extends boolean = false>
+    extends Omit<CustomerAutocompleteMultipleProps<FreeSolo>, "value"> {
     name: string;
 }
 
-const RHFCustomer: FC<RHFCustomerAutocompleteMultipleProps> = ({
+const RHFCustomer = <FreeSolo extends boolean = false>({
     name,
     onChange: _onChange,
     ...props
-}) => {
+}: RHFCustomerAutocompleteMultipleProps<FreeSolo>) => {
     const { control } = useFormContext();
 
     return (
