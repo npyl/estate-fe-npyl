@@ -15,7 +15,7 @@ const useOnChange = <
         | ((value: Multiple extends true ? number[] : number) => void)
         | undefined,
     _freeSoloed: string[],
-    onFreeSoloed?: (v: string[]) => void
+    onFreeSoloed?: (v: string) => void
 ) => {
     const onChange = useCallback(
         (
@@ -37,17 +37,14 @@ const useOnChange = <
             //
             if (!onFreeSoloed) return;
 
-            const filtered = isArray
+            const freeSoloed = isArray
                 ? v.filter(isString).at(0)
                 : typeof v === "string"
                   ? v
                   : undefined;
+            if (!freeSoloed) return;
 
-            const freeSoloed = Boolean(filtered)
-                ? [..._freeSoloed, filtered]
-                : _freeSoloed;
-
-            onFreeSoloed?.(freeSoloed as string[]);
+            onFreeSoloed(freeSoloed as string);
         },
         [_onChange, _freeSoloed, onFreeSoloed]
     );

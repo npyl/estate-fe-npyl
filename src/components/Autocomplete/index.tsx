@@ -26,7 +26,8 @@ interface AutocompleteProps<
 
     // freeSolo'ed values
     freeSoloed?: string[];
-    onFreeSoloed?: (v: string[]) => void;
+    onFreeSoloed?: (v: string) => void;
+    onFreeSoloedDelete?: (idx: number) => void;
 }
 
 type OneOrMany<T, Multiple> = Multiple extends true ? T[] : T;
@@ -45,6 +46,7 @@ const Autocomplete = <
         freeSoloed = [],
         onChange: _onChange,
         onFreeSoloed,
+        onFreeSoloedDelete,
         ...rest
     } = props;
 
@@ -71,7 +73,7 @@ const Autocomplete = <
     );
 
     const [localRef, { onRef }] = useForwardedLocalRef(ref);
-    useFreeSoloRenderer(localRef, freeSoloed, onFreeSoloed);
+    useFreeSoloRenderer(localRef, freeSoloed, onFreeSoloedDelete);
 
     return (
         <MuiAutocomplete

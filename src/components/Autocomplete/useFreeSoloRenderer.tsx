@@ -1,22 +1,20 @@
 import Chip from "@mui/material/Chip";
-import {
-    FC,
-    RefObject,
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-} from "react";
+import { FC, RefObject, useEffect, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 
 interface ChipsProps {
     chips: string[];
-    onDelete: (i: number) => void;
+    onDelete?: (i: number) => void;
 }
 
 const Chips: FC<ChipsProps> = ({ chips, onDelete }) =>
     chips.map((value, i) => (
-        <Chip key={i} label={value} onDelete={() => onDelete(i)} size="small" />
+        <Chip
+            key={i}
+            label={value}
+            onDelete={() => onDelete?.(i)}
+            size="small"
+        />
     ));
 
 const CONTAINER_CLASSNAME = "free-solo-chips-container";
@@ -24,7 +22,7 @@ const CONTAINER_CLASSNAME = "free-solo-chips-container";
 const useFreeSoloRenderer = (
     localRef: RefObject<HTMLDivElement>,
     freeSoloed: string[],
-    onFreeSoloed?: (v: string[]) => void
+    onFreeSoloedDelete?: (idx: number) => void
 ) => {
     const rootRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -68,21 +66,13 @@ const useFreeSoloRenderer = (
         };
     }, []);
 
-    const onDeleteFreeSolo = useCallback(
-        (idx: number) => {
-            const filtered = freeSoloed.filter((_, i) => i !== idx);
-            onFreeSoloed?.(filtered);
-        },
-        [freeSoloed, onFreeSoloed]
-    );
-
     useEffect(() => {
         if (!rootRef.current) return;
 
         rootRef.current.render(
-            <Chips chips={freeSoloed} onDelete={onDeleteFreeSolo} />
+            <Chips chips={freeSoloed} onDelete={onFreeSoloedDelete} />
         );
-    }, [freeSoloed, onDeleteFreeSolo]);
+    }, [freeSoloed, onFreeSoloedDelete]);
 };
 
 export default useFreeSoloRenderer;
