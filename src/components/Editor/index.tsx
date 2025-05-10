@@ -92,6 +92,7 @@ type EditorProps = Omit<
     "editor" | "contentEditable" | "ref" | "onChange"
 > & {
     editable?: boolean;
+    mode?: "json" | "html";
 
     containerProps?: Omit<StackProps, "sx">;
     containerSx?: SxProps<Theme>;
@@ -205,11 +206,12 @@ const Editor = forwardRef<EditorRef, EditorProps>(
  * onUpdate: provides the parent with the editor's content formatted in TipTap-acceptable JSON
  */
 const ProviderWrap = forwardRef<EditorRef, EditorProps>(
-    ({ onUpdate, onPlainTextUpdate, ...props }, ref) => {
+    ({ mode = "json", onUpdate, onPlainTextUpdate, ...props }, ref) => {
         const handleUpdate = useCallback(
             ({ editor }: EditorEvents["update"]) => {
                 try {
-                    const value = editor.getJSON();
+                    const value =
+                        mode === "json" ? editor.getJSON() : editor.getHTML();
                     const sValue = JSON.stringify(value);
                     onUpdate?.(sValue);
 
@@ -220,7 +222,7 @@ const ProviderWrap = forwardRef<EditorRef, EditorProps>(
                     debuglog(ex);
                 }
             },
-            [onUpdate, onPlainTextUpdate]
+            [mode, onUpdate, onPlainTextUpdate]
         );
 
         return (

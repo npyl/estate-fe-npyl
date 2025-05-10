@@ -1,5 +1,5 @@
-import Editor from "@/components/Editor";
 import { MENUBAR_CLASSNAME } from "@/components/Editor/MenuBar";
+import RHFEditor from "@/components/hook-form/RHFEditor";
 import { SxProps, Theme, useTheme } from "@mui/material";
 const EDITOR_ZINDEX = 1;
 
@@ -23,7 +23,9 @@ const EditorContainerSx: SxProps<Theme> = {
 const StyledEditor = () => {
     const { spacing } = useTheme();
     return (
-        <Editor
+        <RHFEditor
+            name="body"
+            mode="html"
             containerSx={EditorContainerSx}
             tiptapStyle={{
                 paddingLeft: spacing(2),
