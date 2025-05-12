@@ -3,7 +3,7 @@ import { TTags } from "../types";
 import { useTranslation } from "react-i18next";
 import useEnums from "../../useEnums";
 import Chip from "@mui/material/Chip";
-import ChipLabel from "./ChipLabel";
+import ChipLabel from "@/sections/Filters/ChipLabel";
 import getEnumLabel from "./util";
 import {
     useChangedFields,

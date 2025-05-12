@@ -2,7 +2,7 @@ import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
 import { IPropertyFilterExtras } from "@/types/properties";
 import { useCallback, useMemo } from "react";
-import ChipLabel from "./ChipLabel";
+import ChipLabel from "@/sections/Filters/ChipLabel";
 import {
     useExtras,
     useFiltersContext,

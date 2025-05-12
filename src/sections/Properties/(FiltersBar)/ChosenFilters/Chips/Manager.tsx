@@ -1,7 +1,7 @@
 import { useAllUsersQuery } from "@/services/user";
 import Chip from "@mui/material/Chip";
 import { useMemo } from "react";
-import ChipLabel from "./ChipLabel";
+import ChipLabel from "@/sections/Filters/ChipLabel";
 import { useTranslation } from "react-i18next";
 import {
     useFiltersContext,

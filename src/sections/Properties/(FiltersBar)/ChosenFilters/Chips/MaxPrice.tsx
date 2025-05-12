@@ -1,6 +1,6 @@
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
-import ChipLabel from "./ChipLabel";
+import ChipLabel from "@/sections/Filters/ChipLabel";
 import {
     useFiltersContext,
     useMaxPrice,

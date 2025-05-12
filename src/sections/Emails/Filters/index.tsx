@@ -4,6 +4,7 @@ import To from "./To";
 import Properties from "./Properties";
 import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
 import IsAuthenticatedGuard from "@/sections/Google/IsAuthenticatedGuard";
+import ChosenFilters from "./ChosenFilters";
 
 const Filters = () => (
     <FiltersBar
@@ -14,7 +15,7 @@ const Filters = () => (
                 <Properties />
             </IsAuthenticatedGuard>
         }
-        bottomContent={<></>}
+        bottomContent={<ChosenFilters />}
         controls={<IsAuthenticatedIndicator />}
     />
 );

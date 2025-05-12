@@ -5,19 +5,34 @@ import {
     FC,
     PropsWithChildren,
     SetStateAction,
+    useCallback,
     useContext,
     useState,
 } from "react";
+import { INITIAL_STATE } from "./constants";
+import useCalculateIds from "./useCalculateIds";
 
 type State = {
     filters: IEmailFilters;
+    ids: (keyof IEmailFilters)[];
 
     setFrom: Dispatch<SetStateAction<string>>;
     setTo: Dispatch<SetStateAction<string>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
+
+    deleteFilter: (filterKey: keyof IEmailFilters) => void;
 };
 
-const FiltersContext = createContext<State | undefined>(undefined);
+const FiltersContext = createContext<State>({
+    filters: INITIAL_STATE,
+    ids: [],
+
+    setFrom: () => {},
+    setPropertyIds: () => {},
+    setTo: () => [],
+
+    deleteFilter: () => {},
+});
 
 export const useFiltersContext = () => {
     const context = useContext(FiltersContext);
@@ -51,14 +66,24 @@ const FiltersProvider: FC<ProviderProps> = ({
         propertyIds,
     };
 
+    const ids = useCalculateIds(filters);
+
+    const deleteFilter = useCallback((key: keyof IEmailFilters) => {
+        if (key === "from") setFrom(INITIAL_STATE.from);
+        if (key === "propertyIds") setPropertyIds(INITIAL_STATE.propertyIds);
+        if (key === "to") setTo(INITIAL_STATE.to);
+    }, []);
+
     return (
         <FiltersContext.Provider
             value={{
                 filters,
+                ids,
                 // ...
                 setFrom,
                 setTo,
                 setPropertyIds,
+                deleteFilter,
             }}
         >
             {children}
@@ -66,4 +91,7 @@ const FiltersProvider: FC<ProviderProps> = ({
     );
 };
 
+const useIds = () => useFiltersContext().ids;
+
+export { useIds };
 export default FiltersProvider;
