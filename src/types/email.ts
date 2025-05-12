@@ -10,7 +10,7 @@ type TEmailRes = Required<gmail_v1.Schema$Message> & { from: string };
 
 interface IEmailFilters {
     from: string;
-    to?: string;
+    to: string[];
     propertyIds: number[];
 }
 

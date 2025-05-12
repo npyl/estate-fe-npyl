@@ -2,7 +2,7 @@ import { IEmailFilters } from "@/types/email";
 
 const INITIAL_STATE: Required<IEmailFilters> = {
     from: "",
-    to: "",
+    to: [],
     propertyIds: [],
 };
 

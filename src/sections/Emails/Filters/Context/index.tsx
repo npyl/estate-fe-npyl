@@ -17,7 +17,7 @@ type State = {
     ids: (keyof IEmailFilters)[];
 
     setFrom: Dispatch<SetStateAction<string>>;
-    setTo: Dispatch<SetStateAction<string>>;
+    setTo: Dispatch<SetStateAction<string[]>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
 
     deleteFilter: (filterKey: keyof IEmailFilters) => void;
@@ -29,7 +29,7 @@ const FiltersContext = createContext<State>({
 
     setFrom: () => {},
     setPropertyIds: () => {},
-    setTo: () => [],
+    setTo: () => {},
 
     deleteFilter: () => {},
 });
@@ -57,7 +57,7 @@ const FiltersProvider: FC<ProviderProps> = ({
     const _propertyIds = Boolean(propertyId) ? [propertyId!] : [];
 
     const [from, setFrom] = useState("");
-    const [to, setTo] = useState(_to);
+    const [to, setTo] = useState(_to ? [_to] : []);
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
     const filters: IEmailFilters = {

@@ -8,12 +8,16 @@ import { TMessageBoxValues } from "./types";
 import useValues from "./useValues";
 
 interface MessageBoxProps {
-    to?: string;
+    to?: string[];
     propertyIds?: number[];
     onClose: VoidFunction;
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
+const MessageBox: FC<MessageBoxProps> = ({
+    to = [],
+    propertyIds = [],
+    onClose,
+}) => {
     const { user } = useAuth();
     const [sendEmail] = useSendEmailMutation();
 
@@ -34,7 +38,7 @@ const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
         [user?.id!]
     );
 
-    const values = useValues();
+    const values = useValues(to, propertyIds);
 
     const methods = useForm<TMessageBoxValues>({
         values,

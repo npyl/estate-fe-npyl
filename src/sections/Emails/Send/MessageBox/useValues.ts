@@ -1,12 +1,14 @@
 import { useMemo } from "react";
 import { TMessageBoxValues } from "./types";
-import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import { useGetNamesQuery } from "@/services/customers";
+import { ICustomerMini } from "@/types/customer";
 
-const useValues = () => {
-    const { filters } = useFiltersContext();
-    const { to: _to, propertyIds } = filters;
+const isCustomer = (data?: ICustomerMini[]) => (e: string) =>
+    data?.find(({ email }) => e === email) ?? [];
+const notCustomer = (data?: ICustomerMini[]) => (e: string) =>
+    data?.find(({ email }) => e !== email) ?? [];
 
+const useValues = (_to: string[], propertyIds: number[]) => {
     const { data } = useGetNamesQuery();
     const calculated = useMemo(() => {
         if (!_to)
@@ -15,16 +17,12 @@ const useValues = () => {
                 toFreeSoloed: [],
             };
 
-        const didFind = data?.find(({ email }) => email === _to);
-        if (!didFind)
-            return {
-                to: [],
-                toFreeSoloed: [_to],
-            };
+        const to = _to.filter(isCustomer(data));
+        const toFreeSoloed = _to.filter(notCustomer(data));
 
         return {
-            to: [_to],
-            toFreeSoloed: [],
+            to,
+            toFreeSoloed,
         };
     }, [_to]);
 

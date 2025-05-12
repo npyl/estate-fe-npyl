@@ -6,7 +6,7 @@ const ToLabel = () => {
     const { t } = useTranslation();
     const { filters } = useFiltersContext();
     const { to } = filters;
-    return <ChipLabel title={t("To")} value={to || ""} />;
+    return <ChipLabel title={t("To")} value={to?.join(", ")} />;
 };
 
 export default ToLabel;
