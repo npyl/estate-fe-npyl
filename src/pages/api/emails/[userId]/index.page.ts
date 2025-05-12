@@ -15,13 +15,14 @@ export default async function handler(
         const iUserId = toNumberSafe(userId);
         if (iUserId === -1) throw "Bad userId";
 
-        const { to, subject, body } = req.body as IEmailReq;
+        const _body = req.body as IEmailReq;
+        const { to, subject, body } = _body;
 
         if (!to) throw "To is required";
         if (!subject) throw "Subject is required";
         if (!body) throw "Body is required";
 
-        await gmailService.send(iUserId, to, subject, body);
+        await gmailService.send(iUserId, _body);
 
         res.status(200).json({});
     } catch (error) {

@@ -32,7 +32,12 @@ const EmailItem: FC<EmailItemProps> = ({ e }) => {
             color="text.secondary"
             sx={ItemSx}
         >
-            <Typography>{e.snippet}</Typography>
+            <Typography fontWeight="500" width="20%">
+                {e.from}
+            </Typography>
+            <Typography variant="body2" width={1}>
+                {e.snippet}
+            </Typography>
         </Stack>
     );
 };

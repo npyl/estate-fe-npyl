@@ -1,9 +1,77 @@
 import { gmail_v1, gmail } from "@googleapis/gmail";
 import { OAuth2Client } from "google-auth-library";
 import managerService from "@/pages/api/google/_service/ManagerService";
-import { IEmailFilters } from "@/types/email";
+import { IEmailFilters, IEmailReq, TEmailRes } from "@/types/email";
+import { toNumberSafe } from "@/utils/toNumber";
 
 type TMessage = gmail_v1.Schema$Message;
+
+const PROPERTY_IDS_HEADER_NAME = "X-Property-Ids";
+
+const getQ = ({ from, to }: IEmailFilters) => {
+    let parts = [];
+    if (from) parts.push(`from:${from}`);
+    if (to) parts.push(`to:${to}`);
+    return parts.join(" ");
+};
+
+const getSender = (m: gmail_v1.Schema$Message) => {
+    const { payload } = m || {};
+    const { headers } = payload || {};
+
+    const h = headers?.find(({ name }) => name?.toLowerCase() === "from");
+
+    const value = h?.value || "";
+
+    // Remove any content that looks like <something>
+    return value.replace(/<[^>]*>/g, "");
+};
+
+/**
+ * Creates RFC 2822 compliant email headers
+ * @param to - Array of recipients
+ * @param subject - Email subject line
+ * @param propertyIds - Optional array of property IDs for custom headers
+ * @param hasAttachments - Whether the email contains attachments
+ * @returns Object containing both raw headers and formatted headers string
+ */
+const getHeaders = (
+    to: string[],
+    subject: string,
+    propertyIds?: number[],
+    hasAttachments: boolean = false
+): string => {
+    // Extract primary recipient and CC recipients
+    const primaryTo = to[0];
+    const cc = to.slice(1);
+
+    // Create message headers according to RFC 2822
+    const headers: Record<string, string> = {
+        "Content-Type": hasAttachments
+            ? `multipart/mixed; boundary="boundary_mixed"`
+            : `text/html; charset="UTF-8"`,
+        "MIME-Version": "1.0",
+        To: primaryTo,
+        Subject: subject,
+    };
+
+    // Add CC if there are additional recipients
+    if (cc.length > 0) {
+        headers["Cc"] = cc.join(", ");
+    }
+
+    if (propertyIds && propertyIds.length > 0) {
+        // Use X- prefix for custom headers
+        headers[PROPERTY_IDS_HEADER_NAME] = propertyIds.join(",");
+    }
+
+    // Format headers according to RFC 2822
+    const formattedHeaders = Object.entries(headers)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join("\r\n");
+
+    return formattedHeaders;
+};
 
 class GmailService {
     private gmail: gmail_v1.Gmail;
@@ -15,13 +83,31 @@ class GmailService {
     // -------------------------------------------------------------------------------------
 
     private messagePromise =
-        (auth: OAuth2Client, from: string) =>
-        (acc: Promise<TMessage>[], m: TMessage) => {
-            const { id } = m || {};
-            if (!Boolean(id)) return acc;
+        (
+            auth: OAuth2Client,
+            from: string,
+            withPropertyIds: boolean,
+            propertyIds: number[]
+        ) =>
+        async (message: TMessage): Promise<TEmailRes | null> => {
+            const { id } = message || {};
+            if (!id) return null;
 
-            acc.push(this._getEmail(auth, id!, from));
-            return acc;
+            if (withPropertyIds) {
+                const HEADER_IDS = await this._getEmailPropertyIds(
+                    auth,
+                    id,
+                    from
+                );
+
+                const found = propertyIds.some((pid) =>
+                    HEADER_IDS.includes(pid)
+                );
+
+                if (!found) return null;
+            }
+
+            return this._getEmail(auth, id, from);
         };
 
     async filter(
@@ -33,13 +119,11 @@ class GmailService {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) return [];
 
-        // TODO: see https://groups.google.com/g/golang-nuts/c/ZwsrCQEj4sQ for "from" support ???
-        const { from, to, propertyIds } = filters;
+        const { from, propertyIds = [] } = filters;
+        const withPropertyIds =
+            Array.isArray(propertyIds) && propertyIds.length > 0;
 
-        let parts = [];
-        if (from) parts.push(`from:${from}`);
-        if (to) parts.push(`to:${to}`);
-        const q = parts.join(" ");
+        const q = getQ(filters);
 
         const res = await this.gmail.users.messages.list({
             auth,
@@ -49,25 +133,63 @@ class GmailService {
             q,
         });
 
-        const promises =
-            res?.data?.messages?.reduce(this.messagePromise(auth, from), []) ||
-            [];
+        const all = res?.data?.messages ?? [];
 
-        const messages = await Promise.all(promises);
+        const promises = all.map(
+            this.messagePromise(auth, from, withPropertyIds, propertyIds)
+        );
+
+        const messageResults = await Promise.all(promises);
+        const messages = messageResults.filter(
+            (m): m is TEmailRes => m !== null
+        );
 
         return { ...(res?.data || {}), messages };
     }
 
     // -------------------------------------------------------------------------------------
 
-    private async _getEmail(auth: OAuth2Client, id: string, userId: string) {
+    private async _getEmailPropertyIds(
+        auth: OAuth2Client,
+        id: string,
+        userId: string
+    ): Promise<number[]> {
+        const res = await this.gmail.users.messages.get({
+            auth,
+            userId,
+            id,
+            format: "metadata",
+            metadataHeaders: [PROPERTY_IDS_HEADER_NAME],
+        });
+
+        const h = res.data?.payload?.headers ?? [];
+
+        const headerName = h.find(
+            ({ name }) =>
+                name?.toLowerCase() === PROPERTY_IDS_HEADER_NAME.toLowerCase()
+        );
+
+        if (!headerName?.value) return [];
+
+        const ids = headerName.value.split(",").map((id) => toNumberSafe(id));
+
+        return ids;
+    }
+
+    private async _getEmail(
+        auth: OAuth2Client,
+        id: string,
+        userId: string
+    ): Promise<TEmailRes> {
         const res = await this.gmail.users.messages.get({
             auth,
             userId,
             id,
         });
 
-        return res.data;
+        const m = res.data as TEmailRes;
+
+        return { ...m, from: getSender(m) };
     }
 
     // -------------------------------------------------------------------------------------
@@ -78,9 +200,7 @@ class GmailService {
      */
     async send(
         userId: number,
-        to: string[],
-        subject: string,
-        body: string,
+        _body: IEmailReq,
         attachments?: Array<{
             filename: string;
             content: string;
@@ -91,29 +211,15 @@ class GmailService {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) return null;
 
-        // Extract primary recipient and CC recipients
-        const primaryTo = to[0];
-        const cc = to.slice(1);
+        const { to, subject, body, propertyIds } = _body;
 
-        // Create message headers according to RFC 2822
-        const headers: Record<string, string> = {
-            "Content-Type": attachments?.length
-                ? `multipart/mixed; boundary="boundary_mixed"`
-                : `text/html; charset="UTF-8"`,
-            "MIME-Version": "1.0",
-            To: primaryTo,
-            Subject: subject,
-        };
-
-        // Add CC if there are additional recipients
-        if (cc.length > 0) {
-            headers["Cc"] = cc.join(", ");
-        }
-
-        // Format headers according to RFC 2822
-        const formattedHeaders = Object.entries(headers)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join("\r\n");
+        // Use the new getHeaders method
+        const formattedHeaders = getHeaders(
+            to,
+            subject,
+            propertyIds,
+            !!attachments?.length
+        );
 
         let emailContent: string;
 

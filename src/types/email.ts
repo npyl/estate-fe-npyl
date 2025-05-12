@@ -6,7 +6,7 @@ interface IEmailReq {
     body: string;
     propertyIds: number[];
 }
-type TEmailRes = Required<gmail_v1.Schema$Message>;
+type TEmailRes = Required<gmail_v1.Schema$Message> & { from: string };
 
 interface IEmailFilters {
     from: string;
