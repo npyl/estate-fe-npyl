@@ -31,7 +31,9 @@ const useFreeSoloRenderer = (
     useLayoutEffect(() => {
         if (!localRef.current) return;
 
-        const input = localRef.current.querySelector("input");
+        const input =
+            localRef.current.querySelector("input") ||
+            localRef.current.querySelector("textarea");
         if (!input) return;
 
         const container = localRef.current.querySelector(
