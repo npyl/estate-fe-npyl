@@ -36,10 +36,9 @@ const Icon: FC<IconProps> = ({ renderer, resourceId }) => {
         const Res = ICONS[renderer];
         if (!Res) return null;
 
-        const _resourceId =
-            renderer === "PROPERTY_EDIT" ? resourceId : undefined;
+        const props = renderer === "PROPERTY_EDIT" ? { resourceId } : {};
 
-        return <Res fontSize="small" resourceId={_resourceId} />;
+        return <Res fontSize="small" {...props} />;
     } catch (ex) {
         return null;
     }
