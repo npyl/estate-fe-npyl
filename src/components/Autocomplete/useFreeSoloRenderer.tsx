@@ -1,6 +1,6 @@
 import Chip from "@mui/material/Chip";
 import { FC, RefObject, useEffect, useLayoutEffect, useRef } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 
 interface ChipsProps {
     chips: string[];
@@ -24,7 +24,7 @@ const useFreeSoloRenderer = (
     freeSoloed: string[],
     onFreeSoloedDelete?: (idx: number) => void
 ) => {
-    const rootRef = useRef<any>(null);
+    const rootRef = useRef<Root | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     // Find the input element and create container
@@ -57,12 +57,10 @@ const useFreeSoloRenderer = (
             }
         }
 
-        // Cleanup function
         return () => {
-            if (rootRef.current) {
-                rootRef.current.unmount();
-                rootRef.current = null;
-            }
+            // INFO: useTimeout forces the unmounting for after render
+            setTimeout(() => rootRef.current?.unmount(), 0);
+            rootRef.current = null;
         };
     }, []);
 
