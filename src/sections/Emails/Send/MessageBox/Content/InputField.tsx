@@ -1,4 +1,5 @@
-import { SxProps, TextField, TextFieldProps, Theme } from "@mui/material";
+import MultilineTextField from "@/components/MultilineTextField";
+import { SxProps, TextFieldProps, Theme } from "@mui/material";
 import { forwardRef } from "react";
 
 const InputFieldSx: SxProps<Theme> = {
@@ -10,8 +11,9 @@ const InputField = forwardRef<
     HTMLInputElement,
     Omit<TextFieldProps, "variant">
 >(({ sx, ...props }, ref) => (
-    <TextField
+    <MultilineTextField
         ref={ref}
+        multiline
         variant="standard"
         sx={{ ...InputFieldSx, ...sx }}
         {...props}
