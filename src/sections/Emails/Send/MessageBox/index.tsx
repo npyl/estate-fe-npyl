@@ -38,10 +38,10 @@ const MessageBox: FC<MessageBoxProps> = ({
         [user?.id!]
     );
 
-    const values = useValues(to, propertyIds);
+    const defaultValues = useValues(to, propertyIds);
 
     const methods = useForm<TMessageBoxValues>({
-        values,
+        defaultValues,
     });
 
     return (
