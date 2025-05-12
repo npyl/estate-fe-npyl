@@ -37,6 +37,6 @@ const EmailItem: FC<EmailItemProps> = ({ e }) => {
     );
 };
 
-const getEmail = (e: TEmailRes) => <EmailItem e={e} />;
+const getEmail = (e: TEmailRes) => <EmailItem key={e.id} e={e} />;
 
 export default getEmail;
