@@ -212,7 +212,9 @@ const ProviderWrap = forwardRef<EditorRef, EditorProps>(
                 try {
                     const value =
                         mode === "json" ? editor.getJSON() : editor.getHTML();
-                    const sValue = JSON.stringify(value);
+                    const sValue = (
+                        mode === "json" ? JSON.stringify(value) : value
+                    ) as string;
                     onUpdate?.(sValue);
 
                     if (!onPlainTextUpdate) return;
