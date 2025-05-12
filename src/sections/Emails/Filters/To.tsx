@@ -54,7 +54,7 @@ const ToFilter = () => {
             onFreeSoloedDelete={onFreeSoloedDelete}
             renderInput={(params) => (
                 <TextField
-                    label={t("Customer")}
+                    label={t("To")}
                     sx={getTextFieldSx(shrink)}
                     {...params}
                 />

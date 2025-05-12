@@ -7,6 +7,7 @@ import Recipients from "./Recipients";
 import getBorderColor from "@/theme/borderColor";
 import StyledEditor, { EDITOR_ZINDEX } from "./StyledEditor";
 import RHFSubject from "./RHFSubject";
+import RHFProperties from "./RHFProperties";
 
 const MessageBoxSx: SxProps<Theme> = {
     position: "absolute",
@@ -31,6 +32,7 @@ const Content: FC<ContentProps> = ({ onClose }) => (
             <Stack p={1} spacing={1} position="relative">
                 <Recipients />
                 <RHFSubject />
+                <RHFProperties />
             </Stack>
             <StyledEditor />
         </Box>

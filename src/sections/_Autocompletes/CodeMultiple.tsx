@@ -1,6 +1,6 @@
 import CodeSelect, { CodeSelectProps } from "@/sections/_Autocompletes/Code";
 import { IPropertyCodeRes } from "@/types/properties";
-import { AutocompleteRenderGetTagProps } from "@mui/material";
+import { AutocompleteRenderGetTagProps, SxProps, Theme } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import ChipLink from "@/components/ChipLink";
 import MultilineTextField from "@/components/MultilineTextField";
@@ -60,14 +60,16 @@ interface CodeAutocompleteMultipleProps
     label?: string;
     error?: boolean;
     helperText?: string;
+
+    inputSx?: SxProps<Theme>;
 }
 
 const CodeAutocompleteMultiple = forwardRef<
     HTMLElement,
     CodeAutocompleteMultipleProps
->(({ label, error, helperText, ...props }, ref) => (
+>(({ label, error, helperText, inputSx, ...props }, ref) => (
     <CodeSelect<true>
-        ref={ref as any}
+        ref={ref}
         multiple
         getOptionLabel={getOptionLabel}
         renderTags={RenderTags}
@@ -76,6 +78,7 @@ const CodeAutocompleteMultiple = forwardRef<
                 multiline
                 label={label}
                 {...other}
+                sx={inputSx}
                 error={error}
                 helperText={helperText}
             />
