@@ -1,9 +1,29 @@
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import { TextField } from "@mui/material";
+import { SxProps, TextField, Theme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import Recipients from "../Pickers/Recipients";
 import { useCallback, useState } from "react";
+
+const LabelSx: SxProps<Theme> = {
+    bgcolor: "white",
+    borderRadius: 1,
+    px: 0.3,
+    top: 0,
+};
+
+const getTextFieldSx = (shrink: boolean): SxProps<Theme> => ({
+    minWidth: "200px",
+    maxWidth: "fit-content",
+
+    "& .MuiInputLabel-root": {
+        ...(shrink ? LabelSx : {}),
+    },
+
+    "& input:focus": {
+        "& .MuiInputLabel-root": LabelSx,
+    },
+});
 
 const ToFilter = () => {
     const { t } = useTranslation();
@@ -18,6 +38,8 @@ const ToFilter = () => {
         []
     );
 
+    const shrink = to.length > 0 || toFreeSoloed.length > 0;
+
     // INFO: prevent picker on customer view
     const router = useRouter();
     const { customerId } = router.query;
@@ -25,14 +47,17 @@ const ToFilter = () => {
 
     return (
         <Recipients
-            // sx={Sx}
             to={to}
             onChange={setTo}
             toFreeSoloed={toFreeSoloed}
             onFreeSoloed={setToFreeSoloed}
             onFreeSoloedDelete={onFreeSoloedDelete}
             renderInput={(params) => (
-                <TextField label={t("Customer")} {...params} />
+                <TextField
+                    label={t("Customer")}
+                    sx={getTextFieldSx(shrink)}
+                    {...params}
+                />
             )}
         />
     );
