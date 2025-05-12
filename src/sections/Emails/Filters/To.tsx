@@ -8,6 +8,7 @@ import { SxProps, Theme } from "@mui/material";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ICustomerMini } from "@/types/customer";
+import { useRouter } from "next/router";
 
 const onlyWithEmail = ({ email }: ICustomerMini) => Boolean(email);
 
@@ -38,6 +39,11 @@ const ToFilter = () => {
         },
         [data]
     );
+
+    // INFO: prevent picker on customer view
+    const router = useRouter();
+    const { customerId } = router.query;
+    if (Boolean(customerId)) return null;
 
     return (
         <CustomerAutocomplete
