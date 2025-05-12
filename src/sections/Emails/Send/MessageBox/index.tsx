@@ -5,6 +5,7 @@ import { useSendEmailMutation } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
 import Content from "./Content";
 import { TMessageBoxValues } from "./types";
+import useValues from "./useValues";
 
 interface MessageBoxProps {
     to?: string;
@@ -33,14 +34,10 @@ const MessageBox: FC<MessageBoxProps> = ({ onClose }) => {
         [user?.id!]
     );
 
+    const values = useValues();
+
     const methods = useForm<TMessageBoxValues>({
-        values: {
-            subject: "",
-            body: "",
-            to: [],
-            toFreeSoloed: [],
-            propertyIds: [],
-        },
+        values,
     });
 
     return (
