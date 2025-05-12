@@ -10,6 +10,7 @@ import { ObjectWithId } from "./types";
 import useOnChange from "./useOnChange";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import useFreeSoloRenderer from "./useFreeSoloRenderer";
+import NoOptions from "./NoOptionts";
 
 interface AutocompleteProps<
     T extends ObjectWithId,
@@ -81,6 +82,7 @@ const Autocomplete = <
             value={calculated as OneOrMany<T, Multiple>}
             isOptionEqualToValue={isOptionEqualToValue}
             onChange={onChange}
+            noOptionsText={<NoOptions />}
             {...rest}
         />
     );

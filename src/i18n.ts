@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            AUTOCOMPLETE_NO_OPTIONS: "No options",
+
             Send: "Send",
             Subject: "Subject",
             To: "To",
@@ -1337,6 +1339,8 @@ const resources = {
     },
     el: {
         translation: {
+            AUTOCOMPLETE_NO_OPTIONS: "Καμία επιλογή",
+
             Send: "Αποστολή",
             Subject: "Τίτλος",
             To: "Προς",
