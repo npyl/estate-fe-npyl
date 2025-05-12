@@ -7,6 +7,14 @@ import { INotificationFilter } from "@/types/notification/notification";
 import { NextPage } from "next";
 import { FC } from "react";
 
+// INFO: prevent from showing up on production
+export const getStaticProps = async () => {
+    if (process.env.NODE_ENV === "production") {
+        return { notFound: true };
+    }
+    return { props: {} };
+};
+
 // ----------------------------------------------------------------------------
 
 const VIEW_BY_ID_TEST_ID = "view-by-id-test-id";
