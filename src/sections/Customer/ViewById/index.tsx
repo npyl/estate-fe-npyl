@@ -97,7 +97,7 @@ const getTab = ({ label }: ITab, idx: number) => (
 const getTabView =
     (value: number) =>
     ({ View }: ITab, idx: number) => (
-        <TabPanel value={value} index={idx}>
+        <TabPanel key={idx} value={value} index={idx}>
             <View />
         </TabPanel>
     );
