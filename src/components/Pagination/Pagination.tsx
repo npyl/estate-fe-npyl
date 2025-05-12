@@ -5,7 +5,7 @@ import React, { useCallback, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { PaginationProps } from "./types";
 const StyledPagination = dynamic(() => import("./styled"));
-const TablePagination = dynamic(() => import("@mui/material/TablePagination"));
+const TablePagination = dynamic(() => import("./TablePagination"));
 import dynamic from "next/dynamic";
 
 const Pagination = <C extends React.ElementType = "div">({
