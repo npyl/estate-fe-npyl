@@ -4,9 +4,9 @@ import { useGetNamesQuery } from "@/services/customers";
 import { ICustomerMini } from "@/types/customer";
 
 const isCustomer = (data?: ICustomerMini[]) => (e: string) =>
-    data?.find(({ email }) => e === email) ?? [];
+    data?.find(({ email }) => e === email);
 const notCustomer = (data?: ICustomerMini[]) => (e: string) =>
-    data?.find(({ email }) => e !== email) ?? [];
+    !data?.find(({ email }) => e === email);
 
 const useValues = (_to: string[], propertyIds: number[]) => {
     const { data } = useGetNamesQuery();
