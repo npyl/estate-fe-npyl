@@ -35,4 +35,5 @@ const AvatarSelectGroup: FC<AvatarSelectGroupProps> = ({
     </Stack>
 );
 
+export type { AvatarSelectGroupProps };
 export default AvatarSelectGroup;
