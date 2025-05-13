@@ -1,6 +1,6 @@
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
-import AgreementCard from "@/components/Cards/AgreementCard";
-import AgreementCardSkeleton from "@/components/Cards/AgreementCard/Skeleton";
+import AgreementCard from "@/sections/agreements/AgreementCard";
+import AgreementCardSkeleton from "@/sections/agreements/AgreementCard/Skeleton";
 import { FC, useCallback, useState } from "react";
 import { useFilterAgreementsQuery } from "@/services/agreements";
 import Pagination, { usePagination } from "@/components/Pagination";

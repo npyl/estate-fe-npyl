@@ -1,4 +1,4 @@
-import AgreementCard from "@/components/Cards/AgreementCard";
+import AgreementCard from "@/sections/agreements/AgreementCard";
 import { usePagination } from "@/components/Pagination";
 import { useSearchAgreementsQuery } from "@/services/agreements";
 import Grid from "@mui/material/Grid";

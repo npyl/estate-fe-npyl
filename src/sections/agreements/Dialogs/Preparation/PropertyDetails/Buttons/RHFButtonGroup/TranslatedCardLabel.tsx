@@ -1,7 +1,7 @@
 import {
     CardLabel,
     CardLabelProps,
-} from "@/components/Cards/AgreementCard/Labels";
+} from "@/sections/agreements/AgreementCard/Labels";
 import { useTranslation } from "react-i18next";
 
 const TranslatedCardLabel: React.FC<CardLabelProps> = ({ variant, name }) => {
