@@ -5,7 +5,6 @@ import Recipients from "../Pickers/Recipients";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { toNumberSafe } from "@/utils/toNumber";
-import { getTagClassname } from "@/sections/_Autocompletes/CustomerMultiple";
 
 const LabelSx: SxProps<Theme> = {
     bgcolor: "white",
@@ -14,10 +13,7 @@ const LabelSx: SxProps<Theme> = {
     top: 0,
 };
 
-const getTextFieldSx = (
-    shrink: boolean,
-    customerId: number
-): SxProps<Theme> => ({
+const getTextFieldSx = (shrink: boolean): SxProps<Theme> => ({
     minWidth: "200px",
     maxWidth: "fit-content",
 
@@ -27,12 +23,6 @@ const getTextFieldSx = (
 
     "& input:focus": {
         "& .MuiInputLabel-root": LabelSx,
-    },
-
-    [`.${getTagClassname(customerId)}`]: {
-        ".MuiChip-deleteIcon": {
-            display: "none",
-        },
     },
 });
 
@@ -65,7 +55,7 @@ const ToFilter = () => {
             renderInput={(params) => (
                 <TextField
                     label={t("To")}
-                    sx={getTextFieldSx(shrink, iCustomerId)}
+                    sx={getTextFieldSx(shrink)}
                     {...params}
                 />
             )}

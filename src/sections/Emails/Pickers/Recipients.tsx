@@ -2,10 +2,23 @@ import { ICustomerMini } from "@/types/customer";
 import { FC, useCallback, useMemo } from "react";
 import CustomerMultiple, {
     CustomerAutocompleteMultipleProps,
+    getTagClassname,
 } from "@/sections/_Autocompletes/CustomerMultiple";
 import { useGetNamesQuery } from "@/services/customers";
+import { SxProps, Theme } from "@mui/material";
+import { useRouter } from "next/router";
+import { toNumberSafe } from "@/utils/toNumber";
 
 // ---------------------------------------------------------------------------
+
+const getSx = (customerId: number): SxProps<Theme> => ({
+    // INFO: disable ability to delete tag chip that corresponds to current property (e.g. when opening Emails from tab from PropertyById)
+    [`.${getTagClassname(customerId)}`]: {
+        ".MuiChip-deleteIcon": {
+            display: "none",
+        },
+    },
+});
 
 const onlyWithEmail = ({ email }: ICustomerMini) => Boolean(email);
 
@@ -70,6 +83,10 @@ const Recipients: FC<RecipientsProps> = ({
         [toFreeSoloed, _onFreeSoloed]
     );
 
+    const router = useRouter();
+    const { customerId } = router.query;
+    const iCustomerId = toNumberSafe(customerId);
+
     return (
         <CustomerMultiple
             freeSolo
@@ -79,6 +96,7 @@ const Recipients: FC<RecipientsProps> = ({
             value={value}
             onChange={onChange}
             optionFilter={onlyWithEmail}
+            sx={getSx(iCustomerId)}
             {...props}
         />
     );
