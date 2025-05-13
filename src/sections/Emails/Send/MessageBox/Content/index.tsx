@@ -1,13 +1,11 @@
-import { SpaceBetween } from "@/components/styled";
 import { Box, Paper, Stack, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
-import CancelButton from "./CancelButton";
-import SendButton from "./SendButton";
 import Recipients from "./Recipients";
 import getBorderColor from "@/theme/borderColor";
 import StyledEditor, { EDITOR_ZINDEX } from "./StyledEditor";
 import RHFSubject from "./RHFSubject";
 import RHFProperties from "./RHFProperties";
+import Actions from "./Actions";
 
 const MessageBoxSx: SxProps<Theme> = {
     position: "fixed",
@@ -36,16 +34,7 @@ const Content: FC<ContentProps> = ({ onClose }) => (
             </Stack>
             <StyledEditor />
         </Box>
-
-        <SpaceBetween
-            alignItems="center"
-            p={1}
-            bgcolor="background.neutral"
-            borderRadius={1}
-        >
-            <CancelButton onClick={onClose} />
-            <SendButton />
-        </SpaceBetween>
+        <Actions onClose={onClose} />
     </Paper>
 );
 
