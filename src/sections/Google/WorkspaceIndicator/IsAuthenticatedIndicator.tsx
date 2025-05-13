@@ -10,6 +10,8 @@ import AvatarSkeleton from "./AvatarSkeleton";
 
 // ------------------------------------------------------------------------
 
+const AVATAR_CLASSNAME = "PPGoogleOAuthAvatar";
+
 interface IsAuthenticatedIndicatorProps extends PropsWithChildren {
     sx?: SxProps<Theme>;
 }
@@ -38,7 +40,11 @@ const IsAuthenticatedIndicator: FC<IsAuthenticatedIndicatorProps> = ({
 
     return (
         <>
-            <AvatarButton userInfo={userInfo} sx={sx} />
+            <AvatarButton
+                className={AVATAR_CLASSNAME}
+                userInfo={userInfo}
+                sx={sx}
+            />
             {children}
         </>
     );
@@ -46,5 +52,6 @@ const IsAuthenticatedIndicator: FC<IsAuthenticatedIndicatorProps> = ({
 
 // ------------------------------------------------------------------------
 
+export { AVATAR_CLASSNAME };
 export type { IsAuthenticatedIndicatorProps };
 export default IsAuthenticatedIndicator;

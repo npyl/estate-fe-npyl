@@ -1,11 +1,21 @@
-import { Typography } from "@mui/material";
+import { SxProps, Theme, Typography } from "@mui/material";
 import { FC, useCallback } from "react";
 import { SpaceBetween } from "@/components/styled";
 import GMailIcon from "@/assets/logo/Gmail";
 import { useAuth } from "@/hooks/use-auth";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-const MessageBox = dynamic(() => import("@/sections/Emails/Send/MessageBox"));
+import IsAuthenticatedIndicator, {
+    AVATAR_CLASSNAME,
+} from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
+import { useIsAuthenticatedQuery } from "@/services/google-oauth";
+const CurrentMessageBox = dynamic(() => import("./CurrentMessageBox"));
+
+const IndicatorSx: SxProps<Theme> = {
+    [`&.${AVATAR_CLASSNAME}`]: {
+        display: "none",
+    },
+};
 
 /**
  * Get Gmail-acceptable url
@@ -19,21 +29,22 @@ const getUrl = (url: string, from: string = "0") => {
 
 interface Props {
     shareUrl: string;
-    onHideParent: VoidFunction;
 }
 
-const GmailButton: FC<Props> = ({ shareUrl, onHideParent }) => {
+const GmailButton: FC<Props> = ({ shareUrl }) => {
     const { user } = useAuth();
     const { workspaceEmail } = user || {};
 
     const body = getUrl(shareUrl, workspaceEmail);
-    console.log("BODY: ", body);
+
+    const { data } = useIsAuthenticatedQuery(user?.id!);
+    const disabled = !data?.isAuthenticated;
 
     const [isOpen, openMessageBox, closeMessageBox] = useDialog();
     const onClick = useCallback(() => {
-        onHideParent();
+        if (disabled) return;
         openMessageBox();
-    }, []);
+    }, [openMessageBox, disabled]);
 
     return (
         <>
@@ -52,17 +63,20 @@ const GmailButton: FC<Props> = ({ shareUrl, onHideParent }) => {
                 <Typography variant="body1" color="text.secondary" width={1}>
                     Gmail
                 </Typography>
-                <GMailIcon
-                    width={33}
-                    height={33}
-                    style={{
-                        borderRadius: "100%",
-                    }}
-                />
+
+                <IsAuthenticatedIndicator sx={IndicatorSx}>
+                    <GMailIcon
+                        width={33}
+                        height={33}
+                        style={{
+                            borderRadius: "100%",
+                        }}
+                    />
+                </IsAuthenticatedIndicator>
             </SpaceBetween>
 
             {isOpen ? (
-                <MessageBox body={body} onClose={closeMessageBox} />
+                <CurrentMessageBox body={body} onClose={closeMessageBox} />
             ) : null}
         </>
     );
