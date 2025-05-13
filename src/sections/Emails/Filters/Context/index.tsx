@@ -16,6 +16,11 @@ type State = {
     filters: IEmailFilters;
     ids: (keyof IEmailFilters)[];
 
+    isPropertyPage: boolean;
+    isCustomerPage: boolean;
+    currentPropertyId?: number;
+    currentCustomerEmail?: string;
+
     setFrom: Dispatch<SetStateAction<string>>;
     setTo: Dispatch<SetStateAction<string[]>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
@@ -26,6 +31,9 @@ type State = {
 const FiltersContext = createContext<State>({
     filters: INITIAL_STATE,
     ids: [],
+
+    isCustomerPage: false,
+    isPropertyPage: false,
 
     setFrom: () => {},
     setPropertyIds: () => {},
@@ -68,11 +76,23 @@ const FiltersProvider: FC<ProviderProps> = ({
 
     const ids = useCalculateIds(filters);
 
-    const deleteFilter = useCallback((key: keyof IEmailFilters) => {
-        if (key === "from") setFrom(INITIAL_STATE.from);
-        if (key === "propertyIds") setPropertyIds(INITIAL_STATE.propertyIds);
-        if (key === "to") setTo(INITIAL_STATE.to);
-    }, []);
+    const isPropertyPage = Boolean(propertyId);
+    const isCustomerPage = Boolean(_to);
+
+    const deleteFilter = useCallback(
+        (key: keyof IEmailFilters) => {
+            if (key === "from") setFrom(INITIAL_STATE.from);
+
+            if (key === "propertyIds" && isPropertyPage)
+                setPropertyIds([propertyId!]);
+            else if (key === "propertyIds")
+                setPropertyIds(INITIAL_STATE.propertyIds);
+
+            if (key === "to" && isCustomerPage) setTo([_to]);
+            else if (key === "to") setTo(INITIAL_STATE.to);
+        },
+        [isPropertyPage, isCustomerPage, propertyId, _to]
+    );
 
     return (
         <FiltersContext.Provider
@@ -80,9 +100,15 @@ const FiltersProvider: FC<ProviderProps> = ({
                 filters,
                 ids,
                 // ...
+                isPropertyPage,
+                isCustomerPage,
+                currentPropertyId: propertyId,
+                currentCustomerEmail: _to,
+                // ...
                 setFrom,
                 setTo,
                 setPropertyIds,
+                // ...
                 deleteFilter,
             }}
         >
