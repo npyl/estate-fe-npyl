@@ -28,7 +28,7 @@ const useOnChange = <
 
             const ids = isArray
                 ? (v.filter(notString) as ObjectWithId[]).map(({ id }) => id)
-                : v;
+                : (v as ObjectWithId).id;
 
             _onChange?.(ids as any);
 

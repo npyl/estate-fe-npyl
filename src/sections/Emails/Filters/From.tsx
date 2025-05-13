@@ -7,10 +7,12 @@ import { useAuth } from "@/hooks/use-auth";
 import { useAllUsersQuery } from "@/services/user";
 import { IUser } from "@/types/user";
 
+const WIDTH = "300px";
+
 const onlyWithEmail = ({ workspaceEmail }: IUser) => Boolean(workspaceEmail);
 
 const Sx: SxProps<Theme> = {
-    width: "300px",
+    width: WIDTH,
 };
 
 const Filter = () => {
@@ -34,7 +36,7 @@ const Filter = () => {
         [data]
     );
 
-    if (isLoading) return <Skeleton width="100px" height="58px" />;
+    if (isLoading) return <Skeleton width={WIDTH} height="58px" />;
 
     return (
         <ManagerAutocomplete
@@ -48,7 +50,7 @@ const Filter = () => {
 
 const FromFilter = () => {
     const { gwIsAdmin, isChecking } = useIsOfficeAdmin();
-    if (isChecking) return <Skeleton width="100px" height="58px" />;
+    if (isChecking) return <Skeleton width={WIDTH} height="58px" />;
     if (!gwIsAdmin) return null;
     return <Filter />;
 };
