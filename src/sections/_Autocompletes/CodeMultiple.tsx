@@ -28,12 +28,20 @@ const Label: FC<LabelProps> = ({ code, parentCategory }) => (
 
 // ---------------------------------------------------------------------------
 
+const getTagClassname = (id: number) => `PPCodeMultiple-TagUser${id}`;
+
 const RenderTags = (
     tagValue: IPropertyCodeRes[],
     getTagProps: AutocompleteRenderGetTagProps
 ) =>
     tagValue.map((option, index) => {
-        const { key, ...tagProps } = getTagProps({ index });
+        const {
+            key,
+            className: _className,
+            ...tagProps
+        } = getTagProps({ index });
+
+        const className = `${_className} ${getTagClassname(option.id)}`;
 
         return (
             <ChipLink
@@ -45,6 +53,7 @@ const RenderTags = (
                         parentCategory={option.parentCategory}
                     />
                 }
+                className={className}
                 {...tagProps}
             />
         );
@@ -87,5 +96,6 @@ const CodeAutocompleteMultiple = forwardRef<
     />
 ));
 
+export { getTagClassname };
 export type { CodeAutocompleteMultipleProps };
 export default CodeAutocompleteMultiple;
