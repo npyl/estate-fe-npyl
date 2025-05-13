@@ -1,9 +1,11 @@
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import { SxProps, TextField, Theme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import Recipients from "../Pickers/Recipients";
 import { useCallback, useState } from "react";
+import { useRouter } from "next/router";
+import { toNumberSafe } from "@/utils/toNumber";
+import { getTagClassname } from "@/sections/_Autocompletes/CustomerMultiple";
 
 const LabelSx: SxProps<Theme> = {
     bgcolor: "white",
@@ -12,7 +14,10 @@ const LabelSx: SxProps<Theme> = {
     top: 0,
 };
 
-const getTextFieldSx = (shrink: boolean): SxProps<Theme> => ({
+const getTextFieldSx = (
+    shrink: boolean,
+    customerId: number
+): SxProps<Theme> => ({
     minWidth: "200px",
     maxWidth: "fit-content",
 
@@ -23,10 +28,20 @@ const getTextFieldSx = (shrink: boolean): SxProps<Theme> => ({
     "& input:focus": {
         "& .MuiInputLabel-root": LabelSx,
     },
+
+    [`.${getTagClassname(customerId)}`]: {
+        ".MuiChip-deleteIcon": {
+            display: "none",
+        },
+    },
 });
 
 const ToFilter = () => {
     const { t } = useTranslation();
+
+    const router = useRouter();
+    const { customerId } = router.query;
+    const iCustomerId = toNumberSafe(customerId);
 
     const { filters, setTo } = useFiltersContext();
     const { to } = filters;
@@ -40,11 +55,6 @@ const ToFilter = () => {
 
     const shrink = to.length > 0 || toFreeSoloed.length > 0;
 
-    // INFO: prevent picker on customer view
-    const router = useRouter();
-    const { customerId } = router.query;
-    if (Boolean(customerId)) return null;
-
     return (
         <Recipients
             to={to}
@@ -55,7 +65,7 @@ const ToFilter = () => {
             renderInput={(params) => (
                 <TextField
                     label={t("To")}
-                    sx={getTextFieldSx(shrink)}
+                    sx={getTextFieldSx(shrink, iCustomerId)}
                     {...params}
                 />
             )}
