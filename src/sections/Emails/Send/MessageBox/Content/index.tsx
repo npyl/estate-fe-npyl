@@ -10,7 +10,7 @@ import RHFSubject from "./RHFSubject";
 import RHFProperties from "./RHFProperties";
 
 const MessageBoxSx: SxProps<Theme> = {
-    position: "absolute",
+    position: "fixed",
     bottom: 30,
     right: 30,
     zIndex: EDITOR_ZINDEX + 1,

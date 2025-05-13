@@ -2,10 +2,10 @@ import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetProperty } from "@/hooks/property";
-import { SharePopoverProps } from "@/components/Share";
+import { SharePopoverProps } from "@/sections/Share";
 import NotGeneratedPlaceholder from "./NotGeneratedPlaceholder";
 import { usePropertyPDFDownloader } from "@/services/properties";
-const SharePopover = dynamic(() => import("@/components/Share"));
+const SharePopover = dynamic(() => import("@/sections/Share"));
 
 // TODO: update this to handle properties that are:
 // 1. published on a different public

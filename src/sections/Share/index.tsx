@@ -19,7 +19,7 @@ import CopyLinkButton from "./Buttons/CopyLink";
 import Section from "./Section";
 import dynamic from "next/dynamic";
 import EmailButton from "./Buttons/Email";
-import { ComponentType } from "react";
+import { ComponentType, useCallback } from "react";
 const FileButton = dynamic(() => import("./Buttons/File"));
 
 // ---------------------------------------------------------------------------
@@ -53,6 +53,8 @@ const SharePopover = ({
 
     const canShareFile = files && getFiles && "share" in window.navigator;
 
+    const onHide = useCallback(() => {}, []);
+
     return (
         <Popover
             open
@@ -85,7 +87,7 @@ const SharePopover = ({
 
             <Section title={t("Email")}>
                 <EmailButton shareUrl={shareUrl} />
-                <GmailButton shareUrl={shareUrl} />
+                <GmailButton shareUrl={shareUrl} onHideParent={onHide} />
             </Section>
 
             <Divider sx={{ width: "100%" }} />

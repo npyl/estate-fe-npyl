@@ -9,12 +9,14 @@ import useValues from "./useValues";
 
 interface MessageBoxProps {
     to?: string[];
+    body?: string;
     propertyIds?: number[];
     onClose: VoidFunction;
 }
 
 const MessageBox: FC<MessageBoxProps> = ({
     to = [],
+    body = "",
     propertyIds = [],
     onClose,
 }) => {
@@ -38,7 +40,7 @@ const MessageBox: FC<MessageBoxProps> = ({
         [user?.id!]
     );
 
-    const defaultValues = useValues(to, propertyIds);
+    const defaultValues = useValues(to, body, propertyIds);
 
     const methods = useForm<TMessageBoxValues>({
         defaultValues,

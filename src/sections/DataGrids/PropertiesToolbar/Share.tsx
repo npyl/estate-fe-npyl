@@ -1,4 +1,4 @@
-const SharePopover = dynamic(() => import("@/components/Share"));
+const SharePopover = dynamic(() => import("@/sections/Share"));
 import useDialog from "@/hooks/useDialog";
 import DisabledShareButton from "@/sections/ViewHeader/ShareButton/Property/DisabledShareButton";
 import {

@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import dynamic from "next/dynamic";
 import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
-const Share = dynamic(() => import("@/components/Share"));
+const Share = dynamic(() => import("@/sections/Share"));
 
 const ShareSx: SxProps<Theme> = {
     ".PPShare-OtherSection, .PPShare-OtherSectionDivider": {

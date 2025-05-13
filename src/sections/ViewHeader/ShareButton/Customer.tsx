@@ -1,4 +1,4 @@
-import Share from "@/components/Share";
+import Share from "@/sections/Share";
 import useDialog from "@/hooks/useDialog";
 import IconButton from "@mui/material/IconButton";
 import ShareIcon from "@mui/icons-material/Share";

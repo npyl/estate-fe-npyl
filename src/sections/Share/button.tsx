@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { ComponentType } from "react";
-import { SpaceBetween } from "../styled";
+import { SpaceBetween } from "../../components/styled";
 
 interface BaseComponentProps {
     url: string;

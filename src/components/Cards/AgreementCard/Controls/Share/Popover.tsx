@@ -1,7 +1,7 @@
 import { FC, useCallback } from "react";
 import { useGeneratePDF } from "@/sections/agreements/Dialogs/_shared/hook";
 import { useLazyGetAgreementByIdQuery } from "@/services/agreements";
-import Share, { SharePopoverProps } from "@/components/Share";
+import Share, { SharePopoverProps } from "@/sections/Share";
 
 interface AgreementShareProps extends SharePopoverProps {
     agreementId: number;

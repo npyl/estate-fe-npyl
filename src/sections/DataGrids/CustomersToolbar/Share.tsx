@@ -1,4 +1,4 @@
-const SharePopover = dynamic(() => import("@/components/Share"));
+const SharePopover = dynamic(() => import("@/sections/Share"));
 import useDialog from "@/hooks/useDialog";
 import IconButton from "@mui/material/IconButton";
 import dynamic from "next/dynamic";
