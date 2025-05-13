@@ -7,7 +7,7 @@ import {
     RenderOption,
 } from "@/sections/_Autocompletes/Customer";
 import MultilineTextField from "@/components/MultilineTextField";
-import renderUserTags from "./renderUserTags";
+import renderUserTags, { getTagClassname } from "./renderUserTags";
 import { AutocompleteRenderInputParams } from "@mui/material";
 
 // -----------------------------------------------------------------------------
@@ -99,5 +99,6 @@ const CustomerAutocomplete = forwardRef(UnforwardedCustomerAutocomplete) as <
 
 UnforwardedCustomerAutocomplete.displayName = "CustomerAutocomplete";
 
+export { getTagClassname };
 export type { CustomerAutocompleteMultipleProps };
 export default CustomerAutocomplete;

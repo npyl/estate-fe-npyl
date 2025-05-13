@@ -3,14 +3,22 @@ import { AutocompleteRenderGetTagProps } from "@mui/material";
 import ChipLink from "@/components/ChipLink";
 import PlaceholderAvatar from "@/sections/_Autocompletes/Customer/PlaceholderAvatar";
 
+const getTagClassname = (id: number) => `PPCustomerAutocomplete-TagUser${id}`;
+
 const renderUserTags = (
     tagValue: ICustomerMini[],
     getTagProps: AutocompleteRenderGetTagProps
 ) =>
     tagValue.map((option, index) => {
-        const { key, ...tagProps } = getTagProps({ index });
+        const {
+            key,
+            className: _className,
+            ...tagProps
+        } = getTagProps({ index });
 
         const label = `${option?.firstName || ""} ${option?.lastName || ""}`;
+
+        const className = `${_className} ${getTagClassname(option.id)}`;
 
         return (
             <ChipLink
@@ -18,9 +26,11 @@ const renderUserTags = (
                 href={`/customer/${option.id}`}
                 label={label}
                 avatar={<PlaceholderAvatar />}
+                className={className}
                 {...tagProps}
             />
         );
     });
 
+export { getTagClassname };
 export default renderUserTags;
