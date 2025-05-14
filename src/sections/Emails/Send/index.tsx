@@ -16,20 +16,13 @@ const FabSx: SxProps<Theme> = {
 const Send = () => {
     const [isOpen, openBox, closeBox] = useDialog();
     const { filters } = useFiltersContext();
-    const { to, propertyIds } = filters || {};
 
     return (
         <>
             <Fab sx={FabSx} color="primary" onClick={openBox}>
                 <AddIcon />
             </Fab>
-            {isOpen ? (
-                <MessageBox
-                    to={to}
-                    propertyIds={propertyIds}
-                    onClose={closeBox}
-                />
-            ) : null}
+            {isOpen ? <MessageBox {...filters} onClose={closeBox} /> : null}
         </>
     );
 };
