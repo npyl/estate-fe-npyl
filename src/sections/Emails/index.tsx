@@ -15,8 +15,8 @@ const ViewAll: FC<Props> = ({ to, propertyId }) => (
         <Filters />
         <IsAuthenticatedGuard>
             <List />
+            <Send />
         </IsAuthenticatedGuard>
-        <Send />
     </FiltersProvider>
 );
 
