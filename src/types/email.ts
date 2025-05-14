@@ -5,6 +5,7 @@ interface IEmailReq {
     subject: string;
     body: string;
     propertyIds: number[];
+    attachments: File[];
 }
 type TEmailRes = Required<gmail_v1.Schema$Message> & { from: string };
 

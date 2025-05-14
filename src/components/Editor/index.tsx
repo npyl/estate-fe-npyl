@@ -132,6 +132,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
             <Stack
                 sx={{
                     "& .tiptap": {
+                        height: 1,
                         minHeight: "200px",
 
                         px: 1.5,
