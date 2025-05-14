@@ -4,8 +4,18 @@ import FileInput, { OpenerBaseProps } from "@/components/FileInput";
 import { ChangeEvent, FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { TMessageBoxValues } from "../../types";
+import toast from "react-hot-toast";
+import { infoToast } from "@/components/Toaster";
 
-const Opener: FC<OpenerBaseProps> = ({ loading, onClick }) => (
+const LITERAL_0 = "EMAILS_REMOVED_DUPLICATES_0";
+const LITERAL_1 = "EMAILS_REMOVED_DUPLICATES_1";
+
+const doesntExistIn =
+    (old: File[]) =>
+    ({ name }: File) =>
+        !old.find(({ name: oldName }) => name === oldName);
+
+const Opener: FC<OpenerBaseProps> = ({ onClick }) => (
     <IconButton size="small" onClick={onClick}>
         <AttachFileIcon />
     </IconButton>
@@ -20,7 +30,16 @@ const AttachmentsButton = () => {
             const list = event.target.files;
             if (!list) return;
 
-            const attachments = [...old, ...Array.from(list)];
+            const files = Array.from(list);
+
+            // Remove duplicates & notify
+            const filtered = files.filter(doesntExistIn(old));
+            const isDuplicates = files.length !== filtered.length;
+            const isWithNew = filtered.length > 0;
+            if (isDuplicates)
+                infoToast(LITERAL_0, isWithNew ? LITERAL_1 : undefined);
+
+            const attachments = [...old, ...filtered];
 
             setValue("attachments", attachments, { shouldDirty: true });
         },

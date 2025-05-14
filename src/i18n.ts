@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            EMAILS_REMOVED_DUPLICATES_0:
+                "Duplicate attachments have been ignored",
+            EMAILS_REMOVED_DUPLICATES_1: "The rest were added",
+
             AUTOCOMPLETE_NO_OPTIONS: "No options",
 
             Send: "Send",
@@ -1338,6 +1342,9 @@ const resources = {
     },
     el: {
         translation: {
+            EMAILS_REMOVED_DUPLICATES_0: "Αγνοήθηκαν διπλότυπα",
+            EMAILS_REMOVED_DUPLICATES_1: "Τα καινούργια προστέθηκαν",
+
             AUTOCOMPLETE_NO_OPTIONS: "Καμία επιλογή",
 
             Send: "Αποστολή",
