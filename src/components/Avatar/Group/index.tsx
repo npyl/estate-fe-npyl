@@ -15,11 +15,12 @@ const getSurplus =
         value: TUser["id"] | undefined,
         onChange: ((id: TUser["id"]) => void) | undefined,
         // ...
-        users: TUser[],
+        _users: TUser[],
         MoreAvatars?: ComponentType<MoreAvatarsProps>
     ) =>
     (surplus: number) => {
-        const surplusUsers = users.filter(({ id }) => id !== value);
+        const users = _users.filter(({ id }) => id !== value);
+        const surplusUsers = users.slice(-1 * surplus);
 
         return (
             <Surplus
