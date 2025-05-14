@@ -2,6 +2,7 @@ import { IEmailReq } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import gmailService from "../_service";
+import verifyEmails from "./verifyEmails";
 
 export default async function handler(
     req: NextApiRequest,
@@ -21,6 +22,10 @@ export default async function handler(
         if (!to) throw "To is required";
         if (!subject) throw "Subject is required";
         if (!body) throw "Body is required";
+
+        // Verify Emails
+        const areValid = await verifyEmails(to);
+        if (!areValid) throw "Invalid emails";
 
         await gmailService.send(iUserId, _body);
 
