@@ -19,8 +19,7 @@ const getSurplus =
         MoreAvatars?: ComponentType<MoreAvatarsProps>
     ) =>
     (surplus: number) => {
-        const end = users.length;
-        const surplusUsers = users.slice(-1 * surplus, end);
+        const surplusUsers = users.filter(({ id }) => id !== value);
 
         return (
             <Surplus
