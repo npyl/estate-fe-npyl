@@ -4,6 +4,8 @@ import { useCallback, useState } from "react";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
+    useGetTasksQuery,
+    useSuggestForCustomerQuery,
 } from "@/services/customers";
 
 import {
@@ -21,9 +23,21 @@ import Agreements from "@/sections/agreements";
 import dynamic from "next/dynamic";
 const Tasks = dynamic(() => import("./sections/Tasks"));
 const DemandSection = dynamic(() => import("./sections/Demand"));
-
+import { usePagination } from "@/components/Pagination";
+import CustomerTabCounter from "./TabsCounter/TabCounter";
+import { useFilterAgreementsQuery } from "@/services/agreements";
+import { IAgreementsFilters } from "@/types/agreements";
 // -------------------------------------------------------------------------------
+const PAGE_SIZE = 5;
 
+const defaultAgreementsFilter: IAgreementsFilters = {
+    variants: null,
+    active: null,
+    draft: null,
+    keys: null,
+    signed: null,
+    expiresBy: null,
+};
 const getTabPaths = (id: number) => [`/customer/${id}`, `/customer/edit/${id}`];
 
 // -------------------------------------------------------------------------------
@@ -32,7 +46,6 @@ type TabConfig = {
     label: string;
     content: JSX.Element;
 };
-
 const ViewById = () => {
     const router = useRouter();
     const { t } = useTranslation();
@@ -40,6 +53,28 @@ const ViewById = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
+    const { data: taskData } = useGetTasksQuery(+customerId!);
+    const pagination = usePagination();
+
+    const { data: suggestData } = useSuggestForCustomerQuery(
+        {
+            customerId: +customerId!,
+            page: pagination.page,
+            pageSize: PAGE_SIZE,
+        },
+        {
+            skip: +customerId! === -1,
+        }
+    );
+
+    const { data: agreementsData } = useFilterAgreementsQuery({
+        ...defaultAgreementsFilter,
+        customerId: +customerId!,
+    });
+
+    const matchingProperties = suggestData?.content || [];
+    const hasMatchingProperties = matchingProperties.length > 0;
+
     const [deleteCustomer] = useDeleteCustomerMutation();
 
     const [value, setValue] = useState(0);
@@ -49,6 +84,13 @@ const ViewById = () => {
 
     const demands = data?.demands;
     const hasDemands = data?.demands?.length && data?.demands?.length > 0;
+
+    const hasTasks = taskData && taskData?.length > 0;
+
+    const ownedProperties = data?.ownedProperties;
+    const hasOwnedProperties = ownedProperties && ownedProperties?.length > 0;
+
+    const agreementsCount = agreementsData?.totalElements || 0;
 
     const handleChange = (_: any, v: number) => setValue(v);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
@@ -84,14 +126,23 @@ const ViewById = () => {
                 </Grid>
             ),
         },
-
-        {
-            label: t("Tasks"),
-            content: <Tasks />,
+        hasTasks && {
+            label: (
+                <CustomerTabCounter
+                    label={t("Tasks")}
+                    count={taskData?.length}
+                />
+            ),
+            content: <Tasks cards={taskData} />,
         },
 
         hasDemands && {
-            label: t("Demands"),
+            label: (
+                <CustomerTabCounter
+                    label={t("Demands")}
+                    count={demands?.length}
+                />
+            ),
             content: (
                 <Stack spacing={1}>
                     {demands?.map((d, i) => (
@@ -100,16 +151,35 @@ const ViewById = () => {
                 </Stack>
             ),
         },
-        isSellerOrLessor && {
-            label: t("Owned Properties"),
-            content: <OwnedProperties />,
-        },
-        isBuyerOrLeaser && {
-            label: t("Matching Properties"),
-            content: <MatchingProperties />,
-        },
+        isSellerOrLessor &&
+            hasOwnedProperties && {
+                label: (
+                    <CustomerTabCounter
+                        label={t("Owned Properties")}
+                        count={ownedProperties.length}
+                    />
+                ),
+                content: <OwnedProperties />,
+            },
+        isBuyerOrLeaser &&
+            hasMatchingProperties && {
+                label: (
+                    <CustomerTabCounter
+                        label={t("Matching Properties")}
+                        count={matchingProperties.length}
+                    />
+                ),
+                content: <MatchingProperties properties={matchingProperties} />,
+            },
+
         {
-            label: t("Agreements"),
+            label: (
+                <CustomerTabCounter
+                    label={t("Agreements")}
+                    count={agreementsCount}
+                />
+            ),
+
             content: <Agreements customerId={+customerId!} />,
         },
         {
