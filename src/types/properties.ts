@@ -510,6 +510,16 @@ interface IPropertyCodeRes {
     parentCategory: ParentCategory;
 }
 
+export interface IPropertyTabCounts {
+    id: number;
+    tasks: number;
+    matchingCustomers: number;
+    images: number;
+    documents: number;
+    notifications: number;
+    agreements: number;
+}
+
 export type {
     IPropertyCodeRes,
     // ...

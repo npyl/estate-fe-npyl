@@ -5,6 +5,7 @@ import {
     useClonePropertyMutation,
     useDeletePermanentPropertyMutation,
     useDeletePropertyMutation,
+    useGetTabCountQuery,
 } from "src/services/properties";
 
 import TabPanel from "src/components/Tabs";
@@ -36,6 +37,13 @@ const QuickView = dynamic(() => import("./(tabs)/QuickView"));
 const NotificationsTab = dynamic(() => import("./(tabs)/Notifications"));
 
 import { styled } from "@mui/material/styles";
+import PropertyTabCounter from "./TabCounter";
+
+interface TabItem {
+    label: React.ReactNode;
+    content: React.ReactNode;
+    isGreen?: boolean;
+}
 
 const StyledTab = styled(Tab)(({ theme }) => ({
     marginLeft: theme.spacing(3),
@@ -79,6 +87,10 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const { t } = useTranslation();
 
     const { propertyId } = router.query;
+    const { data: tabCounts, isLoading: isTabCountsLoading } =
+        useGetTabCountQuery(+propertyId!, {
+            skip: !propertyId,
+        });
 
     const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
@@ -120,6 +132,98 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
         router.push("/property");
     }, [propertyId]);
 
+    // Maybe the following in a new TabsConfig component
+    const tabsConfig: TabItem[] = [
+        {
+            label: t("Overview"),
+            content: <MainContainer />,
+        },
+        {
+            label: t("Quick View"),
+            content: <QuickView />,
+        },
+        tabCounts?.tasks &&
+            tabCounts?.tasks > 0 && {
+                label: (
+                    <PropertyTabCounter
+                        label={t("Tasks")}
+                        count={tabCounts.tasks}
+                    />
+                ),
+                content: <Tasks />,
+            },
+        tabCounts?.matchingCustomers &&
+            tabCounts?.matchingCustomers > 0 && {
+                label: (
+                    <PropertyTabCounter
+                        label={t("Matching Customers")}
+                        count={tabCounts?.matchingCustomers}
+                    />
+                ),
+                content: <MatchingCustomersSection />,
+            },
+        tabCounts?.images &&
+            tabCounts?.images > 0 && {
+                label: (
+                    <PropertyTabCounter
+                        label={t("Photos")}
+                        count={tabCounts?.images}
+                    />
+                ),
+                content: <PhotosOnly />,
+            },
+        {
+            label: t("Integrations"),
+            content: <Integrations />,
+        },
+        {
+            label: t("Logs"),
+            content: <PropertyLogs />,
+        },
+        tabCounts?.documents &&
+            tabCounts?.documents > 0 && {
+                label: (
+                    <PropertyTabCounter
+                        label={t("Documents")}
+                        count={tabCounts.documents}
+                    />
+                ),
+                content: <Documents />,
+            },
+        {
+            label: t("Map"),
+            content: <Map />,
+        },
+        {
+            label: t("Street View"),
+            content: <StreetView />,
+        },
+        tabCounts?.notifications &&
+            tabCounts?.notifications > 0 && {
+                label: (
+                    <PropertyTabCounter
+                        label={t("Notifications")}
+                        count={tabCounts.notifications}
+                    />
+                ),
+                content: <NotificationsTab />,
+            },
+        tabCounts?.agreements &&
+            tabCounts?.agreements > 0 && {
+                label: (
+                    <PropertyTabCounter
+                        label={t("Agreements")}
+                        count={tabCounts.agreements}
+                    />
+                ),
+                content: <AgreementsTab />,
+            },
+        {
+            label: t("Eco Map"),
+            content: <GreenMap />,
+            isGreen: true,
+        },
+    ].filter(Boolean) as TabItem[]; //Type-safe filtering for typescript error
     return (
         <>
             <ViewHeader
@@ -143,61 +247,20 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                         },
                     }}
                 >
-                    <Tab label={t("Overview")} />
-                    <Tab label={t("Quick View")} />
-                    <Tab label={t("Tasks")} />
-                    <Tab label={t("Matching Customers")} />
-                    <Tab label={t("Photos")} />
-                    <Tab label={t("Integrations")} />
-                    <Tab label={t("Logs")} />
-                    <Tab label={t("Documents")} />
-                    <Tab label={t("Map")} />
-                    <Tab label={t("Street View")} />
-                    <Tab label={t("Notifications")} />
-
-                    <Tab label={t("Agreements")} />
-                    <GreenMapTab label={t("Eco Map")} />
+                    {tabsConfig.map((tab, index) =>
+                        tab?.isGreen ? (
+                            <GreenMapTab key={index} label={tab.label} />
+                        ) : (
+                            <Tab key={index} label={tab?.label} />
+                        )
+                    )}
                 </Tabs>
             </ViewHeader>
-            <TabPanel value={value} index={0}>
-                <MainContainer />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <QuickView />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <Tasks />
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                <MatchingCustomersSection />
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                <PhotosOnly />
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                <Integrations />
-            </TabPanel>
-            <TabPanel value={value} index={6}>
-                <PropertyLogs />
-            </TabPanel>
-            <TabPanel value={value} index={7}>
-                <Documents />
-            </TabPanel>
-            <TabPanel value={value} index={8}>
-                <Map />
-            </TabPanel>
-            <TabPanel value={value} index={9}>
-                <StreetView />
-            </TabPanel>
-            <TabPanel value={value} index={10}>
-                <NotificationsTab />
-            </TabPanel>
-            <TabPanel value={value} index={11}>
-                <AgreementsTab />
-            </TabPanel>
-            <TabPanel value={value} index={GREEN_MAP_INDEX}>
-                <GreenMap />
-            </TabPanel>
+            {tabsConfig.map((tab, index) => (
+                <TabPanel key={index} value={value} index={index}>
+                    {tab?.content}
+                </TabPanel>
+            ))}
 
             {cloneConfirmDialogOpen ? (
                 <ConfirmationDialogBox

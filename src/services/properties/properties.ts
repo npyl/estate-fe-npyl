@@ -6,6 +6,7 @@ import {
     IPropertyFilterCounters,
     IPropertyMarker,
     IPropertyResultResponse,
+    IPropertyTabCounts,
 } from "src/types/properties";
 import IPage from "src/types/page";
 
@@ -122,6 +123,12 @@ export const properties = apiWithTranslation({
             query: (id) => `${id}`,
             providesTags: ["PropertyById"],
         }),
+
+        getTabCount: builder.query<IPropertyTabCounts, number>({
+            query: (propertyId) => `/${propertyId}/counts`,
+            providesTags: ["PropertyById"],
+        }),
+
         getPropertyByCode: builder.query<IProperties, string>({
             query: (code) => `code/${code}`,
             providesTags: ["Properties"],
@@ -404,7 +411,7 @@ export const {
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
     useGetPropertyLocationMarkersQuery,
-
+    useGetTabCountQuery,
     // mutations
     useCreatePropertyMutation,
     useClonePropertyMutation,
