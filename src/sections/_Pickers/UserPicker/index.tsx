@@ -6,7 +6,7 @@ import { forwardRef, useMemo } from "react";
 import { IUser } from "@/types/user";
 import { AvatarSelectGroupProps } from "@/components/Avatar/SelectGroup";
 const MoreAvatars = dynamic(
-    () => import("@/sections/Calendar/Filters/UserSelect/MoreAvatars")
+    () => import("@/sections/_Pickers/UserPicker/MoreAvatars")
 );
 
 const Loader = () => <Skeleton width="100px" height="58px" />;

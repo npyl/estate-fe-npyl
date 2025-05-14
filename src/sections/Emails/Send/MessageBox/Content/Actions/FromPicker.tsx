@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import UserPicker from "./UserPicker";
+import UserPicker from "@/sections/_Pickers/UserPicker";
 import { TMessageBoxValues } from "../../types";
 
 const FromPicker = () => {

@@ -1,4 +1,3 @@
-import { SpaceBetween } from "@/components/styled";
 import CancelButton from "./CancelButton";
 import SendButton from "./SendButton";
 import { FC } from "react";
@@ -10,18 +9,20 @@ interface ActionsProps {
 }
 
 const Actions: FC<ActionsProps> = ({ onClose }) => (
-    <SpaceBetween
+    <Stack
+        direction="row"
         alignItems="center"
         p={1}
         bgcolor="background.neutral"
         borderRadius={1}
     >
         <FromPicker />
+        <Stack width={1} />
         <Stack direction="row" spacing={1} alignItems="center">
             <CancelButton onClick={onClose} />
             <SendButton />
         </Stack>
-    </SpaceBetween>
+    </Stack>
 );
 
 export default Actions;
