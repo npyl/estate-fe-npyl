@@ -174,6 +174,8 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                         borderRadius: 1,
                     },
 
+                    height: 1,
+
                     borderRadius: 1,
                     border: editable ? "1px solid" : undefined,
                     borderColor: editable ? getBorderColor2 : undefined,
@@ -193,9 +195,9 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     {editable && editor && menubarRef.current ? (
                         <BubbleMenu menubar={menubarRef.current} />
                     ) : null}
-
-                    {children}
                 </EditorContent>
+
+                {children}
             </Stack>
         );
     }
