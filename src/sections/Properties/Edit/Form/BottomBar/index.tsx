@@ -4,8 +4,9 @@ import CancelButton from "./CancelButton";
 import GenerateCheckbox, { GenerateCheckboxRef } from "./GenerateCheckbox";
 import { FC, ReactNode, RefObject } from "react";
 import FormBottomBar, { FormBottomBarProps } from "@/sections/FormBottomBar";
-import SubmitWithoutRedirectButton from "./SubmitWithoutRedirectButton";
-
+import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
+import { Tooltip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 interface BottomBarProps
     extends Omit<FormBottomBarProps, "contentLeft" | "contentRight"> {
     PersistNotice?: ReactNode;
@@ -17,29 +18,43 @@ const BottomBar: FC<BottomBarProps> = ({
     PersistNotice,
     checkboxRef,
     onSubmitWithoutRedirect,
-}) => (
-    <FormBottomBar
-        contentLeft={PersistNotice}
-        contentRight={
-            <Stack direction="row" spacing={1} alignItems="center">
-                <CancelButton />
+}) => {
+    const { t } = useTranslation();
 
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={1}
-                    bgcolor="background.neutral"
-                    borderRadius={1}
-                >
-                    <GenerateCheckbox ref={checkboxRef} />
-                    <SubmitWithoutRedirectButton
-                        onClick={onSubmitWithoutRedirect}
-                    />
-                    <SubmitButton />
+    return (
+        <FormBottomBar
+            contentLeft={PersistNotice}
+            contentRight={
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <CancelButton />
+
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={2}
+                        bgcolor="background.neutral"
+                        borderRadius={1}
+                    >
+                        <GenerateCheckbox ref={checkboxRef} />
+                        <Tooltip
+                            placement="top"
+                            title={t("Save Without Redirect")}
+                        >
+                            <SaveAsOutlinedIcon
+                                onClick={onSubmitWithoutRedirect}
+                                sx={{
+                                    color: "primary.main",
+                                    cursor: "pointer",
+                                }}
+                            />
+                        </Tooltip>
+
+                        <SubmitButton />
+                    </Stack>
                 </Stack>
-            </Stack>
-        }
-    />
-);
+            }
+        />
+    );
+};
 
 export default BottomBar;
