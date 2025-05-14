@@ -1,22 +1,28 @@
 import CancelButton from "./CancelButton";
 import SendButton from "./SendButton";
 import { FC } from "react";
-import { SpaceBetween } from "@/components/styled";
+import Stack from "@mui/material/Stack";
+import Reporter from "@/sections/Reporter";
 
 interface ActionsProps {
     onClose: VoidFunction;
 }
 
 const Actions: FC<ActionsProps> = ({ onClose }) => (
-    <SpaceBetween
-        p={1}
-        borderRadius={1}
+    <Stack
+        direction="row"
         alignItems="center"
+        p={1}
         bgcolor="background.neutral"
+        borderRadius={1}
     >
-        <CancelButton onClick={onClose} />
-        <SendButton />
-    </SpaceBetween>
+        <Reporter />
+        <Stack width={1} />
+        <Stack direction="row" spacing={1} alignItems="center">
+            <CancelButton onClick={onClose} />
+            <SendButton />
+        </Stack>
+    </Stack>
 );
 
 export default Actions;
