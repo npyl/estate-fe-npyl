@@ -26,4 +26,5 @@ const RHFEditor = forwardRef<EditorRef, RHFEditorProps>(
     }
 );
 
+export type { RHFEditorProps };
 export default RHFEditor;
