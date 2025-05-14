@@ -8,12 +8,7 @@ const isCustomer = (data?: ICustomerMini[]) => (e: string) =>
 const notCustomer = (data?: ICustomerMini[]) => (e: string) =>
     !data?.find(({ email }) => e === email);
 
-const useValues = (
-    from: string,
-    _to: string[],
-    body: string,
-    propertyIds: number[]
-) => {
+const useValues = (_to: string[], body: string, propertyIds: number[]) => {
     const { data } = useGetNamesQuery();
     const calculated = useMemo(() => {
         if (!_to)
@@ -33,7 +28,7 @@ const useValues = (
 
     const values: TMessageBoxValues = useMemo(
         () => ({
-            from,
+            from: "",
             subject: "",
             body,
             ...calculated,
