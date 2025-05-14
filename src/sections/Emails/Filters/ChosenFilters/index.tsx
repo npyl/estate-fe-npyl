@@ -4,6 +4,7 @@ import getChip from "./getChip";
 import { useRouter } from "next/router";
 import PropertyChip from "./PropertyChip";
 import CustomerChip from "./CustomerChip";
+import useCache from "./useCache";
 
 const ChosenFilters = () => {
     const router = useRouter();
@@ -13,13 +14,15 @@ const ChosenFilters = () => {
 
     const ids = useIds();
 
+    const { CODES } = useCache();
+
     return (
         <Stack direction="row" spacing={1} flexWrap="wrap">
             {/* Immutable */}
             {isProperty ? <PropertyChip id={+propertyId!} /> : null}
             {isCustomer ? <CustomerChip id={+customerId!} /> : null}
             {/* Mutable */}
-            {ids.map(getChip)}
+            {ids.map(getChip(CODES))}
         </Stack>
     );
 };

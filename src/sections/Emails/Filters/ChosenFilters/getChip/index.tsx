@@ -3,8 +3,9 @@ import { ComponentType, FC } from "react";
 import FromChip from "./From";
 import PropertyIdsChip from "./PropertyIds";
 import ToChip from "./To";
+import { TCodeMap } from "../useCache";
 
-type FilterChip = ComponentType;
+type FilterChip = ComponentType<any>;
 
 const CHIPS: Record<keyof IEmailFilters, FilterChip> = {
     from: FromChip,
@@ -14,20 +15,24 @@ const CHIPS: Record<keyof IEmailFilters, FilterChip> = {
 
 interface GeneralChipProps {
     filterKey: keyof IEmailFilters;
+    CODES: TCodeMap;
 }
 
-const GeneralChip: FC<GeneralChipProps> = ({ filterKey }) => {
+const GeneralChip: FC<GeneralChipProps> = ({ filterKey, CODES }) => {
     try {
         const Chip = CHIPS[filterKey];
         if (!Chip) return null;
-        return <Chip />;
+
+        const props = filterKey === "propertyIds" ? { CODES } : {};
+
+        return <Chip {...props} />;
     } catch (ex) {
         return null;
     }
 };
 
-const getChip = (key: keyof IEmailFilters) => (
-    <GeneralChip key={key} filterKey={key} />
+const getChip = (CODES: TCodeMap) => (key: keyof IEmailFilters) => (
+    <GeneralChip key={key} filterKey={key} CODES={CODES} />
 );
 
 export default getChip;
