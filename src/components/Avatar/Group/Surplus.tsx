@@ -1,5 +1,5 @@
 import MuiAvatar from "@mui/material/Avatar";
-import { ComponentType, FC, useRef } from "react";
+import { ComponentType, FC, useCallback, useRef } from "react";
 import useDialog from "@/hooks/useDialog";
 import { TUser } from "../types";
 import { MoreAvatarsProps } from "./types";
@@ -16,7 +16,7 @@ interface SurplusProps {
 
 const Surplus: FC<SurplusProps> = ({
     value,
-    onChange,
+    onChange: _onChange,
     // ...
     users,
     surplus,
@@ -26,6 +26,13 @@ const Surplus: FC<SurplusProps> = ({
     const anchorRef = useRef(null);
 
     const [isOpen, openMore, closeMore] = useDialog();
+    const onChange = useCallback(
+        (id: TUser["id"]) => {
+            closeMore();
+            _onChange?.(id);
+        },
+        [_onChange]
+    );
 
     return (
         <>
