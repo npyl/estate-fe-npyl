@@ -16,6 +16,10 @@ type State = {
     filters: IEmailFilters;
     ids: (keyof IEmailFilters)[];
 
+    to: string[];
+    toFreeSoloed: string[];
+    setToFreeSoloed: Dispatch<SetStateAction<string[]>>;
+
     isPropertyPage: boolean;
     isCustomerPage: boolean;
     currentPropertyId?: number;
@@ -31,6 +35,10 @@ type State = {
 const FiltersContext = createContext<State>({
     filters: INITIAL_STATE,
     ids: [],
+
+    to: [],
+    toFreeSoloed: [],
+    setToFreeSoloed: () => {},
 
     isCustomerPage: false,
     isPropertyPage: false,
@@ -68,9 +76,11 @@ const FiltersProvider: FC<ProviderProps> = ({
     const [to, setTo] = useState(_to ? [_to] : []);
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
+    const [toFreeSoloed, setToFreeSoloed] = useState<string[]>([]);
+
     const filters: IEmailFilters = {
         from,
-        to,
+        to: [...to, ...toFreeSoloed],
         propertyIds,
     };
 
@@ -88,6 +98,7 @@ const FiltersProvider: FC<ProviderProps> = ({
             else if (key === "propertyIds")
                 setPropertyIds(INITIAL_STATE.propertyIds);
 
+            if (key === "to") setToFreeSoloed([]);
             if (key === "to" && isCustomerPage) setTo([_to]);
             else if (key === "to") setTo(INITIAL_STATE.to);
         },
@@ -99,6 +110,10 @@ const FiltersProvider: FC<ProviderProps> = ({
             value={{
                 filters,
                 ids,
+                // ...
+                to,
+                toFreeSoloed,
+                setToFreeSoloed,
                 // ...
                 isPropertyPage,
                 isCustomerPage,

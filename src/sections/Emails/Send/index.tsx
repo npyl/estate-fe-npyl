@@ -15,8 +15,11 @@ const FabSx: SxProps<Theme> = {
 
 const Send = () => {
     const [isOpen, openBox, closeBox] = useDialog();
-    const { filters } = useFiltersContext();
-    const { to, propertyIds } = filters || {};
+    const {
+        to,
+        toFreeSoloed,
+        filters: { propertyIds },
+    } = useFiltersContext();
 
     return (
         <>
@@ -26,6 +29,7 @@ const Send = () => {
             {isOpen ? (
                 <MessageBox
                     to={to}
+                    toFreeSoloed={toFreeSoloed}
                     propertyIds={propertyIds}
                     onClose={closeBox}
                 />

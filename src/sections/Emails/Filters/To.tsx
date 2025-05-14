@@ -2,7 +2,7 @@ import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import { SxProps, TextField, Theme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Recipients from "../Pickers/Recipients";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 const TextFieldSx: SxProps<Theme> = {
     minWidth: "200px",
@@ -12,10 +12,13 @@ const TextFieldSx: SxProps<Theme> = {
 const ToFilter = () => {
     const { t } = useTranslation();
 
-    const { filters, setTo } = useFiltersContext();
-    const { to } = filters;
+    const {
+        filters: { to },
+        setTo,
+        toFreeSoloed,
+        setToFreeSoloed,
+    } = useFiltersContext();
 
-    const [toFreeSoloed, setToFreeSoloed] = useState<string[]>([]);
     const onFreeSoloedDelete = useCallback(
         (idx: number) =>
             setToFreeSoloed((old) => old.filter((_, i) => i !== idx)),
