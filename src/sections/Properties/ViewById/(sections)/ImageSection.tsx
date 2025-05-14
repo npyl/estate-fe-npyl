@@ -22,13 +22,16 @@ const toggleSx: SxProps<Theme> = {
 
 const ImageSection = () => {
     const { property } = useGetProperty();
-    const { active, images } = property || {};
+    const { active, images = [] } = property || {};
+
+    // Filter out private images
+    const visibleImages = images.filter((image) => !image.hidden);
 
     return (
         <PanelWithQuickView hideHeader label="ImageSection" toggleSx={toggleSx}>
             <CarouselWithLightbox
                 isActive={active}
-                data={images as ICarouselImage[]}
+                data={visibleImages as ICarouselImage[]}
             />
         </PanelWithQuickView>
     );

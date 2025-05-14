@@ -64,11 +64,11 @@ function OnlyPhotosCarousel({ data }: Props) {
 
     const filtered = useMemo(
         () =>
-            selectedTab === 0 // all
-                ? data
-                : selectedTab === 1 // public
+            selectedTab === 0 // public
                 ? data.filter(({ hidden }) => !hidden)
-                : data.filter(({ hidden }) => !!hidden),
+                : selectedTab === 1 // private
+                  ? data.filter(({ hidden }) => !!hidden)
+                  : data, // all
         [selectedTab, data]
     );
 
@@ -106,9 +106,9 @@ function OnlyPhotosCarousel({ data }: Props) {
             >
                 <Stack direction="row" justifyContent="space-between" px={2}>
                     <Tabs value={selectedTab} onChange={handleTabChange}>
-                        <Tab label={t("All Photos")} />
                         <Tab label={t("Public Photos")} />
                         <Tab label={t("Private Photos")} />
+                        <Tab label={t("All Photos")} />
                     </Tabs>
                     <Button
                         onClick={openDialog}
