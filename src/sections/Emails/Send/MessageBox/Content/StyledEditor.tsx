@@ -1,14 +1,19 @@
 import { MENUBAR_CLASSNAME } from "@/components/Editor/MenuBar";
-import RHFEditor from "@/components/hook-form/RHFEditor";
-import { SxProps, Theme, useTheme } from "@mui/material";
+import RHFEditor, { RHFEditorProps } from "@/components/hook-form/RHFEditor";
+import { SxProps, Theme } from "@mui/material";
+import { FC } from "react";
+
 const EDITOR_ZINDEX = 1;
 
 const EditorContainerSx: SxProps<Theme> = {
     border: 0,
-    flexDirection: "column-reverse",
-    overflowY: "auto",
     zIndex: EDITOR_ZINDEX,
     pb: 5,
+
+    ".tiptap": {
+        pl: 2,
+        overflowY: "auto",
+    },
 
     [`.${MENUBAR_CLASSNAME}`]: {
         position: "absolute",
@@ -19,19 +24,16 @@ const EditorContainerSx: SxProps<Theme> = {
     },
 };
 
-const StyledEditor = () => {
-    const { spacing } = useTheme();
-    return (
-        <RHFEditor
-            name="body"
-            mode="html"
-            containerSx={EditorContainerSx}
-            tiptapStyle={{
-                paddingLeft: spacing(2),
-            }}
-        />
-    );
-};
+type StyledEditorProps = Omit<RHFEditorProps, "name" | "mode" | "containerSx">;
+
+const StyledEditor: FC<StyledEditorProps> = (props) => (
+    <RHFEditor
+        name="body"
+        mode="html"
+        containerSx={EditorContainerSx}
+        {...props}
+    />
+);
 
 export { EDITOR_ZINDEX };
 export default StyledEditor;
