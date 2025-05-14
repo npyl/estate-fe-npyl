@@ -6,6 +6,7 @@ import RHFSubject from "./RHFSubject";
 import RHFProperties from "./RHFProperties";
 import Actions from "./Actions";
 import PaperWithFullscreen from "./PaperWithFullscreen";
+import Attachments from "./Attachments";
 
 interface ContentProps {
     onClose: VoidFunction;
@@ -19,7 +20,9 @@ const Content: FC<ContentProps> = ({ onClose }) => (
                 <RHFSubject />
                 <RHFProperties />
             </Stack>
-            <StyledEditor />
+            <StyledEditor>
+                <Attachments />
+            </StyledEditor>
         </Stack>
         <Actions onClose={onClose} />
     </PaperWithFullscreen>

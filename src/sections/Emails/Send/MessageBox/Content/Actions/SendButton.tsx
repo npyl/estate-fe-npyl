@@ -7,7 +7,7 @@ const SendButton: FC<LoadingButtonProps> = ({ ...props }) => {
     const { t } = useTranslation();
 
     const { formState } = useFormContext();
-    const isLoading = formState.isLoading;
+    const isLoading = formState.isSubmitting;
 
     return (
         <LoadingButton

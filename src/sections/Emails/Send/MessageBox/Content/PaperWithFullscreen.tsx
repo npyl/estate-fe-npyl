@@ -1,4 +1,4 @@
-import { Paper, PaperProps, Portal, SxProps, Theme } from "@mui/material";
+import { Paper, PaperProps, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import getBorderColor from "@/theme/borderColor";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
@@ -73,18 +73,13 @@ const PaperWithFullscreen: FC<PaperProps> = ({ children, sx, ...props }) => {
     const [isFullscreen, toggle] = useToggle();
 
     return (
-        <Portal>
-            <Paper
-                sx={{ ...getMessageBoxSx(isFullscreen), ...(sx as any) }}
-                {...props}
-            >
-                <FullscreenButton
-                    isFullscreen={isFullscreen}
-                    onClick={toggle}
-                />
-                {children}
-            </Paper>
-        </Portal>
+        <Paper
+            sx={{ ...getMessageBoxSx(isFullscreen), ...(sx as any) }}
+            {...props}
+        >
+            <FullscreenButton isFullscreen={isFullscreen} onClick={toggle} />
+            {children}
+        </Paper>
     );
 };
 

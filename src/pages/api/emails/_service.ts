@@ -1,7 +1,12 @@
 import { gmail_v1, gmail } from "@googleapis/gmail";
 import { OAuth2Client } from "google-auth-library";
 import managerService from "@/pages/api/google/_service/ManagerService";
-import { IEmailFilters, IEmailReq, TEmailRes } from "@/types/email";
+import {
+    IEmailFilters,
+    IEmailReq,
+    TEmailRes,
+    IAttachment,
+} from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 
 type TMessage = gmail_v1.Schema$Message;
@@ -38,8 +43,7 @@ const getSender = (m: gmail_v1.Schema$Message) => {
 const getHeaders = (
     to: string[],
     subject: string,
-    propertyIds?: number[],
-    hasAttachments: boolean = false
+    propertyIds?: number[]
 ): string => {
     // Extract primary recipient and CC recipients
     const primaryTo = to[0];
@@ -47,9 +51,7 @@ const getHeaders = (
 
     // Create message headers according to RFC 2822
     const headers: Record<string, string> = {
-        "Content-Type": hasAttachments
-            ? `multipart/mixed; boundary="boundary_mixed"`
-            : `text/html; charset="UTF-8"`,
+        "Content-Type": `text/html; charset="UTF-8"`,
         "MIME-Version": "1.0",
         To: primaryTo,
         Subject: subject,
@@ -71,6 +73,66 @@ const getHeaders = (
         .join("\r\n");
 
     return formattedHeaders;
+};
+
+/**
+ * Creates a multipart MIME message with attachments
+ * @param headers - Email headers
+ * @param body - Email body
+ * @param attachments - Array of pre-encoded attachment objects
+ * @returns Base64url encoded message string
+ */
+const createMultipartMessage = async (
+    headers: string,
+    body: string,
+    attachments: IAttachment[]
+): Promise<string> => {
+    const boundary = `----=${Date.now()}.${Math.random()}`;
+    const messageParts: string[] = [];
+
+    // Start with main headers, but replace Content-Type to multipart/mixed
+    const mainHeaders = headers.replace(
+        /Content-Type: text\/html; charset="UTF-8"/,
+        `Content-Type: multipart/mixed; boundary="${boundary}"`
+    );
+
+    messageParts.push(mainHeaders);
+    messageParts.push("");
+
+    // Add the text/html part
+    messageParts.push(`--${boundary}`);
+    messageParts.push('Content-Type: text/html; charset="UTF-8"');
+    messageParts.push("");
+    messageParts.push(body);
+    messageParts.push("");
+
+    // Add attachments
+    for (const attachment of attachments) {
+        messageParts.push(`--${boundary}`);
+        messageParts.push(`Content-Type: ${attachment.type}`);
+        messageParts.push("Content-Transfer-Encoding: base64");
+        messageParts.push(
+            `Content-Disposition: attachment; filename="${attachment.name}"`
+        );
+        messageParts.push("");
+        messageParts.push(attachment.base64);
+        messageParts.push("");
+    }
+
+    // End boundary
+    messageParts.push(`--${boundary}--`);
+
+    // Join all parts with CRLF
+    const message = messageParts.join("\r\n");
+
+    // Encode as base64url
+    const encodedMessage = Buffer.from(message)
+        .toString("base64")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
+
+    return encodedMessage;
 };
 
 class GmailService {
@@ -198,74 +260,35 @@ class GmailService {
      * Creates a RFC 2822 formatted email message encoded in base64url format
      * as required by the Gmail API
      */
-    async send(
-        userId: number,
-        _body: IEmailReq,
-        attachments?: Array<{
-            filename: string;
-            content: string;
-            encoding: "base64" | "utf8";
-            mimeType: string;
-        }>
-    ) {
+    async send(userId: number, _body: IEmailReq) {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) return null;
 
-        const { to, subject, body, propertyIds } = _body;
+        const { to, subject, body, propertyIds, attachments } = _body;
 
         // Use the new getHeaders method
-        const formattedHeaders = getHeaders(
-            to,
-            subject,
-            propertyIds,
-            !!attachments?.length
-        );
+        const formattedHeaders = getHeaders(to, subject, propertyIds);
 
-        let emailContent: string;
+        let raw: string;
 
-        if (attachments?.length) {
-            // Create multipart email with attachments
-            let messageParts = [
-                // Start with headers
+        if (attachments && attachments.length > 0) {
+            // Create multipart message with attachments
+            raw = await createMultipartMessage(
                 formattedHeaders,
-                "", // Empty line to separate headers from body
-                "--boundary_mixed",
-                `Content-Type: text/html; charset="UTF-8"`,
-                "Content-Transfer-Encoding: quoted-printable",
-                "",
                 body,
-            ];
-
-            // Add each attachment
-            for (const attachment of attachments) {
-                const filename = attachment.filename.replace(/"/g, '\\"');
-                messageParts.push(
-                    "--boundary_mixed",
-                    `Content-Type: ${attachment.mimeType}; name="${filename}"`,
-                    `Content-Disposition: attachment; filename="${filename}"`,
-                    `Content-Transfer-Encoding: ${attachment.encoding === "base64" ? "base64" : "7bit"}`,
-                    "Content-ID: <attachment>",
-                    "",
-                    attachment.content
-                );
-            }
-
-            // Close the multipart message
-            messageParts.push("--boundary_mixed--");
-
-            // Join all parts with proper CRLF line endings
-            emailContent = messageParts.join("\r\n");
+                attachments
+            );
         } else {
             // Simple email without attachments
-            emailContent = `${formattedHeaders}\r\n\r\n${body}`;
-        }
+            const emailContent = `${formattedHeaders}\r\n\r\n${body}`;
 
-        // Encode the message as base64url as required by Gmail API
-        const raw = Buffer.from(emailContent)
-            .toString("base64")
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=+$/, "");
+            // Encode the message as base64url as required by Gmail API
+            raw = Buffer.from(emailContent)
+                .toString("base64")
+                .replace(/\+/g, "-")
+                .replace(/\//g, "_")
+                .replace(/=+$/, "");
+        }
 
         // Send the email
         await this.gmail.users.messages.send({

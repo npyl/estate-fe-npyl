@@ -1,7 +1,7 @@
-import { useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { TMessageBoxValues } from "../types";
 import Stack from "@mui/material/Stack";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -12,6 +12,14 @@ interface AttachmentProps {
 }
 
 const Attachment: FC<AttachmentProps> = ({ f }) => {
+    const old = useWatch<TMessageBoxValues>({ name: "attachments" }) as File[];
+    const { setValue } = useFormContext<TMessageBoxValues>();
+
+    const onDelete = useCallback(() => {
+        const filtered = old.filter(({ name }) => f.name !== name);
+        setValue("attachments", filtered, { shouldDirty: true });
+    }, [old]);
+
     return (
         <SpaceBetween
             direction="row"
@@ -19,15 +27,16 @@ const Attachment: FC<AttachmentProps> = ({ f }) => {
             alignItems="center"
             bgcolor="background.neutral"
             borderRadius={1}
+            pl={1}
         >
             <Typography
                 variant="body2"
                 overflow="hidden"
                 textOverflow="ellipsis"
             >
-                888888888888888888888888888888888888888888888888888888888888888888888888
+                {f.name}
             </Typography>
-            <IconButton size="small">
+            <IconButton size="small" onClick={onDelete}>
                 <ClearIcon fontSize="small" />
             </IconButton>
         </SpaceBetween>

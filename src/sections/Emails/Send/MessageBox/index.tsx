@@ -5,6 +5,7 @@ import { useSendEmailMutation } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
 import Content from "./Content";
 import { TMessageBoxValues } from "./types";
+import filesToBase64 from "./filesToBase64";
 
 interface MessageBoxProps {
     to?: string[];
@@ -26,11 +27,14 @@ const MessageBox: FC<MessageBoxProps> = ({
 
     const onSubmit = useCallback(
         async (d: TMessageBoxValues) => {
-            const { toFreeSoloed, ...rest } = d;
+            const { toFreeSoloed, attachments: _attachments, ...rest } = d;
+
+            const attachments = await filesToBase64(_attachments);
 
             const body = {
                 ...rest,
                 to: [...rest.to, ...toFreeSoloed],
+                attachments,
             } as IEmailReq;
 
             await sendEmail({
@@ -48,6 +52,7 @@ const MessageBox: FC<MessageBoxProps> = ({
             to,
             toFreeSoloed,
             propertyIds: propertyIds ?? [],
+            attachments: [],
         },
     });
 

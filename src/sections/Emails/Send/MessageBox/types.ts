@@ -1,6 +1,7 @@
 import { IEmailReq } from "@/types/email";
 
-type TMessageBoxValues = IEmailReq & {
+type TMessageBoxValues = Omit<IEmailReq, "attachments"> & {
+    attachments: File[];
     toFreeSoloed: string[]; // customer emails that were freeSolo'ed
 };
 
