@@ -8,9 +8,8 @@ import MuiAutocomplete, {
 import { forwardRef, Ref, useCallback, useMemo } from "react";
 import { ObjectWithId } from "./types";
 import useOnChange from "./useOnChange";
-import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import useFreeSoloRenderer from "./useFreeSoloRenderer";
 import NoOptions from "./NoOptionts";
+import useRenderInput from "./useRenderInput";
 
 interface AutocompleteProps<
     T extends ObjectWithId,
@@ -48,6 +47,7 @@ const Autocomplete = <
         onChange: _onChange,
         onFreeSoloed,
         onFreeSoloedDelete,
+        renderInput: _renderInput,
         ...rest
     } = props;
 
@@ -73,16 +73,20 @@ const Autocomplete = <
         onFreeSoloed
     );
 
-    const [localRef, { onRef }] = useForwardedLocalRef(ref);
-    useFreeSoloRenderer(localRef, freeSoloed, onFreeSoloedDelete);
+    const renderInput = useRenderInput(
+        _renderInput,
+        freeSoloed,
+        onFreeSoloedDelete
+    );
 
     return (
         <MuiAutocomplete
-            ref={onRef}
+            ref={ref}
             value={calculated as OneOrMany<T, Multiple>}
             isOptionEqualToValue={isOptionEqualToValue}
             onChange={onChange}
             noOptionsText={<NoOptions />}
+            renderInput={renderInput}
             {...rest}
         />
     );
