@@ -1,7 +1,7 @@
 import MuiAvatarGroup, {
     AvatarGroupProps as MuiAvatarGroupProps,
 } from "@mui/material/AvatarGroup";
-import { ComponentType, FC } from "react";
+import { ComponentType, FC, useMemo } from "react";
 import { TUser } from "../types";
 import { MoreAvatarsProps } from "./types";
 import dynamic from "next/dynamic";
@@ -11,13 +11,22 @@ const Surplus = dynamic(() => import("./Surplus"));
 // -------------------------------------------------------------------
 
 const getSurplus =
-    (users: TUser[], MoreAvatars?: ComponentType<MoreAvatarsProps>) =>
+    (
+        value: TUser["id"] | undefined,
+        onChange: ((id: TUser["id"]) => void) | undefined,
+        // ...
+        users: TUser[],
+        MoreAvatars?: ComponentType<MoreAvatarsProps>
+    ) =>
     (surplus: number) => {
         const end = users.length;
         const surplusUsers = users.slice(-1 * surplus, end);
 
         return (
             <Surplus
+                value={value}
+                onChange={onChange}
+                // ...
                 users={surplusUsers}
                 surplus={surplus}
                 MoreAvatars={MoreAvatars}
@@ -28,17 +37,36 @@ const getSurplus =
 // -------------------------------------------------------------------
 
 const getAvatar =
-    (value?: TUser["id"], onChange?: (id: TUser["id"]) => void) => (u: TUser) =>
-        (
-            <TooltipAvatar
-                key={u.id}
-                u={u}
-                selected={u.id === value}
-                onClick={onChange}
-            />
-        );
+    (value?: TUser["id"], onChange?: (id: TUser["id"]) => void) =>
+    (u: TUser) => (
+        <TooltipAvatar
+            key={u.id}
+            u={u}
+            selected={u.id === value}
+            onClick={onChange}
+        />
+    );
 
-export interface AvatarGroupProps<T extends TUser = TUser>
+// -------------------------------------------------------------------
+
+const useSelectedFirst = <T extends TUser = TUser>(
+    value: T["id"],
+    users: T[]
+) =>
+    useMemo(() => {
+        if (!users || users.length === 0) return [];
+        if (!value) return users;
+
+        const selectedUser = users.find((user) => user.id === value);
+        if (!selectedUser) return users;
+
+        const otherUsers = users.filter((user) => user.id !== value);
+        return [selectedUser, ...otherUsers];
+    }, [users, value]);
+
+// -------------------------------------------------------------------
+
+interface AvatarGroupProps<T extends TUser = TUser>
     extends Omit<MuiAvatarGroupProps, "renderSurplus"> {
     users?: T[];
     MoreAvatars?: ComponentType<MoreAvatarsProps>;
@@ -53,10 +81,18 @@ const AvatarGroup: FC<AvatarGroupProps> = ({
     value,
     onChange,
     ...props
-}) => (
-    <MuiAvatarGroup {...props} renderSurplus={getSurplus(users, MoreAvatars)}>
-        {users.map(getAvatar(value, onChange))}
-    </MuiAvatarGroup>
-);
+}) => {
+    const rearranged = useSelectedFirst(value, users);
 
+    return (
+        <MuiAvatarGroup
+            {...props}
+            renderSurplus={getSurplus(value, onChange, users, MoreAvatars)}
+        >
+            {rearranged.map(getAvatar(value, onChange))}
+        </MuiAvatarGroup>
+    );
+};
+
+export type { AvatarGroupProps };
 export default AvatarGroup;

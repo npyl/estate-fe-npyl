@@ -7,10 +7,22 @@ import { MoreAvatarsProps } from "./types";
 interface SurplusProps {
     users: TUser[];
     surplus: number;
+
+    value?: TUser["id"];
+    onChange?: (id: TUser["id"]) => void;
+
     MoreAvatars?: ComponentType<MoreAvatarsProps>;
 }
 
-const Surplus: FC<SurplusProps> = ({ users, surplus, MoreAvatars }) => {
+const Surplus: FC<SurplusProps> = ({
+    value,
+    onChange,
+    // ...
+    users,
+    surplus,
+    // ...
+    MoreAvatars,
+}) => {
     const anchorRef = useRef(null);
 
     const [isOpen, openMore, closeMore] = useDialog();
@@ -27,6 +39,9 @@ const Surplus: FC<SurplusProps> = ({ users, surplus, MoreAvatars }) => {
 
             {MoreAvatars && anchorRef.current && isOpen ? (
                 <MoreAvatars
+                    value={value}
+                    onChange={onChange}
+                    // ...
                     anchorEl={anchorRef.current}
                     users={users}
                     onClose={closeMore}
