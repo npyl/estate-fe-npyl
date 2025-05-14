@@ -85,9 +85,15 @@ const MapSection = () => {
     }, 150);
 
     const shape = usePoints();
-    const center = useMemo(() => getShapeCenter(shape), [shape]);
-    const zoom = shape ? ZOOM_LEVELS.REGION : ZOOM_LEVELS.DEFAULT;
 
+    const DEFAULT_CENTER = { lat: 38.2466, lng: 21.7346 }; //Patras lat,long
+
+    const center = useMemo(() => {
+        const shapeCenter = getShapeCenter(shape);
+        return shapeCenter || DEFAULT_CENTER;
+    }, [shape]);
+
+    const zoom = shape ? ZOOM_LEVELS.REGION : ZOOM_LEVELS.DEFAULT;
     return (
         <Map
             onReady={setRef}
