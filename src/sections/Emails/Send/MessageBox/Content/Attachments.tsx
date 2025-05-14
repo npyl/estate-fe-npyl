@@ -1,4 +1,4 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { TMessageBoxValues } from "../types";
 import Stack from "@mui/material/Stack";
 import { FC, useCallback } from "react";
@@ -8,10 +8,13 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { SpaceBetween } from "@/components/styled";
 
 interface AttachmentProps {
-    f: File;
+    idx: number;
 }
 
-const Attachment: FC<AttachmentProps> = ({ f }) => {
+const Attachment: FC<AttachmentProps> = ({ idx }) => {
+    const f = useWatch<TMessageBoxValues>({
+        name: `attachments.${idx}`,
+    }) as File;
     const old = useWatch<TMessageBoxValues>({ name: "attachments" }) as File[];
     const { setValue } = useFormContext<TMessageBoxValues>();
 
@@ -43,17 +46,15 @@ const Attachment: FC<AttachmentProps> = ({ f }) => {
     );
 };
 
-const getAttachment = (f: File) => (
-    <Attachment key={`${f.name}_${f.size}`} f={f} />
+const getAttachment = (f: Record<"id", string>, idx: number) => (
+    <Attachment key={f.id} idx={idx} />
 );
 
 const Attachments = () => {
-    const attachments = useWatch<TMessageBoxValues>({
-        name: "attachments",
-    }) as File[];
+    const { fields } = useFieldArray({ name: "attachments" });
     return (
         <Stack spacing={1} p={1} maxWidth="50%">
-            {attachments.map(getAttachment)}
+            {fields.map(getAttachment)}
         </Stack>
     );
 };
