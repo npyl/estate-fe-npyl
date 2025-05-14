@@ -18,6 +18,7 @@ import CreateButton from "../CreateButton";
 import { HideText } from "@/components/styled";
 import dynamic from "next/dynamic";
 import AccountLoader from "./AccountLoader";
+import { Z_INDEX } from "@/constants/config";
 const AccountButton = dynamic(() => import("./AccountButton"), {
     loading: () => <AccountLoader />,
 });
@@ -49,98 +50,93 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
               boxShadow: "none",
           }),
 
-    position: "fixed", // Allow things to show on top of the AppBar
-    zIndex: 200,
+    [theme.breakpoints.up("lg")]: {
+        width: "100%",
+    },
+
+    position: "fixed",
+    zIndex: Z_INDEX.NAVBAR,
 }));
 
 const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
     const { onOpenSidebar, ...other } = props;
 
     return (
-        <>
-            <DashboardNavbarRoot
+        <DashboardNavbarRoot {...other}>
+            <Toolbar
+                disableGutters
                 sx={{
-                    width: {
-                        lg: "100%",
-                    },
+                    height: 64,
+                    left: 0,
+                    px: 2,
+                    pl: 4,
+                    justifyContent: "space-between",
                 }}
-                {...other}
             >
-                <Toolbar
-                    disableGutters
+                <Stack
                     sx={{
-                        height: 64,
-                        left: 0,
-                        px: 2,
-                        pl: 4,
-                        justifyContent: "space-between",
+                        display: {
+                            xs: "none",
+                            md: "inherit",
+                        },
+                    }}
+                    direction="row"
+                    alignItems="center"
+                >
+                    <Link
+                        href="/"
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                    >
+                        {/* <Logo /> */}
+
+                        <Typography
+                            color={"#3366FF"}
+                            variant="h6"
+                            fontWeight={"bold"}
+                        >
+                            property-pro
+                            <span style={{ color: "#0380fc" }}>.gr</span>
+                        </Typography>
+                    </Link>
+                </Stack>
+
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    sx={{
+                        display: {
+                            xs: "flex",
+                            md: "none",
+                        },
                     }}
                 >
-                    <Stack
+                    <IconButton onClick={onOpenSidebar}>
+                        <MenuIcon fontSize="small" />
+                    </IconButton>
+
+                    <DashboardNavbarSearch />
+                </Stack>
+
+                <DashboardNavbarSearch
+                    sx={{
+                        display: { xs: "none", md: "flex" },
+                    }}
+                />
+
+                <Stack alignItems="center" direction="row">
+                    <CreateButton
                         sx={{
-                            display: {
-                                xs: "none",
-                                md: "inherit",
-                            },
-                        }}
-                        direction="row"
-                        alignItems="center"
-                    >
-                        <Link
-                            href="/"
-                            display="flex"
-                            flexDirection="row"
-                            alignItems="center"
-                        >
-                            {/* <Logo /> */}
-
-                            <Typography
-                                color={"#3366FF"}
-                                variant="h6"
-                                fontWeight={"bold"}
-                            >
-                                property-pro
-                                <span style={{ color: "#0380fc" }}>.gr</span>
-                            </Typography>
-                        </Link>
-                    </Stack>
-
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        sx={{
-                            display: {
-                                xs: "flex",
-                                md: "none",
-                            },
-                        }}
-                    >
-                        <IconButton onClick={onOpenSidebar}>
-                            <MenuIcon fontSize="small" />
-                        </IconButton>
-
-                        <DashboardNavbarSearch />
-                    </Stack>
-
-                    <DashboardNavbarSearch
-                        sx={{
-                            display: { xs: "none", md: "flex" },
+                            mx: 1,
+                            ...HideText,
                         }}
                     />
 
-                    <Stack alignItems="center" direction="row">
-                        <CreateButton
-                            sx={{
-                                mx: 1,
-                                ...HideText,
-                            }}
-                        />
-
-                        <AccountButton />
-                    </Stack>
-                </Toolbar>
-            </DashboardNavbarRoot>
-        </>
+                    <AccountButton />
+                </Stack>
+            </Toolbar>
+        </DashboardNavbarRoot>
     );
 };
 

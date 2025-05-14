@@ -1,6 +1,9 @@
 export const Z_INDEX = {
     POPOVER: 1500,
     AGREEMENT_FORM: 1500,
+
+    SIDEBAR: 1,
+    NAVBAR: 1,
 };
 
 export const LAYOUT = {

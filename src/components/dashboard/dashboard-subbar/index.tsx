@@ -26,7 +26,6 @@ const Subbar = () => {
                 display: { xs: "none", lg: "flex" },
                 position: isStickyPath ? "sticky" : "relative",
                 top: isStickyPath ? 64 : 0,
-                zIndex: 100,
             }}
         />
     );

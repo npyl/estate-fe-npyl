@@ -10,7 +10,7 @@ import { FC, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import SidebarSkeleton from "./SidebarSkeleton";
-import { NAV } from "@/constants/config";
+import { NAV, Z_INDEX } from "@/constants/config";
 const Sections = dynamic(() => import("./Sections"), {
     loading: () => <SidebarSkeleton />,
 });
@@ -79,6 +79,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                         width: NAV.W_DASHBOARD,
                     },
                 }}
+                sx={{ zIndex: Z_INDEX.SIDEBAR }}
                 variant="permanent"
             >
                 {content}
@@ -97,7 +98,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                     width: NAV.W_DASHBOARD,
                 },
             }}
-            sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+            sx={{ zIndex: Z_INDEX.SIDEBAR }}
             variant="temporary"
         >
             {open && (

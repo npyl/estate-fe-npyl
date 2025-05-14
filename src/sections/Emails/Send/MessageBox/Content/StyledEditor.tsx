@@ -6,7 +6,6 @@ const EDITOR_ZINDEX = 1;
 const EditorContainerSx: SxProps<Theme> = {
     border: 0,
     flexDirection: "column-reverse",
-    maxHeight: "60vh",
     overflowY: "auto",
     zIndex: EDITOR_ZINDEX,
     pb: 5,
