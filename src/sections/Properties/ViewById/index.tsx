@@ -83,8 +83,8 @@ const getTABS = (t: TranslationType): ITab[] => [
 ];
 
 const getTab = ({ label, Tab }: ITab, idx: number) => {
-    const TabComponent = Boolean(Tab) ? Tab! : MuiTab;
-    return <TabComponent key={idx} label={label} />;
+    const TabLabel = Tab ? <Tab /> : label;
+    return <MuiTab key={idx} label={TabLabel} />; // render MuiTab and pass Tablabel as label prop.
 };
 
 const getTabView =

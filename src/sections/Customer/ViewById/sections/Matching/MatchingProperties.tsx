@@ -22,7 +22,7 @@ const MatchingPropertiesSection = ({
 
     const isLoading = false;
 
-    if (properties.length === 0) {
+    if (properties?.length === 0) {
         return <Placeholder />;
     }
 
@@ -47,12 +47,12 @@ const MatchingPropertiesSection = ({
         );
     }
 
-    return (
+    return properties?.length > 0 ? (
         <Panel label={t("Matching Properties")} childrenSx={{ p: 0 }}>
             <DataGrid
                 loading={isLoading}
                 rows={properties}
-                totalRows={properties.length}
+                totalRows={properties?.length}
                 paginationMode="client"
                 page={pagination.page}
                 pageSize={PAGE_SIZE}
@@ -61,7 +61,7 @@ const MatchingPropertiesSection = ({
                 }
             />
         </Panel>
-    );
+    ) : null;
 };
 
 export default MatchingPropertiesSection;

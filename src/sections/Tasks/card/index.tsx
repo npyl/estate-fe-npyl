@@ -36,12 +36,10 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
                 />
 
                 <Content name={name} />
-                {/* The box ensures the same size of all cards */}
+
                 <Box minHeight={22}>
                     <TaskLabel labels={labels} />
                 </Box>
-
-                <Box flexGrow={2} />
 
                 <Footer
                     commentsCount={card.commentsCount}

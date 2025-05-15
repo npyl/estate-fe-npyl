@@ -56,7 +56,6 @@ type Props = {
 
 const TaskLabel: React.FC<Props> = ({ labels }) => {
     const { t } = useTranslation();
-    const isLargeScreen = useMediaQuery("(min-width:1900px)");
 
     if (!labels?.length) return null;
 

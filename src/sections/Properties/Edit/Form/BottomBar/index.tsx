@@ -25,32 +25,30 @@ const BottomBar: FC<BottomBarProps> = ({
         <FormBottomBar
             contentLeft={PersistNotice}
             contentRight={
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1.5} alignItems="center">
                     <CancelButton />
 
                     <Stack
                         direction="row"
                         alignItems="center"
-                        spacing={2}
+                        spacing={1}
                         bgcolor="background.neutral"
                         borderRadius={1}
                     >
                         <GenerateCheckbox ref={checkboxRef} />
-                        <Tooltip
-                            placement="top"
-                            title={t("Save Without Redirect")}
-                        >
-                            <SaveAsOutlinedIcon
-                                onClick={onSubmitWithoutRedirect}
-                                sx={{
-                                    color: "primary.main",
-                                    cursor: "pointer",
-                                }}
-                            />
-                        </Tooltip>
-
-                        <SubmitButton />
                     </Stack>
+                    <Tooltip placement="top" title={t("Save Without Redirect")}>
+                        <SaveAsOutlinedIcon
+                            onClick={onSubmitWithoutRedirect}
+                            fontSize="medium"
+                            sx={{
+                                color: "primary.main",
+                                cursor: "pointer",
+                            }}
+                        />
+                    </Tooltip>
+
+                    <SubmitButton />
                 </Stack>
             }
         />
