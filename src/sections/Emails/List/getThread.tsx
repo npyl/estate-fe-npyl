@@ -1,7 +1,7 @@
+import Link from "@/components/Link";
 import getBorderColor from "@/theme/borderColor";
-import { TEmailRes } from "@/types/email";
+import { TThreadRes } from "@/types/email";
 import { SxProps, Theme } from "@mui/material";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
@@ -15,20 +15,22 @@ const ItemSx: SxProps<Theme> = {
     },
 };
 
-interface EmailItemProps {
-    e: TEmailRes;
+interface ThreadItemProps {
+    e: TThreadRes;
 }
 
-const EmailItem: FC<EmailItemProps> = ({ e }) => (
-    <Stack
-        direction="row"
-        spacing={1}
+const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
+    <Link
+        display="flex"
+        flexDirection="row"
+        gap={1}
         alignItems="center"
         bgcolor="background.paper"
         p={1}
         borderBottom="1px solid"
         borderColor={getBorderColor}
         color="text.secondary"
+        href={`/emails/${e.id}`}
         sx={ItemSx}
     >
         <Typography fontWeight="500" width="20%">
@@ -37,9 +39,9 @@ const EmailItem: FC<EmailItemProps> = ({ e }) => (
         <Typography variant="body2" width={1}>
             {e.snippet}
         </Typography>
-    </Stack>
+    </Link>
 );
 
-const getEmail = (e: TEmailRes) => <EmailItem key={e.id} e={e} />;
+const getThread = (e: TThreadRes) => <ThreadItem key={e.id} e={e} />;
 
-export default getEmail;
+export default getThread;

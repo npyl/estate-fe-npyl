@@ -1,4 +1,4 @@
-import { IEmailFilters, IEmailReq, TEmailRes } from "@/types/email";
+import { IEmailFilters, IEmailReq, TThreadRes } from "@/types/email";
 import { gmail_v1 } from "@googleapis/gmail";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -15,8 +15,13 @@ interface IEmailFilterReq {
     pageToken?: string; // INFO: tell gmail api to fetch next page
 }
 
+interface IThreadReq {
+    userId: number;
+    threadId: string;
+}
+
 type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
-    threads: TEmailRes[];
+    threads: TThreadRes[];
 };
 
 export const emails = createApi({
@@ -25,9 +30,14 @@ export const emails = createApi({
         baseUrl: "/api/emails",
     }),
 
-    tagTypes: ["Emails"],
+    tagTypes: ["Emails", "EmailById"],
 
     endpoints: (builder) => ({
+        getThread: builder.query<TThreadRes, IThreadReq>({
+            query: ({ userId, threadId }) => `/${userId}/${threadId}`,
+            providesTags: ["EmailById"],
+        }),
+
         sendEmail: builder.mutation<void, ISendMailReq>({
             query: ({ userId, body }) => ({
                 url: `/${userId}`,
@@ -52,4 +62,5 @@ export const emails = createApi({
     }),
 });
 
-export const { useSendEmailMutation, useFilterEmailsQuery } = emails;
+export const { useGetThreadQuery, useSendEmailMutation, useFilterEmailsQuery } =
+    emails;

@@ -4,8 +4,8 @@ import managerService from "@/pages/api/google/_service/ManagerService";
 import {
     IEmailFilters,
     IEmailReq,
-    TEmailRes,
     IAttachment,
+    TThreadRes,
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 
@@ -222,7 +222,7 @@ class GmailService {
      */
     private ti =
         (auth: OAuth2Client, userId: string, propertyIds: number[]) =>
-        async (thread: TThread): Promise<TEmailRes | null> => {
+        async (thread: TThread): Promise<TThreadRes | null> => {
             const { id } = thread || {};
             if (!id) return null;
 
@@ -245,7 +245,7 @@ class GmailService {
                 if (!found) return null;
             }
 
-            return { ...thread, subject: METADATA.subject } as TEmailRes;
+            return { ...thread, subject: METADATA.subject } as TThreadRes;
         };
 
     async filter(
@@ -255,7 +255,7 @@ class GmailService {
         pageToken?: string
     ) {
         const auth = await managerService.getAuthForUser(userId);
-        if (!auth) return [];
+        if (!auth) throw "Bad auth";
 
         const { from, propertyIds = [] } = filters;
 
@@ -289,7 +289,7 @@ class GmailService {
      */
     async send(userId: number, _body: IEmailReq) {
         const auth = await managerService.getAuthForUser(userId);
-        if (!auth) return null;
+        if (!auth) throw "Bad auth";
 
         const { to, subject, body, propertyIds, attachments } = _body;
 
@@ -325,6 +325,19 @@ class GmailService {
                 raw,
             },
         });
+    }
+
+    async get(userId: number, id: string): Promise<TThreadRes> {
+        const auth = await managerService.getAuthForUser(userId);
+        if (!auth) throw "Bad auth";
+
+        const res = await this.gmail.users.threads.get({
+            auth,
+            userId: "me",
+            id,
+        });
+
+        return res?.data as TThreadRes;
     }
 }
 

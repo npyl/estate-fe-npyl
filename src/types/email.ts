@@ -13,7 +13,12 @@ interface IEmailReq {
     propertyIds: number[];
     attachments: IAttachment[];
 }
-type TEmailRes = Required<gmail_v1.Schema$Thread> & { subject: string };
+
+type TEmailRes = Required<gmail_v1.Schema$Message>;
+type TThreadRes = Required<Omit<gmail_v1.Schema$Thread, "messages">> & {
+    subject: string;
+    messages: TEmailRes[];
+};
 
 interface IEmailFilters {
     from: string;
@@ -21,4 +26,4 @@ interface IEmailFilters {
     propertyIds: number[];
 }
 
-export type { IEmailReq, TEmailRes, IAttachment, IEmailFilters };
+export type { IEmailReq, TEmailRes, TThreadRes, IAttachment, IEmailFilters };

@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useFilterEmailsQuery } from "@/services/email";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import getEmail from "./getEmail";
+import getThread from "./getThread";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import useGmailPagination, { FIRST_PAGE_TOKEN } from "./useGmailPagination";
@@ -55,7 +55,7 @@ const List = () => {
                 }}
                 {...pagination}
             >
-                {threads?.map(getEmail)}
+                {threads?.map(getThread)}
             </Pagination>
         </Stack>
     );
