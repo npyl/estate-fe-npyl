@@ -4,6 +4,8 @@ import TasksIcon from "@mui/icons-material/ConfirmationNumber";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
 import MessageIcon from "@mui/icons-material/Message";
+import EmailIcon from "@mui/icons-material/Email";
+
 const MENU_ITEMS = [
     {
         label: "Property",
@@ -34,6 +36,11 @@ const MENU_ITEMS = [
         label: "Message",
         path: "/messages",
         icon: <MessageIcon />,
+    },
+    {
+        label: "Email",
+        path: "/emails",
+        icon: <EmailIcon />,
     },
 ];
 
