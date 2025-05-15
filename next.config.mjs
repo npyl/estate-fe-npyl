@@ -5,14 +5,6 @@ const config = {
     eslint: {
         ignoreDuringBuilds: true,
     },
-    modularizeImports: {
-        "@mui/material": {
-            transform: "@mui/material/{{member}}",
-        },
-        "@mui/icons-material": {
-            transform: "@mui/icons-material/{{member}}",
-        },
-    },
     images: {
         remotePatterns: [
             {
@@ -22,6 +14,10 @@ const config = {
                 pathname: "/**",
             },
         ],
+    },
+
+    experimental: {
+        optimizePackageImports: ["@mui/material", "@mui/icons-material"],
     },
 
     webpack: (config, { buildId, webpack }) => {
