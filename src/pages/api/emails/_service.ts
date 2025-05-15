@@ -9,27 +9,30 @@ import {
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 
-type TMessage = gmail_v1.Schema$Message;
+type TThread = gmail_v1.Schema$Thread;
 
 const PROPERTY_IDS_HEADER_NAME = "X-Property-Ids";
+
+const isPropertyIdsHeader = ({ name }: gmail_v1.Schema$MessagePartHeader) =>
+    name?.toLowerCase() === PROPERTY_IDS_HEADER_NAME.toLowerCase();
+
+const messageToIds = ({ payload }: gmail_v1.Schema$Message) => {
+    const { headers } = payload || {};
+
+    const h = headers?.find(isPropertyIdsHeader);
+    if (!h) return [];
+
+    const v = h?.value;
+    if (!v) return [];
+
+    return v.split(",").map(toNumberSafe);
+};
 
 const getQ = ({ from, to }: IEmailFilters) => {
     let parts = [];
     if (from) parts.push(`from:${from}`);
     if (to) parts.push(`to:${to}`);
     return parts.join(" ");
-};
-
-const getSender = (m: gmail_v1.Schema$Message) => {
-    const { payload } = m || {};
-    const { headers } = payload || {};
-
-    const h = headers?.find(({ name }) => name?.toLowerCase() === "from");
-
-    const value = h?.value || "";
-
-    // Remove any content that looks like <something>
-    return value.replace(/<[^>]*>/g, "");
 };
 
 /**
@@ -144,19 +147,45 @@ class GmailService {
 
     // -------------------------------------------------------------------------------------
 
-    private messagePromise =
+    private async _getThreadPropertyIds(
+        auth: OAuth2Client,
+        id: string,
+        userId: string
+    ): Promise<number[]> {
+        const res = await this.gmail.users.threads.get({
+            auth,
+            userId,
+            id,
+            format: "metadata",
+            metadataHeaders: [PROPERTY_IDS_HEADER_NAME],
+        });
+
+        const m = res.data?.messages ?? [];
+
+        const idSet = new Set(m.map(messageToIds).flat());
+
+        const ids = Array.from(idSet);
+
+        return ids;
+    }
+
+    /**
+     * Receive data for a thread + support filtering by propertyIds
+     * @returns thread with sender field
+     */
+    private ti =
         (
             auth: OAuth2Client,
             from: string,
             withPropertyIds: boolean,
             propertyIds: number[]
         ) =>
-        async (message: TMessage): Promise<TEmailRes | null> => {
-            const { id } = message || {};
+        async (thread: TThread): Promise<TEmailRes | null> => {
+            const { id } = thread || {};
             if (!id) return null;
 
             if (withPropertyIds) {
-                const HEADER_IDS = await this._getEmailPropertyIds(
+                const HEADER_IDS = await this._getThreadPropertyIds(
                     auth,
                     id,
                     from
@@ -169,7 +198,7 @@ class GmailService {
                 if (!found) return null;
             }
 
-            return this._getEmail(auth, id, from);
+            return { ...thread, from: "" } as TEmailRes;
         };
 
     async filter(
@@ -187,7 +216,7 @@ class GmailService {
 
         const q = getQ(filters);
 
-        const res = await this.gmail.users.messages.list({
+        const res = await this.gmail.users.threads.list({
             auth,
             userId: "me",
             maxResults,
@@ -195,63 +224,16 @@ class GmailService {
             q,
         });
 
-        const all = res?.data?.messages ?? [];
+        const all = res?.data?.threads ?? [];
 
-        const promises = all.map(
-            this.messagePromise(auth, from, withPropertyIds, propertyIds)
-        );
+        // Get thread info
+        const p = all.map(this.ti(auth, from, withPropertyIds, propertyIds));
+        const threadsWithInfo = await Promise.all(p);
 
-        const messageResults = await Promise.all(promises);
-        const messages = messageResults.filter(
-            (m): m is TEmailRes => m !== null
-        );
+        // Filter nulls
+        const threads = threadsWithInfo.filter((m) => m !== null);
 
-        return { ...(res?.data || {}), messages };
-    }
-
-    // -------------------------------------------------------------------------------------
-
-    private async _getEmailPropertyIds(
-        auth: OAuth2Client,
-        id: string,
-        userId: string
-    ): Promise<number[]> {
-        const res = await this.gmail.users.messages.get({
-            auth,
-            userId,
-            id,
-            format: "metadata",
-            metadataHeaders: [PROPERTY_IDS_HEADER_NAME],
-        });
-
-        const h = res.data?.payload?.headers ?? [];
-
-        const headerName = h.find(
-            ({ name }) =>
-                name?.toLowerCase() === PROPERTY_IDS_HEADER_NAME.toLowerCase()
-        );
-
-        if (!headerName?.value) return [];
-
-        const ids = headerName.value.split(",").map((id) => toNumberSafe(id));
-
-        return ids;
-    }
-
-    private async _getEmail(
-        auth: OAuth2Client,
-        id: string,
-        userId: string
-    ): Promise<TEmailRes> {
-        const res = await this.gmail.users.messages.get({
-            auth,
-            userId,
-            id,
-        });
-
-        const m = res.data as TEmailRes;
-
-        return { ...m, from: getSender(m) };
+        return { ...(res?.data || {}), threads };
     }
 
     // -------------------------------------------------------------------------------------
