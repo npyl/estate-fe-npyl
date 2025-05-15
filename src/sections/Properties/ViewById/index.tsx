@@ -1,11 +1,10 @@
-import MuiTab, { TabProps } from "@mui/material/Tab";
+import MuiTab from "@mui/material/Tab";
 import { useRouter } from "next/router";
 import { ComponentType, FC, useCallback, useMemo, useState } from "react";
 import {
     useClonePropertyMutation,
     useDeletePermanentPropertyMutation,
     useDeletePropertyMutation,
-    useGetTabCountQuery,
 } from "src/services/properties";
 
 import TabPanel from "src/components/Tabs";
@@ -16,7 +15,6 @@ import { useTranslation } from "react-i18next";
 const ConfirmationDialogBox = dynamic(
     () => import("@/sections/ConfirmationDialogBox")
 );
-import Iconify from "@/components/iconify";
 import dynamic from "next/dynamic";
 
 // Tabs
@@ -37,41 +35,15 @@ const QuickView = dynamic(() => import("./(tabs)/QuickView"));
 const NotificationsTab = dynamic(() => import("./(tabs)/Notifications"));
 const Emails = dynamic(() => import("./(tabs)/Emails"));
 
-import { styled } from "@mui/material/styles";
 import { TranslationType } from "@/types/translation";
 import Tabs from "@mui/material/Tabs";
-import PropertyTabCounter from "./TabCounter";
-
-interface TabItem {
-    label: React.ReactNode;
-    content: React.ReactNode;
-    isGreen?: boolean;
-}
-
-const StyledTab = styled(MuiTab)(({ theme }) => ({
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    "&.Mui-selected": { color: "#00b32d" },
-}));
-
-const GreenMapTab: React.FC<TabProps> = (props) => (
-    <StyledTab
-        {...props}
-        iconPosition="end"
-        icon={
-            <Iconify
-                icon="ph:tree"
-                fontSize="20px"
-                width={20}
-                height={20}
-                sx={{
-                    "&.Mui-selected": { color: "#00b32d" },
-                    mb: 1,
-                }}
-            />
-        }
-    />
-);
+import TasksLabel from "./TabLabels/TasksLabel";
+import MatchingCustomersLabel from "./TabLabels/MatchingCustomers";
+import PhotosLabel from "./TabLabels/Photos";
+import DocumentsLabel from "./TabLabels/Documents";
+import NotificationsLabel from "./TabLabels/Notifications";
+import AgreementsLabel from "./TabLabels/Agreements";
+import GreenMapTab from "./TabLabels/GreenMap";
 
 // -----------------------------------------------------------------
 
@@ -88,17 +60,25 @@ interface ITab {
 const getTABS = (t: TranslationType): ITab[] => [
     { label: t("Overview"), View: MainContainer },
     { label: t("Quick View"), View: QuickView },
-    { label: t("Tasks"), View: Tasks },
-    { label: t("Matching Customers"), View: MatchingCustomersSection },
-    { label: t("Photos"), View: PhotosOnly },
+    { label: t("Tasks"), View: Tasks, Tab: TasksLabel },
+    {
+        label: t("Matching Customers"),
+        View: MatchingCustomersSection,
+        Tab: MatchingCustomersLabel,
+    },
+    { label: t("Photos"), View: PhotosOnly, Tab: PhotosLabel },
     { label: t("Integrations"), View: Integrations },
     { label: t("Logs"), View: PropertyLogs },
-    { label: t("Documents"), View: Documents },
+    { label: t("Documents"), View: Documents, Tab: DocumentsLabel },
     { label: t("Map"), View: Map },
     { label: t("Street View"), View: StreetView },
-    { label: t("Notifications"), View: NotificationsTab },
+    {
+        label: t("Notifications"),
+        View: NotificationsTab,
+        Tab: NotificationsLabel,
+    },
     { label: t("Emails"), View: Emails },
-    { label: t("Agreements"), View: AgreementsTab },
+    { label: t("Agreements"), View: AgreementsTab, Tab: AgreementsLabel },
     { label: t("Eco Map"), View: GreenMap, Tab: GreenMapTab },
 ];
 
@@ -126,10 +106,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const { t } = useTranslation();
 
     const { propertyId } = router.query;
-    const { data: tabCounts, isLoading: isTabCountsLoading } =
-        useGetTabCountQuery(+propertyId!, {
-            skip: !propertyId,
-        });
 
     const TABS = useMemo(() => getTABS(t), [t]);
     const GREEN_MAP_INDEX = TABS.length - 1;
@@ -173,91 +149,7 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
         if ("error" in res) return;
         router.push("/property");
     }, [propertyId]);
-    const tabsConfig: TabItem[] = [
-        {
-            label: t("Overview"),
-            content: <MainContainer />,
-        },
-        {
-            label: t("Quick View"),
-            content: <QuickView />,
-        },
-        {
-            label: (
-                <PropertyTabCounter
-                    label={t("Tasks")}
-                    count={tabCounts?.tasks || 0}
-                />
-            ),
-            content: <Tasks />,
-        },
-        {
-            label: (
-                <PropertyTabCounter
-                    label={t("Matching Customers")}
-                    count={tabCounts?.matchingCustomers || 0}
-                />
-            ),
-            content: <MatchingCustomersSection />,
-        },
-        {
-            label: (
-                <PropertyTabCounter
-                    label={t("Photos")}
-                    count={tabCounts?.images || 0}
-                />
-            ),
-            content: <PhotosOnly />,
-        },
-        {
-            label: t("Integrations"),
-            content: <Integrations />,
-        },
-        {
-            label: t("Logs"),
-            content: <PropertyLogs />,
-        },
-        {
-            label: (
-                <PropertyTabCounter
-                    label={t("Documents")}
-                    count={tabCounts?.documents || 0}
-                />
-            ),
-            content: <Documents />,
-        },
-        {
-            label: t("Map"),
-            content: <Map />,
-        },
-        {
-            label: t("Street View"),
-            content: <StreetView />,
-        },
-        {
-            label: (
-                <PropertyTabCounter
-                    label={t("Notifications")}
-                    count={tabCounts?.notifications || 0}
-                />
-            ),
-            content: <NotificationsTab />,
-        },
-        {
-            label: (
-                <PropertyTabCounter
-                    label={t("Agreements")}
-                    count={tabCounts?.agreements || 0}
-                />
-            ),
-            content: <AgreementsTab />,
-        },
-        {
-            label: t("Eco"),
-            content: <GreenMap />,
-            isGreen: true,
-        },
-    ].filter(Boolean) as TabItem[]; //Type-safe filtering for typescript error
+
     return (
         <>
             <ViewHeader
@@ -282,13 +174,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                     }}
                 >
                     {TABS.map(getTab)}
-                    {tabsConfig.map((tab, index) =>
-                        tab?.isGreen ? (
-                            <GreenMapTab key={index} label={tab.label} />
-                        ) : (
-                            <Tab key={index} label={tab?.label} />
-                        )
-                    )}
                 </Tabs>
             </ViewHeader>
 
