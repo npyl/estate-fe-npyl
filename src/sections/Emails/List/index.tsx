@@ -34,7 +34,7 @@ const List = () => {
         userId: user?.id!,
     });
 
-    const { messages, nextPageToken, resultSizeEstimate } = data || {};
+    const { threads, nextPageToken, resultSizeEstimate } = data || {};
     const totalItems = Boolean(resultSizeEstimate)
         ? resultSizeEstimate!
         : PAGE_SIZE;
@@ -55,7 +55,7 @@ const List = () => {
                 }}
                 {...pagination}
             >
-                {messages?.map(getEmail)}
+                {threads?.map(getEmail)}
             </Pagination>
         </Stack>
     );

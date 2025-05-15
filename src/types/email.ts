@@ -13,7 +13,7 @@ interface IEmailReq {
     propertyIds: number[];
     attachments: IAttachment[];
 }
-type TEmailRes = Required<gmail_v1.Schema$Message> & { from: string };
+type TEmailRes = Required<gmail_v1.Schema$Thread> & { subject: string };
 
 interface IEmailFilters {
     from: string;

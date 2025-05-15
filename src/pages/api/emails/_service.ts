@@ -138,6 +138,13 @@ const createMultipartMessage = async (
     return encodedMessage;
 };
 
+type ThreadMetadata = {
+    subject: string;
+    from: string;
+    snippet: string;
+    ids: number[];
+};
+
 class GmailService {
     private gmail: gmail_v1.Gmail;
 
@@ -147,49 +154,89 @@ class GmailService {
 
     // -------------------------------------------------------------------------------------
 
-    private async _getThreadPropertyIds(
+    /**
+     * Fetches comprehensive thread metadata including subject, snippet, and sender info
+     */
+    private async _getThreadMetadata(
         auth: OAuth2Client,
-        id: string,
-        userId: string
-    ): Promise<number[]> {
-        const res = await this.gmail.users.threads.get({
-            auth,
-            userId,
-            id,
-            format: "metadata",
-            metadataHeaders: [PROPERTY_IDS_HEADER_NAME],
-        });
+        threadId: string,
+        userId: string,
+        withPropertyIds: boolean
+    ): Promise<ThreadMetadata> {
+        try {
+            const res = await this.gmail.users.threads.get({
+                auth,
+                userId,
+                id: threadId,
+                format: "metadata",
+                metadataHeaders: [PROPERTY_IDS_HEADER_NAME, "Subject", "From"],
+            });
 
-        const m = res.data?.messages ?? [];
+            const thread = res.data;
+            const m = thread.messages || [];
 
-        const idSet = new Set(m.map(messageToIds).flat());
+            // Get the first message for subject and from
+            const firstMessage = m[0];
 
-        const ids = Array.from(idSet);
+            let subject = "";
+            let from = "";
 
-        return ids;
+            if (
+                firstMessage &&
+                firstMessage.payload &&
+                firstMessage.payload.headers
+            ) {
+                const headers = firstMessage.payload.headers;
+
+                const subjectHeader = headers.find(
+                    (h) => h.name?.toLowerCase() === "subject"
+                );
+                const fromHeader = headers.find(
+                    (h) => h.name?.toLowerCase() === "from"
+                );
+
+                subject = subjectHeader?.value || "";
+                from = fromHeader?.value || "";
+            }
+
+            // Get snippet from the thread
+            const snippet = thread.snippet || "";
+
+            // PropertyIds
+            let ids: number[] = [];
+            if (withPropertyIds) {
+                const idSet = new Set(m.map(messageToIds).flat());
+                ids = Array.from(idSet);
+            }
+
+            return { subject, from, snippet, ids };
+        } catch (error) {
+            console.error(error);
+            return { subject: "", from: "", snippet: "", ids: [] };
+        }
     }
 
     /**
      * Receive data for a thread + support filtering by propertyIds
-     * @returns thread with sender field
+     * @returns thread with metadata including subject, from, and snippet
      */
     private ti =
-        (
-            auth: OAuth2Client,
-            from: string,
-            withPropertyIds: boolean,
-            propertyIds: number[]
-        ) =>
+        (auth: OAuth2Client, userId: string, propertyIds: number[]) =>
         async (thread: TThread): Promise<TEmailRes | null> => {
             const { id } = thread || {};
             if (!id) return null;
 
+            const withPropertyIds = propertyIds.length > 0;
+
+            const METADATA = await this._getThreadMetadata(
+                auth,
+                id,
+                userId,
+                withPropertyIds
+            );
+
             if (withPropertyIds) {
-                const HEADER_IDS = await this._getThreadPropertyIds(
-                    auth,
-                    id,
-                    from
-                );
+                const HEADER_IDS = METADATA.ids;
 
                 const found = propertyIds.some((pid) =>
                     HEADER_IDS.includes(pid)
@@ -198,7 +245,7 @@ class GmailService {
                 if (!found) return null;
             }
 
-            return { ...thread, from: "" } as TEmailRes;
+            return { ...thread, subject: METADATA.subject } as TEmailRes;
         };
 
     async filter(
@@ -211,8 +258,6 @@ class GmailService {
         if (!auth) return [];
 
         const { from, propertyIds = [] } = filters;
-        const withPropertyIds =
-            Array.isArray(propertyIds) && propertyIds.length > 0;
 
         const q = getQ(filters);
 
@@ -227,7 +272,7 @@ class GmailService {
         const all = res?.data?.threads ?? [];
 
         // Get thread info
-        const p = all.map(this.ti(auth, from, withPropertyIds, propertyIds));
+        const p = all.map(this.ti(auth, from, propertyIds));
         const threadsWithInfo = await Promise.all(p);
 
         // Filter nulls

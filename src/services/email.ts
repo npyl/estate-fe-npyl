@@ -15,11 +15,8 @@ interface IEmailFilterReq {
     pageToken?: string; // INFO: tell gmail api to fetch next page
 }
 
-type TEmailFilterRes = Omit<
-    gmail_v1.Schema$ListMessagesResponse,
-    "messages"
-> & {
-    messages: TEmailRes[];
+type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
+    threads: TEmailRes[];
 };
 
 export const emails = createApi({
