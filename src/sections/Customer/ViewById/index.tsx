@@ -1,28 +1,26 @@
-import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import { useRouter } from "next/router";
 import { ComponentType, useCallback, useMemo, useState } from "react";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
 } from "@/services/customers";
-
-import {
-    Address,
-    Information,
-    MatchingProperties,
-    Notes,
-    OwnedProperties,
-    Logs,
-} from "./sections";
+import { MatchingProperties, OwnedProperties, Logs } from "./sections";
 import TabPanel from "@/components/Tabs";
 import ViewHeader from "@/sections/ViewHeader";
 import { useTranslation } from "react-i18next";
-import Agreements from "@/sections/agreements";
 import dynamic from "next/dynamic";
 import { TranslationType } from "@/types/translation";
+import AgreementsTab from "./Tabs/Agreements";
+import DemandsTab from "./Tabs/Demands";
+import CustomerInformation from "./Tabs/Information";
+import TasksLabel from "./TabLabels/Tasks";
+import DemandsLabel from "./TabLabels/Demands";
+import OwnedPropertiesLabel from "./TabLabels/OwnedProperties";
+import MatchingPropertiesLabel from "./TabLabels/MatchingProperties";
+import AgreementsLabel from "./TabLabels/Agreements";
 const Emails = dynamic(() => import("./sections/Emails"));
 const Tasks = dynamic(() => import("./sections/Tasks"));
-const DemandSection = dynamic(() => import("./sections/Demand"));
 
 // -------------------------------------------------------------------------------
 
@@ -31,8 +29,8 @@ const getTabPaths = (id: number) => [`/customer/${id}`, `/customer/edit/${id}`];
 // -------------------------------------------------------------------------------
 
 interface ITab {
-    label: string;
-    View: ComponentType;
+    Label: ComponentType<any> | string;
+    View: ComponentType<any>;
 }
 
 const WITH = (i: ITab, onOff: boolean) => (onOff ? [i] : []);
@@ -45,54 +43,55 @@ const getTABS = (
     hasEmail: boolean
 ): ITab[] => [
     {
-        label: t("Customer Information"),
+        Label: t<string>("Customer Information"),
         View: CustomerInformation,
     },
     {
-        label: t("Tasks"),
+        Label: TasksLabel,
         View: Tasks,
     },
     ...WITH(
         {
-            label: t("Demands"),
+            Label: DemandsLabel,
             View: DemandsTab,
         },
         hasDemands
     ),
     ...WITH(
         {
-            label: t("Owned Properties"),
+            Label: OwnedPropertiesLabel,
             View: OwnedProperties,
         },
         isSellerOrLessor
     ),
     ...WITH(
         {
-            label: t("Matching Properties"),
+            Label: MatchingPropertiesLabel,
             View: MatchingProperties,
         },
         isBuyerOrLeaser
     ),
     {
-        label: t("Agreements"),
+        Label: AgreementsLabel,
         View: AgreementsTab,
     },
     ...WITH(
         {
-            label: t("Emails"),
+            Label: t<string>("Emails"),
             View: Emails,
         },
         hasEmail
     ),
     {
-        label: t("Logs"),
+        Label: t<string>("Logs"),
         View: Logs,
     },
 ];
 
-const getTab = ({ label }: ITab, idx: number) => (
-    <Tab key={idx} label={label} />
-);
+const getTab = ({ Label }: ITab, idx: number) => {
+    const label = typeof Label === "string" ? Label : <Label />;
+    return <Tab key={idx} label={label} />;
+};
 
 const getTabView =
     (value: number) =>
@@ -101,48 +100,6 @@ const getTabView =
             <View />
         </TabPanel>
     );
-
-const CustomerInformation = () => (
-    <Grid container spacing={1}>
-        <Grid item xs={12} lg={6}>
-            <Information />
-        </Grid>
-        <Grid
-            item
-            xs={12}
-            lg={6}
-            // ...
-            display="flex"
-            flexDirection="column"
-            gap={1}
-        >
-            <Address />
-            <Notes />
-        </Grid>
-    </Grid>
-);
-
-const DemandsTab = () => {
-    const router = useRouter();
-    const { customerId } = router.query;
-    const { data } = useGetCustomerByIdQuery(+customerId!);
-
-    const demands = data?.demands;
-
-    return (
-        <Stack spacing={1}>
-            {demands?.map((d, i) => (
-                <DemandSection key={i} demand={d} index={i} />
-            ))}
-        </Stack>
-    );
-};
-
-const AgreementsTab = () => {
-    const router = useRouter();
-    const { customerId } = router.query;
-    return <Agreements customerId={+customerId!} />;
-};
 
 const ViewById = () => {
     const router = useRouter();
@@ -179,7 +136,7 @@ const ViewById = () => {
     }, [customerId]);
 
     return (
-        <Box sx={{ width: "100%", paddingTop: 1 }}>
+        <>
             <ViewHeader
                 isProperty={false}
                 onEdit={handleEdit}
@@ -191,7 +148,7 @@ const ViewById = () => {
             </ViewHeader>
 
             {TABS.map(getTabView(value))}
-        </Box>
+        </>
     );
 };
 
