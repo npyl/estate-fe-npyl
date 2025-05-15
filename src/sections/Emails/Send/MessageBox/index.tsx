@@ -37,10 +37,14 @@ const MessageBox: FC<MessageBoxProps> = ({
                 attachments,
             } as IEmailReq;
 
-            await sendEmail({
+            const res = await sendEmail({
                 body,
                 userId: user?.id!,
             });
+
+            if ("error" in res) return;
+
+            onClose();
         },
         [user?.id!]
     );
