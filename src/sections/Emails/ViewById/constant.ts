@@ -1,0 +1,12 @@
+const VIEW_CLASSNAME = "PPThreadById-View";
+const COLLAPSED_CLASSNAME = "PPCollapsed";
+
+const GROW_ICON_CLASSNAME = "PPGrowIcon";
+const COLLAPSE_ICON_CLASSNAME = "PPCollapseIcon";
+
+export {
+    VIEW_CLASSNAME,
+    COLLAPSED_CLASSNAME,
+    GROW_ICON_CLASSNAME,
+    COLLAPSE_ICON_CLASSNAME,
+};

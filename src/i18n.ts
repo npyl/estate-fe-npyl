@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Reply: "Reply",
+
             EMAILS_REMOVED_DUPLICATES_0:
                 "Duplicate attachments have been ignored",
             EMAILS_REMOVED_DUPLICATES_1: "The rest were added",
@@ -1342,6 +1344,8 @@ const resources = {
     },
     el: {
         translation: {
+            Reply: "Απάντηση",
+
             EMAILS_REMOVED_DUPLICATES_0: "Αγνοήθηκαν διπλότυπα",
             EMAILS_REMOVED_DUPLICATES_1: "Τα καινούργια προστέθηκαν",
 
