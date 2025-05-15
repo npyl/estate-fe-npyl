@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useSuggestForCustomerQuery } from "@/services/customers";
 import Placeholder from "./Placeholder";
 import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
@@ -8,36 +7,26 @@ import { Grid } from "@mui/material";
 import PropertyCard from "@/components/Cards/PropertyCard";
 import { usePagination } from "@/components/Pagination";
 import Pagination from "@/components/Pagination/client";
-import { useRouter } from "next/router";
-import { toNumberSafe } from "@/utils/toNumber";
+import { IProperties } from "@/types/properties";
 
 const PAGE_SIZE = 5;
-
-const MatchingPropertiesSection = () => {
+interface MatchingPropertiesSectionProps {
+    properties: IProperties[];
+}
+const MatchingPropertiesSection = ({
+    properties,
+}: MatchingPropertiesSectionProps) => {
     const { t } = useTranslation();
-
+    const belowLg = useResponsive("down", "lg");
     const pagination = usePagination();
 
-    const router = useRouter();
-    const { customerId } = router.query;
-    const iCustomerId = toNumberSafe(customerId);
+    const isLoading = false;
 
-    const { data, isLoading } = useSuggestForCustomerQuery(
-        { customerId: iCustomerId, page: pagination.page, pageSize: PAGE_SIZE },
-        {
-            skip: iCustomerId === -1,
-        }
-    );
-
-    const properties = data?.content || [];
-
-    const belowLg = useResponsive("down", "lg");
-
-    if (!isLoading && properties?.length === 0) {
+    if (properties.length === 0) {
         return <Placeholder />;
     }
 
-    if (belowLg)
+    if (belowLg) {
         return (
             <Pagination
                 {...pagination}
@@ -56,20 +45,14 @@ const MatchingPropertiesSection = () => {
                 ))}
             </Pagination>
         );
+    }
 
     return (
-        <Panel
-            label={t("Matching Properties")}
-            childrenSx={{
-                p: 0,
-            }}
-        >
+        <Panel label={t("Matching Properties")} childrenSx={{ p: 0 }}>
             <DataGrid
                 loading={isLoading}
-                // ...
                 rows={properties}
-                totalRows={properties.length ?? PAGE_SIZE}
-                // ...
+                totalRows={properties.length}
                 paginationMode="client"
                 page={pagination.page}
                 pageSize={PAGE_SIZE}

@@ -7,6 +7,7 @@ import {
     IPropertyMarker,
     IPropertyResultResponse,
     IValuationRes,
+    IPropertyTabCounts,
 } from "@/types/properties";
 import IPage from "@/types/page";
 import { ILabel } from "@/types/label";
@@ -121,6 +122,12 @@ export const properties = apiWithTranslation({
             query: (id) => `${id}`,
             providesTags: ["PropertyById"],
         }),
+
+        getTabCount: builder.query<IPropertyTabCounts, number>({
+            query: (propertyId) => `/${propertyId}/counts`,
+            providesTags: ["PropertyById"],
+        }),
+
         getPropertyByCode: builder.query<IProperties, string>({
             query: (code) => `code/${code}`,
             providesTags: ["Properties"],
@@ -412,7 +419,7 @@ export const {
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
     useGetPropertyLocationMarkersQuery,
-
+    useGetTabCountQuery,
     // mutations
     useCreatePropertyMutation,
     useClonePropertyMutation,

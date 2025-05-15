@@ -5,6 +5,7 @@ import {
     useClonePropertyMutation,
     useDeletePermanentPropertyMutation,
     useDeletePropertyMutation,
+    useGetTabCountQuery,
 } from "src/services/properties";
 
 import TabPanel from "src/components/Tabs";
@@ -39,6 +40,13 @@ const Emails = dynamic(() => import("./(tabs)/Emails"));
 import { styled } from "@mui/material/styles";
 import { TranslationType } from "@/types/translation";
 import Tabs from "@mui/material/Tabs";
+import PropertyTabCounter from "./TabCounter";
+
+interface TabItem {
+    label: React.ReactNode;
+    content: React.ReactNode;
+    isGreen?: boolean;
+}
 
 const StyledTab = styled(MuiTab)(({ theme }) => ({
     marginLeft: theme.spacing(3),
@@ -118,6 +126,10 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const { t } = useTranslation();
 
     const { propertyId } = router.query;
+    const { data: tabCounts, isLoading: isTabCountsLoading } =
+        useGetTabCountQuery(+propertyId!, {
+            skip: !propertyId,
+        });
 
     const TABS = useMemo(() => getTABS(t), [t]);
     const GREEN_MAP_INDEX = TABS.length - 1;
@@ -161,7 +173,91 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
         if ("error" in res) return;
         router.push("/property");
     }, [propertyId]);
-
+    const tabsConfig: TabItem[] = [
+        {
+            label: t("Overview"),
+            content: <MainContainer />,
+        },
+        {
+            label: t("Quick View"),
+            content: <QuickView />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Tasks")}
+                    count={tabCounts?.tasks || 0}
+                />
+            ),
+            content: <Tasks />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Matching Customers")}
+                    count={tabCounts?.matchingCustomers || 0}
+                />
+            ),
+            content: <MatchingCustomersSection />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Photos")}
+                    count={tabCounts?.images || 0}
+                />
+            ),
+            content: <PhotosOnly />,
+        },
+        {
+            label: t("Integrations"),
+            content: <Integrations />,
+        },
+        {
+            label: t("Logs"),
+            content: <PropertyLogs />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Documents")}
+                    count={tabCounts?.documents || 0}
+                />
+            ),
+            content: <Documents />,
+        },
+        {
+            label: t("Map"),
+            content: <Map />,
+        },
+        {
+            label: t("Street View"),
+            content: <StreetView />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Notifications")}
+                    count={tabCounts?.notifications || 0}
+                />
+            ),
+            content: <NotificationsTab />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Agreements")}
+                    count={tabCounts?.agreements || 0}
+                />
+            ),
+            content: <AgreementsTab />,
+        },
+        {
+            label: t("Eco"),
+            content: <GreenMap />,
+            isGreen: true,
+        },
+    ].filter(Boolean) as TabItem[]; //Type-safe filtering for typescript error
     return (
         <>
             <ViewHeader
@@ -186,6 +282,13 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                     }}
                 >
                     {TABS.map(getTab)}
+                    {tabsConfig.map((tab, index) =>
+                        tab?.isGreen ? (
+                            <GreenMapTab key={index} label={tab.label} />
+                        ) : (
+                            <Tab key={index} label={tab?.label} />
+                        )
+                    )}
                 </Tabs>
             </ViewHeader>
 
