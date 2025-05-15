@@ -131,8 +131,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
         if ("error" in res) return;
         router.push("/property");
     }, [propertyId]);
-
-    // Maybe the following in a new TabsConfig component
     const tabsConfig: TabItem[] = [
         {
             label: t("Overview"),
@@ -142,36 +140,33 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
             label: t("Quick View"),
             content: <QuickView />,
         },
-        tabCounts?.tasks &&
-            tabCounts?.tasks > 0 && {
-                label: (
-                    <PropertyTabCounter
-                        label={t("Tasks")}
-                        count={tabCounts.tasks}
-                    />
-                ),
-                content: <Tasks />,
-            },
-        tabCounts?.matchingCustomers &&
-            tabCounts?.matchingCustomers > 0 && {
-                label: (
-                    <PropertyTabCounter
-                        label={t("Matching Customers")}
-                        count={tabCounts?.matchingCustomers}
-                    />
-                ),
-                content: <MatchingCustomersSection />,
-            },
-        tabCounts?.images &&
-            tabCounts?.images > 0 && {
-                label: (
-                    <PropertyTabCounter
-                        label={t("Photos")}
-                        count={tabCounts?.images}
-                    />
-                ),
-                content: <PhotosOnly />,
-            },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Tasks")}
+                    count={tabCounts?.tasks || 0}
+                />
+            ),
+            content: <Tasks />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Matching Customers")}
+                    count={tabCounts?.matchingCustomers || 0}
+                />
+            ),
+            content: <MatchingCustomersSection />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Photos")}
+                    count={tabCounts?.images || 0}
+                />
+            ),
+            content: <PhotosOnly />,
+        },
         {
             label: t("Integrations"),
             content: <Integrations />,
@@ -180,16 +175,15 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
             label: t("Logs"),
             content: <PropertyLogs />,
         },
-        tabCounts?.documents &&
-            tabCounts?.documents > 0 && {
-                label: (
-                    <PropertyTabCounter
-                        label={t("Documents")}
-                        count={tabCounts.documents}
-                    />
-                ),
-                content: <Documents />,
-            },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Documents")}
+                    count={tabCounts?.documents || 0}
+                />
+            ),
+            content: <Documents />,
+        },
         {
             label: t("Map"),
             content: <Map />,
@@ -198,28 +192,26 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
             label: t("Street View"),
             content: <StreetView />,
         },
-        tabCounts?.notifications &&
-            tabCounts?.notifications > 0 && {
-                label: (
-                    <PropertyTabCounter
-                        label={t("Notifications")}
-                        count={tabCounts.notifications}
-                    />
-                ),
-                content: <NotificationsTab />,
-            },
-        tabCounts?.agreements &&
-            tabCounts?.agreements > 0 && {
-                label: (
-                    <PropertyTabCounter
-                        label={t("Agreements")}
-                        count={tabCounts.agreements}
-                    />
-                ),
-                content: <AgreementsTab />,
-            },
         {
-            label: t("Eco Map"),
+            label: (
+                <PropertyTabCounter
+                    label={t("Notifications")}
+                    count={tabCounts?.notifications || 0}
+                />
+            ),
+            content: <NotificationsTab />,
+        },
+        {
+            label: (
+                <PropertyTabCounter
+                    label={t("Agreements")}
+                    count={tabCounts?.agreements || 0}
+                />
+            ),
+            content: <AgreementsTab />,
+        },
+        {
+            label: t("Eco"),
             content: <GreenMap />,
             isGreen: true,
         },

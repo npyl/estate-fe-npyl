@@ -9,6 +9,7 @@ import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
 import { IPropertyImage } from "@/types/file";
 import dynamic from "next/dynamic";
+import PropertyTabCounter from "../../TabCounter";
 
 const Lightbox = dynamic(() => import("@/components/Lightbox"));
 const DownloadDialog = dynamic(() => import("./Dialog"));
@@ -94,6 +95,11 @@ function OnlyPhotosCarousel({ data }: Props) {
 
     const handleTabChange = (_: any, t: number) => setSelectedTab(t);
 
+    // Count for public, private and all images
+    const publicCount = data.filter((img) => !img.hidden).length;
+    const privateCount = data.filter((img) => img.hidden).length;
+    const totalCount = data.length;
+
     return (
         <>
             <Box
@@ -106,9 +112,30 @@ function OnlyPhotosCarousel({ data }: Props) {
             >
                 <Stack direction="row" justifyContent="space-between" px={2}>
                     <Tabs value={selectedTab} onChange={handleTabChange}>
-                        <Tab label={t("Public Photos")} />
-                        <Tab label={t("Private Photos")} />
-                        <Tab label={t("All Photos")} />
+                        <Tab
+                            label={
+                                <PropertyTabCounter
+                                    label={t("Public Photos")}
+                                    count={publicCount}
+                                />
+                            }
+                        />
+                        <Tab
+                            label={
+                                <PropertyTabCounter
+                                    label={t("Private Photos")}
+                                    count={privateCount}
+                                />
+                            }
+                        />
+                        <Tab
+                            label={
+                                <PropertyTabCounter
+                                    label={t("All Photos")}
+                                    count={totalCount}
+                                />
+                            }
+                        />
                     </Tabs>
                     <Button
                         onClick={openDialog}
