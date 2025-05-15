@@ -5,7 +5,7 @@ import getAddressFromLatLng from "./getAddressFromLatLng";
 import { IMapProps } from "../../types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
-import { athensLatLng, ZOOM_LEVELS } from "../../constants";
+import { patrasLatLng, ZOOM_LEVELS } from "../../constants";
 import dynamic from "next/dynamic";
 import isPositionValid from "../../util/validation";
 const MainMarker = dynamic(() => import("./MainMarker"));
@@ -24,7 +24,7 @@ const MapContainer: FC<IMapProps> = ({
     // ...
     zoom,
     mainMarker = false,
-    center: _center = athensLatLng,
+    center: _center = patrasLatLng,
     // ...
     leftTop,
     leftCenter,
@@ -41,7 +41,7 @@ const MapContainer: FC<IMapProps> = ({
     const { isLoaded } = useLoadApi();
 
     const center = useMemo(() => {
-        if (!isPositionValid(_center)) return athensLatLng;
+        if (!isPositionValid(_center)) return patrasLatLng;
         return _center;
     }, [_center]);
 

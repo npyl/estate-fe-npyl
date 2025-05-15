@@ -9,7 +9,7 @@ declare type Libraries = (
 const apiKey = "AIzaSyDKNARWExRGZXIsA3oKhRW0aZQmtXGuVbk";
 const libraries = ["drawing", "places", "geometry"] as Libraries;
 
-const athensLatLng = { lat: 37.98381, lng: 23.727539 };
+const patrasLatLng = { lat: 38.2466, lng: 21.7346 };
 
 enum ZOOM_LEVELS {
     DEFAULT = 8,
@@ -18,4 +18,4 @@ enum ZOOM_LEVELS {
     NEIGHB = 16,
 }
 
-export { apiKey, libraries, athensLatLng, ZOOM_LEVELS };
+export { apiKey, libraries, patrasLatLng, ZOOM_LEVELS };
