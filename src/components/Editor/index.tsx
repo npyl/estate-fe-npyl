@@ -21,7 +21,7 @@ import { debuglog } from "util";
 import getBorderColor, { getBorderColor2 } from "@/theme/borderColor";
 import { CLASSNAMES } from "./constants";
 import { primary } from "@/theme/light-theme-options";
-const MenuBar = dynamic(() => import("./MenuBar"));
+const MenuBar = dynamic(() => import("./MenuBar"), { ssr: false });
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
 // ----------------------------------------------------------------------
