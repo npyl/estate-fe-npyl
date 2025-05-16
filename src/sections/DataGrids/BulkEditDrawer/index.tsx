@@ -1,12 +1,12 @@
 import { Drawer, Stack, Button, Typography, DrawerProps } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Actions from "./Actions";
-import { FormProvider, useForm } from "react-hook-form";
+import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 import { useCallback } from "react";
 
 interface BulkEditDrawerProps<State extends object, BulkEditReq>
     extends DrawerProps {
-    DEFAULT_VALUES: State;
+    DEFAULT_VALUES: DefaultValues<State>;
     selectedIds: number[];
     onSave: (r: BulkEditReq) => Promise<void>;
     onClose: () => void;
@@ -34,9 +34,11 @@ const BulkEditDrawer = <State extends object, BulkEditReq>({
 
             // Check each property in dirtyFields
             Object.keys(dirtyFields).forEach((key) => {
-                // if (dirtyFields[key]) {
-                //     changed[key] = values[key];
-                // }
+                const typedKey = key as keyof typeof dirtyFields;
+                if (dirtyFields[typedKey]) {
+                    const stateKey = key as keyof State;
+                    changed[stateKey] = values[stateKey];
+                }
             });
 
             const req = {

@@ -11,9 +11,10 @@ import { BulkEditRequest } from "@/services/properties";
 import EditLabels from "./EditLabels";
 import Active from "./Active";
 import Exclusive from "./Exclusive";
+import { DefaultValues } from "react-hook-form";
 
 interface BulkEditProps<State extends object> {
-    DEFAULT_VALUES: State;
+    DEFAULT_VALUES: DefaultValues<State>;
     selectedIds: number[];
     onSave: (req: BulkEditRequest) => Promise<any>;
     onClose: VoidFunction;
