@@ -6,10 +6,16 @@ import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import useGmailPagination, { FIRST_PAGE_TOKEN } from "./useGmailPagination";
 import { Stack, SxProps, Theme } from "@mui/material";
+import getBorderColor from "@/theme/borderColor";
 
 const PAGE_SIZE = 10;
 
 const StackSx: SxProps<Theme> = {
+    ".MuiTablePagination-root": {
+        borderTop: "1px solid",
+        borderColor: getBorderColor,
+    },
+
     ".MuiTablePagination-selectLabel": {
         display: "none",
     },
@@ -19,6 +25,13 @@ const StackSx: SxProps<Theme> = {
     ".MuiInputBase-root": {
         display: "none",
     },
+
+    mt: 1,
+    borderRadius: 1,
+    bgcolor: "background.paper",
+    boxShadow: 5,
+    border: "1px solid",
+    borderColor: getBorderColor,
 };
 
 const List = () => {
@@ -49,10 +62,6 @@ const List = () => {
                 totalItems={totalItems}
                 isLoading={isLoading}
                 Container={Stack}
-                ContainerProps={{
-                    mt: 1,
-                    boxShadow: 20,
-                }}
                 {...pagination}
             >
                 {threads?.map(getThread)}

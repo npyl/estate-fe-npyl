@@ -1,17 +1,29 @@
 import Link from "@/components/Link";
-import getBorderColor from "@/theme/borderColor";
+import { getBorderColor2 } from "@/theme/borderColor";
+import { primary } from "@/theme/light-theme-options";
 import { TThreadRes } from "@/types/email";
-import { SxProps, Theme } from "@mui/material";
+import { alpha, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 const ItemSx: SxProps<Theme> = {
     "&:hover": {
+        ":first-child": {
+            borderTopLeftRadius: 6,
+            borderTopRightRadius: 6,
+        },
+
         boxShadow: 10,
-        zIndex: 1,
-        color: "text.primary",
+        zIndex: 2,
         userSelect: "none",
         cursor: "pointer",
+
+        bgcolor: alpha(primary.light, 0.3),
+    },
+
+    ":not(:last-child)": {
+        borderBottom: "1px solid",
+        borderColor: getBorderColor2,
     },
 };
 
@@ -25,11 +37,7 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         flexDirection="row"
         gap={1}
         alignItems="center"
-        bgcolor="background.paper"
         p={1}
-        borderBottom="1px solid"
-        borderColor={getBorderColor}
-        color="text.secondary"
         href={`/emails/${e.id}`}
         sx={ItemSx}
     >
