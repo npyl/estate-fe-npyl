@@ -14,19 +14,18 @@ const getHeaderValue = (
 };
 
 interface HeaderProps {
+    last: boolean;
     headers: gmail_v1.Schema$MessagePartHeader[];
 }
 
-const Header: FC<HeaderProps> = ({ headers }) => {
+const Header: FC<HeaderProps> = ({ last, headers }) => {
     // Extract sender, subject, and date from headers
     const sender = getHeaderValue(headers, "From");
-    const subject = getHeaderValue(headers, "Subject");
     const date = getHeaderValue(headers, "Date");
 
     return (
         <Stack>
             <Stack direction="row" spacing={1}>
-                <Typography variant="h6">{subject}</Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                     ({sender || "Unknown sender"})
                 </Typography>

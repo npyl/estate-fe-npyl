@@ -22,7 +22,7 @@ const Message: FC<Props> = ({ m, last }) => {
             borderColor={getBorderColor}
             borderRadius={1}
         >
-            <Header headers={payload.headers ?? []} />
+            <Header headers={payload.headers ?? []} last={last} />
             <Body payload={payload} />
             <Attachments payload={payload} />
         </Stack>
