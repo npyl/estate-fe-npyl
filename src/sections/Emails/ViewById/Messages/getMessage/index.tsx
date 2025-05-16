@@ -4,7 +4,6 @@ import Stack from "@mui/material/Stack";
 import Header from "./Header";
 import Attachments from "./Attachments";
 import Body from "./Body";
-import getBorderColor from "@/theme/borderColor";
 
 interface Props {
     m: TEmailRes;
@@ -15,13 +14,7 @@ const Message: FC<Props> = ({ m, last }) => {
     const { payload } = m || {};
 
     return (
-        <Stack
-            p={2}
-            spacing={2}
-            border="1px solid"
-            borderColor={getBorderColor}
-            borderRadius={1}
-        >
+        <Stack p={2} spacing={2}>
             <Header headers={payload.headers ?? []} last={last} />
             <Body payload={payload} />
             <Attachments payload={payload} />

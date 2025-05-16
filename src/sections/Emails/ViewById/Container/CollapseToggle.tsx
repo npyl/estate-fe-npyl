@@ -10,7 +10,11 @@ interface Props {
 
 const CollapseToggle: FC<Props> = ({ isCollapsed, onClick }) => (
     <IconButton onClick={onClick}>
-        {isCollapsed ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
+        {isCollapsed ? (
+            <CloseFullscreenIcon fontSize="small" />
+        ) : (
+            <OpenInFullIcon fontSize="small" />
+        )}
     </IconButton>
 );
 

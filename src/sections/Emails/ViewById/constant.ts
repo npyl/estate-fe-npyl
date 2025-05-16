@@ -1,4 +1,0 @@
-const CONTAINER_CLASSNAME = "PPThreadContainer";
-const COLLAPSED_CLASSNAME = "PPCollapsed";
-
-export { CONTAINER_CLASSNAME, COLLAPSED_CLASSNAME };

@@ -15,7 +15,16 @@ const Messages: FC<MessagesProps> = ({ threadId }) => {
 
     const count = messages?.length ?? 0;
 
-    return <Stack spacing={1}>{messages?.map(getMessage(count))}</Stack>;
+    return (
+        <Stack
+            spacing={1}
+            overflow="hidden auto"
+            // TODO: hope we can get these calculated somehow one day!
+            height={{ xs: "calc(100vh - 220px)", lg: "calc(100vh - 260px)" }}
+        >
+            {messages?.map(getMessage(count))}
+        </Stack>
+    );
 };
 
 export default Messages;
