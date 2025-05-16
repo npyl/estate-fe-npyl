@@ -2,9 +2,9 @@ export const Z_INDEX = {
     POPOVER: 1500,
     AGREEMENT_FORM: 1500,
 
-    SIDEBAR: 1,
-    NAVBAR: 1,
-    SUBBAR: 2,
+    SIDEBAR: 2,
+    NAVBAR: 2,
+    SUBBAR: 1,
 };
 
 export const LAYOUT = {

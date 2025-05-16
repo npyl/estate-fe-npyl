@@ -5,7 +5,7 @@ import { DashboardSidebar } from "./dashboard-sidebar";
 import useDialog from "@/hooks/useDialog";
 import Subbar from "./dashboard-subbar";
 import TabsProvider from "@/contexts/tabs";
-import { NAV, Z_INDEX } from "@/constants/config";
+import { NAV } from "@/constants/config";
 import Box from "@mui/material/Box";
 
 interface DashboardLayoutProps {

@@ -1,4 +1,4 @@
-import { StackProps } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import { forwardRef, useImperativeHandle } from "react";
 import { SubbarRef } from "@/contexts/tabs";
 import useTabState from "./useTabState";
@@ -26,12 +26,13 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     };
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-            <DroppableContainer {...props}>
-                {tabs.map(getTab)}
-                {tabs.length > 0 ? <ClearButton /> : null}
-            </DroppableContainer>
-        </DragDropContext>
+        <Stack {...props}>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <DroppableContainer>{tabs.map(getTab)}</DroppableContainer>
+            </DragDropContext>
+
+            {tabs.length > 0 ? <ClearButton /> : null}
+        </Stack>
     );
 });
 
