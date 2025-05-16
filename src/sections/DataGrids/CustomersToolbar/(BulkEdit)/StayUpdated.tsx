@@ -10,7 +10,11 @@ const StayUpdated = () => {
     return (
         <Stack>
             <InputLabel>{t("Stay Updated")}</InputLabel>
-            <ToggleButtonGroup exclusive value={value} onChange={onChange}>
+            <ToggleButtonGroup
+                exclusive
+                value={value}
+                onChange={(_, v) => onChange(v)}
+            >
                 <ToggleButton value="">{t("Not selected")}</ToggleButton>
                 <ToggleButton value={false}>{t("No")}</ToggleButton>
                 <ToggleButton value={true}>{t("Yes")}</ToggleButton>
