@@ -4,6 +4,7 @@ export const Z_INDEX = {
 
     SIDEBAR: 1,
     NAVBAR: 1,
+    SUBBAR: 2,
 };
 
 export const LAYOUT = {

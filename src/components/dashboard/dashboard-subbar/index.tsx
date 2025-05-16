@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import SubbarItems from "./Items";
 import { useCallback } from "react";
 import { SubbarRef, useTabsContext } from "@/contexts/tabs";
+import { Z_INDEX } from "@/constants/config";
 
 const Subbar = () => {
     const router = useRouter();
@@ -26,6 +27,7 @@ const Subbar = () => {
                 display: { xs: "none", lg: "flex" },
                 position: isStickyPath ? "sticky" : "relative",
                 top: isStickyPath ? 64 : 0,
+                zIndex: Z_INDEX.SUBBAR,
             }}
         />
     );
