@@ -22,7 +22,7 @@ const BulkEditDrawer = <State extends object, BulkEditReq>({
     const { t } = useTranslation();
 
     const methods = useForm<State>({
-        defaultValues: DEFAULT_VALUES as any,
+        defaultValues: DEFAULT_VALUES,
     });
 
     const dirtyFields = methods.formState.dirtyFields;
