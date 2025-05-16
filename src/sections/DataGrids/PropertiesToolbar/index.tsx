@@ -9,6 +9,7 @@ import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/hooks/use-auth";
 import Share from "./Share";
+import { defaultValues } from "./constants";
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 const BulkEdit = dynamic(() => import("./BulkEdit"));
 const BulkArchiveButton = dynamic(() => import("./BulkArchiveButton"));
@@ -79,7 +80,7 @@ const PropertiesToolbar: FC<ToolbarProps> = ({
 
             {isBulkEditOpen ? (
                 <BulkEdit
-                    open={isBulkEditOpen}
+                    DEFAULT_VALUES={defaultValues}
                     selectedIds={selectedRows}
                     onSave={bulkEdit}
                     onClose={closeBulkEdit}

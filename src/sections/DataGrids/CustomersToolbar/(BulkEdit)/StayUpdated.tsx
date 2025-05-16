@@ -1,19 +1,16 @@
-import {
-    ToggleButton,
-    ToggleButtonGroup,
-    ToggleButtonGroupProps,
-} from "@mui/material";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
-import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
-const StayUpdated: FC<Omit<ToggleButtonGroupProps, "exclusive">> = (props) => {
+const StayUpdated = () => {
     const { t } = useTranslation();
+    const [value, onChange, onClear] = useValueChange("enableEmails");
     return (
         <Stack>
             <InputLabel>{t("Stay Updated")}</InputLabel>
-            <ToggleButtonGroup exclusive {...props}>
+            <ToggleButtonGroup exclusive value={value} onChange={onChange}>
                 <ToggleButton value="">{t("Not selected")}</ToggleButton>
                 <ToggleButton value={false}>{t("No")}</ToggleButton>
                 <ToggleButton value={true}>{t("Yes")}</ToggleButton>

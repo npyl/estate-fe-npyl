@@ -1,21 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { EditProps } from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/types";
 import { DefaultOrEdit } from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/DefaultOrEdit";
 import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
-import { toNumberSafe } from "@/utils/toNumber";
-import { useCallback } from "react";
+import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
-export const EditManager = ({ data, setData }: EditProps<string>) => {
+const EditManager = () => {
     const { t } = useTranslation();
-
-    const iValue = toNumberSafe(data);
-    const onChange = useCallback((v: number) => {
-        setData(v.toString());
-    }, []);
-
+    const [value, onChange, onClear] = useValueChange("managerId");
     return (
-        <DefaultOrEdit label={t("Manager")} onDisable={() => setData("")}>
-            <ManagerAutocomplete value={iValue} onChange={onChange} />
+        <DefaultOrEdit label={t("Manager")} onDisable={onClear}>
+            <ManagerAutocomplete value={value} onChange={onChange} />
         </DefaultOrEdit>
     );
 };
+
+export default EditManager;

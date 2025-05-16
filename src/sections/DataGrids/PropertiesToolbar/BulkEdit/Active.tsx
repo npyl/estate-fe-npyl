@@ -2,10 +2,11 @@ import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectProps } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { IPublicSitesRes, useGetPublicSitesQuery } from "@/services/company";
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import Checkbox from "@mui/material/Checkbox";
+import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
 // ---------------------------------------------------------------------------
 
@@ -23,9 +24,7 @@ const getOption =
 
 // ---------------------------------------------------------------------------
 
-interface ActiveProps extends Omit<SelectProps<number[]>, "multiple"> {}
-
-const Active: FC<ActiveProps> = ({ value = [], ...props }) => {
+const Active = () => {
     const { t } = useTranslation();
 
     const { data } = useGetPublicSitesQuery();
@@ -36,10 +35,24 @@ const Active: FC<ActiveProps> = ({ value = [], ...props }) => {
         [data]
     );
 
+    const [value, onChange] = useValueChange("publicSites");
+
+    const handleChange = (event: SelectChangeEvent<number[]>) => {
+        const {
+            target: { value },
+        } = event;
+        onChange(value as number[]);
+    };
+
     return (
         <Stack>
             <InputLabel>{t("Active")}</InputLabel>
-            <Select multiple value={value} renderValue={renderValue} {...props}>
+            <Select
+                multiple
+                value={value}
+                renderValue={renderValue}
+                onChange={handleChange}
+            >
                 {data?.map(getOption(value))}
             </Select>
         </Stack>

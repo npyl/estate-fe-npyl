@@ -37,6 +37,7 @@ export interface BulkEditRequest {
     labels?: number[];
     bedrooms?: number;
     state?: string;
+    exclusive?: boolean;
 }
 
 interface ICreatePropertyParams {

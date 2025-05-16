@@ -1,21 +1,22 @@
 import { MenuItem } from "@mui/material";
 import { StyledOutlinedInput } from "@/sections/DataGrids/BulkEditDrawer/style";
-
 import { Checkbox, Select, SelectChangeEvent } from "@mui/material";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
 import { useTranslation } from "react-i18next";
+import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
 type Variant = "property" | "customer";
 
-interface EditLabelsProps extends EditProps<number[]> {
+interface EditLabelsProps {
     variant: Variant;
 }
 
-export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
+const EditLabels = ({ variant }: EditLabelsProps) => {
     const { t } = useTranslation();
+
+    const [value, onChange, onClear] = useValueChange("labels");
 
     const { data: allLabels } = useGetLabelsQuery();
 
@@ -28,7 +29,7 @@ export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
         const {
             target: { value },
         } = event;
-        setData(value as number[]);
+        onChange(value as number[]);
     };
 
     const nameForId = (id: number) =>
@@ -38,17 +39,17 @@ export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
         selected.map((id) => nameForId(id)).join(", ");
 
     return (
-        <DefaultOrEdit label={t("Labels")} onDisable={() => setData([])}>
+        <DefaultOrEdit label={t("Labels")} onDisable={onClear}>
             <Select
                 multiple
-                value={data}
+                value={value}
                 onChange={handleChange}
                 renderValue={renderValue}
                 input={<StyledOutlinedInput />}
             >
                 {labelOptions.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                        <Checkbox checked={data.indexOf(option.id!) > -1} />
+                        <Checkbox checked={value.indexOf(option.id) > -1} />
                         <Label color={option.color} name={option.name} />
                     </MenuItem>
                 ))}
@@ -56,3 +57,5 @@ export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
         </DefaultOrEdit>
     );
 };
+
+export default EditLabels;
