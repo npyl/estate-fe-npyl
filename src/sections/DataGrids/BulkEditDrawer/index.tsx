@@ -5,7 +5,8 @@ import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 import { useCallback } from "react";
 
 interface BulkEditDrawerProps<State extends object, BulkEditReq>
-    extends DrawerProps {
+    extends Omit<DrawerProps, "variant"> {
+    variant: "property" | "customer";
     DEFAULT_VALUES: DefaultValues<State>;
     selectedIds: number[];
     onSave: (r: BulkEditReq) => Promise<void>;
@@ -13,6 +14,7 @@ interface BulkEditDrawerProps<State extends object, BulkEditReq>
 }
 
 const BulkEditDrawer = <State extends object, BulkEditReq>({
+    variant,
     DEFAULT_VALUES,
     selectedIds,
     onSave,
@@ -41,10 +43,16 @@ const BulkEditDrawer = <State extends object, BulkEditReq>({
                 }
             });
 
-            const req = {
-                ...changed,
-                propertyIds: selectedIds,
-            } as BulkEditReq;
+            const ids =
+                variant === "property"
+                    ? {
+                          propertyIds: selectedIds,
+                      }
+                    : {
+                          customerIds: selectedIds,
+                      };
+
+            const req = { ...changed, ...ids } as BulkEditReq;
 
             await onSave(req);
 

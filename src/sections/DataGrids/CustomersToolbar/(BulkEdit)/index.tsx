@@ -25,6 +25,7 @@ interface BulkEditProps {
 
 const BulkEdit = ({ selectedIds, onSave, onClose }: BulkEditProps) => (
     <BulkEditDrawer<StateType, BulkEditRequest>
+        variant="customer"
         DEFAULT_VALUES={initialState}
         selectedIds={selectedIds}
         onSave={onSave}

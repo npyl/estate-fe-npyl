@@ -27,6 +27,7 @@ const BulkEdit = <State extends object>({
     onClose,
 }: BulkEditProps<State>) => (
     <BulkEditDrawer<State, BulkEditRequest>
+        variant="property"
         onClose={onClose}
         DEFAULT_VALUES={DEFAULT_VALUES}
         selectedIds={selectedIds}
