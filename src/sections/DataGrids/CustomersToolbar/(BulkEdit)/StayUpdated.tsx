@@ -6,7 +6,7 @@ import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
 const StayUpdated = () => {
     const { t } = useTranslation();
-    const [value, onChange, onClear] = useValueChange("enableEmails");
+    const [value, onChange] = useValueChange("enableEmails");
     return (
         <Stack>
             <InputLabel>{t("Stay Updated")}</InputLabel>

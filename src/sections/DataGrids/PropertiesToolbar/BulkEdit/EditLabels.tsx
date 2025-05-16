@@ -3,7 +3,7 @@ import { StyledOutlinedInput } from "@/sections/DataGrids/BulkEditDrawer/style";
 import { Checkbox, Select, SelectChangeEvent } from "@mui/material";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { DefaultOrEdit } from "./DefaultOrEdit";
+import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useTranslation } from "react-i18next";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
@@ -39,7 +39,7 @@ const EditLabels = ({ variant }: EditLabelsProps) => {
         selected.map((id) => nameForId(id)).join(", ");
 
     return (
-        <DefaultOrEdit label={t("Labels")} onDisable={onClear}>
+        <DefaultOrEdit label={t("Labels")} name="labels">
             <Select
                 multiple
                 value={value}

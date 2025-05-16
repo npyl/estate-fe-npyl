@@ -4,7 +4,7 @@ import {
     StyledOnlyNumbersInput,
     StyledSelect,
 } from "@/sections/DataGrids/BulkEditDrawer/style";
-import { DefaultOrEdit } from "./DefaultOrEdit";
+import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";
 import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
 import { toNumberSafe } from "@/utils/toNumber";
@@ -14,12 +14,12 @@ import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 export const EditManager = () => {
     const { t } = useTranslation();
 
-    const [value, _onChange, onClear] = useValueChange("managerId");
+    const [value, _onChange] = useValueChange("managerId");
     const onChange = (id: number) => _onChange(id.toString());
     const iValue = toNumberSafe(value);
 
     return (
-        <DefaultOrEdit label={t("Manager")} onDisable={onClear}>
+        <DefaultOrEdit label={t("Manager")} name="managerId">
             <ManagerAutocomplete value={iValue} onChange={onChange} />
         </DefaultOrEdit>
     );
@@ -28,12 +28,12 @@ export const EditManager = () => {
 export const EditOwner = () => {
     const { t } = useTranslation();
 
-    const [value, _onChange, onClear] = useValueChange("ownerId");
+    const [value, _onChange] = useValueChange("ownerId");
     const onChange = (id: number) => _onChange(id.toString());
     const iValue = toNumberSafe(value);
 
     return (
-        <DefaultOrEdit label={t("Owner")} onDisable={onClear}>
+        <DefaultOrEdit label={t("Owner")} name="ownerId">
             <CustomerAutocomplete value={iValue} onChange={onChange} />
         </DefaultOrEdit>
     );
@@ -42,10 +42,10 @@ export const EditOwner = () => {
 export const EditZipCode = () => {
     const { t } = useTranslation();
 
-    const [value, onChange, onClear] = useValueChange("zipCode");
+    const [value, onChange] = useValueChange("zipCode");
 
     return (
-        <DefaultOrEdit label={t("Zip Code")} onDisable={onClear}>
+        <DefaultOrEdit label={t("Zip Code")} name="zipCode">
             <StyledOnlyNumbersInput
                 label=""
                 separateThousands={false}
@@ -59,10 +59,10 @@ export const EditZipCode = () => {
 export const EditArea = () => {
     const { t } = useTranslation();
 
-    const [value, onChange, onClear] = useValueChange("area");
+    const [value, onChange] = useValueChange("area");
 
     return (
-        <DefaultOrEdit label={t("Living Space")} onDisable={onClear}>
+        <DefaultOrEdit label={t("Living Space")} name="area">
             <StyledOnlyNumbersInput
                 value={value}
                 onChange={onChange}
@@ -78,7 +78,7 @@ export const EditBedrooms = () => {
     const [value, onChange, onClear] = useValueChange("bedrooms");
 
     return (
-        <DefaultOrEdit label={t("Bedrooms")} onDisable={onClear}>
+        <DefaultOrEdit label={t("Bedrooms")} name="bedrooms">
             <StyledOnlyNumbersInput
                 type="number"
                 placeholder="1,2,3..."
@@ -98,7 +98,7 @@ export const EditState = () => {
     const [value, onChange, onClear] = useValueChange("state");
 
     return (
-        <DefaultOrEdit label={t("State")} onDisable={onClear}>
+        <DefaultOrEdit label={t("State")} name="state">
             <StyledSelect
                 value={value}
                 onChange={(e) => onChange(e.target.value as string)}

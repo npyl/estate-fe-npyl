@@ -4,30 +4,37 @@ import { StyledButton } from "@/sections/DataGrids/BulkEditDrawer/style";
 import CheckIcon from "@mui/icons-material/Check";
 import { Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { useFormContext } from "react-hook-form";
 
 interface DefaultOrEditProps {
+    name: string;
     label: string;
     children: React.ReactNode;
-    onDisable: () => void;
 }
 
-export const DefaultOrEdit = ({
-    label,
-    children,
-    onDisable,
-}: DefaultOrEditProps) => {
+const DefaultOrEdit = ({ name, label, children }: DefaultOrEditProps) => {
     const { t } = useTranslation();
 
     const [checked, setChecked] = useState(true);
 
-    const endIcon = checked ? (
-        <CheckIcon color="success" />
-    ) : (
+    const {
+        setValue,
+        formState: { dirtyFields, defaultValues },
+    } = useFormContext();
+
+    const isChanged = Boolean(dirtyFields[name]);
+
+    const endIcon = isChanged ? (
         <Close color="error" />
+    ) : (
+        <CheckIcon color="success" />
     );
 
+    const onDisable = () =>
+        setValue(name, defaultValues?.[name], { shouldDirty: true });
+
     const toggleChecked = () => {
-        if (checked) onDisable();
+        if (isChanged) onDisable();
         setChecked((old) => !old);
     };
 
@@ -46,3 +53,5 @@ export const DefaultOrEdit = ({
         </Stack>
     );
 };
+
+export default DefaultOrEdit;
