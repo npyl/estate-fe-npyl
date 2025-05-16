@@ -337,7 +337,12 @@ class GmailService {
             id,
         });
 
-        return res?.data as TThreadRes;
+        const METADATA = await this._getThreadMetadata(auth, id, "me", false);
+
+        return {
+            ...(res?.data ?? {}),
+            subject: METADATA.subject,
+        } as TThreadRes;
     }
 }
 
