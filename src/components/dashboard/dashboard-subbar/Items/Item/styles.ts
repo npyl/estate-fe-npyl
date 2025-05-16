@@ -2,9 +2,6 @@ import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
 
 const getButtonSx = (current: boolean): SxProps<Theme> => ({
-    border: "1px solid",
-    borderColor: getBorderColor2,
-
     display: "flex",
     flexDirection: "row",
     gap: 1,
@@ -14,6 +11,8 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
     padding: "6px 10px",
     ...(current
         ? {
+              border: 0,
+
               color: (theme) => theme.palette.neutral?.[200],
               backgroundColor: (theme) => theme.palette.primary.main,
 
@@ -23,6 +22,9 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
               },
           }
         : {
+              border: "1px solid",
+              borderColor: getBorderColor2,
+
               color: (theme) =>
                   theme.palette.mode === "light"
                       ? theme.palette.neutral?.[900]
@@ -32,6 +34,13 @@ const getButtonSx = (current: boolean): SxProps<Theme> => ({
                   theme.palette.mode === "light"
                       ? theme.palette.background.paper
                       : theme.palette.neutral?.[800],
+
+              "&:hover": {
+                  backgroundColor: (theme) =>
+                      theme.palette.mode === "light"
+                          ? theme.palette.background.paper
+                          : theme.palette.neutral?.[800],
+              },
           }),
 
     boxShadow: (theme) => theme.shadows[5],
