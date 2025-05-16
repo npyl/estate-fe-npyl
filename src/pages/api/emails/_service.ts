@@ -78,16 +78,6 @@ const getHeaders = (
     return formattedHeaders;
 };
 
-const getHeaderValue = (
-    headers: gmail_v1.Schema$MessagePartHeader[],
-    name: string
-): string => {
-    const header = headers?.find(
-        (h) => h.name?.toLowerCase() === name.toLowerCase()
-    );
-    return header?.value || "";
-};
-
 /**
  * Creates a multipart MIME message with attachments
  * @param headers - Email headers
@@ -337,7 +327,7 @@ class GmailService {
         });
     }
 
-    async get(userId: number, id: string): Promise<TThreadRes> {
+    async get(userId: number, id: string): Promise<gmail_v1.Schema$Thread> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
 
@@ -347,11 +337,9 @@ class GmailService {
             id,
         });
 
-        const heads0 = res?.data?.messages?.at(0)?.payload?.headers ?? [];
+        if (!Boolean(res?.data?.id)) throw "Bad thread Id";
 
-        const subject = getHeaderValue(heads0, "Subject");
-
-        return { ...(res?.data ?? {}), subject } as TThreadRes;
+        return res?.data;
     }
 }
 

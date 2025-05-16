@@ -1,6 +1,7 @@
 import { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import gmailService from "../../_service";
+import { GMailThreadToPPThread } from "@/types/email";
 
 export default async function handler(
     req: NextApiRequest,
@@ -17,9 +18,11 @@ export default async function handler(
 
         const data = await gmailService.get(iUserId, threadId as string);
 
-        res.status(200).json(data);
+        const thread = GMailThreadToPPThread(data);
+
+        res.status(200).json(thread);
     } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
         res.status(404).json({});
     }
 }

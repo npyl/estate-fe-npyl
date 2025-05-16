@@ -8,11 +8,14 @@ import IsAuthenticatedGuard from "@/sections/Google/IsAuthenticatedGuard";
 import BackButton from "./BackButton";
 import Paper from "@mui/material/Paper";
 import { SxProps, Theme } from "@mui/material";
+import getBorderColor from "@/theme/borderColor";
 
 const PaperSx: SxProps<Theme> = {
     display: "flex",
     flexDirection: "column",
     gap: 1,
+    border: "1px solid",
+    borderColor: getBorderColor,
 };
 
 interface ContainerProps extends PropsWithChildren {
@@ -20,7 +23,7 @@ interface ContainerProps extends PropsWithChildren {
 }
 
 const Container: FC<ContainerProps> = ({ threadId, children }) => (
-    <Paper variant="outlined" sx={PaperSx}>
+    <Paper elevation={5} sx={PaperSx}>
         <SpaceBetween alignItems="center" p={1} boxShadow={5}>
             <Stack direction="row" spacing={1} alignItems="center">
                 <BackButton />
