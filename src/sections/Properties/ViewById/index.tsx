@@ -43,7 +43,7 @@ import PhotosLabel from "./TabLabels/Photos";
 import DocumentsLabel from "./TabLabels/Documents";
 import NotificationsLabel from "./TabLabels/Notifications";
 import AgreementsLabel from "./TabLabels/Agreements";
-import GreenMapTab from "./TabLabels/GreenMap";
+import GreenMapTab from "./GreenMap";
 
 // -----------------------------------------------------------------
 
@@ -52,39 +52,38 @@ const getTabPaths = (id: number) => [`/property/${id}`, `/property/edit/${id}`];
 // -----------------------------------------------------------------
 
 interface ITab {
-    label: string;
+    Label: ComponentType | string;
     View: ComponentType;
     Tab?: ComponentType;
 }
 
 const getTABS = (t: TranslationType): ITab[] => [
-    { label: t("Overview"), View: MainContainer },
-    { label: t("Quick View"), View: QuickView },
-    { label: t("Tasks"), View: Tasks, Tab: TasksLabel },
+    { Label: t<string>("Overview"), View: MainContainer },
+    { Label: t<string>("Quick View"), View: QuickView },
+    { Label: TasksLabel, View: Tasks },
     {
-        label: t("Matching Customers"),
+        Label: MatchingCustomersLabel,
         View: MatchingCustomersSection,
-        Tab: MatchingCustomersLabel,
     },
-    { label: t("Photos"), View: PhotosOnly, Tab: PhotosLabel },
-    { label: t("Integrations"), View: Integrations },
-    { label: t("Logs"), View: PropertyLogs },
-    { label: t("Documents"), View: Documents, Tab: DocumentsLabel },
-    { label: t("Map"), View: Map },
-    { label: t("Street View"), View: StreetView },
+    { Label: PhotosLabel, View: PhotosOnly },
+    { Label: t<string>("Integrations"), View: Integrations },
+    { Label: t<string>("Logs"), View: PropertyLogs },
+    { Label: DocumentsLabel, View: Documents },
+    { Label: t<string>("Map"), View: Map },
+    { Label: t<string>("Street View"), View: StreetView },
     {
-        label: t("Notifications"),
+        Label: NotificationsLabel,
         View: NotificationsTab,
-        Tab: NotificationsLabel,
     },
-    { label: t("Emails"), View: Emails },
-    { label: t("Agreements"), View: AgreementsTab, Tab: AgreementsLabel },
-    { label: t("Eco Map"), View: GreenMap, Tab: GreenMapTab },
+    { Label: t<string>("Emails"), View: Emails },
+    { Label: AgreementsLabel, View: AgreementsTab },
+    { Label: t<string>("Eco Map"), View: GreenMap, Tab: GreenMapTab },
 ];
 
-const getTab = ({ label, Tab }: ITab, idx: number) => {
-    const TabLabel = Tab ? <Tab /> : label;
-    return <MuiTab key={idx} label={TabLabel} />; // render MuiTab and pass Tablabel as label prop.
+const getTab = ({ Label, Tab }: ITab, idx: number) => {
+    const label = typeof Label == "string" ? Label : <Label />;
+    const TabComponent = Boolean(Tab) ? Tab! : MuiTab;
+    return <TabComponent key={idx} label={label} />;
 };
 
 const getTabView =

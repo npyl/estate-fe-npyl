@@ -1,6 +1,5 @@
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import Iconify from "@/components/iconify";
-
 import { styled } from "@mui/material/styles";
 
 const StyledTab = styled(MuiTab)(({ theme }) => ({

@@ -125,4 +125,12 @@ export interface ICustomerPOST {
     preferredLanguage: Enum<string>;
 }
 
-export type { IDemand, ICustomerMini };
+interface ICustomerTabCounts {
+    agreements: number;
+    matchingProperties: number;
+    ownedProperties: number;
+    demands: number;
+    tasks: number;
+}
+
+export type { IDemand, ICustomerMini, ICustomerTabCounts };

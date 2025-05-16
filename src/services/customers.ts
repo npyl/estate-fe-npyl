@@ -6,9 +6,10 @@ import {
     ICustomerMini,
     ICustomerPOST,
     ICustomerResultResponse,
-} from "src/types/customer";
-import { ILabel } from "src/types/label";
-import IPage from "src/types/page";
+    ICustomerTabCounts,
+} from "@/types/customer";
+import { ILabel } from "@/types/label";
+import IPage from "@/types/page";
 import { IProperties } from "@/types/properties";
 import {
     apiWithTranslation,
@@ -188,6 +189,10 @@ export const customers = apiWithTranslation({
             providesTags: ["SuggestedProperties"],
         }),
 
+        tabCount: builder.query<ICustomerTabCounts, number>({
+            query: (customerId) => `/${customerId}/counts`,
+        }),
+
         // ---------------------------------------------------
 
         getTasks: builder.query<IKanbanCardShort[], number>({
@@ -226,6 +231,8 @@ export const {
     useLazyGetCustomerByIdQuery,
 
     useGetOwnedPropertiesMutation,
+
+    useTabCountQuery,
 
     // ...
     useGetTasksQuery,
