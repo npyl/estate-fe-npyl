@@ -78,6 +78,16 @@ const getHeaders = (
     return formattedHeaders;
 };
 
+const getHeaderValue = (
+    headers: gmail_v1.Schema$MessagePartHeader[],
+    name: string
+): string => {
+    const header = headers?.find(
+        (h) => h.name?.toLowerCase() === name.toLowerCase()
+    );
+    return header?.value || "";
+};
+
 /**
  * Creates a multipart MIME message with attachments
  * @param headers - Email headers
@@ -337,12 +347,11 @@ class GmailService {
             id,
         });
 
-        const METADATA = await this._getThreadMetadata(auth, id, "me", false);
+        const heads0 = res?.data?.messages?.at(0)?.payload?.headers ?? [];
 
-        return {
-            ...(res?.data ?? {}),
-            subject: METADATA.subject,
-        } as TThreadRes;
+        const subject = getHeaderValue(heads0, "Subject");
+
+        return { ...(res?.data ?? {}), subject } as TThreadRes;
     }
 }
 
