@@ -64,6 +64,7 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
                 open
                 submit
                 onSubmit={methods.handleSubmit(handleSubmit)}
+                onClose={handleClose}
                 // ...
                 sx={DialogSx}
                 DialogTitleComponent={StyledDialogTitle}
