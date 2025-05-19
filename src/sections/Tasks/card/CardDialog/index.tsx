@@ -58,8 +58,6 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
 
     return (
         <FormProvider {...methods}>
-            {PersistNotice}
-
             <Dialog
                 open
                 submit
@@ -73,14 +71,17 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
                 // ...
                 title={<TaskTitle name={name} taskCode={uniqueCode} />}
                 content={
-                    <Content
-                        cardId={task?.id}
-                        // ...
-                        createdAt={task?.createdAt}
-                        updatedAt={task?.updatedAt}
-                        reporter={task?.reporter}
-                        updatedBy={task?.updatedBy}
-                    />
+                    <>
+                        {PersistNotice}
+                        <Content
+                            cardId={task?.id}
+                            // ...
+                            createdAt={task?.createdAt}
+                            updatedAt={task?.updatedAt}
+                            reporter={task?.reporter}
+                            updatedBy={task?.updatedBy}
+                        />
+                    </>
                 }
                 actions={
                     <Actions quickCreate={quickCreate} onClose={handleClose} />
