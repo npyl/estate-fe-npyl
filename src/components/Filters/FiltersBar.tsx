@@ -50,4 +50,5 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     </Paper>
 );
 
+export type { FiltersBarProps };
 export default FiltersBar;

@@ -4,7 +4,7 @@ import PropertiesList from "./PropertiesList";
 import useResponsive from "@/hooks/useResponsive";
 import { useFilterPropertiesQuery } from "@/services/properties";
 import { FC } from "react";
-import { useAllFilters } from "../../FiltersContext";
+import { useAllFilters } from "../../../FiltersContext";
 
 interface PropertiesSectionProps {
     sortBy: string;

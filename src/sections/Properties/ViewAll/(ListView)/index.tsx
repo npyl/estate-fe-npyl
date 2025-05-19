@@ -6,7 +6,7 @@ import DataGrid from "@/components/DataGrid/Property";
 import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
 import { IPropertyFilterParams } from "@/services/properties";
-import { useAllFilters } from "../FiltersContext";
+import { useAllFilters } from "../../FiltersContext";
 const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 
 interface ViewAllProps {

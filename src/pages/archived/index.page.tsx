@@ -1,11 +1,11 @@
 import AuthGuard from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import ViewAll from "@/sections/Properties/(ViewAll)";
+import ListView from "@/sections/Properties/ViewAll/(ListView)";
 import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 import { NextPage } from "next";
 
 const ArchivedPage: NextPage = () => (
-    <ViewAll archived sortBy="updatedAt" direction="DESC" />
+    <ListView archived sortBy="updatedAt" direction="DESC" />
 );
 
 ArchivedPage.getLayout = (page) => (

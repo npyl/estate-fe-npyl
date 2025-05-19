@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useFilterPropertiesQuery } from "src/services/properties";
 import useResponsive from "@/hooks/useResponsive";
 import Pagination, { usePagination } from "@/components/Pagination";
-import { useAllFilters } from "../FiltersContext";
+import { useAllFilters } from "../../FiltersContext";
 
 // ----------------------------------------------------------------------
 
