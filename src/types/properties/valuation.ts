@@ -1,16 +1,17 @@
-interface IValuationRes {
-    normal: {
-        min: number;
-        mid: number;
-        max: number;
-    };
-    perSqm: {
-        min: number;
-        mid: number;
-        max: number;
-    };
+import { IPropertyResultResponse } from "@/types/properties";
 
-    smallSample: boolean;
+interface IValuationRes {
+    minPrice: number;
+    averagePrice: number;
+    maxPrice: number;
+    propertyMinPrice: IPropertyResultResponse;
+    propertyMaxPrice: IPropertyResultResponse;
+
+    minArea: number;
+    averageArea: number;
+    maxArea: number;
+    propertyMinArea: IPropertyResultResponse;
+    propertyMaxArea: IPropertyResultResponse;
 }
 
 export type { IValuationRes };

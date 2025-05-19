@@ -7,14 +7,14 @@ import useToggle from "@/hooks/useToggle";
 import MapSection from "@/sections/Properties/ViewAll/(MapView)/MapSection";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
-import Content from "./Content";
+import Section from "./Section";
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ResponsiveGrid, {
     TDrawerProps,
     TGridProps,
 } from "@/components/ResponsiveGrid";
-import ContentGridItem from "./ContentGridItem";
+import SectionGridItem from "./SectionGridItem";
 
 const MapToggle: FC<ViewModeButtonProps> = (props) => (
     <ViewModeButton {...props}>
@@ -65,9 +65,9 @@ const Valuation = () => {
             />
 
             <Grid container spacing={1}>
-                <ContentGridItem isMapOpen={isOpen}>
-                    <Content />
-                </ContentGridItem>
+                <SectionGridItem isMapOpen={isOpen}>
+                    <Section />
+                </SectionGridItem>
 
                 {isOpen ? (
                     <ResponsiveGrid

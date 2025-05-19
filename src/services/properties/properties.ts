@@ -403,7 +403,7 @@ export const properties = apiWithTranslation({
 
         valuationByFilters: builder.query<IValuationRes, IPropertyFilter>({
             query: (body) => ({
-                url: "/valuate",
+                url: "/evaluate",
                 method: "POST",
                 body,
             }),
