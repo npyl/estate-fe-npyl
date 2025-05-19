@@ -14,7 +14,6 @@ const ItemSx: SxProps<Theme> = {
         },
 
         boxShadow: 10,
-        zIndex: 2,
         userSelect: "none",
         cursor: "pointer",
 
