@@ -63,11 +63,11 @@ const Create = () => {
                 {t("Create Label")}
             </Typography>
 
-            <FormProvider {...methods}>
-                <form
-                    style={FormStyle}
-                    onSubmit={methods.handleSubmit(createLabel)}
-                >
+            <form
+                style={FormStyle}
+                onSubmit={methods.handleSubmit(createLabel)}
+            >
+                <FormProvider {...methods}>
                     <RHFRadioGroup name="resource" options={radioOptions} />
 
                     {assigneeType ? (
@@ -91,8 +91,8 @@ const Create = () => {
                             <SubmitButton />
                         </>
                     ) : null}
-                </form>
-            </FormProvider>
+                </FormProvider>
+            </form>
         </Paper>
     );
 };
