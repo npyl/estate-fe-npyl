@@ -143,6 +143,7 @@ type ThreadMetadata = {
     from: string;
     snippet: string;
     ids: number[];
+    date: string;
 };
 
 class GmailService {
@@ -155,7 +156,7 @@ class GmailService {
     // -------------------------------------------------------------------------------------
 
     /**
-     * Fetches comprehensive thread metadata including subject, snippet, and sender info
+     * Fetches comprehensive thread metadata including subject, snippet, sender info, and date
      */
     private async _getThreadMetadata(
         auth: OAuth2Client,
@@ -169,17 +170,23 @@ class GmailService {
                 userId,
                 id: threadId,
                 format: "metadata",
-                metadataHeaders: [PROPERTY_IDS_HEADER_NAME, "Subject", "From"],
+                metadataHeaders: [
+                    PROPERTY_IDS_HEADER_NAME,
+                    "Subject",
+                    "From",
+                    "Date",
+                ],
             });
 
             const thread = res.data;
             const m = thread.messages || [];
 
-            // Get the first message for subject and from
+            // Get the first message for subject, from, and date
             const firstMessage = m[0];
 
             let subject = "";
             let from = "";
+            let date = "";
 
             if (
                 firstMessage &&
@@ -194,9 +201,13 @@ class GmailService {
                 const fromHeader = headers.find(
                     (h) => h.name?.toLowerCase() === "from"
                 );
+                const dateHeader = headers.find(
+                    (h) => h.name?.toLowerCase() === "date"
+                );
 
                 subject = subjectHeader?.value || "";
                 from = fromHeader?.value || "";
+                date = dateHeader?.value || "";
             }
 
             // Get snippet from the thread
@@ -209,16 +220,16 @@ class GmailService {
                 ids = Array.from(idSet);
             }
 
-            return { subject, from, snippet, ids };
+            return { subject, from, snippet, ids, date };
         } catch (error) {
             console.error(error);
-            return { subject: "", from: "", snippet: "", ids: [] };
+            return { subject: "", from: "", snippet: "", ids: [], date: "" };
         }
     }
 
     /**
      * Receive data for a thread + support filtering by propertyIds
-     * @returns thread with metadata including subject, from, and snippet
+     * @returns thread with metadata including subject, from, snippet, and date
      */
     private ti =
         (auth: OAuth2Client, userId: string, propertyIds: number[]) =>
@@ -245,7 +256,11 @@ class GmailService {
                 if (!found) return null;
             }
 
-            return { ...thread, subject: METADATA.subject } as TThreadRes;
+            return {
+                ...thread,
+                subject: METADATA.subject,
+                date: METADATA.date,
+            } as TThreadRes;
         };
 
     async filter(

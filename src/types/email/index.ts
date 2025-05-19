@@ -34,6 +34,7 @@ type TThreadRes = {
     id: string;
     snippet: string;
     subject: string;
+    date: string;
     messages: TThreadMessage[];
 };
 

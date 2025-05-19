@@ -4,7 +4,7 @@ import { primary } from "@/theme/light-theme-options";
 import { TThreadRes } from "@/types/email";
 import { alpha, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 const ItemSx: SxProps<Theme> = {
     "&:hover": {
@@ -27,6 +27,34 @@ const ItemSx: SxProps<Theme> = {
     },
 };
 
+interface ThreadDateProps {
+    date: string;
+}
+
+const ThreadDate: FC<ThreadDateProps> = ({ date }) => {
+    const DATE = useMemo(
+        () =>
+            new Date(date).toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+            }),
+        [date]
+    );
+
+    return (
+        <Typography
+            fontWeight="500"
+            noWrap
+            whiteSpace="nowrap"
+            width="max-content"
+            overflow="visible"
+        >
+            {DATE}
+        </Typography>
+    );
+};
+
 interface ThreadItemProps {
     e: TThreadRes;
 }
@@ -47,6 +75,7 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         <Typography variant="body2" width={1}>
             {e.snippet}
         </Typography>
+        <ThreadDate date={e.date} />
     </Link>
 );
 
