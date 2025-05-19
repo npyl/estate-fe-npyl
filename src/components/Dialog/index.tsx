@@ -32,6 +32,7 @@ export type DialogProps = {
     submit?: boolean; // support <form> mode
 
     hideTitle?: boolean;
+    closeButton?: boolean;
 
     DialogTitleComponent?: React.ComponentType<DialogTitleProps>;
     DialogContentComponent?: React.ComponentType<DialogContentProps>;
@@ -48,6 +49,7 @@ const Dialog = ({
     content,
 
     hideTitle = false,
+    closeButton = false,
 
     DialogTitleComponent = DialogTitle,
     DialogContentComponent = DialogContent,
@@ -68,7 +70,7 @@ const Dialog = ({
         >
             {!hideTitle ? (
                 <DialogTitleComponent>
-                    {onClose ? (
+                    {onClose && closeButton ? (
                         <IconButton onClick={onClose}>
                             <Iconify icon="line-md:close" />
                         </IconButton>
