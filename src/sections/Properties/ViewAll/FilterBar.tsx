@@ -20,7 +20,7 @@ import {
 } from "@/sections/Properties/FiltersContext";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import useSortingOptions from "@/sections/Properties/(FiltersBar)/useSortingOptions";
-import { ViewModeButton } from "@/sections/Properties/(FiltersBar)/styles";
+import { ViewModeButton } from "@/sections/Properties/(FiltersBar)/ViewModeButton";
 
 type viewOptionsType = {
     id: optionType;

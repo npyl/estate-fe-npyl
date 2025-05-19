@@ -5,7 +5,7 @@ interface ViewModeButtonProps extends IconButtonProps {
     selected: boolean;
 }
 
-export const ViewModeButton = styled(IconButton)<ViewModeButtonProps>(
+const ViewModeButton = styled(IconButton)<ViewModeButtonProps>(
     ({ theme, selected }) => ({
         height: "38px",
         width: "38px",
@@ -16,14 +16,14 @@ export const ViewModeButton = styled(IconButton)<ViewModeButtonProps>(
         color: selected
             ? theme.palette.primary.main
             : theme.palette.mode === "light"
-            ? theme.palette.neutral?.[400]
-            : theme.palette.neutral?.[500],
+              ? theme.palette.neutral?.[400]
+              : theme.palette.neutral?.[500],
 
         borderColor: selected
             ? theme.palette.primary.main
             : theme.palette.mode === "light"
-            ? theme.palette.neutral?.[300]
-            : theme.palette.neutral?.[700],
+              ? theme.palette.neutral?.[300]
+              : theme.palette.neutral?.[700],
 
         "&:hover": {
             backgroundColor: "transparent", // required
@@ -31,16 +31,19 @@ export const ViewModeButton = styled(IconButton)<ViewModeButtonProps>(
             borderColor: selected
                 ? theme.palette.primary.main
                 : theme.palette.mode === "light"
-                ? theme.palette.neutral?.[400]
-                : theme.palette.neutral?.[500],
+                  ? theme.palette.neutral?.[400]
+                  : theme.palette.neutral?.[500],
 
             ".MuiSvgIcon-root": {
                 color: selected
                     ? theme.palette.primary.main
                     : theme.palette.mode === "light"
-                    ? theme.palette.neutral?.[400]
-                    : theme.palette.neutral?.[400],
+                      ? theme.palette.neutral?.[400]
+                      : theme.palette.neutral?.[400],
             },
         },
     })
 );
+
+export type { ViewModeButtonProps };
+export default ViewModeButton;
