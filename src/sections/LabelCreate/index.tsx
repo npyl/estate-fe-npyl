@@ -4,7 +4,6 @@ import {
     useAssignLabelToResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
 } from "src/services/labels";
-import { useDispatch } from "react-redux";
 import LabelSection from "@/sections/LabelSection";
 import useAssignedLabels from "./useAssignedLabels";
 import useInvalidateTags from "@/sections/LabelSection/Form/useInvalidateTags";
@@ -21,8 +20,6 @@ const LabelCreate = ({
     disabled = false,
     ...props
 }: ILabelCreateProps) => {
-    const dispatch = useDispatch();
-
     const assignedLabels = useAssignedLabels(variant, resourceId);
 
     //
