@@ -24,7 +24,7 @@ const Message: FC<Props> = ({ m, last }) => {
             borderColor={getBorderColor2}
         >
             <Header from={from} date={date} />
-            {/* <Body body={body} /> */}
+            <Body body={body} />
             <Attachments attachments={attachments} />
         </Stack>
     );
