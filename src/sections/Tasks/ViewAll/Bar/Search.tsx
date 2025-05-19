@@ -3,7 +3,8 @@ import { useFiltersContext } from "@/sections/Tasks/filters";
 import { ChangeEvent, useCallback } from "react";
 
 const Search = () => {
-    const { search, setSearch } = useFiltersContext();
+    const { filters, setSearch } = useFiltersContext();
+    const { search } = filters || {};
 
     const handleSearch = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),

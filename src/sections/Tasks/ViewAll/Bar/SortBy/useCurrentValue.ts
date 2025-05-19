@@ -5,7 +5,8 @@ import useSortingOptions from "./useSortingOptions";
 const useCurrentValue = () => {
     const sortingOptions = useSortingOptions();
 
-    const { sorting } = useFiltersContext();
+    const { filters } = useFiltersContext();
+    const { sorting } = filters || {};
 
     const option = useMemo(
         () =>

@@ -17,8 +17,8 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
 
     const [isOpen, openConfirm, closeConfirm] = useDialog();
 
-    const { search, assigneeId, priority } = useFiltersContext();
-    const filters = { search, assigneeId, priority };
+    const { filters } = useFiltersContext();
+
     const [deleteColumn] = useDeleteColumnMutation();
 
     const handleDelete = () => deleteColumn({ columnId, filters });

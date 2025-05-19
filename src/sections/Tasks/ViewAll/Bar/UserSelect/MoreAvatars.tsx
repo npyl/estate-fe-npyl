@@ -5,8 +5,8 @@ import { useFiltersContext } from "@/sections/Tasks/filters";
 import AvatarSelectGroup from "@/components/Avatar/SelectGroup";
 
 const MoreAvatars: FC<MoreAvatarsProps> = ({ users, anchorEl, onClose }) => {
-    const { assigneeId, setAssigneeId } = useFiltersContext();
-
+    const { filters, setAssigneeId } = useFiltersContext();
+    const { assigneeId } = filters || {};
     return (
         <Popover open anchorEl={anchorEl} onClose={onClose}>
             <AvatarSelectGroup

@@ -31,8 +31,8 @@ const useSortedColumns = (board?: IKanbanBoard) => {
 const Content = () => {
     const [mode] = useModeCookie();
 
-    const { search, assigneeId, priority, labels, sorting } =
-        useFiltersContext();
+    const { filters } = useFiltersContext();
+    const { search, assigneeId, priority, labels, sorting } = filters || {};
 
     const [debounced] = useDebounce(search, 300);
 

@@ -62,8 +62,7 @@ interface Props {
 }
 
 const Board: React.FC<Props> = ({ columns }) => {
-    const { search, priority, assigneeId } = useFiltersContext();
-    const filters = { search, priority, assigneeId };
+    const { filters } = useFiltersContext();
 
     const rowRef = useRef<HTMLDivElement>(null);
     useAvailableHeight(rowRef);

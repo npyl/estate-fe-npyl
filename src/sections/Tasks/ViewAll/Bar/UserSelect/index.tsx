@@ -37,7 +37,8 @@ const ClearButton = () => {
 
 const UserSelect = () => {
     const { data } = useAllUsersQuery();
-    const { assigneeId, setAssigneeId } = useFiltersContext();
+    const { filters, setAssigneeId } = useFiltersContext();
+    const { assigneeId } = filters || {};
 
     return (
         <AvatarSelectGroup

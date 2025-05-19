@@ -17,14 +17,13 @@ const DeleteItem: FC<DeleteItemProps> = ({ taskId }) => {
 
     const [isOpen, openConfirm, closeConfirm] = useDialog();
 
-    const { search, priority, assigneeId } = useFiltersContext();
-    const filters = { search, priority, assigneeId };
+    const { filters } = useFiltersContext();
 
     const [deleteTask] = useDeleteCardMutation();
 
     const handleDelete = () =>
         deleteTask({
-            props: { cardId: taskId, filters },
+            props: { cardId: taskId },
             tabPaths: [`/tasks/${taskId}`],
         });
 

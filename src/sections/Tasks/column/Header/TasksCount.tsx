@@ -15,12 +15,9 @@ const TasksCount: FC<TasksCountProps> = ({ columnId }) => {
     const column = board?.columns?.find(({ id }) => id === columnId);
     const allCount = column?.cardIds?.length;
 
-    const { search, assigneeId, priority } = useFiltersContext();
-    const { data: boardAfterFilters } = useGetBoardQuery({
-        search,
-        assigneeId,
-        priority,
-    });
+    const { filters } = useFiltersContext();
+    const { search, assigneeId, priority } = filters || {};
+    const { data: boardAfterFilters } = useGetBoardQuery(filters);
 
     const noFiltersApplied =
         !search && assigneeId === undefined && priority === undefined;

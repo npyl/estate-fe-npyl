@@ -13,17 +13,15 @@ export const getStaticProps = async () => {
 
 const TestComponent: NextPage = () => {
     const {
-        search,
-        assigneeId,
-        labels,
-        priority,
-        sorting,
+        filters,
         setSearch,
         setAssigneeId,
         setLabels,
         setPriority,
         setSorting,
     } = useFiltersContext();
+
+    const { search, assigneeId, labels, priority, sorting } = filters || {};
 
     const handleAddLabel = (labelId: number) => {
         const updatedLabels = [...(labels || []), labelId];

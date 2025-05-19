@@ -20,7 +20,8 @@ interface IOption {
 }
 
 const Option: FC<IOption> = ({ l: { id, color, name } }) => {
-    const { labels } = useFiltersContext();
+    const { filters } = useFiltersContext();
+    const { labels } = filters || {};
     const checked = (labels || []).indexOf(id!) > -1;
     return (
         <>
@@ -42,7 +43,8 @@ const getOption = (l: ILabel) => (
 
 export default function FilterLabels() {
     const { t } = useTranslation();
-    const { labels, setLabels } = useFiltersContext();
+    const { filters, setLabels } = useFiltersContext();
+    const { labels } = filters || {};
 
     const { data } = useGetLabelsQuery();
     const labelOptions = useMemo(

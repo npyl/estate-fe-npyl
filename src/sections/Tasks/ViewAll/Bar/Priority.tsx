@@ -3,7 +3,8 @@ import { useFiltersContext } from "@/sections/Tasks/filters";
 import PriorityGroup from "@/sections/Tasks/PriorityGroup";
 
 const Priority = () => {
-    const { priority, setPriority } = useFiltersContext();
+    const { filters, setPriority } = useFiltersContext();
+    const { priority } = filters || {};
     const handleChange = useCallback((_: any, p: number) => setPriority(p), []);
     const handleClear = useCallback(() => setPriority(undefined), []);
     return (
