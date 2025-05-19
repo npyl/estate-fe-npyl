@@ -1,13 +1,6 @@
-import React from "react";
-import {
-    Box,
-    Stack,
-    Typography,
-    Tooltip,
-    useMediaQuery,
-    SxProps,
-    Theme,
-} from "@mui/material";
+import { useGetCardLabelsQuery } from "@/services/tasks";
+import { Box, Stack, Typography, Tooltip, SxProps, Theme } from "@mui/material";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 // Style Constants
@@ -16,7 +9,6 @@ const containerSx: SxProps<Theme> = {
     borderRadius: 4,
     px: 1.5,
     width: "min-content",
-    flexWrap: "nowrap",
 };
 
 const labelDotSx = (color: string): SxProps<Theme> => ({
@@ -42,25 +34,19 @@ const tooltipWrapperSx: SxProps<Theme> = {
     },
 };
 
-// --------------------
+interface TaskLabelProps {
+    taskId: number;
+}
 
-type Label = {
-    id: number;
-    name: string;
-    color: string;
-};
-
-type Props = {
-    labels: Label[];
-};
-
-const TaskLabel: React.FC<Props> = ({ labels }) => {
+const TaskLabel: FC<TaskLabelProps> = ({ taskId }) => {
     const { t } = useTranslation();
 
-    if (!labels?.length) return null;
+    const { data: labels } = useGetCardLabelsQuery(taskId);
 
-    const visibleLabel = labels[0];
-    const remainingLabels = labels.slice(1);
+    const visibleLabel = labels?.[0];
+    const remainingLabels = labels?.slice(1) ?? [];
+
+    if (!visibleLabel) return null;
 
     return (
         <Box>

@@ -17,8 +17,8 @@ export type TaskCardProps = PaperProps & {
 
 const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
     ({ card, sx, ...props }, ref) => {
-        const { name, completed, priority, assignees, uniqueCode, labels } =
-            card || {};
+        const { name, completed, priority, assignees, uniqueCode } = card || {};
+
         return (
             <Paper
                 ref={ref}
@@ -38,7 +38,7 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
                 <Content name={name} />
 
                 <Box minHeight={22}>
-                    <TaskLabel labels={labels} />
+                    <TaskLabel taskId={card.id} />
                 </Box>
 
                 <Footer
