@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useResponsive from "@/hooks/useResponsive";
 import dynamic from "next/dynamic";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
-import useCurrentSortingOption from "@/sections/Properties/(FiltersBar)/useCurrentSortingOption";
+import useCurrentSortingOption from "./useCurrentSortingOption";
 import { useQueryState } from "nuqs";
 import FilterBar from "./FilterBar";
 // modes

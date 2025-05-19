@@ -19,8 +19,8 @@ import {
     useSorting,
 } from "@/sections/Properties/FiltersContext";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
-import useSortingOptions from "@/sections/Properties/(FiltersBar)/useSortingOptions";
-import { ViewModeButton } from "@/sections/Properties/(FiltersBar)/ViewModeButton";
+import useSortingOptions from "./useSortingOptions";
+import ViewModeButton from "@/sections/Filters/ViewModeButton";
 
 type viewOptionsType = {
     id: optionType;
