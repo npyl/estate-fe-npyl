@@ -1,6 +1,5 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useLayoutEffect, useState } from "react";
-import debugLog from "./debugLog";
 
 const socketUrl = process.env.NEXT_PUBLIC_MAIN_SOCKET;
 
