@@ -5,14 +5,14 @@ import getThread from "./getThread";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import useGmailPagination, { FIRST_PAGE_TOKEN } from "./useGmailPagination";
-import { Stack, SxProps, Theme } from "@mui/material";
+import { Box, Stack, SxProps, Theme } from "@mui/material";
 import getBorderColor from "@/theme/borderColor";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
-const StackSx: SxProps<Theme> = {
+const getStackSx = (hasRows: boolean): SxProps<Theme> => ({
     ".MuiTablePagination-root": {
-        borderTop: "1px solid",
+        borderBottom: hasRows ? "1px solid" : undefined,
         borderColor: getBorderColor,
     },
 
@@ -32,7 +32,7 @@ const StackSx: SxProps<Theme> = {
     boxShadow: 5,
     border: "1px solid",
     borderColor: getBorderColor,
-};
+});
 
 const List = () => {
     const { user } = useAuth();
@@ -54,19 +54,31 @@ const List = () => {
 
     const pagination = useGmailPagination(nextPageToken, setPageToken);
 
+    const hasRows = Array.isArray(threads) && threads.length > 0;
+
     return (
-        <Stack sx={StackSx}>
-            <Pagination
-                table
-                pageSize={PAGE_SIZE}
-                totalItems={totalItems}
-                isLoading={isLoading}
-                Container={Stack}
-                {...pagination}
+        <Pagination
+            table
+            pageSize={PAGE_SIZE}
+            totalItems={totalItems}
+            isLoading={isLoading}
+            Container={Stack}
+            ContainerProps={{
+                flexDirection: "column-reverse",
+                sx: getStackSx(hasRows),
+            }}
+            {...pagination}
+        >
+            <Box
+                height={{
+                    xs: "calc(100vh - 220px)",
+                    lg: "calc(100vh - 260px)",
+                }}
+                overflow="hidden auto"
             >
                 {threads?.map(getThread)}
-            </Pagination>
-        </Stack>
+            </Box>
+        </Pagination>
     );
 };
 

@@ -20,7 +20,10 @@ const Messages: FC<MessagesProps> = ({ threadId }) => {
             spacing={1}
             overflow="hidden auto"
             // TODO: hope we can get these calculated somehow one day!
-            height={{ xs: "calc(100vh - 220px)", lg: "calc(100vh - 260px)" }}
+            height={{
+                xs: "calc(100vh - 220px)",
+                lg: "calc(100vh - 260px)",
+            }}
         >
             {messages?.map(getMessage(count))}
         </Stack>

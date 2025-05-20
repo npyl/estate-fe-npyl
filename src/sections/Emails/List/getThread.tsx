@@ -8,9 +8,9 @@ import { FC, useMemo } from "react";
 
 const ItemSx: SxProps<Theme> = {
     "&:hover": {
-        ":first-of-type": {
-            borderTopLeftRadius: 6,
-            borderTopRightRadius: 6,
+        ":last-of-type": {
+            borderBottomLeftRadius: 6,
+            borderBottomRightRadius: 6,
         },
 
         boxShadow: 10,

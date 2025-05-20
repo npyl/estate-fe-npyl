@@ -42,10 +42,8 @@ const Pagination = <C extends React.ElementType = "div">({
     );
 
     return (
-        <>
-            <Box component={Container} {...ContainerProps}>
-                {children}
-            </Box>
+        <Box component={Container} {...ContainerProps}>
+            {children}
 
             {table ? (
                 <TablePagination
@@ -66,7 +64,7 @@ const Pagination = <C extends React.ElementType = "div">({
                     count={totalPages}
                 />
             ) : null}
-        </>
+        </Box>
     );
 };
 
