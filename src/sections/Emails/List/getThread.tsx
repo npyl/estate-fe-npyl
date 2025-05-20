@@ -1,7 +1,7 @@
 import Link from "@/components/Link";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { primary } from "@/theme/light-theme-options";
-import { TThreadRes } from "@/types/email";
+import { TThreadRes, TThreadShortRes } from "@/types/email";
 import { alpha, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC, useMemo } from "react";
@@ -55,7 +55,7 @@ const ThreadDate: FC<ThreadDateProps> = ({ date }) => {
 };
 
 interface ThreadItemProps {
-    e: TThreadRes;
+    e: TThreadShortRes;
 }
 
 const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
@@ -78,6 +78,6 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
     </Link>
 );
 
-const getThread = (e: TThreadRes) => <ThreadItem key={e.id} e={e} />;
+const getThread = (e: TThreadShortRes) => <ThreadItem key={e.id} e={e} />;
 
 export default getThread;

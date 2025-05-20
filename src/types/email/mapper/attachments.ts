@@ -1,5 +1,5 @@
 import { gmail_v1 } from "@googleapis/gmail";
-import { TThreadAttachment } from "@/types/email";
+import { IThreadAttachmentRes } from "@/types/email";
 
 const formatFileSize = (bytes?: number): string => {
     if (!bytes) return "Unknown size";
@@ -10,8 +10,8 @@ const formatFileSize = (bytes?: number): string => {
 
 const getAttachments = (
     payload: gmail_v1.Schema$MessagePart
-): TThreadAttachment[] => {
-    const attachments: TThreadAttachment[] = [];
+): IThreadAttachmentRes[] => {
+    const attachments: IThreadAttachmentRes[] = [];
 
     // Check if this part is an attachment
     if (payload.filename && payload.body?.attachmentId) {

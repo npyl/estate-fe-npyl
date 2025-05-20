@@ -1,4 +1,9 @@
-import { IEmailFilters, TThreadMessageReq, TThreadRes } from "@/types/email";
+import {
+    IEmailFilters,
+    TThreadMessageReq,
+    TThreadRes,
+    TThreadShortRes,
+} from "@/types/email";
 import { gmail_v1 } from "@googleapis/gmail";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -21,7 +26,7 @@ interface IThreadReq {
 }
 
 type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
-    threads: TThreadRes[];
+    threads: TThreadShortRes[];
 };
 
 export const emails = createApi({

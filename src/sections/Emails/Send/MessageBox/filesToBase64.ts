@@ -1,11 +1,11 @@
-import { IAttachment } from "@/types/email";
+import { IThreadAttachmentReq } from "@/types/email";
 
 /**
  * Converts a File object to base64 on the client side
  * @param file - The File object from input[type="file"]
- * @returns Promise that resolves to an IAttachment object
+ * @returns Promise that resolves to an IThreadAttachmentReq object
  */
-const fileToBase64 = (file: File): Promise<IAttachment> => {
+const fileToBase64 = (file: File): Promise<IThreadAttachmentReq> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
@@ -38,7 +38,7 @@ const fileToBase64 = (file: File): Promise<IAttachment> => {
  */
 const filesToBase64 = async (
     files: File[] | FileList
-): Promise<IAttachment[]> => {
+): Promise<IThreadAttachmentReq[]> => {
     const fileArray = Array.from(files);
     const attachmentPromises = fileArray.map(fileToBase64);
     return Promise.all(attachmentPromises);

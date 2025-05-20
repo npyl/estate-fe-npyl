@@ -3,9 +3,9 @@ import { OAuth2Client } from "google-auth-library";
 import managerService from "@/pages/api/google/_service/ManagerService";
 import {
     IEmailFilters,
-    IAttachment,
-    TThreadRes,
+    IThreadAttachmentReq,
     TThreadMessageReq,
+    TThreadShortRes,
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 
@@ -89,7 +89,7 @@ const getHeaders = (
 const createMultipartMessage = async (
     headers: string,
     body: string,
-    attachments: IAttachment[]
+    attachments: IThreadAttachmentReq[]
 ): Promise<string> => {
     const boundary = `----=${Date.now()}.${Math.random()}`;
     const messageParts: string[] = [];
@@ -234,8 +234,8 @@ class GmailService {
      */
     private ti =
         (auth: OAuth2Client, userId: string, propertyIds: number[]) =>
-        async (thread: TThread): Promise<TThreadRes | null> => {
-            const { id } = thread || {};
+        async (_thread: TThread): Promise<TThreadShortRes | null> => {
+            const { id, messages: _ignored, ...thread } = _thread || {};
             if (!id) return null;
 
             const withPropertyIds = propertyIds.length > 0;
@@ -258,10 +258,11 @@ class GmailService {
             }
 
             return {
+                id,
                 ...thread,
                 subject: METADATA.subject,
                 date: METADATA.date,
-            } as TThreadRes;
+            } as TThreadShortRes;
         };
 
     async filter(

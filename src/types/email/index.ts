@@ -1,8 +1,18 @@
-interface IAttachment {
+// -----------------------------------------------------------
+
+interface IThreadAttachmentReq {
     base64: string;
     name: string;
     type: string;
 }
+
+interface IThreadAttachmentRes {
+    id: string;
+    filename: string;
+    size: string;
+}
+
+// -----------------------------------------------------------
 
 interface TThreadMessageReq {
     to: string[];
@@ -11,23 +21,20 @@ interface TThreadMessageReq {
     subject: string;
     body: string;
     propertyIds: number[];
-    attachments: IAttachment[];
+    attachments: IThreadAttachmentReq[];
 }
-
-type TThreadAttachment = {
-    id: string;
-    filename: string;
-    size: string;
-};
 
 type TThreadMessageRes = {
     id: string;
     from: string;
     date: string;
     body: string;
-    attachments: TThreadAttachment[];
+    attachments: IThreadAttachmentRes[];
 };
 
+// -----------------------------------------------------------
+
+// Thread by id
 type TThreadRes = {
     id: string;
     snippet: string;
@@ -35,6 +42,15 @@ type TThreadRes = {
     date: string;
     initiator: string;
     messages: TThreadMessageRes[];
+};
+
+// Filter's paginated results
+type TThreadShortRes = {
+    id: string;
+    snippet: string;
+    subject: string;
+    date: string;
+    initiator: string;
 };
 
 interface IEmailFilters {
@@ -48,10 +64,11 @@ export type {
     TThreadMessageReq,
     // ...
     TThreadRes,
+    TThreadShortRes,
     TThreadMessageRes,
-    TThreadAttachment,
+    IThreadAttachmentRes,
+    IThreadAttachmentReq,
     // ..
-    IAttachment,
     IEmailFilters,
 };
 
