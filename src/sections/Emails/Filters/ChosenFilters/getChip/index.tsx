@@ -4,10 +4,12 @@ import FromChip from "./From";
 import PropertyIdsChip from "./PropertyIds";
 import ToChip from "./To";
 import { TCodeMap } from "../useCache";
+import SearchChip from "./Search";
 
 type FilterChip = ComponentType<any>;
 
 const CHIPS: Record<keyof IEmailFilters, FilterChip> = {
+    search: SearchChip,
     from: FromChip,
     propertyIds: PropertyIdsChip,
     to: ToChip,
