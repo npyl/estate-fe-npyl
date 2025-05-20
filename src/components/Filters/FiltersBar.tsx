@@ -29,6 +29,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         p={1}
         pt={0} // NOTE: paddingTop must come from the components so that the label that shrinks on top is visible
         spacing={1}
+        elevation={10}
         sx={{ ...FiltersBarSx, ...sx }}
         {...props}
     >
