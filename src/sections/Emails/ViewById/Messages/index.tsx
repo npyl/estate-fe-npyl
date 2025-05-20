@@ -1,6 +1,5 @@
 import { useGetThreadQuery } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
-import Stack from "@mui/material/Stack";
 import getMessage from "./getMessage";
 import { FC } from "react";
 
@@ -15,19 +14,7 @@ const Messages: FC<MessagesProps> = ({ threadId }) => {
 
     const count = messages?.length ?? 0;
 
-    return (
-        <Stack
-            spacing={1}
-            overflow="hidden auto"
-            // TODO: hope we can get these calculated somehow one day!
-            height={{
-                xs: "calc(100vh - 220px)",
-                lg: "calc(100vh - 260px)",
-            }}
-        >
-            {messages?.map(getMessage(count))}
-        </Stack>
-    );
+    return messages?.map(getMessage(count));
 };
 
 export default Messages;

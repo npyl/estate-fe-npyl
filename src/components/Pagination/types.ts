@@ -1,11 +1,7 @@
-import {
-    PaginationProps as MuiPaginationProps,
-    TablePagination,
-} from "@mui/material";
+import { PaginationProps as MuiPaginationProps } from "@mui/material";
 import { ReactNode } from "react";
-import StyledPagination from "./styled";
 
-export type PaginationHookProps = {
+type PaginationHookProps = {
     page: number;
     onChange: (event: any, page: number) => void;
     onPageExceedTotal?: VoidFunction;
@@ -13,7 +9,8 @@ export type PaginationHookProps = {
 
 type Mixup = PaginationHookProps & Omit<MuiPaginationProps, "page">;
 
-export interface PaginationProps<C extends React.ElementType> extends Mixup {
+interface PaginationProps<C extends React.ElementType = React.ElementType>
+    extends Mixup {
     pageSize: number;
     totalItems: number;
     isLoading: boolean; // external data is loading (use to prevent page exceed effect from firing)
@@ -24,3 +21,5 @@ export interface PaginationProps<C extends React.ElementType> extends Mixup {
     Container?: C;
     ContainerProps?: React.ComponentProps<C>;
 }
+
+export type { PaginationHookProps, PaginationProps };
