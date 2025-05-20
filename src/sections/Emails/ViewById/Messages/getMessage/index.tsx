@@ -3,8 +3,8 @@ import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import Header from "./Header";
 import Attachments from "./Attachments";
-import Body from "./Body";
 import { getBorderColor2 } from "@/theme/borderColor";
+import Reader from "@/components/Editor/Reader";
 
 interface Props {
     m: TThreadMessage;
@@ -24,7 +24,7 @@ const Message: FC<Props> = ({ m, last }) => {
             borderColor={getBorderColor2}
         >
             <Header from={from} date={date} />
-            <Body body={body} />
+            <Reader content={body} />
             <Attachments attachments={attachments} />
         </Stack>
     );
