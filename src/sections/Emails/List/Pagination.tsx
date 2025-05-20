@@ -8,8 +8,7 @@ import useAvailableHeight from "@/hooks/useAvailableHeight";
 
 const StackSx: SxProps<Theme> = {
     ".MuiTablePagination-root": {
-        borderBottom: "1px solid",
-        borderColor: getBorderColor,
+        boxShadow: 5,
     },
 
     ".MuiTablePagination-selectLabel": {
