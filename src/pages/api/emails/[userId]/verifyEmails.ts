@@ -38,10 +38,17 @@ const verifyEmail = async (email: string) => {
         const res = ((await response.json()) || {}) as IVerifyRes;
         debugLog(res);
 
-        const { isDisposable, validFormat, validMx, validSmtp } = res;
+        const {
+            isDisposable,
+            validFormat,
+            validMx,
+            // ...
+            // TODO: these cause error for kopanitsanos.gr
+            // validSmtp,
+            // isFree,
+        } = res;
 
-        // TODO: what does isFree mean?
-        if (!isDisposable && validFormat && validMx && validSmtp) return true;
+        if (!isDisposable && validFormat && validMx) return true;
 
         return false;
     } catch (ex) {
