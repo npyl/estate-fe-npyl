@@ -13,14 +13,21 @@ const renderTipTapHTML = (json: any) => {
     }
 };
 
-const isTipTapJson = (input: string | undefined): boolean => {
-    if (!input) return false;
-    try {
-        const parsed = JSON.parse(input);
-        return parsed?.type === "doc" && Array.isArray(parsed?.content);
-    } catch {
-        return false;
-    }
+const isTipTapJson = (input: string | undefined): [boolean, any] => {
+    if (!input) return [false, undefined] as const;
+
+    const parsed = JSON.parseSafe(input);
+    if (!parsed) return [false, undefined] as const;
+
+    const isValid = parsed?.type === "doc" && Array.isArray(parsed?.content);
+
+    return [isValid, parsed] as const;
+};
+
+const isHTML = (str?: string) => {
+    if (!str) return false;
+    const doc = new DOMParser().parseFromString(str, "text/html");
+    return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
 };
 
 interface ReaderProps extends Omit<BoxProps, "dangerouslySetInnerHTML"> {
@@ -29,13 +36,12 @@ interface ReaderProps extends Omit<BoxProps, "dangerouslySetInnerHTML"> {
 
 const Reader: FC<ReaderProps> = ({ content, ...props }) => {
     const html = useMemo(() => {
-        if (isTipTapJson(content)) {
-            try {
-                return renderTipTapHTML(JSON.parse(content || ""));
-            } catch (ex) {
-                debugLog(ex);
-                return content ?? "";
-            }
+        const [isValidJson, parsed] = isTipTapJson(content);
+
+        if (isValidJson) {
+            return renderTipTapHTML(parsed);
+        } else if (isHTML(content)) {
+            return content!;
         } else {
             // Fallback to escape plain text.This handles the comments created before the editor was applied.
             const safeText = content
