@@ -16,6 +16,8 @@ const ChosenFilters = () => {
 
     const { CODES } = useCache();
 
+    if (ids.length === 0) return null;
+
     return (
         <Stack direction="row" spacing={1} flexWrap="wrap">
             {/* Immutable */}
