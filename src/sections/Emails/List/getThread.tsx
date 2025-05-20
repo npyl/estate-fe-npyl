@@ -68,10 +68,10 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         href={`/emails/${e.id}`}
         sx={ItemSx}
     >
-        <Typography fontWeight="500" width="20%">
+        <Typography fontWeight="500" width={{ xs: "40%", lg: "20%" }} noWrap>
             {e.subject}
         </Typography>
-        <Typography variant="body2" width={1}>
+        <Typography variant="body2" width={1} noWrap>
             {e.snippet}
         </Typography>
         <ThreadDate date={e.date} />

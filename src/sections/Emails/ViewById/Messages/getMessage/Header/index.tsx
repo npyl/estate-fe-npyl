@@ -1,7 +1,7 @@
 import { SpaceBetween } from "@/components/styled";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
+import Sender from "./Sender";
 
 interface HeaderProps {
     from: string;
@@ -10,11 +10,7 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ from, date }) => (
     <SpaceBetween direction="row" alignItems="center">
-        <Stack direction="row" spacing={1}>
-            <Typography variant="subtitle2" color="text.secondary">
-                {from || ""}
-            </Typography>
-        </Stack>
+        <Sender from={from} />
 
         <Typography variant="caption" color="text.secondary">
             {new Date(date).toLocaleString()}
