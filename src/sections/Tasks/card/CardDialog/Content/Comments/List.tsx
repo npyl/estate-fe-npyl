@@ -5,33 +5,10 @@ import Typography from "@mui/material/Typography";
 import { SpaceBetween } from "@/components/styled";
 import { useGetCommentsForCardQuery } from "@/services/tasks";
 import { SxProps, Theme } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";
 import Reader from "@/components/Editor/Reader";
 
 // ----------------------------------------------------------------------
-
-interface UsernameProps {
-    firstName: string;
-    lastName: string;
-}
-
-const Username: FC<UsernameProps> = ({ firstName, lastName }) => (
-    <Typography fontWeight="bold">
-        {firstName || ""} {lastName || ""}
-    </Typography>
-);
-
-// ----------------------------------------------------------------------
-
-const OPTIONS: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-};
 
 interface CreationDateProps {
     createdAt: string;
@@ -58,21 +35,6 @@ const CreationDate: FC<CreationDateProps> = ({ createdAt }) => {
         </Typography>
     );
 };
-
-// ----------------------------------------------------------------------
-
-interface HeaderProps {
-    firstName: string;
-    lastName: string;
-    createdAt: string;
-}
-
-const Header: FC<HeaderProps> = ({ firstName, lastName, createdAt }) => (
-    <SpaceBetween alignItems="center">
-        <Username firstName={firstName} lastName={lastName} />
-        <CreationDate createdAt={createdAt} />
-    </SpaceBetween>
-);
 
 // ----------------------------------------------------------------------
 
