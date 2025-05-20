@@ -1,34 +1,28 @@
 import { IEmailFilters } from "@/types/email";
 import {
     createContext,
-    Dispatch,
     FC,
     PropsWithChildren,
-    SetStateAction,
-    useCallback,
     useContext,
+    useMemo,
     useState,
 } from "react";
 import { INITIAL_STATE } from "./constants";
 import useCalculateIds from "./useCalculateIds";
+import useDeleteFilter from "./useDeleteFilter";
+import { Setters } from "./types";
 
-type State = {
+type State = Setters & {
     filters: IEmailFilters;
     ids: (keyof IEmailFilters)[];
 
     to: string[];
     toFreeSoloed: string[];
-    setToFreeSoloed: Dispatch<SetStateAction<string[]>>;
 
     isPropertyPage: boolean;
     isCustomerPage: boolean;
     currentPropertyId?: number;
     currentCustomerEmail?: string;
-
-    setSearch: Dispatch<SetStateAction<string>>;
-    setFrom: Dispatch<SetStateAction<string>>;
-    setTo: Dispatch<SetStateAction<string[]>>;
-    setPropertyIds: Dispatch<SetStateAction<number[]>>;
 
     deleteFilter: (filterKey: keyof IEmailFilters) => void;
 };
@@ -93,20 +87,21 @@ const FiltersProvider: FC<ProviderProps> = ({
     const isPropertyPage = Boolean(propertyId);
     const isCustomerPage = Boolean(_to);
 
-    const deleteFilter = useCallback(
-        (key: keyof IEmailFilters) => {
-            if (key === "from") setFrom(INITIAL_STATE.from);
-
-            if (key === "propertyIds" && isPropertyPage)
-                setPropertyIds([propertyId!]);
-            else if (key === "propertyIds")
-                setPropertyIds(INITIAL_STATE.propertyIds);
-
-            if (key === "to") setToFreeSoloed([]);
-            if (key === "to" && isCustomerPage) setTo([_to]);
-            else if (key === "to") setTo(INITIAL_STATE.to);
-        },
-        [isPropertyPage, isCustomerPage, propertyId, _to]
+    const setters: Setters = useMemo(
+        () => ({
+            setFrom,
+            setPropertyIds,
+            setSearch,
+            setTo,
+            setToFreeSoloed,
+        }),
+        [setFrom, setPropertyIds, setSearch, setTo, setToFreeSoloed]
+    );
+    const deleteFilter = useDeleteFilter(
+        setters,
+        isPropertyPage,
+        isCustomerPage,
+        { propertyId, _to }
     );
 
     return (
@@ -117,17 +112,13 @@ const FiltersProvider: FC<ProviderProps> = ({
                 // ...
                 to,
                 toFreeSoloed,
-                setToFreeSoloed,
                 // ...
                 isPropertyPage,
                 isCustomerPage,
                 currentPropertyId: propertyId,
                 currentCustomerEmail: _to,
                 // ...
-                setSearch,
-                setFrom,
-                setTo,
-                setPropertyIds,
+                ...setters,
                 // ...
                 deleteFilter,
             }}
