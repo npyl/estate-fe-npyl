@@ -2,7 +2,7 @@ import { TThreadMessageReq } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import gmailService from "../_service";
-import verifyEmails from "./verifyEmails";
+import verifyEmails from "../verifyEmails";
 
 export default async function handler(
     req: NextApiRequest,
