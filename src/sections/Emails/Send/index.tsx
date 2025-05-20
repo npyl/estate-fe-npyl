@@ -7,7 +7,7 @@ import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 const MessageBox = dynamic(() => import("./MessageBox"));
 
 const FabSx: SxProps<Theme> = {
-    position: "absolute",
+    position: "fixed",
     bottom: 30,
     right: 30,
     zIndex: 1,
