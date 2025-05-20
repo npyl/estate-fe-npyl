@@ -4,11 +4,12 @@ import { SxProps, Theme } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import dynamic from "next/dynamic";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
+import { LAYOUT } from "@/constants/config";
 const MessageBox = dynamic(() => import("./MessageBox"));
 
 const FabSx: SxProps<Theme> = {
     position: "fixed",
-    bottom: 30,
+    bottom: LAYOUT.FAB_OFFSET_BOTTOM,
     right: 30,
     zIndex: 1,
 };

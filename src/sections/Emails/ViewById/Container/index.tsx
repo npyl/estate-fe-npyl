@@ -1,8 +1,6 @@
-import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
 import Stack from "@mui/material/Stack";
 import ReplyButton from "./ReplyButton";
 import { FC, PropsWithChildren } from "react";
-import { SpaceBetween } from "@/components/styled";
 import Title from "./Title";
 import IsAuthenticatedGuard from "@/sections/Google/IsAuthenticatedGuard";
 import BackButton from "./BackButton";
@@ -24,14 +22,16 @@ interface ContainerProps extends PropsWithChildren {
 
 const Container: FC<ContainerProps> = ({ threadId, children }) => (
     <Paper elevation={5} sx={PaperSx}>
-        <SpaceBetween alignItems="center" p={1} boxShadow={5}>
-            <Stack direction="row" spacing={1} alignItems="center">
-                <BackButton />
-                <Title threadId={threadId} />
-            </Stack>
-
-            <IsAuthenticatedIndicator />
-        </SpaceBetween>
+        <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            p={1}
+            boxShadow={5}
+        >
+            <BackButton />
+            <Title threadId={threadId} />
+        </Stack>
 
         {children}
 

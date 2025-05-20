@@ -1,6 +1,7 @@
 import AdminGuard from "@/components/authentication/admin-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewById from "@/sections/Emails/ViewById";
+import IsAuthenticatedGuard from "@/sections/Google/IsAuthenticatedGuard";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -12,7 +13,9 @@ const EmailByIdPage: NextPage = () => {
 
 EmailByIdPage.getLayout = (page) => (
     <DashboardLayout>
-        <AdminGuard>{page} </AdminGuard>
+        <AdminGuard>
+            <IsAuthenticatedGuard>{page}</IsAuthenticatedGuard>
+        </AdminGuard>
     </DashboardLayout>
 );
 
