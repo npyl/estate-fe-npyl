@@ -1,14 +1,14 @@
 import BasePagination, {
     PaginationProps as BasePaginationProps,
 } from "@/components/Pagination";
-import { Children, FC, useRef } from "react";
+import { FC, useRef } from "react";
 import { Box, Stack, SxProps, Theme } from "@mui/material";
 import getBorderColor from "@/theme/borderColor";
 import useAvailableHeight from "@/hooks/useAvailableHeight";
 
-const getStackSx = (hasRows: boolean): SxProps<Theme> => ({
+const StackSx: SxProps<Theme> = {
     ".MuiTablePagination-root": {
-        borderBottom: hasRows ? "1px solid" : undefined,
+        borderBottom: "1px solid",
         borderColor: getBorderColor,
     },
 
@@ -28,7 +28,7 @@ const getStackSx = (hasRows: boolean): SxProps<Theme> => ({
     boxShadow: 5,
     border: "1px solid",
     borderColor: getBorderColor,
-});
+};
 
 interface PaginationProps
     extends Omit<BasePaginationProps, "ref" | "Container" | "ContainerProps"> {}
@@ -38,8 +38,6 @@ const Pagination: FC<PaginationProps> = ({ children, ...props }) => {
     const boxRef = useRef<HTMLDivElement>(null);
     useAvailableHeight(boxRef, rootRef);
 
-    const hasRows = Children.count(children) > 0;
-
     return (
         <BasePagination
             ref={rootRef}
@@ -47,7 +45,7 @@ const Pagination: FC<PaginationProps> = ({ children, ...props }) => {
             Container={Stack}
             ContainerProps={{
                 flexDirection: "column-reverse",
-                sx: getStackSx(hasRows),
+                sx: StackSx,
             }}
             {...props}
         >
