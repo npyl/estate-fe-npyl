@@ -38,6 +38,7 @@ type TThreadRes = {
 };
 
 interface IEmailFilters {
+    search: string;
     from: string;
     to: string[];
     propertyIds: number[];

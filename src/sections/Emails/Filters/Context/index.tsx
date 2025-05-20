@@ -25,6 +25,7 @@ type State = {
     currentPropertyId?: number;
     currentCustomerEmail?: string;
 
+    setSearch: Dispatch<SetStateAction<string>>;
     setFrom: Dispatch<SetStateAction<string>>;
     setTo: Dispatch<SetStateAction<string[]>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
@@ -43,6 +44,7 @@ const FiltersContext = createContext<State>({
     isCustomerPage: false,
     isPropertyPage: false,
 
+    setSearch: () => {},
     setFrom: () => {},
     setPropertyIds: () => {},
     setTo: () => {},
@@ -72,6 +74,7 @@ const FiltersProvider: FC<ProviderProps> = ({
 }) => {
     const _propertyIds = Boolean(propertyId) ? [propertyId!] : [];
 
+    const [search, setSearch] = useState("");
     const [from, setFrom] = useState("");
     const [to, setTo] = useState(_to ? [_to] : []);
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
@@ -79,6 +82,7 @@ const FiltersProvider: FC<ProviderProps> = ({
     const [toFreeSoloed, setToFreeSoloed] = useState<string[]>([]);
 
     const filters: IEmailFilters = {
+        search,
         from,
         to: [...to, ...toFreeSoloed],
         propertyIds,
@@ -120,6 +124,7 @@ const FiltersProvider: FC<ProviderProps> = ({
                 currentPropertyId: propertyId,
                 currentCustomerEmail: _to,
                 // ...
+                setSearch,
                 setFrom,
                 setTo,
                 setPropertyIds,

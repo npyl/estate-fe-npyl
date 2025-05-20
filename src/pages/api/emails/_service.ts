@@ -28,8 +28,9 @@ const messageToIds = ({ payload }: gmail_v1.Schema$Message) => {
     return v.split(",").map(toNumberSafe);
 };
 
-const getQ = ({ from, to }: IEmailFilters) => {
+const getQ = ({ search, from, to }: IEmailFilters) => {
     let parts = [];
+    if (search) parts.push(search);
     if (from) parts.push(`from:${from}`);
     if (to) parts.push(`to:${to}`);
     return parts.join(" ");
