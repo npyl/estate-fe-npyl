@@ -8,7 +8,7 @@ import { FC, useMemo } from "react";
 
 const ItemSx: SxProps<Theme> = {
     "&:hover": {
-        ":first-child": {
+        ":first-of-type": {
             borderTopLeftRadius: 6,
             borderTopRightRadius: 6,
         },
@@ -20,7 +20,7 @@ const ItemSx: SxProps<Theme> = {
         bgcolor: alpha(primary.light, 0.3),
     },
 
-    ":not(:last-child)": {
+    ":not(:last-of-type)": {
         borderBottom: "1px solid",
         borderColor: getBorderColor2,
     },
