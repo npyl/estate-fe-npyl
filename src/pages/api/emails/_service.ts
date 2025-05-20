@@ -306,7 +306,15 @@ class GmailService {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
 
-        const { to, subject, body, propertyIds, attachments } = _body;
+        const {
+            to,
+            threadId,
+            // ...
+            subject,
+            body,
+            propertyIds,
+            attachments,
+        } = _body;
 
         // Use the new getHeaders method
         const formattedHeaders = getHeaders(to, subject, propertyIds);
@@ -338,6 +346,7 @@ class GmailService {
             userId: "me",
             requestBody: {
                 raw,
+                threadId,
             },
         });
     }

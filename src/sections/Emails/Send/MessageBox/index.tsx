@@ -9,6 +9,11 @@ import filesToBase64 from "./filesToBase64";
 
 interface MessageBoxProps {
     to?: string[];
+
+    // INFO: subject is required when replying to a thread
+    subject?: string;
+    threadId?: string;
+
     toFreeSoloed?: string[];
     body?: string;
     propertyIds?: number[];
@@ -17,6 +22,10 @@ interface MessageBoxProps {
 
 const MessageBox: FC<MessageBoxProps> = ({
     to = [],
+    // ...
+    subject = "",
+    threadId = "",
+    // ...
     toFreeSoloed = [],
     body = "",
     propertyIds = [],
@@ -24,6 +33,8 @@ const MessageBox: FC<MessageBoxProps> = ({
 }) => {
     const { user } = useAuth();
     const [sendEmail] = useSendEmailMutation();
+
+    const threadMode = Boolean(threadId);
 
     const onSubmit = useCallback(
         async (d: TMessageBoxValues) => {
@@ -51,7 +62,8 @@ const MessageBox: FC<MessageBoxProps> = ({
 
     const methods = useForm<TMessageBoxValues>({
         defaultValues: {
-            subject: "",
+            subject,
+            threadId,
             body,
             to,
             toFreeSoloed,
@@ -63,7 +75,7 @@ const MessageBox: FC<MessageBoxProps> = ({
     return (
         <form onSubmit={methods.handleSubmit(onSubmit)}>
             <FormProvider {...methods}>
-                <Content onClose={onClose} />
+                <Content thread={threadMode} onClose={onClose} />
             </FormProvider>
         </form>
     );

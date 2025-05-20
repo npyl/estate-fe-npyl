@@ -1,12 +1,27 @@
 const MessageBox = dynamic(() => import("@/sections/Emails/Send/MessageBox"));
+import { useAuth } from "@/hooks/use-auth";
 import useDialog from "@/hooks/useDialog";
+import { useGetThreadQuery } from "@/services/email";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-const ReplyButton = () => {
+interface ReplyButtonProps {
+    threadId: string;
+}
+
+const ReplyButton: FC<ReplyButtonProps> = ({ threadId }) => {
     const { t } = useTranslation();
+
+    const { user } = useAuth();
+    const { data } = useGetThreadQuery({
+        userId: user?.id!,
+        threadId,
+    });
+    const subject = data?.subject;
+    const to = data?.initiator ? [data?.initiator] : [];
 
     const [isOpen, openMessageBox, closeMessageBox] = useDialog();
 
@@ -20,9 +35,9 @@ const ReplyButton = () => {
 
             {isOpen ? (
                 <MessageBox
-                    // to={to}
-                    // toFreeSoloed={toFreeSoloed}
-                    // propertyIds={propertyIds}
+                    to={to}
+                    subject={subject}
+                    threadId={threadId}
                     onClose={closeMessageBox}
                 />
             ) : null}

@@ -9,15 +9,16 @@ import PaperWithFullscreen from "./PaperWithFullscreen";
 import Attachments from "./Attachments";
 
 interface ContentProps {
+    thread: boolean;
     onClose: VoidFunction;
 }
 
-const Content: FC<ContentProps> = ({ onClose }) => (
+const Content: FC<ContentProps> = ({ thread, onClose }) => (
     <PaperWithFullscreen>
         <Stack position="relative" height={1}>
             <Stack p={1} spacing={1} position="relative">
-                <Recipients />
-                <RHFSubject />
+                {thread ? null : <Recipients />}
+                {thread ? null : <RHFSubject />}
                 <RHFProperties />
             </Stack>
             <StyledEditor>

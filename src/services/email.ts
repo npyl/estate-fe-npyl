@@ -44,7 +44,7 @@ export const emails = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Emails"],
+            invalidatesTags: ["Emails", "EmailById"],
         }),
 
         filterEmails: builder.query<TEmailFilterRes, IEmailFilterReq>({

@@ -8,6 +8,8 @@ interface IAttachment {
 
 interface IEmailReq {
     to: string[];
+    threadId?: string;
+
     subject: string;
     body: string;
     propertyIds: number[];
@@ -35,6 +37,7 @@ type TThreadRes = {
     snippet: string;
     subject: string;
     date: string;
+    initiator: string;
     messages: TThreadMessage[];
 };
 

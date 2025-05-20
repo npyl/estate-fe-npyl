@@ -37,7 +37,7 @@ const Container: FC<ContainerProps> = ({ threadId, children }) => (
 
         <IsAuthenticatedGuard>
             <Stack boxShadow={5} p={1}>
-                <ReplyButton />
+                <ReplyButton threadId={threadId} />
             </Stack>
         </IsAuthenticatedGuard>
     </Paper>
