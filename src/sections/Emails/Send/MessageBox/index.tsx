@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { IEmailReq } from "@/types/email";
+import { TThreadMessageReq } from "@/types/email";
 import { useSendEmailMutation } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
 import Content from "./Content";
@@ -46,7 +46,7 @@ const MessageBox: FC<MessageBoxProps> = ({
                 ...rest,
                 to: [...rest.to, ...toFreeSoloed],
                 attachments,
-            } as IEmailReq;
+            } as TThreadMessageReq;
 
             const res = await sendEmail({
                 body,

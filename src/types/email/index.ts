@@ -1,12 +1,10 @@
-import { gmail_v1 } from "@googleapis/gmail";
-
 interface IAttachment {
     base64: string;
     name: string;
     type: string;
 }
 
-interface IEmailReq {
+interface TThreadMessageReq {
     to: string[];
     threadId?: string;
 
@@ -16,15 +14,13 @@ interface IEmailReq {
     attachments: IAttachment[];
 }
 
-type TEmailRes = Required<gmail_v1.Schema$Message>;
-
 type TThreadAttachment = {
     id: string;
     filename: string;
     size: string;
 };
 
-type TThreadMessage = {
+type TThreadMessageRes = {
     id: string;
     from: string;
     date: string;
@@ -38,7 +34,7 @@ type TThreadRes = {
     subject: string;
     date: string;
     initiator: string;
-    messages: TThreadMessage[];
+    messages: TThreadMessageRes[];
 };
 
 interface IEmailFilters {
@@ -48,11 +44,10 @@ interface IEmailFilters {
 }
 
 export type {
-    IEmailReq,
-    TEmailRes,
+    TThreadMessageReq,
     // ...
     TThreadRes,
-    TThreadMessage,
+    TThreadMessageRes,
     TThreadAttachment,
     // ..
     IAttachment,

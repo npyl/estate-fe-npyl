@@ -3,9 +3,9 @@ import { OAuth2Client } from "google-auth-library";
 import managerService from "@/pages/api/google/_service/ManagerService";
 import {
     IEmailFilters,
-    IEmailReq,
     IAttachment,
     TThreadRes,
+    TThreadMessageReq,
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 
@@ -302,7 +302,7 @@ class GmailService {
      * Creates a RFC 2822 formatted email message encoded in base64url format
      * as required by the Gmail API
      */
-    async send(userId: number, _body: IEmailReq) {
+    async send(userId: number, _body: TThreadMessageReq) {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
 

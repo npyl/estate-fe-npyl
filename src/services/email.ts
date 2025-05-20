@@ -1,10 +1,10 @@
-import { IEmailFilters, IEmailReq, TThreadRes } from "@/types/email";
+import { IEmailFilters, TThreadMessageReq, TThreadRes } from "@/types/email";
 import { gmail_v1 } from "@googleapis/gmail";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface ISendMailReq {
     userId: number;
-    body: IEmailReq;
+    body: TThreadMessageReq;
 }
 
 interface IEmailFilterReq {

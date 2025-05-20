@@ -1,5 +1,5 @@
 import { gmail_v1 } from "@googleapis/gmail";
-import { TThreadMessage, TThreadRes } from "@/types/email";
+import { TThreadMessageRes, TThreadRes } from "@/types/email";
 import { extractOriginalContent } from "./body";
 import { getHeaderValue } from "./util";
 import getAttachments from "./attachments";
@@ -7,7 +7,7 @@ import getAttachments from "./attachments";
 const getThreadMessage = (
     m: gmail_v1.Schema$Message | undefined,
     messageIndex: number
-): TThreadMessage => {
+): TThreadMessageRes => {
     const { id, payload } = m || {};
 
     const { headers } = payload || {};

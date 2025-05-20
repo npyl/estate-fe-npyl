@@ -1,4 +1,4 @@
-import { TThreadMessage } from "@/types/email";
+import { TThreadMessageRes } from "@/types/email";
 import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import Header from "./Header";
@@ -7,7 +7,7 @@ import { getBorderColor2 } from "@/theme/borderColor";
 import Reader from "@/components/Editor/Reader";
 
 interface Props {
-    m: TThreadMessage;
+    m: TThreadMessageRes;
     last: boolean;
 }
 
@@ -30,7 +30,7 @@ const Message: FC<Props> = ({ m, last }) => {
     );
 };
 
-const getMessage = (count: number) => (m: TThreadMessage, idx: number) => (
+const getMessage = (count: number) => (m: TThreadMessageRes, idx: number) => (
     <Message key={m.id} m={m} last={idx === count - 1} />
 );
 

@@ -1,4 +1,4 @@
-import { IEmailReq } from "@/types/email";
+import { TThreadMessageReq } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import gmailService from "../_service";
@@ -16,7 +16,7 @@ export default async function handler(
         const iUserId = toNumberSafe(userId);
         if (iUserId === -1) throw "Bad userId";
 
-        const _body = req.body as IEmailReq;
+        const _body = req.body as TThreadMessageReq;
         const { to, subject, body } = _body;
 
         if (!to) throw "To is required";

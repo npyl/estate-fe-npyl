@@ -1,6 +1,6 @@
-import { IEmailReq } from "@/types/email";
+import { TThreadMessageReq } from "@/types/email";
 
-type TMessageBoxValues = Omit<IEmailReq, "attachments"> & {
+type TMessageBoxValues = Omit<TThreadMessageReq, "attachments"> & {
     attachments: File[];
     toFreeSoloed: string[]; // customer emails that were freeSolo'ed
 };
