@@ -25,6 +25,10 @@ interface IThreadReq {
     threadId: string;
 }
 
+interface IAttachmentData {
+    base64: string;
+}
+
 export const emails = createApi({
     reducerPath: "emails",
     baseQuery: fetchBaseQuery({
@@ -67,7 +71,10 @@ export const emails = createApi({
 
         // ---------------------------------------------------------------------------
 
-        getAttachment: builder.query<string, WithId<IGetAttachmentReq>>({
+        getAttachment: builder.query<
+            IAttachmentData,
+            WithId<IGetAttachmentReq>
+        >({
             query: ({ userId, ...body }) => ({
                 url: `/${userId}/attachment`,
                 method: "POST",
@@ -76,7 +83,10 @@ export const emails = createApi({
             providesTags: ["AttachmentById"],
         }),
 
-        getAttachments: builder.query<string[], WithId<IGetAttachmentsReq>>({
+        getAttachments: builder.query<
+            IAttachmentData[],
+            WithId<IGetAttachmentsReq>
+        >({
             query: ({ userId, ...body }) => ({
                 url: `/${userId}/attachments`,
                 method: "POST",

@@ -387,7 +387,7 @@ class GmailService {
 
     // ------------------------------------------------------------------------
 
-    private async _getAttachment(
+    async _getAttachment(
         auth: OAuth2Client,
         messageId: string,
         id: string
@@ -401,7 +401,19 @@ class GmailService {
 
         if (!res.data) throw "Could not receive attachment data";
 
-        return res.data as string;
+        // Make sure we're returning a string
+        // Gmail API returns an object with a 'data' property containing the base64url string
+        if (typeof res.data === "object" && "data" in res.data) {
+            return res.data.data as string;
+        }
+
+        // If it's already a string, return it directly
+        if (typeof res.data === "string") {
+            return res.data;
+        }
+
+        // If we can't handle the format, convert to string as fallback
+        return String(res.data);
     }
 
     async getAttachment(

@@ -6,25 +6,7 @@ import useDialog from "@/hooks/useDialog";
 import { useGetAttachmentQuery } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
 import Chip from "./Chip";
-
-function base64UrlToStandardBase64(base64Url: string): string {
-    let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    while (base64.length % 4) {
-        base64 += "=";
-    }
-    return base64;
-}
-
-interface ViewerProps {
-    data: string;
-    onClose: VoidFunction;
-}
-
-const Viewer: FC<ViewerProps> = ({ data }) => {
-    const standardBase64 = base64UrlToStandardBase64(data);
-    const dataUrl = `data:image/png;base64,${standardBase64}`;
-    return <img src={dataUrl} />;
-};
+import Viewer from "./Viewer";
 
 interface AttachmentProps {
     a: IThreadAttachmentRes;
@@ -42,17 +24,22 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
         },
         { skip: !shouldLoad }
     );
+    const { base64 } = data || {};
+
     const icon = isLoading ? (
         <CircularProgress size={15} />
     ) : (
         <AttachmentIcon />
     );
 
-    const onClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        start();
-    }, []);
+    const onClick = useCallback(
+        (e: MouseEvent<HTMLDivElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+            start();
+        },
+        [start]
+    );
 
     return (
         <>
@@ -62,7 +49,14 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
                 onClick={onClick}
             />
 
-            {shouldLoad && data ? <Viewer data={data} onClose={stop} /> : null}
+            {shouldLoad && base64 ? (
+                <Viewer
+                    data={base64}
+                    mimeType="image/png"
+                    fileName={a.filename}
+                    onClose={stop}
+                />
+            ) : null}
         </>
     );
 };

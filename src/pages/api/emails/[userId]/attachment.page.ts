@@ -21,13 +21,13 @@ export default async function handler(
         if (!messageId) throw "No messageId provided";
         if (!attachmentId) throw "No attachmentId provided";
 
-        const result = await gmailService.getAttachment(
+        const base64 = await gmailService.getAttachment(
             iUserId,
             messageId,
             attachmentId
         );
 
-        res.status(200).json(result);
+        res.status(200).json({ base64 });
     } catch (error) {
         console.error("Error:", error);
         res.status(404).json({});
