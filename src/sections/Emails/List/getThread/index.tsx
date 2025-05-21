@@ -1,10 +1,12 @@
 import Link from "@/components/Link";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { primary } from "@/theme/light-theme-options";
-import { TThreadRes, TThreadShortRes } from "@/types/email";
-import { alpha, SxProps, Theme } from "@mui/material";
+import { TThreadShortRes } from "@/types/email";
+import { alpha, Stack, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { FC, useMemo } from "react";
+import { FC } from "react";
+import Attachments from "./Attachments";
+import ThreadDate from "./ThreadDate";
 
 const ItemSx: SxProps<Theme> = {
     "&:hover": {
@@ -26,34 +28,6 @@ const ItemSx: SxProps<Theme> = {
     },
 };
 
-interface ThreadDateProps {
-    date: string;
-}
-
-const ThreadDate: FC<ThreadDateProps> = ({ date }) => {
-    const DATE = useMemo(
-        () =>
-            new Date(date).toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-            }),
-        [date]
-    );
-
-    return (
-        <Typography
-            fontWeight="500"
-            noWrap
-            whiteSpace="nowrap"
-            width="max-content"
-            overflow="visible"
-        >
-            {DATE}
-        </Typography>
-    );
-};
-
 interface ThreadItemProps {
     e: TThreadShortRes;
 }
@@ -68,12 +42,26 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         href={`/emails/${e.id}`}
         sx={ItemSx}
     >
-        <Typography fontWeight="500" width={{ xs: "40%", lg: "20%" }} noWrap>
-            {e.subject}
-        </Typography>
-        <Typography variant="body2" width={1} noWrap>
-            {e.snippet}
-        </Typography>
+        <Stack direction="row" width="calc(100% - 80px)">
+            <Typography
+                fontWeight="500"
+                noWrap
+                width="40%"
+                overflow="hidden"
+                textOverflow="ellipsis"
+            >
+                {e.subject}
+            </Typography>
+            <Stack width={1} overflow="hidden" textOverflow="ellipsis">
+                <Typography variant="body2" width={1} noWrap>
+                    {e.snippet}
+                </Typography>
+                {e.attachments.length > 0 ? (
+                    <Attachments attachments={e.attachments} />
+                ) : null}
+            </Stack>
+        </Stack>
+
         <ThreadDate date={e.date} />
     </Link>
 );

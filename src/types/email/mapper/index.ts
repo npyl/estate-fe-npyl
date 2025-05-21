@@ -57,11 +57,9 @@ const GMailThreadToPPThread = (t: gmail_v1.Schema$Thread): TThreadRes => {
 
     return {
         id: t?.id!,
-        snippet: t?.snippet || "",
-        messages,
         subject,
+        messages,
         initiator,
-        date: "",
     };
 };
 

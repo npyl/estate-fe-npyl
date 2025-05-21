@@ -1,5 +1,7 @@
 // -----------------------------------------------------------
 
+import { gmail_v1 } from "@googleapis/gmail";
+
 interface IThreadAttachmentReq {
     base64: string;
     name: string;
@@ -37,21 +39,28 @@ type TThreadMessageRes = {
 // Thread by id
 type TThreadRes = {
     id: string;
-    snippet: string;
     subject: string;
-    date: string;
     initiator: string;
     messages: TThreadMessageRes[];
 };
 
-// Filter's paginated results
+type TThreadMetadata = {
+    subject: string;
+    from: string;
+    date: string;
+    attachments: IThreadAttachmentRes[];
+    initiator: string;
+};
+
+// Filter's paginated results; Each row looks like so:
+//   [from]     [snippet]       [date]
+//              [attachments]
 type TThreadShortRes = {
     id: string;
     snippet: string;
-    subject: string;
-    date: string;
-    initiator: string;
-};
+} & TThreadMetadata;
+
+// ----------------------------------------------------------------------------------
 
 interface IEmailFilters {
     search: string;
@@ -60,16 +69,24 @@ interface IEmailFilters {
     propertyIds: number[];
 }
 
+type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
+    threads: TThreadShortRes[];
+};
+
+// ----------------------------------------------------------------------------------
+
 export type {
     TThreadMessageReq,
     // ...
     TThreadRes,
     TThreadShortRes,
+    TThreadMetadata,
     TThreadMessageRes,
     IThreadAttachmentRes,
     IThreadAttachmentReq,
     // ..
     IEmailFilters,
+    TEmailFilterRes,
 };
 
 export * from "./mapper";

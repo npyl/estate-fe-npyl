@@ -4,10 +4,13 @@ import managerService from "@/pages/api/google/_service/ManagerService";
 import {
     IEmailFilters,
     IThreadAttachmentReq,
+    TEmailFilterRes,
     TThreadMessageReq,
+    TThreadMetadata,
     TThreadShortRes,
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
+import getAttachments from "@/types/email/mapper/attachments";
 
 type TThread = gmail_v1.Schema$Thread;
 
@@ -139,13 +142,7 @@ const createMultipartMessage = async (
     return encodedMessage;
 };
 
-type ThreadMetadata = {
-    subject: string;
-    from: string;
-    snippet: string;
-    ids: number[];
-    date: string;
-};
+type TThreadMetadataExtended = TThreadMetadata & { ids: number[] };
 
 class GmailService {
     private gmail: gmail_v1.Gmail;
@@ -161,25 +158,13 @@ class GmailService {
      */
     private async _getThreadMetadata(
         auth: OAuth2Client,
-        threadId: string,
         userId: string,
+        threadId: string,
         withPropertyIds: boolean
-    ): Promise<ThreadMetadata> {
+    ): Promise<TThreadMetadataExtended> {
         try {
-            const res = await this.gmail.users.threads.get({
-                auth,
-                userId,
-                id: threadId,
-                format: "metadata",
-                metadataHeaders: [
-                    PROPERTY_IDS_HEADER_NAME,
-                    "Subject",
-                    "From",
-                    "Date",
-                ],
-            });
+            const thread = await this._get(auth, userId, threadId);
 
-            const thread = res.data;
             const m = thread.messages || [];
 
             // Get the first message for subject, from, and date
@@ -211,9 +196,6 @@ class GmailService {
                 date = dateHeader?.value || "";
             }
 
-            // Get snippet from the thread
-            const snippet = thread.snippet || "";
-
             // PropertyIds
             let ids: number[] = [];
             if (withPropertyIds) {
@@ -221,10 +203,28 @@ class GmailService {
                 ids = Array.from(idSet);
             }
 
-            return { subject, from, snippet, ids, date };
+            const attachmentsSet = new Set(
+                m.map(({ payload }) => getAttachments(payload!)).flat()
+            );
+
+            return {
+                subject,
+                from,
+                ids,
+                date,
+                initiator: "",
+                attachments: Array.from(attachmentsSet),
+            };
         } catch (error) {
             console.error(error);
-            return { subject: "", from: "", snippet: "", ids: [], date: "" };
+            return {
+                subject: "",
+                from: "",
+                ids: [],
+                date: "",
+                initiator: "",
+                attachments: [],
+            };
         }
     }
 
@@ -235,21 +235,26 @@ class GmailService {
     private ti =
         (auth: OAuth2Client, userId: string, propertyIds: number[]) =>
         async (_thread: TThread): Promise<TThreadShortRes | null> => {
-            const { id, messages: _ignored, ...thread } = _thread || {};
+            const {
+                id,
+                messages: _ignored0,
+                historyId: _ignored2,
+                snippet,
+            } = _thread || {};
             if (!id) return null;
 
             const withPropertyIds = propertyIds.length > 0;
 
-            const METADATA = await this._getThreadMetadata(
-                auth,
-                id,
-                userId,
-                withPropertyIds
-            );
+            const { ids: HEADER_IDS, ...METADATA } =
+                await this._getThreadMetadata(
+                    auth,
+                    userId,
+                    id,
+                    withPropertyIds
+                );
 
+            // INFO: if we are filtering based on propertyIds, fitler-out using the nulls
             if (withPropertyIds) {
-                const HEADER_IDS = METADATA.ids;
-
                 const found = propertyIds.some((pid) =>
                     HEADER_IDS.includes(pid)
                 );
@@ -259,10 +264,9 @@ class GmailService {
 
             return {
                 id,
-                ...thread,
-                subject: METADATA.subject,
-                date: METADATA.date,
-            } as TThreadShortRes;
+                snippet: snippet || "",
+                ...METADATA,
+            };
         };
 
     async filter(
@@ -270,7 +274,7 @@ class GmailService {
         filters: IEmailFilters,
         maxResults: number,
         pageToken?: string
-    ) {
+    ): Promise<TEmailFilterRes> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
 
@@ -353,19 +357,34 @@ class GmailService {
         });
     }
 
-    async get(userId: number, id: string): Promise<gmail_v1.Schema$Thread> {
-        const auth = await managerService.getAuthForUser(userId);
-        if (!auth) throw "Bad auth";
+    // ------------------------------------------------------------------------
 
+    async _get(auth: OAuth2Client, userId: string, threadId: string) {
         const res = await this.gmail.users.threads.get({
             auth,
-            userId: "me",
-            id,
+            userId: userId || "me",
+            id: threadId,
+            format: "full",
+            metadataHeaders: [
+                PROPERTY_IDS_HEADER_NAME,
+                "Subject",
+                "From",
+                "Date",
+            ],
         });
 
         if (!Boolean(res?.data?.id)) throw "Bad thread Id";
 
         return res?.data;
+    }
+
+    async get(
+        userId: number,
+        threadId: string
+    ): Promise<gmail_v1.Schema$Thread> {
+        const auth = await managerService.getAuthForUser(userId);
+        if (!auth) throw "Bad auth";
+        return await this._get(auth, "me", threadId);
     }
 }
 
