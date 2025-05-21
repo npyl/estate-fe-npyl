@@ -43,15 +43,12 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         sx={ItemSx}
     >
         <Stack direction="row" width="calc(100% - 80px)">
-            <Typography
-                fontWeight="500"
-                noWrap
-                width="40%"
-                overflow="hidden"
-                textOverflow="ellipsis"
-            >
-                {e.subject}
-            </Typography>
+            <Stack width="40%" overflow="hidden" textOverflow="ellipsis">
+                <Typography fontWeight="500" noWrap>
+                    {e.subject}
+                </Typography>
+                <Typography color="text.secondary">{e.from || ""}</Typography>
+            </Stack>
             <Stack width={1} overflow="hidden" textOverflow="ellipsis">
                 <Typography variant="body2" width={1} noWrap>
                     {e.snippet}
