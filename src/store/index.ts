@@ -33,6 +33,7 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { server } from "@/services/server";
 import { emails } from "@/services/email";
+import { firm } from "@/services/firm";
 import { rootReducer } from "./root-reducer";
 
 const services = [
@@ -66,6 +67,7 @@ const services = [
     messages,
     logout,
     emails,
+    firm,
     // ...
     server,
 ];
