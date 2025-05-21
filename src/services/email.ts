@@ -1,18 +1,20 @@
 import {
     IEmailFilters,
+    IGetAttachmentReq,
+    IGetAttachmentsReq,
     TEmailFilterRes,
     TThreadMessageReq,
     TThreadRes,
 } from "@/types/email";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+type WithId<T> = T & { userId: number };
+
 interface ISendMailReq {
-    userId: number;
     body: TThreadMessageReq;
 }
 
 interface IEmailFilterReq {
-    userId: number;
     body: IEmailFilters;
 
     pageSize: number;
@@ -20,7 +22,6 @@ interface IEmailFilterReq {
 }
 
 interface IThreadReq {
-    userId: number;
     threadId: string;
 }
 
@@ -30,15 +31,10 @@ export const emails = createApi({
         baseUrl: "/api/emails",
     }),
 
-    tagTypes: ["Emails", "EmailById"],
+    tagTypes: ["Emails", "EmailById", "Attachments", "AttachmentById"],
 
     endpoints: (builder) => ({
-        getThread: builder.query<TThreadRes, IThreadReq>({
-            query: ({ userId, threadId }) => `/${userId}/${threadId}`,
-            providesTags: ["EmailById"],
-        }),
-
-        sendEmail: builder.mutation<void, ISendMailReq>({
+        sendEmail: builder.mutation<void, WithId<ISendMailReq>>({
             query: ({ userId, body }) => ({
                 url: `/${userId}`,
                 method: "POST",
@@ -47,7 +43,9 @@ export const emails = createApi({
             invalidatesTags: ["Emails", "EmailById"],
         }),
 
-        filterEmails: builder.query<TEmailFilterRes, IEmailFilterReq>({
+        // ---------------------------------------------------------------------------
+
+        filterEmails: builder.query<TEmailFilterRes, WithId<IEmailFilterReq>>({
             query: ({ userId, body, pageSize, pageToken }) => ({
                 url: `/${userId}/filter`,
                 method: "POST",
@@ -59,8 +57,43 @@ export const emails = createApi({
             }),
             providesTags: ["Emails"],
         }),
+
+        // ---------------------------------------------------------------------------
+
+        getThread: builder.query<TThreadRes, WithId<IThreadReq>>({
+            query: ({ userId, threadId }) => `/${userId}/${threadId}`,
+            providesTags: ["EmailById"],
+        }),
+
+        // ---------------------------------------------------------------------------
+
+        getAttachment: builder.query<string, WithId<IGetAttachmentReq>>({
+            query: ({ userId, ...body }) => ({
+                url: `/${userId}/attachment`,
+                method: "POST",
+                body,
+            }),
+            providesTags: ["AttachmentById"],
+        }),
+
+        getAttachments: builder.query<string[], WithId<IGetAttachmentsReq>>({
+            query: ({ userId, ...body }) => ({
+                url: `/${userId}/attachments`,
+                method: "POST",
+                body,
+            }),
+            providesTags: ["Attachments"],
+        }),
     }),
 });
 
-export const { useGetThreadQuery, useSendEmailMutation, useFilterEmailsQuery } =
-    emails;
+export const {
+    useSendEmailMutation,
+    // ...
+    useFilterEmailsQuery,
+    // ...
+    useGetThreadQuery,
+    // ...
+    useGetAttachmentQuery,
+    useGetAttachmentsQuery,
+} = emails;

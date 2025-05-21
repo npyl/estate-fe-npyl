@@ -2,6 +2,7 @@
 
 import { gmail_v1 } from "@googleapis/gmail";
 
+// Upload attachment
 interface IThreadAttachmentReq {
     base64: string;
     name: string;
@@ -10,8 +11,20 @@ interface IThreadAttachmentReq {
 
 interface IThreadAttachmentRes {
     id: string;
+    messageId: string; // message it belongs to
     filename: string;
     size: string;
+}
+
+// -----------------------------------------------------------
+
+interface IGetAttachmentsReq {
+    messageId: string;
+    attachmentIds: string[];
+}
+interface IGetAttachmentReq {
+    messageId: string;
+    attachmentId: string;
 }
 
 // -----------------------------------------------------------
@@ -49,7 +62,6 @@ type TThreadMetadata = {
     from: string;
     date: string;
     attachments: IThreadAttachmentRes[];
-    initiator: string;
 };
 
 // Filter's paginated results; Each row looks like so:
@@ -77,6 +89,8 @@ type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
 
 export type {
     TThreadMessageReq,
+    IGetAttachmentReq,
+    IGetAttachmentsReq,
     // ...
     TThreadRes,
     TThreadShortRes,

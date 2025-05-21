@@ -10,7 +10,7 @@ import {
     TThreadShortRes,
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
-import getAttachments from "@/types/email/mapper/attachments";
+import { getAttachmentsFromMessages } from "@/types/email/mapper/attachments";
 
 type TThread = gmail_v1.Schema$Thread;
 
@@ -144,6 +144,8 @@ const createMultipartMessage = async (
 
 type TThreadMetadataExtended = TThreadMetadata & { ids: number[] };
 
+// --------------------------------------------------------------------------
+
 class GmailService {
     private gmail: gmail_v1.Gmail;
 
@@ -203,17 +205,14 @@ class GmailService {
                 ids = Array.from(idSet);
             }
 
-            const attachmentsSet = new Set(
-                m.map(({ payload }) => getAttachments(payload!)).flat()
-            );
+            const attachments = getAttachmentsFromMessages(m);
 
             return {
                 subject,
                 from,
                 ids,
                 date,
-                initiator: "",
-                attachments: Array.from(attachmentsSet),
+                attachments,
             };
         } catch (error) {
             console.error(error);
@@ -222,7 +221,6 @@ class GmailService {
                 from: "",
                 ids: [],
                 date: "",
-                initiator: "",
                 attachments: [],
             };
         }
@@ -359,7 +357,7 @@ class GmailService {
 
     // ------------------------------------------------------------------------
 
-    async _get(auth: OAuth2Client, userId: string, threadId: string) {
+    private async _get(auth: OAuth2Client, userId: string, threadId: string) {
         const res = await this.gmail.users.threads.get({
             auth,
             userId: userId || "me",
@@ -386,8 +384,53 @@ class GmailService {
         if (!auth) throw "Bad auth";
         return await this._get(auth, "me", threadId);
     }
-}
 
+    // ------------------------------------------------------------------------
+
+    private async _getAttachment(
+        auth: OAuth2Client,
+        messageId: string,
+        id: string
+    ): Promise<string> {
+        const res = await this.gmail.users.messages.attachments.get({
+            auth,
+            userId: "me",
+            messageId,
+            id,
+        });
+
+        if (!res.data) throw "Could not receive attachment data";
+
+        return res.data as string;
+    }
+
+    async getAttachment(
+        userId: number,
+        messageId: string,
+        attachmentId: string
+    ) {
+        const auth = await managerService.getAuthForUser(userId);
+        if (!auth) throw "Bad auth";
+        return await this._getAttachment(auth, messageId, attachmentId);
+    }
+
+    // ------------------------------------------------------------------------
+
+    private attachmentPromise =
+        (auth: OAuth2Client, messageId: string) => (id: string) =>
+            this._getAttachment(auth, messageId, id);
+
+    async getAttachments(userId: number, messageId: string, ids: string[]) {
+        const auth = await managerService.getAuthForUser(userId);
+        if (!auth) throw "Bad auth";
+
+        const p = ids.map(this.attachmentPromise(auth, messageId));
+        const all = await Promise.all(p);
+
+        return all;
+    }
+}
+``;
 // ------------------------------------------------------------------------------
 
 const GmailServiceSingleton = () => {

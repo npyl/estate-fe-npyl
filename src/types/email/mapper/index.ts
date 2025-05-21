@@ -18,7 +18,7 @@ const getThreadMessage = (
     // Extract only the original content using standard approaches
     const originalBody = extractOriginalContent(payload, messageIndex);
 
-    const attachments = payload ? getAttachments(payload) : [];
+    const attachments = payload ? getAttachments(id!, payload) : [];
 
     return { id: id!, from, date, body: originalBody, attachments };
 };

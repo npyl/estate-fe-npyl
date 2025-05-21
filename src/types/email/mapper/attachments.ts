@@ -9,6 +9,7 @@ const formatFileSize = (bytes?: number): string => {
 };
 
 const getAttachments = (
+    messageId: string,
     payload: gmail_v1.Schema$MessagePart
 ): IThreadAttachmentRes[] => {
     const attachments: IThreadAttachmentRes[] = [];
@@ -18,17 +19,34 @@ const getAttachments = (
         const id = payload.body?.attachmentId;
         const filename = payload.filename;
         const size = formatFileSize(payload.body.size ?? 0);
-        attachments.push({ id, filename, size });
+        attachments.push({ id, filename, size, messageId });
     }
 
     // Recursively check parts
     if (payload.parts) {
         for (const part of payload.parts) {
-            attachments.push(...getAttachments(part));
+            attachments.push(...getAttachments(messageId, part));
         }
     }
 
     return attachments;
 };
 
+// --------------------------------------------------------------------------
+
+const message2Attachment = ({ id, payload }: gmail_v1.Schema$Message) =>
+    getAttachments(id!, payload!);
+
+/**
+ * Gather all attachments from a list of google messages
+ * @param m list of gmail messages
+ * @returns
+ */
+const getAttachmentsFromMessages = (m: gmail_v1.Schema$Message[]) => {
+    const attachmentSet = new Set(m.map(message2Attachment).flat());
+    const attachments = Array.from(attachmentSet);
+    return attachments;
+};
+
+export { getAttachmentsFromMessages };
 export default getAttachments;
