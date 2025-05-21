@@ -1,4 +1,3 @@
-// components/CustomerTabCounter.tsx
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
@@ -22,7 +21,7 @@ type Props = {
     count?: number;
 };
 
-const CustomerTabCounter = ({ label, count = 0 }: Props) => {
+const TabCounter = ({ label, count = 0 }: Props) => {
     if (count <= 0) return label;
 
     return (
@@ -33,4 +32,4 @@ const CustomerTabCounter = ({ label, count = 0 }: Props) => {
     );
 };
 
-export default CustomerTabCounter;
+export default TabCounter;

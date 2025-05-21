@@ -1,7 +1,9 @@
 import Tab from "@mui/material/Tab";
 import MuiTabs from "@mui/material/Tabs";
 import React from "react";
-import { TListingTab } from "./types";
+import CRMLabel from "./CRMLabel";
+import SpitogatosLabel from "./SpitogatosLabel";
+import { TListingTab } from "../types";
 
 interface TabProps {
     tab: TListingTab;
@@ -10,8 +12,8 @@ interface TabProps {
 
 const Tabs: React.FC<TabProps> = ({ tab, onChange }) => (
     <MuiTabs value={tab} onChange={(_, v) => onChange(v)}>
-        <Tab label="CRM" value="CRM" />
-        <Tab label="Spitogatos" value="SPITOGATOS" />
+        <Tab label={<CRMLabel />} value="CRM" />
+        <Tab label={<SpitogatosLabel />} value="SPITOGATOS" />
     </MuiTabs>
 );
 
