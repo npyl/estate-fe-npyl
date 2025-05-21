@@ -2,6 +2,7 @@ import { Drawer, DrawerProps } from "@mui/material";
 import CustomerForm, { CustomerFormProps } from "@/sections/Customer/Form";
 import { useCallback } from "react";
 import { ICustomerPOST } from "@/types/customer";
+import { makeStickyBottom } from "../FormBottomBar";
 
 const PaperProps: DrawerProps["PaperProps"] = {
     sx: {
@@ -10,11 +11,7 @@ const PaperProps: DrawerProps["PaperProps"] = {
             lg: "30vw",
         },
 
-        ".PPFormBottomBar-bar": {
-            width: 1,
-            position: "sticky",
-            bottom: 0,
-        },
+        ...makeStickyBottom,
     },
 };
 

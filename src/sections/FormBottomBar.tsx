@@ -1,7 +1,17 @@
 import { NAV } from "@/constants/config";
-import { Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import Stack, { StackProps } from "@mui/material/Stack";
 import { FC, ReactNode } from "react";
+
+const CLASSNAME = "PPFormBottomBar-bar";
+
+const makeStickyBottom: SxProps<Theme> = {
+    [`.${CLASSNAME}`]: {
+        width: 1,
+        position: "sticky",
+        bottom: 0,
+    },
+};
 
 // ----------------------------------------------------------------------------------------
 
@@ -40,7 +50,7 @@ const FormBottomBar: FC<FormBottomBarProps> = ({
             <Stack height="54px" my={1} />
 
             <Stack
-                className="PPFormBottomBar-bar"
+                className={CLASSNAME}
                 spacing={1}
                 boxShadow={getBoxShadow}
                 borderRadius={1}
@@ -64,5 +74,6 @@ const FormBottomBar: FC<FormBottomBarProps> = ({
     );
 };
 
+export { makeStickyBottom };
 export type { FormBottomBarProps };
 export default FormBottomBar;
