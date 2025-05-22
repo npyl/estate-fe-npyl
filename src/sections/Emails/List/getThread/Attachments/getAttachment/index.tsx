@@ -1,11 +1,9 @@
 import { FC, MouseEvent, useCallback } from "react";
-import AttachmentIcon from "@mui/icons-material/Attachment";
 import { IThreadAttachmentShortRes } from "@/types/email";
-import { CircularProgress } from "@mui/material";
 import useDialog from "@/hooks/useDialog";
-import Chip from "./Chip";
 import ViewerDialog from "@/sections/ViewerDialog";
 import useAttachmentDataUrl from "./useAttachmentDataUrl";
+import Chip from "./Chip";
 
 interface AttachmentProps {
     a: IThreadAttachmentShortRes;
@@ -17,12 +15,6 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
     const [dataUrl, { isLoading }] = useAttachmentDataUrl(a, {
         skip: !shouldLoad,
     });
-
-    const icon = isLoading ? (
-        <CircularProgress size={15} />
-    ) : (
-        <AttachmentIcon />
-    );
 
     const onClick = useCallback(
         (e: MouseEvent<HTMLDivElement>) => {
@@ -36,7 +28,7 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
     return (
         <>
             <Chip
-                icon={icon}
+                loading={isLoading}
                 label={`${a.filename} (${a.size})`}
                 onClick={onClick}
             />

@@ -1,10 +1,7 @@
 import { IThreadAttachmentShortRes } from "@/types/email";
 import { useGetAttachmentQuery } from "@/services/email";
 import { useAuth } from "@/hooks/use-auth";
-
-// Helper function to convert base64url to standard base64
-const convertBase64UrlToBase64 = (base64url: string) =>
-    base64url.replace(/-/g, "+").replace(/_/g, "/");
+import { attachmentData2Url } from "@/sections/Emails/utils";
 
 const useAttachmentDataUrl = (
     a: IThreadAttachmentShortRes,
@@ -25,11 +22,7 @@ const useAttachmentDataUrl = (
     const { base64 } = data || {};
     if (!base64) return [undefined, { isLoading }] as const;
 
-    // Convert base64url format (used by Gmail API) to standard base64
-    const standardBase64 = convertBase64UrlToBase64(base64);
-
-    // Create the appropriate data URL with the correct MIME type
-    const url = `data:${mimeType};base64,${standardBase64}`;
+    const url = attachmentData2Url(base64, mimeType);
 
     return [url, { isLoading }] as const;
 };

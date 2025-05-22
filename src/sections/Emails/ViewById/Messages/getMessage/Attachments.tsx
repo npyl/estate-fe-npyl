@@ -1,35 +1,54 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import Stack from "@mui/material/Stack";
-import Chip from "@mui/material/Chip";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import { IThreadAttachmentShortRes } from "@/types/email";
+import { IThreadAttachmentRes, IThreadAttachmentShortRes } from "@/types/email";
+import { useGetAttachmentsQuery } from "@/services/email";
+import { useAuth } from "@/hooks/use-auth";
+import { attachmentData2Url } from "@/sections/Emails/utils";
+import Viewer from "@/sections/Viewer";
 
 interface AttachmentProps {
-    a: IThreadAttachmentShortRes;
+    a: IThreadAttachmentRes;
+    mimeType: string;
 }
 
-const Attachment: FC<AttachmentProps> = ({ a }) => (
-    <Chip
-        key={a.id}
-        icon={<AttachmentIcon />}
-        label={`${a.filename} (${a.size})`}
-        variant="outlined"
-        size="small"
-    />
-);
+const Attachment: FC<AttachmentProps> = ({ a: { base64 }, mimeType }) => {
+    const url = attachmentData2Url(base64, mimeType);
+    return <Viewer url={url} mimeType={mimeType} />;
+};
 
-const getAttachment = (a: IThreadAttachmentShortRes) => (
-    <Attachment key={a.id} a={a} />
-);
+const getAttachment =
+    (attachmentIds: string[], mimeTypes: string[]) =>
+    (a: IThreadAttachmentRes, idx: number) => (
+        <Attachment
+            key={attachmentIds.at(idx)}
+            a={a}
+            mimeType={mimeTypes.at(idx) ?? ""}
+        />
+    );
 
 interface AttachmentsProps {
+    messageId: string;
     attachments: IThreadAttachmentShortRes[];
 }
 
-const Attachments: FC<AttachmentsProps> = ({ attachments }) => (
-    <Stack direction="row" spacing={1} flexWrap="wrap">
-        {attachments.map(getAttachment)}
-    </Stack>
-);
+const Attachments: FC<AttachmentsProps> = ({ messageId, attachments }) => {
+    const [attachmentIds, mimeTypes] = useMemo(
+        () => attachments.map(({ id, mimeType }) => [id, mimeType]),
+        [attachments]
+    );
+
+    const { user } = useAuth();
+    const { data } = useGetAttachmentsQuery({
+        userId: user?.id!,
+        messageId,
+        attachmentIds,
+    });
+
+    return (
+        <Stack direction="row" spacing={1} flexWrap="wrap">
+            {data?.map(getAttachment(attachmentIds, mimeTypes))}
+        </Stack>
+    );
+};
 
 export default Attachments;
