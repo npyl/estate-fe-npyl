@@ -10,7 +10,7 @@ import DocumentIcon from "@/components/upload/preview/DocumentIcon";
 import Image from "@/components/image";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-const PDFViewer = dynamic(() => import("@/components/PDFViewer"));
+const PDFViewer = dynamic(() => import("@/sections/ViewerDialog"));
 const Lightbox = dynamic(() => import("@/components/Lightbox"));
 
 // --------------------------------------------------------------
@@ -116,6 +116,7 @@ const View: FC<ViewProps> = ({ url, filename, contentType }) => {
                 {isPDFViewerOpen ? (
                     <PDFViewer
                         url={`https://${url}`}
+                        mimeType="application/pdf"
                         onClose={closePDFViewer}
                     />
                 ) : null}

@@ -5,9 +5,14 @@ import Viewer, { ViewerProps } from "./Viewer";
 type ViewerDialogProps = Omit<DialogProps, "open"> & ViewerProps;
 
 const ViewerDialog: FC<ViewerDialogProps> = ({ mimeType, url, ...props }) => (
-    <Dialog open maxWidth="md" fullWidth {...props}>
-        <Viewer url={url} mimeType={mimeType} />
-    </Dialog>
+    <Dialog
+        open
+        maxWidth="md"
+        fullWidth
+        hideTitle
+        content={<Viewer url={url} mimeType={mimeType} />}
+        {...props}
+    />
 );
 
 export default ViewerDialog;
