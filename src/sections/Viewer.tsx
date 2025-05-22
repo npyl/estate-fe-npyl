@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { CSSProperties, FC } from "react";
 
 // Helper to determine if attachment is viewable as an image
 const isViewableImage = (mimeType: string): boolean => {
@@ -18,22 +18,28 @@ const isPDF = (mimeType: string) => mimeType === "application/pdf";
 interface ViewerProps {
     url: string;
     mimeType: string;
+    style?: CSSProperties;
 }
 
-const Viewer: FC<ViewerProps> = ({ url, mimeType }) => (
+const Viewer: FC<ViewerProps> = ({ url, mimeType, style = {} }) => (
     <>
         {isViewableImage(mimeType) ? (
             <img
                 src={url}
                 alt="alt"
-                style={{ maxWidth: "100%", maxHeight: "70vh" }}
+                style={{ maxWidth: "100%", maxHeight: "70vh", ...style }}
             />
         ) : null}
 
         {isPDF(mimeType) ? (
             <iframe
                 src={url}
-                style={{ border: "none", width: "100%", height: "100vh" }}
+                style={{
+                    border: "none",
+                    width: "100%",
+                    height: "100vh",
+                    ...style,
+                }}
             />
         ) : null}
     </>
