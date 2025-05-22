@@ -416,28 +416,8 @@ class GmailService {
         if (!auth) throw "Bad auth";
         return await this._getAttachment(auth, messageId, attachmentId);
     }
-
-    // ------------------------------------------------------------------------
-
-    private attachmentPromise =
-        (auth: OAuth2Client, messageId: string) => (id: string) =>
-            this._getAttachment(auth, messageId, id);
-
-    async getAttachments(
-        userId: number,
-        messageId: string,
-        ids: string[]
-    ): Promise<string[]> {
-        const auth = await managerService.getAuthForUser(userId);
-        if (!auth) throw "Bad auth";
-
-        const p = ids.map(this.attachmentPromise(auth, messageId));
-        const all = await Promise.all(p);
-
-        return all;
-    }
 }
-``;
+
 // ------------------------------------------------------------------------------
 
 const GmailServiceSingleton = () => {

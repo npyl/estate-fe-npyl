@@ -1,7 +1,6 @@
 import {
     IEmailFilters,
     IGetAttachmentReq,
-    IGetAttachmentsReq,
     IThreadAttachmentRes,
     TEmailFilterRes,
     TThreadMessageReq,
@@ -83,18 +82,6 @@ export const emails = createApi({
             }),
             providesTags: ["AttachmentById"],
         }),
-
-        getAttachments: builder.query<
-            IThreadAttachmentRes[],
-            WithId<IGetAttachmentsReq>
-        >({
-            query: ({ userId, ...body }) => ({
-                url: `/${userId}/attachments`,
-                method: "POST",
-                body,
-            }),
-            providesTags: ["Attachments"],
-        }),
     }),
 });
 
@@ -106,5 +93,4 @@ export const {
     useGetThreadQuery,
     // ...
     useGetAttachmentQuery,
-    useGetAttachmentsQuery,
 } = emails;

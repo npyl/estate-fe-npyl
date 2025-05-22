@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Message: FC<Props> = ({ m, first, last }) => {
-    const { id, from, date, body, attachments } = m || {};
+    const { from, date, body, attachments } = m || {};
 
     const borderBottom = last && !first ? "" : "1px solid";
 
@@ -28,7 +28,7 @@ const Message: FC<Props> = ({ m, first, last }) => {
             <Header from={from} date={date} />
             <Reader content={body} />
             {attachments.length > 0 ? (
-                <Attachments messageId={id} attachments={attachments} />
+                <Attachments attachments={attachments} />
             ) : null}
         </Stack>
     );
