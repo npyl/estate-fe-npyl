@@ -5,7 +5,7 @@ import {
     useDeleteAttachmentMutation,
 } from "@/services/tasks";
 import executeSequentially from "@/utils/executeSequentially";
-import { uploadWithProgress } from "@/services/file";
+import { uploadWithProgress } from "@/ui/useGeneralUploader/file";
 import { useDispatch } from "react-redux";
 import { IAddAttachmentReq, IAddAttachmentRes } from "@/services/tasks/types";
 import useDialog from "@/hooks/useDialog";

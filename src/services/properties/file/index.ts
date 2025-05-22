@@ -32,7 +32,7 @@ import {
 } from "./queryFn";
 import { removeMetadata } from "./util";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { uploadWithProgress } from "@/services/file";
+import { uploadWithProgress } from "@/ui/useGeneralUploader/file";
 
 interface UploadDocumentToAmazonProps {
     variant: TFileVariant; // INFO: for image variant, we must also strip metadata
