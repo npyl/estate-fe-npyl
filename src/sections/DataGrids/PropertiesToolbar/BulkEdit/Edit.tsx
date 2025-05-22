@@ -6,9 +6,9 @@ import {
 } from "@/sections/DataGrids/BulkEditDrawer/style";
 import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useGlobals } from "src/hooks/useGlobals";
-import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import { toNumberSafe } from "@/utils/toNumber";
-import CustomerAutocomplete from "@/sections/_Autocompletes/Customer";
+import CustomerAutocomplete from "@/ui/Autocompletes/Customer";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
 export const EditManager = () => {

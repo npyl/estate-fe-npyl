@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import TabCounter from "@/sections/TabCounter";
+import TabCounter from "@/ui/TabCounter";
 import { useRouter } from "next/router";
 import { useTabCountQuery } from "@/services/customers";
 

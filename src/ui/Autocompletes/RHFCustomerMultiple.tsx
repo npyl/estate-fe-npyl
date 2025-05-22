@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import CustomerAutocompleteMultiple, {
     CustomerAutocompleteMultipleProps,
-} from "@/sections/_Autocompletes/CustomerMultiple";
+} from "@/ui/Autocompletes/CustomerMultiple";
 
 interface RHFCustomerAutocompleteMultipleProps<FreeSolo extends boolean = false>
     extends Omit<CustomerAutocompleteMultipleProps<FreeSolo>, "value"> {

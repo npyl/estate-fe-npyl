@@ -1,6 +1,4 @@
-import CodeMultiple, {
-    getTagClassname,
-} from "@/sections/_Autocompletes/CodeMultiple";
+import CodeMultiple, { getTagClassname } from "@/ui/Autocompletes/CodeMultiple";
 import { toNumberSafe } from "@/utils/toNumber";
 import { SxProps, Theme } from "@mui/material";
 import { useRouter } from "next/router";

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
-import CustomerAutocompleteMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
+import CustomerAutocompleteMultiple from "@/ui/Autocompletes/RHFCustomerMultiple";
 import { useGetOwnedPropertiesMutation } from "@/services/customers";
 import { useFormContext } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";

@@ -13,7 +13,7 @@ import ViewHeader from "@/sections/ViewHeader";
 
 import { useTranslation } from "react-i18next";
 const ConfirmationDialogBox = dynamic(
-    () => import("@/sections/ConfirmationDialogBox")
+    () => import("@/ui/ConfirmationDialogBox")
 );
 import dynamic from "next/dynamic";
 

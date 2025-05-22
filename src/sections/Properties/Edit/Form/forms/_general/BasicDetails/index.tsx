@@ -16,7 +16,7 @@ import CategorySelect from "./CategorySelect";
 import OwnerSelect from "../../_shared/OwnerSelect";
 import RHFCode from "../RHFCode";
 import RHFKeyCode from "../RHFKeyCode";
-import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
+import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
 
 const BasicSection = () => {
     const router = useRouter();

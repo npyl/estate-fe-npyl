@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Controller, useFormContext } from "react-hook-form";
-import AssigneeAutocomplete from "@/sections/_Autocompletes/Assignee";
+import AssigneeAutocomplete from "@/ui/Autocompletes/Assignee";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 
 const RHFAssignee = () => {

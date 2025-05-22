@@ -1,4 +1,4 @@
-import RHFFirm from "@/sections/_Autocompletes/RHFFirm";
+import RHFFirm from "@/ui/Autocompletes/RHFFirm";
 import Stack from "@mui/material/Stack";
 import Opener, { useOpener } from "@/components/Opener";
 import FirmCreateDrawer from "./CreateDrawer";

@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import RHFCustomer from "@/sections/_Autocompletes/RHFCustomer";
+import RHFCustomer from "@/ui/Autocompletes/RHFCustomer";
 import CreateTooltip from "@/sections/Customer/CreateTooltip";
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";

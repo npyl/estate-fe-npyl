@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import CodeAutocompleteMultiple, {
     CodeAutocompleteMultipleProps,
-} from "@/sections/_Autocompletes/CodeMultiple";
+} from "@/ui/Autocompletes/CodeMultiple";
 import { FC } from "react";
 
 interface RHFPropertyCodeMultiple

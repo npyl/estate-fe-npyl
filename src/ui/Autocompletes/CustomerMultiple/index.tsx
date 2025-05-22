@@ -2,10 +2,7 @@ import { ForwardedRef, forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { ICustomerMini } from "@/types/customer";
-import {
-    getOptionLabel,
-    RenderOption,
-} from "@/sections/_Autocompletes/Customer";
+import { getOptionLabel, RenderOption } from "@/ui/Autocompletes/Customer";
 import MultilineTextField from "@/components/MultilineTextField";
 import renderUserTags, { getTagClassname } from "./renderUserTags";
 import { AutocompleteRenderInputParams } from "@mui/material";

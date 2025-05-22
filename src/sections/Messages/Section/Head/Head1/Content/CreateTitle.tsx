@@ -1,4 +1,4 @@
-import AssigneeAutocomplete from "@/sections/_Autocompletes/Assignee";
+import AssigneeAutocomplete from "@/ui/Autocompletes/Assignee";
 import { useTranslation } from "react-i18next";
 import { useCreateConversationContext } from "../../../CreateConversation";
 import { useCallback } from "react";

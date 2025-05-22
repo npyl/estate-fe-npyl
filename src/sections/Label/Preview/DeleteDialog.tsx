@@ -4,7 +4,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelResourceType } from "@/types/label";
 const ConfirmationDialogBox = dynamic(
-    () => import("@/sections/ConfirmationDialogBox")
+    () => import("@/ui/ConfirmationDialogBox")
 );
 
 // --------------------------------------------------------------------------

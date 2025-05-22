@@ -1,4 +1,4 @@
-import TabCounter from "@/sections/TabCounter";
+import TabCounter from "@/ui/TabCounter";
 import useCRMContentOperations from "../Content/hook/crm";
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
 

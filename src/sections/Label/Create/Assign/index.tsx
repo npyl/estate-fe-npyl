@@ -6,7 +6,7 @@ import { ILabelForm } from "../types";
 import { useState } from "react";
 const RHFPropertyAutocomplete = dynamic(() => import("./Property"));
 const RHFCustomerAutocomplete = dynamic(
-    () => import("@/sections/_Autocompletes/RHFCustomer")
+    () => import("@/ui/Autocompletes/RHFCustomer")
 );
 
 const Assign = () => {

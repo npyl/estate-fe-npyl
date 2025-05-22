@@ -19,7 +19,7 @@ import CategorySelect from "./CategorySelect";
 import RHFCode from "../../_general/RHFCode";
 import RHFKeyCode from "../../_general/RHFKeyCode";
 import OwnerSelect from "../../_shared/OwnerSelect";
-import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
+import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
 
 const getCHECKBOXES = (t: TranslationType) => [
     { name: "debatablePrice", label: t("Debatable Price") },

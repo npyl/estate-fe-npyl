@@ -7,7 +7,7 @@ import DocumentIcon from "@/components/upload/preview/DocumentIcon";
 import Image from "@/components/image";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-const PDFViewer = dynamic(() => import("@/sections/ViewerDialog"));
+const PDFViewer = dynamic(() => import("@/ui/ViewerDialog"));
 const Lightbox = dynamic(() => import("@/components/Lightbox"));
 
 type AnyId = string | number;

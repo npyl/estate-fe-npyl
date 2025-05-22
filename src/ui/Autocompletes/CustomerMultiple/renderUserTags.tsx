@@ -1,7 +1,7 @@
 import { ICustomerMini } from "@/types/customer";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
 import ChipLink from "@/components/ChipLink";
-import PlaceholderAvatar from "@/sections/_Autocompletes/Customer/PlaceholderAvatar";
+import PlaceholderAvatar from "@/ui/Autocompletes/Customer/PlaceholderAvatar";
 
 const getTagClassname = (id: number) => `PPCustomerAutocomplete-TagUser${id}`;
 

@@ -1,7 +1,7 @@
 import CancelButton from "./CancelButton";
 import SendButton from "./SendButton";
 import Stack from "@mui/material/Stack";
-import Reporter from "@/sections/Reporter";
+import Reporter from "@/ui/Reporter";
 import Attachments from "./AttachmentsButton";
 import { FC } from "react";
 

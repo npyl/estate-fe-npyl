@@ -1,4 +1,4 @@
-import TabCounter from "@/sections/TabCounter";
+import TabCounter from "@/ui/TabCounter";
 import { TwoDimentionsDndNode } from "@/components/TwoDimentionsDnd/types";
 import useListingContentOperations from "../Content/hook/listing";
 

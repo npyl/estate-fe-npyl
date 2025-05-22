@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import { FC } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import Reporter from "@/sections/Reporter";
+import Reporter from "@/ui/Reporter";
 import { SpaceBetween } from "@/components/styled";
 import Stack from "@mui/material/Stack";
 

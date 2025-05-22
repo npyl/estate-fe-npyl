@@ -1,4 +1,4 @@
-import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import useIsOfficeAdmin from "@/sections/Google/useIsOfficeAdmin";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import { Skeleton, SxProps, Theme } from "@mui/material";

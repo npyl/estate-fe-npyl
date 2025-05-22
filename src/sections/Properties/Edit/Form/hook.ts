@@ -12,7 +12,7 @@ import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { toNumberSafe } from "@/utils/toNumber";
 import { useRouter } from "next/router";
-import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
+import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 
 type OmitList = "managerId" | "ownerId";
 

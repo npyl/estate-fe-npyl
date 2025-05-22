@@ -1,4 +1,4 @@
-import FormBottomBar from "@/sections/FormBottomBar";
+import FormBottomBar from "@/ui/FormBottomBar";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";

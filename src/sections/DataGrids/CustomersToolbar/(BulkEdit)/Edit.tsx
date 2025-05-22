@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import DefaultOrEdit from "@/sections/DataGrids/BulkEditDrawer/DefaultOrEdit";
-import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 
 const EditManager = () => {

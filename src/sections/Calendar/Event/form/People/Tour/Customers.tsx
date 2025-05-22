@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import CustomerAutocomplete from "@/sections/_Autocompletes/CustomerMultiple";
+import CustomerAutocomplete from "@/ui/Autocompletes/CustomerMultiple";
 import {
     Controller,
     ControllerFieldState,

@@ -1,5 +1,5 @@
 import RHFTextField from "@/components/hook-form/RHFTextField";
-import RHFCustomerMultiple from "@/sections/_Autocompletes/RHFCustomerMultiple";
+import RHFCustomerMultiple from "@/ui/Autocompletes/RHFCustomerMultiple";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";

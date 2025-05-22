@@ -1,7 +1,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import Panel from "./Panel";
-const PDFViewer = dynamic(() => import("@/sections/ViewerDialog"));
+const PDFViewer = dynamic(() => import("@/ui/ViewerDialog"));
 
 const DocumentsSection: React.FC = () => {
     const [pdfUrl, setPdfUrl] = useState("");

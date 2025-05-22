@@ -1,7 +1,7 @@
 import { useDispatch } from "src/store";
 import { useSelector } from "react-redux";
 import { selectManagerId, setManagerId } from "src/slices/customer/filters";
-import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
 

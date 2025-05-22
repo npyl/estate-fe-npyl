@@ -2,7 +2,7 @@ import { useFiltersContext } from "../context";
 import useIsOfficeAdmin from "@/sections/Google/useIsOfficeAdmin";
 import AllButton from "./AllButton";
 import ClearButton from "./ClearButton";
-import UserPicker from "@/sections/_Pickers/UserPicker";
+import UserPicker from "@/ui/Pickers/UserPicker";
 
 /**
  * UserSelect makes sence only if the user is a Google Workspace admin!

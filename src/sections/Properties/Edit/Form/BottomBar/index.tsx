@@ -3,7 +3,7 @@ import SubmitButton from "./SubmitButton";
 import CancelButton from "./CancelButton";
 import GenerateCheckbox, { GenerateCheckboxRef } from "./GenerateCheckbox";
 import { FC, ReactNode, RefObject } from "react";
-import FormBottomBar, { FormBottomBarProps } from "@/sections/FormBottomBar";
+import FormBottomBar, { FormBottomBarProps } from "@/ui/FormBottomBar";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";

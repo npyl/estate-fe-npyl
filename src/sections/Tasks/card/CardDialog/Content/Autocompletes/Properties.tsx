@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
-import PropertiesAutocompleteMultiple from "@/sections/_Autocompletes/RHFCodeMultiple";
+import PropertiesAutocompleteMultiple from "@/ui/Autocompletes/RHFCodeMultiple";
 import { Box, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";

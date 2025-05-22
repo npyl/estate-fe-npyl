@@ -3,7 +3,7 @@ import { Drawer } from "@mui/material";
 import FirmForm from "@/sections/Firm/Form";
 import { useFormContext, useWatch } from "react-hook-form";
 import { IFirmReq } from "@/types/firm";
-import { makeStickyBottom } from "@/sections/FormBottomBar";
+import { makeStickyBottom } from "@/ui/FormBottomBar";
 
 interface FirmCreateDrawerProps {
     onClose: VoidFunction;

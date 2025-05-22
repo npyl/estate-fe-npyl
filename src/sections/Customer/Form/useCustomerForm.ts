@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer } from "src/types/customer";
-import useFormPersistStorageKey from "@/sections/useFormPersistStorageKey";
+import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 
 const getLoginSchema = (t: TranslationType) =>
     Yup.object().shape({

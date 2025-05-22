@@ -11,7 +11,7 @@ import NotesSection from "./NotesSection";
 import { FormProvider } from "react-hook-form";
 import { ICustomerYup } from "./types";
 import useCustomerForm from "./useCustomerForm";
-import FormBottomBar from "@/sections/FormBottomBar";
+import FormBottomBar from "@/ui/FormBottomBar";
 import SaveButton from "./SaveButton";
 
 const COLUMN_GRID = (compact: boolean) =>

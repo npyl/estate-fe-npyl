@@ -3,7 +3,7 @@ import { FC, useCallback, useMemo } from "react";
 import CustomerMultiple, {
     CustomerAutocompleteMultipleProps,
     getTagClassname,
-} from "@/sections/_Autocompletes/CustomerMultiple";
+} from "@/ui/Autocompletes/CustomerMultiple";
 import { useGetNamesQuery } from "@/services/customers";
 import { SxProps, Theme } from "@mui/material";
 import { useRouter } from "next/router";

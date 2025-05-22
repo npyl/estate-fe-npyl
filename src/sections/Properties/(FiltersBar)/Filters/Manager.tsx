@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import { useFiltersContext, useManagerId } from "../../FiltersContext";
 
 function ManagerSelect() {

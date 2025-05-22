@@ -22,7 +22,7 @@ import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
 import Select from "@/components/hook-form/Select";
 import { useTranslation } from "react-i18next";
 import StayUpdated from "./StayUpdated";
-import RHFManagerAutocomplete from "@/sections/_Autocompletes/RHFManager";
+import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
 import Firm from "./Firm";
 
 const Rating = () => {

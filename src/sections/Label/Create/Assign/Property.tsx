@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import RHFCode from "@/sections/_Autocompletes/RHFCode";
+import RHFCode from "@/ui/Autocompletes/RHFCode";
 
 const RHFPropertyAutocomplete = () => {
     const { t } = useTranslation();

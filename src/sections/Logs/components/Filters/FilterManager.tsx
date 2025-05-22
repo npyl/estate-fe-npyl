@@ -1,4 +1,4 @@
-import ManagerAutocomplete from "@/sections/_Autocompletes/Manager";
+import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { selectUsers, setUsers } from "src/slices/log";

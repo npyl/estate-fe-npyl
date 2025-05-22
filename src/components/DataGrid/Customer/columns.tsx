@@ -5,7 +5,7 @@ import RenderLabelsCell from "../shared/RenderLabels";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
-import CustomerAvatar from "@/sections/CustomerAvatar";
+import CustomerAvatar from "@/ui/CustomerAvatar";
 
 const StatusColor = ({ row }: GridCellParams) => (
     <Stack width={1} height={1} justifyContent="center" alignItems="flex-start">

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { IDemandFiltersPOST } from "src/types/demand";
 import { IProperties } from "src/types/properties";
 import { useFormContext } from "react-hook-form";
-import CodeSelect from "@/sections/_Autocompletes/Code";
+import CodeSelect from "@/ui/Autocompletes/Code";
 import { IDemandForms } from "../../../Form";
 
 interface DemandAutocompleteProps {

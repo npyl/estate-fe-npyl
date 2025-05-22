@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo } from "react";
 import { useDeleteAttachmentMutation } from "@/services/tasks";
 import { IKanbanAttachment } from "@/types/tasks";
 import { useAttachmentsContext } from "../Context";
-import PPAttachment from "@/sections/Attachment";
+import PPAttachment from "@/ui/Attachment";
 
 const IKanbanAttachmentToPPAttachment = ({
     id,

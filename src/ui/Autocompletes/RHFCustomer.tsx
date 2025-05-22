@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import CustomerAutocomplete, {
     CustomerAutocompleteProps,
-} from "@/sections/_Autocompletes/Customer";
+} from "@/ui/Autocompletes/Customer";
 import { FC } from "react";
 
 interface RHFCustomerProps

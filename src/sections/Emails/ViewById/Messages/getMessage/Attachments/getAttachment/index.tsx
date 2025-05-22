@@ -1,6 +1,6 @@
 import useAttachmentDataUrl from "@/sections/Emails/List/getThread/Attachments/getAttachment/useAttachmentDataUrl";
 import { IThreadAttachmentShortRes } from "@/types/email";
-import PPAttachment from "@/sections/Attachment";
+import PPAttachment from "@/ui/Attachment";
 import Skeleton from "./Skeleton";
 import { FC } from "react";
 

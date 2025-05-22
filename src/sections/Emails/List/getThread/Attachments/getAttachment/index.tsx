@@ -1,7 +1,7 @@
 import { FC, MouseEvent, useCallback } from "react";
 import { IThreadAttachmentShortRes } from "@/types/email";
 import useDialog from "@/hooks/useDialog";
-import ViewerDialog from "@/sections/ViewerDialog";
+import ViewerDialog from "@/ui/ViewerDialog";
 import useAttachmentDataUrl from "./useAttachmentDataUrl";
 import Chip from "./Chip";
 
