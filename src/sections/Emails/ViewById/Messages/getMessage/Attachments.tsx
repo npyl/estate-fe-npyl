@@ -2,10 +2,10 @@ import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { IThreadAttachmentRes } from "@/types/email";
+import { IThreadAttachmentShortRes } from "@/types/email";
 
 interface AttachmentProps {
-    a: IThreadAttachmentRes;
+    a: IThreadAttachmentShortRes;
 }
 
 const Attachment: FC<AttachmentProps> = ({ a }) => (
@@ -18,12 +18,12 @@ const Attachment: FC<AttachmentProps> = ({ a }) => (
     />
 );
 
-const getAttachment = (a: IThreadAttachmentRes) => (
+const getAttachment = (a: IThreadAttachmentShortRes) => (
     <Attachment key={a.id} a={a} />
 );
 
 interface AttachmentsProps {
-    attachments: IThreadAttachmentRes[];
+    attachments: IThreadAttachmentShortRes[];
 }
 
 const Attachments: FC<AttachmentsProps> = ({ attachments }) => (

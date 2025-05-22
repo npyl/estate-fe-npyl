@@ -2,6 +2,7 @@ import {
     IEmailFilters,
     IGetAttachmentReq,
     IGetAttachmentsReq,
+    IThreadAttachmentRes,
     TEmailFilterRes,
     TThreadMessageReq,
     TThreadRes,
@@ -72,7 +73,7 @@ export const emails = createApi({
         // ---------------------------------------------------------------------------
 
         getAttachment: builder.query<
-            IAttachmentData,
+            IThreadAttachmentRes,
             WithId<IGetAttachmentReq>
         >({
             query: ({ userId, ...body }) => ({
@@ -84,7 +85,7 @@ export const emails = createApi({
         }),
 
         getAttachments: builder.query<
-            IAttachmentData[],
+            IThreadAttachmentRes[],
             WithId<IGetAttachmentsReq>
         >({
             query: ({ userId, ...body }) => ({

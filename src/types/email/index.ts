@@ -6,13 +6,16 @@ import { gmail_v1 } from "@googleapis/gmail";
 interface IThreadAttachmentReq {
     base64: string;
     name: string;
-    type: string;
+    mimeType: string;
 }
 
-interface IThreadAttachmentRes {
+type IThreadAttachmentRes = { base64: string };
+
+interface IThreadAttachmentShortRes {
     id: string;
     messageId: string; // message it belongs to
     filename: string;
+    mimeType: string;
     size: string;
 }
 
@@ -44,7 +47,7 @@ type TThreadMessageRes = {
     from: string;
     date: string;
     body: string;
-    attachments: IThreadAttachmentRes[];
+    attachments: IThreadAttachmentShortRes[];
 };
 
 // -----------------------------------------------------------
@@ -61,7 +64,7 @@ type TThreadMetadata = {
     subject: string;
     from: string;
     date: string;
-    attachments: IThreadAttachmentRes[];
+    attachments: IThreadAttachmentShortRes[];
 };
 
 // Filter's paginated results; Each row looks like so:
@@ -96,8 +99,9 @@ export type {
     TThreadShortRes,
     TThreadMetadata,
     TThreadMessageRes,
-    IThreadAttachmentRes,
     IThreadAttachmentReq,
+    IThreadAttachmentShortRes,
+    IThreadAttachmentRes,
     // ..
     IEmailFilters,
     TEmailFilterRes,

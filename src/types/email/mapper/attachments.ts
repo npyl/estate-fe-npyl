@@ -1,5 +1,5 @@
 import { gmail_v1 } from "@googleapis/gmail";
-import { IThreadAttachmentRes } from "@/types/email";
+import { IThreadAttachmentShortRes } from "@/types/email";
 
 const formatFileSize = (bytes?: number): string => {
     if (!bytes) return "Unknown size";
@@ -11,15 +11,24 @@ const formatFileSize = (bytes?: number): string => {
 const getAttachments = (
     messageId: string,
     payload: gmail_v1.Schema$MessagePart
-): IThreadAttachmentRes[] => {
-    const attachments: IThreadAttachmentRes[] = [];
+): IThreadAttachmentShortRes[] => {
+    const attachments: IThreadAttachmentShortRes[] = [];
 
     // Check if this part is an attachment
     if (payload.filename && payload.body?.attachmentId) {
+        // INFO: prevent adding files with unrecognized mimeType (is this even possible?)
+        if (!payload.mimeType) return [];
+
         const id = payload.body?.attachmentId;
         const filename = payload.filename;
         const size = formatFileSize(payload.body.size ?? 0);
-        attachments.push({ id, filename, size, messageId });
+        attachments.push({
+            id,
+            filename,
+            size,
+            messageId,
+            mimeType: payload.mimeType,
+        });
     }
 
     // Recursively check parts

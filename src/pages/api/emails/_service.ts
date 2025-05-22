@@ -116,7 +116,7 @@ const createMultipartMessage = async (
     // Add attachments
     for (const attachment of attachments) {
         messageParts.push(`--${boundary}`);
-        messageParts.push(`Content-Type: ${attachment.type}`);
+        messageParts.push(`Content-Type: ${attachment.mimeType}`);
         messageParts.push("Content-Transfer-Encoding: base64");
         messageParts.push(
             `Content-Disposition: attachment; filename="${attachment.name}"`
@@ -401,26 +401,17 @@ class GmailService {
 
         if (!res.data) throw "Could not receive attachment data";
 
-        // Make sure we're returning a string
-        // Gmail API returns an object with a 'data' property containing the base64url string
-        if (typeof res.data === "object" && "data" in res.data) {
-            return res.data.data as string;
-        }
+        const { data } = res.data;
+        if (typeof data !== "string") throw "Bad attachment data format";
 
-        // If it's already a string, return it directly
-        if (typeof res.data === "string") {
-            return res.data;
-        }
-
-        // If we can't handle the format, convert to string as fallback
-        return String(res.data);
+        return data;
     }
 
     async getAttachment(
         userId: number,
         messageId: string,
         attachmentId: string
-    ) {
+    ): Promise<string> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
         return await this._getAttachment(auth, messageId, attachmentId);
@@ -432,7 +423,11 @@ class GmailService {
         (auth: OAuth2Client, messageId: string) => (id: string) =>
             this._getAttachment(auth, messageId, id);
 
-    async getAttachments(userId: number, messageId: string, ids: string[]) {
+    async getAttachments(
+        userId: number,
+        messageId: string,
+        ids: string[]
+    ): Promise<string[]> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
 

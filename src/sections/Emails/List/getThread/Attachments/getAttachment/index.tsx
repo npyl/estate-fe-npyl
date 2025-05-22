@@ -1,30 +1,22 @@
 import { FC, MouseEvent, useCallback } from "react";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { IThreadAttachmentRes } from "@/types/email";
+import { IThreadAttachmentShortRes } from "@/types/email";
 import { CircularProgress } from "@mui/material";
 import useDialog from "@/hooks/useDialog";
-import { useGetAttachmentQuery } from "@/services/email";
-import { useAuth } from "@/hooks/use-auth";
 import Chip from "./Chip";
-import Viewer from "./Viewer";
+import ViewerDialog from "@/sections/ViewerDialog";
+import useAttachmentDataUrl from "./useAttachmentDataUrl";
 
 interface AttachmentProps {
-    a: IThreadAttachmentRes;
+    a: IThreadAttachmentShortRes;
 }
 
 const Attachment: FC<AttachmentProps> = ({ a }) => {
     const [shouldLoad, start, stop] = useDialog();
 
-    const { user } = useAuth();
-    const { data, isLoading } = useGetAttachmentQuery(
-        {
-            userId: user?.id!,
-            messageId: a.messageId,
-            attachmentId: a.id,
-        },
-        { skip: !shouldLoad }
-    );
-    const { base64 } = data || {};
+    const [dataUrl, { isLoading }] = useAttachmentDataUrl(a, {
+        skip: !shouldLoad,
+    });
 
     const icon = isLoading ? (
         <CircularProgress size={15} />
@@ -49,11 +41,10 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
                 onClick={onClick}
             />
 
-            {shouldLoad && base64 ? (
-                <Viewer
-                    data={base64}
-                    mimeType="image/png"
-                    fileName={a.filename}
+            {shouldLoad && dataUrl ? (
+                <ViewerDialog
+                    url={dataUrl}
+                    mimeType={a.mimeType}
                     onClose={stop}
                 />
             ) : null}
@@ -61,7 +52,7 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
     );
 };
 
-const getAttachment = (a: IThreadAttachmentRes) => (
+const getAttachment = (a: IThreadAttachmentShortRes) => (
     <Attachment key={a.id} a={a} />
 );
 

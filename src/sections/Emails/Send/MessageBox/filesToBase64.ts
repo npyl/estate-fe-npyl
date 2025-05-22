@@ -16,7 +16,7 @@ const fileToBase64 = (file: File): Promise<IThreadAttachmentReq> => {
                 resolve({
                     base64,
                     name: file.name,
-                    type: file.type || "application/octet-stream",
+                    mimeType: file.type,
                 });
             } else {
                 reject(new Error("Failed to read file as string"));

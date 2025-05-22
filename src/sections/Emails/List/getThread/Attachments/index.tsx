@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Stack from "@mui/material/Stack";
-import { IThreadAttachmentRes } from "@/types/email";
+import { IThreadAttachmentShortRes } from "@/types/email";
 import getAttachment from "./getAttachment";
 
 interface AttachmentsProps {
-    attachments: IThreadAttachmentRes[];
+    attachments: IThreadAttachmentShortRes[];
 }
 
 const Attachments: FC<AttachmentsProps> = ({ attachments }) => (
