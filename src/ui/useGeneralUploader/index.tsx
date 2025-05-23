@@ -17,7 +17,10 @@ interface UploadResponse {
 type WithError<T> = { data: T } | { error: any };
 type OrUndefined<T> = T | undefined;
 
-type TStep0Cb = (f: File) => Promise<OrUndefined<AddFileRes>>;
+type TStep0Cb = <Res extends AddFileRes = AddFileRes>(
+    f: File
+) => Promise<OrUndefined<Res>>;
+
 type TStep1Cb = (
     f: OrUndefined<File>,
     res: AddFileRes
@@ -25,7 +28,7 @@ type TStep1Cb = (
 
 // ---------------------------------------------------------------------------------------------------------------------------
 
-type TUpload = (f: File[]) => Promise<void>;
+type TUpload = (f: File[]) => Promise<any>;
 
 interface IUploadProgress {
     key: string;
@@ -50,7 +53,7 @@ interface UseGeneralUploaderMethods {
  * onUploadFail:    `uploadFile` failed for one file
  */
 interface UseGeneralUploaderHandlers {
-    onFinish: VoidFunction;
+    onFinish: <Res extends AddFileRes = AddFileRes>(f: Res[]) => void;
     onAddFail?: VoidFunction;
     onUploadFail?: VoidFunction;
     onProgressUpdate?: (p: IUploadProgress) => void;
@@ -77,7 +80,7 @@ const useGeneralUploader = (
                 return;
             }
 
-            return res.data;
+            return res.data as any;
         },
         [METHODS.addFile, HANDLERS.onAddFail]
     );
@@ -151,9 +154,16 @@ const useGeneralUploader = (
 
             // INFO: call step1 (upload) sequentially
             const p = r.reduce(createUploadPromisesReducer(files), []);
-            await executeSequentially(p);
+            const res = await executeSequentially(p);
 
-            HANDLERS.onFinish();
+            HANDLERS.onFinish(r);
+
+            const data = res.reduce<UploadResponse[]>((acc, item) => {
+                if (item) acc.push(item);
+                return acc;
+            }, []);
+
+            return data;
         },
         [reduceAddFileRes, createUploadPromisesReducer, HANDLERS.onFinish]
     );

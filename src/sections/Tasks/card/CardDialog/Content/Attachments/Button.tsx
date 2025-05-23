@@ -1,11 +1,11 @@
 import { FC, useCallback } from "react";
-import useUploadAttachment from "./useUploadAttachment";
 import { attachmentsKey } from "../_constants";
 import { useFormContext } from "react-hook-form";
 import { useAttachmentsContext } from "./Context";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 import UploadTaskAttachment from "./Upload";
 import { Box, CircularProgress } from "@mui/material";
+import useAttachmentUpload from "@/ui/Tasks/useUploader";
 
 // ------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ const AttachmentsButton: FC<AttachmentsButtonProps> = ({ cardId }) => {
         setAttachments((old) => [...old, ...res]);
     }, []);
 
-    const { upload, isUploading } = useUploadAttachment(cardId, handleAdd);
+    const [upload, { isUploading }] = useAttachmentUpload(cardId, handleAdd);
 
     const { setValue, watch } = useFormContext();
 

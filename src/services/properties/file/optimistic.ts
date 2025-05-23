@@ -10,7 +10,7 @@ import {
 import { MutationLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { filesApiSlice } from ".";
 
-type OptimisticAddCb<T> = (
+type OptimisticAddOrRemoveCb<T> = (
     arg: IPropertyAddFileParams<T>,
     api: MutationLifecycleApi<
         IPropertyAddFileParams<T>,
@@ -20,7 +20,8 @@ type OptimisticAddCb<T> = (
     >
 ) => void;
 
-type OptimisticAddFileCb = OptimisticAddCb<IPropertyFileReq>;
+type OptimisticAddFileCb = OptimisticAddOrRemoveCb<IPropertyFileReq>;
+type OptimisticRemoveFileCb = OptimisticAddOrRemoveCb<string>;
 
 type OptimisticReorderCb = (
     arg: IPropertyFileManipulation<string[]>,
@@ -70,10 +71,10 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
         variant === "image"
             ? "getPropertyImages"
             : variant === "blueprint"
-            ? "getPropertyBlueprints"
-            : variant === "document"
-            ? "getPropertyDocuments"
-            : null;
+              ? "getPropertyBlueprints"
+              : variant === "document"
+                ? "getPropertyDocuments"
+                : null;
 
     if (!query) return;
 
@@ -111,6 +112,40 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
                 return draft;
             })
         );
+    } catch {
+        patchResult.undo();
+    }
+};
+
+export const optimisticRemoveFile: OptimisticRemoveFileCb = async (
+    { body: key, id, variant },
+    { dispatch, queryFulfilled }
+) => {
+    const query =
+        variant === "image"
+            ? "getPropertyImages"
+            : variant === "blueprint"
+              ? "getPropertyBlueprints"
+              : variant === "document"
+                ? "getPropertyDocuments"
+                : null;
+
+    // TODO: update for google-earth, etc.
+
+    if (!query) return;
+
+    const patchResult = dispatch(
+        filesApiSlice.util.updateQueryData(query, id, (draft) => {
+            const index = draft.findIndex((d) => d.key === key);
+
+            if (index !== -1) {
+                draft.splice(index, 1);
+            }
+        })
+    );
+
+    try {
+        await queryFulfilled;
     } catch {
         patchResult.undo();
     }

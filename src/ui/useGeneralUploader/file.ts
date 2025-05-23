@@ -4,7 +4,7 @@ const ERROR0 = "RESPONSE_ERROR";
 
 interface IUploadRes {
     success: boolean;
-    response?: Response;
+    response?: any;
     error?: ProgressEvent<EventTarget> | TUploadError;
 }
 
@@ -32,7 +32,7 @@ const uploadWithProgress = async (
         xhr.onload = () => {
             const res =
                 xhr.status === 200
-                    ? { success: true }
+                    ? { success: true, data: xhr.response }
                     : ({ success: false, error: ERROR0 } as const);
 
             resolve(res);

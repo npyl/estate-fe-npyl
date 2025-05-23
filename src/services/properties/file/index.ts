@@ -5,13 +5,13 @@ import {
     IPropertyFileReq,
     IPropertyBlueprint,
     IPropertyDocument,
-    TFileVariant,
     IPropertyFile,
 } from "src/types/file";
 
 import { properties } from "../properties";
 import {
     optimisticAddFile,
+    optimisticRemoveFile,
     optimisticBulkDeleteImages,
     optimisticDeleteImage,
     optimisticReorder,
@@ -30,20 +30,6 @@ import {
     reorderImagesWithVisibilityQueryFn,
     reorderQueryFn,
 } from "./queryFn";
-import { removeMetadata } from "./util";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { uploadWithProgress } from "@/ui/useGeneralUploader/file";
-
-interface UploadDocumentToAmazonProps {
-    variant: TFileVariant; // INFO: for image variant, we must also strip metadata
-    url: string;
-    file: File;
-    onProgressUpdate?: (p: number) => void;
-}
-
-interface UploadResponse {
-    success: boolean;
-}
 
 export const filesApiSlice = properties.injectEndpoints({
     endpoints: (builder) => ({
@@ -82,6 +68,21 @@ export const filesApiSlice = properties.injectEndpoints({
                 body,
             }),
             onQueryStarted: optimisticAddFile,
+        }),
+
+        removePropertyFile: builder.mutation<
+            IPropertyFileRes,
+            IPropertyAddFileParams<string>
+        >({
+            // INFO: removes BE entry for the specific key
+            query: ({ id, body: key, variant }) => ({
+                url: `/${id}/${variant}/upload-fail`,
+                method: "DELETE",
+                params: {
+                    key,
+                },
+            }),
+            onQueryStarted: optimisticRemoveFile,
         }),
 
         //
@@ -175,49 +176,6 @@ export const filesApiSlice = properties.injectEndpoints({
             }),
             invalidatesTags: ["PropertyByIdGoogleEarth"],
         }),
-
-        // ---------------------------------------------------------------
-        //  UPLOAD
-        // ---------------------------------------------------------------
-        uploadPropertyFile: builder.mutation<
-            UploadResponse,
-            UploadDocumentToAmazonProps
-        >({
-            // INFO: upload to amazon
-            async queryFn({ variant, url, file, onProgressUpdate }) {
-                try {
-                    const cleanFile =
-                        variant === "image" ? await removeMetadata(file) : file;
-
-                    const res = await uploadWithProgress(
-                        url,
-                        cleanFile,
-                        onProgressUpdate
-                    );
-
-                    if (!res.ok) {
-                        return {
-                            error: {
-                                status: "FETCH_ERROR",
-                                error: res.statusText,
-                            } as FetchBaseQueryError,
-                        };
-                    }
-
-                    return { data: { success: true } };
-                } catch (error) {
-                    return {
-                        error: {
-                            status: "FETCH_ERROR",
-                            error: error.message,
-                        } as FetchBaseQueryError,
-                    };
-                }
-            },
-            // WARN: Do not add the tags! We use Promise.all on uploadPropertyImage to wait for all the photos to upload.
-            //          This is because, every photo contains a non-null url, but it is not ready for fetching.
-            // invalidatesTags: ["Properties", "PropertyById"],
-        }),
     }),
 });
 
@@ -228,6 +186,7 @@ export const {
     useGetPropertyGoogleEarthQuery,
 
     useAddPropertyFileMutation,
+    useRemovePropertyFileMutation,
 
     useEditPropertyImageMutation,
     useBulkEditPropertyImagesMutation,
@@ -239,6 +198,4 @@ export const {
     useDeletePropertyBlueprintMutation,
     useDeletePropertyDocumentMutation,
     useDeletePropertyGoogleEarthMutation,
-
-    useUploadPropertyFileMutation,
 } = filesApiSlice;
