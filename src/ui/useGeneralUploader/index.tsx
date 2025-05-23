@@ -34,11 +34,21 @@ interface IUploadProgress {
 
 // ---------------------------------------------------------------------------------------------------------------------------
 
+/**
+ * addFile:     tells BE to allocate space for this and returns cdnUrl to upload to
+ * removeFile:  tells BE to de-allocate space (e.g. on unsuccessful update)
+ */
 interface UseGeneralUploaderMethods {
-    addFile: (f: File) => Promise<WithError<AddFileRes>>; // tells BE to allocate space for this and returns cdnUrl to upload to
-    removeFile: (key: string) => void; // tells BE to de-allocate space (e.g. on unsuccessful update)
+    addFile: (f: File) => Promise<WithError<AddFileRes>>;
+    removeFile: (key: string) => void;
 }
 
+/**
+ * onFinish:        called when everything is done; called even if there were failures (a.k.a. finish doesn't equal 100% success)
+ *
+ * onAddFail:       `addFile` failed for one file
+ * onUploadFail:    `uploadFile` failed for one file
+ */
 interface UseGeneralUploaderHandlers {
     onFinish: VoidFunction;
     onAddFail?: VoidFunction;
@@ -103,7 +113,7 @@ const useGeneralUploader = (
         [step1]
     );
 
-    const reduceAddFileResults = useCallback(
+    const reduceAddFileRes = useCallback(
         async (
             acc: Promise<AddFileRes[]>,
             file: File
@@ -135,10 +145,7 @@ const useGeneralUploader = (
     const upload: TUpload = useCallback(
         async (files) => {
             // INFO: call step0 (add file) in-parallel
-            const r = await files.reduce(
-                reduceAddFileResults,
-                Promise.resolve([])
-            );
+            const r = await files.reduce(reduceAddFileRes, Promise.resolve([]));
 
             // INFO: call step1 (upload) sequentially
             const p = r.reduce(createUploadPromisesReducer(files), []);
@@ -146,7 +153,7 @@ const useGeneralUploader = (
 
             HANDLERS.onFinish();
         },
-        [reduceAddFileResults, createUploadPromisesReducer, HANDLERS.onFinish]
+        [reduceAddFileRes, createUploadPromisesReducer, HANDLERS.onFinish]
     );
 
     return upload;
