@@ -54,8 +54,8 @@ interface UseGeneralUploaderMethods {
  */
 interface UseGeneralUploaderHandlers {
     onFinish: <Res extends AddFileRes = AddFileRes>(f: Res[]) => void;
-    onAddFail?: VoidFunction;
-    onUploadFail?: VoidFunction;
+    onAddFail?: (f: File) => void;
+    onUploadFail?: (key: string) => void;
     onProgressUpdate?: (p: IUploadProgress) => void;
 }
 
@@ -76,7 +76,7 @@ const useGeneralUploader = (
         async (f) => {
             const res = await METHODS.addFile(f);
             if ("error" in res) {
-                HANDLERS.onAddFail?.();
+                HANDLERS.onAddFail?.(f);
                 return;
             }
 
@@ -92,12 +92,12 @@ const useGeneralUploader = (
             // Sanity Checks
             if (!f || !type) {
                 METHODS.removeFile(key);
-                HANDLERS.onUploadFail?.();
+                HANDLERS.onUploadFail?.(key);
                 return;
             }
             if (!key || !url || !cdnUrl) {
                 METHODS.removeFile(key);
-                HANDLERS.onUploadFail?.();
+                HANDLERS.onUploadFail?.(key);
                 return;
             }
 
@@ -107,7 +107,7 @@ const useGeneralUploader = (
             );
 
             if (!res.success) {
-                HANDLERS.onUploadFail?.();
+                HANDLERS.onUploadFail?.(key);
                 return;
             }
 
