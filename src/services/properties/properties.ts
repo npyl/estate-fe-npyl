@@ -24,10 +24,6 @@ import {
     createRemoveTabAwareHook as rt,
 } from "@/services/_util";
 
-interface JustData<T> {
-    data: T;
-}
-
 export interface BulkEditRequest {
     propertyIds: number[];
     managerId?: number;
@@ -156,10 +152,7 @@ export const properties = apiWithTranslation({
         }),
 
         // mutations
-        createProperty: builder.mutation<
-            JustData<number>,
-            ICreatePropertyParams
-        >({
+        createProperty: builder.mutation<number, ICreatePropertyParams>({
             query: (params) => ({
                 url: "/create",
                 method: "POST",
@@ -498,4 +491,4 @@ export {
     useGetPDFQuery,
 };
 
-export type { IPropertyFilterParams };
+export type { IPropertyFilterParams, ICreatePropertyParams };
