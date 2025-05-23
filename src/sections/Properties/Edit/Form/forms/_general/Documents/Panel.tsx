@@ -3,7 +3,7 @@ import { Upload } from "src/components/upload";
 import { usePropertyDocuments } from "@/hooks/property";
 import { FC } from "react";
 import Panel from "@/components/Panel";
-import usePropertyUpload from "@/hooks/property/uploadFile";
+import usePropertyUpload from "@/ui/Property/useUploader";
 import { useDeletePropertyDocumentMutation } from "@/services/properties/file";
 
 interface Props {
@@ -15,7 +15,7 @@ const DocumentsPanel: FC<Props> = ({ onDocumentClick }) => {
 
     const { documents, propertyId } = usePropertyDocuments();
 
-    const { uploadFiles, isUploading } = usePropertyUpload("document");
+    const [uploadFiles, { isUploading }] = usePropertyUpload("document");
 
     const [deleteDocument, { isLoading: isDeleteLoading }] =
         useDeletePropertyDocumentMutation();

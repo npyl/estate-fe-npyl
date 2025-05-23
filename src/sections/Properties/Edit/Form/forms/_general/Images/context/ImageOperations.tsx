@@ -6,7 +6,7 @@ import {
     useReorderPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 } from "@/services/properties/file";
-import usePropertyUpload from "@/hooks/property/uploadFile";
+import usePropertyUpload from "@/ui/Property/useUploader";
 import { useUploadFileContext } from "./UploadProgress";
 
 type TUploadFiles = (f: File[]) => Promise<void>;
@@ -50,7 +50,7 @@ export const ImageOperationsProvider: React.FC<
 > = (props) => {
     const { setUploadProgress } = useUploadFileContext();
 
-    const { uploadFiles, isUploading } = usePropertyUpload(
+    const [uploadFiles, { isUploading }] = usePropertyUpload(
         "image",
         setUploadProgress
     );

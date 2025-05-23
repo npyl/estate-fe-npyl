@@ -1,6 +1,6 @@
 import Panel from "@/components/Panel";
 import { Upload } from "@/components/upload";
-import usePropertyUpload from "@/hooks/property/uploadFile";
+import usePropertyUpload from "@/ui/Property/useUploader";
 import {
     useDeletePropertyGoogleEarthMutation,
     useGetPropertyGoogleEarthQuery,
@@ -17,7 +17,7 @@ const GoogleEarth = () => {
     const { propertyId } = router.query;
 
     const { data, isLoading } = useGetPropertyGoogleEarthQuery(+propertyId!);
-    const { uploadFiles, isUploading } = usePropertyUpload("google-earth");
+    const [uploadFiles, { isUploading }] = usePropertyUpload("google-earth");
     const [remove] = useDeletePropertyGoogleEarthMutation();
 
     const files = data ? [data] : [];

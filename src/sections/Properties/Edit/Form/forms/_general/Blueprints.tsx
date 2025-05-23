@@ -3,16 +3,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDeletePropertyBlueprintMutation } from "src/services/properties";
 import { BlueprintViewer } from "../components/BlueprintViewer";
-import usePropertyUpload from "@/hooks/property/uploadFile";
 import { usePropertyBlueprints } from "@/hooks/property";
 import Panel from "@/components/Panel";
+import usePropertyUpload from "@/ui/Property/useUploader";
 
 const BlueprintsSection: React.FC = () => {
     const { t } = useTranslation();
 
     const { blueprints, propertyId } = usePropertyBlueprints();
 
-    const { uploadFiles, isUploading } = usePropertyUpload("blueprint");
+    const [uploadFiles, { isUploading }] = usePropertyUpload("blueprint");
 
     const [deleteBlueprint, { isLoading: isDeleting }] =
         useDeletePropertyBlueprintMutation();
