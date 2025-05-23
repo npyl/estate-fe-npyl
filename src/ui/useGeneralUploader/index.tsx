@@ -86,18 +86,24 @@ const useGeneralUploader = (
             const { type } = f || {};
             const { key, url, cdnUrl } = addRes;
 
+            // Sanity Checks
             if (!f || !type) {
+                METHODS.removeFile(key);
                 HANDLERS.onUploadFail?.();
                 return;
             }
             if (!key || !url || !cdnUrl) {
+                METHODS.removeFile(key);
                 HANDLERS.onUploadFail?.();
                 return;
             }
 
             // PUT to amazon url
-            await uploadWithProgress(url, f, (p) =>
-                HANDLERS.onProgressUpdate?.({ key, p })
+            await uploadWithProgress(
+                url,
+                f,
+                HANDLERS.onUploadFail ?? (() => {}),
+                (p) => HANDLERS.onProgressUpdate?.({ key, p })
             );
 
             return { key, cdnUrl };
@@ -106,12 +112,6 @@ const useGeneralUploader = (
     );
 
     // ------------------------------------------------------------------------
-
-    const getUploadPromise = useCallback(
-        (files: File[]) => (r: AddFileRes, i: number) => () =>
-            step1(files.at(i), r),
-        [step1]
-    );
 
     const reduceAddFileRes = useCallback(
         async (
@@ -133,11 +133,11 @@ const useGeneralUploader = (
                 addFileResult: AddFileRes,
                 index: number
             ) => {
-                const p = getUploadPromise(files)(addFileResult, index);
+                const p = () => step1(files.at(index), addFileResult);
                 if (p) acc.push(p);
                 return acc;
             },
-        [getUploadPromise]
+        [step1]
     );
 
     // -------------------------------------------------------------------------------
