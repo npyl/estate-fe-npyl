@@ -99,12 +99,14 @@ const useGeneralUploader = (
             }
 
             // PUT to amazon url
-            await uploadWithProgress(
-                url,
-                f,
-                HANDLERS.onUploadFail ?? (() => {}),
-                (p) => HANDLERS.onProgressUpdate?.({ key, p })
+            const res = await uploadWithProgress(url, f, (p) =>
+                HANDLERS.onProgressUpdate?.({ key, p })
             );
+
+            if (!res.success) {
+                HANDLERS.onUploadFail?.();
+                return;
+            }
 
             return { key, cdnUrl };
         },

@@ -1,16 +1,26 @@
+type TUploadError = "RESPONSE_ERROR";
+
+const ERROR0 = "RESPONSE_ERROR";
+
+interface IUploadRes {
+    success: boolean;
+    response?: Response;
+    error?: ProgressEvent<EventTarget> | TUploadError;
+}
+
 /**
- * Used when uploading to Amazon (supports upload progress %)
+ * Upload file to Amazon w/  promise
  * @param url amazon url to upload to
- * @param file -
- * @param onProgressUpdate
- * @returns
+ * @param file the Blob or File object to upload
+ * @param onProgressUpdate (%) upload progress
+ * @returns promise; on error or timeout rejects with the actual error
  */
-async function uploadWithProgress(
+const uploadWithProgress = async (
     url: string,
     file: Blob | File,
     onProgressUpdate?: (p: number) => void
-): Promise<Response> {
-    return new Promise((resolve, reject) => {
+): Promise<IUploadRes> =>
+    new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
 
         xhr.upload.onprogress = ({ loaded, total, lengthComputable }) => {
@@ -20,25 +30,20 @@ async function uploadWithProgress(
         };
 
         xhr.onload = () => {
-            if (xhr.status === 200) {
-                resolve(
-                    new Response(xhr.response, {
-                        status: xhr.status,
-                        statusText: xhr.statusText,
-                    })
-                );
-            } else {
-                reject(xhr.statusText || "");
-            }
+            const res =
+                xhr.status === 200
+                    ? { success: true }
+                    : ({ success: false, error: ERROR0 } as const);
+
+            resolve(res);
         };
 
-        xhr.onerror = () => reject("Network error occurred");
-        xhr.ontimeout = () => reject("Request timed out");
+        xhr.onerror = (error) => resolve({ success: false, error });
+        xhr.ontimeout = (error) => resolve({ success: false, error });
 
         xhr.open("PUT", url, true);
         xhr.setRequestHeader("Content-Type", file.type);
         xhr.send(file);
     });
-}
 
 export { uploadWithProgress };
