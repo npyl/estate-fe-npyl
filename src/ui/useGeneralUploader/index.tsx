@@ -1,4 +1,3 @@
-import useDialog from "@/hooks/useDialog";
 import executeSequentially from "@/utils/executeSequentially";
 import { useCallback } from "react";
 import { uploadWithProgress } from "./file";
@@ -15,7 +14,7 @@ interface UploadResponse {
     cdnUrl: string;
 }
 
-type WithError<T> = T | { error: string };
+type WithError<T> = { data: T } | { error: any };
 type OrUndefined<T> = T | undefined;
 
 type TStep0Cb = (f: File) => Promise<OrUndefined<AddFileRes>>;
@@ -26,15 +25,28 @@ type TStep1Cb = (
 
 // ---------------------------------------------------------------------------------------------------------------------------
 
+type TUpload = (f: File[]) => Promise<void>;
+
 interface IUploadProgress {
     key: string;
     p: number;
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------
+
 interface UseGeneralUploaderMethods {
     addFile: (f: File) => Promise<WithError<AddFileRes>>; // tells BE to allocate space for this and returns cdnUrl to upload to
-    removeFile: () => void; // tells BE to de-allocate space (e.g. on unsuccessful update)
+    removeFile: (key: string) => void; // tells BE to de-allocate space (e.g. on unsuccessful update)
 }
+
+interface UseGeneralUploaderHandlers {
+    onFinish: VoidFunction;
+    onAddFail?: VoidFunction;
+    onUploadFail?: VoidFunction;
+    onProgressUpdate?: (p: IUploadProgress) => void;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------
 
 /**
  *  useGeneralUploader
@@ -45,50 +57,42 @@ interface UseGeneralUploaderMethods {
  */
 const useGeneralUploader = (
     METHODS: UseGeneralUploaderMethods,
-    // ...
-    onFinish: VoidFunction,
-    onAddFail: VoidFunction,
-    onUploadFail: VoidFunction,
-    onProgressUpdate?: (p: IUploadProgress) => void
+    HANDLERS: UseGeneralUploaderHandlers
 ) => {
-    const [isUploading, startUploading, stopUploading] = useDialog();
-
     const step0: TStep0Cb = useCallback(
         async (f) => {
             const res = await METHODS.addFile(f);
             if ("error" in res) {
-                onAddFail();
+                HANDLERS.onAddFail?.();
                 return;
             }
 
-            return res;
+            return res.data;
         },
-        [METHODS.addFile, onAddFail]
+        [METHODS.addFile, HANDLERS.onAddFail]
     );
     const step1: TStep1Cb = useCallback(
         async (f, addRes) => {
             const { type } = f || {};
             const { key, url, cdnUrl } = addRes;
 
-            if (!type) {
-                onUploadFail();
+            if (!f || !type) {
+                HANDLERS.onUploadFail?.();
                 return;
             }
             if (!key || !url || !cdnUrl) {
-                onUploadFail();
+                HANDLERS.onUploadFail?.();
                 return;
             }
 
             // PUT to amazon url
-            // await uploadWithProgress({
-            //     url,
-            //     f,
-            //     onProgressUpdate: (p) => onProgressUpdate?.({ key, p }),
-            // });
+            await uploadWithProgress(url, f, (p) =>
+                HANDLERS.onProgressUpdate?.({ key, p })
+            );
 
             return { key, cdnUrl };
         },
-        [onProgressUpdate, onUploadFail]
+        [HANDLERS.onProgressUpdate, HANDLERS.onUploadFail]
     );
 
     // ------------------------------------------------------------------------
@@ -128,8 +132,8 @@ const useGeneralUploader = (
 
     // -------------------------------------------------------------------------------
 
-    const upload = useCallback(
-        async (files: File[]) => {
+    const upload: TUpload = useCallback(
+        async (files) => {
             // INFO: call step0 (add file) in-parallel
             const r = await files.reduce(
                 reduceAddFileResults,
@@ -140,12 +144,13 @@ const useGeneralUploader = (
             const p = r.reduce(createUploadPromisesReducer(files), []);
             await executeSequentially(p);
 
-            onFinish();
+            HANDLERS.onFinish();
         },
-        [reduceAddFileResults, createUploadPromisesReducer, onFinish]
+        [reduceAddFileResults, createUploadPromisesReducer, HANDLERS.onFinish]
     );
 
-    return { upload };
+    return upload;
 };
 
+export type { TUpload, UseGeneralUploaderMethods, UseGeneralUploaderHandlers };
 export default useGeneralUploader;
