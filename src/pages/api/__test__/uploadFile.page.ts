@@ -1,4 +1,5 @@
 import sleep from "@/utils/sleep";
+import { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 
 export const config = {
@@ -63,6 +64,13 @@ export default async function handler(
                 reject(err);
             });
         });
+
+        const url = new URL(req.url!, `http://${req.headers.host}`);
+        const slow = url.searchParams.get("slow");
+        const DELAY = slow ? toNumberSafe(slow) : -1;
+
+        console.log("awaiting: ", DELAY);
+        await sleep(DELAY);
 
         // Combine all chunks into a single buffer
         const fileBuffer = Buffer.concat(chunks);

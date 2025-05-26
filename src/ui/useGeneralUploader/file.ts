@@ -1,8 +1,13 @@
 const ERROR0 = "RESPONSE_ERROR";
 const ERROR1 = "GENERAL_ERROR";
 const ERROR_TIMEOUT = "TIMEOUT_ERROR";
+const ERROR_DISCONNECT = "DISCONNECT_ERROR";
 
-type TUploadError = typeof ERROR0 | typeof ERROR1 | typeof ERROR_TIMEOUT;
+type TUploadError =
+    | typeof ERROR0
+    | typeof ERROR1
+    | typeof ERROR_TIMEOUT
+    | typeof ERROR_DISCONNECT;
 
 interface IUploadRes {
     success: boolean;
@@ -26,6 +31,12 @@ const uploadWithProgress = async (
 ): Promise<IUploadRes> =>
     new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
+
+        const onDisconnect = () => {
+            resolve({ success: false, error: "DISCONNECT_ERROR" });
+        };
+
+        window.addEventListener("offline", onDisconnect);
 
         xhr.upload.onprogress = ({ loaded, total, lengthComputable }) => {
             if (!lengthComputable) return;
@@ -57,6 +68,8 @@ const uploadWithProgress = async (
                 errorMessage = `Connection error at state ${xhr.readyState}`;
             }
 
+            window.removeEventListener("online", onDisconnect);
+
             resolve({
                 success: false,
                 error: ERROR1,
@@ -70,4 +83,11 @@ const uploadWithProgress = async (
         xhr.send(file);
     });
 
-export { uploadWithProgress };
+export {
+    uploadWithProgress,
+    // ...
+    ERROR0,
+    ERROR1,
+    ERROR_TIMEOUT,
+    ERROR_DISCONNECT,
+};

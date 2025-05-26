@@ -14,18 +14,30 @@ import {
 } from "./uploadWithProgress.comp";
 import Tester from "./uploadWithProgress.comp";
 import path from "path";
+import injectFiles from "../_util/injectFiles";
 import expectValue from "../_util/expectValue";
+import { ERROR_DISCONNECT } from "../../src/ui/useGeneralUploader/file";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
 
-test("Upload w/ Percentage", async ({ mount, page }) => {
-    const component = await mount(<Tester />);
+const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
-    // wait for filechooser
-    const fileChooserPromise = page.waitForEvent("filechooser");
-    await component.getByTestId(INPUT_ID).click();
-    const fileChooser = await fileChooserPromise;
-    await fileChooser.setFiles(FILE);
+const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
+const mockUrl1 = `${mockUrl0}?slow=${DELAY}`;
+
+const OFFLINE = {
+    offline: true,
+    downloadThroughput: 0,
+    uploadThroughput: 0,
+    latency: 0,
+};
+
+// ------------------------------------------------------------------------------
+
+test("Upload w/ Percentage", async ({ mount }) => {
+    const component = await mount(<Tester mockUrl={mockUrl0} />);
+
+    await injectFiles(component, INPUT_ID, [FILE]);
 
     // Now click upload button
     await component.getByTestId(UPLOAD_BTN_ID).click();
@@ -37,4 +49,25 @@ test("Upload w/ Percentage", async ({ mount, page }) => {
 
     // Upload Result
     await expectValue(component, VALUE_ID, SUCCESS_RES);
+});
+
+test("Disconnect", async ({ mount, context, page }) => {
+    test.setTimeout(DELAY);
+    const cdpSession = await context.newCDPSession(page);
+
+    const component = await mount(<Tester mockUrl={mockUrl1} />);
+
+    await injectFiles(component, INPUT_ID, [FILE]);
+
+    // Click Upload Button
+    await component.getByTestId(UPLOAD_BTN_ID).click();
+
+    // Wait until >=10%
+    await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
+
+    // Trigger disconnect
+    await cdpSession.send("Network.emulateNetworkConditions", OFFLINE);
+
+    // Upload Result
+    await expectValue(component, VALUE_ID, ERROR_DISCONNECT);
 });

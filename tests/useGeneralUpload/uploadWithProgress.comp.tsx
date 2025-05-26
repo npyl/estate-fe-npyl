@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { FC, useCallback, useRef, useState } from "react";
 import { uploadWithProgress } from "../../src/ui/useGeneralUploader/file";
 
 const UPLOAD_BTN_ID = "upload-btn-testid";
@@ -15,9 +15,11 @@ const PERCENTAGE_90_VALUE = "90";
 
 const SUCCESS_RES = "success-res";
 
-const mockUrl = "http://127.0.0.1:3000/api/__test__/uploadFile";
+interface TesterProps {
+    mockUrl: string;
+}
 
-const Tester = () => {
+const Tester: FC<TesterProps> = ({ mockUrl }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [value, setValue] = useState("");
@@ -46,7 +48,8 @@ const Tester = () => {
 
         const res = await uploadWithProgress(mockUrl, file, onPercentage);
         if (!res.success) {
-            setValue(`${res.error} ${res.errorDescription}`);
+            const v = `${res.error || ""} ${res.errorDescription || ""}`.trim();
+            setValue(v);
             return;
         }
 
