@@ -1,65 +1,20 @@
 import executeSequentially from "@/utils/executeSequentially";
 import { useCallback } from "react";
 import { uploadWithProgress } from "./file";
+import {
+    AddFileRes,
+    OrUndefined,
+    TStep0Cb,
+    TStep1Cb,
+    TUpload,
+    UploadResponse,
+    // ...
+    UseGeneralUploaderHandlers,
+    UseGeneralUploaderMethods,
+} from "./types";
+import useReport from "./useReport";
 
-// ----------------------------------------------------------------------------------------------------------------------
-
-interface AddFileRes {
-    key: string;
-    url: string; // amazon to PUT image
-    cdnUrl: string; // where image **WILL** be downloadable from when PUT finishes
-}
-interface UploadResponse {
-    key: string;
-    cdnUrl: string;
-}
-
-type WithError<T> = { data: T } | { error: any };
-type OrUndefined<T> = T | undefined;
-
-type TStep0Cb = <Res extends AddFileRes = AddFileRes>(
-    f: File
-) => Promise<OrUndefined<Res>>;
-
-type TStep1Cb = (
-    f: OrUndefined<File>,
-    res: AddFileRes
-) => Promise<OrUndefined<UploadResponse>>;
-
-// ---------------------------------------------------------------------------------------------------------------------------
-
-type TUpload = (f: File[]) => Promise<any>;
-
-interface IUploadProgress {
-    key: string;
-    p: number;
-}
-
-// ---------------------------------------------------------------------------------------------------------------------------
-
-/**
- * addFile:     tells BE to allocate space for this and returns cdnUrl to upload to
- * removeFile:  tells BE to de-allocate space (e.g. on unsuccessful update)
- */
-interface UseGeneralUploaderMethods {
-    addFile: (f: File) => Promise<WithError<AddFileRes>>;
-    removeFile: (key: string) => void;
-}
-
-/**
- * onFinish:        called when everything is done; called even if there were failures (a.k.a. finish doesn't equal 100% success)
- *
- * onAddFail:       `addFile` failed for one file
- * onUploadFail:    `uploadFile` failed for one file
- */
-interface UseGeneralUploaderHandlers {
-    onFinish: <Res extends AddFileRes = AddFileRes>(f: Res[]) => void;
-    onAddFail?: (f: File) => void;
-    onUploadFail?: (key: string) => void;
-    onProgressUpdate?: (p: IUploadProgress) => void;
-}
-
-// ---------------------------------------------------------------------------------------------------------------------------
+type UploadPromise = () => Promise<OrUndefined<UploadResponse>>;
 
 /**
  *  useGeneralUploader
@@ -72,17 +27,21 @@ const useGeneralUploader = (
     METHODS: UseGeneralUploaderMethods,
     HANDLERS: UseGeneralUploaderHandlers
 ) => {
+    const { onAddFail, onUploadFail, onFinish } = useReport(HANDLERS);
+
+    // ------------------------------------------------------------------------
+
     const step0: TStep0Cb = useCallback(
         async (f) => {
             const res = await METHODS.addFile(f);
             if ("error" in res) {
-                HANDLERS.onAddFail?.(f);
+                onAddFail(f);
                 return;
             }
 
             return res.data as any;
         },
-        [METHODS.addFile, HANDLERS.onAddFail]
+        [METHODS.addFile, onAddFail]
     );
     const step1: TStep1Cb = useCallback(
         async (f, addRes) => {
@@ -92,12 +51,12 @@ const useGeneralUploader = (
             // Sanity Checks
             if (!f || !type) {
                 METHODS.removeFile(key);
-                HANDLERS.onUploadFail?.(key);
+                onUploadFail(key);
                 return;
             }
             if (!key || !url || !cdnUrl) {
                 METHODS.removeFile(key);
-                HANDLERS.onUploadFail?.(key);
+                onUploadFail(key);
                 return;
             }
 
@@ -107,13 +66,13 @@ const useGeneralUploader = (
             );
 
             if (!res.success) {
-                HANDLERS.onUploadFail?.(key);
+                onUploadFail(key);
                 return;
             }
 
             return { key, cdnUrl };
         },
-        [HANDLERS.onProgressUpdate, HANDLERS.onUploadFail]
+        [HANDLERS.onProgressUpdate, onUploadFail]
     );
 
     // ------------------------------------------------------------------------
@@ -134,7 +93,7 @@ const useGeneralUploader = (
     const createUploadPromisesReducer = useCallback(
         (files: File[]) =>
             (
-                acc: Array<() => Promise<OrUndefined<UploadResponse>>>,
+                acc: UploadPromise[],
                 addFileResult: AddFileRes,
                 index: number
             ) => {
@@ -156,16 +115,9 @@ const useGeneralUploader = (
             const p = r.reduce(createUploadPromisesReducer(files), []);
             const res = await executeSequentially(p);
 
-            HANDLERS.onFinish(r);
-
-            const data = res.reduce<UploadResponse[]>((acc, item) => {
-                if (item) acc.push(item);
-                return acc;
-            }, []);
-
-            return data;
+            return onFinish(res);
         },
-        [reduceAddFileRes, createUploadPromisesReducer, HANDLERS.onFinish]
+        [reduceAddFileRes, createUploadPromisesReducer]
     );
 
     return upload;
