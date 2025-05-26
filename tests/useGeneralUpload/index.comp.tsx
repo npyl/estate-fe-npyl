@@ -1,6 +1,9 @@
-import { useCallback, useRef, useState } from "react";
+import { FC, useCallback, useRef, useState } from "react";
 import useGeneralUploader from "../../src/ui/useGeneralUploader";
-import { UseGeneralUploaderMethods } from "../../src/ui/useGeneralUploader/types";
+import {
+    AddFileRes,
+    UseGeneralUploaderMethods,
+} from "../../src/ui/useGeneralUploader/types";
 
 const UPLOAD_BTN_ID = "upload-btn-testid";
 const INPUT_ID = "input-test-id";
@@ -9,24 +12,43 @@ const VALUE_ID = "value-id";
 
 const SUCCESS_RES = "success-res";
 
-const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
+// -----------------------------------------------------------------------
 
 type TAddFileCb = UseGeneralUploaderMethods["addFile"];
 
-const Tester = () => {
-    const inputRef = useRef<HTMLInputElement>(null);
+const useStore = (url: string) => {
+    const [fileRes, setFileRes] = useState<AddFileRes[]>([]);
 
-    const addFile: TAddFileCb = useCallback(
-        async () => ({
-            data: {
-                key: `key-${Math.random()}`,
-                cdnUrl: `cdnUrl-${Math.random()}`,
-                url: mockUrl0,
-            },
-        }),
+    const addFile: TAddFileCb = useCallback(async () => {
+        const r = {
+            key: `key-${Math.random()}`,
+            cdnUrl: `cdnUrl-${Math.random()}`,
+            url,
+        };
+
+        setFileRes((old) => [...old, r]);
+
+        return { data: r };
+    }, []);
+    const removeFile = useCallback(
+        (k: string) => setFileRes((old) => old.filter(({ key }) => key !== k)),
         []
     );
-    const removeFile = useCallback(() => {}, []);
+
+    return [fileRes, addFile, removeFile] as const;
+};
+
+// -----------------------------------------------------------------------
+
+interface TesterProps {
+    mockUrl: string;
+}
+
+const Tester: FC<TesterProps> = ({ mockUrl }) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const [files, addFile, removeFile] = useStore(mockUrl);
+
     const upload = useGeneralUploader({ addFile, removeFile }, {});
 
     const [value, setValue] = useState("");
