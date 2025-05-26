@@ -11,6 +11,11 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    // Prevent running in production
+    if (process.env.NODE_ENV === "production") {
+        return res.status(404).json({ error: "Not found" });
+    }
+
     // Set CORS headers for all requests
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
