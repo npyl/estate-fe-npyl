@@ -1,11 +1,15 @@
-type TUploadError = "RESPONSE_ERROR";
-
 const ERROR0 = "RESPONSE_ERROR";
+const ERROR1 = "GENERAL_ERROR";
+const ERROR_TIMEOUT = "TIMEOUT_ERROR";
+
+type TUploadError = typeof ERROR0 | typeof ERROR1 | typeof ERROR_TIMEOUT;
 
 interface IUploadRes {
     success: boolean;
     response?: any;
-    error?: ProgressEvent<EventTarget> | TUploadError;
+
+    error?: TUploadError;
+    errorDescription?: string;
 }
 
 /**
@@ -38,8 +42,28 @@ const uploadWithProgress = async (
             resolve(res);
         };
 
-        xhr.onerror = (error) => resolve({ success: false, error });
-        xhr.ontimeout = (error) => resolve({ success: false, error });
+        xhr.onerror = () => {
+            let errorMessage = "Network error during upload";
+
+            // Try to get more specific error info
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 0) {
+                    errorMessage =
+                        "Network error: No response from server (possibly CORS, network, or firewall issue)";
+                } else {
+                    errorMessage = `HTTP error: ${xhr.status}`;
+                }
+            } else {
+                errorMessage = `Connection error at state ${xhr.readyState}`;
+            }
+
+            resolve({
+                success: false,
+                error: ERROR1,
+                errorDescription: errorMessage,
+            });
+        };
+        xhr.ontimeout = () => resolve({ success: false, error: ERROR_TIMEOUT });
 
         xhr.open("PUT", url, true);
         xhr.setRequestHeader("Content-Type", file.type);
