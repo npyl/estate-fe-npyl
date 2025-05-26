@@ -1,8 +1,7 @@
 import { FC, useCallback } from "react";
 import { attachmentsKey } from "../_constants";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useAttachmentsContext } from "./Context";
-import { IAddAttachmentRes } from "@/services/tasks/types";
 import UploadTaskAttachment from "./Upload";
 import { Box, CircularProgress } from "@mui/material";
 import useAttachmentUpload from "@/ui/Tasks/useUploader";
@@ -16,29 +15,26 @@ interface AttachmentsButtonProps {
 const AttachmentsButton: FC<AttachmentsButtonProps> = ({ cardId }) => {
     const { setAttachments } = useAttachmentsContext();
 
-    const handleAdd = useCallback((res: IAddAttachmentRes[]) => {
-        setAttachments((old) => [...old, ...res]);
-    }, []);
+    const [upload, { isUploading }] = useAttachmentUpload(cardId);
 
-    const [upload, { isUploading }] = useAttachmentUpload(cardId, handleAdd);
+    const { setValue } = useFormContext();
 
-    const { setValue, watch } = useFormContext();
+    const existingIds = useWatch({ name: attachmentsKey });
 
     const handleFiles = useCallback(
         async (files: File[]) => {
             // BE
-            const ids = await upload(files);
+            const { ids, res } = await upload(files);
 
-            //  update form attachments
-            const existingIds = watch(attachmentsKey) || [];
+            if (cardId === undefined && ids.length > 0) {
+                setAttachments((old) => [...old, ...res]);
 
-            if (cardId === undefined) {
                 setValue(attachmentsKey, [...existingIds, ...ids], {
                     shouldDirty: true,
                 });
             }
         },
-        [upload, cardId, watch, setValue]
+        [upload, existingIds, cardId]
     );
 
     return (

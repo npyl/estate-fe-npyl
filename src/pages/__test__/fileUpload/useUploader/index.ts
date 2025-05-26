@@ -7,34 +7,17 @@ import useGeneralUploader, {
 import { useCallback } from "react";
 import useMETHODS from "./useMETHODS";
 
-const REGISTRY = new Map<string, string>();
-
-const useHANDLERS = (
-    _onFinish: (res: boolean) => void
-): UseGeneralUploaderHandlers => {
+const useHANDLERS = (): UseGeneralUploaderHandlers => {
     return {
-        onFinish: () => {
-            _onFinish(REGISTRY.size === 0);
-        },
-
-        onAddFail: (f: File) => {
-            REGISTRY.set(f.name, "wtvr0");
-        },
-        onUploadFail: (key: string) => {
-            REGISTRY.set(key, "wtvr1");
-        },
-
+        onAddFail: (f: File) => {},
+        onUploadFail: (key: string) => {},
         onProgressUpdate: () => {},
     };
 };
 
-const usePropertyUpload = (
-    variant: TFileVariant,
-    propertyId: number,
-    onFinish: (b: boolean) => void
-) => {
+const usePropertyUpload = (variant: TFileVariant, propertyId: number) => {
     const METHODS = useMETHODS(variant, propertyId);
-    const HANDLERS = useHANDLERS(onFinish);
+    const HANDLERS = useHANDLERS();
 
     // ---------------------------------------------------------------
 
@@ -43,8 +26,9 @@ const usePropertyUpload = (
     const [isUploading, startUploading, stopUploading] = useDialog();
     const uploadFiles: TUpload = useCallback(async (f) => {
         startUploading();
-        await upload(f);
+        const res = await upload(f);
         stopUploading();
+        return res;
     }, []);
 
     return [uploadFiles, { isUploading }] as const;

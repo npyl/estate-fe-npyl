@@ -1,5 +1,5 @@
 import useDialog from "@/hooks/useDialog";
-import useGeneralUploader, { TUpload } from "@/ui/useGeneralUploader";
+import useGeneralUploader from "@/ui/useGeneralUploader";
 import { useCallback } from "react";
 import useMETHODS from "./useMETHODS";
 import useHANDLERS from "./useHANDLERS";
@@ -14,7 +14,7 @@ const useCompanyUpload = (variant: CompanyImageType) => {
     const upload = useGeneralUploader(METHODS, HANDLERS);
 
     const [isUploading, startUploading, stopUploading] = useDialog();
-    const uploadFiles: TUpload = useCallback(async (f) => {
+    const uploadFiles = useCallback(async (f: File[]) => {
         startUploading();
         await upload(f);
         stopUploading();

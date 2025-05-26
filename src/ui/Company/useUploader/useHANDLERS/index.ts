@@ -9,10 +9,8 @@ const useHANDLERS = (): UseGeneralUploaderHandlers => {
     const onUploadFail = useCallback(() => {
         errorToast("Fail to upload file: ...");
     }, []);
-    const onFinish = useCallback(() => {}, []);
 
     return {
-        onFinish,
         onAddFail,
         onUploadFail,
     };

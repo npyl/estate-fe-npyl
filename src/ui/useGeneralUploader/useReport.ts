@@ -1,16 +1,10 @@
 import { useCallback, useRef } from "react";
-import {
-    IUploadResult,
-    OrUndefined,
-    UploadResponse,
-    UseGeneralUploaderHandlers,
-} from "./types";
+import { AddFileRes, IUploadResult, UseGeneralUploaderHandlers } from "./types";
 
 // ------------------------------------------------------------------------
 
 const INITIAL_RESULT: IUploadResult = {
     success: false,
-    data: [],
     report: {
         uploaded: [],
         addFails: [],
@@ -37,18 +31,15 @@ const useReport = (HANDLERS: UseGeneralUploaderHandlers) => {
         [HANDLERS.onUploadFail]
     );
 
-    const onFinish = useCallback((res: OrUndefined<UploadResponse>[]) => {
+    const onFinish = useCallback((addFileRes: AddFileRes[]) => {
         const { addFails, uploadFails } = result.current.report;
 
         // Calculate Success
         result.current.success =
             addFails.length === 0 && uploadFails.length === 0;
 
-        // Prepare response data
-        result.current.data = res.reduce<UploadResponse[]>((acc, item) => {
-            if (item) acc.push(item);
-            return acc;
-        }, []);
+        // Prepare uploaded
+        result.current.report.uploaded = addFileRes;
 
         return result.current;
     }, []);

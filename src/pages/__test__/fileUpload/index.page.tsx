@@ -35,11 +35,8 @@ const Tester: FC<TesterProps> = ({ id }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [value, setValue] = useState(FAILURE_RES);
-    const onFinish = (b: boolean) => {
-        if (b) setValue(SUCCESS_RES);
-    };
 
-    const [upload] = usePropertyUpload("image", id, onFinish);
+    const [upload] = usePropertyUpload("image", id);
 
     const onUploadClick = useCallback(async () => {
         const list = inputRef.current?.files;
@@ -47,7 +44,10 @@ const Tester: FC<TesterProps> = ({ id }) => {
 
         const files = Array.from(list);
 
-        await upload(files);
+        const res = await upload(files);
+        if (!res.success) return;
+
+        setValue(SUCCESS_RES);
     }, []);
 
     return (

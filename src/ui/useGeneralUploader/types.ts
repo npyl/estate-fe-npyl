@@ -30,15 +30,13 @@ interface IUploadProgress {
 // ---------------------------------------------------------------------------------------------------------------------------
 
 interface IUploadReport {
-    uploaded: string[]; // keys
-
+    uploaded: AddFileRes[];
     addFails: File[];
     uploadFails: string[]; // keys
 }
 
 interface IUploadResult {
     success: boolean;
-    data: any[]; // data contained in response of each step0 promise
     report: IUploadReport;
 }
 
