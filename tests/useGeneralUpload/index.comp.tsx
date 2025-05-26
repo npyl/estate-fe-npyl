@@ -20,8 +20,6 @@ const INITIAL_VALUE = "";
 type TAddFileCb = UseGeneralUploaderMethods["addFile"];
 
 const useStore = (url: string) => {
-    const [fileRes, setFileRes] = useState<AddFileRes[]>([]);
-
     const addFile: TAddFileCb = useCallback(async () => {
         const r: AddFileRes = {
             key: `key-${Math.random()}`,
@@ -29,16 +27,11 @@ const useStore = (url: string) => {
             url,
         };
 
-        setFileRes((old) => [...old, r]);
-
         return { data: r };
     }, [url]);
-    const removeFile = useCallback(
-        (k: string) => setFileRes((old) => old.filter(({ key }) => key !== k)),
-        []
-    );
+    const removeFile = useCallback(() => {}, []);
 
-    return [fileRes, addFile, removeFile] as const;
+    return [addFile, removeFile] as const;
 };
 
 // -----------------------------------------------------------------------
@@ -50,7 +43,7 @@ interface TesterProps {
 const Tester: FC<TesterProps> = ({ mockUrl }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [files, addFile, removeFile] = useStore(mockUrl);
+    const [addFile, removeFile] = useStore(mockUrl);
 
     const upload = useGeneralUploader({ addFile, removeFile }, {});
 

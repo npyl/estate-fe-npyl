@@ -4,13 +4,7 @@ import Tester from "./index.comp";
 import path from "path";
 import injectFiles from "../_util/injectFiles";
 import { IUploadResult } from "../../src/ui/useGeneralUploader/types";
-
-const OFFLINE = {
-    offline: true,
-    downloadThroughput: 0,
-    uploadThroughput: 0,
-    latency: 0,
-};
+import runOffline from "../_util/runInNetworkMode/runOffline";
 
 const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
@@ -80,15 +74,14 @@ test("Disconnect", async ({ mount, context, page }) => {
     // Click Upload Button
     await component.getByTestId(UPLOAD_BTN_ID).click();
 
-    // Trigger disconnect
-    await cdpSession.send("Network.emulateNetworkConditions", OFFLINE);
+    await runOffline(cdpSession, async () => {
+        const parsed = await getResult(component);
 
-    const parsed = await getResult(component);
+        expect(parsed.success).toBe(false);
+        expect(parsed.report.addFails.length).toBe(0);
+        expect(parsed.report.uploadFails.length).toBeGreaterThan(0); // at least one fail (e.g. on very fast connection)
 
-    expect(parsed.success).toBe(false);
-    expect(parsed.report.addFails.length).toBe(0);
-    expect(parsed.report.uploadFails.length).toBeGreaterThan(0); // at least one fail (e.g. on very fast connection)
-
-    // TODO: ... fix this
-    // expect(parsed.report.uploaded.length).toBe(0);
+        // TODO: ... fix this
+        // expect(parsed.report.uploaded.length).toBe(0);
+    });
 });

@@ -20,6 +20,7 @@ import {
     ERROR_RESPONSE,
     ERROR_DISCONNECT,
 } from "../../src/ui/useGeneralUploader/file";
+import runOffline from "../_util/runInNetworkMode/runOffline";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
 
@@ -28,13 +29,6 @@ const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
 const mockUrl1 = `${mockUrl0}?slow=${DELAY}`;
 const mockUrl2 = `${mockUrl0}?shouldFail=1`;
-
-const OFFLINE = {
-    offline: true,
-    downloadThroughput: 0,
-    uploadThroughput: 0,
-    latency: 0,
-};
 
 // ------------------------------------------------------------------------------
 
@@ -75,11 +69,10 @@ test("Disconnect", async ({ mount, context, page }) => {
     // Wait until >=10%
     await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
 
-    // Trigger disconnect
-    await cdpSession.send("Network.emulateNetworkConditions", OFFLINE);
-
-    // Upload Result
-    await expectValue(component, VALUE_ID, ERROR_DISCONNECT);
+    await runOffline(cdpSession, async () => {
+        // Upload Result
+        await expectValue(component, VALUE_ID, ERROR_DISCONNECT);
+    });
 });
 
 /**
