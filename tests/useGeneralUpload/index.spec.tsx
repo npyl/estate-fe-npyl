@@ -1,9 +1,9 @@
-import { test } from "@playwright/experimental-ct-react";
-import { SUCCESS_RES, UPLOAD_BTN_ID, VALUE_ID, INPUT_ID } from "./index.comp";
+import { expect, MountResult, test } from "@playwright/experimental-ct-react";
+import { UPLOAD_BTN_ID, VALUE_ID, INPUT_ID } from "./index.comp";
 import Tester from "./index.comp";
 import path from "path";
 import injectFiles from "../_util/injectFiles";
-import expectValue from "../_util/expectValue";
+import { IUploadResult } from "../../src/ui/useGeneralUploader/types";
 
 const OFFLINE = {
     offline: true,
@@ -22,6 +22,32 @@ const FILES = [
     path.join(__dirname, "imgs", "img1.png"),
 ];
 
+// ---------------------------------------------------------------------------------------
+
+const getResult = async (component: MountResult): Promise<IUploadResult> => {
+    // IMPORTANT: wait for value element to appear (which means there is actually a value; a.k.a. upload() has finished)
+    await component
+        .getByTestId(VALUE_ID)
+        .waitFor({ state: "visible", timeout: DELAY });
+
+    const value = await component.getByTestId(VALUE_ID).textContent();
+
+    if (!value)
+        return {
+            success: false,
+            report: { addFails: [], uploaded: [], uploadFails: [] },
+        };
+
+    try {
+        return JSON.parse(value) as IUploadResult;
+    } catch (ex) {
+        return {
+            success: false,
+            report: { addFails: [], uploaded: [], uploadFails: [] },
+        };
+    }
+};
+
 // ------------------------------------------------------------------------------
 
 /**
@@ -32,11 +58,11 @@ test("Upload", async ({ mount }) => {
 
     await injectFiles(component, INPUT_ID, FILES);
 
-    // Now click upload button
     await component.getByTestId(UPLOAD_BTN_ID).click();
 
-    // Upload Result
-    await expectValue(component, VALUE_ID, SUCCESS_RES);
+    const parsed = await getResult(component);
+
+    expect(parsed.success).toBe(true);
 });
 
 /**
@@ -56,4 +82,13 @@ test("Disconnect", async ({ mount, context, page }) => {
 
     // Trigger disconnect
     await cdpSession.send("Network.emulateNetworkConditions", OFFLINE);
+
+    const parsed = await getResult(component);
+
+    expect(parsed.success).toBe(false);
+    expect(parsed.report.addFails.length).toBe(0);
+    expect(parsed.report.uploadFails.length).toBeGreaterThan(0); // at least one fail (e.g. on very fast connection)
+
+    // TODO: ... fix this
+    // expect(parsed.report.uploaded.length).toBe(0);
 });

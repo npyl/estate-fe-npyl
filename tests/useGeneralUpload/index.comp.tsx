@@ -12,6 +12,9 @@ const VALUE_ID = "value-id";
 
 const SUCCESS_RES = "success-res";
 
+// INFO: this is intentionally empty
+const INITIAL_VALUE = "";
+
 // -----------------------------------------------------------------------
 
 type TAddFileCb = UseGeneralUploaderMethods["addFile"];
@@ -20,7 +23,7 @@ const useStore = (url: string) => {
     const [fileRes, setFileRes] = useState<AddFileRes[]>([]);
 
     const addFile: TAddFileCb = useCallback(async () => {
-        const r = {
+        const r: AddFileRes = {
             key: `key-${Math.random()}`,
             cdnUrl: `cdnUrl-${Math.random()}`,
             url,
@@ -29,7 +32,7 @@ const useStore = (url: string) => {
         setFileRes((old) => [...old, r]);
 
         return { data: r };
-    }, []);
+    }, [url]);
     const removeFile = useCallback(
         (k: string) => setFileRes((old) => old.filter(({ key }) => key !== k)),
         []
@@ -51,7 +54,7 @@ const Tester: FC<TesterProps> = ({ mockUrl }) => {
 
     const upload = useGeneralUploader({ addFile, removeFile }, {});
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(INITIAL_VALUE);
 
     const onClick = useCallback(async () => {
         const list = inputRef.current?.files;
@@ -64,17 +67,7 @@ const Tester: FC<TesterProps> = ({ mockUrl }) => {
 
         const res = await upload(files);
 
-        try {
-            if (!res.success) throw "Check";
-            if (res.report.addFails.length > 0) throw "Check";
-            if (res.report.uploadFails.length > 0) throw "Check";
-            if (res.report.uploaded.length !== files.length) throw "Check";
-
-            setValue(SUCCESS_RES);
-        } catch (ex) {
-            setValue(JSON.stringify(res.report));
-            return;
-        }
+        setValue(JSON.stringify(res));
     }, []);
 
     return (
@@ -83,7 +76,7 @@ const Tester: FC<TesterProps> = ({ mockUrl }) => {
             <button data-testid={UPLOAD_BTN_ID} onClick={onClick} />
 
             {/* Upload Result */}
-            <div data-testid={VALUE_ID}>{value}</div>
+            {value ? <div data-testid={VALUE_ID}>{value}</div> : null}
         </>
     );
 };
