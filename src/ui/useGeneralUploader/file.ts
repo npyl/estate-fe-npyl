@@ -1,11 +1,11 @@
-const ERROR0 = "RESPONSE_ERROR";
-const ERROR1 = "GENERAL_ERROR";
+const ERROR_RESPONSE = "RESPONSE_ERROR";
+const ERROR_GENERAL = "GENERAL_ERROR";
 const ERROR_TIMEOUT = "TIMEOUT_ERROR";
 const ERROR_DISCONNECT = "DISCONNECT_ERROR";
 
 type TUploadError =
-    | typeof ERROR0
-    | typeof ERROR1
+    | typeof ERROR_RESPONSE
+    | typeof ERROR_GENERAL
     | typeof ERROR_TIMEOUT
     | typeof ERROR_DISCONNECT;
 
@@ -48,7 +48,7 @@ const uploadWithProgress = async (
             const res =
                 xhr.status === 200
                     ? { success: true, data: xhr.response }
-                    : ({ success: false, error: ERROR0 } as const);
+                    : ({ success: false, error: ERROR_RESPONSE } as const);
 
             resolve(res);
         };
@@ -72,7 +72,7 @@ const uploadWithProgress = async (
 
             resolve({
                 success: false,
-                error: ERROR1,
+                error: ERROR_GENERAL,
                 errorDescription: errorMessage,
             });
         };
@@ -86,8 +86,8 @@ const uploadWithProgress = async (
 export {
     uploadWithProgress,
     // ...
-    ERROR0,
-    ERROR1,
+    ERROR_RESPONSE,
+    ERROR_GENERAL,
     ERROR_TIMEOUT,
     ERROR_DISCONNECT,
 };

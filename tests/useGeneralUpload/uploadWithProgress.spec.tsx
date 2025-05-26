@@ -16,7 +16,10 @@ import Tester from "./uploadWithProgress.comp";
 import path from "path";
 import injectFiles from "../_util/injectFiles";
 import expectValue from "../_util/expectValue";
-import { ERROR_DISCONNECT } from "../../src/ui/useGeneralUploader/file";
+import {
+    ERROR_RESPONSE,
+    ERROR_DISCONNECT,
+} from "../../src/ui/useGeneralUploader/file";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
 
@@ -24,6 +27,7 @@ const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
 const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
 const mockUrl1 = `${mockUrl0}?slow=${DELAY}`;
+const mockUrl2 = `${mockUrl0}?shouldFail=1`;
 
 const OFFLINE = {
     offline: true,
@@ -34,6 +38,9 @@ const OFFLINE = {
 
 // ------------------------------------------------------------------------------
 
+/**
+ * Successfully upload an image file and track progress (%)
+ */
 test("Upload w/ Percentage", async ({ mount }) => {
     const component = await mount(<Tester mockUrl={mockUrl0} />);
 
@@ -51,6 +58,9 @@ test("Upload w/ Percentage", async ({ mount }) => {
     await expectValue(component, VALUE_ID, SUCCESS_RES);
 });
 
+/**
+ * Catch a client disconnect during upload (e.g. when internet access is lost)
+ */
 test("Disconnect", async ({ mount, context, page }) => {
     test.setTimeout(DELAY);
     const cdpSession = await context.newCDPSession(page);
@@ -70,4 +80,25 @@ test("Disconnect", async ({ mount, context, page }) => {
 
     // Upload Result
     await expectValue(component, VALUE_ID, ERROR_DISCONNECT);
+});
+
+/**
+ * Catch an upload fail
+ * This could mean the server rejected the request, e.g. on a timeout
+ */
+test("Upload Fail", async ({ mount }) => {
+    test.setTimeout(DELAY);
+
+    const component = await mount(<Tester mockUrl={mockUrl2} />);
+
+    await injectFiles(component, INPUT_ID, [FILE]);
+
+    // Click Upload Button
+    await component.getByTestId(UPLOAD_BTN_ID).click();
+
+    // Wait until >=10%
+    await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
+
+    // Upload Result
+    await expectValue(component, VALUE_ID, ERROR_RESPONSE);
 });

@@ -1,11 +1,22 @@
 import sleep from "@/utils/sleep";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumber, { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 
 export const config = {
     api: {
         bodyParser: false, // Disable body parsing to handle raw file data
     },
+};
+
+const getParameters = (req: NextApiRequest) => {
+    const url = new URL(req.url!, `http://${req.headers.host}`);
+    const slow = url.searchParams.get("slow");
+    const DELAY = slow ? toNumberSafe(slow) : -1;
+
+    const sShouldFail = url.searchParams.get("shouldFail");
+    const shouldFail = sShouldFail ? toNumberSafe(sShouldFail) === 1 : false;
+
+    return { DELAY, shouldFail };
 };
 
 export default async function handler(
@@ -65,12 +76,16 @@ export default async function handler(
             });
         });
 
-        const url = new URL(req.url!, `http://${req.headers.host}`);
-        const slow = url.searchParams.get("slow");
-        const DELAY = slow ? toNumberSafe(slow) : -1;
+        const { DELAY, shouldFail } = getParameters(req);
 
         console.log("awaiting: ", DELAY);
         await sleep(DELAY);
+
+        if (shouldFail) {
+            console.log("early fail");
+            res.status(404).json({});
+            return;
+        }
 
         // Combine all chunks into a single buffer
         const fileBuffer = Buffer.concat(chunks);
