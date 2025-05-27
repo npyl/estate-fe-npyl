@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 import {
     IUploadResult,
-    UploadResponse,
+    UploadFileRes,
     UseGeneralUploaderHandlers,
 } from "./types";
 
@@ -19,6 +19,8 @@ const INITIAL_RESULT: IUploadResult = {
 const useReport = (HANDLERS: UseGeneralUploaderHandlers) => {
     const result = useRef<IUploadResult>(INITIAL_RESULT);
 
+    const onReset = useCallback(() => (result.current = INITIAL_RESULT), []);
+
     const onAddFail = useCallback(
         (f: File) => {
             result.current.report.addFails.push(f);
@@ -28,14 +30,14 @@ const useReport = (HANDLERS: UseGeneralUploaderHandlers) => {
     );
 
     const onUploadFail = useCallback(
-        (key: string) => {
-            result.current.report.uploadFails.push(key);
-            HANDLERS.onUploadFail?.(key);
+        (name: string) => {
+            result.current.report.uploadFails.push(name);
+            HANDLERS.onUploadFail?.(name);
         },
         [HANDLERS.onUploadFail]
     );
 
-    const onFinish = useCallback((addFileRes: UploadResponse[]) => {
+    const onFinish = useCallback((addFileRes: UploadFileRes[]) => {
         const { addFails, uploadFails } = result.current.report;
 
         // Calculate Success
@@ -48,7 +50,7 @@ const useReport = (HANDLERS: UseGeneralUploaderHandlers) => {
         return result.current;
     }, []);
 
-    return { onAddFail, onUploadFail, onFinish };
+    return { onReset, onAddFail, onUploadFail, onFinish };
 };
 
 export default useReport;

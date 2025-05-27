@@ -4,6 +4,7 @@ import useGeneralUploader from "@/ui/useGeneralUploader";
 import { useCallback } from "react";
 import useMETHODS from "./useMETHODS";
 import useInvalidateTags from "./useInvalidateTags";
+import reportToast from "@/ui/useGeneralUploader/reportToast";
 
 const STRIP_METADATA = true;
 
@@ -30,7 +31,10 @@ const usePropertyUpload = (
             const res = await upload(f);
             stopUploading();
 
-            if (!res.success) return;
+            if (!res.success) {
+                reportToast(res.report);
+                return;
+            }
 
             invalidateTags();
         },

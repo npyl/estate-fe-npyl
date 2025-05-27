@@ -5,6 +5,7 @@ import useMETHODS from "./useMETHODS";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 import { useDispatch } from "react-redux";
 import { tasks } from "@/services/tasks";
+import reportToast from "@/ui/useGeneralUploader/reportToast";
 
 const useAttachmentUpload = (cardId: number | undefined) => {
     const dispatch = useDispatch();
@@ -22,7 +23,10 @@ const useAttachmentUpload = (cardId: number | undefined) => {
             const res = await upload(f);
             stopUploading();
 
-            if (!res.success) return { ids: [], res: [] };
+            if (!res.success) {
+                reportToast(res.report);
+                return { ids: [], res: [] };
+            }
 
             // INFO: on create mode do not invalidate tags
             if (cardId !== undefined)

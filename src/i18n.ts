@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            UPLOAD_FAILED_FILES: "Failed to upload",
+
             Online0: "Online",
             Offline0: "Offline",
             Online1: "You can continue",
@@ -1349,6 +1351,8 @@ const resources = {
     },
     el: {
         translation: {
+            UPLOAD_FAILED_FILES: "Αποτυχία ανεβάσματος",
+
             Online0: "Έγινε σύνδεση",
             Offline0: "Απώλεια σύνδεσης",
             Online1: "Μπορείτε να συνεχίσετε",

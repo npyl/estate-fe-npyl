@@ -1,15 +1,16 @@
+type WithError<T> = { data: T } | { error: any };
+type OrUndefined<T> = T | undefined;
+
 interface AddFileRes {
     key: string;
     url: string; // amazon to PUT image
     cdnUrl: string; // where image **WILL** be downloadable from when PUT finishes
 }
-interface UploadResponse {
+
+interface UploadFileRes {
     key: string;
     cdnUrl: string;
 }
-
-type WithError<T> = { data: T } | { error: any };
-type OrUndefined<T> = T | undefined;
 
 type TStep0Cb = <Res extends AddFileRes = AddFileRes>(
     f: File
@@ -18,7 +19,7 @@ type TStep0Cb = <Res extends AddFileRes = AddFileRes>(
 type TStep1Cb = (
     f: OrUndefined<File>,
     res: AddFileRes
-) => Promise<OrUndefined<UploadResponse>>;
+) => Promise<OrUndefined<UploadFileRes>>;
 
 // ---------------------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +31,7 @@ interface IUploadProgress {
 // ---------------------------------------------------------------------------------------------------------------------------
 
 interface IUploadReport {
-    uploaded: UploadResponse[];
+    uploaded: UploadFileRes[];
     addFails: File[];
     uploadFails: string[]; // keys
 }
@@ -65,13 +66,14 @@ export type {
     OrUndefined,
     // ...
     AddFileRes,
-    UploadResponse,
+    UploadFileRes,
     // ...
     TStep0Cb,
     TStep1Cb,
     // ...
     TUpload,
     // ...
+    IUploadReport,
     IUploadResult,
     // ...
     UseGeneralUploaderMethods,

@@ -3,11 +3,11 @@ import { useCallback } from "react";
 import { uploadWithProgress } from "./file";
 import {
     AddFileRes,
+    UploadFileRes,
     OrUndefined,
     TStep0Cb,
     TStep1Cb,
     TUpload,
-    UploadResponse,
     // ...
     UseGeneralUploaderHandlers,
     UseGeneralUploaderMethods,
@@ -15,7 +15,7 @@ import {
 import useReport from "./useReport";
 import { removeMetadata } from "./util";
 
-type UploadPromise = () => Promise<OrUndefined<UploadResponse>>;
+type UploadPromise = () => Promise<OrUndefined<UploadFileRes>>;
 
 /**
  *  useGeneralUploader
@@ -47,18 +47,20 @@ const useGeneralUploader = (
     );
     const step1: TStep1Cb = useCallback(
         async (f, addRes) => {
-            const { type } = f || {};
+            const { type, name } = f || {};
             const { key, url, cdnUrl } = addRes;
+
+            if (!name) return;
 
             // Sanity Checks
             if (!f || !type) {
                 METHODS.removeFile(key);
-                onUploadFail(key);
+                onUploadFail(name);
                 return;
             }
             if (!key || !url || !cdnUrl) {
                 METHODS.removeFile(key);
-                onUploadFail(key);
+                onUploadFail(name);
                 return;
             }
 
@@ -70,7 +72,7 @@ const useGeneralUploader = (
             );
 
             if (!res.success) {
-                onUploadFail(key);
+                onUploadFail(name);
                 return;
             }
 
@@ -120,7 +122,7 @@ const useGeneralUploader = (
             const res = await executeSequentially(p);
 
             // Filter-out failed
-            const final = res.filter(Boolean) as UploadResponse[];
+            const final = res.filter(Boolean) as UploadFileRes[];
 
             return onFinish(final);
         },
