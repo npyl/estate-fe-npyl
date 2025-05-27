@@ -1,6 +1,7 @@
 import { useCallback, useLayoutEffect, useRef } from "react";
 
 const INTERVAL = 30 * 1000; // 30sec (in ms)
+const INSTANT = 300;
 
 const checkConnectivity = async () => {
     try {
@@ -8,7 +9,7 @@ const checkConnectivity = async () => {
             method: "HEAD",
             mode: "no-cors",
             cache: "no-cache",
-            signal: AbortSignal.timeout(5000),
+            signal: AbortSignal.timeout(INSTANT),
         });
 
         return true;
@@ -36,7 +37,6 @@ const useNetworkAccess = (
     const intervalRef = useRef<NodeJS.Timeout>();
 
     const onChange = useCallback(async () => {
-        console.log("checking...");
         const c = await checkConnectivity();
 
         // INFO: do not refire event if not necessary
@@ -46,31 +46,31 @@ const useNetworkAccess = (
         _onChange?.(c);
     }, [_onChange]);
 
-    const startPeriodicCheck = useCallback(() => {
+    const start = useCallback(() => {
         if (!interval.current) return;
         intervalRef.current = setInterval(onChange, interval.current);
     }, [onChange]);
 
-    const stopPeriodicCheck = useCallback(() => {
+    const stop = useCallback(() => {
         if (!intervalRef.current) return;
         clearInterval(intervalRef.current);
         intervalRef.current = undefined;
     }, []);
 
-    const resetInterval = useCallback((n: number) => {
-        stopPeriodicCheck();
-        interval.current = n;
-        startPeriodicCheck();
+    const reset = useCallback((n?: number) => {
+        stop();
+        interval.current = n ?? INTERVAL;
+        start();
     }, []);
 
     useLayoutEffect(() => {
-        startPeriodicCheck();
+        start();
         return () => {
-            stopPeriodicCheck();
+            stop();
         };
     }, []);
 
-    return [status, resetInterval] as const;
+    return [status, stop, reset] as const;
 };
 
 export default useNetworkAccess;
