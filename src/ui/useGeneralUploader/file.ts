@@ -33,7 +33,7 @@ const uploadWithProgress = async (
         const xhr = new XMLHttpRequest();
 
         const onDisconnect = () => {
-            resolve({ success: false, error: "DISCONNECT_ERROR" });
+            resolve({ success: false, error: ERROR_DISCONNECT });
         };
 
         window.addEventListener("offline", onDisconnect);

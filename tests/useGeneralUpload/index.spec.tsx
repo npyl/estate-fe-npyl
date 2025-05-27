@@ -80,8 +80,6 @@ test("Disconnect", async ({ mount, context, page }) => {
         expect(parsed.success).toBe(false);
         expect(parsed.report.addFails.length).toBe(0);
         expect(parsed.report.uploadFails.length).toBeGreaterThan(0); // at least one fail (e.g. on very fast connection)
-
-        // TODO: ... fix this
-        // expect(parsed.report.uploaded.length).toBe(0);
+        expect(parsed.report.uploaded.length).toBe(0);
     });
 });

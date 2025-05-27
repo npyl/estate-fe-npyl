@@ -1,5 +1,9 @@
 import { useCallback, useRef } from "react";
-import { AddFileRes, IUploadResult, UseGeneralUploaderHandlers } from "./types";
+import {
+    IUploadResult,
+    UploadResponse,
+    UseGeneralUploaderHandlers,
+} from "./types";
 
 // ------------------------------------------------------------------------
 
@@ -31,7 +35,7 @@ const useReport = (HANDLERS: UseGeneralUploaderHandlers) => {
         [HANDLERS.onUploadFail]
     );
 
-    const onFinish = useCallback((addFileRes: AddFileRes[]) => {
+    const onFinish = useCallback((addFileRes: UploadResponse[]) => {
         const { addFails, uploadFails } = result.current.report;
 
         // Calculate Success

@@ -30,7 +30,7 @@ interface IUploadProgress {
 // ---------------------------------------------------------------------------------------------------------------------------
 
 interface IUploadReport {
-    uploaded: AddFileRes[];
+    uploaded: UploadResponse[];
     addFails: File[];
     uploadFails: string[]; // keys
 }

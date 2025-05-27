@@ -113,9 +113,12 @@ const useGeneralUploader = (
 
             // INFO: call step1 (upload) sequentially
             const p = r.reduce(createUploadPromisesReducer(files), []);
-            await executeSequentially(p);
+            const res = await executeSequentially(p);
 
-            return onFinish(r);
+            // Filter-out failed
+            const final = res.filter(Boolean) as UploadResponse[];
+
+            return onFinish(final);
         },
         [reduceAddFileRes, createUploadPromisesReducer]
     );
