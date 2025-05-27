@@ -18,10 +18,19 @@ const checkConnectivity = async () => {
 const useNetworkAccess = (_onChange: (b: boolean) => void) => {
     const status = useRef(true);
 
-    const onOffline = useCallback(() => _onChange(false), [_onChange]);
+    const onOffline = useCallback(() => {
+        status.current = false;
+        _onChange(false);
+    }, [_onChange]);
 
     const onChange = useCallback(async () => {
         const c = await checkConnectivity();
+
+        // INFO: do not trigger same event twice (can happen since NetworkInformation API & window's (on/off)line events can overlap)
+        if (status.current === c) return;
+
+        status.current = c;
+
         _onChange(c);
     }, [_onChange]);
 
