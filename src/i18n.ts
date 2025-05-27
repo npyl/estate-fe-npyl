@@ -4,6 +4,11 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Online0: "Online",
+            Offline0: "Offline",
+            Online1: "You can continue",
+            Offline1: "Please do not use the app",
+
             Reply: "Reply",
 
             EMAILS_REMOVED_DUPLICATES_0:
@@ -1344,6 +1349,11 @@ const resources = {
     },
     el: {
         translation: {
+            Online0: "Έγινε σύνδεση",
+            Offline0: "Απώλεια σύνδεσης",
+            Online1: "Μπορείτε να συνεχίσετε",
+            Offline1: "Παρακαλώ μη χρησιμοποιείτε την εφαρμογή",
+
             Reply: "Απάντηση",
 
             EMAILS_REMOVED_DUPLICATES_0: "Αγνοήθηκαν διπλότυπα",

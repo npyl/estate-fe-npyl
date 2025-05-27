@@ -19,7 +19,11 @@ const checkConnectivity = async () => {
 const NetworkListener = () => {
     const onChange = useCallback(async () => {
         const online = await checkConnectivity();
-        infoToast(online ? "Online" : "Offline");
+
+        const text0 = online ? "Online0" : "Offline0";
+        const text1 = online ? "Online1" : "Offline1";
+
+        infoToast(text0, text1);
     }, []);
 
     useLayoutEffect(() => {
