@@ -1,5 +1,7 @@
 import { useCallback, useLayoutEffect, useRef } from "react";
 
+const INTERVAL = 30 * 1000; // 30sec (in ms)
+
 const checkConnectivity = async () => {
     try {
         await fetch("https://www.google.com", {
@@ -15,50 +17,60 @@ const checkConnectivity = async () => {
     }
 };
 
-const useNetworkAccess = (_onChange: (b: boolean) => void) => {
+interface UseNetworkAccessOptions {
+    /**
+     * Interval in milliseconds for periodic connectivity checks.
+     * Set to 0 or null to disable periodic checks.
+     * @default 30000 (30 seconds)
+     */
+    checkInterval?: number;
+}
+
+const useNetworkAccess = (
+    _onChange?: (b: boolean) => void,
+    options?: UseNetworkAccessOptions
+) => {
     const status = useRef(true);
 
-    const onOffline = useCallback(() => {
-        status.current = false;
-        _onChange(false);
-    }, [_onChange]);
+    const interval = useRef<number>(options?.checkInterval ?? INTERVAL);
+    const intervalRef = useRef<NodeJS.Timeout>();
 
     const onChange = useCallback(async () => {
+        console.log("checking...");
         const c = await checkConnectivity();
 
-        // INFO: do not trigger same event twice (can happen since NetworkInformation API & window's (on/off)line events can overlap)
+        // INFO: do not refire event if not necessary
         if (status.current === c) return;
 
         status.current = c;
-
-        _onChange(c);
+        _onChange?.(c);
     }, [_onChange]);
 
+    const startPeriodicCheck = useCallback(() => {
+        if (!interval.current) return;
+        intervalRef.current = setInterval(onChange, interval.current);
+    }, [onChange]);
+
+    const stopPeriodicCheck = useCallback(() => {
+        if (!intervalRef.current) return;
+        clearInterval(intervalRef.current);
+        intervalRef.current = undefined;
+    }, []);
+
+    const resetInterval = useCallback((n: number) => {
+        stopPeriodicCheck();
+        interval.current = n;
+        startPeriodicCheck();
+    }, []);
+
     useLayoutEffect(() => {
-        window.addEventListener("online", onChange);
-        window.addEventListener("offline", onOffline);
-
-        // INFO: check if available
-        if ("connection" in navigator) {
-            // INFO: types are not available yet; experimental API
-            const n = navigator.connection as any;
-            n.addEventListener("change", onChange);
-        }
-
+        startPeriodicCheck();
         return () => {
-            // INFO: check if available
-            if ("connection" in navigator) {
-                // INFO: types are not available yet; experimental API
-                const n = navigator.connection as any;
-                n.removeEventListener("change", onChange);
-            }
-
-            window.removeEventListener("online", onChange);
-            window.removeEventListener("offline", onOffline);
+            stopPeriodicCheck();
         };
-    }, [onChange, onOffline]);
+    }, []);
 
-    return status;
+    return [status, resetInterval] as const;
 };
 
 export default useNetworkAccess;

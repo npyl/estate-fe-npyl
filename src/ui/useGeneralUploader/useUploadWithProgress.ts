@@ -84,6 +84,10 @@ const uploadWithProgress = (
 
 // ---------------------------------------------------------------------------------------
 
+const DONT_CHECK = {
+    checkInterval: 0,
+};
+
 type TCb = (
     url: string,
     file: Blob | File,
@@ -97,7 +101,7 @@ const useUploadWithProgress = () => {
         if (c) return;
         request.current?.abort();
     }, []);
-    useNetworkAccess(onChange);
+    const [isConnected, resetInterval] = useNetworkAccess(onChange, DONT_CHECK);
 
     const upload: TCb = useCallback(async (...args) => {
         const [xhr, req] = uploadWithProgress(...args);
@@ -105,7 +109,7 @@ const useUploadWithProgress = () => {
         return req;
     }, []);
 
-    return upload;
+    return [upload, isConnected, resetInterval] as const;
 };
 
 export { ERROR_RESPONSE, ERROR_GENERAL, ERROR_TIMEOUT, ERROR_ABORT };

@@ -20,7 +20,7 @@ interface TesterProps {
 }
 
 const Tester: FC<TesterProps> = ({ mockUrl }) => {
-    const uploadWithProgress = useUploadWithProgress();
+    const [uploadWithProgress] = useUploadWithProgress();
 
     const inputRef = useRef<HTMLInputElement>(null);
 

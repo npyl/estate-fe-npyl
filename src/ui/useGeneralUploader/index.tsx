@@ -1,6 +1,5 @@
 import executeSequentially from "@/utils/executeSequentially";
 import { useCallback } from "react";
-import { uploadWithProgress } from "./file";
 import {
     AddFileRes,
     UploadFileRes,
@@ -14,6 +13,9 @@ import {
 } from "./types";
 import useReport from "./useReport";
 import { removeMetadata } from "./util";
+import useUploadWithProgress from "./useUploadWithProgress";
+
+const ONE_SECOND = 1000; // 1sec (in ms)
 
 type UploadPromise = () => Promise<OrUndefined<UploadFileRes>>;
 
@@ -29,12 +31,26 @@ const useGeneralUploader = (
     HANDLERS: UseGeneralUploaderHandlers,
     stripMetadata?: boolean
 ) => {
-    const { onAddFail, onUploadFail, onFinish } = useReport(HANDLERS);
+    const { onReset, onAddFail, onUploadFail, onFinish } = useReport(HANDLERS);
+
+    const onProgressUpdate = useCallback(
+        (key: string) => (p: number) => HANDLERS.onProgressUpdate?.({ key, p }),
+        [HANDLERS.onProgressUpdate]
+    );
+
+    const [
+        uploadWithProgress,
+        // ...
+        isConnected,
+        resetInterval,
+    ] = useUploadWithProgress();
 
     // ------------------------------------------------------------------------
 
     const step0: TStep0Cb = useCallback(
         async (f) => {
+            if (!isConnected.current) return;
+
             const res = await METHODS.addFile(f);
             if ("error" in res) {
                 onAddFail(f);
@@ -47,6 +63,8 @@ const useGeneralUploader = (
     );
     const step1: TStep1Cb = useCallback(
         async (f, addRes) => {
+            if (!isConnected.current) return;
+
             const { type, name } = f || {};
             const { key, url, cdnUrl } = addRes;
 
@@ -67,8 +85,10 @@ const useGeneralUploader = (
             const stripped = stripMetadata ? await removeMetadata(f) : f;
 
             // PUT to amazon url
-            const res = await uploadWithProgress(url, stripped, (p) =>
-                HANDLERS.onProgressUpdate?.({ key, p })
+            const res = await uploadWithProgress(
+                url,
+                stripped,
+                onProgressUpdate(key)
             );
 
             if (!res.success) {
@@ -96,7 +116,7 @@ const useGeneralUploader = (
         [step0]
     );
 
-    const createUploadPromisesReducer = useCallback(
+    const reduceUploadFileRes = useCallback(
         (files: File[]) =>
             (
                 acc: UploadPromise[],
@@ -114,11 +134,15 @@ const useGeneralUploader = (
 
     const upload: TUpload = useCallback(
         async (files) => {
+            onReset();
+
+            resetInterval(ONE_SECOND);
+
             // INFO: call step0 (add file) in-parallel
             const r = await files.reduce(reduceAddFileRes, Promise.resolve([]));
 
             // INFO: call step1 (upload) sequentially
-            const p = r.reduce(createUploadPromisesReducer(files), []);
+            const p = r.reduce(reduceUploadFileRes(files), []);
             const res = await executeSequentially(p);
 
             // Filter-out failed
@@ -126,7 +150,7 @@ const useGeneralUploader = (
 
             return onFinish(final);
         },
-        [reduceAddFileRes, createUploadPromisesReducer]
+        [reduceAddFileRes, reduceUploadFileRes]
     );
 
     return upload;
