@@ -1,5 +1,5 @@
 import { FC, useCallback, useRef, useState } from "react";
-import { uploadWithProgress } from "../../src/ui/useGeneralUploader/file";
+import useUploadWithProgress from "../../src/ui/useGeneralUploader/useUploadWithProgress";
 
 const UPLOAD_BTN_ID = "upload-btn-testid";
 const INPUT_ID = "input-test-id";
@@ -20,6 +20,8 @@ interface TesterProps {
 }
 
 const Tester: FC<TesterProps> = ({ mockUrl }) => {
+    const uploadWithProgress = useUploadWithProgress();
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [value, setValue] = useState("");

@@ -18,8 +18,8 @@ import injectFiles from "../_util/injectFiles";
 import expectValue from "../_util/expectValue";
 import {
     ERROR_RESPONSE,
-    ERROR_DISCONNECT,
-} from "../../src/ui/useGeneralUploader/file";
+    ERROR_ABORT,
+} from "../../src/ui/useGeneralUploader/useUploadWithProgress";
 import runOffline from "../_util/runInNetworkMode/runOffline";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
@@ -71,7 +71,7 @@ test("Disconnect", async ({ mount, context, page }) => {
 
     await runOffline(cdpSession, async () => {
         // Upload Result
-        await expectValue(component, VALUE_ID, ERROR_DISCONNECT);
+        await expectValue(component, VALUE_ID, ERROR_ABORT);
     });
 });
 
