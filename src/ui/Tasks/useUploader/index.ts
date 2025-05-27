@@ -2,7 +2,6 @@ import useDialog from "@/hooks/useDialog";
 import useGeneralUploader from "@/ui/useGeneralUploader";
 import { useCallback } from "react";
 import useMETHODS from "./useMETHODS";
-import useHANDLERS from "./useHANDLERS";
 import { IAddAttachmentRes } from "@/services/tasks/types";
 import { useDispatch } from "react-redux";
 import { tasks } from "@/services/tasks";
@@ -11,11 +10,10 @@ const useAttachmentUpload = (cardId: number | undefined) => {
     const dispatch = useDispatch();
 
     const METHODS = useMETHODS(cardId);
-    const HANDLERS = useHANDLERS();
 
     // ---------------------------------------------------------------
 
-    const upload = useGeneralUploader(METHODS, HANDLERS);
+    const upload = useGeneralUploader(METHODS, {});
 
     const [isUploading, startUploading, stopUploading] = useDialog();
     const uploadFiles = useCallback(
