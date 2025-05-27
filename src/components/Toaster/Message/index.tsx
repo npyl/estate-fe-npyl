@@ -1,17 +1,8 @@
-import CloseIcon from "@mui/icons-material/Close";
-import { SxProps, Theme } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-
-const CloseSx: SxProps<Theme> = {
-    top: "50%",
-    transform: "translateY(-50%)",
-    right: 5,
-    position: "absolute",
-};
+import CloseButton from "./CloseButton";
 
 interface MessageProps {
     main: string;
@@ -35,11 +26,7 @@ const Message: FC<MessageProps> = ({ main, secondary, ...other }) => {
                 <Typography color="text.secondary">{t(secondary)}</Typography>
             ) : null}
 
-            {onDismiss ? (
-                <IconButton size="small" sx={CloseSx} onClick={onDismiss}>
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-            ) : null}
+            {onDismiss ? <CloseButton onClick={onDismiss} /> : null}
         </Stack>
     );
 };
