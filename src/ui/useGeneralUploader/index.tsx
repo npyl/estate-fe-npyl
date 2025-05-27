@@ -13,6 +13,7 @@ import {
     UseGeneralUploaderMethods,
 } from "./types";
 import useReport from "./useReport";
+import { removeMetadata } from "./util";
 
 type UploadPromise = () => Promise<OrUndefined<UploadResponse>>;
 
@@ -25,7 +26,8 @@ type UploadPromise = () => Promise<OrUndefined<UploadResponse>>;
  */
 const useGeneralUploader = (
     METHODS: UseGeneralUploaderMethods,
-    HANDLERS: UseGeneralUploaderHandlers
+    HANDLERS: UseGeneralUploaderHandlers,
+    stripMetadata?: boolean
 ) => {
     const { onAddFail, onUploadFail, onFinish } = useReport(HANDLERS);
 
@@ -60,8 +62,10 @@ const useGeneralUploader = (
                 return;
             }
 
+            const stripped = stripMetadata ? await removeMetadata(f) : f;
+
             // PUT to amazon url
-            const res = await uploadWithProgress(url, f, (p) =>
+            const res = await uploadWithProgress(url, stripped, (p) =>
                 HANDLERS.onProgressUpdate?.({ key, p })
             );
 

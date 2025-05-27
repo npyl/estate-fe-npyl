@@ -6,6 +6,8 @@ import useMETHODS from "./useMETHODS";
 import useHANDLERS from "./useHANDLERS";
 import useInvalidateTags from "./useInvalidateTags";
 
+const STRIP_METADATA = true;
+
 const usePropertyUpload = (
     variant: TFileVariant,
     onProgressUpdate?: (p: UploadProgress) => void
@@ -17,7 +19,7 @@ const usePropertyUpload = (
 
     const invalidateTags = useInvalidateTags(variant);
 
-    const upload = useGeneralUploader(METHODS, HANDLERS);
+    const upload = useGeneralUploader(METHODS, HANDLERS, STRIP_METADATA);
 
     const [isUploading, startUploading, stopUploading] = useDialog();
     const uploadFiles = useCallback(
