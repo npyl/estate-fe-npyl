@@ -15,6 +15,8 @@ const usePropertyUpload = (
 
     // ---------------------------------------------------------------
 
+    const invalidateTags = useInvalidateTags(variant);
+
     const upload = useGeneralUploader(METHODS, HANDLERS);
 
     const [isUploading, startUploading, stopUploading] = useDialog();
@@ -26,7 +28,7 @@ const usePropertyUpload = (
 
             if (!res.success) return;
 
-            useInvalidateTags(variant);
+            invalidateTags();
         },
         [variant]
     );
