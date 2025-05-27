@@ -98,10 +98,17 @@ const useUploadWithProgress = () => {
     const request = useRef<XMLHttpRequest>();
 
     const onChange = useCallback((c: boolean) => {
-        if (c) return;
+        if (c) {
+            stopInterval();
+            return;
+        }
         request.current?.abort();
+        resetInterval();
     }, []);
-    const [isConnected, resetInterval] = useNetworkAccess(onChange, DONT_CHECK);
+    const [isConnected, stopInterval, resetInterval] = useNetworkAccess(
+        onChange,
+        DONT_CHECK
+    );
 
     const upload: TCb = useCallback(async (...args) => {
         const [xhr, req] = uploadWithProgress(...args);
@@ -109,7 +116,12 @@ const useUploadWithProgress = () => {
         return req;
     }, []);
 
-    return [upload, isConnected, resetInterval] as const;
+    return [
+        upload,
+        // ...
+        isConnected,
+        resetInterval,
+    ] as const;
 };
 
 export { ERROR_RESPONSE, ERROR_GENERAL, ERROR_TIMEOUT, ERROR_ABORT };

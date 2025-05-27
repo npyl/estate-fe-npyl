@@ -15,6 +15,8 @@ import useReport from "./useReport";
 import { removeMetadata } from "./util";
 import useUploadWithProgress from "./useUploadWithProgress";
 
+// TODO: logic for calling removeFiles ....
+
 const ONE_SECOND = 1000; // 1sec (in ms)
 
 type UploadPromise = () => Promise<OrUndefined<UploadFileRes>>;
@@ -72,12 +74,10 @@ const useGeneralUploader = (
 
             // Sanity Checks
             if (!f || !type) {
-                METHODS.removeFile(key);
                 onUploadFail(name);
                 return;
             }
             if (!key || !url || !cdnUrl) {
-                METHODS.removeFile(key);
                 onUploadFail(name);
                 return;
             }
