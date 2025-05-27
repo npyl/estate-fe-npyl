@@ -27,7 +27,7 @@ const Message: FC<MessageProps> = ({ r, ...other }) => {
                     {t("UPLOAD_FAILED_FILES")}
                 </Typography>
 
-                {onDismiss ? <CloseButton /> : null}
+                {onDismiss ? <CloseButton onClick={onDismiss} /> : null}
             </SpaceBetween>
 
             <Stack>{r.uploadFails.map(getFailed)}</Stack>

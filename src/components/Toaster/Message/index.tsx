@@ -31,4 +31,5 @@ const Message: FC<MessageProps> = ({ main, secondary, ...other }) => {
     );
 };
 
+export type { MessageProps };
 export default Message;
