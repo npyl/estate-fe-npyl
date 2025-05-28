@@ -44,13 +44,13 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
     >
         <Stack direction="row" width="calc(100% - 80px)">
             <Stack width="40%" overflow="hidden" textOverflow="ellipsis">
-                <Typography fontWeight="500" noWrap>
+                <Typography fontWeight="500" noWrap width="90%">
                     {e.subject}
                 </Typography>
                 <Typography color="text.secondary">{e.from || ""}</Typography>
             </Stack>
             <Stack width={1} overflow="hidden" textOverflow="ellipsis">
-                <Typography variant="body2" width={1} noWrap>
+                <Typography variant="body2" width={0.9} noWrap>
                     {e.snippet}
                 </Typography>
                 {e.attachments.length > 0 ? (
