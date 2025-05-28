@@ -66,6 +66,8 @@ const FiltersProvider: FC<ProviderProps> = ({
 
     const filters: IEmailFilters = { search, ...FROM_TO, propertyIds };
 
+    console.log(filters);
+
     const ids = useCalculateIds(filters);
 
     const isPropertyPage = Boolean(propertyId);

@@ -41,6 +41,12 @@ const useDeleteFilter = (
                 return;
             }
 
+            if (key === "from") setPeopleFreeSoloed([]);
+            if (key === "from" && isCustomerPage) {
+                setPeople([_to!]);
+                return;
+            }
+
             try {
                 SETTERS[key](INITIAL_STATE[key] as any);
             } catch (ex) {}

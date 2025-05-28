@@ -7,9 +7,9 @@ import { useCallback } from "react";
 const Chip = () => {
     const { t } = useTranslation();
     const { filters, currentCustomerEmail, deleteFilter } = useFiltersContext();
-    const { to } = filters;
+    const { from } = filters;
 
-    const p = to?.filter((e) => e !== currentCustomerEmail);
+    const p = from?.filter((e) => e !== currentCustomerEmail);
     const label = p.join(", ");
 
     const onDelete = useCallback(() => deleteFilter("from"), []);
