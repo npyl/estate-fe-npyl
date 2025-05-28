@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InboxIcon from "@mui/icons-material/Inbox";
 import OutboxIcon from "@mui/icons-material/Outbox";
 import { SxProps, Theme } from "@mui/material";
-import { useFiltersContext } from "./Context";
+import { useFiltersContext } from "../Context";
 import { TMailbox } from "@/types/email";
 
 interface IOption {

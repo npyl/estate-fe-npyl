@@ -1,6 +1,6 @@
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import { SxProps, TextField, Theme } from "@mui/material";
-import PeoplePicker from "../Pickers/People";
+import PeoplePicker from "../../Pickers/People";
 import { FC, useCallback } from "react";
 
 const TextFieldSx: SxProps<Theme> = {

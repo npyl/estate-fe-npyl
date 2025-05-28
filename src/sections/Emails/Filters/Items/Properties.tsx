@@ -1,5 +1,5 @@
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import PropertyIdsPicker from "../Pickers/PropertyIds";
+import PropertyIdsPicker from "../../Pickers/PropertyIds";
 
 const PropertyFilter = () => {
     const { filters, setPropertyIds } = useFiltersContext();

@@ -1,13 +1,14 @@
 import FiltersBar from "@/components/Filters/FiltersBar";
-import From from "./From";
-import To from "./To";
-import Properties from "./Properties";
 import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
 import IsAuthenticatedGuard from "@/sections/Google/IsAuthenticatedGuard";
 import ChosenFilters from "./ChosenFilters";
-import Search from "./Search";
-import Mailbox from "./Mailbox";
-import ManagerId from "./ManagerId";
+// ...
+import Search from "./Items/Search";
+import Mailbox from "./Items/Mailbox";
+import ManagerId from "./Items/ManagerId";
+import From from "./Items/From";
+import To from "./Items/To";
+import Properties from "./Items/Properties";
 
 const Filters = () => (
     <FiltersBar
