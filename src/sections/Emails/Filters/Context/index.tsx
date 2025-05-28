@@ -10,6 +10,7 @@ import {
 import useCalculateIds from "./useCalculateIds";
 import useDeleteFilter from "./useDeleteFilter";
 import { Setters } from "./types";
+import useFromTo from "./useFromTo";
 
 type State = Setters & {
     filters: IEmailFilters;
@@ -56,21 +57,16 @@ const FiltersProvider: FC<ProviderProps> = ({
 
     const [box, setBox] = useState<TMailbox>("INBOX");
 
-    const [search, setSearch] = useState("");
-    // const [from, setFrom] = useState("");
-    // const [to, setTo] = useState(_to ? [_to] : []);
-    const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
-
     const [people, setPeople] = useState<string[]>([]);
     const [peopleFreeSoloed, setPeopleFreeSoloed] = useState<string[]>([]);
 
-    const filters: IEmailFilters = {
-        search,
-        from: "",
-        to: [],
-        // to: [...to, ...toFreeSoloed],
-        propertyIds,
-    };
+    const [search, setSearch] = useState("");
+    const FROM_TO = useFromTo(manager, box, people, peopleFreeSoloed);
+    const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
+
+    const filters: IEmailFilters = { search, ...FROM_TO, propertyIds };
+
+    console.log("FILTERS: ", filters);
 
     const ids = useCalculateIds(filters);
 
