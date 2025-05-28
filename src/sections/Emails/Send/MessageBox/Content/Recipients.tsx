@@ -3,7 +3,7 @@ import InputField from "./InputField";
 import { useFormContext, useWatch } from "react-hook-form";
 import { TMessageBoxValues } from "../types";
 import { useCallback } from "react";
-import RecipientsPicker from "@/sections/Emails/Pickers/Recipients";
+import RecipientsPicker from "@/sections/Emails/Pickers/People";
 import { useGetNamesQuery } from "@/services/customers";
 
 const Recipients = () => {
@@ -38,9 +38,9 @@ const Recipients = () => {
 
     return (
         <RecipientsPicker
-            to={to}
+            people={to}
             onChange={onChange}
-            toFreeSoloed={toFreeSoloed}
+            peopleFreeSoloed={toFreeSoloed}
             onFreeSoloed={onFreeSoloed}
             onFreeSoloedDelete={onFreeSoloedDelete}
             renderInput={(params) => (
