@@ -1,22 +1,21 @@
-import { ICustomerMini } from "@/types/customer";
 import { useCallback, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import { useAllUsersQuery } from "@/services/user";
 import { isIUser, IUser } from "@/types/user";
+import { TPerson } from "@/ui/Autocompletes/People";
 
-const reduceIdToEmail =
-    (data?: (ICustomerMini | IUser)[]) => (acc: string[], toId: number) => {
-        const found = data?.find(({ id }) => id === toId);
+const reduceIdToEmail = (data?: TPerson[]) => (acc: string[], toId: number) => {
+    const found = data?.find(({ id }) => id === toId);
 
-        const email = found
-            ? isIUser(found)
-                ? (found as IUser).workspaceEmail
-                : found.email
-            : undefined;
+    const email = found
+        ? isIUser(found)
+            ? (found as IUser).workspaceEmail
+            : found.email
+        : undefined;
 
-        if (email) acc.push(email);
-        return acc;
-    };
+    if (email) acc.push(email);
+    return acc;
+};
 
 const useOnChange = (_onChange: (v: string[]) => void) => {
     const { data: customers } = useGetNamesQuery();
