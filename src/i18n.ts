@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            WORKSPACE_ADMIN_ONLY:
+                "You must be the google workspace admin to change this",
+
             UPLOAD_FAILED_FILES: "Failed to upload",
 
             Online0: "Online",
@@ -1351,6 +1354,9 @@ const resources = {
     },
     el: {
         translation: {
+            WORKSPACE_ADMIN_ONLY:
+                "Πρέπει να είστε διαχειριστής του google workspace για να πραγματοποιήσετε αλλαγή",
+
             UPLOAD_FAILED_FILES: "Αποτυχία ανεβάσματος",
 
             Online0: "Έγινε σύνδεση",

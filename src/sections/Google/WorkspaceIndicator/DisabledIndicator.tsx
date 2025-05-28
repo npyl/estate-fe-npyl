@@ -1,25 +1,7 @@
-import React, { FC } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import {
-    IconButton,
-    SvgIcon,
-    Tooltip,
-    TooltipProps,
-    Typography,
-} from "@mui/material";
+import { FC } from "react";
+import { IconButton, Tooltip, TooltipProps, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-
-const CrossedGoogleIcon = () => (
-    <SvgIcon>
-        <GoogleIcon />
-        <path
-            d="M22 2L2 22"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-        />
-    </SvgIcon>
-);
+import CrossedGoogleIcon from "@/assets/logo/CrossedGoogleLogo";
 
 const DisabledIndicator: FC<Omit<TooltipProps, "title" | "children">> = (
     props

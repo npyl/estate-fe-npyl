@@ -173,7 +173,9 @@ const UserForm = ({ open, onClose }: UserFormProps) => {
                                             />
 
                                             {isAdmin ? (
-                                                <GoogleWorkspaceEmail />
+                                                <GoogleWorkspaceEmail
+                                                    email={user?.workspaceEmail}
+                                                />
                                             ) : null}
                                         </>
 
