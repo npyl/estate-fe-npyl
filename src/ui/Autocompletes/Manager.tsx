@@ -1,7 +1,7 @@
 import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
 import { useAllUsersQuery } from "src/services/user";
-import { IUser, IUserMini } from "@/types/user";
-import { forwardRef, useMemo } from "react";
+import { IUser } from "@/types/user";
+import { FC, forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";
@@ -20,7 +20,7 @@ const AvatarSx: SxProps<Theme> = {
 
 // ------------------------------------------------------------------
 
-const getOptionLabel = (o: IUserMini | number) =>
+const getOptionLabel = (o: IUser | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 // ----------------------------------------------------------------------------
@@ -32,11 +32,13 @@ const OptionSx: SxProps<Theme> = {
     width: "100%",
 };
 
-const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
-    option: IUserMini
-) => {
-    const { key, ...otherProps } = props;
+interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
+    key: any;
+    option: IUser;
+}
+
+const RenderOption: FC<RenderOptionProps> = (props) => {
+    const { key, option, ...otherProps } = props;
 
     const { avatar, firstName, lastName } = option;
     const fullname = `${firstName || ""} ${lastName || ""}`;
@@ -54,10 +56,15 @@ const RenderOption = (
     );
 };
 
+const getRenderOption = (
+    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
+    option: IUser
+) => <RenderOption option={option} {...props} />;
+
 // ----------------------------------------------------------------------------
 
 type ManagerAutocompleteProps = Omit<
-    AutocompleteProps<IUserMini, false, true>,
+    AutocompleteProps<IUser, false, true>,
     "options" | "renderOption" | "renderInput"
 > & {
     optionFilter?: (u: IUser) => boolean;
@@ -88,7 +95,7 @@ const ManagerAutocomplete = forwardRef<
             disableClearable
             options={options}
             getOptionLabel={getOptionLabel}
-            renderOption={RenderOption}
+            renderOption={getRenderOption}
             renderInput={({ InputProps, ...params }) => (
                 <TextField
                     label={t("Manager")}
@@ -114,5 +121,6 @@ const ManagerAutocomplete = forwardRef<
 
 ManagerAutocomplete.displayName = "ManagerAutocomplete";
 
+export { RenderOption };
 export type { ManagerAutocompleteProps };
 export default ManagerAutocomplete;

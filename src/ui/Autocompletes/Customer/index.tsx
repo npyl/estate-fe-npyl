@@ -2,7 +2,7 @@ import { SxProps, Theme } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ListItem from "@mui/material/ListItem";
 import InputAdornment from "@mui/material/InputAdornment";
-import { forwardRef, useMemo } from "react";
+import { FC, forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import renderUserTags from "./renderUserTags";
@@ -22,15 +22,26 @@ const OptionSx: SxProps<Theme> = {
     gap: 1,
 };
 
-const RenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
+interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
+    key: any;
+    option: ICustomerMini;
+}
+
+const RenderOption: FC<RenderOptionProps> = (props) => {
+    const { key, option, ...otherProps } = props;
+
+    return (
+        <ListItem key={option.id} sx={OptionSx} {...otherProps}>
+            <PlaceholderAvatar />
+            {option?.firstName || ""} {option?.lastName || ""}
+        </ListItem>
+    );
+};
+
+const getRenderOption = (
+    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
     option: ICustomerMini
-) => (
-    <ListItem {...props} key={option.id} sx={OptionSx}>
-        <PlaceholderAvatar />
-        {option?.firstName || ""} {option?.lastName || ""}
-    </ListItem>
-);
+) => <RenderOption option={option} {...props} />;
 
 // -------------------------------------------------------------------
 
@@ -67,7 +78,7 @@ const CustomerAutocomplete = forwardRef<
             ref={ref}
             disableClearable
             loading={isLoading}
-            renderOption={RenderOption}
+            renderOption={getRenderOption}
             options={options}
             getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
