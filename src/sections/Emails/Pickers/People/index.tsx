@@ -5,7 +5,7 @@ import useValue from "./useValue";
 import useOnChange from "./useOnChange";
 import useFreeSoloedChange from "./useFreeSoloedChange";
 import useSx from "./useSx";
-import PeopleAutocomplete from "@/ui/Autocompletes/PeopleMultiple";
+import PeopleAutocomplete from "@/ui/Autocompletes/People";
 import { IUser } from "@/types/user";
 
 // ---------------------------------------------------------------------------
