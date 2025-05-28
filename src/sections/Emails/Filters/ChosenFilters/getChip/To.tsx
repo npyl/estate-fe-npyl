@@ -1,10 +1,10 @@
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import ChipLabel from "@/sections/Filters/ChipLabel";
-import Chip from "@mui/material/Chip";
+import MuiChip from "@mui/material/Chip";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-const ToChip = () => {
+const Chip = () => {
     const { t } = useTranslation();
     const { filters, currentCustomerEmail, deleteFilter } = useFiltersContext();
     const { to } = filters;
@@ -17,11 +17,17 @@ const ToChip = () => {
     if (p.length === 0) return null;
 
     return (
-        <Chip
+        <MuiChip
             label={<ChipLabel title={t("To")} value={label} />}
             onDelete={onDelete}
         />
     );
+};
+
+const ToChip = () => {
+    const { box } = useFiltersContext();
+    if (box === "INBOX") return null;
+    return <Chip />;
 };
 
 export default ToChip;
