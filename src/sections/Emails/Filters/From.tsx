@@ -1,58 +1,14 @@
-import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
-import useIsOfficeAdmin from "@/sections/Google/useIsOfficeAdmin";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import { Skeleton, SxProps, Theme } from "@mui/material";
-import { useCallback, useMemo } from "react";
-import { useAuth } from "@/hooks/use-auth";
-import { useAllUsersQuery } from "@/services/user";
-import { IUser } from "@/types/user";
-
-const WIDTH = "300px";
-
-const onlyWithEmail = ({ workspaceEmail }: IUser) => Boolean(workspaceEmail);
-
-const Sx: SxProps<Theme> = {
-    width: WIDTH,
-};
-
-const Filter = () => {
-    const { filters, setFrom } = useFiltersContext();
-    const { from } = filters;
-
-    const { data, isLoading } = useAllUsersQuery();
-
-    const { user } = useAuth();
-    const value = useMemo(() => {
-        if (!from) return user?.id;
-        return data?.find(({ workspaceEmail }) => workspaceEmail === from)?.id;
-    }, [user?.id, from, data]);
-
-    const onChange = useCallback(
-        (v: number) => {
-            const found = data?.find(({ id }) => id === v)?.workspaceEmail;
-            if (!found) return;
-            setFrom(found);
-        },
-        [data]
-    );
-
-    if (isLoading) return <Skeleton width={WIDTH} height="58px" />;
-
-    return (
-        <ManagerAutocomplete
-            sx={Sx}
-            value={value}
-            onChange={onChange}
-            optionFilter={onlyWithEmail}
-        />
-    );
-};
+import PeopleFilter from "./_People";
+import { useTranslation } from "react-i18next";
 
 const FromFilter = () => {
-    const { gwIsAdmin, isChecking } = useIsOfficeAdmin();
-    if (isChecking) return <Skeleton width={WIDTH} height="58px" />;
-    if (!gwIsAdmin) return null;
-    return <Filter />;
+    const { t } = useTranslation();
+
+    const { box } = useFiltersContext();
+    if (box !== "INBOX") return null;
+
+    return <PeopleFilter label={t("From")} />;
 };
 
 export default FromFilter;
