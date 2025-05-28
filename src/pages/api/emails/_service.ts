@@ -34,8 +34,8 @@ const messageToIds = ({ payload }: gmail_v1.Schema$Message) => {
 const getQ = ({ search, from, to }: IEmailFilters) => {
     let parts = [];
     if (search) parts.push(search);
-    if (from) parts.push(`from:${from}`);
-    if (to) parts.push(`to:${to}`);
+    if (from.length > 0) parts.push(`from:${from}`);
+    if (to.length > 0) parts.push(`to:${to}`);
     return parts.join(" ");
 };
 
@@ -160,12 +160,11 @@ class GmailService {
      */
     private async _getThreadMetadata(
         auth: OAuth2Client,
-        userId: string,
         threadId: string,
         withPropertyIds: boolean
     ): Promise<TThreadMetadataExtended> {
         try {
-            const thread = await this._get(auth, userId, threadId);
+            const thread = await this._get(auth, threadId);
 
             const m = thread.messages || [];
 
@@ -231,7 +230,7 @@ class GmailService {
      * @returns thread with metadata including subject, from, snippet, and date
      */
     private ti =
-        (auth: OAuth2Client, userId: string, propertyIds: number[]) =>
+        (auth: OAuth2Client, propertyIds: number[]) =>
         async (_thread: TThread): Promise<TThreadShortRes | null> => {
             const {
                 id,
@@ -244,12 +243,7 @@ class GmailService {
             const withPropertyIds = propertyIds.length > 0;
 
             const { ids: HEADER_IDS, ...METADATA } =
-                await this._getThreadMetadata(
-                    auth,
-                    userId,
-                    id,
-                    withPropertyIds
-                );
+                await this._getThreadMetadata(auth, id, withPropertyIds);
 
             // INFO: if we are filtering based on propertyIds, fitler-out using the nulls
             if (withPropertyIds) {
@@ -276,9 +270,11 @@ class GmailService {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
 
-        const { from, propertyIds = [] } = filters;
+        const { propertyIds = [] } = filters;
 
         const q = getQ(filters);
+
+        console.log("Q: ", q);
 
         const res = await this.gmail.users.threads.list({
             auth,
@@ -291,7 +287,7 @@ class GmailService {
         const all = res?.data?.threads ?? [];
 
         // Get thread info
-        const p = all.map(this.ti(auth, from, propertyIds));
+        const p = all.map(this.ti(auth, propertyIds));
         const threadsWithInfo = await Promise.all(p);
 
         // Filter nulls
@@ -357,10 +353,10 @@ class GmailService {
 
     // ------------------------------------------------------------------------
 
-    private async _get(auth: OAuth2Client, userId: string, threadId: string) {
+    private async _get(auth: OAuth2Client, threadId: string) {
         const res = await this.gmail.users.threads.get({
             auth,
-            userId: userId || "me",
+            userId: "me",
             id: threadId,
             format: "full",
             metadataHeaders: [
@@ -382,7 +378,7 @@ class GmailService {
     ): Promise<gmail_v1.Schema$Thread> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
-        return await this._get(auth, "me", threadId);
+        return await this._get(auth, threadId);
     }
 
     // ------------------------------------------------------------------------
