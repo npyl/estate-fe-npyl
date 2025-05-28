@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { getTagClassname } from "@/ui/Autocompletes/CustomerMultiple";
+import { getTagClassname } from "@/ui/Autocompletes/People";
 import { SxProps, Theme } from "@mui/material";
 import { useRouter } from "next/router";
 import { toNumberSafe } from "@/utils/toNumber";
