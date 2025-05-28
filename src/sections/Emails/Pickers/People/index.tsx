@@ -1,12 +1,29 @@
 import { ICustomerMini } from "@/types/customer";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { CustomerAutocompleteMultipleProps } from "@/ui/Autocompletes/CustomerMultiple";
 import useValue from "./useValue";
 import useOnChange from "./useOnChange";
 import useFreeSoloedChange from "./useFreeSoloedChange";
 import useSx from "./useSx";
-import PeopleAutocomplete from "@/ui/Autocompletes/People";
+import PeopleAutocomplete, { TPerson } from "@/ui/Autocompletes/People";
 import { IUser } from "@/types/user";
+import { useTranslation } from "react-i18next";
+
+// ---------------------------------------------------------------------------
+
+const useInternationalised = () => {
+    const { t } = useTranslation();
+
+    const groupBy = useCallback(
+        (o: TPerson) => {
+            const v = "workspaceEmail" in o ? "Managers" : "Customers";
+            return t(v);
+        },
+        [t]
+    );
+
+    return [groupBy];
+};
 
 // ---------------------------------------------------------------------------
 
@@ -39,6 +56,8 @@ const PeoplePicker: FC<PeoplePickerProps> = ({
     const onFreeSoloed = useFreeSoloedChange(peopleFreeSoloed, _onFreeSoloed);
     const sx = useSx();
 
+    const [groupBy] = useInternationalised();
+
     return (
         <PeopleAutocomplete
             freeSolo
@@ -49,6 +68,7 @@ const PeoplePicker: FC<PeoplePickerProps> = ({
             onChange={onChange}
             customerOptionFilter={customerWithEmail}
             managerOptionFilter={managerWithEmail}
+            groupBy={groupBy}
             sx={sx}
             {...props}
         />

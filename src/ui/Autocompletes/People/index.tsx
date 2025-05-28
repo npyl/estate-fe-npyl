@@ -8,7 +8,9 @@ import useOptions from "./useOptions";
 import RenderOption from "./RenderOption";
 import renderUserTags, { getTagClassname } from "./renderUserTags";
 
-const getOptionLabel = (o: ICustomerMini | IUser | number) =>
+type TPerson = ICustomerMini | IUser;
+
+const getOptionLabel = (o: TPerson | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 // -----------------------------------------------------------------------------
@@ -33,7 +35,7 @@ const getDefaultRenderInput =
 
 interface PeopleAutocompleteProps<FreeSolo extends boolean = false>
     extends Omit<
-        AutocompleteProps<ICustomerMini, true, true, FreeSolo>,
+        AutocompleteProps<TPerson, true, true, FreeSolo>,
         "options" | "renderInput" | "renderOption" | "renderTags"
     > {
     label?: string;
@@ -45,7 +47,7 @@ interface PeopleAutocompleteProps<FreeSolo extends boolean = false>
 
     // INFO: make optional
     renderInput?: AutocompleteProps<
-        ICustomerMini,
+        TPerson,
         true,
         true,
         FreeSolo
@@ -103,5 +105,5 @@ const PeopleAutocomplete = forwardRef(UnforwardedPeopleAutocomplete) as <
 UnforwardedPeopleAutocomplete.displayName = "CustomerAutocomplete";
 
 export { getTagClassname };
-export type { PeopleAutocompleteProps };
+export type { PeopleAutocompleteProps, TPerson };
 export default PeopleAutocomplete;
