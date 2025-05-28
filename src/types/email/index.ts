@@ -90,7 +90,11 @@ type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
 
 // ----------------------------------------------------------------------------------
 
+type TMailbox = "INBOX" | "SENT";
+
 export type {
+    TMailbox,
+    // ...
     TThreadMessageReq,
     IGetAttachmentReq,
     IGetAttachmentsReq,

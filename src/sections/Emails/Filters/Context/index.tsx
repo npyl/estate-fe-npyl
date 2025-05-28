@@ -1,4 +1,4 @@
-import { IEmailFilters } from "@/types/email";
+import { IEmailFilters, TMailbox } from "@/types/email";
 import {
     createContext,
     FC,
@@ -19,6 +19,8 @@ type State = Setters & {
     to: string[];
     toFreeSoloed: string[];
 
+    box: TMailbox;
+
     isPropertyPage: boolean;
     isCustomerPage: boolean;
     currentPropertyId?: number;
@@ -34,6 +36,9 @@ const FiltersContext = createContext<State>({
     to: [],
     toFreeSoloed: [],
     setToFreeSoloed: () => {},
+
+    box: "INBOX",
+    setBox: () => {},
 
     isCustomerPage: false,
     isPropertyPage: false,
@@ -75,6 +80,8 @@ const FiltersProvider: FC<ProviderProps> = ({
 
     const [toFreeSoloed, setToFreeSoloed] = useState<string[]>([]);
 
+    const [box, setBox] = useState<TMailbox>("INBOX");
+
     const filters: IEmailFilters = {
         search,
         from,
@@ -94,8 +101,9 @@ const FiltersProvider: FC<ProviderProps> = ({
             setSearch,
             setTo,
             setToFreeSoloed,
+            setBox,
         }),
-        [setFrom, setPropertyIds, setSearch, setTo, setToFreeSoloed]
+        [setFrom, setPropertyIds, setSearch, setTo, setToFreeSoloed, setBox]
     );
     const deleteFilter = useDeleteFilter(
         setters,
@@ -112,6 +120,8 @@ const FiltersProvider: FC<ProviderProps> = ({
                 // ...
                 to,
                 toFreeSoloed,
+                // ...
+                box,
                 // ...
                 isPropertyPage,
                 isCustomerPage,

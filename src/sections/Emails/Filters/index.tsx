@@ -6,12 +6,16 @@ import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAut
 import IsAuthenticatedGuard from "@/sections/Google/IsAuthenticatedGuard";
 import ChosenFilters from "./ChosenFilters";
 import Search from "./Search";
+import Mailbox from "./Mailbox";
+import ManagerId from "./ManagerId";
 
 const Filters = () => (
     <FiltersBar
         filters={
             <IsAuthenticatedGuard>
                 <Search />
+                <Mailbox />
+                <ManagerId />
                 <From />
                 <To />
                 <Properties />
