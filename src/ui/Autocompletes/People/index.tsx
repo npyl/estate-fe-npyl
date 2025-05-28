@@ -3,7 +3,7 @@ import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { ICustomerMini } from "@/types/customer";
 import MultilineTextField from "@/components/MultilineTextField";
 import { AutocompleteRenderInputParams } from "@mui/material";
-import { IUser, IUserMini } from "@/types/user";
+import { IUser } from "@/types/user";
 import useOptions from "./useOptions";
 import RenderOption from "./RenderOption";
 import renderUserTags, { getTagClassname } from "./renderUserTags";
@@ -41,7 +41,7 @@ interface PeopleAutocompleteProps<FreeSolo extends boolean = false>
     helperText?: string;
 
     customerOptionFilter?: (c: ICustomerMini) => boolean;
-    managerOptionFilter?: (m: IUserMini) => boolean;
+    managerOptionFilter?: (m: IUser) => boolean;
 
     // INFO: make optional
     renderInput?: AutocompleteProps<

@@ -2,7 +2,7 @@ import { ICustomerMini } from "@/types/customer";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
 import ChipLink from "@/components/ChipLink";
 import PlaceholderAvatar from "@/ui/Autocompletes/Customer/PlaceholderAvatar";
-import { IUser } from "@/types/user";
+import { isIUser, IUser } from "@/types/user";
 import { FC } from "react";
 import Avatar from "@/components/Avatar";
 
@@ -19,7 +19,7 @@ interface TagProps {
 const Tag: FC<TagProps> = ({ getTagProps, option, index }) => {
     const { key, className: _className, ...tagProps } = getTagProps({ index });
 
-    const isUser = "preferredLanguage" in option;
+    const isUser = isIUser(option);
 
     const label = `${option?.firstName || ""} ${option?.lastName || ""}`;
 
@@ -31,7 +31,7 @@ const Tag: FC<TagProps> = ({ getTagProps, option, index }) => {
         <Avatar
             firstName={option?.firstName}
             lastName={option?.lastName}
-            src={option?.avatar}
+            src={(option as IUser)?.avatar}
         />
     ) : (
         <PlaceholderAvatar />

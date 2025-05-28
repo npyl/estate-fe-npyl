@@ -10,7 +10,8 @@ import { IUser } from "@/types/user";
 
 // ---------------------------------------------------------------------------
 
-const onlyWithEmail = ({ email }: ICustomerMini | IUser) => Boolean(email);
+const customerWithEmail = ({ email }: ICustomerMini) => Boolean(email);
+const managerWithEmail = ({ workspaceEmail }: IUser) => Boolean(workspaceEmail);
 
 interface PeoplePickerProps {
     people: string[];
@@ -46,8 +47,8 @@ const PeoplePicker: FC<PeoplePickerProps> = ({
             onFreeSoloedDelete={onFreeSoloedDelete}
             value={value}
             onChange={onChange}
-            customerOptionFilter={onlyWithEmail}
-            managerOptionFilter={onlyWithEmail}
+            customerOptionFilter={customerWithEmail}
+            managerOptionFilter={managerWithEmail}
             sx={sx}
             {...props}
         />

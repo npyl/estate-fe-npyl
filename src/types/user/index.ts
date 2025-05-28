@@ -70,4 +70,7 @@ interface IUserPOST {
     preferredLanguage?: string; // TODO: yup validator doesn't accept custom string type but should be PreferredLanguageType
 }
 
+const isIUser = (u: any) => "preferredLanguage" in u;
+
+export { isIUser };
 export type { IUser, IUserMini, GUserMini, IUserPOST };
