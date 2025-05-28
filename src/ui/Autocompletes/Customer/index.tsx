@@ -1,47 +1,17 @@
-import { SxProps, Theme } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import ListItem from "@mui/material/ListItem";
 import InputAdornment from "@mui/material/InputAdornment";
-import { FC, forwardRef, useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import { useGetNamesQuery } from "@/services/customers";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import renderUserTags from "./renderUserTags";
 import { ICustomerMini } from "@/types/customer";
 import PlaceholderAvatar from "./PlaceholderAvatar";
+import getRenderOption, { RenderOption } from "./getRenderOption";
 
 // ------------------------------------------------------------------
 
 const getOptionLabel = (o: ICustomerMini | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
-
-// ------------------------------------------------------------------
-
-const OptionSx: SxProps<Theme> = {
-    display: "flex",
-    alignItems: "center",
-    gap: 1,
-};
-
-interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
-    key: any;
-    option: ICustomerMini;
-}
-
-const RenderOption: FC<RenderOptionProps> = (props) => {
-    const { key, option, ...otherProps } = props;
-
-    return (
-        <ListItem key={option.id} sx={OptionSx} {...otherProps}>
-            <PlaceholderAvatar />
-            {option?.firstName || ""} {option?.lastName || ""}
-        </ListItem>
-    );
-};
-
-const getRenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
-    option: ICustomerMini
-) => <RenderOption option={option} {...props} />;
 
 // -------------------------------------------------------------------
 
