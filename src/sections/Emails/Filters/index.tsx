@@ -14,8 +14,10 @@ const Filters = () => (
         filters={
             <IsAuthenticatedGuard>
                 <Search />
-                <Mailbox />
+                {/* ---- */}
                 <ManagerId />
+                {/* ---- */}
+                <Mailbox />
                 <From />
                 <To />
                 <Properties />
