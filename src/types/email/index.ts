@@ -79,7 +79,7 @@ type TThreadShortRes = {
 
 interface IEmailFilters {
     search: string;
-    from: string;
+    from: string[];
     to: string[];
     propertyIds: number[];
 }
