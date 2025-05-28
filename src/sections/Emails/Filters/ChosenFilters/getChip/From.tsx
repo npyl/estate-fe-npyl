@@ -1,22 +1,30 @@
 import { useTranslation } from "react-i18next";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import ChipLabel from "@/sections/Filters/ChipLabel";
-import Chip from "@mui/material/Chip";
+import MuiChip from "@mui/material/Chip";
 import { useCallback } from "react";
 
-const FromChip = () => {
+const Chip = () => {
     const { t } = useTranslation();
     const { filters, deleteFilter } = useFiltersContext();
     const { from } = filters;
 
+    const p = from?.join(", ");
+
     const onDelete = useCallback(() => deleteFilter("from"), []);
 
     return (
-        <Chip
-            label={<ChipLabel title={t("From")} value={from} />}
+        <MuiChip
+            label={<ChipLabel title={t("From")} value={p} />}
             onDelete={onDelete}
         />
     );
+};
+
+const FromChip = () => {
+    const { box } = useFiltersContext();
+    if (box === "SENT") return null;
+    return <Chip />;
 };
 
 export default FromChip;
