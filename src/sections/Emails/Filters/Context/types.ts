@@ -3,14 +3,12 @@ import { Dispatch, SetStateAction } from "react";
 
 interface Setters {
     setSearch: Dispatch<SetStateAction<string>>;
-
     setManager: Dispatch<SetStateAction<string>>;
-
     setBox: Dispatch<SetStateAction<TMailbox>>;
-    setFrom: Dispatch<SetStateAction<string>>;
-    setTo: Dispatch<SetStateAction<string[]>>;
-    setToFreeSoloed: Dispatch<SetStateAction<string[]>>;
     setPropertyIds: Dispatch<SetStateAction<number[]>>;
+
+    setPeople: Dispatch<SetStateAction<string[]>>;
+    setPeopleFreeSoloed: Dispatch<SetStateAction<string[]>>;
 }
 
 export type { Setters };

@@ -7,7 +7,6 @@ import {
     useMemo,
     useState,
 } from "react";
-import { INITIAL_STATE } from "./constants";
 import useCalculateIds from "./useCalculateIds";
 import useDeleteFilter from "./useDeleteFilter";
 import { Setters } from "./types";
@@ -16,11 +15,10 @@ type State = Setters & {
     filters: IEmailFilters;
     ids: (keyof IEmailFilters)[];
 
-    to: string[];
-    toFreeSoloed: string[];
-
     manager: string;
     box: TMailbox;
+    people: string[];
+    peopleFreeSoloed: string[];
 
     isPropertyPage: boolean;
     isCustomerPage: boolean;
@@ -30,30 +28,7 @@ type State = Setters & {
     deleteFilter: (filterKey: keyof IEmailFilters) => void;
 };
 
-const FiltersContext = createContext<State>({
-    filters: INITIAL_STATE,
-    ids: [],
-
-    to: [],
-    toFreeSoloed: [],
-    setToFreeSoloed: () => {},
-
-    box: "INBOX",
-    setBox: () => {},
-
-    manager: "",
-    setManager: () => {},
-
-    isCustomerPage: false,
-    isPropertyPage: false,
-
-    setSearch: () => {},
-    setFrom: () => {},
-    setPropertyIds: () => {},
-    setTo: () => {},
-
-    deleteFilter: () => {},
-});
+const FiltersContext = createContext<State | undefined>(undefined);
 
 export const useFiltersContext = () => {
     const context = useContext(FiltersContext);
@@ -82,16 +57,18 @@ const FiltersProvider: FC<ProviderProps> = ({
     const [box, setBox] = useState<TMailbox>("INBOX");
 
     const [search, setSearch] = useState("");
-    const [from, setFrom] = useState("");
-    const [to, setTo] = useState(_to ? [_to] : []);
+    // const [from, setFrom] = useState("");
+    // const [to, setTo] = useState(_to ? [_to] : []);
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
-    const [toFreeSoloed, setToFreeSoloed] = useState<string[]>([]);
+    const [people, setPeople] = useState<string[]>([]);
+    const [peopleFreeSoloed, setPeopleFreeSoloed] = useState<string[]>([]);
 
     const filters: IEmailFilters = {
         search,
-        from,
-        to: [...to, ...toFreeSoloed],
+        from: "",
+        to: [],
+        // to: [...to, ...toFreeSoloed],
         propertyIds,
     };
 
@@ -103,21 +80,19 @@ const FiltersProvider: FC<ProviderProps> = ({
     const setters: Setters = useMemo(
         () => ({
             setManager,
-            setFrom,
+            setBox,
+            setPeople,
+            setPeopleFreeSoloed,
             setPropertyIds,
             setSearch,
-            setTo,
-            setToFreeSoloed,
-            setBox,
         }),
         [
             setManager,
-            setFrom,
+            setBox,
+            setPeople,
+            setPeopleFreeSoloed,
             setPropertyIds,
             setSearch,
-            setTo,
-            setToFreeSoloed,
-            setBox,
         ]
     );
     const deleteFilter = useDeleteFilter(
@@ -133,11 +108,10 @@ const FiltersProvider: FC<ProviderProps> = ({
                 filters,
                 ids,
                 // ...
-                to,
-                toFreeSoloed,
-                // ...
                 manager,
                 box,
+                people,
+                peopleFreeSoloed,
                 // ...
                 isPropertyPage,
                 isCustomerPage,
