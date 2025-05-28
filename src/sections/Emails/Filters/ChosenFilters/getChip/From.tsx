@@ -6,16 +6,19 @@ import { useCallback } from "react";
 
 const Chip = () => {
     const { t } = useTranslation();
-    const { filters, deleteFilter } = useFiltersContext();
-    const { from } = filters;
+    const { filters, currentCustomerEmail, deleteFilter } = useFiltersContext();
+    const { to } = filters;
 
-    const p = from?.join(", ");
+    const p = to?.filter((e) => e !== currentCustomerEmail);
+    const label = p.join(", ");
 
     const onDelete = useCallback(() => deleteFilter("from"), []);
 
+    if (p.length === 0) return null;
+
     return (
         <MuiChip
-            label={<ChipLabel title={t("From")} value={p} />}
+            label={<ChipLabel title={t("From")} value={label} />}
             onDelete={onDelete}
         />
     );

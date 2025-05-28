@@ -57,7 +57,7 @@ const FiltersProvider: FC<ProviderProps> = ({
 
     const [box, setBox] = useState<TMailbox>("INBOX");
 
-    const [people, setPeople] = useState<string[]>([]);
+    const [people, setPeople] = useState<string[]>(_to ? [_to] : []);
     const [peopleFreeSoloed, setPeopleFreeSoloed] = useState<string[]>([]);
 
     const [search, setSearch] = useState("");
@@ -65,8 +65,6 @@ const FiltersProvider: FC<ProviderProps> = ({
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
     const filters: IEmailFilters = { search, ...FROM_TO, propertyIds };
-
-    console.log("FILTERS: ", filters);
 
     const ids = useCalculateIds(filters);
 

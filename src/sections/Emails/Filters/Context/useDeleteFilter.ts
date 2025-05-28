@@ -13,19 +13,19 @@ interface InitialValues {
 }
 
 const useDeleteFilter = (
-    { setFrom, setPropertyIds, setSearch, setTo, setToFreeSoloed }: Setters,
+    { setPeople, setPeopleFreeSoloed, setPropertyIds, setSearch }: Setters,
     isPropertyPage: boolean,
     isCustomerPage: boolean,
     { propertyId, _to }: InitialValues
 ) => {
     const SETTERS: SetterMap = useMemo(
         () => ({
-            from: setFrom,
+            to: setPeople,
+            from: setPeople,
             propertyIds: setPropertyIds,
             search: setSearch,
-            to: setTo,
         }),
-        [setFrom, setPropertyIds, setSearch, setTo]
+        [setPropertyIds, setSearch]
     );
 
     const deleteFilter = useCallback(
@@ -35,13 +35,15 @@ const useDeleteFilter = (
                 return;
             }
 
-            if (key === "to") setToFreeSoloed([]);
+            if (key === "to") setPeopleFreeSoloed([]);
             if (key === "to" && isCustomerPage) {
-                setTo([_to!]);
+                setPeople([_to!]);
                 return;
             }
 
-            SETTERS[key](INITIAL_STATE[key] as any);
+            try {
+                SETTERS[key](INITIAL_STATE[key] as any);
+            } catch (ex) {}
         },
         [SETTERS, isPropertyPage, isCustomerPage, propertyId, _to]
     );
