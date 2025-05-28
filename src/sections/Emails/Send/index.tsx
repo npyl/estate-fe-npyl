@@ -17,8 +17,8 @@ const FabSx: SxProps<Theme> = {
 const Send = () => {
     const [isOpen, openBox, closeBox] = useDialog();
     const {
-        to,
-        toFreeSoloed,
+        people,
+        peopleFreeSoloed,
         filters: { propertyIds },
     } = useFiltersContext();
 
@@ -29,8 +29,8 @@ const Send = () => {
             </Fab>
             {isOpen ? (
                 <MessageBox
-                    to={to}
-                    toFreeSoloed={toFreeSoloed}
+                    to={people}
+                    toFreeSoloed={peopleFreeSoloed}
                     propertyIds={propertyIds}
                     onClose={closeBox}
                 />
