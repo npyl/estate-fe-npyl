@@ -21,7 +21,7 @@ export const rtkQueryErrorLogger: Middleware =
                 window.location.replace("/authentication/login");
                 errorToast("_END_OF_SESSION_");
             } else {
-                errorToast("_ERROR_");
+                // no op
             }
         }
 
