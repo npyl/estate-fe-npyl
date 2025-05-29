@@ -52,7 +52,7 @@ const Reader: FC<ReaderProps> = ({ content, ...props }) => {
         }
     }, [content]);
 
-    return <Box dangerouslySetInnerHTML={{ __html: html }} {...props} />;
+    return <Box dangerouslySetInnerHTML={{ __html: html }} mt={2} {...props} />;
 };
 
 export default Reader;

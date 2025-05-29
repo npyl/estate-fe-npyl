@@ -13,9 +13,10 @@ const Attachments: FC<AttachmentsProps> = ({ attachments }) => (
         direction="row"
         spacing={1}
         flexWrap="wrap"
-        borderTop="1px solid"
+        borderTop="1px dashed"
         borderColor={getBorderColor2}
         py={1}
+        mt={3}
     >
         {attachments.map(getAttachment)}
     </Stack>
