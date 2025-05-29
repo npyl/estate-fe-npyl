@@ -49,12 +49,12 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
                 </Typography>
                 <Typography color="text.secondary">{e.from || ""}</Typography>
             </Stack>
-            <Stack width={1} overflow="hidden" textOverflow="ellipsis">
-                <Typography variant="body2" width={0.9} noWrap height={30}>
+            <Stack overflow="hidden" textOverflow="ellipsis" width={1}>
+                <Typography variant="body2" noWrap height={30} width={0.9}>
                     {e.snippet}
                 </Typography>
                 {e.attachments.length > 0 ? (
-                    <Attachments attachments={e.attachments} />
+                    <Attachments attachments={e.attachments} width={0.9} />
                 ) : null}
             </Stack>
         </Stack>

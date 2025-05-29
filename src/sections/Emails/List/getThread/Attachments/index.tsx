@@ -1,16 +1,16 @@
 import { FC } from "react";
-import Stack from "@mui/material/Stack";
 import { IThreadAttachmentShortRes } from "@/types/email";
 import getAttachment from "./getAttachment";
+import ResponsiveStack, { ResponsiveStackProps } from "@/ui/ResponsiveStack";
 
-interface AttachmentsProps {
+interface AttachmentsProps extends ResponsiveStackProps {
     attachments: IThreadAttachmentShortRes[];
 }
 
-const Attachments: FC<AttachmentsProps> = ({ attachments }) => (
-    <Stack direction="row" spacing={1} flexWrap="wrap" height={34}>
+const Attachments: FC<AttachmentsProps> = ({ attachments, ...props }) => (
+    <ResponsiveStack height={34} {...props}>
         {attachments.map(getAttachment)}
-    </Stack>
+    </ResponsiveStack>
 );
 
 export default Attachments;
