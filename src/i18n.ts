@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            EMAIL_REQUIRES_TITLE: "Please add a title",
+
             WORKSPACE_ADMIN_ONLY:
                 "You must be the google workspace admin to change this",
 
@@ -1354,6 +1356,8 @@ const resources = {
     },
     el: {
         translation: {
+            EMAIL_REQUIRES_TITLE: "Παρακαλώ συμπληρώστε τίτλο",
+
             WORKSPACE_ADMIN_ONLY:
                 "Πρέπει να είστε διαχειριστής του google workspace για να πραγματοποιήσετε αλλαγή",
 

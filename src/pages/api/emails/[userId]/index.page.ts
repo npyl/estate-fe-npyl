@@ -21,7 +21,6 @@ export default async function handler(
 
         if (!to) throw "To is required";
         if (!subject) throw "Subject is required";
-        if (!body) throw "Body is required";
 
         // Verify Emails
         const areValid = await verifyEmails(to);

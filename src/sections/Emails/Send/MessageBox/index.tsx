@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import Content from "./Content";
 import { TMessageBoxValues } from "./types";
 import filesToBase64 from "./filesToBase64";
+import { errorToast } from "@/components/Toaster";
 
 interface MessageBoxProps {
     to?: string[];
@@ -38,6 +39,11 @@ const MessageBox: FC<MessageBoxProps> = ({
 
     const onSubmit = useCallback(
         async (d: TMessageBoxValues) => {
+            if (!d.subject) {
+                errorToast("EMAIL_REQUIRES_TITLE");
+                return;
+            }
+
             const { toFreeSoloed, attachments: _attachments, ...rest } = d;
 
             const attachments = await filesToBase64(_attachments);
