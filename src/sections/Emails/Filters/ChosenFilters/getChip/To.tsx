@@ -26,7 +26,7 @@ const Chip = () => {
 
 const ToChip = () => {
     const { box } = useFiltersContext();
-    if (box === "INBOX") return null;
+    if (box !== "SENT") return null;
     return <Chip />;
 };
 

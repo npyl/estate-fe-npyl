@@ -7,6 +7,8 @@ type SetterMap = {
     [K in keyof IEmailFilters]: Dispatch<SetStateAction<IEmailFilters[K]>>;
 };
 
+const NO_OP = () => {};
+
 interface InitialValues {
     propertyId?: number;
     _to?: string;
@@ -24,8 +26,9 @@ const useDeleteFilter = (
             from: setPeople,
             propertyIds: setPropertyIds,
             search: setSearch,
+            spam: NO_OP,
         }),
-        [setPropertyIds, setSearch]
+        [setPeople, setPropertyIds, setSearch]
     );
 
     const deleteFilter = useCallback(
@@ -48,7 +51,7 @@ const useDeleteFilter = (
             }
 
             try {
-                SETTERS[key](INITIAL_STATE[key] as any);
+                SETTERS[key]?.(INITIAL_STATE[key] as any);
             } catch (ex) {}
         },
         [SETTERS, isPropertyPage, isCustomerPage, propertyId, _to]

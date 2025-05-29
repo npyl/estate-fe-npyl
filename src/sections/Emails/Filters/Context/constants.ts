@@ -5,6 +5,7 @@ const INITIAL_STATE: Required<IEmailFilters> = {
     from: [],
     to: [],
     propertyIds: [],
+    spam: false,
 };
 
 export { INITIAL_STATE };

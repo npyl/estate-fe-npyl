@@ -23,6 +23,7 @@ const useFromTo: UseFromTo = (manager, box, people, peopleFreeSoloed) => {
 
         switch (box) {
             case "INBOX":
+            case "SPAM":
                 return {
                     from: all,
                     to: [me],
