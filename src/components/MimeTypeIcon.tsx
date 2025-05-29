@@ -159,16 +159,10 @@ const getMimetypeIcon = (mimeType: string): SvgIconComponent => {
 
 interface MimeTypeIconProps extends Omit<SvgIconComponent, "muiName"> {
     mimeType: string;
-    filename: string;
     style?: CSSProperties;
 }
 
-const MimeTypeIcon = ({
-    mimeType,
-    filename,
-    style,
-    ...props
-}: MimeTypeIconProps) => {
+const MimeTypeIcon = ({ mimeType, style, ...props }: MimeTypeIconProps) => {
     const IconComponent = getMimetypeIcon(mimeType);
 
     const color = useMemo(() => {

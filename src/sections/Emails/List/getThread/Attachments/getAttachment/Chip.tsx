@@ -39,7 +39,7 @@ const Chip: FC<ChipProps> = ({
     const icon = loading ? (
         <CircularProgress size={15} />
     ) : (
-        <MimeTypeIcon mimeType={mimeType} filename={filename} />
+        <MimeTypeIcon mimeType={mimeType} />
     );
 
     const label = `${filename} (${size})`;

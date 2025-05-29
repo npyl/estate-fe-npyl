@@ -11,7 +11,7 @@ interface AttachmentsProps {
 const Attachments: FC<AttachmentsProps> = ({ attachments }) => (
     <Stack
         direction="row"
-        spacing={1}
+        spacing={2}
         flexWrap="wrap"
         borderTop="1px dashed"
         borderColor={getBorderColor2}
