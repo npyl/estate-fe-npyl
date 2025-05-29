@@ -8,7 +8,7 @@ interface AttachmentsProps {
 }
 
 const Attachments: FC<AttachmentsProps> = ({ attachments }) => (
-    <Stack direction="row" spacing={1} flexWrap="wrap" height={25}>
+    <Stack direction="row" spacing={1} flexWrap="wrap" height={34}>
         {attachments.map(getAttachment)}
     </Stack>
 );

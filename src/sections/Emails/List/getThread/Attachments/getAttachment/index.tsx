@@ -29,7 +29,9 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
         <>
             <Chip
                 loading={isLoading}
-                label={`${a.filename} (${a.size})`}
+                mimeType={a.mimeType}
+                filename={a.filename}
+                size={a.size}
                 onClick={onClick}
             />
 
