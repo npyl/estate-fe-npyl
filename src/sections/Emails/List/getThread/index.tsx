@@ -6,9 +6,25 @@ import { alpha, Stack, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import Attachments from "./Attachments";
-import ThreadDate from "./ThreadDate";
+import ThreadDate, { DATE_WIDTH } from "./ThreadDate";
 
-const ItemSx: SxProps<Theme> = {
+const TITLE_CLASSNAME = "PPThread-Title-Classname";
+
+const UnreadSx: SxProps<Theme> = {
+    [`.${TITLE_CLASSNAME}`]: {
+        color: ({ palette: { mode } }) =>
+            mode === "light" ? "black" : "white",
+    },
+};
+
+const ReadSx: SxProps<Theme> = {
+    bgcolor: ({ palette: { mode } }) =>
+        mode === "light" ? "grey.100" : "neutral.800",
+};
+
+const getItemSx = (isUnread: boolean): SxProps<Theme> => ({
+    ...(isUnread ? UnreadSx : ReadSx),
+
     "&:hover": {
         ":last-of-type": {
             borderBottomLeftRadius: 6,
@@ -26,7 +42,7 @@ const ItemSx: SxProps<Theme> = {
         borderBottom: "1px solid",
         borderColor: getBorderColor2,
     },
-};
+});
 
 interface ThreadItemProps {
     e: TThreadShortRes;
@@ -40,21 +56,32 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         alignItems="center"
         p={1}
         href={`/emails/${e.id}`}
-        sx={ItemSx}
+        sx={getItemSx(e.unread)}
     >
-        <Stack direction="row" width="calc(100% - 80px)">
-            <Stack width="40%" overflow="hidden" textOverflow="ellipsis">
-                <Typography fontWeight="500" noWrap width="90%">
+        <Stack direction="row" width={`calc(100% - ${DATE_WIDTH})`}>
+            <Typography
+                width="30%"
+                color="text.secondary"
+                overflow="hidden"
+                textOverflow="ellipsis"
+            >
+                {e.from || ""}
+            </Typography>
+            <Stack overflow="hidden" textOverflow="ellipsis" width={1}>
+                <Typography
+                    className={TITLE_CLASSNAME}
+                    fontWeight="500"
+                    color="text.secondary"
+                    noWrap
+                    width={1}
+                >
                     {e.subject}
                 </Typography>
-                <Typography color="text.secondary">{e.from || ""}</Typography>
-            </Stack>
-            <Stack overflow="hidden" textOverflow="ellipsis" width={1}>
-                <Typography variant="body2" noWrap height={30} width={0.9}>
+                <Typography variant="body2" noWrap height={30} width="95%">
                     {e.snippet}
                 </Typography>
                 {e.attachments.length > 0 ? (
-                    <Attachments attachments={e.attachments} width={0.9} />
+                    <Attachments attachments={e.attachments} width="95%" />
                 ) : null}
             </Stack>
         </Stack>

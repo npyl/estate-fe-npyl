@@ -143,6 +143,14 @@ const createMultipartMessage = async (
     return encodedMessage;
 };
 
+/**
+ * A thread is considered "UNREAD", when at least one of it's messages have the label "UNREAD"
+ * @param m
+ * @returns
+ */
+const isUnread = (m: gmail_v1.Schema$Message[]) =>
+    m.some(({ labelIds }) => Boolean(labelIds?.includes("UNREAD")));
+
 type TThreadMetadataExtended = TThreadMetadata & { ids: number[] };
 
 // --------------------------------------------------------------------------
@@ -206,6 +214,7 @@ class GmailService {
             }
 
             const attachments = getAttachmentsFromMessages(m);
+            const unread = isUnread(m);
 
             return {
                 subject,
@@ -213,6 +222,7 @@ class GmailService {
                 ids,
                 date,
                 attachments,
+                unread,
             };
         } catch (error) {
             console.error(error);
@@ -222,6 +232,7 @@ class GmailService {
                 ids: [],
                 date: "",
                 attachments: [],
+                unread: true,
             };
         }
     }

@@ -64,6 +64,7 @@ type TThreadMetadata = {
     subject: string;
     from: string;
     date: string;
+    unread: boolean;
     attachments: IThreadAttachmentShortRes[];
 };
 

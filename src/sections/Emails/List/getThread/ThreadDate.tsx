@@ -1,6 +1,8 @@
 import Typography from "@mui/material/Typography";
 import { FC, useMemo } from "react";
 
+const DATE_WIDTH = "80px";
+
 interface ThreadDateProps {
     date: string;
 }
@@ -21,7 +23,7 @@ const ThreadDate: FC<ThreadDateProps> = ({ date }) => {
             fontWeight="500"
             noWrap
             whiteSpace="nowrap"
-            width="80px"
+            width={DATE_WIDTH}
             overflow="visible"
         >
             {DATE}
@@ -29,4 +31,5 @@ const ThreadDate: FC<ThreadDateProps> = ({ date }) => {
     );
 };
 
+export { DATE_WIDTH };
 export default ThreadDate;
