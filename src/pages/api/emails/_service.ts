@@ -384,6 +384,20 @@ class GmailService {
         return res?.data;
     }
 
+    async markRead(userId: number, id: string): Promise<void> {
+        const auth = await managerService.getAuthForUser(userId);
+        if (!auth) throw "Bad auth";
+
+        await this.gmail.users.threads.modify({
+            auth,
+            userId: "me",
+            id,
+            requestBody: {
+                removeLabelIds: ["UNREAD"],
+            },
+        });
+    }
+
     async get(
         userId: number,
         threadId: string

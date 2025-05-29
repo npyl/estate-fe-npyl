@@ -1,5 +1,4 @@
 import {
-    IEmailFilters,
     IGetAttachmentReq,
     IThreadAttachmentRes,
     TEmailFilterRes,
@@ -7,26 +6,11 @@ import {
     TThreadRes,
 } from "@/types/email";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-type WithId<T> = T & { userId: number };
+import { optimisticMarkThreadRead } from "./optimistic";
+import { IEmailFilterReq, IThreadReq, WithId } from "./types";
 
 interface ISendMailReq {
     body: TThreadMessageReq;
-}
-
-interface IEmailFilterReq {
-    body: IEmailFilters;
-
-    pageSize: number;
-    pageToken?: string; // INFO: tell gmail api to fetch next page
-}
-
-interface IThreadReq {
-    threadId: string;
-}
-
-interface IAttachmentData {
-    base64: string;
 }
 
 export const emails = createApi({
@@ -69,6 +53,15 @@ export const emails = createApi({
             providesTags: ["EmailById"],
         }),
 
+        markThreadRead: builder.mutation<TThreadRes, WithId<IThreadReq>>({
+            query: ({ userId, threadId }) => ({
+                url: `/${userId}/${threadId}/markRead`,
+                method: "PATCH",
+            }),
+            onQueryStarted: optimisticMarkThreadRead,
+            // INFO: do not invalidate tags (too bandwidth constly)
+        }),
+
         // ---------------------------------------------------------------------------
 
         getAttachment: builder.query<
@@ -91,6 +84,7 @@ export const {
     useFilterEmailsQuery,
     // ...
     useGetThreadQuery,
+    useMarkThreadReadMutation,
     // ...
     useGetAttachmentQuery,
 } = emails;
