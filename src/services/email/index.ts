@@ -50,16 +50,8 @@ export const emails = createApi({
 
         getThread: builder.query<TThreadRes, WithId<IThreadReq>>({
             query: ({ userId, threadId }) => `/${userId}/${threadId}`,
-            providesTags: ["EmailById"],
-        }),
-
-        markThreadRead: builder.mutation<TThreadRes, WithId<IThreadReq>>({
-            query: ({ userId, threadId }) => ({
-                url: `/${userId}/${threadId}/markRead`,
-                method: "PATCH",
-            }),
             onQueryStarted: optimisticMarkThreadRead,
-            // INFO: do not invalidate tags (too bandwidth constly)
+            providesTags: ["EmailById"],
         }),
 
         // ---------------------------------------------------------------------------
@@ -84,7 +76,6 @@ export const {
     useFilterEmailsQuery,
     // ...
     useGetThreadQuery,
-    useMarkThreadReadMutation,
     // ...
     useGetAttachmentQuery,
 } = emails;

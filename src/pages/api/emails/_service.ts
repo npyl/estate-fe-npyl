@@ -384,10 +384,10 @@ class GmailService {
         return res?.data;
     }
 
-    async markRead(userId: number, id: string): Promise<void> {
-        const auth = await managerService.getAuthForUser(userId);
-        if (!auth) throw "Bad auth";
-
+    private async _markThreadAsRead(
+        auth: OAuth2Client,
+        id: string
+    ): Promise<void> {
         await this.gmail.users.threads.modify({
             auth,
             userId: "me",
@@ -404,6 +404,10 @@ class GmailService {
     ): Promise<gmail_v1.Schema$Thread> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) throw "Bad auth";
+
+        // INFO: opening a thread automatically means we "read" it
+        await this._markThreadAsRead(auth, threadId);
+
         return await this._get(auth, threadId);
     }
 

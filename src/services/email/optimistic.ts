@@ -1,5 +1,5 @@
 import { TThreadRes } from "@/types/email";
-import { MutationLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
+import { QueryLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { emails } from ".";
 import { IThreadReq, WithId } from "./types";
@@ -8,7 +8,7 @@ const REQ_KEY = "filterEmails";
 
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
-    api: MutationLifecycleApi<Req, BaseQueryFn, Res, "emails">
+    api: QueryLifecycleApi<Req, BaseQueryFn, Res, "emails">
 ) => void;
 
 type TGetThread = OptimisticCb<WithId<IThreadReq>, TThreadRes>;
