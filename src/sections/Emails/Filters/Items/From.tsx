@@ -6,7 +6,7 @@ const FromFilter = () => {
     const { t } = useTranslation();
 
     const { box } = useFiltersContext();
-    if (box !== "INBOX") return null;
+    if (box === "SENT") return null;
 
     return <PeopleFilter label={t("From")} />;
 };
