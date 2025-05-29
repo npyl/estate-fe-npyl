@@ -31,11 +31,12 @@ const messageToIds = ({ payload }: gmail_v1.Schema$Message) => {
     return v.split(",").map(toNumberSafe);
 };
 
-const getQ = ({ search, from, to }: IEmailFilters) => {
+const getQ = ({ search, from, to, spam }: IEmailFilters) => {
     let parts = [];
     if (search) parts.push(search);
     if (from.length > 0) parts.push(`from:${from}`);
     if (to.length > 0) parts.push(`to:${to}`);
+    if (spam) parts.push("in:spam");
     return parts.join(" ");
 };
 
