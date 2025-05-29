@@ -1,23 +1,26 @@
 import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
 import { TranslationType } from "@/types/translation";
-import { ComponentType, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import InboxIcon from "@mui/icons-material/Inbox";
 import OutboxIcon from "@mui/icons-material/Outbox";
 import { SxProps, Theme } from "@mui/material";
 import { useFiltersContext } from "../Context";
 import { TMailbox } from "@/types/email";
+import SpamIcon from "@/assets/icons/spam";
+import { SvgIconComponent } from "@mui/icons-material";
 
 interface IOption {
     key: TMailbox;
     label: string;
-    Icon: ComponentType<any>;
+    Icon: SvgIconComponent;
 }
 
 const getOPTIONS = (t: TranslationType): IOption[] => [
     { key: "INBOX", label: t("Inbox"), Icon: InboxIcon },
     { key: "SENT", label: t("Sent"), Icon: OutboxIcon },
+    { key: "SPAM", label: t("Spam"), Icon: SpamIcon },
 ];
 
 const MenuItemSx: SxProps<Theme> = {

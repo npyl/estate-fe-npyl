@@ -8,11 +8,14 @@ import SearchChip from "./Search";
 
 type FilterChip = ComponentType<any>;
 
+const NoOp = () => null;
+
 const CHIPS: Record<keyof IEmailFilters, FilterChip> = {
     search: SearchChip,
     from: FromChip,
     propertyIds: PropertyIdsChip,
     to: ToChip,
+    spam: NoOp,
 };
 
 interface GeneralChipProps {

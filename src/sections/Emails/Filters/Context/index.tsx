@@ -64,9 +64,12 @@ const FiltersProvider: FC<ProviderProps> = ({
     const FROM_TO = useFromTo(manager, box, people, peopleFreeSoloed);
     const [propertyIds, setPropertyIds] = useState<number[]>(_propertyIds);
 
-    const filters: IEmailFilters = { search, ...FROM_TO, propertyIds };
-
-    console.log(filters);
+    const filters: IEmailFilters = {
+        search,
+        ...FROM_TO,
+        propertyIds,
+        ...(box === "SPAM" ? { spam: true } : {}),
+    };
 
     const ids = useCalculateIds(filters);
 

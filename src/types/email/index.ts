@@ -78,6 +78,8 @@ type TThreadShortRes = {
 // ----------------------------------------------------------------------------------
 
 interface IEmailFilters {
+    spam?: boolean; // should show spam
+
     search: string;
     from: string[];
     to: string[];
@@ -90,7 +92,7 @@ type TEmailFilterRes = Omit<gmail_v1.Schema$ListThreadsResponse, "threads"> & {
 
 // ----------------------------------------------------------------------------------
 
-type TMailbox = "INBOX" | "SENT";
+type TMailbox = "INBOX" | "SENT" | "SPAM";
 
 export type {
     TMailbox,
