@@ -24,10 +24,7 @@ const RHFOrganization: FC<RHFOrganizationAutocompleteProps> = ({
         <Controller
             name={name}
             control={control}
-            render={({
-                field: { ref, value, onChange, ...field },
-                fieldState: { error },
-            }) => (
+            render={({ field: { ref, ...field }, fieldState: { error } }) => (
                 <OrganizationAutocomplete
                     ref={ref as any}
                     fullWidth

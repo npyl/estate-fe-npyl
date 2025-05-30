@@ -1,17 +1,20 @@
-import RHFFirm from "@/ui/Autocompletes/RHFFirm";
 import Stack from "@mui/material/Stack";
 import Opener, { useOpener } from "@/components/Opener";
 import FirmCreateDrawer from "@/sections/Organization/CreateDrawer";
 import AddButton from "./AddButton";
 import { useTranslation } from "react-i18next";
+import RHFOrganization from "@/ui/Autocompletes/RHFOrganization";
 
-const Firm = () => {
+const Organizations = () => {
     const { t } = useTranslation();
     const [openerRef, onClick] = useOpener();
 
     return (
         <Stack direction="row" spacing={1} alignItems="center">
-            <RHFFirm name="firm" label={t<string>("Firm")} />
+            <RHFOrganization
+                name="organization"
+                label={t<string>("Organization")}
+            />
             <Opener
                 ref={openerRef}
                 Clicker={AddButton}
@@ -22,4 +25,4 @@ const Firm = () => {
     );
 };
 
-export default Firm;
+export default Organizations;

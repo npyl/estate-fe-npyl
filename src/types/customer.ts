@@ -4,6 +4,7 @@ import { Enum } from "./enums";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
+import { IOrganizationShortRes } from "./organization";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
@@ -80,11 +81,11 @@ export interface ICustomer {
     ownedProperties: IProperties[];
     labels: ILabel[];
     demands: IDemand[];
+    enableEmails: boolean;
+    organization: IOrganizationShortRes;
 
     createdAt: string;
     updatedAt: string;
-
-    enableEmails: boolean;
 }
 
 interface ICustomerMini {
@@ -124,6 +125,8 @@ export interface ICustomerPOST {
     nationality: Enum<string>;
     leadSource: Enum<string>;
     preferredLanguage: Enum<string>;
+
+    organization: number;
 }
 
 interface ICustomerTabCounts {

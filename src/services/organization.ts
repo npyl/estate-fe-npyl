@@ -67,7 +67,7 @@ export const organization = createApi({
         }),
 
         allOrganizations: builder.query<IOrganization[], void>({
-            query: () => "/all",
+            query: () => "",
             providesTags: ["Organizations"],
         }),
 

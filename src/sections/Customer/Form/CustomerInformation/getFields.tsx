@@ -16,14 +16,13 @@ import {
     RHFRating,
 } from "@/components/hook-form";
 import { TranslationType } from "@/types/translation";
-import { IUser } from "@/types/user";
 import { KeyValue } from "@/types/KeyValue";
 import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
 import Select from "@/components/hook-form/Select";
 import { useTranslation } from "react-i18next";
 import StayUpdated from "./StayUpdated";
 import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
-import Firm from "./Firm";
+import Organizations from "./Organizations";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -82,7 +81,7 @@ const getFIELDS = (
     />,
     <RHFManagerAutocomplete name="managedBy" />,
 
-    <Firm />,
+    <Organizations />,
 
     <RHFTextField fullWidth name="mobilePhone" label={t("Mobile Phone")} />,
     <RHFTextField fullWidth name="homePhone" label={t("Home Phone")} />,
