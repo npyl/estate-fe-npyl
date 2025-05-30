@@ -5,9 +5,11 @@ import { useFilterOrganizationsQuery } from "@/services/organization";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import { FC, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import getColumns from "./columns";
 import { useTranslation } from "react-i18next";
+import { useFiltersContext } from "./Filters/Context";
+import FiltersSection from "./Filters/Section";
 
 const PAGE_SIZE = 20;
 
@@ -15,16 +17,14 @@ const Organisation = () => null;
 
 const getOrganisation = () => <Organisation />;
 
-const FilterSection: FC<any> = () => {
-    return null;
-};
-
 const ViewAll = () => {
+    const { filters: body } = useFiltersContext();
+
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(PAGE_SIZE);
 
     const { data, isLoading } = useFilterOrganizationsQuery({
-        body: { search: "" },
+        body,
         page,
         pageSize: PAGE_SIZE,
         sortBy: "updatedAt",
@@ -46,7 +46,7 @@ const ViewAll = () => {
 
     return (
         <>
-            <FilterSection />
+            <FiltersSection />
 
             {belowMd ? (
                 <Pagination
