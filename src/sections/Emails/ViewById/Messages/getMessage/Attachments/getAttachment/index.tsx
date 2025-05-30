@@ -33,10 +33,10 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
     if (isLoading) return <Skeleton />;
     if (!url) return null;
     return (
-        <Stack spacing={1}>
+        <Stack spacing={1} sx={DescriptionSx}>
             <PPAttachment a={{ ...a, url }} />
 
-            <SpaceBetween alignItems="center" sx={DescriptionSx}>
+            <SpaceBetween alignItems="center">
                 <Stack
                     flexDirection="row"
                     alignItems="center"
