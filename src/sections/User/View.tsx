@@ -9,8 +9,8 @@ import SoftButton from "@/components/SoftButton";
 const UserForm = dynamic(() => import("./Form"));
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
-import AvatarPicker from "./AvatarPicker";
 import AdminLabel from "./AdminLabel";
+import AvatarPicker from "./AvatarPicker";
 
 interface ViewUserProps {
     user?: IUser;
@@ -59,12 +59,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
             </SpaceBetween>
             <Divider />
             <Stack p={3} justifyContent="center" alignItems="center">
-                <AvatarPicker
-                    src={user?.avatar}
-                    userId={user?.id || -1}
-                    firstName={user?.firstName}
-                    lastName={user?.lastName}
-                />
+                <AvatarPicker user={user} />
                 <RenderUsername username={user?.username} />
                 {user?.isAdmin ? <AdminLabel /> : null}
             </Stack>
