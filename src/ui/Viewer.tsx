@@ -1,4 +1,9 @@
+import RoundIconButton from "@/components/RoundIconButton";
+import { Download } from "@mui/icons-material";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { CSSProperties, FC } from "react";
+import { useTranslation } from "react-i18next";
 
 // Helper to determine if attachment is viewable as an image
 const isViewableImage = (mimeType: string): boolean => {
@@ -15,23 +20,44 @@ const isViewableImage = (mimeType: string): boolean => {
 
 const isPDF = (mimeType: string) => mimeType === "application/pdf";
 
+interface UnvieweablePlaceholderProps {
+    url: string;
+}
+
+const UnvieweablePlaceholder: FC<UnvieweablePlaceholderProps> = ({ url }) => {
+    const { t } = useTranslation();
+
+    return (
+        <Stack textAlign="center" spacing={2}>
+            <Typography variant="h5">{t("UNVIEWABLE_FORMAT")}</Typography>
+            <Typography>
+                {t("Download")}{" "}
+                <RoundIconButton>
+                    <Download />
+                </RoundIconButton>
+            </Typography>
+        </Stack>
+    );
+};
+
 interface ViewerProps {
     url: string;
     mimeType: string;
     style?: CSSProperties;
 }
 
-const Viewer: FC<ViewerProps> = ({ url, mimeType, style = {} }) => (
-    <>
-        {isViewableImage(mimeType) ? (
+const Viewer: FC<ViewerProps> = ({ url, mimeType, style = {} }) => {
+    if (isViewableImage(mimeType))
+        return (
             <img
                 src={url}
                 alt="alt"
                 style={{ maxWidth: "100%", maxHeight: "70vh", ...style }}
             />
-        ) : null}
+        );
 
-        {isPDF(mimeType) ? (
+    if (isPDF(mimeType))
+        return (
             <iframe
                 src={url}
                 style={{
@@ -41,9 +67,11 @@ const Viewer: FC<ViewerProps> = ({ url, mimeType, style = {} }) => (
                     ...style,
                 }}
             />
-        ) : null}
-    </>
-);
+        );
 
+    return <UnvieweablePlaceholder url={url} />;
+};
+
+export { isViewableImage, isPDF };
 export type { ViewerProps };
 export default Viewer;

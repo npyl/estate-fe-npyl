@@ -9,6 +9,7 @@ import MimeTypeIcon from "@/components/MimeTypeIcon";
 import { SpaceBetween } from "@/components/styled";
 import { SxProps, Theme } from "@mui/material";
 import DownloadButton from "./DownloadButton";
+import { isViewableImage } from "@/ui/Viewer";
 
 const DOWNLOAD_BTN_CLASSNAME = "PPEmailAttachmentDownloadBtn";
 
@@ -32,9 +33,12 @@ const Attachment: FC<AttachmentProps> = ({ a }) => {
     const [url, { isLoading }] = useAttachmentDataUrl(a, { skip: false });
     if (isLoading) return <Skeleton />;
     if (!url) return null;
+
+    const isImage = isViewableImage(a.mimeType);
+
     return (
         <Stack spacing={1} sx={DescriptionSx}>
-            <PPAttachment a={{ ...a, url }} />
+            {isImage ? <PPAttachment a={{ ...a, url }} /> : null}
 
             <SpaceBetween alignItems="center">
                 <Stack
