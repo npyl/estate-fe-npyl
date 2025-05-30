@@ -1,20 +1,24 @@
-import { IFirmReq } from "@/types/firm";
+import { IOrganizationReq } from "@/types/organization";
 import { FC, useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Content from "./Content";
-import { useCreateOrUpdateFirmMutation } from "@/services/firm";
+import { useCreateOrUpdateOrganizationMutation } from "@/services/organization";
 import Actions from "./Actions";
 
-interface FirmFormProps {
+interface OrganizationFormProps {
     createAssign?: boolean; // true when opened from inside customer for create-assign
     onCreate?: (id: number) => void;
     onCancel: VoidFunction;
 }
 
-const FirmForm: FC<FirmFormProps> = ({ createAssign, onCreate, onCancel }) => {
-    const [createOrUpdate] = useCreateOrUpdateFirmMutation();
+const OrganizationForm: FC<OrganizationFormProps> = ({
+    createAssign,
+    onCreate,
+    onCancel,
+}) => {
+    const [createOrUpdate] = useCreateOrUpdateOrganizationMutation();
 
-    const methods = useForm<IFirmReq>({
+    const methods = useForm<IOrganizationReq>({
         values: {
             name: "",
             customers: [],
@@ -22,7 +26,7 @@ const FirmForm: FC<FirmFormProps> = ({ createAssign, onCreate, onCancel }) => {
     });
 
     const onSubmit = useCallback(
-        async (d: IFirmReq) => {
+        async (d: IOrganizationReq) => {
             const res = await createOrUpdate(d);
             if ("error" in res) return;
 
@@ -41,4 +45,4 @@ const FirmForm: FC<FirmFormProps> = ({ createAssign, onCreate, onCancel }) => {
     );
 };
 
-export default FirmForm;
+export default OrganizationForm;

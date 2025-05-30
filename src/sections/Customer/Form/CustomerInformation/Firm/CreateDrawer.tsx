@@ -1,8 +1,8 @@
 import { FC, useCallback } from "react";
 import { Drawer } from "@mui/material";
-import FirmForm from "@/sections/Firm/Form";
+import FirmForm from "@/sections/Organization/Form";
 import { useFormContext, useWatch } from "react-hook-form";
-import { IFirmReq } from "@/types/firm";
+import { IOrganizationReq } from "@/types/organization";
 import { makeStickyBottom } from "@/ui/FormBottomBar";
 
 interface FirmCreateDrawerProps {
@@ -11,8 +11,8 @@ interface FirmCreateDrawerProps {
 
 const FirmCreateDrawer: FC<FirmCreateDrawerProps> = ({ onClose }) => {
     const oldIds =
-        (useWatch<IFirmReq>({ name: "customers" }) as number[]) ?? [];
-    const { setValue } = useFormContext<IFirmReq>();
+        (useWatch<IOrganizationReq>({ name: "customers" }) as number[]) ?? [];
+    const { setValue } = useFormContext<IOrganizationReq>();
 
     const onCreate = useCallback(
         (id: number) =>

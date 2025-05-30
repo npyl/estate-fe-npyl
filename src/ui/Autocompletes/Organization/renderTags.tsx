@@ -1,8 +1,8 @@
-import { IFirm } from "@/types/firm";
+import { IOrganization } from "@/types/organization";
 import { AutocompleteRenderGetTagProps, Chip } from "@mui/material";
 
 const renderUserTags = (
-    tagValue: IFirm[],
+    tagValue: IOrganization[],
     getTagProps: AutocompleteRenderGetTagProps
 ) =>
     tagValue.map((option, index) => {

@@ -1,14 +1,23 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { FC } from "react";
-import FirmAutocomplete, { FirmAutocompleteProps } from "./Firm";
+import OrganizationAutocomplete, {
+    OrganizationAutocompleteProps,
+} from "./Organization";
 
-interface RHFFirmAutocompleteProps
-    extends Omit<FirmAutocompleteProps, "value" | "renderInput" | "onChange"> {
+interface RHFOrganizationAutocompleteProps
+    extends Omit<
+        OrganizationAutocompleteProps,
+        "value" | "renderInput" | "onChange"
+    > {
     name: string;
     label?: string;
 }
 
-const RHFFirm: FC<RHFFirmAutocompleteProps> = ({ name, label, ...props }) => {
+const RHFOrganization: FC<RHFOrganizationAutocompleteProps> = ({
+    name,
+    label,
+    ...props
+}) => {
     const { control } = useFormContext();
 
     return (
@@ -19,7 +28,7 @@ const RHFFirm: FC<RHFFirmAutocompleteProps> = ({ name, label, ...props }) => {
                 field: { ref, value, onChange, ...field },
                 fieldState: { error },
             }) => (
-                <FirmAutocomplete
+                <OrganizationAutocomplete
                     ref={ref as any}
                     fullWidth
                     label={label}
@@ -33,5 +42,5 @@ const RHFFirm: FC<RHFFirmAutocompleteProps> = ({ name, label, ...props }) => {
     );
 };
 
-export type { RHFFirmAutocompleteProps };
-export default RHFFirm;
+export type { RHFOrganizationAutocompleteProps };
+export default RHFOrganization;

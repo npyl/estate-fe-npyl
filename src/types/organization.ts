@@ -1,20 +1,20 @@
 import { ICustomer } from "./customer";
 
-interface IFirm {
+interface IOrganization {
     id: number;
     name: string;
     customers: ICustomer[];
 }
 
-interface IFirmReq extends Omit<IFirm, "id" | "customers"> {
+interface IOrganizationReq extends Omit<IOrganization, "id" | "customers"> {
     id?: number;
     customers: number[];
 }
 
-interface IFirmFilter {
+interface IOrganizationFilter {
     search: string;
     firms: number[];
     customers: number[];
 }
 
-export type { IFirm, IFirmReq, IFirmFilter };
+export type { IOrganization, IOrganizationReq, IOrganizationFilter };
