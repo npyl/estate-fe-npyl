@@ -1,7 +1,7 @@
 import RHFFirm from "@/ui/Autocompletes/RHFFirm";
 import Stack from "@mui/material/Stack";
 import Opener, { useOpener } from "@/components/Opener";
-import FirmCreateDrawer from "./CreateDrawer";
+import FirmCreateDrawer from "@/sections/Organization/CreateDrawer";
 import AddButton from "./AddButton";
 import { useTranslation } from "react-i18next";
 
