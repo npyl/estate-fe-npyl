@@ -8,16 +8,27 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface IFirmFitlerReq {
     body: IOrganizationFilter;
+
     page: number;
     pageSize: number;
+    sortBy: string;
+    direction: string;
 }
 
-type IFirmFitlerRes = IPage<IOrganization>;
+type IOrganizationFitlerRes = IPage<IOrganization>;
 
 export const organization = createApi({
     reducerPath: "organization",
     baseQuery: fetchBaseQuery({
-        baseUrl: "/api/organization",
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/organizations`,
+        prepareHeaders: (headers) => {
+            // By default, if we have a token in the store, let's use that for authenticated requests
+            headers.set(
+                "Authorization",
+                `Bearer ${localStorage.getItem("accessToken")}`
+            );
+            return headers;
+        },
     }),
 
     tagTypes: ["Organizations"],
@@ -32,15 +43,15 @@ export const organization = createApi({
             invalidatesTags: ["Organizations"],
         }),
 
-        filterOrganizations: builder.query<IFirmFitlerRes, IFirmFitlerReq>({
-            query: ({ body, page, pageSize }) => ({
+        filterOrganizations: builder.query<
+            IOrganizationFitlerRes,
+            IFirmFitlerReq
+        >({
+            query: ({ body, ...params }) => ({
                 url: "/filter",
                 method: "POST",
                 body,
-                params: {
-                    page,
-                    pageSize,
-                },
+                params,
             }),
             providesTags: ["Organizations"],
         }),

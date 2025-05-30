@@ -14,6 +14,7 @@ import NotificationsIcon from "./NotificationsIcon";
 import ChatIcon from "@mui/icons-material/Chat";
 import EuroIcon from "@mui/icons-material/Euro";
 import EmailIcon from "@mui/icons-material/Email";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
 interface Item {
     title: string;
@@ -68,6 +69,12 @@ const getSections = (
                 title: t("Customers"),
                 path: "/customers",
                 icon: <CustomersIcon fontSize="small" />,
+            },
+
+            {
+                title: t("Organizations"),
+                path: "/organizations",
+                icon: <CorporateFareIcon fontSize="small" />,
             },
 
             {

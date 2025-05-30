@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Organizations: "Organizations",
             UNVIEWABLE_FORMAT: "This file cannot be viewed",
 
             EMAIL_REQUIRES_TITLE: "Please add a title",
@@ -1358,6 +1359,8 @@ const resources = {
     },
     el: {
         translation: {
+            Organizations: "Οργανισμοί",
+
             UNVIEWABLE_FORMAT: "Το αρχείο δε μπορεί να προβληθεί",
 
             EMAIL_REQUIRES_TITLE: "Παρακαλώ συμπληρώστε τίτλο",
