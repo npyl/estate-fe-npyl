@@ -5,6 +5,7 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
 import MessageIcon from "@mui/icons-material/Message";
 import EmailIcon from "@mui/icons-material/Email";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
 const MENU_ITEMS = [
     {
@@ -16,6 +17,11 @@ const MENU_ITEMS = [
         label: "Customer",
         path: "/customer/create",
         icon: <CustomersIcon />,
+    },
+    {
+        label: "Organizations",
+        path: "/organizations/create",
+        icon: <CorporateFareIcon />,
     },
     {
         label: "Task",

@@ -21,7 +21,9 @@ const OrganizationForm: FC<OrganizationFormProps> = ({
     const methods = useForm<IOrganizationReq>({
         values: {
             name: "",
-            customers: [],
+            email: "",
+            gemh: "",
+            phone: "",
         },
     });
 

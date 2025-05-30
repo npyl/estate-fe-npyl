@@ -1,4 +1,3 @@
-import FormBottomBar from "@/ui/FormBottomBar";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
@@ -13,22 +12,17 @@ const Actions: FC<ActionsProps> = ({ onCancel }) => {
     const { t } = useTranslation();
 
     return (
-        <FormBottomBar
-            contentRight={
-                <Stack direction="row" spacing={1} alignItems="center">
-                    <Button
-                        variant="outlined"
-                        startIcon={<CancelIcon />}
-                        onClick={onCancel}
-                    >
-                        {t("Cancel")}
-                    </Button>
+        <Stack direction="row" spacing={1} alignItems="center" mt={1}>
+            <Button
+                variant="outlined"
+                startIcon={<CancelIcon />}
+                onClick={onCancel}
+            >
+                {t("Cancel")}
+            </Button>
 
-                    <Button type="submit">{t("Save")}</Button>
-                </Stack>
-            }
-            contentLeft={undefined}
-        />
+            <Button type="submit">{t("Save")}</Button>
+        </Stack>
     );
 };
 

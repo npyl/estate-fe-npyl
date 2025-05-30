@@ -1,6 +1,6 @@
 import RHFTextField from "@/components/hook-form/RHFTextField";
-import RHFCustomerMultiple from "@/ui/Autocompletes/RHFCustomerMultiple";
-import Stack from "@mui/material/Stack";
+// import RHFCustomerMultiple from "@/ui/Autocompletes/RHFCustomerMultiple";
+import Grid from "@mui/material/Unstable_Grid2";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -12,10 +12,16 @@ const Content: FC<ContentProps> = ({ createAssign }) => {
     const { t } = useTranslation();
 
     return (
-        <Stack height={1} p={2}>
-            <RHFTextField name="name" label={t("Label")} />
-            {createAssign ? null : <RHFCustomerMultiple name="customers" />}
-        </Stack>
+        <Grid container height={1} spacing={1}>
+            <Grid xs={12} sm={6}>
+                <RHFTextField name="name" label={t("Name")} />
+            </Grid>
+            <Grid xs={12} sm={6} display="flex" flexDirection="column" gap={1}>
+                <RHFTextField name="email" label={t("Email")} />
+                <RHFTextField name="phone" label={t("Phone")} />
+                {/* {createAssign ? null : <RHFCustomerMultiple name="customers" />} */}
+            </Grid>
+        </Grid>
     );
 };
 
