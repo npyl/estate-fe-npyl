@@ -3,6 +3,7 @@ import EditLabels from "@/sections/DataGrids/PropertiesToolbar/BulkEdit/EditLabe
 import BulkEditDrawer from "@/sections/DataGrids/BulkEditDrawer";
 import { BulkEditRequest } from "src/services/customers";
 import StayUpdated from "./StayUpdated";
+import OrganizationId from "./OrganizationId";
 
 type StateType = {
     managerId: string;
@@ -32,6 +33,7 @@ const BulkEdit = ({ selectedIds, onSave, onClose }: BulkEditProps) => (
         onClose={onClose}
     >
         <EditManager />
+        <OrganizationId />
         <EditLabels variant="customer" />
         <StayUpdated />
     </BulkEditDrawer>
