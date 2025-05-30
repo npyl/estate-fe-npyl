@@ -15,10 +15,11 @@ const Content: FC<ContentProps> = ({ createAssign }) => {
         <Grid container height={1} spacing={1}>
             <Grid xs={12} sm={6}>
                 <RHFTextField name="name" label={t("Name")} />
+                <RHFTextField name="email" label={t("Email")} />
             </Grid>
             <Grid xs={12} sm={6} display="flex" flexDirection="column" gap={1}>
-                <RHFTextField name="email" label={t("Email")} />
                 <RHFTextField name="phone" label={t("Phone")} />
+                <RHFTextField name="gemh" label={t("GEMH")} />
                 {/* {createAssign ? null : <RHFCustomerMultiple name="customers" />} */}
             </Grid>
         </Grid>

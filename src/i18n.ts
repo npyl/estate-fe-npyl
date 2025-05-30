@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Organization: "Organization",
+
             Organizations: "Organizations",
             UNVIEWABLE_FORMAT: "This file cannot be viewed",
 
@@ -1359,6 +1361,7 @@ const resources = {
     },
     el: {
         translation: {
+            Organization: "Οργανισμός",
             Organizations: "Οργανισμοί",
 
             UNVIEWABLE_FORMAT: "Το αρχείο δε μπορεί να προβληθεί",

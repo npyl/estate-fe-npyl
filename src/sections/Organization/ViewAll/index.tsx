@@ -5,7 +5,9 @@ import { useFilterOrganizationsQuery } from "@/services/organization";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
+import getColumns from "./columns";
+import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 20;
 
@@ -39,6 +41,9 @@ const ViewAll = () => {
         setPage(model.page);
     }, []);
 
+    const { t } = useTranslation();
+    const columns = useMemo(() => getColumns(t), [t]);
+
     return (
         <>
             <FilterSection />
@@ -61,7 +66,8 @@ const ViewAll = () => {
             ) : (
                 <Paper>
                     <DataGrid
-                        columns={[]}
+                        resource="organizations"
+                        columns={columns}
                         loading={isLoading}
                         rows={content}
                         page={page}

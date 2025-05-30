@@ -17,6 +17,11 @@ interface IFirmFitlerReq {
 
 type IOrganizationFitlerRes = IPage<IOrganization>;
 
+interface IUploadAvatarReq {
+    file: File;
+    organisationId: number;
+}
+
 export const organization = createApi({
     reducerPath: "organization",
     baseQuery: fetchBaseQuery({
@@ -31,7 +36,7 @@ export const organization = createApi({
         },
     }),
 
-    tagTypes: ["Organizations"],
+    tagTypes: ["Organizations", "OrganizationById"],
 
     endpoints: (builder) => ({
         createOrUpdateOrganization: builder.mutation<number, IOrganizationReq>({
@@ -40,7 +45,7 @@ export const organization = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Organizations"],
+            invalidatesTags: ["Organizations", "OrganizationById"],
         }),
 
         filterOrganizations: builder.query<
@@ -56,9 +61,39 @@ export const organization = createApi({
             providesTags: ["Organizations"],
         }),
 
+        getOrganization: builder.query<IOrganization, number>({
+            query: (id) => `/${id}`,
+            providesTags: ["OrganizationById"],
+        }),
+
         allOrganizations: builder.query<IOrganization[], void>({
             query: () => "/all",
             providesTags: ["Organizations"],
+        }),
+
+        // -----------------------------------------------------------
+
+        uploadAvatar: builder.mutation<void, IUploadAvatarReq>({
+            query: ({ organisationId, file }) => {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                return {
+                    url: `${organisationId}/avatar`,
+                    method: "POST",
+                    body: formData,
+                    responseHandler: "text",
+                };
+            },
+            invalidatesTags: ["Organizations", "OrganizationById"],
+        }),
+
+        removeAvatar: builder.mutation<void, number>({
+            query: (organisationId) => ({
+                url: `${organisationId}/avatar`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Organizations", "OrganizationById"],
         }),
     }),
 });
@@ -66,5 +101,9 @@ export const organization = createApi({
 export const {
     useCreateOrUpdateOrganizationMutation,
     useFilterOrganizationsQuery,
+    useGetOrganizationQuery,
     useAllOrganizationsQuery,
+    // -----------------------
+    useUploadAvatarMutation,
+    useRemoveAvatarMutation,
 } = organization;
