@@ -12,7 +12,13 @@ const Actions: FC<ActionsProps> = ({ onCancel }) => {
     const { t } = useTranslation();
 
     return (
-        <Stack direction="row" spacing={1} alignItems="center" mt={1}>
+        <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="flex-end"
+            mt={1}
+        >
             <Button
                 variant="outlined"
                 startIcon={<CancelIcon />}
@@ -21,7 +27,9 @@ const Actions: FC<ActionsProps> = ({ onCancel }) => {
                 {t("Cancel")}
             </Button>
 
-            <Button type="submit">{t("Save")}</Button>
+            <Button type="submit" variant="contained">
+                {t("Save")}
+            </Button>
         </Stack>
     );
 };
