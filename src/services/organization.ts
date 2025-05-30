@@ -40,9 +40,9 @@ export const organization = createApi({
 
     endpoints: (builder) => ({
         createOrUpdateOrganization: builder.mutation<number, IOrganizationReq>({
-            query: (body) => ({
-                url: "",
-                method: "POST",
+            query: ({ id, ...body }) => ({
+                url: Boolean(id) ? `${id}` : "",
+                method: Boolean(id) ? "PUT" : "POST",
                 body,
             }),
             invalidatesTags: ["Organizations", "OrganizationById"],

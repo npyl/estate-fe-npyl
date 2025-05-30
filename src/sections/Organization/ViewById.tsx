@@ -10,13 +10,15 @@ import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import SoftButton from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useRef } from "react";
 import {
     useGetOrganizationQuery,
     useRemoveAvatarMutation,
     useUploadAvatarMutation,
 } from "@/services/organization";
 import BaseAvatarPicker from "@/ui/AvatarPicker";
+import Opener, { OpenerRef } from "@/components/Opener";
+import OrganizationCreateDrawer from "./CreateDrawer";
 
 interface AvatarPickerProps {
     avatar?: string;
@@ -53,6 +55,15 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ avatar, organisationId }) => {
     );
 };
 
+interface EditButtonProps {
+    onClick: VoidFunction;
+}
+
+const EditButton: FC<EditButtonProps> = ({ onClick }) => {
+    const { t } = useTranslation();
+    return <SoftButton onClick={onClick}>{t("Edit")}</SoftButton>;
+};
+
 interface ViewByIdProps {
     id: number;
 }
@@ -61,6 +72,9 @@ const ViewById: FC<ViewByIdProps> = ({ id }) => {
     const { t } = useTranslation();
 
     const { data } = useGetOrganizationQuery(id);
+
+    const openerRef = useRef<OpenerRef>(null);
+    const onClick = useCallback(() => openerRef.current?.open(), []);
 
     return (
         <Container maxWidth="md">
@@ -75,7 +89,16 @@ const ViewById: FC<ViewByIdProps> = ({ id }) => {
                         {t("Organization")}
                     </Typography>
 
-                    <SoftButton>{t("Edit")}</SoftButton>
+                    <Opener
+                        ref={openerRef}
+                        Clicker={EditButton}
+                        onClick={onClick}
+                        // ...
+                        Component={OrganizationCreateDrawer}
+                        ComponentProps={{
+                            organization: data,
+                        }}
+                    />
                 </SpaceBetween>
                 <Divider />
                 <Stack p={3} justifyContent="center" alignItems="center">

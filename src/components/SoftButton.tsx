@@ -23,4 +23,5 @@ const SoftButton = styled(LoadingButton)<SoftButtonProps>(
     })
 );
 
+export type { SoftButtonProps };
 export default SoftButton;
