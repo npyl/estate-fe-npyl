@@ -7,14 +7,12 @@ import Actions from "./Actions";
 
 interface OrganizationFormProps {
     organization?: IOrganization;
-    createAssign?: boolean; // true when opened from inside customer for create-assign
     onCreate?: (id: number) => void;
     onCancel: VoidFunction;
 }
 
 const OrganizationForm: FC<OrganizationFormProps> = ({
     organization,
-    createAssign,
     onCreate,
     onCancel,
 }) => {
@@ -36,15 +34,20 @@ const OrganizationForm: FC<OrganizationFormProps> = ({
             if ("error" in res) return;
 
             onCreate?.(res.data);
+
+            onCancel();
         },
-        [onCreate]
+        [onCreate, onCancel]
     );
 
     return (
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form>
             <FormProvider {...methods}>
-                <Content createAssign={createAssign} />
-                <Actions onCancel={onCancel} />
+                <Content />
+                <Actions
+                    onCancel={onCancel}
+                    onSubmit={methods.handleSubmit(onSubmit)}
+                />
             </FormProvider>
         </form>
     );

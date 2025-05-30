@@ -6,9 +6,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 interface ActionsProps {
     onCancel: VoidFunction;
+    onSubmit: VoidFunction;
 }
 
-const Actions: FC<ActionsProps> = ({ onCancel }) => {
+const Actions: FC<ActionsProps> = ({ onCancel, onSubmit }) => {
     const { t } = useTranslation();
 
     return (
@@ -27,7 +28,7 @@ const Actions: FC<ActionsProps> = ({ onCancel }) => {
                 {t("Cancel")}
             </Button>
 
-            <Button type="submit" variant="contained">
+            <Button variant="contained" onClick={onSubmit}>
                 {t("Save")}
             </Button>
         </Stack>

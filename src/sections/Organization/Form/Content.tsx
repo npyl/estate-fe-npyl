@@ -1,14 +1,9 @@
 import RHFTextField from "@/components/hook-form/RHFTextField";
 // import RHFCustomerMultiple from "@/ui/Autocompletes/RHFCustomerMultiple";
 import Grid from "@mui/material/Unstable_Grid2";
-import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-interface ContentProps {
-    createAssign?: boolean; // true when opened from inside customer for create-assign
-}
-
-const Content: FC<ContentProps> = ({ createAssign }) => {
+const Content = () => {
     const { t } = useTranslation();
 
     return (

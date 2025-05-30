@@ -1,17 +1,18 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { Drawer } from "@mui/material";
 import FirmForm from "@/sections/Organization/Form";
-import { useFormContext, useWatch } from "react-hook-form";
-import { IOrganization, IOrganizationReq } from "@/types/organization";
+import { IOrganization } from "@/types/organization";
 import { makeStickyBottom } from "@/ui/FormBottomBar";
 
 interface OrganizationCreateDrawerProps {
     organization?: IOrganization;
+    onCreate?: (id: number) => void;
     onClose: VoidFunction;
 }
 
 const OrganizationCreateDrawer: FC<OrganizationCreateDrawerProps> = ({
     organization,
+    onCreate,
     onClose,
 }) => (
     <Drawer
@@ -36,8 +37,7 @@ const OrganizationCreateDrawer: FC<OrganizationCreateDrawerProps> = ({
     >
         <FirmForm
             organization={organization}
-            createAssign
-            onCreate={() => {}}
+            onCreate={onCreate}
             onCancel={onClose}
         />
     </Drawer>
