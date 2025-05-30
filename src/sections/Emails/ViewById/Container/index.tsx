@@ -19,9 +19,10 @@ const PaperSx: SxProps<Theme> = {
 
 interface ContainerProps extends PropsWithChildren {
     threadId: string;
+    onBack: VoidFunction;
 }
 
-const Container: FC<ContainerProps> = ({ threadId, children }) => {
+const Container: FC<ContainerProps> = ({ threadId, children, onBack }) => {
     const rootRef = useRef<HTMLElement>(document.body);
     const boxRef = useRef<HTMLDivElement>(null);
     useAvailableHeight(boxRef, rootRef);
@@ -35,7 +36,7 @@ const Container: FC<ContainerProps> = ({ threadId, children }) => {
                 p={1}
                 boxShadow={5}
             >
-                <BackButton />
+                <BackButton onClick={onBack} />
                 <Title threadId={threadId} />
             </Stack>
 

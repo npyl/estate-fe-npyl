@@ -2,7 +2,7 @@ import Link from "@/components/Link";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { primary } from "@/theme/light-theme-options";
 import { TThreadShortRes } from "@/types/email";
-import { alpha, Stack, SxProps, Theme } from "@mui/material";
+import { alpha, Stack, StackProps, SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import Attachments from "./Attachments";
@@ -44,19 +44,18 @@ const getItemSx = (isUnread: boolean): SxProps<Theme> => ({
     },
 });
 
-interface ThreadItemProps {
+interface ThreadItemProps extends StackProps {
     e: TThreadShortRes;
 }
 
-const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
-    <Link
-        display="flex"
-        flexDirection="row"
+const ThreadItem: FC<ThreadItemProps> = ({ e, sx, ...props }) => (
+    <Stack
+        direction="row"
         gap={1}
         alignItems="center"
         p={1}
-        href={`/emails/${e.id}`}
-        sx={getItemSx(e.unread)}
+        sx={{ ...getItemSx(e.unread), ...(sx as any) }}
+        {...props}
     >
         <Stack direction="row" width={`calc(100% - ${DATE_WIDTH})`}>
             <Typography
@@ -87,9 +86,11 @@ const ThreadItem: FC<ThreadItemProps> = ({ e }) => (
         </Stack>
 
         <ThreadDate date={e.date} />
-    </Link>
+    </Stack>
 );
 
-const getThread = (e: TThreadShortRes) => <ThreadItem key={e.id} e={e} />;
+const getThread = (onClick: (id: string) => void) => (e: TThreadShortRes) => (
+    <ThreadItem key={e.id} e={e} onClick={() => onClick(e.id)} />
+);
 
 export default getThread;

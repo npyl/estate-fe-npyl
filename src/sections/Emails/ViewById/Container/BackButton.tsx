@@ -1,9 +1,9 @@
-import Link from "@/components/Link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import IconButton from "@mui/material/IconButton";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import { FC } from "react";
 
-const BackButton = () => (
-    <IconButton LinkComponent={Link} href="/emails">
+const BackButton: FC<IconButtonProps> = (props) => (
+    <IconButton {...props}>
         <ArrowBackIcon fontSize="small" />
     </IconButton>
 );

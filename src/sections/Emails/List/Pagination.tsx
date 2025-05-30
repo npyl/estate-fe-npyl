@@ -21,7 +21,6 @@ const StackSx: SxProps<Theme> = {
         display: "none",
     },
 
-    mt: 1,
     borderRadius: 1,
     bgcolor: "background.paper",
     boxShadow: 5,
