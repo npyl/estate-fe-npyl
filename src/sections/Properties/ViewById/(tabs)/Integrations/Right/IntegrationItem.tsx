@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Skeleton, Stack, Typography } from "@mui/material";
 import { IntegrationSite } from "src/types/listings";
 import { LabeledSwitch } from "./Switch";
 import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
@@ -8,7 +8,7 @@ import PlotGRIcon from "@/assets/integrations/plotgr";
 import XEIcon from "@/assets/integrations/xrysh_eukairia";
 import JamesEditionIcon from "@/assets/integrations/james_edition";
 import { generalListing } from "@/services/listings";
-import { useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import Iconify from "@/components/iconify";
@@ -17,6 +17,8 @@ import { styled } from "@mui/material/styles";
 import Item from "./styled";
 import { useTranslation } from "react-i18next";
 import useInvalidateTags from "./useInvalidateTags";
+import useDialog from "@/hooks/useDialog";
+import { errorToast } from "@/components/Toaster";
 
 // -------------------------------------------------------
 
@@ -115,6 +117,75 @@ const getSTATIC_DATA = (
 
 // -------------------------------------------------------
 
+const CREDENTIALS_ERROR = "No credentials set for this integration";
+
+const showError = (error: any) => {
+    let msg = "";
+    try {
+        msg = error.data.errorMessage;
+    } catch (ex) {}
+
+    if (msg === CREDENTIALS_ERROR) {
+        errorToast(
+            "INTEGRATION_CREDENTIALS_ERROR_0",
+            "INTEGRATION_CREDENTIALS_ERROR_1"
+        );
+    }
+};
+
+interface SwitchProps {
+    value: boolean;
+    label: IntegrationSite;
+    STATIC_DATA: Record<IntegrationSite, LISTING_STATIC_DATUM>;
+    onClick: VoidFunction;
+}
+
+const Switch: FC<SwitchProps> = ({ value, label, STATIC_DATA, onClick }) => {
+    const { t } = useTranslation();
+
+    const dispatch = useDispatch();
+
+    const [isLoading, startLoading, stopLoading] = useDialog();
+
+    const { invalidateTags } = useInvalidateTags();
+    const handleChange = useCallback(
+        async (_: any, b: boolean) => {
+            const d = STATIC_DATA[label];
+
+            startLoading();
+
+            const cb = b ? d.publish : d.unpublish;
+
+            const res = await dispatch(cb);
+            if ("error" in res) {
+                showError(res.error);
+                stopLoading();
+                return;
+            }
+
+            invalidateTags();
+
+            stopLoading();
+
+            onClick();
+        },
+        [STATIC_DATA, label]
+    );
+
+    if (isLoading) return <Skeleton width="140px" height="34px" />;
+
+    return (
+        <LabeledSwitch
+            checked={value}
+            labelOn={t("Published")}
+            labelOff={t("Unpublished")}
+            onChange={handleChange}
+        />
+    );
+};
+
+// -------------------------------------------------------
+
 interface ListingCardProps {
     label: IntegrationSite;
     value: boolean;
@@ -122,9 +193,7 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
-    const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { invalidateTags } = useInvalidateTags();
 
     const router = useRouter();
     const { propertyId } = router.query;
@@ -133,16 +202,6 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
 
     const [isSyncLoading, setSyncLoading] = useState(false);
     const [cooldown, startCooldown] = useCooldown();
-
-    const handleChange = async (_: any, b: boolean) => {
-        const d = STATIC_DATA[label];
-
-        if (b) await dispatch(d.unpublish);
-        else await dispatch(d.publish);
-        invalidateTags();
-
-        onClick();
-    };
 
     const handleSync = async () => {
         setSyncLoading(true);
@@ -163,11 +222,11 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
                 gap={1}
                 alignItems="center"
             >
-                <LabeledSwitch
-                    checked={value}
-                    labelOn={t("Published")}
-                    labelOff={t("Unpublished")}
-                    onChange={handleChange}
+                <Switch
+                    STATIC_DATA={STATIC_DATA}
+                    value={value}
+                    label={label}
+                    onClick={onClick}
                 />
 
                 {STATIC_DATA[label].sync ? (
