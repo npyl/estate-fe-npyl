@@ -52,6 +52,8 @@ interface ILogFilterPOST {
     customersIds?: number[];
 
     search?: string;
+
+    organizations: number[];
 }
 
 export type { TLogAction, ILog, ILogFilter, ILogFilterPOST };

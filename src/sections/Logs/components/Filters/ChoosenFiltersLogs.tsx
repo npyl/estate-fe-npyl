@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useAllUsersQuery } from "src/services/user";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/log";
+import OrganizationsChip from "./OrganizationsChip";
 
 const ChosenFiltersLogs = () => {
     const dispatch = useDispatch();
@@ -71,6 +72,8 @@ const ChosenFiltersLogs = () => {
     return (
         <Grid container direction="row">
             {ids.map((key) => {
+                if (key == "organizations") return <OrganizationsChip />;
+
                 // Special handling for date range, ensuring it's rendered only once
                 if (
                     !dateRangeRendered &&
