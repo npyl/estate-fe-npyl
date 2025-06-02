@@ -518,6 +518,8 @@ export interface IPropertyTabCounts {
     documents: number;
     notifications: number;
     agreements: number;
+    integrations: number;
+    publicListings: number;
 }
 
 export type {

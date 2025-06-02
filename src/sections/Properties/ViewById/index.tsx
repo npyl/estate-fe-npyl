@@ -44,6 +44,7 @@ import DocumentsLabel from "./TabLabels/Documents";
 import NotificationsLabel from "./TabLabels/Notifications";
 import AgreementsLabel from "./TabLabels/Agreements";
 import GreenMapTab from "./GreenMap";
+import IntegrationsLabel from "./TabLabels/Integrations";
 
 // -----------------------------------------------------------------
 
@@ -66,7 +67,7 @@ const getTABS = (t: TranslationType): ITab[] => [
         View: MatchingCustomersSection,
     },
     { Label: PhotosLabel, View: PhotosOnly },
-    { Label: t<string>("Integrations"), View: Integrations },
+    { Label: IntegrationsLabel, View: Integrations },
     { Label: t<string>("Logs"), View: PropertyLogs },
     { Label: DocumentsLabel, View: Documents },
     { Label: t<string>("Map"), View: Map },
