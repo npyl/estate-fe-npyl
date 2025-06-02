@@ -7,7 +7,7 @@ import {
     useDeletePropertyMutation,
 } from "src/services/properties";
 
-import TabPanel from "src/components/Tabs";
+import TabPanel from "@/components/Tabs/TabPanel";
 
 import ViewHeader from "@/sections/ViewHeader";
 
@@ -36,7 +36,6 @@ const NotificationsTab = dynamic(() => import("./(tabs)/Notifications"));
 const Emails = dynamic(() => import("./(tabs)/Emails"));
 
 import { TranslationType } from "@/types/translation";
-import Tabs from "@mui/material/Tabs";
 import TasksLabel from "./TabLabels/TasksLabel";
 import MatchingCustomersLabel from "./TabLabels/MatchingCustomers";
 import PhotosLabel from "./TabLabels/Photos";
@@ -45,6 +44,7 @@ import NotificationsLabel from "./TabLabels/Notifications";
 import AgreementsLabel from "./TabLabels/Agreements";
 import GreenMapTab from "./GreenMap";
 import IntegrationsLabel from "./TabLabels/Integrations";
+import Tabs, { useCurrentTab } from "@/components/Tabs";
 
 // -----------------------------------------------------------------
 
@@ -114,10 +114,8 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const [deleteProperty] = useDeletePropertyMutation();
     const [deletePermanent] = useDeletePermanentPropertyMutation();
 
-    const [value, setValue] = useState(0);
+    const [value] = useCurrentTab();
     const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
-
-    const handleChange = useCallback((_: any, v: number) => setValue(v), []);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
 
@@ -162,8 +160,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                 onClone={handleClone}
             >
                 <Tabs
-                    value={value}
-                    onChange={handleChange}
                     sx={{
                         // GreenMapTab Indicator
                         "& .MuiTabs-indicator": {
