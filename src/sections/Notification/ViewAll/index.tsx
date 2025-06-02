@@ -1,7 +1,6 @@
 import {
     Box,
     Stack,
-    Tabs,
     InputLabel,
     MenuItem,
     Select,
@@ -13,7 +12,7 @@ import {
 } from "@mui/material";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import TabPanel from "src/components/Tabs";
+import TabPanel from "@/components/Tabs/TabPanel";
 const Listings = dynamic(() => import("./tabs/listings"));
 const Tours = dynamic(() => import("./tabs/tours"));
 const WorkApplications = dynamic(() => import("./tabs/work"));
@@ -29,6 +28,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import getBorderColor from "@/theme/borderColor";
 import ManagerSelect from "./ManagerSelect";
+import Tabs, { useCurrentTab } from "@/components/Tabs";
 
 const SearchInputSx: SxProps<Theme> = {
     minWidth: 350,
@@ -68,7 +68,7 @@ const TABS: INotificationTab[] = [
 const ViewAllNotifications = () => {
     const { t } = useTranslation();
 
-    const [tab, setTab] = useState(0);
+    const [tab] = useCurrentTab();
     const [filter, setFilter] = useState<TViewFilter>("all");
     const [searchText, setSearchText] = useState("");
 
@@ -98,9 +98,7 @@ const ViewAllNotifications = () => {
                     alignItems="center"
                     spacing={2}
                 >
-                    <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                        {TABS.map(getTabOption)}
-                    </Tabs>
+                    <Tabs>{TABS.map(getTabOption)}</Tabs>
 
                     <FilterFormControl
                         sx={{ minWidth: 120, borderColor: "1px solid red" }}
