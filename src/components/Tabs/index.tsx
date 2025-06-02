@@ -1,23 +1,19 @@
-import Box, { BoxProps } from "@mui/material/Box";
-import * as React from "react";
+import MuiTabs, { TabsProps as MuiTabsProps } from "@mui/material/Tabs";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { FC, useCallback } from "react";
 
-interface TabPanelProps extends BoxProps {
-    index: number;
-    value: number;
-}
+const paramKey = "tab";
 
-export default function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+interface TabsProps extends Omit<MuiTabsProps, "value" | "onChange"> {}
 
-    return value === index ? (
-        <Box
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            py={1}
-            height={"100%"}
-            {...other}
-        >
-            {children}
-        </Box>
-    ) : null;
-}
+const Tabs: FC<TabsProps> = (props) => {
+    const [i, setI] = useCurrentTab();
+    const onChange = useCallback((_: any, i: number) => setI(i), []);
+    return <MuiTabs value={i} onChange={onChange} {...props} />;
+};
+
+const useCurrentTab = () =>
+    useQueryState(paramKey, parseAsInteger.withDefault(0));
+
+export { useCurrentTab };
+export default Tabs;
