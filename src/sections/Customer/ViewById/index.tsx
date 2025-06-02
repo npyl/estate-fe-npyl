@@ -1,12 +1,12 @@
-import { Tab, Tabs } from "@mui/material";
+import { Tab } from "@mui/material";
 import { useRouter } from "next/router";
-import { ComponentType, useCallback, useMemo, useState } from "react";
+import { ComponentType, useCallback, useMemo } from "react";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
 } from "@/services/customers";
 import { MatchingProperties, OwnedProperties, Logs } from "./sections";
-import TabPanel from "@/components/Tabs";
+import TabPanel from "@/components/Tabs/TabPanel";
 import ViewHeader from "@/sections/ViewHeader";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
@@ -19,6 +19,7 @@ import DemandsLabel from "./TabLabels/Demands";
 import OwnedPropertiesLabel from "./TabLabels/OwnedProperties";
 import MatchingPropertiesLabel from "./TabLabels/MatchingProperties";
 import AgreementsLabel from "./TabLabels/Agreements";
+import Tabs, { useCurrentTab } from "@/components/Tabs";
 const Emails = dynamic(() => import("./sections/Emails"));
 const Tasks = dynamic(() => import("./sections/Tasks"));
 
@@ -110,7 +111,7 @@ const ViewById = () => {
     const { data } = useGetCustomerByIdQuery(+customerId!);
     const [deleteCustomer] = useDeleteCustomerMutation();
 
-    const [value, setValue] = useState(0);
+    const [tabIndex] = useCurrentTab();
 
     const isSellerOrLessor = (data?.seller || data?.lessor) ?? false;
     const isBuyerOrLeaser = (data?.buyer || data?.leaser) ?? false;
@@ -124,7 +125,6 @@ const ViewById = () => {
         [t, hasDemands, isSellerOrLessor, isBuyerOrLeaser]
     );
 
-    const handleChange = (_: any, v: number) => setValue(v);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = useCallback(async () => {
         const res = await deleteCustomer({
@@ -142,12 +142,10 @@ const ViewById = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             >
-                <Tabs value={value} onChange={handleChange}>
-                    {TABS.map(getTab)}
-                </Tabs>
+                <Tabs>{TABS.map(getTab)}</Tabs>
             </ViewHeader>
 
-            {TABS.map(getTabView(value))}
+            {TABS.map(getTabView(tabIndex))}
         </>
     );
 };
