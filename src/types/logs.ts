@@ -53,7 +53,7 @@ interface ILogFilterPOST {
 
     search?: string;
 
-    organizations: number[];
+    organizations?: number[];
 }
 
 export type { TLogAction, ILog, ILogFilter, ILogFilterPOST };

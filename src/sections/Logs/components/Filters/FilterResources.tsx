@@ -17,7 +17,7 @@ export default function FilterResources() {
     const { t } = useTranslation();
     const data = useGlobals();
 
-    const resources = useSelector(selectResources);
+    const resources = useSelector(selectResources) ?? [];
 
     const logsEnums = data?.logs;
     const resourceEnums = logsEnums?.resourceTypes || [];

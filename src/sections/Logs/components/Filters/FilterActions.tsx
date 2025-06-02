@@ -16,7 +16,7 @@ export default function FilterActions() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
-    const actions = useSelector(selectActions);
+    const actions = useSelector(selectActions) ?? [];
     const logsEnums = data?.logs;
     const actionsEnums = logsEnums?.userActions || [];
 
