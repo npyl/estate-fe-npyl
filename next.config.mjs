@@ -16,6 +16,8 @@ const config = {
         ],
     },
 
+    turbopack: {},
+
     experimental: {
         optimizePackageImports: ["@mui/material", "@mui/icons-material"],
     },

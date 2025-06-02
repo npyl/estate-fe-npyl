@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "preinstall": "npx only-allow npm",
-        "dev": "next",
+        "dev": "next --turbo",
         "build": "next build",
         "start": "next start -p 3000",
         "docker": "docker build -t estate-fe .",
@@ -74,7 +74,7 @@
         "emoji-picker-react": "^4.12.0",
         "i18next": "^22.5.0",
         "lodash.merge": "^4.6.2",
-        "next": "14.2.14",
+        "next": "^15.3.3",
         "nprogress": "^0.2.0",
         "nuqs": "^2.4.0",
         "react": "^18.3.1",
