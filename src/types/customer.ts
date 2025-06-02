@@ -50,7 +50,8 @@ export interface ICustomerFilter {
     maxPrice?: number;
     minCovered?: number;
     maxCovered?: number;
-    managerId?: number; //id
+    managerId?: number;
+    organizationId?: number;
 }
 
 export interface ICustomer {

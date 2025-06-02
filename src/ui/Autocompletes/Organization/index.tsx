@@ -41,7 +41,7 @@ interface OrganizationAutocompleteProps
     helperText?: string;
 }
 
-const FirmAutocomplete = forwardRef<
+const OrganizationAutocomplete = forwardRef<
     HTMLDivElement,
     OrganizationAutocompleteProps
 >(({ label, error, helperText, ...props }, ref) => {
@@ -70,8 +70,8 @@ const FirmAutocomplete = forwardRef<
     );
 });
 
-FirmAutocomplete.displayName = "FirmAutocomplete";
+OrganizationAutocomplete.displayName = "OrganizationAutocomplete";
 
 export { getOptionLabel, RenderOption };
 export type { OrganizationAutocompleteProps };
-export default FirmAutocomplete;
+export default OrganizationAutocomplete;

@@ -53,6 +53,11 @@ const slice = createSlice({
             state.filters.managerId = payload;
             !state.ids.includes("managerId") && state.ids.push("managerId");
         },
+        setOrganizationId(state, { payload }) {
+            state.filters.organizationId = payload;
+            !state.ids.includes("organizationId") &&
+                state.ids.push("organizationId");
+        },
 
         // multiple
 
@@ -117,6 +122,7 @@ const slice = createSlice({
 });
 
 export const {
+    setOrganizationId,
     setManagerId,
     setStates,
     setStatus,
@@ -145,6 +151,8 @@ export const selectStatus = ({ customerFilters }: RootState) =>
     customerFilters.filters.status;
 export const selectManagerId = ({ customerFilters }: RootState) =>
     customerFilters.filters.managerId;
+export const selectOrganizationId = ({ customerFilters }: RootState) =>
+    customerFilters.filters.organizationId;
 export const selectStates = ({ customerFilters }: RootState) =>
     customerFilters.filters.states;
 export const selectBuyer = ({ customerFilters }: RootState) =>
@@ -197,6 +205,7 @@ export const sumOfChangedProperties = createSelector(
             "maxArea",
             "minPrice",
             "maxPrice",
+            "organizationId",
         ];
 
         return propertiesToInclude.reduce(
@@ -207,8 +216,8 @@ export const sumOfChangedProperties = createSelector(
                             ? acc + 1
                             : acc
                         : filter.filters[curr]
-                        ? acc + 1
-                        : acc
+                          ? acc + 1
+                          : acc
                     : acc,
             0
         );
