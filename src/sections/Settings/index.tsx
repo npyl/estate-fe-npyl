@@ -1,8 +1,9 @@
-import { Container, Tab, Tabs } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Container, Tab } from "@mui/material";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { initialData, useSecurityContext } from "@/contexts/security";
-import TabPanel from "@/components/Tabs";
+import TabPanel from "@/components/Tabs/TabPanel";
+import Tabs, { useCurrentTab } from "@/components/Tabs";
 import dynamic from "next/dynamic";
 // ...
 import CompanyInformation from "@/sections/Settings/Company";
@@ -16,11 +17,9 @@ const Settings = () => {
     const { setSelectedUser, setSelectedPreset, setTargetUser, setData } =
         useSecurityContext();
 
-    const [value, setValue] = useState(0);
+    const [value] = useCurrentTab();
 
-    const handleChange = useCallback((_: any, newValue: number) => {
-        setValue(newValue);
-
+    const handleChange = useCallback((newValue: number) => {
         if (newValue === 0) {
             setSelectedUser(-1);
             setSelectedPreset(-1);
@@ -29,11 +28,11 @@ const Settings = () => {
         }
     }, []);
 
-    const gotoPermissions = useCallback(() => handleChange({}, 3), []);
+    const gotoPermissions = useCallback(() => handleChange(3), []);
 
     return (
         <>
-            <Tabs value={value} onChange={handleChange}>
+            <Tabs>
                 <Tab label={t("Company Information")} />
                 <Tab label={t("Integrations")} />
                 <Tab label={t("Users")} />
