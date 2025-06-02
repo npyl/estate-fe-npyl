@@ -12,7 +12,6 @@ import {
     TRowProps,
 } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
-import { useFiltersContext } from "@/sections/Tasks/filters";
 import { TwoDimentionsDnd } from "@/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { GridProps } from "@mui/material/Grid";
 import useAvailableHeight from "@/hooks/useAvailableHeight";
@@ -62,8 +61,6 @@ interface Props {
 }
 
 const Board: React.FC<Props> = ({ columns }) => {
-    const { filters } = useFiltersContext();
-
     const rowRef = useRef<HTMLDivElement>(null);
     useAvailableHeight(rowRef);
 
@@ -94,7 +91,6 @@ const Board: React.FC<Props> = ({ columns }) => {
                 reorderColumn({
                     columnId: draggedItemId,
                     position: oneDimentionArrayDstIndex,
-                    filters,
                 });
             }
 
@@ -117,7 +113,6 @@ const Board: React.FC<Props> = ({ columns }) => {
                         cardId: sourceCardId,
                         columnId: dstColumnId,
                         position,
-                        filters,
                     });
                 } else {
                     moveCard({
@@ -125,12 +120,11 @@ const Board: React.FC<Props> = ({ columns }) => {
                         srcColumnId,
                         dstColumnId,
                         position,
-                        filters,
                     });
                 }
             }
         },
-        [filters, columnsCount]
+        [columnsCount]
     );
 
     return (

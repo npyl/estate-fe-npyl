@@ -1,6 +1,5 @@
 const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
 import useDialog from "@/hooks/useDialog";
-import { useFiltersContext } from "@/sections/Tasks/filters";
 import { useDeleteColumnMutation } from "@/services/tasks";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,11 +16,9 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
 
     const [isOpen, openConfirm, closeConfirm] = useDialog();
 
-    const { filters } = useFiltersContext();
-
     const [deleteColumn] = useDeleteColumnMutation();
 
-    const handleDelete = () => deleteColumn({ columnId, filters });
+    const handleDelete = () => deleteColumn({ columnId });
 
     return (
         <>

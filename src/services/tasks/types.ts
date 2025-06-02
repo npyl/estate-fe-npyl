@@ -1,25 +1,21 @@
-import { BoardFiltersReq, IKanbanCommentPOST } from "@/types/tasks";
+import { IKanbanCommentPOST } from "@/types/tasks";
 
-interface WithFilters {
-    filters?: BoardFiltersReq;
-}
-
-interface DeleteColumnReq extends WithFilters {
+interface DeleteColumnReq {
     columnId: number;
 }
 
-interface ReorderColumnProps extends WithFilters {
+interface ReorderColumnProps {
     columnId: number;
     position: number;
 }
 
-interface MoveCardProps extends WithFilters {
+interface MoveCardProps {
     cardId: number;
     srcColumnId: number;
     dstColumnId: number;
     position: number; // INFO: inside dst column
 }
-interface ReorderCardProps extends WithFilters {
+interface ReorderCardProps {
     cardId: number;
     columnId: number;
     position: number;
@@ -30,7 +26,7 @@ interface ICreateCommentReq {
     body: IKanbanCommentPOST;
 }
 
-interface DeleteCardReq extends WithFilters {
+interface DeleteCardReq {
     cardId: number;
 }
 
