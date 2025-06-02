@@ -1,0 +1,163 @@
+import { Grid, Paper } from "@mui/material";
+import { GridPaginationModel } from "@mui/x-data-grid";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
+import { useFilterCustomersQuery } from "src/services/customers";
+import {
+    selectAll,
+    selectSorting,
+    setManagerId,
+} from "src/slices/customer/filters";
+import DataGrid from "@/components/DataGrid/Customer";
+import useResponsive from "@/hooks/useResponsive";
+import CustomerCard from "@/components/Cards/CustomerCard";
+import { useTranslation } from "react-i18next";
+import { getOptions } from "./(FilterSection)/constants";
+import Pagination, { usePagination } from "@/components/Pagination";
+import Toolbar from "@/sections/DataGrids/CustomersToolbar";
+import { FilterSection } from "./(FilterSection)";
+import { useRouter } from "next/router";
+import { dispatch } from "@/store";
+
+const CustomersViewAll = () => {
+    const { t } = useTranslation();
+
+    const allFilters = useSelector(selectAll);
+
+    const router = useRouter();
+    const { query } = router;
+
+    const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(25);
+
+    const pagination = usePagination();
+
+    const sortingOptions = useMemo(() => getOptions(t), [t]);
+
+    const sorting = useSelector(selectSorting);
+
+    const { sortBy, direction } = useMemo(
+        () =>
+            sortingOptions.find(({ value }) => value === sorting)?.sorting || {
+                sortBy: "updatedAt",
+                direction: "DESC",
+            },
+        [sortingOptions, sorting]
+    );
+
+    const managerId = query.managerId ? Number(query.managerId) : undefined;
+    const filters = useMemo(() => {
+        if (managerId !== undefined) {
+            return { ...allFilters, managerId: managerId };
+        }
+        return allFilters;
+    }, [allFilters, managerId]);
+
+    const { isLoading, data } = useFilterCustomersQuery({
+        filter: filters,
+        page,
+        pageSize,
+        sortBy,
+        direction,
+    });
+
+    const rows = useMemo(
+        () => (Array.isArray(data?.content) ? data.content : []),
+        [data?.content]
+    );
+
+    const totalRows = useMemo(
+        () => (data?.totalElements ? data?.totalElements : 0),
+        [data?.totalElements]
+    );
+
+    const totalElements = data?.totalElements || pageSize;
+
+    useLocalStorageScrollRestore();
+
+    useEffect(() => {
+        const storedPagination = localStorage.getItem(
+            "customerPaginationState"
+        );
+
+        if (storedPagination) {
+            const parsedPagination = JSON.parseSafe(storedPagination);
+            if (!parsedPagination) return;
+
+            if (page !== parsedPagination.page) {
+                setPage(parsedPagination.page);
+            }
+        }
+    }, []);
+
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
+        setPageSize(model.pageSize);
+        setPage(model.page);
+
+        const paginationState = { page: model.page };
+        localStorage.setItem(
+            "customerPaginationState",
+            JSON.stringify(paginationState)
+        );
+    };
+
+    const belowMd = useResponsive("down", "md");
+
+    const handlePageChange = (_: any, newPage: number) => setPage(newPage);
+
+    useEffect(() => {
+        if (managerId !== undefined) {
+            dispatch(setManagerId(managerId));
+        }
+    }, [managerId]);
+
+    return (
+        <>
+            <FilterSection sorting={sorting} />
+
+            {selectedRows && selectedRows.length > 0 ? (
+                <Toolbar selectedRows={selectedRows} />
+            ) : null}
+
+            {belowMd ? (
+                <Pagination
+                    {...pagination}
+                    isLoading={isLoading}
+                    pageSize={pageSize}
+                    page={page}
+                    onChange={handlePageChange}
+                    totalItems={totalElements}
+                    Container={Grid}
+                    ContainerProps={{
+                        container: true,
+                        spacing: 2,
+                    }}
+                >
+                    {rows.map((c, i) => (
+                        <Grid item key={i} xs={12} sm={6}>
+                            <CustomerCard c={c} />
+                        </Grid>
+                    ))}
+                </Pagination>
+            ) : (
+                <Paper>
+                    <DataGrid
+                        loading={isLoading}
+                        rows={rows}
+                        page={page}
+                        pageSize={pageSize}
+                        totalRows={totalRows}
+                        onPaginationModelChange={handlePaginationModelChange}
+                        checkboxSelection
+                        onRowSelectionModelChange={setSelectedRows as any}
+                    />
+                </Paper>
+            )}
+        </>
+    );
+};
+
+export default CustomersViewAll;
