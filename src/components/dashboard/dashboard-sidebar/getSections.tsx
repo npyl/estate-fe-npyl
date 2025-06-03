@@ -72,7 +72,7 @@ const getSections = (
             },
 
             {
-                title: t("Organizations"),
+                title: t("Organization"),
                 path: "/organizations",
                 icon: <CorporateFareIcon fontSize="small" />,
             },
