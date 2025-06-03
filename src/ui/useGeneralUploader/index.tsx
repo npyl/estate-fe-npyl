@@ -1,5 +1,5 @@
 import executeSequentially from "@/utils/executeSequentially";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import {
     AddFileRes,
     UploadFileRes,
@@ -14,8 +14,6 @@ import {
 import useReport from "./useReport";
 import { removeMetadata } from "./util";
 import useUploadWithProgress from "./useUploadWithProgress";
-
-// TODO: logic for calling removeFiles ....
 
 const ONE_SECOND = 1000; // 1sec (in ms)
 
@@ -40,12 +38,17 @@ const useGeneralUploader = (
         [HANDLERS.onProgressUpdate]
     );
 
+    const keysPendingRemoval = useRef<string[]>([]);
+    const removePendingKeys = useCallback(() => {
+        Promise.all(keysPendingRemoval.current.map(METHODS.removeFile));
+    }, []);
+
     const [
         uploadWithProgress,
         // ...
         isConnected,
         resetInterval,
-    ] = useUploadWithProgress();
+    ] = useUploadWithProgress(removePendingKeys);
 
     // ------------------------------------------------------------------------
 
@@ -148,7 +151,22 @@ const useGeneralUploader = (
             // Filter-out failed
             const final = res.filter(Boolean) as UploadFileRes[];
 
-            return onFinish(final);
+            // Generate Report
+            const report = onFinish(final);
+
+            //
+            // Remove Failed files
+            //
+            keysPendingRemoval.current = report.report.uploadFails;
+
+            if (isConnected.current) {
+                removePendingKeys();
+            } else {
+                // do nothing; wait for reconnect
+            }
+
+            // Return report
+            return report;
         },
         [reduceAddFileRes, reduceUploadFileRes]
     );

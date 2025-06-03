@@ -94,14 +94,16 @@ type TCb = (
     onProgressUpdate?: (p: number) => void
 ) => Promise<IUploadRes>;
 
-const useUploadWithProgress = () => {
+const useUploadWithProgress = (onReconnect?: VoidFunction) => {
     const request = useRef<XMLHttpRequest>();
 
     const onChange = useCallback((c: boolean) => {
         if (c) {
             stopInterval();
+            onReconnect?.();
             return;
         }
+
         request.current?.abort();
         resetInterval();
     }, []);
