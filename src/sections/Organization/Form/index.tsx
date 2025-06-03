@@ -24,7 +24,7 @@ const OrganizationForm: FC<OrganizationFormProps> = ({
             name: organization?.name || "",
             email: organization?.email || "",
             gemh: organization?.gemh || "",
-            phone: organization?.phone || "",
+            phone: organization?.mobilePhone || "",
         },
     });
 

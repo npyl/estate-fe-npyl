@@ -25,7 +25,7 @@ const Placeholder = () => {
                             color: "rgba(0, 0, 0, 0.7)",
                         }}
                     >
-                        {t("There are no owned properties")}
+                        {t("NO_OWNED_PROPERTIES")}
                     </Typography>
                 </Grid>
             </Grid>

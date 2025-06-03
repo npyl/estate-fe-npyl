@@ -1364,10 +1364,14 @@ const resources = {
             "Log In": "Log In",
             "Sign in on the internal platform":
                 "Sign in on the internal platform",
+
+            NO_OWNED_PROPERTIES: "No properties owned",
         },
     },
     el: {
         translation: {
+            NO_OWNED_PROPERTIES: "Δεν υπάρχουν ιδιόκτητα ακίνητα",
+
             "Organization Information": "Πληροφορίες Οργανισμού",
 
             INTEGRATION_CREDENTIALS_ERROR_0:

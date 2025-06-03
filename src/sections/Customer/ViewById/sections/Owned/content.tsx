@@ -1,37 +1,47 @@
+import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import Placeholder from "./Placeholder";
 import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
-import { Grid } from "@mui/material";
 import PropertyCard from "@/components/Cards/PropertyCard";
-import { usePagination } from "@/components/Pagination";
 import Pagination from "@/components/Pagination/client";
+import { usePagination } from "@/components/Pagination";
+import NoOwnedProperties from "./NoOwnedProperties";
+import { FC } from "react";
 import { IProperties } from "@/types/properties";
 
-const PAGE_SIZE = 5;
-interface MatchingPropertiesSectionProps {
+interface Props {
+    page: number;
+    pageSize: number;
+    onChange: (_: any, p: number) => void;
     properties: IProperties[];
+    isLoading?: boolean;
 }
-const MatchingPropertiesSection = ({
+
+const OwnedPropertiesContent: FC<Props> = ({
+    page,
+    pageSize,
+    onChange,
     properties,
-}: MatchingPropertiesSectionProps) => {
+    isLoading = false,
+}) => {
     const { t } = useTranslation();
-    const belowLg = useResponsive("down", "lg");
+
     const pagination = usePagination();
 
-    const isLoading = false;
+    const belowLg = useResponsive("down", "lg");
 
-    if (properties?.length === 0) {
-        return <Placeholder />;
+    if (!isLoading && properties.length === 0) {
+        return <NoOwnedProperties />;
     }
 
-    if (belowLg) {
+    if (belowLg)
         return (
             <Pagination
-                {...pagination}
+                page={page}
+                onChange={onChange}
+                pageSize={pageSize}
                 isLoading={isLoading}
-                pageSize={PAGE_SIZE}
                 Container={Grid}
                 ContainerProps={{
                     container: true,
@@ -45,23 +55,26 @@ const MatchingPropertiesSection = ({
                 ))}
             </Pagination>
         );
-    }
 
-    return properties?.length > 0 ? (
-        <Panel label={t("Matching Properties")} childrenSx={{ p: 0 }}>
+    return (
+        <Panel
+            label={t("Owned Properties")}
+            childrenSx={{
+                p: 0,
+            }}
+        >
             <DataGrid
                 loading={isLoading}
+                // ...
                 rows={properties}
-                totalRows={properties?.length}
-                paginationMode="client"
+                // ...
                 page={pagination.page}
-                pageSize={PAGE_SIZE}
-                onPaginationModelChange={(m) =>
-                    pagination.onChange(null, m.page)
-                }
+                pageSize={pageSize}
+                totalRows={properties.length}
+                onPaginationModelChange={(m) => onChange(null, m.page)}
             />
         </Panel>
-    ) : null;
+    );
 };
 
-export default MatchingPropertiesSection;
+export default OwnedPropertiesContent;
