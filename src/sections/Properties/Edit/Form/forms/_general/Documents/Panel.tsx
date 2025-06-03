@@ -26,8 +26,6 @@ const DocumentsPanel: FC<Props> = ({ onDocumentClick }) => {
             imageKey: key,
         });
 
-    // INFO: remove all button was ... removed because we have no respective endpoint on backend
-
     return (
         <Panel label={t("Documents")}>
             <Upload
