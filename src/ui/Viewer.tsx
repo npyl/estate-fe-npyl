@@ -1,5 +1,6 @@
 import RoundIconButton from "@/components/RoundIconButton";
 import { Download } from "@mui/icons-material";
+import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { CSSProperties, FC } from "react";
@@ -28,14 +29,16 @@ const UnvieweablePlaceholder: FC<UnvieweablePlaceholderProps> = ({ url }) => {
     const { t } = useTranslation();
 
     return (
-        <Stack textAlign="center" spacing={2}>
+        <Stack alignItems="center" spacing={2}>
             <Typography variant="h5">{t("UNVIEWABLE_FORMAT")}</Typography>
-            <Typography>
-                {t("Download")}{" "}
-                <RoundIconButton>
-                    <Download />
-                </RoundIconButton>
-            </Typography>
+            <Button
+                variant="contained"
+                sx={{
+                    width: "fit-content",
+                }}
+            >
+                {t("Download")}
+            </Button>
         </Stack>
     );
 };
