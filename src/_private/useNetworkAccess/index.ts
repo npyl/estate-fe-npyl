@@ -1,6 +1,8 @@
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
+import useIntervalControl from "./useIntervalControl";
 
-const INTERVAL = 30 * 1000; // 30sec (in ms)
+// ---------------------------------------------------------------------
+
 const INSTANT = 1000;
 
 const ping = async () => {
@@ -30,6 +32,10 @@ const checkConnectivity = async () => {
     return true;
 };
 
+// ---------------------------------------------------------------------
+
+const INTERVAL = 30 * 1000; // 30sec (in ms)
+
 interface UseNetworkAccessOptions {
     /**
      * Interval in milliseconds for periodic connectivity checks.
@@ -45,9 +51,6 @@ const useNetworkAccess = (
 ) => {
     const status = useRef(true);
 
-    const interval = useRef<number>(options?.checkInterval ?? INTERVAL);
-    const intervalRef = useRef<NodeJS.Timeout>();
-
     const onChange = useCallback(async () => {
         const c = await checkConnectivity();
 
@@ -58,31 +61,12 @@ const useNetworkAccess = (
         _onChange?.(c);
     }, [_onChange]);
 
-    const start = useCallback(() => {
-        if (!interval.current) return;
-        intervalRef.current = setInterval(onChange, interval.current);
-    }, [onChange]);
+    const { stop, reset } = useIntervalControl(
+        options?.checkInterval ?? INTERVAL,
+        onChange
+    );
 
-    const stop = useCallback(() => {
-        if (!intervalRef.current) return;
-        clearInterval(intervalRef.current);
-        intervalRef.current = undefined;
-    }, []);
-
-    const reset = useCallback((n?: number) => {
-        stop();
-        interval.current = n ?? INTERVAL;
-        start();
-    }, []);
-
-    useLayoutEffect(() => {
-        start();
-        return () => {
-            stop();
-        };
-    }, []);
-
-    return [status, stop, reset] as const;
+    return [status, { stop, reset }] as const;
 };
 
 export default useNetworkAccess;

@@ -14,9 +14,7 @@ import {
 } from "./types";
 import useReport from "./useReport";
 import { removeMetadata } from "./util";
-import useUploadWithProgress from "./useUploadWithProgress";
-
-const ONE_SECOND = 1000; // 1sec (in ms)
+import useUploadWithProgress, { POLLING } from "./useUploadWithProgress";
 
 type UploadPromise = () => Promise<OrUndefined<UploadFileRes>>;
 
@@ -56,6 +54,23 @@ const useGeneralUploader = (
         isConnected,
         resetInterval,
     ] = useUploadWithProgress(removePendingKeys);
+
+    const NETWORK_CRITICAL = useCallback(async function <T>(
+        cb: () => Promise<T>
+    ): Promise<T> {
+        // Enable rapid-polling
+        resetInterval(POLLING.RAPID);
+
+        // Perform logic
+        const result = await cb();
+
+        // Disable rapid-polling or make it slower
+        if (isConnected.current) resetInterval();
+        else resetInterval(POLLING.DEFAULT);
+
+        // return result
+        return result;
+    }, []);
 
     // ------------------------------------------------------------------------
 
@@ -150,24 +165,26 @@ const useGeneralUploader = (
 
     // -------------------------------------------------------------------------------
 
+    const doUploadLogic = (files: File[]) => async () => {
+        // INFO: call step0 (add file) in-parallel
+        const r = await files.reduce(reduceAddFileRes, Promise.resolve([]));
+
+        // INFO: call step1 (upload) sequentially
+        const p = r.reduce(reduceUploadFileRes(files), []);
+        const res = await executeSequentially(p);
+
+        // Filter-out failed
+        const final = res.filter(Boolean) as UploadFileRes[];
+
+        // Generate Report
+        return onFinish(final);
+    };
+
     const upload: TUpload = useCallback(
         async (files) => {
             onReset();
 
-            resetInterval(ONE_SECOND);
-
-            // INFO: call step0 (add file) in-parallel
-            const r = await files.reduce(reduceAddFileRes, Promise.resolve([]));
-
-            // INFO: call step1 (upload) sequentially
-            const p = r.reduce(reduceUploadFileRes(files), []);
-            const res = await executeSequentially(p);
-
-            // Filter-out failed
-            const final = res.filter(Boolean) as UploadFileRes[];
-
-            // Generate Report
-            const report = onFinish(final);
+            const report = await NETWORK_CRITICAL(doUploadLogic(files));
 
             //
             // Remove Failed files

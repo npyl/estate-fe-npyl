@@ -84,8 +84,14 @@ const uploadWithProgress = (
 
 // ---------------------------------------------------------------------------------------
 
+const POLLING = {
+    DISABLED: 0,
+    RAPID: 1000,
+    DEFAULT: 3 * 1000,
+};
+
 const DONT_CHECK = {
-    checkInterval: 0,
+    checkInterval: POLLING.DISABLED,
 };
 
 type TCb = (
@@ -99,18 +105,13 @@ const useUploadWithProgress = (onReconnect?: VoidFunction) => {
 
     const onChange = useCallback((c: boolean) => {
         if (c) {
-            stopInterval();
             onReconnect?.();
             return;
         }
 
         request.current?.abort();
-        resetInterval();
     }, []);
-    const [isConnected, stopInterval, resetInterval] = useNetworkAccess(
-        onChange,
-        DONT_CHECK
-    );
+    const [isConnected, INTERVAL] = useNetworkAccess(onChange, DONT_CHECK);
 
     const upload: TCb = useCallback(async (...args) => {
         const [xhr, req] = uploadWithProgress(...args);
@@ -122,9 +123,16 @@ const useUploadWithProgress = (onReconnect?: VoidFunction) => {
         upload,
         // ...
         isConnected,
-        resetInterval,
+        INTERVAL.reset,
     ] as const;
 };
 
-export { ERROR_RESPONSE, ERROR_GENERAL, ERROR_TIMEOUT, ERROR_ABORT };
+export {
+    POLLING,
+    // ...
+    ERROR_RESPONSE,
+    ERROR_GENERAL,
+    ERROR_TIMEOUT,
+    ERROR_ABORT,
+};
 export default useUploadWithProgress;
