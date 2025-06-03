@@ -1,9 +1,13 @@
 import { useCallback, useRef } from "react";
 import useIntervalControl from "./useIntervalControl";
 
-// ---------------------------------------------------------------------
+const POLLING = {
+    DISABLED: 0,
+    RAPID: 1000,
+    DEFAULT: 30 * 1000, // 30 sec
+};
 
-const INSTANT = 1000;
+// ---------------------------------------------------------------------
 
 const ping = async () => {
     try {
@@ -11,7 +15,7 @@ const ping = async () => {
             method: "HEAD",
             mode: "no-cors",
             cache: "no-cache",
-            signal: AbortSignal.timeout(INSTANT),
+            signal: AbortSignal.timeout(POLLING.RAPID),
         });
 
         return res.type === "opaque"; // INFO: this is an opaque response; check if we got any
@@ -33,8 +37,6 @@ const checkConnectivity = async () => {
 };
 
 // ---------------------------------------------------------------------
-
-const INTERVAL = 30 * 1000; // 30sec (in ms)
 
 interface UseNetworkAccessOptions {
     /**
@@ -62,11 +64,12 @@ const useNetworkAccess = (
     }, [_onChange]);
 
     const { stop, reset } = useIntervalControl(
-        options?.checkInterval ?? INTERVAL,
+        options?.checkInterval ?? POLLING.DEFAULT,
         onChange
     );
 
     return [status, { stop, reset }] as const;
 };
 
+export { POLLING };
 export default useNetworkAccess;

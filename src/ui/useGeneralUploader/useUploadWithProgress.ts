@@ -1,4 +1,4 @@
-import useNetworkAccess from "@/_private/useNetworkAccess";
+import useNetworkAccess, { POLLING } from "@/_private/useNetworkAccess";
 import { useCallback, useRef } from "react";
 
 const ERROR_RESPONSE = "RESPONSE_ERROR";
@@ -84,12 +84,6 @@ const uploadWithProgress = (
 
 // ---------------------------------------------------------------------------------------
 
-const POLLING = {
-    DISABLED: 0,
-    RAPID: 1000,
-    DEFAULT: 3 * 1000,
-};
-
 const DONT_CHECK = {
     checkInterval: POLLING.DISABLED,
 };
@@ -103,14 +97,17 @@ type TCb = (
 const useUploadWithProgress = (onReconnect?: VoidFunction) => {
     const request = useRef<XMLHttpRequest>();
 
-    const onChange = useCallback((c: boolean) => {
-        if (c) {
-            onReconnect?.();
-            return;
-        }
+    const onChange = useCallback(
+        (c: boolean) => {
+            if (c) {
+                onReconnect?.();
+                return;
+            }
 
-        request.current?.abort();
-    }, []);
+            request.current?.abort();
+        },
+        [onReconnect]
+    );
     const [isConnected, INTERVAL] = useNetworkAccess(onChange, DONT_CHECK);
 
     const upload: TCb = useCallback(async (...args) => {

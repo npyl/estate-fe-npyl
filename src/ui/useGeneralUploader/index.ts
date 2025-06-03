@@ -65,8 +65,11 @@ const useGeneralUploader = (
         const result = await cb();
 
         // Disable rapid-polling or make it slower
-        if (isConnected.current) resetInterval();
-        else resetInterval(POLLING.DEFAULT);
+        if (isConnected.current) {
+            resetInterval();
+        } else {
+            resetInterval(POLLING.DEFAULT);
+        }
 
         // return result
         return result;
@@ -165,20 +168,23 @@ const useGeneralUploader = (
 
     // -------------------------------------------------------------------------------
 
-    const doUploadLogic = (files: File[]) => async () => {
-        // INFO: call step0 (add file) in-parallel
-        const r = await files.reduce(reduceAddFileRes, Promise.resolve([]));
+    const doUploadLogic = useCallback(
+        (files: File[]) => async () => {
+            // INFO: call step0 (add file) in-parallel
+            const r = await files.reduce(reduceAddFileRes, Promise.resolve([]));
 
-        // INFO: call step1 (upload) sequentially
-        const p = r.reduce(reduceUploadFileRes(files), []);
-        const res = await executeSequentially(p);
+            // INFO: call step1 (upload) sequentially
+            const p = r.reduce(reduceUploadFileRes(files), []);
+            const res = await executeSequentially(p);
 
-        // Filter-out failed
-        const final = res.filter(Boolean) as UploadFileRes[];
+            // Filter-out failed
+            const final = res.filter(Boolean) as UploadFileRes[];
 
-        // Generate Report
-        return onFinish(final);
-    };
+            // Generate Report
+            return onFinish(final);
+        },
+        [reduceAddFileRes, reduceUploadFileRes]
+    );
 
     const upload: TUpload = useCallback(
         async (files) => {
@@ -200,7 +206,7 @@ const useGeneralUploader = (
             // Return report
             return report;
         },
-        [reduceAddFileRes, reduceUploadFileRes]
+        [doUploadLogic]
     );
 
     return upload;
