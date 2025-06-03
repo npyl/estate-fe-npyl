@@ -38,7 +38,7 @@ const usePropertyUpload = (
 
             invalidateTags();
         },
-        [variant]
+        [invalidateTags]
     );
 
     return [uploadFiles, { isUploading }] as const;

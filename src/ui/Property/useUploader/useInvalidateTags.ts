@@ -20,7 +20,7 @@ const useInvalidateTags = (variant: TFileVariant) => {
         const tag = getTag(variant);
         if (!tag) return;
         dispatch(filesApiSlice.util.invalidateTags([tag]));
-    }, []);
+    }, [variant]);
 };
 
 export default useInvalidateTags;
