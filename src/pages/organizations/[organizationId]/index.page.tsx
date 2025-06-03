@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 const OrganizationByIdPage: NextPage = () => {
     const router = useRouter();
     const { organizationId } = router.query;
-    return <ViewById id={+organizationId!} />;
+    return <ViewById organizationId={+organizationId!} />;
 };
 
 OrganizationByIdPage.getLayout = (page) => (

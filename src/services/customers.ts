@@ -65,6 +65,7 @@ export const customers = apiWithTranslation({
         "Customers",
         "CustomerById",
         "CustomerByIdLabels",
+        "OwnedProperties",
         "SuggestedProperties",
         "Tasks",
     ],
@@ -92,14 +93,6 @@ export const customers = apiWithTranslation({
         getCustomerLabels: builder.query<ILabel[], number>({
             query: (customerId: number) => `/${customerId}/labels`,
             providesTags: ["CustomerByIdLabels"],
-        }),
-
-        getOwnedProperties: builder.mutation<IOwnedProperties[], number[]>({
-            query: (body) => ({
-                url: "/owned-properties",
-                body,
-                method: "POST",
-            }),
         }),
 
         filterCustomers: builder.query<
@@ -178,6 +171,8 @@ export const customers = apiWithTranslation({
             invalidatesTags: ["Customers"],
         }),
 
+        // ---------------------------------------------------
+
         suggestForCustomer: builder.query<
             IPage<IProperties>,
             SuggestPropertiesReq
@@ -189,11 +184,29 @@ export const customers = apiWithTranslation({
             providesTags: ["SuggestedProperties"],
         }),
 
-        tabCount: builder.query<ICustomerTabCounts, number>({
-            query: (customerId) => `/${customerId}/counts`,
+        getOwnedProperties: builder.mutation<IOwnedProperties[], number[]>({
+            query: (body) => ({
+                url: "/owned-properties",
+                body,
+                method: "POST",
+            }),
+        }),
+
+        // INFO: same as above but query
+        ownedProperties: builder.query<IOwnedProperties[], number[]>({
+            query: (body) => ({
+                url: "/owned-properties",
+                body,
+                method: "POST",
+            }),
+            providesTags: ["OwnedProperties"],
         }),
 
         // ---------------------------------------------------
+
+        tabCount: builder.query<ICustomerTabCounts, number>({
+            query: (customerId) => `/${customerId}/counts`,
+        }),
 
         getTasks: builder.query<IKanbanCardShort[], number>({
             query: (id) => ({
@@ -230,6 +243,7 @@ export const {
     useGetCustomerLabelsQuery,
     useLazyGetCustomerByIdQuery,
 
+    useOwnedPropertiesQuery,
     useGetOwnedPropertiesMutation,
 
     useTabCountQuery,

@@ -1,4 +1,4 @@
-import { ICustomer, IDemand } from "./customer";
+import { ICustomer } from "./customer";
 import { KeyValue } from "./KeyValue";
 import { ILabel } from "./label";
 import { ILocation } from "./location";
@@ -32,9 +32,7 @@ interface IOrganization {
     suggestedBy: string;
     location: ILocation;
     notes: INote[];
-    ownedProperties: IProperties[];
     labels: ILabel[];
-    demands: IDemand[];
 
     tasks: IKanbanCardShort[];
 }
@@ -51,9 +49,13 @@ interface IOrganizationShortRes {
     id: number;
     name: string;
     avatar: string;
-
+    email: string;
     createdAt: string;
     updatedAt: string;
+
+    mobilePhone: string;
+    labels: ILabel[];
+    ownedProperties: IProperties[];
 }
 
 interface IOrganizationFilter {

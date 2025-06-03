@@ -2,6 +2,7 @@ import {
     IOrganization,
     IOrganizationReq,
     IOrganizationFilter,
+    IOrganizationShortRes,
 } from "@/types/organization";
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -16,8 +17,6 @@ interface IFirmFitlerReq {
     sortBy: string;
     direction: string;
 }
-
-type IOrganizationFitlerRes = IPage<IOrganization>;
 
 interface IUploadAvatarReq {
     file: File;
@@ -63,7 +62,7 @@ export const organization = createApi({
         }),
 
         filterOrganizations: builder.query<
-            IOrganizationFitlerRes,
+            IPage<IOrganizationShortRes>,
             IFirmFitlerReq
         >({
             query: ({ body, ...params }) => ({
