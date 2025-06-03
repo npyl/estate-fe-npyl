@@ -6,6 +6,7 @@ import {
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { createRemoveTabAwareHook as rt } from "./_util";
+import { IProperties } from "@/types/properties";
 
 interface IFirmFitlerReq {
     body: IOrganizationFilter;
@@ -23,6 +24,12 @@ interface IUploadAvatarReq {
     organisationId: number;
 }
 
+interface ISuggestReq {
+    page: number;
+    pageSize: number;
+    organizationId: number;
+}
+
 export const organization = createApi({
     reducerPath: "organization",
     baseQuery: fetchBaseQuery({
@@ -37,7 +44,13 @@ export const organization = createApi({
         },
     }),
 
-    tagTypes: ["Organizations", "OrganizationById"],
+    tagTypes: [
+        "Organizations",
+        "OrganizationById",
+        // ...
+        "OwnedProperties",
+        "MatchingProperties",
+    ],
 
     endpoints: (builder) => ({
         createOrUpdateOrganization: builder.mutation<number, IOrganizationReq>({
@@ -82,6 +95,24 @@ export const organization = createApi({
 
         // -----------------------------------------------------------
 
+        ownedProperties: builder.query<IPage<IProperties>, ISuggestReq>({
+            query: ({ organizationId, ...params }) => ({
+                url: `${organizationId}/ownedProperties`,
+                params,
+            }),
+            providesTags: ["OwnedProperties"],
+        }),
+
+        matchingProperties: builder.query<IPage<IProperties>, ISuggestReq>({
+            query: ({ organizationId, ...params }) => ({
+                url: `${organizationId}/matchingProperties`,
+                params,
+            }),
+            providesTags: ["MatchingProperties"],
+        }),
+
+        // -----------------------------------------------------------
+
         uploadAvatar: builder.mutation<void, IUploadAvatarReq>({
             query: ({ organisationId, file }) => {
                 const formData = new FormData();
@@ -118,6 +149,9 @@ export const {
     useFilterOrganizationsQuery,
     useGetOrganizationQuery,
     useAllOrganizationsQuery,
+
+    useOwnedPropertiesQuery,
+    useMatchingPropertiesQuery,
     // -----------------------
     useUploadAvatarMutation,
     useRemoveAvatarMutation,

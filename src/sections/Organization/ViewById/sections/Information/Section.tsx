@@ -1,12 +1,7 @@
 import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import {
-    ListBooleanItem,
-    ListItem,
-    ListManagerItem,
-    ListRatingItem,
-} from "src/components/List";
+import { ListItem, ListManagerItem, ListRatingItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { SpaceBetween } from "@/components/styled";
@@ -67,14 +62,7 @@ const InformationSection: React.FC = () => {
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <List>
-                        <ListItem
-                            label={t("First Name")}
-                            value={data?.firstName || "-"}
-                        />
-                        <ListItem
-                            label={t("Last Name")}
-                            value={data?.lastName || "-"}
-                        />
+                        <ListItem label={t("Name")} value={data?.name || "-"} />
                         <ListItem
                             label={t("email")}
                             value={data?.email || "-"}
@@ -109,22 +97,6 @@ const InformationSection: React.FC = () => {
                         />
 
                         <ListItem
-                            label={t("ID Number")}
-                            value={data?.idNumber || "-"}
-                        />
-                        <ListItem
-                            label={t("Date of Birth")}
-                            value={
-                                data?.dateOfBirth
-                                    ? new Date(data?.dateOfBirth).toDateString()
-                                    : "-"
-                            }
-                        />
-                        <ListItem
-                            label={t("Passport Number")}
-                            value={data?.passportNumber || "-"}
-                        />
-                        <ListItem
                             label={t("Preferred Language")}
                             value={data?.preferredLanguage.value || "-"}
                         />
@@ -138,11 +110,6 @@ const InformationSection: React.FC = () => {
                                 value={data?.suggestedBy || "-"}
                             />
                         )}
-
-                        <ListBooleanItem
-                            label={t("Stay Updated")}
-                            status={data?.enableEmails || false}
-                        />
 
                         {/* <LabelCreate
                             mt={1}

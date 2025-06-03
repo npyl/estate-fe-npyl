@@ -1,12 +1,12 @@
-import Content from "@/sections/Customer/ViewById/sections/Owned/content";
-import { useOwnedPropertiesQuery } from "@/services/organization";
+import Content from "@/sections/Customer/ViewById/sections/Matching/content";
+import { useMatchingPropertiesQuery } from "@/services/organization";
 import { toNumberSafe } from "@/utils/toNumber";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
 const pageSize = 5;
 
-const OwnedCustomerPropertiesSection = () => {
+const MatchingPropertiesSection = () => {
     const [page, setPage] = useState(0);
 
     const router = useRouter();
@@ -14,7 +14,7 @@ const OwnedCustomerPropertiesSection = () => {
     const iOrganizationId = toNumberSafe(organizationId);
     if (iOrganizationId === -1) return null;
 
-    const { data, isLoading } = useOwnedPropertiesQuery({
+    const { data } = useMatchingPropertiesQuery({
         page,
         pageSize,
         organizationId: iOrganizationId,
@@ -28,9 +28,8 @@ const OwnedCustomerPropertiesSection = () => {
             page={page}
             onChange={onChange}
             properties={data?.content ?? []}
-            isLoading={isLoading}
         />
     );
 };
 
-export default OwnedCustomerPropertiesSection;
+export default MatchingPropertiesSection;
