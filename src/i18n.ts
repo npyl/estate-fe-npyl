@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Organization Information": "Organization Information",
+
             INTEGRATION_CREDENTIALS_ERROR_0:
                 "No credentials set for this integration",
             INTEGRATION_CREDENTIALS_ERROR_1:
@@ -1366,6 +1368,8 @@ const resources = {
     },
     el: {
         translation: {
+            "Organization Information": "Πληροφορίες Οργανισμού",
+
             INTEGRATION_CREDENTIALS_ERROR_0:
                 "Δεν έχουν καταχωρηθεί διαπιστευτήρια για αυτή τη διασύνδεση",
             INTEGRATION_CREDENTIALS_ERROR_1:

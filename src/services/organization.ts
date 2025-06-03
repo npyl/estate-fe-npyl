@@ -5,6 +5,7 @@ import {
 } from "@/types/organization";
 import IPage from "@/types/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createRemoveTabAwareHook as rt } from "./_util";
 
 interface IFirmFitlerReq {
     body: IOrganizationFilter;
@@ -71,6 +72,14 @@ export const organization = createApi({
             providesTags: ["Organizations"],
         }),
 
+        deleteOrganization: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Organizations", "OrganizationById"],
+        }),
+
         // -----------------------------------------------------------
 
         uploadAvatar: builder.mutation<void, IUploadAvatarReq>({
@@ -97,6 +106,12 @@ export const organization = createApi({
         }),
     }),
 });
+
+const useDeleteOrganizationMutation = rt(
+    organization.useDeleteOrganizationMutation
+);
+
+export { useDeleteOrganizationMutation };
 
 export const {
     useCreateOrUpdateOrganizationMutation,
