@@ -1,11 +1,12 @@
 import PersonalTasks from "@/sections/Tasks/PersonalTasks";
-import { IKanbanCardShort } from "@/types/tasks";
+import { useGetTasksQuery } from "@/services/customers";
+import { useRouter } from "next/router";
 
-interface TasksProps {
-    cards: IKanbanCardShort[];
-}
-const Tasks = ({ cards }: TasksProps) => {
-    return <PersonalTasks cards={cards} />;
+const Tasks = () => {
+    const router = useRouter();
+    const { customerId } = router.query;
+    const { data } = useGetTasksQuery(+customerId!);
+    return <PersonalTasks cards={data ?? []} />;
 };
 
 export default Tasks;
