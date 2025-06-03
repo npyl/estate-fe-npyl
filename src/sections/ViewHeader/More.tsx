@@ -9,6 +9,8 @@ import ControlPointDuplicateOutlinedIcon from "@mui/icons-material/ControlPointD
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import RestoreButton from "./RestoreButton";
 import DeleteOrArchiveButton from "./DeleteOrArchiveButton";
+import { useRouter } from "next/router";
+import { toNumberSafe } from "@/utils/toNumber";
 const PropertyTaskButton = dynamic(() => import("./PropertyTaskButton"));
 const CustomerTaskButton = dynamic(() => import("./CustomerTaskButton"));
 
@@ -30,6 +32,10 @@ const MoreButton = ({
     onClone,
 }: MoreButtonProps) => {
     const { t } = useTranslation();
+
+    const router = useRouter();
+    const { customerId } = router.query;
+    const isCustomer = toNumberSafe(customerId) !== -1;
 
     const anchorRef = useRef(null);
 
@@ -110,7 +116,7 @@ const MoreButton = ({
                         ) : null}
 
                         {isProperty ? <PropertyTaskButton /> : null}
-                        {!isProperty ? <CustomerTaskButton /> : null}
+                        {isCustomer ? <CustomerTaskButton /> : null}
 
                         {isArchived ? <RestoreButton /> : null}
 
