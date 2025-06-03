@@ -10,6 +10,7 @@ import {
     // ...
     UseGeneralUploaderHandlers,
     UseGeneralUploaderMethods,
+    IUploadFail,
 } from "./types";
 import useReport from "./useReport";
 import { removeMetadata } from "./util";
@@ -38,10 +39,16 @@ const useGeneralUploader = (
         [HANDLERS.onProgressUpdate]
     );
 
-    const keysPendingRemoval = useRef<string[]>([]);
-    const removePendingKeys = useCallback(() => {
-        Promise.all(keysPendingRemoval.current.map(METHODS.removeFile));
-    }, []);
+    const failedPendingRemoval = useRef<IUploadFail[]>([]);
+    const removePendingKeys = useCallback(
+        () =>
+            Promise.all(
+                failedPendingRemoval.current.map(({ key }) =>
+                    METHODS.removeFile(key)
+                )
+            ),
+        []
+    );
 
     const [
         uploadWithProgress,
@@ -54,7 +61,10 @@ const useGeneralUploader = (
 
     const step0: TStep0Cb = useCallback(
         async (f) => {
-            if (!isConnected.current) return;
+            if (!isConnected.current) {
+                onAddFail(f);
+                return;
+            }
 
             const res = await METHODS.addFile(f);
             if ("error" in res) {
@@ -68,20 +78,25 @@ const useGeneralUploader = (
     );
     const step1: TStep1Cb = useCallback(
         async (f, addRes) => {
-            if (!isConnected.current) return;
-
             const { type, name } = f || {};
             const { key, url, cdnUrl } = addRes;
 
             if (!name) return;
 
+            const fail: IUploadFail = { key, name };
+
+            if (!isConnected.current) {
+                onUploadFail(fail);
+                return;
+            }
+
             // Sanity Checks
             if (!f || !type) {
-                onUploadFail(name);
+                onUploadFail(fail);
                 return;
             }
             if (!key || !url || !cdnUrl) {
-                onUploadFail(name);
+                onUploadFail(fail);
                 return;
             }
 
@@ -95,7 +110,7 @@ const useGeneralUploader = (
             );
 
             if (!res.success) {
-                onUploadFail(name);
+                onUploadFail(fail);
                 return;
             }
 
@@ -157,7 +172,7 @@ const useGeneralUploader = (
             //
             // Remove Failed files
             //
-            keysPendingRemoval.current = report.report.uploadFails;
+            failedPendingRemoval.current = report.report.uploadFails;
 
             if (isConnected.current) {
                 removePendingKeys();

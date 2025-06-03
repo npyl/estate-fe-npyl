@@ -130,8 +130,6 @@ export const optimisticRemoveFile: OptimisticRemoveFileCb = async (
                 ? "getPropertyDocuments"
                 : null;
 
-    // TODO: update for google-earth, etc.
-
     if (!query) return;
 
     const patchResult = dispatch(

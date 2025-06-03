@@ -1,5 +1,5 @@
 import orgToast, { ToastOptions } from "react-hot-toast";
-import { IUploadReport } from "./types";
+import { IUploadFail, IUploadReport } from "./types";
 import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -7,7 +7,9 @@ import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import CloseButton from "@/components/Toaster/Message/CloseButton";
 
-const getFailed = (name: string) => <Typography key={name}>{name}</Typography>;
+const getFailed = ({ key, name }: IUploadFail) => (
+    <Typography key={key}>{name}</Typography>
+);
 
 interface MessageProps {
     r: IUploadReport;

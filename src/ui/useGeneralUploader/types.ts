@@ -30,10 +30,15 @@ interface IUploadProgress {
 
 // ---------------------------------------------------------------------------------------------------------------------------
 
+interface IUploadFail {
+    key: string;
+    name: string;
+}
+
 interface IUploadReport {
     uploaded: UploadFileRes[];
     addFails: File[];
-    uploadFails: string[]; // keys
+    uploadFails: IUploadFail[]; // keys
 }
 
 interface IUploadResult {
@@ -58,7 +63,7 @@ interface UseGeneralUploaderMethods {
  */
 interface UseGeneralUploaderHandlers {
     onAddFail?: (f: File) => void;
-    onUploadFail?: (key: string) => void;
+    onUploadFail?: (f: IUploadFail) => void;
     onProgressUpdate?: (p: IUploadProgress) => void;
 }
 
@@ -67,6 +72,7 @@ export type {
     // ...
     AddFileRes,
     UploadFileRes,
+    IUploadFail,
     // ...
     TStep0Cb,
     TStep1Cb,

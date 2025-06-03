@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import {
+    IUploadFail,
     IUploadResult,
     UploadFileRes,
     UseGeneralUploaderHandlers,
@@ -30,9 +31,9 @@ const useReport = (HANDLERS: UseGeneralUploaderHandlers) => {
     );
 
     const onUploadFail = useCallback(
-        (name: string) => {
-            result.current.report.uploadFails.push(name);
-            HANDLERS.onUploadFail?.(name);
+        (f: IUploadFail) => {
+            result.current.report.uploadFails.push(f);
+            HANDLERS.onUploadFail?.(f);
         },
         [HANDLERS.onUploadFail]
     );
