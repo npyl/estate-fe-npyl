@@ -63,7 +63,6 @@ export interface ICustomer {
     homePhone: string;
     afm: string;
     managedBy: IUser;
-    firm: number;
     status: number;
     leaser: boolean;
     lessor: boolean;
