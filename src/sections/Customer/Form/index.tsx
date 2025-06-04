@@ -22,6 +22,8 @@ const COLUMN_GRID = (compact: boolean) =>
         : {};
 
 interface CustomerFormProps {
+    b2b?: boolean;
+
     quickCreate?: boolean;
     compact?: boolean;
 
@@ -34,6 +36,8 @@ interface CustomerFormProps {
 }
 
 const Form: FC<CustomerFormProps> = ({
+    b2b = false,
+
     quickCreate = false,
     compact = false,
 

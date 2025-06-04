@@ -1,10 +1,14 @@
-import { useCallback, useRef } from "react";
+import { FC, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
 import Form from "@/sections/Customer/Form";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 import { ICustomerPOST } from "@/types/customer";
 
-const CreateCustomer = () => {
+interface Props {
+    b2b?: boolean;
+}
+
+const CreateCustomer: FC<Props> = ({ b2b }) => {
     const router = useRouter();
     const redirectId = useRef(-1);
 
@@ -27,6 +31,7 @@ const CreateCustomer = () => {
 
     return (
         <Form
+            b2b={b2b}
             isLoading={isLoading}
             isError={isError}
             onSave={handleSave}

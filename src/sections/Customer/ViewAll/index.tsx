@@ -61,7 +61,7 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
     }, [allFilters, managerId]);
 
     const { isLoading, data } = useFilterCustomersQuery({
-        filter: filters,
+        filter: { ...filters, b2b },
         page,
         pageSize,
         sortBy,

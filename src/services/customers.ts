@@ -99,16 +99,11 @@ export const customers = apiWithTranslation({
             IPage<ICustomerResultResponse>,
             ICustomerFilterProps
         >({
-            query: ({ filter, page, pageSize, sortBy, direction }) => ({
+            query: ({ filter: body, ...params }) => ({
                 url: "/filter",
                 method: "POST",
-                body: filter,
-                params: {
-                    page,
-                    pageSize,
-                    sortBy,
-                    direction,
-                },
+                body,
+                params,
             }),
             providesTags: ["Customers"],
         }),
