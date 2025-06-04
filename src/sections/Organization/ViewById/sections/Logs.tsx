@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { useCustomerHistoryPaginatedQuery } from "src/services/logs";
+import { useFilterLogsQuery } from "src/services/logs";
 import { Box, Pagination, Stack } from "@mui/material";
-import { NextPage } from "next";
 import LogCard from "@/components/Cards/LogCard";
 import { useRouter } from "next/router";
 
-const CustomerLogs: NextPage = () => {
+const Logs = () => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
+
     const router = useRouter();
-    const { customerId } = router.query;
-    const { data } = useCustomerHistoryPaginatedQuery({
-        id: +customerId!,
+    const { organizationId } = router.query;
+
+    const { data } = useFilterLogsQuery({
+        filter: {
+            organizations: [+organizationId!],
+        },
         page,
         pageSize,
     });
@@ -52,4 +55,4 @@ const CustomerLogs: NextPage = () => {
     );
 };
 
-export default CustomerLogs;
+export default Logs;
