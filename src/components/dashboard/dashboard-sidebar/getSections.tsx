@@ -67,13 +67,13 @@ const getSections = (
 
             {
                 title: t("Customers"),
-                path: "/customers",
+                path: "/customer",
                 icon: <CustomersIcon fontSize="small" />,
             },
 
             {
-                title: t("Organization"),
-                path: "/organizations",
+                title: t("B2B Customers"),
+                path: "/customerb2b",
                 icon: <CorporateFareIcon fontSize="small" />,
             },
 

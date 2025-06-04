@@ -5,8 +5,6 @@ import {
     setSorting,
     sumOfChangedProperties,
 } from "src/slices/customer/filters";
-// filters
-import FilterStatus from "./Filters/Status";
 import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
 import FilterCategory from "./Filters/Category";
 import FilterParentCategory from "./Filters/ParentCategory";
@@ -29,7 +27,6 @@ import BasicFilters from "./Filters/BasicFilters";
 import FilterBuyerLeaserAndMoreInMoreSection from "./Filters/BuyerLeaserAndMoreInMoreSection";
 import ParentCategoryInMore from "./Filters/ParentCategoryInMore";
 import FilterCategoryInMore from "./Filters/CategoryInMore";
-import OrganizationFilter from "./Filters/Organization";
 const FilterMore = dynamic(
     () => import("@/sections/Filters/FilterMore/Dialog")
 );
@@ -60,7 +57,6 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <PriceSelect />
             <AreaSelect />
             <FilterManager />
-            <OrganizationFilter />
         </>
     );
 

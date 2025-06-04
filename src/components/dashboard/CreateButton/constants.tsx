@@ -19,8 +19,8 @@ const MENU_ITEMS = [
         icon: <CustomersIcon />,
     },
     {
-        label: "Organizations",
-        path: "/organizations/create",
+        label: "B2B Customer",
+        path: "/customerb2b/create",
         icon: <CorporateFareIcon />,
     },
     {

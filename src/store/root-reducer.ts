@@ -27,7 +27,6 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { server } from "@/services/server";
 import { emails } from "@/services/email";
-import { organization } from "@/services/organization";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as logReducer } from "../slices/log";
@@ -66,7 +65,6 @@ export const rootReducer = combineReducers({
     // ...
     [server.reducerPath]: server.reducer,
     [emails.reducerPath]: emails.reducer,
-    [organization.reducerPath]: organization.reducer,
 
     // customer
     customerFilters: customerFiltersReducer,

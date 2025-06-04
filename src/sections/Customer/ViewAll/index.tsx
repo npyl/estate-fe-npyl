@@ -1,6 +1,6 @@
 import { Grid, Paper } from "@mui/material";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import { useFilterCustomersQuery } from "src/services/customers";
@@ -20,7 +20,11 @@ import { FilterSection } from "./(FilterSection)";
 import { useRouter } from "next/router";
 import { dispatch } from "@/store";
 
-const CustomersViewAll = () => {
+interface Props {
+    b2b?: boolean;
+}
+
+const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
     const { t } = useTranslation();
 
     const allFilters = useSelector(selectAll);

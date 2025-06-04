@@ -10,7 +10,6 @@ import {
 } from "./types";
 import { labels } from ".";
 import { tasks } from "@/services/tasks";
-import uuidv4 from "@/utils/uuidv4";
 
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,

@@ -53,7 +53,7 @@ const useTabState = () => {
                 const basePath = p.startsWith("/property")
                     ? "/property"
                     : p.startsWith("/customer")
-                      ? "/customers"
+                      ? "/customer"
                       : p.startsWith("/agreements")
                         ? "/agreements"
                         : "/";

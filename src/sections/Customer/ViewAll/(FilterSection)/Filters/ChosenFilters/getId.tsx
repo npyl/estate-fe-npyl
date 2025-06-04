@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { deleteFilter } from "src/slices/customer/filters";
 import { Tags } from "./types";
-import OrganizationChip from "./Chips/Organization";
 
 interface IIdData {
     filterTags: Tags;
@@ -68,8 +67,6 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
         filterKey.includes("min") || filterKey.includes("max")
             ? filterKey.slice(3)
             : null;
-
-    if (filterKey === "organizationId") return <OrganizationChip />;
 
     if (isRole && values === true) {
         // For role filters, just show the role name

@@ -4,16 +4,13 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
-            "Organization Information": "Organization Information",
+            "B2B Customers": "B2B Customers",
 
             INTEGRATION_CREDENTIALS_ERROR_0:
                 "No credentials set for this integration",
             INTEGRATION_CREDENTIALS_ERROR_1:
                 "Set up through Settings -> Integrations",
 
-            Organization: "Organization",
-
-            Organizations: "Organizations",
             UNVIEWABLE_FORMAT: "This file cannot be viewed",
 
             EMAIL_REQUIRES_TITLE: "Please add a title",
@@ -1370,17 +1367,13 @@ const resources = {
     },
     el: {
         translation: {
+            "B2B Customers": "B2B Πελάτες",
             NO_OWNED_PROPERTIES: "Δεν υπάρχουν ιδιόκτητα ακίνητα",
-
-            "Organization Information": "Πληροφορίες Οργανισμού",
 
             INTEGRATION_CREDENTIALS_ERROR_0:
                 "Δεν έχουν καταχωρηθεί διαπιστευτήρια για αυτή τη διασύνδεση",
             INTEGRATION_CREDENTIALS_ERROR_1:
                 "Καταχωρήστε μέσα από τις Ρυθμίσεις -> Διασύνδεση",
-
-            Organization: "Οργανισμός",
-            Organizations: "Οργανισμοί",
 
             UNVIEWABLE_FORMAT: "Το αρχείο δε μπορεί να προβληθεί",
 

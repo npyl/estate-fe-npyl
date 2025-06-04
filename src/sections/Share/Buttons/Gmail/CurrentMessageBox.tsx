@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { toNumberSafe } from "@/utils/toNumber";
 import { useGetCustomerByIdQuery } from "@/services/customers";
 import MessageBox from "@/sections/Emails/Send/MessageBox";
-import Portal from "@mui/material/Portal";
 
 interface CurrentMessageBoxProps {
     body: string;

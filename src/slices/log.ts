@@ -17,7 +17,6 @@ const initialState: IFilterProps = {
         resources: [],
         actions: [],
         users: [],
-        organizations: [],
         search: "",
     },
     ids: [],
@@ -39,11 +38,6 @@ const slice = createSlice({
         setUsers(state, { payload }) {
             state.filters.users = payload;
             !state.ids.includes("users") && state.ids.push("users");
-        },
-        setOrganizations(state, { payload }) {
-            state.filters.organizations = payload;
-            !state.ids.includes("organizations") &&
-                state.ids.push("organizations");
         },
         //start-end
         setFromDate(state, { payload }) {
@@ -89,7 +83,6 @@ export const {
     setFromDate,
     setToDate,
     setSearch,
-    setOrganizations,
     // delete
     deleteFilter,
 } = slice.actions;
@@ -102,8 +95,6 @@ export const selectUsers = ({ logsFilters }: RootState) =>
     logsFilters.filters.users;
 export const selectSearch = ({ logsFilters }: RootState) =>
     logsFilters.filters.search;
-export const selectOrganizations = ({ logsFilters }: RootState) =>
-    logsFilters.filters.organizations;
 
 //start-end
 export const selectFromDate = ({ logsFilters }: RootState) =>
@@ -124,7 +115,6 @@ export const sumOfChangedProperties = createSelector(
             //start-end
             "fromDate",
             "toDate",
-            "organizations",
         ];
 
         return propertiesToInclude.reduce(

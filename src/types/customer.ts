@@ -4,19 +4,71 @@ import { Enum } from "./enums";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
-import { IOrganizationShortRes } from "./organization";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
-interface ICustomerLocationPOST
-    extends Omit<ILocationPOST, "locationDisplay"> {}
+// ----------------------------------------------------------------------
+
+type WithB2B<T> = T & { b2b: boolean };
+
+// ----------------------------------------------------------------------
+
+interface B2BMemberReq {
+    firstName: string;
+    lastName: string;
+    position: string;
+    email: string;
+    mobilePhone: string;
+    homePhone: string;
+    fax: string;
+
+    nationality: string;
+    preferredLanguage: string;
+
+    suggestedBy: string;
+}
+
+interface B2BMember {
+    id: number;
+
+    firstName: string;
+    lastName: string;
+    position: string;
+    email: string;
+    mobilePhone: string;
+    homePhone: string;
+
+    nationality: KeyValue;
+    preferredLanguage: KeyValue;
+
+    fax: string;
+    suggestedBy: string;
+}
 
 interface IOwnedProperties {
     id: number;
     code: number;
 }
 
-export interface ICustomerResultResponse {
+// ----------------------------------------------------------------------
+
+interface FilterBase {
+    labels?: number[]; // ids
+    status?: number;
+    leaser?: boolean;
+    lessor?: boolean;
+    seller?: boolean;
+    buyer?: boolean;
+    parentCategories?: string[];
+    categories?: string[];
+    minPrice?: number;
+    maxPrice?: number;
+    minCovered?: number;
+    maxCovered?: number;
+    managerId?: number;
+}
+
+interface ResponseShortBase {
     id: number;
     firstName: string;
     lastName: string;
@@ -37,24 +89,7 @@ export interface ICustomerResultResponse {
     }[];
 }
 
-export interface ICustomerFilter {
-    labels?: number[]; // ids
-    status?: number;
-    leaser?: boolean;
-    lessor?: boolean;
-    seller?: boolean;
-    buyer?: boolean;
-    parentCategories?: string[];
-    categories?: string[];
-    minPrice?: number;
-    maxPrice?: number;
-    minCovered?: number;
-    maxCovered?: number;
-    managerId?: number;
-    organizationId?: number;
-}
-
-export interface ICustomer {
+interface ResponseBase {
     id: number;
     firstName: string;
     lastName: string;
@@ -82,20 +117,12 @@ export interface ICustomer {
     labels: ILabel[];
     demands: IDemand[];
     enableEmails: boolean;
-    organization: IOrganizationShortRes;
 
     createdAt: string;
     updatedAt: string;
 }
 
-interface ICustomerMini {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email?: string;
-}
-
-export interface ICustomerPOST {
+interface RequestBase {
     id?: number;
     firstName: string;
     lastName: string;
@@ -125,8 +152,24 @@ export interface ICustomerPOST {
     nationality: Enum<string>;
     leadSource: Enum<string>;
     preferredLanguage: Enum<string>;
+}
 
-    organization: number;
+// ----------------------------------------------------------
+
+interface ICustomerLocationPOST
+    extends Omit<ILocationPOST, "locationDisplay"> {}
+
+type ICustomerFilter = WithB2B<FilterBase>;
+
+type ICustomer = WithB2B<ResponseBase> & { members: B2BMember[] };
+type ICustomerResultResponse = WithB2B<ResponseShortBase>;
+type ICustomerPOST = WithB2B<RequestBase> & { b2bMembers: B2BMemberReq[] };
+
+interface ICustomerMini {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email?: string;
 }
 
 interface ICustomerTabCounts {
@@ -137,4 +180,12 @@ interface ICustomerTabCounts {
     tasks: number;
 }
 
-export type { IDemand, ICustomerMini, ICustomerTabCounts };
+export type {
+    ICustomer,
+    ICustomerPOST,
+    ICustomerResultResponse,
+    ICustomerFilter,
+    IDemand,
+    ICustomerMini,
+    ICustomerTabCounts,
+};

@@ -69,7 +69,9 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
 
     enableEmails: customer?.enableEmails || false,
 
-    organization: customer?.organization?.id,
+    b2b: false,
+    b2bMembers: [],
+    labelIDs: [],
 });
 
 const useCustomerForm = (

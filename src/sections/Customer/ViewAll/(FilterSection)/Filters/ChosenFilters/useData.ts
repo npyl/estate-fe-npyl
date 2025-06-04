@@ -46,9 +46,6 @@ const getFilterTags = (t: TranslationType): Tags => ({
     categories: {
         label: t("Categories"),
     },
-    organizationId: {
-        label: t("Organization"),
-    },
 });
 
 const getPairFilterTags = (t: TranslationType): Tags => ({

@@ -171,7 +171,7 @@ const UserRow: FC<UserRowProps> = ({
     };
     const handleRedirectCustomers = () => {
         router.push({
-            pathname: "/customers",
+            pathname: "/customer",
             query: { managerId: u.id },
         });
     };

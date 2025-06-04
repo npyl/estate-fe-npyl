@@ -22,7 +22,6 @@ import Select from "@/components/hook-form/Select";
 import { useTranslation } from "react-i18next";
 import StayUpdated from "./StayUpdated";
 import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
-import Organizations from "./Organizations";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -80,8 +79,6 @@ const getFIELDS = (
         label={t("VAT")}
     />,
     <RHFManagerAutocomplete name="managedBy" />,
-
-    <Organizations />,
 
     <RHFTextField fullWidth name="mobilePhone" label={t("Mobile Phone")} />,
     <RHFTextField fullWidth name="homePhone" label={t("Home Phone")} />,

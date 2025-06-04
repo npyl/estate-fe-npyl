@@ -1,6 +1,6 @@
 import { Tab } from "@mui/material";
 import { useRouter } from "next/router";
-import { ComponentType, useCallback, useMemo } from "react";
+import { ComponentType, FC, useCallback, useMemo } from "react";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
@@ -102,7 +102,11 @@ const getTabView =
         </TabPanel>
     );
 
-const ViewById = () => {
+interface Props {
+    b2b?: boolean;
+}
+
+const ViewById: FC<Props> = ({ b2b = false }) => {
     const router = useRouter();
     const { t } = useTranslation();
 
@@ -132,7 +136,7 @@ const ViewById = () => {
             props: +customerId!,
         });
         if ("error" in res) return;
-        router.push("/customers");
+        router.push("/customer");
     }, [customerId]);
 
     return (
