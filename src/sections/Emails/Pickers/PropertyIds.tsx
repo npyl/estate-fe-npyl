@@ -6,7 +6,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 const getSx = (propertyId: number): SxProps<Theme> => ({
-    minWidth: "100px",
+    minWidth: "200px",
 
     // INFO: disable ability to delete tag chip that corresponds to current property (e.g. when opening Emails from tab from PropertyById)
     [`.${getTagClassname(propertyId)}`]: {
