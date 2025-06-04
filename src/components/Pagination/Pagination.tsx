@@ -1,12 +1,12 @@
 // Pagination component for server-side pagination
 // WARN: MUI pagination starts from index 1; datagrids start from 0 (=> Let's say that outside of this component we use 0)
 
-import React, { forwardRef, useCallback, useEffect } from "react";
-import Box from "@mui/material/Box";
+import { forwardRef, useCallback, useEffect } from "react";
 import { PaginationProps } from "./types";
 const StyledPagination = dynamic(() => import("./styled"));
 const TablePagination = dynamic(() => import("./TablePagination"));
 import dynamic from "next/dynamic";
+import Stack from "@mui/material/Stack";
 
 const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
     (
@@ -46,7 +46,7 @@ const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
         );
 
         return (
-            <Box ref={ref} component={Container} {...ContainerProps}>
+            <Stack ref={ref} component={Container} {...ContainerProps}>
                 {children}
 
                 {table ? (
@@ -68,7 +68,7 @@ const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
                         count={totalPages}
                     />
                 ) : null}
-            </Box>
+            </Stack>
         );
     }
 );
