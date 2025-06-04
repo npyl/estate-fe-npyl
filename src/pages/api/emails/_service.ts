@@ -286,8 +286,6 @@ class GmailService {
 
         const q = getQ(filters);
 
-        console.log("Q: ", q);
-
         const res = await this.gmail.users.threads.list({
             auth,
             userId: "me",
