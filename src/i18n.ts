@@ -1363,10 +1363,14 @@ const resources = {
                 "Sign in on the internal platform",
 
             NO_OWNED_PROPERTIES: "No properties owned",
+
+            "B2B Customer Information": "B2B Customer Information",
         },
     },
     el: {
         translation: {
+            "B2B Customer Information": "Πληροφορίες B2B Πελάτη",
+
             "B2B Customers": "B2B Πελάτες",
             NO_OWNED_PROPERTIES: "Δεν υπάρχουν ιδιόκτητα ακίνητα",
 

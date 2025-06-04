@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import { useRouter } from "next/router";
 import {
     useCreateOrUpdateCustomerMutation,
@@ -14,11 +14,7 @@ const useLoadCustomer = () => {
     return { customer, customerId };
 };
 
-interface Props {
-    b2b?: boolean;
-}
-
-const CustomerEdit: FC<Props> = ({ b2b = false }) => {
+const CustomerEdit = () => {
     const router = useRouter();
     const { customer, customerId } = useLoadCustomer();
 

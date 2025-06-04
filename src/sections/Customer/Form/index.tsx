@@ -8,11 +8,19 @@ import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./NotesSection";
 // Forms
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useWatch } from "react-hook-form";
 import { ICustomerYup } from "./types";
 import useCustomerForm from "./useCustomerForm";
 import FormBottomBar from "@/ui/FormBottomBar";
 import SaveButton from "./SaveButton";
+import dynamic from "next/dynamic";
+const B2BMembers = dynamic(() => import("./B2BMembers"));
+
+const B2BSection = () => {
+    const isB2B = useWatch<ICustomerYup>({ name: "b2b" });
+    if (!Boolean(isB2B)) return null;
+    return <B2BMembers />;
+};
 
 const COLUMN_GRID = (compact: boolean) =>
     compact
@@ -22,8 +30,6 @@ const COLUMN_GRID = (compact: boolean) =>
         : {};
 
 interface CustomerFormProps {
-    b2b?: boolean;
-
     quickCreate?: boolean;
     compact?: boolean;
 
@@ -36,8 +42,6 @@ interface CustomerFormProps {
 }
 
 const Form: FC<CustomerFormProps> = ({
-    b2b = false,
-
     quickCreate = false,
     compact = false,
 
@@ -71,10 +75,17 @@ const Form: FC<CustomerFormProps> = ({
             <FormProvider {...methods}>
                 <Grid container spacing={1}>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
-                        <CustomerInformation />
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <CustomerInformation />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <B2BSection />
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item xs={12} lg={6} {...COLUMN_GRID(compact)}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <AddressDetails />
                             </Grid>

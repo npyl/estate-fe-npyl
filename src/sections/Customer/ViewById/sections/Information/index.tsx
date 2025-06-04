@@ -19,6 +19,8 @@ const InformationSection: React.FC = () => {
     const enums = useGlobals();
 
     const { customer: data, customerId } = useGetCustomer();
+    const isB2B = Boolean(data?.b2b);
+    const label = isB2B ? "B2B Customer Information" : "Customer Information";
 
     const leadSource = data?.leadSource?.key as LeadSource;
     const nationalitiesEnum = enums?.customer?.nationality || [];
@@ -51,10 +53,8 @@ const InformationSection: React.FC = () => {
             }}
         >
             <SpaceBetween
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                }}
+                px={3}
+                py={1.5}
                 direction={{
                     xs: "column",
                     md: "row",
@@ -62,7 +62,7 @@ const InformationSection: React.FC = () => {
                 spacing={0.5}
             >
                 <Typography variant="h6" flex={1}>
-                    {t("Customer Information")}
+                    {t(label)}
                 </Typography>
 
                 <TypeLabels

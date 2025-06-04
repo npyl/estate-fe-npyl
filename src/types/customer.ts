@@ -188,4 +188,6 @@ export type {
     IDemand,
     ICustomerMini,
     ICustomerTabCounts,
+    B2BMember,
+    B2BMemberReq,
 };

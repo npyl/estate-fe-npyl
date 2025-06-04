@@ -2,17 +2,21 @@ import { Grid } from "@mui/material";
 import { useGlobals } from "src/hooks/useGlobals";
 import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import Panel from "src/components/Panel";
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import getFIELDS from "./getFields";
+import useGetCustomer from "@/hooks/customer";
+import B2bSwitch from "./B2BSwitch";
 
 const CustomerInformation = () => {
-    const router = useRouter();
     const { t } = useTranslation();
 
-    const { customerId } = router.query;
+    const { customer, customerId } = useGetCustomer();
+
+    const isB2B = Boolean(customer?.b2b);
+    const label = isB2B ? "B2B Customer Information" : "Customer Information";
+
     const enums = useGlobals();
     const leadSource = useWatch({ name: "leadSource" });
 
@@ -32,7 +36,7 @@ const CustomerInformation = () => {
     );
 
     return (
-        <Panel label={t("Customer Information")}>
+        <Panel label={t(label)} endNode={<B2bSwitch />}>
             <Grid container spacing={2} p={1.5}>
                 {FIELDS.map((f, i) => (
                     <Grid key={i} item xs={12} sm={6}>

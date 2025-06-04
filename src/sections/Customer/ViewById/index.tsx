@@ -20,6 +20,7 @@ import OwnedPropertiesLabel from "./TabLabels/OwnedProperties";
 import MatchingPropertiesLabel from "./TabLabels/MatchingProperties";
 import AgreementsLabel from "./TabLabels/Agreements";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
+import useGetCustomer from "@/hooks/customer";
 const Emails = dynamic(() => import("./sections/Emails"));
 const Tasks = dynamic(() => import("./sections/Tasks"));
 
@@ -102,17 +103,12 @@ const getTabView =
         </TabPanel>
     );
 
-interface Props {
-    b2b?: boolean;
-}
-
-const ViewById: FC<Props> = ({ b2b = false }) => {
+const ViewById = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
-    const { customerId } = router.query;
+    const { customer: data, customerId } = useGetCustomer();
 
-    const { data } = useGetCustomerByIdQuery(+customerId!);
     const [deleteCustomer] = useDeleteCustomerMutation();
 
     const [tabIndex] = useCurrentTab();
