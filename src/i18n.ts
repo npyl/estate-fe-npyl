@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "B2B Customer": "B2B Customer",
             "B2B Customers": "B2B Customers",
 
             INTEGRATION_CREDENTIALS_ERROR_0:
@@ -1369,6 +1370,7 @@ const resources = {
     },
     el: {
         translation: {
+            "B2B Customer": "B2B Πελάτης",
             "B2B Customer Information": "Πληροφορίες B2B Πελάτη",
 
             "B2B Customers": "B2B Πελάτες",

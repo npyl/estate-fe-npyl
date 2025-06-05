@@ -25,7 +25,7 @@ const getLoginSchema = (t: TranslationType) =>
             .optional(),
     });
 
-const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
+const getDefaultValues = (customer?: Partial<ICustomer>): ICustomerYup => ({
     id: customer?.id,
 
     firstName: customer?.firstName || "",
@@ -69,14 +69,14 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
 
     enableEmails: customer?.enableEmails || false,
 
-    b2b: false,
+    b2b: customer?.b2b ?? false,
     b2bMembers: [],
     labelIDs: [],
 });
 
 const useCustomerForm = (
     quickCreate: boolean,
-    customer: ICustomer | undefined,
+    customer: Partial<ICustomer> | undefined,
     onSaveSuccess: VoidFunction | null
 ) => {
     const { t } = useTranslation();
