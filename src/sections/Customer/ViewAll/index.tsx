@@ -1,4 +1,5 @@
-import { Grid, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -140,8 +141,8 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
                         spacing: 2,
                     }}
                 >
-                    {rows.map((c, i) => (
-                        <Grid item key={i} xs={12} sm={6}>
+                    {rows.map((c) => (
+                        <Grid key={c.id} xs={12} sm={6}>
                             <CustomerCard c={c} />
                         </Grid>
                     ))}
