@@ -5,9 +5,9 @@ const SpamIcon = createSvgIcon(
         viewBox="0 0 24 24"
         role="img"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         fill="none"
     >
         <polygon points="16 3 21 8 21 16 16 21 8 21 3 16 3 8 8 3" />

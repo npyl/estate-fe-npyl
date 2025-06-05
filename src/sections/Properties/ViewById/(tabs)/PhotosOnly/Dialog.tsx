@@ -71,7 +71,6 @@ const DownloadDialog = ({
                 <LoadingButton
                     loading={clicked === "all" && loading}
                     color="primary"
-                    loadingPosition="end"
                     disabled={loading}
                     onClick={handleExportAll}
                 >
@@ -82,7 +81,6 @@ const DownloadDialog = ({
                 <LoadingButton
                     loading={clicked === "public" && loading}
                     color="primary"
-                    loadingPosition="end"
                     disabled={loading}
                     onClick={handleExportPublic}
                 >

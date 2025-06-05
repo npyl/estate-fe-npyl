@@ -138,7 +138,6 @@ const Documents: React.FC = () => {
                 <LoadingButton
                     loading={isLoading}
                     disabled={isLoading}
-                    loadingPosition="end"
                     onClick={handleDownload}
                 >
                     {t("Download")}
