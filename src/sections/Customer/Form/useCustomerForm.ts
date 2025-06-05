@@ -5,8 +5,8 @@ import { ICustomerYup } from "./types";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
-import { demandMapper } from "src/mappers/demand";
-import { ICustomer } from "src/types/customer";
+import { demandMapper } from "@/mappers/demand";
+import { B2BMember2Req, ICustomer } from "@/types/customer";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 
 const getLoginSchema = (t: TranslationType) =>
@@ -70,7 +70,7 @@ const getDefaultValues = (customer?: Partial<ICustomer>): ICustomerYup => ({
     enableEmails: customer?.enableEmails || false,
 
     b2b: customer?.b2b ?? false,
-    b2bMembers: [],
+    b2bMembers: customer?.members?.map(B2BMember2Req) || [],
     labelIDs: [],
 });
 

@@ -35,13 +35,19 @@ interface B2BMember {
     email: string;
     mobilePhone: string;
     homePhone: string;
+    fax: string;
 
     nationality: KeyValue;
     preferredLanguage: KeyValue;
 
-    fax: string;
     suggestedBy: string;
 }
+
+const B2BMember2Req = (m: B2BMember): B2BMemberReq => ({
+    ...m,
+    nationality: m.nationality.key,
+    preferredLanguage: m.preferredLanguage.key,
+});
 
 interface IOwnedProperties {
     id: number;
@@ -189,3 +195,5 @@ export type {
     B2BMember,
     B2BMemberReq,
 };
+
+export { B2BMember2Req };
