@@ -2,18 +2,31 @@ import { ForwardedRef, forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { ICustomerMini } from "@/types/customer";
 import MultilineTextField from "@/components/MultilineTextField";
-import { AutocompleteRenderInputParams } from "@mui/material";
-import { IUser } from "@/types/user";
+import {
+    AutocompleteFreeSoloValueMapping,
+    AutocompleteRenderInputParams,
+} from "@mui/material";
+import { isIUser, IUser } from "@/types/user";
 import useOptions from "./useOptions";
-import RenderOption from "./RenderOption";
+import getRenderOption from "./getRenderOption";
 import renderUserTags, { getTagClassname } from "./renderUserTags";
 
-type TPerson = ICustomerMini | IUser;
+// -----------------------------------------------------------------------------
 
-const getOptionLabel = (o: TPerson | number) =>
-    typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
+type TPerson = ICustomerMini | IUser;
+type TFreeSolo = AutocompleteFreeSoloValueMapping<true>; // INFO: just a string
 
 // -----------------------------------------------------------------------------
+
+const getOptionKey = (o: TPerson | TFreeSolo) =>
+    typeof o === "string"
+        ? o
+        : isIUser(o)
+          ? `User-${o.id}`
+          : `Customer-${o.id}`;
+
+const getOptionLabel = (o: TPerson | TFreeSolo) =>
+    typeof o === "string" ? o : `${o?.firstName} ${o?.lastName}`;
 
 const getDefaultRenderInput =
     (
@@ -82,9 +95,10 @@ function UnforwardedPeopleAutocomplete<FreeSolo extends boolean = false>(
             multiple
             disableClearable
             loading={isLoading}
-            renderOption={RenderOption}
+            renderOption={getRenderOption}
+            getOptionKey={getOptionKey}
             options={options}
-            getOptionLabel={getOptionLabel as any}
+            getOptionLabel={getOptionLabel}
             renderTags={renderUserTags}
             renderInput={renderInput ?? defaultRenderInput}
             {...props}

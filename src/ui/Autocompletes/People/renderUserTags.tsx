@@ -1,61 +1,67 @@
 import { ICustomerMini } from "@/types/customer";
 import { AutocompleteRenderGetTagProps } from "@mui/material";
-import ChipLink from "@/components/ChipLink";
+import ChipLink, { ChipLinkProps } from "@/components/ChipLink";
 import PlaceholderAvatar from "@/ui/Autocompletes/Customer/PlaceholderAvatar";
 import { isIUser, IUser } from "@/types/user";
-import { FC } from "react";
+import { FC, forwardRef } from "react";
 import Avatar from "@/components/Avatar";
 
 // -----------------------------------------------------------------------
 
 const getTagClassname = (id: number) => `PPPeopleAutocomplete-Tag-${id}`;
 
-interface TagProps {
-    getTagProps: AutocompleteRenderGetTagProps;
+interface TagProps extends Omit<ChipLinkProps, "href"> {
     option: ICustomerMini | IUser;
-    index: number;
 }
 
-const Tag: FC<TagProps> = ({ getTagProps, option, index }) => {
-    const { key, className: _className, ...tagProps } = getTagProps({ index });
+const Tag = forwardRef<HTMLAnchorElement, TagProps>(
+    ({ className: _className, option, ...props }, ref) => {
+        const isUser = isIUser(option);
 
-    const isUser = isIUser(option);
+        const label = `${option?.firstName || ""} ${option?.lastName || ""}`;
 
-    const label = `${option?.firstName || ""} ${option?.lastName || ""}`;
+        const className = `${_className} ${getTagClassname(option.id)}`;
 
-    const className = `${_className} ${getTagClassname(option.id)}`;
+        const href = isUser ? `/user/${option.id}` : `/customer/${option.id}`;
 
-    const href = isUser ? `/user/${option.id}` : `/customer/${option.id}`;
+        const avatar = isUser ? (
+            <Avatar
+                firstName={option?.firstName}
+                lastName={option?.lastName}
+                src={(option as IUser)?.avatar}
+            />
+        ) : (
+            <PlaceholderAvatar />
+        );
 
-    const avatar = isUser ? (
-        <Avatar
-            firstName={option?.firstName}
-            lastName={option?.lastName}
-            src={(option as IUser)?.avatar}
-        />
-    ) : (
-        <PlaceholderAvatar />
-    );
+        return (
+            <ChipLink
+                ref={ref}
+                href={href}
+                label={label}
+                avatar={avatar}
+                className={className}
+                {...props}
+            />
+        );
+    }
+);
 
-    return (
-        <ChipLink
-            key={key}
-            href={href}
-            label={label}
-            avatar={avatar}
-            className={className}
-            {...tagProps}
-        />
-    );
-};
+Tag.displayName = "Tag";
 
 // -----------------------------------------------------------------------
 
 const getTag =
     (getTagProps: AutocompleteRenderGetTagProps) =>
-    (option: ICustomerMini | IUser, index: number) => (
-        <Tag option={option} getTagProps={getTagProps} index={index} />
-    );
+    (option: ICustomerMini | IUser, index: number) => {
+        const {
+            key,
+            className: _className,
+            ...tagProps
+        } = getTagProps({ index });
+
+        return <Tag key={key} option={option} {...tagProps} />;
+    };
 
 // -----------------------------------------------------------------------
 

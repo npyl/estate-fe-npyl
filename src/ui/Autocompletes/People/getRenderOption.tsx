@@ -3,15 +3,17 @@ import { RenderOption as CustomerRenderOption } from "@/ui/Autocompletes/Custome
 import { RenderOption as ManagerRenderOption } from "@/ui/Autocompletes/Manager";
 import { isIUser, IUser } from "@/types/user";
 
-const RenderOption = (
+const getRenderOption = (
     props: React.HTMLAttributes<HTMLLIElement> & { key: any },
     option: ICustomerMini | IUser
 ) => {
+    const { key, ...other } = props;
+
     const Renderer = isIUser(option)
         ? ManagerRenderOption
         : CustomerRenderOption;
 
-    return <Renderer option={option as any} {...props} />;
+    return <Renderer key={key} option={option as any} {...other} />;
 };
 
-export default RenderOption;
+export default getRenderOption;
