@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { Drawer, DrawerProps } from "@mui/material";
 import { makeStickyBottom } from "@/ui/FormBottomBar";
 import Title from "./Title";
@@ -25,15 +25,25 @@ interface MemberDrawerProps {
     onClose: () => void;
 }
 
-const MemberDrawer: FC<MemberDrawerProps> = ({ onAdd, onClose }) => (
-    <Drawer open anchor="right" PaperProps={PaperProps} onClose={onClose}>
-        <Form>
-            <Title />
-            <Content />
-            <Actions onSave={onAdd} onCancel={onClose} />
-        </Form>
-    </Drawer>
-);
+const MemberDrawer: FC<MemberDrawerProps> = ({ onAdd: _onAdd, onClose }) => {
+    const onAdd = useCallback(
+        (d: B2BMemberReq) => {
+            _onAdd(d);
+            onClose();
+        },
+        [_onAdd, onClose]
+    );
+
+    return (
+        <Drawer open anchor="right" PaperProps={PaperProps} onClose={onClose}>
+            <Form>
+                <Title />
+                <Content />
+                <Actions onSave={onAdd} onCancel={onClose} />
+            </Form>
+        </Drawer>
+    );
+};
 
 export type { MemberDrawerProps };
 export default MemberDrawer;
