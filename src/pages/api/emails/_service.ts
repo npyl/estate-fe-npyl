@@ -11,7 +11,7 @@ import {
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 import { getAttachmentsFromMessages } from "@/types/email/mapper/attachments";
-import { decode } from "html-entities";
+import * as he from "html-entities";
 
 /**
  * @param snippet any string
@@ -19,7 +19,7 @@ import { decode } from "html-entities";
  */
 const getEscapedSnippet = (snippet?: string | null) => {
     try {
-        return decode(snippet);
+        return he.decode(snippet);
     } catch (ex) {
         console.log(ex);
         return "";
