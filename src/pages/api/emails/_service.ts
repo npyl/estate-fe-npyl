@@ -11,6 +11,20 @@ import {
 } from "@/types/email";
 import { toNumberSafe } from "@/utils/toNumber";
 import { getAttachmentsFromMessages } from "@/types/email/mapper/attachments";
+import { decode } from "html-entities";
+
+/**
+ * @param snippet any string
+ * @returns same string with escaped "html entities"
+ */
+const getEscapedSnippet = (snippet?: string | null) => {
+    try {
+        return decode(snippet);
+    } catch (ex) {
+        console.log(ex);
+        return "";
+    }
+};
 
 type TThread = gmail_v1.Schema$Thread;
 
@@ -268,7 +282,7 @@ class GmailService {
 
             return {
                 id,
-                snippet: snippet || "",
+                snippet: getEscapedSnippet(snippet),
                 ...METADATA,
             };
         };
