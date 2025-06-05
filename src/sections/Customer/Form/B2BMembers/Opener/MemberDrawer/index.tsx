@@ -21,11 +21,16 @@ const PaperProps: DrawerProps["PaperProps"] = {
 };
 
 interface MemberDrawerProps {
+    member?: B2BMemberReq;
     onAdd: (d: B2BMemberReq) => void;
     onClose: () => void;
 }
 
-const MemberDrawer: FC<MemberDrawerProps> = ({ onAdd: _onAdd, onClose }) => {
+const MemberDrawer: FC<MemberDrawerProps> = ({
+    member,
+    onAdd: _onAdd,
+    onClose,
+}) => {
     const onAdd = useCallback(
         (d: B2BMemberReq) => {
             _onAdd(d);
@@ -36,7 +41,7 @@ const MemberDrawer: FC<MemberDrawerProps> = ({ onAdd: _onAdd, onClose }) => {
 
     return (
         <Drawer open anchor="right" PaperProps={PaperProps} onClose={onClose}>
-            <Form>
+            <Form member={member}>
                 <Title />
                 <Content />
                 <Actions onSave={onAdd} onCancel={onClose} />

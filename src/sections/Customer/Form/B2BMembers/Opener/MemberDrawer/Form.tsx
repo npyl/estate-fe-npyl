@@ -3,8 +3,15 @@ import Stack from "@mui/material/Stack";
 import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-const Form: FC<PropsWithChildren> = ({ children }) => {
-    const methods = useForm<B2BMemberReq>();
+interface FormProps extends PropsWithChildren {
+    member?: B2BMemberReq;
+}
+
+const Form: FC<FormProps> = ({ member, children }) => {
+    const methods = useForm<B2BMemberReq>({
+        values: member,
+    });
+
     return (
         <Stack spacing={1} component="form">
             <FormProvider {...methods}>{children}</FormProvider>

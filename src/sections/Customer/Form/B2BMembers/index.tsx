@@ -9,13 +9,13 @@ import Opener from "./Opener";
 const MembersSection = () => {
     const { t } = useTranslation();
 
-    const { fields, append, remove } = useFieldArray<ICustomerYup>({
+    const { fields, append, remove, update } = useFieldArray<ICustomerYup>({
         name: nameKey,
     });
 
     return (
         <Panel label={t("Members")} endNode={<Opener onAdd={append} />}>
-            {fields?.map(getMember(remove))}
+            {fields?.map(getMember(update, remove))}
         </Panel>
     );
 };

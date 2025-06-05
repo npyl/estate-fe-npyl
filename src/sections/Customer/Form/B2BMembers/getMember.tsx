@@ -4,33 +4,49 @@ import { useWatch } from "react-hook-form";
 import { useCallback } from "react";
 import { nameKey } from "./constants";
 import { SpaceBetween } from "@/components/styled";
+import EditOpener from "./EditOpener";
+import { B2BMemberReq } from "@/types/customer";
 
 interface MemberProps {
     index: number;
+    onEdit: (index: number, m: B2BMemberReq) => void;
     onRemove: (i: number) => void;
 }
 
-const Member = ({ index, onRemove: _onRemove }: MemberProps) => {
+const Member = ({ index, onEdit, onRemove: _onRemove }: MemberProps) => {
     const onRemove = useCallback(() => _onRemove(index), [index]);
 
-    const firstName =
-        useWatch({ name: `${nameKey}[${index}].firstName` }) || "";
-    const lastName = useWatch({ name: `${nameKey}[${index}].lastName` }) || "";
-    const fullname = `${firstName} ${lastName}`;
+    const m = useWatch({ name: `${nameKey}[${index}]` }) as B2BMemberReq;
+    const { position, firstName, lastName, email } = m || {};
+    const fullname = `${firstName || ""} ${lastName || ""}`;
 
     return (
-        <SpaceBetween direction="row" spacing={1.5}>
-            <Typography>{fullname}</Typography>
-            <IconButton onClick={onRemove}>
-                <Cancel />
-            </IconButton>
+        <SpaceBetween direction="row" spacing={1.5} alignItems="center">
+            <Stack direction="row" spacing={1} alignItems="center">
+                <Typography>{position}</Typography>
+                <Typography variant="body1" fontWeight="bold">
+                    {fullname}
+                </Typography>
+                <Typography>({email})</Typography>
+            </Stack>
+
+            <Stack direction="row" spacing={1} alignItems="center">
+                <EditOpener index={index} member={m} onEdit={onEdit} />
+                <IconButton onClick={onRemove}>
+                    <Cancel />
+                </IconButton>
+            </Stack>
         </SpaceBetween>
     );
 };
 
 const getMember =
-    (onRemove: (i: number) => void) => (m: Record<"id", string>, i: number) => (
-        <Member key={m.id} index={i} onRemove={onRemove} />
+    (
+        onEdit: (index: number, m: B2BMemberReq) => void,
+        onRemove: (i: number) => void
+    ) =>
+    (m: Record<"id", string>, i: number) => (
+        <Member key={m.id} index={i} onEdit={onEdit} onRemove={onRemove} />
     );
 
 export default getMember;
