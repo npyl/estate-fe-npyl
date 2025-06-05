@@ -13,15 +13,14 @@ const OptionSx: SxProps<Theme> = {
 };
 
 interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
-    key: any;
     option: ICustomerMini;
 }
 
 const RenderOption: FC<RenderOptionProps> = (props) => {
-    const { key, option, ...otherProps } = props;
+    const { option, ...otherProps } = props;
 
     return (
-        <ListItem key={option.id} sx={OptionSx} {...otherProps}>
+        <ListItem sx={OptionSx} {...otherProps}>
             <PlaceholderAvatar />
             {option?.firstName || ""} {option?.lastName || ""}
         </ListItem>
@@ -29,9 +28,12 @@ const RenderOption: FC<RenderOptionProps> = (props) => {
 };
 
 const getRenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
+    props: React.HTMLAttributes<HTMLLIElement> & { key: number },
     option: ICustomerMini
-) => <RenderOption option={option} {...props} />;
+) => {
+    const { key, ...other } = props;
+    return <RenderOption key={key} option={option} {...other} />;
+};
 
 export { RenderOption };
 export default getRenderOption;

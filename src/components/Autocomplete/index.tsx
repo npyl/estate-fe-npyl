@@ -11,6 +11,14 @@ import useOnChange from "./useOnChange";
 import NoOptions from "./NoOptionts";
 import useRenderInput from "./useRenderInput";
 
+// --------------------------------------------------------------------
+
+// INFO: string in case of freeSolo
+const getOptionKey = (o: ObjectWithId | string) =>
+    typeof o === "string" ? o : o.id;
+
+// --------------------------------------------------------------------
+
 interface AutocompleteProps<
     T extends ObjectWithId,
     Multiple extends boolean = false,
@@ -83,6 +91,7 @@ const Autocomplete = <
         <MuiAutocomplete
             ref={ref}
             value={calculated as OneOrMany<T, Multiple>}
+            getOptionKey={getOptionKey}
             isOptionEqualToValue={isOptionEqualToValue}
             onChange={onChange}
             noOptionsText={<NoOptions />}

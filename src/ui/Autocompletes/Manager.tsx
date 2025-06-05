@@ -33,18 +33,17 @@ const OptionSx: SxProps<Theme> = {
 };
 
 interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
-    key: any;
     option: IUser;
 }
 
 const RenderOption: FC<RenderOptionProps> = (props) => {
-    const { key, option, ...otherProps } = props;
+    const { option, ...otherProps } = props;
 
     const { avatar, firstName, lastName } = option;
     const fullname = `${firstName || ""} ${lastName || ""}`;
 
     return (
-        <MenuItem sx={OptionSx} key={option.id} {...otherProps}>
+        <MenuItem sx={OptionSx} {...otherProps}>
             <Avatar
                 src={avatar}
                 firstName={firstName}
@@ -59,7 +58,10 @@ const RenderOption: FC<RenderOptionProps> = (props) => {
 const getRenderOption = (
     props: React.HTMLAttributes<HTMLLIElement> & { key: any },
     option: IUser
-) => <RenderOption option={option} {...props} />;
+) => {
+    const { key, ...other } = props;
+    return <RenderOption key={key} option={option} {...other} />;
+};
 
 // ----------------------------------------------------------------------------
 
