@@ -20,19 +20,20 @@ const PaperProps: DrawerProps["PaperProps"] = {
     },
 };
 
-interface ModalProps {
-    onSave: (d: B2BMemberReq) => void;
+interface MemberDrawerProps {
+    onAdd: (d: B2BMemberReq) => void;
     onClose: () => void;
 }
 
-const MemberDrawer: FC<ModalProps> = ({ onSave, onClose }) => (
+const MemberDrawer: FC<MemberDrawerProps> = ({ onAdd, onClose }) => (
     <Drawer open anchor="right" PaperProps={PaperProps} onClose={onClose}>
         <Form>
             <Title />
             <Content />
-            <Actions onSave={onSave} />
+            <Actions onSave={onAdd} onCancel={onClose} />
         </Form>
     </Drawer>
 );
 
+export type { MemberDrawerProps };
 export default MemberDrawer;

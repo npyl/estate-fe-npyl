@@ -29,8 +29,6 @@ interface B2BMemberReq {
 }
 
 interface B2BMember {
-    id: number;
-
     firstName: string;
     lastName: string;
     position: string;

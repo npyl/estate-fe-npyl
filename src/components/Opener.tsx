@@ -35,22 +35,39 @@ interface OpenerProps<
     onClick: VoidFunction;
 }
 
-const Opener = forwardRef<OpenerRef, OpenerProps>(
-    ({ Clicker, Component, ComponentProps, onClick }, ref) => {
-        const [isOpen, open, close] = useDialog();
+const Opener = <
+    ClickerProps extends BaseClickerProps = BaseClickerProps,
+    CP extends BaseComponentProps = BaseComponentProps,
+>(
+    {
+        Clicker,
+        Component,
+        ComponentProps,
+        onClick,
+    }: OpenerProps<ClickerProps, CP>,
+    ref: React.Ref<OpenerRef>
+) => {
+    const [isOpen, open, close] = useDialog();
 
-        useImperativeHandle(ref, () => ({ open }), []);
+    useImperativeHandle(ref, () => ({ open }), []);
 
-        return (
-            <>
-                <Clicker onClick={onClick} />
-                {isOpen ? (
-                    <Component onClose={close} {...ComponentProps} />
-                ) : null}
-            </>
-        );
-    }
-);
+    const clickerProps = { onClick } as ClickerProps;
+    const componentProps = { onClose: close, ...ComponentProps } as CP;
+
+    return (
+        <>
+            <Clicker {...clickerProps} />
+            {isOpen ? <Component {...componentProps} /> : null}
+        </>
+    );
+};
+
+const OpenerWithRef = forwardRef(Opener) as <
+    ClickerProps extends BaseClickerProps = BaseClickerProps,
+    CP extends BaseComponentProps = BaseComponentProps,
+>(
+    props: OpenerProps<ClickerProps, CP> & { ref?: React.Ref<OpenerRef> }
+) => ReturnType<typeof Opener>;
 
 // ------------------------------------------------------------------------
 
@@ -64,4 +81,4 @@ const useOpener = () => {
 
 export { useOpener };
 export type { OpenerRef };
-export default Opener;
+export default OpenerWithRef;

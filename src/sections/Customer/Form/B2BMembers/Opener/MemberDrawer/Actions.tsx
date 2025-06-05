@@ -6,15 +6,16 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 interface Props {
+    onCancel: VoidFunction;
     onSave: (d: B2BMemberReq) => void;
 }
 
-const Actions: FC<Props> = ({ onSave }) => {
+const Actions: FC<Props> = ({ onCancel, onSave }) => {
     const { t } = useTranslation();
     const methods = useFormContext<B2BMemberReq>();
     return (
         <Stack direction="row" spacing={1}>
-            <Button>{t("Cancel")}</Button>
+            <Button onClick={onCancel}>{t("Cancel")}</Button>
             <Button variant="contained" onClick={methods.handleSubmit(onSave)}>
                 {t("Save")}
             </Button>

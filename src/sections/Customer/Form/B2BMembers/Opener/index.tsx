@@ -1,28 +1,16 @@
-import { IconButton, IconButtonProps } from "@mui/material";
-import { AddCircle } from "@mui/icons-material";
-import { FC, useCallback, useRef } from "react";
+import { FC } from "react";
 import { ICustomerYup } from "../../types";
-import PPOpener, { OpenerRef } from "@/components/Opener";
+import PPOpener, { useOpener } from "@/components/Opener";
 import dynamic from "next/dynamic";
+import Clicker from "./Clicker";
 const MemberDrawer = dynamic(() => import("./MemberDrawer"));
-
-type ClickerProps = Omit<IconButtonProps, "onClick"> & {
-    onClick: VoidFunction;
-};
-
-const Clicker: FC<ClickerProps> = (props) => (
-    <IconButton {...props}>
-        <AddCircle />
-    </IconButton>
-);
 
 interface OpenerProps {
     onAdd: (b: ICustomerYup) => void;
 }
 
 const Opener: FC<OpenerProps> = ({ onAdd }) => {
-    const openerRef = useRef<OpenerRef>(null);
-    const onOpen = useCallback(() => openerRef.current?.open(), []);
+    const [openerRef, onClick] = useOpener();
 
     return (
         <PPOpener
@@ -32,7 +20,7 @@ const Opener: FC<OpenerProps> = ({ onAdd }) => {
             ComponentProps={{
                 onAdd,
             }}
-            onClick={onOpen}
+            onClick={onClick}
         />
     );
 };

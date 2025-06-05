@@ -3,6 +3,7 @@ import { Cancel } from "@mui/icons-material";
 import { useWatch } from "react-hook-form";
 import { useCallback } from "react";
 import { nameKey } from "./constants";
+import { SpaceBetween } from "@/components/styled";
 
 interface MemberProps {
     index: number;
@@ -18,12 +19,12 @@ const Member = ({ index, onRemove: _onRemove }: MemberProps) => {
     const fullname = `${firstName} ${lastName}`;
 
     return (
-        <Stack direction="row" spacing={1.5}>
+        <SpaceBetween direction="row" spacing={1.5}>
             <Typography>{fullname}</Typography>
             <IconButton onClick={onRemove}>
                 <Cancel />
             </IconButton>
-        </Stack>
+        </SpaceBetween>
     );
 };
 

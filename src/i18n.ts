@@ -1366,10 +1366,12 @@ const resources = {
             NO_OWNED_PROPERTIES: "No properties owned",
 
             "B2B Customer Information": "B2B Customer Information",
+            Members: "Members",
         },
     },
     el: {
         translation: {
+            Members: "Μέλη",
             "B2B Customer": "B2B Πελάτης",
             "B2B Customer Information": "Πληροφορίες B2B Πελάτη",
 

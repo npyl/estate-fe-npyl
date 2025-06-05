@@ -26,13 +26,24 @@ const PreferredLanguage = () => {
     );
 };
 
-const Content = () => {
+const Nationality = () => {
     const { t } = useTranslation();
-
-    //     position: string;
 
     const enums = useGlobals();
     const nationalitiesEnum = enums?.customer?.nationality || [];
+
+    return (
+        <Select
+            isEnum
+            name="nationality"
+            label={t("Nationality")}
+            options={nationalitiesEnum}
+        />
+    );
+};
+
+const Content = () => {
+    const { t } = useTranslation();
 
     return (
         <Grid container spacing={1} mt={1}>
@@ -51,12 +62,7 @@ const Content = () => {
                     label={t("Home Phone")}
                 />
 
-                <Select
-                    isEnum
-                    name="nationality"
-                    label={t("Nationality")}
-                    options={nationalitiesEnum}
-                />
+                <Nationality />
 
                 <RHFTextField
                     fullWidth
@@ -77,6 +83,8 @@ const Content = () => {
                 />
 
                 <RHFTextField fullWidth name="fax" label={t("Fax")} />
+
+                <RHFTextField fullWidth name="position" label={t("Position")} />
 
                 <PreferredLanguage />
             </Grid>
