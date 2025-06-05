@@ -1,23 +1,38 @@
 import { gmail_v1 } from "@googleapis/gmail";
 
-// Extract body content from message parts
+// Extract body content from message parts with HTML priority
 const extractBodyFromParts = (parts: gmail_v1.Schema$MessagePart[]): string => {
-    for (const part of parts) {
-        // Look for text/html first, then text/plain
-        if (part.mimeType === "text/html" && part.body?.data) {
-            return Buffer.from(part.body.data, "base64").toString("utf-8");
-        }
-        if (part.mimeType === "text/plain" && part.body?.data) {
-            return Buffer.from(part.body.data, "base64").toString("utf-8");
-        }
+    let htmlContent = "";
+    let plainTextContent = "";
 
-        // Recursively search in nested parts
-        if (part.parts) {
-            const nestedBody = extractBodyFromParts(part.parts);
-            if (nestedBody) return nestedBody;
+    const searchParts = (partsList: gmail_v1.Schema$MessagePart[]) => {
+        for (const part of partsList) {
+            // Check for HTML content
+            if (part.mimeType === "text/html" && part.body?.data) {
+                htmlContent = Buffer.from(part.body.data, "base64").toString(
+                    "utf-8"
+                );
+            }
+            // Check for plain text content
+            else if (part.mimeType === "text/plain" && part.body?.data) {
+                plainTextContent = Buffer.from(
+                    part.body.data,
+                    "base64"
+                ).toString("utf-8");
+            }
+
+            // Recursively search in nested parts
+            if (part.parts) {
+                searchParts(part.parts);
+            }
         }
-    }
-    return "";
+    };
+
+    // Search through all parts
+    searchParts(parts);
+
+    // Return HTML content if available, otherwise return plain text
+    return htmlContent || plainTextContent;
 };
 
 // Standard HTML parsing approach
@@ -138,18 +153,26 @@ const isReplyHeader = (
     return false;
 };
 
-// Detect if content is HTML
-const isHtmlContent = (content: string): boolean => {
-    return (
-        content.includes("<html") ||
-        content.includes("</html>") ||
-        content.includes("<div") ||
-        content.includes("<p>") ||
-        content.includes("<br")
-    );
+// Detect if content is HTML based on MIME type
+const isHtmlContent = (payload?: gmail_v1.Schema$MessagePart): boolean => {
+    if (!payload) return false;
+
+    // Check the MIME type directly
+    if (payload.mimeType === "text/html") {
+        return true;
+    }
+
+    // For multipart messages, check if any part contains HTML
+    if (payload.parts) {
+        return payload.parts.some(
+            (part) => part.mimeType === "text/html" || isHtmlContent(part)
+        );
+    }
+
+    return false;
 };
 
-// Get the full message body
+// Get the full message body with HTML priority
 const getMessageBody = (payload?: gmail_v1.Schema$MessagePart): string => {
     if (!payload) return "";
 
@@ -158,7 +181,7 @@ const getMessageBody = (payload?: gmail_v1.Schema$MessagePart): string => {
         return Buffer.from(payload.body.data, "base64").toString("utf-8");
     }
 
-    // Check in parts
+    // Check in parts with HTML priority
     if (payload.parts) {
         return extractBodyFromParts(payload.parts);
     }
@@ -172,8 +195,8 @@ const extractOriginalContent = (
 ): string => {
     const body = getMessageBody(payload);
 
-    // Determine if it's HTML or plain text
-    const isHtml = isHtmlContent(body);
+    // Determine if it's HTML or plain text using MIME type
+    const isHtml = isHtmlContent(payload);
 
     if (!body || messageIndex === 0) {
         // First message in thread - return as is
