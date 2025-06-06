@@ -30,6 +30,9 @@ const ICONS: TIcons = {
     USER: PersonIcon,
 };
 
+const needResourceId = (renderer: TTabRenderer) =>
+    renderer === "PROPERTY_EDIT" || renderer === "CUSTOMER_EDIT";
+
 interface IconProps {
     renderer: TTabRenderer;
     resourceId?: number;
@@ -40,7 +43,7 @@ const Icon: FC<IconProps> = ({ renderer, resourceId }) => {
         const Res = ICONS[renderer];
         if (!Res) return null;
 
-        const props = renderer === "PROPERTY_EDIT" ? { resourceId } : {};
+        const props = needResourceId(renderer) ? { resourceId } : {};
 
         return <Res fontSize="small" {...props} />;
     } catch (ex) {
