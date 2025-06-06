@@ -42,7 +42,7 @@ const MemberDrawer: FC<MemberDrawerProps> = ({
     return (
         <Drawer open anchor="right" PaperProps={PaperProps} onClose={onClose}>
             <Form member={member}>
-                <Title />
+                <Title member={member} />
                 <Content />
                 <Actions onSave={onAdd} onCancel={onClose} />
             </Form>
