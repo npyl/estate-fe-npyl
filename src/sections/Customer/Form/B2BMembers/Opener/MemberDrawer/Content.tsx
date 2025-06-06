@@ -46,49 +46,101 @@ const Content = () => {
     const { t } = useTranslation();
 
     return (
-        <Grid container spacing={1} mt={1}>
-            <Grid xs={12} sm={6} display="flex" flexDirection="column" gap={1}>
-                <RHFTextField
-                    fullWidth
-                    name="firstName"
-                    label={t("First Name") + " *"}
-                />
+        <>
+            <Grid container spacing={1} mt={1}>
+                <Grid
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <RHFTextField
+                        fullWidth
+                        name="firstName"
+                        label={t("First Name") + " *"}
+                    />
 
-                <RHFTextField fullWidth name="email" label={t("Email")} />
-
-                <RHFTextField
-                    fullWidth
-                    name="homePhone"
-                    label={t("Home Phone")}
-                />
-
-                <Nationality />
-
-                <RHFTextField
-                    fullWidth
-                    name="suggestedBy"
-                    label={t("Suggested by")}
-                />
+                    <RHFTextField fullWidth name="email" label={t("Email")} />
+                </Grid>
+                <Grid
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <RHFTextField
+                        fullWidth
+                        name="lastName"
+                        label={t("Last Name") + " *"}
+                    />
+                    <RHFTextField
+                        fullWidth
+                        name="position"
+                        label={t("Position")}
+                    />
+                </Grid>
             </Grid>
-            <Grid xs={12} sm={6} display="flex" flexDirection="column" gap={1}>
-                <RHFTextField
-                    fullWidth
-                    name="lastName"
-                    label={t("Last Name") + " *"}
-                />
-                <RHFTextField
-                    fullWidth
-                    name="mobilePhone"
-                    label={t("Mobile Phone")}
-                />
 
-                <RHFTextField fullWidth name="fax" label={t("Fax")} />
+            <Grid container spacing={1} mt={1}>
+                <Grid
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <RHFTextField
+                        fullWidth
+                        name="homePhone"
+                        label={t("Home Phone")}
+                    />
 
-                <RHFTextField fullWidth name="position" label={t("Position")} />
-
-                <PreferredLanguage />
+                    <RHFTextField fullWidth name="fax" label={t("Fax")} />
+                </Grid>
+                <Grid
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <RHFTextField
+                        fullWidth
+                        name="mobilePhone"
+                        label={t("Mobile Phone")}
+                    />
+                </Grid>
             </Grid>
-        </Grid>
+
+            <Grid container spacing={1} mt={1}>
+                <Grid
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <Nationality />
+
+                    <RHFTextField
+                        fullWidth
+                        name="suggestedBy"
+                        label={t("Suggested by")}
+                    />
+                </Grid>
+                <Grid
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <PreferredLanguage />
+                </Grid>
+            </Grid>
+        </>
     );
 };
 

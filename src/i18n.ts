@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Position: "Position",
+            "Add Member": "Add Member",
+
             "B2B Customer": "B2B Customer",
             "B2B Customers": "B2B Customers",
 
@@ -1371,6 +1374,9 @@ const resources = {
     },
     el: {
         translation: {
+            Position: "Θέση",
+            "Add Member": "Προσθήκη Μέλους",
+
             Members: "Μέλη",
             "B2B Customer": "B2B Πελάτης",
             "B2B Customer Information": "Πληροφορίες B2B Πελάτη",
