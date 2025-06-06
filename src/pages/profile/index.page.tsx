@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import type { NextPage } from "next";
 import ViewUser from "@/sections/User/View";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { SecurityProvider } from "@/contexts/security";
 import { useGetUserQuery } from "@/services/user";
 import AuthGuard from "@/components/authentication/auth-guard";

@@ -1,5 +1,5 @@
 import AuthGuard from "@/components/authentication/auth-guard";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { FiltersProvider, useFiltersContext } from "@/sections/Tasks/filters";
 import { NextPage } from "next";
 

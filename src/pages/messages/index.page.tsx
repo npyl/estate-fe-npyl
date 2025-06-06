@@ -1,5 +1,5 @@
 import MessagesGuard from "@/components/authentication/messages-guard";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import MessagesSection from "@/sections/Messages/Section";
 import { NextPage } from "next";
 

@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import type { NextPage } from "next";
 import ViewNotificationById from "@/sections/Notification/ViewById";
 import NotificationsGuard from "@/components/authentication/notification-guard";

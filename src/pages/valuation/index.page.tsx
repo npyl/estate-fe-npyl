@@ -1,5 +1,5 @@
 import AdminGuard from "@/components/authentication/admin-guard";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 import Valuation from "@/sections/Valuation";
 import { NextPage } from "next";

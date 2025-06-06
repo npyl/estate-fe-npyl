@@ -1,6 +1,6 @@
 import AuthGuard from "@/components/authentication/auth-guard";
 
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 const CalendarSection = dynamic(() => import("@/sections/Calendar"), {
     ssr: false,
 });

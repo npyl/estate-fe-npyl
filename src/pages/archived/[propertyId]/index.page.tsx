@@ -1,6 +1,6 @@
 import AuthGuard from "@/components/authentication/auth-guard";
 
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import ViewPropertyById from "@/sections/Properties/ViewById";
 import { NextPage } from "next";
 

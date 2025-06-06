@@ -1,5 +1,5 @@
 import TasksGuard from "@/components/authentication/tasks-guard";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import ViewAllTasks from "@/sections/Tasks/ViewAll";
 
 export default function CreateTaskPage() {

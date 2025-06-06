@@ -2,7 +2,7 @@ import React from "react";
 import useStateMethods from "@/sections/Properties/FiltersContext/useStateMethods";
 import useTabState from "@/sections/Properties/FiltersContext/useTabState";
 import AuthGuard from "@/components/authentication/auth-guard";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { FiltersProvider } from "@/sections/Properties/FiltersContext";
 import { NextPage } from "next";
 import {

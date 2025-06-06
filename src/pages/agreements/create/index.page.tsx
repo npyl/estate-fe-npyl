@@ -1,5 +1,5 @@
 import AgreementsGuard from "@/components/authentication/agreements-guard";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import AgreementsSection from "@/sections/agreements";
 import { NextPage } from "next";
 
