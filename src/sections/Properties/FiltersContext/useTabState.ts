@@ -4,7 +4,7 @@ import { IFilterProps } from "./types";
 import { didChangeFields, getChangedFields } from "./useChangedFields";
 import { initialState } from "./constant";
 import { IPropertyFilter } from "@/types/properties";
-import useTabData from "@/components/dashboard/dashboard-subbar/Items/useTabData";
+import useTabData from "@/ui/dashboard/dashboard-subbar/Items/useTabData";
 import useCallbackSetter from "@/hooks/useCallbackSetter";
 import {
     parseAsBoolean,

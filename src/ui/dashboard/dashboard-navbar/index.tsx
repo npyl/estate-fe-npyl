@@ -10,7 +10,7 @@ import {
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
 import { Menu as MenuIcon } from "@/assets/icons/menu";
-import DashboardNavbarSearch from "@/components/dashboard/dashboard-navbar-search";
+import DashboardNavbarSearch from "@/ui/dashboard/dashboard-navbar-search";
 import LogoHorizontalLight from "@/assets/logo/horizontal/light";
 import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
