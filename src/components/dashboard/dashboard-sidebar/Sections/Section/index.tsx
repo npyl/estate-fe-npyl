@@ -2,7 +2,7 @@ import type { ListProps } from "@mui/material";
 import { List, ListSubheader } from "@mui/material";
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import DashboardSidebarItem from "./dashboard-sidebar-item";
+import DashboardSidebarItem from "./SidebarItem";
 import { TranslationType } from "@/types/translation";
 
 interface Item {
@@ -59,8 +59,8 @@ const reduceChildRoutes = ({
         item.title === t("Dashboard") && path === "/"
             ? true
             : item.path && item.path !== "/"
-            ? path.includes(item.path)
-            : false;
+              ? path.includes(item.path)
+              : false;
 
     if (item.children) {
         acc.push(

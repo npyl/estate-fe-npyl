@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { DashboardSidebarSection } from "../dashboard-sidebar-section";
+import { DashboardSidebarSection } from "./Section";
 import { useGetProfileQuery } from "src/services/user";
 import getSections from "./getSections";
 
