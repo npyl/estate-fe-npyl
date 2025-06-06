@@ -32,7 +32,7 @@ const CreateCustomer: FC<Props> = ({ b2b = false }) => {
     }, []);
 
     const onSaveSuccess = useCallback(() => {
-        const baseUrl = savedB2B.current ? "/customerb2b" : "/customer";
+        const baseUrl = savedB2B.current ? "/b2b" : "/customer";
         router.push(`${baseUrl}/${redirectId.current}`);
     }, []);
 

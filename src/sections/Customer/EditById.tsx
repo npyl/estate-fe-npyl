@@ -24,7 +24,7 @@ const CustomerEdit = () => {
     );
 
     const redirectToView = useCallback(() => {
-        const baseUrl = savedB2B.current ? "/customerb2b" : "/customer";
+        const baseUrl = savedB2B.current ? "/b2b" : "/customer";
         router.push(`${baseUrl}/${customerId}`);
     }, [customerId]);
 

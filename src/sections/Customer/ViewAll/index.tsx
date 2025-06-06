@@ -38,7 +38,7 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
-    const resource = b2b ? "customerb2b" : "customer";
+    const resource = b2b ? "b2b" : "customer";
     const pagination = usePagination();
 
     const sortingOptions = useMemo(() => getOptions(t), [t]);

@@ -20,7 +20,7 @@ const MENU_ITEMS = [
     },
     {
         label: "B2B Customer",
-        path: "/customerb2b/create",
+        path: "/b2b/create",
         icon: <CorporateFareIcon />,
     },
     {

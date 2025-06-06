@@ -10,7 +10,7 @@ type CustomerDataGridProps = Omit<GridProps, "columns" | "resource"> & {
 
 const DataGrid: FC<CustomerDataGridProps> = ({ b2b = false, ...props }) => {
     const { t } = useTranslation();
-    const resource = b2b ? "customerb2b" : "customer";
+    const resource = b2b ? "b2b" : "customer";
     const columns = useMemo(() => getColumns(t), [t]);
     return (
         <DataGridTable

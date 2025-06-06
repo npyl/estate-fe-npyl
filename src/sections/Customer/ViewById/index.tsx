@@ -24,7 +24,7 @@ const Tasks = dynamic(() => import("./sections/Tasks"));
 // -------------------------------------------------------------------------------
 
 const getTabPaths = (id: number, b2b: boolean) => {
-    const baseUrl = b2b ? "/customerb2b" : "/customer";
+    const baseUrl = b2b ? "/b2b" : "/customer";
     return [`${baseUrl}/${id}`, `${baseUrl}/edit/${id}`];
 };
 
@@ -129,7 +129,7 @@ const ViewById: FC<Props> = ({ b2b = false }) => {
         [t, hasDemands, isSellerOrLessor, isBuyerOrLeaser]
     );
 
-    const baseUrl = b2b ? "/customerb2b" : "/customer";
+    const baseUrl = b2b ? "/b2b" : "/customer";
 
     const handleEdit = () => router.push(`${baseUrl}/edit/${customerId}`);
     const handleDelete = useCallback(async () => {

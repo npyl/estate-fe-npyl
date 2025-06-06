@@ -4,6 +4,13 @@ import { useMemo } from "react";
 import useTabData from "../useTabData";
 import { IPropertyFilter } from "@/types/properties";
 
+const isCustomer = (p: string) =>
+    p.startsWith("/customer/") || p.startsWith("/b2b/");
+const isCustomerCreate = (p: string) =>
+    p.startsWith("/customer/create") || p.startsWith("/b2b/create");
+const isCustomerEdit = (p: string) =>
+    p.startsWith("/customer/edit") || p.startsWith("/b2b/edit");
+
 const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
     const path = usePathname();
 
@@ -26,16 +33,10 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
                   : undefined;
         }
 
-        // Customer
-        if (path.startsWith("/customer/edit")) return "CUSTOMER_EDIT";
-        if (path.startsWith("/customer/create")) return "CUSTOMER_CREATE";
-        if (path.startsWith("/customer/")) return "CUSTOMER_VIEW";
-
-        // B2B Customer
-        if (path.startsWith("/customerb2b/edit")) return "CUSTOMER_B2B_EDIT";
-        if (path.startsWith("/customerb2b/create"))
-            return "CUSTOMER_B2B_CREATE";
-        if (path.startsWith("/customerb2b/")) return "CUSTOMER_B2B_VIEW";
+        // Customer & B2B Customer
+        if (isCustomerEdit(path)) return "CUSTOMER_EDIT";
+        if (isCustomerCreate("/customer/create")) return "CUSTOMER_CREATE";
+        if (isCustomer("/customer/")) return "CUSTOMER_VIEW";
 
         if (!hasResourceId) return;
 
