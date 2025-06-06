@@ -86,7 +86,8 @@ export const CustomerSearchItem = ({
 
     const handleClick = () => {
         onClick(`${option.firstName} ${option.lastName}`);
-        router.push(`/customer/${option.id}`);
+        const baseUrl = option.b2b ? "/b2b" : "/customer";
+        router.push(`${baseUrl}/${option.id}`);
     };
 
     return (
