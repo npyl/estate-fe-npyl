@@ -1,5 +1,5 @@
 import sleep from "@/utils/sleep";
-import toNumber, { toNumberSafe } from "@/utils/toNumber";
+import { toNumberSafe } from "@/utils/toNumber";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 
 export const config = {
@@ -59,21 +59,9 @@ export default async function handler(
             req.on("data", async (chunk: Buffer) => {
                 chunks.push(chunk);
                 totalBytesReceived += chunk.length;
-
-                // Add artificial delay to simulate network transfer time
-                // This helps trigger the progress events in XMLHttpRequest
-                await sleep(50); // Small delay per chunk
             });
-
-            req.on("end", async () => {
-                // Add final processing delay
-                await sleep(200);
-                resolve();
-            });
-
-            req.on("error", (err) => {
-                reject(err);
-            });
+            req.on("end", resolve);
+            req.on("error", reject);
         });
 
         const { DELAY, shouldFail } = getParameters(req);
