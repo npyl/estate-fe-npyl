@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import type { NextPage } from "next";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { useGetUserQuery } from "src/services/user";
 import ViewUser from "@/sections/User/View";
 import { useRouter } from "next/router";

@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import AdminGuard from "@/components/authentication/admin-guard";
 import ViewAll from "@/sections/Logs/ViewAll";
 

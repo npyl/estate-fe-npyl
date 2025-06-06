@@ -1,6 +1,6 @@
 import { Paper, Stack } from "@mui/material";
 import type { NextPage } from "next";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import ViewsChart from "./LiveViews";
 import PropertyViewLineChart from "./Views";
 import CategoryViewsBarChart from "./CategoryViews";
