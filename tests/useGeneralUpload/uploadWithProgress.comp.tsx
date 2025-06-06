@@ -15,12 +15,14 @@ const PERCENTAGE_90_VALUE = "90";
 
 const SUCCESS_RES = "success-res";
 
+const EVERY_SECOND = 1000;
+
 interface TesterProps {
     mockUrl: string;
 }
 
 const Tester: FC<TesterProps> = ({ mockUrl }) => {
-    const [uploadWithProgress] = useUploadWithProgress();
+    const [uploadWithProgress, _, resetInterval] = useUploadWithProgress();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,14 +50,17 @@ const Tester: FC<TesterProps> = ({ mockUrl }) => {
             return;
         }
 
+        resetInterval(EVERY_SECOND);
+
         const res = await uploadWithProgress(mockUrl, file, onPercentage);
         if (!res.success) {
-            const v = `${res.error || ""} ${res.errorDescription || ""}`.trim();
-            setValue(v);
+            setValue(res.error || "");
+            resetInterval(); // INFO: return to initial state (NO_CHECK)
             return;
         }
 
         setValue(SUCCESS_RES);
+        resetInterval(); // INFO: return to initial state (NO_CHECK)
     }, []);
 
     return (

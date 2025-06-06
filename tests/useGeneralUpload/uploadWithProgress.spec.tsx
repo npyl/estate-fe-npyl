@@ -21,6 +21,7 @@ import {
     ERROR_ABORT,
 } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
 import runOffline from "../_util/runInNetworkMode/runOffline";
+import run3G from "../_util/runInNetworkMode/run3G";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
 
@@ -29,6 +30,8 @@ const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
 const mockUrl1 = `${mockUrl0}?slow=${DELAY}`;
 const mockUrl2 = `${mockUrl0}?shouldFail=1`;
+
+const DO_NOT_RESET = false;
 
 // ------------------------------------------------------------------------------
 
@@ -56,22 +59,33 @@ test("Upload w/ Percentage", async ({ mount }) => {
  * Catch a client disconnect during upload (e.g. when internet access is lost)
  */
 test("Disconnect", async ({ mount, context, page }) => {
-    test.setTimeout(DELAY);
+    test.setTimeout(DELAY * 2);
     const cdpSession = await context.newCDPSession(page);
 
     const component = await mount(<Tester mockUrl={mockUrl1} />);
 
     await injectFiles(component, INPUT_ID, [FILE]);
 
-    // Click Upload Button
-    await component.getByTestId(UPLOAD_BTN_ID).click();
+    await run3G(
+        cdpSession,
+        async () => {
+            // Click Upload Button
+            await component.getByTestId(UPLOAD_BTN_ID).click();
 
-    // Wait until >=10%
-    await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
+            // Wait until >=10%
+            await expectValue(
+                component,
+                PERCENTAGE_10_ID,
+                PERCENTAGE_10_VALUE,
+                DELAY
+            );
+        },
+        DO_NOT_RESET
+    );
 
     await runOffline(cdpSession, async () => {
         // Upload Result
-        await expectValue(component, VALUE_ID, ERROR_ABORT);
+        await expectValue(component, VALUE_ID, ERROR_ABORT, DELAY);
     });
 });
 
@@ -80,17 +94,12 @@ test("Disconnect", async ({ mount, context, page }) => {
  * This could mean the server rejected the request, e.g. on a timeout
  */
 test("Upload Fail", async ({ mount }) => {
-    test.setTimeout(DELAY);
-
     const component = await mount(<Tester mockUrl={mockUrl2} />);
 
     await injectFiles(component, INPUT_ID, [FILE]);
 
     // Click Upload Button
     await component.getByTestId(UPLOAD_BTN_ID).click();
-
-    // Wait until >=10%
-    await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
 
     // Upload Result
     await expectValue(component, VALUE_ID, ERROR_RESPONSE);
