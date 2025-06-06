@@ -31,7 +31,9 @@ const ICONS: TIcons = {
 };
 
 const needResourceId = (renderer: TTabRenderer) =>
-    renderer === "PROPERTY_EDIT" || renderer === "CUSTOMER_EDIT";
+    renderer === "PROPERTY_EDIT" ||
+    renderer === "CUSTOMER_VIEW" ||
+    renderer === "CUSTOMER_EDIT";
 
 interface IconProps {
     renderer: TTabRenderer;

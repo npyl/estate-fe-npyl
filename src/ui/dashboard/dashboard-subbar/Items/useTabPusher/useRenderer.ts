@@ -35,8 +35,8 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
 
         // Customer & B2B Customer
         if (isCustomerEdit(path)) return "CUSTOMER_EDIT";
-        if (isCustomerCreate("/customer/create")) return "CUSTOMER_CREATE";
-        if (isCustomer("/customer/")) return "CUSTOMER_VIEW";
+        if (isCustomerCreate(path)) return "CUSTOMER_CREATE";
+        if (isCustomer(path)) return "CUSTOMER_VIEW";
 
         if (!hasResourceId) return;
 
