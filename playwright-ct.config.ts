@@ -1,6 +1,12 @@
 import { defineConfig, devices } from "@playwright/experimental-ct-react";
 import { resolve } from "path";
 
+import dotenv from "dotenv";
+import dotenvExpand from "dotenv-expand";
+
+const myEnv = dotenv.config();
+dotenvExpand.expand(myEnv);
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
