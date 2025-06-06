@@ -52,6 +52,11 @@ interface IOwnedProperties {
     parentCategory: string;
 }
 
+interface ISearchParams {
+    searchString: string;
+    b2b?: boolean;
+}
+
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
 const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
 const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
@@ -148,15 +153,15 @@ export const customers = apiWithTranslation({
             invalidatesTags: ["Customers", "CustomerById"],
         }),
 
-        searchCustomer: builder.query<ICustomerResultResponse[], string>({
-            query: (searchString: string) => {
-                return {
+        searchCustomer: builder.query<ICustomerResultResponse[], ISearchParams>(
+            {
+                query: ({ searchString, b2b = false }) => ({
                     url: "/search",
-                    params: { searchString },
-                };
-            },
-            providesTags: ["Customers"],
-        }),
+                    params: { searchString, b2b },
+                }),
+                providesTags: ["Customers"],
+            }
+        ),
 
         deleteCustomer: builder.mutation<ICustomer, number>({
             query: (id: number) => ({

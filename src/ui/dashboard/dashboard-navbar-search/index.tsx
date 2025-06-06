@@ -179,7 +179,7 @@ const DashboardNavbarSearch: FC<InputBaseProps> = ({ sx, ...props }) => {
                 <SearchList
                     open
                     anchorEl={anchorEl}
-                    searchText={debouncedSearch}
+                    searchString={debouncedSearch}
                     searchCategory={searchCategory}
                     onClickOutside={() => setAnchorEl(null)}
                     updateSearchHistory={handleUpdateSearchHistory}

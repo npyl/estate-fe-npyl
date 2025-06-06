@@ -127,14 +127,14 @@ const PropertiesSubList = ({
 };
 
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
-    searchText: string;
+    searchString: string;
     searchCategory: SearchCategory;
     onClickOutside: () => void;
     updateSearchHistory: (history: { term: string; date: string }[]) => void;
 }
 
 const SearchList = ({
-    searchText,
+    searchString,
     searchCategory,
     open,
     onClickOutside,
@@ -151,9 +151,14 @@ const SearchList = ({
         onClickOutside && onClickOutside();
     });
 
-    const { data: customersResults } = useSearchCustomerQuery(searchText, {
-        skip: searchText === "",
-    });
+    const b2b = searchCategory === "b2b";
+
+    const { data: customersResults } = useSearchCustomerQuery(
+        { searchString, b2b },
+        {
+            skip: searchString === "",
+        }
+    );
 
     const handleItemClick = (value: string) => {
         addSearchHistory(value);
@@ -184,8 +189,8 @@ const SearchList = ({
                     isMobile
                         ? "bottom-start"
                         : searchCategory === "all"
-                        ? "top"
-                        : "bottom-start"
+                          ? "top"
+                          : "bottom-start"
                 }
             >
                 <Paper
@@ -194,10 +199,10 @@ const SearchList = ({
                         width: isMobile
                             ? "140%"
                             : searchCategory === "properties"
-                            ? "100%"
-                            : searchCategory === "customers"
-                            ? "100%"
-                            : paperWidth,
+                              ? "100%"
+                              : searchCategory === "customers"
+                                ? "100%"
+                                : paperWidth,
                         overflowX: "hidden",
                         overflowY: isMobile ? "auto" : "hidden",
                     }}
@@ -205,7 +210,7 @@ const SearchList = ({
                     <Grid container>
                         {searchCategory === "properties" && (
                             <PropertiesSubList
-                                searchString={searchText}
+                                searchString={searchString}
                                 onItemClick={handleItemClick}
                                 sortBy="code"
                             />
@@ -217,17 +222,10 @@ const SearchList = ({
                                 width="100%"
                             >
                                 <Grid item xs={12} md={7}>
-                                    {isMobile ? (
-                                        <PropertiesSubList
-                                            searchString={searchText}
-                                            onItemClick={handleItemClick}
-                                        />
-                                    ) : (
-                                        <PropertiesSubList
-                                            searchString={searchText}
-                                            onItemClick={handleItemClick}
-                                        />
-                                    )}
+                                    <PropertiesSubList
+                                        searchString={searchString}
+                                        onItemClick={handleItemClick}
+                                    />
                                 </Grid>
                                 {customers.length > 0 && (
                                     <Grid
@@ -272,7 +270,7 @@ const SearchList = ({
                                                                 key={index}
                                                                 option={option}
                                                                 searchText={
-                                                                    searchText
+                                                                    searchString
                                                                 }
                                                                 onClick={
                                                                     handleItemClick
@@ -314,7 +312,7 @@ const SearchList = ({
                                                                 key={index}
                                                                 option={option}
                                                                 searchText={
-                                                                    searchText
+                                                                    searchString
                                                                 }
                                                                 onClick={
                                                                     handleItemClick
@@ -330,54 +328,55 @@ const SearchList = ({
                             </Stack>
                         )}
 
-                        {searchCategory === "customers" &&
-                            customers.length > 0 && (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sx={{
-                                        marginY: "10px",
-                                    }}
-                                >
-                                    <ScrollBox scrollbarWidth="15px">
-                                        <Typography
-                                            variant="h6"
-                                            display="flex"
-                                            justifyContent="center"
-                                            gap={1}
-                                            alignItems="center"
-                                            width="100%"
-                                            sx={{
-                                                borderBottom:
-                                                    "1px solid lightgrey",
-                                            }}
-                                        >
-                                            <PersonOutlineOutlinedIcon
+                        {searchCategory === "customers" ||
+                            (searchCategory === "b2b" &&
+                                customers.length > 0 && (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sx={{
+                                            marginY: "10px",
+                                        }}
+                                    >
+                                        <ScrollBox scrollbarWidth="15px">
+                                            <Typography
+                                                variant="h6"
+                                                display="flex"
+                                                justifyContent="center"
+                                                gap={1}
+                                                alignItems="center"
+                                                width="100%"
                                                 sx={{
-                                                    // color: "black",
-                                                    width: "22px",
-                                                    height: "22px",
+                                                    borderBottom:
+                                                        "1px solid lightgrey",
                                                 }}
-                                            />
-                                            {t("Customers")}
-                                        </Typography>
+                                            >
+                                                <PersonOutlineOutlinedIcon
+                                                    sx={{
+                                                        // color: "black",
+                                                        width: "22px",
+                                                        height: "22px",
+                                                    }}
+                                                />
+                                                {t("Customers")}
+                                            </Typography>
 
-                                        {customers.map((option, index) => (
-                                            <CustomerSearchItem
-                                                key={index}
-                                                option={option}
-                                                searchText={searchText}
-                                                onClick={handleItemClick}
-                                            />
-                                        ))}
-                                    </ScrollBox>
-                                </Grid>
-                            )}
+                                            {customers.map((option, index) => (
+                                                <CustomerSearchItem
+                                                    key={index}
+                                                    option={option}
+                                                    searchText={searchString}
+                                                    onClick={handleItemClick}
+                                                />
+                                            ))}
+                                        </ScrollBox>
+                                    </Grid>
+                                ))}
                     </Grid>
 
                     {searchCategory === "all" ||
                     searchCategory === "agreements" ? (
-                        <AgreementItems search={searchText} />
+                        <AgreementItems search={searchString} />
                     ) : null}
                 </Paper>
             </StyledPopper>

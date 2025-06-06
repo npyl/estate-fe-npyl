@@ -12,6 +12,7 @@ import { FC } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
 const Empty = () => null;
 
@@ -88,6 +89,15 @@ const ModeSelect: FC<SelectProps> = (props) => {
                         }}
                     />
                     {t("Customers")}
+                </MenuItem>
+                <MenuItem value="b2b" sx={MenuItemSx}>
+                    <CorporateFareIcon
+                        sx={{
+                            color: "text.secondary",
+                            fontSize: "large",
+                        }}
+                    />
+                    {t("B2B")}
                 </MenuItem>
                 <MenuItem value="agreements" sx={MenuItemSx}>
                     <HandshakeIcon
