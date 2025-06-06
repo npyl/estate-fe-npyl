@@ -9,7 +9,7 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { StyledPopper } from "../styles";
-import { useEffect, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
@@ -126,6 +126,114 @@ const PropertiesSubList = ({
     );
 };
 
+interface CustomerSearchListProps {
+    searchCategory: SearchCategory;
+    searchString: string;
+    onItemClick: (value: string) => void;
+}
+
+const CustomersSearchList: FC<CustomerSearchListProps> = ({
+    searchCategory,
+    searchString,
+    onItemClick,
+}) => {
+    const { t } = useTranslation();
+
+    const isMobile = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down("sm")
+    );
+
+    const b2b = searchCategory === "b2b" || searchCategory === "all";
+
+    // non-b2b Customers
+    const { data: data0 } = useSearchCustomerQuery(
+        { searchString, b2b: false },
+        {
+            skip: searchString === "" || searchCategory === "b2b",
+        }
+    );
+    // b2b-only Customers
+    const { data: b2bOnly } = useSearchCustomerQuery(
+        { searchString, b2b: true },
+        {
+            skip: searchString === "" || !b2b,
+        }
+    );
+
+    const all = useMemo(
+        () => [...(data0 ?? []), ...(b2bOnly ?? [])],
+        [data0, b2bOnly]
+    );
+
+    return (
+        <>
+            {isMobile ? (
+                <>
+                    <Typography
+                        variant="h6"
+                        display="flex"
+                        justifyContent="center"
+                        gap={1}
+                        alignItems="center"
+                        sx={{
+                            borderBottom: "1px solid lightgrey",
+                        }}
+                    >
+                        <PersonOutlineOutlinedIcon
+                            sx={{
+                                width: "22px",
+                                height: "22px",
+                            }}
+                        />
+                        {t("Customers")}
+                    </Typography>
+                    <Box width="100%" sx={{ overflowX: "hidden" }}>
+                        {all.map((option, index) => (
+                            <CustomerSearchItem
+                                key={index}
+                                option={option}
+                                searchText={searchString}
+                                onClick={onItemClick}
+                            />
+                        ))}
+                    </Box>
+                </>
+            ) : (
+                <ScrollBox scrollbarWidth="15px">
+                    <Typography
+                        variant="h6"
+                        display="flex"
+                        justifyContent="center"
+                        gap={1}
+                        alignItems="center"
+                        sx={{
+                            borderBottom: "1px solid lightgrey",
+                        }}
+                    >
+                        <PersonOutlineOutlinedIcon
+                            sx={{
+                                width: "22px",
+                                height: "22px",
+                            }}
+                        />
+                        {t("Customers")}
+                    </Typography>
+                    <Box width="100%" sx={{ overflowX: "hidden" }}>
+                        {all.map((option, index) => (
+                            <CustomerSearchItem
+                                key={index}
+                                option={option}
+                                searchText={searchString}
+                                onClick={onItemClick}
+                            />
+                        ))}
+                    </Box>
+                </ScrollBox>
+            )}
+        </>
+    );
+};
+
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchString: string;
     searchCategory: SearchCategory;
@@ -141,7 +249,6 @@ const SearchList = ({
     anchorEl,
     updateSearchHistory,
 }: SearchListProps) => {
-    const { t } = useTranslation();
     const isMobile = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down("sm")
     );
@@ -151,24 +258,10 @@ const SearchList = ({
         onClickOutside && onClickOutside();
     });
 
-    const b2b = searchCategory === "b2b";
-
-    const { data: customersResults } = useSearchCustomerQuery(
-        { searchString, b2b },
-        {
-            skip: searchString === "",
-        }
-    );
-
     const handleItemClick = (value: string) => {
         addSearchHistory(value);
         updateSearchHistory(getSearchHistory());
     };
-
-    const customers = useMemo(
-        () => (searchCategory !== "properties" ? customersResults || [] : []),
-        [searchCategory, customersResults]
-    );
 
     const screenWidth = useScreenWidth();
 
@@ -227,151 +320,32 @@ const SearchList = ({
                                         onItemClick={handleItemClick}
                                     />
                                 </Grid>
-                                {customers.length > 0 && (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        md={5}
-                                        sx={{
-                                            marginY: "10px",
-
-                                            borderLeft: "1px solid grey",
-                                        }}
-                                    >
-                                        {isMobile ? (
-                                            <>
-                                                <Typography
-                                                    variant="h6"
-                                                    display="flex"
-                                                    justifyContent="center"
-                                                    gap={1}
-                                                    alignItems="center"
-                                                    // width="100%"
-                                                    sx={{
-                                                        borderBottom:
-                                                            "1px solid lightgrey",
-                                                    }}
-                                                >
-                                                    <PersonOutlineOutlinedIcon
-                                                        sx={{
-                                                            width: "22px",
-                                                            height: "22px",
-                                                        }}
-                                                    />
-                                                    {t("Customers")}
-                                                </Typography>
-                                                <Box
-                                                    width="100%"
-                                                    sx={{ overflowX: "hidden" }}
-                                                >
-                                                    {customers.map(
-                                                        (option, index) => (
-                                                            <CustomerSearchItem
-                                                                key={index}
-                                                                option={option}
-                                                                searchText={
-                                                                    searchString
-                                                                }
-                                                                onClick={
-                                                                    handleItemClick
-                                                                }
-                                                            />
-                                                        )
-                                                    )}
-                                                </Box>
-                                            </>
-                                        ) : (
-                                            <ScrollBox scrollbarWidth="15px">
-                                                <Typography
-                                                    variant="h6"
-                                                    display="flex"
-                                                    justifyContent="center"
-                                                    gap={1}
-                                                    alignItems="center"
-                                                    // width="100%"
-                                                    sx={{
-                                                        borderBottom:
-                                                            "1px solid lightgrey",
-                                                    }}
-                                                >
-                                                    <PersonOutlineOutlinedIcon
-                                                        sx={{
-                                                            width: "22px",
-                                                            height: "22px",
-                                                        }}
-                                                    />
-                                                    {t("Customers")}
-                                                </Typography>
-                                                <Box
-                                                    width="100%"
-                                                    sx={{ overflowX: "hidden" }}
-                                                >
-                                                    {customers.map(
-                                                        (option, index) => (
-                                                            <CustomerSearchItem
-                                                                key={index}
-                                                                option={option}
-                                                                searchText={
-                                                                    searchString
-                                                                }
-                                                                onClick={
-                                                                    handleItemClick
-                                                                }
-                                                            />
-                                                        )
-                                                    )}
-                                                </Box>
-                                            </ScrollBox>
-                                        )}
-                                    </Grid>
-                                )}
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={5}
+                                    sx={{
+                                        marginY: "10px",
+                                        borderLeft: "1px solid grey",
+                                    }}
+                                >
+                                    <CustomersSearchList
+                                        searchCategory={searchCategory}
+                                        searchString={searchString}
+                                        onItemClick={handleItemClick}
+                                    />
+                                </Grid>
                             </Stack>
                         )}
 
                         {searchCategory === "customers" ||
-                            (searchCategory === "b2b" &&
-                                customers.length > 0 && (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sx={{
-                                            marginY: "10px",
-                                        }}
-                                    >
-                                        <ScrollBox scrollbarWidth="15px">
-                                            <Typography
-                                                variant="h6"
-                                                display="flex"
-                                                justifyContent="center"
-                                                gap={1}
-                                                alignItems="center"
-                                                width="100%"
-                                                sx={{
-                                                    borderBottom:
-                                                        "1px solid lightgrey",
-                                                }}
-                                            >
-                                                <PersonOutlineOutlinedIcon
-                                                    sx={{
-                                                        // color: "black",
-                                                        width: "22px",
-                                                        height: "22px",
-                                                    }}
-                                                />
-                                                {t("Customers")}
-                                            </Typography>
-
-                                            {customers.map((option, index) => (
-                                                <CustomerSearchItem
-                                                    key={index}
-                                                    option={option}
-                                                    searchText={searchString}
-                                                    onClick={handleItemClick}
-                                                />
-                                            ))}
-                                        </ScrollBox>
-                                    </Grid>
-                                ))}
+                        searchCategory === "b2b" ? (
+                            <CustomersSearchList
+                                searchCategory={searchCategory}
+                                searchString={searchString}
+                                onItemClick={handleItemClick}
+                            />
+                        ) : null}
                     </Grid>
 
                     {searchCategory === "all" ||
