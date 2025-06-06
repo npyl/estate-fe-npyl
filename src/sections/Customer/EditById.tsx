@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useRouter } from "next/router";
 import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
 import Form from "@/sections/Customer/Form";
@@ -9,17 +9,24 @@ const CustomerEdit = () => {
     const router = useRouter();
     const { customer, customerId } = useGetCustomer();
 
+    const savedB2B = useRef(false);
     const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 
     const handleEdit = useCallback(
-        (body: ICustomerPOST) => edit({ ...body, id: +customerId! }),
+        async (body: ICustomerPOST) => {
+            const res = await edit({ ...body, id: +customerId! });
+            if (!("error" in res)) {
+                savedB2B.current = Boolean(body.b2b);
+            }
+            return res;
+        },
         [customerId]
     );
 
-    const redirectToView = useCallback(
-        () => router.push(`/customer/${customerId}`),
-        [customerId]
-    );
+    const redirectToView = useCallback(() => {
+        const baseUrl = savedB2B.current ? "/customerb2b" : "/customer";
+        router.push(`${baseUrl}/${customerId}`);
+    }, [customerId]);
 
     return (
         <Form

@@ -13,6 +13,8 @@ const MembersSection = () => {
         name: nameKey,
     });
 
+    console.log("GOT: ", fields);
+
     return (
         <Panel label={t("Members")} endNode={<Opener onAdd={append} />}>
             {fields?.map(getMember(update, remove))}
