@@ -1,10 +1,7 @@
 import { Tab } from "@mui/material";
 import { useRouter } from "next/router";
 import { ComponentType, FC, useCallback, useMemo } from "react";
-import {
-    useDeleteCustomerMutation,
-    useGetCustomerByIdQuery,
-} from "@/services/customers";
+import { useDeleteCustomerMutation } from "@/services/customers";
 import { MatchingProperties, OwnedProperties, Logs } from "./sections";
 import TabPanel from "@/components/Tabs/TabPanel";
 import ViewHeader from "@/sections/ViewHeader";
@@ -26,7 +23,10 @@ const Tasks = dynamic(() => import("./sections/Tasks"));
 
 // -------------------------------------------------------------------------------
 
-const getTabPaths = (id: number) => [`/customer/${id}`, `/customer/edit/${id}`];
+const getTabPaths = (id: number, b2b: boolean) => {
+    const baseUrl = b2b ? "/customerb2b" : "/customer";
+    return [`${baseUrl}/${id}`, `${baseUrl}/edit/${id}`];
+};
 
 // -------------------------------------------------------------------------------
 
@@ -103,7 +103,11 @@ const getTabView =
         </TabPanel>
     );
 
-const ViewById = () => {
+interface Props {
+    b2b?: boolean;
+}
+
+const ViewById: FC<Props> = ({ b2b = false }) => {
     const router = useRouter();
     const { t } = useTranslation();
 
@@ -125,15 +129,17 @@ const ViewById = () => {
         [t, hasDemands, isSellerOrLessor, isBuyerOrLeaser]
     );
 
-    const handleEdit = () => router.push(`/customer/edit/${customerId}`);
+    const baseUrl = b2b ? "/customerb2b" : "/customer";
+
+    const handleEdit = () => router.push(`${baseUrl}/edit/${customerId}`);
     const handleDelete = useCallback(async () => {
         const res = await deleteCustomer({
-            tabPaths: getTabPaths(+customerId!),
+            tabPaths: getTabPaths(+customerId!, b2b),
             props: +customerId!,
         });
         if ("error" in res) return;
-        router.push("/customer");
-    }, [customerId]);
+        router.push(baseUrl);
+    }, [baseUrl, customerId]);
 
     return (
         <>

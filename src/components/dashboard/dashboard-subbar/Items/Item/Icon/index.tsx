@@ -8,6 +8,7 @@ import CustomersEditIcon from "@/assets/icons/customers-edit";
 import CustomersCreateIcon from "@/assets/icons/customers-create";
 import HomeCreateIcon from "@/assets/icons/home-create";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import PropertyEditIcon from "./PropertEditIcon";
 
 type TIcons = Record<TTabRenderer, ComponentType<any>>;
@@ -16,6 +17,9 @@ const ICONS: TIcons = {
     CUSTOMER_CREATE: CustomersCreateIcon,
     CUSTOMER_EDIT: CustomersEditIcon,
     CUSTOMER_VIEW: CustomersIcon,
+    CUSTOMER_B2B_CREATE: CorporateFareIcon,
+    CUSTOMER_B2B_EDIT: CorporateFareIcon,
+    CUSTOMER_B2B_VIEW: CorporateFareIcon,
     PROPERTY_FITLERS: HomeIcon,
     PROPERTY_EDIT: PropertyEditIcon,
     PROPERTY_CREATE: HomeCreateIcon,

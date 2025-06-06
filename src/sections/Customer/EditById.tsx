@@ -1,22 +1,13 @@
 import { useCallback } from "react";
 import { useRouter } from "next/router";
-import {
-    useCreateOrUpdateCustomerMutation,
-    useGetCustomerByIdQuery,
-} from "src/services/customers";
+import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
 import Form from "@/sections/Customer/Form";
 import { ICustomerPOST } from "src/types/customer";
-
-const useLoadCustomer = () => {
-    const router = useRouter();
-    const { customerId } = router.query;
-    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
-    return { customer, customerId };
-};
+import useGetCustomer from "@/hooks/customer";
 
 const CustomerEdit = () => {
     const router = useRouter();
-    const { customer, customerId } = useLoadCustomer();
+    const { customer, customerId } = useGetCustomer();
 
     const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 

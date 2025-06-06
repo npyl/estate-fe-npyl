@@ -23,10 +23,16 @@ const RENDERERS: TRenderers = {
     CUSTOMER_CREATE: CustomerCreate,
     CUSTOMER_EDIT: CustomerEdit,
     CUSTOMER_VIEW: CustomerView,
+    // ...
+    CUSTOMER_B2B_CREATE: CustomerCreate,
+    CUSTOMER_B2B_EDIT: CustomerEdit,
+    CUSTOMER_B2B_VIEW: CustomerView,
+    // ...
     PROPERTY_FITLERS: PropertyAll,
     PROPERTY_EDIT: PropertyEdit,
     PROPERTY_CREATE: PropertyCreate,
     PROPERTY_VIEW: PropertyView,
+    // ...
     AGREEMENT: Agreement,
     TASK: Task,
     PROFILE: Profile,

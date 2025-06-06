@@ -22,14 +22,20 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
             return hasResourceId
                 ? "PROPERTY_VIEW"
                 : isFilters
-                ? "PROPERTY_FITLERS"
-                : undefined;
+                  ? "PROPERTY_FITLERS"
+                  : undefined;
         }
 
         // Customer
         if (path.startsWith("/customer/edit")) return "CUSTOMER_EDIT";
         if (path.startsWith("/customer/create")) return "CUSTOMER_CREATE";
         if (path.startsWith("/customer/")) return "CUSTOMER_VIEW";
+
+        // B2B Customer
+        if (path.startsWith("/customerb2b/edit")) return "CUSTOMER_B2B_EDIT";
+        if (path.startsWith("/customerb2b/create"))
+            return "CUSTOMER_B2B_CREATE";
+        if (path.startsWith("/customerb2b/")) return "CUSTOMER_B2B_VIEW";
 
         if (!hasResourceId) return;
 

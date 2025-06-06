@@ -4,15 +4,18 @@ import { useTranslation } from "react-i18next";
 import GridProps from "../types";
 import getColumns from "./columns";
 
-type CustomerDataGridProps = Omit<GridProps, "columns" | "resource">;
+type CustomerDataGridProps = Omit<GridProps, "columns" | "resource"> & {
+    b2b?: boolean;
+};
 
-const DataGrid: FC<CustomerDataGridProps> = (props) => {
+const DataGrid: FC<CustomerDataGridProps> = ({ b2b = false, ...props }) => {
     const { t } = useTranslation();
+    const resource = b2b ? "customerb2b" : "customer";
     const columns = useMemo(() => getColumns(t), [t]);
     return (
         <DataGridTable
+            resource={resource}
             columns={columns}
-            resource="customer"
             disableColumnMenu
             {...props}
         />
