@@ -107,8 +107,8 @@
         "zod": "^3.24.2"
     },
     "devDependencies": {
-        "@playwright/experimental-ct-react": "^1.51.1",
-        "@playwright/test": "^1.51.1",
+        "@playwright/experimental-ct-react": "^1.52.0",
+        "@playwright/test": "^1.52.0",
         "@types/lodash.merge": "^4.6.9",
         "@types/node": "^18.15.10",
         "@types/nprogress": "^0.2.0",
