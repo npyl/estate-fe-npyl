@@ -20,8 +20,7 @@ import {
     ERROR_RESPONSE,
     ERROR_ABORT,
 } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
-import runOffline from "../_util/runInNetworkMode/runOffline";
-import run3G from "../_util/runInNetworkMode/run3G";
+import getNetworkControl from "../_util/network/getControl";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
 
@@ -60,33 +59,27 @@ test("Upload w/ Percentage", async ({ mount }) => {
  */
 test("Disconnect", async ({ mount, context, page }) => {
     test.setTimeout(DELAY * 2);
-    const cdpSession = await context.newCDPSession(page);
+
+    const { goOffline, go3G, reset } = await getNetworkControl(context, page);
 
     const component = await mount(<Tester mockUrl={mockUrl1} />);
 
     await injectFiles(component, INPUT_ID, [FILE]);
 
-    await run3G(
-        cdpSession,
-        async () => {
-            // Click Upload Button
-            await component.getByTestId(UPLOAD_BTN_ID).click();
+    await go3G();
 
-            // Wait until >=10%
-            await expectValue(
-                component,
-                PERCENTAGE_10_ID,
-                PERCENTAGE_10_VALUE,
-                DELAY
-            );
-        },
-        DO_NOT_RESET
-    );
+    // Click Upload Button
+    await component.getByTestId(UPLOAD_BTN_ID).click();
 
-    await runOffline(cdpSession, async () => {
-        // Upload Result
-        await expectValue(component, VALUE_ID, ERROR_ABORT, DELAY);
-    });
+    // Wait until >=10%
+    await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE, DELAY);
+
+    await goOffline();
+
+    // Upload Result
+    await expectValue(component, VALUE_ID, ERROR_ABORT, DELAY);
+
+    await reset();
 });
 
 /**

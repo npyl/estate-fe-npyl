@@ -1,3 +1,5 @@
+const METHOD = "Network.emulateNetworkConditions";
+
 type TPreset = {
     offline: boolean;
     latency: number;
@@ -68,5 +70,6 @@ const NETWORK_PRESETS: Record<string, TPreset> = {
     },
 };
 
+export { METHOD };
 export type { TPreset };
 export default NETWORK_PRESETS;

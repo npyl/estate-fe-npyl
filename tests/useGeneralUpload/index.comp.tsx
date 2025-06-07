@@ -10,6 +10,7 @@ const INPUT_ID = "input-test-id";
 
 const VALUE_ID = "value-id";
 const FILES_COUNT_ID = "files-count-id";
+const RECONNECT_ID = "reconnect-id";
 
 const SUCCESS_RES = "success-res";
 
@@ -54,9 +55,12 @@ const Tester: FC<TesterProps> = ({ mockUrl, onIntervalChange }) => {
 
     const [files, addFile, removeFile] = useStore(mockUrl);
 
+    const [didReconnect, setReconnect] = useState(false);
+    const onReconnect = useCallback(() => setReconnect(true), []);
+
     const upload = useGeneralUploader(
         { addFile, removeFile },
-        { onIntervalChange }
+        { onIntervalChange, onReconnect }
     );
 
     const [value, setValue] = useState(INITIAL_VALUE);
@@ -83,11 +87,23 @@ const Tester: FC<TesterProps> = ({ mockUrl, onIntervalChange }) => {
             {/* Upload Result */}
             {value ? <div data-testid={VALUE_ID}>{value}</div> : null}
 
+            {/* Reconnect */}
+            {didReconnect ? <div data-testid={RECONNECT_ID} /> : null}
+
             {/* TODO: Check files after remove */}
             <div data-test-id={FILES_COUNT_ID}>{files.length}</div>
         </>
     );
 };
 
-export { UPLOAD_BTN_ID, INPUT_ID, VALUE_ID, FILES_COUNT_ID, SUCCESS_RES };
+export {
+    UPLOAD_BTN_ID,
+    INPUT_ID,
+    // ...
+    VALUE_ID,
+    FILES_COUNT_ID,
+    RECONNECT_ID,
+    // ...
+    SUCCESS_RES,
+};
 export default Tester;

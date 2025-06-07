@@ -1,12 +1,11 @@
 import { expect, MountResult, test } from "@playwright/experimental-ct-react";
-import { UPLOAD_BTN_ID, VALUE_ID, INPUT_ID } from "./index.comp";
+import { UPLOAD_BTN_ID, VALUE_ID, INPUT_ID, RECONNECT_ID } from "./index.comp";
 import Tester from "./index.comp";
 import path from "path";
 import injectFiles from "../_util/injectFiles";
 import { IUploadResult } from "../../src/ui/useGeneralUploader/types";
-import runOffline from "../_util/runInNetworkMode/runOffline";
 import { POLLING } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
-import run3G from "../_util/runInNetworkMode/run3G";
+import getNetworkControl from "../_util/network/getControl";
 
 const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
@@ -83,7 +82,7 @@ test("Disconnect", async ({ mount, context, page }) => {
 
     test.setTimeout(DELAY);
 
-    const cdpSession = await context.newCDPSession(page);
+    const { goOffline, go3G, reset } = await getNetworkControl(context, page);
 
     const component = await mount(
         <Tester mockUrl={mockUrl1} onIntervalChange={onIntervalChange} />
@@ -91,23 +90,94 @@ test("Disconnect", async ({ mount, context, page }) => {
 
     await injectFiles(component, INPUT_ID, FILES);
 
-    await run3G(cdpSession, async () => {
-        await component.getByTestId(UPLOAD_BTN_ID).click();
+    await go3G();
 
-        // Wait a bit for upload to actually start
-        await page.waitForTimeout(500);
+    await component.getByTestId(UPLOAD_BTN_ID).click();
 
-        await runOffline(cdpSession, async () => {
-            const parsed = await getResult(component);
+    // Wait a bit for upload to actually start
+    await page.waitForTimeout(500);
 
-            expect(parsed.success).toBe(false);
-            expect(parsed.report.addFails.length).toBe(0);
-            expect(parsed.report.uploadFails.length).toBeGreaterThan(0);
-            expect(parsed.report.uploaded.length).toBe(0);
-        });
+    await goOffline();
 
-        expect(intervals.length).toBe(2);
-        expect(intervals[0]).toBe(POLLING.RAPID);
-        expect(intervals[1]).toBe(POLLING.DEFAULT);
-    });
+    const parsed = await getResult(component);
+
+    expect(parsed.success).toBe(false);
+    expect(parsed.report.addFails.length).toBe(0);
+    expect(parsed.report.uploadFails.length).toBeGreaterThan(0);
+    expect(parsed.report.uploaded.length).toBe(0);
+
+    expect(intervals.length).toBe(2);
+    expect(intervals[0]).toBe(POLLING.RAPID);
+    expect(intervals[1]).toBe(POLLING.DEFAULT);
+
+    await reset();
+});
+
+/**
+ * Test with extended timing to see if useNetworkAccess eventually detects reconnection
+ */
+test("Reconnect - Extended Timing", async ({ mount, context, page }) => {
+    const [intervals, onIntervalChange] = getIntervalsStore();
+
+    test.setTimeout(DELAY * 4); // Even longer timeout
+
+    const { goOffline, go3G, reset } = await getNetworkControl(context, page);
+
+    const component = await mount(
+        <Tester mockUrl={mockUrl1} onIntervalChange={onIntervalChange} />
+    );
+
+    await injectFiles(component, INPUT_ID, FILES);
+
+    console.log("Starting upload...");
+    await component.getByTestId(UPLOAD_BTN_ID).click();
+    await page.waitForTimeout(1500);
+
+    console.log(`Intervals after upload start: ${intervals.join(", ")}`);
+
+    console.log("Going offline...");
+    await goOffline();
+
+    await page.waitForTimeout(3000);
+    console.log(`Intervals after going offline: ${intervals.join(", ")}`);
+
+    await component
+        .getByTestId(VALUE_ID)
+        .waitFor({ state: "visible", timeout: DELAY });
+
+    console.log("Going back online...");
+    await reset();
+
+    console.log(
+        "Network is back to normal, now waiting for useNetworkAccess to detect..."
+    );
+
+    // Wait for multiple polling cycles (30sec DEFAULT polling)
+    // Let's wait for 2 full cycles to be sure
+    for (let i = 0; i < 6; i++) {
+        await page.waitForTimeout(10000); // Wait 10 seconds at a time
+        console.log(
+            `After ${(i + 1) * 10} seconds online: intervals = ${intervals.join(", ")}`
+        );
+
+        // Check if reconnect was detected
+        const reconnectVisible = await component
+            .getByTestId(RECONNECT_ID)
+            .isVisible()
+            .catch(() => false);
+        if (reconnectVisible) {
+            console.log(`Reconnect detected after ${(i + 1) * 10} seconds!`);
+            break;
+        }
+    }
+
+    console.log(`Final intervals after extended wait: ${intervals.join(", ")}`);
+
+    // This should eventually work if it's just a timing issue
+    await component
+        .getByTestId(RECONNECT_ID)
+        .waitFor({ state: "visible", timeout: 5000 });
+
+    expect(intervals.length).toBe(3);
+    expect(intervals[2]).toBe(POLLING.DISABLED);
 });
