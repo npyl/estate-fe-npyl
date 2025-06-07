@@ -5,6 +5,7 @@ import path from "path";
 import injectFiles from "../_util/injectFiles";
 import { IUploadResult } from "../../src/ui/useGeneralUploader/types";
 import runOffline from "../_util/runInNetworkMode/runOffline";
+import { POLLING } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
 
 const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
@@ -44,11 +45,21 @@ const getResult = async (component: MountResult): Promise<IUploadResult> => {
 
 // ------------------------------------------------------------------------------
 
+const getIntervalsStore = () => {
+    const intervals: number[] = [];
+    const onIntervalChange = (i: number) => intervals.push(i);
+    return [intervals, onIntervalChange] as const;
+};
+
 /**
  * Successfully upload two image files
  */
 test("Upload", async ({ mount }) => {
-    const component = await mount(<Tester mockUrl={mockUrl0} />);
+    const [intervals, onIntervalChange] = getIntervalsStore();
+
+    const component = await mount(
+        <Tester mockUrl={mockUrl0} onIntervalChange={onIntervalChange} />
+    );
 
     await injectFiles(component, INPUT_ID, FILES);
 
@@ -57,17 +68,25 @@ test("Upload", async ({ mount }) => {
     const parsed = await getResult(component);
 
     expect(parsed.success).toBe(true);
+
+    expect(intervals.length).toBe(2);
+    expect(intervals[0]).toBe(POLLING.RAPID);
+    expect(intervals[1]).toBe(POLLING.DISABLED);
 });
 
 /**
  * Catch a client disconnect during upload (e.g. when internet access is lost)
  */
 test("Disconnect", async ({ mount, context, page }) => {
+    const [intervals, onIntervalChange] = getIntervalsStore();
+
     test.setTimeout(DELAY);
 
     const cdpSession = await context.newCDPSession(page);
 
-    const component = await mount(<Tester mockUrl={mockUrl1} />);
+    const component = await mount(
+        <Tester mockUrl={mockUrl1} onIntervalChange={onIntervalChange} />
+    );
 
     await injectFiles(component, INPUT_ID, FILES);
 
@@ -82,4 +101,8 @@ test("Disconnect", async ({ mount, context, page }) => {
         expect(parsed.report.uploadFails.length).toBeGreaterThan(0); // at least one fail (e.g. on very fast connection)
         expect(parsed.report.uploaded.length).toBe(0);
     });
+
+    expect(intervals.length).toBe(2);
+    expect(intervals[0]).toBe(POLLING.RAPID);
+    expect(intervals[1]).toBe(POLLING.DEFAULT);
 });

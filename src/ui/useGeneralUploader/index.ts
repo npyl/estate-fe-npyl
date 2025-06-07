@@ -52,8 +52,16 @@ const useGeneralUploader = (
         uploadWithProgress,
         // ...
         isConnected,
-        resetInterval,
+        _resetInterval,
     ] = useUploadWithProgress(removePendingKeys);
+
+    const resetInterval = useCallback(
+        (i?: number) => {
+            const actualI = _resetInterval(i);
+            HANDLERS.onIntervalChange?.(actualI);
+        },
+        [_resetInterval, HANDLERS.onIntervalChange]
+    );
 
     const NETWORK_CRITICAL = useCallback(async function <T>(
         cb: () => Promise<T>

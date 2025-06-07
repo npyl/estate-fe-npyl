@@ -46,14 +46,18 @@ const useStore = (url: string) => {
 
 interface TesterProps {
     mockUrl: string;
+    onIntervalChange?: (i: number) => void;
 }
 
-const Tester: FC<TesterProps> = ({ mockUrl }) => {
+const Tester: FC<TesterProps> = ({ mockUrl, onIntervalChange }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [files, addFile, removeFile] = useStore(mockUrl);
 
-    const upload = useGeneralUploader({ addFile, removeFile }, {});
+    const upload = useGeneralUploader(
+        { addFile, removeFile },
+        { onIntervalChange }
+    );
 
     const [value, setValue] = useState(INITIAL_VALUE);
 

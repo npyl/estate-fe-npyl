@@ -64,6 +64,7 @@ interface UseGeneralUploaderMethods {
 interface UseGeneralUploaderHandlers {
     onAddFail?: (f: File) => void;
     onUploadFail?: (f: IUploadFail) => void;
+    onIntervalChange?: (i: number) => void;
     onProgressUpdate?: (p: IUploadProgress) => void;
 }
 

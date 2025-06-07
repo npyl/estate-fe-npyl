@@ -20,9 +20,14 @@ const useIntervalControl = (
 
     const reset = useCallback(
         (n?: number) => {
+            const i = n ?? initialInterval;
+
             stop();
-            interval.current = n ?? initialInterval;
+            interval.current = i;
             start();
+
+            // INFO: return actual interval chosen through our internal logic (for debugging)
+            return i;
         },
         [initialInterval]
     );
