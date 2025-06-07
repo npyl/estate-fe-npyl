@@ -6,6 +6,7 @@ import injectFiles from "../_util/injectFiles";
 import { IUploadResult } from "../../src/ui/useGeneralUploader/types";
 import runOffline from "../_util/runInNetworkMode/runOffline";
 import { POLLING } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
+import run3G from "../_util/runInNetworkMode/run3G";
 
 const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
@@ -90,19 +91,23 @@ test("Disconnect", async ({ mount, context, page }) => {
 
     await injectFiles(component, INPUT_ID, FILES);
 
-    // Click Upload Button
-    await component.getByTestId(UPLOAD_BTN_ID).click();
+    await run3G(cdpSession, async () => {
+        await component.getByTestId(UPLOAD_BTN_ID).click();
 
-    await runOffline(cdpSession, async () => {
-        const parsed = await getResult(component);
+        // Wait a bit for upload to actually start
+        await page.waitForTimeout(500);
 
-        expect(parsed.success).toBe(false);
-        expect(parsed.report.addFails.length).toBe(0);
-        expect(parsed.report.uploadFails.length).toBeGreaterThan(0); // at least one fail (e.g. on very fast connection)
-        expect(parsed.report.uploaded.length).toBe(0);
+        await runOffline(cdpSession, async () => {
+            const parsed = await getResult(component);
+
+            expect(parsed.success).toBe(false);
+            expect(parsed.report.addFails.length).toBe(0);
+            expect(parsed.report.uploadFails.length).toBeGreaterThan(0);
+            expect(parsed.report.uploaded.length).toBe(0);
+        });
+
+        expect(intervals.length).toBe(2);
+        expect(intervals[0]).toBe(POLLING.RAPID);
+        expect(intervals[1]).toBe(POLLING.DEFAULT);
     });
-
-    expect(intervals.length).toBe(2);
-    expect(intervals[0]).toBe(POLLING.RAPID);
-    expect(intervals[1]).toBe(POLLING.DEFAULT);
 });
