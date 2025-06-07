@@ -6,6 +6,7 @@ import { UserResponse } from "../src/types/auth";
 const privFile = path.join(__dirname, "../playwright/.auth/priv.json");
 const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 
+const localhost = "http://127.0.0.1:3000";
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
 const loginUrl = `${baseUrl}/login`;
 const profileUrl = `${baseUrl}/users/profile`;
@@ -93,7 +94,7 @@ setup("authenticate", async ({ page }) => {
     if (!token) throw "Did not receive a token!";
 
     // Navigate to your app and wait for it to load
-    await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
+    await page.goto(localhost, { waitUntil: "domcontentloaded" });
 
     // Wait a bit for the page to be ready
     await page.waitForTimeout(1000);
