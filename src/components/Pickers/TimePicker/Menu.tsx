@@ -44,16 +44,13 @@ const formatTimeDisplay = (isoString: string): string => {
     return `${hours}:${minuteFormat} ${period}`;
 };
 
-const getOption = (onClick: (d: string) => void) => (d: string) =>
-    (
-        <MenuItem key={d} onClick={() => onClick(d)}>
-            {formatTimeDisplay(d)}
-        </MenuItem>
-    );
+const getOption = (onClick: (d: string) => void) => (d: string) => (
+    <MenuItem key={d} onClick={() => onClick(d)}>
+        {formatTimeDisplay(d)}
+    </MenuItem>
+);
 
 // ------------------------------------------------------------------------------
-
-const PopperSx: SxProps<Theme> = { zIndex: 1500 };
 
 const PaperSx: SxProps<Theme> = {
     width: "inherit",
@@ -75,7 +72,7 @@ const Menu: FC<MenuProps> = ({ anchorEl, minTime, maxTime, onSelect }) => {
         [minTime, maxTime]
     );
     return (
-        <Popper open anchorEl={anchorEl} sx={PopperSx}>
+        <Popper open anchorEl={anchorEl}>
             <Paper sx={PaperSx}>{OPTIONS.map(getOption(onSelect))}</Paper>
         </Popper>
     );
