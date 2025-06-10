@@ -62,8 +62,11 @@ const Rating = () => {
     );
 };
 
+const WITH = (C: any, onOff: boolean) => (onOff ? [C] : []);
+
 const getFIELDS = (
     t: TranslationType,
+    isB2B: boolean,
     nationalitiesEnum: KeyValue<string>[],
     leadSourceEnum: KeyValue<string>[],
     leadSource?: LeadSource,
@@ -89,13 +92,21 @@ const getFIELDS = (
         label={t("Nationality")}
         options={nationalitiesEnum}
     />,
-    <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
-    <RHFDatePicker disableFuture name="dateOfBirth" />,
-    <RHFTextField
-        fullWidth
-        name="passportNumber"
-        label={t("Passport number")}
-    />,
+
+    ...WITH(
+        <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
+        !isB2B
+    ),
+    ...WITH(<RHFDatePicker disableFuture name="dateOfBirth" />, !isB2B),
+    ...WITH(
+        <RHFTextField
+            fullWidth
+            name="passportNumber"
+            label={t("Passport number")}
+        />,
+        !isB2B
+    ),
+
     <FormControl fullWidth variant="outlined">
         <InputLabel>{t("Preferred Language")}</InputLabel>
         <RHFSelect

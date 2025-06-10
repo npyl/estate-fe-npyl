@@ -27,12 +27,13 @@ const CustomerInformation = () => {
         () =>
             getFIELDS(
                 t,
+                isB2B,
                 nationalitiesEnum,
                 leadSourceEnum,
                 leadSource,
                 customerId as string
             ),
-        [t, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
+        [t, isB2B, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
     );
 
     return (

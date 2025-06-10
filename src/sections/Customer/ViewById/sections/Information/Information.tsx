@@ -46,10 +46,7 @@ const Information = () => {
                             label={t("Last Name")}
                             value={data?.lastName || "-"}
                         />
-                        <ListItem
-                            label={t("email")}
-                            value={data?.email || "-"}
-                        />
+                        <ListItem label="Email" value={data?.email || "-"} />
                         <ListItem label={t("VAT")} value={data?.afm || "-"} />
                         <ListManagerItem
                             label={t("Managed By").toString()}
@@ -77,22 +74,6 @@ const Information = () => {
                         <NationalityListItem />
 
                         <ListItem
-                            label={t("ID Number")}
-                            value={data?.idNumber || "-"}
-                        />
-                        <ListItem
-                            label={t("Date of Birth")}
-                            value={
-                                data?.dateOfBirth
-                                    ? new Date(data?.dateOfBirth).toDateString()
-                                    : "-"
-                            }
-                        />
-                        <ListItem
-                            label={t("Passport Number")}
-                            value={data?.passportNumber || "-"}
-                        />
-                        <ListItem
                             label={t("Preferred Language")}
                             value={data?.preferredLanguage.value || "-"}
                         />
@@ -105,6 +86,29 @@ const Information = () => {
                         ) : null}
 
                         <LeadSourceListItem leadSource={leadSource} />
+
+                        {!isB2B ? (
+                            <>
+                                <ListItem
+                                    label={t("ID Number")}
+                                    value={data?.idNumber || "-"}
+                                />
+                                <ListItem
+                                    label={t("Date of Birth")}
+                                    value={
+                                        data?.dateOfBirth
+                                            ? new Date(
+                                                  data?.dateOfBirth
+                                              ).toDateString()
+                                            : "-"
+                                    }
+                                />
+                                <ListItem
+                                    label={t("Passport Number")}
+                                    value={data?.passportNumber || "-"}
+                                />
+                            </>
+                        ) : null}
 
                         <ListBooleanItem
                             label={t("Stay Updated")}
