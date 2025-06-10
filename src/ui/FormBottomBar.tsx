@@ -1,4 +1,3 @@
-import { NAV } from "@/constants/config";
 import { SxProps, Theme } from "@mui/material";
 import Stack, { StackProps } from "@mui/material/Stack";
 import { FC, ReactNode } from "react";
@@ -21,12 +20,12 @@ const WHITE = "0px 0px 6px -2px rgba(0,0,0,1)";
 const getBoxShadow = ({ palette: { mode } }: Theme) =>
     mode === "dark" ? BLACK : WHITE;
 
-const getResponsiveWidth = ({ spacing }: Theme) => {
+const getResponsiveWidth = ({ layout, spacing }: Theme) => {
     const mr = spacing(3);
 
     return {
         xs: `calc(100% - ${mr})`,
-        md: `calc(100% - ${NAV.W_DASHBOARD}px - ${mr})`,
+        md: `calc(100% - ${layout.nav.sidebarWidth}px - ${mr})`,
     };
 };
 

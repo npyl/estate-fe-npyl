@@ -1,9 +1,9 @@
-// FloatingButton.tsx
 import React from "react";
 import { Box, Badge, Button, BoxProps } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import { useTranslation } from "react-i18next";
-import { LAYOUT } from "@/constants/config";
+
+const getBottom = ({ layout }: any) => layout.createFab.bottom;
 
 interface FloatingButtonProps extends Omit<BoxProps, "onClick"> {
     badgeContent: number;
@@ -20,7 +20,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     return (
         <Box
             position="fixed"
-            bottom={LAYOUT.FAB_OFFSET_BOTTOM}
+            bottom={getBottom}
             zIndex={2}
             left="50%"
             sx={{

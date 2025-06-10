@@ -2,7 +2,14 @@ import { useRouter } from "next/router";
 import SubbarItems from "./Items";
 import { useCallback } from "react";
 import { SubbarRef, useTabsContext } from "@/contexts/tabs";
-import { Z_INDEX } from "@/constants/config";
+import { SxProps, Theme } from "@mui/material";
+
+const getSx = (isStickyPath: boolean): SxProps<Theme> => ({
+    display: { xs: "none", lg: "flex" },
+    position: isStickyPath ? "sticky" : "relative",
+    top: isStickyPath ? 64 : 0,
+    zIndex: ({ zIndex }) => zIndex.subbar,
+});
 
 const Subbar = () => {
     const router = useRouter();
@@ -23,12 +30,7 @@ const Subbar = () => {
             ref={onRef}
             overflow="auto"
             width={1}
-            sx={{
-                display: { xs: "none", lg: "flex" },
-                position: isStickyPath ? "sticky" : "relative",
-                top: isStickyPath ? 64 : 0,
-                zIndex: Z_INDEX.SUBBAR,
-            }}
+            sx={getSx(isStickyPath)}
         />
     );
 };

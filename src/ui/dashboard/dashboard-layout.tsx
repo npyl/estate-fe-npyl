@@ -5,7 +5,6 @@ import { DashboardSidebar } from "./dashboard-sidebar";
 import useDialog from "@/hooks/useDialog";
 import Subbar from "./dashboard-subbar";
 import TabsProvider from "@/contexts/tabs";
-import { NAV } from "@/constants/config";
 import Box from "@mui/material/Box";
 
 interface DashboardLayoutProps {
@@ -18,13 +17,13 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     flex: "1 1 auto",
     maxWidth: "100%",
 
-    marginTop: NAV.W_TOPBAR,
+    marginTop: theme.layout.nav.topbarHeight,
     marginBottom: theme.spacing(2),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
 
     [theme.breakpoints.up("md")]: {
-        marginLeft: NAV.W_DASHBOARD,
+        marginLeft: theme.layout.nav.sidebarWidth,
         paddingLeft: theme.spacing(2),
     },
 }));

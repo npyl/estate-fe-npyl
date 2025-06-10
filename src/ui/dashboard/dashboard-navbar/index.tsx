@@ -5,32 +5,19 @@ import {
     Stack,
     Toolbar,
     Typography,
-    useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
 import { Menu as MenuIcon } from "@/assets/icons/menu";
 import DashboardNavbarSearch from "@/ui/dashboard/dashboard-navbar-search";
-import LogoHorizontalLight from "@/assets/logo/horizontal/light";
-import LogoHorizontalDark from "@/assets/logo/horizontal/dark";
 import Link from "@/components/Link";
 import CreateButton from "../CreateButton";
 import { HideText } from "@/components/styled";
 import dynamic from "next/dynamic";
 import AccountLoader from "./AccountLoader";
-import { Z_INDEX } from "@/constants/config";
 const AccountButton = dynamic(() => import("./AccountButton"), {
     loading: () => <AccountLoader />,
 });
-
-const Logo = () => {
-    const theme = useTheme();
-    const Comp =
-        theme.palette.mode === "light"
-            ? LogoHorizontalLight
-            : LogoHorizontalDark;
-    return <Comp height={64} />;
-};
 
 interface DashboardNavbarProps extends AppBarProps {
     onOpenSidebar?: () => void;
@@ -55,7 +42,6 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     },
 
     position: "fixed",
-    zIndex: Z_INDEX.NAVBAR,
 }));
 
 const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {

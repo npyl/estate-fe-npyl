@@ -12,8 +12,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import { SpaceBetween } from "@/components/styled";
 import { useTranslation } from "react-i18next";
 import PopoverPaper from "./PopoverPaper";
-import { Modal } from "@mui/material";
-import { Z_INDEX } from "@/constants/config";
+import { Modal, SxProps, Theme } from "@mui/material";
+
+const getModalSx = (anchorEl: HTMLInputElement): SxProps<Theme> => ({
+    position: "absolute",
+    top: anchorEl?.getBoundingClientRect()?.bottom || 0,
+    overflowY: "auto",
+    overflowX: "hidden",
+    zIndex: ({ zIndex }) => zIndex.modal + 1,
+    px: 1,
+});
 
 interface ResultsPopperProps {
     anchorEl: HTMLInputElement;
@@ -56,14 +64,7 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
             hideBackdrop
             disableAutoFocus // prevent focus ring
             disableEnforceFocus // prevent search losing focus
-            sx={{
-                position: "absolute",
-                top: anchorEl?.getBoundingClientRect()?.bottom || 0,
-                overflowY: "auto",
-                overflowX: "hidden",
-                zIndex: Z_INDEX.AGREEMENT_FORM + 1,
-                px: 1,
-            }}
+            sx={getModalSx(anchorEl)}
             onClose={onClose}
         >
             <PopoverPaper>
