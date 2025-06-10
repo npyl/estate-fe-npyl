@@ -65,6 +65,7 @@ const PlacesAutocomplete = forwardRef<
                     anchorEl={inputRef.current}
                     data={data}
                     onSelect={onSelect}
+                    onClose={clearSuggestions}
                 />
             ) : null}
         </>

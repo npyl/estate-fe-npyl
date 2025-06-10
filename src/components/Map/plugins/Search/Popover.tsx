@@ -1,30 +1,33 @@
 import { FC } from "react";
-import Stack from "@mui/material/Stack";
 import MenuItem from "@mui/material/MenuItem";
-import Popper from "@mui/material/Popper";
+import MuiPopover from "@mui/material/Popover";
 import { DataProps } from "./types";
-import { Paper } from "@mui/material";
 
-const Popover: FC<DataProps> = ({ data, anchorEl, onSelect }) => (
-    <Popper
+const getItem =
+    (onSelect: (o: google.maps.places.AutocompletePrediction) => void) =>
+    (o: google.maps.places.AutocompletePrediction) => (
+        <MenuItem key={o.place_id} onClick={() => onSelect(o)}>
+            {o.description}
+        </MenuItem>
+    );
+
+const Popover: FC<DataProps> = ({ data, anchorEl, onSelect, onClose }) => (
+    <MuiPopover
         open
         disablePortal
         anchorEl={anchorEl}
-        placement="bottom-start"
-        sx={{
-            zIndex: 2000,
+        anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
         }}
+        transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+        }}
+        onClose={onClose}
     >
-        <Paper>
-            <Stack direction="column">
-                {data.map((o) => (
-                    <MenuItem key={o.place_id} onClick={() => onSelect(o)}>
-                        {o.description}
-                    </MenuItem>
-                ))}
-            </Stack>
-        </Paper>
-    </Popper>
+        {data.map(getItem(onSelect))}
+    </MuiPopover>
 );
 
 export default Popover;

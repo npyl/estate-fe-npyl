@@ -16,7 +16,7 @@ export const SplashScreen: FC = () => (
             position: "fixed",
             top: 0,
             width: "100vw",
-            zIndex: 2000,
+            zIndex: ({ zIndex }) => zIndex.all,
         }}
     >
         <LogoMini />

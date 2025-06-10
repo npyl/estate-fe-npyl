@@ -50,6 +50,8 @@ declare module "@mui/material/styles" {
         subbar: number;
         // ...
         modal: number; // INFO: make required
+        // ...
+        all: number;
     }
 
     // ------------------------------------------

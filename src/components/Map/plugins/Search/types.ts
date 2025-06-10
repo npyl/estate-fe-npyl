@@ -3,6 +3,7 @@ import { ClearSuggestions } from "use-places-autocomplete";
 interface DataProps {
     data: google.maps.places.AutocompletePrediction[];
     anchorEl: HTMLElement;
+    onClose: VoidFunction;
     onSelect: (o: google.maps.places.AutocompletePrediction) => void;
 }
 

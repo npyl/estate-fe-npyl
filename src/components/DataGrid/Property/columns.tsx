@@ -44,7 +44,7 @@ function RenderImage(
                         position: "absolute",
                         top: { xl: 0, lg: 10, xs: 0 },
                         right: -4,
-                        zIndex: 5000,
+                        zIndex: 1,
                         width: 23,
                         height: 23,
                         bgcolor: "grey.400",

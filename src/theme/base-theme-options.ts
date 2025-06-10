@@ -3,6 +3,7 @@ import { ThemeOptions } from "@mui/material";
 const Z_INDEX = {
     NAVIGATION: 1000, // sidebar, topbar, subbar
     BASE: 1500, // everything that goes on top!
+    TOP_OF_ALL: 2200,
 };
 
 const baseThemeOptions: ThemeOptions = {
@@ -163,7 +164,7 @@ const baseThemeOptions: ThemeOptions = {
                     position: "fixed",
                     top: 0,
                     width: "100%",
-                    zIndex: 2000,
+                    zIndex: Z_INDEX.TOP_OF_ALL,
                 },
             },
         },
@@ -384,6 +385,8 @@ const baseThemeOptions: ThemeOptions = {
         drawer: Z_INDEX.BASE + 100,
         modal: Z_INDEX.BASE + 200,
         tooltip: Z_INDEX.BASE + 300,
+        // ...
+        all: Z_INDEX.TOP_OF_ALL,
     },
     layout: {
         createFab: {
