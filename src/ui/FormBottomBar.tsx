@@ -29,6 +29,8 @@ const getResponsiveWidth = ({ layout, spacing }: Theme) => {
     };
 };
 
+const getZIndex = ({ zIndex }: Theme) => zIndex.drawer;
+
 // ----------------------------------------------------------------------------------------
 
 interface FormBottomBarProps extends Omit<StackProps, "children"> {
@@ -57,7 +59,7 @@ const FormBottomBar: FC<FormBottomBarProps> = ({
                 width={getResponsiveWidth}
                 p={1}
                 position="fixed"
-                zIndex={1000}
+                zIndex={getZIndex}
                 bottom={10}
                 // ...
                 direction="row"
