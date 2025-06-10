@@ -5,6 +5,7 @@ import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import useCurrentSortingOption from "./useCurrentSortingOption";
 import { useQueryState } from "nuqs";
 import FilterBar from "./FilterBar";
+import Box from "@mui/material/Box";
 // modes
 const ListView = dynamic(
     () => import("@/sections/Properties/ViewAll/(ListView)")
@@ -47,6 +48,8 @@ const ViewAll = () => {
     return (
         <>
             <FilterBar {...optionViewProps} />
+
+            <Box mt={1} />
 
             {optionViewProps.optionView === "list" ? (
                 <ListView sortBy={sortBy} direction={direction} />

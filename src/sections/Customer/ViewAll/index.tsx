@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { FC, useEffect, useMemo, useState } from "react";
@@ -127,6 +127,8 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
             {selectedRows && selectedRows.length > 0 ? (
                 <Toolbar selectedRows={selectedRows} />
             ) : null}
+
+            <Box mt={1} />
 
             {belowMd ? (
                 <Pagination

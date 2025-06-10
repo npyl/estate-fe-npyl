@@ -8,7 +8,6 @@ import {
     FilterType,
 } from "./Filters";
 import FilterDraft from "./Filters/Draft";
-import CreateButton from "./CreateButton";
 
 interface Props {
     customer: boolean;
@@ -26,7 +25,6 @@ const AgreementsFiltersBar: React.FC<Props> = ({ customer }) => (
                 <FilterDraft />
             </>
         }
-        controls={<CreateButton />}
         bottomContent={<ChosenFilters />}
     />
 );

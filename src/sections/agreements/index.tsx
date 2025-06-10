@@ -2,9 +2,10 @@ import FiltersBar from "./FiltersBar";
 import { AgreementsFiltersProvider } from "./FiltersBar/FiltersContext";
 import Stack from "@mui/material/Stack";
 import CardsContent from "./Content";
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import dynamic from "next/dynamic";
 import useDialog from "@/hooks/useDialog";
+import CreateButton from "./CreateButton";
 const PreparationDialog = dynamic(() => import("./Dialogs/Preparation"));
 
 // --------------------------------------------------------------------------------
@@ -44,6 +45,8 @@ const AgreementsSection: React.FC<Props> = ({
                 <CardsContent propertyId={propertyId} customerId={customerId} />
             </Stack>
         </AgreementsFiltersProvider>
+
+        <CreateButton />
 
         <CreateAgreement create={create} />
     </>
