@@ -1,17 +1,19 @@
 import { SpaceBetween } from "@/components/styled";
 import { SxProps, Theme } from "@mui/material";
-import Paper, { PaperProps } from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
+import Stack, { StackProps } from "@mui/material/Stack";
 import { ReactNode } from "react";
-import HorizontalScrollbar from "../Scrollbar";
+import HorizontalScrollbar from "../HorizontalScrollbar";
 
 const FiltersBarSx: SxProps<Theme> = {
     position: "sticky",
     top: 64,
-    zIndex: 2,
+    zIndex: 1,
+    backgroundColor: "background.paper",
+    boxShadow: 15,
+    borderRadius: 1,
 };
 
-interface FiltersBarProps extends Omit<PaperProps, "component"> {
+interface FiltersBarProps extends Omit<StackProps, "component"> {
     filters: ReactNode;
     controls?: ReactNode;
     bottomContent: ReactNode;
@@ -24,12 +26,10 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     sx,
     ...props
 }) => (
-    <Paper
-        component={Stack}
+    <Stack
         p={1}
         pt={0} // NOTE: paddingTop must come from the components so that the label that shrinks on top is visible
         gap={0.5}
-        elevation={10}
         sx={{ ...FiltersBarSx, ...sx }}
         {...props}
     >
@@ -42,7 +42,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
             </Stack>
         </SpaceBetween>
         {bottomContent}
-    </Paper>
+    </Stack>
 );
 
 export type { FiltersBarProps };

@@ -1,36 +1,28 @@
-import { useTranslation } from "react-i18next";
-import TypeSelect from "../Event/TypeSelect";
-import Typography from "@mui/material/Typography";
-import ToggleButton from "@mui/material/ToggleButton";
-import { useFiltersContext } from "./context";
 import Stack from "@mui/material/Stack";
 import Search from "./Search";
 import UserSelect from "./UserSelect";
-import { TTypeFilter } from "./types";
+import FiltersBar from "@/components/Filters/FiltersBar";
+import Type from "./Type";
+import { SxProps, Theme } from "@mui/material";
 
-const Filters = () => {
-    const { t } = useTranslation();
-    const { type, setType } = useFiltersContext();
-
-    return (
-        <Stack
-            direction="row"
-            alignItems="center"
-            spacing={3}
-            width={1}
-            overflow="auto hidden"
-        >
-            <Search />
-
-            <UserSelect />
-
-            <TypeSelect<TTypeFilter> type={type} onChange={setType}>
-                <ToggleButton value="ANY">
-                    <Typography ml={1}>{t("All")}</Typography>
-                </ToggleButton>
-            </TypeSelect>
-        </Stack>
-    );
+const BarSx: SxProps<Theme> = {
+    bgcolor: "background.default",
+    boxShadow: 0,
 };
+
+const Filters = () => (
+    <FiltersBar
+        sx={BarSx}
+        filters={
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Search />
+                <UserSelect />
+                <Type />
+            </Stack>
+        }
+        controls={undefined}
+        bottomContent={undefined}
+    />
+);
 
 export default Filters;

@@ -7,6 +7,7 @@ import {
     useCallback,
     useEffect,
     useImperativeHandle,
+    useLayoutEffect,
     useRef,
 } from "react";
 import RoundIconButton from "./RoundIconButton";
@@ -27,11 +28,15 @@ const useOverflow = (
     }, []);
 
     const onOverflowChange = useCallback(() => onChange(checkOverflow()), []);
-    useEffect(() => {
-        onOverflowChange();
-    }, [children]);
 
-    return { onResize: onOverflowChange };
+    useEffect(onOverflowChange, [children]);
+
+    useLayoutEffect(() => {
+        window.addEventListener("resize", onOverflowChange);
+        return () => {
+            window.removeEventListener("resize", onOverflowChange);
+        };
+    }, []);
 };
 
 interface ScrollContainerProps extends Omit<StackProps, "onResize"> {
@@ -61,7 +66,7 @@ const ScrollContainer = forwardRef<ContainerRef, ScrollContainerProps>(
             });
         }, []);
 
-        const { onResize } = useOverflow(scrollRef, children, onOverflowChange);
+        useOverflow(scrollRef, children, onOverflowChange);
 
         useImperativeHandle(
             ref,
@@ -78,7 +83,6 @@ const ScrollContainer = forwardRef<ContainerRef, ScrollContainerProps>(
                 direction="row"
                 overflow="hidden hidden"
                 alignItems="center"
-                onResize={onResize}
                 {...props}
             >
                 {children}

@@ -15,6 +15,7 @@ import { useState } from "react";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import View from "./View";
 import Header from "./Header";
+import Box from "@mui/material/Box";
 
 const MobileControls = dynamic(() => import("./MobileControls"));
 
@@ -26,6 +27,8 @@ const CalendarSection = () => {
     return (
         <FiltersProvider>
             <Filters />
+
+            <Box mt={1} />
 
             {/* Account + date controls */}
             {belowMd ? (
