@@ -1,9 +1,9 @@
 import { SpaceBetween } from "@/components/styled";
 import { SxProps, Theme } from "@mui/material";
-import Box from "@mui/material/Box";
 import Paper, { PaperProps } from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { ReactNode } from "react";
+import HorizontalScrollbar from "../Scrollbar";
 
 const FiltersBarSx: SxProps<Theme> = {
     position: "sticky",
@@ -28,25 +28,19 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         component={Stack}
         p={1}
         pt={0} // NOTE: paddingTop must come from the components so that the label that shrinks on top is visible
-        spacing={1}
+        gap={0.5}
         elevation={10}
         sx={{ ...FiltersBarSx, ...sx }}
         {...props}
     >
-        <SpaceBetween>
-            <Stack
-                alignItems="center"
-                direction="row"
-                spacing={0.3}
-                pt={1}
-                overflow="auto hidden"
-                mb="-5px" // INFO: helps scrollbar not cause a layout shift
-            >
+        <SpaceBetween alignItems="center" gap={0.5}>
+            <HorizontalScrollbar spacing={0.5} pt={1}>
                 {filters}
+            </HorizontalScrollbar>
+            <Stack mt={1} direction="row" alignItems="center">
+                {controls}
             </Stack>
-            {controls ? <Box mt={1}>{controls}</Box> : null}
         </SpaceBetween>
-
         {bottomContent}
     </Paper>
 );
