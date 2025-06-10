@@ -5,7 +5,6 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import useToggle from "@/hooks/useToggle";
-import { Z_INDEX } from "@/constants/config";
 
 const FullscreenButtonSx: SxProps<Theme> = {
     position: "absolute",
@@ -53,21 +52,19 @@ const FullscreenSx: SxProps<Theme> = {
     },
 };
 
-const getMessageBoxSx = (isFullscreen: boolean): SxProps<Theme> => {
-    return {
-        position: "fixed",
+const getMessageBoxSx = (isFullscreen: boolean): SxProps<Theme> => ({
+    position: "fixed",
 
-        right: ({ spacing }) => spacing(FACTOR),
+    right: ({ spacing }) => spacing(FACTOR),
 
-        ...(isFullscreen ? FullscreenSx : NormalSx),
+    ...(isFullscreen ? FullscreenSx : NormalSx),
 
-        zIndex: Z_INDEX.SIDEBAR + 1,
-        backgroundColor: "background.paper",
-        boxShadow: 20,
-        border: "1px solid",
-        borderColor: getBorderColor,
-    };
-};
+    zIndex: ({ zIndex }) => zIndex.modal,
+    backgroundColor: "background.paper",
+    boxShadow: 20,
+    border: "1px solid",
+    borderColor: getBorderColor,
+});
 
 const PaperWithFullscreen: FC<PaperProps> = ({ children, sx, ...props }) => {
     const [isFullscreen, toggle] = useToggle();

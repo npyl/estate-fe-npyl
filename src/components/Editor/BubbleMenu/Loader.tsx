@@ -1,4 +1,4 @@
-import { Popper } from "@mui/material";
+import { Popper, SxProps, Theme } from "@mui/material";
 import {
     FC,
     PropsWithChildren,
@@ -10,10 +10,13 @@ import {
 import { useEditorContext } from "../context";
 import { isNodeSelection, posToDOMRect } from "@tiptap/core";
 import { ShouldShowProps } from "./types";
-import { Z_INDEX } from "@/constants/config";
 
 // TODO: fix popover moving on scroll;
 // IMPORTANT: Some attempts to fixing this caused nested popovers to lose anchor and load on the top left corner so beware! lets consider it a feature for now!
+
+const PopperSx: SxProps<Theme> = {
+    zIndex: ({ zIndex }) => zIndex.modal + 1,
+};
 
 interface LoaderProps extends PropsWithChildren {
     /**
@@ -104,7 +107,7 @@ const Loader: FC<LoaderProps> = ({ children, shouldShow }) => {
             open={open}
             anchorEl={virtualAnchorEl}
             placement="top"
-            style={{ zIndex: Z_INDEX.POPOVER + 1 }}
+            sx={PopperSx}
         >
             {children}
         </Popper>

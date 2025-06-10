@@ -9,7 +9,6 @@ import Divider from "@mui/material/Divider";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
-import { Z_INDEX } from "@/constants/config";
 
 // -----------------------------------------------------------------------------
 
@@ -52,7 +51,7 @@ const getContainerSx = (dialog: boolean): SxProps<Theme> => ({
     position: dialog ? "fixed" : "unset",
     top: 0,
     right: 0,
-    zIndex: Z_INDEX.POPOVER,
+    zIndex: ({ zIndex }) => zIndex.modal,
     bgcolor: dialog ? "background.paper" : "unset",
     border: dialog ? "1px solid" : "none",
     borderColor: getBorderColor2,

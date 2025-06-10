@@ -18,7 +18,7 @@ import {
 } from "../contexts/settings-context";
 import "../i18n";
 import { store } from "../store";
-import { createTheme } from "../theme";
+import createTheme from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
 import Toaster from "@/components/Toaster";

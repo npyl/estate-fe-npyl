@@ -1,18 +1,8 @@
 import useDialog from "@/hooks/useDialog";
-import AddIcon from "@mui/icons-material/Add";
-import { SxProps, Theme } from "@mui/material";
-import Fab from "@mui/material/Fab";
 import dynamic from "next/dynamic";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import { LAYOUT } from "@/constants/config";
+import CreateFab from "@/ui/CreateFab";
 const MessageBox = dynamic(() => import("./MessageBox"));
-
-const FabSx: SxProps<Theme> = {
-    position: "fixed",
-    bottom: LAYOUT.FAB_OFFSET_BOTTOM,
-    right: 30,
-    zIndex: 1,
-};
 
 const Send = () => {
     const [isOpen, openBox, closeBox] = useDialog();
@@ -24,9 +14,8 @@ const Send = () => {
 
     return (
         <>
-            <Fab sx={FabSx} color="primary" onClick={openBox}>
-                <AddIcon />
-            </Fab>
+            <CreateFab onClick={openBox} />
+
             {isOpen ? (
                 <MessageBox
                     to={people}

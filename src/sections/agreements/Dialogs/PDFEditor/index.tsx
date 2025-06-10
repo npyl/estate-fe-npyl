@@ -1,14 +1,38 @@
-import React from "react";
+import React, { FC } from "react";
 import Dialog, { DialogProps } from "@mui/material/Dialog";
-import { Box, Fab } from "@mui/material";
+import { Box, Fab, SxProps, Theme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveFab from "./SaveFab";
 import ErrorTooltips from "./ErrorTooltips";
 import useValidatePDF from "./useValidatePDF";
 import dynamic from "next/dynamic";
-import { Z_INDEX } from "@/constants/config";
 const PDFEditor = dynamic(() => import("./Editor"), { ssr: false });
 const SuggestProperties = dynamic(() => import("./SuggestProperties"));
+
+// --------------------------------------------------------------------------------------------
+
+const getZIndex = ({ zIndex }: Theme) => zIndex.modal;
+
+// --------------------------------------------------------------------------------------------
+
+const CloseFabSx: SxProps<Theme> = {
+    position: "fixed",
+    top: 30,
+    right: 30,
+    zIndex: getZIndex,
+};
+
+interface CloseFabProps {
+    onClick: VoidFunction;
+}
+
+const CloseFab: FC<CloseFabProps> = ({ onClick }) => (
+    <Fab sx={CloseFabSx} onClick={onClick}>
+        <CloseIcon />
+    </Fab>
+);
+
+// --------------------------------------------------------------------------------------------
 
 interface Props extends Omit<DialogProps, "open" | "onClose"> {
     suggestProperties: boolean;
@@ -37,24 +61,14 @@ const PDFEditorDialog: React.FC<Props> = ({ suggestProperties, ...props }) => {
                 <ErrorTooltips />
 
                 {/* Close */}
-                <Fab
-                    sx={{
-                        position: "fixed",
-                        top: 30,
-                        right: 30,
-                        zIndex: Z_INDEX.AGREEMENT_FORM,
-                    }}
-                    onClick={props.onClose}
-                >
-                    <CloseIcon />
-                </Fab>
+                <CloseFab onClick={props.onClose} />
 
                 {/* Save */}
                 <SaveFab
                     position="fixed"
                     bottom={30}
                     right={30}
-                    zIndex={Z_INDEX.AGREEMENT_FORM}
+                    zIndex={getZIndex}
                     onClick={handleSave}
                 />
             </Box>
