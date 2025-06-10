@@ -5,6 +5,8 @@ import {
     ListItemButton,
     ListItemText,
     Stack,
+    SxProps,
+    Theme,
     Typography,
 } from "@mui/material";
 import {
@@ -20,6 +22,15 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { getSearchHistory, removeSearchHistoryItem } from "./history";
 import { format, isToday, isYesterday, isThisWeek, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
+
+const ListSx: SxProps<Theme> = {
+    position: "absolute",
+    backgroundColor: "background.paper",
+    boxShadow: 15,
+    width: { xs: "65vw", sm: "40vw" },
+    zIndex: ({ zIndex }) => zIndex.modal,
+    top: "60px",
+};
 
 const formatHistoryDate = (dateString: string) => {
     const date = parseISO(dateString);
@@ -46,9 +57,8 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
         const { t } = useTranslation();
 
         // State for search history
-        const [searchHistory, setSearchHistory] = useState<
-            { term: string; date: string }[]
-        >(getSearchHistory());
+        const [searchHistory, setSearchHistory] =
+            useState<{ term: string; date: string }[]>(getSearchHistory());
 
         useImperativeHandle(
             ref,
@@ -68,17 +78,7 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
         );
 
         return (
-            <List
-                sx={{
-                    position: "absolute",
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === "light" ? "white" : "#001830",
-                    boxShadow: 1,
-                    width: { xs: "65vw", sm: "40vw" },
-                    zIndex: 1500, // Ensure it appears above other elements
-                    top: "67px", // Position below the input field
-                }}
-            >
+            <List sx={ListSx}>
                 {searchHistory?.map(({ term, date }, index) => (
                     <ListItem key={index} disablePadding>
                         <ListItemButton onClick={() => onSelect(term)}>
