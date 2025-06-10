@@ -11,7 +11,7 @@ import useResponsive from "@/hooks/useResponsive";
 import { Grid } from "@mui/material";
 import Pagination, { usePagination } from "@/components/Pagination";
 
-const pageSize = 5;
+const pageSize = 25;
 
 const MatchingCustomersSection: React.FC = () => {
     const router = useRouter();
