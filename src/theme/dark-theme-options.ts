@@ -1,4 +1,4 @@
-import { ThemeOptions, alpha } from "@mui/material";
+import { ThemeOptions } from "@mui/material";
 
 // Colors
 
@@ -72,7 +72,7 @@ const text = {
     white: "rgba(255,255,255,0.85)",
 };
 
-export const darkThemeOptions: ThemeOptions = {
+export const darkThemeOptions: Omit<ThemeOptions, "layout"> = {
     components: {
         //scrollbar css
         MuiCssBaseline: {

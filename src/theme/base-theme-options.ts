@@ -1,6 +1,11 @@
 import { ThemeOptions } from "@mui/material";
 
-export const baseThemeOptions: ThemeOptions = {
+const Z_INDEX = {
+    NAVIGATION: 1000, // sidebar, topbar, subbar
+    BASE: 1500, // everything that goes on top!
+};
+
+const baseThemeOptions: ThemeOptions = {
     breakpoints: {
         values: {
             xs: 0,
@@ -210,11 +215,6 @@ export const baseThemeOptions: ThemeOptions = {
             styleOverrides: {
                 input: {
                     fontWeight: 500,
-                    // "&:-webkit-autofill": {
-                    //     WebkitBoxShadow: "0 0 0px 1000px white inset",
-                    //     WebkitTextFillColor: "#000", // Set the text color if needed
-                    //     transition: "background-color 5000s ease-in-out 0s",
-                    // },
                 },
             },
         },
@@ -228,11 +228,18 @@ export const baseThemeOptions: ThemeOptions = {
                 },
             },
         },
+        MuiPopper: {
+            defaultProps: {
+                sx: {
+                    zIndex: ({ zIndex }) => zIndex.modal,
+                },
+            },
+        },
         MuiPopover: {
             defaultProps: {
                 elevation: 16,
                 sx: {
-                    marginTop: 0.5,
+                    zIndex: ({ zIndex }) => zIndex.modal,
                 },
             },
         },
@@ -370,7 +377,24 @@ export const baseThemeOptions: ThemeOptions = {
         },
     },
     zIndex: {
-        appBar: 1200,
-        drawer: 1100,
+        sidebar: Z_INDEX.NAVIGATION,
+        appBar: Z_INDEX.NAVIGATION,
+        subbar: Z_INDEX.NAVIGATION,
+        // ...
+        drawer: Z_INDEX.BASE + 100,
+        modal: Z_INDEX.BASE + 200,
+        tooltip: Z_INDEX.BASE + 300,
+    },
+    layout: {
+        createFab: {
+            bottom: 70,
+            right: 30,
+        },
+        nav: {
+            sidebarWidth: 200,
+            topbarHeight: 75,
+        },
     },
 };
+
+export default baseThemeOptions;
