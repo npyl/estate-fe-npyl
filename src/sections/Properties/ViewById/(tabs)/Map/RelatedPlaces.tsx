@@ -11,8 +11,7 @@ import {
 // utils
 // components
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Place } from "src/types/googleMap";
-import { Scrollbar } from "src/components/scrollbar";
+import { Place } from "@/types/googleMap";
 import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
@@ -43,17 +42,16 @@ export default function RelatedPlaces({
                     <Typography textAlign={"center"}>No location</Typography>
                 )
             )}
-            <Scrollbar>
-                <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-                    {list.map((app, i) => (
-                        <ApplicationItem
-                            key={app.place_id}
-                            app={app}
-                            duration={duration[i]}
-                        />
-                    ))}
-                </Stack>
-            </Scrollbar>
+
+            <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
+                {list.map((app, i) => (
+                    <ApplicationItem
+                        key={app.place_id}
+                        app={app}
+                        duration={duration[i]}
+                    />
+                ))}
+            </Stack>
         </Card>
     );
 }
