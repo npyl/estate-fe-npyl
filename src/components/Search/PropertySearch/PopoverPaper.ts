@@ -7,7 +7,6 @@ const PopoverPaper = styled(Paper)(({ theme }) => ({
     borderColor: getBorderColor2(theme),
     padding: theme.spacing(2),
 
-    zIndex: 3000,
     width: "100%",
 
     marginTop: theme.spacing(1),

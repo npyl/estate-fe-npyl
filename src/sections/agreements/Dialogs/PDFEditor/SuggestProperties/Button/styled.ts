@@ -2,15 +2,15 @@ import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import { PaperProps } from "@mui/material/Paper";
 
-const StyledIconButton = styled(IconButton)({
+const StyledIconButton = styled(IconButton)(({ theme: { zIndex } }) => ({
     position: "absolute",
     left: "-30px",
     bottom: "-5px",
-    zIndex: 5000,
+    zIndex: zIndex.modal,
 
     width: "30px",
     height: "30px",
-});
+}));
 
 const PopoverSlotProps: {
     paper: Omit<PaperProps, "children">;

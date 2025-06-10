@@ -28,15 +28,12 @@ const SelectPopover: FC<SelectPopoverProps> = ({
     options,
     sorting,
     onSortingChange,
+    sx,
     ...props
 }) => (
     <Popover
         {...props}
-        sx={{
-            ...props.sx,
-            mt: 0.5,
-            zIndex: 1000,
-        }}
+        sx={{ ...sx, mt: 0.5 }}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         transformOrigin={{ horizontal: "center", vertical: "top" }}
         slotProps={slotProps}

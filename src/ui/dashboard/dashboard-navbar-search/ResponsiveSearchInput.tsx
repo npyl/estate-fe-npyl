@@ -9,7 +9,7 @@ const MobileSx: SxProps<Theme> = {
     "&:focus-within": {
         position: "absolute",
         top: 8,
-        zIndex: 1500,
+        zIndex: ({ zIndex }) => zIndex.modal,
         width: "calc(100vw - 115px)",
         boxShadow: 20,
     },

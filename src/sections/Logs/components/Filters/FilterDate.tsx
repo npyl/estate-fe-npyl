@@ -1,11 +1,9 @@
-import { Box, ClickAwayListener, Grid, Popper } from "@mui/material";
+import { Box, ClickAwayListener, Popover } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "src/store";
-
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-
 import { DateRange } from "react-date-range";
 import { FilterButton } from "@/components/Filters";
 import {
@@ -68,7 +66,9 @@ const DateSelect = () => {
             return `${fromDateStr} - ${toDateStr}`;
         }
     };
+
     const isMobile = useResponsive("down", 500);
+
     return (
         <ClickAwayListener onClickAway={() => setOpen(false)}>
             <Box>
@@ -82,35 +82,36 @@ const DateSelect = () => {
                 </FilterButton>
 
                 {open ? (
-                    <Popper
+                    <Popover
                         open={open}
                         anchorEl={anchorEl}
-                        placement="bottom-start"
-                        style={{ zIndex: 9999 }} // Ensure it's on top of other components
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                        }}
+                        onClose={() => setOpen(false)}
                     >
-                        <Grid
-                            item
-                            xs={12}
-                            style={{ background: "white", padding: "16px" }}
-                        >
-                            {isMobile ? (
-                                <DateRange
-                                    editableDateInputs={true}
-                                    onChange={handleSelect}
-                                    moveRangeOnFirstSelection={false}
-                                    ranges={state}
-                                />
-                            ) : (
-                                <DateRange
-                                    onChange={handleSelect}
-                                    moveRangeOnFirstSelection={false}
-                                    months={1}
-                                    ranges={state}
-                                    direction="vertical"
-                                />
-                            )}
-                        </Grid>
-                    </Popper>
+                        {isMobile ? (
+                            <DateRange
+                                editableDateInputs={true}
+                                onChange={handleSelect}
+                                moveRangeOnFirstSelection={false}
+                                ranges={state}
+                            />
+                        ) : (
+                            <DateRange
+                                onChange={handleSelect}
+                                moveRangeOnFirstSelection={false}
+                                months={1}
+                                ranges={state}
+                                direction="vertical"
+                            />
+                        )}
+                    </Popover>
                 ) : null}
             </Box>
         </ClickAwayListener>

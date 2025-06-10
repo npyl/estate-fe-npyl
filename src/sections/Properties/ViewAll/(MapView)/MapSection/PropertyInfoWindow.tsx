@@ -145,9 +145,9 @@ const PropertyInfoWindow = ({
                     position: "relative",
                 }}
             >
-                <button
+                <Box
                     onClick={handleCloseClick}
-                    style={{
+                    sx={{
                         position: "absolute",
                         top: "10px",
                         right: "10px",
@@ -160,13 +160,13 @@ const PropertyInfoWindow = ({
                         fontSize: "12px",
                         cursor: "pointer",
                         display: "flex",
-                        zIndex: 9999,
+                        zIndex: ({ zIndex }) => zIndex.modal,
                         alignItems: "center",
                         justifyContent: "center",
                     }}
                 >
                     X
-                </button>
+                </Box>
 
                 {propertyToShow && <PropertyCard item={propertyToShow} />}
             </Box>

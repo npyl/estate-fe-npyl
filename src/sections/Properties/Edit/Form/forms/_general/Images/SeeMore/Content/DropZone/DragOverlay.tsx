@@ -21,7 +21,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    zIndex: 1000,
+    zIndex: theme.zIndex.modal,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     padding: theme.spacing(2, 4),
