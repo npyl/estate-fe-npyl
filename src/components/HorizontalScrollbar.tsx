@@ -123,7 +123,10 @@ const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 
 interface HorizontalScrollbarProps extends Omit<StackProps, "ref"> {}
 
-const HorizontalScrollbar: FC<HorizontalScrollbarProps> = (props) => {
+const HorizontalScrollbar = forwardRef<
+    HTMLDivElement,
+    HorizontalScrollbarProps
+>((props, ref) => {
     const scrollRef = useRef<ContainerRef>(null);
     const scrollLeft = useCallback(() => scrollRef.current?.scrollLeft(), []);
     const scrollRight = useCallback(() => scrollRef.current?.scrollRight(), []);
@@ -137,6 +140,7 @@ const HorizontalScrollbar: FC<HorizontalScrollbarProps> = (props) => {
 
     return (
         <Stack
+            ref={ref}
             direction="row"
             alignItems="center"
             overflow="hidden hidden"
@@ -155,6 +159,9 @@ const HorizontalScrollbar: FC<HorizontalScrollbarProps> = (props) => {
             />
         </Stack>
     );
-};
+});
 
+HorizontalScrollbar.displayName = "HorizontalScrollbar";
+
+export type { HorizontalScrollbarProps };
 export default HorizontalScrollbar;

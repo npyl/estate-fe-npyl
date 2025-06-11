@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "@mui/material";
+import { StackProps } from "@mui/material";
 import { forwardRef, useImperativeHandle } from "react";
 import { SubbarRef } from "@/contexts/tabs";
 import useTabState from "./useTabState";
@@ -7,6 +7,7 @@ import useTabPusher from "./useTabPusher";
 import DroppableContainer from "./DnD/Droppable";
 import getTab from "./DnD/Draggable";
 import ClearButton from "./ClearButton";
+import { SpaceBetween } from "@/components/styled";
 
 const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     const [tabs, methods] = useTabState();
@@ -26,13 +27,18 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
     };
 
     return (
-        <Stack {...props}>
+        <SpaceBetween
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            {...props}
+        >
             <DragDropContext onDragEnd={onDragEnd}>
                 <DroppableContainer>{tabs.map(getTab)}</DroppableContainer>
             </DragDropContext>
 
             {tabs.length > 0 ? <ClearButton /> : null}
-        </Stack>
+        </SpaceBetween>
     );
 });
 
