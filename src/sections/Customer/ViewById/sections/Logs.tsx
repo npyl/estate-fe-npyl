@@ -16,10 +16,7 @@ const CustomerLogs: NextPage = () => {
         pageSize,
     });
 
-    const handlePageChange = (
-        event: React.ChangeEvent<unknown>,
-        value: number
-    ) => {
+    const handlePageChange = (_: any, value: number) => {
         setPage(value - 1); // Adjust page number for zero-based numbering API
     };
 
@@ -30,7 +27,7 @@ const CustomerLogs: NextPage = () => {
 
     return (
         <Box>
-            <Stack spacing={2}>{content}</Stack>
+            <Stack spacing={1}>{content}</Stack>
             {data && ( // Only display pagination when data is loaded
                 <Box
                     display="flex" // Establishes a flex container

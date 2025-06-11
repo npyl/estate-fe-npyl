@@ -31,7 +31,7 @@ const PropertyLogs: NextPage = () => {
 
     return (
         <Box>
-            <Stack spacing={2}>{content}</Stack>
+            <Stack spacing={1}>{content}</Stack>
             {data && ( // Only display pagination when data is loaded
                 <Box
                     display="flex" // Establishes a flex container
