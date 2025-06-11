@@ -13,7 +13,6 @@ export default function TabPanel(props: TabPanelProps) {
         <Box
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
-            py={1}
             height={"100%"}
             {...other}
         >

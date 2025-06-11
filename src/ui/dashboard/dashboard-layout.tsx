@@ -17,8 +17,11 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     flex: "1 1 auto",
     maxWidth: "100%",
 
+    gap: theme.spacing(1),
+
     marginTop: theme.layout.nav.topbarHeight,
     marginBottom: theme.spacing(2),
+    paddingTop: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
 
@@ -43,7 +46,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => (
         <DashboardLayoutRoot data-testid="dashboard">
             <TabsProvider>
                 <Subbar />
-                <Box mb={1} />
                 {children}
             </TabsProvider>
         </DashboardLayoutRoot>
