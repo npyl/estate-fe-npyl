@@ -34,9 +34,7 @@ const Sections: FC<SectionsProps> = ({ currentPath }) => {
                     path={currentPath}
                     sx={{
                         pt: 2,
-
                         width: "100%",
-                        overflowY: "hidden",
                         textWrap: "nowrap",
                     }}
                     {...section}

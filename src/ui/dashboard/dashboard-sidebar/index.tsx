@@ -6,7 +6,7 @@ import {
     Typography,
     useMediaQuery,
 } from "@mui/material";
-import { FC, useEffect, useMemo } from "react";
+import { FC, PropsWithChildren, useEffect } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import SidebarSkeleton from "./SidebarSkeleton";
@@ -14,54 +14,19 @@ const Sections = dynamic(() => import("./Sections"), {
     loading: () => <SidebarSkeleton />,
 });
 
-interface DashboardSidebarProps {
-    onClose?: () => void;
+interface ResponsiveDrawerProps extends PropsWithChildren {
     open?: boolean;
+    onClose?: VoidFunction;
 }
 
-export const DashboardSidebar: FC<DashboardSidebarProps> = ({
-    onClose,
+const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({
     open,
+    onClose,
+    children,
 }) => {
-    const router = useRouter();
     const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"), {
         noSsr: true,
     });
-
-    const handlePathChange = () => {
-        if (!router.isReady) {
-            return;
-        }
-
-        if (open) {
-            onClose?.();
-        }
-    };
-
-    // WARN: Do not change the deps; they are intentionally left like so in order not to mess up the `open` state behavior
-    // TODO: change this bs...
-    useEffect(handlePathChange, [router.isReady, router.asPath]);
-
-    const content = useMemo(
-        () => (
-            <Stack height={1} bgcolor="background.default">
-                <Sections currentPath={router.asPath} />
-
-                {/* nick ama to svhseis se gamhsa */}
-                {/* <Tooltip title="Alex Gamiesai file">
-                            </Tooltip> */}
-                <Typography
-                    mt={3}
-                    variant="body2"
-                    textAlign="center"
-                    color="text.secondary"
-                >
-                    v0.99.4
-                </Typography>
-            </Stack>
-        ),
-        [router.asPath]
-    );
 
     if (lgUp) {
         return (
@@ -70,17 +35,19 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                 open
                 PaperProps={{
                     sx: {
-                        display: "absolute",
-                        top: "64px",
-                        backgroundColor: "#FFF",
+                        top: ({ layout }) => layout.nav.topbarHeight,
+                        backgroundColor: "background.default",
                         border: 0,
                         color: "#FFFFFF",
                         width: ({ layout }) => layout.nav.sidebarWidth,
+
+                        // INFO: support scrolling vertically when display is too small
+                        pb: ({ layout }) => `${layout.nav.topbarHeight}px`,
                     },
                 }}
                 variant="permanent"
             >
-                {content}
+                {children}
             </Drawer>
         );
     }
@@ -105,7 +72,51 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                     </Link>
                 </Stack>
             )}
-            {content}
+            {children}
         </Drawer>
+    );
+};
+
+interface DashboardSidebarProps {
+    onClose?: () => void;
+    open?: boolean;
+}
+
+export const DashboardSidebar: FC<DashboardSidebarProps> = ({
+    onClose,
+    open,
+}) => {
+    const router = useRouter();
+
+    const handlePathChange = () => {
+        if (!router.isReady) {
+            return;
+        }
+
+        if (open) {
+            onClose?.();
+        }
+    };
+
+    // WARN: Do not change the deps; they are intentionally left like so in order not to mess up the `open` state behavior
+    // TODO: change this bs...
+    useEffect(handlePathChange, [router.isReady, router.asPath]);
+
+    return (
+        <ResponsiveDrawer open={open} onClose={onClose}>
+            <Sections currentPath={router.asPath} />
+
+            {/* nick ama to svhseis se gamhsa */}
+            {/* <Tooltip title="Alex Gamiesai file">
+                            </Tooltip> */}
+            <Typography
+                mt={3}
+                variant="body2"
+                textAlign="center"
+                color="text.secondary"
+            >
+                v0.99.4
+            </Typography>
+        </ResponsiveDrawer>
     );
 };
