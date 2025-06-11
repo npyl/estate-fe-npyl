@@ -26,6 +26,9 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
         methods.setTabs(reorderedTabs); //  Update state with new order
     };
 
+    // INFO: prevent gap={1} from adding an extra spacing
+    if (tabs.length === 0) return null;
+
     return (
         <SpaceBetween
             direction="row"
@@ -37,7 +40,7 @@ const SubbarItems = forwardRef<SubbarRef, StackProps>((props, ref) => {
                 <DroppableContainer>{tabs.map(getTab)}</DroppableContainer>
             </DragDropContext>
 
-            {tabs.length > 0 ? <ClearButton /> : null}
+            <ClearButton />
         </SpaceBetween>
     );
 });

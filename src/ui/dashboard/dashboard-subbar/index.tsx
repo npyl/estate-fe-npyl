@@ -25,14 +25,7 @@ const Subbar = () => {
         setSubbar(s);
     }, []);
 
-    return (
-        <SubbarItems
-            ref={onRef}
-            overflow="auto"
-            width={1}
-            sx={getSx(isStickyPath)}
-        />
-    );
+    return <SubbarItems ref={onRef} width={1} sx={getSx(isStickyPath)} />;
 };
 
 export default Subbar;
