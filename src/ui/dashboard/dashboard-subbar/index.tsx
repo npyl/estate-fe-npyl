@@ -7,7 +7,7 @@ import { SxProps, Theme } from "@mui/material";
 const getSx = (isStickyPath: boolean): SxProps<Theme> => ({
     display: { xs: "none", lg: "flex" },
     position: isStickyPath ? "sticky" : "relative",
-    top: isStickyPath ? 64 : 0,
+    top: ({ layout }) => (isStickyPath ? layout.nav.topbarHeight : 0),
     zIndex: ({ zIndex }) => zIndex.subbar,
 });
 
