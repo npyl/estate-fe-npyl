@@ -1,90 +1,24 @@
-import { forwardRef, MouseEvent, useCallback } from "react";
+import { forwardRef } from "react";
 import { Box, Stack } from "@mui/material";
 import Title from "../_shared/Title";
 import Description from "../_shared/Description";
-import Container, { EventContainerProps } from "../Container";
-import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import dynamic from "next/dynamic";
-const People = dynamic(() => import("../_shared/People"));
 import { useCalendarColorById } from "@/services/calendar";
-import VerticalResize from "./VerticalResize";
-import useResponsiveCellPositions from "./useResponsiveCellPositions";
-import {
-    TCalendarEvent,
-    TOnEventClick,
-    TOnEventDragEnd,
-    TOnEventResizeEnd,
-    TOnEventResizeStart,
-} from "../../types";
-import useDraggable from "./useDraggable";
-import useNoDragClick from "../../useNoDragClick";
-import updateDurationLabelAsync from "./updateDuration";
-import useGhost from "./useGhost";
+import EventsTarget, { EventsTargetProps } from "./EventsTarget";
+const People = dynamic(() => import("../_shared/People"));
 
-interface MainProps
-    extends Omit<EventContainerProps, "bgcolor" | "onClick" | "onMouseDown"> {
-    event: TCalendarEvent;
+interface MainProps extends Omit<EventsTargetProps, "bgcolor"> {
     isMinimumHeight: boolean;
-
-    onEventClick?: TOnEventClick;
-    onEventResizeStart?: TOnEventResizeStart;
-    onEventDragEnd?: TOnEventDragEnd;
-    onEventResizeEnd?: TOnEventResizeEnd;
 }
 
 const Main = forwardRef<HTMLDivElement, MainProps>(
-    (
-        {
-            event,
-            isMinimumHeight,
-            onEventClick,
-            onEventResizeStart,
-            onEventResizeEnd: _onEventResizeEnd,
-            onEventDragStart,
-            onEventDragEnd: _onEventDragEnd,
-            // ...
-            onMouseMove,
-            ...props
-        },
-        ref
-    ) => {
-        const [elementRef, { onRef }] =
-            useForwardedLocalRef<HTMLDivElement>(ref);
+    ({ isMinimumHeight, ...props }, ref) => {
+        const { event } = props;
 
         const bgcolor = useCalendarColorById(event?.colorId);
 
-        const { cellsRef } = useResponsiveCellPositions();
-
-        const onPositionUpdate = useCallback(() => {
-            updateDurationLabelAsync(elementRef.current, cellsRef);
-        }, []);
-
-        const { onGhostAdd, onGhostRemove, onEventDragEnd, onEventResizeEnd } =
-            useGhost(event.id, _onEventDragEnd, _onEventResizeEnd);
-
-        const { onMouseDown } = useDraggable(
-            event,
-            elementRef,
-            cellsRef,
-            onPositionUpdate,
-            onGhostAdd,
-            onEventDragStart,
-            onGhostRemove,
-            onEventDragEnd
-        );
-
-        const handleClick = useCallback(
-            (me: MouseEvent<HTMLDivElement>) => {
-                me.stopPropagation();
-                onEventClick?.(me, event);
-            },
-            [onEventClick, event]
-        );
-
-        const methods = useNoDragClick(handleClick, onMouseDown, onMouseMove);
-
         return (
-            <Container ref={onRef} bgcolor={bgcolor} {...methods} {...props}>
+            <EventsTarget ref={ref} bgcolor={bgcolor} {...props}>
                 <Title
                     title={event.title}
                     startDate={event.startDate}
@@ -105,18 +39,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
                         ) : null}
                     </>
                 ) : null}
-
-                {_onEventResizeEnd ? (
-                    <VerticalResize
-                        event={event}
-                        cellsRef={cellsRef}
-                        targetRef={elementRef}
-                        onResizeEarlyStart={onGhostAdd}
-                        onResizeStart={onEventResizeStart}
-                        onResizeEnd={onEventResizeEnd}
-                    />
-                ) : null}
-            </Container>
+            </EventsTarget>
         );
     }
 );

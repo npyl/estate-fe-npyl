@@ -1,4 +1,4 @@
-import { CellPosition } from "../../Main/types";
+import { CellPosition } from "../types";
 
 // Helper to calculate overlap ratio between element and cell
 function getOverlapRatio(elementRect: DOMRect, cell: CellPosition) {

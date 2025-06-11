@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { TOnEventDragEnd, TOnEventResizeEnd } from "../../types";
-import { addGhost, removeGhost } from "../util";
+import { TOnEventDragEnd, TOnEventResizeEnd } from "../../../types";
+import { addGhost, removeGhost } from "../../util";
 
 const useGhost = (
     eventId: string,

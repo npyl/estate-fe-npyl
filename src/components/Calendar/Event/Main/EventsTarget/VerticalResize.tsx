@@ -7,7 +7,7 @@ import {
     TCalendarEvent,
     TOnEventResizeEnd,
     TOnEventResizeStart,
-} from "../../types";
+} from "../../../types";
 
 const ResizeHandleSx: SxProps<Theme> = {
     position: "absolute",
