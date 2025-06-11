@@ -93,6 +93,8 @@ const ScrollContainer = forwardRef<ContainerRef, ScrollContainerProps>(
 
 // ----------------------------------------------------------------------------------
 
+const CONTROLS_CLASSNAME = "PPHorizontalScrollbar-Controls";
+
 interface ControlsProps extends StackProps {
     onScrollLeft: VoidFunction;
     onScrollRight: VoidFunction;
@@ -102,6 +104,7 @@ const Controls = forwardRef<HTMLDivElement, ControlsProps>(
     ({ onScrollLeft, onScrollRight, ...props }, ref) => (
         <Stack
             ref={ref}
+            className={CONTROLS_CLASSNAME}
             direction="row"
             alignItems="center"
             width="fit-content"
@@ -121,12 +124,14 @@ const Controls = forwardRef<HTMLDivElement, ControlsProps>(
 
 // ----------------------------------------------------------------------------------
 
-interface HorizontalScrollbarProps extends Omit<StackProps, "ref"> {}
+interface HorizontalScrollbarProps extends Omit<StackProps, "ref"> {
+    containerProps?: StackProps;
+}
 
 const HorizontalScrollbar = forwardRef<
     HTMLDivElement,
     HorizontalScrollbarProps
->((props, ref) => {
+>(({ containerProps, ...props }, ref) => {
     const scrollRef = useRef<ContainerRef>(null);
     const scrollLeft = useCallback(() => scrollRef.current?.scrollLeft(), []);
     const scrollRight = useCallback(() => scrollRef.current?.scrollRight(), []);
@@ -145,6 +150,7 @@ const HorizontalScrollbar = forwardRef<
             alignItems="center"
             overflow="hidden hidden"
             gap={0.5}
+            {...containerProps}
         >
             <ScrollContainer
                 ref={scrollRef}
@@ -163,5 +169,6 @@ const HorizontalScrollbar = forwardRef<
 
 HorizontalScrollbar.displayName = "HorizontalScrollbar";
 
+export { CONTROLS_CLASSNAME };
 export type { HorizontalScrollbarProps };
 export default HorizontalScrollbar;
