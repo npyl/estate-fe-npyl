@@ -1,4 +1,3 @@
-import Stack from "@mui/material/Stack";
 import Search from "./Search";
 import UserSelect from "./UserSelect";
 import FiltersBar from "@/components/Filters/FiltersBar";
@@ -14,11 +13,11 @@ const Filters = () => (
     <FiltersBar
         sx={BarSx}
         filters={
-            <Stack direction="row" alignItems="center" spacing={0.5}>
+            <>
                 <Search />
                 <UserSelect />
                 <Type />
-            </Stack>
+            </>
         }
         controls={undefined}
         bottomContent={undefined}

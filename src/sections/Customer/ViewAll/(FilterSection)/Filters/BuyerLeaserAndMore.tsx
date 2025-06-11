@@ -46,10 +46,10 @@ export default function FilterBuyerLeaserAndMore() {
     };
 
     return (
-        <FormControl sx={{ width: "200px" }}>
-            <StyledInputLabel id="roles-label">{t("Roles")}</StyledInputLabel>
+        <FormControl sx={{ minWidth: "200px" }}>
+            <StyledInputLabel>{t("Roles")}</StyledInputLabel>
             <Select
-                labelId="roles-label"
+                label={t("Roles")}
                 multiple
                 value={selectedRoles}
                 onChange={handleChange}
@@ -59,12 +59,6 @@ export default function FilterBuyerLeaserAndMore() {
                             t(role.charAt(0).toUpperCase() + role.slice(1))
                         )
                         .join(", ")
-                }
-                input={
-                    <OutlinedInput
-                        sx={{ maxHeight: "38px", textAlign: "center" }}
-                        label={t("Roles")}
-                    />
                 }
             >
                 <MenuItem value={"leaser"}>

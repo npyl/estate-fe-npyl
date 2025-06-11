@@ -33,7 +33,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         sx={{ ...FiltersBarSx, ...sx }}
         {...props}
     >
-        <SpaceBetween alignItems="center" gap={0.5}>
+        <SpaceBetween alignItems="center" gap={2}>
             <HorizontalScrollbar spacing={0.5} pt={1}>
                 {filters}
             </HorizontalScrollbar>

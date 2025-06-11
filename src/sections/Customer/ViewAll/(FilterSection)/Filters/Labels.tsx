@@ -51,13 +51,7 @@ export default function FilterLabels() {
     return (
         <FormControl
             sx={{
-                width: "220px",
-                maxHeight: "38px",
-
-                display: {
-                    md: "none",
-                    lg: "flex",
-                },
+                minWidth: "220px",
             }}
         >
             <StyledInputLabel>{t("Labels")}</StyledInputLabel>
