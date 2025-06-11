@@ -66,6 +66,8 @@ interface UseGeneralUploaderHandlers {
     onUploadFail?: (f: IUploadFail) => void;
     onIntervalChange?: (i: number) => void;
     onProgressUpdate?: (p: IUploadProgress) => void;
+
+    onReconnect?: VoidFunction;
 }
 
 export type {
