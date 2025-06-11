@@ -395,7 +395,7 @@ const baseThemeOptions: ThemeOptions = {
         },
         nav: {
             sidebarWidth: 200,
-            topbarHeight: 75,
+            topbarHeight: 64,
         },
     },
 };

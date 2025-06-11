@@ -51,7 +51,7 @@ declare module "@mui/material/styles" {
         // ...
         modal: number; // INFO: make required
         // ...
-        all: number;
+        all: number; // INFO: "above all" (eg. for splash screen)
     }
 
     // ------------------------------------------
