@@ -8,7 +8,7 @@ const Logs = () => {
     const iCustomerId = toNumberSafe(customerId);
     if (iCustomerId === -1) return null;
 
-    return <ViewAll propertyId={iCustomerId} />;
+    return <ViewAll customerId={iCustomerId} />;
 };
 
 export default Logs;

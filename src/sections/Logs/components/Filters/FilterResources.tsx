@@ -8,16 +8,15 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
-import { selectResources, setResources } from "src/slices/log";
+import { useFiltersContext, useSelectResources } from "./Context";
 
 export default function FilterResources() {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
 
-    const resources = useSelector(selectResources) ?? [];
+    const { setResources } = useFiltersContext();
+    const resources = useSelectResources() ?? [];
 
     const logsEnums = data?.logs;
     const resourceEnums = logsEnums?.resourceTypes || [];
@@ -26,11 +25,9 @@ export default function FilterResources() {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setResources(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+        setResources(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
         );
     };
     const getDisplayValues = (selectedKeys: string[]) => {

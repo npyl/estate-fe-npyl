@@ -8,25 +8,23 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
-import { selectActions, setActions } from "src/slices/log";
+import { useFiltersContext, useSelectActions } from "./Context";
 
 export default function FilterActions() {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
-    const actions = useSelector(selectActions) ?? [];
     const logsEnums = data?.logs;
     const actionsEnums = logsEnums?.userActions || [];
+
+    const { setActions } = useFiltersContext();
+    const actions = useSelectActions() ?? [];
 
     const handleChange = (event: SelectChangeEvent<typeof actions>) => {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setActions(typeof value === "string" ? value.split(",") : value)
-        );
+        setActions(typeof value === "string" ? value.split(",") : value);
     };
 
     const getSelectedActionValues = (selectedKeys: string[]) => {

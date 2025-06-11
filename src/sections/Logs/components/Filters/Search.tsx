@@ -1,16 +1,15 @@
 import PoppingSearch from "@/components/PoppingSearch";
-import { setSearch } from "@/slices/log";
 import { ChangeEvent, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
+import { useFiltersContext } from "./Context";
 
 const Search = () => {
-    const dispatch = useDispatch();
-
     const [value, setValue] = useState("");
 
+    const { setSearch } = useFiltersContext();
+
     const debouncedSetSearch = useDebouncedCallback((v: string) => {
-        dispatch(setSearch(v));
+        setSearch(v);
     }, 300);
     const handleSearch = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const v = e.target.value;
@@ -20,7 +19,7 @@ const Search = () => {
 
     const handleClear = useCallback(() => {
         setValue("");
-        dispatch(setSearch(""));
+        setSearch("");
     }, []);
 
     return (

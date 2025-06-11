@@ -2,19 +2,23 @@ import { Chip, Grid } from "@mui/material";
 import { format } from "date-fns"; // for date formatting
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useAllUsersQuery } from "src/services/user";
-import { deleteFilter, getChangedFields, selectIds } from "src/slices/log";
+import {
+    useFiltersContext,
+    useSelectChangedFields,
+    useSelectIds,
+} from "./Context";
 
 const ChosenFiltersLogs = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const { data: labelsQuery } = useGetLabelsQuery();
     const { data: users } = useAllUsersQuery();
-    const changedProps = useSelector(getChangedFields);
-    const ids = useSelector(selectIds);
+
+    const { deleteFilter } = useFiltersContext();
+    const changedProps = useSelectChangedFields();
+    const ids = useSelectIds();
 
     const allLabels = useMemo(
         () => labelsQuery?.customerLabels || [],
@@ -97,8 +101,8 @@ const ChosenFiltersLogs = () => {
                             key={"date-range-chip"} // Unique key for the date range chip
                             label={`${dateLabel}: ${formatFromDate} - ${formatToDate}`}
                             onDelete={() => {
-                                dispatch(deleteFilter("fromDate"));
-                                dispatch(deleteFilter("toDate"));
+                                deleteFilter("fromDate");
+                                deleteFilter("toDate");
                             }}
                             sx={{ m: 0.5 }}
                         />
@@ -113,8 +117,8 @@ const ChosenFiltersLogs = () => {
                     return (
                         <Chip
                             key={key} // Consider using something unique rather than 'index'
-                            label={`${t(key)}: ${valuesToDisplay}`} // Assuming 't(key)' gets the correct label for the filter
-                            onDelete={() => dispatch(deleteFilter(key))}
+                            label={`${t(key as string)}: ${valuesToDisplay}`} // Assuming 't(key)' gets the correct label for the filter
+                            onDelete={() => deleteFilter(key)}
                             sx={{ m: 0.5 }}
                         />
                     );

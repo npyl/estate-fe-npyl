@@ -1,17 +1,14 @@
 import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { selectUsers, setUsers } from "src/slices/log";
-import { useDispatch } from "src/store";
+import { useFiltersContext, useSelectUsers } from "./Context";
 
 function FilterLogManager() {
-    const dispatch = useDispatch();
-
-    const ids = useSelector(selectUsers);
+    const { setUsers } = useFiltersContext();
+    const ids = useSelectUsers();
     const value = Array.isArray(ids) ? ids.at(0) : -1;
 
     const handleChange = useCallback((id: number) => {
-        dispatch(setUsers([id]));
+        setUsers([id]);
     }, []);
 
     return <ManagerAutocomplete value={value} onChange={handleChange} />;

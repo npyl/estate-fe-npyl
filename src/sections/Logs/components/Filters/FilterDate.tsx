@@ -6,23 +6,23 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { DateRange } from "react-date-range";
 import { FilterButton } from "@/components/Filters";
-import {
-    selectFromDate,
-    selectToDate,
-    setFromDate,
-    setToDate,
-} from "src/slices/log";
 
 import { addDays } from "date-fns"; // make sure you've installed date-fns as it's a peer dependency
 import "react-date-range/dist/styles.css"; // main CSS file
 import "react-date-range/dist/theme/default.css"; // theme CSS file
 import useResponsive from "src/hooks/useResponsive";
+import {
+    useFiltersContext,
+    useSelectFromDate,
+    useSelectToDate,
+} from "./Context";
 
 const DateSelect = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
-    const fromDate = useSelector(selectFromDate);
-    const toDate = useSelector(selectToDate);
+
+    const { setFromDate, setToDate } = useFiltersContext();
+    const fromDate = useSelectFromDate();
+    const toDate = useSelectToDate();
 
     const initialStartDate = fromDate ? new Date(fromDate) : new Date();
     const initialEndDate = toDate ? new Date(toDate) : addDays(new Date(), 7); // or however far in the future you prefer
@@ -46,8 +46,8 @@ const DateSelect = () => {
 
     const handleSelect = (ranges: any) => {
         const range = ranges.selection; // 'selection' is the same key used in the state
-        dispatch(setFromDate(Math.floor(range.startDate.getTime())));
-        dispatch(setToDate(Math.floor(range.endDate.getTime())));
+        setFromDate(Math.floor(range.startDate.getTime()));
+        setToDate(Math.floor(range.endDate.getTime()));
         setState([range]);
     };
 

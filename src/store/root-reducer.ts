@@ -29,7 +29,6 @@ import { server } from "@/services/server";
 import { emails } from "@/services/email";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
-import { reducer as logReducer } from "../slices/log";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -68,6 +67,4 @@ export const rootReducer = combineReducers({
 
     // customer
     customerFilters: customerFiltersReducer,
-    // general
-    logsFilters: logReducer,
 });

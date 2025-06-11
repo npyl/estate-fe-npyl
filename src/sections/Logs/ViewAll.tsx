@@ -1,9 +1,7 @@
 import { Stack } from "@mui/material";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { useFilterLogsQuery } from "src/services/logs";
-import { selectAll, sumOfChangedProperties } from "@/slices/log";
 import { FilterLogSection } from "./components/FilterSection";
 const FilterMore = dynamic(
     () => import("@/sections/Filters/FilterMore/Dialog")
@@ -15,26 +13,28 @@ import useDialog from "@/hooks/useDialog";
 import NoLogsPlaceholder from "./components/NoLogs";
 import dynamic from "next/dynamic";
 import FiltersBar from "@/components/Filters/FiltersBar";
-import ChosenFiltersLogs from "./components/Filters/ChoosenFiltersLogs";
+import ChosenFiltersLogs from "./components/Filters/ChosenFilters";
+import LogsFiltersProvider, {
+    useSelectAll,
+    useSelectSumOfChangedProperties,
+} from "./components/Filters/Context";
 
 const pageSize = 15;
 
 const ChosenFilters = () => {
-    const changed = useSelector(sumOfChangedProperties);
-
+    const changed = useSelectSumOfChangedProperties();
     if (changed === 0) return null;
-
     return <ChosenFiltersLogs />;
 };
 
-const ViewAll = () => {
+const Content = () => {
     const { i18n } = useTranslation();
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     const pagination = usePagination();
 
-    const filter = useSelector(selectAll);
+    const filter = useSelectAll();
 
     const { data, isLoading } = useFilterLogsQuery({
         filter,
@@ -48,10 +48,12 @@ const ViewAll = () => {
         [data]
     );
 
+    const changed = useSelectSumOfChangedProperties();
+
     return (
         <>
             <FloatingButton
-                badgeContent={checkFields(filter) ? 1 : 0}
+                badgeContent={changed}
                 onClick={openDialog}
                 sx={{
                     display: {
@@ -99,31 +101,15 @@ const ViewAll = () => {
     );
 };
 
-function checkFields(obj: any) {
-    // List of fields to check in the object
-    const fieldsToCheck = [
-        "resources",
-        "actions",
-        "users",
-        "fromDate",
-        "toDate",
-    ];
-
-    // Iterate over the list of fields
-    for (let field of fieldsToCheck) {
-        const value = obj[field];
-
-        // Check if the field exists
-        if (value !== undefined) {
-            // Check if it's an array with length > 0 or a non-array value
-            if (Array.isArray(value) ? value.length > 0 : true) {
-                return true; // Return true if the field meets the criteria
-            }
-        }
-    }
-
-    // Return false if none of the fields meet the criteria
-    return false;
+interface ViewAllProps {
+    propertyId?: number;
+    customerId?: number;
 }
+
+const ViewAll: FC<ViewAllProps> = (props) => (
+    <LogsFiltersProvider {...props}>
+        <Content />
+    </LogsFiltersProvider>
+);
 
 export default ViewAll;
