@@ -249,6 +249,15 @@ export const properties = apiWithTranslation({
             }),
         }),
 
+        generateTitle: builder.mutation<string, IOpenAIDetailsPOST>({
+            query: (body) => ({
+                url: `/title/generate`,
+                method: "POST",
+                body,
+                responseHandler: "text",
+            }),
+        }),
+
         generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
             query: (body) => ({
                 url: `/description/generate`,
@@ -430,6 +439,7 @@ export const {
     useGetPropertyLabelsQuery,
 
     // description editor
+    useGenerateTitleMutation,
     useGenerateDescriptionMutation,
     useImproveDescriptionMutation,
 

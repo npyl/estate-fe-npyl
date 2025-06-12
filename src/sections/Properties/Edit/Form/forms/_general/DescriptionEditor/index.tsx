@@ -18,6 +18,9 @@ import {
 } from "./context/EditorHandle";
 import { Language } from "@/components/LanguageButton/types";
 import Box from "@mui/material/Box";
+import GenerateTitleButton from "./GenerateTitleButton";
+import Stack from "@mui/material/Stack";
+import { SpaceBetween } from "@/components/styled";
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
@@ -38,26 +41,33 @@ const DescriptionSection = () => {
             tabs={TABS}
             selected={lang}
             disabled={isLoading}
-            endNode={<UpperRightButtons lang={lang} />}
             onSelect={setLang}
         >
-            <Box>
-                <Typography variant="h6" flex={1}>
-                    {`${t("Title")} (${lang})`}
-                </Typography>
+            <Stack spacing={1}>
+                <SpaceBetween direction="row" alignItems="center">
+                    <Typography variant="h6" flex={1}>
+                        {`${t("Title")} (${lang})`}
+                    </Typography>
+                    <GenerateTitleButton lang={lang} />
+                </SpaceBetween>
                 <RHFTextField fullWidth key={title} name={title} />
-            </Box>
+            </Stack>
 
-            <Box>
-                <Typography variant="h6" flex={1}>
-                    {`${t("Description")} (${lang})`}
-                </Typography>
+            <Box />
+
+            <Stack spacing={1}>
+                <SpaceBetween direction="row" alignItems="center">
+                    <Typography variant="h6" flex={1}>
+                        {`${t("Description")} (${lang})`}
+                    </Typography>
+                    <UpperRightButtons lang={lang} />
+                </SpaceBetween>
                 <RHFEditor
                     ref={editorRef}
                     name={descriptionName}
                     onPlainTextChange={handlePlainTextChange}
                 />
-            </Box>
+            </Stack>
         </TabbedBox>
     );
 };
