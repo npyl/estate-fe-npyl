@@ -29,7 +29,6 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ user }) => {
             isLoading={isLoading}
             // ...
             src={user?.avatar}
-            userId={user?.id || -1}
             firstName={user?.firstName}
             lastName={user?.lastName}
             // ...
