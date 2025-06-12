@@ -57,6 +57,11 @@ interface ISearchParams {
     b2b?: boolean;
 }
 
+interface IUploadAvatarReq {
+    file: File;
+    customerId: number;
+}
+
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/customers`;
 const notificationBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`;
 const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
@@ -228,6 +233,31 @@ export const customers = apiWithTranslation({
             }),
             invalidatesTags: ["Customers", "CustomerById"],
         }),
+
+        // ---------------------------------------------------
+
+        uploadAvatar: builder.mutation<void, IUploadAvatarReq>({
+            query: ({ customerId, file }) => {
+                const body = new FormData();
+                body.append("file", file);
+
+                return {
+                    url: `${customerId}/avatar`,
+                    method: "POST",
+                    body,
+                    responseHandler: "text",
+                };
+            },
+            invalidatesTags: ["Customers", "CustomerById"],
+        }),
+
+        removeAvatar: builder.mutation<void, number>({
+            query: (customerId) => ({
+                url: `${customerId}/avatar`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Customers", "CustomerById"],
+        }),
     }),
 });
 
@@ -253,6 +283,9 @@ export const {
     // ...
 
     useCreateOrUpdateCustomerFromStayUpdatedMutation,
+
+    useUploadAvatarMutation,
+    useRemoveAvatarMutation,
 } = customers;
 
 const useGetCustomerByIdQuery = la(customers.useGetCustomerByIdQuery);

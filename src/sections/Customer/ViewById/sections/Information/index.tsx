@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import Information from "./View";
+import Information from "./Information";
 import useGetCustomer from "@/hooks/customer";
 import dynamic from "next/dynamic";
 const B2BMembers = dynamic(() => import("./B2BMembers"));
