@@ -1,17 +1,19 @@
-import { forwardRef } from "react";
+import { ComponentProps, forwardRef } from "react";
 import { Box, Stack } from "@mui/material";
 import Title from "../_shared/Title";
 import Description from "../_shared/Description";
 import dynamic from "next/dynamic";
 import { useCalendarColorById } from "@/services/calendar";
-import Ghostable, { GhostableProps } from "./Ghostable";
 import WithLabelUpdate from "./WithLabelUpdate";
+import WithGhost from "./WithGhost";
+import EventsTarget from "./EventsTarget";
 const People = dynamic(() => import("../_shared/People"));
-const FullLogic = WithLabelUpdate(Ghostable as any);
+const FullLogic = WithGhost(WithLabelUpdate(EventsTarget));
 
-type OmitList = "bgcolor" | "cellsRef" | "onPositionUpdate";
+type OmitList = "bgcolor";
+type FullLogicProps = ComponentProps<typeof FullLogic>;
 
-interface MainProps extends Omit<GhostableProps, OmitList> {
+interface MainProps extends Omit<FullLogicProps, OmitList> {
     isMinimumHeight: boolean;
 }
 

@@ -1,37 +1,47 @@
-import { ComponentType, forwardRef, useCallback } from "react";
+import { ComponentType, forwardRef, RefObject, useCallback } from "react";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import updateDurationLabelAsync from "./updateDuration";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import { GhostableProps } from "../Ghostable";
+import { CellPosition } from "../EventsTarget/types";
 
 type OmitList = "cellsRef" | "onPositionUpdate";
-type WrappableComponent = ComponentType<GhostableProps>;
-type WithLabelUpdateProps = Omit<GhostableProps, OmitList>;
 
-const WithLabelUpdate = (Ghostable: WrappableComponent) => {
-    const WrappedComponent = forwardRef<HTMLDivElement, WithLabelUpdateProps>(
-        (props, ref) => {
-            const { cellsRef } = useResponsiveCellPositions();
+type Responder = {
+    cellsRef: RefObject<CellPosition[]>;
+    onPositionUpdate: VoidFunction;
+};
 
-            const [elementRef, { onRef }] =
-                useForwardedLocalRef<HTMLDivElement>(ref);
+type WrappableComponent<T extends Responder> = ComponentType<T>;
+type WithLabelUpdateProps<T extends Responder> = Omit<T, OmitList>;
 
-            const onPositionUpdate = useCallback(() => {
-                updateDurationLabelAsync(elementRef.current, cellsRef);
-            }, []);
+const WithLabelUpdate = <T extends Responder>(
+    Component: WrappableComponent<T>
+) => {
+    const WrappedComponent = forwardRef<
+        HTMLDivElement,
+        WithLabelUpdateProps<T>
+    >((props, ref) => {
+        const { cellsRef } = useResponsiveCellPositions();
 
-            return (
-                <Ghostable
-                    ref={onRef}
-                    cellsRef={cellsRef}
-                    onPositionUpdate={onPositionUpdate}
-                    {...props}
-                />
-            );
-        }
-    );
+        const [elementRef, { onRef }] =
+            useForwardedLocalRef<HTMLDivElement>(ref);
 
-    WrappedComponent.displayName = `WithLabelUpdate(${Ghostable.displayName || Ghostable.name})`;
+        const onPositionUpdate = useCallback(() => {
+            updateDurationLabelAsync(elementRef.current, cellsRef);
+        }, []);
+
+        // Type assertion to tell TypeScript that we're reconstructing T correctly
+        const componentProps = {
+            ref: onRef,
+            cellsRef,
+            onPositionUpdate,
+            ...props,
+        } as unknown as T & { ref: (node: HTMLDivElement | null) => void };
+
+        return <Component {...componentProps} />;
+    });
+
+    WrappedComponent.displayName = `WithLabelUpdate(${Component.displayName || Component.name})`;
 
     return WrappedComponent;
 };
