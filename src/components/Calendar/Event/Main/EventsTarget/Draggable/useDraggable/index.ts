@@ -58,11 +58,22 @@ const useDraggable = (
             // Get cell width information
             const dayWidth = cellsRef.current?.at(0)?.width ?? 100;
 
-            // Calculate new position using the transform approach from the older code for X
-            // but keep the existing approach for Y
+            // Calculate horizontal movement from start position
+            const horizontalMovement =
+                e.clientX - dragInfo.current.startPosition.x;
+
+            // INFO: Only snap to new day if we've moved more than half a day width; this prevents accidental jumps
+            const dayOffset =
+                Math.abs(horizontalMovement) >= dayWidth / 2
+                    ? Math.sign(horizontalMovement) *
+                      Math.floor(
+                          (Math.abs(horizontalMovement) + dayWidth / 2) /
+                              dayWidth
+                      )
+                    : 0;
+
             const newX =
-                dragInfo.current.initialTransform.x +
-                (e.clientX - dragInfo.current.startPosition.x);
+                dragInfo.current.initialTransform.x + dayOffset * dayWidth;
 
             // Original Y calculation remains
             const newY =
@@ -70,9 +81,6 @@ const useDraggable = (
                 gridRect.top +
                 grid.scrollTop -
                 mouseOffset.current.y;
-
-            // Snap X to days (horizontal) - transforming the newX to days
-            const newDay = Math.floor(newX / dayWidth);
 
             // For vertical snapping, we need to ensure we're truly aligning to 15-minute intervals
             // Force snapping to exact multiples of INTERVAL_HEIGHT (15px)
@@ -83,7 +91,7 @@ const useDraggable = (
             );
 
             // Calculate new position with snapping
-            const newLeft = newDay * dayWidth;
+            const newLeft = newX;
             const newTop = newInterval * INTERVAL_HEIGHT; // This must be exactly divisible by 15
 
             // Update DOM element position
