@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { TOnEventDragEnd, TOnEventResizeEnd } from "../../../types";
-import { addGhost, removeGhost } from "../../util";
+import { addGhost, removeGhosts } from "./util";
 
 const useGhost = (
     eventId: string,
@@ -11,7 +11,7 @@ const useGhost = (
         addGhost(eventId);
     }, [eventId]);
     const onGhostRemove = useCallback(() => {
-        removeGhost();
+        removeGhosts();
     }, []);
 
     const onEventDragEnd: TOnEventDragEnd = useCallback(
