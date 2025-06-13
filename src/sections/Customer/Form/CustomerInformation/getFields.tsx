@@ -126,17 +126,19 @@ const getFIELDS = (
         label={t("Lead Source")}
         options={leadSourceEnum}
     />,
+
     leadSource === "CUSTOMER" ? (
         <RHFTextField fullWidth name="suggestedBy" label={t("Suggested by")} />
     ) : null,
-    <Rating />,
+
+    <StayUpdated />,
+
     customerId ? (
         <LabelCreate variant="customer" resourceId={+customerId} />
     ) : (
         <LabelPlaceholder />
     ),
-
-    <StayUpdated />,
+    <Rating />,
 ];
 
 export default getFIELDS;

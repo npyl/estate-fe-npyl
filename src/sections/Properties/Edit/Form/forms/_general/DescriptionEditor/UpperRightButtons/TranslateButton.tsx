@@ -6,15 +6,20 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import { HideText } from "@/components/styled";
 import { useOperationsContext } from "../context/OperationsContext";
 import { useEditorHandleContext } from "../context/EditorHandle";
+import { IPropertyYup } from "../../../../hook";
+
+const useTypedWatch = (field: "title" | "descriptionText") =>
+    (useWatch<IPropertyYup>({ name: `descriptions.0.${field}` }) ||
+        "") as string;
 
 const TranslateButton = () => {
     const { t } = useTranslation();
 
     const { editorRef } = useEditorHandleContext();
-    const { setValue } = useFormContext();
+    const { setValue } = useFormContext<IPropertyYup>();
 
-    const title = useWatch({ name: "descriptions[0].title" });
-    const description = useWatch({ name: "descriptions[0].descriptionText" });
+    const title = useTypedWatch("title");
+    const description = useTypedWatch("descriptionText");
 
     const { translate, isLoading } = useOperationsContext();
 
@@ -30,7 +35,7 @@ const TranslateButton = () => {
         const res = await translate(body).unwrap();
         const translatedTexts = res.translations.map(({ text }) => text);
 
-        setValue("descriptions[1].title", translatedTexts[0]);
+        setValue("descriptions.1.title", translatedTexts[0]);
         editorRef.current?.commands.setContent(translatedTexts[1], true);
     }, []);
 
