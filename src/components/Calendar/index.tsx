@@ -26,6 +26,8 @@ const Calendar: FC<CalendarProps> = ({
     HeaderSlots,
     ViewSlots,
 }) => {
+    const { Header = CalendarHeader, ...otherSlots } = slots || {};
+
     // internal state (for uncontrolled use)
     const [_date, _setDate] = useState(TODAY);
     const [_view, _setView] = useState<TCalendarView>(initialView);
@@ -53,10 +55,7 @@ const Calendar: FC<CalendarProps> = ({
             onDateChange={handleDateChange}
             onViewChange={handleViewChange}
             // ...
-            slots={{
-                Header: CalendarHeader,
-                ...slots,
-            }}
+            slots={{ Header, ...otherSlots }}
             ViewSlots={{
                 DayView: CalendarDayView as any,
                 WeekView: CalendarWeekView as any,
