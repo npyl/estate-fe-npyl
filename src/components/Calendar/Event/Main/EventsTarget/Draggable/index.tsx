@@ -61,4 +61,5 @@ const Draggable = forwardRef<HTMLDivElement, DraggableProps>(
 
 Draggable.displayName = "Draggable";
 
+export type { DraggableProps };
 export default Draggable;

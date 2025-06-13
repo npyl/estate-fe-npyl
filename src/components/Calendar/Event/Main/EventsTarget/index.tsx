@@ -1,5 +1,4 @@
 import { forwardRef, useCallback } from "react";
-import { EventContainerProps } from "../../Container";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import VerticalResize from "./VerticalResize";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
@@ -11,11 +10,11 @@ import {
     TOnEventResizeStart,
 } from "../../../types";
 import updateDurationLabelAsync from "./Draggable/updateDuration";
-import useGhost from "./useGhost";
-import Draggable from "./Draggable";
+import Draggable, { DraggableProps } from "./Draggable";
 
-interface EventsTargetProps
-    extends Omit<EventContainerProps, "onClick" | "onMouseDown"> {
+type OmitList = "cellsRef" | "onPositionUpdate";
+
+interface EventsTargetProps extends Omit<DraggableProps, OmitList> {
     event: TCalendarEvent;
 
     onEventClick?: TOnEventClick;
@@ -29,8 +28,10 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
         {
             event,
             onEventResizeStart,
-            onEventResizeEnd: _onEventResizeEnd,
-            onEventDragEnd: _onEventDragEnd,
+            onEventResizeEnd,
+            onEventDragEnd,
+            onGhostAdd,
+            onGhostRemove,
             // ...
             children,
             ...props
@@ -46,14 +47,6 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
             updateDurationLabelAsync(elementRef.current, cellsRef);
         }, []);
 
-        const {
-            onGhostAdd,
-            onGhostRemove,
-            // ...
-            onEventDragEnd,
-            onEventResizeEnd,
-        } = useGhost(event.id, _onEventDragEnd, _onEventResizeEnd);
-
         return (
             <Draggable
                 ref={onRef}
@@ -67,7 +60,7 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
             >
                 {children}
 
-                {_onEventResizeEnd ? (
+                {onEventResizeEnd ? (
                     <VerticalResize
                         event={event}
                         targetRef={elementRef}
