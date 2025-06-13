@@ -1,5 +1,5 @@
-import { forwardRef, MouseEvent, useCallback } from "react";
-import Container, { EventContainerProps } from "../../Container";
+import { forwardRef, useCallback } from "react";
+import { EventContainerProps } from "../../Container";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import VerticalResize from "./VerticalResize";
 import useResponsiveCellPositions from "./useResponsiveCellPositions";
@@ -10,10 +10,9 @@ import {
     TOnEventResizeEnd,
     TOnEventResizeStart,
 } from "../../../types";
-import useDraggable from "./useDraggable";
-import useNoDragClick from "../../../useNoDragClick";
-import updateDurationLabelAsync from "./updateDuration";
+import updateDurationLabelAsync from "./Draggable/updateDuration";
 import useGhost from "./useGhost";
+import Draggable from "./Draggable";
 
 interface EventsTargetProps
     extends Omit<EventContainerProps, "onClick" | "onMouseDown"> {
@@ -29,12 +28,9 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
     (
         {
             event,
-            onEventClick,
             onEventResizeStart,
             onEventResizeEnd: _onEventResizeEnd,
-            onEventDragStart,
             onEventDragEnd: _onEventDragEnd,
-            onMouseMove,
             // ...
             children,
             ...props
@@ -50,45 +46,40 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
             updateDurationLabelAsync(elementRef.current, cellsRef);
         }, []);
 
-        const { onGhostAdd, onGhostRemove, onEventDragEnd, onEventResizeEnd } =
-            useGhost(event.id, _onEventDragEnd, _onEventResizeEnd);
-
-        const { onMouseDown } = useDraggable(
-            event,
-            elementRef,
-            cellsRef,
-            onPositionUpdate,
+        const {
             onGhostAdd,
-            onEventDragStart,
             onGhostRemove,
-            onEventDragEnd
-        );
-
-        const handleClick = useCallback(
-            (me: MouseEvent<HTMLDivElement>) => {
-                me.stopPropagation();
-                onEventClick?.(me, event);
-            },
-            [onEventClick, event]
-        );
-
-        const methods = useNoDragClick(handleClick, onMouseDown, onMouseMove);
+            // ...
+            onEventDragEnd,
+            onEventResizeEnd,
+        } = useGhost(event.id, _onEventDragEnd, _onEventResizeEnd);
 
         return (
-            <Container ref={onRef} {...methods} {...props}>
+            <Draggable
+                ref={onRef}
+                event={event}
+                cellsRef={cellsRef}
+                onPositionUpdate={onPositionUpdate}
+                onGhostAdd={onGhostAdd}
+                onGhostRemove={onGhostRemove}
+                onEventDragEnd={onEventDragEnd}
+                {...props}
+            >
                 {children}
 
                 {_onEventResizeEnd ? (
                     <VerticalResize
                         event={event}
-                        cellsRef={cellsRef}
                         targetRef={elementRef}
+                        // ...
                         onResizeEarlyStart={onGhostAdd}
                         onResizeStart={onEventResizeStart}
                         onResizeEnd={onEventResizeEnd}
+                        // ...
+                        onPositionUpdate={onPositionUpdate}
                     />
                 ) : null}
-            </Container>
+            </Draggable>
         );
     }
 );

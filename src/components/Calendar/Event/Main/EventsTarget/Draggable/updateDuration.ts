@@ -1,6 +1,6 @@
 import { RefObject } from "react";
-import { getText } from "../../_shared/Duration";
-import { CellPosition } from "./types";
+import { getText } from "../../../_shared/Duration";
+import { CellPosition } from "../types";
 import sleep from "@/utils/sleep";
 import getOverlapRatio from "./useDraggable/getOverlapRatio";
 import calculateNewDates from "./useDraggable/calculateNewDates";

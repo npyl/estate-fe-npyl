@@ -1,7 +1,5 @@
 import { useRef, useCallback, MutableRefObject, FC } from "react";
 import { Box, SxProps, Theme } from "@mui/material";
-import { CellPosition } from "./types";
-import updateDurationLabelAsync from "./updateDuration";
 import stopPropagation from "@/utils/stopPropagation";
 import {
     TCalendarEvent,
@@ -22,20 +20,22 @@ const ResizeHandleSx: SxProps<Theme> = {
 
 interface VerticalResizeProps {
     targetRef: MutableRefObject<HTMLDivElement | null>;
-    cellsRef: MutableRefObject<CellPosition[]>;
     event: TCalendarEvent;
     onResizeEarlyStart?: VoidFunction; // equivalent to onResizeStart but fires earlier, before we are sure it is actually a resize start
     onResizeStart?: TOnEventResizeStart;
     onResizeEnd?: TOnEventResizeEnd;
+
+    onPositionUpdate: VoidFunction;
 }
 
 const VerticalResize: FC<VerticalResizeProps> = ({
     targetRef,
-    cellsRef,
     event,
     onResizeEarlyStart,
     onResizeStart,
     onResizeEnd,
+
+    onPositionUpdate,
 }) => {
     const isResizing = useRef(false);
 
@@ -81,10 +81,10 @@ const VerticalResize: FC<VerticalResizeProps> = ({
             // Simply set the new height without constraints
             targetRef.current.style.height = `${newHeight}px`;
 
-            // Update duration
-            updateDurationLabelAsync(targetRef.current, cellsRef);
+            // Update duration label
+            onPositionUpdate();
         },
-        [targetRef]
+        [onPositionUpdate]
     );
 
     const handleResizeEnd = useCallback(
