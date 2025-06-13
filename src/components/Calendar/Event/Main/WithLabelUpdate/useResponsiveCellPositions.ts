@@ -1,5 +1,5 @@
 import { useCallback, useRef, useLayoutEffect } from "react";
-import { CellPosition } from "./types";
+import { CellPosition } from "../EventsTarget/types";
 import { CELL_CLASSNAME } from "@/components/Calendar/constants";
 
 const useResponsiveCellPositions = () => {

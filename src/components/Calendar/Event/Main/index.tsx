@@ -5,9 +5,13 @@ import Description from "../_shared/Description";
 import dynamic from "next/dynamic";
 import { useCalendarColorById } from "@/services/calendar";
 import Ghostable, { GhostableProps } from "./Ghostable";
+import WithLabelUpdate from "./WithLabelUpdate";
 const People = dynamic(() => import("../_shared/People"));
+const FullLogic = WithLabelUpdate(Ghostable as any);
 
-interface MainProps extends Omit<GhostableProps, "bgcolor"> {
+type OmitList = "bgcolor" | "cellsRef" | "onPositionUpdate";
+
+interface MainProps extends Omit<GhostableProps, OmitList> {
     isMinimumHeight: boolean;
 }
 
@@ -18,7 +22,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
         const bgcolor = useCalendarColorById(event?.colorId);
 
         return (
-            <Ghostable ref={ref} bgcolor={bgcolor} {...props}>
+            <FullLogic ref={ref} bgcolor={bgcolor} {...props}>
                 <Title
                     title={event.title}
                     startDate={event.startDate}
@@ -39,7 +43,7 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
                         ) : null}
                     </>
                 ) : null}
-            </Ghostable>
+            </FullLogic>
         );
     }
 );

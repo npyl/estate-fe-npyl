@@ -1,7 +1,6 @@
-import { forwardRef, useCallback } from "react";
+import { forwardRef } from "react";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import VerticalResize from "./VerticalResize";
-import useResponsiveCellPositions from "./useResponsiveCellPositions";
 import {
     TCalendarEvent,
     TOnEventClick,
@@ -9,12 +8,9 @@ import {
     TOnEventResizeEnd,
     TOnEventResizeStart,
 } from "../../../types";
-import updateDurationLabelAsync from "./Draggable/updateDuration";
 import Draggable, { DraggableProps } from "./Draggable";
 
-type OmitList = "cellsRef" | "onPositionUpdate";
-
-interface EventsTargetProps extends Omit<DraggableProps, OmitList> {
+interface EventsTargetProps extends DraggableProps {
     event: TCalendarEvent;
 
     onEventClick?: TOnEventClick;
@@ -27,6 +23,8 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
     (
         {
             event,
+            cellsRef,
+            onPositionUpdate,
             onEventResizeStart,
             onEventResizeEnd,
             onEventDragEnd,
@@ -40,12 +38,6 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
     ) => {
         const [elementRef, { onRef }] =
             useForwardedLocalRef<HTMLDivElement>(ref);
-
-        const { cellsRef } = useResponsiveCellPositions();
-
-        const onPositionUpdate = useCallback(() => {
-            updateDurationLabelAsync(elementRef.current, cellsRef);
-        }, []);
 
         return (
             <Draggable

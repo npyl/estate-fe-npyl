@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useLayoutEffect, useRef } from "react";
-import { CellPosition } from "../types";
+import { CellPosition } from "../../types";
 import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
 import {
     TCalendarEvent,
