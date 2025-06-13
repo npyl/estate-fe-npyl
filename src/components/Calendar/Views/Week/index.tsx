@@ -4,6 +4,7 @@ import { CalendarWeekViewProps } from "../../types";
 import { _getMiscCellEvents, _getTodaysEvents } from "../util";
 import dynamic from "next/dynamic";
 import DaysHeader from "./DaysHeader";
+import Box from "@mui/material/Box";
 const DefaultNumbering = dynamic(() => import("../Numbering"));
 const CalendarWeekViewCell = dynamic(() => import("./Cell"));
 
@@ -31,6 +32,8 @@ const CalendarWeekView: FC<CalendarWeekViewProps> = ({
     return (
         <>
             <DaysHeader date={date} />
+
+            <Box mt={1} />
 
             <WeekView
                 date={date}
