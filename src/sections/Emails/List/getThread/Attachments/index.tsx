@@ -8,7 +8,7 @@ interface AttachmentsProps extends ResponsiveStackProps {
 }
 
 const Attachments: FC<AttachmentsProps> = ({ attachments, ...props }) => (
-    <ResponsiveStack height={34} {...props}>
+    <ResponsiveStack height={40} {...props}>
         {attachments.map(getAttachment)}
     </ResponsiveStack>
 );
