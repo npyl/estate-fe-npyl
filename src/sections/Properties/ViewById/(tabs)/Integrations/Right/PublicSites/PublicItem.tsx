@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { LabeledSwitch } from "./Switch";
-import Item from "./styled";
+import { LabeledSwitch } from "../Switch";
+import Item from "../styled";
 import { useTranslation } from "react-i18next";
 import PublicLogo from "@/assets/logo/Public";
 

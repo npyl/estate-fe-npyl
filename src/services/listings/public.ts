@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const PUBLIC_SITE_ID = 1;
+interface AddOrRemoveFromPublicSiteReq {
+    propertyId: number;
+    siteId: number;
+}
 
 export const publicListing = createApi({
     reducerPath: "publicListing",
@@ -24,15 +27,18 @@ export const publicListing = createApi({
     }),
     tagTypes: [],
     endpoints: (builder) => ({
-        addPublicListing: builder.mutation<void, number>({
-            query: (propertyId: number) => ({
-                url: `addListing/${propertyId}?publicSiteId=${PUBLIC_SITE_ID}`,
+        addPublicListing: builder.mutation<void, AddOrRemoveFromPublicSiteReq>({
+            query: ({ propertyId, siteId }) => ({
+                url: `addListing/${propertyId}?publicSiteId=${siteId}`,
                 method: "POST",
             }),
         }),
-        removePublicListing: builder.mutation<void, number>({
-            query: (propertyId: number) => ({
-                url: `removeListing/${propertyId}?publicSiteId=${PUBLIC_SITE_ID}`,
+        removePublicListing: builder.mutation<
+            void,
+            AddOrRemoveFromPublicSiteReq
+        >({
+            query: ({ propertyId, siteId }) => ({
+                url: `removeListing/${propertyId}?publicSiteId=${siteId}`,
                 method: "DELETE",
             }),
         }),

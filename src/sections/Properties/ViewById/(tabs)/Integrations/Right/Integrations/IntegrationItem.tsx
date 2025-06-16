@@ -1,6 +1,6 @@
 import { Skeleton, Stack, Typography } from "@mui/material";
 import { IntegrationSite } from "src/types/listings";
-import { LabeledSwitch } from "./Switch";
+import { LabeledSwitch } from "../Switch";
 import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
 import RightMoveIcon from "@/assets/integrations/RightMoveIcon";
 import FerimmoIcon from "@/assets/integrations/ferimmo";
@@ -14,9 +14,9 @@ import { useDispatch } from "react-redux";
 import Iconify from "@/components/iconify";
 import { LoadingButton } from "@mui/lab";
 import { styled } from "@mui/material/styles";
-import Item from "./styled";
+import Item from "../styled";
 import { useTranslation } from "react-i18next";
-import useInvalidateTags from "./useInvalidateTags";
+import useInvalidateTags from "../useInvalidateTags";
 import useDialog from "@/hooks/useDialog";
 import { errorToast } from "@/components/Toaster";
 
