@@ -3,18 +3,19 @@ import { IIntegration, IIntegrationPOST } from "@/types/integrations";
 import { IntegrationSite } from "@/types/listings";
 import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CompanyImageType, ICompany, ICompanyPOST } from "src/types/company";
+import {
+    CompanyImageType,
+    ICompany,
+    ICompanyPOST,
+    IPublicSiteReq,
+    IPublicSitesRes,
+} from "@/types/company";
 
 interface IUploadCompanyImage {
     contentType: string;
     filename: string;
     size: number;
     type: CompanyImageType;
-}
-
-interface IPublicSitesRes {
-    id: number;
-    siteUrl: string;
 }
 
 export const company = createApi({
@@ -104,6 +105,11 @@ export const company = createApi({
             query: () => "/public-sites",
             providesTags: ["CompanyPublicSites"],
         }),
+
+        addPublicSite: builder.mutation<void, IPublicSiteReq>({
+            query: (body) => ({ url: "/public-sites", method: "POST", body }),
+            invalidatesTags: ["CompanyPublicSites"],
+        }),
     }),
 });
 
@@ -116,7 +122,7 @@ export const {
     useRemoveCompanyImageMutation,
 
     useGetMembersQuery,
-    useGetPublicSitesQuery,
-} = company;
 
-export type { IPublicSitesRes };
+    useGetPublicSitesQuery,
+    useAddPublicSiteMutation,
+} = company;

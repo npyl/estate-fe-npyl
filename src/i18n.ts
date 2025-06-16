@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Add public site": "Add public site",
+            "Public Sites": "Public Sites",
+
             Position: "Position",
             "Add Member": "Add Member",
 
@@ -1374,6 +1377,9 @@ const resources = {
     },
     el: {
         translation: {
+            "Add public site": "Προσθήκη δημόσιου site",
+            "Public Sites": "Δημόσια Sites",
+
             Position: "Θέση",
             "Add Member": "Προσθήκη Μέλους",
 

@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from "@mui/material";
+import { Divider, Paper, Stack, Typography } from "@mui/material";
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -90,6 +90,9 @@ const Right = () => {
 
             <Stack gap={1}>
                 <PublicSites onClick={invalidateTags} />
+
+                <Divider />
+
                 <Integrations onClick={invalidateTags} />
             </Stack>
         </Paper>

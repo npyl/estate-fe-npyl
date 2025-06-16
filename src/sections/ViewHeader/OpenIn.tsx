@@ -2,11 +2,11 @@ import { IconButton, Stack, Typography, ButtonBase } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
-
 import { useGetProperty } from "@/hooks/property";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
 import usePropertyListings from "@/hooks/listings";
+import PublicLogo from "@/assets/logo/Public";
 
 const CustomStack = styled(Stack)(({ theme }) => ({
     border: "1px solid",
@@ -15,8 +15,6 @@ const CustomStack = styled(Stack)(({ theme }) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
 }));
-
-const publicLogo = "/static/PublicLogo.png";
 
 const OpenIn = () => {
     const { t, i18n } = useTranslation();
@@ -61,8 +59,8 @@ const OpenIn = () => {
                 hasPublic
                     ? openPublic
                     : hasSpitogato
-                    ? openSpitogato
-                    : undefined
+                      ? openSpitogato
+                      : undefined
             }
             sx={{
                 width: "100%",
@@ -86,14 +84,7 @@ const OpenIn = () => {
                 </Typography>
                 {hasPublic && (
                     <IconButton size="small">
-                        <img
-                            src={publicLogo}
-                            alt="Public Logo"
-                            style={{
-                                width: "18px",
-                                height: "18px",
-                            }}
-                        />
+                        <PublicLogo />
                     </IconButton>
                 )}
                 {hasSpitogato && (

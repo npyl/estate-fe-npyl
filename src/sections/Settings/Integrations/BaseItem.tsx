@@ -17,7 +17,7 @@ interface BaseItemProps extends PropsWithChildren {
     Icon?: ComponentType<any>;
     type: string;
     topRightContent?: ReactNode;
-    onEdit: VoidFunction;
+    onEdit?: VoidFunction;
 }
 
 const BaseItem: FC<BaseItemProps> = ({
@@ -51,13 +51,15 @@ const BaseItem: FC<BaseItemProps> = ({
                         <>
                             {topRightContent}
 
-                            <SoftButton
-                                variant="contained"
-                                size="small"
-                                onClick={onEdit}
-                            >
-                                {t("Edit")}
-                            </SoftButton>
+                            {onEdit ? (
+                                <SoftButton
+                                    variant="contained"
+                                    size="small"
+                                    onClick={onEdit}
+                                >
+                                    {t("Edit")}
+                                </SoftButton>
+                            ) : null}
                         </>
                     ) : null}
 

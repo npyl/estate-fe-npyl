@@ -1,11 +1,11 @@
-export type CompanyImageType = "LOGO" | "WATERMARK";
+type CompanyImageType = "LOGO" | "WATERMARK";
 
 interface ICompanyImages {
     LOGO: string;
     WATERMARK: string;
 }
 
-export interface ICompany {
+interface ICompany {
     companyName: string;
     address: string;
     city: string;
@@ -37,7 +37,7 @@ export interface ICompany {
         | "UP_LEFT";
 }
 
-export interface ICompanyPOST
+interface ICompanyPOST
     extends Omit<
         ICompany,
         | "facebook"
@@ -65,3 +65,21 @@ export interface ICompanyPOST
 
     companyImages?: Partial<ICompanyImages>;
 }
+
+interface IPublicSitesRes {
+    id: number;
+    siteUrl: string;
+}
+
+interface IPublicSiteReq {
+    siteUrl: string;
+}
+
+export type {
+    IPublicSiteReq,
+    IPublicSitesRes,
+    // ...
+    ICompany,
+    ICompanyPOST,
+    CompanyImageType,
+};
