@@ -110,17 +110,20 @@ const AvatarPicker: FC<AvatarPickerProps> = ({
     onDelete,
     ...props
 }) => {
-    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+    const handleChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
 
-        if (file.size > MAX_FILE_SIZE) {
-            errorToast("Please upload a file of size <3MB");
-            return;
-        }
+            if (file.size > MAX_FILE_SIZE) {
+                errorToast("Please upload a file of size <3MB");
+                return;
+            }
 
-        onSelect(file);
-    }, []);
+            onSelect(file);
+        },
+        [onSelect]
+    );
 
     return (
         <FileInput
