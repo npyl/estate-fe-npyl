@@ -41,7 +41,7 @@ const Information = () => {
             }
         >
             <Stack p={3} justifyContent="center" alignItems="center">
-                <AvatarPicker />
+                <AvatarPicker c={data} />
             </Stack>
             <Divider />
             <Grid container>
