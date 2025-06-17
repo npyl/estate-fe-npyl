@@ -1,7 +1,5 @@
-import { Grid } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import Grid from "@mui/material/Unstable_Grid2";
 import DataGrid from "@/components/DataGrid/Property";
-import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
 import PropertyCard from "@/components/Cards/PropertyCard";
 import Pagination from "@/components/Pagination/client";
@@ -25,8 +23,6 @@ const OwnedPropertiesContent: FC<Props> = ({
     properties,
     isLoading = false,
 }) => {
-    const { t } = useTranslation();
-
     const pagination = usePagination();
 
     const belowLg = useResponsive("down", "lg");
@@ -42,38 +38,28 @@ const OwnedPropertiesContent: FC<Props> = ({
                 onChange={onChange}
                 pageSize={pageSize}
                 isLoading={isLoading}
-                Container={Grid}
-                ContainerProps={{
-                    container: true,
-                    spacing: 1,
-                }}
             >
-                {properties.map((p) => (
-                    <Grid item key={p.id} xs={12} sm={6}>
-                        <PropertyCard item={p} />
-                    </Grid>
-                ))}
+                <Grid container spacing={1}>
+                    {properties.map((p) => (
+                        <Grid key={p.id} xs={12} sm={6}>
+                            <PropertyCard item={p} />
+                        </Grid>
+                    ))}
+                </Grid>
             </Pagination>
         );
 
     return (
-        <Panel
-            label={t("Owned Properties")}
-            childrenSx={{
-                p: 0,
-            }}
-        >
-            <DataGrid
-                loading={isLoading}
-                // ...
-                rows={properties}
-                // ...
-                page={pagination.page}
-                pageSize={pageSize}
-                totalRows={properties.length}
-                onPaginationModelChange={(m) => onChange(null, m.page)}
-            />
-        </Panel>
+        <DataGrid
+            loading={isLoading}
+            // ...
+            rows={properties}
+            // ...
+            page={pagination.page}
+            pageSize={pageSize}
+            totalRows={properties.length}
+            onPaginationModelChange={(m) => onChange(null, m.page)}
+        />
     );
 };
 

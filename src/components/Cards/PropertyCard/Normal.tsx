@@ -25,7 +25,7 @@ type PropertyCardProps = {
 const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
     const {
         id,
-        images,
+        images = [],
         details,
         price,
         code,
@@ -55,24 +55,22 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
 
     const convertedImages = useMemo(
         () =>
-            images.length > 0
-                ? images.map((url, index) => {
-                      let urlString = typeof url === "string" ? url : url?.url;
-                      urlString =
-                          urlString && urlString.startsWith("https://")
-                              ? urlString
-                              : "https://" + urlString;
-                      return {
-                          id: index,
-                          url: urlString,
-                          title: "",
-                      };
-                  })
-                : [],
+            images.map((url, index) => {
+                let urlString = typeof url === "string" ? url : url?.url;
+                urlString =
+                    urlString && urlString.startsWith("https://")
+                        ? urlString
+                        : "https://" + urlString;
+                return {
+                    id: index,
+                    url: urlString,
+                    title: "",
+                };
+            }),
         [images]
     );
 
-    const stateColor = getPropertyStatusColor(state.value);
+    const stateColor = getPropertyStatusColor(state?.value);
 
     return (
         <StyledLink

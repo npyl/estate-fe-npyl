@@ -1,4 +1,4 @@
-import { Grid, GridProps } from "@mui/material";
+import Grid, { Grid2Props } from "@mui/material/Unstable_Grid2";
 import PropertyCard from "@/components/Cards/PropertyCard";
 import { useMemo } from "react";
 import { useFilterPropertiesQuery } from "src/services/properties";
@@ -8,7 +8,7 @@ import { useAllFilters } from "../../FiltersContext";
 
 // ----------------------------------------------------------------------
 
-interface Props extends Omit<GridProps, "direction"> {
+interface Props extends Omit<Grid2Props, "direction"> {
     title?: string;
     subheader?: string;
     sortBy: string;
@@ -45,19 +45,17 @@ export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
             pageSize={pageSize}
             totalItems={data?.totalElements ?? pageSize}
             isLoading={isLoading}
-            Container={Grid}
             ContainerProps={{
-                container: true,
                 py: 2,
-                spacing: 1,
-                ...other,
             }}
         >
-            {content?.map((item, index) => (
-                <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    <PropertyCard item={item} />
-                </Grid>
-            ))}
+            <Grid container spacing={1} {...other}>
+                {content?.map((item, index) => (
+                    <Grid key={item.id} xs={12} sm={6} md={4} lg={3}>
+                        <PropertyCard item={item} />
+                    </Grid>
+                ))}
+            </Grid>
         </Pagination>
     );
 }

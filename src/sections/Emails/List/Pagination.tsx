@@ -2,7 +2,7 @@ import BasePagination, {
     PaginationProps as BasePaginationProps,
 } from "@/components/Pagination";
 import { FC, useRef } from "react";
-import { Box, Stack, SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import getBorderColor from "@/theme/borderColor";
 import useAvailableHeight from "@/hooks/useAvailableHeight";
 
@@ -40,7 +40,6 @@ const Pagination: FC<PaginationProps> = ({ children, ...props }) => {
         <BasePagination
             ref={rootRef}
             table
-            Container={Stack}
             ContainerProps={{
                 flexDirection: "column-reverse",
                 sx: StackSx,

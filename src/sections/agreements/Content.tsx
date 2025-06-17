@@ -4,7 +4,7 @@ import AgreementCardSkeleton from "@/sections/agreements/AgreementCard/Skeleton"
 import { FC, useCallback, useState } from "react";
 import { useFilterAgreementsQuery } from "@/services/agreements";
 import Pagination, { usePagination } from "@/components/Pagination";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import dynamic from "next/dynamic";
 const PreparationDialog = dynamic(() => import("./Dialogs/Preparation"));
 
@@ -37,26 +37,22 @@ const CardsContent: FC<Props> = ({ propertyId, customerId }) => {
                 isLoading={isLoading}
                 pageSize={PAGE_SIZE}
                 totalItems={data?.totalElements || PAGE_SIZE}
-                // ...
-                Container={Grid}
-                ContainerProps={{
-                    container: true,
-                    spacing: 1,
-                }}
             >
-                {isLoading ? (
-                    <>
-                        <AgreementCardSkeleton />
-                        <AgreementCardSkeleton />
-                        <AgreementCardSkeleton />
-                    </>
-                ) : null}
+                <Grid container spacing={1}>
+                    {isLoading ? (
+                        <>
+                            <AgreementCardSkeleton />
+                            <AgreementCardSkeleton />
+                            <AgreementCardSkeleton />
+                        </>
+                    ) : null}
 
-                {data?.content?.map((a) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={a.id}>
-                        <AgreementCard a={a} onEdit={setEditId} />
-                    </Grid>
-                ))}
+                    {data?.content?.map((a) => (
+                        <Grid key={a.id} xs={12} sm={6} md={4} lg={3}>
+                            <AgreementCard a={a} onEdit={setEditId} />
+                        </Grid>
+                    ))}
+                </Grid>
             </Pagination>
 
             {editId ? (

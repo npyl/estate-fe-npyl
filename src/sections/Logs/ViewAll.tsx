@@ -1,4 +1,3 @@
-import { Stack } from "@mui/material";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFilterLogsQuery } from "src/services/logs";
@@ -76,10 +75,8 @@ const Content = () => {
                     isLoading={isLoading}
                     pageSize={pageSize}
                     totalItems={data?.totalElements ?? pageSize}
-                    Container={Stack}
                     ContainerProps={{
                         spacing: 1,
-                        mt: 1,
                     }}
                 >
                     {content.map((log, index) => (

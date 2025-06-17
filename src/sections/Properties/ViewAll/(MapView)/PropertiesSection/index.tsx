@@ -1,4 +1,3 @@
-import { Grid } from "@mui/material";
 import Pagination, { usePagination } from "@/components/Pagination";
 import PropertiesList from "./PropertiesList";
 import useResponsive from "@/hooks/useResponsive";
@@ -40,11 +39,8 @@ const PropertiesSection: FC<PropertiesSectionProps> = ({
             pageSize={pageSize}
             totalItems={totalElements}
             isLoading={isLoading}
-            Container={Grid}
             ContainerProps={{
-                container: true,
                 py: 2,
-                spacing: 1,
             }}
         >
             <PropertiesList isLoading={isLoading} filtered={properties} />

@@ -17,7 +17,7 @@ type PropertyCardProps = {
 const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
     const {
         id,
-        images,
+        images = [],
         details,
         price,
         code,
@@ -58,11 +58,11 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
                     url: urlString,
                     title: "",
                 };
-            }) || [],
+            }),
         [images]
     );
 
-    const stateColor = getPropertyStatusColor(state.value);
+    const stateColor = getPropertyStatusColor(state?.value);
 
     return (
         <StyledLink

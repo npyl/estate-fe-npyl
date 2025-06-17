@@ -2,10 +2,10 @@ import React from "react";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 
 const AgreementCardSkeleton = () => (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Grid xs={12} sm={6} md={4} lg={3}>
         <Card
             sx={{
                 width: "100%",
