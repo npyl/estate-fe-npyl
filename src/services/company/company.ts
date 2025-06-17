@@ -110,6 +110,14 @@ export const company = createApi({
             query: (body) => ({ url: "/public-sites", method: "POST", body }),
             invalidatesTags: ["CompanyPublicSites"],
         }),
+
+        removePublicSite: builder.mutation<void, number>({
+            query: (siteId) => ({
+                url: `/public-sites/${siteId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["CompanyPublicSites"],
+        }),
     }),
 });
 
@@ -125,4 +133,5 @@ export const {
 
     useGetPublicSitesQuery,
     useAddPublicSiteMutation,
+    useRemovePublicSiteMutation,
 } = company;

@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Delete public site?": "Delete public site?",
+            DELETE_PUBLIC_0:
+                "This change is permanent and the properties associated with it will not be recoverable",
+
             "Add public site": "Add public site",
             "Public Sites": "Public Sites",
 
@@ -1377,6 +1381,11 @@ const resources = {
     },
     el: {
         translation: {
+            "Delete public site?": "Διαγραφή δημόσιου site?",
+
+            DELETE_PUBLIC_0:
+                "Η αλλαγή αυτή είναι μόνιμη και τα συνδεδεμένα ακίνητα δε θα μπορούν να ανακτηθούν",
+
             "Add public site": "Προσθήκη δημόσιου site",
             "Public Sites": "Δημόσια Sites",
 
