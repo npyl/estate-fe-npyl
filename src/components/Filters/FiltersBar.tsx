@@ -7,7 +7,7 @@ import HorizontalScrollbar from "../HorizontalScrollbar";
 const FiltersBarSx: SxProps<Theme> = {
     position: "sticky",
     top: ({ layout }) => layout.nav.topbarHeight,
-    zIndex: 1,
+    zIndex: ({ zIndex }) => zIndex.filtersBar,
     backgroundColor: "background.paper",
     boxShadow: 15,
     borderRadius: 1,

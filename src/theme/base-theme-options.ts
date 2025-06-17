@@ -381,6 +381,7 @@ const baseThemeOptions: ThemeOptions = {
         sidebar: Z_INDEX.NAVIGATION,
         appBar: Z_INDEX.NAVIGATION,
         subbar: Z_INDEX.NAVIGATION,
+        filtersBar: Z_INDEX.NAVIGATION,
         // ...
         drawer: Z_INDEX.BASE + 100,
         modal: Z_INDEX.BASE + 200,
