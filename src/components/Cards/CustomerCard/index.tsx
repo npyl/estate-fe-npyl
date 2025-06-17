@@ -51,7 +51,7 @@ type Props = CardProps & {
 };
 
 export default function UserCard({ c, ...props }: Props) {
-    const { id, firstName, lastName, email, mobilePhone } = c || {};
+    const { id, firstName, lastName, email, mobilePhone, avatar } = c || {};
 
     const { t } = useTranslation();
 
@@ -73,6 +73,7 @@ export default function UserCard({ c, ...props }: Props) {
                 <Avatar
                     firstName={firstName}
                     lastName={lastName}
+                    src={avatar}
                     sx={AvatarSx}
                 />
 

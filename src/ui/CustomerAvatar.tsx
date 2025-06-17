@@ -11,7 +11,7 @@ const AvatarSx: SxProps<Theme> = {
     color: "white !important",
 };
 
-interface CustomerAvatarProps extends Omit<AvatarProps, "src"> {
+interface CustomerAvatarProps extends AvatarProps {
     email?: string;
 }
 
