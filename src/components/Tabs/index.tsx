@@ -1,6 +1,19 @@
 import MuiTabs, { TabsProps as MuiTabsProps } from "@mui/material/Tabs";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { FC, useCallback } from "react";
+import HorizontalScrollbar from "@/components/HorizontalScrollbar";
+import { SxProps, Theme } from "@mui/material";
+
+const TabsSx: SxProps<Theme> = {
+    overflow: "visible",
+    width: "fit-content",
+
+    ".MuiTab-root": {
+        textWrap: "nowrap",
+        whiteSpace: "nowrap",
+        minWidth: "fit-content",
+    },
+};
 
 const paramKey = "tab";
 
@@ -8,7 +21,7 @@ interface TabsProps extends Omit<MuiTabsProps, "value" | "onChange"> {
     onChange?: (v: number) => void;
 }
 
-const Tabs: FC<TabsProps> = ({ onChange: _onChange, ...props }) => {
+const Tabs: FC<TabsProps> = ({ onChange: _onChange, sx, ...props }) => {
     const [i, setI] = useCurrentTab();
     const onChange = useCallback(
         (_: any, i: number) => {
@@ -17,7 +30,17 @@ const Tabs: FC<TabsProps> = ({ onChange: _onChange, ...props }) => {
         },
         [_onChange]
     );
-    return <MuiTabs value={i} onChange={onChange} {...props} />;
+    return (
+        <HorizontalScrollbar>
+            <MuiTabs
+                variant="fullWidth"
+                value={i}
+                onChange={onChange}
+                sx={{ ...TabsSx, ...sx }}
+                {...props}
+            />
+        </HorizontalScrollbar>
+    );
 };
 
 const useCurrentTab = () =>
