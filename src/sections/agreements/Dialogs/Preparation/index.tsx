@@ -17,7 +17,6 @@ import {
     useGetAgreementByIdQuery,
     useUpdateAgreementMutation,
 } from "@/services/agreements";
-import { usePathname } from "next/navigation";
 import { TLanguageType } from "@/types/translation";
 import { getValues } from "./mapper";
 import { StyledActions } from "./styled";
@@ -27,12 +26,18 @@ import EditPDFButton from "./Buttons/EditPDF";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { TForm } from "./types";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
+import { useRouter } from "next/router";
+import { toNumberSafe } from "@/utils/toNumber";
 
 // -------------------------------------------------------------------
 
 const useInitialValues = (id?: number) => {
     const { i18n } = useTranslation();
-    const isCustomer = usePathname().includes("customer");
+
+    // INFO: correct way to check whether we are in a customer page (supports b2b)
+    const router = useRouter();
+    const { customerId } = router.query;
+    const isCustomer = toNumberSafe(customerId) !== -1;
 
     const { data: editedAgreement } = useGetAgreementByIdQuery(id!, {
         skip: !id || id === -1,

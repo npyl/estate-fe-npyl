@@ -12,7 +12,6 @@ const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
     (
         {
             children,
-            Container,
             pageSize,
             totalItems,
             table = false,
@@ -46,7 +45,7 @@ const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
         );
 
         return (
-            <Stack ref={ref} component={Container} {...ContainerProps}>
+            <Stack ref={ref} {...ContainerProps}>
                 {children}
 
                 {table ? (

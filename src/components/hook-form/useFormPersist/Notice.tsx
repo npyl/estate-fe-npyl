@@ -51,7 +51,7 @@ const getContainerSx = (dialog: boolean): SxProps<Theme> => ({
     position: dialog ? "fixed" : "unset",
     top: 0,
     right: 0,
-    zIndex: ({ zIndex }) => zIndex.modal,
+    zIndex: ({ zIndex }) => zIndex.modal + 1,
     bgcolor: dialog ? "background.paper" : "unset",
     border: dialog ? "1px solid" : "none",
     borderColor: getBorderColor2,

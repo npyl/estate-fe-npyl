@@ -48,6 +48,7 @@ declare module "@mui/material/styles" {
     interface ZIndex {
         sidebar: number;
         subbar: number;
+        filtersBar: number;
         // ...
         modal: number; // INFO: make required
         // ...

@@ -1,14 +1,12 @@
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useSuggestForPropertyQuery } from "src/services/properties";
 import DataGrid from "@/components/DataGrid/Customer";
-import Panel from "@/components/Panel";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import CustomerCard from "@/components/Cards/CustomerCard";
 import useResponsive from "@/hooks/useResponsive";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import Pagination, { usePagination } from "@/components/Pagination";
 
 const pageSize = 25;
@@ -16,8 +14,6 @@ const pageSize = 25;
 const MatchingCustomersSection: React.FC = () => {
     const router = useRouter();
     const { propertyId } = router.query;
-
-    const { t } = useTranslation();
 
     const pagination = usePagination();
 
@@ -48,36 +44,26 @@ const MatchingCustomersSection: React.FC = () => {
                 isLoading={isLoading}
                 totalItems={totalRows}
                 pageSize={pageSize}
-                Container={Grid}
-                ContainerProps={{
-                    container: true,
-                    spacing: 1,
-                }}
             >
-                {customers.map((c, i) => (
-                    <Grid item key={i} xs={12} sm={6}>
-                        <CustomerCard c={c} />
-                    </Grid>
-                ))}
+                <Grid container spacing={1}>
+                    {customers.map((c) => (
+                        <Grid key={c.id} xs={12} sm={6}>
+                            <CustomerCard c={c} />
+                        </Grid>
+                    ))}
+                </Grid>
             </Pagination>
         );
     }
 
     return (
-        <Panel
-            label={t("Matching Customers")}
-            childrenSx={{
-                p: 0,
-            }}
-        >
-            <DataGrid
-                rows={customers}
-                page={pagination.page}
-                pageSize={pageSize}
-                totalRows={totalRows}
-                onPaginationModelChange={handlePaginationChange}
-            />
-        </Panel>
+        <DataGrid
+            rows={customers}
+            page={pagination.page}
+            pageSize={pageSize}
+            totalRows={totalRows}
+            onPaginationModelChange={handlePaginationChange}
+        />
     );
 };
 

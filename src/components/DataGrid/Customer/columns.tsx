@@ -6,8 +6,11 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Stack from "@mui/material/Stack";
 import CustomerAvatar from "@/ui/CustomerAvatar";
+import { ICustomerResultResponse } from "@/types/customer";
 
-const StatusColor = ({ row }: GridCellParams) => (
+type CellParams = GridCellParams<ICustomerResultResponse>;
+
+const StatusColor = ({ row }: CellParams) => (
     <Stack width={1} height={1} justifyContent="center" alignItems="flex-start">
         <TypeLabels
             forceTruncate
@@ -30,7 +33,7 @@ const formatPrice = (price: number | string) => {
     return `${priceStr.replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €`;
 };
 
-const RenderPriceCell = ({ row }: GridCellParams) => {
+const RenderPriceCell = ({ row }: CellParams) => {
     if (!row.budget) return null;
 
     const formattedPrice = formatPrice(row.budget);
@@ -38,7 +41,7 @@ const RenderPriceCell = ({ row }: GridCellParams) => {
     return <Typography variant="inherit">{formattedPrice}</Typography>;
 };
 
-const RenderAreaCell = ({ row }: GridCellParams) => {
+const RenderAreaCell = ({ row }: CellParams) => {
     const { i18n } = useTranslation();
 
     if (!row.areas) return null;
@@ -52,7 +55,7 @@ const RenderAreaCell = ({ row }: GridCellParams) => {
     return <Typography variant="inherit">{areas}</Typography>;
 };
 
-const renderDateCell = ({ row }: GridCellParams) => {
+const renderDateCell = ({ row }: CellParams) => {
     const timestamp = row.createdAt;
     const date = new Date(timestamp);
     const day = String(date.getDate()).padStart(2, "0");
@@ -63,9 +66,13 @@ const renderDateCell = ({ row }: GridCellParams) => {
     );
 };
 
-const RenderFullNameCell = ({ row }: GridCellParams) => (
+const RenderFullNameCell = ({ row }: CellParams) => (
     <Stack width={1} height={1} justifyContent="center">
-        <CustomerAvatar firstName={row.firstName} lastName={row.lastName} />
+        <CustomerAvatar
+            firstName={row.firstName}
+            lastName={row.lastName}
+            src={row.avatar}
+        />
     </Stack>
 );
 

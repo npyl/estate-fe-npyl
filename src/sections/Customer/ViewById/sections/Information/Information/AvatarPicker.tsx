@@ -21,6 +21,8 @@ const AvatarPicker: FC<AvatarPickerProps> = ({ c }) => {
     const onDelete = useCallback(() => remove(c?.id!), [c?.id]);
     return (
         <BaseAvatarPicker
+            src={c?.avatar}
+            // ...
             isLoading={isLoading}
             onSelect={onSelect}
             onDelete={onDelete}

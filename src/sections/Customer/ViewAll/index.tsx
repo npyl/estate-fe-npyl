@@ -136,17 +136,14 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
                     page={page}
                     onChange={handlePageChange}
                     totalItems={totalElements}
-                    Container={Grid}
-                    ContainerProps={{
-                        container: true,
-                        spacing: 2,
-                    }}
                 >
-                    {rows.map((c) => (
-                        <Grid key={c.id} xs={12} sm={6}>
-                            <CustomerCard c={c} />
-                        </Grid>
-                    ))}
+                    <Grid container spacing={1}>
+                        {rows.map((c) => (
+                            <Grid key={c.id} xs={12} sm={6}>
+                                <CustomerCard c={c} />
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Pagination>
             ) : (
                 <Paper>

@@ -5,7 +5,7 @@ import { IPropertyResultResponse } from "@/types/properties";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 import { ComponentType, MouseEvent } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -83,40 +83,30 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
                     isLoading={isLoading}
                     pageSize={pageSize}
                     totalItems={totalElements}
-                    // ...
-                    Container={Grid}
-                    ContainerProps={{
-                        container: true,
-                        spacing: 1,
-                    }}
                 >
-                    {content.length === 0 && NoResultsPlaceholder ? (
-                        <NoResultsPlaceholder />
-                    ) : null}
+                    <Grid container spacing={1}>
+                        {content.length === 0 && NoResultsPlaceholder ? (
+                            <NoResultsPlaceholder />
+                        ) : null}
 
-                    {content.map((p) => (
-                        <Grid
-                            item
-                            key={p.id}
-                            xs={12}
-                            md={3}
-                            position="relative"
-                        >
-                            <PropertyCard item={p} />
+                        {content.map((p) => (
+                            <Grid key={p.id} xs={12} md={3} position="relative">
+                                <PropertyCard item={p} />
 
-                            <Fab
-                                sx={{
-                                    position: "absolute",
-                                    top: -2,
-                                    right: -4,
-                                }}
-                                size="small"
-                                onClick={(e) => handleCardClick(e, p)}
-                            >
-                                <AddIcon />
-                            </Fab>
-                        </Grid>
-                    ))}
+                                <Fab
+                                    sx={{
+                                        position: "absolute",
+                                        top: -2,
+                                        right: -4,
+                                    }}
+                                    size="small"
+                                    onClick={(e) => handleCardClick(e, p)}
+                                >
+                                    <AddIcon />
+                                </Fab>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Pagination>
             </PopoverPaper>
         </Modal>

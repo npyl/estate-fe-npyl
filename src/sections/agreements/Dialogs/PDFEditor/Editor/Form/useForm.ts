@@ -1,11 +1,24 @@
 import { useEffect, useRef } from "react";
-import { IAgreementReq } from "@/types/agreements";
-import { loadPdf } from "../util";
+import { IAgreementType } from "@/types/agreements";
+import { loadPdf } from "../../util";
 import { getPDF_PLUGINS_LIST } from "@/components/PDFPlugins/_shared/constants";
 import { Form } from "@pdfme/ui";
 import { KeyValuePair } from "./types";
 import flattenObject from "@/utils/flattenObject";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
+import { TForm } from "../../../Preparation/types";
+import { PreferredLanguageType } from "@/types/enums";
+
+const useTypedValues = () => {
+    const { getValues } = useFormContext<TForm>();
+
+    const variant = useWatch<TForm>({ name: "variant" }) as IAgreementType;
+    const language = useWatch<TForm>({
+        name: "language",
+    }) as PreferredLanguageType;
+
+    return { getValues, variant, language };
+};
 
 const useForm = (
     formRef: React.MutableRefObject<HTMLDivElement | null>,
@@ -13,9 +26,7 @@ const useForm = (
     onLoad: () => void,
     onInputChange: ({ key, value }: KeyValuePair) => void
 ) => {
-    const { watch } = useFormContext();
-    const all = watch() as IAgreementReq;
-    const { variant, language } = all;
+    const { getValues, language, variant } = useTypedValues();
 
     const form = useRef<Form | null>(null);
 
@@ -25,6 +36,8 @@ const useForm = (
             if (!formRef.current || form.current !== null) return;
 
             try {
+                const all = getValues();
+
                 const inputs = [flattenObject(all)];
 
                 form.current = new Form({
@@ -34,7 +47,9 @@ const useForm = (
                     plugins: getPDF_PLUGINS_LIST(onLoad),
                 });
 
-                form.current.onChangeInput(onInputChange);
+                form.current.onChangeInput(
+                    onInputChange as Form["onChangeInputCallback"]
+                );
             } catch (ex) {}
         });
 
@@ -42,7 +57,7 @@ const useForm = (
             form.current?.destroy();
             form.current = null;
         };
-    }, []);
+    }, [getValues, variant, language]);
 
     return form.current;
 };

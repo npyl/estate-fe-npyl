@@ -1,16 +1,13 @@
-import { useRouter } from "next/router";
 import Content from "./content";
-import { useOwnedPropertiesQuery } from "@/services/customers";
 import { useCallback, useState } from "react";
+import useGetCustomer from "@/hooks/customer";
 
 const pageSize = 5;
 
 const OwnedCustomerPropertiesSection = () => {
     const [page, setPage] = useState(0);
 
-    const router = useRouter();
-    const { customerId } = router.query;
-    const { data, isLoading } = useOwnedPropertiesQuery([+customerId!]);
+    const { customer, isLoading } = useGetCustomer();
 
     const onChange = useCallback((_: any, p: number) => setPage(p), []);
 
@@ -19,7 +16,7 @@ const OwnedCustomerPropertiesSection = () => {
             page={page}
             onChange={onChange}
             pageSize={pageSize}
-            properties={(data as any) ?? []}
+            properties={customer?.ownedProperties ?? []}
             isLoading={isLoading}
         />
     );

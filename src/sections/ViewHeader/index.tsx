@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Paper, Stack, SxProps, Theme } from "@mui/material";
 import { PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 const ExportButton = dynamic(() => import("./Export"));
@@ -7,6 +7,16 @@ const DownloadGoogleEarthButton = dynamic(
     () => import("./DownloadGoogleEarthButton")
 );
 import MoreButton from "./More";
+
+const PaperSx: SxProps<Theme> = {
+    borderColor: "divider",
+    paddingLeft: 2,
+    paddingRight: 1,
+    display: "flex",
+    direction: "row",
+    justifyContent: "space-between",
+    gap: 2,
+};
 
 interface IViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
@@ -28,34 +38,22 @@ const ViewHeader = ({
     onDelete,
     onClone,
 }: IViewHeaderProps) => (
-    <Paper
-        sx={{
-            borderColor: "divider",
-            paddingLeft: 2,
-            paddingRight: 1,
-        }}
-    >
-        <Stack direction="row" alignItems="center">
-            <Box width={1} overflow="auto hidden" whiteSpace="nowrap">
-                <Stack direction="row" minWidth="max-content">
-                    {children}
-                </Stack>
-            </Box>
+    <Paper sx={PaperSx}>
+        {children}
 
-            <Stack direction="row" spacing={1}>
-                {isProperty ? <DownloadGoogleEarthButton /> : null}
-                {isProperty ? <ExportButton /> : null}
-                <ShareButton />
-                <MoreButton
-                    isProperty={isProperty}
-                    isArchived={isArchived}
-                    // ...
-                    onEdit={onEdit}
-                    onArchive={onArchive}
-                    onDelete={onDelete}
-                    onClone={onClone}
-                />
-            </Stack>
+        <Stack alignItems="center" direction="row" spacing={1}>
+            {isProperty ? <DownloadGoogleEarthButton /> : null}
+            {isProperty ? <ExportButton /> : null}
+            <ShareButton />
+            <MoreButton
+                isProperty={isProperty}
+                isArchived={isArchived}
+                // ...
+                onEdit={onEdit}
+                onArchive={onArchive}
+                onDelete={onDelete}
+                onClone={onClone}
+            />
         </Stack>
     </Paper>
 );

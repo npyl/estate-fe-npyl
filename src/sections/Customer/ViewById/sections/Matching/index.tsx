@@ -12,7 +12,6 @@ const MatchingPropertiesSection = () => {
     const router = useRouter();
     const { customerId } = router.query;
     const iCustomerId = toNumberSafe(customerId);
-    if (iCustomerId === -1) return null;
 
     const { data } = useSuggestForCustomerQuery({
         page,
@@ -21,6 +20,8 @@ const MatchingPropertiesSection = () => {
     });
 
     const onChange = useCallback((_: any, p: number) => setPage(p), []);
+
+    if (iCustomerId === -1) return null;
 
     return (
         <Content

@@ -197,16 +197,6 @@ export const customers = apiWithTranslation({
             }),
         }),
 
-        // INFO: same as above but query
-        ownedProperties: builder.query<IOwnedProperties[], number[]>({
-            query: (body) => ({
-                url: "/owned-properties",
-                body,
-                method: "POST",
-            }),
-            providesTags: ["OwnedProperties"],
-        }),
-
         // ---------------------------------------------------
 
         tabCount: builder.query<ICustomerTabCounts, number>({
@@ -273,7 +263,6 @@ export const {
     useGetCustomerLabelsQuery,
     useLazyGetCustomerByIdQuery,
 
-    useOwnedPropertiesQuery,
     useGetOwnedPropertiesMutation,
 
     useTabCountQuery,

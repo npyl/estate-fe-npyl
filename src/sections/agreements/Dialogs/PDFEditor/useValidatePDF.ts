@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { IAgreementType } from "@/types/agreements";
 import { getTRIGGER_OPTIONS } from "./constants/trigger";
+import { TForm } from "../Preparation/types";
 
 //
 //  Validates only the pdfme form using trigger()
@@ -9,8 +10,8 @@ import { getTRIGGER_OPTIONS } from "./constants/trigger";
 const useValidatePDF = () => {
     const { trigger } = useFormContext();
 
-    const isDraft = useWatch({ name: "draft" });
-    const variant = useWatch({ name: "variant" }) as IAgreementType;
+    const isDraft = (useWatch<TForm>({ name: "draft" }) ?? false) as boolean;
+    const variant = useWatch<TForm>({ name: "variant" }) as IAgreementType;
 
     const TRIGGER_OPTIONS = useMemo(
         () => getTRIGGER_OPTIONS(variant),
