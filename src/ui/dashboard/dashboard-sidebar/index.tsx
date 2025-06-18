@@ -40,9 +40,10 @@ const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({
                         border: 0,
                         color: "#FFFFFF",
                         width: ({ layout }) => layout.nav.sidebarWidth,
-
                         // INFO: support scrolling vertically when display is too small
                         pb: ({ layout }) => `${layout.nav.topbarHeight}px`,
+
+                        zIndex: ({ zIndex }) => zIndex.sidebar,
                     },
                 }}
                 variant="permanent"
@@ -61,6 +62,7 @@ const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({
                 sx: {
                     paddingTop: !open ? "100px" : 0,
                     width: ({ layout }) => layout.nav.sidebarWidth,
+                    zIndex: ({ zIndex }) => zIndex.sidebar,
                 },
             }}
             variant="temporary"
