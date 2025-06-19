@@ -7,8 +7,8 @@ import PublicSites from "./PublicSites";
 
 const Integrations: React.FC = () => (
     <Stack spacing={1}>
-        <PublicSites />
         <GoogleWorkspace />
+        <PublicSites />
         <StandardItems />
         <RightMoveItem />
     </Stack>
