@@ -1,4 +1,4 @@
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 
 interface GetImagesOrderReq {
     propertyId: number;

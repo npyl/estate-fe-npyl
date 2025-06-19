@@ -1,5 +1,5 @@
 import { Skeleton, Stack, Typography } from "@mui/material";
-import { IntegrationSite } from "src/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { LabeledSwitch } from "../Switch";
 import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
 import RightMoveIcon from "@/assets/integrations/RightMoveIcon";

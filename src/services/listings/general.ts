@@ -1,4 +1,4 @@
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface IListingReq {

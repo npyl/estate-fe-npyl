@@ -32,7 +32,11 @@ const Active = () => {
 
     const renderValue = useCallback(
         (v: number[]) =>
-            v.map((valueId) => data?.find(({ id }) => id === valueId)?.siteUrl),
+            v
+                .map(
+                    (valueId) => data?.find(({ id }) => id === valueId)?.siteUrl
+                )
+                ?.join(", "),
         [data]
     );
 

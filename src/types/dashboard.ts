@@ -1,4 +1,4 @@
-import { IntegrationSite } from "./listings";
+import { IntegrationSite } from "@/types/integrations";
 import { IKanbanCardLabels } from "./tasks";
 import { IUserMini } from "./user";
 

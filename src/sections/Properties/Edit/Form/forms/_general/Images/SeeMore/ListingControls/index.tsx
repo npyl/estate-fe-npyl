@@ -2,7 +2,7 @@ import { useGetIntegrationOrderedImagesQuery } from "@/services/integrations";
 import Stack from "@mui/material/Stack";
 import { useRouter } from "next/router";
 import React from "react";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import AddXButton from "./AddX";
 import RemoveAll from "./RemoveAll";
 

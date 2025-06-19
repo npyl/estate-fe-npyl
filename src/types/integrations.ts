@@ -1,5 +1,17 @@
 import { IPropertyImage } from "./file";
-import { IntegrationSite } from "./listings";
+
+type IntegrationSite =
+    | "SPITOGATOS"
+    | "PLOT_GR"
+    | "JAMES_EDITION"
+    | "XE"
+    | "RIGHT_MOVE"
+    | "FERIMMO";
+
+interface IIntegration {
+    id: IntegrationSite;
+    name: string;
+}
 
 interface ImagesOrderRes {
     publicImages: IPropertyImage[];
@@ -24,6 +36,9 @@ interface IIntegrationCredentialsPOST
     extends Partial<IIntegrationCredentials> {}
 
 export type {
+    IntegrationSite,
+    IIntegration,
+    // ...
     ImagesOrderRes,
     // ...
     IIntegrationCredentials,

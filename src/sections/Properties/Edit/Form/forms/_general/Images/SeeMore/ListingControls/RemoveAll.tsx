@@ -1,5 +1,5 @@
 import SoftButton from "@/components/SoftButton";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { useTranslation } from "react-i18next";
 import { TListingTab } from "../types";
 import { useRouter } from "next/router";

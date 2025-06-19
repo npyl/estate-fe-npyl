@@ -11,7 +11,7 @@ import {
     IPropertyImage,
 } from "@/types/file";
 import { ILabel } from "@/types/label";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { ILocation, ILocationPOST } from "@/types/location";
 import { INote } from "@/types/note";
 import { TShape } from "@/types/shape";

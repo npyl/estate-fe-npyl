@@ -12,7 +12,7 @@ import {
     parseAsString,
     useQueryState,
 } from "nuqs";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 
 // --------------------------------------------------------------------------------------
 

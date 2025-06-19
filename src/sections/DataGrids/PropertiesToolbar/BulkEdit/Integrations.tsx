@@ -7,18 +7,18 @@ import { useCallback } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 import { useGetIntegrationsQuery } from "@/services/company";
-import { IntegrationSite } from "@/types/listings";
+import { IIntegration, IntegrationSite } from "@/types/integrations";
 
 // ---------------------------------------------------------------------------
 
 const getOption =
     (selected: IntegrationSite[] | "") =>
-    ({ id, siteUrl }: any) => {
+    ({ id, name }: IIntegration) => {
         const checked = Array.isArray(selected) && selected.includes(id);
         return (
             <MenuItem key={id} value={id}>
                 <Checkbox checked={checked} />
-                {siteUrl}
+                {name}
             </MenuItem>
         );
     };
@@ -31,8 +31,10 @@ const Integrations = () => {
     const { data } = useGetIntegrationsQuery();
 
     const renderValue = useCallback(
-        (v: string[]) =>
-            v.map((valueId) => data?.find(({ id }) => id === valueId)?.name),
+        (v: IntegrationSite[]) =>
+            v
+                .map((valueId) => data?.find(({ id }) => id === valueId)?.name)
+                ?.join(", "),
         [data]
     );
 

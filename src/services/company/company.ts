@@ -1,6 +1,9 @@
 import { IPropertyFileRes } from "@/types/file";
-import { IIntegration, IIntegrationPOST } from "@/types/integrations";
-import { IntegrationSite } from "@/types/listings";
+import {
+    IIntegrationCredentials,
+    IIntegrationCredentialsPOST,
+} from "@/types/integrations";
+import { IntegrationSite } from "@/types/integrations";
 import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
@@ -17,6 +20,17 @@ interface IUploadCompanyImage {
     size: number;
     type: CompanyImageType;
 }
+
+interface IIntegration {
+    id: IntegrationSite;
+    name: string;
+}
+
+const INTEGRATION_SITES: IIntegration[] = [
+    { id: "SPITOGATOS", name: "Spitogatos.gr" },
+    { id: "PLOT_GR", name: "plot.gr" },
+    { id: "JAMES_EDITION", name: "jamesedition.com" },
+];
 
 export const company = createApi({
     reducerPath: "company",
@@ -49,12 +63,19 @@ export const company = createApi({
             invalidatesTags: ["Company"],
         }),
 
-        getIntegrations: builder.query<IIntegration, IntegrationSite>({
+        getIntegrationCredentials: builder.query<
+            IIntegrationCredentials,
+            IntegrationSite
+        >({
             query: (site) => ({
                 url: "/integration-credentials",
                 params: { site },
             }),
             providesTags: ["CompanyIntegrations"],
+        }),
+
+        getIntegrations: builder.query<IIntegration[], void>({
+            queryFn: () => ({ data: INTEGRATION_SITES }),
         }),
 
         getMembers: builder.query<IUserMini[], number>({
@@ -65,15 +86,17 @@ export const company = createApi({
 
         // -------------------------------------------------------------
 
-        updateIntegrations: builder.mutation<void, IIntegrationPOST>({
-            query: (body) => ({
-                url: "/integration-credentials",
-                method: "POST",
-                body,
-                params: { site: body.site },
-            }),
-            invalidatesTags: ["CompanyIntegrations"],
-        }),
+        updateIntegrations: builder.mutation<void, IIntegrationCredentialsPOST>(
+            {
+                query: (body) => ({
+                    url: "/integration-credentials",
+                    method: "POST",
+                    body,
+                    params: { site: body.site },
+                }),
+                invalidatesTags: ["CompanyIntegrations"],
+            }
+        ),
 
         // Logo or Watermark
         uploadCompanyImage: builder.mutation<
@@ -124,6 +147,7 @@ export const company = createApi({
 export const {
     useGetCompanyDetailsQuery,
     useUpdateCompanyDetailsMutation,
+    useGetIntegrationCredentialsQuery,
     useGetIntegrationsQuery,
     useUpdateIntegrationsMutation,
     useUploadCompanyImageMutation,

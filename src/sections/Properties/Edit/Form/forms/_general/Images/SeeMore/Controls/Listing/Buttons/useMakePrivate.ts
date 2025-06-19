@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useIntegrationsOperations } from "../../../../context/IntegrationsOperations";
 import { TListingTab } from "../../../types";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { useGetIntegrationOrderedImagesQuery } from "@/services/integrations";
 
 // INFO: filter out all elements of b from a

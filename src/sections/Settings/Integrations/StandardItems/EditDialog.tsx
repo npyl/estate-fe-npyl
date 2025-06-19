@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { TranslationType } from "@/types/translation";
 import Dialog from "@/components/Dialog";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 
 interface IntegrationExceptRightMove
     extends Omit<IIntegrationCredentials, "branchId"> {}

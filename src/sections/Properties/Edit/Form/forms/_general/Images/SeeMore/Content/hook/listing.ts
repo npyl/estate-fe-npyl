@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 import TUseContentOperations, { ExtendedDropResult } from "./type";
 import { useGetIntegrationOrderedImagesQuery } from "@/services/integrations";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { DroppableTypeItem } from "@/components/TwoDimentionsDnd/types";
 import { parseItemId, parseRowId } from "@/components/TwoDimentionsDnd/util";
 import { useIntegrationsOperations } from "../../../context/IntegrationsOperations";

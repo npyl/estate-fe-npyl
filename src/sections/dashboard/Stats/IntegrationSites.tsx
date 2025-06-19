@@ -4,7 +4,7 @@ import { PropertyIntegrations } from "@/types/dashboard";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "@/components/Link";
 import { Home } from "@mui/icons-material";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import JamesEdition from "@/assets/integrations/svgs/JamesEdition";
 import { TAnySvg } from "./types";
 import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";

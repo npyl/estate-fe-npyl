@@ -7,7 +7,7 @@ import CounterChip from "./OptionCheckbox/CounterChip";
 import OptionCheckbox from "./OptionCheckbox";
 import { TOptionMapper } from "./OptionCheckbox/types";
 import { useFiltersContext, useIntegrationSites } from "../../FiltersContext";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 
 // -----------------------------------------------------------------
 

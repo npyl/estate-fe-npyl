@@ -16,8 +16,13 @@ import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegrationCredentials } from "@/types/integrations";
 import ItemSkeleton from "../Skeleton";
-import RightMoveIcon from "@/assets/integrations/RightMoveIcon";
 import { FC } from "react";
+import INTEGRATIONS_ICONS from "@/assets/icons/integrations";
+
+const RightMoveIcon: FC<any> = (props) => {
+    const Icon = INTEGRATIONS_ICONS["RIGHT_MOVE"];
+    return <Icon {...props} />;
+};
 
 interface Props {
     onEdit: (s: IIntegrationCredentials) => void;

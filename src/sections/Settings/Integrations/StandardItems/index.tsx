@@ -1,33 +1,14 @@
 import dynamic from "next/dynamic";
-import { ComponentType, useCallback, useState } from "react";
-import { IIntegration } from "src/types/integrations";
+import { useCallback, useState } from "react";
 import IntegrationItem from "./Item";
-import { IntegrationSite } from "@/types/listings";
-import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
-import PlotGRIcon from "@/assets/integrations/plotgr";
-import JamesEditionIcon from "@/assets/integrations/james_edition";
+import { useGetIntegrationsQuery } from "@/services/company";
+import INTEGRATIONS_ICONS from "@/assets/icons/integrations";
 const EditDialog = dynamic(() => import("./EditDialog"));
 
-// import FerimmoIcon from "@/assets/integrations/ferimmo";
-// import XEIcon from "@/assets/integrations/xrysh_eukairia";
-
-// const DISABLED: IntegrationSite[] = ["XE", "FERIMMO"];
-
-type TIntegrationOption = {
-    type: IntegrationSite;
-    name: string;
-    icon: ComponentType<any>;
-};
-
-const INTEGRATION_SITES: TIntegrationOption[] = [
-    { type: "SPITOGATOS", name: "Spitogatos.gr", icon: SpitogatosSvg },
-    { type: "PLOT_GR", name: "plot.gr", icon: PlotGRIcon },
-    { type: "JAMES_EDITION", name: "jamesedition.com", icon: JamesEditionIcon },
-];
-
 const StandardItems = () => {
-    const [selectedIntegration, setSelectedIntegration] =
-        useState<IIntegration>();
+    const { data } = useGetIntegrationsQuery();
+
+    const [selectedIntegration, setSelectedIntegration] = useState<any>();
 
     const handleCloseDialog = useCallback(
         () => setSelectedIntegration(undefined),
@@ -36,12 +17,12 @@ const StandardItems = () => {
 
     return (
         <>
-            {INTEGRATION_SITES.map(({ type, name, icon }, i) => (
+            {data?.map(({ id, name }, i) => (
                 <IntegrationItem
-                    key={type}
-                    type={type}
+                    key={id}
+                    type={id}
                     name={name}
-                    Icon={icon}
+                    Icon={INTEGRATIONS_ICONS[id]}
                     expandedInitialy={i === 0}
                     onEdit={setSelectedIntegration}
                 />

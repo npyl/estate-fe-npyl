@@ -8,8 +8,9 @@ const defaultValues: StateType = {
     labels: [],
     bedrooms: "",
     state: "",
-    publicSites: [],
     exclusive: false,
+    publicSites: [],
+    integrations: [],
 };
 
 export { defaultValues };

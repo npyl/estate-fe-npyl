@@ -12,6 +12,7 @@ import EditLabels from "./EditLabels";
 import Active from "./Active";
 import Exclusive from "./Exclusive";
 import { DefaultValues } from "react-hook-form";
+import Integrations from "./Integrations";
 
 interface BulkEditProps<State extends object> {
     DEFAULT_VALUES: DefaultValues<State>;
@@ -41,6 +42,7 @@ const BulkEdit = <State extends object>({
         <EditBedrooms />
         <EditState />
         <Active />
+        <Integrations />
         <Exclusive />
     </BulkEditDrawer>
 );

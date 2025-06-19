@@ -12,7 +12,7 @@ import SoftButton from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
 import { useGetIntegrationCredentialsQuery } from "@/services/company";
 import { useTranslation } from "react-i18next";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IIntegrationCredentials } from "@/types/integrations";
@@ -20,7 +20,7 @@ import ItemSkeleton from "../Skeleton";
 import { ComponentType, FC } from "react";
 
 interface Props {
-    Icon?: ComponentType<{ width: number; height: number }>;
+    Icon?: ComponentType<any>;
     type: IntegrationSite;
     name: string;
     expandedInitialy: boolean;

@@ -1,3 +1,5 @@
+import { IntegrationSite } from "@/types/integrations";
+
 type StateType = {
     managerId: string;
     ownerId: string;
@@ -6,8 +8,9 @@ type StateType = {
     labels: number[];
     bedrooms: string;
     state: string;
-    publicSites: number[];
     exclusive: boolean;
+    publicSites: number[];
+    integrations: IntegrationSite[];
 };
 
 export type { StateType };

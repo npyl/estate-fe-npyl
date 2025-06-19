@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import usePropertyImages from "../../hook";
 import { useRouter } from "next/router";
 import React from "react";
-import { IntegrationSite } from "@/types/listings";
+import { IntegrationSite } from "@/types/integrations";
 import { useIntegrationsOperations } from "../../context/IntegrationsOperations";
 
 const COUNTS: Record<IntegrationSite, number> = {
