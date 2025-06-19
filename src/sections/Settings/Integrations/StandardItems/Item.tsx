@@ -10,12 +10,12 @@ import {
 import { List, ListItem } from "@/components/List";
 import SoftButton from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
-import { useGetIntegrationsQuery } from "@/services/company";
+import { useGetIntegrationCredentialsQuery } from "@/services/company";
 import { useTranslation } from "react-i18next";
 import { IntegrationSite } from "@/types/listings";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { IIntegration } from "@/types/integrations";
+import { IIntegrationCredentials } from "@/types/integrations";
 import ItemSkeleton from "../Skeleton";
 import { ComponentType, FC } from "react";
 
@@ -24,7 +24,7 @@ interface Props {
     type: IntegrationSite;
     name: string;
     expandedInitialy: boolean;
-    onEdit: (s: IIntegration) => void;
+    onEdit: (s: IIntegrationCredentials) => void;
 }
 
 const IntegrationItem: FC<Props> = ({
@@ -38,9 +38,12 @@ const IntegrationItem: FC<Props> = ({
 
     const [expanded, toggleExpanded] = useToggle(expandedInitialy);
 
-    const { data: integration, isLoading } = useGetIntegrationsQuery(type, {
-        skip: !expanded,
-    });
+    const { data: integration, isLoading } = useGetIntegrationCredentialsQuery(
+        type,
+        {
+            skip: !expanded,
+        }
+    );
 
     if (isLoading) return <ItemSkeleton />;
 

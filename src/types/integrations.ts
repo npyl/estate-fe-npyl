@@ -9,7 +9,7 @@ interface ImagesOrderRes {
     privateKeys: string[];
 }
 
-export interface IIntegration {
+interface IIntegrationCredentials {
     apiKey: string;
     appKey: string;
     password: string;
@@ -20,6 +20,12 @@ export interface IIntegration {
     branchId: number;
 }
 
-export interface IIntegrationPOST extends Partial<IIntegration> {}
+interface IIntegrationCredentialsPOST
+    extends Partial<IIntegrationCredentials> {}
 
-export type { ImagesOrderRes };
+export type {
+    ImagesOrderRes,
+    // ...
+    IIntegrationCredentials,
+    IIntegrationCredentialsPOST,
+};

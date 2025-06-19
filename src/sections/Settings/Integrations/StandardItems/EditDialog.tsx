@@ -3,7 +3,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
-import { IIntegration, IIntegrationPOST } from "src/types/integrations";
+import {
+    IIntegrationCredentials,
+    IIntegrationCredentialsPOST,
+} from "src/types/integrations";
 import { RHFTextField } from "@/components/hook-form";
 import { useUpdateIntegrationsMutation } from "@/services/company";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,7 +15,8 @@ import { TranslationType } from "@/types/translation";
 import Dialog from "@/components/Dialog";
 import { IntegrationSite } from "@/types/listings";
 
-interface IntegrationExceptRightMove extends Omit<IIntegration, "branchId"> {}
+interface IntegrationExceptRightMove
+    extends Omit<IIntegrationCredentials, "branchId"> {}
 
 const getSchema = (t: TranslationType) =>
     Yup.object().shape({
@@ -34,7 +38,7 @@ const getSchema = (t: TranslationType) =>
 
 interface FormProps {
     open: boolean;
-    initialValues?: IIntegration;
+    initialValues?: IIntegrationCredentials;
     onClose: () => void;
 }
 
@@ -50,7 +54,7 @@ const EditDialog: React.FC<FormProps> = ({ open, initialValues, onClose }) => {
 
     const [updateIntegrations] = useUpdateIntegrationsMutation();
 
-    const onSubmit = async (d: IIntegrationPOST) => {
+    const onSubmit = async (d: IIntegrationCredentialsPOST) => {
         await updateIntegrations(d);
         onClose();
     };

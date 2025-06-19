@@ -10,24 +10,25 @@ import {
 import { List, ListItem } from "@/components/List";
 import SoftButton from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
-import { useGetIntegrationsQuery } from "@/services/company";
+import { useGetIntegrationCredentialsQuery } from "@/services/company";
 import { useTranslation } from "react-i18next";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { IIntegration } from "@/types/integrations";
+import { IIntegrationCredentials } from "@/types/integrations";
 import ItemSkeleton from "../Skeleton";
 import RightMoveIcon from "@/assets/integrations/RightMoveIcon";
+import { FC } from "react";
 
 interface Props {
-    onEdit: (s: IIntegration) => void;
+    onEdit: (s: IIntegrationCredentials) => void;
 }
 
-const IntegrationItem = ({ onEdit }: Props) => {
+const IntegrationItem: FC<Props> = ({ onEdit }) => {
     const { t } = useTranslation();
 
     const [expanded, toggleExpanded] = useToggle(false);
 
-    const { data: integration, isLoading } = useGetIntegrationsQuery(
+    const { data: integration, isLoading } = useGetIntegrationCredentialsQuery(
         "RIGHT_MOVE",
         {
             skip: !expanded,
