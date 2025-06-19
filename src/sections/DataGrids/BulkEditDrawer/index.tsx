@@ -58,7 +58,7 @@ const BulkEditDrawer = <State extends object, BulkEditReq>({
 
             onClose();
         },
-        [dirtyFields, selectedIds]
+        [variant, dirtyFields, selectedIds]
     );
 
     return (
