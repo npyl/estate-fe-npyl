@@ -2,12 +2,16 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 
 const Item = styled(Stack)(({ theme }) => ({
+    alignItems: "center",
+    justifyContent: "center",
     flexDirection: "column",
-    gap: 2,
+
+    gap: theme.spacing(1),
+
     [theme.breakpoints.up("md")]: {
+        justifyContent: "space-between",
         flexDirection: "row",
     },
-    justifyContent: "space-between",
     spacing: theme.spacing(1),
 
     backgroundColor:

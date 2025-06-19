@@ -217,11 +217,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
                 <Typography>{STATIC_DATA[label].text}</Typography>
             </Stack>
 
-            <Stack
-                direction={{ xs: "column", md: "row" }}
-                gap={1}
-                alignItems="center"
-            >
+            <Stack direction="row" gap={1} alignItems="center">
                 <Switch
                     STATIC_DATA={STATIC_DATA}
                     value={value}
