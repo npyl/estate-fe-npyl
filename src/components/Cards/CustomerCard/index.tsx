@@ -4,13 +4,9 @@ import Avatar from "@/components/Avatar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
-
 import AvatarShape from "./AvatarShape";
-
 import { ICustomer, ICustomerResultResponse } from "@/types/customer";
-
 import { TypeLabels } from "@/components/TypeLabels";
-
 import { styled, SxProps, Theme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import Link from "@/components/Link";
@@ -51,7 +47,8 @@ type Props = CardProps & {
 };
 
 export default function UserCard({ c, ...props }: Props) {
-    const { id, firstName, lastName, email, mobilePhone, avatar } = c || {};
+    const { id, firstName, lastName, email, mobilePhone, customerAvatar } =
+        c || {};
 
     const { t } = useTranslation();
 
@@ -73,7 +70,7 @@ export default function UserCard({ c, ...props }: Props) {
                 <Avatar
                     firstName={firstName}
                     lastName={lastName}
-                    src={avatar}
+                    src={customerAvatar}
                     sx={AvatarSx}
                 />
 

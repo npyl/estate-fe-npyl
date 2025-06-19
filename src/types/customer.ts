@@ -77,7 +77,7 @@ interface ResponseShortBase {
     firstName: string;
     lastName: string;
     email: string;
-    avatar: string;
+    customerAvatar: string;
     mobilePhone: string;
     city: string;
     leaser: boolean;
@@ -99,7 +99,7 @@ interface ResponseBase {
     firstName: string;
     lastName: string;
     email: string;
-    avatar: string;
+    customerAvatar: string;
     mobilePhone: string;
     homePhone: string;
     afm: string;

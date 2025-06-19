@@ -71,7 +71,7 @@ const RenderFullNameCell = ({ row }: CellParams) => (
         <CustomerAvatar
             firstName={row.firstName}
             lastName={row.lastName}
-            src={row.avatar}
+            src={row.customerAvatar}
         />
     </Stack>
 );
