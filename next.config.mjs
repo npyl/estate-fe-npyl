@@ -21,15 +21,6 @@ const config = {
     experimental: {
         optimizePackageImports: ["@mui/material", "@mui/icons-material"],
     },
-
-    webpack: (config, { buildId, webpack }) => {
-        config.plugins.push(
-            new webpack.DefinePlugin({
-                "process.env.NEXT_PUBLIC_BUILD_ID": JSON.stringify(buildId),
-            })
-        );
-        return config;
-    },
 };
 
 export default config;
