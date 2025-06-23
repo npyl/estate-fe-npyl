@@ -27,6 +27,7 @@ import Toaster from "@/components/Toaster";
 import "@/_private/JSON";
 
 import AuthenticatedProviders from "@/providers/Authenticated";
+import LoadBalancerRedirect from "@/providers/LoadBalancerRedirect";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -58,6 +59,8 @@ const App: FC<EnhancedAppProps> = (props) => {
                 />
                 <link rel="icon" href="/favicon-logo.ico" />
             </Head>
+
+            <LoadBalancerRedirect />
 
             <ReduxProvider store={store}>
                 <AuthProvider>
