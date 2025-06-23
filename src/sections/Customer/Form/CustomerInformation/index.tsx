@@ -12,9 +12,9 @@ import B2bSwitch from "./B2BSwitch";
 const CustomerInformation = () => {
     const { t } = useTranslation();
 
-    const { customer, customerId } = useGetCustomer();
+    const { customerId } = useGetCustomer();
 
-    const isB2B = Boolean(customer?.b2b);
+    const isB2B = Boolean(useWatch({ name: "b2b" }));
     const label = isB2B ? "B2B Customer Information" : "Customer Information";
 
     const enums = useGlobals();

@@ -9,12 +9,8 @@ import {
 import { Placeholder as LabelPlaceholder } from "@/components/Label";
 import LabelCreate from "@/sections/LabelCreate";
 import { LeadSource } from "@/types/global";
-import {
-    RHFSelect,
-    RHFTextField,
-    RHFOnlyNumbers,
-    RHFRating,
-} from "@/components/hook-form";
+import { RHFSelect, RHFOnlyNumbers, RHFRating } from "@/components/hook-form";
+import RHFTextField from "@/components/hook-form/dynamic/RHFTextField";
 import { TranslationType } from "@/types/translation";
 import { KeyValue } from "@/types/KeyValue";
 import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
@@ -73,7 +69,14 @@ const getFIELDS = (
     customerId?: string
 ) => [
     <RHFTextField fullWidth name="firstName" label={t("First Name") + " *"} />,
-    <RHFTextField fullWidth name="lastName" label={t("Last Name") + " *"} />,
+    ...WITH(
+        <RHFTextField
+            fullWidth
+            name="lastName"
+            label={t("Last Name") + " *"}
+        />,
+        !isB2B
+    ),
     <RHFTextField fullWidth name="email" label={t("Email")} />,
     <RHFOnlyNumbers
         fullWidth
