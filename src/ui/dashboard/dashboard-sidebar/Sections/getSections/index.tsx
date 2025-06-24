@@ -15,6 +15,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import EuroIcon from "@mui/icons-material/Euro";
 import EmailIcon from "@mui/icons-material/Email";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import RssFeedIcon from "@mui/icons-material/RssFeed";
 
 interface Item {
     title: string;
@@ -156,6 +157,15 @@ const getSections = (
                     title: t("Emails"),
                     path: "/emails",
                     icon: <EmailIcon />,
+                },
+                isAdmin
+            ),
+
+            ...WITH(
+                {
+                    title: t("Blog"),
+                    path: "/blog",
+                    icon: <RssFeedIcon />,
                 },
                 isAdmin
             ),
