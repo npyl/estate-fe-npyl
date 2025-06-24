@@ -1,5 +1,6 @@
 interface BlogPostReq {
     id?: number;
+    title: string;
     content: string;
 }
 
