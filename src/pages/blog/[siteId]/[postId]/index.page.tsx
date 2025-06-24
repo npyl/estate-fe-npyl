@@ -7,10 +7,10 @@ import { useRouter } from "next/router";
 
 const BlogByPublicIdPage: NextPage = () => {
     const router = useRouter();
-    const { publicId } = router.query;
-    const iPublicId = toNumberSafe(publicId);
-    if (iPublicId === -1) return null;
-    return <BlogViewByPublicId publicId={iPublicId} />;
+    const { siteId } = router.query;
+    const iSiteId = toNumberSafe(siteId);
+    if (iSiteId === -1) return null;
+    return <BlogViewByPublicId siteId={iSiteId} />;
 };
 
 BlogByPublicIdPage.getLayout = (page) => (

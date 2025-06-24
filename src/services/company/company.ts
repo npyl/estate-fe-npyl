@@ -7,6 +7,8 @@ import { IntegrationSite } from "@/types/integrations";
 import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+    BlogPostReq,
+    BlogPostRes,
     CompanyImageType,
     ICompany,
     ICompanyPOST,
@@ -32,6 +34,16 @@ const INTEGRATION_SITES: IIntegration[] = [
     { id: "JAMES_EDITION", name: "jamesedition.com" },
 ];
 
+interface IPublishBlogPostReq {
+    siteId: number;
+    post: BlogPostReq;
+}
+
+interface IBlogPostByIdReq {
+    siteId: number;
+    postId: number;
+}
+
 export const company = createApi({
     reducerPath: "company",
     baseQuery: fetchBaseQuery({
@@ -45,7 +57,14 @@ export const company = createApi({
         },
     }),
 
-    tagTypes: ["Company", "CompanyIntegrations", "CompanyPublicSites"],
+    tagTypes: [
+        "Company",
+        "CompanyIntegrations",
+        "CompanyPublicSites",
+        // ...
+        "BlogPosts",
+        "BlogPostById",
+    ],
 
     endpoints: (builder) => ({
         getCompanyDetails: builder.query<ICompany, void>({
@@ -141,6 +160,37 @@ export const company = createApi({
             }),
             invalidatesTags: ["CompanyPublicSites"],
         }),
+
+        // -------------------------------------------------------------------------
+
+        getBlogPosts: builder.query<BlogPostRes[], number>({
+            query: (siteId) => `/public-sites/${siteId}/blog/all`,
+            providesTags: ["BlogPosts"],
+        }),
+
+        getBlogPostById: builder.query<BlogPostRes, IBlogPostByIdReq>({
+            query: ({ siteId, postId }) =>
+                `/public-sites/${siteId}/blog/${postId}`,
+            providesTags: ["BlogPostById"],
+        }),
+
+        createOrUpdateBlogPost: builder.mutation<void, IPublishBlogPostReq>({
+            query: (siteId) => ({
+                url: `/public-sites/${siteId}/blog`,
+                method: "POST",
+            }),
+            invalidatesTags: ["BlogPosts", "BlogPostById"],
+        }),
+
+        deleteBlogPost: builder.mutation<void, IBlogPostByIdReq>({
+            query: ({ siteId, postId }) => ({
+                url: `/public-sites/${siteId}/blog/${postId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["BlogPosts"],
+        }),
+
+        // -------------------------------------------------------------------------
     }),
 });
 
@@ -158,4 +208,9 @@ export const {
     useGetPublicSitesQuery,
     useAddPublicSiteMutation,
     useRemovePublicSiteMutation,
+
+    useGetBlogPostsQuery,
+    useGetBlogPostByIdQuery,
+    useCreateOrUpdateBlogPostMutation,
+    useDeleteBlogPostMutation,
 } = company;

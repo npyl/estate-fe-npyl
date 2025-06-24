@@ -1,144 +1,42 @@
 import {
-    Stack,
-    Paper,
-    TextField,
-    MenuItem,
-    Typography,
-    Container,
-    Grid,
-} from "@mui/material";
-import * as React from "react";
-import { useGlobals } from "src/hooks/useGlobals";
-import { IGlobalProperty } from "src/types/global";
-import { Send as SendIcon } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
-import { KeyValue } from "src/types/KeyValue";
-import { useCallback, useMemo, useState } from "react";
-import { LoadingButton } from "@mui/lab";
-import { PPButton } from "@/components/styled";
-import getIcons from "@/assets/icons/parent-categories";
+    ICreatePropertyParams,
+    useCreatePropertyMutation,
+} from "@/services/properties";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
+import { FC, PropsWithChildren, useCallback } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
-interface IFormProps {
-    isLoading: boolean;
-    isError: boolean;
-    performCreate: (parentCategory: string, category: string) => void;
-}
+const schema = z.object({
+    parentCategory: z.string(),
+    category: z.string(),
+});
 
-export default function Form({
-    isLoading,
-    isError,
-    performCreate,
-}: IFormProps) {
-    const { t } = useTranslation();
+interface FormProps extends PropsWithChildren {}
 
-    const [category, setCategory] = useState("");
-    const [parentCategory, setParentCategory] = useState("");
+const Form: FC<FormProps> = ({ children }) => {
+    const methods = useForm<ICreatePropertyParams>({
+        values: {
+            category: "",
+            parentCategory: "",
+        },
+        resolver: zodResolver(schema),
+    });
 
-    // enums
-    const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const parentCategoryEnum = enums?.parentCategory || [];
-
-    const subCategoriesMap: {
-        [key: string]: KeyValue[];
-    } = useMemo(
-        () => ({
-            RESIDENTIAL: enums?.residentialCategory || [],
-            COMMERCIAL: enums?.commercialCategory || [],
-            LAND: enums?.landCategory || [],
-            OTHER: enums?.otherCategory || [],
-        }),
-        [enums]
-    );
-
-    const handleSave = useCallback(
-        () => performCreate(parentCategory, category),
-        [parentCategory, category]
-    );
-
-    const handleParentCategorySelect = (key: string) => {
-        setParentCategory(key);
-        if (parentCategory === key) {
-            return;
-        } else setCategory(""); // Reset subcategory when parent category changes
-    };
-
-    const handleCategorySelect = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const selectedKey = event.target.value;
-        const selectedItem = subCategoriesMap[parentCategory!]?.find(
-            (item) => item.key === selectedKey
-        );
-
-        if (selectedItem) {
-            setCategory(selectedItem.key);
-        }
-    };
+    const router = useRouter();
+    const [create] = useCreatePropertyMutation();
+    const onSubmit = useCallback(async (d: ICreatePropertyParams) => {
+        const res = await create(d);
+        if ("error" in res) return;
+        router.push(`/property/edit/${res.data}`);
+    }, []);
 
     return (
-        <Container maxWidth="md">
-            <Paper component={Stack} p={2}>
-                <Typography variant="h5" gutterBottom>
-                    {t("Create a new property")}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {t(
-                        "Choose a parent category and category for your property"
-                    )}
-                </Typography>
-
-                <Grid
-                    container
-                    mr={1}
-                    my={3}
-                    spacing={1}
-                    direction={{
-                        xs: "column",
-                        sm: "row",
-                    }}
-                >
-                    {parentCategoryEnum.map(({ key, value }) => (
-                        <Grid key={key} item xs={1} sm={6} width={1} height={1}>
-                            <PPButton
-                                clicked={key === parentCategory}
-                                onClick={() => handleParentCategorySelect(key)}
-                            >
-                                {getIcons({ width: 80, height: 80 })[key]}
-                                <Typography mt={1}>{value}</Typography>
-                            </PPButton>
-                        </Grid>
-                    ))}
-                </Grid>
-
-                <TextField
-                    disabled={!parentCategory}
-                    select
-                    label={t("Category")}
-                    value={category}
-                    onChange={handleCategorySelect}
-                >
-                    {subCategoriesMap[parentCategory!]?.map(
-                        ({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        )
-                    ) || []}
-                </TextField>
-            </Paper>
-
-            <Stack direction="row" justifyContent="center" marginTop={3}>
-                <LoadingButton
-                    loading={isLoading && !isError}
-                    variant="contained"
-                    startIcon={<SendIcon />}
-                    onClick={handleSave}
-                    disabled={category === "" || isLoading}
-                >
-                    {t("Save")}
-                </LoadingButton>
-            </Stack>
-        </Container>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <FormProvider {...methods}>{children}</FormProvider>
+        </form>
     );
-}
+};
+
+export default Form;
