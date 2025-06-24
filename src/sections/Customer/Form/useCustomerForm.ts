@@ -1,5 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { TranslationType } from "@/types/translation";
 import { ICustomerYup } from "./types";
 import useFormPersist from "@/components/hook-form/useFormPersist";
@@ -10,20 +10,38 @@ import { B2BMember2Req, ICustomer } from "@/types/customer";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 
 const getLoginSchema = (t: TranslationType) =>
-    Yup.object().shape({
-        firstName: Yup.string().required(t<string>("First Name is required")),
-        lastName: Yup.string().required(t<string>("Last Name is required")),
-        email: Yup.string()
-            .email(t<string>("Email must be a valid email address"))
-            .optional(),
-        afm: Yup.string()
-            .test(
-                "length",
-                t<string>("VAT must be empty or exactly 9 digits"),
-                (value) => !value || value.length === 9
-            )
-            .optional(),
-    });
+    z
+        .object({
+            firstName: z.string().min(1, t<string>("First Name is required")),
+            lastName: z.string(),
+            email: z
+                .string()
+                .email(t<string>("Email must be a valid email address")),
+            afm: z
+                .string()
+                .refine(
+                    (value) => !value || value.length === 9,
+                    t<string>("VAT must be empty or exactly 9 digits")
+                ),
+            b2b: z.boolean(),
+        })
+        .passthrough()
+        .refine(
+            (data) => {
+                // If b2b is false, lastName is required
+                if (
+                    !data.b2b &&
+                    (!data.lastName || data.lastName.trim() === "")
+                ) {
+                    return false;
+                }
+                return true;
+            },
+            {
+                message: t<string>("Last Name is required"),
+                path: ["lastName"],
+            }
+        );
 
 const getDefaultValues = (customer?: Partial<ICustomer>): ICustomerYup => ({
     id: customer?.id,
@@ -59,10 +77,7 @@ const getDefaultValues = (customer?: Partial<ICustomer>): ICustomerYup => ({
     preferredLanguage: customer?.preferredLanguage?.key || "GREEK", // just for now, before the Guatemala tour
     leadSource: customer?.leadSource?.key || null,
 
-    demands:
-        customer?.demands && customer?.demands?.length > 0
-            ? customer?.demands?.map(demandMapper)
-            : [],
+    demands: customer?.demands?.map(demandMapper) ?? [],
 
     // INFO: this field will only contain data on customer creation
     notes: [],
@@ -91,7 +106,7 @@ const useCustomerForm = (
     );
 
     const all = useFormPersist<ICustomerYup>(cookieKey, onSaveSuccess, {
-        resolver: yupResolver(LoginSchema),
+        resolver: zodResolver(LoginSchema),
         values: defaultValues,
     });
 

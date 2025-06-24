@@ -25,7 +25,6 @@ import { googleWorkspaceApi } from "@/services/company";
 import { googleOAuth } from "@/services/google-oauth";
 import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
-import { server } from "@/services/server";
 import { emails } from "@/services/email";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
@@ -62,7 +61,6 @@ export const rootReducer = combineReducers({
     [messages.reducerPath]: messages.reducer,
     [logout.reducerPath]: logout.reducer,
     // ...
-    [server.reducerPath]: server.reducer,
     [emails.reducerPath]: emails.reducer,
 
     // customer
