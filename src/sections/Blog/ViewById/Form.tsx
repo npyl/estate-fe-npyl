@@ -5,6 +5,12 @@ import { FC, PropsWithChildren, useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+const BlogPostResToReq = (d?: BlogPostRes) => ({
+    id: d?.id,
+    title: d?.title || "",
+    content: d?.content || "",
+});
+
 const schema = z.object({
     content: z.string(),
 });
@@ -16,10 +22,7 @@ interface FormProps extends PropsWithChildren {
 
 const Form: FC<FormProps> = ({ siteId, data, children }) => {
     const methods = useForm<BlogPostReq>({
-        values: {
-            id: data?.id,
-            content: data?.content || "",
-        },
+        values: BlogPostResToReq(data),
         resolver: zodResolver(schema),
     });
 

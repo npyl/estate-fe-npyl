@@ -2,6 +2,7 @@ import { FC } from "react";
 import Content from "./Content";
 import Form from "./Form";
 import { useGetBlogPostByIdQuery } from "@/services/company";
+import Actions from "./Actions";
 
 interface Props {
     siteId: number;
@@ -13,6 +14,7 @@ const BlogViewByPublicId: FC<Props> = ({ siteId, postId }) => {
     return (
         <Form siteId={siteId} data={data}>
             <Content />
+            <Actions siteId={siteId} />
         </Form>
     );
 };
