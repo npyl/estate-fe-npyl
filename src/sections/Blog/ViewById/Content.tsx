@@ -7,7 +7,7 @@ const Content = () => {
     const { t } = useTranslation();
     return (
         <Stack spacing={1}>
-            <RHFTextField label={t("Label")} name="title" />
+            <RHFTextField label={t("Title")} name="title" />
             <RHFEditor name="content" height="500px" />
         </Stack>
     );

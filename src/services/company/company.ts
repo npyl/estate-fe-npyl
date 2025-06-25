@@ -15,6 +15,7 @@ import {
     IPublicSiteReq,
     IPublicSitesRes,
 } from "@/types/company";
+import IPage from "@/types/page";
 
 interface IUploadCompanyImage {
     contentType: string;
@@ -163,7 +164,7 @@ export const company = createApi({
 
         // -------------------------------------------------------------------------
 
-        getBlogPosts: builder.query<BlogPostRes[], number>({
+        getBlogPosts: builder.query<IPage<BlogPostRes[]>, number>({
             query: (siteId) => `/public-sites/${siteId}/blog/all`,
             providesTags: ["BlogPosts"],
         }),
