@@ -12,6 +12,7 @@ import Task from "./Renderers/Task";
 import PropertyAll from "./Renderers/PropertyAll";
 import PropertyEdit from "./Renderers/PropertyEdit";
 import PropertyCreate from "./Renderers/PropertyCreate";
+import BlogPost from "./Renderers/BlogPost";
 
 // --------------------------------------------------------------------
 
@@ -33,6 +34,7 @@ const RENDERERS: TRenderers = {
     TASK: Task,
     PROFILE: Profile,
     USER: User,
+    BLOG_POST: BlogPost,
 };
 
 // --------------------------------------------------------------------

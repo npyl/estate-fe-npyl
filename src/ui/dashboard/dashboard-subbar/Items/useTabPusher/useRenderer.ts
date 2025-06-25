@@ -45,6 +45,7 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
         if (path.startsWith("/tasks")) return "TASK";
         if (path.startsWith("/user")) return "USER";
         if (path.startsWith("/profile")) return "PROFILE";
+        if (path.startsWith("/blog")) return "BLOG_POST";
     }, [path, hasResourceId, tabData]);
 
     return renderer;

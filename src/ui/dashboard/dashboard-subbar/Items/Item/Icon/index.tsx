@@ -11,6 +11,7 @@ import {
     CustomerCreateIcon,
     CustomerEditIcon,
 } from "./Customer";
+import RssFeedIcon from "@mui/icons-material/RssFeed";
 
 type TIcons = Record<TTabRenderer, ComponentType<any>>;
 
@@ -28,6 +29,7 @@ const ICONS: TIcons = {
     TASK: ConfirmationNumberIcon,
     PROFILE: PersonIcon,
     USER: PersonIcon,
+    BLOG_POST: RssFeedIcon,
 };
 
 const needResourceId = (renderer: TTabRenderer) =>
