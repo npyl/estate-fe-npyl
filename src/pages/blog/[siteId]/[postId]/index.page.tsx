@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { toNumberSafe } from "@/utils/toNumber";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import BreadcrumbsLayout from "@/sections/Blog/BreadcrumbsLayout";
 
 const BlogByPublicIdPage: NextPage = () => {
     const router = useRouter();
@@ -16,7 +17,9 @@ const BlogByPublicIdPage: NextPage = () => {
 
 BlogByPublicIdPage.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <BreadcrumbsLayout>{page}</BreadcrumbsLayout>
+        </DashboardLayout>
     </AuthGuard>
 );
 

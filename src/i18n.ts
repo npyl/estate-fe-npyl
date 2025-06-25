@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            New_Neutral: "New_Neutral",
             DELETE_POST_0: "Deleting this post cannot be undone",
             "Delete post?": "Delete post?",
             "Delete public site?": "Delete public site?",
@@ -1383,6 +1384,7 @@ const resources = {
     },
     el: {
         translation: {
+            New_Neutral: "Νέο",
             DELETE_POST_0: "Η διαγραφή του post θα είναι μόνιμη",
             "Delete post?": "Διαγραφή post?",
             "Delete public site?": "Διαγραφή δημόσιου site?",
