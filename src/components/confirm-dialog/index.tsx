@@ -9,17 +9,19 @@ import {
 //
 import { ConfirmDialogProps } from "./types";
 import { useTranslation } from "react-i18next";
+import stopPropagation from "@/utils/stopPropagation";
+import { FC } from "react";
 // ----------------------------------------------------------------------
 
-export default function ConfirmDialog({
+const ConfirmDialog: FC<ConfirmDialogProps> = ({
     title,
     content,
     action,
     ...other
-}: ConfirmDialogProps) {
+}) => {
     const { t } = useTranslation();
     return (
-        <Dialog fullWidth maxWidth="xs" {...other}>
+        <Dialog fullWidth maxWidth="xs" onClick={stopPropagation} {...other}>
             <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
 
             {content && (
@@ -42,4 +44,6 @@ export default function ConfirmDialog({
             </DialogActions>
         </Dialog>
     );
-}
+};
+
+export default ConfirmDialog;

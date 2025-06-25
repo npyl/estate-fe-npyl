@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            DELETE_POST_0: "Deleting this post cannot be undone",
+            "Delete post?": "Delete post?",
             "Delete public site?": "Delete public site?",
             DELETE_PUBLIC_0:
                 "This change is permanent and the properties associated with it will not be recoverable",
@@ -1381,6 +1383,8 @@ const resources = {
     },
     el: {
         translation: {
+            DELETE_POST_0: "Η διαγραφή του post θα είναι μόνιμη",
+            "Delete post?": "Διαγραφή post?",
             "Delete public site?": "Διαγραφή δημόσιου site?",
 
             DELETE_PUBLIC_0:
