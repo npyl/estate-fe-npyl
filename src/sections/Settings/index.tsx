@@ -1,58 +1,45 @@
-import { Container, Tab } from "@mui/material";
-import { useCallback } from "react";
+import { Tab } from "@mui/material";
+import { ComponentType, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { initialData, useSecurityContext } from "@/contexts/security";
 import TabPanel from "@/components/Tabs/TabPanel";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
 import dynamic from "next/dynamic";
-// ...
 import CompanyInformation from "@/sections/Settings/Company";
+import { TranslationType } from "@/types/translation";
+import { PERMISSIONS_TAB_ID } from "./constant";
 const Integrations = dynamic(() => import("@/sections/Settings/Integrations"));
 const UserPage = dynamic(() => import("@/sections/Settings/user"));
 const PermissionPage = dynamic(() => import("@/sections/Settings/permission"));
 
+type TTab = { id: number; label: string; View: ComponentType };
+
+const getTABS = (t: TranslationType): TTab[] => [
+    { id: 0, label: t("Company Information"), View: CompanyInformation },
+    { id: 1, label: t("Integrations"), View: Integrations },
+    { id: 2, label: t("Users"), View: UserPage },
+    { id: PERMISSIONS_TAB_ID, label: t("Permissions"), View: PermissionPage },
+];
+
+const getTab = ({ id, label }: TTab) => <Tab key={id} label={label} />;
+const getView =
+    (value: number) =>
+    ({ id, View }: TTab) => (
+        <TabPanel value={value} index={id}>
+            <View />
+        </TabPanel>
+    );
+
 const Settings = () => {
     const { t } = useTranslation();
 
-    const { setSelectedUser, setSelectedPreset, setTargetUser, setData } =
-        useSecurityContext();
-
     const [value] = useCurrentTab();
 
-    const handleChange = useCallback((newValue: number) => {
-        if (newValue === 0) {
-            setSelectedUser(-1);
-            setSelectedPreset(-1);
-            setTargetUser(-1);
-            setData(initialData);
-        }
-    }, []);
-
-    const gotoPermissions = useCallback(() => handleChange(3), []);
+    const TABS = useMemo(() => getTABS(t), [t]);
 
     return (
         <>
-            <Tabs>
-                <Tab label={t("Company Information")} />
-                <Tab label={t("Integrations")} />
-                <Tab label={t("Users")} />
-                <Tab label={t("Permissions")} />
-            </Tabs>
-
-            <Container maxWidth="md">
-                <TabPanel value={value} index={0}>
-                    <CompanyInformation />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <Integrations />
-                </TabPanel>
-            </Container>
-            <TabPanel value={value} index={2}>
-                <UserPage onGotoPermissions={gotoPermissions} />
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                <PermissionPage />
-            </TabPanel>
+            <Tabs>{TABS.map(getTab)}</Tabs>
+            {TABS.map(getView(value))}
         </>
     );
 };

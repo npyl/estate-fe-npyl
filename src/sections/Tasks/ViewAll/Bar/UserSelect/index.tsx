@@ -24,7 +24,6 @@ const ClearButton = () => {
             onClick={handleClear}
             size="small"
             sx={{
-                ml: 1,
                 borderRadius: "100%",
             }}
         >

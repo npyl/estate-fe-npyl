@@ -1,8 +1,7 @@
 import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
-import { useSecurityContext } from "src/contexts/security";
 import { IUser } from "src/types/user";
 import ListLanguageItem from "@/components/List/Items/language";
 import SoftButton from "@/components/SoftButton";
@@ -31,17 +30,21 @@ const RenderUsername = ({ username }: { username?: string }) => {
     ) : null;
 };
 
-const ViewUser = ({ user }: ViewUserProps) => {
+const EditButton = () => {
     const { t } = useTranslation();
-    const { setSelectedUser } = useSecurityContext();
-
     const [formOpen, setFormOpen] = useState(false);
     const handleFormOpen = () => setFormOpen(true);
     const handleFormClose = () => setFormOpen(false);
+    return (
+        <>
+            <SoftButton onClick={handleFormOpen}>{t("Edit")}</SoftButton>
+            {formOpen && <UserForm open={formOpen} onClose={handleFormClose} />}
+        </>
+    );
+};
 
-    useEffect(() => {
-        setSelectedUser(user!.id);
-    }, []);
+const ViewUser = ({ user }: ViewUserProps) => {
+    const { t } = useTranslation();
 
     return (
         <Paper elevation={10}>
@@ -55,7 +58,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                     {t("User Profile")}
                 </Typography>
 
-                <SoftButton onClick={handleFormOpen}>{t("Edit")}</SoftButton>
+                <EditButton />
             </SpaceBetween>
             <Divider />
             <Stack p={3} justifyContent="center" alignItems="center">
@@ -192,8 +195,6 @@ const ViewUser = ({ user }: ViewUserProps) => {
                     </List>
                 </Grid>
             </Grid>
-
-            {formOpen && <UserForm open={formOpen} onClose={handleFormClose} />}
         </Paper>
     );
 };

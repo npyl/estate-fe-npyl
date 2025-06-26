@@ -4,14 +4,17 @@ import RightMoveItem from "./RightMoveItem";
 import StandardItems from "./StandardItems";
 import GoogleWorkspace from "./GoogleWorkspace";
 import PublicSites from "./PublicSites";
+import Container from "@mui/material/Container";
 
 const Integrations: React.FC = () => (
-    <Stack spacing={1}>
-        <GoogleWorkspace />
-        <PublicSites />
-        <StandardItems />
-        <RightMoveItem />
-    </Stack>
+    <Container maxWidth="md">
+        <Stack spacing={1}>
+            <GoogleWorkspace />
+            <PublicSites />
+            <StandardItems />
+            <RightMoveItem />
+        </Stack>
+    </Container>
 );
 
 export default Integrations;

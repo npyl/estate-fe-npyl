@@ -1,0 +1,2 @@
+const PERMISSIONS_TAB_ID = 3;
+export { PERMISSIONS_TAB_ID };

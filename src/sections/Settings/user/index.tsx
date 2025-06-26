@@ -35,11 +35,7 @@ type ActiveNotificationsType = {
     [userId: number]: boolean;
 };
 
-interface Props {
-    onGotoPermissions: VoidFunction;
-}
-
-const UserPage: FC<Props> = ({ onGotoPermissions }) => {
+const UserPage = () => {
     const router = useRouter();
     const { data: users } = useAllUsersQuery();
     const { setSelectedUser } = useSecurityContext();
@@ -182,16 +178,12 @@ const UserPage: FC<Props> = ({ onGotoPermissions }) => {
                                             handleOpenUserForm();
                                             e.stopPropagation();
                                         }}
-                                        sx={{ ml: 1, mr: -1 }}
                                     >
                                         <EditIcon fontSize="small" />
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
-                                    <GotoPermissions
-                                        userId={user.id}
-                                        onGotoPermissions={onGotoPermissions}
-                                    />
+                                    <GotoPermissions userId={user.id} />
                                 </TableCell>
                             </AnimatedTableRow>
                         ))}
