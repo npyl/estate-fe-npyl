@@ -22,7 +22,7 @@ const AvatarSelectGroup: FC<AvatarSelectGroupProps> = ({
     children,
     ...props
 }) => (
-    <Stack direction="row" spacing={1} alignItems="center">
+    <Stack direction="row" alignItems="center">
         <AvatarGroup
             users={users}
             value={value}

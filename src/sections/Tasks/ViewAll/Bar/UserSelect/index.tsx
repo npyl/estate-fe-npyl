@@ -24,10 +24,12 @@ const ClearButton = () => {
             onClick={handleClear}
             size="small"
             sx={{
+                width: "30px",
+                height: "30px",
                 borderRadius: "100%",
             }}
         >
-            <ClearIcon />
+            <ClearIcon fontSize="small" />
         </ToggleButton>
     );
 };

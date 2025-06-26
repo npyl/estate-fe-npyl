@@ -15,13 +15,13 @@ const ClearButton = () => {
         <ToggleButton
             value=""
             onClick={handleClear}
-            size="small"
             sx={{
-                ml: 1,
+                width: "30px",
+                height: "30px",
                 borderRadius: "100%",
             }}
         >
-            <ClearIcon />
+            <ClearIcon fontSize="small" />
         </ToggleButton>
     );
 };

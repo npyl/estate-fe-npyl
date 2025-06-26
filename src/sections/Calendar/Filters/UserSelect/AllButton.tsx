@@ -18,8 +18,10 @@ const AllButton = () => {
             value="ADMIN_ALL"
             onClick={handleClick}
             selected={calendarId === "ADMIN_ALL"}
-            size="small"
             sx={{
+                width: "40px",
+                height: "40px",
+                fontSize: "10px",
                 borderRadius: "100%",
                 "&.Mui-selected": {
                     borderWidth: "3px",
