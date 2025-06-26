@@ -13,7 +13,7 @@ const BlogViewByPublicId: FC<Props> = ({ siteId, postId }) => {
     const { data } = useGetBlogPostByIdQuery({ siteId, postId });
     return (
         <Form data={data}>
-            <Content />
+            <Content siteId={siteId} postId={postId} />
             <Actions siteId={siteId} />
         </Form>
     );

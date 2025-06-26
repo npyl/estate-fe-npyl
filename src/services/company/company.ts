@@ -45,6 +45,10 @@ interface IBlogPostByIdReq {
     postId: number;
 }
 
+interface IUploadImageReq extends IBlogPostByIdReq {
+    file: File;
+}
+
 export const company = createApi({
     reducerPath: "company",
     baseQuery: fetchBaseQuery({
@@ -191,6 +195,29 @@ export const company = createApi({
             invalidatesTags: ["BlogPosts"],
         }),
 
+        uploadBlogPostImage: builder.mutation<void, IUploadImageReq>({
+            query: ({ siteId, postId, file }) => {
+                const body = new FormData();
+                body.append("file", file);
+
+                return {
+                    url: `/public-sites/${siteId}/blog/${postId}/image`,
+                    method: "POST",
+                    body,
+                    responseHandler: "text",
+                };
+            },
+            invalidatesTags: ["BlogPosts", "BlogPostById"],
+        }),
+
+        removeBlogPostImage: builder.mutation<void, IBlogPostByIdReq>({
+            query: ({ siteId, postId }) => ({
+                url: `/public-sites/${siteId}/blog/${postId}/image`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["BlogPosts", "BlogPostById"],
+        }),
+
         // -------------------------------------------------------------------------
     }),
 });
@@ -214,4 +241,6 @@ export const {
     useGetBlogPostByIdQuery,
     useCreateOrUpdateBlogPostMutation,
     useDeleteBlogPostMutation,
+    useUploadBlogPostImageMutation,
+    useRemoveBlogPostImageMutation,
 } = company;

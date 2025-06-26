@@ -1,18 +1,12 @@
-import FileInput from "@/components/FileInput";
 import { ChangeEvent, FC, useCallback } from "react";
-import Avatar, { AvatarProps } from "@/components/Avatar";
-import {
-    alpha,
-    Box,
-    CircularProgress,
-    IconButton,
-    Stack,
-    SxProps,
-    Theme,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { errorToast } from "@/components/Toaster";
+import FileInput from "@/components/FileInput";
 import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from "@/constants/file";
+import { errorToast } from "@/components/Toaster";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import { alpha, CircularProgress, Stack, SxProps, Theme } from "@mui/material";
+import Image, { ImageProps } from "@/components/image";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // ----------------------------------------------------------------------------
 
@@ -36,17 +30,6 @@ const LoadingOverlay = () => (
 
 // ----------------------------------------------------------------------------
 
-const AvatarSx: SxProps<Theme> = {
-    border: "3px solid",
-    borderColor: "transparent",
-    "&:hover": {
-        borderColor: "info.main",
-    },
-    height: AVATAR_H,
-    width: AVATAR_W,
-    cursor: "pointer",
-};
-
 const DeleteButtonSx: SxProps<Theme> = {
     position: "absolute",
     top: -15,
@@ -61,13 +44,13 @@ const DeleteButtonSx: SxProps<Theme> = {
     zIndex: 10,
 };
 
-interface OverlayAvatarProps extends Omit<AvatarProps, "onClick"> {
+interface OverlayImageProps extends Omit<ImageProps, "onClick"> {
     loading?: boolean;
     onClick: VoidFunction;
     onDelete: VoidFunction;
 }
 
-const OverlayAvatar: FC<OverlayAvatarProps> = ({
+const OverlayImage: FC<OverlayImageProps> = ({
     src,
     loading,
     sx,
@@ -84,25 +67,20 @@ const OverlayAvatar: FC<OverlayAvatarProps> = ({
             </IconButton>
         ) : null}
 
-        <Avatar
-            sx={{ ...AvatarSx, ...sx }}
-            src={src}
-            onClick={onClick}
-            {...props}
-        />
+        <Image src={src} onClick={onClick} {...props} />
     </Box>
 );
 
-// ----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
 
-interface AvatarPickerProps
-    extends Omit<OverlayAvatarProps, "onClick" | "onSelect" | "onDelete"> {
+interface ImagePickerProps
+    extends Omit<OverlayImageProps, "onClick" | "onSelect" | "onDelete"> {
     isLoading: boolean;
     onSelect: (f: File) => void;
     onDelete: VoidFunction;
 }
 
-const AvatarPicker: FC<AvatarPickerProps> = ({
+const ImagePicker: FC<ImagePickerProps> = ({
     isLoading,
     onSelect,
     onDelete,
@@ -128,7 +106,7 @@ const AvatarPicker: FC<AvatarPickerProps> = ({
             disabled={isLoading}
             accept={ACCEPTED_FILE_TYPES}
             Opener={(openerProps) => (
-                <OverlayAvatar
+                <OverlayImage
                     loading={isLoading}
                     onDelete={onDelete}
                     {...openerProps}
@@ -140,4 +118,4 @@ const AvatarPicker: FC<AvatarPickerProps> = ({
     );
 };
 
-export default AvatarPicker;
+export default ImagePicker;
