@@ -1,10 +1,5 @@
-import React, { PropsWithChildren } from "react";
 import { styled } from "@mui/material/styles";
 import TableRow from "@mui/material/TableRow";
-
-interface AnimatedTableRowProps extends PropsWithChildren {
-    onClick: () => void;
-}
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: "transparent",
@@ -20,16 +15,4 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const AnimatedTableRow: React.FC<AnimatedTableRowProps> = ({
-    onClick,
-    children,
-    ...props
-}) => {
-    return (
-        <StyledTableRow onClick={onClick} {...props}>
-            {children}
-        </StyledTableRow>
-    );
-};
-
-export default AnimatedTableRow;
+export default StyledTableRow;

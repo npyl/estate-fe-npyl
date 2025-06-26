@@ -119,7 +119,7 @@ const UserPage = () => {
                             <TableCell>{t("Status")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
                             <TableCell>{t("Update")}</TableCell>
-                            <TableCell />
+                            <TableCell>{t("Permissions")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
