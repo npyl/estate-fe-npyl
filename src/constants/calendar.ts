@@ -1,4 +1,4 @@
-const HEADER_HEIGHT = 64;
+const HEADER_HEIGHT = 60;
 const CELL_HOUR_HEIGHT = 60;
 
 // START, END hours correspond to calendar rows
