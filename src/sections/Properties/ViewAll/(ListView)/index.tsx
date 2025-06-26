@@ -1,4 +1,3 @@
-import { Paper } from "@mui/material";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
@@ -72,21 +71,19 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
                 />
             ) : null}
 
-            <Paper>
-                <DataGrid
-                    loading={isLoading}
-                    resource={archived ? "archived" : "property"}
-                    rows={rows || []}
-                    page={page}
-                    pageSize={pageSize}
-                    totalRows={totalRows}
-                    onPaginationModelChange={handlePaginationChange}
-                    checkboxSelection
-                    onRowSelectionModelChange={setSelectedRows as any}
-                    disableColumnMenu
-                    disableColumnSorting={false}
-                />
-            </Paper>
+            <DataGrid
+                loading={isLoading}
+                resource={archived ? "archived" : "property"}
+                rows={rows || []}
+                page={page}
+                pageSize={pageSize}
+                totalRows={totalRows}
+                onPaginationModelChange={handlePaginationChange}
+                checkboxSelection
+                onRowSelectionModelChange={setSelectedRows as any}
+                disableColumnMenu
+                disableColumnSorting={false}
+            />
         </>
     );
 };

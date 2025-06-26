@@ -6,6 +6,7 @@ import CustomersIcon from "@/assets/icons/customers";
 import MessageIcon from "@mui/icons-material/Message";
 import EmailIcon from "@mui/icons-material/Email";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import RssFeedIcon from "@mui/icons-material/RssFeed";
 
 const MENU_ITEMS = [
     {
@@ -47,6 +48,11 @@ const MENU_ITEMS = [
         label: "Email",
         path: "/emails",
         icon: <EmailIcon />,
+    },
+    {
+        label: "Blog",
+        path: "/blog",
+        icon: <RssFeedIcon />,
     },
 ];
 

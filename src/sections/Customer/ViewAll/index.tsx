@@ -1,4 +1,3 @@
-import { Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { FC, useEffect, useMemo, useState } from "react";
@@ -146,19 +145,17 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
                     </Grid>
                 </Pagination>
             ) : (
-                <Paper>
-                    <DataGrid
-                        b2b={b2b}
-                        loading={isLoading}
-                        rows={rows}
-                        page={page}
-                        pageSize={pageSize}
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationModelChange}
-                        checkboxSelection
-                        onRowSelectionModelChange={setSelectedRows as any}
-                    />
-                </Paper>
+                <DataGrid
+                    b2b={b2b}
+                    loading={isLoading}
+                    rows={rows}
+                    page={page}
+                    pageSize={pageSize}
+                    totalRows={totalRows}
+                    onPaginationModelChange={handlePaginationModelChange}
+                    checkboxSelection
+                    onRowSelectionModelChange={setSelectedRows as any}
+                />
             )}
         </>
     );

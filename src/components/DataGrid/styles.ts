@@ -1,13 +1,13 @@
+import { getBorderColor2 } from "@/theme/borderColor";
 import { styled } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 
 export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
-    border: 0,
     borderRadius: 10,
-    backgroundColor:
-        theme.palette.mode === "light"
-            ? theme.palette.neutral![100]
-            : theme.palette.neutral![800],
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[10],
+    border: "1px solid",
+    borderColor: getBorderColor2(theme),
     color:
         theme.palette.mode === "light"
             ? "rgba(0,0,0,.85)"
