@@ -12,7 +12,7 @@ interface Props {
 const BlogViewByPublicId: FC<Props> = ({ siteId, postId }) => {
     const { data } = useGetBlogPostByIdQuery({ siteId, postId });
     return (
-        <Form siteId={siteId} data={data}>
+        <Form data={data}>
             <Content />
             <Actions siteId={siteId} />
         </Form>

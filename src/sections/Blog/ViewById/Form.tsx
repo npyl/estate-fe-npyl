@@ -1,7 +1,7 @@
-import { useCreateOrUpdateBlogPostMutation } from "@/services/company";
 import { BlogPostReq, BlogPostRes } from "@/types/company/blog";
+import preventDefault from "@/utils/preventDefault";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, PropsWithChildren, useCallback } from "react";
+import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -16,24 +16,17 @@ const schema = z.object({
 });
 
 interface FormProps extends PropsWithChildren {
-    siteId: number;
     data?: BlogPostRes;
 }
 
-const Form: FC<FormProps> = ({ siteId, data, children }) => {
+const Form: FC<FormProps> = ({ data, children }) => {
     const methods = useForm<BlogPostReq>({
         values: BlogPostResToReq(data),
         resolver: zodResolver(schema),
     });
 
-    const [submit] = useCreateOrUpdateBlogPostMutation();
-    const onSubmit = useCallback(
-        (post: BlogPostReq) => submit({ siteId, post }),
-        [siteId]
-    );
-
     return (
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={preventDefault}>
             <FormProvider {...methods}>{children}</FormProvider>
         </form>
     );
