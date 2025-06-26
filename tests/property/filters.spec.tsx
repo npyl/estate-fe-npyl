@@ -1,9 +1,10 @@
 import { test, expect, Page } from "@playwright/test";
+import { TTestCb } from "../_types";
 
 import {
     ASCENDING_PRICE,
     DESCENDING_PRICE,
-} from "../src/sections/Properties/(FiltersBar)/constants";
+} from "../../src/sections/Properties/(FiltersBar)/constants";
 
 const STATE_SELECTOR = '[data-testid="current-state"] pre';
 
@@ -17,7 +18,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto("http://127.0.0.1:3000/__test__/propertyFilters");
 });
 
-test("should update filters correctly", async ({ page }) => {
+const update = async ({ page }: TTestCb) => {
     let state;
 
     // Test updating minPrice
@@ -37,9 +38,9 @@ test("should update filters correctly", async ({ page }) => {
     state = await getState(page);
     expect(state.filters.minArea).toBe(50);
     expect(state.ids).toContain("minArea");
-});
+};
 
-test("should toggle array filters correctly", async ({ page }) => {
+const toggleArrayFilters = async ({ page }: TTestCb) => {
     let state;
 
     // Test with categories
@@ -52,9 +53,9 @@ test("should toggle array filters correctly", async ({ page }) => {
     state = await getState(page);
     expect(state.filters.categories).not.toContain("apartment");
     expect(state.ids).not.toContain("categories");
-});
+};
 
-test("should delete filters correctly", async ({ page }) => {
+const deleteFilters = async ({ page }: TTestCb) => {
     // First add minPrice
     await page.click('[data-testid="set-min-price"]');
 
@@ -64,9 +65,9 @@ test("should delete filters correctly", async ({ page }) => {
     const state = await getState(page);
     expect(state.filters.minPrice).toBeUndefined();
     expect(state.ids).not.toContain("minPrice");
-});
+};
 
-test("should handle complex sequence of operations", async ({ page }) => {
+const complexSequence = async ({ page }: TTestCb) => {
     // Add minPrice
     await page.click('[data-testid="set-min-price"]');
 
@@ -88,10 +89,9 @@ test("should handle complex sequence of operations", async ({ page }) => {
     expect(state.ids).toContain("minPrice");
     expect(state.ids).toContain("maxPrice");
     expect(state.ids).not.toContain("regions");
-});
+};
 
-// New test for sorting functionality
-test("sorting", async ({ page }) => {
+const sorting = async ({ page }: TTestCb) => {
     // Check the initial sorting value
     let state = await getState(page);
     const initialSorting = state.sorting;
@@ -106,4 +106,12 @@ test("sorting", async ({ page }) => {
     await page.click('[data-testid="sort-price-desc"]');
     state = await getState(page);
     expect(state.sorting).toBe(DESCENDING_PRICE);
+};
+
+test.describe("property", () => {
+    test("should update filters correctly", update);
+    test("should toggle array filters correctly", toggleArrayFilters);
+    test("should delete filters correctly", deleteFilters);
+    test("should handle complex sequence of operations", complexSequence);
+    test("sorting", sorting);
 });

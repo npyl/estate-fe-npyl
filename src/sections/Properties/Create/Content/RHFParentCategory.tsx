@@ -7,6 +7,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ICreatePropertyParams } from "@/services/properties";
 import { FC, useCallback } from "react";
 
+const getDataTestId = (index: number) => `PPParentCategoryButton-${index}`;
+
 interface RenderProps {
     value: string;
     onChange: (v: string) => void;
@@ -42,9 +44,10 @@ const Render: FC<RenderProps> = ({
                 sm: "row",
             }}
         >
-            {parentCategoryEnum.map(({ key, value }) => (
+            {parentCategoryEnum.map(({ key, value }, index) => (
                 <Grid key={key} item xs={1} sm={6} width={1} height={1}>
                     <PPButton
+                        data-testid={getDataTestId(index)}
                         clicked={key === _value}
                         onClick={() => onChange(key)}
                     >
@@ -56,13 +59,6 @@ const Render: FC<RenderProps> = ({
         </Grid>
     );
 };
-
-// const handleParentCategorySelect = (key: string) => {
-//     setParentCategory(key);
-//     if (parentCategory === key) {
-//         return;
-//     } else setCategory(""); // Reset subcategory when parent category changes
-// };
 
 const RHFParentCategory = () => {
     const { setValue, control } = useFormContext<ICreatePropertyParams>();
@@ -85,4 +81,5 @@ const RHFParentCategory = () => {
     );
 };
 
+export { getDataTestId };
 export default RHFParentCategory;

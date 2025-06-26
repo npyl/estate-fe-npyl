@@ -4,6 +4,8 @@ import { LoadingButton } from "@mui/lab";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ICreatePropertyParams } from "@/services/properties";
 
+const SAVE_BUTTON_TESTID = "PPPropertyCreateSaveButton";
+
 const SaveButton = () => {
     const { t } = useTranslation();
 
@@ -14,6 +16,7 @@ const SaveButton = () => {
 
     return (
         <LoadingButton
+            data-testid={SAVE_BUTTON_TESTID}
             type="submit"
             loading={isLoading}
             variant="contained"
@@ -25,4 +28,5 @@ const SaveButton = () => {
     );
 };
 
+export { SAVE_BUTTON_TESTID };
 export default SaveButton;

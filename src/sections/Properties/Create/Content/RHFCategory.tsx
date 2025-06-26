@@ -7,6 +7,9 @@ import { ChangeEvent, useCallback, useMemo } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { ICreatePropertyParams } from "@/services/properties";
 
+const CATEGORY_TESTID = "PPCategorySelectTestId";
+const getDataTestId = (index: number) => `PPCategoryOption-${index}`;
+
 const RHFCategory = () => {
     const { t } = useTranslation();
 
@@ -52,6 +55,7 @@ const RHFCategory = () => {
                 fieldState: { error },
             }) => (
                 <TextField
+                    data-testid={CATEGORY_TESTID}
                     disabled={!parentCategory}
                     select
                     label={t("Category")}
@@ -60,8 +64,12 @@ const RHFCategory = () => {
                     onChange={onChangeCb(onChange)}
                     {...field}
                 >
-                    {CATEGORIES.map(({ key, value }) => (
-                        <MenuItem key={key} value={key}>
+                    {CATEGORIES.map(({ key, value }, index) => (
+                        <MenuItem
+                            data-testid={getDataTestId(index)}
+                            key={key}
+                            value={key}
+                        >
                             {value}
                         </MenuItem>
                     ))}
@@ -71,4 +79,5 @@ const RHFCategory = () => {
     );
 };
 
+export { CATEGORY_TESTID, getDataTestId };
 export default RHFCategory;
