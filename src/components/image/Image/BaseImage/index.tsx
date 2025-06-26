@@ -3,6 +3,8 @@ import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
 import NoImageIcon from "@/assets/icons/no-image";
 import WrapperWithRatio from "./WrapperWithRatio";
 
+const IMAGE_CLASSNAME = "PPImage-img";
+
 // --------------------------------------------------------------------------------
 
 const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
@@ -39,7 +41,7 @@ const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
 
                 <img
                     ref={ref}
-                    className="PPImage-img"
+                    className={IMAGE_CLASSNAME}
                     src={src!}
                     alt={alt}
                     loading="lazy"
@@ -59,4 +61,5 @@ const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
 
 BaseImage.displayName = "Image";
 
+export { IMAGE_CLASSNAME };
 export default BaseImage;

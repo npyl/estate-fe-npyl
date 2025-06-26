@@ -3,6 +3,7 @@ import getRatio from "./getRatio";
 import { WrapperWithRatioProps } from "../../types";
 import { FC } from "react";
 import { Theme } from "@mui/material";
+import { IMAGE_CLASSNAME } from ".";
 
 // -------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ const WrapperWithRatio: FC<WrapperWithRatioProps> = ({
             position: "relative",
             pt: getRatio(ratio),
 
-            ".PPImage-img": {
+            [`.${IMAGE_CLASSNAME}`]: {
                 bgcolor: getImageBackground,
             },
 
