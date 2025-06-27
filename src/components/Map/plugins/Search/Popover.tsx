@@ -14,6 +14,9 @@ const getItem =
 const Popover: FC<DataProps> = ({ data, anchorEl, onSelect, onClose }) => (
     <MuiPopover
         open
+        disableAutoFocus
+        disableEnforceFocus
+        disableRestoreFocus
         disablePortal
         anchorEl={anchorEl}
         anchorOrigin={{

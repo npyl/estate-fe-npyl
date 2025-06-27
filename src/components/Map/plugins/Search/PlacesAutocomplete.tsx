@@ -2,28 +2,26 @@ import {
     useRef,
     ChangeEvent,
     forwardRef,
-    ComponentType,
     useImperativeHandle,
     useCallback,
 } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import usePlacesAutocomplete from "use-places-autocomplete";
-import { DataProps, PlacesAutocompleteRef } from "./types";
-
-type DataViewComponent = ComponentType<DataProps>;
+import { PlacesAutocompleteRef } from "./types";
+import dynamic from "next/dynamic";
+const Popover = dynamic(() => import("./Popover"));
 
 interface PlacesAutocompleteProps
     extends Omit<TextFieldProps, "onChange" | "value" | "onSelect"> {
     text?: string;
     onTextChange?: (s: string) => void;
     onSelect: (o: google.maps.places.AutocompletePrediction) => void;
-    DataView?: DataViewComponent;
 }
 
 const PlacesAutocomplete = forwardRef<
     PlacesAutocompleteRef,
     PlacesAutocompleteProps
->(({ DataView, disabled, text, onTextChange, onSelect, ...props }, ref) => {
+>(({ disabled, text, onTextChange, onSelect, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const {
@@ -55,13 +53,13 @@ const PlacesAutocomplete = forwardRef<
             <TextField
                 ref={inputRef}
                 disabled={!ready || disabled}
-                {...props}
                 value={text}
                 onChange={handleChange}
+                {...props}
             />
 
             {DataView && data.length > 0 && inputRef.current ? (
-                <DataView
+                <Popover
                     anchorEl={inputRef.current}
                     data={data}
                     onSelect={onSelect}

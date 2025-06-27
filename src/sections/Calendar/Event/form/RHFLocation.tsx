@@ -4,7 +4,6 @@
 
 import { useLoadApi } from "@/components/Map";
 import PlacesAutocomplete from "@/components/Map/plugins/Search/PlacesAutocomplete";
-import Popover from "@/components/Map/plugins/Search/Popover";
 import { PlacesAutocompleteRef } from "@/components/Map/plugins/Search/types";
 import { LocationSearching } from "@mui/icons-material";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -59,7 +58,6 @@ const RHFLocation = () => {
                             </InputAdornment>
                         ),
                     }}
-                    DataView={Popover}
                     onSelect={handleSelect}
                 />
             )}

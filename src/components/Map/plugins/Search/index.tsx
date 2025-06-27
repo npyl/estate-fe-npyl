@@ -2,12 +2,10 @@ import { useRef, FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
-import dynamic from "next/dynamic";
 import { StyledAutocomplete } from "./styled";
 import { PlacesAutocompleteRef } from "./types";
 import { IMapAddress } from "@/components/Map/types";
 import getAddressComponent from "@/components/Map/util/getAddressComponent";
-const Popover = dynamic(() => import("./Popover"));
 
 interface SearchProps {
     onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
@@ -63,7 +61,6 @@ const Search: FC<SearchProps> = ({ onSearchSelect }) => {
                 startAdornment: <SearchIcon />,
             }}
             onSelect={handleSelect}
-            DataView={Popover}
         />
     );
 };
