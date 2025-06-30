@@ -7,7 +7,7 @@ import AuthGuard from "./auth-guard";
 
 const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
-    const { user } = useAuth();
+    const { user, isAuthenticated } = useAuth();
 
     const [checkIsAdmin] = useLazyIsAdminQuery();
 
@@ -16,6 +16,9 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
     useLayoutEffect(() => {
         const check = async () => {
             try {
+                // INFO: we are going to just return here; either we lost authenticated status because of logout or we werent authenticated to begin with (which is AuthGuard's job to handle)
+                if (!isAuthenticated) return;
+
                 // Not logged in...
                 if (!Boolean(user?.id)) throw new Error("Bad user");
 
@@ -31,7 +34,7 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
         };
 
         check();
-    }, [user?.id]);
+    }, [isAuthenticated, user?.id]);
 
     if (!checked) {
         return null;
