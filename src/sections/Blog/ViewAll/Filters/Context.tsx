@@ -1,6 +1,18 @@
-import { createContext, FC, PropsWithChildren, useContext } from "react";
+import { BlogFilters } from "@/types/company";
+import {
+    createContext,
+    Dispatch,
+    FC,
+    PropsWithChildren,
+    SetStateAction,
+    useContext,
+    useState,
+} from "react";
 
-type State = {};
+type State = {
+    filters: BlogFilters;
+    setSearch: Dispatch<SetStateAction<string>>;
+};
 
 const FiltersContext = createContext<State | undefined>(undefined);
 
@@ -17,8 +29,12 @@ export const useFiltersContext = () => {
 interface ProviderProps extends PropsWithChildren {}
 
 const FiltersProvider: FC<ProviderProps> = ({ children }) => {
+    const [search, setSearch] = useState("");
+    const filters = { search };
     return (
-        <FiltersContext.Provider value={{}}>{children}</FiltersContext.Provider>
+        <FiltersContext.Provider value={{ filters, setSearch }}>
+            {children}
+        </FiltersContext.Provider>
     );
 };
 

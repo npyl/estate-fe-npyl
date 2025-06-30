@@ -7,6 +7,7 @@ import { IntegrationSite } from "@/types/integrations";
 import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+    BlogFilters,
     BlogPostReq,
     BlogPostRes,
     CompanyImageType,
@@ -47,6 +48,11 @@ interface IBlogPostByIdReq {
 
 interface IUploadImageReq extends IBlogPostByIdReq {
     file: File;
+}
+
+interface FilterBlogPostsReq {
+    siteId: number;
+    filters: BlogFilters;
 }
 
 export const company = createApi({
@@ -168,8 +174,14 @@ export const company = createApi({
 
         // -------------------------------------------------------------------------
 
-        getBlogPosts: builder.query<IPage<BlogPostRes[]>, number>({
-            query: (siteId) => `/public-sites/${siteId}/blog/all`,
+        filterBlogPosts: builder.query<
+            IPage<BlogPostRes[]>,
+            FilterBlogPostsReq
+        >({
+            query: (siteId) => ({
+                url: `/public-sites/${siteId}/blog/all`,
+                method: "POST",
+            }),
             providesTags: ["BlogPosts"],
         }),
 
@@ -237,7 +249,7 @@ export const {
     useAddPublicSiteMutation,
     useRemovePublicSiteMutation,
 
-    useGetBlogPostsQuery,
+    useFilterBlogPostsQuery,
     useGetBlogPostByIdQuery,
     useCreateOrUpdateBlogPostMutation,
     useDeleteBlogPostMutation,

@@ -1,7 +1,8 @@
-import { useGetBlogPostsQuery } from "@/services/company";
+import { useFilterBlogPostsQuery } from "@/services/company";
 import getPost from "./getPost";
 import { BlogPostRes } from "@/types/company";
 import Pagination, { usePagination } from "@/components/Pagination";
+import { useFiltersContext } from "@/sections/Blog/ViewAll/Filters/Context";
 import { FC } from "react";
 
 const PAGE_SIZE = 5;
@@ -15,7 +16,8 @@ interface ContentProps {
 }
 
 const Content: FC<ContentProps> = ({ siteId }) => {
-    const { data, isLoading } = useGetBlogPostsQuery(siteId);
+    const { filters } = useFiltersContext();
+    const { data, isLoading } = useFilterBlogPostsQuery({ siteId, filters });
     const totalItems = data?.totalElements ?? PAGE_SIZE;
     const pagination = usePagination();
 

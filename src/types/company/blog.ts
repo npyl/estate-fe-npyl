@@ -8,4 +8,8 @@ interface BlogPostRes extends BlogPostReq {
     id: number;
 }
 
-export type { BlogPostReq, BlogPostRes };
+interface BlogFilters {
+    search: string;
+}
+
+export type { BlogPostReq, BlogPostRes, BlogFilters };
