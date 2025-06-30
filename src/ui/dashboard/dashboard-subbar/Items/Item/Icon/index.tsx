@@ -30,6 +30,7 @@ const ICONS: TIcons = {
     PROFILE: PersonIcon,
     USER: PersonIcon,
     BLOG_POST: RssFeedIcon,
+    BLOG_POST_CREATE: RssFeedIcon,
 };
 
 const needResourceId = (renderer: TTabRenderer) =>

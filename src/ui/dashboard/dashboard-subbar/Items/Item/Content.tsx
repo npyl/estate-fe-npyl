@@ -13,6 +13,7 @@ import PropertyAll from "./Renderers/PropertyAll";
 import PropertyEdit from "./Renderers/PropertyEdit";
 import PropertyCreate from "./Renderers/PropertyCreate";
 import BlogPost from "./Renderers/BlogPost";
+import BlogPostCreate from "./Renderers/BlogPostCreate";
 
 // --------------------------------------------------------------------
 
@@ -35,6 +36,7 @@ const RENDERERS: TRenderers = {
     PROFILE: Profile,
     USER: User,
     BLOG_POST: BlogPost,
+    BLOG_POST_CREATE: BlogPostCreate,
 };
 
 // --------------------------------------------------------------------

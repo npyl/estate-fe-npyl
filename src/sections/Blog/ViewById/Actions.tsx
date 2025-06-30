@@ -8,7 +8,7 @@ import { FC, MouseEvent, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-const useSubmit = (siteId: number, isAll: boolean = false) => {
+const useSubmit = (siteId?: number, isAll: boolean = false) => {
     const methods = useFormContext<BlogPostReq>();
     const [submit] = useCreateOrUpdateBlogPostMutation();
     const handleSubmit = useCallback(
@@ -28,7 +28,7 @@ const useSubmit = (siteId: number, isAll: boolean = false) => {
 };
 
 interface Props {
-    postId: number;
+    postId?: number;
 }
 
 const CancelButton = () => {

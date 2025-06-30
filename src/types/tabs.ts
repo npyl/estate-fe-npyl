@@ -12,7 +12,8 @@ type TTabRenderer =
     | "TASK"
     | "PROFILE"
     | "USER"
-    | "BLOG_POST";
+    | "BLOG_POST"
+    | "BLOG_POST_CREATE";
 
 interface BaseTab {
     path: string;

@@ -2,18 +2,19 @@ import { RHFTextField } from "@/components/hook-form";
 import RHFEditor from "@/components/hook-form/RHFEditor";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
-import ImagePicker from "./ImagePicker";
+const ImagePicker = dynamic(() => import("./ImagePicker"));
 import { FC } from "react";
+import dynamic from "next/dynamic";
 
 interface ContentProps {
-    postId: number;
+    postId?: number;
 }
 
 const Content: FC<ContentProps> = ({ postId }) => {
     const { t } = useTranslation();
     return (
         <Stack spacing={1}>
-            <ImagePicker postId={postId} />
+            {Boolean(postId) ? <ImagePicker postId={postId!} /> : null}
             <RHFTextField label={t("Title")} name="title" />
             <RHFEditor name="content" height="500px" />
         </Stack>

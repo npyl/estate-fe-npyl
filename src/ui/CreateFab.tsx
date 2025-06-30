@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { SxProps, Theme } from "@mui/material";
 import Fab, { FabProps } from "@mui/material/Fab";
+import Link from "next/link";
 import { FC } from "react";
 
 const FabSx: SxProps<Theme> = {
@@ -13,7 +14,12 @@ const FabSx: SxProps<Theme> = {
 interface CreateFabProps extends FabProps {}
 
 const CreateFab: FC<CreateFabProps> = ({ sx, ...props }) => (
-    <Fab sx={{ ...FabSx, ...sx }} color="primary" {...props}>
+    <Fab
+        sx={{ ...FabSx, ...sx }}
+        LinkComponent={Link}
+        color="primary"
+        {...props}
+    >
         <AddIcon />
     </Fab>
 );

@@ -38,6 +38,8 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
         if (isCustomerCreate(path)) return "CUSTOMER_CREATE";
         if (isCustomer(path)) return "CUSTOMER_VIEW";
 
+        if (path.startsWith("/blog/create")) return "BLOG_POST_CREATE";
+
         if (!hasResourceId) return;
 
         // Other (w/ Id)
