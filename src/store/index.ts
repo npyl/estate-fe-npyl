@@ -69,9 +69,8 @@ const services = [
 
 export const clearAllApiCaches = () => {
     services.forEach((api) => {
-        if (api.util && typeof api.util.resetApiState === "function") {
-            dispatch(api.util.resetApiState());
-        }
+        // Invalidate all possible tags - this clears cache without immediate refetch
+        dispatch(api.util.invalidateTags([])); // Empty array invalidates all
     });
 };
 
@@ -93,6 +92,7 @@ export const createStore = (
             ),
         ...options,
     });
+
 export const store = createStore();
 
 export const { dispatch } = store;
