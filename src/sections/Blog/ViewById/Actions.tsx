@@ -1,5 +1,5 @@
 import Link from "@/components/Link";
-import { useCreateOrUpdateBlogPostMutation } from "@/services/company";
+import { useCreateOrUpdateBlogPostMutation } from "@/services/blog";
 import { BlogPostReq } from "@/types/company";
 import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
@@ -13,7 +13,7 @@ const useSubmit = (siteId: number, isAll: boolean = false) => {
     const [submit] = useCreateOrUpdateBlogPostMutation();
     const handleSubmit = useCallback(
         (post: BlogPostReq) => {
-            return submit({ siteId, post });
+            return submit(post);
         },
         [siteId, isAll]
     );
@@ -28,13 +28,13 @@ const useSubmit = (siteId: number, isAll: boolean = false) => {
 };
 
 interface Props {
-    siteId: number;
+    postId: number;
 }
 
-const CancelButton: FC<Props> = ({ siteId }) => {
+const CancelButton = () => {
     const { t } = useTranslation();
     return (
-        <Button LinkComponent={Link} href={`/blog/${siteId}`}>
+        <Button LinkComponent={Link} href={`/blog`}>
             {t("Cancel")}
         </Button>
     );
@@ -42,9 +42,9 @@ const CancelButton: FC<Props> = ({ siteId }) => {
 
 const ALL_PUBLICS = true;
 
-const SaveAllButton: FC<Props> = ({ siteId }) => {
+const SaveAllButton: FC<Props> = ({ postId }) => {
     const { t } = useTranslation();
-    const { onSubmit, isLoading } = useSubmit(siteId, ALL_PUBLICS);
+    const { onSubmit, isLoading } = useSubmit(postId, ALL_PUBLICS);
     return (
         <LoadingButton
             loading={isLoading}
@@ -58,9 +58,9 @@ const SaveAllButton: FC<Props> = ({ siteId }) => {
     );
 };
 
-const SaveButton: FC<Props> = ({ siteId }) => {
+const SaveButton: FC<Props> = ({ postId }) => {
     const { t } = useTranslation();
-    const { onSubmit, isLoading } = useSubmit(siteId);
+    const { onSubmit, isLoading } = useSubmit(postId);
     return (
         <LoadingButton
             loading={isLoading}
@@ -73,11 +73,11 @@ const SaveButton: FC<Props> = ({ siteId }) => {
     );
 };
 
-const Actions: FC<Props> = ({ siteId }) => (
+const Actions: FC<Props> = ({ postId }) => (
     <Stack direction="row" justifyContent="flex-end" spacing={1} mt={1}>
-        <CancelButton siteId={siteId} />
-        <SaveAllButton siteId={siteId} />
-        <SaveButton siteId={siteId} />
+        <CancelButton />
+        <SaveAllButton postId={postId} />
+        <SaveButton postId={postId} />
     </Stack>
 );
 

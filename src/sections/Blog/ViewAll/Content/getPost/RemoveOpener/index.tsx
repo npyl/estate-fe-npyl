@@ -6,7 +6,6 @@ import RemoveButton from "./RemoveButton";
 const ConfirmDialog = dynamic(() => import("./ConfirmDialog"));
 
 interface Props {
-    siteId: number;
     postId: number;
 }
 

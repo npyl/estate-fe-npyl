@@ -6,15 +6,14 @@ import ImagePicker from "./ImagePicker";
 import { FC } from "react";
 
 interface ContentProps {
-    siteId: number;
     postId: number;
 }
 
-const Content: FC<ContentProps> = ({ siteId, postId }) => {
+const Content: FC<ContentProps> = ({ postId }) => {
     const { t } = useTranslation();
     return (
         <Stack spacing={1}>
-            <ImagePicker siteId={siteId} postId={postId} />
+            <ImagePicker postId={postId} />
             <RHFTextField label={t("Title")} name="title" />
             <RHFEditor name="content" height="500px" />
         </Stack>

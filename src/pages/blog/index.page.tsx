@@ -1,14 +1,14 @@
 import type { NextPage } from "next";
 import AuthGuard from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
-import ViewAllPublicSites from "@/sections/Blog/PublicSites";
+import ViewAllPosts from "@/sections/Blog/ViewAll";
 
-const Blog: NextPage = () => <ViewAllPublicSites />;
+const ViewAllPostsPage: NextPage = () => <ViewAllPosts />;
 
-Blog.getLayout = (page) => (
+ViewAllPostsPage.getLayout = (page) => (
     <AuthGuard>
         <DashboardLayout>{page}</DashboardLayout>
     </AuthGuard>
 );
 
-export default Blog;
+export default ViewAllPostsPage;

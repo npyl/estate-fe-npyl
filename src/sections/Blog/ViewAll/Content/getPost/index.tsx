@@ -19,19 +19,16 @@ const PostSx: SxProps<Theme> = {
 };
 
 interface PostProps {
-    siteId: number;
     p: BlogPostRes;
 }
 
-const Post: FC<PostProps> = ({ siteId, p }) => (
-    <Link href={`/blog/${siteId}/${p.id}`} sx={PostSx}>
+const Post: FC<PostProps> = ({ p }) => (
+    <Link href={`/blog/${p.id}`} sx={PostSx}>
         {p.title}
-        <RemoveOpener siteId={siteId} postId={p.id} />
+        <RemoveOpener postId={p.id} />
     </Link>
 );
 
-const getPost = (siteId: number) => (p: BlogPostRes) => (
-    <Post key={p.id} siteId={siteId} p={p} />
-);
+const getPost = (p: BlogPostRes) => <Post key={p.id} p={p} />;
 
 export default getPost;

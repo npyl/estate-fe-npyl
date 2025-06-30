@@ -1,20 +1,19 @@
 import { FC } from "react";
 import Content from "./Content";
 import Form from "./Form";
-import { useGetBlogPostByIdQuery } from "@/services/company";
+import { useGetBlogPostByIdQuery } from "@/services/blog";
 import Actions from "./Actions";
 
 interface Props {
-    siteId: number;
     postId: number;
 }
 
-const BlogViewByPublicId: FC<Props> = ({ siteId, postId }) => {
-    const { data } = useGetBlogPostByIdQuery({ siteId, postId });
+const BlogViewByPublicId: FC<Props> = ({ postId }) => {
+    const { data } = useGetBlogPostByIdQuery(postId);
     return (
         <Form data={data}>
-            <Content siteId={siteId} postId={postId} />
-            <Actions siteId={siteId} />
+            <Content postId={postId} />
+            <Actions postId={postId} />
         </Form>
     );
 };

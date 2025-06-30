@@ -5,10 +5,11 @@ import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
-const BlogPostResToReq = (d?: BlogPostRes) => ({
+const BlogPostResToReq = (d?: BlogPostRes): BlogPostReq => ({
     id: d?.id,
     title: d?.title || "",
     content: d?.content || "",
+    publicSites: d?.sites?.map(({ id }) => id) ?? [],
 });
 
 const schema = z.object({

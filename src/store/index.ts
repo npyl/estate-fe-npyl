@@ -32,6 +32,7 @@ import { googleOAuth } from "@/services/google-oauth";
 import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
+import { blog } from "@/services/blog";
 import { rootReducer } from "./root-reducer";
 
 const services = [
@@ -65,6 +66,7 @@ const services = [
     messages,
     logout,
     emails,
+    blog,
 ];
 
 export const clearAllApiCaches = () => {

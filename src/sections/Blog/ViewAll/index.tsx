@@ -1,16 +1,11 @@
-import { FC } from "react";
 import Content from "./Content";
 import FiltersProvider from "./Filters/Context";
 import FiltersBar from "./Filters/Bar";
 
-interface Props {
-    siteId: number;
-}
-
-const ViewAllPosts: FC<Props> = ({ siteId }) => (
+const ViewAllPosts = () => (
     <FiltersProvider>
         <FiltersBar />
-        <Content siteId={siteId} />
+        <Content />
     </FiltersProvider>
 );
 

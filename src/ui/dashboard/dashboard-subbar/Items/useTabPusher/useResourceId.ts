@@ -4,7 +4,7 @@ import { toNumberSafe } from "@/utils/toNumber";
 const useResourceId = () => {
     const router = useRouter();
 
-    const { agreementId, propertyId, customerId, taskId, userId } =
+    const { agreementId, propertyId, customerId, taskId, userId, postId } =
         router.query;
 
     if (Boolean(agreementId)) return toNumberSafe(agreementId);
@@ -12,6 +12,7 @@ const useResourceId = () => {
     if (Boolean(customerId)) return toNumberSafe(customerId);
     if (Boolean(userId)) return toNumberSafe(userId);
     if (Boolean(taskId)) return toNumberSafe(taskId);
+    if (Boolean(postId)) return toNumberSafe(postId);
 
     // INFO: it is ok to return nothing if we found nothing!
     return;

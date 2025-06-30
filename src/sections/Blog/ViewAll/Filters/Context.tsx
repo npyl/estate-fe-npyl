@@ -12,6 +12,9 @@ import {
 type State = {
     filters: BlogFilters;
     setSearch: Dispatch<SetStateAction<string>>;
+    setSites: Dispatch<SetStateAction<number[]>>;
+    setPublished: Dispatch<SetStateAction<boolean | undefined>>;
+    setUsers: Dispatch<SetStateAction<number[]>>;
 };
 
 const FiltersContext = createContext<State | undefined>(undefined);
@@ -30,9 +33,14 @@ interface ProviderProps extends PropsWithChildren {}
 
 const FiltersProvider: FC<ProviderProps> = ({ children }) => {
     const [search, setSearch] = useState("");
-    const filters = { search };
+    const [sites, setSites] = useState<number[]>([]);
+    const [published, setPublished] = useState<boolean>();
+    const [users, setUsers] = useState<number[]>([]);
+    const filters = { search, sites, published, users };
     return (
-        <FiltersContext.Provider value={{ filters, setSearch }}>
+        <FiltersContext.Provider
+            value={{ filters, setSearch, setSites, setPublished, setUsers }}
+        >
             {children}
         </FiltersContext.Provider>
     );

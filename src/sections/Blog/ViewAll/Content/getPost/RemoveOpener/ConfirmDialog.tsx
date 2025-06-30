@@ -1,4 +1,4 @@
-import { useDeleteBlogPostMutation } from "@/services/company";
+import { useDeleteBlogPostMutation } from "@/services/blog";
 import { Button, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
@@ -6,21 +6,20 @@ import { useTranslation } from "react-i18next";
 const PPConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
 
 interface DeleteButtonProps {
-    siteId: number;
     postId: number;
     onClose: VoidFunction;
 }
 
-const ConfirmDialog: FC<DeleteButtonProps> = ({ siteId, postId, onClose }) => {
+const ConfirmDialog: FC<DeleteButtonProps> = ({ postId, onClose }) => {
     const { t } = useTranslation();
 
     const [remove] = useDeleteBlogPostMutation();
 
     const handleDelete = useCallback(async () => {
-        const res = await remove({ siteId, postId });
+        const res = await remove(postId);
         if ("error" in res) return;
         onClose();
-    }, [siteId, postId]);
+    }, [postId]);
 
     return (
         <PPConfirmDialog

@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import {
     useRemoveBlogPostImageMutation,
     useUploadBlogPostImageMutation,
-} from "@/services/company";
+} from "@/services/blog";
 import Box from "@mui/material/Box";
 import BaseImagePicker from "@/ui/ImagePicker";
 
@@ -11,12 +11,11 @@ const IMAGE_HEIGHT = "400px";
 // -----------------------------------------------------------------------------------------
 
 interface AvatarPickerProps {
-    siteId: number;
     postId: number;
     image?: string;
 }
 
-const ImagePicker: FC<AvatarPickerProps> = ({ siteId, postId, image }) => {
+const ImagePicker: FC<AvatarPickerProps> = ({ postId, image }) => {
     const [uploadImage, { isLoading: isUploading }] =
         useUploadBlogPostImageMutation();
     const [removeImage, { isLoading: isRemoving }] =
@@ -25,14 +24,11 @@ const ImagePicker: FC<AvatarPickerProps> = ({ siteId, postId, image }) => {
     const isLoading = isUploading || isRemoving;
 
     const onSelect = useCallback(
-        (file: File) => uploadImage({ file, siteId, postId }),
-        [siteId, postId]
+        (file: File) => uploadImage({ file, postId }),
+        [postId]
     );
 
-    const onDelete = useCallback(
-        () => removeImage({ siteId, postId }),
-        [siteId, postId]
-    );
+    const onDelete = useCallback(() => removeImage(postId), [postId]);
 
     return (
         <Box height={IMAGE_HEIGHT}>

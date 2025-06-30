@@ -36,25 +36,6 @@ const INTEGRATION_SITES: IIntegration[] = [
     { id: "JAMES_EDITION", name: "jamesedition.com" },
 ];
 
-interface IPublishBlogPostReq {
-    siteId: number;
-    post: BlogPostReq;
-}
-
-interface IBlogPostByIdReq {
-    siteId: number;
-    postId: number;
-}
-
-interface IUploadImageReq extends IBlogPostByIdReq {
-    file: File;
-}
-
-interface FilterBlogPostsReq {
-    siteId: number;
-    filters: BlogFilters;
-}
-
 export const company = createApi({
     reducerPath: "company",
     baseQuery: fetchBaseQuery({
@@ -171,66 +152,6 @@ export const company = createApi({
             }),
             invalidatesTags: ["CompanyPublicSites"],
         }),
-
-        // -------------------------------------------------------------------------
-
-        filterBlogPosts: builder.query<
-            IPage<BlogPostRes[]>,
-            FilterBlogPostsReq
-        >({
-            query: (siteId) => ({
-                url: `/public-sites/${siteId}/blog/all`,
-                method: "POST",
-            }),
-            providesTags: ["BlogPosts"],
-        }),
-
-        getBlogPostById: builder.query<BlogPostRes, IBlogPostByIdReq>({
-            query: ({ siteId, postId }) =>
-                `/public-sites/${siteId}/blog/${postId}`,
-            providesTags: ["BlogPostById"],
-        }),
-
-        createOrUpdateBlogPost: builder.mutation<void, IPublishBlogPostReq>({
-            query: (siteId) => ({
-                url: `/public-sites/${siteId}/blog`,
-                method: "POST",
-            }),
-            invalidatesTags: ["BlogPosts", "BlogPostById"],
-        }),
-
-        deleteBlogPost: builder.mutation<void, IBlogPostByIdReq>({
-            query: ({ siteId, postId }) => ({
-                url: `/public-sites/${siteId}/blog/${postId}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["BlogPosts"],
-        }),
-
-        uploadBlogPostImage: builder.mutation<void, IUploadImageReq>({
-            query: ({ siteId, postId, file }) => {
-                const body = new FormData();
-                body.append("file", file);
-
-                return {
-                    url: `/public-sites/${siteId}/blog/${postId}/image`,
-                    method: "POST",
-                    body,
-                    responseHandler: "text",
-                };
-            },
-            invalidatesTags: ["BlogPosts", "BlogPostById"],
-        }),
-
-        removeBlogPostImage: builder.mutation<void, IBlogPostByIdReq>({
-            query: ({ siteId, postId }) => ({
-                url: `/public-sites/${siteId}/blog/${postId}/image`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["BlogPosts", "BlogPostById"],
-        }),
-
-        // -------------------------------------------------------------------------
     }),
 });
 
@@ -248,11 +169,4 @@ export const {
     useGetPublicSitesQuery,
     useAddPublicSiteMutation,
     useRemovePublicSiteMutation,
-
-    useFilterBlogPostsQuery,
-    useGetBlogPostByIdQuery,
-    useCreateOrUpdateBlogPostMutation,
-    useDeleteBlogPostMutation,
-    useUploadBlogPostImageMutation,
-    useRemoveBlogPostImageMutation,
 } = company;
