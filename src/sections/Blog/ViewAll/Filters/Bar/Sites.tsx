@@ -13,7 +13,7 @@ const Sites = () => {
     } = useFiltersContext();
 
     return (
-        <FormControl sx={{ minWidth: "150px" }}>
+        <FormControl sx={{ width: "150px" }}>
             <StyledInputLabel>{t("Public Sites")}</StyledInputLabel>
             <PublicSitesPicker
                 label={t<string>("Public Sites")}
