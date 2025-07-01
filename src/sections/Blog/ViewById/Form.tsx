@@ -12,9 +12,11 @@ const BlogPostResToReq = (d?: BlogPostRes): BlogPostReq => ({
     publicSites: d?.sites?.map(({ id }) => id) ?? [],
 });
 
-const schema = z.object({
-    content: z.string(),
-});
+const schema = z
+    .object({
+        content: z.string(),
+    })
+    .passthrough();
 
 interface FormProps extends PropsWithChildren {
     data?: BlogPostRes;

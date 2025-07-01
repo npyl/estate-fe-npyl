@@ -31,7 +31,7 @@ export const blog = createApi({
     tagTypes: ["BlogPosts", "BlogPostById"],
 
     endpoints: (builder) => ({
-        filterBlogPosts: builder.query<IPage<BlogPostShort[]>, BlogFilters>({
+        filterBlogPosts: builder.query<IPage<BlogPostShort>, BlogFilters>({
             query: (body) => ({
                 url: `/filters`,
                 method: "POST",
@@ -47,8 +47,8 @@ export const blog = createApi({
 
         createOrUpdateBlogPost: builder.mutation<void, BlogPostReq>({
             query: ({ id, ...body }) => ({
-                url: Boolean(id) ? `/${id}` : `/`,
-                method: "POST",
+                url: Boolean(id) ? `/${id}` : ``,
+                method: Boolean(id) ? "PUT" : "POST",
                 body,
             }),
             invalidatesTags: ["BlogPosts", "BlogPostById"],

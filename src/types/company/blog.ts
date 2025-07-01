@@ -7,7 +7,7 @@ interface BlogPostShort {
     user: IUserMini;
     createdAt: string;
     updatedAt: string;
-    URL: string;
+    url: string;
     viewCounter: number;
     sites: IPublicSitesRes[];
 }

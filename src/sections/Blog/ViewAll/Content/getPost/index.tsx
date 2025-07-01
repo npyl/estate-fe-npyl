@@ -1,6 +1,6 @@
 import Link from "@/components/Link";
 import getBorderColor from "@/theme/borderColor";
-import { BlogPostRes } from "@/types/company";
+import { BlogPostShort } from "@/types/company";
 import { SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import RemoveOpener from "./RemoveOpener";
@@ -19,7 +19,7 @@ const PostSx: SxProps<Theme> = {
 };
 
 interface PostProps {
-    p: BlogPostRes;
+    p: BlogPostShort;
 }
 
 const Post: FC<PostProps> = ({ p }) => (
@@ -29,6 +29,6 @@ const Post: FC<PostProps> = ({ p }) => (
     </Link>
 );
 
-const getPost = (p: BlogPostRes) => <Post key={p.id} p={p} />;
+const getPost = (p: BlogPostShort) => <Post key={p.id} p={p} />;
 
 export default getPost;
