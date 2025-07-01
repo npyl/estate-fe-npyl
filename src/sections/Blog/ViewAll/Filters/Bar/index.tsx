@@ -3,6 +3,7 @@ import Search from "./Search";
 import Sites from "./Sites";
 import User from "./User";
 import State from "./State";
+import ChosenFilters from "./ChosenFilters";
 
 const FiltersBar = () => (
     <PPFiltersBar
@@ -14,7 +15,7 @@ const FiltersBar = () => (
                 <State />
             </>
         }
-        bottomContent={undefined}
+        bottomContent={<ChosenFilters />}
     />
 );
 
