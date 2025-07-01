@@ -4,7 +4,7 @@ import {
     setMaxPrice,
     setMinPrice,
 } from "src/slices/customer/filters";
-import RangeSelect from "@/sections/Filters/Range";
+import RangeSelect from "@/ui/Filters/Range";
 import usePriceRangeGenerator from "./usePriceGenerator";
 import { useSelector } from "react-redux";
 import { useCallback } from "react";

@@ -3,7 +3,7 @@ import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
 import { FC } from "react";
 import useDialog from "@/hooks/useDialog";
-import FilterMoreButton from "@/sections/Filters/FilterMore/Button";
+import FilterMoreButton from "@/ui/Filters/FilterMore/Button";
 import dynamic from "next/dynamic";
 import FiltersBar, { FiltersBarProps } from "@/components/Filters/FiltersBar";
 import { useFilterPropertiesQuery } from "@/services/properties";

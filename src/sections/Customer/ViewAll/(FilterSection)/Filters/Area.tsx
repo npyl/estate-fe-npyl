@@ -5,9 +5,9 @@ import {
     setMinArea,
 } from "src/slices/customer/filters";
 
-import RangeSelect from "@/sections/Filters/Range";
+import RangeSelect from "@/ui/Filters/Range";
 
-import areaRangeGenerator from "@/sections/Filters/areaRangeGenerator";
+import areaRangeGenerator from "@/ui/Filters/areaRangeGenerator";
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
 import { dispatch } from "@/store";

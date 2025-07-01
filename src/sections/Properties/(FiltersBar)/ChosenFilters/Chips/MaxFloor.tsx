@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import useEnums from "../../useEnums";
-import ChipLabel from "@/sections/Filters/ChipLabel";
+import ChipLabel from "@/ui/Filters/ChipLabel";
 import getEnumLabel from "./util";
 import { useTranslation } from "react-i18next";
 import {

@@ -1,4 +1,4 @@
-import { TSorting } from "@/sections/Filters/SortBy/types";
+import { TSorting } from "@/ui/Filters/SortBy/types";
 import { IUserMini } from "@/types/user";
 
 interface BoardFiltersReq {

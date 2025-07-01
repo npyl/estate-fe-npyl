@@ -13,14 +13,14 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 // components
 import { useMemo } from "react";
-import FilterSortBy from "@/sections/Filters/SortBy";
+import FilterSortBy from "@/ui/Filters/SortBy";
 import {
     useFiltersContext,
     useSorting,
 } from "@/sections/Properties/FiltersContext";
 import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import useSortingOptions from "./useSortingOptions";
-import ViewModeButton from "@/sections/Filters/ViewModeButton";
+import ViewModeButton from "@/ui/Filters/ViewModeButton";
 
 type viewOptionsType = {
     id: optionType;

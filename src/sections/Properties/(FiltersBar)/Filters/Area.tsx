@@ -1,5 +1,5 @@
-import RangeSelect from "@/sections/Filters/Range";
-import areaRangeGenerator from "@/sections/Filters/areaRangeGenerator";
+import RangeSelect from "@/ui/Filters/Range";
+import areaRangeGenerator from "@/ui/Filters/areaRangeGenerator";
 import {
     useFiltersContext,
     useMaxArea,

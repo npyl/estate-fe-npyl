@@ -1,4 +1,4 @@
-import ChipLabel from "@/sections/Filters/ChipLabel";
+import ChipLabel from "@/ui/Filters/ChipLabel";
 import { useTranslation } from "react-i18next";
 import { useGetLabelsQuery } from "@/services/labels";
 import { useMemo } from "react";

@@ -2,10 +2,8 @@ import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFilterLogsQuery } from "src/services/logs";
 import { FilterLogSection } from "./components/FilterSection";
-const FilterMore = dynamic(
-    () => import("@/sections/Filters/FilterMore/Dialog")
-);
-import FloatingButton from "@/sections/Filters/FilterMore/FloatingButton";
+const FilterMore = dynamic(() => import("@/ui/Filters/FilterMore/Dialog"));
+import FloatingButton from "@/ui/Filters/FilterMore/FloatingButton";
 import LogCard from "@/components/Cards/LogCard";
 import Pagination, { usePagination } from "@/components/Pagination";
 import useDialog from "@/hooks/useDialog";

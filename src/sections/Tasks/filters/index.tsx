@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useLayoutEffect } from "react";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { TSorting } from "@/sections/Filters/SortBy/types";
+import { TSorting } from "@/ui/Filters/SortBy/types";
 import { TFilters } from "./types";
 import { initialState } from "./constants";
 import useFilterState from "./useFilterState";
