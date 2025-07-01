@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            User: "User",
             "Save to all": "Save to all",
             New_Neutral: "New_Neutral",
             DELETE_POST_0: "Deleting this post cannot be undone",
@@ -1385,6 +1386,7 @@ const resources = {
     },
     el: {
         translation: {
+            User: "Χρήστης",
             "Save to all": "Αποθήκευση σε όλα",
             New_Neutral: "Νέο",
             DELETE_POST_0: "Η διαγραφή του post θα είναι μόνιμη",
