@@ -1,6 +1,7 @@
 import PPFiltersBar from "@/components/Filters/FiltersBar";
 import Search from "./Search";
 import Sites from "./Sites";
+import User from "./User";
 
 const FiltersBar = () => (
     <PPFiltersBar
@@ -8,6 +9,7 @@ const FiltersBar = () => (
             <>
                 <Search />
                 <Sites />
+                <User />
             </>
         }
         bottomContent={undefined}

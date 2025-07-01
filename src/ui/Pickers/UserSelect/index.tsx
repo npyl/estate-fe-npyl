@@ -1,6 +1,5 @@
 import { useAllUsersQuery } from "@/services/user";
-import { useCallback } from "react";
-import { useFiltersContext } from "@/sections/Tasks/filters";
+import { FC, useCallback } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import { MouseEvent } from "react";
@@ -10,12 +9,14 @@ const MoreAvatars = dynamic(() => import("./MoreAvatars"));
 
 // -------------------------------------------------------------------
 
-const ClearButton = () => {
-    const { setAssigneeId } = useFiltersContext();
+interface Props {
+    onClick: VoidFunction;
+}
 
+const ClearButton: FC<Props> = ({ onClick }) => {
     const handleClear = useCallback((e: MouseEvent) => {
         e.preventDefault();
-        setAssigneeId(undefined);
+        onClick();
     }, []);
 
     return (
@@ -36,22 +37,26 @@ const ClearButton = () => {
 
 // -------------------------------------------------------------------
 
-const UserSelect = () => {
+interface UserSelectProps {
+    userId?: number;
+    onChange: (id: number) => void;
+    onClear: VoidFunction;
+}
+
+const UserSelect: FC<UserSelectProps> = ({ userId, onChange, onClear }) => {
     const { data } = useAllUsersQuery();
-    const { filters, setAssigneeId } = useFiltersContext();
-    const { assigneeId } = filters || {};
 
     return (
         <AvatarSelectGroup
             max={6}
             // ...
             users={data}
-            value={assigneeId}
-            onChange={setAssigneeId}
+            value={userId}
+            onChange={onChange}
             // ...
             MoreAvatars={MoreAvatars}
         >
-            {assigneeId !== undefined ? <ClearButton /> : null}
+            {userId !== undefined ? <ClearButton onClick={onClear} /> : null}
         </AvatarSelectGroup>
     );
 };
