@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import DataGrid from "@/components/DataGrid/Property";
 import useResponsive from "@/hooks/useResponsive";
-import PropertyCard from "@/components/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 import Pagination from "@/components/Pagination/client";
 import { usePagination } from "@/components/Pagination";
 import NoOwnedProperties from "./NoOwnedProperties";

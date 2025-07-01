@@ -1,5 +1,5 @@
 import Grid, { Grid2Props } from "@mui/material/Unstable_Grid2";
-import PropertyCard from "@/components/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 import { useMemo } from "react";
 import { useFilterPropertiesQuery } from "src/services/properties";
 import useResponsive from "@/hooks/useResponsive";

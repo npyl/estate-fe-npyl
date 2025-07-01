@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack } from "@mui/material";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled"; // Adjust the path as necessary
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled"; // Adjust the path as necessary
 
 interface ListingStateBadgeProps {
     stateValue: string;

@@ -11,7 +11,7 @@ import {
 } from "src/slices/customer/filters";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
-import CustomerCard from "@/components/Cards/CustomerCard";
+import CustomerCard from "@/ui/Cards/CustomerCard";
 import { useTranslation } from "react-i18next";
 import { getOptions } from "./(FilterSection)/constants";
 import Pagination, { usePagination } from "@/components/Pagination";

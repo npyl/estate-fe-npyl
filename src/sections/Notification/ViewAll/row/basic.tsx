@@ -20,7 +20,7 @@ import {
     differenceInDays,
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PropertyRegion from "./components/PropertyRegion";

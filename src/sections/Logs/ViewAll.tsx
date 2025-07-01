@@ -4,7 +4,7 @@ import { useFilterLogsQuery } from "src/services/logs";
 import { FilterLogSection } from "./components/FilterSection";
 const FilterMore = dynamic(() => import("@/ui/Filters/FilterMore/Dialog"));
 import FloatingButton from "@/ui/Filters/FilterMore/FloatingButton";
-import LogCard from "@/components/Cards/LogCard";
+import LogCard from "@/ui/Cards/LogCard";
 import Pagination, { usePagination } from "@/components/Pagination";
 import useDialog from "@/hooks/useDialog";
 import NoLogsPlaceholder from "./components/NoLogs";

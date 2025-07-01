@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import PropertyCard, { PropertyCardH } from "@/components/Cards/PropertyCard";
+import PropertyCard, { PropertyCardH } from "@/ui/Cards/PropertyCard";
 import { IPropertyResultResponse } from "@/types/properties";
 import Placeholder from "./Placeholder";
 import useResponsiveOrientation from "./hook";
@@ -64,8 +64,10 @@ const GridItem: FC<GridItemProps> = ({ orientation, item }) => {
 
 // ---------------------------------------------------------------------------------
 
-const getGridItem = (orientation: boolean) => (item: IPropertyResultResponse) =>
-    <GridItem key={item.id} orientation={orientation} item={item} />;
+const getGridItem =
+    (orientation: boolean) => (item: IPropertyResultResponse) => (
+        <GridItem key={item.id} orientation={orientation} item={item} />
+    );
 
 // ---------------------------------------------------------------------------------
 

@@ -15,7 +15,7 @@ import {
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
-import PropertyCard from "@/components/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 import useResponsive from "@/hooks/useResponsive";
 import { format } from "date-fns";
 import LabelComponent from "./LabelComponent";

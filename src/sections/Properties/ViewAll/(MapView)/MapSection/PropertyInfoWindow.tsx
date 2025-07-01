@@ -1,4 +1,4 @@
-import PropertyCard from "@/components/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 import { IMapMarker } from "@/components/Map";
 import { useGetPropertyCardByIdQuery } from "@/services/properties";
 import { InfoWindowF } from "@react-google-maps/api";
