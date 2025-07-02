@@ -11,7 +11,7 @@
 
 import { ImageProps } from "@/components/image/types";
 import BaseImage from "./BaseImage";
-import { FC, SyntheticEvent, useCallback } from "react";
+import { forwardRef, SyntheticEvent, useCallback } from "react";
 
 const epsilon = 0.01; // floating-point imprecision
 
@@ -20,33 +20,43 @@ const isCloseToRatio = (actual: number, expected: number) =>
 
 interface SmartImageProps extends Omit<ImageProps, "size"> {}
 
-const SmartImage: FC<SmartImageProps> = ({ src, ref: _, ...props }) => {
-    const onLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
-        const el = e.currentTarget;
-        if (!el || !el.style) return;
+const SmartImage = forwardRef<HTMLImageElement, SmartImageProps>(
+    ({ src, ...props }, ref) => {
+        const onLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+            const el = e.currentTarget;
+            if (!el || !el.style) return;
 
-        const aspectRatio = el.naturalWidth / el.naturalHeight;
+            const aspectRatio = el.naturalWidth / el.naturalHeight;
 
-        // Horizontal (2048x1365)
-        if (isCloseToRatio(aspectRatio, 2048 / 1365)) {
-            return;
-        }
+            // Horizontal (2048x1365)
+            if (isCloseToRatio(aspectRatio, 2048 / 1365)) {
+                return;
+            }
 
-        // Vertical (1365x2048)
-        if (isCloseToRatio(aspectRatio, 1365 / 2048)) {
-            el.style.objectFit = "contain";
-            return;
-        }
+            // Vertical (1365x2048)
+            if (isCloseToRatio(aspectRatio, 1365 / 2048)) {
+                el.style.objectFit = "contain";
+                return;
+            }
 
-        // Drone (2048x1152)
-        if (isCloseToRatio(aspectRatio, 2048 / 1152)) {
-            el.style.objectFit = "contain";
-            return;
-        }
-    }, []);
+            // Drone (2048x1152)
+            if (isCloseToRatio(aspectRatio, 2048 / 1152)) {
+                el.style.objectFit = "contain";
+                return;
+            }
+        }, []);
 
-    return <BaseImage onLoad={onLoad} src={src} ratio="4/3" {...props} />;
-};
+        return (
+            <BaseImage
+                ref={ref}
+                onLoad={onLoad}
+                src={src}
+                ratio="4/3"
+                {...props}
+            />
+        );
+    }
+);
 
 export type { SmartImageProps };
 export default SmartImage;
