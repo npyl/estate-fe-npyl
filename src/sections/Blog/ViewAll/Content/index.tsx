@@ -18,6 +18,7 @@ const Content = () => {
             isLoading={isLoading}
             pageSize={PAGE_SIZE}
             totalItems={totalItems}
+            ContainerProps={{ spacing: 1 }}
             {...pagination}
         >
             {content.map(getPost)}

@@ -1,10 +1,10 @@
 import Link from "@/components/Link";
 import getBorderColor from "@/theme/borderColor";
 import { BlogPostShort } from "@/types/company";
-import { SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import RemoveOpener from "./RemoveOpener";
-import Image from "next/image";
+import Image from "@/components/image";
 
 const PostSx: SxProps<Theme> = {
     display: "flex",
@@ -24,13 +24,16 @@ interface PostProps {
 
 const Post: FC<PostProps> = ({ p }) => (
     <Link href={`/blog/${p.id}`} sx={PostSx}>
-        <Image
-            src={p.url}
-            alt=""
-            width={300}
-            height={300}
-            style={{ borderRadius: "8px" }}
-        />
+        <Box width={300}>
+            <Image
+                src={p.url}
+                alt=""
+                style={{
+                    objectFit: "contain",
+                    borderRadius: "8px",
+                }}
+            />
+        </Box>
         {p.title}
         <RemoveOpener postId={p.id} />
     </Link>
