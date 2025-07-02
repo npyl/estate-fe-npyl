@@ -155,6 +155,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
         localStorage.setItem("accessToken", loginRes.token);
 
+        clearAllApiCaches();
+
         const user = await getProfile().unwrap();
         if (!user) {
             throw "Failed getting profile!";
@@ -183,9 +185,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const logout = useCallback(async () => {
         await logoutCb();
-
-        clearAllApiCaches();
-
         localStorage.removeItem("accessToken");
         dispatch({ type: ActionType.LOGOUT });
     }, []);

@@ -69,12 +69,8 @@ const services = [
     blog,
 ];
 
-export const clearAllApiCaches = () => {
-    services.forEach((api) => {
-        // Invalidate all possible tags - this clears cache without immediate refetch
-        dispatch(api.util.invalidateTags([])); // Empty array invalidates all
-    });
-};
+export const clearAllApiCaches = () =>
+    services.forEach((api) => dispatch(api.util.resetApiState()));
 
 export const createStore = (
     options?: ConfigureStoreOptions["preloadedState"] | undefined
