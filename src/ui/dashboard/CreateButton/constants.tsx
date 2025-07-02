@@ -51,7 +51,7 @@ const MENU_ITEMS = [
     },
     {
         label: "Blog",
-        path: "/blog",
+        path: "/blog/create",
         icon: <RssFeedIcon />,
     },
 ];
