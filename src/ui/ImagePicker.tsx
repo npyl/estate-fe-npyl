@@ -5,7 +5,6 @@ import { errorToast } from "@/components/Toaster";
 import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import Image, { ImageProps } from "@/components/image";
 import Placeholder from "@/components/upload/placeholder";
-import getBorderColor from "@/theme/borderColor";
 
 // ----------------------------------------------------------------------------
 
@@ -34,8 +33,6 @@ const OverlayImage: FC<OverlayImageProps> = ({
     <Stack
         position="relative"
         height={1}
-        border="1px solid"
-        borderColor={getBorderColor}
         borderRadius={1}
         sx={OverlayImageSx}
         {...overlayContainerProps}
