@@ -1,14 +1,18 @@
 import { ImageProps } from "@/components/image/types";
 import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
 import NoImageIcon from "@/assets/icons/no-image";
-import WrapperWithRatio from "./WrapperWithRatio";
+import { styled, Theme } from "@mui/material";
 
-const IMAGE_CLASSNAME = "PPImage-img";
+const StyledImg = styled("img")(({ theme }) => ({
+    backgroundColor: getBgColor(theme),
+    borderRadius: theme.spacing(1),
+}));
 
-// --------------------------------------------------------------------------------
+const getBgColor = ({ palette: { mode, neutral } }: Theme) =>
+    mode === "light" ? neutral?.[200] : neutral?.[800];
 
 const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
-    ({ alt = "", src = "", imgStyle, onLoad, ...props }, ref) => {
+    ({ alt = "", src = "", style, aspectRatio, onLoad, ...props }, ref) => {
         const fallbackRef = useRef<SVGSVGElement>(null);
 
         const handleError = useCallback(
@@ -31,17 +35,20 @@ const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
         );
 
         return (
-            <WrapperWithRatio {...props}>
+            <>
                 <NoImageIcon
                     ref={fallbackRef}
                     height="100%"
                     width="100%"
-                    style={{ display: "none", padding: "10px", ...imgStyle }}
+                    style={{
+                        display: "none",
+                        padding: "10px",
+                        aspectRatio,
+                    }}
                 />
 
-                <img
+                <StyledImg
                     ref={ref}
-                    className={IMAGE_CLASSNAME}
                     src={src!}
                     alt={alt}
                     loading="lazy"
@@ -49,17 +56,19 @@ const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
                     height="100%"
                     style={{
                         visibility: "hidden",
-                        ...imgStyle,
+                        aspectRatio,
+                        ...style,
                     }}
                     onLoad={handleLoad}
                     onError={handleError}
+                    {...props}
                 />
-            </WrapperWithRatio>
+            </>
         );
     }
 );
 
 BaseImage.displayName = "Image";
 
-export { IMAGE_CLASSNAME };
+export type { ImageProps };
 export default BaseImage;

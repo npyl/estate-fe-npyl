@@ -122,7 +122,7 @@ export const PropertySearchItem = ({
                 {option?.propertyImage ? (
                     <Image src={option.propertyImage} />
                 ) : (
-                    <PreviewImage padding={0} sx={{ borderRadius: 1 }} />
+                    <PreviewImage style={{ padding: 0, borderRadius: "8px" }} />
                 )}
             </Stack>
             <Stack direction={"column"} width="100%">

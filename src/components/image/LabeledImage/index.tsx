@@ -10,9 +10,9 @@ export interface LabeledImageProps extends ImageProps {
 }
 
 const LabeledImage = forwardRef<HTMLImageElement, LabeledImageProps>(
-    ({ src, label, hidden, ...props }, ref) => (
+    ({ label, hidden, ...props }, ref) => (
         <Box position="relative">
-            <Image ref={ref} src={src} {...props} />
+            <Image ref={ref} {...props} />
             {label ? <Label>{label}</Label> : null}
             {hidden ? <LockIcon fontSize="large" /> : null}
         </Box>

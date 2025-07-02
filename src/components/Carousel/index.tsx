@@ -126,13 +126,13 @@ const Carousel: FC<CarouselProps> = ({
                         src={url}
                         hidden={hidden}
                         label={mainLabel && thumbnail ? mainLabel : ""}
-                        ratio={ratio! as ImageRatio}
+                        aspectRatio={ratio! as ImageRatio}
                         onClick={() => onImageClick?.(index)}
                     />
                 ))}
 
                 {data.length === 0 ? (
-                    <LabeledImage ratio={ratio! as ImageRatio} />
+                    <LabeledImage aspectRatio={ratio! as ImageRatio} />
                 ) : null}
             </Slick>
 

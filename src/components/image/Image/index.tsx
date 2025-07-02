@@ -21,7 +21,7 @@ const isCloseToRatio = (actual: number, expected: number) =>
 interface SmartImageProps extends Omit<ImageProps, "size"> {}
 
 const SmartImage = forwardRef<HTMLImageElement, SmartImageProps>(
-    ({ src, ...props }, ref) => {
+    (props, ref) => {
         const onLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
             const el = e.currentTarget;
             if (!el || !el.style) return;
@@ -47,13 +47,7 @@ const SmartImage = forwardRef<HTMLImageElement, SmartImageProps>(
         }, []);
 
         return (
-            <BaseImage
-                ref={ref}
-                onLoad={onLoad}
-                src={src}
-                ratio="4/3"
-                {...props}
-            />
+            <BaseImage ref={ref} onLoad={onLoad} aspectRatio="4/3" {...props} />
         );
     }
 );

@@ -44,7 +44,11 @@ interface OpenerProps extends OpenerBaseProps {
 
 const Opener: FC<OpenerProps> = ({ variant, src, onClick }) => (
     <ContentStack onClick={onClick}>
-        <StyledAvatar alt="" src={src} width="200px" height="200px" />
+        <StyledAvatar
+            alt=""
+            src={src}
+            style={{ width: "200px", height: "200px" }}
+        />
         {src ? <RemoveButton variant={variant} /> : null}
     </ContentStack>
 );

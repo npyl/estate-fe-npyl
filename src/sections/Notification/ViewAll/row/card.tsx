@@ -51,11 +51,7 @@ export const ListingCard = ({ item }: BookingItemProps) => {
             {item?.state?.key === "SALE" && <ForSaleLabel />}
 
             <Box sx={{ position: "relative", height: "100%" }}>
-                <Image
-                    src={item?.photo}
-                    alt=""
-                    imgStyle={{ objectFit: "fill" }}
-                />
+                <Image src={item?.photo} alt="" style={{ objectFit: "fill" }} />
             </Box>
 
             <Box

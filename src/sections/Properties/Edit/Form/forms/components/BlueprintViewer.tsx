@@ -61,7 +61,7 @@ export const BlueprintViewer = ({
                 }}
             >
                 <Box width={"50%"}>
-                    <Image src={url} ratio="16/9" />
+                    <Image src={url} aspectRatio="16/9" />
                 </Box>
             </DialogContent>
         </Dialog>

@@ -1,29 +1,14 @@
-// @mui
-import { BoxProps, SxProps, Theme } from "@mui/material";
-import { CSSProperties } from "react";
+import { CSSProperties, HTMLAttributes } from "react";
 
 // ----------------------------------------------------------------------
 
-type ImageRatio =
-    | "4/3"
-    | "3/4"
-    | "6/4"
-    | "4/6"
-    | "16/9"
-    | "9/16"
-    | "21/9"
-    | "9/21"
-    | "1/1";
+type ImageRatio = CSSProperties["aspectRatio"];
 
-interface WrapperWithRatioProps extends Omit<BoxProps, "style"> {
-    ratio?: ImageRatio;
-    containerSx?: SxProps<Theme>;
-}
-
-interface ImageProps extends WrapperWithRatioProps {
+interface ImageProps
+    extends Omit<HTMLAttributes<HTMLImageElement>, "src" | "onError"> {
     src?: string | null;
     alt?: string;
-    imgStyle?: CSSProperties;
+    aspectRatio?: ImageRatio;
 }
 
 interface IPreviewImageProps extends ImageProps {
@@ -34,10 +19,4 @@ interface UploadImageProps extends Omit<IPreviewImageProps, "src"> {
     progress: number;
 }
 
-export type {
-    ImageRatio,
-    WrapperWithRatioProps,
-    ImageProps,
-    IPreviewImageProps,
-    UploadImageProps,
-};
+export type { ImageRatio, ImageProps, IPreviewImageProps, UploadImageProps };

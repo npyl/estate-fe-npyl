@@ -3,18 +3,17 @@ import { useUploadFileContext } from "../context/UploadProgress";
 import React from "react";
 import { useConditionalMemo } from "@/hooks/useConditionalMemo";
 import { ImageItemProps } from "./types";
-import { SxProps } from "@mui/material";
-import { Theme } from "@mui/material";
+import { styled } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { LabeledImage } from "@/components/image";
 
-const SmartImageContainerSx: SxProps<Theme> = {
+const StyledImage = styled(LabeledImage)({
     transition: "transform 0.2s ease-in-out",
     "&:hover": {
         transform: "scale(0.95)",
         cursor: "pointer",
     },
-};
+});
 
 const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
     const { url, thumbnail, hidden, key } = image;
@@ -30,12 +29,11 @@ const ImageItem: React.FC<ImageItemProps> = ({ image, onImageClick }) => {
 
     if (url) {
         return (
-            <LabeledImage
+            <StyledImage
                 src={url}
                 label={thumbnail ? t("_main_").toString() : ""}
                 hidden={hidden}
                 onClick={() => onImageClick(key)}
-                containerSx={SmartImageContainerSx}
             />
         );
     }

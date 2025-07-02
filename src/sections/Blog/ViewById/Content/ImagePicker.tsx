@@ -3,10 +3,9 @@ import {
     useRemoveBlogPostImageMutation,
     useUploadBlogPostImageMutation,
 } from "@/services/blog";
-import Box from "@mui/material/Box";
 import BaseImagePicker from "@/ui/ImagePicker";
 
-const IMAGE_HEIGHT = "400px";
+const IMAGE_HEIGHT = "600px";
 
 // -----------------------------------------------------------------------------------------
 
@@ -31,20 +30,18 @@ const ImagePicker: FC<AvatarPickerProps> = ({ postId, image }) => {
     const onDelete = useCallback(() => removeImage(postId), [postId]);
 
     return (
-        <Box height={IMAGE_HEIGHT}>
-            <BaseImagePicker
-                isLoading={isLoading}
-                // ...
-                src={image}
-                // ...
-                onSelect={onSelect}
-                onDelete={onDelete}
-                imgStyle={{
-                    height: IMAGE_HEIGHT,
-                }}
-                height={IMAGE_HEIGHT}
-            />
-        </Box>
+        <BaseImagePicker
+            isLoading={isLoading}
+            // ...
+            src={image}
+            // ...
+            onSelect={onSelect}
+            onDelete={onDelete}
+            overlayContainerProps={{
+                height: IMAGE_HEIGHT,
+            }}
+            style={{ maxHeight: IMAGE_HEIGHT, objectFit: "contain" }}
+        />
     );
 };
 

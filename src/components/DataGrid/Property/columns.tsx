@@ -30,8 +30,8 @@ function RenderImage(
             <Image
                 src={src}
                 alt=""
-                ratio="16/9"
-                sx={{
+                aspectRatio="16/9"
+                style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",

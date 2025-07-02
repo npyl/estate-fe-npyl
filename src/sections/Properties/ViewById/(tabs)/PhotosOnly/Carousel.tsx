@@ -82,7 +82,7 @@ function OnlyPhotosCarousel({ data }: Props) {
                             alt={title}
                             src={url}
                             hidden={hidden}
-                            ratio="16/9"
+                            aspectRatio="16/9"
                             onClick={() => setClickedImageIndex(index)}
                         />
                     ) : (
