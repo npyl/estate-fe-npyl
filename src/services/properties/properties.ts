@@ -8,6 +8,7 @@ import {
     IPropertyResultResponse,
     IValuationRes,
     IPropertyTabCounts,
+    BulkEditRequest,
 } from "@/types/properties";
 import IPage from "@/types/page";
 import { ILabel } from "@/types/label";
@@ -23,18 +24,6 @@ import {
     createLanguageAwareHook as la,
     createRemoveTabAwareHook as rt,
 } from "@/services/_util";
-
-export interface BulkEditRequest {
-    propertyIds: number[];
-    managerId?: number;
-    ownerId?: number;
-    zipcode?: number;
-    area?: number;
-    labels?: number[];
-    bedrooms?: number;
-    state?: string;
-    exclusive?: boolean;
-}
 
 interface ICreatePropertyParams {
     parentCategory: string;
@@ -68,6 +57,25 @@ interface EditLocationDisplayProps {
     propertyId: number;
     display: LocationDisplay;
 }
+
+type BulkEditInvalidateTag =
+    | "Properties"
+    | "Archived"
+    | "PropertyById"
+    | "PropertyByIdListings";
+
+const getBulkEditInvalidateTags = (_0: any, _1: any, body: BulkEditRequest) => {
+    const tags = ["Properties", "Archived", "PropertyById"];
+
+    const withIntegrations =
+        Array.isArray(body.integrations) && body.integrations.length > 0;
+    const withPublicSites =
+        Array.isArray(body.publicSites) && body.publicSites.length > 0;
+
+    if (withIntegrations || withPublicSites) tags.push("PropertyByIdListings");
+
+    return tags as BulkEditInvalidateTag[];
+};
 
 export const properties = apiWithTranslation({
     reducerPath: "properties",
@@ -173,7 +181,7 @@ export const properties = apiWithTranslation({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Properties", "Archived", "PropertyById"],
+            invalidatesTags: getBulkEditInvalidateTags,
         }),
 
         filterProperties: builder.query<

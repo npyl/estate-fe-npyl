@@ -17,6 +17,21 @@ import { INote } from "@/types/note";
 import { TShape } from "@/types/shape";
 import { IUser } from "@/types/user";
 
+interface BulkEditRequest {
+    propertyIds: number[];
+    managerId?: number;
+    ownerId?: number;
+    zipcode?: number;
+    area?: number;
+    labels?: number[];
+    bedrooms?: number;
+    state?: string;
+    exclusive?: boolean;
+
+    publicSites?: number[];
+    integrations?: number[];
+}
+
 export interface IPropertyResultResponse {
     id: number;
     title: string;
@@ -530,6 +545,7 @@ export type {
     IPropertyFilterExtras,
     // ...
     IPropertyReq,
+    BulkEditRequest,
 };
 
 export type * from "./valuation";
