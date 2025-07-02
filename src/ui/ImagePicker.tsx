@@ -2,49 +2,22 @@ import { ChangeEvent, FC, useCallback } from "react";
 import FileInput from "@/components/FileInput";
 import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from "@/constants/file";
 import { errorToast } from "@/components/Toaster";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import { alpha, CircularProgress, Stack, SxProps, Theme } from "@mui/material";
+import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import Image, { ImageProps } from "@/components/image";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Placeholder from "@/components/upload/placeholder";
+import getBorderColor from "@/theme/borderColor";
 
 // ----------------------------------------------------------------------------
 
-const AVATAR_H = "130px";
-const AVATAR_W = AVATAR_H;
-
-const LoadingOverlay = () => (
-    <Stack
-        alignItems="center"
-        justifyContent="center"
-        width={AVATAR_W}
-        height={AVATAR_H}
-        bgcolor={({ palette: { neutral } }) => alpha(neutral?.[300]!, 0.3)}
-        position="absolute"
-        zIndex={11}
-        borderRadius="100%"
-    >
-        <CircularProgress />
-    </Stack>
-);
-
-// ----------------------------------------------------------------------------
-
-const DeleteButtonSx: SxProps<Theme> = {
-    position: "absolute",
-    top: -15,
-    right: -15,
-    bgcolor: "background.paper",
+const OverlayImageSx: SxProps<Theme> = {
     "&:hover": {
-        bgcolor: "background.paper",
+        bgcolor: ({ palette: { mode } }) =>
+            mode === "light" ? "background.neutral" : "neutral.800",
     },
-    border: "1px solid",
-    borderColor: "divider",
-    borderRadius: "16px",
-    zIndex: 10,
 };
 
-interface OverlayImageProps extends Omit<ImageProps, "onClick"> {
+interface OverlayImageProps extends Omit<ImageProps, "ref" | "onClick"> {
+    overlayContainerProps?: Omit<StackProps, "children">;
     loading?: boolean;
     onClick: VoidFunction;
     onDelete: VoidFunction;
@@ -53,22 +26,28 @@ interface OverlayImageProps extends Omit<ImageProps, "onClick"> {
 const OverlayImage: FC<OverlayImageProps> = ({
     src,
     loading,
-    sx,
     onClick,
     onDelete,
+    overlayContainerProps,
     ...props
 }) => (
-    <Box position="relative">
-        {loading ? <LoadingOverlay /> : null}
-
-        {src && !loading ? (
-            <IconButton onClick={onDelete} sx={DeleteButtonSx}>
-                <DeleteIcon />
-            </IconButton>
+    <Stack
+        position="relative"
+        height={1}
+        border="1px solid"
+        borderColor={getBorderColor}
+        borderRadius={1}
+        sx={OverlayImageSx}
+        {...overlayContainerProps}
+    >
+        {!src && !loading ? (
+            <Placeholder position="absolute" height={1} />
         ) : null}
 
-        <Image src={src} onClick={onClick} {...props} />
-    </Box>
+        {src && !loading ? (
+            <Image src={src} onClick={onClick} {...props} />
+        ) : null}
+    </Stack>
 );
 
 // -----------------------------------------------------------------------------------------
