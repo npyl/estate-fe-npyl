@@ -37,7 +37,7 @@ const ImagePicker: FC<AvatarPickerProps> = ({ postId, image }) => {
             // ...
             onSelect={onSelect}
             onDelete={onDelete}
-            overlayContainerProps={{
+            ContainerProps={{
                 height: IMAGE_HEIGHT,
             }}
             style={{ maxHeight: IMAGE_HEIGHT, objectFit: "contain" }}

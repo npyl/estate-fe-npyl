@@ -15,8 +15,8 @@ const OverlayImageSx: SxProps<Theme> = {
     },
 };
 
-interface OverlayImageProps extends Omit<ImageProps, "ref" | "onClick"> {
-    overlayContainerProps?: Omit<StackProps, "children">;
+interface OverlayImageProps extends Omit<ImageProps, "ref" | "sx" | "onClick"> {
+    ContainerProps?: Omit<StackProps, "children">;
     loading?: boolean;
     onClick: VoidFunction;
     onDelete: VoidFunction;
@@ -27,25 +27,28 @@ const OverlayImage: FC<OverlayImageProps> = ({
     loading,
     onClick,
     onDelete,
-    overlayContainerProps,
+    ContainerProps,
     ...props
-}) => (
-    <Stack
-        position="relative"
-        height={1}
-        borderRadius={1}
-        sx={OverlayImageSx}
-        {...overlayContainerProps}
-    >
-        {!src && !loading ? (
-            <Placeholder position="absolute" height={1} />
-        ) : null}
+}) => {
+    const { sx, ...other } = ContainerProps || {};
 
-        {src && !loading ? (
-            <Image src={src} onClick={onClick} {...props} />
-        ) : null}
-    </Stack>
-);
+    return (
+        <Stack
+            position="relative"
+            height={1}
+            borderRadius={1}
+            sx={{ ...OverlayImageSx, ...sx }}
+            onClick={onClick}
+            {...other}
+        >
+            {!src && !loading ? (
+                <Placeholder position="absolute" height={1} />
+            ) : null}
+
+            {src && !loading ? <Image src={src} {...props} /> : null}
+        </Stack>
+    );
+};
 
 // -----------------------------------------------------------------------------------------
 
