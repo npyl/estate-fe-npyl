@@ -41,9 +41,11 @@ const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
                     height="100%"
                     width="100%"
                     style={{
-                        display: "none",
                         padding: "10px",
                         aspectRatio,
+                        display: "none",
+                        width: style?.width,
+                        height: style?.height,
                     }}
                 />
 
