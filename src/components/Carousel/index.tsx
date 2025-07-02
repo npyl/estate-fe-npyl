@@ -14,8 +14,6 @@ import Slick from "react-slick";
 import CarouselArrowIndex from "./CarouselArrowIndex";
 import { ImageRatio, LabeledImage } from "@/components/image";
 import ICarouselImage from "./types";
-import NoImageIcon from "@/assets/icons/no-image";
-import WrapperWithRatio from "@/components/image/Image/BaseImage/WrapperWithRatio";
 
 const StyledLinkOffIcon = styled(LinkOffOutlinedIcon)(({ theme }) => ({
     color: theme.palette.neutral?.[100],
@@ -125,7 +123,7 @@ const Carousel: FC<CarouselProps> = ({
                     <LabeledImage
                         key={id}
                         alt={title}
-                        src={url || ""}
+                        src={url}
                         hidden={hidden}
                         label={mainLabel && thumbnail ? mainLabel : ""}
                         ratio={ratio! as ImageRatio}
@@ -134,9 +132,7 @@ const Carousel: FC<CarouselProps> = ({
                 ))}
 
                 {data.length === 0 ? (
-                    <WrapperWithRatio ratio={ratio! as ImageRatio}>
-                        <NoImageIcon height="100%" width="100%" />
-                    </WrapperWithRatio>
+                    <LabeledImage ratio={ratio! as ImageRatio} />
                 ) : null}
             </Slick>
 
