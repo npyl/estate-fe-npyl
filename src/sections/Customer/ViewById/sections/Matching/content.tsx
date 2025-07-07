@@ -2,7 +2,7 @@ import Placeholder from "./Placeholder";
 import DataGrid from "@/components/DataGrid/Property";
 import useResponsive from "@/hooks/useResponsive";
 import Grid from "@mui/material/Unstable_Grid2";
-import PropertyCard from "@/components/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 import Pagination from "@/components/Pagination/client";
 import { IProperties } from "@/types/properties";
 

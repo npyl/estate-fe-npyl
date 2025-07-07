@@ -1,4 +1,4 @@
-import generatePriceRange from "@/sections/Filters/priceRangeGenerator";
+import generatePriceRange from "@/ui/Filters/priceRangeGenerator";
 import { useStates } from "@/sections/Properties/FiltersContext";
 import { useCallback } from "react";
 
@@ -10,8 +10,8 @@ const usePriceRangeGenerator = () => {
         states.includes("RENT") && states.includes("RENTED")
             ? 2
             : states.includes("RENT") || states.includes("RENTED")
-            ? 1
-            : 0;
+              ? 1
+              : 0;
 
     const isRent = rentLength > 0;
     const isSale = states.length > rentLength;

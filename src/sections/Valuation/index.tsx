@@ -2,7 +2,9 @@ import PropertyFiltersBar from "@/sections/Properties/(FiltersBar)";
 import useResponsive from "@/hooks/useResponsive";
 import { FC } from "react";
 import MapIcon from "@mui/icons-material/Map";
-import ViewModeButton, { ViewModeButtonProps } from "../Filters/ViewModeButton";
+import ViewModeButton, {
+    ViewModeButtonProps,
+} from "../../ui/Filters/ViewModeButton";
 import useToggle from "@/hooks/useToggle";
 import MapSection from "@/sections/Properties/ViewAll/(MapView)/MapSection";
 import Grid from "@mui/material/Unstable_Grid2";

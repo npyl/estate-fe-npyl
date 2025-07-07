@@ -1,5 +1,5 @@
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
-import ChipLabel from "@/sections/Filters/ChipLabel";
+import ChipLabel from "@/ui/Filters/ChipLabel";
 import Chip from "@mui/material/Chip";
 import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";

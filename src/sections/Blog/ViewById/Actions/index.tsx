@@ -4,32 +4,32 @@ import { BlogPostReq } from "@/types/company";
 import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { FC, MouseEvent, useCallback } from "react";
+import { MouseEvent, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import PublishTo from "./PublishTo";
+import { useRouter } from "next/router";
 
-const useSubmit = (siteId?: number, isAll: boolean = false) => {
+const useSubmit = () => {
+    const router = useRouter();
     const methods = useFormContext<BlogPostReq>();
+    const isDirty = methods.formState.isDirty;
+    const isLoading = methods.formState.isLoading;
     const [submit] = useCreateOrUpdateBlogPostMutation();
-    const handleSubmit = useCallback(
-        (post: BlogPostReq) => {
-            return submit(post);
-        },
-        [siteId, isAll]
-    );
+    const handleSubmit = useCallback(async (d: BlogPostReq) => {
+        const res = await submit(d);
+        if ("error" in res) return;
+        router.push("/blog");
+    }, []);
     const onSubmit = useCallback(
         (e: MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             return methods.handleSubmit(handleSubmit)(e);
         },
-        [handleSubmit]
+        [submit]
     );
-    return { onSubmit, isLoading: methods.formState.isLoading };
+    return { onSubmit, isLoading, isDirty };
 };
-
-interface Props {
-    postId?: number;
-}
 
 const CancelButton = () => {
     const { t } = useTranslation();
@@ -40,27 +40,10 @@ const CancelButton = () => {
     );
 };
 
-const ALL_PUBLICS = true;
-
-const SaveAllButton: FC<Props> = ({ postId }) => {
+const SaveButton = () => {
     const { t } = useTranslation();
-    const { onSubmit, isLoading } = useSubmit(postId, ALL_PUBLICS);
-    return (
-        <LoadingButton
-            loading={isLoading}
-            disabled={isLoading}
-            variant="contained"
-            color="info"
-            onClick={onSubmit}
-        >
-            {t("Save to all")}
-        </LoadingButton>
-    );
-};
-
-const SaveButton: FC<Props> = ({ postId }) => {
-    const { t } = useTranslation();
-    const { onSubmit, isLoading } = useSubmit(postId);
+    const { onSubmit, isLoading, isDirty } = useSubmit();
+    if (!isDirty) return null;
     return (
         <LoadingButton
             loading={isLoading}
@@ -73,11 +56,11 @@ const SaveButton: FC<Props> = ({ postId }) => {
     );
 };
 
-const Actions: FC<Props> = ({ postId }) => (
+const Actions = () => (
     <Stack direction="row" justifyContent="flex-end" spacing={1} mt={1}>
         <CancelButton />
-        <SaveAllButton postId={postId} />
-        <SaveButton postId={postId} />
+        <PublishTo />
+        <SaveButton />
     </Stack>
 );
 

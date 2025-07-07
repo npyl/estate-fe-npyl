@@ -14,7 +14,7 @@ import PreviewImage from "@/components/image/PreviewImage";
 import { useRouter } from "next/router";
 import { MatchResult } from "../types";
 import { useTranslation } from "react-i18next";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import { getPropertyStatusColor } from "@/theme/colors";
 
 interface SearchItemProps {
@@ -122,7 +122,7 @@ export const PropertySearchItem = ({
                 {option?.propertyImage ? (
                     <Image src={option.propertyImage} />
                 ) : (
-                    <PreviewImage padding={0} sx={{ borderRadius: 1 }} />
+                    <PreviewImage style={{ padding: 0, borderRadius: "8px" }} />
                 )}
             </Stack>
             <Stack direction={"column"} width="100%">

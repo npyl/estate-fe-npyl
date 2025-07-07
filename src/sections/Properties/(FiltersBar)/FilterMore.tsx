@@ -1,4 +1,4 @@
-import { FilterMoreDialog } from "@/sections/Filters/FilterMore";
+import { FilterMoreDialog } from "@/ui/Filters/FilterMore";
 import ConstructionYear from "./Filters/ConstructionYear";
 import Floors from "./CompactFilters/Floors";
 import Fields from "./CompactFilters/Fields";

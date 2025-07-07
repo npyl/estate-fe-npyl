@@ -1,4 +1,4 @@
-import { TSortByOptions } from "@/sections/Filters/SortBy";
+import { TSortByOptions } from "@/ui/Filters/SortBy";
 import { TranslationType } from "@/types/translation";
 
 const ASCENDING_PRICE = "Ascending_Price";

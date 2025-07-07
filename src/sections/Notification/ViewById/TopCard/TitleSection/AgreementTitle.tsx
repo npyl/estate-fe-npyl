@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import useGetNotification from "@/sections/Notification/useGetNotification";
 import ShareButton from "./ShareButton";
 

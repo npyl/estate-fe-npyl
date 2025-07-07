@@ -1,4 +1,4 @@
-import generatePriceRange from "@/sections/Filters/priceRangeGenerator";
+import generatePriceRange from "@/ui/Filters/priceRangeGenerator";
 import {
     selectBuyer,
     selectLeaser,

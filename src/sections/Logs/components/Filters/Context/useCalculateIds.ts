@@ -1,8 +1,8 @@
 import { INITIAL_STATE } from "./constants";
-import _useCalculateIds from "@/sections/Filters/useCalculateIds";
+import { useCalculateIds as _useCalculateIds } from "@/ui/Filters/useCalculateIds";
 import { Filters } from "./types";
 
 const useCalculateIds = (filters: Filters) =>
-    _useCalculateIds(INITIAL_STATE, filters);
+    _useCalculateIds<Filters>(INITIAL_STATE, filters);
 
 export default useCalculateIds;

@@ -1,20 +1,25 @@
+import {
+    useChangedFields as _useChangedFields,
+    useCalculateIds,
+} from "@/ui/Filters/useCalculateIds";
 import { BlogFilters } from "@/types/company";
 import {
     createContext,
-    Dispatch,
     FC,
     PropsWithChildren,
-    SetStateAction,
+    useCallback,
     useContext,
     useState,
 } from "react";
 
 type State = {
     filters: BlogFilters;
-    setSearch: Dispatch<SetStateAction<string>>;
-    setSites: Dispatch<SetStateAction<number[]>>;
-    setPublished: Dispatch<SetStateAction<boolean | undefined>>;
-    setUsers: Dispatch<SetStateAction<number[]>>;
+    setSearch: (s: string) => void;
+    setSites: (s: number[]) => void;
+    setPublished: (p: boolean | undefined) => void;
+    setUsers: (u: number[]) => void;
+
+    deleteFilter: (key: keyof BlogFilters) => void;
 };
 
 const FiltersContext = createContext<State | undefined>(undefined);
@@ -29,21 +34,65 @@ export const useFiltersContext = () => {
     return context;
 };
 
+const INITIAL_STATE: BlogFilters = {
+    search: "",
+    sites: [],
+    users: [],
+    published: undefined,
+};
+
 interface ProviderProps extends PropsWithChildren {}
 
 const FiltersProvider: FC<ProviderProps> = ({ children }) => {
-    const [search, setSearch] = useState("");
-    const [sites, setSites] = useState<number[]>([]);
-    const [published, setPublished] = useState<boolean>();
-    const [users, setUsers] = useState<number[]>([]);
-    const filters = { search, sites, published, users };
+    const [filters, setFilters] = useState<BlogFilters>(INITIAL_STATE);
+    const setSearch = useCallback(
+        (search: string) => setFilters((old) => ({ ...old, search })),
+        []
+    );
+    const setSites = useCallback(
+        (sites: number[]) => setFilters((old) => ({ ...old, sites })),
+        []
+    );
+    const setPublished = useCallback(
+        (published?: boolean) => setFilters((old) => ({ ...old, published })),
+        []
+    );
+    const setUsers = useCallback(
+        (users: number[]) => setFilters((old) => ({ ...old, users })),
+        []
+    );
+    const deleteFilter = useCallback(
+        (key: keyof BlogFilters) =>
+            setFilters((old) => ({ ...old, [key]: INITIAL_STATE[key] })),
+        []
+    );
+
     return (
         <FiltersContext.Provider
-            value={{ filters, setSearch, setSites, setPublished, setUsers }}
+            value={{
+                filters,
+                setSearch,
+                setSites,
+                setPublished,
+                setUsers,
+                deleteFilter,
+            }}
         >
             {children}
         </FiltersContext.Provider>
     );
 };
 
+const useIds = () => {
+    const { filters } = useFiltersContext();
+    const ids = useCalculateIds<BlogFilters>(INITIAL_STATE as any, filters);
+    return ids;
+};
+
+const useChangedFields = () => {
+    const { filters } = useFiltersContext();
+    return _useChangedFields<BlogFilters>(filters, INITIAL_STATE);
+};
+
+export { useChangedFields, useIds };
 export default FiltersProvider;

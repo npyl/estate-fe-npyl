@@ -7,12 +7,12 @@ import {
     EditZipCode,
 } from "./Edit";
 import BulkEditDrawer from "@/sections/DataGrids/BulkEditDrawer";
-import { BulkEditRequest } from "@/services/properties";
 import EditLabels from "./EditLabels";
 import Active from "./Active";
 import Exclusive from "./Exclusive";
 import { DefaultValues } from "react-hook-form";
 import Integrations from "./Integrations";
+import { BulkEditRequest } from "@/types/properties";
 
 interface BulkEditProps<State extends object> {
     DEFAULT_VALUES: DefaultValues<State>;

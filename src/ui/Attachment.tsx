@@ -46,16 +46,6 @@ const DeleteButton: FC<DeleteButtonProps> = ({ attachmentId, onDelete }) => {
 
 // --------------------------------------------------------------
 
-const StyledImage = styled(Image)(({ theme }) => ({
-    "& img": {
-        objectFit: "contain",
-        backgroundColor:
-            theme.palette.mode === "light"
-                ? theme.palette.neutral?.[250]
-                : theme.palette.neutral?.[800],
-    },
-}));
-
 const BoxSx: SxProps<Theme> = {
     border: "2px solid transparent",
     borderRadius: "10px",
@@ -65,6 +55,18 @@ const BoxSx: SxProps<Theme> = {
         borderColor: "info.main",
     },
 };
+
+const StyledImage = styled(Image)(({ theme }) => ({
+    "& img": {
+        objectFit: "contain",
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? theme.palette.neutral?.[250]
+                : theme.palette.neutral?.[800],
+    },
+
+    ...BoxSx,
+}));
 
 interface ViewProps {
     url: string;
@@ -120,13 +122,12 @@ const View: FC<ViewProps> = ({ url, filename, mimeType }) => {
     return (
         <>
             <StyledImage
-                containerSx={{
-                    width: "180px",
-                    height: "150px",
-                    ...BoxSx,
-                }}
                 src={url}
                 alt=""
+                style={{
+                    width: "180px",
+                    height: "150px",
+                }}
                 onClick={openLightbox}
             />
 

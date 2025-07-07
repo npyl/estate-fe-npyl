@@ -4,7 +4,7 @@ import {
 } from "@/sections/Properties/FiltersContext";
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
-import ChipLabel from "@/sections/Filters/ChipLabel";
+import ChipLabel from "@/ui/Filters/ChipLabel";
 
 const IntegrationsChip = () => {
     const { t } = useTranslation();

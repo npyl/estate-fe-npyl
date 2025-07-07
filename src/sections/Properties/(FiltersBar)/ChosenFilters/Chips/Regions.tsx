@@ -3,7 +3,7 @@ import { IGeoLocation } from "@/types/geolocation";
 import Chip from "@mui/material/Chip";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import ChipLabel from "@/sections/Filters/ChipLabel";
+import ChipLabel from "@/ui/Filters/ChipLabel";
 import {
     useFiltersContext,
     useRegions,

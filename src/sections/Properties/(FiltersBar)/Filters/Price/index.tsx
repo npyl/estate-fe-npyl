@@ -1,4 +1,4 @@
-import RangeSelect from "@/sections/Filters/Range";
+import RangeSelect from "@/ui/Filters/Range";
 import usePriceRangeGenerator from "./usePriceRangeGenerator";
 import {
     useFiltersContext,

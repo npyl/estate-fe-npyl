@@ -8,13 +8,16 @@ import dynamic from "next/dynamic";
 
 interface ContentProps {
     postId?: number;
+    image?: string;
 }
 
-const Content: FC<ContentProps> = ({ postId }) => {
+const Content: FC<ContentProps> = ({ postId, image }) => {
     const { t } = useTranslation();
     return (
         <Stack spacing={1}>
-            {Boolean(postId) ? <ImagePicker postId={postId!} /> : null}
+            {Boolean(postId) ? (
+                <ImagePicker postId={postId!} image={image} />
+            ) : null}
             <RHFTextField label={t("Title")} name="title" />
             <RHFEditor name="content" height="500px" />
         </Stack>

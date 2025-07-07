@@ -5,7 +5,7 @@ import ExpireIcon from "@mui/icons-material/AccessTime";
 import ExpiredIcon from "@mui/icons-material/Error";
 // Adjust the path as necessary
 import Link from "@/components/Link";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import useGetNotification from "@/sections/Notification/useGetNotification";
 
 const AgreementDetails = () => {

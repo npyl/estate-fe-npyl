@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { useSuggestForPropertyQuery } from "src/services/properties";
 import DataGrid from "@/components/DataGrid/Customer";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import CustomerCard from "@/components/Cards/CustomerCard";
+import CustomerCard from "@/ui/Cards/CustomerCard";
 import useResponsive from "@/hooks/useResponsive";
 import Grid from "@mui/material/Unstable_Grid2";
 import Pagination, { usePagination } from "@/components/Pagination";

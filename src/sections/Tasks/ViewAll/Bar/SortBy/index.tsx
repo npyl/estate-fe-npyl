@@ -1,4 +1,4 @@
-import FilterSortBy from "@/sections/Filters/SortBy";
+import FilterSortBy from "@/ui/Filters/SortBy";
 import useSortingOptions from "./useSortingOptions";
 import useCurrentValue from "./useCurrentValue";
 import { useCallback } from "react";

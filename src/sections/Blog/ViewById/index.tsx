@@ -14,8 +14,8 @@ const BlogViewByPublicId: FC<Props> = ({ postId }) => {
     });
     return (
         <Form data={data}>
-            <Content postId={postId} />
-            <Actions postId={postId} />
+            <Content postId={postId} image={data?.url} />
+            <Actions />
         </Form>
     );
 };

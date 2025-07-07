@@ -23,14 +23,31 @@ const isDifferent = (value: any, initialValue: any): boolean => {
     return value !== initialValue;
 };
 
-const useCalculateIds = <T extends object>(
-    INITIAL_STATE: Required<T>,
-    filters: T
-) =>
+const getChangedFields = <T extends object>(filters: T, initialState: T) =>
+    Object.entries(filters).reduce((acc: Partial<T>, entry) => {
+        const [_key, value] = entry;
+        const key = _key as keyof T;
+
+        // Only include this field in the result if it's different from initial state
+        if (isDifferent(value, initialState[key])) {
+            acc[key] = value;
+        }
+
+        return acc;
+    }, {});
+
+// -------------------------------------------------------------------------------------
+
+const useChangedFields = <T extends object>(filters: T, INITIAL_STATE: T) =>
+    useMemo(() => getChangedFields(filters, INITIAL_STATE), [filters]);
+
+const useCalculateIds = <T extends object>(INITIAL_STATE: T, filters: T) =>
     useMemo(() => {
         const changed: Partial<T> = {};
 
-        (Object.keys(filters) as (keyof T)[]).forEach((key) => {
+        const keys = Object.keys(filters) as (keyof T)[];
+
+        keys.forEach((key) => {
             if (isDifferent(filters[key], INITIAL_STATE[key])) {
                 changed[key] = filters[key] as any;
             }
@@ -39,4 +56,4 @@ const useCalculateIds = <T extends object>(
         return Object.keys(changed) as (keyof T)[];
     }, [filters]);
 
-export default useCalculateIds;
+export { useCalculateIds, useChangedFields };

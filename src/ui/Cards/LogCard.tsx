@@ -15,7 +15,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { ILog, TLogAction } from "@/types/logs"; // import your log type
 import Avatar from "@/components/Avatar";
-import { SpaceBetween } from "../styled";
+import { SpaceBetween } from "../../components/styled";
 
 interface LogCardProps {
     log: ILog;
@@ -96,7 +96,8 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                     <Stack>
                         <Typography variant="subtitle1">
                             <strong>
-                                {log?.user?.firstName} {log?.user?.lastName}{" "}
+                                {log?.user?.firstName}{" "}
+                                {log?.user?.lastName}{" "}
                             </strong>
                             {log?.message}
 

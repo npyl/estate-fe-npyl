@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled"; // Adjust the path as necessary
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled"; // Adjust the path as necessary
 
 interface TourPropertyBadgesProps {
     stateValue: string;

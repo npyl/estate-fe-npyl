@@ -9,7 +9,7 @@ import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 import { getPropertyStatusColor } from "@/theme/colors";
 import getParentCategoriesIcons from "@/assets/icons/parent-categories";
-import { NormalBadge } from "@/components/Cards/PropertyCard/styled";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 
 function RenderImage(
     params: GridCellParams<IPropertyResultResponse | IProperties>
@@ -30,8 +30,8 @@ function RenderImage(
             <Image
                 src={src}
                 alt=""
-                ratio="16/9"
-                sx={{
+                aspectRatio="16/9"
+                style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
