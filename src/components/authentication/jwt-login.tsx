@@ -50,7 +50,8 @@ export const JWTLogin: FC = (props) => {
 
             const returnUrl =
                 (router.query.returnUrl as string | undefined) || "/";
-            router.push(returnUrl).catch(console.error);
+
+            router.push(returnUrl);
         } catch (err) {
             console.error(err);
         }
