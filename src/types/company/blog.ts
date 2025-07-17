@@ -1,5 +1,8 @@
+import { KeyValue } from "../KeyValue";
 import { IUser, IUserMini } from "../user";
 import { IPublicSitesRes } from "./company";
+
+type TCategory = string;
 
 interface BlogPostShort {
     id: number;
@@ -17,11 +20,13 @@ interface BlogPostReq {
     title: string;
     content: string;
     publicSites: number[];
+    category: TCategory;
 }
 
 interface BlogPostRes extends BlogPostShort {
     content: string;
     user: IUser;
+    category: KeyValue<TCategory>;
 }
 
 interface BlogFilters {
@@ -31,4 +36,4 @@ interface BlogFilters {
     users: number[];
 }
 
-export type { BlogPostShort, BlogPostReq, BlogPostRes, BlogFilters };
+export type { TCategory, BlogPostShort, BlogPostReq, BlogPostRes, BlogFilters };

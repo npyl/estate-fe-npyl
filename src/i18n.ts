@@ -4,6 +4,16 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Purchase in Greece": "Purchase in Greece",
+            "Purchase in Patras": "Purchase in Patras",
+            "Purchase Abroad": "Purchase Abroad",
+            News: "News",
+            "Guides and Advice": "Guides & Advice",
+            "Dream Homes": "Dream Homes",
+            "Student News": "Student News",
+            "Legal and Technical": "Legal & Technical",
+            "Tourism in Athens": "Tourism in Athens",
+
             User: "User",
             "Save to all": "Save to all",
             New_Neutral: "New_Neutral",
@@ -1386,6 +1396,16 @@ const resources = {
     },
     el: {
         translation: {
+            "Purchase in Greece": "Αγορά στην Ελλάδα",
+            "Purchase in Patras": "Αγορά στην Πάτρα",
+            "Purchase Abroad": "Αγορά στο Εξωτερικό",
+            News: "Νέα",
+            "Guides and Advice": "Οδηγοί & Συμβουλές",
+            "Dream Homes": "Ονειρικά Σπίτια",
+            "Student News": "Φοιτητικά Νέα",
+            "Legal and Technical": "Νομικά & Τεχνικά",
+            "Tourism in Athens": "Τουρισμός στην Αθήνα",
+
             User: "Χρήστης",
             "Save to all": "Αποθήκευση σε όλα",
             New_Neutral: "Νέο",
