@@ -28,6 +28,6 @@
             "public/*": ["./public/*"]
         }
     },
-    "include": ["src", ".next/types/**/*.ts"],
+    "include": ["src"],
     "exclude": ["node_modules"]
 }
