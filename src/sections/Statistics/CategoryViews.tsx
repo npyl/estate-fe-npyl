@@ -10,7 +10,7 @@ import {
     Rectangle,
     TooltipProps,
 } from "recharts";
-import { Stack, Box } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { TTimeFrame } from "@/types/publicDashboard";
@@ -23,9 +23,9 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
-import DateRangePicker from "../../pages/statistics/DateRangePicker";
 import { format } from "date-fns";
 import useResponsive from "@/hooks/useResponsive";
+import DateRangePicker from "./DateRangePicker";
 
 const formatYAxis = (tickItem: number) => {
     return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
@@ -269,13 +269,6 @@ export default function ViewsOfPropertiesChart() {
                         }
                         tickMargin={7}
                         ticks={xAxisTicks}
-                        // interval={
-                        //     timeframe === "WEEK"
-                        //         ? 0
-                        //         : timeframe === "MONTH"
-                        //         ? 2
-                        //         : 8
-                        // }
                     />
                     <YAxis width={20} tickFormatter={formatYAxis} />
                     <Tooltip content={renderTooltipContent} />
