@@ -23,7 +23,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from "../../pages/statistics/DateRangePicker";
 import { format } from "date-fns";
 import useResponsive from "@/hooks/useResponsive";
 
