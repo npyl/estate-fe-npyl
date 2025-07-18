@@ -1,21 +1,25 @@
 import { SxProps, Theme, Typography } from "@mui/material";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { SpaceBetween } from "@/components/styled";
 import GMailIcon from "@/assets/logo/Gmail";
 import { useAuth } from "@/hooks/use-auth";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-import IsAuthenticatedIndicator, {
-    AVATAR_CLASSNAME,
-} from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
+import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
+import { AVATAR_CLASSNAME } from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";
 import { useIsAuthenticatedQuery } from "@/services/google-oauth";
 const CurrentMessageBox = dynamic(() => import("./CurrentMessageBox"));
 
-const IndicatorSx: SxProps<Theme> = {
-    [`&.${AVATAR_CLASSNAME}`]: {
-        display: "none",
-    },
-};
+// INFO: ssr problem so lets wrap into a memo
+const useIndicatorSx = () =>
+    useMemo<SxProps<Theme>>(
+        () => ({
+            [`&.${AVATAR_CLASSNAME}`]: {
+                display: "none",
+            },
+        }),
+        []
+    );
 
 /**
  * Get Gmail-acceptable url
@@ -45,6 +49,8 @@ const GmailButton: FC<Props> = ({ shareUrl }) => {
         if (disabled) return;
         openMessageBox();
     }, [openMessageBox, disabled]);
+
+    const IndicatorSx = useIndicatorSx();
 
     return (
         <>
