@@ -38,7 +38,7 @@ const getPublicUrl = () => {
     const points = encodeURIComponent(SHAPE);
     const filters = getFilters();
 
-    // const baseUrl = "http://127.0.0.1:3001/en/properties";
+    // const baseUrl = "http://localhost:3001/en/properties";
     const baseUrl = "https://kopanitsanos.gr/en/properties";
 
     return `${baseUrl}?${filters}&points=${points}`;
@@ -96,7 +96,10 @@ test("Filters", async ({ page }) => {
     await page.goto(publicUrl);
 
     // Open Modal
-    await page.getByTestId(STAY_UPDATED_TEST_ID).click();
+    await page.getByTestId(STAY_UPDATED_TEST_ID).locator("svg").click();
+
+    // Wait for it to actually open
+    await page.getByTestId(MODAL_TEST_ID).waitFor({ state: "visible" });
 
     // Fill in form
     await fillAndExpect(page, FIRSTNAME_TEST_ID, VALUES.firstName);
@@ -109,7 +112,7 @@ test("Filters", async ({ page }) => {
 
     // Wait for modal to be close which means success
     await expect(page.getByTestId(MODAL_TEST_ID)).toBeHidden({
-        timeout: 10000,
+        timeout: 10 * 1000,
     });
 
     //

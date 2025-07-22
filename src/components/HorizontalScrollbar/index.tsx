@@ -66,7 +66,7 @@ const HorizontalScrollbar = forwardRef<
         ref={ref}
         direction="row"
         alignItems="center"
-        overflow="hidden hidden"
+        overflow="auto hidden"
         gap={0.5}
         {...containerProps}
     >

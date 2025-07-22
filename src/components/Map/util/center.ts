@@ -1,5 +1,6 @@
 import { TShape } from "@/types/shape";
 import { getShapeType, normaliseShape } from "./draw";
+import { patrasLatLng } from "../constants";
 
 function getPolygonCentroid(shape: TShape): google.maps.LatLngLiteral {
     let area = 0;
@@ -58,27 +59,56 @@ function getPolygonCentroid(shape: TShape): google.maps.LatLngLiteral {
     };
 }
 
-function getRectangleCenter(
-    nelat: number,
-    nelng: number,
-    swlat: number,
-    swlng: number
-): google.maps.LatLngLiteral {
+function getRectangleCenter(shape: TShape): google.maps.LatLngLiteral {
+    // Find the bounding box of all points
+    let minLat = Infinity,
+        minLng = Infinity;
+    let maxLat = -Infinity,
+        maxLng = -Infinity;
+
+    for (const point of shape) {
+        const lat = point.x;
+        const lng = point.y;
+
+        if (lng === null) continue; // Skip invalid points
+
+        minLat = Math.min(minLat, lat);
+        minLng = Math.min(minLng, lng);
+        maxLat = Math.max(maxLat, lat);
+        maxLng = Math.max(maxLng, lng);
+    }
+
     return {
-        lat: (nelat + swlat) / 2,
-        lng: (nelng + swlng) / 2,
+        lat: (maxLat + minLat) / 2,
+        lng: (maxLng + minLng) / 2,
     };
 }
 
-const getShapeCenter = (shape: TShape) => {
-    const s = normaliseShape(shape);
+const getShapeCenter = (shape: TShape): google.maps.LatLngLiteral => {
+    if (!shape || shape.length === 0) return patrasLatLng;
 
+    const s = normaliseShape(shape);
     const type = getShapeType(s);
 
-    if (type === "Circle") return { lat: s[0].x, lng: s[0].y! };
-    if (type === "Rectangle")
-        return getRectangleCenter(s[0].x, s[0].y!, s[1].x, s[1].y!);
-    if (type === "Polygon") return getPolygonCentroid(s);
+    if (type === "Circle") {
+        // For circles: s[0] is center point [lat, lng], s[1] is [radius, null]
+        const centerLat = s[0].x;
+        const centerLng = s[0].y;
+
+        if (centerLat === null || centerLng === null) return patrasLatLng;
+
+        return { lat: centerLat, lng: centerLng };
+    }
+
+    if (type === "Rectangle") {
+        return getRectangleCenter(s);
+    }
+
+    if (type === "Polygon") {
+        return getPolygonCentroid(s);
+    }
+
+    return patrasLatLng;
 };
 
 export { getShapeCenter };
