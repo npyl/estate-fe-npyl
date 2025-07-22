@@ -8,7 +8,7 @@ import drawPolygon from "./_polygon";
 
 type TShapeType = "Circle" | "Rectangle" | "Polygon";
 
-const isNullPoint = (p: TPoint) => !p.x || !p.x;
+const isNullPoint = (p: TPoint) => Boolean(p.x) && !Boolean(p.y);
 
 const isNonNullShape = (s: TShape) => {
     if (s.some(isNullPoint)) return false;
