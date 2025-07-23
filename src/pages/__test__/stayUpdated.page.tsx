@@ -120,6 +120,7 @@ const getFrontendFriendlyShape = (shapeList?: any[]) => {
     if (!shapeList) return "";
     if (!Array.isArray(shapeList)) return "";
     if (shapeList.length === 0) return "";
+    if (Array.isArray(shapeList[0]) && shapeList[0].length === 0) return "";
 
     // Create a deep copy of the shape
     const shapeCopy = JSON.parse(JSON.stringify(shapeList[0]));
