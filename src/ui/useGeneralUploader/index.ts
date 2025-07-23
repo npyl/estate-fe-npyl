@@ -48,12 +48,17 @@ const useGeneralUploader = (
         []
     );
 
+    const onReconnect = useCallback(() => {
+        removePendingKeys();
+        HANDLERS.onReconnect?.();
+    }, [removePendingKeys, HANDLERS.onReconnect]);
+
     const [
         uploadWithProgress,
         // ...
         isConnected,
         _resetInterval,
-    ] = useUploadWithProgress(removePendingKeys);
+    ] = useUploadWithProgress(onReconnect);
 
     const resetInterval = useCallback(
         (i?: number) => {
