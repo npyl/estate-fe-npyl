@@ -76,17 +76,13 @@ test("labels", async ({ page }) => {
 test("sorting", async ({ page }) => {
     await page.getByTestId("sort-by-created-asc").click();
     let state = await getState(page);
-    expect(state.sorting).toEqual({
-        sortBy: "createdAt",
-        direction: "ASC",
-    });
+    expect(state.sortBy).toEqual("createdAt");
+    expect(state.direction).toEqual("ASC");
 
     await page.getByTestId("sort-by-priority-desc").click();
     state = await getState(page);
-    expect(state.sorting).toEqual({
-        sortBy: "priority",
-        direction: "DESC",
-    });
+    expect(state.sortBy).toEqual("priority");
+    expect(state.direction).toEqual("DESC");
 });
 
 test("complex", async ({ page }) => {
@@ -112,10 +108,8 @@ test("complex", async ({ page }) => {
     expect(state.labels).toEqual(expect.arrayContaining([1, 3]));
     expect(state.assigneeId).toBe(123);
     expect(state.priority).toBe(2);
-    expect(state.sorting).toEqual({
-        sortBy: "priority",
-        direction: "DESC",
-    });
+    expect(state.sortBy).toEqual("priority");
+    expect(state.direction).toEqual("DESC");
 
     // Remove label 1
     await page.getByTestId("remove-label-1").click();
@@ -132,10 +126,8 @@ test("complex", async ({ page }) => {
     expect(state.labels).toEqual([3]);
     expect(state.assigneeId).toBe(123);
     expect(state.priority).toBeUndefined();
-    expect(state.sorting).toEqual({
-        sortBy: "createdAt",
-        direction: "ASC",
-    });
+    expect(state.sortBy).toEqual("createdAt");
+    expect(state.direction).toEqual("ASC");
 });
 
 test("reset", async ({ page }) => {
