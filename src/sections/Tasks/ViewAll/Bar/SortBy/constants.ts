@@ -6,7 +6,7 @@ const getOptions = (t: TranslationType): TSortByOptions => [
         value: "default",
         label: t("Last update"),
         sorting: {
-            sortBy: "updatedAt",
+            sortBy: "modifiedAt",
             direction: "DESC",
         },
         icon: "mdi:clock-outline",

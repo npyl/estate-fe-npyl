@@ -4,19 +4,24 @@ import { TSorting } from "@/ui/Filters/SortBy/types";
 import { TFilters } from "./types";
 import { initialState } from "./constants";
 import useFilterState from "./useFilterState";
+import { useDebouncedCallback } from "use-debounce";
 
 type TSetters = {
     setSearch: (s: string) => void;
     setAssigneeId: (id?: number) => void;
     setLabels: (ids: number[]) => void;
     setPriority: (p?: number) => void;
-    setSorting: (s?: TSorting) => void;
+    setSorting: (s: TSorting) => void;
 };
 
-type FiltersState = { filters: TFilters } & TSetters;
+type FiltersState = {
+    filters: TFilters;
+    sorting: Partial<TSorting>;
+} & TSetters;
 
 const FiltersContext = createContext<FiltersState>({
     filters: initialState,
+    sorting: {},
 
     setSearch: () => {},
     setAssigneeId: () => {},
@@ -35,14 +40,17 @@ export const useFiltersContext = () => {
     return context;
 };
 
+const SEARCH_DEBOUNCE = 300;
+
 export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
     const [filters, setState] = useFilterState();
+    const sorting = { sortBy: filters.sortBy, direction: filters.direction };
 
-    const setSearch = useCallback(
+    const setSearch = useDebouncedCallback(
         (search: string) => setState((old) => ({ ...old, search })),
-        []
+        SEARCH_DEBOUNCE
     );
     const setAssigneeId = useCallback(
         (assigneeId?: number) => setState((old) => ({ ...old, assigneeId })),
@@ -57,7 +65,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
         []
     );
     const setSorting = useCallback(
-        (sorting?: TSorting) => setState((old) => ({ ...old, sorting })),
+        (s: TSorting) => setState((old) => ({ ...old, ...s })),
         []
     );
 
@@ -74,6 +82,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
         <FiltersContext.Provider
             value={{
                 filters,
+                sorting,
                 // ...
                 setSearch,
                 setAssigneeId,
