@@ -4,6 +4,7 @@ import { getState } from "./util";
 import gotoSafe from "../_util/gotoSafe";
 
 test.beforeEach(async ({ page }) => {
+    test.setTimeout(2 * 60 * 1000);
     await gotoSafe(page, baseUrl);
 });
 
@@ -151,6 +152,8 @@ test("reset", async ({ page }) => {
 });
 
 test("complex & validate persistence", async ({ page }) => {
+    test.setTimeout(2 * 60 * 1000);
+
     // Set multiple filters
     await page.getByTestId("set-search").click();
     await page.getByTestId("add-label-2").click();

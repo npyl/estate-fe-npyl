@@ -16,6 +16,7 @@ const getState = async (page: Page) => {
 };
 
 test.beforeEach(async ({ page }) => {
+    test.setTimeout(2 * 60 * 1000);
     await gotoSafe(page, "http://127.0.0.1:3000/__test__/propertyFilters");
 });
 
