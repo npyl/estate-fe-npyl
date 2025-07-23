@@ -10,13 +10,13 @@ const BlogPostResToReq = (d?: BlogPostRes): BlogPostReq => ({
     title: d?.title || "",
     content: d?.content || "",
     publicSites: d?.sites?.map(({ id }) => id) ?? [],
-    category: d?.category?.key || "",
+    categories: d?.categories?.map(({ key }) => key) || [],
 });
 
 const schema = z
     .object({
         content: z.string().nonempty(),
-        category: z.string().nonempty(),
+        categories: z.array(z.string()),
     })
     .passthrough();
 
