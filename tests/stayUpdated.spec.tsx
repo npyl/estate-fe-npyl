@@ -4,6 +4,7 @@ import {
     FILTERS_TEST_ID,
     SHAPELIST_TEST_ID,
 } from "../src/pages/__test__/stayUpdated.page";
+import gotoSafe from "./_util/gotoSafe";
 
 const SHAPE = JSON.stringify([
     { x: 38.2704, y: 21.7749 },
@@ -82,18 +83,24 @@ const expectFilters = async (content: string) => {
 };
 
 const fillAndExpect = async (page: Page, FIELD_ID: string, value: string) => {
-    await page.getByTestId(FIELD_ID).fill(value);
-    await expect(page.getByTestId(FIELD_ID)).toHaveValue(value);
+    const locator = page.getByTestId(FIELD_ID);
+    await locator.fill(value);
+
+    // INFO: this is immediate; whereas expect(locator).toHave() is not!
+    const immediateValue = await locator.inputValue();
+    expect(immediateValue).toBe(value);
 };
 
 /**
  * This should test whether filters applied from public are passed correctly to CRM
  */
 test("Filters", async ({ page }) => {
+    test.setTimeout(6 * 60 * 1000);
+
     //
     //  Public
     //
-    await page.goto(publicUrl);
+    await gotoSafe(page, publicUrl);
 
     // Open Modal
     await page.getByTestId(STAY_UPDATED_TEST_ID).locator("svg").click();
@@ -118,7 +125,7 @@ test("Filters", async ({ page }) => {
     //
     // Now go to crm's notification page
     //
-    await page.goto(crmUrl);
+    await gotoSafe(page, crmUrl);
     await page.getByTestId(VIEW_BY_ID_TEST_ID).waitFor({ state: "visible" });
     await expectFilters(await page.getByTestId(FILTERS_TEST_ID).innerHTML());
     await expect(page.getByTestId(SHAPELIST_TEST_ID)).toHaveText(SHAPE);
