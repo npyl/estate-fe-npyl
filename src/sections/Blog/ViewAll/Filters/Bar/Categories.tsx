@@ -50,7 +50,7 @@ const Categories = () => {
     );
 
     return (
-        <FormControl sx={{ minWidth: "160px" }}>
+        <FormControl sx={{ width: "160px" }}>
             <StyledInputLabel>{t("Categories")}</StyledInputLabel>
             <Select<number[]>
                 multiple
