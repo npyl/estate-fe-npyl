@@ -2,6 +2,7 @@ import { test as setup } from "@playwright/test";
 import path from "path";
 import fs from "fs";
 import { UserResponse } from "../src/types/auth";
+import gotoSafe from "./_util/gotoSafe";
 
 const privFile = path.join(__dirname, "../playwright/.auth/priv.json");
 const authFile = path.join(__dirname, "../playwright/.auth/user.json");
@@ -94,7 +95,7 @@ setup("authenticate", async ({ page }) => {
     if (!token) throw "Did not receive a token!";
 
     // Navigate to your app and wait for it to load
-    await page.goto(localhost, { waitUntil: "domcontentloaded" });
+    await gotoSafe(page, localhost);
 
     // Wait a bit for the page to be ready
     await page.waitForTimeout(1000);
