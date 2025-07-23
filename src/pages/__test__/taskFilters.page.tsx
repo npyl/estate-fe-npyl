@@ -21,7 +21,7 @@ const TestComponent: NextPage = () => {
         setSorting,
     } = useFiltersContext();
 
-    const { search, assigneeId, labels, priority, sorting } = filters || {};
+    const { labels } = filters || {};
 
     const handleAddLabel = (labelId: number) => {
         const updatedLabels = [...(labels || []), labelId];
@@ -179,19 +179,7 @@ const TestComponent: NextPage = () => {
             <section className="state">
                 <h2>Current State</h2>
                 <div data-testid="current-state" className="state-display">
-                    <pre>
-                        {JSON.stringify(
-                            {
-                                search,
-                                assigneeId,
-                                labels,
-                                priority,
-                                sorting,
-                            },
-                            null,
-                            2
-                        )}
-                    </pre>
+                    <pre>{JSON.stringify(filters, null, 2)}</pre>
                 </div>
             </section>
         </div>

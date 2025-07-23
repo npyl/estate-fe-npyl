@@ -4,14 +4,13 @@ import { TSorting } from "@/ui/Filters/SortBy/types";
 import { TFilters } from "./types";
 import { initialState } from "./constants";
 import useFilterState from "./useFilterState";
-import { useDebouncedCallback } from "use-debounce";
 
 type TSetters = {
     setSearch: (s: string) => void;
     setAssigneeId: (id?: number) => void;
     setLabels: (ids: number[]) => void;
     setPriority: (p?: number) => void;
-    setSorting: (s: TSorting) => void;
+    setSorting: (s?: TSorting) => void;
 };
 
 type FiltersState = {
@@ -40,17 +39,15 @@ export const useFiltersContext = () => {
     return context;
 };
 
-const SEARCH_DEBOUNCE = 300;
-
 export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
     const [filters, setState] = useFilterState();
     const sorting = { sortBy: filters.sortBy, direction: filters.direction };
 
-    const setSearch = useDebouncedCallback(
+    const setSearch = useCallback(
         (search: string) => setState((old) => ({ ...old, search })),
-        SEARCH_DEBOUNCE
+        []
     );
     const setAssigneeId = useCallback(
         (assigneeId?: number) => setState((old) => ({ ...old, assigneeId })),
@@ -65,7 +62,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
         []
     );
     const setSorting = useCallback(
-        (s: TSorting) => setState((old) => ({ ...old, ...s })),
+        (s?: TSorting) => setState((old) => ({ ...old, ...(s || {}) })),
         []
     );
 
