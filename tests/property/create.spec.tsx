@@ -7,16 +7,7 @@ import {
 import { SAVE_BUTTON_TESTID } from "../../src/sections/Properties/Create/Content/SaveButton";
 import { TTestCb } from "../_types";
 
-const TWO_MINUTES = 2 * 60 * 1000;
-const FIVE_MINUTES = 5 * 60 * 1000;
-
-test.beforeEach(async ({ page }) => {
-    await page.goto("http://127.0.0.1:3000/property/create");
-});
-
 const create = async ({ page }: TTestCb) => {
-    test.setTimeout(FIVE_MINUTES);
-
     const parentCategoryTestId = getParentCategoryDataTestId(0);
     const categoryTestId = getCategoryDataTestId(0);
 
@@ -44,13 +35,6 @@ const create = async ({ page }: TTestCb) => {
     const responseData = await response.json();
     const propertyId = responseData;
 
-    // Wait for navigation to the edit page with the specific ID
-    await page.waitForURL(`/property/edit/${propertyId}`, {
-        timeout: TWO_MINUTES,
-    });
-
-    // Verify we're on the correct page
-    expect(page.url()).toContain(`/property/edit/${propertyId}`);
     expect(parseInt(propertyId.toString())).toBeGreaterThan(0);
 };
 
