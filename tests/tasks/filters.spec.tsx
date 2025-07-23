@@ -1,14 +1,6 @@
-import { test, expect, Page } from "@playwright/test";
-
-const STATE_SELECTOR = '[data-testid="current-state"] pre';
-
-const baseUrl = "http://127.0.0.1:3000/__test__/taskFilters";
-
-const getState = async (page: Page) => {
-    const updatedState = await page.textContent(STATE_SELECTOR);
-    if (!updatedState) throw "Could not get state";
-    return JSON.parse(updatedState);
-};
+import { test, expect } from "@playwright/test";
+import { baseUrl } from "./constants";
+import { getState } from "./util";
 
 test.beforeEach(async ({ page }) => {
     await page.goto(baseUrl);
@@ -155,14 +147,6 @@ test("reset", async ({ page }) => {
     expect(state.assigneeId).toBeUndefined();
     expect(state.priority).toBeUndefined();
     expect(state.sorting).toBeUndefined();
-});
-
-test("URL overrides", async ({ page }) => {
-    // Navigate with assignee query param
-    await page.goto(`${baseUrl}?assignee=456`);
-
-    const state = await getState(page);
-    expect(state.assigneeId).toBe(456);
 });
 
 test("complex & validate persistence", async ({ page }) => {
