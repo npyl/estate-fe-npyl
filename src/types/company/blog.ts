@@ -20,13 +20,13 @@ interface BlogPostReq {
     title: string;
     content: string;
     publicSites: number[];
-    category: TCategory;
+    categories: TCategory[];
 }
 
 interface BlogPostRes extends BlogPostShort {
     content: string;
     user: IUser;
-    category: KeyValue<TCategory>;
+    categories: KeyValue<TCategory>[];
 }
 
 interface BlogFilters {
