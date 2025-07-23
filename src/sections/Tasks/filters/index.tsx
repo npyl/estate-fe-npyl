@@ -13,10 +13,14 @@ type TSetters = {
     setSorting: (s?: TSorting) => void;
 };
 
-type FiltersState = { filters: TFilters } & TSetters;
+type FiltersState = {
+    filters: TFilters;
+    sorting: Partial<TSorting>;
+} & TSetters;
 
 const FiltersContext = createContext<FiltersState>({
     filters: initialState,
+    sorting: {},
 
     setSearch: () => {},
     setAssigneeId: () => {},
@@ -39,6 +43,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
     const [filters, setState] = useFilterState();
+    const sorting = { sortBy: filters.sortBy, direction: filters.direction };
 
     const setSearch = useCallback(
         (search: string) => setState((old) => ({ ...old, search })),
@@ -57,7 +62,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
         []
     );
     const setSorting = useCallback(
-        (sorting?: TSorting) => setState((old) => ({ ...old, sorting })),
+        (s?: TSorting) => setState((old) => ({ ...old, ...(s || {}) })),
         []
     );
 
@@ -74,6 +79,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
         <FiltersContext.Provider
             value={{
                 filters,
+                sorting,
                 // ...
                 setSearch,
                 setAssigneeId,
