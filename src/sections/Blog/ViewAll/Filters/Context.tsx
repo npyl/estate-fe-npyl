@@ -18,6 +18,7 @@ type State = {
     setSites: (s: number[]) => void;
     setPublished: (p: boolean | undefined) => void;
     setUsers: (u: number[]) => void;
+    setCategories: (c: number[]) => void;
 
     deleteFilter: (key: keyof BlogFilters) => void;
 };
@@ -38,6 +39,7 @@ const INITIAL_STATE: BlogFilters = {
     search: "",
     sites: [],
     users: [],
+    categories: [],
     published: undefined,
 };
 
@@ -61,6 +63,10 @@ const FiltersProvider: FC<ProviderProps> = ({ children }) => {
         (users: number[]) => setFilters((old) => ({ ...old, users })),
         []
     );
+    const setCategories = useCallback(
+        (categories: number[]) => setFilters((old) => ({ ...old, categories })),
+        []
+    );
     const deleteFilter = useCallback(
         (key: keyof BlogFilters) =>
             setFilters((old) => ({ ...old, [key]: INITIAL_STATE[key] })),
@@ -75,6 +81,7 @@ const FiltersProvider: FC<ProviderProps> = ({ children }) => {
                 setSites,
                 setPublished,
                 setUsers,
+                setCategories,
                 deleteFilter,
             }}
         >

@@ -34,6 +34,7 @@ interface BlogFilters {
     sites: number[];
     published?: boolean;
     users: number[];
+    categories: number[];
 }
 
 export type { TCategory, BlogPostShort, BlogPostReq, BlogPostRes, BlogFilters };
