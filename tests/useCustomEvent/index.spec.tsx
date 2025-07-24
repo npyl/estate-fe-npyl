@@ -1,14 +1,13 @@
 import { test } from "@playwright/experimental-ct-react";
-import Tester from "./useCustomEvent.comp";
+import Tester from "./index.comp";
 import {
     DISPATCH_BTN0_ID,
     DISPATCH_BTN1_ID,
     VALUE0_ID,
     VALUE1_ID,
     FINAL,
-} from "./useCustomEvent.comp";
-import React from "react";
-import clickAndExpect from "./_util/clickAndExpect";
+} from "./index.comp";
+import clickAndExpect from "../_util/clickAndExpect";
 
 test("Global", async ({ mount }) => {
     const component = await mount(<Tester />);

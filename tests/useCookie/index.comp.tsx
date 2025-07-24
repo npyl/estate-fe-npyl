@@ -1,6 +1,5 @@
 import { useCallback } from "react";
-import useCookie from "../src/hooks/useCookie";
-import React from "react";
+import useCookie from "../../src/hooks/useCookie";
 
 const VALUE_ID = "value";
 

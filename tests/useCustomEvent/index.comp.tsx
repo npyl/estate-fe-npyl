@@ -1,5 +1,5 @@
 import { FC, RefObject, useCallback, useRef, useState } from "react";
-import useCustomEvent, { TCb } from "../src/hooks/useCustomEvent";
+import useCustomEvent, { TCb } from "../../src/hooks/useCustomEvent";
 import React from "react";
 
 // ----------------------------------------------------------------
