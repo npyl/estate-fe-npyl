@@ -1,5 +1,5 @@
 import { FC, useCallback, useRef, useState } from "react";
-import useUploadWithProgress from "../../src/ui/useGeneralUploader/useUploadWithProgress";
+import useUploadWithProgress from "../../../src/ui/useGeneralUploader/useUploadWithProgress";
 
 const UPLOAD_BTN_ID = "upload-btn-testid";
 const INPUT_ID = "input-test-id";

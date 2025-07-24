@@ -11,18 +11,18 @@ import {
     PERCENTAGE_30_VALUE,
     PERCENTAGE_90_ID,
     PERCENTAGE_90_VALUE,
-} from "./uploadWithProgress.comp";
-import Tester from "./uploadWithProgress.comp";
+} from "./index.comp";
+import Tester from "./index.comp";
 import path from "path";
-import injectFiles from "../_util/injectFiles";
-import expectValue from "../_util/expectValue";
+import injectFiles from "../../_util/injectFiles";
+import expectValue from "../../_util/expectValue";
 import {
     ERROR_RESPONSE,
     ERROR_ABORT,
-} from "../../src/ui/useGeneralUploader/useUploadWithProgress";
-import getNetworkControl from "./_util/getNetworkControl";
+} from "../../../src/ui/useGeneralUploader/useUploadWithProgress";
+import getNetworkControl from "../_util/getNetworkControl";
 
-const FILE = path.join(__dirname, "imgs", "img0.png");
+const FILE = path.join(__dirname, "..", "imgs", "img0.png");
 
 const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 

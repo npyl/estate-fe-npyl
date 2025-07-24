@@ -1,6 +1,6 @@
-import React, { HTMLAttributes, useCallback, useRef, useState } from "react";
+import { HTMLAttributes, useCallback, useRef, useState } from "react";
 import { forwardRef } from "react";
-import useForwardedLocalRef from "../src/hooks/useForwadedLocalRef";
+import useForwardedLocalRef from "../../src/hooks/useForwadedLocalRef";
 
 // ------------------------------------------------------------------------------------
 

@@ -8,10 +8,9 @@ import {
     TEST_LEVEL2_ID,
     VALUE_LEVEL2_ID,
     UPDATE_LEVEL2_ID,
-} from "./useCallbackSetter.comp";
-import Tester from "./useCallbackSetter.comp";
-import clickAndExpect from "./_util/clickAndExpect";
-import React from "react";
+} from "./index.comp";
+import Tester from "./index.comp";
+import clickAndExpect from "../_util/clickAndExpect";
 
 /**
  * Checks state initial value

@@ -1,20 +1,17 @@
 import { MountResult, test } from "@playwright/experimental-ct-react";
-import Leveled from "./useLocalStorageExt.comp";
+import Leveled from "./Extended.comp";
 import {
     TEST_LEVEL2_ID,
     UPDATE_LEVEL2_ID,
     VALUE_LEVEL2_ID,
-} from "./useLocalStorageExt.comp";
-import { Page } from "playwright-core";
-import clickAndExpectOrg from "./_util/clickAndExpect";
-import React from "react";
+} from "./Extended.comp";
+import clickAndExpectOrg from "../_util/clickAndExpect";
 
 /**
  * Clicks on a button and checks both state and cookie value change
  */
 const clickAndExpect = async (
     component: MountResult,
-    page: Page,
     // ...
     clickId: string,
     valueId: string,
@@ -33,24 +30,12 @@ const clickAndExpect = async (
     // await expectItem(page, expected);
 };
 
-test("Levels", async ({ mount, page }) => {
+test("Levels", async ({ mount }) => {
     const component = await mount(<Leveled />);
 
     const EXPECT0 = JSON.stringify([1, 2, 3, 4]);
     const EXPECT1 = JSON.stringify([1, 2, 3, 4, 5]);
 
-    await clickAndExpect(
-        component,
-        page,
-        UPDATE_LEVEL2_ID,
-        VALUE_LEVEL2_ID,
-        EXPECT0
-    );
-    await clickAndExpect(
-        component,
-        page,
-        TEST_LEVEL2_ID,
-        VALUE_LEVEL2_ID,
-        EXPECT1
-    );
+    await clickAndExpect(component, UPDATE_LEVEL2_ID, VALUE_LEVEL2_ID, EXPECT0);
+    await clickAndExpect(component, TEST_LEVEL2_ID, VALUE_LEVEL2_ID, EXPECT1);
 });

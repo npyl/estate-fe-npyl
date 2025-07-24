@@ -5,10 +5,9 @@ import {
     TEST_BUTTON0_ID,
     TEST_BUTTON1_ID,
     VALUE_ID,
-} from "./useForwardedLocalRef.comp";
-import Tester from "./useForwardedLocalRef.comp";
-import clickAndExpect from "./_util/clickAndExpect";
-import React from "react";
+} from "./index.comp";
+import Tester from "./index.comp";
+import clickAndExpect from "../_util/clickAndExpect";
 
 test("Basic", async ({ mount }) => {
     const component = await mount(<Tester />);

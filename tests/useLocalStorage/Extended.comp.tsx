@@ -1,7 +1,6 @@
 import { useCallback } from "react";
-import useLocalStorage from "../src/hooks/useLocalStorage";
-import useCallbackSetter from "../src/hooks/useCallbackSetter";
-import React from "react";
+import useLocalStorage from "../../src/hooks/useLocalStorage";
+import useCallbackSetter from "../../src/hooks/useCallbackSetter";
 
 const itemName = "item-key";
 
