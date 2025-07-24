@@ -25,8 +25,8 @@ const Listings = ({ filter, searchText }: any) => {
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, searchText]);
 
@@ -65,8 +65,6 @@ const Listings = ({ filter, searchText }: any) => {
                 rows={filteredListing || []}
                 onRemove={handleRemove}
                 loading={isLoading}
-                sortBy={sortBy}
-                direction={direction}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

@@ -48,16 +48,11 @@ export const notification = apiWithTranslation({
             IPage<INotificationShort>,
             INotificationFilterParams
         >({
-            query: ({ filter, page, pageSize, sortBy, direction }) => ({
+            query: ({ filter, ...params }) => ({
                 url: "/filter",
                 method: "POST",
                 body: filter,
-                params: {
-                    page,
-                    pageSize,
-                    sortBy,
-                    direction,
-                },
+                params,
             }),
             providesTags: ["Notifications"],
         }),

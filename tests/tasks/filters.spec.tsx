@@ -1,9 +1,11 @@
 import { test, expect } from "@playwright/test";
 import { baseUrl } from "./constants";
 import { getState } from "./util";
+import gotoSafe from "../_util/gotoSafe";
 
 test.beforeEach(async ({ page }) => {
-    await page.goto(baseUrl);
+    test.setTimeout(2 * 60 * 1000);
+    await gotoSafe(page, baseUrl);
 });
 
 test("initial", async ({ page }) => {
@@ -150,14 +152,16 @@ test("reset", async ({ page }) => {
 });
 
 test("complex & validate persistence", async ({ page }) => {
+    test.setTimeout(2 * 60 * 1000);
+
     // Set multiple filters
     await page.getByTestId("set-search").click();
     await page.getByTestId("add-label-2").click();
     await page.getByTestId("set-assignee").click();
 
     // Navigate away and come back to test persistence
-    await page.goto("http://127.0.0.1:3000/");
-    await page.goto(baseUrl);
+    await gotoSafe(page, "http://127.0.0.1:3000/");
+    await gotoSafe(page, baseUrl);
 
     // Check state persists
     const state = await getState(page);

@@ -7,11 +7,13 @@ const POLLING = {
     DEFAULT: 30 * 1000, // 30 sec
 };
 
+const PING_URL = "https://www.google.com";
+
 // ---------------------------------------------------------------------
 
 const ping = async () => {
     try {
-        const res = await fetch("https://www.google.com", {
+        const res = await fetch(PING_URL, {
             method: "HEAD",
             mode: "no-cors",
             cache: "no-cache",
@@ -71,5 +73,5 @@ const useNetworkAccess = (
     return [status, { stop, reset }] as const;
 };
 
-export { POLLING };
+export { POLLING, PING_URL };
 export default useNetworkAccess;

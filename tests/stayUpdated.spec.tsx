@@ -122,6 +122,8 @@ test("Filters", async ({ page }) => {
         timeout: 10 * 1000,
     });
 
+    // TODO: NOTE: basically, the only thing preventing this test from succeeding now is a bug on BE where the newly updated notification does not come on top (as first!)
+
     //
     // Now go to crm's notification page
     //

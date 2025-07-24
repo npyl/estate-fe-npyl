@@ -24,8 +24,8 @@ const Reviews = ({ filter, searchText }: any) => {
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, searchText]);
     const { data: reviews } = useFilterNotificationsQuery({
@@ -62,8 +62,6 @@ const Reviews = ({ filter, searchText }: any) => {
                 rows={filteredReviews || []}
                 onRemove={handleRemove}
                 loading={isLoading}
-                sortBy={sortBy}
-                direction={direction}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

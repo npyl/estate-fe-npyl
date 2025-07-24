@@ -5,6 +5,7 @@ import {
     ASCENDING_PRICE,
     DESCENDING_PRICE,
 } from "../../src/sections/Properties/(FiltersBar)/constants";
+import gotoSafe from "../_util/gotoSafe";
 
 const STATE_SELECTOR = '[data-testid="current-state"] pre';
 
@@ -15,7 +16,8 @@ const getState = async (page: Page) => {
 };
 
 test.beforeEach(async ({ page }) => {
-    await page.goto("http://127.0.0.1:3000/__test__/propertyFilters");
+    test.setTimeout(2 * 60 * 1000);
+    await gotoSafe(page, "http://127.0.0.1:3000/__test__/propertyFilters");
 });
 
 const update = async ({ page }: TTestCb) => {

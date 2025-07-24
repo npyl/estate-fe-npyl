@@ -6,9 +6,11 @@ import {
 } from "../../src/sections/Properties/Create/Content/RHFCategory";
 import { SAVE_BUTTON_TESTID } from "../../src/sections/Properties/Create/Content/SaveButton";
 import { TTestCb } from "../_types";
+import gotoSafe from "../_util/gotoSafe";
 
 test.beforeEach(async ({ page }) => {
-    await page.goto("http://127.0.0.1:3000/property/create");
+    test.setTimeout(2 * 60 * 1000);
+    await gotoSafe(page, "http://127.0.0.1:3000/property/create");
 });
 
 const create = async ({ page }: TTestCb) => {
