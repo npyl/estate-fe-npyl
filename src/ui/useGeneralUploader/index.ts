@@ -50,6 +50,7 @@ const useGeneralUploader = (
 
     const onReconnect = useCallback(() => {
         removePendingKeys();
+        resetInterval();
         HANDLERS.onReconnect?.();
     }, [removePendingKeys, HANDLERS.onReconnect]);
 

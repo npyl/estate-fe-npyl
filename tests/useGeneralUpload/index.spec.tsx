@@ -172,10 +172,11 @@ test("Reconnect", async ({ mount, context, page }) => {
 
     await page.waitForTimeout(30 * 1000);
 
-    // expect(intervals.length).toBe(3);
-    // expect(intervals[2]).toBe(POLLING.DISABLED);
-    // TODO: intervals are not complete! There needs to be a POLLING.DISABLED as last interval!
-
     await expectValue(component, RECONNECT_ID, RECONNECT_VALUE);
     await expectValue(component, FILES_COUNT_ID, "0");
+
+    expect(intervals.length).toBe(3);
+    expect(intervals[0]).toBe(POLLING.RAPID);
+    expect(intervals[1]).toBe(POLLING.DEFAULT);
+    expect(intervals[2]).toBe(POLLING.DISABLED);
 });
