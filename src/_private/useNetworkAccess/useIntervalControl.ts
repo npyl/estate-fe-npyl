@@ -29,7 +29,7 @@ const useIntervalControl = (
             // INFO: return actual interval chosen through our internal logic (for debugging)
             return i;
         },
-        [initialInterval]
+        [initialInterval, start]
     );
 
     useLayoutEffect(() => {
@@ -37,7 +37,7 @@ const useIntervalControl = (
         return () => {
             stop();
         };
-    }, []);
+    }, [start]);
 
     return { start, stop, reset };
 };
