@@ -24,8 +24,8 @@ const Agreements = ({ filter, searchText }: any) => {
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, searchText]);
 
@@ -63,8 +63,6 @@ const Agreements = ({ filter, searchText }: any) => {
                 rows={fileteredAgreements || []}
                 onRemove={handleRemove}
                 loading={isLoading}
-                sortBy={sortBy}
-                direction={direction}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

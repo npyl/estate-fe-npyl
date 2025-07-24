@@ -7,11 +7,12 @@ import { Box } from "@mui/material";
 import { useMemo, useState } from "react";
 import { NotificationType } from "@/types/notification";
 
+const sortBy = "createdAt";
+const direction = "DESC";
+
 const WorkApplications = ({ filter, searchText }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sortBy, setSortBy] = useState("createdAt");
-    const [direction, setDirection] = useState("DESC");
 
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
@@ -25,8 +26,8 @@ const WorkApplications = ({ filter, searchText }: any) => {
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, searchText]);
 
@@ -64,8 +65,6 @@ const WorkApplications = ({ filter, searchText }: any) => {
                 rows={filteredWorks || []}
                 onRemove={handleRemove}
                 loading={isLoading}
-                sortBy={sortBy}
-                direction={direction}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

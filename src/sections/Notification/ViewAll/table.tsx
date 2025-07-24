@@ -18,8 +18,6 @@ import { useCallback } from "react";
 interface TableProps {
     variant: NotificationType;
     rows: ContactNotification[];
-    sortBy: string;
-    direction: string;
     onRemove: (index: number) => void;
     loading: boolean;
     page?: number;
@@ -48,12 +46,12 @@ const Table = ({
         variant === "LISTING"
             ? ListingRow
             : variant === "WORK_FOR_US"
-            ? WorkApplicationRow
-            : variant === "REVIEW"
-            ? ReviewRow
-            : variant === "AGREEMENT"
-            ? AgreementRow
-            : TourRow;
+              ? WorkApplicationRow
+              : variant === "REVIEW"
+                ? ReviewRow
+                : variant === "AGREEMENT"
+                  ? AgreementRow
+                  : TourRow;
 
     const isMobile = useMediaQuery("(max-width:600px)");
 

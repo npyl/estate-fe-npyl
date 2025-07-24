@@ -69,9 +69,7 @@ const Tours = ({ filter, searchText }: any) => {
                 rows={filteredTours || []}
                 onRemove={handleRemove}
                 loading={isLoading}
-                sortBy={sortBy}
                 filter={filter}
-                direction={direction}
                 page={page}
                 pageSize={pageSize}
                 onPageChange={handlePageChange}

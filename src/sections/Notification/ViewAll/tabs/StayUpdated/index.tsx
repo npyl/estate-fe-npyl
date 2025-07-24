@@ -31,8 +31,8 @@ const StayUpdated: FC<StayUpdatedProps> = ({ filter, searchText }) => {
                 filter === "viewed"
                     ? true
                     : filter === "notViewed"
-                    ? false
-                    : undefined,
+                      ? false
+                      : undefined,
         };
     }, [filter, searchText]);
     const { data } = useFilterNotificationsQuery({
@@ -64,8 +64,6 @@ const StayUpdated: FC<StayUpdatedProps> = ({ filter, searchText }) => {
                 rows={filtered}
                 onRemove={deleteNotification}
                 loading={isLoading}
-                sortBy={sortBy}
-                direction={direction}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}
