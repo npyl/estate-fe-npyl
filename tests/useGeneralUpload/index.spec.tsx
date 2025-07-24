@@ -5,7 +5,7 @@ import path from "path";
 import injectFiles from "../_util/injectFiles";
 import { IUploadResult } from "../../src/ui/useGeneralUploader/types";
 import { POLLING } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
-import getNetworkControl from "../_util/network/getControl";
+import getNetworkControl from "./_util/getNetworkControl";
 
 const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 
@@ -77,27 +77,29 @@ test("Upload", async ({ mount }) => {
 /**
  * Catch a client disconnect during upload (e.g. when internet access is lost)
  */
-test("Disconnect", async ({ mount, context, page }) => {
-    const [intervals, onIntervalChange] = getIntervalsStore();
-
+test("Disconnect", async ({ mount, page }) => {
     test.setTimeout(DELAY);
 
-    const { goOffline, go3G, reset } = await getNetworkControl(context, page);
+    // -------------------------------------------------------------------
+
+    const [intervals, onIntervalChange] = getIntervalsStore();
 
     const component = await mount(
         <Tester mockUrl={mockUrl1} onIntervalChange={onIntervalChange} />
     );
 
-    await injectFiles(component, INPUT_ID, FILES);
+    // -------------------------------------------------------------------
 
-    await go3G();
+    const { goOffline, goOnline } = await getNetworkControl(page);
+
+    await injectFiles(component, INPUT_ID, FILES);
 
     await component.getByTestId(UPLOAD_BTN_ID).click();
 
     // Wait a bit for upload to actually start
     await page.waitForTimeout(500);
 
-    await goOffline();
+    goOffline();
 
     const parsed = await getResult(component);
 
@@ -110,18 +112,18 @@ test("Disconnect", async ({ mount, context, page }) => {
     expect(intervals[0]).toBe(POLLING.RAPID);
     expect(intervals[1]).toBe(POLLING.DEFAULT);
 
-    await reset();
+    goOnline();
 });
 
 /**
  * Test with extended timing to see if useNetworkAccess eventually detects reconnection
  */
-test("Reconnect - Extended Timing", async ({ mount, context, page }) => {
+test("Reconnect - Extended Timing", async ({ mount, page }) => {
     const [intervals, onIntervalChange] = getIntervalsStore();
 
     test.setTimeout(DELAY * 4); // Even longer timeout
 
-    const { goOffline, go3G, reset } = await getNetworkControl(context, page);
+    const { goOffline, goOnline } = await getNetworkControl(page);
 
     const component = await mount(
         <Tester mockUrl={mockUrl1} onIntervalChange={onIntervalChange} />
@@ -136,7 +138,7 @@ test("Reconnect - Extended Timing", async ({ mount, context, page }) => {
     console.log(`Intervals after upload start: ${intervals.join(", ")}`);
 
     console.log("Going offline...");
-    await goOffline();
+    goOffline();
 
     await page.waitForTimeout(3000);
     console.log(`Intervals after going offline: ${intervals.join(", ")}`);
@@ -146,7 +148,7 @@ test("Reconnect - Extended Timing", async ({ mount, context, page }) => {
         .waitFor({ state: "visible", timeout: DELAY });
 
     console.log("Going back online...");
-    await reset();
+    goOnline();
 
     console.log(
         "Network is back to normal, now waiting for useNetworkAccess to detect..."

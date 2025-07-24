@@ -20,7 +20,7 @@ import {
     ERROR_RESPONSE,
     ERROR_ABORT,
 } from "../../src/ui/useGeneralUploader/useUploadWithProgress";
-import getNetworkControl from "../_util/network/getControl";
+import getNetworkControl from "./_util/getNetworkControl";
 
 const FILE = path.join(__dirname, "imgs", "img0.png");
 
@@ -29,8 +29,6 @@ const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
 const mockUrl1 = `${mockUrl0}?slow=${DELAY}`;
 const mockUrl2 = `${mockUrl0}?shouldFail=1`;
-
-const DO_NOT_RESET = false;
 
 // ------------------------------------------------------------------------------
 
@@ -57,16 +55,14 @@ test("Upload w/ Percentage", async ({ mount }) => {
 /**
  * Catch a client disconnect during upload (e.g. when internet access is lost)
  */
-test("Disconnect", async ({ mount, context, page }) => {
+test("Disconnect", async ({ mount, page }) => {
     test.setTimeout(DELAY * 2);
 
-    const { goOffline, go3G, reset } = await getNetworkControl(context, page);
+    const { goOffline, goOnline } = await getNetworkControl(page);
 
     const component = await mount(<Tester mockUrl={mockUrl1} />);
 
     await injectFiles(component, INPUT_ID, [FILE]);
-
-    await go3G();
 
     // Click Upload Button
     await component.getByTestId(UPLOAD_BTN_ID).click();
@@ -74,12 +70,12 @@ test("Disconnect", async ({ mount, context, page }) => {
     // Wait until >=10%
     await expectValue(component, PERCENTAGE_10_ID, PERCENTAGE_10_VALUE, DELAY);
 
-    await goOffline();
+    goOffline();
 
     // Upload Result
     await expectValue(component, VALUE_ID, ERROR_ABORT, DELAY);
 
-    await reset();
+    goOnline();
 });
 
 /**
