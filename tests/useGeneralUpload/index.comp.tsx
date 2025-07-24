@@ -4,6 +4,7 @@ import {
     AddFileRes,
     UseGeneralUploaderMethods,
 } from "../../src/ui/useGeneralUploader/types";
+import useDialog from "../../src/hooks/useDialog";
 
 const UPLOAD_BTN_ID = "upload-btn-testid";
 const INPUT_ID = "input-test-id";
@@ -16,6 +17,8 @@ const SUCCESS_RES = "success-res";
 
 // INFO: this is intentionally empty
 const INITIAL_VALUE = "";
+const RECONNECT_VALUE = "reconnected";
+const NOT_RECONNECT_VALUE = "not-reconnected :(";
 
 // -----------------------------------------------------------------------
 
@@ -55,8 +58,7 @@ const Tester: FC<TesterProps> = ({ mockUrl, onIntervalChange }) => {
 
     const [files, addFile, removeFile] = useStore(mockUrl);
 
-    const [didReconnect, setReconnect] = useState(false);
-    const onReconnect = useCallback(() => setReconnect(true), []);
+    const [didReconnect, onReconnect] = useDialog();
 
     const upload = useGeneralUploader(
         { addFile, removeFile },
@@ -80,7 +82,7 @@ const Tester: FC<TesterProps> = ({ mockUrl, onIntervalChange }) => {
     }, []);
 
     return (
-        <>
+        <div>
             <input data-testid={INPUT_ID} ref={inputRef} multiple type="file" />
             <button data-testid={UPLOAD_BTN_ID} onClick={onClick} />
 
@@ -88,11 +90,12 @@ const Tester: FC<TesterProps> = ({ mockUrl, onIntervalChange }) => {
             {value ? <div data-testid={VALUE_ID}>{value}</div> : null}
 
             {/* Reconnect */}
-            {didReconnect ? <div data-testid={RECONNECT_ID} /> : null}
+            <div data-testid={RECONNECT_ID}>
+                {didReconnect ? RECONNECT_VALUE : NOT_RECONNECT_VALUE}
+            </div>
 
-            {/* TODO: Check files after remove */}
-            <div data-test-id={FILES_COUNT_ID}>{files.length}</div>
-        </>
+            <div data-testid={FILES_COUNT_ID}>{files.length}</div>
+        </div>
     );
 };
 
@@ -105,5 +108,8 @@ export {
     RECONNECT_ID,
     // ...
     SUCCESS_RES,
+    // ...
+    RECONNECT_VALUE,
+    NOT_RECONNECT_VALUE,
 };
 export default Tester;
