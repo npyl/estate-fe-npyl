@@ -5,6 +5,11 @@ type TVersioned<V> = {
     content: V;
 };
 
+const getVersioned = <V extends string | number | object = string>(
+    version: number,
+    content: V
+): TVersioned<V> => ({ version, content });
+
 type UseStore<V extends string | number | object = string> = (
     key: string | null,
     fallbackValue: V
@@ -16,10 +21,15 @@ const useVersioned = <V extends string | number | object = string>(
     version: number,
     useStore: UseStore<TVersioned<V>>
 ) => {
-    const [_value, _set, remove] = useStore(key, {
-        version,
-        content: fallbackValue,
-    });
+    const FALLBACK = useMemo(
+        () => ({
+            version,
+            content: fallbackValue,
+        }),
+        [version, fallbackValue]
+    );
+
+    const [_value, _set, remove] = useStore(key, FALLBACK);
 
     const value = useMemo(() => {
         if (_value.version !== version) return fallbackValue;
@@ -34,4 +44,6 @@ const useVersioned = <V extends string | number | object = string>(
     return [value, set, remove] as const;
 };
 
+export { getVersioned };
+export type { TVersioned };
 export default useVersioned;
