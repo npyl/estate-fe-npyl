@@ -34,7 +34,7 @@ const useVersioned = <V extends string | number | object = string>(
     const value = useMemo(() => {
         if (_value.version !== version) return fallbackValue;
         return _value.content;
-    }, [_value.version, _value.content, version]);
+    }, [_value.version, _value.content, version, fallbackValue]);
 
     const set = useCallback(
         (content: V, ...args: any[]) => _set({ version, content }, ...args),
