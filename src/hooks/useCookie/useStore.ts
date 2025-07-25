@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
 import { useCookies } from "react-cookie";
-import useCallbackSetter from "./useCallbackSetter";
 
 const getOneYearFromNow = () =>
     new Date(new Date().setFullYear(new Date().getFullYear() + 1));
@@ -17,19 +16,13 @@ const OPTIONS = {
     expires: getOneYearFromNow(),
 } as const;
 
-/**
- * Single cookie (to be used inside the respective context)
- * @param cookieName the cookie key
- * @param fallbackValue fallback value for when the cookie's value isn't yet set
- * @returns res: useCookies()'s value or fallback, actualSet, actualRemove are wrappers for only changing specific cookie
- */
-const useCookie = <V extends string | number | object = string>(
+const useStore = <V extends string | number | object = string>(
     cookieName: string | null,
     fallbackValue: V
 ) => {
     const names = cookieName ? [cookieName] : [];
 
-    const [_value, _set, remove] = useCookies<string, { [K in string]: V }>(
+    const [_value, _set, _remove] = useCookies<string, { [K in string]: V }>(
         names,
         LIBRARY_OPTIONS
     );
@@ -47,9 +40,6 @@ const useCookie = <V extends string | number | object = string>(
         }
     }, [cookieName, _value, fallbackValue]);
 
-    //
-    //  Set
-    //
     const set = useCallback(
         (v: V) => {
             if (!cookieName) return;
@@ -57,17 +47,13 @@ const useCookie = <V extends string | number | object = string>(
         },
         [cookieName, _set]
     );
-    const actualSet = useCallbackSetter<V>(value, set);
 
-    //
-    //  Remove
-    //
-    const actualRemove = useCallback(() => {
+    const remove = useCallback(() => {
         if (!cookieName) return;
-        remove(cookieName, OPTIONS);
-    }, [cookieName, remove]);
+        _remove(cookieName, OPTIONS);
+    }, [cookieName, _remove]);
 
-    return [value, actualSet, actualRemove] as const;
+    return [value, set, remove] as const;
 };
 
-export default useCookie;
+export default useStore;

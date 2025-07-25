@@ -17,8 +17,10 @@ import clickAndExpectOrg from "../_util/clickAndExpect";
  * @param page
  * @param value
  */
-const expectCookie = async (page: Page, value?: string) => {
-    const encoded = value ? encodeURIComponent(value) : undefined;
+const expectCookie = async (page: Page, content?: string) => {
+    const encoded = content
+        ? encodeURIComponent(JSON.stringify({ version: 1, content }))
+        : undefined;
     const cookies = await page.context().cookies();
     const initialCookie = cookies.find(({ name }) => name === cookieName);
     expect(initialCookie?.value).toBe(encoded);

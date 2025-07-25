@@ -1,7 +1,5 @@
 import debugLog from "@/_private/debugLog";
 import { useCallback, useLayoutEffect, useState } from "react";
-import useUpdateLayoutEffect from "@/hooks/useUpdateLayoutEffect";
-import useCallbackSetter from "./useCallbackSetter";
 
 const getValue = <V extends string | number | object = string>(
     key: string | null,
@@ -79,30 +77,27 @@ const useLocalStorageSubscribe = <V>(
 
 // ----------------------------------------------------------------------------------
 
-/**
- * Access to localStorage
- *
- * @param passive Do a set/remove on the localStorage item without updating the state
- * @param key the entry key
- * @param fallbackValue fallback value for when the item isn't available
- */
-
-function useLocalStorage<V extends string | number | object = string>(
+const useStore = <V extends string | number | object = string>(
     key: string | null,
     fallbackValue: V
-) {
+) => {
     const [value, setValue] = useState<V>(getValue(key, fallbackValue));
     useLocalStorageSubscribe(key, fallbackValue, setValue);
 
-    const _set = useCallback(
+    /**
+     * @param passive Do a set/remove on the localStorage item without updating the state
+     */
+    const set = useCallback(
         (v: V, passive?: boolean) => {
             if (!key) throw "Null key";
             setLocalStorageItem(key, v, passive);
         },
         [key]
     );
-    const set = useCallbackSetter(value, _set);
 
+    /**
+     * @param passive Do a set/remove on the localStorage item without updating the state
+     */
     const remove = useCallback(
         (passive?: boolean) => {
             if (!key) return;
@@ -111,11 +106,7 @@ function useLocalStorage<V extends string | number | object = string>(
         [key]
     );
 
-    useUpdateLayoutEffect(() => {
-        throw "Update of key is not supported";
-    }, [key]);
-
     return [value, set, remove] as const;
-}
+};
 
-export default useLocalStorage;
+export default useStore;
