@@ -30,14 +30,12 @@ const VERSION_STORED = 1;
  * Store w/ injected value support
  */
 const useStore =
-    <T extends object>(injectedValue?: any) =>
-    (_: string | null, fallbackValue: T) => {
-        const versionedFallback = getVersioned(VERSION_STORED, fallbackValue);
-
-        const [value, setState] = useState(injectedValue ?? versionedFallback);
+    <T extends object>(injectedValue?: TVersioned<T>) =>
+    (_: string | null, fallbackValue: TVersioned<T>) => {
+        const [value, setState] = useState(injectedValue ?? fallbackValue);
         const remove = useCallback(
-            () => setState(versionedFallback),
-            [versionedFallback]
+            () => setState(fallbackValue),
+            [fallbackValue]
         );
         return [value, setState, remove] as const;
     };
