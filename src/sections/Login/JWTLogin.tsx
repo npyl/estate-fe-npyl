@@ -9,6 +9,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TranslationType } from "@/types/translation";
 import { RHFTextField } from "../../components/hook-form";
+import { EMAIL_ID, PSSWD_ID, SUBMIT_ID } from "./constants";
 
 const Form = styled("form")(({ theme }) => ({
     display: "flex",
@@ -67,7 +68,7 @@ const JWTLogin: FC = (props) => {
                     margin="normal"
                     name="email"
                     type="email"
-                    data-testid="email"
+                    data-testid={EMAIL_ID}
                 />
                 <RHFTextField
                     fullWidth
@@ -75,7 +76,7 @@ const JWTLogin: FC = (props) => {
                     margin="normal"
                     name="password"
                     type="password"
-                    data-testid="password"
+                    data-testid={PSSWD_ID}
                 />
                 <Button
                     disabled={methods.formState.isSubmitting}
@@ -83,7 +84,7 @@ const JWTLogin: FC = (props) => {
                     size="large"
                     type="submit"
                     variant="contained"
-                    data-testid="submit"
+                    data-testid={SUBMIT_ID}
                 >
                     {t("Log In")}
                 </Button>

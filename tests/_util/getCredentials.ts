@@ -9,8 +9,6 @@ const CREDENTIALS_ERROR =
 type TCredentials = { username: string; password: string };
 
 const getCredentials = (): TCredentials => {
-    console.log("PRIV: ", privFile);
-
     let credentials;
 
     const credentialsData = fs.readFileSync(privFile, "utf8");
