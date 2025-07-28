@@ -1,11 +1,13 @@
 import { defineConfig, devices } from "@playwright/experimental-ct-react";
-import { resolve } from "path";
+import path from "path";
 
 import dotenv from "dotenv";
 import dotenvExpand from "dotenv-expand";
 
 const myEnv = dotenv.config();
 dotenvExpand.expand(myEnv);
+
+global.projectRoot = path.resolve(__dirname);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -37,7 +39,7 @@ export default defineConfig({
         ctViteConfig: {
             resolve: {
                 alias: {
-                    "@": resolve(__dirname, "./src"),
+                    "@": path.resolve(__dirname, "./src"),
                 },
             },
         },

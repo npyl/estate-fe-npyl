@@ -3,31 +3,14 @@ import path from "path";
 import fs from "fs";
 import { UserResponse } from "../src/types/auth";
 import gotoSafe from "./_util/gotoSafe";
+import getCredentials, { TCredentials } from "./_util/getCredentials";
 
-const privFile = path.join(__dirname, "../playwright/.auth/priv.json");
-const authFile = path.join(__dirname, "../playwright/.auth/user.json");
+const authFile = path.join(global.projectRoot, "playwright/.auth/user.json");
 
 const localhost = "http://127.0.0.1:3000";
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
 const loginUrl = `${baseUrl}/login`;
 const profileUrl = `${baseUrl}/users/profile`;
-
-const CREDENTIALS_ERROR =
-    "Username or password not found in credentials file! Please fill-in credentials in playwright/.auth/priv.json";
-
-type TCredentials = { username: string; password: string };
-
-const getCredentials = (): TCredentials => {
-    let credentials;
-
-    const credentialsData = fs.readFileSync(privFile, "utf8");
-    credentials = JSON.parse(credentialsData);
-
-    const { username, password } = credentials;
-    if (!username || !password) throw new Error(CREDENTIALS_ERROR);
-
-    return { username, password };
-};
 
 const isntTokenExpired = async (authFile: string) => {
     const credentialsData = fs.readFileSync(authFile, "utf8");
