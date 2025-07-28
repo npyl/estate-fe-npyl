@@ -12,7 +12,7 @@ import Pagination, { usePagination } from "@/components/Pagination";
 import Toolbar from "@/sections/DataGrids/CustomersToolbar";
 import { FilterSection } from "./(FilterSection)";
 import {
-    CustomerFiltersProvider,
+    FiltersProvider,
     useSelectAll,
     useSorting,
 } from "./(FilterSection)/Context";
@@ -140,9 +140,9 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
 };
 
 const Wrapped: FC<Props> = (props) => (
-    <CustomerFiltersProvider>
+    <FiltersProvider b2b={props.b2b}>
         <CustomersViewAll {...props} />
-    </CustomerFiltersProvider>
+    </FiltersProvider>
 );
 
 export default Wrapped;

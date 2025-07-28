@@ -5,6 +5,8 @@ import {
 import { parseAsInteger, useQueryState } from "nuqs";
 import {
     createContext,
+    FC,
+    PropsWithChildren,
     useCallback,
     useContext,
     useLayoutEffect,
@@ -14,6 +16,7 @@ import { ICustomerFilter } from "src/types/customer";
 import useSetters from "./useSetters";
 import { initialState } from "./constants";
 import { FiltersState } from "./types";
+import useFilterState from "./useFilterState";
 
 const CustomerFiltersContext = createContext<FiltersState>({
     filters: initialState.filters,
@@ -48,10 +51,12 @@ export const useFiltersContext = () => {
     return context;
 };
 
-export const CustomerFiltersProvider: React.FC<
-    React.PropsWithChildren<unknown>
-> = (props) => {
-    const [filters, setFilters] = useState(initialState.filters);
+interface Props extends PropsWithChildren {
+    b2b?: boolean;
+}
+
+export const FiltersProvider: FC<Props> = ({ b2b = false, ...props }) => {
+    const [filters, setFilters] = useFilterState(b2b);
     const [sorting, setSorting] = useState(initialState.sorting);
 
     const deleteFilter = useCallback(
