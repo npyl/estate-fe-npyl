@@ -1,14 +1,8 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { FC, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
-import { useFilterCustomersQuery } from "src/services/customers";
-import {
-    selectAll,
-    selectSorting,
-    setManagerId,
-} from "src/slices/customer/filters";
+import useLocalStorageScrollRestore from "@/hooks/useLocalStorageScrollRestore";
+import { useFilterCustomersQuery } from "@/services/customers";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/ui/Cards/CustomerCard";
@@ -17,8 +11,11 @@ import { getOptions } from "./(FilterSection)/constants";
 import Pagination, { usePagination } from "@/components/Pagination";
 import Toolbar from "@/sections/DataGrids/CustomersToolbar";
 import { FilterSection } from "./(FilterSection)";
-import { useRouter } from "next/router";
-import { dispatch } from "@/store";
+import {
+    CustomerFiltersProvider,
+    useSelectAll,
+    useSorting,
+} from "./(FilterSection)/Context";
 
 interface Props {
     b2b?: boolean;
@@ -27,22 +24,16 @@ interface Props {
 const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
     const { t } = useTranslation();
 
-    const allFilters = useSelector(selectAll);
-
-    const router = useRouter();
-    const { query } = router;
-
     const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
-    const resource = b2b ? "b2b" : "customer";
     const pagination = usePagination();
 
     const sortingOptions = useMemo(() => getOptions(t), [t]);
 
-    const sorting = useSelector(selectSorting);
+    const sorting = useSorting();
 
     const { sortBy, direction } = useMemo(
         () =>
@@ -53,14 +44,7 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
         [sortingOptions, sorting]
     );
 
-    const managerId = query.managerId ? Number(query.managerId) : undefined;
-    const filters = useMemo(() => {
-        if (managerId !== undefined) {
-            return { ...allFilters, managerId: managerId };
-        }
-        return allFilters;
-    }, [allFilters, managerId]);
-
+    const filters = useSelectAll();
     const { isLoading, data } = useFilterCustomersQuery({
         filter: { ...filters, b2b },
         page,
@@ -113,12 +97,6 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
 
     const handlePageChange = (_: any, newPage: number) => setPage(newPage);
 
-    useEffect(() => {
-        if (managerId !== undefined) {
-            dispatch(setManagerId(managerId));
-        }
-    }, [managerId]);
-
     return (
         <>
             <FilterSection sorting={sorting} />
@@ -161,4 +139,10 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
     );
 };
 
-export default CustomersViewAll;
+const Wrapped: FC<Props> = (props) => (
+    <CustomerFiltersProvider>
+        <CustomersViewAll {...props} />
+    </CustomerFiltersProvider>
+);
+
+export default Wrapped;

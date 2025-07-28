@@ -10,16 +10,14 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { useDispatch } from "src/store";
 import { StyledInputLabel } from "@/components/Filters";
-import { useSelector } from "react-redux";
-import { selectLabels, setLabels } from "@/slices/customer/filters";
+import { useFiltersContext, useLabels } from "../Context";
 
 export default function FilterLabels() {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const labels = useSelector(selectLabels) || [];
+    const { setLabels } = useFiltersContext();
+    const labels = useLabels() || [];
 
     const { data } = useGetLabelsQuery();
 
@@ -40,11 +38,9 @@ export default function FilterLabels() {
         const {
             target: { value },
         } = event;
-        dispatch(
-            setLabels(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+        setLabels(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
         );
     };
 

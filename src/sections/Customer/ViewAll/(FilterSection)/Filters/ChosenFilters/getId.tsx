@@ -2,9 +2,8 @@ import { Chip, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { deleteFilter } from "src/slices/customer/filters";
 import { Tags } from "./types";
+import { useFiltersContext } from "../../Context";
 
 interface IIdData {
     filterTags: Tags;
@@ -28,8 +27,9 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
     const { filterTags, pairFilterTags, changedProps } = data;
     const { getLabelNames, getManagerName, hasMinMaxPair } = methods;
 
-    const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const { deleteFilter } = useFiltersContext();
 
     const router = useRouter();
 
@@ -74,7 +74,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
             <Chip
                 key={index}
                 label={label}
-                onDelete={() => dispatch(deleteFilter(filterKey))}
+                onDelete={() => deleteFilter(filterKey)}
             />
         );
     }
@@ -115,8 +115,8 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                     </Stack>
                 }
                 onDelete={() => {
-                    dispatch(deleteFilter(`min${suffix}`));
-                    dispatch(deleteFilter(`max${suffix}`));
+                    deleteFilter(`min${suffix}`);
+                    deleteFilter(`max${suffix}`);
                 }}
             />
         );
@@ -143,7 +143,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                         </Stack>
                     }
                     onDelete={() => {
-                        dispatch(deleteFilter("minPrice"));
+                        deleteFilter("minPrice");
                     }}
                 />
             );
@@ -167,7 +167,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                         </Stack>
                     }
                     onDelete={() => {
-                        dispatch(deleteFilter("maxPrice"));
+                        deleteFilter("maxPrice");
                     }}
                 />
             );
@@ -189,7 +189,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                     </Stack>
                 }
                 onDelete={() => {
-                    dispatch(deleteFilter(filterKey));
+                    deleteFilter(filterKey);
 
                     if (filterKey === "managerId") {
                         const newQuery = { ...router.query };

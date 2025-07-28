@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import FilterLabels from "./Labels";
 import PriceSelect from "./Price";
@@ -6,27 +6,27 @@ import AreaSelect from "./Area";
 import FilterManager from "./ManagedBy";
 import FilterStatus from "./Status";
 import ClearableSection from "@/components/Filters/ClearableSection";
-import { dispatch } from "@/store";
-import {
-    setLabels,
-    setManagerId,
-    setMaxArea,
-    setMaxPrice,
-    setMinArea,
-    setMinPrice,
-    setStatus,
-} from "@/slices/customer/filters";
+import { useFiltersContext } from "../Context";
 
 const BasicFilters = () => {
+    const {
+        setLabels,
+        setManagerId,
+        setStatus,
+        setMinPrice,
+        setMaxPrice,
+        setMinArea,
+        setMaxArea,
+    } = useFiltersContext();
     const { t } = useTranslation();
     const reset = () => {
-        dispatch(setLabels(null));
-        dispatch(setManagerId(null));
-        dispatch(setStatus(null));
-        dispatch(setMinPrice(undefined));
-        dispatch(setMaxPrice(undefined));
-        dispatch(setMinArea(undefined));
-        dispatch(setMaxArea(undefined));
+        setLabels([]);
+        setManagerId(undefined);
+        setStatus(undefined);
+        setMinPrice(undefined);
+        setMaxPrice(undefined);
+        setMinArea(undefined);
+        setMaxArea(undefined);
     };
     return (
         <ClearableSection title={t("Basic")} reset={reset}>

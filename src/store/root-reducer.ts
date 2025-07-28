@@ -7,16 +7,16 @@ import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
 import { tasks } from "@/services/tasks"; // a.k.a. kanban
-import { auth } from "../services/auth";
-import { customers } from "../services/customers";
-import { global } from "../services/global";
-import { location } from "../services/location";
-import { properties } from "../services/properties";
-import { security } from "../services/security";
-import { user } from "../services/user";
+import { auth } from "@/services/auth";
+import { customers } from "@/services/customers";
+import { global } from "@/services/global";
+import { location } from "@/services/location";
+import { properties } from "@/services/properties";
+import { security } from "@/services/security";
+import { user } from "@/services/user";
 import { translation } from "@/services/translate";
-import { publicDashboard } from "../services/publicDashboard";
-import { company } from "../services/company";
+import { publicDashboard } from "@/services/publicDashboard";
+import { company } from "@/services/company";
 import { solar, airQuality } from "@/services/googleapi";
 import { integrations } from "@/services/integrations";
 import { agreements } from "@/services/agreements";
@@ -27,8 +27,6 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
 import { blog } from "@/services/blog";
-
-import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -64,7 +62,4 @@ export const rootReducer = combineReducers({
     // ...
     [emails.reducerPath]: emails.reducer,
     [blog.reducerPath]: blog.reducer,
-
-    // customer
-    customerFilters: customerFiltersReducer,
 });

@@ -1,18 +1,12 @@
 import generatePriceRange from "@/ui/Filters/priceRangeGenerator";
-import {
-    selectBuyer,
-    selectLeaser,
-    selectLessor,
-    selectSeller,
-} from "@/slices/customer/filters";
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useBuyer, useLeaser, useLessor, useSeller } from "../../Context";
 
 const usePriceRangeGenerator = () => {
-    const leaser = useSelector(selectLeaser);
-    const buyer = useSelector(selectBuyer);
-    const seller = useSelector(selectSeller);
-    const lessor = useSelector(selectLessor);
+    const leaser = useLeaser();
+    const buyer = useBuyer();
+    const seller = useSeller();
+    const lessor = useLessor();
 
     const isRent = Boolean(leaser) || Boolean(lessor);
     const isSale = Boolean(buyer) || Boolean(seller);

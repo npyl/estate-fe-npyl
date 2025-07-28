@@ -57,19 +57,21 @@ interface IOwnedProperties {
 // ----------------------------------------------------------------------
 
 interface FilterBase {
-    labels?: number[]; // ids
+    labels: number[]; // ids
+    parentCategories: string[];
+    categories: string[];
     status?: number;
     leaser?: boolean;
     lessor?: boolean;
     seller?: boolean;
     buyer?: boolean;
-    parentCategories?: string[];
-    categories?: string[];
     minPrice?: number;
     maxPrice?: number;
     minCovered?: number;
     maxCovered?: number;
     managerId?: number;
+
+    [key: string]: any;
 }
 
 interface ResponseShortBase {

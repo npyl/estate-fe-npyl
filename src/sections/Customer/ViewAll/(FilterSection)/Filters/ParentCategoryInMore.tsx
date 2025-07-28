@@ -2,18 +2,13 @@ import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/hooks/useGlobals";
 import { KeyValue } from "@/types/KeyValue";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { PPButton } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    selectParentCategories,
-    setCategories,
-    setParentCategories,
-} from "src/slices/customer/filters";
 import getIcons from "@/assets/icons/parent-categories";
+import { useFiltersContext, useParentCategories } from "../Context";
 
 // Responsive layout for icon buttons
 const FlexItem = styled.div`
@@ -35,15 +30,16 @@ interface IOption {
 }
 
 const Option: FC<IOption> = ({ option: { key, value } }) => {
-    const dispatch = useDispatch();
-    const selected = useSelector(selectParentCategories) || [];
+    const { setParentCategories } = useFiltersContext();
+
+    const selected = useParentCategories() || [];
 
     const isChecked = selected?.includes(key);
     const toggle = () => {
         const updated = isChecked
             ? selected?.filter((k) => k !== key)
             : [...selected, key];
-        dispatch(setParentCategories(updated));
+        setParentCategories(updated);
     };
 
     return (
@@ -63,13 +59,16 @@ const Option: FC<IOption> = ({ option: { key, value } }) => {
 const ParentCategoryInMore = () => {
     const { t } = useTranslation();
     const data = useGlobals();
+
+    const { setCategories, setParentCategories } = useFiltersContext();
+
     const parentCategoryEnum = data?.property?.parentCategory || [];
 
-    const dispatch = useDispatch();
-    const reset = () => {
-        dispatch(setParentCategories([]));
-        dispatch(setCategories([]));
-    };
+    const reset = useCallback(() => {
+        setParentCategories([]);
+        setCategories([]);
+    }, []);
+
     return (
         <ClearableSection title={t("Parent Category")} reset={reset}>
             <Stack direction="row" gap={1} flexWrap="wrap" p={1}>

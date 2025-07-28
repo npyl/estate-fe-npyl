@@ -10,25 +10,23 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/hooks/useGlobals";
+import { KeyValue } from "@/types/KeyValue";
 import {
-    selectCategories,
-    selectParentCategories,
-    setCategories,
-} from "src/slices/customer/filters";
-
-import { useDispatch, useSelector } from "src/store";
-import { KeyValue } from "src/types/KeyValue";
+    useCategories,
+    useFiltersContext,
+    useParentCategories,
+} from "../Context";
 
 export default function FilterCategory() {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
 
     const propertyEnums = data?.property;
 
-    const parentCategories = useSelector(selectParentCategories) || [];
-    const subCategories = useSelector(selectCategories) || [];
+    const { setCategories } = useFiltersContext();
+    const parentCategories = useParentCategories() || [];
+    const subCategories = useCategories() || [];
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -47,11 +45,9 @@ export default function FilterCategory() {
             target: { value },
         } = event;
 
-        dispatch(
-            setCategories(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+        setCategories(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
         );
     };
 

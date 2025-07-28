@@ -2,8 +2,8 @@ import { TranslationType } from "@/types/translation";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { getChangedFields } from "@/slices/customer/filters";
 import { Tags } from "./types";
+import { useChangedFields } from "../../Context";
 
 const getFilterTags = (t: TranslationType): Tags => ({
     status: {
@@ -61,7 +61,7 @@ const useData = () => {
     const { t } = useTranslation();
     const filterTags = useMemo(() => getFilterTags(t), [t]);
     const pairFilterTags = useMemo(() => getPairFilterTags(t), [t]);
-    const changedProps = useSelector(getChangedFields);
+    const changedProps = useChangedFields();
     return { filterTags, pairFilterTags, changedProps };
 };
 
