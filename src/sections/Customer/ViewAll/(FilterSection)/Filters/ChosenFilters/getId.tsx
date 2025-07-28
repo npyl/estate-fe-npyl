@@ -30,8 +30,6 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
 
     const { t } = useTranslation();
 
-    console.log("FILTERKEY: ", filterKey);
-
     const { deleteFilter } = useFiltersContext();
 
     const router = useRouter();

@@ -61,7 +61,6 @@ const useData = () => {
     const filterTags = useMemo(() => getFilterTags(t), [t]);
     const pairFilterTags = useMemo(() => getPairFilterTags(t), [t]);
     const changedProps = useChangedFields();
-    console.log("CHAGNED: ", changedProps);
     return { filterTags, pairFilterTags, changedProps };
 };
 
