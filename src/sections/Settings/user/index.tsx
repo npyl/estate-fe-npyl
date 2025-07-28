@@ -13,103 +13,168 @@ import {
 } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, MouseEvent, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import AnimatedTableRow from "@/sections/Settings/user/AnimatedTableRow";
 const UserForm = dynamic(() => import("@/sections/User/Form"));
 import IOSSwitch from "@/components/iOSSwitch";
 import { Label } from "@/components/Label";
-import { useSecurityContext } from "src/contexts/security";
-import {
-    useAllUsersQuery,
-    useToggleActiveUserMutation,
-} from "src/services/user";
+import { useAllUsersQuery, useToggleActiveUserMutation } from "@/services/user";
 import dynamic from "next/dynamic";
 import GotoPermissions from "./GotoPermissions";
+import useDialog from "@/hooks/useDialog";
+import { IUser } from "@/types/user";
 
-type ActiveStatusesType = {
-    [userId: number]: boolean;
-};
-
-type ActiveNotificationsType = {
-    [userId: number]: boolean;
-};
-
-const UserPage = () => {
-    const router = useRouter();
-    const { data: users } = useAllUsersQuery();
-    const { setSelectedUser } = useSecurityContext();
-    const [toggleActiveUser] = useToggleActiveUserMutation();
-
-    const [openUserForm, setOpenUserForm] = useState(false);
-    const [activeStatuses, setActiveStatuses] = useState<ActiveStatusesType>(
-        {}
-    );
-
-    useEffect(() => {
-        if (users) {
-            const initialStatuses: ActiveStatusesType = {};
-            const initialNotifications: ActiveNotificationsType = {};
-            users.forEach((user) => {
-                initialStatuses[user.id] = user.isActive;
-                initialNotifications[user.id] = user.notificationsEnabled;
-            });
-            setActiveStatuses(initialStatuses);
-        }
-    }, [users]);
-
-    const handleToggleActiveStatus = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-        userId: number
-    ) => {
-        // Prevent further propagation of the event
-        event.stopPropagation();
-
-        const currentStatus = event.target.checked;
-
-        // Optimistically update the UI for a faster response
-        setActiveStatuses((prevStatuses) => ({
-            ...prevStatuses,
-            [userId]: currentStatus,
-        }));
-
-        try {
-            // Make the API request and await its result
-            await toggleActiveUser(userId);
-        } catch (error) {
-            // If the request fails, revert the UI change
-            setActiveStatuses((prevStatuses) => ({
-                ...prevStatuses,
-                [userId]: !currentStatus, // revert the status
-            }));
-
-            // Optionally, show an error message to the user
-            console.error("Failed to update user status:", error);
-        }
-    };
-
-    const handleOpenUserForm = () => setOpenUserForm(true);
-    const handleCloseUserForm = () => {
-        setOpenUserForm(false);
-        setSelectedUser(-1);
-    };
-    const handleRowClick = (userId: number) => {
-        setSelectedUser(userId);
-        router.push(`/user/${userId}`);
-    };
-
+const CreateButton = () => {
     const { t } = useTranslation();
 
+    const [isOpen, open, close] = useDialog();
+
     return (
-        <div>
+        <>
             <Button
                 variant="contained"
                 color="primary"
                 style={{ marginBottom: "20px" }}
-                onClick={handleOpenUserForm}
+                onClick={open}
             >
                 {t("Create User")}
             </Button>
+
+            {isOpen ? <UserForm onClose={close} /> : null}
+        </>
+    );
+};
+
+interface EditButtonProps {
+    user: IUser;
+}
+
+const EditButton: FC<EditButtonProps> = ({ user }) => {
+    const [isOpen, open, close] = useDialog();
+
+    const onClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        open();
+    }, []);
+
+    return (
+        <>
+            <IconButton size="small" onClick={onClick}>
+                <EditIcon fontSize="small" />
+            </IconButton>
+
+            {isOpen ? <UserForm user={user} onClose={close} /> : null}
+        </>
+    );
+};
+
+const getIsChecked = (activeStatuses: boolean[], userId: number) => {
+    try {
+        return activeStatuses[userId] ?? false;
+    } catch (ex) {
+        return false;
+    }
+};
+
+interface ToggleActiveButtonProps {
+    activeStatuses: boolean[];
+    userId: number;
+}
+
+const ToggleActiveButton: FC<ToggleActiveButtonProps> = ({
+    activeStatuses,
+    userId,
+}) => {
+    const isChecked = getIsChecked(activeStatuses, userId);
+
+    const [toggleActiveUser] = useToggleActiveUserMutation();
+
+    const toggle = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            e.stopPropagation();
+            toggleActiveUser(userId);
+        },
+        [userId]
+    );
+
+    return (
+        <FormGroup>
+            <FormControlLabel
+                control={
+                    <IOSSwitch
+                        checked={isChecked} // fallback to 'false' if the id is not yet in the state
+                        onChange={toggle}
+                        onClick={(e) => e.stopPropagation()}
+                        name="isActiveSwitch"
+                        sx={{ m: 1 }}
+                    />
+                }
+                label="Active"
+            />
+        </FormGroup>
+    );
+};
+
+interface UserRowProps {
+    activeStatuses: boolean[];
+    user: IUser;
+}
+
+const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
+    const { t } = useTranslation();
+
+    const router = useRouter();
+
+    const handleRowClick = (userId: number) => {
+        router.push(`/user/${userId}`);
+    };
+
+    return (
+        <AnimatedTableRow key={user.id} onClick={() => handleRowClick(user.id)}>
+            <TableCell>
+                {user.firstName || ""} {user.lastName || ""}
+            </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>
+                {user.isAdmin ? (
+                    <Label opaque color="info" name={t("Admin")} />
+                ) : (
+                    <ToggleActiveButton
+                        activeStatuses={activeStatuses}
+                        userId={user.id}
+                    />
+                )}
+            </TableCell>
+
+            <TableCell>{user.mobilePhone}</TableCell>
+            <TableCell>
+                <EditButton user={user} />
+            </TableCell>
+            <TableCell>
+                <GotoPermissions userId={user.id} />
+            </TableCell>
+        </AnimatedTableRow>
+    );
+};
+
+const getRow = (activeStatuses: boolean[]) => (u: IUser) => (
+    <UserRow key={u.id} user={u} activeStatuses={activeStatuses} />
+);
+
+const UserPage = () => {
+    const { t } = useTranslation();
+
+    const { data: users } = useAllUsersQuery();
+
+    const activeStatuses = useMemo(
+        () => users?.map(({ isActive }) => isActive) ?? [],
+        [users]
+    );
+
+    return (
+        <div>
+            <CreateButton />
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -122,77 +187,9 @@ const UserPage = () => {
                             <TableCell>{t("Permissions")}</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {users?.map((user) => (
-                            <AnimatedTableRow
-                                key={user.id}
-                                onClick={() => handleRowClick(user.id)}
-                            >
-                                <TableCell>
-                                    {user.firstName || ""} {user.lastName || ""}
-                                </TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>
-                                    {user.isAdmin ? (
-                                        <Label
-                                            opaque
-                                            color="info"
-                                            name={t("Admin")}
-                                        />
-                                    ) : (
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <IOSSwitch
-                                                        checked={
-                                                            activeStatuses[
-                                                                user.id
-                                                            ] || false
-                                                        } // fallback to 'false' if the id is not yet in the state
-                                                        onChange={(e) => {
-                                                            e.stopPropagation();
-                                                            handleToggleActiveStatus(
-                                                                e,
-                                                                user.id
-                                                            );
-                                                        }}
-                                                        onClick={(e) =>
-                                                            e.stopPropagation()
-                                                        }
-                                                        name="isActiveSwitch"
-                                                        sx={{ m: 1 }}
-                                                    />
-                                                }
-                                                label="Active"
-                                            />
-                                        </FormGroup>
-                                    )}
-                                </TableCell>
-
-                                <TableCell>{user.mobilePhone}</TableCell>
-                                <TableCell>
-                                    <IconButton
-                                        size="small"
-                                        onClick={(e) => {
-                                            setSelectedUser(user.id);
-                                            handleOpenUserForm();
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        <EditIcon fontSize="small" />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell>
-                                    <GotoPermissions userId={user.id} />
-                                </TableCell>
-                            </AnimatedTableRow>
-                        ))}
-                    </TableBody>
+                    <TableBody>{users?.map(getRow(activeStatuses))}</TableBody>
                 </Table>
             </TableContainer>
-            {openUserForm && (
-                <UserForm open={openUserForm} onClose={handleCloseUserForm} />
-            )}
         </div>
     );
 };
