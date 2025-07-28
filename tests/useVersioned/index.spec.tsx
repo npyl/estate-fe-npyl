@@ -46,4 +46,8 @@ test("Version Mismatch w/ Update", async ({ mount }) => {
             version={VERSION_WANTED}
         />
     );
+
+    // INFO: due to version mismatch we expect a FALLBACK_VALUE and not a SPECIFIC_VALUE; this is actually the point of the whole hook!
+    await expectValue(component, VALUE_ID, FALLBACK_VALUE_STR);
+    await clickAndExpect(component, SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
 });
