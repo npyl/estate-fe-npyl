@@ -1,7 +1,6 @@
 import { TranslationType } from "@/types/translation";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Tags } from "./types";
 import { useChangedFields } from "../../Context";
 
@@ -62,6 +61,7 @@ const useData = () => {
     const filterTags = useMemo(() => getFilterTags(t), [t]);
     const pairFilterTags = useMemo(() => getPairFilterTags(t), [t]);
     const changedProps = useChangedFields();
+    console.log("CHAGNED: ", changedProps);
     return { filterTags, pairFilterTags, changedProps };
 };
 

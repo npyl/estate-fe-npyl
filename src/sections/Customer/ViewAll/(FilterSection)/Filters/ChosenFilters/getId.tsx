@@ -4,6 +4,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Tags } from "./types";
 import { useFiltersContext } from "../../Context";
+import { ICustomerFilter } from "@/types/customer";
 
 interface IIdData {
     filterTags: Tags;
@@ -17,7 +18,7 @@ interface IIdMethods {
 }
 
 interface IdProps {
-    filterKey: string;
+    filterKey: keyof ICustomerFilter;
     index: number;
     data: IIdData;
     methods: IIdMethods;
@@ -28,6 +29,8 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
     const { getLabelNames, getManagerName, hasMinMaxPair } = methods;
 
     const { t } = useTranslation();
+
+    console.log("FILTERKEY: ", filterKey);
 
     const { deleteFilter } = useFiltersContext();
 
@@ -64,8 +67,9 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
               : values;
 
     const suffix =
-        filterKey.includes("min") || filterKey.includes("max")
-            ? filterKey.slice(3)
+        (filterKey as string).includes("min") ||
+        (filterKey as string).includes("max")
+            ? (filterKey as string).slice(3)
             : null;
 
     if (isRole && values === true) {
@@ -212,7 +216,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
 
 const getId =
     (data: IIdData, methods: IIdMethods) =>
-    (filterKey: string, index: number) => (
+    (filterKey: keyof ICustomerFilter, index: number) => (
         <Id
             key={filterKey}
             filterKey={filterKey}

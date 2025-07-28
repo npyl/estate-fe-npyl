@@ -98,7 +98,7 @@ const useIds = () => {
 
 const useChangedFields = () => {
     const { filters } = useFiltersContext();
-    return _useChangedFields<BlogFilters>(filters, INITIAL_STATE);
+    return _useChangedFields<BlogFilters>(INITIAL_STATE, filters);
 };
 
 export { useChangedFields, useIds };

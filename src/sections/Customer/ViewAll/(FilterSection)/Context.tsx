@@ -1,3 +1,7 @@
+import {
+    useCalculateIds,
+    useChangedFields as _useChangedFields,
+} from "@/ui/Filters/useCalculateIds";
 import { parseAsInteger, useQueryState } from "nuqs";
 import {
     createContext,
@@ -31,7 +35,6 @@ type TSetters = {
 type Filters = {
     filters: ICustomerFilter;
     sorting: string;
-    ids: string[];
 };
 
 type FiltersState = Filters & TSetters;
@@ -55,7 +58,6 @@ const initialState: Filters = {
         states: [],
     },
     sorting: "default",
-    ids: [],
 };
 
 const useSetters = (
@@ -161,7 +163,6 @@ const useSetters = (
 const CustomerFiltersContext = createContext<FiltersState>({
     filters: initialState.filters,
     sorting: initialState.sorting,
-    ids: initialState.ids,
 
     setStatus: () => {},
     setLeaser: () => {},
@@ -197,7 +198,6 @@ export const CustomerFiltersProvider: React.FC<
 > = (props) => {
     const [filters, setFilters] = useState(initialState.filters);
     const [sorting, setSorting] = useState(initialState.sorting);
-    const [ids] = useState([]);
 
     const deleteFilter = useCallback(
         (key: keyof ICustomerFilter) => {
@@ -221,7 +221,6 @@ export const CustomerFiltersProvider: React.FC<
             value={{
                 filters,
                 sorting,
-                ids,
                 ...setters,
                 deleteFilter,
             }}
@@ -248,7 +247,18 @@ export const useMinArea = () => useFiltersContext().filters.minCovered;
 export const useMaxArea = () => useFiltersContext().filters.maxCovered;
 export const useStates = () => useFiltersContext().filters.states;
 export const useSorting = () => useFiltersContext().sorting;
-export const useIds = () => useFiltersContext().ids;
 
-export const useSumOfChangedProperties = () => 0;
-export const useChangedFields = () => [];
+export const useSumOfChangedProperties = () => {
+    const { filters } = useFiltersContext();
+    return useCalculateIds(initialState.filters, filters).length;
+};
+
+export const useIds = () => {
+    const { filters } = useFiltersContext();
+    return useCalculateIds<ICustomerFilter>(initialState.filters, filters);
+};
+
+export const useChangedFields = () => {
+    const { filters } = useFiltersContext();
+    return _useChangedFields<ICustomerFilter>(initialState.filters, filters);
+};
