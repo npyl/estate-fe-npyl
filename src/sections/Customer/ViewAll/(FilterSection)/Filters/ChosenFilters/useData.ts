@@ -29,10 +29,10 @@ const getFilterTags = (t: TranslationType): Tags => ({
     maxPrice: {
         label: t("Maximun Price"),
     },
-    minArea: {
+    minCovered: {
         label: t("Minimum Covered Area"),
     },
-    maxArea: {
+    maxCovered: {
         label: t("Maximun Covered Area"),
     },
     managerId: {
@@ -51,7 +51,7 @@ const getPairFilterTags = (t: TranslationType): Tags => ({
     minMaxPrice: {
         label: t("Price (€)"),
     },
-    minMaxArea: {
+    minMaxCovered: {
         label: t("Area (m²)"),
     },
 });
