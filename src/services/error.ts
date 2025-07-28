@@ -18,7 +18,7 @@ export const rtkQueryErrorLogger: Middleware =
                 action.payload.status === 403
             ) {
                 localStorage.removeItem("accessToken");
-                window.location.replace("/authentication/login");
+                window.location.replace("/login");
                 errorToast("_END_OF_SESSION_");
             } else {
                 // no op

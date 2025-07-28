@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TranslationType } from "@/types/translation";
-import { RHFTextField } from "../hook-form";
+import { RHFTextField } from "../../components/hook-form";
 
 const Form = styled("form")(({ theme }) => ({
     display: "flex",
@@ -27,7 +27,7 @@ const getSchema = (t: TranslationType) =>
             .required(t("Password is required") || ""),
     });
 
-export const JWTLogin: FC = (props) => {
+const JWTLogin: FC = (props) => {
     const { t } = useTranslation();
 
     const schema = useMemo(() => getSchema(t), [t]);
@@ -91,3 +91,5 @@ export const JWTLogin: FC = (props) => {
         </FormProvider>
     );
 };
+
+export default JWTLogin;

@@ -1,17 +1,11 @@
 import { Box, Card, Container, Typography } from "@mui/material";
-import type { NextPage } from "next";
-import { GuestGuard } from "@/components/authentication/guest-guard";
-import { JWTLogin } from "@/components/authentication/jwt-login";
+import JWTLogin from "@/sections/Login/JWTLogin";
 import LogoVertical from "@/assets/logo/vertical/light";
-import { useAuth } from "@/hooks/use-auth";
 import { useTranslation } from "react-i18next";
 import { LanguageButtonAuth } from "@/components/language/LanguageButtonAuth";
 
-type Platform = "JWT";
-
-const Login: NextPage = () => {
+const LoginSection = () => {
     const { t } = useTranslation();
-    const { platform }: { platform: Platform } = useAuth();
 
     return (
         <Box
@@ -90,7 +84,7 @@ const Login: NextPage = () => {
                             width: "100%",
                         }}
                     >
-                        {platform === "JWT" && <JWTLogin />}
+                        <JWTLogin />
                     </Box>
                 </Card>
             </Container>
@@ -98,6 +92,4 @@ const Login: NextPage = () => {
     );
 };
 
-Login.getLayout = (page) => <GuestGuard>{page}</GuestGuard>;
-
-export default Login;
+export default LoginSection;
