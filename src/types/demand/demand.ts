@@ -1,7 +1,7 @@
-import { Nullable } from "./common";
-import { IPropertyFeatures } from "./features";
-import { KeyValue } from "./KeyValue";
-import { TShape } from "./shape";
+import { Nullable } from "@/types/common";
+import { IPropertyFeatures } from "@/types/features";
+import { KeyValue } from "@/types/KeyValue";
+import { TShape } from "@/types/shape";
 
 export interface IDemandFilters {
     minBedrooms: number;
