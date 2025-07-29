@@ -14,12 +14,24 @@ export const Schema = object().shape({
         .required("Email is required"),
     workspaceEmail: string().email().optional(),
 
-    password: string()
-        .required("Password is required")
-        .matches(
-            /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/,
-            "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters."
-        ),
+    // INFO: Require a password ONLY when we are creating a user!
+    password: string().when("id", {
+        is: (id?: number) => !Boolean(id),
+        then: (schema) =>
+            schema
+                .matches(
+                    /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/,
+                    "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters."
+                )
+                .required("Password is required"),
+        otherwise: (schema) =>
+            schema
+                .matches(
+                    /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/,
+                    "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters."
+                )
+                .optional(),
+    }),
 
     mobilePhone: numberString("Mobile Phone").length(10).required(),
     homePhone: numberString("Home Phone"),

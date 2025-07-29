@@ -5,6 +5,7 @@ import Form from "./Form";
 import Content from "./Content";
 import Dialog from "@/components/Dialog";
 import Actions from "./Actions";
+import { FC } from "react";
 
 // {openReset && (
 //     <Dialog open={openReset} onClose={() => setOpenReset(false)}>
@@ -34,26 +35,31 @@ import Actions from "./Actions";
 //     </Dialog>
 // )}
 
+interface TitleProps {
+    userId?: number;
+}
+
+const Title: FC<TitleProps> = ({ userId }) => {
+    const { t } = useTranslation();
+    return t(Boolean(userId) ? "User Update" : "Create User");
+};
+
 interface UserFormProps {
     user?: IUser;
     onClose: () => void;
 }
 
-const UserForm = ({ user, onClose }: UserFormProps) => {
-    const { t } = useTranslation();
-
-    return (
-        <Form user={user} onClose={onClose}>
-            <Dialog
-                open
-                title={t(user ? "User Update" : "Create User")}
-                actions={<Actions user={user} onClose={onClose} />}
-                content={<Content user={user} />}
-                onClose={onClose}
-                onClick={stopPropagation}
-            />
-        </Form>
-    );
-};
+const UserForm: FC<UserFormProps> = ({ user, onClose }) => (
+    <Form user={user}>
+        <Dialog
+            open
+            title={<Title userId={user?.id} />}
+            actions={<Actions user={user} onClose={onClose} />}
+            content={<Content user={user} />}
+            onClose={onClose}
+            onClick={stopPropagation}
+        />
+    </Form>
+);
 
 export default UserForm;
