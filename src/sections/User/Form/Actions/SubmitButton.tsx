@@ -22,10 +22,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({ user, onClose }) => {
     }, []);
 
     const methods = useFormContext<IUserPOST>();
-    const handleSubmit = useCallback(
-        (e: MouseEvent<HTMLButtonElement>) => methods.handleSubmit(onSubmit),
-        []
-    );
+    const handleSubmit = useCallback(methods.handleSubmit(onSubmit), []);
 
     return (
         <LoadingButton

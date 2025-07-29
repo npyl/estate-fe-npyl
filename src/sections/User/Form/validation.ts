@@ -21,14 +21,14 @@ export const Schema = object().shape({
             "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters."
         ),
 
-    mobilePhone: numberString("Mobile Phone").required(),
+    mobilePhone: numberString("Mobile Phone").length(10).required(),
     homePhone: numberString("Home Phone"),
     businessPhone: numberString("Business Phone"),
     officePhone: numberString("Office Phone"),
     callCenterNumber: numberString("Call Center Number"),
 
     address: string().required(),
-    zipCode: string().required(),
+    zipCode: numberString("").length(5).required(),
     city: string().required(),
     region: string().required(),
 
