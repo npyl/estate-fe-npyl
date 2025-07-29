@@ -1,9 +1,7 @@
-import { IconButton, Stack, Typography } from "@mui/material";
-import { FC, MouseEvent, useCallback, useState } from "react";
+import { Stack, Typography } from "@mui/material";
+import { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDeleteUserMutation } from "@/services/user";
-import useDialog from "@/hooks/useDialog";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "@/ui/confirm-dialog";
 import { LoadingButton } from "@mui/lab";
 import AssigneeAutocomplete from "@/ui/Autocompletes/Assignee";
@@ -57,26 +55,4 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ userId, onClose }) => {
     );
 };
 
-interface DeleteButtonProps {
-    userId: number;
-}
-
-const DeleteButton: FC<DeleteButtonProps> = ({ userId }) => {
-    const [isOpen, open, close] = useDialog();
-    const onClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        open();
-    }, []);
-
-    return (
-        <>
-            <IconButton size="small" onClick={onClick}>
-                <DeleteIcon fontSize="small" />
-            </IconButton>
-
-            {isOpen ? <DeleteDialog userId={userId} onClose={close} /> : null}
-        </>
-    );
-};
-
-export default DeleteButton;
+export default DeleteDialog;
