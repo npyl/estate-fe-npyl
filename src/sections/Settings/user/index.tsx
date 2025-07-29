@@ -30,8 +30,7 @@ const UserPage = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>{t("Fullname")}</TableCell>
-                            <TableCell>{t("Email")}</TableCell>
+                            <TableCell>{t("User")}</TableCell>
                             <TableCell>{t("Status")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
                             <TableCell>{t("Edit")}</TableCell>

@@ -9,6 +9,7 @@ import { IUser } from "@/types/user";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
 import ToggleActiveButton from "./ToggleActiveButton";
+import AvatarLarge from "@/components/Avatar/Large";
 
 interface UserRowProps {
     activeStatuses: boolean[];
@@ -17,6 +18,8 @@ interface UserRowProps {
 
 const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
     const { t } = useTranslation();
+
+    const { avatar, firstName, lastName, email } = user;
 
     const router = useRouter();
 
@@ -27,9 +30,13 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
     return (
         <AnimatedTableRow key={user.id} onClick={() => handleRowClick(user.id)}>
             <TableCell>
-                {user.firstName || ""} {user.lastName || ""}
+                <AvatarLarge
+                    src={avatar}
+                    firstName={firstName}
+                    lastName={lastName}
+                    email={email}
+                />
             </TableCell>
-            <TableCell>{user.email}</TableCell>
             <TableCell>
                 {user.isAdmin ? (
                     <Label
