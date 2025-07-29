@@ -1,5 +1,5 @@
-import { IMapAddress } from "../../types";
-import getAddressComponent from "../../util/getAddressComponent";
+import { IMapAddress } from "../../../types";
+import getAddressComponent from "../../../util/getAddressComponent";
 
 const getAddressFromLatLng = async (
     geocoder: google.maps.Geocoder,

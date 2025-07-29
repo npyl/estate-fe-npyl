@@ -23,14 +23,13 @@ export type StopDraw = null;
 
 interface IMapControls {
     leftTop?: ReactNode;
-    leftCenter?: ReactNode;
-
     rightTop?: ReactNode;
-
     centerTop?: ReactNode;
+
+    leftCenter?: ReactNode;
 }
 
-interface IMapProps extends IMapControls {
+interface MapContainerProps extends IMapControls {
     onReady?: (m: google.maps.Map) => void;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
 
@@ -40,26 +39,29 @@ interface IMapProps extends IMapControls {
         address: IMapAddress
     ) => void;
 
-    //
-    // Shape
-    //
-    onDraw?: (shape: DrawShape | StopDraw) => void;
-    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
-    //
-    // Search
-    //
-    onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
-
     zoom?: number;
     shapes?: TShape[];
     center?: IMapCoordinates;
     mainMarker?: boolean;
 
-    drawing?: boolean;
-    search?: boolean;
-
     // INFO: Only for e.g. custom markers. For controls use topLeft, centerLeft etc.
     children?: ReactNode;
 }
 
-export type { IMapControls, IMapProps };
+interface IMapProps extends MapContainerProps {
+    drawing?: boolean;
+    search?: boolean;
+
+    //
+    // Shape
+    //
+    onDraw?: (shape: DrawShape | StopDraw) => void;
+    onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
+
+    //
+    // Search
+    //
+    onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
+}
+
+export type { MapContainerProps, IMapControls, IMapProps };
