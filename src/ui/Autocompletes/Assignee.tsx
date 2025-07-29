@@ -18,7 +18,7 @@ const AssignToMeButtonSx: SxProps<Theme> = {
 
 interface AssigneeAutocompleteProps extends ManagerAutocompleteProps {
     label: string;
-    error: boolean;
+    error?: boolean;
     helperText?: string;
     // ...
     assignToMe?: boolean;
@@ -27,7 +27,7 @@ interface AssigneeAutocompleteProps extends ManagerAutocompleteProps {
 const AssigneeAutocomplete = forwardRef<
     HTMLDivElement,
     AssigneeAutocompleteProps
->(({ label, error, helperText, assignToMe = true, ...props }, ref) => {
+>(({ label, error = false, helperText, assignToMe = false, ...props }, ref) => {
     const { t } = useTranslation();
 
     const { user } = useAuth();

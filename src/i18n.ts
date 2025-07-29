@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            TRANSFER_TO: "Transfer data to:",
+
             DELETE_USER_0: "Delete user",
 
             "Purchase in Greece": "Purchase in Greece",
@@ -1398,6 +1400,8 @@ const resources = {
     },
     el: {
         translation: {
+            TRANSFER_TO: "Μεταφορά δεδομένων σε:",
+
             DELETE_USER_0: "Διαγραφή χρήστη",
 
             "Purchase in Greece": "Αγορά στην Ελλάδα",

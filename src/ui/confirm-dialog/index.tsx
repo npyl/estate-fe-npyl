@@ -17,15 +17,11 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({ actions, ...other }) => {
             onClick={stopPropagation}
             actions={
                 <>
-                    {actions}
-
-                    <Button
-                        variant="outlined"
-                        color="inherit"
-                        onClick={other.onClose}
-                    >
+                    <Button color="inherit" onClick={other.onClose}>
                         {t("Close")}
                     </Button>
+
+                    {actions}
                 </>
             }
             {...other}

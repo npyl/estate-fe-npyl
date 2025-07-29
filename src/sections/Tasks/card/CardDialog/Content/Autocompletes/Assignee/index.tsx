@@ -17,6 +17,7 @@ const RHFAssignee = () => {
                 fieldState: { error },
             }) => (
                 <AssigneeAutocomplete
+                    assignToMe
                     label={t("Assignee")}
                     // INFO: make sure we store in array format
                     value={value?.[0] ?? -1}
