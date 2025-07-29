@@ -1,0 +1,65 @@
+import { TableCell } from "@mui/material";
+import { useRouter } from "next/router";
+import { FC } from "react";
+import { useTranslation } from "react-i18next";
+import AnimatedTableRow from "@/sections/Settings/user/AnimatedTableRow";
+import { Label } from "@/components/Label";
+import GotoPermissions from "./GotoPermissions";
+import { IUser } from "@/types/user";
+import EditButton from "./EditButton";
+import DeleteButton from "./DeleteButton";
+import ToggleActiveButton from "./ToggleActiveButton";
+
+interface UserRowProps {
+    activeStatuses: boolean[];
+    user: IUser;
+}
+
+const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
+    const { t } = useTranslation();
+
+    const router = useRouter();
+
+    const handleRowClick = (userId: number) => {
+        router.push(`/user/${userId}`);
+    };
+
+    return (
+        <AnimatedTableRow key={user.id} onClick={() => handleRowClick(user.id)}>
+            <TableCell>
+                {user.firstName || ""} {user.lastName || ""}
+            </TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>
+                {user.isAdmin ? (
+                    <Label
+                        opaque
+                        color="info"
+                        name={t("Admin")}
+                        width="fit-content"
+                    />
+                ) : (
+                    <ToggleActiveButton
+                        activeStatuses={activeStatuses}
+                        userId={user.id}
+                    />
+                )}
+            </TableCell>
+
+            <TableCell>{user.mobilePhone}</TableCell>
+            <TableCell>
+                <EditButton user={user} />
+                <DeleteButton userId={user.id} />
+            </TableCell>
+            <TableCell>
+                <GotoPermissions userId={user.id} />
+            </TableCell>
+        </AnimatedTableRow>
+    );
+};
+
+const getRow = (activeStatuses: boolean[]) => (u: IUser) => (
+    <UserRow key={u.id} user={u} activeStatuses={activeStatuses} />
+);
+
+export default getRow;

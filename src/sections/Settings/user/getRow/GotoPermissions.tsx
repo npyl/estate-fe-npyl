@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { FC } from "react";
-import { PERMISSIONS_TAB_ID } from "../constant";
+import { PERMISSIONS_TAB_ID } from "../../constant";
 import Link from "@/components/Link";
 import stopPropagation from "@/utils/stopPropagation";
 
