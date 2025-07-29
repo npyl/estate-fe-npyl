@@ -37,6 +37,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                     email={email}
                 />
             </TableCell>
+            <TableCell>{user.mobilePhone}</TableCell>
             <TableCell>
                 {user.isAdmin ? (
                     <Label
@@ -52,14 +53,12 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                     />
                 )}
             </TableCell>
-
-            <TableCell>{user.mobilePhone}</TableCell>
+            <TableCell>
+                <GotoPermissions userId={user.id} />
+            </TableCell>
             <TableCell>
                 <EditButton user={user} />
                 <DeleteButton userId={user.id} />
-            </TableCell>
-            <TableCell>
-                <GotoPermissions userId={user.id} />
             </TableCell>
         </AnimatedTableRow>
     );

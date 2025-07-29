@@ -31,10 +31,10 @@ const UserPage = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>{t("User")}</TableCell>
-                            <TableCell>{t("Status")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
-                            <TableCell>{t("Edit")}</TableCell>
+                            <TableCell>{t("Status")}</TableCell>
                             <TableCell>{t("Permissions")}</TableCell>
+                            <TableCell>{t("Edit")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>{users?.map(getRow(activeStatuses))}</TableBody>
