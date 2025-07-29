@@ -20,10 +20,10 @@ const Actions: FC<ActionsProps> = ({ user, onClose }) => {
     return (
         <>
             {user ? <ResetButton /> : null}
-            {isDirty ? <SubmitButton user={user} onClose={onClose} /> : null}
             <Button variant="outlined" onClick={onClose} color="secondary">
                 <Typography>{t("Cancel")}</Typography>
             </Button>
+            {isDirty ? <SubmitButton user={user} onClose={onClose} /> : null}
         </>
     );
 };

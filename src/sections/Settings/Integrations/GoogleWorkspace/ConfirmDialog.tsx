@@ -1,4 +1,4 @@
-import ConfirmDialog from "@/components/confirm-dialog";
+import ConfirmDialog from "@/ui/confirm-dialog";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
@@ -19,7 +19,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
             open
             title={t("Delete")}
             content={<Typography>{t("_UPDATE_WORKSPACE_EMAILS_")}</Typography>}
-            action={
+            actions={
                 <Button variant="contained" color="error" onClick={onConfirm}>
                     {t("Delete")}
                 </Button>

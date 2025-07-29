@@ -3,7 +3,7 @@ import { Button, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-const PPConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
+const PPConfirmDialog = dynamic(() => import("@/ui/confirm-dialog"));
 
 interface DeleteButtonProps {
     postId: number;
@@ -26,7 +26,7 @@ const ConfirmDialog: FC<DeleteButtonProps> = ({ postId, onClose }) => {
             open
             title={t("Delete post?")}
             content={<Typography>{t("DELETE_POST_0")}</Typography>}
-            action={
+            actions={
                 <Button
                     variant="contained"
                     color="error"

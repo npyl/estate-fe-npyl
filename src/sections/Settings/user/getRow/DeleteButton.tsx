@@ -6,7 +6,7 @@ import { useDeleteUserMutation } from "@/services/user";
 import dynamic from "next/dynamic";
 import useDialog from "@/hooks/useDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ConfirmDialog from "@/components/confirm-dialog";
+import ConfirmDialog from "@/ui/confirm-dialog";
 
 interface DeleteButtonProps {
     userId: number;
@@ -28,15 +28,15 @@ const DeleteButton: FC<DeleteButtonProps> = ({ userId }) => {
     );
     return (
         <>
-            <IconButton onClick={onClick}>
-                <DeleteIcon />
+            <IconButton size="small" onClick={onClick}>
+                <DeleteIcon fontSize="small" />
             </IconButton>
 
             {isOpen ? (
                 <ConfirmDialog
                     open
                     title={t("DELETE_USER_0")}
-                    action={
+                    actions={
                         <Button
                             disabled
                             color="error"
