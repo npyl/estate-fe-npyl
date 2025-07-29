@@ -30,6 +30,7 @@ import useDialog from "@/hooks/useDialog";
 import { IUser } from "@/types/user";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "@/components/confirm-dialog";
+import stopPropagation from "@/utils/stopPropagation";
 
 const CreateButton = () => {
     const { t } = useTranslation();
@@ -113,8 +114,7 @@ const ToggleActiveButton: FC<ToggleActiveButtonProps> = ({
                     <IOSSwitch
                         checked={isChecked} // fallback to 'false' if the id is not yet in the state
                         onChange={toggle}
-                        onClick={(e) => e.stopPropagation()}
-                        name="isActiveSwitch"
+                        onClick={stopPropagation}
                         sx={{ m: 1 }}
                     />
                 }

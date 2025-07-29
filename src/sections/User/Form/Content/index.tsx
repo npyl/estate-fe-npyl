@@ -8,6 +8,42 @@ import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
 import { useAuth } from "@/hooks/use-auth";
 import useToggle from "@/hooks/useToggle";
 
+const PasswordField = () => {
+    const { t } = useTranslation();
+
+    const [showPassword, togglePassword] = useToggle();
+
+    return (
+        <RHFTextField
+            required
+            name="password"
+            label={t("Password")}
+            type={showPassword ? "text" : "password"}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment
+                        position="end"
+                        sx={{
+                            mb: 0.5,
+                            mr: 1.5,
+                        }}
+                    >
+                        <IconButton onClick={togglePassword} edge="end">
+                            <Iconify
+                                icon={
+                                    showPassword
+                                        ? "eva:eye-fill"
+                                        : "eva:eye-off-fill"
+                                }
+                            />
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }}
+        />
+    );
+};
+
 interface ContentProps {
     user?: IUser;
 }
@@ -16,8 +52,6 @@ const Content: FC<ContentProps> = ({ user }) => {
     const { t } = useTranslation();
 
     const isAdmin = useAuth().user?.isAdmin;
-
-    const [showPassword, togglePassword] = useToggle();
 
     return (
         <Grid container flex={1} direction="row" p={1} spacing={2}>
@@ -75,36 +109,9 @@ const Content: FC<ContentProps> = ({ user }) => {
                         name="lastName"
                         label={t("Last Name")}
                     />
-                    <RHFTextField
-                        required
-                        name="password"
-                        label={t("Password")}
-                        type={showPassword ? "text" : "password"}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment
-                                    position="end"
-                                    sx={{
-                                        mb: 0.5,
-                                        mr: 1.5,
-                                    }}
-                                >
-                                    <IconButton
-                                        onClick={togglePassword}
-                                        edge="end"
-                                    >
-                                        <Iconify
-                                            icon={
-                                                showPassword
-                                                    ? "eva:eye-fill"
-                                                    : "eva:eye-off-fill"
-                                            }
-                                        />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+
+                    {!Boolean(user) ? <PasswordField /> : null}
+
                     <RHFTextField
                         required
                         name="mobilePhone"

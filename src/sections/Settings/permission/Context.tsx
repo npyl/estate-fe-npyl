@@ -13,7 +13,7 @@ import {
     useGetPresetByIdQuery,
     useGetRelationshipQuery,
 } from "src/services/security";
-import { useAuth } from "@/hooks/use-auth";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 export type ISecurityState = {
     data: IRolesReq;
@@ -54,12 +54,14 @@ export const initialData = {
 };
 
 const useSecurityState = () => {
-    const { user } = useAuth();
+    const [selectedUser, setSelectedUser] = useQueryState(
+        "userId",
+        parseAsInteger.withDefault(-1)
+    );
 
     const [data, setData] = useState<IRolesReq>(initialData);
     const [targetUser, setTargetUser] = useState<number>(-1);
     const [selectedPreset, setSelectedPreset] = useState<number>(-1);
-    const [selectedUser, setSelectedUser] = useState<number>(user?.id ?? -1);
     const [isDirty, setIsDirty] = useState<boolean>(false);
     const skipRelation = useMemo(
         () => targetUser === -1 || selectedUser === -1,

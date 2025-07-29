@@ -4,8 +4,11 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useSecurityContext } from "src/contexts/security";
-import { useSaveRelationshipMutation } from "src/services/security";
+import {
+    SecurityProvider,
+    useSecurityContext,
+} from "@/sections/Settings/permission/Context";
+import { useSaveRelationshipMutation } from "@/services/security";
 import PermissionsTable from "./PermissionsTable";
 import SeparatePermissions from "./SeparatePermissions";
 import Sidebar from "./Sidebar";
@@ -54,4 +57,10 @@ const PermissionPage: FC = () => {
     );
 };
 
-export default PermissionPage;
+const Wrapped = () => (
+    <SecurityProvider>
+        <PermissionPage />
+    </SecurityProvider>
+);
+
+export default Wrapped;

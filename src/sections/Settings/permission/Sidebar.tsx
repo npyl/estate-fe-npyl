@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSecurityContext } from "src/contexts/security";
+import { useSecurityContext } from "@/sections/Settings/permission/Context";
 import {
     useDeletePresetMutation,
     useGetPresetsQuery,

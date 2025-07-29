@@ -4,6 +4,7 @@ import { IUser } from "@/types/user";
 import { FC } from "react";
 import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
+import { useFormContext } from "react-hook-form";
 
 interface ActionsProps {
     user?: IUser;
@@ -13,10 +14,13 @@ interface ActionsProps {
 const Actions: FC<ActionsProps> = ({ user, onClose }) => {
     const { t } = useTranslation();
 
+    const { formState } = useFormContext();
+    const { isDirty } = formState;
+
     return (
         <>
             {user ? <ResetButton /> : null}
-            <SubmitButton user={user} onClose={onClose} />
+            {isDirty ? <SubmitButton user={user} onClose={onClose} /> : null}
             <Button variant="outlined" onClick={onClose} color="secondary">
                 <Typography>{t("Cancel")}</Typography>
             </Button>
