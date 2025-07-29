@@ -4,7 +4,6 @@ import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { useGetUserQuery } from "src/services/user";
 import ViewUser from "@/sections/User/View";
 import { useRouter } from "next/router";
-import { SecurityProvider } from "src/contexts/security";
 import AdminGuard from "@/components/authentication/admin-guard";
 
 const User: NextPage = () => {
@@ -21,9 +20,7 @@ const User: NextPage = () => {
 
 User.getLayout = (page) => (
     <DashboardLayout>
-        <AdminGuard>
-            <SecurityProvider>{page}</SecurityProvider>
-        </AdminGuard>
+        <AdminGuard>{page}</AdminGuard>
     </DashboardLayout>
 );
 

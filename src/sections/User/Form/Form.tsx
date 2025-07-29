@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FC, PropsWithChildren, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useAddUserMutation } from "@/services/user";
 import { IUser, IUserPOST } from "@/types/user";
 import { Schema } from "./validation";
 import { useAuth } from "@/hooks/use-auth";
+import preventDefault from "@/utils/preventDefault";
 
 interface FormProps extends PropsWithChildren {
     user?: IUser;
@@ -46,16 +46,9 @@ const Form: FC<FormProps> = ({ user, onClose, children }) => {
         mode: "onChange",
     });
 
-    const [addUser] = useAddUserMutation();
-
-    const onSubmit = async ({ status, ...user }: IUserPOST) => {
-        await addUser(user);
-        onClose();
-    };
-
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+            <form onSubmit={preventDefault}>{children}</form>
         </FormProvider>
     );
 };

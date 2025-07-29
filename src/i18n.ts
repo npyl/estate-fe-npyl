@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            DELETE_USER_0: "Delete user",
+
             "Purchase in Greece": "Purchase in Greece",
             "Purchase in Patras": "Purchase in Patras",
             "Purchase Abroad": "Purchase Abroad",
@@ -1396,6 +1398,8 @@ const resources = {
     },
     el: {
         translation: {
+            DELETE_USER_0: "Διαγραφή χρήστη",
+
             "Purchase in Greece": "Αγορά στην Ελλάδα",
             "Purchase in Patras": "Αγορά στην Πάτρα",
             "Purchase Abroad": "Αγορά στο Εξωτερικό",

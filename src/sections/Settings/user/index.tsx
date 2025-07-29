@@ -19,11 +19,17 @@ import AnimatedTableRow from "@/sections/Settings/user/AnimatedTableRow";
 const UserForm = dynamic(() => import("@/sections/User/Form"));
 import IOSSwitch from "@/components/iOSSwitch";
 import { Label } from "@/components/Label";
-import { useAllUsersQuery, useToggleActiveUserMutation } from "@/services/user";
+import {
+    useAllUsersQuery,
+    useDeleteUserMutation,
+    useToggleActiveUserMutation,
+} from "@/services/user";
 import dynamic from "next/dynamic";
 import GotoPermissions from "./GotoPermissions";
 import useDialog from "@/hooks/useDialog";
 import { IUser } from "@/types/user";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ConfirmDialog from "@/components/confirm-dialog";
 
 const CreateButton = () => {
     const { t } = useTranslation();
@@ -86,6 +92,8 @@ const ToggleActiveButton: FC<ToggleActiveButtonProps> = ({
     activeStatuses,
     userId,
 }) => {
+    const { t } = useTranslation();
+
     const isChecked = getIsChecked(activeStatuses, userId);
 
     const [toggleActiveUser] = useToggleActiveUserMutation();
@@ -110,9 +118,54 @@ const ToggleActiveButton: FC<ToggleActiveButtonProps> = ({
                         sx={{ m: 1 }}
                     />
                 }
-                label="Active"
+                label={t("Active")}
             />
         </FormGroup>
+    );
+};
+
+interface DeleteButtonProps {
+    userId: number;
+}
+
+const DeleteButton: FC<DeleteButtonProps> = ({ userId }) => {
+    const { t } = useTranslation();
+    const [isOpen, open, close] = useDialog();
+    const onClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        open();
+    }, []);
+    const [deleteUser] = useDeleteUserMutation();
+
+    // TODO: transfer?!
+    const onDelete = useCallback(
+        () => deleteUser({ userId, transferId: -1 }),
+        [userId]
+    );
+    return (
+        <>
+            <IconButton onClick={onClick}>
+                <DeleteIcon />
+            </IconButton>
+
+            {isOpen ? (
+                <ConfirmDialog
+                    open
+                    title={t("DELETE_USER_0")}
+                    action={
+                        <Button
+                            disabled
+                            color="error"
+                            variant="contained"
+                            onClick={onDelete}
+                        >
+                            {t("Delete")}
+                        </Button>
+                    }
+                    onClose={close}
+                />
+            ) : null}
+        </>
     );
 };
 
@@ -138,7 +191,12 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
             <TableCell>{user.email}</TableCell>
             <TableCell>
                 {user.isAdmin ? (
-                    <Label opaque color="info" name={t("Admin")} />
+                    <Label
+                        opaque
+                        color="info"
+                        name={t("Admin")}
+                        width="fit-content"
+                    />
                 ) : (
                     <ToggleActiveButton
                         activeStatuses={activeStatuses}
@@ -150,6 +208,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
             <TableCell>{user.mobilePhone}</TableCell>
             <TableCell>
                 <EditButton user={user} />
+                <DeleteButton userId={user.id} />
             </TableCell>
             <TableCell>
                 <GotoPermissions userId={user.id} />
@@ -183,7 +242,7 @@ const UserPage = () => {
                             <TableCell>{t("Email")}</TableCell>
                             <TableCell>{t("Status")}</TableCell>
                             <TableCell>{t("Mobile Phone")}</TableCell>
-                            <TableCell>{t("Update")}</TableCell>
+                            <TableCell>{t("Edit")}</TableCell>
                             <TableCell>{t("Permissions")}</TableCell>
                         </TableRow>
                     </TableHead>
