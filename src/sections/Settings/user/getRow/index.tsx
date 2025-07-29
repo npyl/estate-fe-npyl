@@ -10,6 +10,7 @@ import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
 import ToggleActiveButton from "./ToggleActiveButton";
 import AvatarLarge from "@/components/Avatar/Large";
+import ResetPasswordButton from "./ResetPasswordButton";
 
 interface UserRowProps {
     activeStatuses: boolean[];
@@ -57,6 +58,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                 <GotoPermissions userId={user.id} />
             </TableCell>
             <TableCell>
+                <ResetPasswordButton userId={user.id} />
                 <EditButton user={user} />
                 <DeleteButton userId={user.id} />
             </TableCell>

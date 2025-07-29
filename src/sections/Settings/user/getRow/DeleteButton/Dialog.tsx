@@ -18,9 +18,10 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ userId, onClose }) => {
 
     const [transferId, setTransferId] = useState<number>();
 
-    const onDelete = useCallback(() => {
+    const onDelete = useCallback(async () => {
         if (!Boolean(transferId)) return;
-        deleteUser({ userId, transferId: transferId! });
+        await deleteUser({ userId, transferId: transferId! });
+        onClose();
     }, [userId, transferId]);
 
     const Actions = Boolean(transferId) ? (

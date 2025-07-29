@@ -17,6 +17,11 @@ interface ISetTaskViewReq {
     visibility: TTaskVisibility;
 }
 
+interface IResetPasswordReq {
+    userId: number;
+    newPassword: string;
+}
+
 export const user = apiWithTranslation({
     reducerPath: "user",
     baseQuery: fetchBaseQuery({
@@ -92,17 +97,11 @@ export const user = apiWithTranslation({
             }),
             invalidatesTags: ["Users"],
         }),
-        resetPassword: builder.mutation<
-            void,
-            { userId: number; newPassword: string }
-        >({
-            query: ({ userId, newPassword }) => ({
+        resetPassword: builder.mutation<void, IResetPasswordReq>({
+            query: (body) => ({
                 url: "reset-password",
                 method: "PATCH",
-                body: {
-                    userId,
-                    newPassword,
-                },
+                body,
             }),
         }),
 

@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            RESET_USER_PASSWORD: "Reset user password",
+
             TRANSFER_TO: "Transfer data to:",
 
             DELETE_USER_0: "Delete user",
@@ -1400,6 +1402,8 @@ const resources = {
     },
     el: {
         translation: {
+            RESET_USER_PASSWORD: "Αλλαγή κωδικού χρήστη",
+
             TRANSFER_TO: "Μεταφορά δεδομένων σε:",
 
             DELETE_USER_0: "Διαγραφή χρήστη",
