@@ -3,6 +3,11 @@ import { styled } from "@mui/material/styles";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
+const POLYGON_ID = "polygon-testid";
+const CIRCLE_ID = "circle-testid";
+const RECTANGLE_ID = "rectangle-testid";
+const CLEAR_ID = "clear-testid";
+
 const StyledButton = styled(Button)({
     margin: "2px",
     padding: "3px 4px",
@@ -48,7 +53,7 @@ const Picker: FC<PickerProps> = ({
                 borderRadius: "5px",
             }}
         >
-            <StyledButton onClick={drawPolygon}>
+            <StyledButton data-testid={POLYGON_ID} onClick={drawPolygon}>
                 <SvgIcon>
                     <path
                         fill="currentColor"
@@ -57,7 +62,7 @@ const Picker: FC<PickerProps> = ({
                 </SvgIcon>
             </StyledButton>
 
-            <StyledButton onClick={drawCircle}>
+            <StyledButton data-testid={CIRCLE_ID} onClick={drawCircle}>
                 <SvgIcon
                     sx={{
                         width: "10px",
@@ -70,7 +75,7 @@ const Picker: FC<PickerProps> = ({
                 </SvgIcon>
             </StyledButton>
 
-            <StyledButton onClick={drawRectangle}>
+            <StyledButton data-testid={RECTANGLE_ID} onClick={drawRectangle}>
                 <SvgIcon>
                     <path
                         fill="currentColor"
@@ -79,11 +84,12 @@ const Picker: FC<PickerProps> = ({
                 </SvgIcon>
             </StyledButton>
 
-            <StyledButton onClick={clear}>
+            <StyledButton data-testid={CLEAR_ID} onClick={clear}>
                 <Typography fontSize={10}>{t("Clear")}</Typography>
             </StyledButton>
         </Stack>
     );
 };
 
+export { POLYGON_ID, CIRCLE_ID, RECTANGLE_ID, CLEAR_ID };
 export default Picker;

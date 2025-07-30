@@ -1,6 +1,21 @@
 import { useCallback, useState } from "react";
-import Map, { IMapAddress, IMapMarker } from "../../../src/components/Map";
+import Map, {
+    DrawShape,
+    IMapAddress,
+    IMapMarker,
+    StopDraw,
+} from "../../../src/components/Map";
 import Marker from "../../../src/components/Map/Marker";
+import { TShape } from "@/types/shape";
+import { drawingToPoints } from "@/components/Map/util";
+
+// INFO: prevent from showing up on production
+export const getStaticProps = async () => {
+    if (process.env.NODE_ENV === "production") {
+        return { notFound: true };
+    }
+    return { props: {} };
+};
 
 type TMarker = Required<IMapMarker>;
 
@@ -47,6 +62,8 @@ const MAP_ID = "map-testid";
 const ZOOM = 16;
 const CLICK_RES_ID = "click-res-testid";
 
+const SHAPE_RES_ID = "shape-res-testid";
+
 interface IClickRes {
     lat: number;
     lng: number;
@@ -63,6 +80,12 @@ const Tester = () => {
 
     // -------------------------------------------------------------
 
+    const [shape, setShape] = useState<TShape>();
+    const onDraw = useCallback((s: DrawShape | StopDraw) => {
+        if (!s) setShape(undefined);
+        else setShape(drawingToPoints(s));
+    }, []);
+
     return (
         <div>
             <div
@@ -70,14 +93,21 @@ const Tester = () => {
                 style={{ width: "800px", height: "600px" }}
             >
                 <Map
+                    drawing
                     search
+                    shapes={shape ? [shape] : []}
                     zoom={ZOOM}
                     onClick={onMapClick}
                     onSearchSelect={onMapClick}
+                    onDraw={onDraw}
                 >
                     <MapList />
                 </Map>
             </div>
+
+            {shape ? (
+                <div data-testid={SHAPE_RES_ID}>{JSON.stringify(shape)}</div>
+            ) : null}
 
             {/* Click Result */}
             {clickRes ? (
@@ -93,6 +123,7 @@ export {
     MARKERS,
     getMarkerTestId,
     // ...
+    SHAPE_RES_ID,
     CLICK_RES_ID,
 };
 export type { TMarker, IClickRes };
