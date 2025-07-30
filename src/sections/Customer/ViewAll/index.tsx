@@ -3,7 +3,7 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 import { FC, useEffect, useMemo, useState } from "react";
 import useLocalStorageScrollRestore from "@/hooks/useLocalStorageScrollRestore";
 import { useFilterCustomersQuery } from "@/services/customers";
-import DataGrid from "@/components/DataGrid/Customer";
+import DataGrid from "@/ui/DataGrids/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/ui/Cards/CustomerCard";
 import { useTranslation } from "react-i18next";

@@ -1,7 +1,7 @@
-import DataGridTable from "../DataGrid";
+import DataGridTable from "@/components/DataGrid";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import GridProps from "../types";
+import GridProps from "@/components/DataGrid/types";
 import { getColumns } from "./columns";
 
 type PropertyDataGridProps = Omit<GridProps, "columns">;

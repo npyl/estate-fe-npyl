@@ -1,7 +1,7 @@
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
-import DataGrid from "@/components/DataGrid/Property";
+import DataGrid from "@/ui/DataGrids/Property";
 import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
 import { IPropertyFilterParams } from "@/services/properties";

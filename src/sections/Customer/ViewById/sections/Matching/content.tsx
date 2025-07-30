@@ -1,5 +1,5 @@
 import Placeholder from "./Placeholder";
-import DataGrid from "@/components/DataGrid/Property";
+import DataGrid from "@/ui/DataGrids/Property";
 import useResponsive from "@/hooks/useResponsive";
 import Grid from "@mui/material/Unstable_Grid2";
 import PropertyCard from "@/ui/Cards/PropertyCard";

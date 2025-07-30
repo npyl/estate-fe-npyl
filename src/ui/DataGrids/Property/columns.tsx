@@ -1,9 +1,9 @@
 import { Stack, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "@/components/image";
-import { KeyValue } from "src/types/KeyValue";
+import { KeyValue } from "@/types/KeyValue";
 import { TranslationType } from "@/types/translation";
-import RenderLabelsCell from "../shared/RenderLabels";
+import RenderLabelsCell from "@/ui/DataGrids/shared/RenderLabels";
 import { useTranslation } from "react-i18next";
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
