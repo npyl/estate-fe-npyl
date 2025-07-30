@@ -8,6 +8,7 @@ import {
     MAP_ID,
 } from "../../../src/pages/__test__/map.page";
 import gotoSafe from "../../_util/gotoSafe";
+import { MAP_SEARCH_TESTID } from "../../../src/components/Map/plugins/Search";
 
 const baseUrl = "http://127.0.0.1:3000/__test__/map";
 
@@ -69,11 +70,43 @@ test("onClick & GeoLocation", async () => {
     // Wait for geolocation calculation result to appear
     await page.getByTestId(CLICK_RES_ID).isVisible({ timeout: 2 * 60 * 1000 });
 
-    // Read result
+    // Read result & Assert
     const value = await page
         .getByTestId(CLICK_RES_ID)
         .innerText({ timeout: 2 * 60 * 1000 });
-
-    // Assert
     expect(value).toBe(CLICK_VALUE_STR);
+});
+
+// --------------------------------------------------------------------------------------------
+
+const SEARCH_LITERAL = "ATHENS";
+const ATHENS_PLACE_ID = "ChIJ8UNwBh-9oRQR3Y1mdkU1Nic"; // google assigns a place_id to every possible option
+const SEARCH_VALUE = {
+    lat: 37.9838096,
+    lng: 23.7275388,
+    address: { street: "", number: "", zipCode: "" },
+};
+const SEARCH_VALUE_STR = JSON.stringify(SEARCH_VALUE);
+
+test("Search", async () => {
+    test.setTimeout(5 * 60 * 1000);
+
+    // Focus on search & input our search literal
+    const searchInput = page.getByTestId(MAP_SEARCH_TESTID);
+    await searchInput.focus();
+    await searchInput.fill(SEARCH_LITERAL);
+
+    // TODO: check if options-popover remains open while typing!!!
+
+    // Click option when available
+    await page
+        .getByTestId(ATHENS_PLACE_ID)
+        .isVisible({ timeout: 2 * 60 * 1000 });
+    await page.getByTestId(ATHENS_PLACE_ID).click();
+
+    // Read result & Assert
+    const value = await page
+        .getByTestId(CLICK_RES_ID)
+        .innerText({ timeout: 2 * 60 * 1000 });
+    expect(value).toBe(SEARCH_VALUE_STR);
 });

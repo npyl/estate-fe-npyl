@@ -6,7 +6,11 @@ import { DataProps } from "./types";
 const getItem =
     (onSelect: (o: google.maps.places.AutocompletePrediction) => void) =>
     (o: google.maps.places.AutocompletePrediction) => (
-        <MenuItem key={o.place_id} onClick={() => onSelect(o)}>
+        <MenuItem
+            key={o.place_id}
+            data-testid={o.place_id}
+            onClick={() => onSelect(o)}
+        >
             {o.description}
         </MenuItem>
     );

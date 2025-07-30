@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "../../../src/components/Map";
 import Marker from "../../../src/components/Map/Marker";
 
@@ -54,19 +54,14 @@ interface IClickRes {
 }
 
 const Tester = () => {
-    const mapRef = useRef<google.maps.Map>();
-    const onReady = useCallback((m: google.maps.Map) => {
-        // m.getDiv().setAttribute("data-testid", MAP_ID);
-        mapRef.current = m;
-    }, []);
-
     const [clickRes, setClickRes] = useState<IClickRes>();
-
     const onMapClick = useCallback(
         (lat: number, lng: number, address: IMapAddress) =>
             setClickRes({ lat, lng, address }),
         []
     );
+
+    // -------------------------------------------------------------
 
     return (
         <div>
@@ -74,7 +69,12 @@ const Tester = () => {
                 data-testid={MAP_ID}
                 style={{ width: "800px", height: "600px" }}
             >
-                <Map zoom={ZOOM} onClick={onMapClick} onReady={onReady}>
+                <Map
+                    search
+                    zoom={ZOOM}
+                    onClick={onMapClick}
+                    onSearchSelect={onMapClick}
+                >
                     <MapList />
                 </Map>
             </div>
