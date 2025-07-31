@@ -9,7 +9,7 @@ const expectValue = async (
 ) => {
     const locator = component.getByTestId(ID);
     await locator.isVisible({ timeout });
-    await expect(locator).toHaveText(VALUE, { timeout });
+    await expect(locator).toHaveText(VALUE);
 };
 
 export default expectValue;
