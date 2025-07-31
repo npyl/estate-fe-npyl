@@ -1,62 +1,18 @@
 /* eslint-disable react/jsx-key */
-import {
-    Box,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Typography,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import { Placeholder as LabelPlaceholder } from "@/components/Label";
 import LabelCreate from "@/sections/LabelCreate";
 import { LeadSource } from "@/types/global";
-import { RHFSelect, RHFOnlyNumbers, RHFRating } from "@/components/hook-form";
+import { RHFSelect, RHFOnlyNumbers } from "@/components/hook-form";
 import RHFTextField from "@/components/hook-form/dynamic/RHFTextField";
 import { TranslationType } from "@/types/translation";
 import { KeyValue } from "@/types/KeyValue";
 import RHFDatePicker from "@/components/hook-form/RHFDatePicker";
 import Select from "@/components/hook-form/Select";
-import { useTranslation } from "react-i18next";
 import StayUpdated from "./StayUpdated";
 import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
-
-const Rating = () => {
-    const { t } = useTranslation();
-
-    return (
-        <Box
-            sx={{
-                border: 1,
-                borderColor: "divider",
-                borderRadius: 1,
-                height: "100%",
-                px: 3,
-                py: 1.5,
-                display: "flex",
-                justifyContent: "center",
-            }}
-            flexDirection={"column"}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                }}
-            >
-                <Typography variant="h6">{t("Status")}</Typography>
-            </Box>
-
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    py: 1.5,
-                }}
-            >
-                <RHFRating name="status" />
-            </Box>
-        </Box>
-    );
-};
+import Rating from "./Rating";
+import { FIRSTNAME_ID, LASTNAME_ID } from "../constants";
 
 const WITH = (C: any, onOff: boolean) => (onOff ? [C] : []);
 
@@ -68,9 +24,15 @@ const getFIELDS = (
     leadSource?: LeadSource,
     customerId?: string
 ) => [
-    <RHFTextField fullWidth name="firstName" label={t("First Name") + " *"} />,
+    <RHFTextField
+        data-testid={FIRSTNAME_ID}
+        fullWidth
+        name="firstName"
+        label={t("First Name") + " *"}
+    />,
     ...WITH(
         <RHFTextField
+            data-testid={LASTNAME_ID}
             fullWidth
             name="lastName"
             label={t("Last Name") + " *"}

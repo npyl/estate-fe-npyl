@@ -53,22 +53,22 @@ const useSetters = (
     );
 
     const setMaxPrice = useCallback(
-        (maxPrice: number) => setFilters((old) => ({ ...old, maxPrice })),
+        (maxPrice?: number) => setFilters((old) => ({ ...old, maxPrice })),
         []
     );
 
     const setMinPrice = useCallback(
-        (minPrice: number) => setFilters((old) => ({ ...old, minPrice })),
+        (minPrice?: number) => setFilters((old) => ({ ...old, minPrice })),
         []
     );
 
     const setMinArea = useCallback(
-        (minCovered: number) => setFilters((old) => ({ ...old, minCovered })),
+        (minCovered?: number) => setFilters((old) => ({ ...old, minCovered })),
         []
     );
 
     const setMaxArea = useCallback(
-        (maxCovered: number) => setFilters((old) => ({ ...old, maxCovered })),
+        (maxCovered?: number) => setFilters((old) => ({ ...old, maxCovered })),
         []
     );
 

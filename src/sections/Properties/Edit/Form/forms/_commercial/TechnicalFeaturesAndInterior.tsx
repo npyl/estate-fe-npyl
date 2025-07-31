@@ -1,4 +1,4 @@
-import { Divider, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import * as React from "react";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
