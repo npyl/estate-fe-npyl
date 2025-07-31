@@ -1,7 +1,7 @@
-import { forwardRef, useImperativeHandle } from "react";
-import { PropsWithChildren } from "react";
+import { forwardRef, HTMLAttributes, useImperativeHandle } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { IDemandPOST } from "@/types/demand";
+import preventDefault from "@/utils/preventDefault";
 
 interface FormRef {
     getValues: () => void;
@@ -11,10 +11,12 @@ interface IDemandForms {
     demands: IDemandPOST[];
 }
 
+interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit"> {}
+
 /**
  * This is a subform (under customer's form) used to contain demands changes
  */
-const Form = forwardRef<FormRef, PropsWithChildren>(({ children }, ref) => {
+const Form = forwardRef<FormRef, FormProps>(({ children, ...props }, ref) => {
     const demands = useWatch({ name: "demands" });
 
     const methods = useForm<IDemandForms>({
@@ -32,7 +34,7 @@ const Form = forwardRef<FormRef, PropsWithChildren>(({ children }, ref) => {
     );
 
     return (
-        <form>
+        <form onSubmit={preventDefault} {...props}>
             <FormProvider {...methods}>{children}</FormProvider>
         </form>
     );
