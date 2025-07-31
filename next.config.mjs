@@ -21,6 +21,8 @@ const config = {
     experimental: {
         optimizePackageImports: ["@mui/material", "@mui/icons-material"],
     },
+
+    devIndicators: false,
 };
 
 export default config;
