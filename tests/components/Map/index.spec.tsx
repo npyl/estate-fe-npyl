@@ -114,59 +114,69 @@ test("Search", async () => {
 
 // --------------------------------------------------------------------------------------------
 
+const CIRCLE_POINTS = [
+    { x: 100, y: 100 },
+    { x: 500, y: 500 },
+];
 const CIRCLE_VALUE = [
-    { x: 38.24322954956487, y: 21.736745767211936 },
-    { x: 0, y: null },
+    { x: 38.24997029415935, y: 21.72816269836428 },
+    { x: 1061.1922774903821, y: null },
 ];
 const CIRCLE_VALUE_STR = JSON.stringify(CIRCLE_VALUE);
 
+const RECTANGLE_POINTS = [
+    { x: 100, y: 100 },
+    { x: 500, y: 500 },
+];
 const RECTANGLE_VALUE = [
-    { x: 38.24997029415935, y: 21.736745767211936 },
-    { x: 38.24997029415935, y: 21.736745767211936 },
-    { x: 38.24997029415935, y: 21.736745767211936 },
-    { x: 38.24997029415935, y: 21.736745767211936 },
+    { x: 38.19265404295217, y: 21.631603173828147 },
+    { x: 38.19265404295217, y: 21.768932275390647 },
+    { x: 38.3005059504578, y: 21.768932275390647 },
+    { x: 38.3005059504578, y: 21.631603173828147 },
 ];
 const RECTANGLE_VALUE_STR = JSON.stringify(RECTANGLE_VALUE);
 
+const POLYGON_POINTS = [
+    { x: 200, y: 200 },
+    { x: 400, y: 200 },
+    { x: 450, y: 350 },
+    { x: 300, y: 450 },
+    { x: 150, y: 350 },
+    { x: 200, y: 200 }, // FIRST = LAST
+];
 const POLYGON_VALUE = [
-    { x: 38.247, y: 21.735 }, // Adjust these values based on your expected output
-    { x: 38.248, y: 21.735 },
-    { x: 38.247, y: 21.737 },
-    { x: 38.246, y: 21.736 },
-    { x: 38.245, y: 21.736 },
+    { x: 38.3005059504578, y: 21.59727089843752 },
+    { x: 38.3005059504578, y: 21.73460000000002 },
+    { x: 38.21963202116805, y: 21.768932275390647 },
+    { x: 38.16566606762801, y: 21.66593544921877 },
+    { x: 38.21963202116805, y: 21.562938623046897 },
 ];
 const POLYGON_VALUE_STR = JSON.stringify(POLYGON_VALUE);
 
 type TPoint = { x: number; y: number };
 
-const addPoint = async (MAP_ID: string, action: number, position: TPoint) => {
-    await page.getByTestId(MAP_ID).hover({ position });
-    if (action === 0) await page.mouse.down();
-    if (action === 1) await page.mouse.up();
+const addPoint = async (position: TPoint) => {
+    await page.getByTestId(MAP_ID).click({
+        position,
+        delay: 1000,
+    });
 };
 
 const makeShapeAndExpect = async (
     page: Page,
-    MAP_ID: string,
     ID: string,
     points: TPoint[],
-    // ....
-    VALUE_ID: string,
     value: string
 ) => {
     await page.getByTestId(ID).click();
 
-    let action = 0;
-    const toggleAction = () => (action = action === 0 ? 1 : 0);
-
     for (let i = 0; i < points.length; i++) {
         const p = points.at(i);
         if (!p) continue;
-        await addPoint(MAP_ID, action, p);
-        toggleAction();
+        await addPoint(p);
     }
 
-    await expectValue(page, VALUE_ID, value, 2 * 60 * 1000);
+    await expectValue(page, SHAPE_RES_ID, value, 2 * 60 * 1000);
 };
 
 test("Draw", async () => {
@@ -175,44 +185,27 @@ test("Draw", async () => {
     // Circle
     await makeShapeAndExpect(
         page,
-        MAP_ID,
+        // ...
         CIRCLE_ID,
-        [
-            { x: 100, y: 100 },
-            { x: 500, y: 500 },
-        ],
-        SHAPE_RES_ID,
+        CIRCLE_POINTS,
         CIRCLE_VALUE_STR
     );
 
     // Rectangle
     await makeShapeAndExpect(
         page,
-        MAP_ID,
+        // ...
         RECTANGLE_ID,
-        [
-            { x: 100, y: 100 },
-            { x: 500, y: 100 },
-            { x: 100, y: 500 },
-            { x: 500, y: 500 },
-        ],
-        SHAPE_RES_ID,
+        RECTANGLE_POINTS,
         RECTANGLE_VALUE_STR
     );
 
+    // Polygon
     await makeShapeAndExpect(
         page,
-        MAP_ID,
+        // ...
         POLYGON_ID,
-        [
-            { x: 200, y: 200 }, // Top-left
-            { x: 400, y: 200 }, // Top-right
-            { x: 450, y: 350 }, // Right-middle
-            { x: 300, y: 450 }, // Bottom-right
-            { x: 150, y: 350 }, // Bottom-left
-            { x: 200, y: 200 }, // Back to top-left to close the polygon
-        ],
-        SHAPE_RES_ID,
+        POLYGON_POINTS,
         POLYGON_VALUE_STR
     );
 });
