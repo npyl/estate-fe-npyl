@@ -3,7 +3,7 @@ import {
     VIEW_BY_ID_TEST_ID,
     FILTERS_TEST_ID,
     SHAPELIST_TEST_ID,
-} from "../src/pages/__test__/stayUpdated.page";
+} from "../src/sections/__test__/StayUpdated";
 import gotoSafe from "./_util/gotoSafe";
 import fillAndExpect from "./_util/fillAndExpect";
 
