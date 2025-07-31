@@ -77,6 +77,11 @@ const useSetters = (
         []
     );
 
+    const setB2B = useCallback(
+        (b2b: boolean = false) => setFilters((old) => ({ ...old, b2b })),
+        []
+    );
+
     const resetState = useCallback(() => {
         setFilters(initialState.filters);
         setSorting(initialState.sorting);
@@ -97,6 +102,7 @@ const useSetters = (
         setMinArea,
         setMaxArea,
         setStates,
+        setB2B,
         setSorting,
         resetState,
     };

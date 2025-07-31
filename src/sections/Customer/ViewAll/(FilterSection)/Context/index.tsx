@@ -37,6 +37,7 @@ const CustomerFiltersContext = createContext<FiltersState>({
     setMaxArea: () => {},
     setStates: () => {},
     setSorting: () => {},
+    setB2B: () => {},
     deleteFilter: () => {},
     resetState: () => {},
 });

@@ -17,6 +17,7 @@ type TSetters = {
     setMaxArea: (maxArea: any) => void;
     setStates: (states: any[]) => void;
     setSorting: (sorting: string) => void;
+    setB2B: (b2b?: boolean) => void;
     deleteFilter: (key: keyof ICustomerFilter) => void;
     resetState: () => void;
 };
