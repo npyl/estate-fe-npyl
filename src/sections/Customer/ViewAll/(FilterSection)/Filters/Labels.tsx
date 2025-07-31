@@ -6,7 +6,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
@@ -34,15 +34,15 @@ export default function FilterLabels() {
             .join(", ");
     };
 
-    const handleChange = (event: SelectChangeEvent<typeof labels>) => {
-        const {
-            target: { value },
-        } = event;
-        setLabels(
-            // On autofill we get a stringified value.
-            typeof value === "string" ? value.split(",") : value
-        );
-    };
+    const handleChange = useCallback(
+        (event: SelectChangeEvent<typeof labels>) => {
+            const {
+                target: { value },
+            } = event;
+            setLabels(value as number[]);
+        },
+        []
+    );
 
     return (
         <FormControl
