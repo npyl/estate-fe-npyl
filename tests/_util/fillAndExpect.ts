@@ -1,5 +1,11 @@
 import { expect, Page } from "@playwright/test";
 
+/**
+ * Fill an input element with a value & check if value was written
+ * @param FIELD_ID
+ * @param value
+ * @param searchDeeper
+ */
 const fillAndExpect = async (
     page: Page,
     FIELD_ID: string,

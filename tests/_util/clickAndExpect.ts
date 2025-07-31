@@ -1,5 +1,12 @@
-import { expect, MountResult } from "@playwright/experimental-ct-react";
+import { MountResult } from "@playwright/experimental-ct-react";
+import expectValue from "./expectValue";
 
+/**
+ * Click a button & Expect a specific value on a div
+ * @param clickId
+ * @param valueId
+ * @param expected
+ */
 const clickAndExpect = async (
     component: MountResult,
     // ...
@@ -8,8 +15,7 @@ const clickAndExpect = async (
     expected: string
 ) => {
     await component.getByTestId(clickId).click();
-    const valueLocator = component.getByTestId(valueId);
-    await expect(valueLocator).toHaveText(expected);
+    await expectValue(component, valueId, expected);
 };
 
 export default clickAndExpect;
