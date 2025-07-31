@@ -12,7 +12,11 @@ import Select from "@/components/hook-form/Select";
 import StayUpdated from "./StayUpdated";
 import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
 import Rating from "./Rating";
-import { FIRSTNAME_ID, LASTNAME_ID } from "../constants";
+import {
+    EMAIL_ID,
+    FIRSTNAME_ID,
+    LASTNAME_ID,
+} from "@/sections/Customer/Form/constants";
 
 const WITH = (C: any, onOff: boolean) => (onOff ? [C] : []);
 
@@ -39,7 +43,12 @@ const getFIELDS = (
         />,
         !isB2B
     ),
-    <RHFTextField fullWidth name="email" label={t("Email")} />,
+    <RHFTextField
+        data-testid={EMAIL_ID}
+        fullWidth
+        name="email"
+        label={t("Email")}
+    />,
     <RHFOnlyNumbers
         fullWidth
         separateThousands={false}

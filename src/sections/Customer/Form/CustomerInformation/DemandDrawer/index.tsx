@@ -3,7 +3,7 @@ import { FC, useCallback, useRef } from "react";
 import Content from "./Content";
 import Form, { FormRef, IDemandForms } from "./Form";
 import Controls from "./Controls";
-import { DEMAND_FORM_ID } from "@/sections/Customer/Form/CustomerInformation/constants";
+import { DEMAND_FORM_ID } from "@/sections/Customer/Form/constants";
 
 interface DemandDrawerProps {
     onClose: VoidFunction;

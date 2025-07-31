@@ -4,6 +4,7 @@ import { ICustomerYup } from "./types";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import { FC } from "react";
+import { CUSTOMER_SUBMIT_ID } from "./constants";
 
 interface SaveButtonProps {
     quickCreate: boolean;
@@ -28,6 +29,7 @@ const SaveButton: FC<SaveButtonProps> = ({
 
     return (
         <LoadingButton
+            data-testid={CUSTOMER_SUBMIT_ID}
             disabled={isDisabled}
             loading={isLoading}
             variant="contained"

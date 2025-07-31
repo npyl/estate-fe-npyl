@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import { useFormContext } from "react-hook-form";
-import { DEMAND_SAVE_BUTTON_ID } from "../constants";
+import { DEMAND_SAVE_BUTTON_ID } from "@/sections/Customer/Form/constants";
 
 interface ControlsProps {
     onSave: VoidFunction;

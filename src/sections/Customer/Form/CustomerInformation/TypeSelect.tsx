@@ -2,7 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { RHFCheckbox } from "@/components/hook-form";
 import DemandsButton from "./DemandsButton";
-import { BUYER_CHECKBOX_ID } from "./constants";
+import { BUYER_CHECKBOX_ID } from "@/sections/Customer/Form/constants";
 
 const CustomerTypeSelect = () => {
     const { t } = useTranslation();

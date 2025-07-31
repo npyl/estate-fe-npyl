@@ -1,27 +1,25 @@
-import { Browser, chromium, Page, test } from "@playwright/test";
+import { Browser, chromium, expect, Page, test } from "@playwright/test";
 import gotoSafe from "../_util/gotoSafe";
 import {
-    BUYER_CHECKBOX_ID,
-    DEMAND_FORM_ID,
-    DEMAND_SAVE_BUTTON_ID,
-    DEMANDS_BUTTON_ID,
     FIRSTNAME_ID,
     LASTNAME_ID,
-} from "../../src/sections/Customer/Form/CustomerInformation/constants";
+    EMAIL_ID,
+    // ..
+    BUYER_CHECKBOX_ID,
+    // ..
+    DEMANDS_BUTTON_ID,
+    DEMAND_FORM_ID,
+    DEMAND_SAVE_BUTTON_ID,
+    // ...
+    CUSTOMER_SUBMIT_ID,
+} from "../../src/sections/Customer/Form/constants";
 import fillAndExpect from "../_util/fillAndExpect";
-import { makeShape } from "../components/Map/util";
 import { CIRCLE_ID } from "../../src/components/Map/plugins/Draw";
-import { CIRCLE_POINTS } from "../components/Map/constants";
 import { MAP_ID } from "../../src/components/Map/constants";
 
 const SEARCH_DEEPER = true;
 
 const baseUrl = "http://127.0.0.1:3000/customer/create";
-
-// test.beforeEach(async ({ page }) => {
-//     test.setTimeout(2 * 60 * 1000);
-//     await gotoSafe(page, baseUrl);
-// });
 
 let browser: Browser;
 let page: Page;
@@ -39,11 +37,20 @@ test.afterAll(async () => {
     await browser?.close();
 });
 
+/**
+ * Tests Create sequence & visibility of some core elements
+ */
 test("create", async ({}) => {
     test.setTimeout(5 * 60 * 1000);
 
     await fillAndExpect(page, FIRSTNAME_ID, "Tester", SEARCH_DEEPER);
     await fillAndExpect(page, LASTNAME_ID, "Testoglou", SEARCH_DEEPER);
+    await fillAndExpect(
+        page,
+        EMAIL_ID,
+        "propertypro-crm-tester@digipath.gr",
+        SEARCH_DEEPER
+    );
 
     // Click Buyer checkbox
     await page.getByTestId(BUYER_CHECKBOX_ID).click();
@@ -70,4 +77,31 @@ test("create", async ({}) => {
 
     // Save demands
     await page.getByTestId(DEMAND_SAVE_BUTTON_ID).click();
+
+    // Wait for both the API response and navigation
+    const [response] = await Promise.all([
+        // Wait for the create property API call
+        page.waitForResponse(
+            (response) =>
+                response.url().includes("/customers") &&
+                response.request().method() === "POST" &&
+                response.status() === 200
+        ),
+        // Click submit button
+        page.getByTestId(CUSTOMER_SUBMIT_ID).click(),
+    ]);
+
+    // Get the property ID from the API response
+    const responseData = await response.json();
+    const customerId = responseData;
+
+    const expectedUrl = `http://127.0.0.1:3000/customer/${customerId}`;
+
+    // Poll for the correct URL
+    await expect(async () => {
+        expect(page.url()).toBe(expectedUrl);
+    }).toPass({ timeout: 2 * 60 * 1000 });
+
+    // Additional verification that page is loaded
+    await expect(page).toHaveURL(expectedUrl);
 });

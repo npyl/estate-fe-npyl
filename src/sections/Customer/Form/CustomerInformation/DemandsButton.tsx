@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import { useCallback } from "react";
 import { IDemandForms } from "./DemandDrawer/Form";
 import { ICustomerYup } from "../types";
-import { DEMANDS_BUTTON_ID } from "./constants";
+import { DEMANDS_BUTTON_ID } from "@/sections/Customer/Form/constants";
 const DemandDrawer = dynamic(() => import("./DemandDrawer"));
 
 // ------------------------------------------------------------
