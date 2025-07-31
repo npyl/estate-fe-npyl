@@ -1,5 +1,6 @@
 import { MountResult } from "@playwright/experimental-ct-react";
 import expectValue from "./expectValue";
+import { Page } from "@playwright/test";
 
 /**
  * Click a button & Expect a specific value on a div
@@ -8,7 +9,7 @@ import expectValue from "./expectValue";
  * @param expected
  */
 const clickAndExpect = async (
-    component: MountResult,
+    component: MountResult | Page,
     // ...
     clickId: string,
     valueId: string,

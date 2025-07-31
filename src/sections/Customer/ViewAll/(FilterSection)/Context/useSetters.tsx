@@ -37,43 +37,43 @@ const useSetters = (
     );
 
     const setLabels = useCallback(
-        (labels: any[]) => setFilters((old) => ({ ...old, labels })),
+        (labels: number[]) => setFilters((old) => ({ ...old, labels })),
         []
     );
 
     const setCategories = useCallback(
-        (categories: any[]) => setFilters((old) => ({ ...old, categories })),
+        (categories: string[]) => setFilters((old) => ({ ...old, categories })),
         []
     );
 
     const setParentCategories = useCallback(
-        (parentCategories: any[]) =>
+        (parentCategories: string[]) =>
             setFilters((old) => ({ ...old, parentCategories })),
         []
     );
 
     const setMaxPrice = useCallback(
-        (maxPrice: any) => setFilters((old) => ({ ...old, maxPrice })),
+        (maxPrice: number) => setFilters((old) => ({ ...old, maxPrice })),
         []
     );
 
     const setMinPrice = useCallback(
-        (minPrice: any) => setFilters((old) => ({ ...old, minPrice })),
+        (minPrice: number) => setFilters((old) => ({ ...old, minPrice })),
         []
     );
 
     const setMinArea = useCallback(
-        (minCovered: any) => setFilters((old) => ({ ...old, minCovered })),
+        (minCovered: number) => setFilters((old) => ({ ...old, minCovered })),
         []
     );
 
     const setMaxArea = useCallback(
-        (maxCovered: any) => setFilters((old) => ({ ...old, maxCovered })),
+        (maxCovered: number) => setFilters((old) => ({ ...old, maxCovered })),
         []
     );
 
     const setStates = useCallback(
-        (states: any[]) => setFilters((old) => ({ ...old, states })),
+        (states: string[]) => setFilters((old) => ({ ...old, states })),
         []
     );
 

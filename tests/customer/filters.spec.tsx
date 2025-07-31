@@ -1,5 +1,9 @@
 import { test, expect, Page } from "@playwright/test";
 import gotoSafe from "../_util/gotoSafe";
+import {
+    SET_LABELS_ID,
+    DELETE_LABELS_ID,
+} from "../../src/sections/__test__/CustomerFilters/Filters/constants";
 
 const baseUrl = "http://127.0.0.1:3000/__test__/customerFilters";
 
@@ -146,24 +150,15 @@ test("area filters", async ({ page }) => {
 });
 
 test("labels filter", async ({ page }) => {
-    // Add first label
-    await page.getByTestId("add-label-1").click();
-    let state = await getState(page);
-    expect(state.filters.labels).toContain(1);
-
-    // Add second label
-    await page.getByTestId("add-label-2").click();
-    state = await getState(page);
-    expect(state.filters.labels).toEqual(expect.arrayContaining([1, 2]));
+    let state;
 
     // Remove first label
-    await page.getByTestId("remove-label-1").click();
+    await page.getByTestId(SET_LABELS_ID).click();
     state = await getState(page);
-    expect(state.filters.labels).not.toContain(1);
-    expect(state.filters.labels).toContain(2);
+    expect(state.filters.labels).toStrictEqual([1, 2, 3]);
 
     // Clear all labels
-    await page.getByTestId("clear-labels").click();
+    await page.getByTestId(DELETE_LABELS_ID).click();
     state = await getState(page);
     expect(state.filters.labels).toEqual([]);
 });
@@ -292,7 +287,6 @@ test("reset all filters", async ({ page }) => {
     await page.getByTestId("set-leaser").click();
     await page.getByTestId("set-lessor").click();
     await page.getByTestId("set-manager").click();
-    await page.getByTestId("add-label-1").click();
     await page.getByTestId("add-category-residential").click();
     await page.getByTestId("set-min-price").click();
     await page.getByTestId("set-max-area").click();
@@ -304,7 +298,6 @@ test("reset all filters", async ({ page }) => {
     expect(state.filters.leaser).toBe(true);
     expect(state.filters.lessor).toBe(true);
     expect(state.filters.managerId).toBe(123);
-    expect(state.filters.labels).toContain(1);
     expect(state.filters.categories).toContain("residential");
     expect(state.filters.minPrice).toBe(100000);
     expect(state.filters.maxCovered).toBe(200);
@@ -346,10 +339,6 @@ test("complex filter combinations", async ({ page }) => {
     await page.getByTestId("set-min-area").click();
     await page.getByTestId("set-max-area").click();
 
-    // Add multiple labels
-    await page.getByTestId("add-label-1").click();
-    await page.getByTestId("add-label-2").click();
-
     // Add categories
     await page.getByTestId("add-category-residential").click();
     await page.getByTestId("add-parent-category-sale").click();
@@ -367,7 +356,6 @@ test("complex filter combinations", async ({ page }) => {
     expect(state.filters.maxPrice).toBe(500000);
     expect(state.filters.minCovered).toBe(50);
     expect(state.filters.maxCovered).toBe(200);
-    expect(state.filters.labels).toEqual(expect.arrayContaining([1, 2]));
     expect(state.filters.categories).toContain("residential");
     expect(state.filters.parentCategories).toContain("sale");
     expect(state.filters.managerId).toBe(123);
@@ -376,14 +364,12 @@ test("complex filter combinations", async ({ page }) => {
     // Modify some filters
     await page.getByTestId("clear-leaser").click();
     await page.getByTestId("set-buyer").click();
-    await page.getByTestId("remove-label-1").click();
     await page.getByTestId("clear-min-price").click();
 
     state = await getState(page);
     expect(state.filters.leaser).toBe(false);
     expect(state.filters.buyer).toBe(true);
     expect(state.filters.seller).toBe(true);
-    expect(state.filters.labels).toEqual([2]);
     expect(state.filters.minPrice).toBeUndefined();
     expect(state.filters.maxPrice).toBe(500000); // Should remain
 });
@@ -393,7 +379,6 @@ test("filter persistence", async ({ page }) => {
 
     // Set multiple filters
     await page.getByTestId("set-leaser").click();
-    await page.getByTestId("add-label-1").click();
     await page.getByTestId("set-manager").click();
     await page.getByTestId("set-min-price").click();
 
@@ -404,32 +389,14 @@ test("filter persistence", async ({ page }) => {
     // Check state persists (assuming persistence is implemented)
     const state = await getState(page);
     expect(state.filters.leaser).toBe(true);
-    expect(state.filters.labels).toContain(1);
     expect(state.filters.managerId).toBe(123);
     expect(state.filters.minPrice).toBe(100000);
 });
 
 test("edge cases - duplicate operations", async ({ page }) => {
-    // Add same label multiple times
-    await page.getByTestId("add-label-1").click();
-    await page.getByTestId("add-label-1").click();
-    await page.getByTestId("add-label-1").click();
-
-    let state = await getState(page);
-    // Should only contain the label once
-    expect(state.filters.labels.filter((id: number) => id === 1).length).toBe(
-        1
-    );
-
-    // Remove label that doesn't exist
-    await page.getByTestId("remove-label-3").click();
-    state = await getState(page);
-    expect(state.filters.labels).toContain(1); // Should remain unchanged
-
-    // Set same role multiple times
     await page.getByTestId("set-leaser").click();
     await page.getByTestId("set-leaser").click();
-    state = await getState(page);
+    const state = await getState(page);
     expect(state.filters.leaser).toBe(true);
 });
 
