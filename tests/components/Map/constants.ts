@@ -1,0 +1,47 @@
+const CIRCLE_POINTS = [
+    { x: 100, y: 100 },
+    { x: 500, y: 500 },
+];
+const CIRCLE_VALUE = [
+    { x: 38.24997029415935, y: 21.72816269836428 },
+    { x: 1061.1922774903821, y: null },
+];
+const CIRCLE_VALUE_STR = JSON.stringify(CIRCLE_VALUE);
+
+const RECTANGLE_POINTS = [
+    { x: 100, y: 100 },
+    { x: 500, y: 500 },
+];
+const RECTANGLE_VALUE = [
+    { x: 38.19265404295217, y: 21.631603173828147 },
+    { x: 38.19265404295217, y: 21.768932275390647 },
+    { x: 38.3005059504578, y: 21.768932275390647 },
+    { x: 38.3005059504578, y: 21.631603173828147 },
+];
+const RECTANGLE_VALUE_STR = JSON.stringify(RECTANGLE_VALUE);
+
+const POLYGON_POINTS = [
+    { x: 200, y: 200 },
+    { x: 400, y: 200 },
+    { x: 450, y: 350 },
+    { x: 300, y: 450 },
+    { x: 150, y: 350 },
+    { x: 200, y: 200 }, // FIRST = LAST
+];
+const POLYGON_VALUE = [
+    { x: 38.3005059504578, y: 21.59727089843752 },
+    { x: 38.3005059504578, y: 21.73460000000002 },
+    { x: 38.21963202116805, y: 21.768932275390647 },
+    { x: 38.16566606762801, y: 21.66593544921877 },
+    { x: 38.21963202116805, y: 21.562938623046897 },
+];
+const POLYGON_VALUE_STR = JSON.stringify(POLYGON_VALUE);
+
+export {
+    CIRCLE_POINTS,
+    CIRCLE_VALUE_STR,
+    RECTANGLE_POINTS,
+    RECTANGLE_VALUE_STR,
+    POLYGON_POINTS,
+    POLYGON_VALUE_STR,
+};

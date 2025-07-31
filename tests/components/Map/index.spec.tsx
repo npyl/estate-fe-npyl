@@ -2,7 +2,6 @@ import { expect, test, chromium, Page, Browser } from "@playwright/test"; // Reg
 import {
     MARKERS,
     CLICK_RES_ID,
-    MAP_ID,
     SHAPE_RES_ID,
 } from "../../../src/sections/__test__/Map/constants";
 import { TMarker, IClickRes } from "../../../src/sections/__test__/Map/type";
@@ -15,6 +14,16 @@ import {
     RECTANGLE_ID,
 } from "../../../src/components/Map/plugins/Draw";
 import expectValue from "../../_util/expectValue";
+import {
+    CIRCLE_POINTS,
+    CIRCLE_VALUE_STR,
+    POLYGON_POINTS,
+    POLYGON_VALUE_STR,
+    RECTANGLE_POINTS,
+    RECTANGLE_VALUE_STR,
+} from "./constants";
+import { makeShape, TPoint } from "./util";
+import { MAP_ID } from "../../../src/components/Map/constants";
 
 const baseUrl = "http://127.0.0.1:3000/__test__/map";
 
@@ -113,68 +122,13 @@ test("Search", async () => {
 
 // --------------------------------------------------------------------------------------------
 
-const CIRCLE_POINTS = [
-    { x: 100, y: 100 },
-    { x: 500, y: 500 },
-];
-const CIRCLE_VALUE = [
-    { x: 38.24997029415935, y: 21.72816269836428 },
-    { x: 1061.1922774903821, y: null },
-];
-const CIRCLE_VALUE_STR = JSON.stringify(CIRCLE_VALUE);
-
-const RECTANGLE_POINTS = [
-    { x: 100, y: 100 },
-    { x: 500, y: 500 },
-];
-const RECTANGLE_VALUE = [
-    { x: 38.19265404295217, y: 21.631603173828147 },
-    { x: 38.19265404295217, y: 21.768932275390647 },
-    { x: 38.3005059504578, y: 21.768932275390647 },
-    { x: 38.3005059504578, y: 21.631603173828147 },
-];
-const RECTANGLE_VALUE_STR = JSON.stringify(RECTANGLE_VALUE);
-
-const POLYGON_POINTS = [
-    { x: 200, y: 200 },
-    { x: 400, y: 200 },
-    { x: 450, y: 350 },
-    { x: 300, y: 450 },
-    { x: 150, y: 350 },
-    { x: 200, y: 200 }, // FIRST = LAST
-];
-const POLYGON_VALUE = [
-    { x: 38.3005059504578, y: 21.59727089843752 },
-    { x: 38.3005059504578, y: 21.73460000000002 },
-    { x: 38.21963202116805, y: 21.768932275390647 },
-    { x: 38.16566606762801, y: 21.66593544921877 },
-    { x: 38.21963202116805, y: 21.562938623046897 },
-];
-const POLYGON_VALUE_STR = JSON.stringify(POLYGON_VALUE);
-
-type TPoint = { x: number; y: number };
-
-const addPoint = async (position: TPoint) => {
-    await page.getByTestId(MAP_ID).click({
-        position,
-        delay: 1000,
-    });
-};
-
 const makeShapeAndExpect = async (
     page: Page,
     ID: string,
     points: TPoint[],
     value: string
 ) => {
-    await page.getByTestId(ID).click();
-
-    for (let i = 0; i < points.length; i++) {
-        const p = points.at(i);
-        if (!p) continue;
-        await addPoint(p);
-    }
-
+    await makeShape(page, ID, points);
     await expectValue(page, SHAPE_RES_ID, value, 2 * 60 * 1000);
 };
 

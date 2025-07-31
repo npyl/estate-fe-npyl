@@ -1,10 +1,10 @@
 import { GoogleMap } from "@react-google-maps/api";
 import { CSSProperties, FC, useCallback, useRef } from "react";
-import useLoadApi from "../../hook";
-import { IMapProps, MapContainerProps } from "../../types";
+import useLoadApi from "@/components/Map/hook";
+import { IMapProps, MapContainerProps } from "@/components/Map/types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
-import { patrasLatLng } from "../../constants";
+import { MAP_ID, patrasLatLng } from "@/components/Map/constants";
 import dynamic from "next/dynamic";
 import useZoom from "./useZoom";
 import useCenter from "./useCenter";
@@ -46,6 +46,8 @@ const MapContainer: FC<MapContainerProps> = ({
 
     const onLoad = useCallback(
         (map: google.maps.Map) => {
+            map.getDiv().setAttribute("data-testid", MAP_ID);
+
             // map
             mapRef.current = map;
 

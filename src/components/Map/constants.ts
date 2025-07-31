@@ -18,4 +18,6 @@ enum ZOOM_LEVELS {
     NEIGHB = 16,
 }
 
-export { apiKey, libraries, patrasLatLng, ZOOM_LEVELS };
+const MAP_ID = "map-testid";
+
+export { apiKey, libraries, patrasLatLng, ZOOM_LEVELS, MAP_ID };

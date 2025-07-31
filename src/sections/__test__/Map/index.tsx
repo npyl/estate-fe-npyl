@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import Map, { DrawShape, IMapAddress, StopDraw } from "@/components/Map";
 import { TShape } from "@/types/shape";
 import { drawingToPoints } from "@/components/Map/util";
-import { CLICK_RES_ID, MAP_ID, SHAPE_RES_ID, ZOOM } from "./constants";
+import { CLICK_RES_ID, SHAPE_RES_ID, ZOOM } from "./constants";
 import MapList from "./MapList";
 import { IClickRes } from "./type";
 
@@ -24,10 +24,7 @@ const Tester = () => {
 
     return (
         <div>
-            <div
-                data-testid={MAP_ID}
-                style={{ width: "800px", height: "600px" }}
-            >
+            <div style={{ width: "800px", height: "600px" }}>
                 <Map
                     drawing
                     search

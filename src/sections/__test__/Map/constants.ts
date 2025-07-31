@@ -23,12 +23,10 @@ const MARKERS: TMarker[] = [
     },
 ];
 
-const MAP_ID = "map-testid";
-
 // INFO: zoom into lowest level so that we can click a street and help geolocation recognize it
 const ZOOM = 16;
 const CLICK_RES_ID = "click-res-testid";
 
 const SHAPE_RES_ID = "shape-res-testid";
 
-export { MARKERS, MAP_ID, ZOOM, CLICK_RES_ID, SHAPE_RES_ID };
+export { MARKERS, ZOOM, CLICK_RES_ID, SHAPE_RES_ID };
