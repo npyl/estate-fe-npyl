@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import { useCallback } from "react";
 import { IDemandForms } from "./DemandDrawer/Form";
 import { ICustomerYup } from "../types";
+import { DEMANDS_BUTTON_ID } from "./constants";
 const DemandDrawer = dynamic(() => import("./DemandDrawer"));
 
 // ------------------------------------------------------------
@@ -60,7 +61,11 @@ const DemandsButton = () => {
 
     return (
         <>
-            <StyledButton onClick={openDrawer} endIcon={<EditIcon />}>
+            <StyledButton
+                data-testid={DEMANDS_BUTTON_ID}
+                onClick={openDrawer}
+                endIcon={<EditIcon />}
+            >
                 {t("Demands")}
             </StyledButton>
 
