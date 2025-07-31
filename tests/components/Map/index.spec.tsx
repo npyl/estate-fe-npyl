@@ -1,13 +1,12 @@
 import { expect, test, chromium, Page, Browser } from "@playwright/test"; // Regular Playwright, not component testing
 import {
     MARKERS,
-    getMarkerTestId,
-    TMarker,
     CLICK_RES_ID,
-    IClickRes,
     MAP_ID,
     SHAPE_RES_ID,
-} from "../../../src/pages/__test__/map.page";
+} from "../../../src/sections/__test__/Map/constants";
+import { TMarker, IClickRes } from "../../../src/sections/__test__/Map/type";
+import { getMarkerTestId } from "../../../src/sections/__test__/Map/MapList";
 import gotoSafe from "../../_util/gotoSafe";
 import { MAP_SEARCH_TESTID } from "../../../src/components/Map/plugins/Search";
 import {
