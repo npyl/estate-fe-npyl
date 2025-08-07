@@ -76,8 +76,15 @@ export const inputRegex =
 /**
  * Image Container Node
  */
-export const ImageContainer = Node.create({
+export const ImageContainer = Node.create<ImageContainerOptions>({
     name: "imageContainer",
+
+    addOptions() {
+        return {
+            HTMLAttributes: {},
+            tag: "div",
+        };
+    },
 
     group() {
         return "block";
@@ -92,6 +99,13 @@ export const ImageContainer = Node.create({
             containerTag: {
                 default: "div",
             },
+            // Store HTML attributes as node attributes
+            containerStyle: {
+                default: null,
+            },
+            containerClass: {
+                default: null,
+            },
         };
     },
 
@@ -103,6 +117,8 @@ export const ImageContainer = Node.create({
                     const el = element as HTMLElement;
                     return {
                         containerTag: el.tagName.toLowerCase(),
+                        containerStyle: el.getAttribute("style"),
+                        containerClass: el.getAttribute("class"),
                     };
                 },
             },
@@ -111,13 +127,19 @@ export const ImageContainer = Node.create({
 
     renderHTML({ HTMLAttributes, node }) {
         const tag = node.attrs.containerTag || "div";
-        return [
-            tag,
-            mergeAttributes(HTMLAttributes, {
+
+        // Merge the node's stored attributes with any additional HTMLAttributes
+        const attrs = mergeAttributes(
+            this.options.HTMLAttributes ?? {},
+            HTMLAttributes,
+            {
                 "data-image-container": "",
-            }),
-            0, // Content slot
-        ];
+                style: node.attrs.containerStyle,
+                class: node.attrs.containerClass,
+            }
+        );
+
+        return [tag, attrs, 0]; // 0 is the content slot
     },
 });
 
@@ -205,8 +227,20 @@ export const Image = Node.create<ImageOptions>({
                         return false;
                     }
 
+                    // Extract style and class from HTMLAttributes to store as node attributes
+                    const nodeAttrs: any = {
+                        containerTag: tag,
+                    };
+
+                    if (HTMLAttributes.style) {
+                        nodeAttrs.containerStyle = HTMLAttributes.style;
+                    }
+                    if (HTMLAttributes.class) {
+                        nodeAttrs.containerClass = HTMLAttributes.class;
+                    }
+
                     const containerNode = containerNodeType.create(
-                        { containerTag: tag },
+                        nodeAttrs,
                         [] // Empty content initially
                     );
 
@@ -217,8 +251,6 @@ export const Image = Node.create<ImageOptions>({
                         dispatch(transaction);
 
                         // Return the position of the inserted container for later use
-                        // Note: This is a bit tricky to return from a command, but we can store it
-                        // in the transaction metadata for retrieval
                         transaction.setMeta("containerPos", insertPos);
                     }
 
@@ -278,15 +310,6 @@ export const Image = Node.create<ImageOptions>({
         ];
     },
 });
-
-// Helper function to find container position after creation
-export const findContainerPosition = (
-    state: any,
-    transaction: any
-): number | null => {
-    const containerPos = transaction.getMeta("containerPos");
-    return containerPos !== undefined ? containerPos : null;
-};
 
 // Utility function to get all containers in the document
 export const getAllContainers = (state: any) => {

@@ -29,6 +29,11 @@ import Stack from "@mui/material/Stack";
 import { SpaceBetween } from "@/components/styled";
 import { getAllContainers } from "@/components/Editor/extensions/Image";
 
+const IMG_CONTAINER_STYLE =
+    "display: flex; flex-direction: row; gap: 8px; height: fit-content; width: 100%;";
+const IMG_STYLE =
+    "width: 50%; height: auto; object-fit: fit; border-radius: 8px;";
+
 interface TitleDescriptionEditorRef {
     setImage: (src: string) => void;
 }
@@ -52,7 +57,7 @@ const TitleDescriptionEditor = forwardRef<
 
         editor.commands.createContainer({
             HTMLAttributes: {
-                style: "height: 300px; width: 100%; backgroundColor: black;",
+                style: IMG_CONTAINER_STYLE,
             },
         });
 
@@ -62,7 +67,7 @@ const TitleDescriptionEditor = forwardRef<
 
         editor.commands.addImageToContainer(latestContainer.pos, {
             src,
-            style: "width: 50%",
+            style: IMG_STYLE,
         });
     }, []);
     useImperativeHandle(ref, () => ({ setImage }), []);
@@ -75,17 +80,6 @@ const TitleDescriptionEditor = forwardRef<
     const { setValue } = useFormContext();
     const handlePlainTextChange = (plain: string) =>
         setValue(descriptionTextName, plain);
-
-    // useEffect(() => {
-    //     const editor = editorRef.current;
-    //     if (!editor) return;
-
-    //     editor.commands.createContainer({
-    //         HTMLAttributes: {
-    //             style: "height: 300px; width: 100%; backgroundColor: black;",
-    //         },
-    //     });
-    // }, []);
 
     return (
         <TabbedBox<Language>
