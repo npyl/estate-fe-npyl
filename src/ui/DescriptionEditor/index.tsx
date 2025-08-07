@@ -40,7 +40,20 @@ const TitleDescriptionEditor = forwardRef<
 
     const { editorRef } = useEditorHandleContext();
     const setImage = useCallback((src: string) => {
-        editorRef.current?.chain().focus().setImage({ src }).run();
+        const editor = editorRef.current;
+        if (!editor) return;
+
+        // Get the document size and insert at the end
+        const docSize = editor.state.doc.content.size;
+
+        editor
+            .chain()
+            .focus()
+            .insertContentAt(docSize, {
+                type: "image",
+                attrs: { src },
+            })
+            .run();
     }, []);
     useImperativeHandle(ref, () => ({ setImage }), []);
 
