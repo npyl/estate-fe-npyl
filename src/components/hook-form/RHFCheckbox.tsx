@@ -7,13 +7,14 @@ import {
     FormControlLabelProps,
     FormGroup,
 } from "@mui/material";
+import { DefaultTFuncReturn, TFunction } from "i18next";
 
 // ----------------------------------------------------------------------
 
 interface RHFCheckboxProps
     extends Omit<FormControlLabelProps, "control" | "label"> {
     name: string;
-    label?: string;
+    label?: string | DefaultTFuncReturn;
 }
 
 export function RHFCheckbox({ name, label = "", ...other }: RHFCheckboxProps) {
