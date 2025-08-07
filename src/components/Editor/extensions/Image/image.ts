@@ -1,4 +1,5 @@
 import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
+import { TextSelection } from "@tiptap/pm/state";
 
 export interface ImageOptions {
     /**
@@ -26,20 +27,6 @@ export interface ImageContainerOptions {
 declare module "@tiptap/core" {
     interface Commands<ReturnType> {
         image: {
-            /**
-             * Add an image
-             * @param options The image attributes
-             * @example
-             * editor
-             *   .commands
-             *   .addImage({ src: 'https://tiptap.dev/logo.png', alt: 'tiptap', title: 'tiptap logo', style: 'width: 100px;' })
-             */
-            addImage: (options: {
-                src: string;
-                alt?: string;
-                title?: string;
-                style?: string;
-            }) => ReturnType;
             /**
              * Create a new image container
              * @param options The container options
@@ -196,22 +183,6 @@ export const Image = Node.create<ImageOptions>({
 
     addCommands() {
         return {
-            addImage:
-                (options) =>
-                ({ state, tr, dispatch }) => {
-                    const { selection } = state;
-                    const imageNode =
-                        state.schema.nodes[this.name].create(options);
-                    const insertPos = selection.$to.pos;
-
-                    if (dispatch) {
-                        tr.insert(insertPos, imageNode);
-                        dispatch(tr);
-                    }
-
-                    return true;
-                },
-
             createContainer:
                 (options = {}) =>
                 ({ state, tr, dispatch }) => {
@@ -248,6 +219,22 @@ export const Image = Node.create<ImageOptions>({
 
                     if (dispatch) {
                         const transaction = tr.insert(insertPos, containerNode);
+
+                        // Add a paragraph after the container for continued editing
+                        const afterContainerPos =
+                            insertPos + containerNode.nodeSize;
+                        const paragraphNode =
+                            state.schema.nodes.paragraph.create();
+                        transaction.insert(afterContainerPos, paragraphNode);
+
+                        // Set cursor to the new paragraph
+                        const resolvedPos = transaction.doc.resolve(
+                            afterContainerPos + 1
+                        );
+                        transaction.setSelection(
+                            TextSelection.near(resolvedPos)
+                        );
+
                         dispatch(transaction);
 
                         // Return the position of the inserted container for later use
