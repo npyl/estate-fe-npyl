@@ -49,7 +49,9 @@ const PropertyCard: FC<PropertyCardProps> = ({
     children,
     ...props
 }) => {
-    const { id, url, title, createdAt, user } = item || {};
+    const { id, url, createdAt, user } = item || {};
+
+    const title = "TEMP";
 
     return (
         <StyledLink

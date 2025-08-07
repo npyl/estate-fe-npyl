@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography";
-import { FC, useState } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RHFTextField } from "@/components/hook-form";
@@ -22,16 +22,27 @@ import GenerateTitleButton from "./GenerateTitleButton";
 import Stack from "@mui/material/Stack";
 import { SpaceBetween } from "@/components/styled";
 
+interface TitleDescriptionEditorRef {
+    setImage: (src: string) => void;
+}
+
 interface TitleDescriptionEditorProps
     extends Omit<
         TabbedBoxProps,
         "tabs" | "selected" | "disabled" | "onSelect" | "children"
     > {}
 
-const TitleDescriptionEditor: FC<TitleDescriptionEditorProps> = (props) => {
+const TitleDescriptionEditor = forwardRef<
+    TitleDescriptionEditorRef,
+    TitleDescriptionEditorProps
+>((props, ref) => {
     const { t } = useTranslation();
 
     const { editorRef } = useEditorHandleContext();
+    const setImage = useCallback((src: string) => {
+        editorRef.current?.chain().focus().setImage({ src }).run();
+    }, []);
+    useImperativeHandle(ref, () => ({ setImage }), []);
 
     const [lang, setLang] = useState<Language>("el");
     const { title, descriptionName, descriptionTextName } = useNames(lang);
@@ -77,14 +88,18 @@ const TitleDescriptionEditor: FC<TitleDescriptionEditorProps> = (props) => {
             </Stack>
         </TabbedBox>
     );
-};
+});
 
-const WithProvider: FC<TitleDescriptionEditorProps> = (props) => (
+const WithProvider = forwardRef<
+    TitleDescriptionEditorRef,
+    TitleDescriptionEditorProps
+>((props, ref) => (
     <EditorHandleProvider>
         <OperationsProvider>
-            <TitleDescriptionEditor {...props} />
+            <TitleDescriptionEditor ref={ref} {...props} />
         </OperationsProvider>
     </EditorHandleProvider>
-);
+));
 
+export type { TitleDescriptionEditorRef };
 export default WithProvider;
