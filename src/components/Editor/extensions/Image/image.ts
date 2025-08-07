@@ -1,5 +1,6 @@
 import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
 import { TextSelection } from "@tiptap/pm/state";
+import ensureParagraphAfterContainerPlugin from "./ResidualParagraph";
 
 export interface ImageOptions {
     /**
@@ -127,6 +128,10 @@ export const ImageContainer = Node.create<ImageContainerOptions>({
         );
 
         return [tag, attrs, 0]; // 0 is the content slot
+    },
+
+    addProseMirrorPlugins() {
+        return [ensureParagraphAfterContainerPlugin()];
     },
 });
 
