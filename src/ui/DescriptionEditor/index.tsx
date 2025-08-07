@@ -1,5 +1,11 @@
 import Typography from "@mui/material/Typography";
-import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
+import {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useState,
+} from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RHFTextField } from "@/components/hook-form";
@@ -21,6 +27,7 @@ import Box from "@mui/material/Box";
 import GenerateTitleButton from "./GenerateTitleButton";
 import Stack from "@mui/material/Stack";
 import { SpaceBetween } from "@/components/styled";
+import { getAllContainers } from "@/components/Editor/extensions/Image";
 
 interface TitleDescriptionEditorRef {
     setImage: (src: string) => void;
@@ -43,7 +50,20 @@ const TitleDescriptionEditor = forwardRef<
         const editor = editorRef.current;
         if (!editor) return;
 
-        editor.commands.addImage({ src, style: "width: 300px; height: 300px" });
+        editor.commands.createContainer({
+            HTMLAttributes: {
+                style: "height: 300px; width: 100%; backgroundColor: black;",
+            },
+        });
+
+        // Get the container position (you'll need to track this)
+        const containers = getAllContainers(editor.state);
+        const latestContainer = containers[containers.length - 1];
+
+        editor.commands.addImageToContainer(latestContainer.pos, {
+            src,
+            style: "width: 50%",
+        });
     }, []);
     useImperativeHandle(ref, () => ({ setImage }), []);
 
@@ -55,6 +75,17 @@ const TitleDescriptionEditor = forwardRef<
     const { setValue } = useFormContext();
     const handlePlainTextChange = (plain: string) =>
         setValue(descriptionTextName, plain);
+
+    // useEffect(() => {
+    //     const editor = editorRef.current;
+    //     if (!editor) return;
+
+    //     editor.commands.createContainer({
+    //         HTMLAttributes: {
+    //             style: "height: 300px; width: 100%; backgroundColor: black;",
+    //         },
+    //     });
+    // }, []);
 
     return (
         <TabbedBox<Language>
