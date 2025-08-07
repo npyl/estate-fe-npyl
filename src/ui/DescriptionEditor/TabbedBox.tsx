@@ -131,4 +131,5 @@ const TabbedBox = <T extends unknown>({
     );
 };
 
+export type { TabbedBoxProps };
 export default TabbedBox;

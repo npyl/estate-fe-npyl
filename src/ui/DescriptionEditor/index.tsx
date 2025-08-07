@@ -1,9 +1,9 @@
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RHFTextField } from "@/components/hook-form";
-import TabbedBox from "./TabbedBox";
+import TabbedBox, { TabbedBoxProps } from "./TabbedBox";
 import { TABS } from "./constants";
 import {
     OperationsProvider,
@@ -22,7 +22,13 @@ import GenerateTitleButton from "./GenerateTitleButton";
 import Stack from "@mui/material/Stack";
 import { SpaceBetween } from "@/components/styled";
 
-const DescriptionSection = () => {
+interface TitleDescriptionEditorProps
+    extends Omit<
+        TabbedBoxProps,
+        "tabs" | "selected" | "disabled" | "onSelect" | "children"
+    > {}
+
+const TitleDescriptionEditor: FC<TitleDescriptionEditorProps> = (props) => {
     const { t } = useTranslation();
 
     const { editorRef } = useEditorHandleContext();
@@ -42,6 +48,7 @@ const DescriptionSection = () => {
             selected={lang}
             disabled={isLoading}
             onSelect={setLang}
+            {...props}
         >
             <Stack spacing={1}>
                 <SpaceBetween direction="row" alignItems="center">
@@ -72,10 +79,10 @@ const DescriptionSection = () => {
     );
 };
 
-const WithProvider = () => (
+const WithProvider: FC<TitleDescriptionEditorProps> = (props) => (
     <EditorHandleProvider>
         <OperationsProvider>
-            <DescriptionSection />
+            <TitleDescriptionEditor {...props} />
         </OperationsProvider>
     </EditorHandleProvider>
 );

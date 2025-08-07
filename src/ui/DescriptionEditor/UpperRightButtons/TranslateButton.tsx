@@ -6,7 +6,7 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import { HideText } from "@/components/styled";
 import { useOperationsContext } from "../context/OperationsContext";
 import { useEditorHandleContext } from "../context/EditorHandle";
-import { IPropertyYup } from "../../../../hook";
+import { IPropertyYup } from "../../../sections/Properties/Edit/Form/hook";
 
 const useTypedWatch = (field: "title" | "descriptionText") =>
     (useWatch<IPropertyYup>({ name: `descriptions.0.${field}` }) ||
