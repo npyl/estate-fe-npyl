@@ -43,17 +43,7 @@ const TitleDescriptionEditor = forwardRef<
         const editor = editorRef.current;
         if (!editor) return;
 
-        // Get the document size and insert at the end
-        const docSize = editor.state.doc.content.size;
-
-        editor
-            .chain()
-            .focus()
-            .insertContentAt(docSize, {
-                type: "image",
-                attrs: { src },
-            })
-            .run();
+        editor.commands.addImage({ src, style: "width: 300px; height: 300px" });
     }, []);
     useImperativeHandle(ref, () => ({ setImage }), []);
 
