@@ -1,7 +1,8 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Select, SelectChangeEvent, SelectProps } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { ForwardedRef, forwardRef, ReactNode, useCallback } from "react";
 import { NOT_SELECTED_VALUE } from "@/constants/select";
+import Select, { SelectProps } from "@/components/Select";
 
 // ----------------------------------------------------------------------
 

@@ -1,15 +1,8 @@
-import {
-    Checkbox,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useFiltersContext, useSelectActions } from "./Context";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 export default function FilterActions() {
     const { t } = useTranslation();
@@ -35,31 +28,30 @@ export default function FilterActions() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel>{t("Action")}</InputLabel>
-            <Select
-                multiple
-                value={actions}
-                onChange={handleChange}
-                renderValue={(selected) => {
-                    const displayValues = getSelectedActionValues(selected);
-                    return displayValues.join(", ");
-                }}
-                input={<OutlinedInput label={t("Action")} />}
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-            >
-                {actionsEnums!.map(({ key, value }) => {
-                    const isKeySelected = actions?.includes(key);
+        <Select
+            multiple
+            value={actions}
+            formControlProps={{
+                sx: { minWidth: "130px", maxWidth: "130px" },
+            }}
+            onChange={handleChange}
+            renderValue={(selected) => {
+                const displayValues = getSelectedActionValues(selected);
+                return displayValues.join(", ");
+            }}
+            label={t("Action")}
+            MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+        >
+            {actionsEnums!.map(({ key, value }) => {
+                const isKeySelected = actions?.includes(key);
 
-                    // Use the 'key' for the MenuItem key instead of 'index' to ensure it's unique
-                    return (
-                        <MenuItem key={key} value={key}>
-                            <Checkbox checked={isKeySelected} />
-                            {value}
-                        </MenuItem>
-                    );
-                })}
-            </Select>
-        </FormControl>
+                return (
+                    <MenuItem key={key} value={key}>
+                        <Checkbox checked={isKeySelected} />
+                        {value}
+                    </MenuItem>
+                );
+            })}
+        </Select>
     );
 }

@@ -1,13 +1,4 @@
-import {
-    Checkbox,
-    FormControl,
-    InputLabel,
-    ListSubheader,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, ListSubheader, MenuItem } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "@/hooks/useGlobals";
@@ -17,6 +8,7 @@ import {
     useFiltersContext,
     useParentCategories,
 } from "../Context";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 export default function FilterCategory() {
     const { t } = useTranslation();
@@ -54,51 +46,42 @@ export default function FilterCategory() {
     const isDisabled = parentCategories.length === 0;
 
     return (
-        <FormControl sx={{ minWidth: "220px" }}>
-            <InputLabel>{t("Category")}</InputLabel>
-            <Select
-                multiple
-                disabled={isDisabled}
-                value={subCategories}
-                onChange={handleChange}
-                renderValue={(selected: string[]) => {
-                    return selected
-                        .map((key) => {
-                            for (const parentCategory of parentCategories) {
-                                const found = subCategoriesMap[
-                                    parentCategory
-                                ].find((item) => item.key === key);
-                                if (found) {
-                                    return t(found.value);
-                                }
+        <Select
+            multiple
+            disabled={isDisabled}
+            value={subCategories}
+            onChange={handleChange}
+            label={t("Category")}
+            formControlProps={{ sx: { minWidth: "220px" } }}
+            renderValue={(selected: string[]) => {
+                return selected
+                    .map((key) => {
+                        for (const parentCategory of parentCategories) {
+                            const found = subCategoriesMap[parentCategory].find(
+                                (item) => item.key === key
+                            );
+                            if (found) {
+                                return t(found.value);
                             }
-                            return null;
-                        })
-                        .filter(Boolean)
-                        .join(", ");
-                }}
-                input={<OutlinedInput label={t("Category")} />}
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-            >
-                {parentCategories.map((parentCategory) => [
-                    <ListSubheader key={`header_${parentCategory}`}>
-                        {parentCategory}
-                    </ListSubheader>,
-                    ...subCategoriesMap[parentCategory].map(
-                        ({ key, value }) => (
-                            <MenuItem
-                                key={`${parentCategory}_${key}`}
-                                value={key}
-                            >
-                                <Checkbox
-                                    checked={subCategories.indexOf(key) > -1}
-                                />
-                                {t(value)}
-                            </MenuItem>
-                        )
-                    ),
-                ])}
-            </Select>
-        </FormControl>
+                        }
+                        return null;
+                    })
+                    .filter(Boolean)
+                    .join(", ");
+            }}
+            MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+        >
+            {parentCategories.map((parentCategory) => [
+                <ListSubheader key={`header_${parentCategory}`}>
+                    {parentCategory}
+                </ListSubheader>,
+                ...subCategoriesMap[parentCategory].map(({ key, value }) => (
+                    <MenuItem key={`${parentCategory}_${key}`} value={key}>
+                        <Checkbox checked={subCategories.indexOf(key) > -1} />
+                        {t(value)}
+                    </MenuItem>
+                )),
+            ])}
+        </Select>
     );
 }

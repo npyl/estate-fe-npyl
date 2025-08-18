@@ -1,17 +1,10 @@
-import {
-    Checkbox,
-    FormControl,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, MenuItem } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { StyledInputLabel } from "@/components/Filters";
 import { useFiltersContext, useLabels } from "../Context";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 export default function FilterLabels() {
     const { t } = useTranslation();
@@ -45,31 +38,20 @@ export default function FilterLabels() {
     );
 
     return (
-        <FormControl
-            sx={{
-                minWidth: "220px",
-            }}
+        <Select
+            multiple
+            value={labels}
+            label={t("Labels")}
+            formControlProps={{ sx: { minWidth: "220px" } }}
+            onChange={handleChange}
+            renderValue={renderLabelNames}
         >
-            <StyledInputLabel>{t("Labels")}</StyledInputLabel>
-            <Select
-                multiple
-                value={labels}
-                onChange={handleChange}
-                renderValue={renderLabelNames}
-                input={
-                    <OutlinedInput
-                        sx={{ maxHeight: "38px", textAlign: "center" }}
-                        label="Ετικέτες"
-                    />
-                }
-            >
-                {labelOptions.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                        <Checkbox checked={labels.indexOf(option.id!) > -1} />
-                        <Label color={option.color} name={option.name} />
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+            {labelOptions.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                    <Checkbox checked={labels.indexOf(option.id!) > -1} />
+                    <Label color={option.color} name={option.name} />
+                </MenuItem>
+            ))}
+        </Select>
     );
 }

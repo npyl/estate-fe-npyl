@@ -1,8 +1,8 @@
-import { FormControl, Select, InputLabel } from "@mui/material";
 import Tabs from "./Tabs";
 import RenderValues from "./RenderValues";
 import { useTranslation } from "react-i18next";
 import { useRegions } from "@/sections/Properties/FiltersContext";
+import Select from "@/components/Select";
 
 export default function Location() {
     const { t } = useTranslation();
@@ -13,16 +13,16 @@ export default function Location() {
     const value = regions.length > 0 ? [1] : [];
 
     return (
-        <FormControl sx={{ minWidth: "140px", maxWidth: "150px" }}>
-            <InputLabel>{t("Locations")}</InputLabel>
-            <Select
-                multiple
-                value={value}
-                renderValue={() => <RenderValues />}
-                label={t("Locations")}
-            >
-                <Tabs />
-            </Select>
-        </FormControl>
+        <Select
+            multiple
+            value={value}
+            renderValue={() => <RenderValues />}
+            formControlProps={{
+                sx: { minWidth: "140px", maxWidth: "150px" },
+            }}
+            label={t("Locations")}
+        >
+            <Tabs />
+        </Select>
     );
 }

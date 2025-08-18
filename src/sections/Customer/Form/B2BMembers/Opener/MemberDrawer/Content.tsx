@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useTranslation } from "react-i18next";
 import RHFTextField from "@/components/hook-form/RHFTextField";
@@ -10,19 +10,16 @@ const PreferredLanguage = () => {
     const { t } = useTranslation();
 
     return (
-        <FormControl fullWidth variant="outlined">
-            <InputLabel>{t("Preferred Language")}</InputLabel>
-            <RHFSelect
-                isEnum
-                fullWidth
-                name="preferredLanguage"
-                label={t("Preferred Language")}
-            >
-                <MenuItem value="">{t("Not selected")}</MenuItem>
-                <MenuItem value="ENGLISH">{t("English")}</MenuItem>
-                <MenuItem value="GREEK">{t("Greek")}</MenuItem>
-            </RHFSelect>
-        </FormControl>
+        <RHFSelect
+            isEnum
+            fullWidth
+            name="preferredLanguage"
+            label={t("Preferred Language")}
+        >
+            <MenuItem value="">{t("Not selected")}</MenuItem>
+            <MenuItem value="ENGLISH">{t("English")}</MenuItem>
+            <MenuItem value="GREEK">{t("Greek")}</MenuItem>
+        </RHFSelect>
     );
 };
 

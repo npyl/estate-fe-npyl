@@ -4,7 +4,6 @@ import { FC } from "react";
 import { useGetBoardQuery } from "@/services/tasks";
 import { IKanbanColumn } from "@/types/tasks";
 import MenuItem from "@mui/material/MenuItem";
-import { FormControl, InputLabel } from "@mui/material";
 import { RHFSelect } from "@/components/hook-form";
 
 // -----------------------------------------------------------------
@@ -45,13 +44,10 @@ const ColumnSelect: FC<SelectProps> = (props) => {
     const { t } = useTranslation();
     const columns = useBoardColumns();
     return (
-        <FormControl fullWidth>
-            <InputLabel>{props.label}</InputLabel>
-            <RHFSelect name="columnId" defaultValue={-1} {...props}>
-                <MenuItem value={-1}>{t("Not selected")}</MenuItem>
-                {columns?.map(getOption)}
-            </RHFSelect>
-        </FormControl>
+        <RHFSelect name="columnId" defaultValue={-1} {...props}>
+            <MenuItem value={-1}>{t("Not selected")}</MenuItem>
+            {columns?.map(getOption)}
+        </RHFSelect>
     );
 };
 

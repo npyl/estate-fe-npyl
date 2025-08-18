@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { RHFSelect } from "src/components/hook-form";
 import { KeyValue } from "src/types/KeyValue";
@@ -15,19 +15,14 @@ const Select = ({ name, label, options, ...props }: SelectProps) => {
     const { t } = useTranslation();
 
     return (
-        <FormControl fullWidth variant="outlined">
-            <InputLabel>{label}</InputLabel>
-            <RHFSelect fullWidth name={name} label={label} {...props}>
-                <MenuItem value={NOT_SELECTED_VALUE}>
-                    {t("Not selected")}
+        <RHFSelect fullWidth name={name} label={label} {...props}>
+            <MenuItem value={NOT_SELECTED_VALUE}>{t("Not selected")}</MenuItem>
+            {options.map(({ key, value }, i) => (
+                <MenuItem key={i} value={key}>
+                    {t(value)}
                 </MenuItem>
-                {options.map(({ key, value }, i) => (
-                    <MenuItem key={i} value={key}>
-                        {t(value)}
-                    </MenuItem>
-                ))}
-            </RHFSelect>
-        </FormControl>
+            ))}
+        </RHFSelect>
     );
 };
 

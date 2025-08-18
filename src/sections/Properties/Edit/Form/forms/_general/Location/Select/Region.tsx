@@ -1,10 +1,5 @@
 import { RHFSelect } from "@/components/hook-form";
-import {
-    FormControl,
-    InputLabel,
-    OutlinedInput,
-    SelectChangeEvent,
-} from "@mui/material";
+import { OutlinedInput, SelectChangeEvent } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -57,26 +52,23 @@ const RegionSelect: FC<IRegionSelectProps> = ({ onChange }) => {
     );
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>{t("Prefecture")}</InputLabel>
-            <RHFSelect
-                disabled={regions.length === 0}
-                name={name}
-                onChange={handleChange}
-                renderValue={renderValue}
-                input={<OutlinedInput label={t("Prefecture")} />}
-            >
-                {regions.map((region, index) => (
-                    <MenuItem
-                        key={region.areaID}
-                        value={region.areaID}
-                        nameEN={region.nameEN}
-                        nameGR={region.nameGR}
-                        checked={regionCode === region.areaID.toString()}
-                    />
-                ))}
-            </RHFSelect>
-        </FormControl>
+        <RHFSelect
+            disabled={regions.length === 0}
+            name={name}
+            onChange={handleChange}
+            renderValue={renderValue}
+            input={<OutlinedInput label={t("Prefecture")} />}
+        >
+            {regions.map((region, index) => (
+                <MenuItem
+                    key={region.areaID}
+                    value={region.areaID}
+                    nameEN={region.nameEN}
+                    nameGR={region.nameGR}
+                    checked={regionCode === region.areaID.toString()}
+                />
+            ))}
+        </RHFSelect>
     );
 };
 

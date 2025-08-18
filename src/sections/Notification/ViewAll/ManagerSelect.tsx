@@ -1,16 +1,9 @@
-import {
-    Avatar,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Avatar, MenuItem, Stack, Typography } from "@mui/material";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "@/services/user";
+import Select from "@/components/Select";
 
 const ManagerSelect = () => {
     const { t } = useTranslation();
@@ -34,39 +27,23 @@ const ManagerSelect = () => {
     };
 
     return (
-        <FormControl size="small" sx={{ width: 260, ml: 2 }}>
-            <InputLabel id="user-select-label">{t("Manager")}</InputLabel>
-            <Select
-                labelId="user-select-label"
-                value={selectedUserId ? Number(selectedUserId) : "All Managers"}
-                label={t("Manager")}
-                onChange={handleChange}
-                renderValue={(value) => {
-                    const user = users?.find((u) => u.id === Number(value));
-                    return user ? (
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <Avatar
-                                src={user.avatar || ""}
-                                alt={user.firstName}
-                                sx={{ width: 24, height: 24 }}
-                            />
-                            <Typography>{`${user.firstName} ${user.lastName}`}</Typography>
-                        </Stack>
-                    ) : (
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <PeopleAltOutlinedIcon
-                                sx={{
-                                    width: 24,
-                                    height: 24,
-                                    color: "text.secondary",
-                                }}
-                            />
-                            <Typography>{t("All Managers")}</Typography>
-                        </Stack>
-                    );
-                }}
-            >
-                <MenuItem value="All Managers">
+        <Select
+            value={selectedUserId ? Number(selectedUserId) : "All Managers"}
+            label={t("Manager")}
+            formControlProps={{ sx: { width: 260, ml: 2 } }}
+            onChange={handleChange}
+            renderValue={(value) => {
+                const user = users?.find((u) => u.id === Number(value));
+                return user ? (
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Avatar
+                            src={user.avatar || ""}
+                            alt={user.firstName}
+                            sx={{ width: 24, height: 24 }}
+                        />
+                        <Typography>{`${user.firstName} ${user.lastName}`}</Typography>
+                    </Stack>
+                ) : (
                     <Stack direction="row" spacing={1} alignItems="center">
                         <PeopleAltOutlinedIcon
                             sx={{
@@ -77,21 +54,34 @@ const ManagerSelect = () => {
                         />
                         <Typography>{t("All Managers")}</Typography>
                     </Stack>
+                );
+            }}
+        >
+            <MenuItem value="All Managers">
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <PeopleAltOutlinedIcon
+                        sx={{
+                            width: 24,
+                            height: 24,
+                            color: "text.secondary",
+                        }}
+                    />
+                    <Typography>{t("All Managers")}</Typography>
+                </Stack>
+            </MenuItem>
+            {users?.map((user) => (
+                <MenuItem key={user.id} value={user.id}>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Avatar
+                            src={user.avatar || ""}
+                            alt={user.firstName}
+                            sx={{ width: 24, height: 24 }}
+                        />
+                        <Typography>{`${user.firstName} ${user.lastName}`}</Typography>
+                    </Stack>
                 </MenuItem>
-                {users?.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <Avatar
-                                src={user.avatar || ""}
-                                alt={user.firstName}
-                                sx={{ width: 24, height: 24 }}
-                            />
-                            <Typography>{`${user.firstName} ${user.lastName}`}</Typography>
-                        </Stack>
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+            ))}
+        </Select>
     );
 };
 

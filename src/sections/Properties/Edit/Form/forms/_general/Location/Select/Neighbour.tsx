@@ -1,10 +1,5 @@
 import { RHFSelect } from "@/components/hook-form";
-import {
-    FormControl,
-    InputLabel,
-    OutlinedInput,
-    SelectChangeEvent,
-} from "@mui/material";
+import { OutlinedInput, SelectChangeEvent } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -63,26 +58,23 @@ const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
     );
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>{t("Neighborhood")}</InputLabel>
-            <RHFSelect
-                disabled={neighbours.length === 0}
-                name={name}
-                onChange={handleChange}
-                renderValue={renderValue}
-                input={<OutlinedInput label={t("Neighborhood")} />}
-            >
-                {neighbours.map((option) => (
-                    <MenuItem
-                        key={option.areaID}
-                        value={option.areaID.toString()}
-                        nameEN={option.nameEN}
-                        nameGR={option.nameGR}
-                        checked={option.areaID.toString() === neighbourCode}
-                    />
-                ))}
-            </RHFSelect>
-        </FormControl>
+        <RHFSelect
+            disabled={neighbours.length === 0}
+            name={name}
+            onChange={handleChange}
+            renderValue={renderValue}
+            input={<OutlinedInput label={t("Neighborhood")} />}
+        >
+            {neighbours.map((option) => (
+                <MenuItem
+                    key={option.areaID}
+                    value={option.areaID.toString()}
+                    nameEN={option.nameEN}
+                    nameGR={option.nameGR}
+                    checked={option.areaID.toString() === neighbourCode}
+                />
+            ))}
+        </RHFSelect>
     );
 };
 

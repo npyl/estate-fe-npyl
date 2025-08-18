@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { FormControl, InputLabel, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import { Placeholder as LabelPlaceholder } from "@/components/Label";
 import LabelCreate from "@/sections/LabelCreate";
 import { LeadSource } from "@/types/global";
@@ -81,19 +81,17 @@ const getFIELDS = (
         !isB2B
     ),
 
-    <FormControl fullWidth variant="outlined">
-        <InputLabel>{t("Preferred Language")}</InputLabel>
-        <RHFSelect
-            isEnum
-            fullWidth
-            name="preferredLanguage"
-            label={t("Preferred Language")}
-        >
-            <MenuItem value="">{t("Not selected")}</MenuItem>
-            <MenuItem value="ENGLISH">{t("English")}</MenuItem>
-            <MenuItem value="GREEK">{t("Greek")}</MenuItem>
-        </RHFSelect>
-    </FormControl>,
+    <RHFSelect
+        isEnum
+        fullWidth
+        name="preferredLanguage"
+        label={t("Preferred Language")}
+    >
+        <MenuItem value="">{t("Not selected")}</MenuItem>
+        <MenuItem value="ENGLISH">{t("English")}</MenuItem>
+        <MenuItem value="GREEK">{t("Greek")}</MenuItem>
+    </RHFSelect>,
+
     <Select
         isEnum
         name="leadSource"

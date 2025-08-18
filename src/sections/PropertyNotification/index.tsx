@@ -1,16 +1,13 @@
 import {
     Box,
     Stack,
-    InputLabel,
     MenuItem,
-    Select,
     TextField,
     InputAdornment,
     SxProps,
     Theme,
     IconButton,
     Typography,
-    FormControl,
 } from "@mui/material";
 import { useCallback, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,6 +21,7 @@ import {
 import { NotificationType } from "@/types/notification";
 import getBorderColor from "@/theme/borderColor";
 import Table from "../Notification/ViewAll/table";
+import Select from "@/components/Select";
 
 // 🔹 Search Input Styling
 const SearchInputSx: SxProps<Theme> = {
@@ -150,19 +148,17 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                     }}
                 />
 
-                <FormControl sx={{ minWidth: 140 }}>
-                    <InputLabel>{t(`  View `)}</InputLabel>
-                    <Select
-                        label={t(`  View `)}
-                        value={filter}
-                        onChange={handleFilterChange}
-                        displayEmpty
-                    >
-                        <MenuItem value="all">{t("All")}</MenuItem>
-                        <MenuItem value="viewed">{t("Viewed")}</MenuItem>
-                        <MenuItem value="notViewed">{t("Not Viewed")}</MenuItem>
-                    </Select>
-                </FormControl>
+                <Select
+                    label={t(`  View `)}
+                    value={filter}
+                    onChange={handleFilterChange}
+                    displayEmpty
+                    formControlProps={{ sx: { minWidth: 140 } }}
+                >
+                    <MenuItem value="all">{t("All")}</MenuItem>
+                    <MenuItem value="viewed">{t("Viewed")}</MenuItem>
+                    <MenuItem value="notViewed">{t("Not Viewed")}</MenuItem>
+                </Select>
             </Stack>
 
             {notifications?.content?.length ? (

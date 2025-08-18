@@ -1,9 +1,7 @@
 import {
     Box,
     Stack,
-    InputLabel,
     MenuItem,
-    Select,
     TextField,
     InputAdornment,
     SxProps,
@@ -22,13 +20,13 @@ const StayUpdated = dynamic(() => import("./tabs/StayUpdated"));
 import dynamic from "next/dynamic";
 import { INotificationTab, TViewFilter } from "./types";
 import getTabOption from "./getTabOption";
-import { FilterFormControl } from "./styled";
 import { useDebounce } from "use-debounce";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import getBorderColor from "@/theme/borderColor";
 import ManagerSelect from "./ManagerSelect";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
+import Select from "@/components/Select";
 
 const SearchInputSx: SxProps<Theme> = {
     minWidth: 350,
@@ -100,31 +98,16 @@ const ViewAllNotifications = () => {
                 >
                     <Tabs>{TABS.map(getTabOption)}</Tabs>
 
-                    <FilterFormControl
-                        sx={{ minWidth: 120, borderColor: "1px solid red" }}
+                    <Select
+                        value={filter}
+                        label={t(`  View `)}
+                        formControlProps={{ sx: { minWidth: 120 } }}
+                        onChange={handleFilterChange}
                     >
-                        <InputLabel
-                            sx={{
-                                fontSize: "medium",
-                                color: "primary",
-                                display: "flex",
-                            }}
-                        >
-                            {t(`  View `)}
-                        </InputLabel>
-
-                        <Select
-                            value={filter}
-                            label={t(`  View `)}
-                            onChange={handleFilterChange}
-                        >
-                            <MenuItem value="all">{t(`All`)}</MenuItem>
-                            <MenuItem value="viewed">{t(`Viewed`)}</MenuItem>
-                            <MenuItem value="notViewed">
-                                {t(`Not Viewed`)}
-                            </MenuItem>
-                        </Select>
-                    </FilterFormControl>
+                        <MenuItem value="all">{t(`All`)}</MenuItem>
+                        <MenuItem value="viewed">{t(`Viewed`)}</MenuItem>
+                        <MenuItem value="notViewed">{t(`Not Viewed`)}</MenuItem>
+                    </Select>
                 </Stack>
                 <Box mt={1} mb={1}>
                     <TextField
