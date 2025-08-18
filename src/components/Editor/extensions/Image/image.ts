@@ -36,19 +36,20 @@ declare module "@tiptap/core" {
              */
             createContainer: (options?: ImageContainerOptions) => ReturnType;
             /**
-             * Add an image to a specific container
+             * Add multiple images to a specific container
              * @param containerPos Position of the container node
-             * @param options The image attributes
+             * @param images Array of image source URLs
+             * @param options The shared image options
              * @example
-             * editor.commands.addImageToContainer(containerPos, { src: 'image.jpg' })
+             * editor.commands.addImageToContainer(containerPos, ['image1.jpg', 'image2.jpg'], { style: 'width: 50%;' })
              */
             addImageToContainer: (
                 containerPos: number,
-                options: {
-                    src: string;
+                images: string[],
+                options?: {
+                    style?: string;
                     alt?: string;
                     title?: string;
-                    style?: string;
                 }
             ) => ReturnType;
         };
@@ -250,7 +251,7 @@ export const Image = Node.create<ImageOptions>({
                 },
 
             addImageToContainer:
-                (containerPos, imageOptions) =>
+                (containerPos, images, options = {}) =>
                 ({ state, tr, dispatch }) => {
                     try {
                         const containerNode = state.doc.nodeAt(containerPos);
@@ -265,22 +266,43 @@ export const Image = Node.create<ImageOptions>({
                             return false;
                         }
 
-                        const imageNode =
-                            state.schema.nodes.image.create(imageOptions);
+                        // Validate that images is an array
+                        if (!Array.isArray(images) || images.length === 0) {
+                            console.warn(
+                                "Images parameter must be a non-empty array"
+                            );
+                            return false;
+                        }
 
                         // Find the end position inside the container
-                        const containerEnd =
+                        let insertPos =
                             containerPos + containerNode.nodeSize - 1;
 
-                        if (dispatch) {
-                            tr.insert(containerEnd, imageNode);
-                            dispatch(tr);
-                        }
+                        if (!dispatch) return false;
+
+                        // Create and insert all image nodes
+                        images.forEach((src) => {
+                            const imageOptions = {
+                                src,
+                                alt: options.alt,
+                                title: options.title,
+                                style: options.style,
+                            };
+
+                            const imageNode =
+                                state.schema.nodes.image.create(imageOptions);
+                            tr.insert(insertPos, imageNode);
+
+                            // Update insert position for the next image
+                            insertPos += imageNode.nodeSize;
+                        });
+
+                        dispatch(tr);
 
                         return true;
                     } catch (error) {
                         console.error(
-                            "Error adding image to container:",
+                            "Error adding images to container:",
                             error
                         );
                         return false;

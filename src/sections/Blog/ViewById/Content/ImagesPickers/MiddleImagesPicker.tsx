@@ -1,8 +1,9 @@
 import { IPropertyImage } from "@/types/file";
-import { FC, useCallback, useState } from "react";
+import { FC, RefObject, useCallback, useState } from "react";
 import { Upload } from "src/components/upload";
 import { errorToast } from "@/components/Toaster";
 import uuidv4 from "@/utils/uuidv4";
+import { TitleDescriptionEditorRef } from "@/ui/DescriptionEditor";
 
 const getImageFromFile = (f: File): IPropertyImage => {
     const id = Math.random();
@@ -21,10 +22,11 @@ const getImageFromFile = (f: File): IPropertyImage => {
 const FULL_LITERAL = "BLOG_MIDDLE_IMAGES_FULL";
 
 interface Props {
+    editorRef: RefObject<TitleDescriptionEditorRef>;
     images: IPropertyImage[];
 }
 
-const MiddleImagesPicker: FC<Props> = ({}) => {
+const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
     // const [uploadFiles, { isUploading }] = useBlogUpload();
 
     const [images, setImages] = useState<IPropertyImage[]>([]);
@@ -40,7 +42,12 @@ const MiddleImagesPicker: FC<Props> = ({}) => {
                 return;
             }
 
-            setImages((old) => [...old, ...f.map(getImageFromFile)]);
+            const i = f.map(getImageFromFile);
+            const urls = i.map(({ url }) => url).filter(Boolean) ?? [];
+
+            editorRef.current?.addImages(urls as string[]);
+
+            setImages((old) => [...old, ...i]);
         },
         [images]
     );

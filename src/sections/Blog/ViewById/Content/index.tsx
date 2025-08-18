@@ -18,7 +18,11 @@ const Content: FC<ContentProps> = ({ postId, image }) => {
     return (
         <Stack spacing={1}>
             {Boolean(postId) ? (
-                <ImagesPickers postId={postId!} image={image} />
+                <ImagesPickers
+                    editorRef={editorRef}
+                    postId={postId!}
+                    image={image}
+                />
             ) : null}
 
             <TitleDescriptionEditor

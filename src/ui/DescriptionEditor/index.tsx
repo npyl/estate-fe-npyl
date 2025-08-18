@@ -35,7 +35,7 @@ const IMG_STYLE =
     "width: 50%; height: auto; object-fit: fit; border-radius: 8px;";
 
 interface TitleDescriptionEditorRef {
-    setImage: (src: string) => void;
+    addImages: (sources: string[]) => void;
 }
 
 interface TitleDescriptionEditorProps
@@ -51,9 +51,9 @@ const TitleDescriptionEditor = forwardRef<
     const { t } = useTranslation();
 
     const { editorRef } = useEditorHandleContext();
-    const setImage = useCallback((src: string) => {
+    const addImages = useCallback((sources: string[]) => {
         const editor = editorRef.current;
-        if (!editor) return;
+        if (!editor || sources.length === 0) return;
 
         editor.commands.createContainer({
             HTMLAttributes: {
@@ -61,16 +61,14 @@ const TitleDescriptionEditor = forwardRef<
             },
         });
 
-        // Get the container position (you'll need to track this)
         const containers = getAllContainers(editor.state);
         const latestContainer = containers[containers.length - 1];
 
-        editor.commands.addImageToContainer(latestContainer.pos, {
-            src,
+        editor.commands.addImageToContainer(latestContainer.pos, sources, {
             style: IMG_STYLE,
         });
     }, []);
-    useImperativeHandle(ref, () => ({ setImage }), []);
+    useImperativeHandle(ref, () => ({ addImages }), []);
 
     const [lang, setLang] = useState<Language>("el");
     const { title, descriptionName, descriptionTextName } = useNames(lang);

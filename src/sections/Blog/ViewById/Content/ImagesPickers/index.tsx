@@ -1,16 +1,18 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import ImagePicker from "./ImagePicker";
 import MiddleImagesPicker from "./MiddleImagesPicker";
-import { FC } from "react";
+import { FC, RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import Typography from "@mui/material/Typography";
+import { TitleDescriptionEditorRef } from "@/ui/DescriptionEditor";
 
 interface Props {
     postId: number;
     image?: string;
+    editorRef: RefObject<TitleDescriptionEditorRef>;
 }
 
-const ImagesPickers: FC<Props> = ({ postId, image }) => {
+const ImagesPickers: FC<Props> = ({ postId, image, editorRef }) => {
     const { t } = useTranslation();
     return (
         <Grid container spacing={1}>
@@ -21,7 +23,7 @@ const ImagesPickers: FC<Props> = ({ postId, image }) => {
                 <Typography textAlign="center" variant="h5">
                     {t("MiddleImages")}
                 </Typography>
-                <MiddleImagesPicker images={[]} />
+                <MiddleImagesPicker editorRef={editorRef} images={[]} />
             </Grid>
         </Grid>
     );
