@@ -5,6 +5,7 @@ const resources = {
     en: {
         translation: {
             BLOG_MIDDLE_IMAGES_FULL: "You can only upload 2 images",
+            MainImage: "Main Image",
             MiddleImages: "Middle Images",
 
             RESET_USER_PASSWORD: "Reset user password",
@@ -1407,6 +1408,7 @@ const resources = {
         translation: {
             BLOG_MIDDLE_IMAGES_FULL:
                 "Μπορείτε να ανεβάσετε μέχρι 2 φωτογραφίες",
+            MainImage: "Κύρια Εικόνα",
             MiddleImages: "Εικόνες Μέσης",
 
             RESET_USER_PASSWORD: "Αλλαγή κωδικού χρήστη",

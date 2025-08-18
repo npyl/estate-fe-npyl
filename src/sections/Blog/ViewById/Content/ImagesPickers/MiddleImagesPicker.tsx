@@ -37,9 +37,9 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
 
     const containerRef = useRef(-1);
 
-    const addImages = useCallback((sources: string[]) => {
+    const addImages = useCallback((i: IPropertyImage[]) => {
         const editor = editorRef.current;
-        if (!editor || sources.length === 0) return;
+        if (!editor) return;
 
         // INFO: if we haven't created a container do so!
         if (containerRef.current === -1) {
@@ -57,7 +57,7 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
 
         const pos = containerRef.current;
 
-        editor.commands.addImageToContainer(pos, sources, {
+        editor.commands.addImageToContainer(pos, i, {
             style: IMG_STYLE,
         });
     }, []);
@@ -76,9 +76,8 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
             }
 
             const i = f.map(getImageFromFile);
-            const urls = i.map(({ url }) => url).filter(Boolean) ?? [];
 
-            addImages(urls as string[]);
+            addImages(i);
 
             setImages((old) => [...old, ...i]);
         },

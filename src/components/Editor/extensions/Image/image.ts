@@ -2,6 +2,10 @@ import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
 import { TextSelection } from "@tiptap/pm/state";
 import ensureParagraphAfterContainerPlugin from "./ResidualParagraph";
 
+const CONTAINER_NAME = "imageContainer";
+
+type TImage = { id: number; url: string };
+
 export interface ImageOptions {
     /**
      * HTML attributes to add to the image element.
@@ -45,7 +49,7 @@ declare module "@tiptap/core" {
              */
             addImageToContainer: (
                 containerPos: number,
-                images: string[],
+                images: TImage[],
                 options?: {
                     style?: string;
                     alt?: string;
@@ -66,7 +70,7 @@ export const inputRegex =
  * Image Container Node
  */
 export const ImageContainer = Node.create<ImageContainerOptions>({
-    name: "imageContainer",
+    name: CONTAINER_NAME,
 
     addOptions() {
         return {
@@ -223,29 +227,26 @@ export const Image = Node.create<ImageOptions>({
 
                     const insertPos = selection.$to.pos;
 
-                    if (dispatch) {
-                        const transaction = tr.insert(insertPos, containerNode);
+                    if (!dispatch) return false;
 
-                        // Add a paragraph after the container for continued editing
-                        const afterContainerPos =
-                            insertPos + containerNode.nodeSize;
-                        const paragraphNode =
-                            state.schema.nodes.paragraph.create();
-                        transaction.insert(afterContainerPos, paragraphNode);
+                    const transaction = tr.insert(insertPos, containerNode);
 
-                        // Set cursor to the new paragraph
-                        const resolvedPos = transaction.doc.resolve(
-                            afterContainerPos + 1
-                        );
-                        transaction.setSelection(
-                            TextSelection.near(resolvedPos)
-                        );
+                    // Add a paragraph after the container for continued editing
+                    const afterContainerPos =
+                        insertPos + containerNode.nodeSize;
+                    const paragraphNode = state.schema.nodes.paragraph.create();
+                    transaction.insert(afterContainerPos, paragraphNode);
 
-                        dispatch(transaction);
+                    // Set cursor to the new paragraph
+                    const resolvedPos = transaction.doc.resolve(
+                        afterContainerPos + 1
+                    );
+                    transaction.setSelection(TextSelection.near(resolvedPos));
 
-                        // Return the position of the inserted container for later use
-                        transaction.setMeta("containerPos", insertPos);
-                    }
+                    dispatch(transaction);
+
+                    // Return the position of the inserted container for later use
+                    transaction.setMeta("containerPos", insertPos);
 
                     return true;
                 },
@@ -258,7 +259,7 @@ export const Image = Node.create<ImageOptions>({
 
                         if (
                             !containerNode ||
-                            containerNode.type.name !== "imageContainer"
+                            containerNode.type.name !== CONTAINER_NAME
                         ) {
                             console.warn(
                                 "No container found at the specified position"
@@ -281,9 +282,10 @@ export const Image = Node.create<ImageOptions>({
                         if (!dispatch) return false;
 
                         // Create and insert all image nodes
-                        images.forEach((src) => {
+                        images.forEach(({ id, url }) => {
                             const imageOptions = {
-                                src,
+                                id,
+                                src: url,
                                 alt: options.alt,
                                 title: options.title,
                                 style: options.style,
@@ -301,10 +303,7 @@ export const Image = Node.create<ImageOptions>({
 
                         return true;
                     } catch (error) {
-                        console.error(
-                            "Error adding images to container:",
-                            error
-                        );
+                        console.error(error);
                         return false;
                     }
                 },
@@ -330,7 +329,7 @@ export const getAllContainers = (state: any) => {
     const containers: { pos: number; node: any }[] = [];
 
     state.doc.descendants((node: any, pos: number) => {
-        if (node.type.name === "imageContainer") {
+        if (node.type.name === CONTAINER_NAME) {
             containers.push({ pos, node });
         }
     });

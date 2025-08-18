@@ -16,10 +16,13 @@ const ImagesPickers: FC<Props> = ({ postId, image, editorRef }) => {
     const { t } = useTranslation();
     return (
         <Grid container spacing={1}>
-            <Grid xs={12} lg={6}>
+            <Grid xs={12} lg={6} display="flex" flexDirection="column" gap={1}>
+                <Typography textAlign="center" variant="h5">
+                    {t("MainImage")}
+                </Typography>
                 <ImagePicker postId={postId} image={image} />
             </Grid>
-            <Grid xs={12} lg={6}>
+            <Grid xs={12} lg={6} display="flex" flexDirection="column" gap={1}>
                 <Typography textAlign="center" variant="h5">
                     {t("MiddleImages")}
                 </Typography>
