@@ -1,21 +1,11 @@
 import { DropzoneOptions, useDropzone } from "react-dropzone";
-// @mui
-import {
-    Box,
-    Stack,
-    StackProps,
-    SxProps,
-    Theme,
-    Typography,
-} from "@mui/material";
-// assets
+import { Box, SxProps, Theme } from "@mui/material";
 import { IPropertyImage } from "@/types/file";
-import { UploadIllustration } from "@/assets/illustrations";
 import RejectionFiles from "@/components/upload/errors/RejectionFiles";
 import ImagePreview from "./ImagePreview";
 import { useImageOperations } from "../context/ImageOperations";
 import StyledDropZone from "./styled";
-import { useTranslation } from "react-i18next";
+import Placeholder from "./Placeholder";
 
 export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
@@ -24,7 +14,6 @@ export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     files?: IPropertyImage[];
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
-    disableMultiple?: boolean;
 
     onImageClick: (key: string) => void;
 }
@@ -101,39 +90,6 @@ function UploadImages({
 
             {helperText && helperText}
         </Box>
-    );
-}
-
-// ----------------------------------------------------------------------
-
-function Placeholder({ sx, ...other }: StackProps) {
-    const { t } = useTranslation();
-    return (
-        <Stack
-            alignItems="center"
-            justifyContent="center"
-            direction={{
-                xs: "column",
-                md: "row",
-            }}
-            sx={{
-                width: 1,
-                textAlign: {
-                    xs: "center",
-                    md: "left",
-                },
-                ...sx,
-            }}
-            {...other}
-        >
-            <UploadIllustration sx={{ width: 100 }} />
-
-            <Box sx={{ p: 3 }}>
-                <Typography gutterBottom variant="h5">
-                    {t("Drop or Select files")}
-                </Typography>
-            </Box>
-        </Stack>
     );
 }
 
