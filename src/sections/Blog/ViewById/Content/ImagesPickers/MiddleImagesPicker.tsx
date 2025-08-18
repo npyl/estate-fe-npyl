@@ -83,10 +83,14 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
         },
         [images]
     );
-    const onRemove = useCallback(
-        (k: string) => setImages((old) => old.filter(({ key }) => key !== k)),
-        []
-    );
+    const onRemove = useCallback((k: string) => {
+        const editor = editorRef.current;
+        if (!editor) return;
+
+        editor.commands.removeImageByKey(k);
+
+        setImages((old) => old.filter(({ key }) => key !== k));
+    }, []);
 
     return (
         <Upload

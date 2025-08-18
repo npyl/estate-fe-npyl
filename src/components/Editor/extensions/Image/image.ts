@@ -4,7 +4,7 @@ import ensureParagraphAfterContainerPlugin from "./ResidualParagraph";
 
 const CONTAINER_NAME = "imageContainer";
 
-type TImage = { id: number; url: string };
+type TImage = { key: string; url: string };
 
 export interface ImageOptions {
     /**
@@ -56,6 +56,13 @@ declare module "@tiptap/core" {
                     title?: string;
                 }
             ) => ReturnType;
+            /**
+             * Remove an image by its key from any container
+             * @param key The key/id of the image to remove
+             * @example
+             * editor.commands.removeImageByKey('image-123')
+             */
+            removeImageByKey: (key: string) => ReturnType;
         };
     }
 }
@@ -63,8 +70,7 @@ declare module "@tiptap/core" {
 /**
  * Matches an image to a ![image](src "title") on input.
  */
-export const inputRegex =
-    /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
+const inputRegex = /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
 
 /**
  * Image Container Node
@@ -170,6 +176,9 @@ export const Image = Node.create<ImageOptions>({
                 default: null,
             },
             style: {
+                default: null,
+            },
+            id: {
                 default: null,
             },
         };
@@ -282,9 +291,9 @@ export const Image = Node.create<ImageOptions>({
                         if (!dispatch) return false;
 
                         // Create and insert all image nodes
-                        images.forEach(({ id, url }) => {
+                        images.forEach(({ key, url }) => {
                             const imageOptions = {
-                                id,
+                                id: key,
                                 src: url,
                                 alt: options.alt,
                                 title: options.title,
@@ -293,6 +302,7 @@ export const Image = Node.create<ImageOptions>({
 
                             const imageNode =
                                 state.schema.nodes.image.create(imageOptions);
+
                             tr.insert(insertPos, imageNode);
 
                             // Update insert position for the next image
@@ -304,6 +314,52 @@ export const Image = Node.create<ImageOptions>({
                         return true;
                     } catch (error) {
                         console.error(error);
+                        return false;
+                    }
+                },
+
+            removeImageByKey:
+                (key) =>
+                ({ state, tr, dispatch }) => {
+                    try {
+                        if (!key) {
+                            console.warn("Key parameter is required");
+                            return false;
+                        }
+
+                        let imageFound = false;
+                        let imagePos = -1;
+
+                        // Search through the document to find the image with the matching key/id
+                        state.doc.descendants((node: any, pos: number) => {
+                            if (
+                                node.type.name === "image" &&
+                                node.attrs.id === key
+                            ) {
+                                imageFound = true;
+                                imagePos = pos;
+                                return false; // Stop iteration
+                            }
+                        });
+
+                        if (!imageFound) {
+                            console.warn(`Image with key "${key}" not found`);
+                            return false;
+                        }
+
+                        if (!dispatch) return false;
+
+                        // Remove the image node
+                        const imageNode = state.doc.nodeAt(imagePos);
+                        if (imageNode) {
+                            tr.delete(imagePos, imagePos + imageNode.nodeSize);
+                            dispatch(tr);
+                            return true;
+                        }
+
+                        return false;
+                    } catch (error) {
+                        console.error("Error removing image:", error);
                         return false;
                     }
                 },
