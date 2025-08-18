@@ -53,6 +53,7 @@ const Categories = () => {
             label={t("Categories")}
             value={categories}
             onChange={onChange}
+            formControlProps={{ sx: { minWidth: "170px" } }}
         >
             {OPTIONS.map(getOption)}
         </Select>

@@ -28,10 +28,11 @@ export default function FilterType() {
 
     return (
         <Select
-            label={t("Type")}
             multiple
+            label={t("Type")}
             value={filters[key] || []}
             onChange={handleChange}
+            formControlProps={{ sx: { minWidth: "130px" } }}
         >
             <MenuItem value="">{t("Not selected")}</MenuItem>
             {OPTIONS.map(({ key, label }) => (

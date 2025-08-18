@@ -3,6 +3,7 @@ import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import { useFiltersContext, useParentCategories } from "../Context";
 import Select, { SelectChangeEvent } from "@/components/Select";
+import { useCallback } from "react";
 
 export default function FilterParentCategory() {
     const { t } = useTranslation();
@@ -26,7 +27,19 @@ export default function FilterParentCategory() {
         );
     };
 
-    if (!data) return null;
+    const renderValue = useCallback(
+        (selected: string[]) => {
+            return selected
+                .map(
+                    (key) =>
+                        parentCategoryEnums?.find((item) => item.key === key)
+                            ?.value
+                )
+                .filter(Boolean)
+                .join(", ");
+        },
+        [parentCategoryEnums]
+    );
 
     return (
         <Select
@@ -37,33 +50,21 @@ export default function FilterParentCategory() {
                 sx: { minWidth: "225px", maxWidth: "225px" },
             }}
             onChange={handleChange}
-            renderValue={(selected: string[]) => {
-                return selected
-                    .map(
-                        (key) =>
-                            parentCategoryEnums?.find(
-                                (item) => item.key === key
-                            )?.value
-                    )
-                    .filter(Boolean)
-                    .join(", ");
-            }}
+            renderValue={renderValue}
             MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
         >
-            {parentCategoryEnums!.map(({ key, value }) => {
-                return (
-                    <MenuItem key={key} value={key}>
-                        <Checkbox
-                            checked={
-                                parentCategories &&
-                                parentCategories.length > 0 &&
-                                parentCategories.indexOf(key) > -1
-                            }
-                        />
-                        {value}
-                    </MenuItem>
-                );
-            })}
+            {parentCategoryEnums?.map(({ key, value }) => (
+                <MenuItem key={key} value={key}>
+                    <Checkbox
+                        checked={
+                            parentCategories &&
+                            parentCategories.length > 0 &&
+                            parentCategories.indexOf(key) > -1
+                        }
+                    />
+                    {value}
+                </MenuItem>
+            ))}
         </Select>
     );
 }

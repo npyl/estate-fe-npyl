@@ -27,6 +27,7 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
             multiple
             fullWidth
             name={name}
+            label={label}
             defaultValue={[]}
             renderValue={renderValue}
         >

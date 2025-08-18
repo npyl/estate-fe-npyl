@@ -59,11 +59,12 @@ const NeighbourSelect: FC<NeighbourSelectProps> = ({ onChange }) => {
 
     return (
         <RHFSelect
-            disabled={neighbours.length === 0}
+            fullWidth
             name={name}
+            disabled={neighbours.length === 0}
+            label={t("Neighborhood")}
             onChange={handleChange}
             renderValue={renderValue}
-            input={<OutlinedInput label={t("Neighborhood")} />}
         >
             {neighbours.map((option) => (
                 <MenuItem

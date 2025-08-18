@@ -1,5 +1,5 @@
 import { RHFSelect } from "@/components/hook-form";
-import { OutlinedInput, SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -57,11 +57,12 @@ const MunicipSelect: FC<IMunicipSelectProps> = ({ onChange }) => {
 
     return (
         <RHFSelect
-            disabled={municips.length === 0}
+            fullWidth
             name={name}
+            label={t("Municipality")}
+            disabled={municips.length === 0}
             onChange={handleChange}
             renderValue={renderValue}
-            input={<OutlinedInput label={t("Municipality")} />}
         >
             {municips.map(({ areaID, nameEN, nameGR }) => (
                 <MenuItem

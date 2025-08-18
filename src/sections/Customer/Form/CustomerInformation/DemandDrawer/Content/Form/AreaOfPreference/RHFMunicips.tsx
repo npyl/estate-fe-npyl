@@ -60,6 +60,7 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
     return (
         <Select
             multiple
+            fullWidth
             value={value}
             label={t("Municipality")}
             onChange={handleChange}

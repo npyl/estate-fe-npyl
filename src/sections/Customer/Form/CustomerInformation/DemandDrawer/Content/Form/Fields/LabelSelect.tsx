@@ -30,9 +30,10 @@ const LabelSelect: FC<Props> = ({ index }) => {
 
     return (
         <RHFSelect
+            multiple
+            fullWidth
             label={t("Labels")}
             name={name}
-            multiple
             renderValue={renderValue}
             defaultValue={[]}
         >

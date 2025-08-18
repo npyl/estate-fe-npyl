@@ -1,5 +1,5 @@
 import { RHFSelect } from "@/components/hook-form";
-import { OutlinedInput, SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -53,13 +53,14 @@ const RegionSelect: FC<IRegionSelectProps> = ({ onChange }) => {
 
     return (
         <RHFSelect
-            disabled={regions.length === 0}
+            fullWidth
             name={name}
+            label={t("Prefecture")}
+            disabled={regions.length === 0}
             onChange={handleChange}
             renderValue={renderValue}
-            input={<OutlinedInput label={t("Prefecture")} />}
         >
-            {regions.map((region, index) => (
+            {regions.map((region) => (
                 <MenuItem
                     key={region.areaID}
                     value={region.areaID}

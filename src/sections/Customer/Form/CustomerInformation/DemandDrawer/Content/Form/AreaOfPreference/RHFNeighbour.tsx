@@ -58,6 +58,7 @@ const NeighbourSelectDemands = (props: NeighbourSelectProps) => {
     return (
         <Select
             multiple
+            fullWidth
             value={value}
             onChange={handleChange}
             label={t("Neighborhood")}

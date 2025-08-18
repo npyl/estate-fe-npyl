@@ -27,6 +27,7 @@ const RegionSelect = (props: IRegionSelectProps) => {
     return (
         <Select
             multiple
+            fullWidth
             value={value}
             label={t("Prefecture")}
             onChange={handleChange}

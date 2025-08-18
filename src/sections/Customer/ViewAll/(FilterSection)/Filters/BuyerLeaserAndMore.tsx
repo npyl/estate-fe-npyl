@@ -8,6 +8,7 @@ import {
     useSeller,
 } from "../Context";
 import Select, { SelectChangeEvent } from "@/components/Select";
+import { useCallback } from "react";
 
 export default function FilterBuyerLeaserAndMore() {
     const { t } = useTranslation();
@@ -26,20 +27,21 @@ export default function FilterBuyerLeaserAndMore() {
     if (seller) selectedRoles.push("seller");
     if (lessor) selectedRoles.push("lessor");
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const handleChange = useCallback((event: SelectChangeEvent<string[]>) => {
         const selected = event.target.value;
         setLeaser(selected.includes("leaser"));
         setBuyer(selected.includes("buyer"));
         setSeller(selected.includes("seller"));
         setLessor(selected.includes("lessor"));
-    };
+    }, []);
 
     return (
         <Select
-            label={t("Roles")}
             multiple
+            label={t("Roles")}
             value={selectedRoles}
             onChange={handleChange}
+            formControlProps={{ sx: { minWidth: "200px" } }}
             renderValue={(selected) =>
                 selected
                     .map((role) =>
