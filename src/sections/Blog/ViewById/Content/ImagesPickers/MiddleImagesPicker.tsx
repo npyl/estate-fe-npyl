@@ -1,9 +1,10 @@
 import { IPropertyImage } from "@/types/file";
-import { FC, RefObject, useCallback, useState } from "react";
+import { FC, RefObject, useCallback, useRef, useState } from "react";
 import { Upload } from "src/components/upload";
 import { errorToast } from "@/components/Toaster";
 import uuidv4 from "@/utils/uuidv4";
-import { TitleDescriptionEditorRef } from "@/ui/DescriptionEditor";
+import { Editor } from "@tiptap/react";
+import { getAllContainers } from "@/components/Editor/extensions/Image";
 
 const getImageFromFile = (f: File): IPropertyImage => {
     const id = Math.random();
@@ -21,13 +22,45 @@ const getImageFromFile = (f: File): IPropertyImage => {
 
 const FULL_LITERAL = "BLOG_MIDDLE_IMAGES_FULL";
 
+const IMG_CONTAINER_STYLE =
+    "display: flex; flex-direction: row; gap: 8px; height: fit-content; width: 100%;";
+const IMG_STYLE =
+    "width: 50%; height: auto; object-fit: fit; border-radius: 8px;";
+
 interface Props {
-    editorRef: RefObject<TitleDescriptionEditorRef>;
+    editorRef: RefObject<Editor>;
     images: IPropertyImage[];
 }
 
 const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
     // const [uploadFiles, { isUploading }] = useBlogUpload();
+
+    const containerRef = useRef(-1);
+
+    const addImages = useCallback((sources: string[]) => {
+        const editor = editorRef.current;
+        if (!editor || sources.length === 0) return;
+
+        // INFO: if we haven't created a container do so!
+        if (containerRef.current === -1) {
+            editor.commands.createContainer({
+                HTMLAttributes: {
+                    style: IMG_CONTAINER_STYLE,
+                },
+            });
+
+            const containers = getAllContainers(editor.state);
+            const latestContainer = containers[containers.length - 1];
+
+            containerRef.current = latestContainer.pos;
+        }
+
+        const pos = containerRef.current;
+
+        editor.commands.addImageToContainer(pos, sources, {
+            style: IMG_STYLE,
+        });
+    }, []);
 
     const [images, setImages] = useState<IPropertyImage[]>([]);
     const uploadFiles = useCallback(
@@ -45,7 +78,7 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
             const i = f.map(getImageFromFile);
             const urls = i.map(({ url }) => url).filter(Boolean) ?? [];
 
-            editorRef.current?.addImages(urls as string[]);
+            addImages(urls as string[]);
 
             setImages((old) => [...old, ...i]);
         },

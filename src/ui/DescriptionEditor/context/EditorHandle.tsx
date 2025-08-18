@@ -1,15 +1,18 @@
 import {
     createContext,
     FC,
+    forwardRef,
     PropsWithChildren,
     RefObject,
     useContext,
     useRef,
 } from "react";
 import { Editor } from "@tiptap/core";
+import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 
 type State = {
     editorRef: RefObject<Editor>;
+    onRef: (node: Editor | null) => void;
 };
 
 const EditorHandleContext = createContext<State | undefined>(undefined);
@@ -26,15 +29,18 @@ export const useEditorHandleContext = () => {
 
 interface EditorHandleProps extends PropsWithChildren {}
 
-export const EditorHandleProvider: FC<EditorHandleProps> = (props) => {
-    const editorRef = useRef<Editor>(null);
+export const EditorHandleProvider = forwardRef<Editor, EditorHandleProps>(
+    (props, ref) => {
+        const [editorRef, { onRef }] = useForwardedLocalRef<Editor>(ref);
 
-    return (
-        <EditorHandleContext.Provider
-            value={{
-                editorRef,
-            }}
-            {...props}
-        />
-    );
-};
+        return (
+            <EditorHandleContext.Provider
+                value={{
+                    editorRef,
+                    onRef,
+                }}
+                {...props}
+            />
+        );
+    }
+);

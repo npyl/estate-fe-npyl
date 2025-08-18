@@ -1,11 +1,5 @@
 import Typography from "@mui/material/Typography";
-import {
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useState,
-} from "react";
+import { FC, forwardRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RHFTextField } from "@/components/hook-form";
@@ -27,16 +21,7 @@ import Box from "@mui/material/Box";
 import GenerateTitleButton from "./GenerateTitleButton";
 import Stack from "@mui/material/Stack";
 import { SpaceBetween } from "@/components/styled";
-import { getAllContainers } from "@/components/Editor/extensions/Image";
-
-const IMG_CONTAINER_STYLE =
-    "display: flex; flex-direction: row; gap: 8px; height: fit-content; width: 100%;";
-const IMG_STYLE =
-    "width: 50%; height: auto; object-fit: fit; border-radius: 8px;";
-
-interface TitleDescriptionEditorRef {
-    addImages: (sources: string[]) => void;
-}
+import { Editor } from "@tiptap/react";
 
 interface TitleDescriptionEditorProps
     extends Omit<
@@ -44,31 +29,10 @@ interface TitleDescriptionEditorProps
         "tabs" | "selected" | "disabled" | "onSelect" | "children"
     > {}
 
-const TitleDescriptionEditor = forwardRef<
-    TitleDescriptionEditorRef,
-    TitleDescriptionEditorProps
->((props, ref) => {
+const TitleDescriptionEditor: FC<TitleDescriptionEditorProps> = (props) => {
     const { t } = useTranslation();
 
-    const { editorRef } = useEditorHandleContext();
-    const addImages = useCallback((sources: string[]) => {
-        const editor = editorRef.current;
-        if (!editor || sources.length === 0) return;
-
-        editor.commands.createContainer({
-            HTMLAttributes: {
-                style: IMG_CONTAINER_STYLE,
-            },
-        });
-
-        const containers = getAllContainers(editor.state);
-        const latestContainer = containers[containers.length - 1];
-
-        editor.commands.addImageToContainer(latestContainer.pos, sources, {
-            style: IMG_STYLE,
-        });
-    }, []);
-    useImperativeHandle(ref, () => ({ addImages }), []);
+    const { onRef } = useEditorHandleContext();
 
     const [lang, setLang] = useState<Language>("el");
     const { title, descriptionName, descriptionTextName } = useNames(lang);
@@ -107,25 +71,23 @@ const TitleDescriptionEditor = forwardRef<
                     <UpperRightButtons lang={lang} />
                 </SpaceBetween>
                 <RHFEditor
-                    ref={editorRef}
+                    ref={onRef}
                     name={descriptionName}
                     onPlainTextChange={handlePlainTextChange}
                 />
             </Stack>
         </TabbedBox>
     );
-});
+};
 
-const WithProvider = forwardRef<
-    TitleDescriptionEditorRef,
-    TitleDescriptionEditorProps
->((props, ref) => (
-    <EditorHandleProvider>
-        <OperationsProvider>
-            <TitleDescriptionEditor ref={ref} {...props} />
-        </OperationsProvider>
-    </EditorHandleProvider>
-));
+const WithProvider = forwardRef<Editor, TitleDescriptionEditorProps>(
+    (props, ref) => (
+        <EditorHandleProvider ref={ref}>
+            <OperationsProvider>
+                <TitleDescriptionEditor {...props} />
+            </OperationsProvider>
+        </EditorHandleProvider>
+    )
+);
 
-export type { TitleDescriptionEditorRef };
 export default WithProvider;

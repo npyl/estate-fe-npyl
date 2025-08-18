@@ -4,12 +4,12 @@ import MiddleImagesPicker from "./MiddleImagesPicker";
 import { FC, RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import Typography from "@mui/material/Typography";
-import { TitleDescriptionEditorRef } from "@/ui/DescriptionEditor";
+import { Editor } from "@tiptap/core";
 
 interface Props {
     postId: number;
     image?: string;
-    editorRef: RefObject<TitleDescriptionEditorRef>;
+    editorRef: RefObject<Editor>;
 }
 
 const ImagesPickers: FC<Props> = ({ postId, image, editorRef }) => {
