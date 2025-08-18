@@ -6,7 +6,11 @@ import uuidv4 from "@/utils/uuidv4";
 import { Editor } from "@tiptap/react";
 import { getAllContainers } from "@/components/Editor/extensions/Image";
 
-const getImageFromFile = (f: File): IPropertyImage => {
+interface IPropertyImageSafe extends Omit<IPropertyImage, "src"> {
+    url: string;
+}
+
+const getImageFromFile = (f: File): IPropertyImageSafe => {
     const id = Math.random();
     return {
         id,
@@ -37,7 +41,7 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
 
     const containerRef = useRef(-1);
 
-    const addImages = useCallback((i: IPropertyImage[]) => {
+    const addImages = useCallback((i: IPropertyImageSafe[]) => {
         const editor = editorRef.current;
         if (!editor) return;
 

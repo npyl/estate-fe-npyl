@@ -15,6 +15,8 @@ const useAddFile = () => {
             //         contentType: type,
             //     },
             // });
+
+            return {} as any;
         },
         []
     );

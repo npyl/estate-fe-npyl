@@ -32,7 +32,7 @@ export interface IPropertyFileRes {
 
 export interface IPropertyFile {
     id: number;
-    url: string;
+    url: string | null;
     key: string;
     filename: string;
 }
