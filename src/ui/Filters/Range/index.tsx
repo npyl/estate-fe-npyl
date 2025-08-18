@@ -1,9 +1,9 @@
-import { FormControl, InputLabel, Select } from "@mui/material";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Content from "./Content";
 import { Props } from "./types";
 import formatNumber from "./formatNumber";
+import Select from "@/components/Select";
 
 const PriceSelect: FC<Props> = (props) => {
     const { type, valueMin = 0, valueMax = 0 } = props;
@@ -39,18 +39,19 @@ const PriceSelect: FC<Props> = (props) => {
     }, [valueMax, valueMin, t]);
 
     return (
-        <FormControl
-            sx={{ minWidth: "175px", maxWidth: "175px", textWrap: "nowrap" }}
+        <Select
+            label={t(label)}
+            value={value}
+            formControlProps={{
+                sx: {
+                    minWidth: "175px",
+                    maxWidth: "175px",
+                    textWrap: "nowrap",
+                },
+            }}
         >
-            <InputLabel>{t(label)}</InputLabel>
-            <Select
-                label={t(label)}
-                value={value}
-                renderValue={(selected) => selected as string}
-            >
-                <Content {...props} />
-            </Select>
-        </FormControl>
+            <Content {...props} />
+        </Select>
     );
 };
 

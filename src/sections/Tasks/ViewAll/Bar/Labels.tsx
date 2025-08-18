@@ -1,17 +1,11 @@
-import {
-    Checkbox,
-    FormControl,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, MenuItem } from "@mui/material";
 import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { StyledInputLabel } from "@/components/Filters";
 import { ILabel } from "@/types/label";
 import { useFiltersContext } from "../../filters";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 // -----------------------------------------------------------
 
@@ -73,29 +67,24 @@ export default function FilterLabels() {
     }, []);
 
     return (
-        <FormControl
-            sx={{
-                minWidth: "130px",
-                maxWidth: "200px",
+        <Select
+            multiple
+            value={labels}
+            onChange={handleChange}
+            renderValue={renderLabelNames}
+            label={t("Labels")}
+            formControlProps={{
+                sx: { minWidth: "130px", maxWidth: "200px" },
+            }}
+            MenuProps={{
+                PaperProps: {
+                    style: {
+                        maxHeight: 500,
+                    },
+                },
             }}
         >
-            <StyledInputLabel>{t("Labels")}</StyledInputLabel>
-            <Select
-                multiple
-                value={labels}
-                onChange={handleChange}
-                renderValue={renderLabelNames}
-                label={t("Labels")}
-                MenuProps={{
-                    PaperProps: {
-                        style: {
-                            maxHeight: 500,
-                        },
-                    },
-                }}
-            >
-                {labelOptions.map(getOption)}
-            </Select>
-        </FormControl>
+            {labelOptions.map(getOption)}
+        </Select>
     );
 }
