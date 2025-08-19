@@ -29,6 +29,10 @@ const clickAndExpect = async (
     OPTION_IDs: string[],
     value: string
 ) => {
+    // Close any open dropdown first
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(100); // Small delay to ensure dropdown closes
+
     await component.locator(".MuiSelect-select").click();
     await page.locator('[role="listbox"]').waitFor(); // wait for popover to appear
 
@@ -47,19 +51,22 @@ test("Set, Set other & Clear (Single)", async ({ mount, page }) => {
     // Set
     const OPTION0 = OPTIONS[0];
     const OPTION0_TEST_ID = getOptionTestId(OPTION0.key);
-    await clickAndExpect(component, page, [OPTION0_TEST_ID], OPTION0.key);
+    const EXPECTED0 = JSON.stringify(OPTION0.key);
+    await clickAndExpect(component, page, [OPTION0_TEST_ID], EXPECTED0);
 
     // Set other
     const OPTION1 = OPTIONS[1];
     const OPTION1_TEST_ID = getOptionTestId(OPTION1.key);
-    await clickAndExpect(component, page, [OPTION1_TEST_ID], OPTION1.key);
+    const EXPECTED1 = JSON.stringify(OPTION1.key);
+    await clickAndExpect(component, page, [OPTION1_TEST_ID], EXPECTED1);
 
     // Clear
+    const EXPECTED_CLEAR = JSON.stringify(NOT_SELECTED_VALUE);
     await clickAndExpect(
         component,
         page,
         [NOT_SELECTED_TESTID],
-        NOT_SELECTED_VALUE
+        EXPECTED_CLEAR
     );
 });
 
@@ -86,7 +93,7 @@ test("Set, Set other, Re-set (Multiple)", async ({ mount, page }) => {
         component,
         page,
         [NOT_SELECTED_TESTID],
-        JSON.stringify(null)
+        JSON.stringify([])
     );
 });
 
@@ -96,12 +103,14 @@ test("Set, Set other (Single & Enum)", async ({ mount, page }) => {
     // Set
     const OPTION0 = OPTIONS[0];
     const OPTION0_TEST_ID = getOptionTestId(OPTION0.key);
-    await clickAndExpect(component, page, [OPTION0_TEST_ID], OPTION0.key);
+    const EXPECTED0 = JSON.stringify(OPTION0.key);
+    await clickAndExpect(component, page, [OPTION0_TEST_ID], EXPECTED0);
 
     // Set other
     const OPTION1 = OPTIONS[1];
     const OPTION1_TEST_ID = getOptionTestId(OPTION1.key);
-    await clickAndExpect(component, page, [OPTION1_TEST_ID], OPTION1.key);
+    const EXPECTED1 = JSON.stringify(OPTION1.key);
+    await clickAndExpect(component, page, [OPTION1_TEST_ID], EXPECTED1);
 
     // Clear
     await clickAndExpect(

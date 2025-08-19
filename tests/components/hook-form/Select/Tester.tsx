@@ -15,6 +15,8 @@ interface TesterProps {
 const Tester: FC<TesterProps> = ({ isEnum, multiple }) => {
     const value = useWatch({ name: FIELD_NAME });
 
+    const displayValue = JSON.stringify(value);
+
     return (
         <>
             <Select
@@ -26,7 +28,7 @@ const Tester: FC<TesterProps> = ({ isEnum, multiple }) => {
                 multiple={multiple}
             />
 
-            <div data-testid={VALUE_ID}>{value}</div>
+            <div data-testid={VALUE_ID}>{displayValue}</div>
         </>
     );
 };
