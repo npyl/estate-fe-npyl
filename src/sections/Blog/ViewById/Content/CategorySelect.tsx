@@ -14,6 +14,7 @@ const CategorySelect = () => {
             label={t("Categories")}
             options={CATEGORIES}
             sx={{
+                minWidth: "180px",
                 width: "fit-content",
             }}
         />
