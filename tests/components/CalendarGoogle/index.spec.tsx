@@ -138,14 +138,8 @@ test("Event", async () => {
 
     // 6. Assert positioning:
     // - Y position should remain the same (same height level)
-    // expect(finalY).toBeCloseTo(initialY, 1); // Allow 1px tolerance for any minor positioning adjustments
+    expect(finalY).toBe(initialY);
 
     // - X position should move by exactly one cell width to the right
     expect(finalX).toBe(initialX + cellWidth);
-
-    console.log("CELL_WIDTH: ", cellWidth);
-
-    console.log(
-        `Event moved from (${initialX}, ${initialY}) to (${finalX}, ${finalY})`
-    );
 });
