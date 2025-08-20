@@ -47,59 +47,32 @@ const prepareGoogleOAuth = async (
 
         const data = (await authResponse.json()) as { authUrl: string };
 
-        // --- NEW IMPLEMENTATION ---
+        // Wait for popup to be opened
+        const [popup] = await Promise.all([
+            page.waitForEvent("popup"),
+            page.evaluate((authUrl) => {
+                const width = 600;
+                const height = 600;
+                const left = (window.innerWidth - width) / 2 + window.screenX;
+                const top = (window.innerHeight - height) / 2 + window.screenY;
 
-        // 1. Create a Promise that we can resolve from our exposed function
-        let authResolver: (value: boolean) => void;
-        const authPromise = new Promise<boolean>((resolve) => {
-            authResolver = resolve;
-        });
-
-        // 2. Expose a function on the main page. The popup will call this function.
-        await page.exposeFunction("onGoogleAuthSuccess", () => {
-            console.log("onGoogleAuthSuccess called from browser");
-            authResolver(true);
-        });
-
-        // Create a new page for OAuth popup
-        const context = page.context();
-        const oauthPage = await context.newPage();
-
-        // Navigate to OAuth URL in the popup page
-        await oauthPage.goto(data.authUrl);
-
-        // --------------------------------------------------
-        // Handle Google OAuth flow (e.g., filling in email, password, consenting)
-        // ... your Google interaction logic would go here ...
-        // --------------------------------------------------
-
-        // Final wait for the redirect to our app to complete
-        await oauthPage.waitForURL(/localhost|127\.0\.0\.1/, {
-            timeout: 3 * 60 * 1000,
-        });
-
-        console.log("Successfully redirected back to the app.");
-
-        // 3. Instead of postMessage, call the function we exposed on the opener
-        await oauthPage.evaluate(() => {
-            if (
-                window.opener &&
-                typeof (window.opener as any).onGoogleAuthSuccess === "function"
-            ) {
-                (window.opener as any).onGoogleAuthSuccess();
-            } else {
-                // Fallback for debugging, but the `exposeFunction` should make this reliable
-                console.error(
-                    "Could not find onGoogleAuthSuccess on window.opener"
+                window.open(
+                    authUrl,
+                    "Google Auth",
+                    `width=${width},height=${height},left=${left},top=${top},popup=1`
                 );
-            }
+            }, data.authUrl),
+        ]);
+
+        // Wait for the popup to navigate to your callback URL
+        // This indicates successful authentication
+        await popup.waitForURL(/oauth\?state=.*&code=.*/, {
+            timeout: 60000, // 60 second timeout
         });
 
-        // 4. Wait for the promise to be resolved by the exposed function
-        await authPromise;
-
-        // Close the OAuth page
-        await oauthPage.close();
+        // The popup should automatically close due to your API route
+        // but we can wait for it to close to be sure
+        await popup.waitForEvent("close", { timeout: 10000 });
 
         console.log("Google OAuth authentication completed");
     } catch (error) {
