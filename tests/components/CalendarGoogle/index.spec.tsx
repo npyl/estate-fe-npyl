@@ -17,7 +17,7 @@ const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
 //     await gotoSafe(page, baseUrl);
 // });
 
-import { Browser, chromium, Page } from "@playwright/test";
+import { Browser, chromium, Locator, Page } from "@playwright/test";
 
 let browser: Browser;
 let page: Page;
@@ -35,6 +35,11 @@ test.afterAll(async () => {
     await browser?.close();
 });
 
+const expectHeight = async (ev: Locator, height: number) => {
+    const EXPECTED_HEIGHT = `${height}px`;
+    await expect(ev).toHaveCSS("height", EXPECTED_HEIGHT);
+};
+
 // test("Event", async ({ page }) => {
 test("Event", async () => {
     // 1. week start as start date
@@ -49,14 +54,29 @@ test("Event", async () => {
     await event.waitFor({ state: "visible" });
 
     // 4. expect "create-event" height to be 60px
-    const boundingBox = await event.boundingBox();
-    expect(boundingBox?.height).toBe(CELL_HOUR_HEIGHT);
-
-    //
-    //  Drag
-    //
+    await expectHeight(event, CELL_HOUR_HEIGHT);
 
     //
     //  Resize
+    //
+    // 1. Get the current bounding box to calculate the bottom position
+    const initialBoundingBox = await event.boundingBox();
+    expect(initialBoundingBox).toBeTruthy();
+
+    // 2. Calculate the bottom edge position for mouse down
+    const bottomX = initialBoundingBox!.x + initialBoundingBox!.width / 2; // center horizontally
+    const bottomY = initialBoundingBox!.y + initialBoundingBox!.height - 2; // 2px from bottom edge
+
+    // 3. Perform the resize drag operation
+    await page.mouse.move(bottomX, bottomY);
+    await page.mouse.down();
+    await page.mouse.move(bottomX, bottomY + CELL_HOUR_HEIGHT); // drag 60px down
+    await page.mouse.up();
+
+    // 4. Wait for the element to reach the expected size
+    await expectHeight(event, 2 * CELL_HOUR_HEIGHT);
+
+    //
+    //  Drag
     //
 });
