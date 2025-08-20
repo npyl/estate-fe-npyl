@@ -2,8 +2,8 @@ import { CSSProperties, FC, HTMLAttributes } from "react";
 import { CELL_CLASSNAME } from "../constants";
 import toLocalDate from "@/utils/toLocalDate";
 
-const getCellTestId = (date: Date) => {
-    const d = toLocalDate(date.toISOString());
+const getCellTestId = (date: string) => {
+    const d = toLocalDate(date);
     return `CELL-${d}`;
 };
 
@@ -18,8 +18,10 @@ interface BaseCellProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const BaseCell: FC<BaseCellProps> = ({ date, style, ...props }) => {
-    const dataTestId = getCellTestId(date);
-    const dataDate = date.toISOString();
+    const dateISOString = date.toISOString();
+
+    const dataTestId = getCellTestId(dateISOString);
+    const dataDate = dateISOString;
 
     return (
         <div

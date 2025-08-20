@@ -1,32 +1,23 @@
-import { test } from "@playwright/experimental-ct-react";
+import { expect, test } from "@playwright/experimental-ct-react";
 import gotoSafe from "../../_util/gotoSafe";
 import { getCellTestId } from "../../../src/components/Calendar/Views/BaseCell";
-import { Browser, chromium, Page } from "@playwright/test";
+import { START_OF_WEEK_ID } from "../../../src/sections/__test__/CalendarGoogle/constants";
+import { getEventTestId } from "../../../src/components/Calendar/Event/constants";
+import {
+    CELL_HOUR_HEIGHT,
+    CREATE_EVENT_ID,
+} from "../../../src/constants/calendar";
 
 // WARNING: you need to be already authenticated to google for this test to work
 
 const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
 
-/**
- * Returns the start of the week (Monday) for a given date
- * @param {Date} date - The date to get the start of week for (defaults to today)
- * @returns {Date} - The start of the week (Monday at 00:00:00)
- */
-function getStartOfWeek(date = new Date()) {
-    const d = new Date(date);
-    const day = d.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+// test.beforeEach(async ({ page }) => {
+//     test.setTimeout(2 * 60 * 1000);
+//     await gotoSafe(page, baseUrl);
+// });
 
-    // Calculate days to subtract to get to Monday
-    // If day is 0 (Sunday), we need to go back 6 days
-    // If day is 1 (Monday), we need to go back 0 days
-    // If day is 2 (Tuesday), we need to go back 1 day, etc.
-    const daysToSubtract = day === 0 ? 6 : day - 1;
-
-    d.setDate(d.getDate() - daysToSubtract);
-    d.setHours(0, 0, 0, 0); // Set to start of day
-
-    return d;
-}
+import { Browser, chromium, Page } from "@playwright/test";
 
 let browser: Browser;
 let page: Page;
@@ -44,18 +35,28 @@ test.afterAll(async () => {
     await browser?.close();
 });
 
+// test("Event", async ({ page }) => {
 test("Event", async () => {
-    const startDate = getStartOfWeek();
+    // 1. week start as start date
+    const startDate = await page.getByTestId(START_OF_WEEK_ID).innerText();
+
+    // 2. click on week start cell
     const CELL_TESTID = getCellTestId(startDate);
-
-    console.log("Looking for cell with testid:", CELL_TESTID);
-    console.log("Start date:", startDate.toISOString());
-
-    // Check what test IDs actually exist on the page
-    const allTestIds = await page.$$eval("[data-testid]", (elements) =>
-        elements.map((el) => el.getAttribute("data-testid"))
-    );
-    console.log("Available test IDs:", allTestIds);
-
     await page.getByTestId(CELL_TESTID).click();
+
+    // 3. wait for "create-event" to appear
+    const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
+    await event.waitFor({ state: "visible" });
+
+    // 4. expect "create-event" height to be 60px
+    const boundingBox = await event.boundingBox();
+    expect(boundingBox?.height).toBe(CELL_HOUR_HEIGHT);
+
+    //
+    //  Drag
+    //
+
+    //
+    //  Resize
+    //
 });

@@ -5,8 +5,7 @@ import {
     DatesDetail,
     UpdateEvent,
 } from "@/sections/Calendar/View/PopperContext/notifyCells";
-
-const CREATE_EVENT_ID = "PPEvent-Create";
+import { CREATE_EVENT_ID } from "@/constants/calendar";
 
 const getEndDate = (startDate: string) => {
     const endDate = new Date(startDate);
@@ -79,5 +78,4 @@ const useEventsWithCreate = (cellDate: Date, _events: TCalendarEvent[]) => {
     return events;
 };
 
-export { CREATE_EVENT_ID };
 export default useEventsWithCreate;

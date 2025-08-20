@@ -13,6 +13,7 @@ import {
     TOnEventResizeStart,
 } from "../types";
 import Main from "./Main";
+import { getEventTestId } from "./constants";
 const Bullet = dynamic(() => import("./Bullet"));
 
 const EVENT_CLASSNAME = "PPCalendar-Event";
@@ -74,7 +75,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
             <Main
                 className={EVENT_CLASSNAME}
                 id={event.id}
-                data-testid={event.id}
+                data-testid={getEventTestId(event.id)}
                 ref={onRef}
                 isMinimumHeight={isMinimumHeight}
                 top={top}

@@ -3,7 +3,7 @@ import { Box, SxProps, Theme, Tooltip } from "@mui/material";
 import { TCalendarEvent, TCalendarEventType, TOnEventClick } from "../types";
 import { Z_INDEX } from "@/constants/calendar";
 import getTypeColor from "./_shared/getTypeColor";
-import { LF } from "./_constants";
+import { LF } from "./constants";
 
 // ------------------------------------------------------------------------------------
 
