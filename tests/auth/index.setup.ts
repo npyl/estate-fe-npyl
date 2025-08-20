@@ -18,8 +18,11 @@ test.afterAll(async () => {
 });
 
 setup("authenticate", async () => {
-    const accessToken = await prepareLocalAuth(page);
+    const [accessToken, id] = await prepareLocalAuth(page);
     if (!accessToken) throw "This is really wrong!";
+    if (id === -1) throw "This is a bad Id";
 
-    await prepareGoogleOAuth(page, accessToken);
+    console.log("Passing userId: ", id);
+
+    await prepareGoogleOAuth(page, accessToken, id);
 });

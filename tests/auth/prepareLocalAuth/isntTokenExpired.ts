@@ -1,8 +1,5 @@
 import fs from "fs";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
-const profileUrl = `${baseUrl}/users/profile`;
-
 const isntTokenExpired = async (authFile: string) => {
     const credentialsData = fs.readFileSync(authFile, "utf8");
     const storageState = JSON.parse(credentialsData);
@@ -20,25 +17,7 @@ const isntTokenExpired = async (authFile: string) => {
     );
     if (!tokenItem) return;
 
-    const token = tokenItem.value;
-
-    const res = await fetch(profileUrl, {
-        headers: {
-            Authorization: `Bearer  ${token}`,
-            "Content-Type": "application/json",
-        },
-        method: "GET",
-    });
-
-    if (!res.ok) return;
-
-    const data = await res.json();
-
-    const didFind = "firstName" in data;
-
-    if (didFind) console.log("Found and using non-expired token!");
-
-    return token;
+    return tokenItem.value;
 };
 
 export default isntTokenExpired;

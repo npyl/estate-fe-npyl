@@ -2,12 +2,9 @@ import { Page } from "@playwright/test";
 
 const localhost = "http://127.0.0.1:3000";
 
-// TODO: Fix this!
-const userId = 1;
-
 const baseUrl = `${localhost}/api/google`;
 
-const isOAuthAuthenticated = async (accessToken: string) => {
+const isOAuthAuthenticated = async (accessToken: string, userId: number) => {
     try {
         const res = await fetch(`${baseUrl}/${userId}/auth`, {
             headers: {
@@ -29,9 +26,13 @@ const isOAuthAuthenticated = async (accessToken: string) => {
     }
 };
 
-const prepareGoogleOAuth = async (page: Page, accessToken: string) => {
+const prepareGoogleOAuth = async (
+    page: Page,
+    accessToken: string,
+    userId: number
+) => {
     try {
-        const isAuthenticated = await isOAuthAuthenticated(accessToken);
+        const isAuthenticated = await isOAuthAuthenticated(accessToken, userId);
         if (isAuthenticated) {
             console.log("GoogleOAuth: already authenticated");
             return;
