@@ -5,16 +5,11 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../../NowIndicator";
 import dynamic from "next/dynamic";
 import VerticalDivider from "./VerticalDivider";
-import { CELL_CLASSNAME } from "@/components/Calendar/constants";
 import useNoDragClick from "@/components/Calendar/useNoDragClick";
+import BaseCell from "../../BaseCell";
 const MiscCell = dynamic(() => import("../../MiscCell"));
 
 // -------------------------------------------------------------------------
-
-const CellStyle: CSSProperties = {
-    position: "relative",
-    height: "100%",
-};
 
 const ContainerStyle: CSSProperties = {
     position: "relative",
@@ -55,19 +50,13 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
         <div style={ContainerStyle}>
             {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
 
-            <div
-                className={CELL_CLASSNAME}
-                data-date={date.toISOString()}
-                style={{ ...CellStyle, ...style }}
-                {...methods}
-                {...props}
-            >
+            <BaseCell date={date} {...methods} {...props}>
                 {/* Events */}
                 {EVENTS}
 
                 {/* Today Indicator */}
                 {isToday ? <NowIndicator /> : null}
-            </div>
+            </BaseCell>
 
             <VerticalDivider />
         </div>

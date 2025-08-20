@@ -4,17 +4,11 @@ import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
 import MiscCell from "../MiscCell";
-import { CELL_CLASSNAME } from "@/components/Calendar/constants";
 import useNoDragClick from "@/components/Calendar/useNoDragClick";
+import BaseCell from "../BaseCell";
 const NowIndicator = dynamic(() => import("../NowIndicator"));
 
 // ------------------------------------------------------------------
-
-// INFO: this is important to act as a full-height container
-const CellStyle: CSSProperties = {
-    height: "100%",
-    position: "relative",
-};
 
 const CalendarDayViewCell: FC<CalendarCellProps> = ({
     date,
@@ -25,7 +19,6 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
     onEventDragEnd,
     onEventResizeStart,
     onEventResizeEnd,
-    style,
     onClick,
     onMouseDown,
     onMouseMove,
@@ -50,19 +43,13 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
         <>
             {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
 
-            <div
-                className={CELL_CLASSNAME}
-                data-date={date.toISOString()}
-                style={{ ...CellStyle, ...style }}
-                {...methods}
-                {...props}
-            >
+            <BaseCell date={date} {...methods} {...props}>
                 {/* Events */}
                 {EVENTS}
 
                 {/* Today Indicator */}
                 {isToday ? <NowIndicator /> : null}
-            </div>
+            </BaseCell>
         </>
     );
 };

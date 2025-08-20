@@ -74,6 +74,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
             <Main
                 className={EVENT_CLASSNAME}
                 id={event.id}
+                data-testid={event.id}
                 ref={onRef}
                 isMinimumHeight={isMinimumHeight}
                 top={top}
