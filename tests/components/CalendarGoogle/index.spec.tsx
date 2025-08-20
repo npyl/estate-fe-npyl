@@ -35,9 +35,14 @@ test.afterAll(async () => {
     await browser?.close();
 });
 
-const expectHeight = async (ev: Locator, height: number) => {
+/**
+ * Expect an element to have a specific height (number) in pixels
+ * @param el an element
+ * @param height expected height (px) for this element
+ */
+const expectHeight = async (el: Locator, height: number) => {
     const EXPECTED_HEIGHT = `${height}px`;
-    await expect(ev).toHaveCSS("height", EXPECTED_HEIGHT);
+    await expect(el).toHaveCSS("height", EXPECTED_HEIGHT);
 };
 
 interface Position {
@@ -67,21 +72,17 @@ const resizeY = async (ev: Locator, offsetY: number) => {
     );
 };
 
-const getDragOffset = async (cellId: string) => {
-    // 1. get cell width
+/**
+ * Get a cell's width
+ * @param cellId a cell's id (all of them should have the same width though!)
+ */
+const getCellWidth = async (cellId: string) => {
     const cellElement = page.getByTestId(cellId);
     const cellBoundingBox = await cellElement.boundingBox();
     expect(cellBoundingBox).toBeTruthy();
-    const cellWidth = cellBoundingBox!.width;
-
-    // 2. drag event right for cell width + 1/2 cell width
-
-    const offsetX = cellWidth + cellWidth / 2; // cell width + 1/2 cell width
-
-    return offsetX;
+    return cellBoundingBox!.width;
 };
 
-// test("Event", async ({ page }) => {
 test("Event", async () => {
     // 1. week start as start date
     const startDate = await page.getByTestId(START_OF_WEEK_ID).innerText();
@@ -109,20 +110,42 @@ test("Event", async () => {
     //  Drag
     //
 
-    // 1. get event center
-    const eventBoundingBox = await event.boundingBox();
-    expect(eventBoundingBox).toBeTruthy();
-    const centerX = eventBoundingBox!.x + eventBoundingBox!.width / 2;
-    const centerY = eventBoundingBox!.y + eventBoundingBox!.height / 2;
+    // 1. Store initial position before drag
+    const initialBoundingBox = await event.boundingBox();
+    expect(initialBoundingBox).toBeTruthy();
+    const initialX = initialBoundingBox!.x;
+    const initialY = initialBoundingBox!.y;
+    const centerX = initialX + initialBoundingBox!.width / 2;
+    const centerY = initialY + initialBoundingBox!.height / 2;
 
-    // 2. calculate dragOffset based on cell width
-    const dragOffset = await getDragOffset(CELL_TESTID);
+    // 2. calculate dragOffset and cellWidth
+    const cellWidth = await getCellWidth(CELL_TESTID);
 
     // 3. perform horizontal drag (just enough to trigger a snap to neighbouring cell on the right)
     await drag(
         { x: centerX, y: centerY },
-        { x: centerX + dragOffset, y: centerY }
+        { x: centerX + cellWidth, y: centerY }
     );
 
-    // 4. check if positioned correct!
+    // 4. Wait for any drag animations/transitions to complete
+    await page.waitForTimeout(500);
+
+    // 5. Verify final position
+    const finalBoundingBox = await event.boundingBox();
+    expect(finalBoundingBox).toBeTruthy();
+    const finalX = finalBoundingBox!.x;
+    const finalY = finalBoundingBox!.y;
+
+    // 6. Assert positioning:
+    // - Y position should remain the same (same height level)
+    // expect(finalY).toBeCloseTo(initialY, 1); // Allow 1px tolerance for any minor positioning adjustments
+
+    // - X position should move by exactly one cell width to the right
+    expect(finalX).toBe(initialX + cellWidth);
+
+    console.log("CELL_WIDTH: ", cellWidth);
+
+    console.log(
+        `Event moved from (${initialX}, ${initialY}) to (${finalX}, ${finalY})`
+    );
 });
