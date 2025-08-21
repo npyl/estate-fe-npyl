@@ -1,4 +1,8 @@
+import { getEventId } from "../../constants";
+
 const GHOST_CLASSNAME = "PPCalendar-EventGhost";
+
+const getGhostId = (eventId: string) => `PPCalendar-EventGhost-${eventId}`;
 
 const createGhost = (element: HTMLElement) => {
     const computedStyle = window.getComputedStyle(element);
@@ -35,8 +39,8 @@ const removeGhost = (el: Element) => el.remove();
 
 // ---------------------------------------------------------------------
 
-const addGhost = (id: string) => {
-    const el = document.getElementById(id);
+const addGhost = (eventId: string) => {
+    const el = document.getElementById(getEventId(eventId));
     if (!el) return;
 
     // Create ghost style
@@ -45,6 +49,7 @@ const addGhost = (id: string) => {
     // Create a new div element
     const ghostElement = document.createElement("div");
 
+    ghostElement.id = getGhostId(eventId);
     ghostElement.className = GHOST_CLASSNAME;
 
     // Apply all the computed styles to the ghost element
@@ -67,4 +72,9 @@ const removeGhosts = () => {
     all.forEach(removeGhost);
 };
 
-export { addGhost, removeGhosts };
+export {
+    getGhostId,
+    // ...
+    addGhost,
+    removeGhosts,
+};
