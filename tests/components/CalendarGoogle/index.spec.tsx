@@ -11,20 +11,34 @@ import GoogleOAuthBeforeAllHook from "../../_hooks/GoogleOAuth";
 import expectHeight from "./_util/expectHeight";
 import resizeY from "./resizeY";
 import { dragToNextCell, expectOnNextCell } from "./dragToNextCell";
+import { Browser, chromium, Locator, Page } from "@playwright/test";
 
 const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
+
+let browser: Browser;
+let page: Page;
 
 test.beforeAll(async () => {
     // INFO: you need to be already authenticated to google for this test to work
     await GoogleOAuthBeforeAllHook();
-});
 
-test.beforeEach(async ({ page }) => {
-    test.setTimeout(2 * 60 * 1000);
+    test.setTimeout(5 * 60 * 1000);
+    browser = await chromium.launch({ headless: false });
+    const context = await browser.newContext();
+    page = await context.newPage();
     await gotoSafe(page, baseUrl);
 });
 
-test("Event", async ({ page }) => {
+// test.beforeEach(async ({ page }) => {
+//     test.setTimeout(2 * 60 * 1000);
+//     await gotoSafe(page, baseUrl);
+// });
+
+/**
+ * Clicks on the first weekday's cell and an event with its popover pops up
+ * @param page
+ */
+const makeEvent = async (page: Page) => {
     // 1. week start as start date
     const startDate = await page.getByTestId(START_OF_WEEK_ID).innerText();
 
@@ -39,10 +53,24 @@ test("Event", async ({ page }) => {
     // 4. expect "create-event" height to be 60px
     await expectHeight(event, CELL_HOUR_HEIGHT);
 
+    return { event, CELL_TESTID };
+};
+
+/**
+ * Tests resize & drag to cell neighbouring cell on the right of an event ("create" or existing)
+ * @param event
+ * @param CELL_TESTID
+ * @param isCreate
+ */
+const testBasicFlow = async (
+    event: Locator,
+    CELL_TESTID: string,
+    isCreate: boolean
+) => {
     //
     //  Resize
     //
-    await resizeY(page, event, CELL_HOUR_HEIGHT, CREATE_EVENT_ID);
+    await resizeY(page, event, CELL_HOUR_HEIGHT, CREATE_EVENT_ID, true);
 
     // Wait for the element to reach the expected size
     await expectHeight(event, 2 * CELL_HOUR_HEIGHT);
@@ -56,4 +84,14 @@ test("Event", async ({ page }) => {
     await page.waitForTimeout(1000);
 
     await expectOnNextCell(event, dragStats);
+};
+
+test("Event (Create)", async () => {
+    const { event, CELL_TESTID } = await makeEvent(page);
+    await testBasicFlow(event, CELL_TESTID, true);
+});
+
+test("Event (Existing)", async () => {
+    const { event, CELL_TESTID } = await makeEvent(page);
+    await testBasicFlow(event, CELL_TESTID, false);
 });
