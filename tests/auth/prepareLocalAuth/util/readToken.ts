@@ -1,7 +1,8 @@
 import fs from "fs";
+import { AUTH_FILE } from "../_constant";
 
-const readToken = async (authFile: string): Promise<string | undefined> => {
-    const credentialsData = fs.readFileSync(authFile, "utf8");
+const readToken = async (): Promise<string | undefined> => {
+    const credentialsData = fs.readFileSync(AUTH_FILE, "utf8");
     const storageState = JSON.parse(credentialsData);
 
     // Find the origin that contains localStorage

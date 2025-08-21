@@ -2,10 +2,11 @@ import gotoSafe from "../../_util/gotoSafe";
 import getCredentials from "../../_util/getCredentials";
 import login from "./service/login";
 import { Page } from "@playwright/test";
+import { AUTH_FILE } from "./_constant";
 
 const localhost = "http://127.0.0.1:3000";
 
-const authenticate = async (page: Page, authFile: string): Promise<string> => {
+const authenticate = async (page: Page) => {
     // Get (private) credentials for tester user
     const CREDENTIALS = getCredentials();
 
@@ -25,9 +26,7 @@ const authenticate = async (page: Page, authFile: string): Promise<string> => {
 
     // Save authenticated state
     console.log("Storing token");
-    await page.context().storageState({ path: authFile });
-
-    return accessToken;
+    await page.context().storageState({ path: AUTH_FILE });
 };
 
 export default authenticate;
