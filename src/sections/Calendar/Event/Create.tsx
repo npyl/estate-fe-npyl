@@ -3,6 +3,7 @@ import { forwardRef, useCallback, useRef } from "react";
 import useEventMutations from "@/sections/Calendar/Event/View/useEventMutations";
 import Popover, { EventPopperRef } from "@/sections/Calendar/Event/Popover";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
+import { CREATE_EVENT_ID } from "@/constants/calendar";
 
 interface CreateEventPopperRef extends EventPopperRef {
     updateDates: (s: string, e: string) => void;
@@ -31,7 +32,7 @@ const CreateEventPopper = forwardRef<
     });
 
     return (
-        <Popover ref={onRef} open anchorEl={anchorEl}>
+        <Popover ref={onRef} open anchorEl={anchorEl} eventId={CREATE_EVENT_ID}>
             <Form
                 ref={formRef}
                 startDate={startDate}

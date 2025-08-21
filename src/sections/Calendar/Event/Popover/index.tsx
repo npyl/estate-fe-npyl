@@ -4,6 +4,7 @@ import usePopoverPosition from "./usePopperControl";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/calendar";
 import { State } from "@popperjs/core";
+import { getPopoverId } from "./constants";
 
 const PaperSx: SxProps<Theme> = {
     minWidth: "300px",
@@ -35,11 +36,12 @@ interface EventPopperProps
         | "children"
         | "onClose"
     > {
+    eventId: string;
     children: ReactNode;
 }
 
 const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
-    ({ children, sx, anchorEl, ...props }, ref) => {
+    ({ eventId, children, sx, anchorEl, ...props }, ref) => {
         const {
             onPopperRef,
             onPaperRef,
@@ -66,6 +68,7 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
 
         return (
             <Popper
+                id={getPopoverId(eventId)}
                 popperRef={onPopperRef}
                 placement="right"
                 anchorEl={anchorEl}
