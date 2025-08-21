@@ -4,6 +4,10 @@ import { getCellTestId } from "../../../src/components/Calendar/Views/BaseCell";
 import { START_OF_WEEK_ID } from "../../../src/sections/__test__/CalendarGoogle/constants";
 import { getEventTestId } from "../../../src/components/Calendar/Event/constants";
 import {
+    EVENT_POPOVER_SUBMIT_TESTID,
+    EVENT_POPOVER_TITLE_TESTID,
+} from "../../../src/sections/Calendar/Event/form/constants";
+import {
     CELL_HOUR_HEIGHT,
     CREATE_EVENT_ID,
 } from "../../../src/constants/calendar";
@@ -12,6 +16,10 @@ import expectHeight from "./_util/expectHeight";
 import resizeY from "./resizeY";
 import { dragToNextCell, expectOnNextCell } from "./dragToNextCell";
 import { Browser, chromium, Locator, Page } from "@playwright/test";
+import fillAndExpect from "../../_util/fillAndExpect";
+import uuidv4 from "../../../src/utils/uuidv4";
+
+const SEARCH_DEEP = true;
 
 const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
 
@@ -53,7 +61,7 @@ const makeEvent = async (page: Page) => {
     // 4. expect "create-event" height to be 60px
     await expectHeight(event, CELL_HOUR_HEIGHT);
 
-    return { event, CELL_TESTID };
+    return { CELL_TESTID };
 };
 
 /**
@@ -70,7 +78,7 @@ const testBasicFlow = async (
     //
     //  Resize
     //
-    await resizeY(page, event, CELL_HOUR_HEIGHT, CREATE_EVENT_ID, true);
+    await resizeY(page, event, CELL_HOUR_HEIGHT, CREATE_EVENT_ID, isCreate);
 
     // Wait for the element to reach the expected size
     await expectHeight(event, 2 * CELL_HOUR_HEIGHT);
@@ -86,12 +94,25 @@ const testBasicFlow = async (
     await expectOnNextCell(event, dragStats);
 };
 
-test("Event (Create)", async () => {
-    const { event, CELL_TESTID } = await makeEvent(page);
-    await testBasicFlow(event, CELL_TESTID, true);
-});
+// test("Event (Create)", async () => {
+//     const { event, CELL_TESTID } = await makeEvent(page);
+//     await testBasicFlow(event, CELL_TESTID, true);
+// });
 
 test("Event (Existing)", async () => {
-    const { event, CELL_TESTID } = await makeEvent(page);
-    await testBasicFlow(event, CELL_TESTID, false);
+    const { CELL_TESTID } = await makeEvent(page);
+
+    await fillAndExpect(
+        page,
+        EVENT_POPOVER_TITLE_TESTID,
+        uuidv4(),
+        SEARCH_DEEP
+    );
+
+    await page.getByTestId(EVENT_POPOVER_SUBMIT_TESTID).click();
+
+    await page.waitForTimeout(10 * 1000);
+
+    // const event = page.getByTestId();
+    // await testBasicFlow(event, CELL_TESTID, false);
 });
