@@ -18,6 +18,7 @@ import { dragToNextCell, expectOnNextCell } from "./dragToNextCell";
 import { Browser, chromium, Locator, Page } from "@playwright/test";
 import fillAndExpect from "../../_util/fillAndExpect";
 import uuidv4 from "../../../src/utils/uuidv4";
+import removeAllEvents from "./_util/removeAllEvents";
 
 const SEARCH_DEEP = true;
 
@@ -54,14 +55,20 @@ const makeEvent = async (page: Page) => {
     const CELL_TESTID = getCellTestId(startDate);
     await page.getByTestId(CELL_TESTID).click();
 
-    // 3. wait for "create-event" to appear
+    // 3. remove all events of cell clicking
+    await removeAllEvents(startDate);
+
+    // 4. make sure ui is also on track with this change
+    await page.reload();
+
+    // 5. wait for "create-event" to appear
     const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
     await event.waitFor({ state: "visible" });
 
-    // 4. expect "create-event" height to be 60px
+    // 6. expect "create-event" height to be 60px
     await expectHeight(event, CELL_HOUR_HEIGHT);
 
-    return { CELL_TESTID };
+    return { startDate, CELL_TESTID };
 };
 
 /**
