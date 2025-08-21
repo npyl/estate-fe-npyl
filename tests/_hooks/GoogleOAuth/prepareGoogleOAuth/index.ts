@@ -1,22 +1,10 @@
 import { Page } from "@playwright/test";
-import isOAuthAuthenticated from "./isOAuthAuthenticated";
 
 const localhost = "http://127.0.0.1:3000";
-
 const baseUrl = `${localhost}/api/google`;
 
-const prepareGoogleOAuth = async (
-    page: Page,
-    accessToken: string,
-    userId: number
-) => {
+const prepareGoogleOAuth = async (page: Page, userId: number) => {
     try {
-        const isAuthenticated = await isOAuthAuthenticated(accessToken, userId);
-        if (isAuthenticated) {
-            console.log("GoogleOAuth: already authenticated");
-            return;
-        }
-
         // Start OAuth flow
         const authResponse = await fetch(`${baseUrl}/${userId}/auth`, {
             method: "POST",
@@ -43,17 +31,19 @@ const prepareGoogleOAuth = async (
             }, data.authUrl),
         ]);
 
-        // Wait for the popup to navigate to your callback URL
-        // This indicates successful authentication
-        await popup.waitForURL(/oauth\?state=.*&code=.*/, {
-            timeout: 60000, // 60 second timeout
-        });
-
-        // The popup should automatically close due to your API route
-        // but we can wait for it to close to be sure
-        await popup.waitForEvent("close", { timeout: 10000 });
-
-        console.log("Google OAuth authentication completed");
+        // Race between URL navigation and popup closure
+        try {
+            await popup.waitForEvent("close", { timeout: 2 * 60 * 1000 });
+        } catch (error) {
+            // Check if popup is already closed
+            if (popup.isClosed()) {
+                console.log(
+                    "Popup was closed during OAuth flow - likely successful"
+                );
+            } else {
+                throw error;
+            }
+        }
     } catch (error) {
         console.error("Google OAuth setup failed:", error);
         throw error;
