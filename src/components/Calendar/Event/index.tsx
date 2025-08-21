@@ -13,10 +13,8 @@ import {
     TOnEventResizeStart,
 } from "../types";
 import Main from "./Main";
-import { getEventId, getEventTestId } from "./constants";
+import { EVENT_CLASSNAME, getEventId, getEventTestId } from "./constants";
 const Bullet = dynamic(() => import("./Bullet"));
-
-const EVENT_CLASSNAME = "PPCalendar-Event";
 
 // ------------------------------------------------------------------------------------
 

@@ -1,3 +1,5 @@
+const EVENT_CLASSNAME = "PPCalendar-Event";
+
 // left-factor
 const LF = 10;
 
@@ -10,4 +12,4 @@ const getEventId = (eventId: string) => eventId;
 
 const getEventTestId = (eventId: string) => `EventTestId-${eventId}`;
 
-export { LF, getEventId, getEventTestId };
+export { EVENT_CLASSNAME, LF, getEventId, getEventTestId };

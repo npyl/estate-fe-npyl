@@ -12,7 +12,7 @@ interface DragStats {
 const dragToNextCell = async (
     page: Page,
     event: Locator,
-    cellId: string
+    cell: Locator
 ): Promise<DragStats> => {
     // 1. Store initial position before drag
     const initialBoundingBox = await event.boundingBox();
@@ -23,7 +23,7 @@ const dragToNextCell = async (
     const centerY = initialY + initialBoundingBox!.height / 2;
 
     // 2. calculate dragOffset and cellWidth
-    const cellWidth = await getCellWidth(page, cellId);
+    const cellWidth = await getCellWidth(cell);
 
     // 3. perform horizontal drag (just enough to trigger a snap to neighbouring cell on the right)
     await drag(

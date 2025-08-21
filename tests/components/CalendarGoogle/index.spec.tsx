@@ -2,7 +2,10 @@ import { test } from "@playwright/experimental-ct-react";
 import gotoSafe from "../../_util/gotoSafe";
 import { getCellTestId } from "../../../src/components/Calendar/Views/BaseCell";
 import { START_OF_WEEK_ID } from "../../../src/sections/__test__/CalendarGoogle/constants";
-import { getEventTestId } from "../../../src/components/Calendar/Event/constants";
+import {
+    EVENT_CLASSNAME,
+    getEventTestId,
+} from "../../../src/components/Calendar/Event/constants";
 import {
     EVENT_POPOVER_SUBMIT_TESTID,
     EVENT_POPOVER_TITLE_TESTID,
@@ -31,19 +34,20 @@ test.beforeAll(async () => {
     // INFO: you need to be already authenticated to google for this test to work
     await GoogleOAuthBeforeAllHook();
 
-    test.setTimeout(5 * 60 * 1000);
-    browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    page = await context.newPage();
+    // test.setTimeout(5 * 60 * 1000);
+    // browser = await chromium.launch({ headless: false });
+    // const context = await browser.newContext();
+    // page = await context.newPage();
+    // await gotoSafe(page, baseUrl);
+});
+
+test.beforeEach(async ({ page }) => {
+    test.setTimeout(2 * 60 * 1000);
     await gotoSafe(page, baseUrl);
 });
 
-// test.beforeEach(async ({ page }) => {
-//     test.setTimeout(2 * 60 * 1000);
-//     await gotoSafe(page, baseUrl);
-// });
-
-const getWeekStartDate = () => page.getByTestId(START_OF_WEEK_ID).innerText();
+const getWeekStartDate = (page: Page) =>
+    page.getByTestId(START_OF_WEEK_ID).innerText();
 
 const safeReload = (page: Page) => page.reload({ waitUntil: "networkidle" });
 
@@ -53,7 +57,7 @@ const safeReload = (page: Page) => page.reload({ waitUntil: "networkidle" });
  */
 const makeEvent = async (page: Page) => {
     // 1. week start as start date
-    const startDate = await getWeekStartDate();
+    const startDate = await getWeekStartDate(page);
 
     // 2. remove all events of cell clicking
     await removeAllEvents(startDate);
@@ -63,7 +67,8 @@ const makeEvent = async (page: Page) => {
 
     // 4. click on week start cell
     const CELL_TESTID = getCellTestId(startDate);
-    await page.getByTestId(CELL_TESTID).click();
+    const cell = page.getByTestId(CELL_TESTID);
+    await cell.click();
 
     // 5. wait for "create-event" to appear
     const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
@@ -72,7 +77,7 @@ const makeEvent = async (page: Page) => {
     // 6. expect "create-event" height to be 60px
     await expectHeight(event, CELL_HOUR_HEIGHT);
 
-    return { startDate, CELL_TESTID };
+    return { startDate, cell };
 };
 
 /**
@@ -82,8 +87,9 @@ const makeEvent = async (page: Page) => {
  * @param isCreate
  */
 const testBasicFlow = async (
+    page: Page,
     event: Locator,
-    CELL_TESTID: string,
+    cell: Locator,
     isCreate: boolean
 ) => {
     //
@@ -97,7 +103,7 @@ const testBasicFlow = async (
     //
     //  Drag
     //
-    const dragStats = await dragToNextCell(page, event, CELL_TESTID);
+    const dragStats = await dragToNextCell(page, event, cell);
 
     // 4. Wait for any drag animations/transitions to complete
     await page.waitForTimeout(1000);
@@ -105,13 +111,45 @@ const testBasicFlow = async (
     await expectOnNextCell(event, dragStats);
 };
 
-// test("Event (Create)", async () => {
-//     const { event, CELL_TESTID } = await makeEvent(page);
-//     await testBasicFlow(event, CELL_TESTID, true);
-// });
+/**
+ * Finds an event element within a cell by searching for a specific className
+ * @param cell - The cell Locator to search within
+ * @param className - The className to search for
+ * @param options - Optional configuration for the search
+ * @returns Promise<Locator> - The event locator found within the cell
+ */
+const getEventByClassName = async (
+    cell: Locator,
+    className: string,
+    options?: {
+        timeout?: number;
+        state?: "visible" | "attached" | "detached" | "hidden";
+        strict?: boolean;
+    }
+): Promise<Locator> => {
+    const { timeout = 5000, state = "visible", strict = true } = options || {};
 
-test("Event (Existing)", async () => {
-    const { CELL_TESTID } = await makeEvent(page);
+    // Search for element with the specific className within the cell
+    const event = cell.locator(`.${className}`);
+
+    // Wait for the element to be in the expected state
+    await event.waitFor({
+        state,
+        timeout,
+        ...(strict && { strict }),
+    });
+
+    return event;
+};
+
+test("Event (Create)", async ({ page }) => {
+    const { cell } = await makeEvent(page);
+    const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
+    await testBasicFlow(page, event, cell, true);
+});
+
+test("Event (Existing)", async ({ page }) => {
+    const { cell } = await makeEvent(page);
 
     await fillAndExpect(
         page,
@@ -124,6 +162,6 @@ test("Event (Existing)", async () => {
 
     await page.waitForTimeout(10 * 1000);
 
-    // const event = page.getByTestId();
-    // await testBasicFlow(event, CELL_TESTID, false);
+    const event = await getEventByClassName(cell, EVENT_CLASSNAME);
+    await testBasicFlow(page, event, cell, false);
 });
