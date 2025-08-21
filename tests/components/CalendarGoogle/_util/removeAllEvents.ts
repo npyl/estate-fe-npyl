@@ -4,6 +4,10 @@ import getProfileId from "../../../auth/prepareLocalAuth/service/getProfileId";
 const getUrl = (userId: number) =>
     `http://127.0.0.1:3000/api/calendar/${userId}/events/removeAll`;
 
+/**
+ * Remove all calendar events on a specific day
+ * @param date
+ */
 const removeAllEvents = async (date: string) => {
     try {
         const token = await readToken();

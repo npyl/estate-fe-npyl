@@ -43,23 +43,27 @@ test.beforeAll(async () => {
 //     await gotoSafe(page, baseUrl);
 // });
 
+const getWeekStartDate = () => page.getByTestId(START_OF_WEEK_ID).innerText();
+
+const safeReload = (page: Page) => page.reload({ waitUntil: "networkidle" });
+
 /**
  * Clicks on the first weekday's cell and an event with its popover pops up
  * @param page
  */
 const makeEvent = async (page: Page) => {
     // 1. week start as start date
-    const startDate = await page.getByTestId(START_OF_WEEK_ID).innerText();
+    const startDate = await getWeekStartDate();
 
-    // 2. click on week start cell
-    const CELL_TESTID = getCellTestId(startDate);
-    await page.getByTestId(CELL_TESTID).click();
-
-    // 3. remove all events of cell clicking
+    // 2. remove all events of cell clicking
     await removeAllEvents(startDate);
 
-    // 4. make sure ui is also on track with this change
-    await page.reload();
+    // 3. make sure ui is also on track with this change
+    await safeReload(page);
+
+    // 4. click on week start cell
+    const CELL_TESTID = getCellTestId(startDate);
+    await page.getByTestId(CELL_TESTID).click();
 
     // 5. wait for "create-event" to appear
     const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
