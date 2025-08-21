@@ -7,11 +7,49 @@ import {
     CELL_HOUR_HEIGHT,
     CREATE_EVENT_ID,
 } from "../../../src/constants/calendar";
-import { Locator, Page } from "@playwright/test";
+import { Browser, chromium, Locator, Page } from "@playwright/test";
 
 // WARNING: you need to be already authenticated to google for this test to work
 
 const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
+
+// --------------------------------------------------------------------------------------------
+
+import readToken from "../../auth/prepareLocalAuth/util/readToken";
+import isOAuthAuthenticated from "../../auth/prepareGoogleOAuth/isOAuthAuthenticated";
+import getProfileId from "../../auth/prepareLocalAuth/service/getProfileId";
+import prepareGoogleOAuth from "../../auth/prepareGoogleOAuth";
+
+let headedBrowser: Browser;
+
+// INFO: for ever test we need to bring up a non-headless browser instance
+test.beforeAll(async () => {
+    const token = await readToken();
+    if (!token) throw "This shouldnt happen";
+
+    const id = await getProfileId(token);
+    const isAuthenticated = await isOAuthAuthenticated(token, id);
+
+    // INFO: early return; we have everything we need!
+    if (isAuthenticated) {
+        console.log("GoogleAuth: already authenticated");
+        return;
+    }
+
+    // Open headed browser session
+    test.setTimeout(5 * 60 * 1000);
+    headedBrowser = await chromium.launch({ headless: false });
+    const context = await headedBrowser.newContext();
+    const headedPage = await context.newPage();
+
+    await prepareGoogleOAuth(headedPage, token, id);
+});
+
+test.afterAll(async () => {
+    await headedBrowser?.close();
+});
+
+// --------------------------------------------------------------------------------------------
 
 test.beforeEach(async ({ page }) => {
     test.setTimeout(2 * 60 * 1000);

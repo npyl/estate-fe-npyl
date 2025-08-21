@@ -1,7 +1,7 @@
-import getProfile from "../service/getProfile";
+import getProfileId from "../service/getProfileId";
 
 const isTokenExpired = async (accessToken: string) => {
-    const id = await getProfile(accessToken);
+    const id = await getProfileId(accessToken);
     return id === -1;
 };
 

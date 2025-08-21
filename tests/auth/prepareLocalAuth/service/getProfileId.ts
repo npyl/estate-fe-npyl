@@ -3,7 +3,7 @@ import { IUser } from "../../../../src/types/user";
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
 const profileUrl = `${baseUrl}/users/profile`;
 
-const getProfile = async (accessToken: string): Promise<number> => {
+const getProfileId = async (accessToken: string): Promise<number> => {
     try {
         const res = await fetch(profileUrl, {
             headers: {
@@ -17,10 +17,6 @@ const getProfile = async (accessToken: string): Promise<number> => {
 
         const data = (await res.json()) as IUser;
 
-        const didFind = "firstName" in data;
-
-        if (didFind) console.log("Found and using non-expired token!");
-
         return data.id ?? -1;
     } catch (ex) {
         // console.log(ex);
@@ -28,4 +24,4 @@ const getProfile = async (accessToken: string): Promise<number> => {
     }
 };
 
-export default getProfile;
+export default getProfileId;
