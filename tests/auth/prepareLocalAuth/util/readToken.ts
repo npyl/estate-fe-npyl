@@ -1,6 +1,6 @@
 import fs from "fs";
 
-const isntTokenExpired = async (authFile: string) => {
+const readToken = async (authFile: string): Promise<string | undefined> => {
     const credentialsData = fs.readFileSync(authFile, "utf8");
     const storageState = JSON.parse(credentialsData);
 
@@ -8,7 +8,6 @@ const isntTokenExpired = async (authFile: string) => {
     const origin = storageState.origins?.find(
         (o) => o.localStorage && o.localStorage.length > 0
     );
-
     if (!origin) return;
 
     // Find the accessToken in localStorage
@@ -20,4 +19,4 @@ const isntTokenExpired = async (authFile: string) => {
     return tokenItem.value;
 };
 
-export default isntTokenExpired;
+export default readToken;

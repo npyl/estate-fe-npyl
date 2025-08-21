@@ -5,7 +5,7 @@ import prepareGoogleOAuth from "./prepareGoogleOAuth";
 let browser: Browser;
 let page: Page;
 
-// INFO: for ever test we need to bring up a non-headless browser instance (because the Map cannot load without a view)
+// INFO: for ever test we need to bring up a non-headless browser instance
 test.beforeAll(async () => {
     test.setTimeout(5 * 60 * 1000);
     browser = await chromium.launch({ headless: false });
@@ -21,8 +21,6 @@ setup("authenticate", async () => {
     const [accessToken, id] = await prepareLocalAuth(page);
     if (!accessToken) throw "This is really wrong!";
     if (id === -1) throw "This is a bad Id";
-
-    console.log("Passing userId: ", id);
 
     await prepareGoogleOAuth(page, accessToken, id);
 });
