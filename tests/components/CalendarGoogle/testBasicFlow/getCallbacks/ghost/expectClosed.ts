@@ -1,8 +1,8 @@
 import { Page } from "@playwright/test";
-import { getGhostId } from "../../../../../../src/components/Calendar/Event/Main/WithGhost/util";
+import { getGhostTestId } from "../../../../../../src/components/Calendar/Event/Main/WithGhost/util";
 
 const expectGhostClosed = async (page: Page, eventId: string) => {
-    const GHOST_ID = getGhostId(eventId);
+    const GHOST_ID = getGhostTestId(eventId);
     console.log("Checking ghost closed!");
     await page
         .getByTestId(GHOST_ID)

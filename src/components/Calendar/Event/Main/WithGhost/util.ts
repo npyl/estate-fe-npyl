@@ -2,7 +2,7 @@ import { getEventId } from "../../constants";
 
 const GHOST_CLASSNAME = "PPCalendar-EventGhost";
 
-const getGhostId = (eventId: string) => `PPCalendar-EventGhost-${eventId}`;
+const getGhostTestId = (eventId: string) => `PPCalendar-EventGhost-${eventId}`;
 
 const createGhost = (element: HTMLElement) => {
     const computedStyle = window.getComputedStyle(element);
@@ -49,7 +49,9 @@ const addGhost = (eventId: string) => {
     // Create a new div element
     const ghostElement = document.createElement("div");
 
-    ghostElement.id = getGhostId(eventId);
+    // ClassName & data-testid
+    const GHOST_TESTID = getGhostTestId(eventId);
+    ghostElement.setAttribute("data-testid", GHOST_TESTID);
     ghostElement.className = GHOST_CLASSNAME;
 
     // Apply all the computed styles to the ghost element
@@ -73,7 +75,7 @@ const removeGhosts = () => {
 };
 
 export {
-    getGhostId,
+    getGhostTestId,
     // ...
     addGhost,
     removeGhosts,
