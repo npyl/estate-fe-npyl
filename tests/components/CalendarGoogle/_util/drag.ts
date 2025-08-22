@@ -18,9 +18,9 @@ const drag = async (
 ) => {
     const { onStart, onEnd } = callbacks || {};
 
+    await onStart?.();
     await page.mouse.move(initial.x, initial.y);
     await page.mouse.down();
-    await onStart?.();
     await page.mouse.move(final.x, final.y);
     await page.mouse.up();
     await onEnd?.();

@@ -1,10 +1,6 @@
 import { expect } from "@playwright/experimental-ct-react";
 import { Locator, Page } from "@playwright/test";
 import drag from "../_util/drag";
-import expectGhostOpen from "./ghost/expectOpen";
-import expectGhostClosed from "./ghost/expectClose";
-import expectPopoverOpen from "./popover/expectOpen";
-import expectPopoverClosed from "./popover/expectClosed";
 import getCallbacks from "./getCallbacks";
 
 const resizeY = async (

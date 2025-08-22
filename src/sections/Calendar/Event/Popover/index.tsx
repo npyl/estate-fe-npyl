@@ -4,7 +4,7 @@ import usePopoverPosition from "./usePopperControl";
 import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/calendar";
 import { State } from "@popperjs/core";
-import { getPopoverId } from "./constants";
+import { getPopoverTestId } from "./constants";
 
 const PaperSx: SxProps<Theme> = {
     minWidth: "300px",
@@ -68,7 +68,7 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
 
         return (
             <Popper
-                id={getPopoverId(eventId)}
+                data-testid={getPopoverTestId(eventId)}
                 popperRef={onPopperRef}
                 placement="right"
                 anchorEl={anchorEl}

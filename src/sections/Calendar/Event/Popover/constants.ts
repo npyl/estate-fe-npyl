@@ -1,3 +1,4 @@
-const getPopoverId = (eventId: string) => `PPCalendarEventPopover-${eventId}`;
+const getPopoverTestId = (eventId: string) =>
+    `PPCalendarEventPopover-${eventId}`;
 
-export { getPopoverId };
+export { getPopoverTestId };
