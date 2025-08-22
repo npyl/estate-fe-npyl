@@ -1,10 +1,12 @@
 import { IPropertyImage } from "@/types/file";
-import { FC, RefObject, useCallback, useRef, useState } from "react";
+import { FC, RefObject, useCallback, useRef } from "react";
 import { Upload } from "src/components/upload";
 import { errorToast } from "@/components/Toaster";
 import uuidv4 from "@/utils/uuidv4";
 import { Editor } from "@tiptap/react";
 import { getAllContainers } from "@/components/Editor/extensions/Image";
+import { useGetImagesQuery } from "@/services/blog";
+import useBlogUpload from "./useUploader";
 
 interface IPropertyImageSafe extends Omit<IPropertyImage, "src"> {
     url: string;
@@ -33,11 +35,12 @@ const IMG_STYLE =
 
 interface Props {
     editorRef: RefObject<Editor>;
+    postId: number;
     images: IPropertyImage[];
 }
 
-const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
-    // const [uploadFiles, { isUploading }] = useBlogUpload();
+const MiddleImagesPicker: FC<Props> = ({ postId, editorRef }) => {
+    const [upload, { isUploading }] = useBlogUpload(postId);
 
     const containerRef = useRef(-1);
 
@@ -66,9 +69,13 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
         });
     }, []);
 
-    const [images, setImages] = useState<IPropertyImage[]>([]);
+    const { data: images } = useGetImagesQuery(postId);
     const uploadFiles = useCallback(
-        (f: File[]) => {
+        async (f: File[]) => {
+            if (!images) {
+                errorToast(FULL_LITERAL);
+                return;
+            }
             if (images.length === 2) {
                 errorToast(FULL_LITERAL);
                 return;
@@ -83,7 +90,7 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
 
             addImages(i);
 
-            setImages((old) => [...old, ...i]);
+            await upload(f);
         },
         [images]
     );
@@ -93,7 +100,7 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
 
         editor.commands.removeImageByKey(k);
 
-        setImages((old) => old.filter(({ key }) => key !== k));
+        // setImages((old) => old.filter(({ key }) => key !== k));
     }, []);
 
     return (
@@ -102,7 +109,7 @@ const MiddleImagesPicker: FC<Props> = ({ editorRef }) => {
             multiple
             variant="image"
             files={images}
-            // disabled={isUploading}
+            disabled={isUploading}
             onDrop={uploadFiles}
             onRemove={onRemove}
         />

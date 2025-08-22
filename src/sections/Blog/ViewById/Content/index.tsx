@@ -2,9 +2,8 @@ import Stack from "@mui/material/Stack";
 import { FC, useRef } from "react";
 import TitleDescriptionEditor from "@/ui/DescriptionEditor";
 import CategorySelect from "./CategorySelect";
-import dynamic from "next/dynamic";
 import { Editor } from "@tiptap/react";
-const ImagesPickers = dynamic(() => import("./ImagesPickers"));
+import ImagesPickers from "./ImagesPickers";
 
 interface ContentProps {
     postId?: number;
@@ -16,13 +15,7 @@ const Content: FC<ContentProps> = ({ postId, image }) => {
 
     return (
         <Stack spacing={1}>
-            {Boolean(postId) ? (
-                <ImagesPickers
-                    editorRef={editorRef}
-                    postId={postId!}
-                    image={image}
-                />
-            ) : null}
+            <ImagesPickers editorRef={editorRef} image={image} />
 
             <TitleDescriptionEditor
                 ref={editorRef}

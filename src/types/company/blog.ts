@@ -7,10 +7,10 @@ type TCategory = string;
 
 interface BlogPostShort {
     id: number;
+    thumbnail: string; // url
     user: IUserMini;
     createdAt: string;
     updatedAt: string;
-    url: string;
     viewCounter: number;
     sites: IPublicSitesRes[];
 
@@ -19,6 +19,8 @@ interface BlogPostShort {
 
 interface BlogPostReq {
     id?: number;
+    thumbnail?: File;
+    images: string[]; // keys
     descriptions: Record<string, DescriptionEntry>;
     publicSites: number[];
     categories: TCategory[];
@@ -26,6 +28,7 @@ interface BlogPostReq {
 
 interface BlogPostRes extends BlogPostShort {
     user: IUser;
+    images: string[]; // keys
     categories: KeyValue<TCategory>[];
     descriptions: Record<string, DescriptionEntry>;
 }
@@ -38,4 +41,17 @@ interface BlogFilters {
     categories: number[];
 }
 
-export type { TCategory, BlogPostShort, BlogPostReq, BlogPostRes, BlogFilters };
+interface IImageReq {
+    contentType: string;
+    filename: string;
+    size: number;
+}
+
+export type {
+    TCategory,
+    BlogPostShort,
+    BlogPostReq,
+    BlogPostRes,
+    BlogFilters,
+    IImageReq,
+};

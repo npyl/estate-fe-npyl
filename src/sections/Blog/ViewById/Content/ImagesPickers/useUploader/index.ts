@@ -4,15 +4,19 @@ import useGeneralUploader from "@/ui/useGeneralUploader";
 import { useCallback } from "react";
 import useMETHODS from "./useMETHODS";
 import reportToast from "@/ui/useGeneralUploader/reportToast";
+import useInvalidateTags from "./useInvalidateTags";
 
 const STRIP_METADATA = true;
 
-const useBlogUpload = (onProgressUpdate?: (p: UploadProgress) => void) => {
-    const METHODS = useMETHODS();
+const useBlogUpload = (
+    postId: number,
+    onProgressUpdate?: (p: UploadProgress) => void
+) => {
+    const METHODS = useMETHODS(postId);
 
     // ---------------------------------------------------------------
 
-    // const invalidateTags = useInvalidateTags();
+    const invalidateTags = useInvalidateTags();
 
     const upload = useGeneralUploader(
         METHODS,
@@ -31,7 +35,7 @@ const useBlogUpload = (onProgressUpdate?: (p: UploadProgress) => void) => {
             return;
         }
 
-        // invalidateTags();
+        invalidateTags();
     }, []);
 
     return [uploadFiles, { isUploading }] as const;

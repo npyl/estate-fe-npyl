@@ -20,13 +20,17 @@ const ImagesPickers: FC<Props> = ({ postId, image, editorRef }) => {
                 <Typography textAlign="center" variant="h5">
                     {t("MainImage")}
                 </Typography>
-                <ImagePicker postId={postId} image={image} />
+                <ImagePicker image={image} />
             </Grid>
             <Grid xs={12} lg={6} display="flex" flexDirection="column" gap={1}>
                 <Typography textAlign="center" variant="h5">
                     {t("MiddleImages")}
                 </Typography>
-                <MiddleImagesPicker editorRef={editorRef} images={[]} />
+                <MiddleImagesPicker
+                    editorRef={editorRef}
+                    postId={postId}
+                    images={[]}
+                />
             </Grid>
         </Grid>
     );

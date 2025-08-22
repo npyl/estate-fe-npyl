@@ -1,46 +1,36 @@
-import { FC, useCallback } from "react";
-import {
-    useRemoveBlogPostImageMutation,
-    useUploadBlogPostImageMutation,
-} from "@/services/blog";
+import { FC } from "react";
 import BaseImagePicker from "@/ui/ImagePicker";
+import { Controller, useFormContext } from "react-hook-form";
+import { CreateOrUpdateBlogPostReq } from "@/services/blog";
 
 const IMAGE_HEIGHT = "600px";
 
 // -----------------------------------------------------------------------------------------
 
 interface AvatarPickerProps {
-    postId: number;
     image?: string;
 }
 
-const ImagePicker: FC<AvatarPickerProps> = ({ postId, image }) => {
-    const [uploadImage, { isLoading: isUploading }] =
-        useUploadBlogPostImageMutation();
-    const [removeImage, { isLoading: isRemoving }] =
-        useRemoveBlogPostImageMutation();
-
-    const isLoading = isUploading || isRemoving;
-
-    const onSelect = useCallback(
-        (file: File) => uploadImage({ file, postId }),
-        [postId]
-    );
-
-    const onDelete = useCallback(() => removeImage(postId), [postId]);
+const ImagePicker: FC<AvatarPickerProps> = ({ image }) => {
+    const { control } = useFormContext<CreateOrUpdateBlogPostReq>();
 
     return (
-        <BaseImagePicker
-            isLoading={isLoading}
-            // ...
-            src={image}
-            // ...
-            onSelect={onSelect}
-            onDelete={onDelete}
-            ContainerProps={{
-                height: IMAGE_HEIGHT,
-            }}
-            style={{ maxHeight: IMAGE_HEIGHT, objectFit: "contain" }}
+        <Controller
+            name="thumbnail"
+            control={control}
+            render={({ field: { onChange } }) => (
+                <BaseImagePicker
+                    // ...
+                    src={image}
+                    // ...
+                    onSelect={onChange}
+                    onDelete={() => onChange(undefined)}
+                    ContainerProps={{
+                        height: IMAGE_HEIGHT,
+                    }}
+                    style={{ maxHeight: IMAGE_HEIGHT, objectFit: "contain" }}
+                />
+            )}
         />
     );
 };

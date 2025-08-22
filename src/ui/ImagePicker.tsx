@@ -54,13 +54,13 @@ const OverlayImage: FC<OverlayImageProps> = ({
 
 interface ImagePickerProps
     extends Omit<OverlayImageProps, "onClick" | "onSelect" | "onDelete"> {
-    isLoading: boolean;
+    isLoading?: boolean;
     onSelect: (f: File) => void;
     onDelete: VoidFunction;
 }
 
 const ImagePicker: FC<ImagePickerProps> = ({
-    isLoading,
+    isLoading = false,
     onSelect,
     onDelete,
     ...props
