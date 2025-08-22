@@ -23,8 +23,8 @@ const resizeY = async (
 
     // 3. Ghost & Popover callbacks
     const onStart = async () => {
-        // if (!isCreate) await expectGhostOpen(page, eventId);
-        // await expectPopoverOpen(page, eventId);
+        if (!isCreate) await expectGhostOpen(page, eventId);
+        await expectPopoverOpen(page, eventId);
     };
     const onEnd = async () => {
         if (!isCreate) await expectGhostClosed(page, eventId);
