@@ -1,11 +1,11 @@
-import readToken from "../../auth/prepareLocalAuth/util/readToken";
-import isOAuthAuthenticated from "./prepareGoogleOAuth/isOAuthAuthenticated";
-import getProfileId from "../../auth/prepareLocalAuth/service/getProfileId";
-import prepareGoogleOAuth from "./prepareGoogleOAuth";
+import readToken from "../prepareLocalAuth/util/readToken";
+import isOAuthAuthenticated from "./authenticate/isOAuthAuthenticated";
+import getProfileId from "../prepareLocalAuth/service/getProfileId";
+import authenticate from "./authenticate";
 import { chromium } from "@playwright/test";
 import { test } from "@playwright/experimental-ct-react";
 
-const GoogleOAuthBeforeAllHook = async () => {
+const prepareGoogleOAuth = async () => {
     const token = await readToken();
     if (!token) throw "This shouldnt happen";
 
@@ -24,9 +24,9 @@ const GoogleOAuthBeforeAllHook = async () => {
     const context = await headedBrowser.newContext();
     const headedPage = await context.newPage();
 
-    await prepareGoogleOAuth(headedPage, id);
+    await authenticate(headedPage, id);
 
     await headedBrowser.close();
 };
 
-export default GoogleOAuthBeforeAllHook;
+export default prepareGoogleOAuth;

@@ -14,14 +14,15 @@ import {
     CELL_HOUR_HEIGHT,
     CREATE_EVENT_ID,
 } from "../../../src/constants/calendar";
-import GoogleOAuthBeforeAllHook from "../../_hooks/GoogleOAuth";
 import expectHeight from "./_util/expectHeight";
 import resizeY from "./resizeY";
 import { dragToNextCell, expectOnNextCell } from "./dragToNextCell";
-import { Browser, chromium, Locator, Page } from "@playwright/test";
+import { Browser, Locator, Page } from "@playwright/test";
 import fillAndExpect from "../../_util/fillAndExpect";
 import uuidv4 from "../../../src/utils/uuidv4";
 import removeAllEvents from "./_util/removeAllEvents";
+
+// INFO: you need to be already authenticated to google for this test to work
 
 const SEARCH_DEEP = true;
 
@@ -31,9 +32,6 @@ let browser: Browser;
 let page: Page;
 
 test.beforeAll(async () => {
-    // INFO: you need to be already authenticated to google for this test to work
-    await GoogleOAuthBeforeAllHook();
-
     // test.setTimeout(5 * 60 * 1000);
     // browser = await chromium.launch({ headless: false });
     // const context = await browser.newContext();

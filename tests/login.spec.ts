@@ -2,7 +2,7 @@ import { test } from "@playwright/test";
 import fillAndExpect from "./_util/fillAndExpect";
 import { EMAIL_ID, PSSWD_ID, SUBMIT_ID } from "../src/sections/Login/constants";
 import { DASHBOARD_ID } from "../src/sections/dashboard/constants";
-import getCredentials from "./_util/getCredentials";
+import { getLocalCredentials } from "./_util/getCredentials";
 import gotoSafe from "./_util/gotoSafe";
 
 const SEARCH_DEEPER = true;
@@ -26,7 +26,7 @@ test("Login", async ({ page }) => {
     // Reload to ensure the cleared state takes effect
     await page.reload();
 
-    const { username, password } = getCredentials();
+    const { username, password } = getLocalCredentials();
 
     await fillAndExpect(page, EMAIL_ID, username, SEARCH_DEEPER);
     await fillAndExpect(page, PSSWD_ID, password, SEARCH_DEEPER);

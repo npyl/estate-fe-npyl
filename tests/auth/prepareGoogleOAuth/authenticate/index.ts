@@ -1,45 +1,23 @@
 import { Page } from "@playwright/test";
+import { getGoogleOAuthCredentials } from "../../../_util/getCredentials";
 
 const localhost = "http://127.0.0.1:3000";
 const baseUrl = `${localhost}/api/google`;
 
-const GOOGLE_TEST_EMAIL = "npylarinos@digipath.gr";
-const GOOGLE_TEST_PASSWORD = "Pain@ass1";
-
-const prepareGoogleOAuth = async (page: Page, userId: number) => {
-    try {
-        // Start OAuth flow
-        const authResponse = await fetch(`${baseUrl}/${userId}/auth`, {
-            method: "POST",
-        });
-        if (!authResponse.ok)
-            throw `Auth request failed: ${authResponse.status}`;
-
-        const data = (await authResponse.json()) as { authUrl: string };
-
-        await automateOAuthFlow(page, data.authUrl, userId);
-    } catch (error) {
-        console.error("Google OAuth setup failed:", error);
-        throw error;
-    }
-};
-
 /**
  * Automates the OAuth flow using headless browser
  */
-const automateOAuthFlow = async (
-    page: Page,
-    authUrl: string,
-    userId: number
-) => {
+const automateOAuthFlow = async (page: Page, authUrl: string) => {
     console.log("Starting automated OAuth flow...");
+
+    const { username, password } = getGoogleOAuthCredentials();
 
     // Navigate to Google OAuth page
     await page.goto(authUrl);
 
     // Wait for and fill email
     await page.waitForSelector('input[type="email"]', { timeout: 10000 });
-    await page.fill('input[type="email"]', GOOGLE_TEST_EMAIL);
+    await page.fill('input[type="email"]', username);
 
     // Click Next button
     await page.click(
@@ -48,7 +26,7 @@ const automateOAuthFlow = async (
 
     // Wait for password field and fill it
     await page.waitForSelector('input[type="password"]', { timeout: 10000 });
-    await page.fill('input[type="password"]', GOOGLE_TEST_PASSWORD);
+    await page.fill('input[type="password"]', password);
 
     // Click Next/Sign in button
     await page.click(
@@ -62,12 +40,9 @@ const automateOAuthFlow = async (
     await handleConsentScreen(page);
 
     // Wait for redirect back to your application
-    await page.waitForURL(
-        new RegExp(`${localhost}/api/google/${userId}/callback`),
-        {
-            timeout: 30000,
-        }
-    );
+    await page.waitForURL(new RegExp(`${localhost}/api/google/oauth`), {
+        timeout: 30 * 1000,
+    });
 
     console.log("OAuth flow completed successfully");
 };
@@ -102,22 +77,35 @@ const handle2FAIfPresent = async (page: Page) => {
  * Handles the OAuth consent screen
  */
 const handleConsentScreen = async (page: Page) => {
-    try {
-        // Wait for consent screen
-        await page.waitForSelector(
-            'button:has-text("Allow"), button:has-text("Continue"), button[data-l10n-id="allow"]',
-            { timeout: 10000 }
-        );
+    // Wait for consent screen
+    await page.waitForSelector(
+        'button:has-text("Allow"), button:has-text("Continue"), button[data-l10n-id="allow"]',
+        { timeout: 10000 }
+    );
 
-        // Click Allow/Continue button
-        await page.click(
-            'button:has-text("Allow"), button:has-text("Continue"), button[data-l10n-id="allow"]'
-        );
+    // Click Allow/Continue button
+    await page.click(
+        'button:has-text("Allow"), button:has-text("Continue"), button[data-l10n-id="allow"]'
+    );
 
-        console.log("Consent granted");
-    } catch (error) {
-        console.log("No consent screen or already consented");
-    }
+    console.log("Consent granted");
 };
 
-export default prepareGoogleOAuth;
+const getAuthUrl = async (userId: number) => {
+    // Start OAuth flow
+    const authResponse = await fetch(`${baseUrl}/${userId}/auth`, {
+        method: "POST",
+    });
+    if (!authResponse.ok) throw `Auth request failed: ${authResponse.status}`;
+
+    const data = (await authResponse.json()) as { authUrl: string };
+
+    return data.authUrl;
+};
+
+const authenticate = async (page: Page, userId: number) => {
+    const authUrl = await getAuthUrl(userId);
+    await automateOAuthFlow(page, authUrl);
+};
+
+export default authenticate;
