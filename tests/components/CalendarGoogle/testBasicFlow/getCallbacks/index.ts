@@ -3,17 +3,26 @@ import expectPopoverOpen from "./popover/expectOpen";
 import expectGhostOpen from "./ghost/expectOpen";
 import expectGhostClosed from "./ghost/expectClosed";
 
-const getCallbacks = (page: Page, eventId: string) => {
+interface IDragCallbacks {
+    onBeforeStart?: () => Promise<void>;
+    onStart?: () => Promise<void>;
+    onEnd?: () => Promise<void>;
+}
+
+const getCallbacks = (page: Page, eventId: string): IDragCallbacks => {
+    const onBeforeStart = async () => {
+        await expectPopoverOpen(page, eventId);
+    };
     const onStart = async () => {
         await expectGhostOpen(page, eventId);
-        await expectPopoverOpen(page, eventId);
     };
     const onEnd = async () => {
         await expectGhostClosed(page, eventId);
         await expectPopoverOpen(page, eventId);
     };
 
-    return { onStart, onEnd };
+    return { onBeforeStart, onStart, onEnd };
 };
 
+export type { IDragCallbacks };
 export default getCallbacks;

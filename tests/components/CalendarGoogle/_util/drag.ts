@@ -1,13 +1,9 @@
 import { Page } from "@playwright/test";
+import { IDragCallbacks } from "../testBasicFlow/getCallbacks";
 
 interface Position {
     x: number;
     y: number;
-}
-
-interface IDragCallbacks {
-    onStart?: () => Promise<void>;
-    onEnd?: () => Promise<void>;
 }
 
 const drag = async (
@@ -16,11 +12,12 @@ const drag = async (
     final: Position,
     callbacks?: IDragCallbacks
 ) => {
-    const { onStart, onEnd } = callbacks || {};
+    const { onBeforeStart, onStart, onEnd } = callbacks || {};
 
-    await onStart?.();
+    await onBeforeStart?.();
     await page.mouse.move(initial.x, initial.y);
     await page.mouse.down();
+    await onStart?.();
     await page.mouse.move(final.x, final.y);
     await page.mouse.up();
     await onEnd?.();

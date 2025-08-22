@@ -3,7 +3,6 @@ import { getGhostTestId } from "../../../../../../src/components/Calendar/Event/
 
 const expectGhostClosed = async (page: Page, eventId: string) => {
     const GHOST_ID = getGhostTestId(eventId);
-    console.log("Checking ghost closed!");
     await page
         .getByTestId(GHOST_ID)
         .waitFor({ state: "detached", timeout: 2 * 60 * 1000 });

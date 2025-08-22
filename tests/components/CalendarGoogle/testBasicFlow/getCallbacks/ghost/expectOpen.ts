@@ -3,7 +3,6 @@ import { getGhostTestId } from "../../../../../../src/components/Calendar/Event/
 
 const expectGhostOpen = async (page: Page, eventId: string) => {
     const GHOST_ID = getGhostTestId(eventId);
-    console.log("CHECKING GHOST OPEN");
     await page
         .getByTestId(GHOST_ID)
         .waitFor({ state: "visible", timeout: 2 * 60 * 1000 });
