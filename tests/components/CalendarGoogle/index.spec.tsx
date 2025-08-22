@@ -29,7 +29,7 @@ test.beforeEach(async ({ page }) => {
 test("Event (Create)", async ({ page }) => {
     const { cell } = await makeEvent(page);
     const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
-    await testBasicFlow(page, event, cell, true);
+    await testBasicFlow(page, event, CREATE_EVENT_ID, cell, true);
 });
 
 test("Event (Existing)", async ({ page }) => {
@@ -53,5 +53,8 @@ test("Event (Existing)", async ({ page }) => {
         2 * 60 * 1000
     );
 
-    await testBasicFlow(page, event, cell, false);
+    const eventId = await event.getAttribute("id");
+    if (!eventId) throw "Could not find eventId";
+
+    await testBasicFlow(page, event, eventId, cell, false);
 });

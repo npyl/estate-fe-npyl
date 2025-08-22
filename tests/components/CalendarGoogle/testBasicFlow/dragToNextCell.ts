@@ -2,6 +2,7 @@ import { expect } from "@playwright/experimental-ct-react";
 import { Locator, Page } from "@playwright/test";
 import drag from "../_util/drag";
 import getCellWidth from "../_util/getCellWidth";
+import getCallbacks from "./getCallbacks";
 
 interface DragStats {
     initialX: number;
@@ -11,8 +12,13 @@ interface DragStats {
 
 const dragToNextCell = async (
     page: Page,
+    // ...
     event: Locator,
-    cell: Locator
+    eventId: string,
+    // ...
+    cell: Locator,
+    // ...
+    isCreate: boolean
 ): Promise<DragStats> => {
     // 1. Store initial position before drag
     const initialBoundingBox = await event.boundingBox();
@@ -25,21 +31,21 @@ const dragToNextCell = async (
     // 2. calculate dragOffset and cellWidth
     const cellWidth = await getCellWidth(cell);
 
-    // 3. perform horizontal drag (just enough to trigger a snap to neighbouring cell on the right)
+    // 3. Ghost & Popover callbacks
+    const callbacks = getCallbacks(page, eventId, isCreate);
+
+    // 4. perform horizontal drag (just enough to trigger a snap to neighbouring cell on the right)
     await drag(
         page,
         { x: centerX, y: centerY },
-        { x: centerX + cellWidth, y: centerY }
+        { x: centerX + cellWidth, y: centerY },
+        callbacks
     );
 
     return { initialX, initialY, cellWidth };
 };
 
-const expectOnNextCell = async (
-    event: Locator,
-    dragStats: DragStats,
-    isCreate: boolean
-) => {
+const expectOnNextCell = async (event: Locator, dragStats: DragStats) => {
     const { initialX, initialY, cellWidth } = dragStats;
 
     // 5. Verify final position

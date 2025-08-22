@@ -1,7 +1,4 @@
-import {
-    CELL_HOUR_HEIGHT,
-    CREATE_EVENT_ID,
-} from "../../../../src/constants/calendar";
+import { CELL_HOUR_HEIGHT } from "../../../../src/constants/calendar";
 import expectHeight from "../_util/expectHeight";
 import resizeY from "./resizeY";
 import { dragToNextCell, expectOnNextCell } from "./dragToNextCell";
@@ -16,13 +13,14 @@ import { Locator, Page } from "@playwright/test";
 const testBasicFlow = async (
     page: Page,
     event: Locator,
+    eventId: string,
     cell: Locator,
     isCreate: boolean
 ) => {
     //
     //  Resize
     //
-    await resizeY(page, event, CELL_HOUR_HEIGHT, CREATE_EVENT_ID, isCreate);
+    await resizeY(page, event, eventId, CELL_HOUR_HEIGHT, isCreate);
 
     // Wait for the element to reach the expected size
     await expectHeight(event, 2 * CELL_HOUR_HEIGHT);
@@ -30,12 +28,18 @@ const testBasicFlow = async (
     //
     //  Drag
     //
-    const dragStats = await dragToNextCell(page, event, cell);
+    const dragStats = await dragToNextCell(
+        page,
+        event,
+        eventId,
+        cell,
+        isCreate
+    );
 
     // 4. Wait for any drag animations/transitions to complete
     await page.waitForTimeout(1000);
 
-    await expectOnNextCell(event, dragStats, isCreate);
+    await expectOnNextCell(event, dragStats);
 };
 
 export default testBasicFlow;

@@ -5,16 +5,20 @@ import expectGhostOpen from "./ghost/expectOpen";
 import expectGhostClosed from "./ghost/expectClose";
 import expectPopoverOpen from "./popover/expectOpen";
 import expectPopoverClosed from "./popover/expectClosed";
+import getCallbacks from "./getCallbacks";
 
 const resizeY = async (
     page: Page,
-    ev: Locator,
-    offsetY: number,
+    // ...
+    event: Locator,
     eventId: string,
+    // ...
+    offsetY: number,
+    // ...
     isCreate: boolean
 ) => {
     // 1. Get the current bounding box to calculate the bottom position
-    const initialBoundingBox = await ev.boundingBox();
+    const initialBoundingBox = await event.boundingBox();
     expect(initialBoundingBox).toBeTruthy();
 
     // 2. Calculate the bottom edge position for mouse down
@@ -22,20 +26,13 @@ const resizeY = async (
     const bottomY = initialBoundingBox!.y + initialBoundingBox!.height - 2; // 2px from bottom edge
 
     // 3. Ghost & Popover callbacks
-    const onStart = async () => {
-        if (!isCreate) await expectGhostOpen(page, eventId);
-        await expectPopoverOpen(page, eventId);
-    };
-    const onEnd = async () => {
-        if (!isCreate) await expectGhostClosed(page, eventId);
-        await expectPopoverClosed(page, eventId);
-    };
+    const callbacks = getCallbacks(page, eventId, isCreate);
 
     await drag(
         page,
         { x: bottomX, y: bottomY },
         { x: bottomX, y: bottomY + offsetY },
-        { onStart, onEnd }
+        callbacks
     );
 };
 
