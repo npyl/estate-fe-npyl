@@ -14,6 +14,8 @@ import uuidv4 from "../../../src/utils/uuidv4";
 import getEventByClassName from "./_util/getEventByClassName";
 import makeEvent from "./makeEvent";
 import testBasicFlow from "./testBasicFlow";
+import expectPopoverClosed from "./testBasicFlow/getCallbacks/popover/expectClosed";
+import clickOutside from "./_util/clickOutside";
 
 // INFO: you need to be already authenticated to google for this test to work
 
@@ -30,6 +32,10 @@ test("Event (Create)", async ({ page }) => {
     const { cell } = await makeEvent(page);
     const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
     await testBasicFlow(page, event, CREATE_EVENT_ID, cell);
+
+    // click outside the event & expect the popover to close
+    await clickOutside(page, event);
+    await expectPopoverClosed(page, CREATE_EVENT_ID);
 });
 
 test("Event (Existing)", async ({ page }) => {
