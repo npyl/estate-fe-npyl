@@ -1,13 +1,15 @@
 import { Page } from "@playwright/test";
 import expectPopoverOpen from "./popover/expectOpen";
+import expectGhostOpen from "./ghost/expectOpen";
+import expectGhostClosed from "./ghost/expectClosed";
 
-const getCallbacks = (page: Page, eventId: string, isCreate: boolean) => {
+const getCallbacks = (page: Page, eventId: string) => {
     const onStart = async () => {
-        // if (!isCreate) await expectGhostOpen(page, eventId);
+        // await expectGhostOpen(page, eventId);
         await expectPopoverOpen(page, eventId);
     };
     const onEnd = async () => {
-        // if (!isCreate) await expectGhostClosed(page, eventId);
+        // await expectGhostClosed(page, eventId);
         await expectPopoverOpen(page, eventId);
     };
 

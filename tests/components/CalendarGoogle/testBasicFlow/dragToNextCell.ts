@@ -16,9 +16,7 @@ const dragToNextCell = async (
     event: Locator,
     eventId: string,
     // ...
-    cell: Locator,
-    // ...
-    isCreate: boolean
+    cell: Locator
 ): Promise<DragStats> => {
     // 1. Store initial position before drag
     const initialBoundingBox = await event.boundingBox();
@@ -32,7 +30,7 @@ const dragToNextCell = async (
     const cellWidth = await getCellWidth(cell);
 
     // 3. Ghost & Popover callbacks
-    const callbacks = getCallbacks(page, eventId, isCreate);
+    const callbacks = getCallbacks(page, eventId);
 
     // 4. perform horizontal drag (just enough to trigger a snap to neighbouring cell on the right)
     await drag(

@@ -9,9 +9,7 @@ const resizeY = async (
     event: Locator,
     eventId: string,
     // ...
-    offsetY: number,
-    // ...
-    isCreate: boolean
+    offsetY: number
 ) => {
     // 1. Get the current bounding box to calculate the bottom position
     const initialBoundingBox = await event.boundingBox();
@@ -22,7 +20,7 @@ const resizeY = async (
     const bottomY = initialBoundingBox!.y + initialBoundingBox!.height - 2; // 2px from bottom edge
 
     // 3. Ghost & Popover callbacks
-    const callbacks = getCallbacks(page, eventId, isCreate);
+    const callbacks = getCallbacks(page, eventId);
 
     await drag(
         page,

@@ -14,13 +14,12 @@ const testBasicFlow = async (
     page: Page,
     event: Locator,
     eventId: string,
-    cell: Locator,
-    isCreate: boolean
+    cell: Locator
 ) => {
     //
     //  Resize
     //
-    await resizeY(page, event, eventId, CELL_HOUR_HEIGHT, isCreate);
+    await resizeY(page, event, eventId, CELL_HOUR_HEIGHT);
 
     // Wait for the element to reach the expected size
     await expectHeight(event, 2 * CELL_HOUR_HEIGHT);
@@ -28,13 +27,7 @@ const testBasicFlow = async (
     //
     //  Drag
     //
-    const dragStats = await dragToNextCell(
-        page,
-        event,
-        eventId,
-        cell,
-        isCreate
-    );
+    const dragStats = await dragToNextCell(page, event, eventId, cell);
 
     // 4. Wait for any drag animations/transitions to complete
     await page.waitForTimeout(1000);
