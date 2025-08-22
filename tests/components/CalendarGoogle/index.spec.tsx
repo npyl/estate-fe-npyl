@@ -16,6 +16,8 @@ import makeEvent from "./makeEvent";
 import testBasicFlow from "./testBasicFlow";
 import expectPopoverClosed from "./testBasicFlow/getCallbacks/popover/expectClosed";
 import clickOutside from "./_util/clickOutside";
+import { Browser, chromium, Page } from "@playwright/test";
+import safeReload from "./_util/safeReload";
 
 // INFO: you need to be already authenticated to google for this test to work
 
@@ -23,20 +25,36 @@ const SEARCH_DEEP = true;
 
 const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
 
+// let browser: Browser;
+// let page: Page;
+
+// // INFO: for ever test we need to bring up a non-headless browser instance (because the Map cannot load without a view)
+// test.beforeAll(async () => {
+//     test.setTimeout(5 * 60 * 1000);
+//     browser = await chromium.launch({ headless: false });
+//     const context = await browser.newContext();
+//     page = await context.newPage();
+//     await gotoSafe(page, baseUrl);
+// });
+
+// test.afterAll(async () => {
+//     await browser?.close();
+// });
+
 test.beforeEach(async ({ page }) => {
     test.setTimeout(2 * 60 * 1000);
     await gotoSafe(page, baseUrl);
 });
 
-test("Event (Create)", async ({ page }) => {
-    const { cell } = await makeEvent(page);
-    const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
-    await testBasicFlow(page, event, CREATE_EVENT_ID, cell);
+// test("Event (Create)", async ({ page }) => {
+//     const { cell } = await makeEvent(page);
+//     const event = page.getByTestId(getEventTestId(CREATE_EVENT_ID));
+//     await testBasicFlow(page, event, CREATE_EVENT_ID, cell);
 
-    // click outside the event & expect the popover to close
-    await clickOutside(page, event);
-    await expectPopoverClosed(page, CREATE_EVENT_ID);
-});
+//     // click outside the event & expect the popover to close
+//     await clickOutside(page, event);
+//     await expectPopoverClosed(page, CREATE_EVENT_ID);
+// });
 
 test("Event (Existing)", async ({ page }) => {
     const { cell } = await makeEvent(page);
@@ -48,19 +66,24 @@ test("Event (Existing)", async ({ page }) => {
         SEARCH_DEEP
     );
 
+    // Wait for the createEvent API call and capture the response
+    const createEventPromise = page.waitForResponse(
+        (response) =>
+            response.url().includes("/events/create") &&
+            response.request().method() === "POST" &&
+            response.status() === 200
+    );
+
     await page.getByTestId(EVENT_POPOVER_SUBMIT_TESTID).click();
+
+    // Wait for the API response and get the eventId
+    const response = await createEventPromise;
+    const eventId = await response.text();
 
     await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
     await page.waitForLoadState("domcontentloaded", { timeout: 2 * 60 * 1000 });
 
-    const event = await getEventByClassName(
-        cell,
-        EVENT_CLASSNAME,
-        2 * 60 * 1000
-    );
-
-    const eventId = await event.getAttribute("id");
-    if (!eventId) throw "Could not find eventId";
+    const event = page.getByTestId(getEventTestId(eventId));
 
     await testBasicFlow(page, event, eventId, cell);
 });

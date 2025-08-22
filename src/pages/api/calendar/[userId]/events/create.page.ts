@@ -19,9 +19,9 @@ export default async function handler(
 
         const body = TCalendarEventToGCalendarEvent(event);
 
-        await calendarService.createEvent(iUserId, body);
+        const eventId = await calendarService.createEvent(iUserId, body);
 
-        res.status(200).json({});
+        res.status(200).send(eventId);
     } catch (ex) {
         console.error(ex);
         res.status(404).json({});
