@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { getPopoverId } from "../../../../src/sections/Calendar/Event/Popover/constants";
+import { getPopoverId } from "../../../../../src/sections/Calendar/Event/Popover/constants";
 
 const expectPopoverOpen = async (page: Page, eventId: string) => {
     const POPOVER_ID = getPopoverId(eventId);

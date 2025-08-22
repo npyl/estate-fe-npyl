@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { getGhostId } from "../../../../src/components/Calendar/Event/Main/WithGhost/util";
+import { getGhostId } from "../../../../../src/components/Calendar/Event/Main/WithGhost/util";
 
 const expectGhostOpen = async (page: Page, eventId: string) => {
     const GHOST_ID = getGhostId(eventId);

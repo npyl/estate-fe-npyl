@@ -1,7 +1,7 @@
 import { expect } from "@playwright/experimental-ct-react";
 import { Locator, Page } from "@playwright/test";
-import drag from "./_util/drag";
-import getCellWidth from "./_util/getCellWidth";
+import drag from "../_util/drag";
+import getCellWidth from "../_util/getCellWidth";
 
 interface DragStats {
     initialX: number;

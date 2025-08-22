@@ -1,6 +1,6 @@
 import { expect } from "@playwright/experimental-ct-react";
 import { Locator, Page } from "@playwright/test";
-import drag from "./_util/drag";
+import drag from "../_util/drag";
 import expectGhostOpen from "./ghost/expectOpen";
 import expectGhostClosed from "./ghost/expectClose";
 import expectPopoverOpen from "./popover/expectOpen";
