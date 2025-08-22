@@ -14,6 +14,9 @@ const getWeekStartDate = (page: Page) =>
 
 const safeReload = (page: Page) => page.reload({ waitUntil: "networkidle" });
 
+const getNextDay = (date: string) =>
+    new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000).toISOString();
+
 /**
  * Clicks on the first weekday's cell and an event with its popover pops up
  * @param page
@@ -21,9 +24,11 @@ const safeReload = (page: Page) => page.reload({ waitUntil: "networkidle" });
 const makeEvent = async (page: Page) => {
     // 1. week start as start date
     const startDate = await getWeekStartDate(page);
+    const nextDate = getNextDay(startDate);
 
-    // 2. remove all events of cell clicking
+    // 2. remove all events of first week day and next of that
     await removeAllEvents(startDate);
+    await removeAllEvents(nextDate);
 
     // 3. make sure ui is also on track with this change
     await safeReload(page);
