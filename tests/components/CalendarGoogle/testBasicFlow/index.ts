@@ -35,7 +35,7 @@ const testBasicFlow = async (
     // 4. Wait for any drag animations/transitions to complete
     await page.waitForTimeout(1000);
 
-    await expectOnNextCell(event, dragStats);
+    await expectOnNextCell(event, dragStats, isCreate);
 };
 
 export default testBasicFlow;

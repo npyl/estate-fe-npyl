@@ -9,7 +9,6 @@ import {
     EVENT_POPOVER_TITLE_TESTID,
 } from "../../../src/sections/Calendar/Event/form/constants";
 import { CREATE_EVENT_ID } from "../../../src/constants/calendar";
-import { Browser, Page } from "@playwright/test";
 import fillAndExpect from "../../_util/fillAndExpect";
 import uuidv4 from "../../../src/utils/uuidv4";
 import getEventByClassName from "./_util/getEventByClassName";
@@ -21,17 +20,6 @@ import testBasicFlow from "./testBasicFlow";
 const SEARCH_DEEP = true;
 
 const baseUrl = "http://127.0.0.1:3000/__test__/calendar";
-
-let browser: Browser;
-let page: Page;
-
-test.beforeAll(async () => {
-    // test.setTimeout(5 * 60 * 1000);
-    // browser = await chromium.launch({ headless: false });
-    // const context = await browser.newContext();
-    // page = await context.newPage();
-    // await gotoSafe(page, baseUrl);
-});
 
 test.beforeEach(async ({ page }) => {
     test.setTimeout(2 * 60 * 1000);
@@ -56,8 +44,14 @@ test("Event (Existing)", async ({ page }) => {
 
     await page.getByTestId(EVENT_POPOVER_SUBMIT_TESTID).click();
 
-    await page.waitForTimeout(10 * 1000);
+    await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
+    await page.waitForLoadState("domcontentloaded", { timeout: 2 * 60 * 1000 });
 
-    const event = await getEventByClassName(cell, EVENT_CLASSNAME);
+    const event = await getEventByClassName(
+        cell,
+        EVENT_CLASSNAME,
+        2 * 60 * 1000
+    );
+
     await testBasicFlow(page, event, cell, false);
 });

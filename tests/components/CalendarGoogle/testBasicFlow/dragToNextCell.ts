@@ -35,7 +35,11 @@ const dragToNextCell = async (
     return { initialX, initialY, cellWidth };
 };
 
-const expectOnNextCell = async (event: Locator, dragStats: DragStats) => {
+const expectOnNextCell = async (
+    event: Locator,
+    dragStats: DragStats,
+    isCreate: boolean
+) => {
     const { initialX, initialY, cellWidth } = dragStats;
 
     // 5. Verify final position

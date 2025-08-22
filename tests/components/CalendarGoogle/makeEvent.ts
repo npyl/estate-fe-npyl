@@ -8,11 +8,10 @@ import {
 import expectHeight from "./_util/expectHeight";
 import { Page } from "@playwright/test";
 import removeAllEvents from "./_util/removeAllEvents";
+import safeReload from "./_util/safeReload";
 
 const getWeekStartDate = (page: Page) =>
     page.getByTestId(START_OF_WEEK_ID).innerText();
-
-const safeReload = (page: Page) => page.reload({ waitUntil: "networkidle" });
 
 const getNextDay = (date: string) =>
     new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000).toISOString();
