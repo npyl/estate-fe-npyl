@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 // filters
 import PropertyFilterBar, {
     PropertyFiltersBarProps,
@@ -12,7 +12,6 @@ import { Menu } from "@/assets/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 // components
-import { useMemo } from "react";
 import FilterSortBy from "@/ui/Filters/SortBy";
 import {
     useFiltersContext,
@@ -22,11 +21,15 @@ import { optionType } from "@/sections/Properties/(FiltersBar)/types";
 import useSortingOptions from "./useSortingOptions";
 import ViewModeButton from "@/ui/Filters/ViewModeButton";
 
+type TIcon = OverridableComponent<
+    SvgIconTypeMap<{}, "svg"> & {
+        muiName: string;
+    }
+>;
+
 type viewOptionsType = {
     id: optionType;
-    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-        muiName: string;
-    };
+    icon: TIcon;
     label: string;
 };
 
