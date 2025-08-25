@@ -3,7 +3,7 @@ const fileToBase64 = (file: Blob): Promise<ArrayBuffer | string | null> =>
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
+        reader.onerror = () => reject(new Error("ERROR"));
     });
 
 export default fileToBase64;

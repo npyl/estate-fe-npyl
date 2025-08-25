@@ -1,5 +1,4 @@
 import {
-    BarChart,
     Bar,
     XAxis,
     YAxis,
@@ -14,11 +13,9 @@ import {
     Line,
 } from "recharts";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
-import { Box, Stack } from "@mui/material";
-import { Typography } from "@mui/material";
+import { Typography, Box, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetDailyViewsQuery } from "@/services/publicDashboard";
-import { StyledCursor } from "./styled";
 import {
     NameType,
     ValueType,
@@ -73,19 +70,6 @@ export default function ViewsChart() {
     });
 
     const chartData = useMemo(() => data?.views || [], [data]);
-
-    const currentDate = useMemo(
-        () =>
-            new Date().toLocaleDateString(
-                i18n.language === "el" ? "el-GR" : "en-US",
-                {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                }
-            ),
-        [i18n.language]
-    );
 
     const formatHour = (hour: number) => {
         const date = new Date();
@@ -175,7 +159,6 @@ export default function ViewsChart() {
 
     const belowMd = useResponsive("down", "md");
     const now = new Date();
-    const currentHour = now.getHours();
 
     const currentDecimalTime = now.getHours() + now.getMinutes() / 60 - 0.5;
 
@@ -183,9 +166,6 @@ export default function ViewsChart() {
         <div ref={ref}>
             <Stack position="relative">
                 <Stack direction="row" alignItems="center" spacing={-1} pb={2}>
-                    {/* <Typography variant="body1" p={1}>
-                        {currentDate}
-                    </Typography> */}
                     <Typography variant="h5" fontWeight={600} p={2} pt={1}>
                         {t("Day Views in progress")}:{" "}
                     </Typography>
@@ -213,6 +193,7 @@ export default function ViewsChart() {
                     }}
                 >
                     <img
+                        alt=""
                         src="/static/liveicon.gif"
                         style={{
                             display: "block",

@@ -62,6 +62,7 @@ const Document: FC<DocumentProps> = ({ d }) => {
             </Box>
             {isOpen ? (
                 <iframe
+                    title="Document"
                     src={url}
                     height={500}
                     width={"100%"}

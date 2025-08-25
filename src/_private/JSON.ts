@@ -32,7 +32,8 @@ JSON.parseSafe = function <T>(
 ) {
     try {
         return orgParse(text, reviver) as T;
-    } catch (error) {
+    } catch (ex) {
+        console.log(ex);
         return null;
     }
 };
