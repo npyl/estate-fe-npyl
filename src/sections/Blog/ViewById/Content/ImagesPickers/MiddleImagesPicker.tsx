@@ -35,11 +35,11 @@ const IMG_STYLE =
 
 interface Props {
     editorRef: RefObject<Editor>;
-    postId: number;
+    postId?: number;
     images: IPropertyImage[];
 }
 
-const MiddleImagesPicker: FC<Props> = ({ postId, editorRef }) => {
+const MiddleImagesPicker: FC<Props> = ({ postId = -1, editorRef }) => {
     const [upload, { isUploading }] = useBlogUpload(postId);
 
     const containerRef = useRef(-1);
@@ -69,7 +69,7 @@ const MiddleImagesPicker: FC<Props> = ({ postId, editorRef }) => {
         });
     }, []);
 
-    const { data: images } = useGetImagesQuery(postId);
+    const { data: images } = useGetImagesQuery(postId, { skip: postId === -1 });
     const uploadFiles = useCallback(
         async (f: File[]) => {
             if (!images) {

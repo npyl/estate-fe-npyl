@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { Editor } from "@tiptap/core";
 
 interface Props {
-    postId: number;
+    postId?: number;
     image?: string;
     editorRef: RefObject<Editor>;
 }

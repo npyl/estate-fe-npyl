@@ -15,7 +15,11 @@ const Content: FC<ContentProps> = ({ postId, image }) => {
 
     return (
         <Stack spacing={1}>
-            <ImagesPickers editorRef={editorRef} image={image} />
+            <ImagesPickers
+                editorRef={editorRef}
+                postId={postId}
+                image={image}
+            />
 
             <TitleDescriptionEditor
                 ref={editorRef}
