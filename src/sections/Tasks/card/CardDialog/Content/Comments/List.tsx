@@ -66,7 +66,7 @@ interface CommentProps {
 }
 
 const Comment: FC<CommentProps> = ({ c }) => {
-    const { avatar, firstName, lastName } = c?.creator;
+    const { avatar, firstName, lastName } = c?.creator || {};
     const { message, createdAt } = c;
 
     return (

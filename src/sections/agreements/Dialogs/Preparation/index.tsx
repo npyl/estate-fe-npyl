@@ -117,57 +117,55 @@ const PreparationDialog: React.FC<Props> = ({
     );
 
     return (
-        <>
-            <FormProvider {...methods}>
-                {PersistNotice}
+        <FormProvider {...methods}>
+            {PersistNotice}
 
-                <Dialog
-                    open
-                    maxWidth="lg"
-                    submit
-                    onSubmit={methods.handleSubmit(handleSubmit)}
-                    // ...
-                    title={<Typography>{t("Agreement")}</Typography>}
-                    content={
-                        <Stack spacing={1}>
-                            <PropertyDetails
-                                isCustomer={isCustomer}
-                                shouldAutofill={shouldAutofill}
+            <Dialog
+                open
+                maxWidth="lg"
+                submit
+                onSubmit={methods.handleSubmit(handleSubmit)}
+                // ...
+                title={<Typography>{t("Agreement")}</Typography>}
+                content={
+                    <Stack spacing={1}>
+                        <PropertyDetails
+                            isCustomer={isCustomer}
+                            shouldAutofill={shouldAutofill}
+                        />
+
+                        <EditPDFButton />
+                    </Stack>
+                }
+                DialogActionsComponent={StyledActions}
+                actions={
+                    <Stack spacing={1} width={1}>
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            alignItems="center"
+                            justifyContent="flex-end"
+                        >
+                            <FormControlLabel
+                                label={t("Agreement date")}
+                                labelPlacement="start"
+                                control={
+                                    <RHFDatePicker name="additional.date" />
+                                }
                             />
 
-                            <EditPDFButton />
+                            <RHFCheckbox
+                                name="draft"
+                                label={t("Save as draft")}
+                            />
+                            <SubmitButton />
+                            <ExportButton />
                         </Stack>
-                    }
-                    DialogActionsComponent={StyledActions}
-                    actions={
-                        <Stack spacing={1} width={1}>
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                alignItems="center"
-                                justifyContent="flex-end"
-                            >
-                                <FormControlLabel
-                                    label={t("Agreement date")}
-                                    labelPlacement="start"
-                                    control={
-                                        <RHFDatePicker name="additional.date" />
-                                    }
-                                />
-
-                                <RHFCheckbox
-                                    name="draft"
-                                    label={t("Save as draft")}
-                                />
-                                <SubmitButton />
-                                <ExportButton />
-                            </Stack>
-                        </Stack>
-                    }
-                    {...props}
-                />
-            </FormProvider>
-        </>
+                    </Stack>
+                }
+                {...props}
+            />
+        </FormProvider>
     );
 };
 

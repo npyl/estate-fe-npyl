@@ -15,9 +15,7 @@ const ViewModeButton = styled(IconButton)<ViewModeButtonProps>(
 
         color: selected
             ? theme.palette.primary.main
-            : theme.palette.mode === "light"
-              ? theme.palette.neutral?.[400]
-              : theme.palette.neutral?.[500],
+            : theme.palette.neutral?.[400],
 
         borderColor: selected
             ? theme.palette.primary.main
@@ -37,9 +35,7 @@ const ViewModeButton = styled(IconButton)<ViewModeButtonProps>(
             ".MuiSvgIcon-root": {
                 color: selected
                     ? theme.palette.primary.main
-                    : theme.palette.mode === "light"
-                      ? theme.palette.neutral?.[400]
-                      : theme.palette.neutral?.[400],
+                    : theme.palette.neutral?.[400],
             },
         },
     })
