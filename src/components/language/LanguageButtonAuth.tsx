@@ -1,10 +1,4 @@
-import {
-    ButtonProps,
-    IconButton,
-    Box,
-    Typography,
-    useTheme,
-} from "@mui/material";
+import { ButtonProps, Box, Typography, useTheme } from "@mui/material";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
@@ -53,17 +47,13 @@ export const LanguageButtonAuth = ({
                     ml: 0.5,
                     backgroundColor: "rgba(0, 0, 0, 0.15)",
                     "& svg, & p": {
-                        color:
-                            theme.palette.mode === "light" ? "white" : "white", // Change the color of the icons and typography on hover
+                        color: "white",
                     },
                     borderRadius: 2, // Slight rounding for a soft look
                     "&:hover": {
                         backgroundColor: "rgba(0, 0, 0, 0.14)",
                         "& svg, & p": {
-                            color:
-                                theme.palette.mode === "light"
-                                    ? "white"
-                                    : "white", // Change the color of the icons and typography on hover
+                            color: "white",
                         },
                     },
 
