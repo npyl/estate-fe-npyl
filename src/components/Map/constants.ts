@@ -6,7 +6,6 @@ declare type Libraries = (
     | "visualization"
 )[];
 
-const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY0;
 const libraries = ["drawing", "places", "geometry"] as Libraries;
 
 const patrasLatLng = { lat: 38.2466, lng: 21.7346 };
@@ -20,4 +19,4 @@ enum ZOOM_LEVELS {
 
 const MAP_ID = "map-testid";
 
-export { apiKey, libraries, patrasLatLng, ZOOM_LEVELS, MAP_ID };
+export { libraries, patrasLatLng, ZOOM_LEVELS, MAP_ID };
