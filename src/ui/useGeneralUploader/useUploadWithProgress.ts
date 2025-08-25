@@ -34,7 +34,7 @@ const uploadWithProgress = (
 ): [XMLHttpRequest, Promise<IUploadRes>] => {
     const xhr = new XMLHttpRequest();
 
-    const p = new Promise<IUploadRes>(async (resolve) => {
+    const p = new Promise<IUploadRes>((resolve) => {
         xhr.upload.onprogress = ({ loaded, total, lengthComputable }) => {
             if (!lengthComputable) return;
             const progress = Math.min(Math.round((loaded / total) * 100), 100);
@@ -51,7 +51,7 @@ const uploadWithProgress = (
         };
 
         xhr.onerror = () => {
-            let errorMessage = "Network error during upload";
+            let errorMessage = "";
 
             // Try to get more specific error info
             if (xhr.readyState === XMLHttpRequest.DONE) {

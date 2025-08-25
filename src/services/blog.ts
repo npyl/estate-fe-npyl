@@ -7,11 +7,7 @@ import {
     IImageReq,
 } from "@/types/company";
 import IPage from "@/types/page";
-import {
-    IPropertyFile,
-    IPropertyFileReq,
-    IPropertyFileRes,
-} from "@/types/file";
+import { IPropertyFile, IPropertyFileRes } from "@/types/file";
 
 const objectToFormData = (o: object, file: File) => {
     const formData = new FormData();
@@ -116,7 +112,7 @@ export const blog = createApi({
             // onQueryStarted: optimisticAddFile,
         }),
 
-        removeImage: builder.mutation<IPropertyFileRes, RemoveImage>({
+        removeImage: builder.mutation<void, RemoveImage>({
             // INFO: removes BE entry for the specific key
             query: ({ postId, imageKey }) => ({
                 url: `/${postId}/removeImage/${imageKey}`,

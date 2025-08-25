@@ -14,7 +14,7 @@ interface SaverRef {
 
 interface SaverProps {}
 
-const Saver = forwardRef<SaverRef, SaverProps>(({}, ref) => {
+const Saver = forwardRef<SaverRef, SaverProps>((props, ref) => {
     const { user } = useAuth();
     const [updateEvent] = useUpdateEventMutation();
 

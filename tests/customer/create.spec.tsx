@@ -40,7 +40,7 @@ test.afterAll(async () => {
 /**
  * Tests Create sequence & visibility of some core elements
  */
-test("create", async ({}) => {
+test("create", async () => {
     test.setTimeout(5 * 60 * 1000);
 
     await fillAndExpect(page, FIRSTNAME_ID, "Tester", SEARCH_DEEPER);

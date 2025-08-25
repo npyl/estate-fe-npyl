@@ -7,7 +7,7 @@ import MapContainer from "./Container";
 const Draw = dynamic(() => import("../plugins/Draw/"));
 const Search = dynamic(() => import("../plugins/Search"));
 
-const Map: FC<IMapProps> = ({
+const PPMap: FC<IMapProps> = ({
     onDraw,
     onShapeChange,
     onSearchSelect,
@@ -45,4 +45,4 @@ const Map: FC<IMapProps> = ({
     </MapContainer>
 );
 
-export default Map;
+export default PPMap;

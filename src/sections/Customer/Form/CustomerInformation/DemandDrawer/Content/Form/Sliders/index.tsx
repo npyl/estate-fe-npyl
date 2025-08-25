@@ -5,7 +5,6 @@ import { useWatch } from "react-hook-form";
 import { ICustomerYup } from "@/sections/Customer/Form/types";
 import getSLIDERS from "./getSliders";
 
-const leaserName = "leaser";
 const buyerName = "buyer";
 
 interface SliderProps {
@@ -15,9 +14,8 @@ interface SliderProps {
 const Sliders: FC<SliderProps> = ({ index }) => {
     const { t } = useTranslation();
 
-    const leaser = useWatch<ICustomerYup>({ name: leaserName });
     const buyer = useWatch<ICustomerYup>({ name: buyerName });
-    const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true
+    const stepValue = buyer ? 25000 : 100; // default to 100 if neither is true
 
     const SLIDERS = useMemo(
         () => getSLIDERS(t, index, stepValue),
