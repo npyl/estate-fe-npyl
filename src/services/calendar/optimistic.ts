@@ -2,6 +2,7 @@ import { MutationLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefini
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { CreateUpdateEventReq, DeleteEventReq } from "./types";
 import { calendar } from ".";
+import sortAlpha from "@/utils/sortAlpha";
 
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
@@ -11,23 +12,25 @@ type OptimisticCb<Req extends object, Res extends object | void> = (
 type TUpdateCb = OptimisticCb<CreateUpdateEventReq, void>;
 type TDeleteCb = OptimisticCb<DeleteEventReq, void>;
 
+const EVENTS_KEY = "getEvents";
+
 const optimisticUpdate: TUpdateCb = async (
     { body },
     { dispatch, queryFulfilled, getState }
 ) => {
     const state = getState() as any;
     const currentQueries = state.calendar.queries;
-    const latestGetEventsQuery = Object.keys(currentQueries)
-        .filter((key) => key.startsWith("getEvents"))
-        .sort()
-        .pop();
+    const sortedQueries = sortAlpha(
+        Object.keys(currentQueries).filter((key) => key.startsWith(EVENTS_KEY))
+    );
+    const latestGetEventsQuery = sortedQueries.pop();
 
     if (!latestGetEventsQuery) return;
 
     // Update optimistically
     const patchResult = dispatch(
         calendar.util.updateQueryData(
-            "getEvents",
+            EVENTS_KEY,
             currentQueries[latestGetEventsQuery].originalArgs,
             (draft) => {
                 const eventIndex = draft.findIndex(
@@ -58,17 +61,17 @@ const optimisticDelete: TDeleteCb = async (
 ) => {
     const state = getState() as any;
     const currentQueries = state.calendar.queries;
-    const latestGetEventsQuery = Object.keys(currentQueries)
-        .filter((key) => key.startsWith("getEvents"))
-        .sort()
-        .pop();
+    const sortedQueries = sortAlpha(
+        Object.keys(currentQueries).filter((key) => key.startsWith(EVENTS_KEY))
+    );
+    const latestGetEventsQuery = sortedQueries.pop();
 
     if (!latestGetEventsQuery) return;
 
     // Remove optimistically
     const patchResult = dispatch(
         calendar.util.updateQueryData(
-            "getEvents",
+            EVENTS_KEY,
             currentQueries[latestGetEventsQuery].originalArgs,
             (draft) => {
                 const eventIndex = draft.findIndex(
