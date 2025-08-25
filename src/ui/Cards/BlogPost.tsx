@@ -49,7 +49,9 @@ const PropertyCard: FC<PropertyCardProps> = ({
     children,
     ...props
 }) => {
-    const { id, url, title, createdAt, user } = item || {};
+    const { id, thumbnail, createdAt, user } = item || {};
+
+    const title = "TEMP";
 
     return (
         <StyledLink
@@ -60,7 +62,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
             <Image
                 aspectRatio="4/3"
                 style={{ height: "300px", width: "30%", objectFit: "contain" }}
-                src={url}
+                src={thumbnail}
             />
 
             <Stack width={1} p={2} justifyContent="space-between">

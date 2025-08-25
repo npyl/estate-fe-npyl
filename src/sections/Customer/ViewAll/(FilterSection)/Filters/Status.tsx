@@ -1,8 +1,7 @@
 import { FormControl, Rating } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { selectStatus, setStatus } from "src/slices/customer/filters";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
+import { useFiltersContext, useStatus } from "../Context";
 
 const StyledRating = styled(Rating)(({ theme }) => ({
     borderRadius: "7px",
@@ -31,16 +30,13 @@ const StyledRating = styled(Rating)(({ theme }) => ({
 }));
 
 export default function FilterStatus() {
-    const dispatch = useDispatch();
-
-    const status = useSelector(selectStatus) || 0;
+    const { setStatus } = useFiltersContext();
+    const status = useStatus() ?? 0;
 
     const onChange = (_event: any, value: number | null) => {
-        dispatch(
-            setStatus(
-                // On autofill we get a stringified value.
-                value ? value : undefined
-            )
+        setStatus(
+            // On autofill we get a stringified value.
+            value ? value : undefined
         );
     };
 

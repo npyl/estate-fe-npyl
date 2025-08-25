@@ -10,7 +10,6 @@ interface IUser {
     lastName: string;
     email: string;
     workspaceEmail: string;
-    password: string;
     mobilePhone: string;
     homePhone: string;
     businessPhone: string;
@@ -49,11 +48,11 @@ interface IUserMini {
 type GUserMini = Omit<IUserMini, "id"> & { id: string };
 
 interface IUserPOST {
+    id?: number;
     firstName: string;
     lastName: string;
     email: string;
     workspaceEmail?: string; // INFO: Google Workspace email (for pairing a gw-user with a pp-user)
-    password: string;
     mobilePhone: string;
     homePhone?: string;
     businessPhone?: string;
@@ -74,3 +73,5 @@ const isIUser = (u: any) => "preferredLanguage" in u;
 
 export { isIUser };
 export type { IUser, IUserMini, GUserMini, IUserPOST };
+
+export * from "./mapper";

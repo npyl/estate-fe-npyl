@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { Stack, SxProps, Theme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { EventProps } from "./types";
-import { LF } from "./_constants";
+import { LF } from "./constants";
 import { Z_INDEX } from "@/constants/calendar";
 
 const getEventSx = (overlapCount?: number): SxProps<Theme> => {

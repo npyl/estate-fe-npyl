@@ -1,17 +1,14 @@
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback } from "react";
 import {
-    selectBuyer,
-    selectLeaser,
-    selectLessor,
-    selectSeller,
-    setBuyer,
-    setLeaser,
-    setLessor,
-    setSeller,
-} from "src/slices/customer/filters";
+    useBuyer,
+    useFiltersContext,
+    useLeaser,
+    useLessor,
+    useSeller,
+} from "../Context";
 
 const roles = [
     { key: "buyer", label: "Buyer" },
@@ -22,12 +19,12 @@ const roles = [
 
 const FilterBuyerLeaserAndMoreInMore = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const buyer = useSelector(selectBuyer);
-    const leaser = useSelector(selectLeaser);
-    const seller = useSelector(selectSeller);
-    const lessor = useSelector(selectLessor);
+    const { setBuyer, setLeaser, setLessor, setSeller } = useFiltersContext();
+    const leaser = useLeaser();
+    const buyer = useBuyer();
+    const seller = useSeller();
+    const lessor = useLessor();
 
     const getChecked = (key: string) => {
         switch (key) {
@@ -48,26 +45,26 @@ const FilterBuyerLeaserAndMoreInMore = () => {
         const value = !getChecked(key);
         switch (key) {
             case "buyer":
-                dispatch(setBuyer(value));
+                setBuyer(value);
                 break;
             case "leaser":
-                dispatch(setLeaser(value));
+                setLeaser(value);
                 break;
             case "seller":
-                dispatch(setSeller(value));
+                setSeller(value);
                 break;
             case "lessor":
-                dispatch(setLessor(value));
+                setLessor(value);
                 break;
         }
     };
 
-    const reset = () => {
-        dispatch(setBuyer(false));
-        dispatch(setLeaser(false));
-        dispatch(setSeller(false));
-        dispatch(setLessor(false));
-    };
+    const reset = useCallback(() => {
+        setBuyer(false);
+        setLeaser(false);
+        setSeller(false);
+        setLessor(false);
+    }, []);
 
     return (
         <ClearableSection title={t("Roles")} reset={reset}>

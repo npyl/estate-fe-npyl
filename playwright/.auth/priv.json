@@ -1,4 +1,10 @@
 {
-    "username": "",
-    "password": ""
+    "local": {
+        "username": "",
+        "password": ""
+    },
+    "GoogleOAuth": {
+        "username": "",
+        "password": ""
+    }
 }

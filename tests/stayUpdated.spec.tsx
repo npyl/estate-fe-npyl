@@ -1,10 +1,11 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import {
     VIEW_BY_ID_TEST_ID,
     FILTERS_TEST_ID,
     SHAPELIST_TEST_ID,
-} from "../src/pages/__test__/stayUpdated.page";
+} from "../src/sections/__test__/StayUpdated";
 import gotoSafe from "./_util/gotoSafe";
+import fillAndExpect from "./_util/fillAndExpect";
 
 const SHAPE = JSON.stringify([
     { x: 38.2704, y: 21.7749 },
@@ -80,15 +81,6 @@ const expectFilter = ([key, value]: [any, any]) => {
 
 const expectFilters = async (content: string) => {
     Object.entries(JSON.parse(content)).forEach(expectFilter);
-};
-
-const fillAndExpect = async (page: Page, FIELD_ID: string, value: string) => {
-    const locator = page.getByTestId(FIELD_ID);
-    await locator.fill(value);
-
-    // INFO: this is immediate; whereas expect(locator).toHave() is not!
-    const immediateValue = await locator.inputValue();
-    expect(immediateValue).toBe(value);
 };
 
 /**

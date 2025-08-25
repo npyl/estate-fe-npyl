@@ -1,14 +1,13 @@
 import { useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useGetLabelsQuery } from "@/services/labels";
 import { useAllUsersQuery } from "@/services/user";
-import { getChangedFields } from "@/slices/customer/filters";
+import { useChangedFields } from "../../Context";
 
 const useMethods = () => {
     const { data: labelsQuery } = useGetLabelsQuery();
     const { data: users } = useAllUsersQuery();
 
-    const changedProps = useSelector(getChangedFields);
+    const changedProps = useChangedFields();
 
     const allLabels = useMemo(
         () => labelsQuery?.customerLabels || [],

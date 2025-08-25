@@ -5,7 +5,7 @@ import { ICustomerYup } from "./types";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
-import { demandMapper } from "@/mappers/demand";
+import { demandMapper } from "@/types/demand";
 import { B2BMember2Req, ICustomer } from "@/types/customer";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 

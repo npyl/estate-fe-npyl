@@ -8,7 +8,7 @@ import { ForwardedRef, useCallback, useRef } from "react";
  * @returns tuple of [localRef, { onRef }] to be used in your component
  */
 const useForwardedLocalRef = <
-    Base extends HTMLElement = HTMLElement,
+    Base extends object = object,
     More extends any = any,
 >(
     ref: ForwardedRef<Base>,

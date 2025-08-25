@@ -1,15 +1,8 @@
-import {
-    Checkbox,
-    FormControl,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-import { StyledInputLabel } from "@/components/Filters";
 import { useFiltersContext, useStates } from "../../FiltersContext";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 export default function SaleSelect() {
     const { t } = useTranslation();
@@ -33,38 +26,30 @@ export default function SaleSelect() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px" }}>
-            <StyledInputLabel>{t("State")}</StyledInputLabel>
-            <Select
-                multiple
-                value={states}
-                onChange={handleChange}
-                renderValue={(selected: string[]) => {
-                    return selected
-                        .map(
-                            (key) =>
-                                stateEnum.find((item) => item.key === key)
-                                    ?.value
-                        )
-                        .filter(Boolean) // Remove any undefined values
-                        .join(", ");
-                }}
-                input={
-                    <OutlinedInput
-                        sx={{ maxHeight: "38px", textAlign: "center" }}
-                        label="Κατάσταση"
-                    />
-                }
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-            >
-                {stateEnum.map(({ key, value }) => (
-                    <MenuItem key={key} value={key}>
-                        <Checkbox checked={states.indexOf(key) > -1} />
+        <Select
+            multiple
+            value={states}
+            onChange={handleChange}
+            label={t("State")}
+            formControlProps={{ sx: { minWidth: "130px" } }}
+            renderValue={(selected: string[]) => {
+                return selected
+                    .map(
+                        (key) =>
+                            stateEnum.find((item) => item.key === key)?.value
+                    )
+                    .filter(Boolean) // Remove any undefined values
+                    .join(", ");
+            }}
+            MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+        >
+            {stateEnum.map(({ key, value }) => (
+                <MenuItem key={key} value={key}>
+                    <Checkbox checked={states.indexOf(key) > -1} />
 
-                        {value}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+                    {value}
+                </MenuItem>
+            ))}
+        </Select>
     );
 }

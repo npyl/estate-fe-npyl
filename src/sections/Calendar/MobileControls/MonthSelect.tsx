@@ -1,5 +1,5 @@
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@/components/Select";
 import { useTranslation } from "react-i18next";
 import { FC, useCallback, useMemo } from "react";
 import { Props } from "./types";
@@ -39,11 +39,9 @@ const MonthSelect: FC<Props> = ({ date, onDateChange }) => {
     );
 
     return (
-        // <FormControl size="small">
         <Select value={date.getMonth()} onChange={handleChange}>
             {OPTIONS.map(getOption)}
         </Select>
-        // </FormControl>
     );
 };
 

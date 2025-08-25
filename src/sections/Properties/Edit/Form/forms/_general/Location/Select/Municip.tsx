@@ -1,10 +1,5 @@
 import { RHFSelect } from "@/components/hook-form";
-import {
-    FormControl,
-    InputLabel,
-    OutlinedInput,
-    SelectChangeEvent,
-} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -61,26 +56,24 @@ const MunicipSelect: FC<IMunicipSelectProps> = ({ onChange }) => {
     );
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>{t("Municipality")}</InputLabel>
-            <RHFSelect
-                disabled={municips.length === 0}
-                name={name}
-                onChange={handleChange}
-                renderValue={renderValue}
-                input={<OutlinedInput label={t("Municipality")} />}
-            >
-                {municips.map(({ areaID, nameEN, nameGR }) => (
-                    <MenuItem
-                        key={areaID}
-                        value={areaID.toString()}
-                        nameEN={nameEN}
-                        nameGR={nameGR}
-                        checked={areaID.toString() === municipCode}
-                    />
-                ))}
-            </RHFSelect>
-        </FormControl>
+        <RHFSelect
+            fullWidth
+            name={name}
+            label={t("Municipality")}
+            disabled={municips.length === 0}
+            onChange={handleChange}
+            renderValue={renderValue}
+        >
+            {municips.map(({ areaID, nameEN, nameGR }) => (
+                <MenuItem
+                    key={areaID}
+                    value={areaID.toString()}
+                    nameEN={nameEN}
+                    nameGR={nameGR}
+                    checked={areaID.toString() === municipCode}
+                />
+            ))}
+        </RHFSelect>
     );
 };
 

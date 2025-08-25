@@ -2,9 +2,9 @@ import { Chip, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { deleteFilter } from "src/slices/customer/filters";
 import { Tags } from "./types";
+import { useFiltersContext } from "../../Context";
+import { ICustomerFilter } from "@/types/customer";
 
 interface IIdData {
     filterTags: Tags;
@@ -18,7 +18,7 @@ interface IIdMethods {
 }
 
 interface IdProps {
-    filterKey: string;
+    filterKey: keyof ICustomerFilter;
     index: number;
     data: IIdData;
     methods: IIdMethods;
@@ -28,8 +28,9 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
     const { filterTags, pairFilterTags, changedProps } = data;
     const { getLabelNames, getManagerName, hasMinMaxPair } = methods;
 
-    const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const { deleteFilter } = useFiltersContext();
 
     const router = useRouter();
 
@@ -64,8 +65,9 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
               : values;
 
     const suffix =
-        filterKey.includes("min") || filterKey.includes("max")
-            ? filterKey.slice(3)
+        (filterKey as string).includes("min") ||
+        (filterKey as string).includes("max")
+            ? (filterKey as string).slice(3)
             : null;
 
     if (isRole && values === true) {
@@ -74,7 +76,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
             <Chip
                 key={index}
                 label={label}
-                onDelete={() => dispatch(deleteFilter(filterKey))}
+                onDelete={() => deleteFilter(filterKey)}
             />
         );
     }
@@ -115,8 +117,8 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                     </Stack>
                 }
                 onDelete={() => {
-                    dispatch(deleteFilter(`min${suffix}`));
-                    dispatch(deleteFilter(`max${suffix}`));
+                    deleteFilter(`min${suffix}`);
+                    deleteFilter(`max${suffix}`);
                 }}
             />
         );
@@ -143,7 +145,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                         </Stack>
                     }
                     onDelete={() => {
-                        dispatch(deleteFilter("minPrice"));
+                        deleteFilter("minPrice");
                     }}
                 />
             );
@@ -167,7 +169,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                         </Stack>
                     }
                     onDelete={() => {
-                        dispatch(deleteFilter("maxPrice"));
+                        deleteFilter("maxPrice");
                     }}
                 />
             );
@@ -189,7 +191,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
                     </Stack>
                 }
                 onDelete={() => {
-                    dispatch(deleteFilter(filterKey));
+                    deleteFilter(filterKey);
 
                     if (filterKey === "managerId") {
                         const newQuery = { ...router.query };
@@ -212,7 +214,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
 
 const getId =
     (data: IIdData, methods: IIdMethods) =>
-    (filterKey: string, index: number) => (
+    (filterKey: keyof ICustomerFilter, index: number) => (
         <Id
             key={filterKey}
             filterKey={filterKey}

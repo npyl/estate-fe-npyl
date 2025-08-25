@@ -4,15 +4,43 @@ import {
     BlogPostReq,
     BlogPostRes,
     BlogPostShort,
+    IImageReq,
 } from "@/types/company";
 import IPage from "@/types/page";
+import {
+    IPropertyFile,
+    IPropertyFileReq,
+    IPropertyFileRes,
+} from "@/types/file";
 
-interface IBlogPostByIdReq {
+const objectToFormData = (o: object, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Append all other fields to FormData
+    Object.entries(o).forEach(([key, value]) => {
+        // Handle arrays and objects by stringifying them
+        const stringValue =
+            typeof value === "object" ? JSON.stringify(value) : String(value);
+
+        formData.append(key, stringValue);
+    });
+
+    return formData;
+};
+
+type CreateOrUpdateBlogPostReq = Omit<Required<BlogPostReq>, "id"> & {
+    id?: number;
+};
+
+interface RemoveImage {
     postId: number;
+    imageKey: string;
 }
 
-interface IUploadImageReq extends IBlogPostByIdReq {
-    file: File;
+interface IAddImageReq {
+    postId: number;
+    body: IImageReq;
 }
 
 export const blog = createApi({
@@ -28,7 +56,7 @@ export const blog = createApi({
         },
     }),
 
-    tagTypes: ["BlogPosts", "BlogPostById"],
+    tagTypes: ["BlogPosts", "BlogPostById", "BlogPostByIdImages"],
 
     endpoints: (builder) => ({
         filterBlogPosts: builder.query<IPage<BlogPostShort>, BlogFilters>({
@@ -45,12 +73,21 @@ export const blog = createApi({
             providesTags: ["BlogPostById"],
         }),
 
-        createOrUpdateBlogPost: builder.mutation<void, BlogPostReq>({
-            query: ({ id, ...body }) => ({
-                url: Boolean(id) ? `/${id}` : ``,
-                method: Boolean(id) ? "PUT" : "POST",
-                body,
-            }),
+        createOrUpdateBlogPost: builder.mutation<
+            void,
+            CreateOrUpdateBlogPostReq
+        >({
+            query: ({ id, thumbnail, ...other }) => {
+                const isUpdate = Boolean(id);
+                const url = isUpdate ? `/${id}` : ``;
+                const method = isUpdate ? "PUT" : "POST";
+                const body = objectToFormData(other, thumbnail);
+                return {
+                    url,
+                    method,
+                    body,
+                };
+            },
             invalidatesTags: ["BlogPosts", "BlogPostById"],
         }),
 
@@ -64,36 +101,41 @@ export const blog = createApi({
 
         // -----------------------------------------------------------------------------
 
-        uploadBlogPostImage: builder.mutation<void, IUploadImageReq>({
-            query: ({ postId, file }) => {
-                const body = new FormData();
-                body.append("file", file);
-
-                return {
-                    url: `/${postId}/uploadImage`,
-                    method: "POST",
-                    body,
-                    responseHandler: "text",
-                };
-            },
-            invalidatesTags: ["BlogPosts", "BlogPostById"],
+        getImages: builder.query<IPropertyFile[], number>({
+            query: (postId) => `/${postId}`,
+            providesTags: ["BlogPostByIdImages"],
         }),
 
-        removeBlogPostImage: builder.mutation<void, number>({
-            query: (postId) => ({
-                url: `/${postId}/deleteImage`,
+        addImage: builder.mutation<IPropertyFileRes, IAddImageReq>({
+            // INFO: asks for an amazon url from backend; to be used before uploadPropertyImage
+            query: ({ postId, body }) => ({
+                url: `/${postId}/addImage`,
+                method: "POST",
+                body,
+            }),
+            // onQueryStarted: optimisticAddFile,
+        }),
+
+        removeImage: builder.mutation<IPropertyFileRes, RemoveImage>({
+            // INFO: removes BE entry for the specific key
+            query: ({ postId, imageKey }) => ({
+                url: `/${postId}/removeImage/${imageKey}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["BlogPosts", "BlogPostById"],
+            // onQueryStarted: optimisticRemoveFile,
         }),
     }),
 });
+
+export type { CreateOrUpdateBlogPostReq };
 
 export const {
     useFilterBlogPostsQuery,
     useGetBlogPostByIdQuery,
     useCreateOrUpdateBlogPostMutation,
     useDeleteBlogPostMutation,
-    useUploadBlogPostImageMutation,
-    useRemoveBlogPostImageMutation,
+    // ...
+    useGetImagesQuery,
+    useAddImageMutation,
+    useRemoveImageMutation,
 } = blog;

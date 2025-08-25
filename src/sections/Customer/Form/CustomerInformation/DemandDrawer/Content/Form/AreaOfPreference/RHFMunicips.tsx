@@ -1,13 +1,4 @@
-import {
-    Checkbox,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-    ListItemText,
-} from "@mui/material";
+import { Checkbox, MenuItem, ListItemText } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { FC, useEffect, useState } from "react";
 import { useLazyGetMunicipalitiesQuery } from "src/services/location";
@@ -15,6 +6,7 @@ import { IGeoLocation } from "@/types/geolocation";
 import { Controller, useFormContext } from "react-hook-form";
 import { IDemandForms } from "../../../Form";
 import WithDynamicName from "@/components/hook-form/dynamic/WithDynamicName";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 interface IMunicipSelectProps {
     regionCodes: string[];
@@ -66,39 +58,33 @@ const MunicipSelectDemands = (props: IMunicipSelectProps) => {
     if (!allMunicipalities.length) return null;
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>{t("Municipality")}</InputLabel>
-            <Select
-                multiple
-                value={value}
-                onChange={handleChange}
-                renderValue={(selected) => {
-                    const selectedMunicips = allMunicipalities.filter(
-                        (municip) =>
-                            selected.includes(municip.areaID.toString())
-                    );
-                    return selectedMunicips
-                        .map((municip) => municip.nameGR)
-                        .join(", ");
-                }}
-                input={<OutlinedInput label={t("Municipality")} />}
-                MenuProps={{
-                    PaperProps: { sx: { maxHeight: "60vh" } },
-                }}
-            >
-                {allMunicipalities.map((option) => (
-                    <MenuItem
-                        key={option.areaID}
-                        value={option.areaID.toString()}
-                    >
-                        <Checkbox
-                            checked={value.includes(option.areaID.toString())}
-                        />
-                        <ListItemText primary={option.nameGR} />
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <Select
+            multiple
+            fullWidth
+            value={value}
+            label={t("Municipality")}
+            onChange={handleChange}
+            renderValue={(selected) => {
+                const selectedMunicips = allMunicipalities.filter((municip) =>
+                    selected.includes(municip.areaID.toString())
+                );
+                return selectedMunicips
+                    .map((municip) => municip.nameGR)
+                    .join(", ");
+            }}
+            MenuProps={{
+                PaperProps: { sx: { maxHeight: "60vh" } },
+            }}
+        >
+            {allMunicipalities.map((option) => (
+                <MenuItem key={option.areaID} value={option.areaID.toString()}>
+                    <Checkbox
+                        checked={value.includes(option.areaID.toString())}
+                    />
+                    <ListItemText primary={option.nameGR} />
+                </MenuItem>
+            ))}
+        </Select>
     );
 };
 

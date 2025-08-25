@@ -21,8 +21,8 @@ export interface UploadProps extends DropzoneOptions {
     sx?: SxProps<Theme>;
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
-    disableMultiple?: boolean;
     variant?: UploadVariant;
+    compact?: boolean; // force list view
     //
     files?: TUploadFile[];
     onFileClick?: (key: string) => void;

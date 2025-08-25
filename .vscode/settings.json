@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "npylarinos",
+        "projectKey": "npylarinos_estate-fe"
+    }
+}

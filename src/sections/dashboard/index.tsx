@@ -6,6 +6,7 @@ import Tasks from "./Tasks";
 import UserDetailList from "./UserDetailList";
 import StickyCalendar from "./StickyCalendar";
 import Stats from "./Stats";
+import { DASHBOARD_ID } from "./constants";
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +35,7 @@ const Dashboard = () => {
     const startRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Stack spacing={1} pb={8}>
+        <Stack data-testid={DASHBOARD_ID} spacing={1} pb={8}>
             <Stack position="relative" width={1} height={1} spacing={1}>
                 <Title />
 

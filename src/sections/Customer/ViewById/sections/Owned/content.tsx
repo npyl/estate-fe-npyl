@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import DataGrid from "@/components/DataGrid/Property";
+import DataGrid from "@/ui/DataGrids/Property";
 import useResponsive from "@/hooks/useResponsive";
 import PropertyCard from "@/ui/Cards/PropertyCard";
 import Pagination from "@/components/Pagination/client";

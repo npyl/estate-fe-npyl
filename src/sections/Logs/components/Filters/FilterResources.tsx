@@ -1,15 +1,8 @@
-import {
-    Checkbox,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, MenuItem, SelectChangeEvent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useFiltersContext, useSelectResources } from "./Context";
+import Select from "@/components/Select";
 
 export default function FilterResources() {
     const { t } = useTranslation();
@@ -40,33 +33,31 @@ export default function FilterResources() {
         });
     };
     return (
-        <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel>{t("Resource")}</InputLabel>
-            <Select
-                multiple
-                value={resources}
-                onChange={handleChange}
-                renderValue={(selected) => {
-                    // Get display values.
-                    const displayValues = getDisplayValues(selected);
-                    // Join the values for displaying in the select box.
-                    return displayValues.join(", ");
-                }}
-                input={<OutlinedInput label={t("Resource")} />}
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-            >
-                {resourceEnums.map(({ key, value }) => {
-                    const isKeySelected = resources?.some(
-                        (resourceKey) => resourceKey === key
-                    );
-                    return (
-                        <MenuItem key={key} value={key}>
-                            <Checkbox checked={isKeySelected} />
-                            {value}
-                        </MenuItem>
-                    );
-                })}
-            </Select>
-        </FormControl>
+        <Select
+            multiple
+            value={resources}
+            label={t("Resource")}
+            formControlProps={{ sx: { minWidth: "130px", maxWidth: "130px" } }}
+            onChange={handleChange}
+            renderValue={(selected) => {
+                // Get display values.
+                const displayValues = getDisplayValues(selected);
+                // Join the values for displaying in the select box.
+                return displayValues.join(", ");
+            }}
+            MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+        >
+            {resourceEnums.map(({ key, value }) => {
+                const isKeySelected = resources?.some(
+                    (resourceKey) => resourceKey === key
+                );
+                return (
+                    <MenuItem key={key} value={key}>
+                        <Checkbox checked={isKeySelected} />
+                        {value}
+                    </MenuItem>
+                );
+            })}
+        </Select>
     );
 }

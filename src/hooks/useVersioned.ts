@@ -1,0 +1,49 @@
+import { useCallback, useMemo } from "react";
+
+type TVersioned<V> = {
+    version: number;
+    content: V;
+};
+
+const getVersioned = <V extends string | number | object = string>(
+    version: number,
+    content: V
+): TVersioned<V> => ({ version, content });
+
+type UseStore<V extends string | number | object = string> = (
+    key: string | null,
+    fallbackValue: V
+) => readonly [V, (v: V, ...rest: any) => void, (...rest: any) => void];
+
+const useVersioned = <V extends string | number | object = string>(
+    key: string | null,
+    fallbackValue: V,
+    version: number,
+    useStore: UseStore<TVersioned<V>>
+) => {
+    const FALLBACK = useMemo(
+        () => ({
+            version,
+            content: fallbackValue,
+        }),
+        [version, fallbackValue]
+    );
+
+    const [_value, _set, remove] = useStore(key, FALLBACK);
+
+    const value = useMemo(() => {
+        if (_value.version !== version) return fallbackValue;
+        return _value.content;
+    }, [_value.version, _value.content, version, fallbackValue]);
+
+    const set = useCallback(
+        (content: V, ...args: any[]) => _set({ version, content }, ...args),
+        [_set, version]
+    );
+
+    return [value, set, remove] as const;
+};
+
+export { getVersioned };
+export type { TVersioned };
+export default useVersioned;

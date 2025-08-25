@@ -3,6 +3,7 @@ import { FC, useCallback, useRef } from "react";
 import Content from "./Content";
 import Form, { FormRef, IDemandForms } from "./Form";
 import Controls from "./Controls";
+import { DEMAND_FORM_ID } from "@/sections/Customer/Form/constants";
 
 interface DemandDrawerProps {
     onClose: VoidFunction;
@@ -35,7 +36,7 @@ const DemandDrawer: FC<DemandDrawerProps> = ({ onSave, onClose }) => {
             }}
             onClose={onClose}
         >
-            <Form ref={formRef}>
+            <Form ref={formRef} data-testid={DEMAND_FORM_ID}>
                 <Content onClose={onClose} />
                 <Controls onSave={handleSave} />
             </Form>
@@ -43,4 +44,5 @@ const DemandDrawer: FC<DemandDrawerProps> = ({ onSave, onClose }) => {
     );
 };
 
+export { DEMAND_FORM_ID };
 export default DemandDrawer;

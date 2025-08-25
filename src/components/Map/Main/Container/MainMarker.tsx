@@ -1,6 +1,6 @@
 import { FC, MutableRefObject, useCallback } from "react";
 import { IMapAddress, IMapCoordinates, IMapMarker } from "../../types";
-import getAddressFromLatLng from "./getAddressFromLatLng";
+import getAddressFromLatLng from "./useClick/getAddressFromLatLng";
 import Marker from "@/components/Map/Marker";
 
 interface Props {

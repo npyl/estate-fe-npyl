@@ -69,7 +69,7 @@ export const calendar = createApi({
             providesTags: ["Events"],
         }),
 
-        createEvent: builder.mutation<void, CreateUpdateEventReq>({
+        createEvent: builder.mutation<string, CreateUpdateEventReq>({
             query: ({ userId, body }) => ({
                 url: `/${userId}/events/create`,
                 body,

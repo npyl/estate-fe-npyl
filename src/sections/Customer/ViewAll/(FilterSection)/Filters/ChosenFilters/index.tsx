@@ -1,13 +1,12 @@
 import { Stack, StackProps } from "@mui/material";
 import { FC } from "react";
-import { useSelector } from "react-redux";
-import { selectIds } from "src/slices/customer/filters";
 import useData from "./useData";
 import useMethods from "./useMethods";
 import getId from "./getId";
+import { useIds } from "../../Context";
 
 const ChosenFilters: FC<StackProps> = (props) => {
-    const ids = useSelector(selectIds);
+    const ids = useIds();
     const data = useData();
     const methods = useMethods();
 

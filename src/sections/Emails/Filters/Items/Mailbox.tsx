@@ -1,4 +1,4 @@
-import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
+import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
 import { useTranslation } from "react-i18next";
 import { TranslationType } from "@/types/translation";
 import { useCallback, useMemo } from "react";

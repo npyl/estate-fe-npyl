@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import { useFormContext } from "react-hook-form";
+import { DEMAND_SAVE_BUTTON_ID } from "@/sections/Customer/Form/constants";
 
 interface ControlsProps {
     onSave: VoidFunction;
@@ -26,7 +27,11 @@ const Controls: FC<ControlsProps> = ({ onSave }) => {
             bgcolor="background.paper"
         >
             {isDirty ? (
-                <Button variant="contained" onClick={onSave}>
+                <Button
+                    data-testid={DEMAND_SAVE_BUTTON_ID}
+                    variant="contained"
+                    onClick={onSave}
+                >
                     {t("Save")}
                 </Button>
             ) : null}

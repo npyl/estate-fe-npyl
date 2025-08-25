@@ -4,6 +4,16 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            BLOG_MIDDLE_IMAGES_FULL: "You can only upload 2 images",
+            MainImage: "Main Image",
+            MiddleImages: "Middle Images",
+
+            RESET_USER_PASSWORD: "Reset user password",
+
+            TRANSFER_TO: "Transfer data to:",
+
+            DELETE_USER_0: "Delete user",
+
             "Purchase in Greece": "Purchase in Greece",
             "Purchase in Patras": "Purchase in Patras",
             "Purchase Abroad": "Purchase Abroad",
@@ -1396,6 +1406,17 @@ const resources = {
     },
     el: {
         translation: {
+            BLOG_MIDDLE_IMAGES_FULL:
+                "Μπορείτε να ανεβάσετε μέχρι 2 φωτογραφίες",
+            MainImage: "Κύρια Εικόνα",
+            MiddleImages: "Εικόνες Μέσης",
+
+            RESET_USER_PASSWORD: "Αλλαγή κωδικού χρήστη",
+
+            TRANSFER_TO: "Μεταφορά δεδομένων σε:",
+
+            DELETE_USER_0: "Διαγραφή χρήστη",
+
             "Purchase in Greece": "Αγορά στην Ελλάδα",
             "Purchase in Patras": "Αγορά στην Πάτρα",
             "Purchase Abroad": "Αγορά στο Εξωτερικό",

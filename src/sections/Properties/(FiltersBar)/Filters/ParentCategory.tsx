@@ -1,15 +1,8 @@
-import {
-    Checkbox,
-    FormControl,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
+import { Checkbox, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-import { StyledInputLabel } from "@/components/Filters";
 import { useFiltersContext, useParentCategories } from "../../FiltersContext";
+import Select, { SelectChangeEvent } from "@/components/Select";
 
 export default function FilterParentCategory() {
     const { t } = useTranslation();
@@ -32,44 +25,38 @@ export default function FilterParentCategory() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "200px", maxWidth: "200px" }}>
-            <StyledInputLabel>{t("Parent Category")}</StyledInputLabel>
-            <Select
-                multiple
-                value={categories}
-                onChange={handleChange}
-                renderValue={(selected: string[]) => {
-                    return selected
-                        .map(
-                            (key) =>
-                                categoryEnums.find((item) => item.key === key)
-                                    ?.value
-                        )
-                        .filter(Boolean)
-                        .join(", ");
-                }}
-                input={
-                    <OutlinedInput
-                        sx={{ maxHeight: "38px", textAlign: "center" }}
-                        label={t("Parent Category")}
+        <Select
+            multiple
+            value={categories}
+            onChange={handleChange}
+            formControlProps={{
+                sx: { minWidth: "200px", maxWidth: "200px" },
+            }}
+            renderValue={(selected: string[]) => {
+                return selected
+                    .map(
+                        (key) =>
+                            categoryEnums.find((item) => item.key === key)
+                                ?.value
+                    )
+                    .filter(Boolean)
+                    .join(", ");
+            }}
+            label={t("Parent Category")}
+            MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+        >
+            {categoryEnums.map(({ key, value }) => (
+                <MenuItem key={key} value={key}>
+                    <Checkbox
+                        checked={
+                            categories &&
+                            categories.length > 0 &&
+                            categories.indexOf(key) > -1
+                        }
                     />
-                }
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-            >
-                {categoryEnums.map(({ key, value }) => (
-                    <MenuItem key={key} value={key}>
-                        <Checkbox
-                            checked={
-                                categories &&
-                                categories.length > 0 &&
-                                categories.indexOf(key) > -1
-                            }
-                        />
-
-                        {value}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+                    {value}
+                </MenuItem>
+            ))}
+        </Select>
     );
 }

@@ -1,16 +1,16 @@
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "src/hooks/useGlobals";
-import { useDispatch, useSelector } from "src/store";
-import {
-    selectCategories,
-    selectParentCategories,
-    setCategories,
-} from "src/slices/customer/filters";
 import { Checkbox, Grid, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";
 import { KeyValue } from "src/types/KeyValue";
+import {
+    useCategories,
+    useFiltersContext,
+    useParentCategories,
+} from "../Context";
+import { useCallback } from "react";
 
 // ----------------------------------------
 
@@ -33,11 +33,11 @@ const CategoryItem = styled.label<{ disabled?: boolean }>`
 
 const FilterCategoryInMore = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
     const data = useGlobals();
 
-    const parentCategories = useSelector(selectParentCategories) || [];
-    const selected = useSelector(selectCategories) || [];
+    const { setCategories } = useFiltersContext();
+    const parentCategories = useParentCategories() || [];
+    const selected = useCategories() || [];
 
     const propertyEnums = data?.property;
 
@@ -55,12 +55,10 @@ const FilterCategoryInMore = () => {
         const updated = isSelected
             ? selected.filter((k) => k !== key)
             : [...selected, key];
-        dispatch(setCategories(updated));
+        setCategories(updated);
     };
 
-    const reset = () => {
-        dispatch(setCategories([]));
-    };
+    const reset = useCallback(() => setCategories([]), []);
 
     return (
         <ClearableSection title={t("Category")} reset={reset}>

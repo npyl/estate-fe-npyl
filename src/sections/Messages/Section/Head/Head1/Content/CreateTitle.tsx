@@ -22,14 +22,12 @@ const CreateTitle = () => {
         <Stack direction="row" spacing={1} alignItems="center">
             <AssigneeAutocomplete
                 label={t("User")}
-                error={false}
                 value={recipients?.[0]}
                 onChange={(v) => setRecipients([v])}
                 getOptionDisabled={getOptionDisabled}
                 sx={{
                     width: "300px",
                 }}
-                assignToMe={false}
             />
         </Stack>
     );

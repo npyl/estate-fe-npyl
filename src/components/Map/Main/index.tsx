@@ -11,7 +11,6 @@ const Map: FC<IMapProps> = ({
     onDraw,
     onShapeChange,
     onSearchSelect,
-    shapes = [],
     drawing = false,
     search = false,
     // ...
@@ -26,7 +25,7 @@ const Map: FC<IMapProps> = ({
             <>
                 <Draw
                     drawing={drawing}
-                    shapes={shapes}
+                    shapes={props.shapes ?? []}
                     onDraw={onDraw}
                     onShapeChange={onShapeChange}
                 />

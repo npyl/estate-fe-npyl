@@ -1,5 +1,5 @@
 import { Button, Skeleton, Stack } from "@mui/material";
-import { FC, forwardRef, useCallback, useImperativeHandle } from "react";
+import { forwardRef, useCallback, useImperativeHandle } from "react";
 import {
     CALENDAR_COLOR_FALLBACK,
     TCalendarEvent,
@@ -14,6 +14,10 @@ import RHFTypeSelect from "./RHFTypeSelect";
 import Pickers from "./Pickers";
 import dynamic from "next/dynamic";
 import RHFEditor from "@/components/hook-form/RHFEditor";
+import {
+    EVENT_POPOVER_SUBMIT_TESTID,
+    EVENT_POPOVER_TITLE_TESTID,
+} from "./constants";
 const Color = dynamic(() => import("./Color"), {
     loading: () => <Skeleton variant="circular" width="30px" height="30px" />,
 });
@@ -100,6 +104,7 @@ const CreateUpdateForm = forwardRef<FormRef, Props>(
                 <FormProvider {...methods}>
                     <Stack spacing={2} minHeight="400px">
                         <RHFTextField
+                            data-testid={EVENT_POPOVER_TITLE_TESTID}
                             variant="standard"
                             name="title"
                             placeholder={t<string>("Title")}
@@ -132,6 +137,7 @@ const CreateUpdateForm = forwardRef<FormRef, Props>(
 
                             {isDirty ? (
                                 <LoadingButton
+                                    data-testid={EVENT_POPOVER_SUBMIT_TESTID}
                                     type="submit"
                                     variant="contained"
                                     loading={isSubmitting}

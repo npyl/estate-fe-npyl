@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import { useCallback, useMemo } from "react";
 import { useSuggestForPropertyQuery } from "src/services/properties";
-import DataGrid from "@/components/DataGrid/Customer";
+import DataGrid from "@/ui/DataGrids/Customer";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import CustomerCard from "@/ui/Cards/CustomerCard";
 import useResponsive from "@/hooks/useResponsive";

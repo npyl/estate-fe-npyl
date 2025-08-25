@@ -1,13 +1,15 @@
 import { expect, MountResult } from "@playwright/experimental-ct-react";
+import { Page } from "@playwright/test";
 
 const expectValue = async (
-    component: MountResult,
+    component: MountResult | Page,
     ID: string,
     VALUE: string,
     timeout?: number
 ) => {
-    const valueLocator = component.getByTestId(ID);
-    await expect(valueLocator).toHaveText(VALUE, { timeout });
+    const locator = component.getByTestId(ID);
+    await locator.waitFor({ state: "visible", timeout });
+    await expect(locator).toHaveText(VALUE);
 };
 
 export default expectValue;

@@ -367,6 +367,57 @@ class CalendarService {
         });
     }
 
+    async deleteDayEvents(
+        userId: number,
+        date: string,
+        calendarId: string = DEFAULT_CALENDAR_ID
+    ) {
+        const auth = await managerService.getAuthForUser(userId);
+        if (!auth) throw new Error("Could not find user!");
+
+        // Create start and end of day timestamps
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        // Get all events for the specified day
+        const events = await this.getCalendarEvents(
+            calendarId,
+            startOfDay.toISOString(),
+            endOfDay.toISOString(),
+            auth
+        );
+
+        if (!events || events.length === 0) {
+            console.log(`No events found for ${date}`);
+            return { deletedCount: 0 };
+        }
+
+        // Delete each event
+        const deletePromises = events.map((event) => {
+            if (!event.id) {
+                console.warn("Event without ID found, skipping");
+                return Promise.resolve(false);
+            }
+
+            return this.calendar.events.delete({
+                calendarId,
+                eventId: event.id,
+                auth,
+            });
+        });
+
+        const results = await Promise.all(deletePromises);
+
+        const deletedCount = results.filter(Boolean).length;
+
+        console.log(
+            `Deleted ${deletedCount} out of ${events.length} events for ${date}`
+        );
+    }
+
     // --------------------------------------------------------------------
 
     async getColors(userId: number) {

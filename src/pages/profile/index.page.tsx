@@ -2,7 +2,6 @@ import { Container } from "@mui/material";
 import type { NextPage } from "next";
 import ViewUser from "@/sections/User/View";
 import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
-import { SecurityProvider } from "@/contexts/security";
 import { useGetUserQuery } from "@/services/user";
 import AuthGuard from "@/components/authentication/auth-guard";
 import { useAuth } from "@/hooks/use-auth";
@@ -22,9 +21,7 @@ const Profile: NextPage = () => {
 
 Profile.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>
-            <SecurityProvider>{page}</SecurityProvider>
-        </DashboardLayout>
+        <DashboardLayout>{page}</DashboardLayout>
     </AuthGuard>
 );
 

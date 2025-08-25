@@ -1,3 +1,4 @@
+import { DescriptionEntry } from "../description";
 import { KeyValue } from "../KeyValue";
 import { IUser, IUserMini } from "../user";
 import { IPublicSitesRes } from "./company";
@@ -6,27 +7,30 @@ type TCategory = string;
 
 interface BlogPostShort {
     id: number;
-    title: string;
+    thumbnail: string; // url
     user: IUserMini;
     createdAt: string;
     updatedAt: string;
-    url: string;
     viewCounter: number;
     sites: IPublicSitesRes[];
+
+    // TODO: title?
 }
 
 interface BlogPostReq {
     id?: number;
-    title: string;
-    content: string;
+    thumbnail?: File;
+    images: string[]; // keys
+    descriptions: Record<string, DescriptionEntry>;
     publicSites: number[];
     categories: TCategory[];
 }
 
 interface BlogPostRes extends BlogPostShort {
-    content: string;
     user: IUser;
+    images: string[]; // keys
     categories: KeyValue<TCategory>[];
+    descriptions: Record<string, DescriptionEntry>;
 }
 
 interface BlogFilters {
@@ -37,4 +41,17 @@ interface BlogFilters {
     categories: number[];
 }
 
-export type { TCategory, BlogPostShort, BlogPostReq, BlogPostRes, BlogFilters };
+interface IImageReq {
+    contentType: string;
+    filename: string;
+    size: number;
+}
+
+export type {
+    TCategory,
+    BlogPostShort,
+    BlogPostReq,
+    BlogPostRes,
+    BlogFilters,
+    IImageReq,
+};

@@ -19,6 +19,7 @@ import Highlight from "@tiptap/extension-highlight";
 import History from "@tiptap/extension-history";
 import Indent from "./extensions/Indent";
 import Mention from "./extensions/Mention";
+import { ImageContainer, Image } from "./extensions/Image";
 import { errorToast } from "@/components/Toaster";
 import { CLASSNAMES } from "./constants";
 
@@ -85,6 +86,8 @@ const extensions = [
     // ...
     History,
     Mention,
+    ImageContainer,
+    Image,
 ];
 
 export { extensions };

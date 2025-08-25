@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, InputLabel, MenuItem } from "@mui/material";
+import { Checkbox, MenuItem } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -29,23 +29,21 @@ const LabelSelect: FC<Props> = ({ index }) => {
         selected.map(nameForId).join(", ");
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>{t("Labels")}</InputLabel>
-            <RHFSelect
-                label={t("Labels")}
-                name={name}
-                multiple
-                renderValue={renderValue}
-                defaultValue={[]}
-            >
-                {labelOptions.map(({ id, color, name }) => (
-                    <MenuItem key={id} value={id}>
-                        <Checkbox checked={labels.indexOf(id!) > -1} />
-                        <Label color={color} name={name} />
-                    </MenuItem>
-                ))}
-            </RHFSelect>
-        </FormControl>
+        <RHFSelect
+            multiple
+            fullWidth
+            label={t("Labels")}
+            name={name}
+            renderValue={renderValue}
+            defaultValue={[]}
+        >
+            {labelOptions.map(({ id, color, name }) => (
+                <MenuItem key={id} value={id}>
+                    <Checkbox checked={labels.indexOf(id!) > -1} />
+                    <Label color={color} name={name} />
+                </MenuItem>
+            ))}
+        </RHFSelect>
     );
 };
 

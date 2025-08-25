@@ -50,15 +50,15 @@ const useDraggable = (
     const handleMouseMove = useCallback(
         async (e: globalThis.MouseEvent) => {
             const grid = gridRef.current;
-            const event = eventRef.current;
-            if (!grid || !event) return;
+            const eventElement = eventRef.current;
+            if (!grid || !eventElement) return;
 
             const gridRect = grid.getBoundingClientRect();
 
             // Get cell width information
             const dayWidth = cellsRef.current?.at(0)?.width ?? 100;
 
-            // Calculate horizontal movement from start position
+            // Calculate horizontal movement from start position (KEEP ORIGINAL LOGIC)
             const horizontalMovement =
                 e.clientX - dragInfo.current.startPosition.x;
 
@@ -75,12 +75,10 @@ const useDraggable = (
             const newX =
                 dragInfo.current.initialTransform.x + dayOffset * dayWidth;
 
-            // Original Y calculation remains
-            const newY =
-                e.clientY -
-                gridRect.top +
-                grid.scrollTop -
-                mouseOffset.current.y;
+            // FIXED: Calculate Y movement from start position (like horizontal)
+            const verticalMovement =
+                e.clientY - dragInfo.current.startPosition.y;
+            const newY = dragInfo.current.initialTransform.y + verticalMovement;
 
             // For vertical snapping, we need to ensure we're truly aligning to 15-minute intervals
             // Force snapping to exact multiples of INTERVAL_HEIGHT (15px)
@@ -95,12 +93,12 @@ const useDraggable = (
             const newTop = newInterval * INTERVAL_HEIGHT; // This must be exactly divisible by 15
 
             // Update DOM element position
-            event.style.left = `${newLeft}px`;
-            event.style.top = `${newTop}px`;
+            eventElement.style.left = `${newLeft}px`;
+            eventElement.style.top = `${newTop}px`;
 
             onPositionUpdate();
         },
-        [onPositionUpdate]
+        [onPositionUpdate, cellsRef]
     );
 
     const handleMouseUp = useCallback(
@@ -147,7 +145,7 @@ const useDraggable = (
                 }
             }
         },
-        [event, onEventDragEarlyEnd, onEventDragEnd]
+        [event, onEventDragEarlyEnd, onEventDragEnd, handleMouseMove]
     );
 
     const onMouseDown = useCallback(
@@ -156,13 +154,13 @@ const useDraggable = (
 
             if (!onEventDragStart) return;
 
-            const event = eventRef.current;
-            if (!event) return;
+            const eventElement = eventRef.current;
+            if (!eventElement) return;
 
             // Calculate and store the initial mouse position relative to the element
-            const eventRect = event.getBoundingClientRect();
+            const eventRect = eventElement.getBoundingClientRect();
 
-            // Store the offset where the mouse clicked within the element
+            // Store the offset where the mouse clicked within the element (KEEP ORIGINAL)
             mouseOffset.current = {
                 x: e.clientX - eventRect.left,
                 y: e.clientY - eventRect.top,
@@ -171,9 +169,19 @@ const useDraggable = (
             // Store the starting position for transform calculation
             dragInfo.current.startPosition = { x: e.clientX, y: e.clientY };
 
-            // Get current left position converted to transform style
-            const currentLeft = parseFloat(event.style.left || "0");
-            dragInfo.current.initialTransform = { x: currentLeft, y: 0 };
+            // FIXED: Get current transform from computed style if no inline style exists
+            const computedStyle = window.getComputedStyle(eventElement);
+            const currentLeft = parseFloat(
+                eventElement.style.left || computedStyle.left || "0"
+            );
+            const currentTop = parseFloat(
+                eventElement.style.top || computedStyle.top || "0"
+            );
+
+            dragInfo.current.initialTransform = {
+                x: currentLeft,
+                y: currentTop,
+            };
 
             onEventDragEarlyStart?.();
 

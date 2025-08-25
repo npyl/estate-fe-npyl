@@ -34,6 +34,7 @@ export default function Upload({
     error,
     helperText,
     variant = "image",
+    compact = false,
     //
     files,
     onFileClick,
@@ -96,6 +97,7 @@ export default function Upload({
             {hasFiles ? (
                 <MultiFilePreview
                     files={files}
+                    compact={compact}
                     variant={variant}
                     disabled={disabled}
                     onFileClick={onFileClick}

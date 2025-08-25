@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import { IUser } from "src/types/user";
@@ -10,6 +10,7 @@ import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
 import AdminLabel from "./AdminLabel";
 import AvatarPicker from "./AvatarPicker";
+import useDialog from "@/hooks/useDialog";
 
 interface ViewUserProps {
     user?: IUser;
@@ -30,15 +31,17 @@ const RenderUsername = ({ username }: { username?: string }) => {
     ) : null;
 };
 
-const EditButton = () => {
+interface EditButtonProps {
+    user?: IUser;
+}
+
+const EditButton: FC<EditButtonProps> = ({ user }) => {
     const { t } = useTranslation();
-    const [formOpen, setFormOpen] = useState(false);
-    const handleFormOpen = () => setFormOpen(true);
-    const handleFormClose = () => setFormOpen(false);
+    const [isOpen, open, close] = useDialog();
     return (
         <>
-            <SoftButton onClick={handleFormOpen}>{t("Edit")}</SoftButton>
-            {formOpen && <UserForm open={formOpen} onClose={handleFormClose} />}
+            <SoftButton onClick={open}>{t("Edit")}</SoftButton>
+            {isOpen ? <UserForm user={user} onClose={close} /> : null}
         </>
     );
 };
@@ -58,7 +61,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                     {t("User Profile")}
                 </Typography>
 
-                <EditButton />
+                <EditButton user={user} />
             </SpaceBetween>
             <Divider />
             <Stack p={3} justifyContent="center" alignItems="center">

@@ -38,7 +38,7 @@ const getChangedFields = <T extends object>(filters: T, initialState: T) =>
 
 // -------------------------------------------------------------------------------------
 
-const useChangedFields = <T extends object>(filters: T, INITIAL_STATE: T) =>
+const useChangedFields = <T extends object>(INITIAL_STATE: T, filters: T) =>
     useMemo(() => getChangedFields(filters, INITIAL_STATE), [filters]);
 
 const useCalculateIds = <T extends object>(INITIAL_STATE: T, filters: T) =>

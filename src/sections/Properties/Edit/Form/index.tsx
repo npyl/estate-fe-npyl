@@ -1,4 +1,4 @@
-import usePropertyForm, { IPropertyYup } from "./hook";
+import usePropertyForm from "./hook";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
 import dynamic from "next/dynamic";

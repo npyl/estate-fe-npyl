@@ -1,34 +1,24 @@
-import {
-    Checkbox,
-    FormControl,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent,
-} from "@mui/material";
-import { useDispatch } from "src/store";
+import { Checkbox, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import {
-    selectBuyer,
-    selectLeaser,
-    selectLessor,
-    selectSeller,
-    setBuyer,
-    setLeaser,
-    setLessor,
-    setSeller,
-} from "src/slices/customer/filters";
-import { StyledInputLabel } from "@/components/Filters";
+    useBuyer,
+    useFiltersContext,
+    useLeaser,
+    useLessor,
+    useSeller,
+} from "../Context";
+import Select, { SelectChangeEvent } from "@/components/Select";
+import { useCallback } from "react";
 
 export default function FilterBuyerLeaserAndMore() {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const leaser = useSelector(selectLeaser);
-    const buyer = useSelector(selectBuyer);
-    const seller = useSelector(selectSeller);
-    const lessor = useSelector(selectLessor);
+    const { setBuyer, setLeaser, setLessor, setSeller } = useFiltersContext();
+
+    const leaser = useLeaser();
+    const buyer = useBuyer();
+    const seller = useSeller();
+    const lessor = useLessor();
 
     // Create a representation of the selected values
     const selectedRoles = [];
@@ -37,47 +27,45 @@ export default function FilterBuyerLeaserAndMore() {
     if (seller) selectedRoles.push("seller");
     if (lessor) selectedRoles.push("lessor");
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const handleChange = useCallback((event: SelectChangeEvent<string[]>) => {
         const selected = event.target.value;
-        dispatch(setLeaser(selected.includes("leaser")));
-        dispatch(setBuyer(selected.includes("buyer")));
-        dispatch(setSeller(selected.includes("seller")));
-        dispatch(setLessor(selected.includes("lessor")));
-    };
+        setLeaser(selected.includes("leaser"));
+        setBuyer(selected.includes("buyer"));
+        setSeller(selected.includes("seller"));
+        setLessor(selected.includes("lessor"));
+    }, []);
 
     return (
-        <FormControl sx={{ minWidth: "200px" }}>
-            <StyledInputLabel>{t("Roles")}</StyledInputLabel>
-            <Select
-                label={t("Roles")}
-                multiple
-                value={selectedRoles}
-                onChange={handleChange}
-                renderValue={(selected) =>
-                    selected
-                        .map((role) =>
-                            t(role.charAt(0).toUpperCase() + role.slice(1))
-                        )
-                        .join(", ")
-                }
-            >
-                <MenuItem value={"leaser"}>
-                    <Checkbox checked={leaser} />
-                    {t("Leaser")}
-                </MenuItem>
-                <MenuItem value={"buyer"}>
-                    <Checkbox checked={buyer} />
-                    {t("Buyer")}
-                </MenuItem>
-                <MenuItem value={"seller"}>
-                    <Checkbox checked={seller} />
-                    {t("Seller")}
-                </MenuItem>
-                <MenuItem value={"lessor"}>
-                    <Checkbox checked={lessor} />
-                    {t("Lessor")}
-                </MenuItem>
-            </Select>
-        </FormControl>
+        <Select
+            multiple
+            label={t("Roles")}
+            value={selectedRoles}
+            onChange={handleChange}
+            formControlProps={{ sx: { minWidth: "200px" } }}
+            renderValue={(selected) =>
+                selected
+                    .map((role) =>
+                        t(role.charAt(0).toUpperCase() + role.slice(1))
+                    )
+                    .join(", ")
+            }
+        >
+            <MenuItem value={"leaser"}>
+                <Checkbox checked={leaser} />
+                {t("Leaser")}
+            </MenuItem>
+            <MenuItem value={"buyer"}>
+                <Checkbox checked={buyer} />
+                {t("Buyer")}
+            </MenuItem>
+            <MenuItem value={"seller"}>
+                <Checkbox checked={seller} />
+                {t("Seller")}
+            </MenuItem>
+            <MenuItem value={"lessor"}>
+                <Checkbox checked={lessor} />
+                {t("Lessor")}
+            </MenuItem>
+        </Select>
     );
 }

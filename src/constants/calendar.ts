@@ -14,6 +14,8 @@ const Z_INDEX = {
     HEADER: 30,
 };
 
+const CREATE_EVENT_ID = "PPEvent-Create";
+
 export {
     Z_INDEX,
     // ...
@@ -23,4 +25,6 @@ export {
     START_HOUR,
     END_HOUR,
     TOTAL_HOURS,
+    // ...
+    CREATE_EVENT_ID,
 };

@@ -1,5 +1,8 @@
 import Link from "@/components/Link";
-import { useCreateOrUpdateBlogPostMutation } from "@/services/blog";
+import {
+    CreateOrUpdateBlogPostReq,
+    useCreateOrUpdateBlogPostMutation,
+} from "@/services/blog";
 import { BlogPostReq } from "@/types/company";
 import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
@@ -12,11 +15,11 @@ import { useRouter } from "next/router";
 
 const useSubmit = () => {
     const router = useRouter();
-    const methods = useFormContext<BlogPostReq>();
+    const methods = useFormContext<CreateOrUpdateBlogPostReq>();
     const isDirty = methods.formState.isDirty;
     const isLoading = methods.formState.isLoading;
     const [submit] = useCreateOrUpdateBlogPostMutation();
-    const handleSubmit = useCallback(async (d: BlogPostReq) => {
+    const handleSubmit = useCallback(async (d: CreateOrUpdateBlogPostReq) => {
         const res = await submit(d);
         if ("error" in res) return;
         router.push("/blog");

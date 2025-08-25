@@ -30,6 +30,7 @@ const ItemSx: SxProps<Theme> = {
 
 interface ItemProps {
     variant: UploadVariant;
+    compact: boolean;
     file: TUploadFile;
     disabled?: boolean;
     onClick?: (url: string) => void;
@@ -40,6 +41,7 @@ const Item = ({
     variant,
     file,
     disabled = false,
+    compact,
     onClick,
     onRemove,
 }: ItemProps) => {
@@ -54,9 +56,11 @@ const Item = ({
     return (
         <SpaceBetween alignItems="center" sx={ItemSx} onClick={handleClick}>
             <Stack direction="row" spacing={1} alignItems="center">
-                {variant === "image" && <FileThumbnail file={file} />}
+                {variant === "image" && !compact ? (
+                    <FileThumbnail file={file} />
+                ) : null}
 
-                {variant === "document" && (
+                {variant === "document" || compact ? (
                     <DocumentIcon
                         isPreview={!file.url}
                         sx={{
@@ -64,7 +68,7 @@ const Item = ({
                             height: 50,
                         }}
                     />
-                )}
+                ) : null}
 
                 {variant === "googleEarth" ? (
                     <GoogleEarthIcon width={50} height={50} />
@@ -108,6 +112,7 @@ const Item = ({
 interface MultiFilePreviewProps extends StackProps {
     files: TUploadFile[];
     variant: UploadVariant;
+    compact: boolean;
     disabled?: boolean;
     onFileClick?: (url: string) => void;
     onRemove?: (key: string) => void;
@@ -117,6 +122,7 @@ const MultiFilePreview = ({
     files,
     variant,
     disabled = false,
+    compact,
     onFileClick,
     onRemove,
     ...props
@@ -125,6 +131,7 @@ const MultiFilePreview = ({
         {files.map((file, i) => (
             <Item
                 key={`${file.filename}_${i}`}
+                compact={compact}
                 variant={variant}
                 file={file}
                 disabled={disabled}

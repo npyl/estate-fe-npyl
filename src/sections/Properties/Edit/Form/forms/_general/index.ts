@@ -2,7 +2,7 @@ export { default as Areas } from "./Areas";
 export { default as Balconies } from "./Balconies";
 export { default as BasicDetails } from "./BasicDetails";
 export { default as Blueprints } from "./Blueprints";
-export { default as DescriptionEditor } from "./DescriptionEditor";
+export { default as DescriptionEditor } from "@/ui/DescriptionEditor";
 export { default as Distances } from "./Location/Distances";
 export { default as Documents } from "./Documents";
 export { default as Features } from "./Features";

@@ -1,13 +1,14 @@
 import { GoogleMap } from "@react-google-maps/api";
-import { CSSProperties, FC, useCallback, useMemo, useRef } from "react";
-import useLoadApi from "../../hook";
-import getAddressFromLatLng from "./getAddressFromLatLng";
-import { IMapProps } from "../../types";
+import { CSSProperties, FC, useCallback, useRef } from "react";
+import useLoadApi from "@/components/Map/hook";
+import { IMapProps, MapContainerProps } from "@/components/Map/types";
 import { MapProvider, useMapContext } from "../context";
 import Controls, { ControlsRef } from "./Controls";
-import { patrasLatLng, ZOOM_LEVELS } from "../../constants";
+import { MAP_ID, patrasLatLng } from "@/components/Map/constants";
 import dynamic from "next/dynamic";
-import isPositionValid from "../../util/validation";
+import useZoom from "./useZoom";
+import useCenter from "./useCenter";
+import useClick from "./useClick";
 const MainMarker = dynamic(() => import("./MainMarker"));
 
 const containerStyle: CSSProperties = {
@@ -16,13 +17,13 @@ const containerStyle: CSSProperties = {
     position: "relative",
 };
 
-const MapContainer: FC<IMapProps> = ({
+const MapContainer: FC<MapContainerProps> = ({
     onReady,
     // ...
     onClick,
     onMainMarkerDrag,
     // ...
-    zoom,
+    zoom: _zoom,
     mainMarker = false,
     center: _center = patrasLatLng,
     // ...
@@ -40,13 +41,13 @@ const MapContainer: FC<IMapProps> = ({
 
     const { isLoaded } = useLoadApi();
 
-    const center = useMemo(() => {
-        if (!isPositionValid(_center)) return patrasLatLng;
-        return _center;
-    }, [_center]);
+    const center = useCenter(_center);
+    const zoom = useZoom(props.shapes, _zoom);
 
     const onLoad = useCallback(
         (map: google.maps.Map) => {
+            map.getDiv().setAttribute("data-testid", MAP_ID);
+
             // map
             mapRef.current = map;
 
@@ -61,29 +62,7 @@ const MapContainer: FC<IMapProps> = ({
         [onReady]
     );
 
-    const handleMapClick = useCallback(
-        async (event: google.maps.MapMouseEvent) => {
-            if (!geocoderRef.current) return;
-            if (!onClick) return;
-
-            const latLng = event.latLng;
-            const lat = latLng?.lat();
-            const lng = latLng?.lng();
-
-            if (lat === undefined || lng === undefined) return;
-
-            const response = await getAddressFromLatLng(
-                geocoderRef.current,
-                lat,
-                lng
-            );
-
-            if (!response) return;
-
-            onClick(lat, lng, response);
-        },
-        [onClick]
-    );
+    const handleMapClick = useClick(geocoderRef, onClick);
 
     if (!isLoaded) return null;
 
@@ -91,7 +70,7 @@ const MapContainer: FC<IMapProps> = ({
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={zoom || ZOOM_LEVELS.DEFAULT}
+            zoom={zoom}
             onClick={handleMapClick}
             onLoad={onLoad}
             options={{

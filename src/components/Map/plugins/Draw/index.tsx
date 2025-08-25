@@ -32,4 +32,5 @@ const Draw: FC<DrawProps> = ({ drawing = false, shapes, ...props }) => {
     );
 };
 
+export * from "./Picker";
 export default Draw;

@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSecurityContext } from "src/contexts/security";
+import { useSecurityContext } from "@/sections/Settings/permission/Context";
 import { IActions, IRoles } from "@/types/roles";
 import {
     ActionsHeadCells,

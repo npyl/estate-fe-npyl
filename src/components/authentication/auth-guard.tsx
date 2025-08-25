@@ -17,7 +17,7 @@ const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
             if (!auth.isAuthenticated) {
                 router
                     .push({
-                        pathname: "/authentication/login",
+                        pathname: "/login",
                         query: { returnUrl: router.asPath },
                     })
                     .catch(console.error);

@@ -7,6 +7,8 @@ import { PlacesAutocompleteRef } from "./types";
 import { IMapAddress } from "@/components/Map/types";
 import getAddressComponent from "@/components/Map/util/getAddressComponent";
 
+const MAP_SEARCH_TESTID = "map-search-testid";
+
 interface SearchProps {
     onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
 }
@@ -60,9 +62,13 @@ const Search: FC<SearchProps> = ({ onSearchSelect }) => {
             InputProps={{
                 startAdornment: <SearchIcon />,
             }}
+            inputProps={{
+                "data-testid": MAP_SEARCH_TESTID,
+            }}
             onSelect={handleSelect}
         />
     );
 };
 
+export { MAP_SEARCH_TESTID };
 export default Search;

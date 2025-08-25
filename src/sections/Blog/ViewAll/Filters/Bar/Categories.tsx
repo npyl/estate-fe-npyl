@@ -1,9 +1,7 @@
-import FormControl from "@mui/material/FormControl";
 import { useFiltersContext } from "../Context";
-import { StyledInputLabel } from "@/components/Filters/styled";
 import { useTranslation } from "react-i18next";
 import { useCallback, useMemo } from "react";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@/components/Select";
 import { NOT_SELECTED_VALUE } from "@/constants/select";
 import MenuItem from "@mui/material/MenuItem";
 import { TranslationType } from "@/types/translation";
@@ -50,17 +48,15 @@ const Categories = () => {
     );
 
     return (
-        <FormControl sx={{ width: "160px" }}>
-            <StyledInputLabel>{t("Categories")}</StyledInputLabel>
-            <Select<number[]>
-                multiple
-                label={t("Categories")}
-                value={categories}
-                onChange={onChange}
-            >
-                {OPTIONS.map(getOption)}
-            </Select>
-        </FormControl>
+        <Select<number[]>
+            multiple
+            label={t("Categories")}
+            value={categories}
+            onChange={onChange}
+            formControlProps={{ sx: { minWidth: "170px" } }}
+        >
+            {OPTIONS.map(getOption)}
+        </Select>
     );
 };
 

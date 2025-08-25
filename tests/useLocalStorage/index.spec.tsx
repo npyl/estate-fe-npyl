@@ -35,8 +35,15 @@ const expectItem = async (page: Page, value?: string) => {
         expect(storedValue).toBeNull();
     } else {
         // Values in localStorage are JSON-stringified, so we need to parse them
-        const parsedValue = storedValue ? JSON.parse(storedValue) : storedValue;
-        expect(parsedValue).toBe(value);
+        const parsedObject = storedValue ? JSON.parse(storedValue) : null;
+
+        if (!parsedObject) throw "Found null!";
+        if (typeof parsedObject !== "object") throw "Not an object";
+        if (!("content" in parsedObject)) throw "Doesnt contain content field";
+
+        const { content } = parsedObject;
+
+        expect(content).toBe(value);
     }
 };
 

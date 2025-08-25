@@ -1,11 +1,9 @@
-import { RHFTextField, Select } from "@/components/hook-form";
-import RHFEditor from "@/components/hook-form/RHFEditor";
 import Stack from "@mui/material/Stack";
-import { useTranslation } from "react-i18next";
-import { FC, useMemo } from "react";
-import dynamic from "next/dynamic";
-import { getCATEGORIES } from "../../constants";
-const ImagePicker = dynamic(() => import("./ImagePicker"));
+import { FC, useRef } from "react";
+import TitleDescriptionEditor from "@/ui/DescriptionEditor";
+import CategorySelect from "./CategorySelect";
+import { Editor } from "@tiptap/react";
+import ImagesPickers from "./ImagesPickers";
 
 interface ContentProps {
     postId?: number;
@@ -13,24 +11,20 @@ interface ContentProps {
 }
 
 const Content: FC<ContentProps> = ({ postId, image }) => {
-    const { t } = useTranslation();
-    const CATEGORIES = useMemo(() => getCATEGORIES(t), [t]);
+    const editorRef = useRef<Editor>(null);
+
     return (
         <Stack spacing={1}>
-            {Boolean(postId) ? (
-                <ImagePicker postId={postId!} image={image} />
-            ) : null}
-            <Stack direction="row" spacing={1} alignItems="center">
-                <RHFTextField fullWidth label={t("Title")} name="title" />
-                <Select
-                    multiple
-                    fullWidth
-                    name="categories"
-                    label={t("Categories")}
-                    options={CATEGORIES}
-                />
-            </Stack>
-            <RHFEditor name="content" height="500px" />
+            <ImagesPickers
+                editorRef={editorRef}
+                postId={postId}
+                image={image}
+            />
+
+            <TitleDescriptionEditor
+                ref={editorRef}
+                endNode={<CategorySelect />}
+            />
         </Stack>
     );
 };

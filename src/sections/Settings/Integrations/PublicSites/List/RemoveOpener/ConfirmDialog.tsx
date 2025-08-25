@@ -3,7 +3,7 @@ import { Button, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-const ConfirmDialog = dynamic(() => import("@/components/confirm-dialog"));
+const ConfirmDialog = dynamic(() => import("@/ui/confirm-dialog"));
 
 interface DeleteButtonProps {
     siteId: number;
@@ -26,7 +26,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ siteId, onClose }) => {
             open
             title={t("Delete public site?")}
             content={<Typography>{t("DELETE_PUBLIC_0")}</Typography>}
-            action={
+            actions={
                 <Button
                     variant="contained"
                     color="error"

@@ -23,7 +23,7 @@ import {
     lockAllEventsExcept,
     unlockAllEvents,
 } from "@/components/Calendar/Event/util";
-import { CREATE_EVENT_ID } from "../../Views/_hocs/WithClick/useEventsWithCreate";
+import { CREATE_EVENT_ID } from "@/constants/calendar";
 
 type IState = {
     dispatch: ReturnType<ReturnType<typeof usePopperEvents>[0]>["dispatch"];

@@ -7,16 +7,12 @@ import { IntegrationSite } from "@/types/integrations";
 import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-    BlogFilters,
-    BlogPostReq,
-    BlogPostRes,
     CompanyImageType,
     ICompany,
     ICompanyPOST,
     IPublicSiteReq,
     IPublicSitesRes,
 } from "@/types/company";
-import IPage from "@/types/page";
 
 interface IUploadCompanyImage {
     contentType: string;

@@ -1,13 +1,14 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Select, SelectChangeEvent, SelectProps } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { ForwardedRef, forwardRef, ReactNode, useCallback } from "react";
 import { NOT_SELECTED_VALUE } from "@/constants/select";
+import Select, { SelectProps } from "@/components/Select";
 
 // ----------------------------------------------------------------------
 
 type RenderProps<T> = SelectProps<T> & {
     /**
-     * isEnum is a flag to enable custom handling for "" value. Basically, our backend doesn't support "" as value for enums, and we need to pass null if unset
+     * Enable custom handling for "" value. Basically, our backend doesn't support "" as value for enums, and we need to pass null if unset
      */
     isEnum?: boolean;
 };
@@ -31,14 +32,26 @@ function RenderWithoutRef<T>(
         (e: SelectChangeEvent<T>, child: ReactNode) => {
             const v = e.target.value as any;
 
-            if (isEnum && !v) {
+            // INFO: multiple & we want to clear
+            const isMultipleClear =
+                props.multiple &&
+                Array.isArray(v) &&
+                v.includes(NOT_SELECTED_VALUE);
+
+            // INFO: Enum & we want to clear
+            const isEnumClear =
+                !props.multiple && isEnum && v === NOT_SELECTED_VALUE;
+
+            if (isMultipleClear) {
+                _onChange?.([] as any, child);
+            } else if (isEnumClear) {
                 // INFO: force null for empty value when backend uses enum
                 _onChange?.(null as any, child);
             } else {
                 _onChange?.(e as any, child);
             }
         },
-        [isEnum, _onChange]
+        [props.multiple, isEnum, _onChange]
     );
 
     if (!children) {

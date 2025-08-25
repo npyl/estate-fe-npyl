@@ -1,9 +1,7 @@
-import FormControl from "@mui/material/FormControl";
 import { useFiltersContext } from "../Context";
-import { StyledInputLabel } from "@/components/Filters/styled";
 import { useTranslation } from "react-i18next";
 import { useCallback, useMemo } from "react";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@/components/Select";
 import { NOT_SELECTED_VALUE } from "@/constants/select";
 import MenuItem from "@mui/material/MenuItem";
 import { TranslationType } from "@/types/translation";
@@ -47,16 +45,14 @@ const State = () => {
     }, []);
 
     return (
-        <FormControl sx={{ minWidth: "130px" }}>
-            <StyledInputLabel>{t("State")}</StyledInputLabel>
-            <Select<boolean>
-                label={t("State")}
-                value={published}
-                onChange={onChange}
-            >
-                {OPTIONS.map(getOption)}
-            </Select>
-        </FormControl>
+        <Select<boolean>
+            label={t("State")}
+            value={published}
+            formControlProps={{ sx: { minWidth: "130px" } }}
+            onChange={onChange}
+        >
+            {OPTIONS.map(getOption)}
+        </Select>
     );
 };
 
