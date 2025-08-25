@@ -44,11 +44,9 @@ class AuthService {
     // e.g. npylarinos@digipath.gr -> digipath.gr
     WORKSPACE_DOMAIN: string | undefined;
 
-    constructor(keys: GoogleWorkspaceKeys) {
+    constructor() {
         // Construct singleton
         tokenService;
-
-        this.setOauth2ClientForKeys(keys);
     }
 
     async getAuthUrl(userId: number) {
@@ -274,9 +272,8 @@ class AuthService {
         this.oauth2Client = res;
     };
 
-    // ---------------------------------------------------------------------------------
-
-    async initialise() {
+    async initialise(keys: GoogleWorkspaceKeys) {
+        await this.setOauth2ClientForKeys(keys);
         await tokenService.initialize();
     }
 }

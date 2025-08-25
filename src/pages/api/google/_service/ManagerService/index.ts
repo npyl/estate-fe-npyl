@@ -44,8 +44,8 @@ class ManagerService {
     ) {
         if (this.workspaces.has(domain)) return;
 
-        const authService = new AuthService(keys);
-        await authService.initialise();
+        const authService = new AuthService();
+        await authService.initialise(keys);
 
         this.workspaces.set(domain, authService);
     }
