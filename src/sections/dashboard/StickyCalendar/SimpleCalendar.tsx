@@ -1,6 +1,4 @@
 import { Paper, styled } from "@mui/material";
-import { FC, useCallback } from "react";
-import React from "react";
 import Numbering from "@/components/Calendar/Views/Numbering";
 import CalendarGoogle from "@/components/CalendarGoogle";
 import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator";
@@ -13,6 +11,7 @@ import CalendarEvent from "@/components/Calendar/Event";
 import { EventProps } from "@/components/Calendar/Event/types";
 import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import useTimemappedEvents from "@/components/Calendar/Views/useTimemappedEvents";
+import React, { FC, useCallback } from "react";
 
 // ------------------------------------------------------------------------
 
@@ -23,7 +22,7 @@ const PaperSx = {
 
 // ------------------------------------------------------------------------
 
-const CustomButtonGroup = ({}: any) => <IsAuthenticatedIndicator />;
+const CustomButtonGroup = () => <IsAuthenticatedIndicator />;
 
 // ------------------------------------------------------------------------
 
