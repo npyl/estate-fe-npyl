@@ -16,21 +16,22 @@ interface ListLabelsItemProps extends ListItemProps {
 }
 
 const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
-    // NOTE: show this list item *only* if we have 1+ labels
-    if (labels.length === 0) return null;
-
     // Show only the first label
     const visibleLabel = labels[0];
     const remainingLabels = labels.slice(1);
     const isLargeScreen = useMediaQuery("(min-width:1900px)");
+
+    // NOTE: show this list item *only* if we have 1+ labels
+    if (labels.length === 0) return null;
+
     return (
         <ListItem {...other}>
             <Stack spacing={1} ml={0.5} alignItems="center">
                 {remainingLabels.length > 0 ? (
                     <Tooltip
-                        title={remainingLabels.map(({ color, name }, i) => (
+                        title={remainingLabels.map(({ id, color, name }, i) => (
                             <Label
-                                key={i}
+                                key={id}
                                 color={color}
                                 width="min-content"
                                 maxWidth="100%"
