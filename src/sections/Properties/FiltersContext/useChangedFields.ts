@@ -17,7 +17,7 @@ const areArraysEqual = (arr1: any[], arr2: any[]): boolean => {
     }
 
     // For more complex objects in arrays (would need deeper comparison)
-    return JSON.stringify(arr1.sort()) === JSON.stringify(arr2.sort());
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
 };
 
 /**
