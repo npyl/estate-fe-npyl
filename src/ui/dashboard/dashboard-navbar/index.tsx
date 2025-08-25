@@ -83,7 +83,9 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             fontWeight={"bold"}
                         >
                             property-pro
-                            <span style={{ color: "#0380fc" }}>.gr</span>
+                        </Typography>
+                        <Typography variant="h6" color="#0380fc">
+                            .gr
                         </Typography>
                     </Link>
                 </Stack>

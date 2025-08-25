@@ -1,7 +1,5 @@
-import { Stack, StackProps } from "@mui/material";
+import { Popper, PopperProps, alpha, Stack, StackProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { alpha } from "@mui/material";
-import { Popper, PopperProps } from "@mui/material";
 import { bgBlur } from "src/utils/cssStyles";
 import { SearchCategory } from "./types";
 
@@ -39,8 +37,7 @@ export const StyledPopper = styled((props: StyledPopperProps) => (
 
     [theme.breakpoints.down("sm")]: {
         width: "65vw",
-        left:
-            searchCategory === "all" ? "-90px !important" : "-90px !important",
+        left: "-90px !important",
     },
 
     [theme.breakpoints.up("md")]: {

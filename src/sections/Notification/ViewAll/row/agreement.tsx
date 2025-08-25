@@ -1,6 +1,5 @@
 import { TableCell, TableRow } from "@mui/material";
 import { Fragment } from "react";
-import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
 
@@ -12,26 +11,10 @@ interface AgreementRowProps {
     filter: any;
 }
 
-function AgreementRow({
-    row,
-    onRemove,
-    loading,
-    onClick,
-    filter,
-}: AgreementRowProps) {
-    const [open, toggleOpen] = useToggle(false);
-
+function AgreementRow({ row, onClick, filter }: AgreementRowProps) {
     return (
         <Fragment>
-            <BasicRow
-                row={row}
-                open={open}
-                onToggle={toggleOpen}
-                onRemove={onRemove}
-                filter={filter}
-                loading={loading}
-                onClick={onClick}
-            />
+            <BasicRow row={row} filter={filter} onClick={onClick} />
             <TableRow>
                 <TableCell
                     style={{

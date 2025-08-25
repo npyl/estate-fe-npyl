@@ -20,7 +20,7 @@ const getVideoId = (url: string) => {
 const VideoSection = () => {
     const { property } = useGetProperty();
 
-    if (!property || !property.video) return null;
+    if (!property?.video) return null;
 
     const videoId = getVideoId(property.video.trim());
 
@@ -29,13 +29,13 @@ const VideoSection = () => {
     return (
         <PanelWithQuickView label="VideoSection">
             <iframe
+                title="Video"
                 width="100%"
                 height="100%"
                 src={`https://www.youtube.com/embed/${videoId}`}
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-            ></iframe>
+            />
         </PanelWithQuickView>
     );
 };

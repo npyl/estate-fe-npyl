@@ -59,11 +59,6 @@ export const getDate = (s?: string, language?: string) => {
 
 interface BasicRowProps {
     row: ContactNotification;
-    open: boolean;
-    onToggle: () => void;
-    onRemove: () => void;
-    onClick: () => void;
-    loading: boolean;
     filter: any;
     contactDetails?: ListingNotification;
     workDetails?: IWorkForUs;
@@ -151,7 +146,7 @@ const BasicRow = ({
                                         contactDetails?.photo ||
                                         ""
                                     }
-                                    alt={"property Image"}
+                                    alt="property"
                                     style={{
                                         width: 180,
                                         height: 120,
@@ -183,7 +178,9 @@ const BasicRow = ({
                                             }
                                         />
                                     </>
-                                ) : type === "WORK_FOR_US" ? (
+                                ) : null}
+
+                                {type === "WORK_FOR_US" ? (
                                     <Box>
                                         <Typography>{row.message}</Typography>
                                         <Box
@@ -203,7 +200,9 @@ const BasicRow = ({
                                             ) : null}
                                         </Box>
                                     </Box>
-                                ) : type === "AGREEMENT" ? ( // TODO: See if the AgreementDetails component  is working as expected
+                                ) : null}
+
+                                {type === "AGREEMENT" ? (
                                     <>
                                         <Typography fontWeight="bold">
                                             {row?.agreement?.title}
@@ -307,20 +306,18 @@ const BasicRow = ({
                                                 >
                                                     {row?.agreement
                                                         ?.expiresSoon && (
-                                                        <>
-                                                            <Tooltip
-                                                                title="Expires soon"
-                                                                placement="top"
-                                                            >
-                                                                <ExpireIcon
-                                                                    color="warning"
-                                                                    sx={{
-                                                                        width: "21px",
-                                                                        height: "21px",
-                                                                    }}
-                                                                />
-                                                            </Tooltip>
-                                                        </>
+                                                        <Tooltip
+                                                            title="Expires soon"
+                                                            placement="top"
+                                                        >
+                                                            <ExpireIcon
+                                                                color="warning"
+                                                                sx={{
+                                                                    width: "21px",
+                                                                    height: "21px",
+                                                                }}
+                                                            />
+                                                        </Tooltip>
                                                     )}
 
                                                     {row?.agreement

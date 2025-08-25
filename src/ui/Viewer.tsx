@@ -60,6 +60,7 @@ const Viewer: FC<ViewerProps> = ({ url, mimeType, style = {} }) => {
     if (isPDF(mimeType))
         return (
             <iframe
+                title="PDF"
                 src={url}
                 style={{
                     border: "none",

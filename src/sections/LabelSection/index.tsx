@@ -7,9 +7,10 @@ import useDialog from "@/hooks/useDialog";
 import { SpaceBetween } from "@/components/styled";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
+import stopPropagation from "@/utils/stopPropagation";
 const AddLabelDialog = dynamic(() => import("./Dialog"));
 
-interface LabelSectionProps extends StackProps {
+interface LabelSectionProps extends Omit<StackProps, "onClick"> {
     assignedLabels: ILabel[];
 
     variant: LabelResourceType;
@@ -55,6 +56,7 @@ const LabelSection: FC<LabelSectionProps> = ({
             borderRadius={1}
             height={1}
             py={1}
+            onClick={stopPropagation}
             {...props}
         >
             <SpaceBetween alignItems="center" height="10px">

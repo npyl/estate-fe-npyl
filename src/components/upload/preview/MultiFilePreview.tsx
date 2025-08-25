@@ -83,13 +83,11 @@ const Item = ({
 
             <Stack direction="row" spacing={1} alignItems="center">
                 {variant === "document" && file.url ? (
-                    <div onClick={(e) => e.stopPropagation()}>
-                        <LabelCreate
-                            variant="document"
-                            resourceId={file.id}
-                            disabled={disabled}
-                        />
-                    </div>
+                    <LabelCreate
+                        variant="document"
+                        resourceId={file.id}
+                        disabled={disabled}
+                    />
                 ) : null}
 
                 {onRemove && file.url && (

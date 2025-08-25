@@ -112,7 +112,7 @@ export const PropertySearchItem = ({
             }}
         >
             <Stack
-                width={isMobile ? 420 : 420}
+                width={420}
                 height={isMobile ? 220 : 175}
                 borderRadius={1}
                 overflow="hidden"
