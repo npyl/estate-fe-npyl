@@ -20,7 +20,7 @@ export const solar = createApi({
                     "location.latitude": lat,
                     "location.longitude": lng,
                     requiredQuality: "MEDIUM",
-                    key: process.env.NEXT_PUBLIC_MAP_API_KEY,
+                    key: process.env.NEXT_PUBLIC_MAP_API_KEY1,
                 },
             }),
         }),

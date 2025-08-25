@@ -29,7 +29,7 @@ export const airQuality = createApi({
                     languageCode: localStorage.getItem("language") ?? "el",
                 }),
                 params: {
-                    key: process.env.NEXT_PUBLIC_MAP_API_KEY,
+                    key: process.env.NEXT_PUBLIC_MAP_API_KEY1,
                 },
                 method: "POST",
             }),
