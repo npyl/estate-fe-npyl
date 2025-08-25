@@ -1,7 +1,3 @@
-//   @DeleteMapping("/{propertyId}/image/upload-fail")
-//     @DeleteMapping("/{propertyId}/blueprint/upload-fail")
-//     @DeleteMapping("/{propertyId}/document/upload-fail")
-
 import { useRemovePropertyFileMutation } from "@/services/properties";
 import { TFileVariant } from "@/types/file";
 import { useRouter } from "next/router";
@@ -22,11 +18,9 @@ const useRemoveFile = (variant: TFileVariant) => {
                 variant !== "blueprint" &&
                 variant !== "document"
             )
-                return; // TODO: maybe also show error for this?
+                return { error: "VARIANT_NOT_VALID" };
 
-            await removeFile({ id: +propertyId!, body: key, variant });
-
-            // TODO: return & handler error
+            return await removeFile({ id: +propertyId!, body: key, variant });
         },
         [propertyId, variant]
     );

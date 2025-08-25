@@ -54,7 +54,7 @@ type TUpload = (f: File[]) => Promise<IUploadResult>;
  */
 interface UseGeneralUploaderMethods {
     addFile: (f: File) => Promise<WithError<AddFileRes>>;
-    removeFile: (key: string) => void;
+    removeFile: (key: string) => Promise<WithError<any>>;
 }
 
 /**

@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import {
     useBulkDeletePropertyImagesMutation,
     useBulkEditPropertyImagesMutation,
@@ -71,17 +71,24 @@ export const ImageOperationsProvider: React.FC<
     const isLoading =
         isUploading || isLoading0 || isLoading1 || isLoading2 || isLoading3;
 
+    const methods = useMemo(
+        () => ({
+            upload: uploadFiles,
+            bulkEditImages,
+            reorderImages,
+            reorderImagesWithVisibility,
+            deleteImage,
+            bulkDeleteImages,
+        }),
+        []
+    );
+
     return (
         <ImageOperationsContext.Provider
             value={{
                 isLoading,
                 // ...
-                upload: uploadFiles,
-                bulkEditImages,
-                reorderImages,
-                reorderImagesWithVisibility,
-                deleteImage,
-                bulkDeleteImages,
+                ...methods,
             }}
             {...props}
         />

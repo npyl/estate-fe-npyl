@@ -6,6 +6,7 @@ import ImagePreview from "./ImagePreview";
 import { useImageOperations } from "../context/ImageOperations";
 import StyledDropZone from "./styled";
 import Placeholder from "./Placeholder";
+import { FC } from "react";
 
 export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
@@ -20,7 +21,7 @@ export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
 
 // ----------------------------------------------------------------------
 
-function UploadImages({
+const UploadImages: FC<UploadProps> = ({
     multiple = true,
     error,
     helperText,
@@ -30,7 +31,7 @@ function UploadImages({
     onImageClick,
     sx,
     ...other
-}: UploadProps) {
+}) => {
     const { upload, isLoading } = useImageOperations();
 
     const {
@@ -88,9 +89,9 @@ function UploadImages({
                 />
             )}
 
-            {helperText && helperText}
+            {helperText}
         </Box>
     );
-}
+};
 
 export default UploadImages;

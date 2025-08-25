@@ -7,7 +7,9 @@ import { useCallback } from "react";
 const useRemoveFile = (postId: number) => {
     const [removeImage] = useRemoveImageMutation();
     const removeFileCb = useCallback(
-        async (imageKey: string) => removeImage({ postId, imageKey }),
+        async (imageKey: string) => {
+            return await removeImage({ postId, imageKey });
+        },
         [postId]
     );
     return removeFileCb;

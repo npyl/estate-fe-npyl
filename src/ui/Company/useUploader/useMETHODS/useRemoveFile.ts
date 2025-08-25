@@ -7,10 +7,7 @@ import { useCallback } from "react";
  */
 const useRemoveFile = (variant: CompanyImageType) => {
     const [removeFile] = useRemoveCompanyImageMutation();
-    const removeFileCb = useCallback(async () => {
-        await removeFile(variant);
-        // TODO: return & handler error
-    }, [variant]);
+    const removeFileCb = useCallback(() => removeFile(variant), [variant]);
     return removeFileCb;
 };
 

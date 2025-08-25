@@ -9,9 +9,7 @@ const useRemoveFile = () => {
 
     const removeFileCb = useCallback(async (key: string) => {
         // INFO: see useAddFile for this type cast
-        await deleteAttachment(key as unknown as number);
-
-        // TODO: return & handler error
+        return await deleteAttachment(key as unknown as number);
     }, []);
     return removeFileCb;
 };
