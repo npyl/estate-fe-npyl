@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import { useGetProperty } from "@/sections/Properties/hooks/usePropertyDocuments";
 
 interface TechnicalFeaturesItemProps {
     field: string;

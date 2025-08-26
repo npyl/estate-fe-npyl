@@ -5,7 +5,7 @@ import { List } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import DistanceListItem from "@/components/List/Items/distance";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 interface DistancesItemProps {
     field: string;

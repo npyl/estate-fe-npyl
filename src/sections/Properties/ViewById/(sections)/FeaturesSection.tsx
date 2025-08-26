@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
 import { ParentCategory } from "src/types/properties";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 interface PropertyFeaturesItemProps {
     field: string;

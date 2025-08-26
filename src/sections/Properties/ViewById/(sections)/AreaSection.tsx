@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { List, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 const AreaSection = () => {
     const { t } = useTranslation();

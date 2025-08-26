@@ -3,7 +3,7 @@ import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
 import PanelWithQuickView from "../PanelWithQuickView";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 const toggleSx: SxProps<Theme> = {
     ".ToggleButton": {

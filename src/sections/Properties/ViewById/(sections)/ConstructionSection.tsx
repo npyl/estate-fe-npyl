@@ -4,7 +4,7 @@ import { List, ListBooleanItem, ListItem } from "@/components/List";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 interface ConstructionSectionProps {
     data: IProperties;

@@ -1,7 +1,7 @@
 import CarouselWithLightbox from "@/components/Carousel/WithLightbox";
 import ICarouselImage from "@/components/Carousel/types";
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 const BlueprintsSection = () => {
     const { property } = useGetProperty();
