@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
 import Form from "@/sections/Customer/Form";
 import { ICustomerPOST } from "src/types/customer";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 
 const CustomerEdit = () => {
     const router = useRouter();

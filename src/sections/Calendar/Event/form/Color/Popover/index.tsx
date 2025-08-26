@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useGetColorsQuery } from "@/services/calendar";
 import MuiPopover from "@mui/material/Popover";
 import { FC, useCallback } from "react";

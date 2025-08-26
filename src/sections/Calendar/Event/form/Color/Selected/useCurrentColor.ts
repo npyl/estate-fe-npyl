@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import { useGetColorsQuery } from "@/services/calendar";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { toNumberSafe } from "@/utils/toNumber";
 import { CalendarEventReq } from "@/types/calendar";
 

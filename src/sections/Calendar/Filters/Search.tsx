@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useSearchEventsQuery } from "@/services/calendar";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import PoppingSearch from "@/components/PoppingSearch";
 import dynamic from "next/dynamic";
 import { useFiltersContext } from "./context";

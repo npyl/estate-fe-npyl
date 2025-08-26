@@ -4,7 +4,7 @@ import {
     useDeleteEventMutation,
     useUpdateEventMutation,
 } from "@/services/calendar";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { CalendarEventReq } from "@/types/calendar";
 
 const useEventMutations = () => {

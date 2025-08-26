@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import RHFTextField from "@/components/hook-form/RHFTextField";
 import Select from "@/components/hook-form/Select";
 import RHFSelect from "@/components/hook-form/RHFSelect";
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 
 const PreferredLanguage = () => {
     const { t } = useTranslation();

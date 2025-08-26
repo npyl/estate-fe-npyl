@@ -2,7 +2,7 @@ import {
     TOnEventDragEndAsync,
     TOnEventResizeEndAsync,
 } from "@/components/Calendar/types";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useUpdateEventMutation } from "@/services/calendar";
 import { forwardRef, useCallback, useImperativeHandle } from "react";
 import getEndDateForDuration from "./getEndDateForDuration";
