@@ -4,7 +4,7 @@ import ViewUser from "@/sections/User/View";
 import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
 import { useGetUserQuery } from "@/services/user";
 import AuthGuard from "@/components/authentication/auth-guard";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 
 const Profile: NextPage = () => {
     const { user } = useAuth();

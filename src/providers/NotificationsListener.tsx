@@ -1,4 +1,4 @@
-import useTasksNotifications from "@/hooks/useTasksNotifications";
+import useTasksNotifications from "@/ui/useTasksNotifications";
 import onTaskNotification from "@/sections/Tasks/toast";
 
 const NotificationsListener = () => {
