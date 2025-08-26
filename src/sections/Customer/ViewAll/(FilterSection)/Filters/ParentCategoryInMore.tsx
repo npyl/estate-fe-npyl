@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { KeyValue } from "@/types/KeyValue";
 import { FC, useCallback } from "react";
 import { PPButton } from "@/components/styled";

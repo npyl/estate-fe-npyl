@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { Checkbox, Grid, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";

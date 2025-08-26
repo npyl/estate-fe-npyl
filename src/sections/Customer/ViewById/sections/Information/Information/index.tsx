@@ -10,7 +10,7 @@ import {
 import ListLanguageItem from "@/components/List/Items/language";
 import ViewPanel from "@/components/Panel/View";
 import { TypeLabels } from "@/components/TypeLabels";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 import LabelCreate from "@/sections/LabelCreate";
 import LeadSourceListItem from "./LeadSourceListItem";
 import { LeadSource } from "@/types/global";

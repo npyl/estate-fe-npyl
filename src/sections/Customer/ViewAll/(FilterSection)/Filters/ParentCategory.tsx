@@ -1,5 +1,5 @@
 import { Checkbox, MenuItem } from "@mui/material";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { useTranslation } from "react-i18next";
 import { useFiltersContext, useParentCategories } from "../Context";
 import Select, { SelectChangeEvent } from "@/components/Select";

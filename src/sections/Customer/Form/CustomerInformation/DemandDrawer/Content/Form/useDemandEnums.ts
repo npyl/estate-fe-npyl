@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 
 const useDemandEnums = () => {
     const enums = useGlobals();

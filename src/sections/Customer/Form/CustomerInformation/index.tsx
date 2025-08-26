@@ -1,12 +1,12 @@
 import { Grid } from "@mui/material";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import getFIELDS from "./getFields";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 import B2bSwitch from "./B2BSwitch";
 
 const CustomerInformation = () => {

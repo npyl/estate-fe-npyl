@@ -17,7 +17,7 @@ import OwnedPropertiesLabel from "./TabLabels/OwnedProperties";
 import MatchingPropertiesLabel from "./TabLabels/MatchingProperties";
 import AgreementsLabel from "./TabLabels/Agreements";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 const Emails = dynamic(() => import("./sections/Emails"));
 const Tasks = dynamic(() => import("./sections/Tasks"));
 

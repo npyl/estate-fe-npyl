@@ -1,5 +1,5 @@
 import ViewPanel from "@/components/Panel/View";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import getMember from "./getMember";

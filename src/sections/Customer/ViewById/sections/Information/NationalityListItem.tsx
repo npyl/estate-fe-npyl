@@ -1,6 +1,6 @@
 import { ListItem } from "@/components/List";
-import useGetCustomer from "@/hooks/customer";
-import { useGlobals } from "@/hooks/useGlobals";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
+import { useGlobals } from "@/sections/useGlobals";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 

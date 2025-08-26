@@ -1,5 +1,5 @@
 import NoteCreate from "@/components/Note/Create";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { INote } from "@/types/note";
 import { useCallback, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";

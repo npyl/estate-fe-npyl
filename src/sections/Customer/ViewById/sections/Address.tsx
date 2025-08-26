@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ViewLocation } from "src/components/Location/View";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 import ViewPanel from "@/components/Panel/View";
 
 const AddressSection: React.FC = () => {

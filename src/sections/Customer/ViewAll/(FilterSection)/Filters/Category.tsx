@@ -1,7 +1,7 @@
 import { Checkbox, ListSubheader, MenuItem } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { KeyValue } from "@/types/KeyValue";
 import {
     useCategories,
