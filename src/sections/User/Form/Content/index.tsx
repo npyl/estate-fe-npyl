@@ -5,7 +5,7 @@ import { RHFSelect, RHFTextField } from "@/components/hook-form";
 import Iconify from "src/components/iconify";
 import { IUser } from "@/types/user";
 import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import useToggle from "@/hooks/useToggle";
 
 const PasswordField = () => {

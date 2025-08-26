@@ -6,7 +6,7 @@ const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
 import useDialog from "@/hooks/useDialog";
 import { FC, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import ConfirmDialog from "@/ui/confirm-dialog";
 import ArchiveIcon from "@mui/icons-material/Archive";
 

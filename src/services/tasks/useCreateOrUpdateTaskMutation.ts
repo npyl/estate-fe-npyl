@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import { tasks } from "./tasks";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { calendar } from "@/services/calendar";
 import { properties } from "@/services/properties";
 import { customers } from "@/services/customers";

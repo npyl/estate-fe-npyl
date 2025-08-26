@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 import { SharePopoverProps } from "@/sections/Share";
 import NotGeneratedPlaceholder from "./NotGeneratedPlaceholder";
 import { usePropertyPDFDownloader } from "@/services/properties";

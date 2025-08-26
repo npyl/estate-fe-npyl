@@ -1,6 +1,6 @@
 import { Box, SxProps, Theme, Button } from "@mui/material";
 import { forwardRef } from "react";
-import { useAuth } from "@/hooks/use-auth"; // Hook to get logged-in user
+import { useAuth } from "@/sections/use-auth"; // Hook to get logged-in user
 import { useTranslation } from "react-i18next";
 import ManagerAutocomplete, { ManagerAutocompleteProps } from "./Manager";
 

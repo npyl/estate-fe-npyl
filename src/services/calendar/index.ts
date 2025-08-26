@@ -1,5 +1,5 @@
 import { TCalendarColor, TCalendarEvent } from "@/components/Calendar/types";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { GUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {

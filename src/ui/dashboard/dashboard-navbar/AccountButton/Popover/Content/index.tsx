@@ -5,7 +5,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Link from "@/components/Link";
 import { useTranslation } from "react-i18next";
 import { errorToast } from "@/components/Toaster";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useCallback } from "react";
 import LanguageButton from "./LanguageButton";
 import DayNightButton from "./DayNightButton";

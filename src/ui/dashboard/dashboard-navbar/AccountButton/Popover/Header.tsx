@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 
 import Avatar from "@/components/Avatar";
 

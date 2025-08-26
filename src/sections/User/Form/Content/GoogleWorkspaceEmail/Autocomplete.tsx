@@ -12,7 +12,7 @@ import Avatar from "@/components/Avatar";
 import { FC, forwardRef, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetUsersQuery } from "@/services/calendar";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import TextField from "@mui/material/TextField";
 
 // --------------------------------------------------------------------------------

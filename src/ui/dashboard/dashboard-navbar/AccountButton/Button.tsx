@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import Avatar, { AvatarProps } from "@/components/Avatar";
 
 const AvatarButton = forwardRef<HTMLDivElement, AvatarProps>((props, ref) => {

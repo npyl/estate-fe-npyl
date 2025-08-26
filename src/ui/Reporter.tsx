@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 
 const Reporter = () => {

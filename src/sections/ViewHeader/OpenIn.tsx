@@ -2,11 +2,11 @@ import { IconButton, Stack, Typography, ButtonBase } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import SpitogatosSvg from "@/assets/integrations/SpitogatosSvg";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
-import usePropertyListings from "@/hooks/listings";
 import PublicLogo from "@/assets/logo/Public";
+import usePropertyListings from "@/sections/Properties/hooks/usePropertyListings";
 
 const CustomStack = styled(Stack)(({ theme }) => ({
     border: "1px solid",
