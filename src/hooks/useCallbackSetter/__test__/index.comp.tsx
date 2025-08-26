@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import useCallbackSetter from "../../src/hooks/useCallbackSetter";
+import useCallbackSetter from "@/hooks/useCallbackSetter";
 
 // ----------------------------------------------------------------------------
 

@@ -113,9 +113,9 @@ const ViewAllNotifications = () => {
                     <TextField
                         variant="outlined"
                         size="small"
-                        placeholder={
-                            t(`Search for ${TABS[tab]?.label}`) as string
-                        }
+                        placeholder={t<string>(
+                            `Search for ${TABS[tab]?.label}`
+                        )}
                         value={searchText}
                         onChange={handleSearchTextChange}
                         sx={SearchInputSx}

@@ -95,7 +95,7 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
         };
     }, [filter, debouncedSearchText, propertyId]);
 
-    const { data: notifications, isLoading } = useFilterNotificationsQuery({
+    const { data: notifications } = useFilterNotificationsQuery({
         filter: filterBody,
         page: 0,
         pageSize: 10,
@@ -165,11 +165,9 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                 <Table
                     variant="TOUR"
                     rows={notifications?.content || []}
-                    loading={isLoading}
                     filter={t("View")}
                     totalRows={notifications?.totalElements || 0}
                     hidePagination={true}
-                    onRemove={handleRemove}
                 />
             ) : (
                 <Typography color="textSecondary" variant="body2" mt={1}>

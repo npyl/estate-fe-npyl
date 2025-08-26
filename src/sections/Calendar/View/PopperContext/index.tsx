@@ -47,7 +47,7 @@ export const usePopperContext = () => {
 
 type TMachineMethod<
     T extends keyof PopperEventDataMap = keyof PopperEventDataMap,
-> = (o: PopperEventDataMap[T]) => void;
+> = (o: PopperEventDataMap[T]) => void | Promise<void>;
 
 interface MachineMethods {
     // Open an existing event (e.g. view / edit), open a create event popper
@@ -207,11 +207,9 @@ const useMachine = (
                 },
 
                 Close: () => {
-                    switch (state.current) {
-                        case STATES.POPPER_CREATE:
-                            // INFO: remove all "create"-events
-                            notifyCells("", "");
-                            break;
+                    if (state.current === STATES.POPPER_CREATE) {
+                        // INFO: remove all "create"-events
+                        notifyCells("", "");
                     }
 
                     rendererRef.current?.closePopper();

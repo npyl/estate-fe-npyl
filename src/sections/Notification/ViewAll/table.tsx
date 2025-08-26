@@ -4,6 +4,7 @@ import {
     TableBody,
     TableContainer,
     TablePagination,
+    useMediaQuery,
 } from "@mui/material";
 import { ContactNotification, NotificationType } from "src/types/notification";
 // rows
@@ -12,14 +13,11 @@ import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
 import ReviewRow from "./row/review";
 import AgreementRow from "./row/agreement";
-import { useMediaQuery } from "@mui/material";
 import { useCallback } from "react";
 
 interface TableProps {
     variant: NotificationType;
     rows: ContactNotification[];
-    onRemove: (index: number) => void;
-    loading: boolean;
     page?: number;
     pageSize?: number;
     onPageChange?: (event: unknown, newPage: number) => void;
@@ -32,8 +30,6 @@ interface TableProps {
 const Table = ({
     variant,
     rows,
-    onRemove,
-    loading,
     filter,
     page,
     pageSize,
@@ -84,14 +80,7 @@ const Table = ({
             >
                 <TableBody>
                     {rows.map((row, i) => (
-                        <RowComponent
-                            key={i}
-                            row={row}
-                            onRemove={() => onRemove(row.id || 0)}
-                            loading={loading}
-                            filter={filter}
-                            onClick={() => {}}
-                        />
+                        <RowComponent key={row.id} row={row} filter={filter} />
                     ))}
                 </TableBody>
             </MuiTable>

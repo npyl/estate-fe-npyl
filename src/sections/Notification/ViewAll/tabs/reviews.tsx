@@ -7,12 +7,12 @@ import { Box } from "@mui/material";
 import { useMemo, useState } from "react";
 import { NotificationType } from "@/types/notification";
 
+const sortBy = "createdAt";
+const direction = "DESC";
+
 const Reviews = ({ filter, searchText }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sortBy, setSortBy] = useState("createdAt");
-    const [direction, setDirection] = useState("DESC");
-    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
     const filterBody = useMemo(() => {
         return {
@@ -36,10 +36,6 @@ const Reviews = ({ filter, searchText }: any) => {
         direction,
     });
 
-    const handleRemove = (id: number) => {
-        deleteNotification(id);
-    };
-
     const handlePageChange = (event: any, newPage: any) => {
         setPage(newPage);
     };
@@ -60,8 +56,6 @@ const Reviews = ({ filter, searchText }: any) => {
             <Table
                 variant="REVIEW"
                 rows={filteredReviews || []}
-                onRemove={handleRemove}
-                loading={isLoading}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

@@ -1,8 +1,5 @@
 import { FC, useCallback, useState } from "react";
-import useVersioned, {
-    getVersioned,
-    TVersioned,
-} from "../../src/hooks/useVersioned";
+import useVersioned, { getVersioned, TVersioned } from "@/hooks/useVersioned";
 
 type TValue = {
     an: string;

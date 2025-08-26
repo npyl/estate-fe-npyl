@@ -22,7 +22,7 @@ const MainContainer = dynamic(() => import("./(tabs)/MainContainer"));
 const Documents = dynamic(() => import("./(tabs)/Documents"));
 const Integrations = dynamic(() => import("./(tabs)/Integrations"));
 const StreetView = dynamic(() => import("./(tabs)/StreetView"));
-const Map = dynamic(() => import("./(tabs)/Map"));
+const MapTab = dynamic(() => import("./(tabs)/Map"));
 const MatchingCustomersSection = dynamic(
     () => import("./(tabs)/MatchingCustomers")
 );
@@ -70,7 +70,7 @@ const getTABS = (t: TranslationType): ITab[] => [
     { Label: IntegrationsLabel, View: Integrations },
     { Label: t<string>("Logs"), View: PropertyLogs },
     { Label: DocumentsLabel, View: Documents },
-    { Label: t<string>("Map"), View: Map },
+    { Label: t<string>("Map"), View: MapTab },
     { Label: t<string>("Street View"), View: StreetView },
     {
         Label: NotificationsLabel,
@@ -83,7 +83,7 @@ const getTABS = (t: TranslationType): ITab[] => [
 
 const getTab = ({ Label, Tab }: ITab, idx: number) => {
     const label = typeof Label == "string" ? Label : <Label />;
-    const TabComponent = Boolean(Tab) ? Tab! : MuiTab;
+    const TabComponent = Tab ?? MuiTab;
     return <TabComponent key={idx} label={label} />;
 };
 

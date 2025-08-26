@@ -1,47 +1,21 @@
-import { Fragment } from "react";
-import useToggle from "src/hooks/useToggle";
 import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
 
 interface ListingRowProps {
     row: ContactNotification;
-    onRemove: () => void;
-    onClick: () => void;
     filter: any;
-    loading: boolean;
 }
 
-function ListingRow({
-    row,
-    onRemove,
-    loading,
-    onClick,
-    filter,
-}: ListingRowProps) {
-    const [open, toggleOpen] = useToggle(false);
-
+const ListingRow = ({ row, filter }: ListingRowProps) => {
     const { data: listing } = useGetNotificationByIdQuery(row.id!, {
-        skip: !row.id && !open,
+        skip: !row.id,
         selectFromResult: ({ data }) => ({
             data: data?.listingDetails,
         }),
     });
 
-    return (
-        <Fragment>
-            <BasicRow
-                row={row}
-                open={open}
-                onToggle={toggleOpen}
-                onRemove={onRemove}
-                loading={loading}
-                filter={filter}
-                onClick={onClick}
-                contactDetails={listing}
-            />
-        </Fragment>
-    );
-}
+    return <BasicRow row={row} filter={filter} contactDetails={listing} />;
+};
 
 export default ListingRow;

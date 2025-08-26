@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import useLocalStorage from "../../src/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 // ------------------------------------------------------------------------------------------
 

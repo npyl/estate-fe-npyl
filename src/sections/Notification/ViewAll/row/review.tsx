@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
 import { useGetNotificationByIdQuery } from "@/services/notification";
@@ -21,23 +20,13 @@ import { useGetPropertyByCodeQuery } from "@/services/properties";
 
 interface ReviewRowProps {
     row: ContactNotification;
-    onRemove: () => void;
-    onClick: () => void;
-    loading: boolean;
     filter: any;
 }
 
-function ReviewRow({
-    row,
-    onRemove,
-    loading,
-    onClick,
-    filter,
-}: ReviewRowProps) {
+const ReviewRow = ({ row, filter }: ReviewRowProps) => {
     const { t } = useTranslation();
-    const [open, toggleOpen] = useToggle(false);
     const { data: review } = useGetNotificationByIdQuery(row.id!, {
-        skip: !row.id && !open,
+        skip: !row.id,
         selectFromResult: ({ data, isLoading }) => ({
             data: data?.reviewDetails,
             isLoading,
@@ -48,15 +37,7 @@ function ReviewRow({
 
     return (
         <Fragment>
-            <BasicRow
-                row={row}
-                open={open}
-                onToggle={toggleOpen}
-                onRemove={onRemove}
-                filter={filter}
-                loading={loading}
-                onClick={onClick}
-            />
+            <BasicRow row={row} filter={filter} />
             <TableRow>
                 <TableCell
                     style={{
@@ -65,7 +46,7 @@ function ReviewRow({
                     colSpan={7}
                 >
                     <Collapse
-                        in={open}
+                        in
                         timeout="auto"
                         unmountOnExit
                         sx={{ backgroundColor: "neutral.100" }}
@@ -193,6 +174,6 @@ function ReviewRow({
             </TableRow>
         </Fragment>
     );
-}
+};
 
 export default ReviewRow;
