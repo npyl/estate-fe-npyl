@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useLayoutEffect, useState } from "react";
 
 const socketUrl = process.env.NEXT_PUBLIC_MAIN_SOCKET;

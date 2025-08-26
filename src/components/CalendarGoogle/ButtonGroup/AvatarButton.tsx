@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import useDialog from "@/hooks/useDialog";
 import { useLogoutMutation } from "@/services/google-oauth";
 import { GoogleCalendarUserInfo } from "@/types/calendar/google";

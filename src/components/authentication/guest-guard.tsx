@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../../hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 
 interface GuestGuardProps {
     children: ReactNode;

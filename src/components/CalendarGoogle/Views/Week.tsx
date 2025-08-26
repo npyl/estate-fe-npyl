@@ -1,7 +1,7 @@
 import { CalendarWeekViewProps } from "@/components/Calendar/types";
 import CalendarWeekView from "@/components/Calendar/Views/Week";
 import { FC } from "react";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import useWeekUtils from "@/components/BaseCalendar/useWeekUtils";
 import { useGetEventsQuery } from "@/services/calendar";
 import useEventsSplitter from "../useEventsSplitter";

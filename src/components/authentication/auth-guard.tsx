@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 
 const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
     const auth = useAuth();

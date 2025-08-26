@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useRouter } from "next/router";
 import { FC, PropsWithChildren, useLayoutEffect } from "react";
 import AuthGuard from "./auth-guard";

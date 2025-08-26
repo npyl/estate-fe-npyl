@@ -2,7 +2,7 @@ import { MenuItem, Popover, Typography, List } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/sections/use-settings";
 
 interface LanguagePopoverProps {
     updatesGlobalLanguage: boolean;
