@@ -1,7 +1,4 @@
-import {
-    useDeleteNotificationMutation,
-    useFilterNotificationsQuery,
-} from "src/services/notification";
+import { useFilterNotificationsQuery } from "src/services/notification";
 import Table from "../table";
 import { Box } from "@mui/material";
 import { useMemo, useState } from "react";
@@ -13,8 +10,6 @@ const direction = "DESC";
 const WorkApplications = ({ filter, searchText }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-
-    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
     const filterBody = useMemo(() => {
         return {
@@ -39,10 +34,6 @@ const WorkApplications = ({ filter, searchText }: any) => {
         direction,
     });
 
-    const handleRemove = (id: number) => {
-        deleteNotification(id);
-    };
-
     const handlePageChange = (event: any, newPage: any) => {
         setPage(newPage);
     };
@@ -63,8 +54,6 @@ const WorkApplications = ({ filter, searchText }: any) => {
             <Table
                 variant="WORK_FOR_US"
                 rows={filteredWorks || []}
-                onRemove={handleRemove}
-                loading={isLoading}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

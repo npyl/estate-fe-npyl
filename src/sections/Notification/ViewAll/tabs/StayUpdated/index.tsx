@@ -1,7 +1,4 @@
-import {
-    useDeleteNotificationMutation,
-    useFilterNotificationsQuery,
-} from "src/services/notification";
+import { useFilterNotificationsQuery } from "src/services/notification";
 import Table from "../../table";
 import { Box } from "@mui/material";
 import { FC, useMemo, useState } from "react";
@@ -19,7 +16,6 @@ interface StayUpdatedProps {
 const StayUpdated: FC<StayUpdatedProps> = ({ filter, searchText }) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
     const filterBody = useMemo(() => {
         return {
@@ -62,8 +58,6 @@ const StayUpdated: FC<StayUpdatedProps> = ({ filter, searchText }) => {
             <Table
                 variant="STAY_UPDATED"
                 rows={filtered}
-                onRemove={deleteNotification}
-                loading={isLoading}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}

@@ -1,19 +1,15 @@
-import {
-    useDeleteNotificationMutation,
-    useFilterNotificationsQuery,
-} from "src/services/notification";
+import { useFilterNotificationsQuery } from "src/services/notification";
 import Table from "../table";
 import { Box } from "@mui/material";
 import { useMemo, useState } from "react";
 import { NotificationType } from "@/types/notification";
 
+const sortBy = "createdAt";
+const direction = "DESC";
+
 const Listings = ({ filter, searchText }: any) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sortBy, setSortBy] = useState("createdAt");
-    const [direction, setDirection] = useState("DESC");
-
-    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
     const filterBody = useMemo(() => {
         return {
@@ -38,10 +34,6 @@ const Listings = ({ filter, searchText }: any) => {
         direction,
     });
 
-    const handleRemove = (id: number) => {
-        deleteNotification(id);
-    };
-
     const handlePageChange = (event: any, newPage: any) => {
         setPage(newPage);
     };
@@ -63,8 +55,6 @@ const Listings = ({ filter, searchText }: any) => {
             <Table
                 variant="LISTING"
                 rows={filteredListing || []}
-                onRemove={handleRemove}
-                loading={isLoading}
                 page={page}
                 filter={filter}
                 pageSize={pageSize}
