@@ -6,7 +6,7 @@ import { FC } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import CounterChip from "../OptionCheckbox/CounterChip";
-import useFilterCounters from "@/hooks/property/useFilterCounters";
+import useFilterCounters from "@/sections/Properties/hooks/useFilterCounters";
 import Grid from "@mui/material/Grid";
 import { TOptionMapper } from "../OptionCheckbox/types";
 import { TToggleCb } from "./types";
@@ -56,8 +56,9 @@ const Option: FC<OptionProps> = ({ o: { key, value }, values, toggle }) => {
 
 // ------------------------------------------------------------------------------
 
-const getOption = (values: string[], toggle: TToggleCb) => (o: KeyValue) =>
-    <Option key={o.key} o={o} toggle={toggle} values={values} />;
+const getOption = (values: string[], toggle: TToggleCb) => (o: KeyValue) => (
+    <Option key={o.key} o={o} toggle={toggle} values={values} />
+);
 
 // ------------------------------------------------------------------------------
 

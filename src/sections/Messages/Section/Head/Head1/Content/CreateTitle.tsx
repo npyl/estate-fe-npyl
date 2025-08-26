@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useCreateConversationContext } from "../../../CreateConversation";
 import { useCallback } from "react";
 import { IUserMini } from "@/types/user";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import Stack from "@mui/material/Stack";
 
 const CreateTitle = () => {

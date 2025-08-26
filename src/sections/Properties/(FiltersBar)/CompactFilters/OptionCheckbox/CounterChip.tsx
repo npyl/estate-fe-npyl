@@ -1,4 +1,4 @@
-import useFilterCounters from "@/hooks/property/useFilterCounters";
+import useFilterCounters from "@/sections/Properties/hooks/useFilterCounters";
 import Skeleton from "@mui/material/Skeleton";
 import { FC } from "react";
 import { TOptionMapper } from "./types";

@@ -7,7 +7,7 @@ import {
 } from "react";
 import getMessage from "./getMessage";
 import { IMessageRes } from "@/types/messages";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 
 export interface MessagesListRef {
     prependMessages: (m: IMessageRes[]) => void;

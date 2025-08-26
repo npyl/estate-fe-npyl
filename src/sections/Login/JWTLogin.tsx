@@ -3,13 +3,13 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { useMemo, type FC } from "react";
 import * as Yup from "yup";
-import { useAuth } from "../../hooks/use-auth";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TranslationType } from "@/types/translation";
-import { RHFTextField } from "../../components/hook-form";
+import { RHFTextField } from "@/components/hook-form";
 import { EMAIL_ID, PSSWD_ID, SUBMIT_ID } from "./constants";
+import { useAuth } from "@/sections/use-auth";
 
 const Form = styled("form")(({ theme }) => ({
     display: "flex",

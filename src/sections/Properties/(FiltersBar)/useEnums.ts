@@ -1,4 +1,4 @@
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { useMemo } from "react";
 
 const useEnums = () => {

@@ -1,7 +1,7 @@
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import useOption from "./useOption";
-import useFilterCounters from "@/hooks/property/useFilterCounters";
+import useFilterCounters from "@/sections/Properties/hooks/useFilterCounters";
 import { FC } from "react";
 import { SetterType, TOptionMapper } from "./types";
 

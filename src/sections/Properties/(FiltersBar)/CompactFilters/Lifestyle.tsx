@@ -5,7 +5,7 @@ import ClearableSection from "@/components/Filters/ClearableSection";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import useFilterCounters from "@/hooks/property/useFilterCounters";
+import useFilterCounters from "@/sections/Properties/hooks/useFilterCounters";
 import { IPropertyFilterExtras } from "@/types/properties";
 import { FC, useCallback } from "react";
 import CounterChip from "./OptionCheckbox/CounterChip";

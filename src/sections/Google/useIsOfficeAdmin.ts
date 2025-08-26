@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useIsAdminQuery } from "@/services/calendar";
 
 // gwIsAdmin: is admin (on a Google Workspace)

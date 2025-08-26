@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { KeyValue } from "@/types/KeyValue";
 import { FC } from "react";
 import { PPButton } from "@/components/styled";
@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 import CounterChip from "./OptionCheckbox/CounterChip";
 import useOption from "./OptionCheckbox/useOption";
 import { TOptionMapper } from "./OptionCheckbox/types";
-import useFilterCounters from "@/hooks/property/useFilterCounters";
+import useFilterCounters from "@/sections/Properties/hooks/useFilterCounters";
 import getIcons from "@/assets/icons/parent-categories";
 import { useFiltersContext, useParentCategories } from "../../FiltersContext";
 
