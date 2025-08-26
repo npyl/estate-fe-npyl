@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { RHFTextFieldProps } from "@/components/hook-form/RHFTextField";
 import { useDebouncedCallback } from "use-debounce";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 import { codeIsUnique } from "@/sections/Properties/validators";
 
 // ----------------------------------------------------------------------

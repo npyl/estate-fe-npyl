@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
 import { IGlobalPropertyDetails } from "src/types/global";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { RHFCheckbox, Select } from "src/components/hook-form";

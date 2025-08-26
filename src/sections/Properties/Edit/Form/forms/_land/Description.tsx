@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { RHFOnlyNumbers, Select } from "src/components/hook-form";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 
 const useEnums = () => {
     const data = useGlobals();

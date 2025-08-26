@@ -1,4 +1,4 @@
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { IGlobalProperty } from "@/types/global";
 import { useMemo } from "react";
 

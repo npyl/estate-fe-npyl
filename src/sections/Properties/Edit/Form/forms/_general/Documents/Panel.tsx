@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Upload } from "src/components/upload";
-import { usePropertyDocuments } from "@/hooks/property";
+import usePropertyDocuments from "@/sections/Properties/hooks/usePropertyDocuments";
 import { FC } from "react";
 import Panel from "@/components/Panel";
 import usePropertyUpload from "@/ui/Property/useUploader";
