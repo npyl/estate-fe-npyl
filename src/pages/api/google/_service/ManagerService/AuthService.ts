@@ -38,16 +38,11 @@ function isTokenExpired(expiryDate: number): boolean {
 }
 
 class AuthService {
-    private userTokens: Map<number, UserToken> = new Map();
+    private readonly userTokens: Map<number, UserToken> = new Map();
     private oauth2Client!: OAuth2Client;
 
     // e.g. npylarinos@digipath.gr -> digipath.gr
     WORKSPACE_DOMAIN: string | undefined;
-
-    constructor() {
-        // Construct singleton
-        tokenService;
-    }
 
     async getAuthUrl(userId: number) {
         const authUrl = this.oauth2Client.generateAuthUrl({
@@ -214,7 +209,10 @@ class AuthService {
         await tokenService.deleteAllTokens();
     }
 
-    private getRevokeUserPromise = async (tokens: UserToken, i: number) => {
+    private readonly getRevokeUserPromise = async (
+        tokens: UserToken,
+        i: number
+    ) => {
         this.oauth2Client.setCredentials({
             access_token: tokens.accessToken,
             refresh_token: tokens.refreshToken,

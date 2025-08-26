@@ -7,7 +7,6 @@ import getCredentialsForUser, {
 } from "@/pages/api/google/_service/getCredentialsForUser";
 import { OAuth2Client } from "google-auth-library";
 import AuthService from "./AuthService";
-import tokenService from "./TokenStorage";
 import { toNumberSafe } from "@/utils/toNumber";
 
 type TUserId = number;
@@ -18,13 +17,10 @@ type TWorkspaceDomain = string;
  */
 
 class ManagerService {
-    private domains: Map<TUserId, TWorkspaceDomain>;
-    private workspaces: Map<TWorkspaceDomain, AuthService>;
+    private readonly domains: Map<TUserId, TWorkspaceDomain>;
+    private readonly workspaces: Map<TWorkspaceDomain, AuthService>;
 
     constructor() {
-        // Initialise singleton instance
-        tokenService;
-
         this.domains = new Map();
         this.workspaces = new Map();
     }
