@@ -1,4 +1,4 @@
-import useNotificationsSocket from "@/ui/useTasksNotifications";
+import useNotificationsSocket from "@/sections/Notification/hook/useTasksNotifications";
 import CircleUnReadNotifications from "@/sections/Notification/_shared/CircleUnReadNotifications";
 import { useActiveAssignedTasksCountQuery } from "@/services/notification";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";

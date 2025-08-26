@@ -1,6 +1,6 @@
 import Avatar from "@/components/Avatar";
 import Link from "@/components/Link";
-import { ITaskUpdateNotificationPayload } from "@/ui/useTasksNotifications";
+import { ITaskUpdateNotificationPayload } from "@/sections/Notification/hook/useTasksNotifications";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
