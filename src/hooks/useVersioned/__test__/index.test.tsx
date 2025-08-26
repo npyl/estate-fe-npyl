@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import Tester, {
     FALLBACK_VALUE,
     SPECIFIC_VALUE,
@@ -12,7 +12,7 @@ import Tester, {
     getVersioned,
 } from "./index.comp";
 import expectValue from "@/test/expectValue";
-// import clickAndExpect from "../_util/clickAndExpect";
+import clickAndExpect from "@/test/clickAndExpect";
 
 const FALLBACK_VALUE_STR = JSON.stringify(FALLBACK_VALUE);
 const SPECIFIC_VALUE_STR = JSON.stringify(SPECIFIC_VALUE);
@@ -26,19 +26,14 @@ describe("useVersioned", () => {
         render(<Tester />);
 
         await expectValue(VALUE_ID, FALLBACK_VALUE_STR);
-        // await clickAndExpect(component, SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
+        await clickAndExpect(SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
     });
 
     test("Remove", async () => {
         render(<Tester />);
         await expectValue(VALUE_ID, FALLBACK_VALUE_STR);
-        // await clickAndExpect(component, SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
-        // await clickAndExpect(
-        //     component,
-        //     REMOVE_VALUE_ID,
-        //     VALUE_ID,
-        //     FALLBACK_VALUE_STR
-        // );
+        await clickAndExpect(SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
+        await clickAndExpect(REMOVE_VALUE_ID, VALUE_ID, FALLBACK_VALUE_STR);
     });
 
     test("Version Mismatch w/ Update", async () => {
@@ -51,6 +46,6 @@ describe("useVersioned", () => {
 
         // INFO: due to version mismatch we expect a FALLBACK_VALUE and not a SPECIFIC_VALUE; this is actually the point of the whole hook!
         await expectValue(VALUE_ID, FALLBACK_VALUE_STR);
-        // await clickAndExpect(component, SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
+        await clickAndExpect(SET_VALUE_ID, VALUE_ID, SPECIFIC_VALUE_STR);
     });
 });
