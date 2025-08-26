@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import { useIsGoogleWorkspaceIntegratedQuery } from "@/services/company";
 import { useIsAuthenticatedQuery } from "@/services/google-oauth";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 
 const IsAuthenticatedGuard: FC<PropsWithChildren> = ({ children }) => {
     const { user } = useAuth();

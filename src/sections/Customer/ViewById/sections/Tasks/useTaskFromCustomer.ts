@@ -1,4 +1,4 @@
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 import { IKanbanCard } from "@/types/tasks";
 import { useCallback } from "react";
 

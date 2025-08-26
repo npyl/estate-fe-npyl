@@ -1,5 +1,5 @@
 import { useGetThreadQuery } from "@/services/email";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { FC } from "react";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { ListItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { FC } from "react";
 
 interface Props {

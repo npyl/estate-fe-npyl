@@ -1,5 +1,5 @@
 const MessageBox = dynamic(() => import("@/sections/Emails/Send/MessageBox"));
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import useDialog from "@/hooks/useDialog";
 import { useGetThreadQuery } from "@/services/email";
 import Box from "@mui/material/Box";

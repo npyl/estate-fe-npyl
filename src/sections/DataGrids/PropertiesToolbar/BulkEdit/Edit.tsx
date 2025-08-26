@@ -5,7 +5,7 @@ import {
     StyledSelect,
 } from "@/sections/DataGrids/BulkEditDrawer/style";
 import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import { toNumberSafe } from "@/utils/toNumber";
 import CustomerAutocomplete from "@/ui/Autocompletes/Customer";

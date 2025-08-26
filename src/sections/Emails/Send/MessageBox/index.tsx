@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { TThreadMessageReq } from "@/types/email";
 import { useSendEmailMutation } from "@/services/email";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import Content from "./Content";
 import { TMessageBoxValues } from "./types";
 import filesToBase64 from "./filesToBase64";

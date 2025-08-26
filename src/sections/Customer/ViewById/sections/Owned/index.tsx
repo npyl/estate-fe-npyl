@@ -1,6 +1,6 @@
 import Content from "./content";
 import { useCallback, useState } from "react";
-import useGetCustomer from "@/hooks/customer";
+import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
 
 const pageSize = 5;
 

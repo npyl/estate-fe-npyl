@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { TMailbox } from "@/types/email";
 import { useLayoutEffect, useMemo } from "react";
 

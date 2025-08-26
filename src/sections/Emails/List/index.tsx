@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useFilterEmailsQuery } from "@/services/email";
 import { useFiltersContext } from "@/sections/Emails/Filters/Context";
 import getThread from "./getThread";

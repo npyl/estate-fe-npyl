@@ -1,6 +1,6 @@
 import { IThreadAttachmentShortRes } from "@/types/email";
 import { useGetAttachmentQuery } from "@/services/email";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { attachmentData2Url } from "@/sections/Emails/utils";
 
 const useAttachmentDataUrl = (

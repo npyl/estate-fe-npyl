@@ -7,7 +7,7 @@ import { FC, useCallback } from "react";
 import BaseToolbar from "@/sections/DataGrids/BaseToolbar";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import Share from "./Share";
 import { defaultValues } from "./constants";
 const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));

@@ -1,5 +1,5 @@
 import { useGetThreadQuery } from "@/services/email";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import getMessage from "./getMessage";
 import { FC } from "react";
 
