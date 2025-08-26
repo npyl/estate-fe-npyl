@@ -1,6 +1,6 @@
 import React from "react";
 import IntegrationItem from "./IntegrationItem";
-import usePropertyListings from "@/hooks/listings";
+import usePropertyListings from "@/sections/Properties/hooks/usePropertyListings";
 
 interface IntegrationsProps {
     onClick: VoidFunction;

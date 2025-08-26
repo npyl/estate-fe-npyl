@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IUser, IUserPOST, IUserToReq } from "@/types/user";
 import { Schema } from "./validation";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import preventDefault from "@/utils/preventDefault";
 
 interface FormProps extends PropsWithChildren {

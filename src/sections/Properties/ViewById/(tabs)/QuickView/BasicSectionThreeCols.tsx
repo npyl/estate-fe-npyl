@@ -11,7 +11,7 @@ import {
 import { IProperties, ParentCategory } from "@/types/properties";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 interface BasicSectionProps {
     data: IProperties;

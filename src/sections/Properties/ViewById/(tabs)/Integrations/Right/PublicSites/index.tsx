@@ -4,8 +4,8 @@ import {
     useRemovePublicListingMutation,
 } from "@/services/listings";
 import PublicItem from "./PublicItem";
-import usePropertyListings from "@/hooks/listings";
 import useInvalidateTags from "../useInvalidateTags";
+import usePropertyListings from "@/sections/Properties/hooks/usePropertyListings";
 
 interface PublicSitesProps {
     onClick: VoidFunction;

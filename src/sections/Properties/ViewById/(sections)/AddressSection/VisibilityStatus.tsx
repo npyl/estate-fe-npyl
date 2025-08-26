@@ -1,5 +1,5 @@
 import SoftTypography, { ColorType } from "@/components/SoftLabel";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 import { LocationDisplay } from "@/types/enums";
 import { TranslationType } from "@/types/translation";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,13 @@ const VisibilityStatus = () => {
     if (!key) return null;
 
     return (
-        <SoftTypography mr={5} px={1} py={0.5} borderRadius={2} color={getColor(key)}>
+        <SoftTypography
+            mr={5}
+            px={1}
+            py={0.5}
+            borderRadius={2}
+            color={getColor(key)}
+        >
             {getText(t, key)}
         </SoftTypography>
     );

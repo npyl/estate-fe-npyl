@@ -2,7 +2,7 @@ import { SxProps, Theme, Typography } from "@mui/material";
 import { FC, useCallback, useMemo } from "react";
 import { SpaceBetween } from "@/components/styled";
 import GMailIcon from "@/assets/logo/Gmail";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator/IsAuthenticatedIndicator";

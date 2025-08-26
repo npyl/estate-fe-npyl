@@ -1,7 +1,7 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { initialState } from "./constants";
 import { TFilters } from "./types";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { useCallback, useMemo } from "react";
 import useCallbackSetter from "@/hooks/useCallbackSetter";
 

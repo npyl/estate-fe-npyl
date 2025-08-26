@@ -9,7 +9,7 @@ import {
     CartesianGrid,
     TooltipProps,
 } from "recharts";
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashboard";
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";

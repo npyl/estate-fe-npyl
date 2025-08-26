@@ -1,4 +1,4 @@
-import useTasksNotifications from "@/hooks/useTasksNotifications";
+import useTasksNotifications from "@/ui/useTasksNotifications";
 import { tasks } from "@/services/tasks";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";

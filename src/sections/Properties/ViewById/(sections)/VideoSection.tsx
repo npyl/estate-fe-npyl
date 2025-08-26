@@ -1,5 +1,5 @@
 import PanelWithQuickView from "../PanelWithQuickView";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 const getVideoId = (url: string) => {
     if (url.includes("youtu.be/")) {

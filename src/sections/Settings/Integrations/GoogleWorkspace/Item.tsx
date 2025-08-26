@@ -10,7 +10,7 @@ import { LoadingButton } from "@mui/lab";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import OriginalGoogleLogo from "@/assets/logo/OriginalGoogleLogo";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 const ConfirmationDialog = dynamic(() => import("./ConfirmDialog"));
 
 interface RemoveButtonProps {
