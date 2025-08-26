@@ -1,5 +1,5 @@
 import { Typography, Grid } from "@mui/material";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { IGlobalProperty } from "src/types/global";
 import { PPButton } from "@/components/styled";
 import getIcons from "@/assets/icons/parent-categories";

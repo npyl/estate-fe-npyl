@@ -1,9 +1,9 @@
-import { useGetProperty } from "@/hooks/property";
 import Form from "./Form";
 import { useEditPropertyMutation } from "@/services/properties";
 import { useCallback } from "react";
 import { IPropertiesPOST } from "@/types/properties";
 import { useRouter } from "next/router";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
 const EditById = () => {
     const router = useRouter();

@@ -1,5 +1,5 @@
 import IOSSwitch from "@/components/iOSSwitch";
-import { useGetProperty } from "@/hooks/property";
+import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 import useToggle from "@/hooks/useToggle";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { forwardRef, useImperativeHandle } from "react";

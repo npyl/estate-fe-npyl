@@ -1,5 +1,5 @@
 import { TextField, MenuItem } from "@mui/material";
-import { useGlobals } from "@/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { IGlobalProperty } from "@/types/global";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "@/types/KeyValue";

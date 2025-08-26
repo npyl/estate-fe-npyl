@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDeletePropertyBlueprintMutation } from "src/services/properties";
 import { BlueprintViewer } from "../components/BlueprintViewer";
-import { usePropertyBlueprints } from "@/hooks/property";
+import usePropertyBlueprints from "@/sections/Properties/hooks/usePropertyBlueprints";
 import Panel from "@/components/Panel";
 import usePropertyUpload from "@/ui/Property/useUploader";
 

@@ -1,7 +1,7 @@
 import { IconButton, Stack } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
-import { useGlobals } from "src/hooks/useGlobals";
+import { useGlobals } from "@/sections/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
 import { useFieldArray, useWatch } from "react-hook-form";
