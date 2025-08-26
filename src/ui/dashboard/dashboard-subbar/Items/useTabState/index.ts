@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { ITab } from "@/types/tabs";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import { isSameTab, isSameTabOrg } from "./util";
 import {
     isntContained,

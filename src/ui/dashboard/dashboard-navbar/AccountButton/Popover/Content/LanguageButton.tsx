@@ -2,7 +2,7 @@ import LanguageImage from "@/assets/icons/language";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/sections/use-settings";
 
 const LanguageButton = () => {
     const { t, i18n } = useTranslation();

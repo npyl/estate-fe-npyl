@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/sections/use-auth";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { ITab } from "@/types/tabs";
 import { useMemo } from "react";
