@@ -18,6 +18,10 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 
+const clearLocalStorage = () => {
+    window.localStorage.clear();
+};
+
 /**
  * Check actual localStorage item value (Jest version)
  * @param value - Expected value or undefined if item should be removed
@@ -72,6 +76,10 @@ const checkInitial = () => {
 };
 
 describe("useLocalStorage", () => {
+    beforeEach(() => {
+        clearLocalStorage();
+    });
+
     // ---------------------------------------------------------------------------------------------------
     //          BASIC
     // ---------------------------------------------------------------------------------------------------

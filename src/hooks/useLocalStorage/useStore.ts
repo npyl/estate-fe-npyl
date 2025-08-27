@@ -1,7 +1,9 @@
 import debugLog from "@/_private/debugLog";
 import { useCallback, useLayoutEffect, useState } from "react";
 
-const getValue = <V extends string | number | object = string>(
+type AnyType = string | number | object;
+
+const getValue = <V extends AnyType = string>(
     key: string | null,
     fallbackValue: V
 ) => {
@@ -59,7 +61,7 @@ const useLocalStorageSubscribe = <V>(
             if (e.key !== key) return;
 
             const v = e?.newValue
-                ? JSON.parseSafe<V>(e.newValue) || fallbackValue
+                ? (JSON.parseSafe<V>(e.newValue) ?? fallbackValue)
                 : fallbackValue;
 
             onChange(v);
@@ -89,7 +91,7 @@ const useStore = <V extends string | number | object = string>(
      */
     const set = useCallback(
         (v: V, passive?: boolean) => {
-            if (!key) throw "Null key";
+            if (!key) throw new Error("Null key");
             setLocalStorageItem(key, v, passive);
         },
         [key]
