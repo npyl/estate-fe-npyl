@@ -7,6 +7,7 @@ import { useImageOperations } from "../context/ImageOperations";
 import StyledDropZone from "./styled";
 import Placeholder from "./Placeholder";
 import { FC } from "react";
+import breakPromise from "@/utils/breakPromise";
 
 export interface UploadProps extends Omit<DropzoneOptions, "disabled"> {
     error?: boolean;
@@ -47,7 +48,7 @@ const UploadImages: FC<UploadProps> = ({
             "image/jpeg": ["jpeg", "jpg"],
             "image/png": ["png"],
         },
-        onDrop: upload,
+        onDrop: breakPromise(upload),
         ...other,
     });
 
