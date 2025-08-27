@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
-import useNetworkAccess, {
-    POLLING,
-} from "../../../src/_private/useNetworkAccess";
+import useNetworkAccess, { POLLING } from "@/_private/useNetworkAccess";
 
 const VALUE_ID = "value-id";
 const VALUE_OFFLINE = "OFFLINE";
