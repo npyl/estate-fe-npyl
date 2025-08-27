@@ -7,7 +7,7 @@ import sortAlpha from "@/utils/sortAlpha";
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
     api: MutationLifecycleApi<Req, BaseQueryFn, Res, "calendar">
-) => void;
+) => Promise<void>;
 
 type TUpdateCb = OptimisticCb<CreateUpdateEventReq, void>;
 type TDeleteCb = OptimisticCb<DeleteEventReq, void>;

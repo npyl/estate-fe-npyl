@@ -18,7 +18,7 @@ type OptimisticAddOrRemoveCb<T> = (
         IPropertyFileRes,
         "properties"
     >
-) => void;
+) => Promise<void>;
 
 type OptimisticAddFileCb = OptimisticAddOrRemoveCb<IPropertyFileReq>;
 type OptimisticRemoveFileCb = OptimisticAddOrRemoveCb<string>;
@@ -31,7 +31,7 @@ type OptimisticReorderCb = (
         number,
         "properties"
     >
-) => void;
+) => Promise<void>;
 
 type OptimisticReorderWithVisibilityCb = (
     arg: ReorderImagesWithSetImageVisibility,
@@ -41,7 +41,7 @@ type OptimisticReorderWithVisibilityCb = (
         IPropertyFileRes,
         "properties"
     >
-) => void;
+) => Promise<void>;
 
 type OptimisticDeleteImageCb = (
     arg: IDeleteFileProps,
@@ -51,7 +51,7 @@ type OptimisticDeleteImageCb = (
         number,
         "properties"
     >
-) => void;
+) => Promise<void>;
 
 type optimisticBulkDeleteImagesCb = (
     arg: BulkDeletePropertyImagesParams,
@@ -61,7 +61,7 @@ type optimisticBulkDeleteImagesCb = (
         number,
         "properties"
     >
-) => void;
+) => Promise<void>;
 
 export const optimisticAddFile: OptimisticAddFileCb = async (
     { body, id, variant },

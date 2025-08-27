@@ -14,7 +14,7 @@ import { tasks } from "@/services/tasks";
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
     api: MutationLifecycleApi<Req, BaseQueryFn, Res, "labels">
-) => void;
+) => Promise<void>;
 
 type TCreateCb = OptimisticCb<
     ILabelForResourceReq,
@@ -162,7 +162,7 @@ const optimisticAssign: TAssignCb = async (
         assignRes = dispatch(
             properties.util.updateQueryData(
                 "getPropertyLabels",
-                resourceId!,
+                resourceId,
                 (draft) => {
                     draft.push({
                         ...body,
@@ -175,7 +175,7 @@ const optimisticAssign: TAssignCb = async (
         assignRes = dispatch(
             customers.util.updateQueryData(
                 "getCustomerLabels",
-                resourceId!,
+                resourceId,
                 (draft) => {
                     draft.push({
                         ...body,
@@ -188,7 +188,7 @@ const optimisticAssign: TAssignCb = async (
         assignRes = dispatch(
             filesApiSlice.util.updateQueryData(
                 "getPropertyDocuments",
-                resourceId!,
+                resourceId,
                 (draft) => {
                     const idx = draft.findIndex(({ id }) => id === resourceId);
 
@@ -203,16 +203,12 @@ const optimisticAssign: TAssignCb = async (
         );
     } else if (resource === "ticket") {
         assignRes = dispatch(
-            tasks.util.updateQueryData(
-                "getCardLabels",
-                resourceId!,
-                (draft) => {
-                    draft.push({
-                        ...body,
-                        id: newId,
-                    });
-                }
-            )
+            tasks.util.updateQueryData("getCardLabels", resourceId, (draft) => {
+                draft.push({
+                    ...body,
+                    id: newId,
+                });
+            })
         );
     }
 
