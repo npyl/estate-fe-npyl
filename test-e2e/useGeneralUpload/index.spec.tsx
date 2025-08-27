@@ -45,6 +45,7 @@ const getResult = async (component: MountResult): Promise<IUploadResult> => {
     try {
         return JSON.parse(value) as IUploadResult;
     } catch (ex) {
+        console.log(ex);
         return {
             success: false,
             report: { addFails: [], uploaded: [], uploadFails: [] },
