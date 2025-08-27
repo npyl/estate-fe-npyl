@@ -10,7 +10,7 @@ const REQ_KEY = "filterEmails";
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
     api: QueryLifecycleApi<Req, BaseQueryFn, Res, "emails">
-) => void;
+) => Promise<void>;
 
 type TGetThread = OptimisticCb<WithId<IThreadReq>, TThreadRes>;
 

@@ -18,7 +18,7 @@ import undoAllPatches from "../_util/undoAllPatches";
 type OptimisticCb<Req extends object, Res extends object | void> = (
     arg: Req,
     api: MutationLifecycleApi<Req, BaseQueryFn, Res, "tasks">
-) => void;
+) => Promise<void>;
 
 type TReorderColumnCb = OptimisticCb<ReorderColumnProps, void>;
 type TDeleteColumnCb = OptimisticCb<DeleteColumnReq, void>;
@@ -147,7 +147,6 @@ const optimisticMoveCard: TMoveCardCb = async (
     const patchResults = getQueryPatches(getState, dispatch, (draft) => {
         // Find source column containing the card
         let sourceColumn = null;
-        let movedCard = null;
 
         // Find and remove card from source column
         for (const column of draft.columns) {
@@ -158,9 +157,6 @@ const optimisticMoveCard: TMoveCardCb = async (
                 column.cardOrder.splice(cardIndex, 1);
                 column.cardIds = column.cardIds.filter((id) => id !== cardId);
                 column.numberOfTasks--;
-
-                // Find the card object if we have a cards array
-                movedCard = draft.cards?.find((c) => c.id === cardId);
                 break;
             }
         }

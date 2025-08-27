@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { styled } from "@mui/material/styles";
 import DragOverlay from "./DragOverlay";
 import { useImageOperations } from "../../../context/ImageOperations";
+import breakPromise from "@/utils/breakPromise";
 
 const StyledRoot = styled("div")({
     height: "100%",
@@ -18,8 +19,7 @@ const DropZone: React.FC<DropZoneProps> = ({ disabled = false, children }) => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         disabled: disabled || isLoading,
-        onDrop: upload,
-        // Allow only file drop
+        onDrop: breakPromise(upload),
         noClick: true,
         noKeyboard: true,
     });

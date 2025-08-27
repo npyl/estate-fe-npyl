@@ -90,9 +90,12 @@ const PreparationDialog: React.FC<Props> = ({
     );
 
     const handleSubmit = useCallback(
-        async ({ auto, property, ...d }: TForm) => {
-            // NOTE: we must not pass this to BE
-            auto;
+        async (all: TForm) => {
+            const {
+                auto: _, // NOTE: we must not pass this to BE
+                property,
+                ...d
+            } = all;
 
             const cb =
                 editedAgreementId !== -1 ? updateAgreement : createAgreement;
