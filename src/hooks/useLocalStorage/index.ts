@@ -24,7 +24,7 @@ function useLocalStorage<V extends string | number | object = string>(
     const set = useCallbackSetter(value, _set);
 
     useUpdateLayoutEffect(() => {
-        throw "Update of key is not supported";
+        throw new Error("Update of key is not supported");
     }, [key]);
 
     return [value, set, remove] as const;

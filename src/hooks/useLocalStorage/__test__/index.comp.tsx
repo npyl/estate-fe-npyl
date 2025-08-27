@@ -1,6 +1,8 @@
 import { useCallback } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
+import "@/_private/JSON";
+
 // ------------------------------------------------------------------------------------------
 
 const itemName = "test-item";

@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import useCallbackSetter from "@/hooks/useCallbackSetter";
 
+import "@/_private/JSON";
+
 const itemName = "item-key";
 
 type TLeveled = {
