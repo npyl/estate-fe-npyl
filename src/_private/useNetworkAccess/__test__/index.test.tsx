@@ -1,5 +1,5 @@
 import Tester, { VALUE_ID, VALUE_ONLINE, VALUE_OFFLINE } from "./Tester";
-import getNetworkControl from "./getNetworkControl";
+import getNetworkControl from "@/test/getNetworkControl";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import expectValue from "@/test/expectValue";
