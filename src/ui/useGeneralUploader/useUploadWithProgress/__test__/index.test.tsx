@@ -37,22 +37,26 @@ describe("useUploadWithProgress", () => {
     /**
      * Successfully upload an image file and track progress (%)
      */
-    it("Upload w/ Percentage", async () => {
-        render(<Tester mockUrl={mockUrl0} />);
+    it(
+        "Upload w/ Percentage",
+        async () => {
+            render(<Tester mockUrl={mockUrl0} />);
 
-        await injectFiles(INPUT_ID, [FILE]);
+            await injectFiles(INPUT_ID, [FILE]);
 
-        // Now click upload button
-        screen.getByTestId(UPLOAD_BTN_ID).click();
+            // Now click upload button
+            screen.getByTestId(UPLOAD_BTN_ID).click();
 
-        // Percentage checks (uncomment when ready)
-        await expectValue(PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
-        await expectValue(PERCENTAGE_30_ID, PERCENTAGE_30_VALUE);
-        await expectValue(PERCENTAGE_90_ID, PERCENTAGE_90_VALUE);
+            // Percentage checks (uncomment when ready)
+            await expectValue(PERCENTAGE_10_ID, PERCENTAGE_10_VALUE);
+            await expectValue(PERCENTAGE_30_ID, PERCENTAGE_30_VALUE);
+            await expectValue(PERCENTAGE_90_ID, PERCENTAGE_90_VALUE);
 
-        // Upload Result
-        await expectValue(VALUE_ID, SUCCESS_RES);
-    });
+            // Upload Result
+            await expectValue(VALUE_ID, SUCCESS_RES);
+        },
+        DELAY
+    );
 
     /**
      * Catch a client disconnect during upload (e.g. when internet access is lost)
@@ -86,15 +90,19 @@ describe("useUploadWithProgress", () => {
      * Catch an upload fail
      * This could mean the server rejected the request, e.g. on a timeout
      */
-    it("Upload Fail", async () => {
-        render(<Tester mockUrl={mockUrl2} />);
+    it(
+        "Upload Fail",
+        async () => {
+            render(<Tester mockUrl={mockUrl2} />);
 
-        await injectFiles(INPUT_ID, [FILE]);
+            await injectFiles(INPUT_ID, [FILE]);
 
-        // Click Upload Button
-        screen.getByTestId(UPLOAD_BTN_ID).click();
+            // Click Upload Button
+            screen.getByTestId(UPLOAD_BTN_ID).click();
 
-        // Upload Result
-        await expectValue(VALUE_ID, ERROR_RESPONSE);
-    });
+            // Upload Result
+            await expectValue(VALUE_ID, ERROR_RESPONSE);
+        },
+        DELAY
+    );
 });
