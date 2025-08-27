@@ -1,3 +1,4 @@
+import { getVersioned } from "@/hooks/useVersioned";
 import { expect } from "@jest/globals";
 
 // Mock document.cookie for Jest environment
@@ -5,6 +6,10 @@ Object.defineProperty(document, "cookie", {
     writable: true,
     value: "",
 });
+
+const clearCookies = () => {
+    document.cookie = "";
+};
 
 /**
  * Helper function to parse document.cookie string into an object
@@ -27,15 +32,18 @@ const parseCookies = (): Record<string, string> => {
  * @param cookieName - The name of the cookie to check
  * @param content - Expected content value
  */
-const expectCookie = (cookieName: string, content?: string) => {
-    const encoded = content
-        ? encodeURIComponent(JSON.stringify({ version: 1, content }))
-        : undefined;
-
+const expectCookie = (cookieName: string, expected: string | undefined) => {
     const cookies = parseCookies();
+
+    if (expected === undefined) {
+        expect(cookies[cookieName]).toBeUndefined();
+        return;
+    }
+
+    const expectedJson = JSON.stringify(getVersioned(1, expected));
     const actualCookieValue = cookies[cookieName];
 
-    expect(actualCookieValue).toBe(encoded);
+    expect(actualCookieValue).toBe(expectedJson);
 };
 
-export default expectCookie;
+export { expectCookie, clearCookies };

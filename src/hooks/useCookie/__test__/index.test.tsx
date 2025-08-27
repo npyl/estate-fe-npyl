@@ -9,7 +9,7 @@ import Tester, {
 import clickAndExpectOrg from "@/test/clickAndExpect";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import expectCookie from "./expectCookie";
+import { expectCookie, clearCookies } from "./cookies";
 
 /**
  * Clicks on a button and checks both state and cookie value change
@@ -27,6 +27,7 @@ const clickAndExpect = async (
     const actualExpected = (expected || fallback)!;
 
     await clickAndExpectOrg(clickId, valueId, actualExpected);
+
     expectCookie(cookieName, expected);
 };
 
@@ -39,6 +40,10 @@ const checkInitial = () => {
 };
 
 describe("useCookie", () => {
+    beforeEach(() => {
+        clearCookies();
+    });
+
     // ---------------------------------------------------------------------------------------------------
     //          BASIC
     // ---------------------------------------------------------------------------------------------------
