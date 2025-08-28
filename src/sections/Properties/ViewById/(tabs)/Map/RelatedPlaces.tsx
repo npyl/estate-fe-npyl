@@ -11,55 +11,14 @@ import {
 // utils
 // components
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Place } from "@/types/googleMap";
 import { useTranslation } from "react-i18next";
-// ----------------------------------------------------------------------
-
-interface Props extends CardProps {
-    title?: string;
-    list: google.maps.places.PlaceResult[];
-    duration: any;
-    data?: any;
-}
-
-const RelatedPlaces = ({ title, data, list, duration, ...other }: Props) => {
-    return (
-        <Card {...other}>
-            <CardHeader title={title} />
-            {data?.location?.lat != null &&
-            data?.location?.lng != null &&
-            list.length == 0 ? (
-                <Typography textAlign={"center"}>No results</Typography>
-            ) : (
-                !data?.location?.lat &&
-                !data?.location?.lng && (
-                    <Typography textAlign={"center"}>No location</Typography>
-                )
-            )}
-
-            <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-                {list.map((app, i) => (
-                    <ApplicationItem
-                        key={app.place_id}
-                        app={app}
-                        duration={duration[i]}
-                    />
-                ))}
-            </Stack>
-        </Card>
-    );
-};
-
-export default RelatedPlaces;
-
-// ----------------------------------------------------------------------
 
 type ApplicationItemProps = {
     app: google.maps.places.PlaceResult;
     duration: any;
 };
 
-function ApplicationItem({ app, duration }: ApplicationItemProps) {
+const ApplicationItem = ({ app, duration }: ApplicationItemProps) => {
     const { vicinity, rating, name } = app;
     const { t } = useTranslation();
 
@@ -105,4 +64,45 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
             </Stack>
         </Stack>
     );
+};
+
+// ----------------------------------------------------------------------
+
+interface Props extends CardProps {
+    title?: string;
+    list: google.maps.places.PlaceResult[];
+    duration: any;
+    data?: any;
 }
+
+const RelatedPlaces = ({ title, data, list, duration, ...other }: Props) => {
+    return (
+        <Card {...other}>
+            <CardHeader title={title} />
+            {data?.location?.lat != null &&
+            data?.location?.lng != null &&
+            list.length == 0 ? (
+                <Typography textAlign={"center"}>No results</Typography>
+            ) : (
+                !data?.location?.lat &&
+                !data?.location?.lng && (
+                    <Typography textAlign={"center"}>No location</Typography>
+                )
+            )}
+
+            <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
+                {list.map((app, i) => (
+                    <ApplicationItem
+                        key={app.place_id}
+                        app={app}
+                        duration={duration[i]}
+                    />
+                ))}
+            </Stack>
+        </Card>
+    );
+};
+
+export default RelatedPlaces;
+
+// ----------------------------------------------------------------------
