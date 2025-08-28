@@ -34,7 +34,7 @@ const userByIdUrl = `${process.env.BACKEND_API_URL}/users`;
 
 const getGoogleUserKey = async (Authorization: string, ids?: number[]) => {
     const userId = Array.isArray(ids) ? ids[0] : undefined;
-    if (!Boolean(userId)) return "";
+    if (!userId) return "";
 
     try {
         const res = await fetch(`${userByIdUrl}/${userId}`, {
@@ -48,7 +48,7 @@ const getGoogleUserKey = async (Authorization: string, ids?: number[]) => {
         if (!res.ok) throw await res.json();
 
         const data = (await res.json()) as IUser;
-        if (!data && "workspaceEmail" in data) throw "Bad data";
+        if (!data && "workspaceEmail" in data) throw new Error("Bad data");
 
         return data.workspaceEmail;
     } catch (ex) {
@@ -59,71 +59,84 @@ const getGoogleUserKey = async (Authorization: string, ids?: number[]) => {
 
 // -----------------------------------------------------------------------
 
+const getTaskBody = async (
+    Authorization: string,
+    iUserId: number,
+    parsedBody: ICreateOrUpdateTaskReq
+): Promise<IKanbanCardPOST> => {
+    const { withCalendar, oldUserId, ...task } = parsedBody;
+
+    let taskBody = { ...task };
+
+    const _eventId = task.event;
+    const isEdit = Boolean(_eventId);
+
+    if (withCalendar) {
+        // googleUserKey
+        const googleUserKey = await getGoogleUserKey(
+            Authorization,
+            task?.userIds
+        );
+        if (!googleUserKey) throw new Error("Bad googleUserKey");
+
+        const event = KanbanTaskToCalendarEvent(task);
+        const gEvent = TCalendarEventToGCalendarEvent(event);
+
+        if (isEdit) {
+            // oldGoogleUserKey
+            if (!oldUserId) throw new Error("Bad oldUserId");
+
+            const oldGoogleUserKey = await getGoogleUserKey(Authorization, [
+                oldUserId,
+            ]);
+            if (!oldGoogleUserKey)
+                throw new Error("Did not find old google user key");
+
+            // Body
+            const updatableEvent = { ...gEvent, id: _eventId };
+
+            await calendarService.updateEvent(
+                iUserId,
+                updatableEvent,
+                oldGoogleUserKey,
+                googleUserKey
+            );
+        } else {
+            // INFO: `event` meaning eventId
+            const event = await calendarService.createEvent(
+                iUserId,
+                gEvent,
+                googleUserKey
+            );
+            if (!event) throw new Error("Some bad event id");
+
+            taskBody = { ...taskBody, event };
+        }
+    }
+
+    return taskBody;
+};
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     try {
-        const { userId } = req.query;
-
-        const iUserId = toNumber(userId);
-
         if (req.method !== "POST") throw new Error("Bad method");
+
+        const { userId } = req.query;
+        const iUserId = toNumber(userId);
 
         const Authorization = req.headers.authorization;
         if (!Authorization) throw new Error("Invalid headers");
 
         const parsedBody = JSON.parseSafe<ICreateOrUpdateTaskReq>(req.body);
         if (!parsedBody) throw new Error("Bad json body");
-        const { withCalendar, oldUserId, ...task } = parsedBody;
-
-        const _eventId = task.event;
-        const isEdit = Boolean(_eventId);
-        let taskBody = { ...task } as IKanbanCardPOST;
 
         // ------------------------------------------------
         //       0: (with create/edit calendar event)
         // ------------------------------------------------
-        if (withCalendar) {
-            // googleUserKey
-            const googleUserKey = await getGoogleUserKey(
-                Authorization,
-                task?.userIds
-            );
-            if (!googleUserKey) throw new Error("Bad googleUserKey");
-
-            const event = KanbanTaskToCalendarEvent(task);
-            const gEvent = TCalendarEventToGCalendarEvent(event);
-
-            if (isEdit) {
-                // oldGoogleUserKey
-                if (!Boolean(oldUserId)) throw "Bad oldUserId";
-                const oldGoogleUserKey = await getGoogleUserKey(Authorization, [
-                    oldUserId!,
-                ]);
-                if (!oldGoogleUserKey) throw "Did not find old google user key";
-
-                // Body
-                const updatableEvent = { ...gEvent, id: _eventId };
-
-                await calendarService.updateEvent(
-                    iUserId,
-                    updatableEvent,
-                    oldGoogleUserKey,
-                    googleUserKey
-                );
-            } else {
-                // INFO: `event` meaning eventId
-                const event = await calendarService.createEvent(
-                    iUserId,
-                    gEvent,
-                    googleUserKey
-                );
-                if (!event) throw new Error("Some bad event id");
-
-                taskBody = { ...taskBody, event };
-            }
-        }
+        const taskBody = await getTaskBody(Authorization, iUserId, parsedBody);
 
         // -------------------------------------------------
         //        1:     Create/Update Task

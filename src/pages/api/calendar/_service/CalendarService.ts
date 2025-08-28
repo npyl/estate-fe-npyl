@@ -30,15 +30,15 @@ const logIsAdminException = (ex: any) => {
 
 // --------------------------------------------------------------------------------------
 
-interface CalendarService$IsAdminRes {
+interface IsAdminRes {
     isAdmin: boolean;
     user?: admin_directory_v1.Schema$User;
     userInfo?: GoogleCalendarUserInfo;
 }
 
 class CalendarService {
-    private calendar: calendar_v3.Calendar;
-    private directory: admin_directory_v1.Admin;
+    private readonly calendar: calendar_v3.Calendar;
+    private readonly directory: admin_directory_v1.Admin;
 
     constructor() {
         this.calendar = calendar({ version: "v3" });
@@ -52,7 +52,7 @@ class CalendarService {
      * @param userId propertypro user id
      * @returns whether the property-pro user happens to be the google workspace's admin + returns the google workspace user anyway to support ui functions
      */
-    async isAdmin(userId: number): Promise<CalendarService$IsAdminRes> {
+    async isAdmin(userId: number): Promise<IsAdminRes> {
         const auth = await managerService.getAuthForUser(userId);
         if (!auth) return { isAdmin: false };
 
@@ -114,7 +114,7 @@ class CalendarService {
     /**
      * this is a promise generator
      */
-    private getEventsFromCalendarPromise =
+    private readonly getEventsFromCalendarPromise =
         (startDate: string, endDate: string, auth: OAuth2Client) =>
         (calendarId: string) => {
             if (!calendarId) throw new Error("Does not contain a valid id!");
@@ -200,7 +200,7 @@ class CalendarService {
      * Helper
      * @returns a search promise for any calendarId
      */
-    private getSearchPromise =
+    private readonly getSearchPromise =
         (
             q: string,
             timeMin: string | undefined,
