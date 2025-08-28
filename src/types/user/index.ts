@@ -1,7 +1,6 @@
-import { KeyValue } from "../KeyValue";
-import { PreferredLanguageType } from "../enums";
-import { IProperties } from "../properties";
-import { TTaskVisibility } from "../roles";
+import { KeyValue } from "@/types/KeyValue";
+import { PreferredLanguageType } from "@/types/enums";
+import { TTaskVisibility } from "@/types/roles";
 
 interface IUser {
     id: number;
@@ -23,7 +22,6 @@ interface IUser {
     doy: string;
     gemh: string;
     avatar: string;
-    properties: IProperties[];
     isAdmin: boolean;
     isActive: boolean;
     joinedIn: string;
