@@ -1,68 +1,13 @@
 import { FC } from "react";
-import useEnums from "../../useEnums";
-import Chip from "@mui/material/Chip";
-import ChipLabel from "@/ui/Filters/ChipLabel";
-import { useTranslation } from "react-i18next";
-import getEnumLabel from "./util";
 import { TTags } from "../types";
-import dynamic from "next/dynamic";
 import { IPropertyFilter } from "@/types/properties";
-import Points from "./Points";
-import {
-    useChangedFields,
-    useFiltersContext,
-} from "@/sections/Properties/FiltersContext";
-import IntegrationsChip from "./Integrationts";
+import { useChangedFields } from "@/sections/Properties/FiltersContext";
+import ValidChip from "./ValidChip";
 
-// Chips
-const MinMaxChip = dynamic(() => import("./MinMax"));
-const MinFloorChip = dynamic(() => import("./MinFloor"));
-const MaxFloorChip = dynamic(() => import("./MaxFloor"));
-const ActiveChip = dynamic(() => import("./Active"));
-const MinPriceChip = dynamic(() => import("./MinPrice"));
-const MaxPriceChip = dynamic(() => import("./MaxPrice"));
-const LabelsChip = dynamic(() => import("./Labels"));
-const ManagerChip = dynamic(() => import("./Manager"));
-const Regions = dynamic(() => import("./Regions"));
-const Cities = dynamic(() => import("./Cities"));
-const LocationChip = dynamic(() => import("./Location"));
-const LifestyleChip = dynamic(() => import("./Lifestyle"));
-
-// --------------------------------------------------------------------------------
-
-interface SimpleChipProps {
-    title: string;
-    values: string[];
-    filterKey: keyof IPropertyFilter;
-}
-
-const SimpleChip: FC<SimpleChipProps> = ({ values, title, filterKey }) => {
-    const { t } = useTranslation();
-
-    const label = Array.isArray(values)
-        ? values.map((v) => t(v)).join(", ")
-        : t(values);
-
-    const { deleteFilter } = useFiltersContext();
-    const handleClear = () => deleteFilter(filterKey);
-
-    return (
-        <Chip
-            label={<ChipLabel title={title} value={label} />}
-            onDelete={handleClear}
-        />
-    );
-};
-
-// --------------------------------------------------------------------------------
-
-const getSuffix = (_filterKey: keyof IPropertyFilter) => {
-    const filterKey = _filterKey as string;
-
-    return filterKey.includes("min") || filterKey.includes("max")
-        ? filterKey.slice(3)
-        : null;
-};
+const shouldAvoid = (values: any) =>
+    values === 0 ||
+    values == undefined ||
+    (Array.isArray(values) && values.length === 0);
 
 interface GeneralChipProps {
     filterKey: keyof IPropertyFilter;
@@ -75,118 +20,20 @@ const GeneralChip: FC<GeneralChipProps> = ({
     filterTags,
     pairFilterTags,
 }) => {
-    const { frameTypeEnum, furnishedEnum, heatingTypeEnum } = useEnums();
-
     const changedProps = useChangedFields();
     const values = changedProps[filterKey];
+
+    if (shouldAvoid(values)) return null;
+
     const label = filterTags[filterKey]?.label;
 
-    if (
-        values === 0 ||
-        values == undefined ||
-        (Array.isArray(values) && values.length === 0)
-    )
-        return null;
-
-    const suffix = getSuffix(filterKey);
-
-    const hasMinMaxPair = (suffix: string | null): boolean => {
-        if (!suffix) return false;
-
-        const minKey = `min${suffix}`;
-        const maxKey = `max${suffix}`;
-
-        return (
-            changedProps.hasOwnProperty(minKey) &&
-            changedProps.hasOwnProperty(maxKey)
-        );
-    };
-
-    // If we have min-max pair, make sure we ignore one of them (don't show the same chip twice)
-    if (hasMinMaxPair(suffix) && filterKey === `max${suffix}`) return null;
-
-    // If we have min-max pair show chip differently
-    if (hasMinMaxPair(suffix)) {
-        return <MinMaxChip suffix={suffix!} pairFilterTags={pairFilterTags} />;
-    }
-
-    //
-    //  Single Chips
-    //
-    if (filterKey === "integrationSites") {
-        return <IntegrationsChip />;
-    }
-
-    if (filterKey === "locationSearch") {
-        return <LocationChip />;
-    }
-
-    if (filterKey === "minFloor") {
-        return <MinFloorChip />;
-    }
-
-    // If only maxFloor is selected
-    if (filterKey === "maxFloor") {
-        return <MaxFloorChip />;
-    }
-
-    if (filterKey === "minPrice") {
-        return <MinPriceChip />;
-    }
-
-    if (filterKey === "maxPrice") {
-        return <MaxPriceChip />;
-    }
-
-    if (filterKey === "active") {
-        return <ActiveChip />;
-    }
-
-    if (filterKey === "labels") {
-        return <LabelsChip />;
-    }
-
-    if (filterKey === "managerId") {
-        return <ManagerChip />;
-    }
-
-    if (filterKey === "regions") {
-        return <Regions />;
-    }
-
-    if (filterKey === "cities") {
-        return <Cities />;
-    }
-    if (filterKey === "extras") {
-        return <LifestyleChip />;
-    }
-
-    if (filterKey === "points") {
-        return <Points />;
-    }
-
-    let valuesToDisplay = values;
-
-    // Map the keys to their corresponding labels for frameType, furnished, heatingType
-    if (filterKey === "frameType") {
-        valuesToDisplay = values.map((val: any) =>
-            getEnumLabel(val, frameTypeEnum)
-        );
-    } else if (filterKey === "furnished") {
-        valuesToDisplay = values.map((val: any) =>
-            getEnumLabel(val, furnishedEnum)
-        );
-    } else if (filterKey === "heatingType") {
-        valuesToDisplay = values.map((val: any) =>
-            getEnumLabel(val, heatingTypeEnum)
-        );
-    }
-
     return (
-        <SimpleChip
+        <ValidChip
             filterKey={filterKey}
-            title={label}
-            values={valuesToDisplay}
+            label={label}
+            values={values}
+            pairFilterTags={pairFilterTags}
+            changedProps={changedProps}
         />
     );
 };

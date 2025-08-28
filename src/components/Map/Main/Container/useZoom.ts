@@ -7,7 +7,7 @@ import { ZOOM_LEVELS } from "../../constants";
 const useZoom = (shapes: TShape[] = [], zoom: number = ZOOM_LEVELS.DEFAULT) => {
     const shape = shapes?.at(0);
     return useMemo(() => {
-        if (Boolean(shape)) return getZoomFromShape(shape!);
+        if (shape) return getZoomFromShape(shape);
         return zoom;
     }, [shape, zoom]);
 };
