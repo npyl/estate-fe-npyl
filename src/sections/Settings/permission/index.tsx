@@ -48,7 +48,7 @@ const PermissionPage: FC = () => {
                         isFetching ||
                         isLoading
                     }
-                    onClick={() => saveRelationship(data!)}
+                    onClick={() => saveRelationship(data)}
                 >
                     {t("Apply Changes")}
                 </Button>
