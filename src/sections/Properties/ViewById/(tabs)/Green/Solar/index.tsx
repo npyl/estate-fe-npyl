@@ -54,7 +54,7 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
     const { t } = useTranslation();
 
     const solarPotential = solarInsights.solarPotential;
-    var yValues = solarPotential.wholeRoofStats.sunshineQuantiles;
+    const yValues = solarPotential.wholeRoofStats.sunshineQuantiles;
 
     const chartData = useMemo(
         () => ({
