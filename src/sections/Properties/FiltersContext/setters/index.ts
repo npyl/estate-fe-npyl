@@ -1,7 +1,13 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { IFilterProps, IFilterStateSetters, TUpdateFilterCb } from "./types";
-import { initialState } from "./constant";
+import {
+    IFilterProps,
+    IFilterStateSetters,
+    TUpdateFilterCb,
+} from "@/sections/Properties/FiltersContext/types";
+import { initialState } from "@/sections/Properties/FiltersContext/constant";
 import { IPropertyFilter } from "@/types/properties";
+import calculateReset from "./calculateReset";
+import calculateLifestyle from "./calculateLifestyle";
 
 type UseSetters = (
     methods: {
@@ -58,53 +64,7 @@ const useSetters: UseSetters = (
             toggleHeatingType: (value) =>
                 toggleFilterArray("heatingType", value),
 
-            toggleLifestyleFilter: (key) =>
-                setState((prevState) => {
-                    // Check if the key exists in extras
-                    if (prevState.filters.extras.hasOwnProperty(key)) {
-                        // Create a completely new state object with nested structure
-                        const newFilters = {
-                            ...prevState.filters,
-                            extras: {
-                                ...prevState.filters.extras,
-                                [key]: !prevState.filters.extras[key],
-                            },
-                        };
-
-                        // Determine if any extras are active after the toggle
-                        const anyExtrasActive = Object.values(
-                            newFilters.extras
-                        ).some((v) => Boolean(v));
-
-                        // Create a new IDs array based on extras status
-                        let newIds;
-                        if (
-                            anyExtrasActive &&
-                            !prevState.ids.includes("extras")
-                        ) {
-                            newIds = [...prevState.ids, "extras"];
-                        } else if (
-                            !anyExtrasActive &&
-                            prevState.ids.includes("extras")
-                        ) {
-                            newIds = prevState.ids.filter(
-                                (id) => id !== "extras"
-                            );
-                        } else {
-                            newIds = [...prevState.ids]; // Create a new array but with same content
-                        }
-
-                        // Return completely new state object
-                        return {
-                            ...prevState,
-                            filters: newFilters,
-                            ids: newIds,
-                        };
-                    }
-
-                    // If key doesn't exist, return the previous state (but as a new object to be safe)
-                    return { ...prevState };
-                }),
+            toggleLifestyleFilter: (key) => setState(calculateLifestyle(key)),
 
             deleteFilter,
 
@@ -114,40 +74,7 @@ const useSetters: UseSetters = (
 
             resetState: () => setState(initialState),
 
-            resetBasic: () =>
-                setState((prevState) => {
-                    const fieldsToReset = [
-                        "locationSearch",
-                        "code",
-                        "managerId",
-                        "minPrice",
-                        "maxPrice",
-                        "minArea",
-                        "maxArea",
-                        "labels",
-                        "active",
-                        "regions",
-                        "cities",
-                    ] as const;
-
-                    const newState = { ...prevState };
-                    const newFilters = { ...newState.filters } as any;
-
-                    // Reset each field
-                    fieldsToReset.forEach((field) => {
-                        newFilters[field] = initialState.filters[field];
-                    });
-
-                    // Update state with reset filters
-                    newState.filters = newFilters;
-
-                    // Remove reset fields from IDs
-                    newState.ids = newState.ids.filter(
-                        (id) => !fieldsToReset.includes(id as any)
-                    );
-
-                    return newState;
-                }),
+            resetBasic: () => setState(calculateReset),
 
             resetBedrooms: () => {
                 deleteFilter("minBedrooms");
