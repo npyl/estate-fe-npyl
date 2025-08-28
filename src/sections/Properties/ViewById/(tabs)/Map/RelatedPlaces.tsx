@@ -17,18 +17,12 @@ import { useTranslation } from "react-i18next";
 
 interface Props extends CardProps {
     title?: string;
-    list: Place[];
+    list: google.maps.places.PlaceResult[];
     duration: any;
     data?: any;
 }
 
-export default function RelatedPlaces({
-    title,
-    data,
-    list,
-    duration,
-    ...other
-}: Props) {
+const RelatedPlaces = ({ title, data, list, duration, ...other }: Props) => {
     return (
         <Card {...other}>
             <CardHeader title={title} />
@@ -54,12 +48,14 @@ export default function RelatedPlaces({
             </Stack>
         </Card>
     );
-}
+};
+
+export default RelatedPlaces;
 
 // ----------------------------------------------------------------------
 
 type ApplicationItemProps = {
-    app: Place;
+    app: google.maps.places.PlaceResult;
     duration: any;
 };
 
