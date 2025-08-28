@@ -1,14 +1,14 @@
 import { DrawShape } from "../../types";
 import { TPoint, TShape } from "@/types/shape";
-import drawCircle from "./_circle";
-import drawRectangle from "./_rectangle";
-import drawPolygon from "./_polygon";
+import drawCircle from "./circle";
+import drawRectangle from "./rectangle";
+import drawPolygon from "./polygon";
 
 // --------------------------------------------------------------------------------
 
 type TShapeType = "Circle" | "Rectangle" | "Polygon";
 
-const isNullPoint = (p: TPoint) => Boolean(p.x) && !Boolean(p.y);
+const isNullPoint = (p: TPoint) => Boolean(p.x) && !p.y;
 
 const isNonNullShape = (s: TShape) => {
     if (s.some(isNullPoint)) return false;
@@ -51,63 +51,18 @@ const drawShape = (
 
     const type = getShapeType(shape);
 
-    if (type === "Circle") {
-        // For circles: shape[0] is center point [x, y], shape[1] is [radius, null]
-        const centerLat = shape[0].x; // y-coordinate is latitude
-        const centerLng = shape[0].y; // x-coordinate is longitude
-        const radius = shape[1].x; // radius is x-coordinate of second point
+    if (type === "Circle") return drawCircle(shape, map, changeable);
 
-        if (centerLat === null || !centerLng || !radius) return null;
-
-        return drawCircle(centerLat, centerLng, radius, map, changeable);
-    }
     // Check if shape is a rectangle (4 points forming a rectangle)
-    else if (type === "Rectangle") {
-        // Find the northeast and southwest corners
-        let minLat = Infinity,
-            minLng = Infinity;
-        let maxLat = -Infinity,
-            maxLng = -Infinity;
+    if (type === "Rectangle") return drawRectangle(shape, map, changeable);
 
-        for (const point of shape) {
-            const lat = point.x;
-            const lng = point.y;
-
-            if (lng === null) return null; // All points in a rectangle must have valid lat
-
-            minLat = Math.min(minLat, lat);
-            minLng = Math.min(minLng, lng);
-            maxLat = Math.max(maxLat, lat);
-            maxLng = Math.max(maxLng, lng);
-        }
-
-        return drawRectangle(maxLat, maxLng, minLat, minLng, map, changeable);
-    }
     // Otherwise, treat as polygon
-    else if (type === "Polygon") {
-        // Convert TShape to google.maps.LatLngLiteral[][] format
-        const points: google.maps.LatLngLiteral[] = [];
+    if (type === "Polygon") return drawPolygon(shape, map, changeable);
 
-        for (const point of shape) {
-            const lat = point.x;
-            const lng = point.y;
-
-            // All points in a polygon must have valid lat
-            if (lng === null) return null;
-
-            points.push({ lat, lng });
-        }
-
-        if (points.length === 0) return null;
-
-        // Wrap points in an array to match google.maps.LatLngLiteral[][]
-        const paths: google.maps.LatLngLiteral[][] = [points];
-
-        return drawPolygon(paths, map, changeable);
-    } else {
-        return null;
-    }
+    return null;
 };
+
+// --------------------------------------------------------------------------------
 
 /**
  * Converts a google.maps.{Shape} to TShape
