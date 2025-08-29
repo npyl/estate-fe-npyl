@@ -1,10 +1,12 @@
 import { reactHooksModule } from "@reduxjs/toolkit/dist/query/react";
-import { EndpointDefinitions } from "@reduxjs/toolkit/query";
-import { buildCreateApi } from "@reduxjs/toolkit/query";
-import { coreModule } from "@reduxjs/toolkit/query";
-import { Module } from "@reduxjs/toolkit/query";
-import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import { ApiModules } from "@reduxjs/toolkit/query";
+import {
+    EndpointDefinitions,
+    buildCreateApi,
+    coreModule,
+    Module,
+    BaseQueryFn,
+    ApiModules,
+} from "@reduxjs/toolkit/query";
 import { useTranslation } from "react-i18next";
 
 function createLanguageAwareHook<T extends (...args: any[]) => any>(

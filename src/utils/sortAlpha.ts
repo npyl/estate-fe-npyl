@@ -16,6 +16,6 @@ const compare = (a: string, b: string): number => a.localeCompare(b);
  * @returns {string[]} The same array instance, now sorted alphabetically
  *
  */
-const sortAlpha = (a: string[]): string[] => a.sort(compare);
+const sortAlpha = (a: string[]): string[] => a.toSorted(compare);
 
 export default sortAlpha;
