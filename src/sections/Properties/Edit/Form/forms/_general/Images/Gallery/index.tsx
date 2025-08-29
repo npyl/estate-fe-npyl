@@ -7,7 +7,7 @@ import {
     useEditPropertyImageMutation,
 } from "@/services/properties";
 import { LanguageButton } from "@/components/LanguageButton";
-import { useConditionalMemo } from "@/hooks/useConditionalMemo";
+import useConditionalMemo from "@/hooks/useConditionalMemo";
 import usePropertyImages from "../hook";
 import {
     StyledDialog,
