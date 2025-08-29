@@ -11,13 +11,9 @@ type TLogAction =
     | "LOGOUT"
     | "RESTORE";
 
-// TODO: what is this? Is it correct? Where should I use it?
-type TLogResource = "ENGLISH" | "GREEK" | "SYSTEM";
-
 interface ILog {
     action: KeyValue<TLogAction>;
     message: string;
-    resourceType: KeyValue<TLogResource>;
     user: IUserMini;
     createdAt: string;
 
