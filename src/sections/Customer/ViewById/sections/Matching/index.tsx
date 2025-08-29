@@ -1,7 +1,7 @@
 import Content from "./content";
 import { useSuggestForCustomerQuery } from "@/services/customers";
 import { useRouter } from "next/router";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { useCallback, useState } from "react";
 
 const pageSize = 5;

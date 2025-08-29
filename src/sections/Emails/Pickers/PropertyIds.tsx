@@ -1,5 +1,5 @@
 import CodeMultiple, { getTagClassname } from "@/ui/Autocompletes/CodeMultiple";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { SxProps, Theme } from "@mui/material";
 import { useRouter } from "next/router";
 import { FC } from "react";

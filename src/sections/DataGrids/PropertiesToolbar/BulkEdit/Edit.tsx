@@ -7,7 +7,7 @@ import {
 import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useGlobals } from "@/sections/useGlobals";
 import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import CustomerAutocomplete from "@/ui/Autocompletes/Customer";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
 

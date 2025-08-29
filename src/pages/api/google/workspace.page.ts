@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import workspaceService from "./_service/WorkspaceService";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { IGoogleWorkspaceIntegrationReq } from "@/services/company";
 
 import * as yup from "yup";

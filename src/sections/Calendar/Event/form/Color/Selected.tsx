@@ -3,7 +3,7 @@ import { useWatch } from "react-hook-form";
 import ColorBox from "./Box";
 import { useGetColorsQuery } from "@/services/calendar";
 import { useAuth } from "@/sections/use-auth";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 const useCurrentColor = () => {
     const { user } = useAuth();

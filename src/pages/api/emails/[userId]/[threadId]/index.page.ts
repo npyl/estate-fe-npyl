@@ -1,4 +1,4 @@
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import gmailService from "../../_service";
 import { GMailThreadToPPThread } from "@/types/email";

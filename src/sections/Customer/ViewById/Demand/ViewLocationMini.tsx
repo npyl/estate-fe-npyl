@@ -9,7 +9,7 @@ import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
 import { IGeoLocation } from "@/types/geolocation";
 import { useHumanReadableCallback } from "@/components/Location/hook";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 // TODO: reuse this
 

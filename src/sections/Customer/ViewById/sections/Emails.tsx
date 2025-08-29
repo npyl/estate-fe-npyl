@@ -1,6 +1,6 @@
 import ViewAll from "@/sections/Emails";
 import { useGetCustomerByIdQuery } from "@/services/customers";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 
 const Emails = () => {

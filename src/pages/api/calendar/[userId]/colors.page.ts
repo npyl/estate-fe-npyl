@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../_service/CalendarService";
-import toNumber from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { GColorToTCalendarColor } from "@/types/calendar/mapper";
 
 export default async function handler(
@@ -15,7 +15,8 @@ export default async function handler(
 
         const { userId } = req.query;
 
-        const iUserId = toNumber(userId);
+        const iUserId = toNumberSafe(userId);
+        if (iUserId === -1) throw new Error("Bad userId");
 
         const data = await calendarService.getColors(iUserId);
 

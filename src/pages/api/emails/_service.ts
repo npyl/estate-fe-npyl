@@ -9,7 +9,7 @@ import {
     TThreadMetadata,
     TThreadShortRes,
 } from "@/types/email";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { getAttachmentsFromMessages } from "@/types/email/mapper/attachments";
 import * as he from "html-entities";
 

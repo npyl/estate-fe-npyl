@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../../_service/CalendarService";
-import toNumber from "@/utils/toNumber";
 import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 export default async function handler(
     req: NextApiRequest,
@@ -9,9 +9,11 @@ export default async function handler(
 ) {
     try {
         const { userId } = req.query;
-        const eventId = req.query.eventId as string;
 
-        const iUserId = toNumber(userId);
+        const iUserId = toNumberSafe(userId);
+        if (iUserId === -1) throw new Error("Bad userId");
+
+        const eventId = req.query.eventId as string;
         if (!eventId) throw new Error("Undefined eventId");
 
         // DELETE

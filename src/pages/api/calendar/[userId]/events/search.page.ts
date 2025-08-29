@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../_service/CalendarService";
 import { GCalendarToTCalendarEvent } from "@/types/calendar/mapper";
-import toNumber from "@/utils/toNumber";
 import { TCalendarIdFilter } from "@/types/calendar";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 export default async function handler(
     req: NextApiRequest,
@@ -23,7 +23,8 @@ export default async function handler(
         const calendarId = url.searchParams.get("calendarId") || "";
         if (!query) throw new Error("No query!");
 
-        const iUserId = toNumber(userId);
+        const iUserId = toNumberSafe(userId);
+        if (iUserId === -1) throw new Error("Bad userId");
 
         const data = await calendarService.searchEvents(
             iUserId,

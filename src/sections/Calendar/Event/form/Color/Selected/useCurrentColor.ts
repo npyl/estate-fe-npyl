@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import { useGetColorsQuery } from "@/services/calendar";
 import { useAuth } from "@/sections/use-auth";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { CalendarEventReq } from "@/types/calendar";
 
 const useCurrentColor = () => {

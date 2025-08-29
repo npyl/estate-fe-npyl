@@ -12,7 +12,7 @@ import {
     getAllDayStartEnd,
     isAllDay as getIsAllDay,
 } from "@/components/Calendar/util";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import toLocalDate from "@/utils/toLocalDate";
 import debugLog from "@/_private/debugLog";
 

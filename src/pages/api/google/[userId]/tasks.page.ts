@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../calendar/_service/CalendarService";
 import { KanbanTaskToCalendarEvent } from "@/types/tasks/mapper";
 import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
-import toNumber from "@/utils/toNumber";
 import { IUser } from "@/types/user";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 // -----------------------------------------------------------------------
 
@@ -125,7 +125,8 @@ export default async function handler(
         if (req.method !== "POST") throw new Error("Bad method");
 
         const { userId } = req.query;
-        const iUserId = toNumber(userId);
+        const iUserId = toNumberSafe(userId);
+        if (iUserId === -1) throw new Error("Bad userId");
 
         const Authorization = req.headers.authorization;
         if (!Authorization) throw new Error("Invalid headers");

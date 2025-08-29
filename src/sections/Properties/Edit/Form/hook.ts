@@ -10,7 +10,7 @@ import {
 } from "@/sections/Properties/validators";
 import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
 import useFormPersist from "@/components/hook-form/useFormPersist";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 

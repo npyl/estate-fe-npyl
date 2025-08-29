@@ -4,8 +4,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 // ----------------------------------------------------------------------
 
-type ReturnType = boolean;
-
 type Query = "up" | "down" | "between" | "only";
 
 type Value = Breakpoint | number;
@@ -14,7 +12,7 @@ export default function useResponsive(
     query: Query,
     start?: Value,
     end?: Value
-): ReturnType {
+): boolean {
     const theme = useTheme();
 
     const mediaUp = useMediaQuery(theme.breakpoints.up(start as Value));

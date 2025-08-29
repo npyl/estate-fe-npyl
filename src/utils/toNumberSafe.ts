@@ -18,5 +18,4 @@ const toNumberSafe = (s?: string | string[]) => {
     }
 };
 
-export { toNumberSafe };
-export default toNumber;
+export default toNumberSafe;
