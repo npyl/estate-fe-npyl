@@ -9,16 +9,14 @@ const OPAQUE = {
     type: "opaque",
 };
 
-const getNetworkControl = async () => {
-    let isOnline = true;
-
-    // Mock fetch globally
-    const originalFetch = global.fetch;
-
-    global.fetch = jest.fn((url, options) => {
+const getMockFetch = (
+    isOnlineRef: { current: boolean },
+    originalFetch: typeof global.fetch
+) =>
+    jest.fn((url, options) => {
         // Check if this is the URL we want to intercept
         if (url === PING_URL) {
-            if (isOnline) {
+            if (isOnlineRef.current) {
                 // Simulate successful opaque response (crucial for no-cors mode)
                 return Promise.resolve({
                     statusText: "",
@@ -52,20 +50,4 @@ const getNetworkControl = async () => {
         }) as unknown as TExpectedResponse;
     });
 
-    const goOffline = () => {
-        isOnline = false;
-    };
-
-    const goOnline = () => {
-        isOnline = true;
-    };
-
-    // Return cleanup function along with control functions
-    const cleanup = () => {
-        global.fetch = originalFetch;
-    };
-
-    return { goOnline, goOffline, cleanup };
-};
-
-export default getNetworkControl;
+export default getMockFetch;
