@@ -23,9 +23,8 @@ interface ContainerProps extends PropsWithChildren {
 }
 
 const Container: FC<ContainerProps> = ({ threadId, children, onBack }) => {
-    const rootRef = useRef<HTMLElement>(document.body);
     const boxRef = useRef<HTMLDivElement>(null);
-    useAvailableHeight(boxRef, rootRef);
+    useAvailableHeight(boxRef);
 
     return (
         <Paper ref={boxRef} elevation={5} sx={PaperSx}>
