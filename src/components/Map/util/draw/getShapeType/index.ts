@@ -2,7 +2,7 @@ import { TPoint, TShape } from "@/types/shape";
 
 type TShapeType = "Circle" | "Rectangle" | "Polygon";
 
-const isNullPoint = (p: TPoint) => Boolean(p.x) && !p.y;
+const isNullPoint = (p: TPoint) => Boolean(p.x) && p.y === null;
 
 const isNonNullShape = (s: TShape) => {
     if (s.some(isNullPoint)) return false;
@@ -16,4 +16,5 @@ const getShapeType = (s: TShape): TShapeType | null => {
     return null;
 };
 
+export type { TShapeType };
 export default getShapeType;
