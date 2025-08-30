@@ -9,7 +9,7 @@ const baseUrl = "http://127.0.0.1:3000/__test__/customerFilters";
 
 // Helper function to get current filter state
 const getState = async (page: Page) => {
-    const stateElement = await page.getByTestId("current-state");
+    const stateElement = page.getByTestId("current-state");
     const stateText = await stateElement.textContent();
     return JSON.parse(stateText || "{}");
 };
