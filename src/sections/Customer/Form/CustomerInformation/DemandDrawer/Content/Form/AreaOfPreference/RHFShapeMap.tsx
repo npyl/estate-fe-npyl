@@ -29,6 +29,7 @@ const Render: FC<RenderProps> = ({
                 onShapesClear();
             } else {
                 const newS = drawingToPoints(s);
+                if (!newS) return;
                 onChange([...value, newS]);
             }
         },

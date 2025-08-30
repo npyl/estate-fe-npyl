@@ -20,10 +20,12 @@ const MapFilter: FC<PropsWithChildren> = ({ children }) => {
     const { setPoints, resetPoints } = useFiltersContext();
 
     const handleDraw = useCallback((shape: DrawShape | StopDraw) => {
-        if (shape) {
-            setPoints(drawingToPoints(shape));
-        } else {
+        if (!shape) {
             resetPoints();
+        } else {
+            const p = drawingToPoints(shape);
+            if (!p) return;
+            setPoints(p);
         }
     }, []);
 
