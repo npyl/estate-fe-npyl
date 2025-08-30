@@ -9,6 +9,7 @@ import useAvailableHeight from "@/hooks/useAvailableHeight";
 const StackSx: SxProps<Theme> = {
     ".MuiTablePagination-root": {
         boxShadow: 5,
+        overflow: "visible",
     },
 
     ".MuiTablePagination-selectLabel": {
@@ -33,8 +34,7 @@ interface PaginationProps
 
 const Pagination: FC<PaginationProps> = ({ children, ...props }) => {
     const rootRef = useRef<HTMLDivElement>(null);
-    const boxRef = useRef<HTMLDivElement>(null);
-    useAvailableHeight(boxRef, rootRef);
+    useAvailableHeight(rootRef);
 
     return (
         <BasePagination
@@ -46,9 +46,7 @@ const Pagination: FC<PaginationProps> = ({ children, ...props }) => {
             }}
             {...props}
         >
-            <Box ref={boxRef} overflow="hidden auto">
-                {children}
-            </Box>
+            <Box overflow="hidden auto">{children}</Box>
         </BasePagination>
     );
 };
