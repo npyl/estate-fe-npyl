@@ -1,5 +1,5 @@
 import sleep from "@/utils/sleep";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 
 export const config = {

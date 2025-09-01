@@ -1,5 +1,5 @@
 import ViewAll from "@/sections/Logs/ViewAll";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 
 const Logs = () => {

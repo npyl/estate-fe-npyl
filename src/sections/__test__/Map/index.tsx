@@ -19,7 +19,11 @@ const Tester = () => {
     const [shape, setShape] = useState<TShape>();
     const onDraw = useCallback((s: DrawShape | StopDraw) => {
         if (!s) setShape(undefined);
-        else setShape(drawingToPoints(s));
+        else {
+            const p = drawingToPoints(s);
+            if (!p) return;
+            setShape(p);
+        }
     }, []);
 
     return (

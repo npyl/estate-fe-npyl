@@ -41,7 +41,6 @@ const ViewedNotificationIcon = createSvgIcon(
             fontFamily="none"
             fontWeight="none"
             fontSize="none"
-            textAnchor="none"
             style={{ mixBlendMode: "normal" }}
         >
             <g transform="scale(6,6)">

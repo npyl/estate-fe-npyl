@@ -10,7 +10,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import RestoreButton from "./RestoreButton";
 import DeleteOrArchiveButton from "./DeleteOrArchiveButton";
 import { useRouter } from "next/router";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 const PropertyTaskButton = dynamic(() => import("./PropertyTaskButton"));
 const CustomerTaskButton = dynamic(() => import("./CustomerTaskButton"));
 

@@ -4,7 +4,7 @@ import { usePropertyPDFDownloader } from "@/services/properties";
 import { useRouter } from "next/router";
 import Skeleton from "@mui/material/Skeleton";
 import { errorToast } from "@/components/Toaster";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { LoadingButton } from "@mui/lab";
 import downloadBlob from "@/utils/downloadBlob";
 

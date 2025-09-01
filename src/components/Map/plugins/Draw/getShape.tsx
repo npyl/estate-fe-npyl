@@ -41,6 +41,7 @@ const Shape: FC<ShapeProps> = ({ s, onShapeChange }) => {
         if (isChangeable) {
             const cb = () => {
                 const newS = drawingToPoints(res);
+                if (!newS) return;
                 onShapeChange?.(s, newS);
             };
 
@@ -60,8 +61,9 @@ const Shape: FC<ShapeProps> = ({ s, onShapeChange }) => {
 
 const getShape =
     (onShapeChange?: (oldShape: TShape, newShape: TShape) => void) =>
-    (s: TShape) =>
-        <Shape key={getShapeKey(s)} s={s} onShapeChange={onShapeChange} />;
+    (s: TShape) => (
+        <Shape key={getShapeKey(s)} s={s} onShapeChange={onShapeChange} />
+    );
 
 // ---------------------------------------------------------------------------
 

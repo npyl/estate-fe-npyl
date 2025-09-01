@@ -26,7 +26,7 @@ const Select = ({ name, label, options, ...props }: SelectProps) => {
             {options.map(({ key, value }, i) => (
                 <MenuItem
                     data-testid={getOptionTestId(key)}
-                    key={i}
+                    key={key}
                     value={key}
                 >
                     {t(value)}

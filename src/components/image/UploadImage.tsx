@@ -3,7 +3,7 @@ import Image from "@/components/image";
 import { UploadImageProps } from "./types";
 import { forwardRef, useEffect, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useConditionalMemo } from "src/hooks/useConditionalMemo";
+import useConditionalMemo from "@/hooks/useConditionalMemo";
 
 interface ProgressLabelProps {
     progress: number;

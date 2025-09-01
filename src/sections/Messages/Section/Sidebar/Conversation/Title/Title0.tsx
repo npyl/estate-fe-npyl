@@ -2,7 +2,7 @@ import { useGetUserQuery } from "@/services/user";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "./Typography";
 import { FC } from "react";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 interface Title0Props {
     userId: string;

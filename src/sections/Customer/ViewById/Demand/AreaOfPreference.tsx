@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Map from "@/components/Map";
 import { useGetMunicipalitiesQuery } from "@/services/location";
 import { IDemand } from "@/types/demand";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import ViewLocationMini from "./ViewLocationMini";
 import { getShapeCenter } from "@/components/Map/util";
 import Panel from "@/components/Panel";

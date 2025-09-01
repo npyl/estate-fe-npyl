@@ -34,6 +34,11 @@ const mockUrl2 = `${mockUrl0}?shouldFail=1`;
 // ------------------------------------------------------------------------------
 
 describe("useUploadWithProgress", () => {
+    beforeEach(async () => {
+        // INFO: attach the mock APIs
+        await getNetworkControl();
+    });
+
     /**
      * Successfully upload an image file and track progress (%)
      */

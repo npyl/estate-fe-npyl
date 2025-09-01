@@ -7,7 +7,7 @@ import {
     useEditPropertyImageMutation,
 } from "@/services/properties";
 import { LanguageButton } from "@/components/LanguageButton";
-import { useConditionalMemo } from "@/hooks/useConditionalMemo";
+import useConditionalMemo from "@/hooks/useConditionalMemo";
 import usePropertyImages from "../hook";
 import {
     StyledDialog,
@@ -100,7 +100,7 @@ const Gallery: React.FC<GalleryProps> = ({
         []
     );
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (!currentImageKey) return;
 
         // Prepare Next Image to avoid jumping
@@ -114,12 +114,13 @@ const Gallery: React.FC<GalleryProps> = ({
 
         if (!nextImageKey) return;
 
-        deleteImage({
-            propertyId: +propertyId!,
+        const res = await deleteImage({
+            propertyId,
             imageKey: currentImageKey,
-        })
-            .then(() => setCurrentImageKey(nextImageKey))
-            .catch((reason) => console.error("deleteImage: ", reason));
+        });
+        if ("error" in res) return;
+
+        setCurrentImageKey(nextImageKey);
     };
 
     return (
@@ -135,89 +136,87 @@ const Gallery: React.FC<GalleryProps> = ({
                 DialogActionsComponent={StyledActions}
                 // ...
                 content={
-                    <>
-                        <Grid container spacing={1}>
-                            <Grid item xs={10}>
-                                <Carousel
-                                    onImageChange={handleImageChange}
-                                    mainLabel={t("_main_").toString()}
-                                    data={images as ICarouselImage[]}
-                                    initialIndex={carouselIndex}
-                                />
-                            </Grid>
-                            <Grid
-                                item
-                                xs={2}
-                                display="flex"
-                                flexDirection="column"
-                                gap={1}
-                            >
-                                <LanguageButton
-                                    updatesGlobalLanguage={false}
-                                    onLanguageChange={handleLanguageChange}
-                                    sx={{
-                                        alignSelf: "flex-end",
-                                        width: "max-content",
-                                    }}
-                                />
-
-                                {isLoading ? (
-                                    <>
-                                        <Skeleton width="100%" height="30px" />
-                                        <Skeleton width="100%" height="30px" />
-                                        <Skeleton width="100%" height="30px" />
-                                    </>
-                                ) : (
-                                    <>
-                                        <RHFTextField
-                                            fullWidth
-                                            label="Title"
-                                            name="title"
-                                        />
-
-                                        <DescriptionField
-                                            fullWidth
-                                            name="description"
-                                            multiline
-                                            rows={5}
-                                        />
-
-                                        <RHFRadioGroup
-                                            name="hidden"
-                                            options={VISIBILITY_OPTIONS}
-                                        />
-                                    </>
-                                )}
-
-                                {isDirty ? (
-                                    <Stack
-                                        direction="row"
-                                        justifyContent={"right"}
-                                        spacing={1}
-                                        mt={2}
-                                    >
-                                        <Button
-                                            variant="outlined"
-                                            color="secondary"
-                                            onClick={handleClear}
-                                        >
-                                            {t("Clear")}
-                                        </Button>
-
-                                        <LoadingButton
-                                            variant="contained"
-                                            color="secondary"
-                                            loading={isUpdating}
-                                            disabled={isUpdating}
-                                            onClick={handleUpdate}
-                                        >
-                                            {t("Update")}
-                                        </LoadingButton>
-                                    </Stack>
-                                ) : null}
-                            </Grid>
+                    <Grid container spacing={1}>
+                        <Grid item xs={10}>
+                            <Carousel
+                                onImageChange={handleImageChange}
+                                mainLabel={t("_main_").toString()}
+                                data={images as ICarouselImage[]}
+                                initialIndex={carouselIndex}
+                            />
                         </Grid>
-                    </>
+                        <Grid
+                            item
+                            xs={2}
+                            display="flex"
+                            flexDirection="column"
+                            gap={1}
+                        >
+                            <LanguageButton
+                                updatesGlobalLanguage={false}
+                                onLanguageChange={handleLanguageChange}
+                                sx={{
+                                    alignSelf: "flex-end",
+                                    width: "max-content",
+                                }}
+                            />
+
+                            {isLoading ? (
+                                <>
+                                    <Skeleton width="100%" height="30px" />
+                                    <Skeleton width="100%" height="30px" />
+                                    <Skeleton width="100%" height="30px" />
+                                </>
+                            ) : (
+                                <>
+                                    <RHFTextField
+                                        fullWidth
+                                        label="Title"
+                                        name="title"
+                                    />
+
+                                    <DescriptionField
+                                        fullWidth
+                                        name="description"
+                                        multiline
+                                        rows={5}
+                                    />
+
+                                    <RHFRadioGroup
+                                        name="hidden"
+                                        options={VISIBILITY_OPTIONS}
+                                    />
+                                </>
+                            )}
+
+                            {isDirty ? (
+                                <Stack
+                                    direction="row"
+                                    justifyContent={"right"}
+                                    spacing={1}
+                                    mt={2}
+                                >
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        onClick={handleClear}
+                                    >
+                                        {t("Clear")}
+                                    </Button>
+
+                                    <LoadingButton
+                                        variant="contained"
+                                        color="secondary"
+                                        loading={isUpdating}
+                                        disabled={isUpdating}
+                                        onClick={handleUpdate}
+                                    >
+                                        {t("Update")}
+                                    </LoadingButton>
+                                </Stack>
+                            ) : null}
+                        </Grid>
+                    </Grid>
                 }
                 actions={
                     <>

@@ -31,7 +31,6 @@ const LoadBalancerRedirect = () => {
         // Redirect HTTP to HTTPS, but allow localhost in production builds
         if (isHTTP() && !isLocalhost(hostname)) {
             router.replace(VALID_URL);
-            return;
         }
     }, []);
 

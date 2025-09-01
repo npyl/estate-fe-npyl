@@ -22,7 +22,7 @@ const PASSIVE = true;
  */
 type PropsWithoutDefaultValues<
     TFieldValues extends FieldValues = FieldValues,
-    TContext = any
+    TContext = any,
 > = Omit<UseFormProps<TFieldValues, TContext>, "defaultValues"> & {
     dialog?: boolean;
 };
@@ -32,7 +32,7 @@ type TReturn<TFieldValues extends FieldValues = FieldValues, TContext = any> = [
     {
         PersistNotice: ReactNode;
         persistChanges: VoidFunction;
-    }
+    },
 ];
 
 /**
@@ -64,13 +64,13 @@ type TReturn<TFieldValues extends FieldValues = FieldValues, TContext = any> = [
  */
 function useFormPersist<
     TFieldValues extends FieldValues = FieldValues,
-    TContext = any
+    TContext = any,
 >(
     storageKey: string | null,
     onSaveSuccess: VoidFunction | null,
     _props?: PropsWithoutDefaultValues<TFieldValues, TContext>
 ): TReturn<TFieldValues, TContext> {
-    const { dialog = false, ...props } = _props || {};
+    const { dialog = false, ...props } = _props ?? {};
 
     const [cookie, setStorage, removeStorage] =
         useFormStorage<TFieldValues>(storageKey);
@@ -138,7 +138,7 @@ function useFormPersist<
     // ---------------------------------------------------------------------
 
     const onChange = useCallback((key: string, value: any) => {
-        const old = temporaryChanges.current || props?.values;
+        const old = temporaryChanges.current ?? props?.values;
         temporaryChanges.current = { ...old, [key]: value } as TFieldValues;
     }, []);
     const onSubmitSuccess = useCallback(() => {

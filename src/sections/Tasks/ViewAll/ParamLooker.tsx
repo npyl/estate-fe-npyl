@@ -1,4 +1,4 @@
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback } from "react";

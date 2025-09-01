@@ -98,6 +98,8 @@ function useTimemappedEvents<TCustomProps extends object = object>(
                 all
             );
 
+            const otherProps = EventProps?.(i) ?? ({} as TCustomProps);
+
             results.push(
                 <EventComponent
                     key={event.id}
@@ -108,7 +110,7 @@ function useTimemappedEvents<TCustomProps extends object = object>(
                     onEventDragEnd={onEventDragEnd}
                     onEventResizeStart={onEventResizeStart}
                     onEventResizeEnd={onEventResizeEnd}
-                    {...(EventProps?.(i) || ({} as TCustomProps))}
+                    {...otherProps}
                 />
             );
 

@@ -5,15 +5,16 @@ import {
     TCalendarEventExtendedProperties,
     TCalendarEventPerson,
     TCalendarEventType,
+    TCalendarColor,
 } from "@/components/Calendar/types";
 import { calendar_v3 } from "@googleapis/calendar";
 import {
     getAllDayStartEnd,
     isAllDay as getIsAllDay,
 } from "@/components/Calendar/util";
-import { TCalendarColor } from "@/components/Calendar/types";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import toLocalDate from "@/utils/toLocalDate";
+import debugLog from "@/_private/debugLog";
 
 type TColorDefinition = calendar_v3.Schema$ColorDefinition;
 type TColorEntry = [string, TColorDefinition];
@@ -54,6 +55,7 @@ const extractPeople = (
 
         return people;
     } catch (ex) {
+        debugLog(ex);
         return [];
     }
 };
@@ -114,11 +116,11 @@ const GCalendarToTCalendarEvent = ({
 type TCalendarEventReq = Omit<TCalendarEvent, "id"> & { id?: string };
 
 const withGwEmail = ({ gwEmail }: TCalendarEventPerson) => Boolean(gwEmail);
-const withoutGwEmail = ({ gwEmail }: TCalendarEventPerson) => !Boolean(gwEmail);
+const withoutGwEmail = ({ gwEmail }: TCalendarEventPerson) => !gwEmail;
 const withoutGwEmailAndNonCustomer = ({
     gwEmail,
     customerId,
-}: TCalendarEventPerson) => !Boolean(gwEmail) && !Boolean(customerId);
+}: TCalendarEventPerson) => !gwEmail && !customerId;
 
 /**
  * Convert `people` field of TCalendarEvent to an entry valid for google calendar event's extendedProperties.

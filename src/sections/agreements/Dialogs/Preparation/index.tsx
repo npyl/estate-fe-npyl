@@ -27,7 +27,7 @@ import useFormPersist from "@/components/hook-form/useFormPersist";
 import { TForm } from "./types";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 import { useRouter } from "next/router";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 // -------------------------------------------------------------------
 

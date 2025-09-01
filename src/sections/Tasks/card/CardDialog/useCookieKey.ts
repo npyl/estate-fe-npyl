@@ -1,5 +1,5 @@
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 import { parseAsInteger, useQueryState } from "nuqs";
 

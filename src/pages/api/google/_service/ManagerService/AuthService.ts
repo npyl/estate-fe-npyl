@@ -5,7 +5,7 @@ import {
 } from "@/types/calendar/google";
 import { GoogleWorkspaceKeys } from "@/pages/api/google/_service/getCredentialsForUser";
 import tokenService from "./TokenStorage";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import SCOPE from "./SCOPE";
 
 /**

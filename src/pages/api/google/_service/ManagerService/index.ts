@@ -7,7 +7,7 @@ import getCredentialsForUser, {
 } from "@/pages/api/google/_service/getCredentialsForUser";
 import { OAuth2Client } from "google-auth-library";
 import AuthService from "./AuthService";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 type TUserId = number;
 type TWorkspaceDomain = string;

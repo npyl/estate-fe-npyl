@@ -6,7 +6,7 @@ type SelectProps<Value = unknown> = Omit<MuiSelectProps<Value>, "ref"> & {
     formControlProps?: FormControlProps;
 };
 
-const SelectComponent = <Value extends unknown = unknown>(
+const SelectComponent = <Value,>(
     { formControlProps, ...props }: SelectProps<Value>,
     ref: ForwardedRef<HTMLSelectElement>
 ) => (
@@ -20,7 +20,7 @@ const SelectComponent = <Value extends unknown = unknown>(
     </FormControl>
 );
 
-const Select = forwardRef(SelectComponent) as <Value = unknown>(
+const Select = forwardRef(SelectComponent) as <Value>(
     props: SelectProps<Value> & { ref?: ForwardedRef<HTMLSelectElement> }
 ) => ReactElement;
 

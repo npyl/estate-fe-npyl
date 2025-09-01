@@ -1,7 +1,7 @@
 import AuthGuard from "@/components/authentication/auth-guard";
 import BlogViewByPublicId from "@/sections/Blog/ViewById";
 import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 

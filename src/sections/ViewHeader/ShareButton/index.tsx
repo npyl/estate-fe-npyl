@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import PropertyShareButton from "./Property";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import CustomerShareButton from "./Customer";
 
 const ShareButton = () => {

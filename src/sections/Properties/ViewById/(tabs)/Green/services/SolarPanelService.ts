@@ -25,7 +25,6 @@ const getBoundingBoxAroundCoordinate = (
     const earthRadius = 6371000; // Earth's radius in meters
     // Convert center coordinates to radians
     const centerLatRadians = (center.latitude * Math.PI) / 180;
-    const centerLngRadians = (center.longitude * Math.PI) / 180;
     // Calculate the offsets in latitude and longitude for the given size
     const latOffset = (heightMeters / earthRadius) * (180 / Math.PI);
     const lngOffset =
@@ -98,7 +97,7 @@ const useSolarPanelService = () => {
     ) => {
         solar_panels.current?.forEach((polygon: any) => polygon?.setMap(null));
 
-        var solarPotential = buildingInsights.solarPotential;
+        const solarPotential = buildingInsights.solarPotential;
         let placed_panels: any[] = [];
         let widthMeters = solarPotential.panelHeightMeters;
         let heightMeters = solarPotential.panelWidthMeters;
@@ -154,7 +153,6 @@ const useSolarPanelService = () => {
                             );
 
                             objectMerged["paths"] = finalCoords;
-                            // objectMerged["visible"] = false;
                             panelsArray.push(objectMerged);
                             count++;
                         }

@@ -1,7 +1,7 @@
 import UploadImage from "@/components/image/UploadImage";
 import { useUploadFileContext } from "../context/UploadProgress";
 import React from "react";
-import { useConditionalMemo } from "@/hooks/useConditionalMemo";
+import useConditionalMemo from "@/hooks/useConditionalMemo";
 import { ImageItemProps } from "./types";
 import { styled } from "@mui/material";
 import { useTranslation } from "react-i18next";

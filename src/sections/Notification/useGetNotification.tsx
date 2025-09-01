@@ -1,5 +1,5 @@
 import { useGetNotificationByIdQuery } from "@/services/notification";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 
 const useGetNotification = () => {

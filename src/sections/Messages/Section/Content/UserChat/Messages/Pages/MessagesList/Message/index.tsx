@@ -1,5 +1,5 @@
 import { IMessageRes } from "@/types/messages";
-import { toNumberSafe } from "@/utils/toNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import SenderAvatar from "./SenderAvatar";

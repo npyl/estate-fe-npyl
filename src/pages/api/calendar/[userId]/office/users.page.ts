@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import calendarService from "../../_service/CalendarService";
-import toNumber from "@/utils/toNumber";
 import { GUserToGUserMini } from "@/types/user/google";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 export default async function handler(
     req: NextApiRequest,
@@ -10,7 +10,8 @@ export default async function handler(
     try {
         const { userId } = req.query;
 
-        const iUserId = toNumber(userId);
+        const iUserId = toNumberSafe(userId);
+        if (iUserId === -1) throw new Error("Bad userId");
 
         // GET: check if user with id `userId` is authenticated
         if (req.method === "GET") {
