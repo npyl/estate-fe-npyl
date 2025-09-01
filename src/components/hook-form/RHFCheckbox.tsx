@@ -7,7 +7,7 @@ import {
     FormControlLabelProps,
     FormGroup,
 } from "@mui/material";
-import { DefaultTFuncReturn, TFunction } from "i18next";
+import { DefaultTFuncReturn } from "i18next";
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +17,11 @@ interface RHFCheckboxProps
     label?: string | DefaultTFuncReturn;
 }
 
-export function RHFCheckbox({ name, label = "", ...other }: RHFCheckboxProps) {
+export const RHFCheckbox = ({
+    name,
+    label = "",
+    ...other
+}: RHFCheckboxProps) => {
     const { control } = useFormContext();
 
     return (
@@ -39,7 +43,7 @@ export function RHFCheckbox({ name, label = "", ...other }: RHFCheckboxProps) {
             )}
         />
     );
-}
+};
 
 // ----------------------------------------------------------------------
 
@@ -52,11 +56,11 @@ interface RHFMultiCheckboxProps
     }[];
 }
 
-export function RHFMultiCheckbox({
+export const RHFMultiCheckbox = ({
     name,
     options,
     ...other
-}: RHFMultiCheckboxProps) {
+}: RHFMultiCheckboxProps) => {
     const { control } = useFormContext();
 
     return (
@@ -97,4 +101,4 @@ export function RHFMultiCheckbox({
             }}
         />
     );
-}
+};
