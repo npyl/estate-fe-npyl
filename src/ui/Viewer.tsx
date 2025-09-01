@@ -19,11 +19,7 @@ const isViewableImage = (mimeType: string): boolean => {
 
 const isPDF = (mimeType: string) => mimeType === "application/pdf";
 
-interface UnvieweablePlaceholderProps {
-    url: string;
-}
-
-const UnvieweablePlaceholder: FC<UnvieweablePlaceholderProps> = ({ url }) => {
+const UnvieweablePlaceholder = () => {
     const { t } = useTranslation();
 
     return (
@@ -71,7 +67,7 @@ const Viewer: FC<ViewerProps> = ({ url, mimeType, style = {} }) => {
             />
         );
 
-    return <UnvieweablePlaceholder url={url} />;
+    return <UnvieweablePlaceholder />;
 };
 
 export { isViewableImage, isPDF };
