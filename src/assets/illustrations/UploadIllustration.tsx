@@ -14,7 +14,6 @@ function UploadIllustration({ ...other }: BoxProps) {
 
     const PRIMARY_DARK = theme.palette.primary.dark;
 
-    // const PRIMARY_DARKER = theme.palette.primary.darker;
     const PRIMARY_DARKER = PRIMARY_DARK;
 
     return (

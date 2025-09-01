@@ -191,7 +191,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         sm={6}
                         md={4}
                         lg={3}
-                        key={i}
+                        key={value}
                         label={label}
                         value={value}
                     />

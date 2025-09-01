@@ -1,6 +1,11 @@
-import { CSSProperties, FC } from "react";
-import { BaseCalendarYearViewProps } from "../types";
+import { ComponentType, CSSProperties, FC, useMemo } from "react";
+import { BaseCalendarCellProps, BaseCalendarYearViewProps } from "../types";
 import { EmptyCell } from "./Empty";
+
+const getCell =
+    (Cell: ComponentType<BaseCalendarCellProps>) => (monthDate: Date) => (
+        <Cell key={monthDate.toISOString()} date={monthDate} />
+    );
 
 const gridStyle: CSSProperties = {
     display: "grid",
@@ -14,15 +19,12 @@ const YearView: FC<BaseCalendarYearViewProps> = ({
 }) => {
     const year = date.getFullYear();
 
-    const months = Array.from({ length: 12 }, (_, i) => new Date(year, i, 1));
-
-    return (
-        <div style={gridStyle}>
-            {months.map((monthDate, i) => (
-                <Cell key={i} date={monthDate} />
-            ))}
-        </div>
+    const months = useMemo(
+        () => Array.from({ length: 12 }, (_, i) => new Date(year, i, 1)),
+        [year]
     );
+
+    return <div style={gridStyle}>{months.map(getCell(Cell))}</div>;
 };
 
 export default YearView;

@@ -4,12 +4,42 @@ import { useMemo } from "react";
 import useTabData from "../useTabData";
 import { IPropertyFilter } from "@/types/properties";
 
+// --------------------------------------------------------------------------------------
+
+const isProperty = (p: string) => p.startsWith("/property");
+
 const isCustomer = (p: string) =>
     p.startsWith("/customer/") || p.startsWith("/b2b/");
 const isCustomerCreate = (p: string) =>
     p.startsWith("/customer/create") || p.startsWith("/b2b/create");
 const isCustomerEdit = (p: string) =>
     p.startsWith("/customer/edit") || p.startsWith("/b2b/edit");
+
+// --------------------------------------------------------------------------------------
+
+const getPropertyRenderer = (
+    path: string,
+    hasResourceId: boolean,
+    tabData: IPropertyFilter | undefined
+) => {
+    if (path.startsWith("/property/create")) return "PROPERTY_CREATE";
+    if (path.startsWith("/property/edit")) return "PROPERTY_EDIT";
+
+    if (hasResourceId) return "PROPERTY_VIEW";
+
+    const isFilters = Boolean(tabData);
+    if (isFilters) return "PROPERTY_FITLERS";
+
+    return undefined;
+};
+
+const getCustomerRenderer = (path: string) => {
+    if (isCustomerEdit(path)) return "CUSTOMER_EDIT";
+    if (isCustomerCreate(path)) return "CUSTOMER_CREATE";
+    if (isCustomer(path)) return "CUSTOMER_VIEW";
+};
+
+// --------------------------------------------------------------------------------------
 
 const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
     const path = usePathname();
@@ -21,23 +51,13 @@ const useRenderer = (hasResourceId: boolean): TTabRenderer | undefined => {
         if (!path) return;
 
         // Property
-        if (path.startsWith("/property/create")) return "PROPERTY_CREATE";
-        if (path.startsWith("/property/edit")) return "PROPERTY_EDIT";
-        if (path.startsWith("/property")) {
-            const isFilters = Boolean(tabData);
-
-            return hasResourceId
-                ? "PROPERTY_VIEW"
-                : isFilters
-                  ? "PROPERTY_FITLERS"
-                  : undefined;
-        }
+        if (isProperty(path))
+            return getPropertyRenderer(path, hasResourceId, tabData);
 
         // Customer & B2B Customer
-        if (isCustomerEdit(path)) return "CUSTOMER_EDIT";
-        if (isCustomerCreate(path)) return "CUSTOMER_CREATE";
-        if (isCustomer(path)) return "CUSTOMER_VIEW";
+        if (isCustomer(path)) return getCustomerRenderer(path);
 
+        // Blog
         if (path.startsWith("/blog/create")) return "BLOG_POST_CREATE";
 
         if (!hasResourceId) return;

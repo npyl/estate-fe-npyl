@@ -8,7 +8,7 @@ interface ViewTitleProps {
 }
 
 const ViewTitle: FC<ViewTitleProps> = ({ conversationId }) => {
-    const { data, isLoading } = useGetConversationsQuery(undefined, {
+    const { data } = useGetConversationsQuery(undefined, {
         skip: !conversationId,
     });
 

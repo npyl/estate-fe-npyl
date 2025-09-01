@@ -98,7 +98,7 @@ const useCurrentState = (setState: (p: IFilterProps) => void): IFilterProps => {
     //  Tab's Data
     //
     const tabData = useTabData("/property");
-    const { sorting, ..._filters } = tabData || {};
+    const { sorting, ..._filters } = tabData ?? {};
     const filters = tabData
         ? (_filters as IPropertyFilter)
         : initialState.filters;

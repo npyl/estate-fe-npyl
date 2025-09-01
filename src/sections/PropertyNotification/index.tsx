@@ -14,10 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useDebounce } from "use-debounce";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-    useDeleteNotificationMutation,
-    useFilterNotificationsQuery,
-} from "@/services/notification";
+import { useFilterNotificationsQuery } from "@/services/notification";
 import { NotificationType } from "@/types/notification";
 import getBorderColor from "@/theme/borderColor";
 import Table from "../Notification/ViewAll/table";
@@ -103,10 +100,6 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
         direction: "DESC",
     });
 
-    const [deleteNotification] = useDeleteNotificationMutation();
-    const handleRemove = (id: number) => {
-        deleteNotification(id);
-    };
     return (
         <Box sx={{ width: "100%", mt: 2 }}>
             {/* {notifications?.content?.length ? ( */}

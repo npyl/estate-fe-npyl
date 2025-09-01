@@ -1,6 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-// import match from "autosuggest-highlight/match";
-// import parse from "autosuggest-highlight/parse";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { ICustomerResultResponse } from "src/types/customer";

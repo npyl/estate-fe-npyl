@@ -15,9 +15,9 @@ const FeaturesList: FC<Props> = ({ index }) => {
 
     return (
         <>
-            {parentCategories.map((e, i) => (
+            {parentCategories.map((e) => (
                 <PriorityFeatures
-                    key={`${i}_1`}
+                    key={`${index}_${e}_PriorityFeatures`}
                     index={index}
                     parentCategory={e}
                 />

@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { List, ListItem } from "src/components/List";
+import { List, ListItem } from "@/components/List";
 import PanelWithQuickView from "../PanelWithQuickView";
 import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
 
@@ -14,31 +14,29 @@ const BalconiesSection = () => {
 
     return (
         <PanelWithQuickView hideHeader label="BalconiesSection">
-            {balconies?.map((balcony, index) => {
-                return (
-                    <Box key={index} borderRadius={1}>
-                        <Typography variant="h6" p={1} px={2.5}>
-                            {t("Balcony No.")}
-                            {index + 1}
-                        </Typography>
-                        <Divider />
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} order={"row"} padding={0}>
-                                <List>
-                                    <ListItem
-                                        label={t("Living Space")}
-                                        value={balcony?.area}
-                                    />
-                                    <ListItem
-                                        label={t("Side")}
-                                        value={balcony?.side.value}
-                                    />
-                                </List>
-                            </Grid>
+            {balconies?.map((balcony, index) => (
+                <Box key={balcony.id} borderRadius={1}>
+                    <Typography variant="h6" p={1} px={2.5}>
+                        {t("Balcony No.")}
+                        {index + 1}
+                    </Typography>
+                    <Divider />
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} order={"row"} padding={0}>
+                            <List>
+                                <ListItem
+                                    label={t("Living Space")}
+                                    value={balcony?.area}
+                                />
+                                <ListItem
+                                    label={t("Side")}
+                                    value={balcony?.side.value}
+                                />
+                            </List>
                         </Grid>
-                    </Box>
-                );
-            })}
+                    </Grid>
+                </Box>
+            ))}
         </PanelWithQuickView>
     );
 };

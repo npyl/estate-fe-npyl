@@ -2,15 +2,19 @@
 
 import debugLog from "@/_private/debugLog";
 
-const toNumber = (s?: string | string[]) => {
-    if (typeof s !== "string") throw new Error("Not a string: " + s);
+const toNumber = (s: string) => {
     const res = parseInt(s, 10);
     if (isNaN(res)) throw new Error("Not containing a number: " + s);
     return res;
 };
 
-const toNumberSafe = (s?: string | string[]) => {
+/**
+ * @param s any input but we only allow "string"
+ */
+const toNumberSafe = (s?: any) => {
     try {
+        if (typeof s !== "string") return -1;
+        if (!s) return -1;
         return toNumber(s);
     } catch (ex) {
         debugLog(ex);

@@ -90,7 +90,7 @@ interface TabbedBoxProps<T = string> {
     onSelect: (s: T) => void;
 }
 
-const TabbedBox = <T extends unknown>({
+const TabbedBox = <T extends string = string>({
     disabled,
     tabs,
     selected,
@@ -102,7 +102,7 @@ const TabbedBox = <T extends unknown>({
         () =>
             tabs.map(({ label, value }, i) => (
                 <StyledTab
-                    key={i}
+                    key={value}
                     selected={selected === value} // is current tab selected?
                     label={label}
                     value={value}

@@ -9,7 +9,7 @@ interface ChipsProps {
 
 const Chips: FC<ChipsProps> = ({ chips, onDelete }) =>
     chips.map((value, i) => (
-        <Chip key={i} label={value} onDelete={() => onDelete?.(i)} />
+        <Chip key={value} label={value} onDelete={() => onDelete?.(i)} />
     ));
 
 const useRenderInput = (

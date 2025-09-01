@@ -188,9 +188,9 @@ const CustomersSearchList: FC<CustomerSearchListProps> = ({
                         {t("Customers")}
                     </Typography>
                     <Box width="100%" sx={{ overflowX: "hidden" }}>
-                        {all.map((option, index) => (
+                        {all.map((option) => (
                             <CustomerSearchItem
-                                key={index}
+                                key={option.id}
                                 option={option}
                                 searchText={searchString}
                                 onClick={onItemClick}
@@ -219,9 +219,9 @@ const CustomersSearchList: FC<CustomerSearchListProps> = ({
                         {t("Customers")}
                     </Typography>
                     <Box width="100%" sx={{ overflowX: "hidden" }}>
-                        {all.map((option, index) => (
+                        {all.map((option) => (
                             <CustomerSearchItem
-                                key={index}
+                                key={option.id}
                                 option={option}
                                 searchText={searchString}
                                 onClick={onItemClick}

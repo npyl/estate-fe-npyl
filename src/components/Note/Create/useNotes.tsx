@@ -28,24 +28,6 @@ const useNotes = (
             const isUserChange = lastUserId !== userId;
             lastUserId = userId;
 
-            // Check if next message is from the same user
-            const isLastInGroup =
-                idx === notes.length - 1 ||
-                notes[idx + 1].creator.id !== userId;
-
-            // Calculate position class
-            let positionClass;
-
-            if (isUserChange && isLastInGroup) {
-                positionClass = "standalone";
-            } else if (isUserChange) {
-                positionClass = "first-in-group";
-            } else if (isLastInGroup) {
-                positionClass = "last-in-group";
-            } else {
-                positionClass = "middle-in-group";
-            }
-
             // Create style override for avatar and fullname visibility
             const avatarDisplay = isUserChange ? "flex" : "none";
             const fullnameDisplay = isUserChange ? "block" : "none";

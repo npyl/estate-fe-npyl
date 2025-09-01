@@ -13,7 +13,6 @@ const AirQualityDetails: React.FC<Props> = ({ center }) => {
     const { data: airQualityData, isLoading } = useGetAirQualityQuery(center);
 
     const primaryIndex = airQualityData?.indexes[0]; // Assuming the first index is primary
-    const progress = Math.min((primaryIndex?.aqi ?? 0) / 500, 1);
 
     // Define icons for each health recommendation
     const findAqi = airQualityData?.indexes.find((item) => item.code == "uaqi");

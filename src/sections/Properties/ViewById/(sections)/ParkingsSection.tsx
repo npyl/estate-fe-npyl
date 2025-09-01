@@ -1,5 +1,5 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { List, ListItem } from "src/components/List";
+import { List, ListItem } from "@/components/List";
 import { useTranslation } from "react-i18next";
 import PanelWithQuickView from "../PanelWithQuickView";
 import useGetProperty from "@/sections/Properties/hooks/useGetProperty";
@@ -16,7 +16,7 @@ const ParkingsSection = () => {
     return (
         <PanelWithQuickView hideHeader label="ParkingsSection">
             {parkings?.map((parking, index) => (
-                <Box key={index}>
+                <Box key={parking.id}>
                     <Box
                         sx={{
                             px: 3,

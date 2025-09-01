@@ -92,7 +92,7 @@ const Multiple = ({ label, name }: MultipleProps) => {
                 <Stack spacing={1} width={1}>
                     {values.map((_, i) => (
                         <RemovableRHFTextField
-                            key={i}
+                            key={`${name}.${i}`}
                             fullWidth
                             name={`${name}.${i}`}
                             isRemoveDisabled={values.length === 1}

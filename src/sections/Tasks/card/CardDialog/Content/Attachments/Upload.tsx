@@ -39,7 +39,7 @@ const UploadTaskAttachment = ({
         [onDropAccepted]
     );
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         disabled,
         multiple: true,

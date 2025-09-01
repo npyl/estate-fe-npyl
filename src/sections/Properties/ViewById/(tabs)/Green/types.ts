@@ -149,3 +149,10 @@ export interface MinorPanelInfo {
         text: string;
     };
 }
+
+export type {
+    SolarPanel,
+    RoofSegmentSummary,
+    SolarPanelConfig,
+    SolarPotential,
+};

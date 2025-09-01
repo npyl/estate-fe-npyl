@@ -14,11 +14,12 @@ import useCustomerForm from "./useCustomerForm";
 import FormBottomBar from "@/ui/FormBottomBar";
 import SaveButton from "./SaveButton";
 import dynamic from "next/dynamic";
+import isFalsy from "@/utils/isFalsy";
 const B2BMembers = dynamic(() => import("./B2BMembers"));
 
 const B2BSection = () => {
     const isB2B = useWatch<ICustomerYup>({ name: "b2b" });
-    if (!Boolean(isB2B)) return null;
+    if (isFalsy(isB2B)) return null;
     return <B2BMembers />;
 };
 

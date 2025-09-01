@@ -33,33 +33,31 @@ const CategoriesSelect: FC<Props> = ({ index }) => {
         [propertyEnums]
     );
 
+    if (parentCategories.length === 0) return null;
+
     return (
         <>
-            {parentCategories.length > 0 ? (
-                <>
-                    <Divider />
-                    <Grid container spacing={1.5}>
-                        {parentCategories.map((e, i) => {
-                            // Find the name (value) of the selected parent category using its key (e)
-                            const pc = parentCategoryEnum.find(
-                                (item) => item.key === e
-                            )?.value;
+            <Divider />
+            <Grid container spacing={1.5}>
+                {parentCategories.map((e) => {
+                    // Find the name (value) of the selected parent category using its key (e)
+                    const pc = parentCategoryEnum.find(
+                        (item) => item.key === e
+                    )?.value;
 
-                            const name = filterName("categories", index);
+                    const name = filterName("categories", index);
 
-                            return (
-                                <Grid key={i} item xs={6}>
-                                    <MultiSelect
-                                        name={name}
-                                        label={`${t("Category")} (${pc})`}
-                                        options={subCategoriesMap[e]}
-                                    />
-                                </Grid>
-                            );
-                        })}
-                    </Grid>
-                </>
-            ) : null}
+                    return (
+                        <Grid key={pc} item xs={6}>
+                            <MultiSelect
+                                name={name}
+                                label={`${t("Category")} (${pc})`}
+                                options={subCategoriesMap[e]}
+                            />
+                        </Grid>
+                    );
+                })}
+            </Grid>
         </>
     );
 };

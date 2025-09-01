@@ -142,8 +142,8 @@ const BasicSection = () => {
             <List sx={{ p: 0 }}>
                 {fields
                     .slice(startIndex, startIndex + itemsPerColumn)
-                    .map((field, i) => (
-                        <BasicDetailItem field={field} key={i} />
+                    .map((field) => (
+                        <BasicDetailItem field={field} key={field} />
                     ))}
             </List>
         </Grid>

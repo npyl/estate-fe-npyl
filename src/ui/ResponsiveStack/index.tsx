@@ -1,16 +1,21 @@
 import Stack, { StackProps } from "@mui/material/Stack";
 import React, {
+    FC,
+    useRef,
     ReactNode,
     useCallback,
     useLayoutEffect,
     useMemo,
     useState,
 } from "react";
-import { FC, useRef } from "react";
 import Item from "./Item";
 import NotFittingButton from "./NotFittingButton";
 
 // -------------------------------------------------------------------------------
+
+// INFO: Use React element's key if available, fallback to generated key
+const getKey = (c: any) =>
+    React.isValidElement(c) && c.key ? c.key : `item-${Date.now()}`;
 
 interface IFullChild {
     el: HTMLDivElement;
@@ -35,8 +40,8 @@ const ResponsiveStack: FC<ResponsiveStackProps> = ({ children, ...props }) => {
     );
     const Children = useMemo(
         () =>
-            React.Children.map(children, (c, i) => (
-                <Item onRef={onChildRef(c)} key={i} c={c} />
+            React.Children.map(children, (c) => (
+                <Item onRef={onChildRef(c)} key={getKey(c)} c={c} />
             )),
         [children]
     );

@@ -75,7 +75,7 @@ export const EditArea = () => {
 export const EditBedrooms = () => {
     const { t } = useTranslation();
 
-    const [value, onChange, onClear] = useValueChange("bedrooms");
+    const [value, onChange] = useValueChange("bedrooms");
 
     return (
         <DefaultOrEdit label={t("Bedrooms")} name="bedrooms">
@@ -95,7 +95,7 @@ export const EditState = () => {
     const enums = useGlobals();
     const stateEnum = enums?.property?.state || [];
 
-    const [value, onChange, onClear] = useValueChange("state");
+    const [value, onChange] = useValueChange("state");
 
     return (
         <DefaultOrEdit label={t("State")} name="state">
@@ -103,9 +103,9 @@ export const EditState = () => {
                 value={value}
                 onChange={(e) => onChange(e.target.value as string)}
             >
-                {stateEnum.map((item, index) => (
-                    <MenuItem key={index} value={item.key}>
-                        {item.value}
+                {stateEnum.map(({ key, value }) => (
+                    <MenuItem key={key} value={key}>
+                        {value}
                     </MenuItem>
                 ))}
             </StyledSelect>

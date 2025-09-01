@@ -9,7 +9,7 @@ interface FullNameProps {
 
 const FullName: FC<FullNameProps> = ({ userId }) => {
     const { data, isLoading } = useGetUserQuery(userId);
-    const { firstName, lastName } = data || {};
+    const { firstName, lastName } = data ?? {};
     const fullname = `${firstName || ""} ${lastName || ""}`;
 
     if (isLoading)

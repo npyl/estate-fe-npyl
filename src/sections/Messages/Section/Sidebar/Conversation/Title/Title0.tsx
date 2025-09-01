@@ -12,7 +12,7 @@ const Title0: FC<Title0Props> = ({ userId }) => {
     const iUserId = toNumberSafe(userId);
 
     const { data, isLoading } = useGetUserQuery(iUserId);
-    const { firstName, lastName } = data || {};
+    const { firstName, lastName } = data ?? {};
     const fullname = `${firstName || ""} ${lastName || ""}`;
 
     if (isLoading) return <Skeleton width="70%" height="35px" variant="text" />;

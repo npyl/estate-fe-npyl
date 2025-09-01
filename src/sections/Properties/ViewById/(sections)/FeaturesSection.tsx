@@ -88,8 +88,8 @@ const Features = () => {
     ) => (
         <Grid item xs={12} sm={6} md={4}>
             <List>
-                {fields.slice(from, to).map((field, i) => (
-                    <PropertyFeaturesItem field={field} key={i} />
+                {fields.slice(from, to).map((field) => (
+                    <PropertyFeaturesItem field={field} key={field} />
                 ))}
             </List>
         </Grid>

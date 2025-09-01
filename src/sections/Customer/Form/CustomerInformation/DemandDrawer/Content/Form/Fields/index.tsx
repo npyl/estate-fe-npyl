@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-
 import { Grid } from "@mui/material";
 import { FC, useMemo } from "react";
 import LabelSelect from "./LabelSelect";
@@ -11,6 +10,7 @@ import DemandAutocomplete from "./Autocomplete";
 import { useTranslation } from "react-i18next";
 import { demandName, filterName } from "../util";
 import useDemandEnums from "../useDemandEnums";
+import getIndexMapped from "@/utils/getIndexMapped";
 
 const getFIELDS = (
     t: TranslationType,
@@ -20,37 +20,38 @@ const getFIELDS = (
     furnishingEnum: KeyValue[],
     stateEnum: KeyValue[],
     timeframeEnum: KeyValue[]
-) => [
-    <DemandAutocomplete index={index} />,
+) =>
+    getIndexMapped([
+        <DemandAutocomplete index={index} />,
 
-    <MultiSelect
-        name={filterName("parentCategories", index)}
-        label={t("Parent Category")}
-        options={parentCategoryEnum}
-    />,
+        <MultiSelect
+            name={filterName("parentCategories", index)}
+            label={t("Parent Category")}
+            options={parentCategoryEnum}
+        />,
 
-    <MultiSelect
-        name={filterName("furnished", index)}
-        label={t("Furnishing")}
-        options={furnishingEnum}
-    />,
+        <MultiSelect
+            name={filterName("furnished", index)}
+            label={t("Furnishing")}
+            options={furnishingEnum}
+        />,
 
-    <MultiSelect
-        name={filterName("states", index)}
-        label={t("State")}
-        options={stateEnum}
-    />,
+        <MultiSelect
+            name={filterName("states", index)}
+            label={t("State")}
+            options={stateEnum}
+        />,
 
-    <LabelSelect index={index} />,
+        <LabelSelect index={index} />,
 
-    <Select
-        isEnum
-        name={demandName("timeframe", index)}
-        label={t("Time Frame")}
-        options={timeframeEnum}
-        defaultValue=""
-    />,
-];
+        <Select
+            isEnum
+            name={demandName("timeframe", index)}
+            label={t("Time Frame")}
+            options={timeframeEnum}
+            defaultValue=""
+        />,
+    ]);
 
 interface Props {
     index: number;
@@ -84,15 +85,11 @@ const Fields: FC<Props> = ({ index }) => {
         ]
     );
 
-    return (
-        <>
-            {FIELDS.map((f, i) => (
-                <Grid key={i} item xs={12} sm={6}>
-                    {f}
-                </Grid>
-            ))}
-        </>
-    );
+    return FIELDS.map((f) => (
+        <Grid key={f.id} item xs={12} sm={6}>
+            {f.item}
+        </Grid>
+    ));
 };
 
 export default Fields;

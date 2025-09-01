@@ -12,6 +12,7 @@ import {
 import toNumberSafe from "@/utils/toNumberSafe";
 import { getAttachmentsFromMessages } from "@/types/email/mapper/attachments";
 import * as he from "html-entities";
+import isFalsy from "@/utils/isFalsy";
 
 /**
  * @param snippet any string
@@ -391,7 +392,7 @@ class GmailService {
             ],
         });
 
-        if (!Boolean(res?.data?.id)) throw "Bad thread Id";
+        if (isFalsy(res?.data?.id)) throw "Bad thread Id";
 
         return res?.data;
     }

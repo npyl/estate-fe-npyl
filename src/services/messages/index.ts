@@ -25,11 +25,6 @@ interface IConversationReq {
 
 interface IConversationRes {
     id: string;
-
-    // unused:
-    // type: "DIRECT";
-    // createdAt: "2025-01-08T12:21:57.330Z";
-    // updatedAt: "2025-01-08T12:21:57.330Z";
 }
 
 export const messages = createApi({

@@ -10,10 +10,9 @@ import {
     RHFOnlyNumbers,
     RHFSwitch,
     Select,
-} from "src/components/hook-form";
+} from "@/components/hook-form";
 import { TranslationType } from "src/types/translation";
 import Rent from "../../_general/Rent";
-import { useGetPropertyByIdQuery } from "@/services/properties";
 import useEnums from "./useEnums";
 import CategorySelect from "./CategorySelect";
 import RHFCode from "../../_general/RHFCode";
@@ -55,15 +54,11 @@ const Checkboxes = () => {
     const { t } = useTranslation();
     const CHECKBOXES = useMemo(() => getCHECKBOXES(t), [t]);
 
-    return (
-        <>
-            {CHECKBOXES.map((c, i) => (
-                <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
-                    <RHFCheckbox {...c} />
-                </Grid>
-            ))}
-        </>
-    );
+    return CHECKBOXES.map((c, i) => (
+        <Grid key={c.name} item xs={12} sm={6} md={4} lg={3}>
+            <RHFCheckbox {...c} />
+        </Grid>
+    ));
 };
 
 const StateSelect = () => {
@@ -89,7 +84,7 @@ const BasicForLandSection: React.FC<any> = () => {
     return (
         <Panel
             label={t("BasicSection")}
-            endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />} // TODO: iOS switch
+            endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />}
         >
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>

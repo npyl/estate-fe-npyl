@@ -53,8 +53,6 @@ const useDraggable = (
             const eventElement = eventRef.current;
             if (!grid || !eventElement) return;
 
-            const gridRect = grid.getBoundingClientRect();
-
             // Get cell width information
             const dayWidth = cellsRef.current?.at(0)?.width ?? 100;
 

@@ -6,7 +6,7 @@ const useTaskFromCustomer = () => {
     const { customer } = useGetCustomer();
 
     const getTask = useCallback(() => {
-        const { id, firstName, lastName } = customer || {};
+        const { id, firstName, lastName } = customer ?? {};
 
         const name = `${firstName || ""} ${lastName || ""}`;
 

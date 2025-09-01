@@ -7,7 +7,7 @@ import getMember from "./getMember";
 const B2BMembers = () => {
     const { t } = useTranslation();
     const { customer } = useGetCustomer();
-    const { members } = customer || {};
+    const { members } = customer ?? {};
     return (
         <ViewPanel label={t("Members")}>
             <Stack maxHeight="500px" overflow="hidden auto">

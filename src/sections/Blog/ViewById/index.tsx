@@ -3,6 +3,7 @@ import Content from "./Content";
 import Form from "./Form";
 import { useGetBlogPostByIdQuery } from "@/services/blog";
 import Actions from "./Actions";
+import isFalsy from "@/utils/isFalsy";
 
 interface Props {
     postId?: number;
@@ -10,7 +11,7 @@ interface Props {
 
 const BlogViewByPublicId: FC<Props> = ({ postId }) => {
     const { data } = useGetBlogPostByIdQuery(postId!, {
-        skip: !Boolean(postId),
+        skip: isFalsy(postId),
     });
     return (
         <Form data={data}>

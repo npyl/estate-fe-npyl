@@ -74,7 +74,7 @@ export default function StackedAreas() {
 
     const handleCategorySelect = (event: SelectChangeEvent<string>) => {
         const selectedKey = event.target.value;
-        const selectedItem = subCategoriesMap[parentCategory!]?.find(
+        const selectedItem = subCategoriesMap[parentCategory]?.find(
             (item) => item.key === selectedKey
         );
 
@@ -153,7 +153,7 @@ export default function StackedAreas() {
                         disabled={!parentCategory}
                     >
                         <MenuItem value="">{t("Category")}</MenuItem>
-                        {subCategoriesMap[parentCategory!]?.map((item) => (
+                        {subCategoriesMap[parentCategory]?.map((item) => (
                             <MenuItem key={item.key} value={item.key}>
                                 {item.value}
                             </MenuItem>
@@ -173,62 +173,64 @@ export default function StackedAreas() {
                 </Stack>
             </Stack>
 
-            {belowSm ? (
-                isFetching ? (
-                    <Stack px={2} direction="row" spacing={2} overflow="auto">
-                        {[...Array(1)].map((_, i) => (
-                            <Skeleton
-                                key={i}
-                                variant="rectangular"
-                                animation="wave"
-                                width={300}
-                                height={200}
-                                sx={{ borderRadius: 2 }}
-                            />
-                        ))}
-                    </Stack>
-                ) : (
-                    <Stack px={2} direction="row" spacing={2} overflow="auto">
-                        {filteredProperties?.map((property) => (
-                            <Box
-                                flex={1}
-                                key={`${property.id}-${timeframe}`}
+            {belowSm && isFetching ? (
+                <Stack px={2} direction="row" spacing={2} overflow="auto">
+                    {[...Array(1)].map((_, i) => (
+                        <Skeleton
+                            key={i}
+                            variant="rectangular"
+                            animation="wave"
+                            width={300}
+                            height={200}
+                            sx={{ borderRadius: 2 }}
+                        />
+                    ))}
+                </Stack>
+            ) : null}
+
+            {belowSm && !isFetching ? (
+                <Stack px={2} direction="row" spacing={2} overflow="auto">
+                    {filteredProperties?.map((property) => (
+                        <Box
+                            flex={1}
+                            key={`${property.id}-${timeframe}`}
+                            sx={{
+                                position: "relative",
+                            }}
+                            width={1}
+                            height={1}
+                        >
+                            <PropertyCard item={property} />
+                            <Stack
+                                position="absolute"
+                                direction="column"
+                                top={5}
+                                right={2}
                                 sx={{
-                                    position: "relative",
+                                    paddingLeft: 1,
+                                    paddingRight: 1,
+                                    borderRadius: 15,
                                 }}
-                                width={1}
-                                height={1}
                             >
-                                <PropertyCard item={property} />
-                                <Stack
-                                    position="absolute"
-                                    direction="column"
-                                    top={5}
-                                    right={2}
-                                    sx={{
-                                        paddingLeft: 1,
-                                        paddingRight: 1,
-                                        borderRadius: 15,
-                                    }}
-                                >
+                                <LabelComponent
+                                    text={`${t("Total Views")}: ${
+                                        (property as any).visitors ?? 0
+                                    }`}
+                                />
+                                {timeframe !== "ALL_TIME" && (
                                     <LabelComponent
-                                        text={`${t("Total Views")}: ${
-                                            (property as any).visitors ?? 0
+                                        text={`${getViewLabel()}: ${
+                                            (property as any).views ?? 0
                                         }`}
                                     />
-                                    {timeframe !== "ALL_TIME" && (
-                                        <LabelComponent
-                                            text={`${getViewLabel()}: ${
-                                                (property as any).views ?? 0
-                                            }`}
-                                        />
-                                    )}
-                                </Stack>
-                            </Box>
-                        ))}
-                    </Stack>
-                )
-            ) : isFetching ? (
+                                )}
+                            </Stack>
+                        </Box>
+                    ))}
+                </Stack>
+            ) : null}
+
+            {!belowSm && isFetching ? (
                 <Grid container spacing={2} my={2}>
                     {[...Array(12)].map((_, i) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
@@ -242,7 +244,9 @@ export default function StackedAreas() {
                         </Grid>
                     ))}
                 </Grid>
-            ) : (
+            ) : null}
+
+            {!belowSm && !isFetching ? (
                 <Grid container spacing={2} my={2}>
                     {filteredProperties?.map((property) => (
                         <Grid
@@ -286,7 +290,7 @@ export default function StackedAreas() {
                         </Grid>
                     ))}
                 </Grid>
-            )}
+            ) : null}
         </>
     );
 }

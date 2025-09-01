@@ -108,7 +108,6 @@ const useListingContentOperations: TUseContentOperations = (
             }
             // 4.
             if (srcDndId === 2 && dstDndId === 1) {
-                // alert("4h");
                 const draggedItemId = privateKeys[srcIdx];
                 updatedItems.splice(dstIdx, 0, draggedItemId);
             }

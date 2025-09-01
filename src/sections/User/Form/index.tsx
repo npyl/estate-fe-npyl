@@ -6,34 +6,7 @@ import Content from "./Content";
 import Dialog from "@/components/Dialog";
 import Actions from "./Actions";
 import { FC } from "react";
-
-// {openReset && (
-//     <Dialog open={openReset} onClose={() => setOpenReset(false)}>
-//         <DialogTitle>{t("Reset Password")}</DialogTitle>
-//         <Box p={1}>
-//             <TextField
-//                 label={"Password"}
-//                 value={newPassword}
-//                 onChange={(e) => setNewPassword(e.target.value)}
-//             />
-//         </Box>
-//         <DialogActions>
-//             <Button
-//                 onClick={() => setOpenReset(false)}
-//                 color="primary"
-//             >
-//                 {t("Cancel")}
-//             </Button>
-//             <Button
-//                 disabled={isResetLoading}
-//                 onClick={handleResetPassword}
-//                 color="secondary"
-//             >
-//                 {t("Reset")}
-//             </Button>
-//         </DialogActions>
-//     </Dialog>
-// )}
+import isFalsy from "@/utils/isFalsy";
 
 interface TitleProps {
     userId?: number;
@@ -41,7 +14,7 @@ interface TitleProps {
 
 const Title: FC<TitleProps> = ({ userId }) => {
     const { t } = useTranslation();
-    return t(Boolean(userId) ? "User Update" : "Create User");
+    return t(isFalsy(userId) ? "Create User" : "User Update");
 };
 
 interface UserFormProps {

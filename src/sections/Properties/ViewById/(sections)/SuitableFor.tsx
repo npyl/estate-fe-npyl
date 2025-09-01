@@ -35,8 +35,8 @@ const SuitableFor = () => {
         return (
             <Grid item xs={12} sm={6}>
                 <List>
-                    {fields.slice(from, to).map((field, i) => (
-                        <SuitableForItem field={field} key={i} />
+                    {fields.slice(from, to).map((field) => (
+                        <SuitableForItem field={field} key={field} />
                     ))}
                 </List>
             </Grid>

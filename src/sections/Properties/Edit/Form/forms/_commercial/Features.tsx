@@ -93,7 +93,7 @@ const Features: React.FC = () => {
                         sm={6}
                         md={4}
                         lg={3}
-                        key={i}
+                        key={value}
                         label={label}
                         value={value}
                     />

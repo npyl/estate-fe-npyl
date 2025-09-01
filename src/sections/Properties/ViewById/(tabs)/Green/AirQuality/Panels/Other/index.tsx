@@ -26,8 +26,8 @@ const OtherPollutants: React.FC<OtherPollutantsProps> = ({
                 </>
             ) : null}
 
-            {pollutants?.map((p, i) => (
-                <PollutantItem key={i} p={p} />
+            {pollutants?.map((p) => (
+                <PollutantItem key={p.code} p={p} />
             ))}
         </Panel>
     );

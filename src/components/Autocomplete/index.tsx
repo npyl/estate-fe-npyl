@@ -66,13 +66,10 @@ const Autocomplete = <
     );
 
     const calculated = useMemo(() => {
-        if (Array.isArray(value)) {
-            return props.options?.filter(({ id }) =>
-                (value as number[]).includes(id)
-            );
-        }
+        if (Array.isArray(value))
+            return props.options?.filter(({ id }) => value.includes(id));
 
-        return props.options?.find(({ id }) => value === id) || null!;
+        return props.options?.find(({ id }) => value === id) ?? null!;
     }, [props.options, value]);
 
     const onChange = useOnChange<T, Multiple, DisableClearable, FreeSolo>(

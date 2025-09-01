@@ -122,7 +122,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
                 </Grid>
 
                 {FEATURES.map(({ name, label }, i) => (
-                    <Grid key={i} item xs={12} sm={6}>
+                    <Grid key={name} item xs={12} sm={6}>
                         <RHFCheckbox name={name} label={label} />
                     </Grid>
                 ))}
