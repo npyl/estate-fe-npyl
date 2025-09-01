@@ -5,8 +5,8 @@ import { TListingTab } from "./types";
 import { styled } from "@mui/material/styles";
 import Tabs from "./Tabs";
 import Content from "./Content";
-import useArrayState from "@/sections/Properties/Edit/Form/forms/_general/Images/SeeMore/useArrayState";
-import useRefState from "@/hooks/useRefState";
+import useArrayState from "./useArrayState";
+import useRefState from "./useRefState";
 import ListingControls from "./ListingControls";
 import DialogTitle from "./DialogTitle";
 
