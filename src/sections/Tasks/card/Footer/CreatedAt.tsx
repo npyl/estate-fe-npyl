@@ -1,9 +1,8 @@
 import { TODAY } from "@/components/BaseCalendar/constants";
 import useCalendarLocale from "@/hooks/useDateLocale";
-import useWidthObserver from "@/hooks/useWidthObserver";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FC, forwardRef, useCallback, useState } from "react";
+import { FC, forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 
 const CreatedAtIcon = () => (
@@ -46,14 +45,6 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
         const date = new Date(createdAt).toDateString();
         const isToday = date === TODAY.toDateString();
 
-        const [isSmall, setSmall] = useState(false);
-
-        const handleWidth = useCallback((w: number) => {
-            if (w < 60) setSmall(true);
-        }, []);
-
-        const { onRef } = useWidthObserver(ref, handleWidth);
-
         const label = createdAt
             ? isToday
                 ? t("today")
@@ -65,7 +56,7 @@ const ResponsiveTypography = forwardRef<HTMLDivElement, Props>(
             : "-";
 
         return (
-            <Typography ref={onRef} variant="body2">
+            <Typography ref={ref} variant="body2">
                 {label}
             </Typography>
         );

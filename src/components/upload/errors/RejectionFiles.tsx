@@ -28,7 +28,7 @@ export default function RejectionFiles({ fileRejections }: Props) {
             }}
         >
             {fileRejections.map(({ file, errors }) => {
-                const { path, size } = fileData(file);
+                const { path } = fileData(file);
 
                 return (
                     <Box key={path} sx={{ my: 1 }}>

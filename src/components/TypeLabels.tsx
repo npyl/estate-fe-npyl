@@ -1,8 +1,7 @@
 import { Box, BoxProps } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Label, LabelColor } from "@/components/Label";
-import useResponsive from "src/hooks/useResponsive";
+import { Label } from "@/components/Label";
 
 interface TypeProps extends BoxProps {
     forceTruncate?: boolean;
@@ -46,8 +45,6 @@ export const TypeLabels = ({
         }),
         [seller, lessor, leaser, buyer]
     );
-
-    const belowSm = useResponsive("down", "sm");
 
     return (
         <Box

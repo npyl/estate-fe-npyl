@@ -13,7 +13,7 @@ interface Props {
 const AgreementItems: React.FC<Props> = ({ search }) => {
     const pagination = usePagination();
 
-    const { data, isLoading } = useSearchAgreementsQuery({
+    const { data } = useSearchAgreementsQuery({
         search,
         page: pagination.page,
         pageSize: PAGE_SIZE,

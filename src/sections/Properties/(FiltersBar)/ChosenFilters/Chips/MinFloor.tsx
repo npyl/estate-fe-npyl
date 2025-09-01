@@ -1,6 +1,5 @@
 import { Chip } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import useEnums from "../../useEnums";
 import ChipLabel from "@/ui/Filters/ChipLabel";
 import getEnumLabel from "./util";
@@ -10,7 +9,6 @@ import {
 } from "@/sections/Properties/FiltersContext";
 
 const MinFloorChip = () => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const { minFloorEnum } = useEnums();

@@ -1,8 +1,7 @@
-import { MenuItem } from "@mui/material";
 import { StyledOutlinedInput } from "@/sections/DataGrids/BulkEditDrawer/style";
-import { Checkbox, Select, SelectChangeEvent } from "@mui/material";
+import { MenuItem, Checkbox, Select, SelectChangeEvent } from "@mui/material";
 import { Label } from "@/components/Label";
-import { useGetLabelsQuery } from "src/services/labels";
+import { useGetLabelsQuery } from "@/services/labels";
 import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useTranslation } from "react-i18next";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
@@ -16,7 +15,7 @@ interface EditLabelsProps {
 const EditLabels = ({ variant }: EditLabelsProps) => {
     const { t } = useTranslation();
 
-    const [value, onChange, onClear] = useValueChange("labels");
+    const [value, onChange] = useValueChange("labels");
 
     const { data: allLabels } = useGetLabelsQuery();
 

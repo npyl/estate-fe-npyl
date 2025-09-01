@@ -21,14 +21,10 @@ const Content: FC<ContentProps> = ({ valuation }) => {
         minArea,
         averageArea,
         maxArea,
-        propertyMinArea,
-        propertyMaxArea,
         // ...
         minPrice,
         averagePrice,
         maxPrice,
-        propertyMinPrice,
-        propertyMaxPrice,
     } = valuation;
 
     return (

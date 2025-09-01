@@ -17,7 +17,7 @@ export default async function handler(
         if (iUserId === -1) throw "Bad userId";
 
         const _body = req.body as TThreadMessageReq;
-        const { to, subject, body } = _body;
+        const { to, subject } = _body;
 
         if (!to) throw "To is required";
         if (!subject) throw "Subject is required";
