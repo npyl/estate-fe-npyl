@@ -2,19 +2,17 @@ import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "@/types/KeyValue";
 import { Select } from "src/components/hook-form";
-import { useWatch } from "react-hook-form";
 import { useGlobals } from "@/sections/useGlobals";
 
 interface Props {
     name: string;
+    parentCategory: string;
 }
 
-const RHFCategorySelect: FC<Props> = ({ name }) => {
+const RHFCategorySelect: FC<Props> = ({ name, parentCategory }) => {
     const { t } = useTranslation();
 
     const propertyEnums = useGlobals()?.property;
-
-    const parentCategory = useWatch({ name: "parentCategory" }) || "";
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -29,7 +27,7 @@ const RHFCategorySelect: FC<Props> = ({ name }) => {
     );
 
     const categories = useMemo(
-        () => subCategoriesMap[parentCategory!] || [],
+        () => subCategoriesMap[parentCategory] || [],
         [subCategoriesMap, parentCategory]
     );
 
