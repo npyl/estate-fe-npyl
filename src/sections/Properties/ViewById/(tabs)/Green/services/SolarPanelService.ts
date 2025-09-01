@@ -1,7 +1,14 @@
-import { useRef } from "react";
-import { BuildingInsights, MinorPanelInfo } from "../types";
+import { useCallback, useRef } from "react";
+import {
+    BuildingInsights,
+    MinorPanelInfo,
+    RoofSegmentSummary,
+    SolarPanel,
+    SolarPanelConfig,
+    SolarPotential,
+} from "../types";
 
-const renderPolygon = (panel: any, mapRef: any) => {
+const renderPolygon = (mapEl: google.maps.Map) => (panel: any) => {
     const polygon = new google.maps.Polygon({
         paths: panel.paths,
         visible: panel.visible,
@@ -12,7 +19,7 @@ const renderPolygon = (panel: any, mapRef: any) => {
         strokeWeight: 1,
     });
 
-    polygon.setMap(mapRef);
+    polygon.setMap(mapEl);
 
     return polygon;
 };
@@ -86,8 +93,130 @@ const rotatePolygon = (
     return rotatedPolygonCoords;
 };
 
+const getBoundBox = (
+    widthMeters: number,
+    heightMeters: number,
+    objectMerged: MergedObject,
+    solarPotential: SolarPotential
+) => {
+    if (objectMerged.orientation === "PORTRAIT") {
+        const heightMeters = solarPotential.panelHeightMeters;
+        const widthMeters = solarPotential.panelWidthMeters;
+        return getBoundingBoxAroundCoordinate(
+            objectMerged.center,
+            widthMeters,
+            heightMeters
+        );
+    }
+
+    return getBoundingBoxAroundCoordinate(
+        objectMerged.center,
+        widthMeters,
+        heightMeters
+    );
+};
+
+type MergedObject = SolarPanel &
+    RoofSegmentSummary & {
+        paths: any;
+    };
+
+const getPanelsForSum =
+    (
+        widthMeters: number,
+        heightMeters: number,
+        LIMIT_COUNT: number,
+        solarPotential: SolarPotential,
+        projection: any,
+        // ...
+        placed_panels: any[],
+        panelsArray: any[],
+        count: number
+    ) =>
+    (s: RoofSegmentSummary) => {
+        const segmentIndex = s.segmentIndex;
+        const panelsCount = s.panelsCount;
+        const panels = solarPotential.solarPanels.filter(
+            (p) => p.segmentIndex === segmentIndex
+        );
+
+        for (let i = 0; i < panels.length; i++) {
+            if (count >= LIMIT_COUNT) return;
+
+            if (i < panelsCount) {
+                let objectMerged: MergedObject = {
+                    ...panels[i],
+                    ...s,
+                    paths: [],
+                };
+
+                if (
+                    !placed_panels.some((e) => e.center === objectMerged.center)
+                ) {
+                    placed_panels.push(objectMerged);
+
+                    const boundBox = getBoundBox(
+                        widthMeters,
+                        heightMeters,
+                        objectMerged,
+                        solarPotential
+                    );
+
+                    const rotationCenter = {
+                        lat: objectMerged.center.latitude,
+                        lng: objectMerged.center.longitude,
+                    };
+
+                    const finalCoords = rotatePolygon(
+                        boundBox,
+                        rotationCenter,
+                        objectMerged.azimuthDegrees,
+                        projection
+                    );
+
+                    objectMerged["paths"] = finalCoords;
+                    panelsArray.push(objectMerged);
+                    count++;
+                }
+            }
+        }
+    };
+
+const getPanelsForConfig =
+    (
+        widthMeters: number,
+        heightMeters: number,
+        LIMIT_COUNT: number,
+        solarPotential: SolarPotential,
+        projection: any,
+        // ...
+        placed_panels: any[],
+        panelsArray: any[],
+        count: number
+    ) =>
+    (config: SolarPanelConfig) => {
+        const sums = config.roofSegmentSummaries;
+        sums.forEach(
+            getPanelsForSum(
+                widthMeters,
+                heightMeters,
+                LIMIT_COUNT,
+                solarPotential,
+                projection,
+                // ...
+                placed_panels,
+                panelsArray,
+                count
+            )
+        );
+    };
+
 const useSolarPanelService = () => {
     const solar_panels = useRef<google.maps.Polygon[]>();
+
+    const clearPolygons = useCallback(() => {
+        solar_panels.current?.forEach((polygon: any) => polygon?.setMap(null));
+    }, []);
 
     const plotSolar = (
         buildingInsights: BuildingInsights,
@@ -95,75 +224,31 @@ const useSolarPanelService = () => {
         LIMIT_COUNT: number,
         mapRef: any
     ) => {
-        solar_panels.current?.forEach((polygon: any) => polygon?.setMap(null));
+        clearPolygons();
 
         const solarPotential = buildingInsights.solarPotential;
+        const widthMeters = solarPotential.panelHeightMeters;
+        const heightMeters = solarPotential.panelWidthMeters;
+
         let placed_panels: any[] = [];
-        let widthMeters = solarPotential.panelHeightMeters;
-        let heightMeters = solarPotential.panelWidthMeters;
         let count = 0;
         let panelsArray: any = [];
 
-        solarPotential.solarPanelConfigs.forEach((config, i: any) => {
-            config.roofSegmentSummaries.forEach((s: any) => {
-                const segmentIndex = s.segmentIndex;
-                const panelsCount = s.panelsCount;
-                const panels = solarPotential.solarPanels.filter(
-                    (p) => p.segmentIndex === segmentIndex
-                );
-                for (let i = 0; i < panels.length; i++) {
-                    if (count >= LIMIT_COUNT) return;
-                    if (i < panelsCount) {
-                        const objectMerged = { ...panels[i], ...s };
-
-                        if (
-                            !placed_panels.some(
-                                (e) => e.center === objectMerged.center
-                            )
-                        ) {
-                            placed_panels.push(objectMerged);
-
-                            let boundBox;
-                            if (objectMerged.orientation === "PORTRAIT") {
-                                let heightMeters =
-                                    solarPotential.panelHeightMeters;
-                                let widthMeters =
-                                    solarPotential.panelWidthMeters;
-                                boundBox = getBoundingBoxAroundCoordinate(
-                                    objectMerged.center,
-                                    widthMeters,
-                                    heightMeters
-                                );
-                            } else {
-                                boundBox = getBoundingBoxAroundCoordinate(
-                                    objectMerged.center,
-                                    widthMeters,
-                                    heightMeters
-                                );
-                            }
-                            let rotationCenter = {
-                                lat: objectMerged.center.latitude,
-                                lng: objectMerged.center.longitude,
-                            };
-                            const finalCoords = rotatePolygon(
-                                boundBox,
-                                rotationCenter,
-                                objectMerged.azimuthDegrees,
-                                projection
-                            );
-
-                            objectMerged["paths"] = finalCoords;
-                            panelsArray.push(objectMerged);
-                            count++;
-                        }
-                    }
-                }
-            });
-        });
-
-        solar_panels.current = panelsArray.map((panel: any) =>
-            renderPolygon(panel, mapRef)
+        solarPotential.solarPanelConfigs.forEach(
+            getPanelsForConfig(
+                widthMeters,
+                heightMeters,
+                LIMIT_COUNT,
+                solarPotential,
+                projection,
+                // ...
+                placed_panels,
+                panelsArray,
+                count
+            )
         );
+
+        solar_panels.current = panelsArray.map(renderPolygon(mapRef));
     };
 
     const getMinorPanelInfo = (
