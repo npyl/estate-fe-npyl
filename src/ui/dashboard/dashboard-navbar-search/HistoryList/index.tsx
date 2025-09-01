@@ -79,8 +79,8 @@ const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
 
         return (
             <List sx={ListSx}>
-                {searchHistory?.map(({ term, date }, index) => (
-                    <ListItem key={index} disablePadding>
+                {searchHistory?.map(({ term, date }) => (
+                    <ListItem key={date} disablePadding>
                         <ListItemButton onClick={() => onSelect(term)}>
                             <Stack
                                 direction="row"

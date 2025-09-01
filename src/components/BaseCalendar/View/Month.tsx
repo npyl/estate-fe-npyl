@@ -1,5 +1,5 @@
-import { CSSProperties, FC } from "react";
-import { BaseCalendarMonthViewProps } from "../types";
+import { ComponentType, CSSProperties, FC } from "react";
+import { BaseCalendarCellProps, BaseCalendarMonthViewProps } from "../types";
 import { EmptyCell } from "./Empty";
 
 const gridStyle: CSSProperties = {
@@ -10,7 +10,17 @@ const gridStyle: CSSProperties = {
 
 const DAYS_IN_WEEK = 7;
 
-const getDays = (date: Date) => {
+interface IDay {
+    date: Date;
+    isCurrentMonth: boolean;
+}
+
+interface IAllDays {
+    weekDays: Date[];
+    calendarDays: IDay[];
+}
+
+const getDays = (date: Date): IAllDays => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
@@ -43,6 +53,21 @@ const getDays = (date: Date) => {
     return { weekDays, calendarDays };
 };
 
+const getHeadCell =
+    (HeadCell: ComponentType<BaseCalendarCellProps>) => (day: Date) => (
+        <HeadCell key={day.toISOString()} date={day} />
+    );
+
+const getDayCell =
+    (
+        Cell: ComponentType<BaseCalendarCellProps>,
+        PlaceholderCell: ComponentType<BaseCalendarCellProps>
+    ) =>
+    ({ date, isCurrentMonth }: IDay) => {
+        const Component = isCurrentMonth ? Cell : PlaceholderCell;
+        return <Component key={date.toISOString()} date={date} />;
+    };
+
 const MonthView: FC<BaseCalendarMonthViewProps> = ({
     date,
     HeadCell = EmptyCell,
@@ -54,18 +79,10 @@ const MonthView: FC<BaseCalendarMonthViewProps> = ({
     return (
         <div style={gridStyle}>
             {/* Heads */}
-            {weekDays.map((day) => (
-                <HeadCell key={day.toISOString()} date={day} />
-            ))}
+            {weekDays.map(getHeadCell(HeadCell))}
 
             {/* Actual Cells */}
-            {calendarDays.map(({ date, isCurrentMonth }, index) =>
-                isCurrentMonth ? (
-                    <Cell key={`cell-${index}`} date={date} />
-                ) : (
-                    <PlaceholderCell key={`empty-${index}`} date={date} />
-                )
-            )}
+            {calendarDays.map(getDayCell(Cell, PlaceholderCell))}
         </div>
     );
 };

@@ -31,8 +31,8 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
             defaultValue={[]}
             renderValue={renderValue}
         >
-            {options.map(({ key, value }, i) => (
-                <MenuItem key={i} value={key}>
+            {options.map(({ key, value }) => (
+                <MenuItem key={key} value={key}>
                     <Checkbox checked={values?.indexOf(key) > -1} />
                     {value}
                 </MenuItem>

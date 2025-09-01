@@ -61,7 +61,7 @@ const SegmentPicker: FC<SegmentPickerProps> = ({
         <SegmentBar>
             {segments.map((color, index) => (
                 <ColorSegment
-                    key={index}
+                    key={color}
                     selected={selectedSegment === index}
                     sx={{ backgroundColor: color }}
                     onClick={() => handleSegmentSelect(index, color)}
