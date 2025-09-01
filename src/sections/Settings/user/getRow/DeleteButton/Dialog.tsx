@@ -25,7 +25,7 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ userId, onClose }) => {
         onClose();
     }, [userId, transferId]);
 
-    const Actions = Boolean(transferId) ? (
+    const Actions = isFalsy(transferId) ? undefined : (
         <LoadingButton
             disabled={isLoading}
             loading={isLoading}
@@ -35,7 +35,7 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ userId, onClose }) => {
         >
             {t("Delete")}
         </LoadingButton>
-    ) : undefined;
+    );
 
     return (
         <ConfirmDialog
