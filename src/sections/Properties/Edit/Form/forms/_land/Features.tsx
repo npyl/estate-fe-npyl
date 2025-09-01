@@ -47,7 +47,7 @@ const Features: React.FC = () => {
                         xs={12}
                         sm={6}
                         md={4}
-                        key={i}
+                        key={value}
                         label={label}
                         value={value}
                     />

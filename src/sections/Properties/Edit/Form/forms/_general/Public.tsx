@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Panel from "src/components/Panel";
-import { RHFCheckbox } from "src/components/hook-form/RHFCheckbox";
-import { TranslationType } from "src/types/translation";
+import Panel from "@/components/Panel";
+import { RHFCheckbox } from "@/components/hook-form/RHFCheckbox";
+import { TranslationType } from "@/types/translation";
 
 const getFEATURES = (t: TranslationType) => [
     {
@@ -44,9 +44,9 @@ const Public = () => {
     return (
         <Panel label={t("Public Features")}>
             <Grid container spacing={1}>
-                {FEATURES.map(({ label, value }, i) => (
-                    <Grid item key={i} xs={12} sm={6} md={4}>
-                        <RHFCheckbox name={value} label={label} key={i} />
+                {FEATURES.map(({ label, value }) => (
+                    <Grid item key={value} xs={12} sm={6} md={4}>
+                        <RHFCheckbox name={value} label={label} />
                     </Grid>
                 ))}
             </Grid>

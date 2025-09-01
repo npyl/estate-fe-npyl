@@ -39,9 +39,9 @@ const CustomerInformation = () => {
     return (
         <Panel label={t(label)} endNode={<B2bSwitch />}>
             <Grid container spacing={2} p={1.5}>
-                {FIELDS.map((f, i) => (
-                    <Grid key={i} item xs={12} sm={6}>
-                        {f}
+                {FIELDS.map((f) => (
+                    <Grid key={f.id} item xs={12} sm={6}>
+                        {f.item}
                     </Grid>
                 ))}
 

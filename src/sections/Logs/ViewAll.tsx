@@ -77,8 +77,8 @@ const Content = () => {
                         spacing: 1,
                     }}
                 >
-                    {content.map((log, index) => (
-                        <LogCard key={index} log={log} />
+                    {content.map((log) => (
+                        <LogCard key={log.createdAt} log={log} />
                     ))}
                 </Pagination>
             ) : null}

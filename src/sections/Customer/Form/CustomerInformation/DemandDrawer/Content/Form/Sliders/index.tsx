@@ -22,15 +22,11 @@ const Sliders: FC<SliderProps> = ({ index }) => {
         [t, index, stepValue]
     );
 
-    return (
-        <>
-            {SLIDERS.map((s, i) => (
-                <Grid key={i} xs={12} sm={6} item>
-                    {s}
-                </Grid>
-            ))}
-        </>
-    );
+    return SLIDERS.map((s) => (
+        <Grid key={s.id} xs={12} sm={6} item>
+            {s.item}
+        </Grid>
+    ));
 };
 
 export default Sliders;

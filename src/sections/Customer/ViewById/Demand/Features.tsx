@@ -82,7 +82,10 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     OTHER: ["Panoramic View", "Facade", "Loading Dock", "Veranda", "View"],
 };
 
-const Features: React.FC<FeaturesProps> = ({ features, parentCategories }) => {
+const Features: React.FC<FeaturesProps> = ({
+    features,
+    parentCategories = [],
+}) => {
     const { t } = useTranslation();
 
     const renderThirdOfFields = (
@@ -93,20 +96,22 @@ const Features: React.FC<FeaturesProps> = ({ features, parentCategories }) => {
         <Grid item xs={6} sm={6}>
             <List>
                 {fields.slice(from, to).map((field, i) => (
-                    <PropertyFeaturesItem field={field} key={i} />
+                    <PropertyFeaturesItem field={field} key={field} />
                 ))}
             </List>
         </Grid>
     );
 
-    const propertyFeatures = (category: ParentCategory) => {
+    const propertyFeatures = (categoryPair: KeyValue<string>) => {
+        const category = categoryPair.key as ParentCategory;
+
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
 
         const third = Math.ceil(fieldsForCategory.length / 3);
 
         return (
-            <Grid container>
+            <>
                 {renderThirdOfFields(fieldsForCategory, 0, third)}
                 {renderThirdOfFields(fieldsForCategory, third, 2 * third)}
                 {renderThirdOfFields(
@@ -114,7 +119,7 @@ const Features: React.FC<FeaturesProps> = ({ features, parentCategories }) => {
                     2 * third,
                     fieldsForCategory.length
                 )}
-            </Grid>
+            </>
         );
     };
 
@@ -422,14 +427,7 @@ const Features: React.FC<FeaturesProps> = ({ features, parentCategories }) => {
                     </Box>
                     <Divider />
                     <Grid container>
-                        {Array.isArray(parentCategories) &&
-                            parentCategories.map((categoryObj, index) => (
-                                <React.Fragment key={index}>
-                                    {propertyFeatures(
-                                        categoryObj.key as ParentCategory
-                                    )}
-                                </React.Fragment>
-                            ))}
+                        {parentCategories.map(propertyFeatures)}
                     </Grid>
                 </Paper>
             </Grid>

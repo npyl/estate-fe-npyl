@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { Grid } from "@mui/material";
 import * as React from "react";
 import { IGlobalPropertyDetails } from "src/types/global";
@@ -8,6 +9,7 @@ import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
 import { KeyValue } from "src/types/KeyValue";
+import getIndexMapped from "@/utils/getIndexMapped";
 
 const getFIELDS = (
     t: TranslationType,
@@ -15,46 +17,47 @@ const getFIELDS = (
     frameType: KeyValue[],
     panelGlassType: KeyValue[],
     floorType: KeyValue[]
-) => [
-    <RHFOnlyNumbers
-        label={t("Display Window Length")}
-        name="technicalFeatures.displayWindowsLength"
-        adornment="m"
-    />,
+) =>
+    getIndexMapped([
+        <RHFOnlyNumbers
+            label={t("Display Window Length")}
+            name="technicalFeatures.displayWindowsLength"
+            adornment="m"
+        />,
 
-    <RHFOnlyNumbers
-        fullWidth
-        label={t("Entrances")}
-        name="technicalFeatures.entrances"
-    />,
+        <RHFOnlyNumbers
+            fullWidth
+            label={t("Entrances")}
+            name="technicalFeatures.entrances"
+        />,
 
-    <Select
-        isEnum
-        label={t("Furnished")}
-        name="technicalFeatures.furnished"
-        options={furnished}
-    />,
-    <Select
-        isEnum
-        label={t("Frame Type")}
-        name="technicalFeatures.frameType"
-        options={frameType}
-    />,
-    <Select
-        isEnum
-        label={t("Pane Glass Type")}
-        name="technicalFeatures.paneGlassType"
-        options={panelGlassType}
-    />,
+        <Select
+            isEnum
+            label={t("Furnished")}
+            name="technicalFeatures.furnished"
+            options={furnished}
+        />,
+        <Select
+            isEnum
+            label={t("Frame Type")}
+            name="technicalFeatures.frameType"
+            options={frameType}
+        />,
+        <Select
+            isEnum
+            label={t("Pane Glass Type")}
+            name="technicalFeatures.paneGlassType"
+            options={panelGlassType}
+        />,
 
-    <Select
-        isEnum
-        fullWidth
-        label={t("Floor Type")}
-        name="technicalFeatures.floorType"
-        options={floorType}
-    />,
-];
+        <Select
+            isEnum
+            fullWidth
+            label={t("Floor Type")}
+            name="technicalFeatures.floorType"
+            options={floorType}
+        />,
+    ]);
 
 const getFEATURES = (t: TranslationType) => [
     {
@@ -146,13 +149,13 @@ const TechnicalFeaturesAndInterior: React.FC = () => {
     return (
         <Panel label={t("Technical Features And Interior")}>
             <Grid container spacing={2}>
-                {FIELDS.map((f, i) => (
-                    <Grid key={i} item xs={12} md={6}>
-                        {f}
+                {FIELDS.map((f) => (
+                    <Grid key={f.id} item xs={12} md={6}>
+                        {f.item}
                     </Grid>
                 ))}
                 {FEATURES.map(({ name, label }, i) => (
-                    <Grid key={i} item xs={12} sm={6}>
+                    <Grid key={name} item xs={12} sm={6}>
                         <RHFCheckbox name={name} label={label} />
                     </Grid>
                 ))}

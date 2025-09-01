@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { Grid } from "@mui/material";
 import * as React from "react";
 import { useMemo } from "react";
@@ -7,6 +8,7 @@ import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { useGlobals } from "@/sections/useGlobals";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "src/types/translation";
+import getIndexMapped from "@/utils/getIndexMapped";
 
 const useEnums = () => {
     const data = useGlobals();
@@ -32,51 +34,52 @@ const getFIELDS = (
     accessibility: KeyValue[],
     landUse: KeyValue[],
     zoneType: KeyValue[]
-) => [
-    <Select label={t("Floor")} name="details.floor" options={floors} />,
-    <RHFOnlyNumbers
-        fullWidth
-        label={t("Layers")}
-        name="details.layers"
-        placeholder="1,2,3..."
-    />,
-    <RHFOnlyNumbers
-        fullWidth
-        label={t("Number of WC")}
-        name="details.wc"
-        placeholder="1,2,3..."
-    />,
-    <RHFOnlyNumbers
-        fullWidth
-        label={t("Bathrooms")}
-        name="details.bathrooms"
-        placeholder="1,2,3..."
-    />,
-    <Select
-        isEnum
-        label={t("Accessibility")}
-        name={"details.accessibility"}
-        options={accessibility}
-    />,
-    <Select
-        isEnum
-        label={t("Land Use")}
-        name={"details.landUse"}
-        options={landUse}
-    />,
-    <Select
-        isEnum
-        label={t("Zone")}
-        name="details.zoneType"
-        options={zoneType}
-    />,
-    <RHFOnlyNumbers
-        fullWidth
-        label={t("Rooms")}
-        name="details.rooms"
-        placeholder="1,2,3..."
-    />,
-];
+) =>
+    getIndexMapped([
+        <Select label={t("Floor")} name="details.floor" options={floors} />,
+        <RHFOnlyNumbers
+            fullWidth
+            label={t("Layers")}
+            name="details.layers"
+            placeholder="1,2,3..."
+        />,
+        <RHFOnlyNumbers
+            fullWidth
+            label={t("Number of WC")}
+            name="details.wc"
+            placeholder="1,2,3..."
+        />,
+        <RHFOnlyNumbers
+            fullWidth
+            label={t("Bathrooms")}
+            name="details.bathrooms"
+            placeholder="1,2,3..."
+        />,
+        <Select
+            isEnum
+            label={t("Accessibility")}
+            name={"details.accessibility"}
+            options={accessibility}
+        />,
+        <Select
+            isEnum
+            label={t("Land Use")}
+            name={"details.landUse"}
+            options={landUse}
+        />,
+        <Select
+            isEnum
+            label={t("Zone")}
+            name="details.zoneType"
+            options={zoneType}
+        />,
+        <RHFOnlyNumbers
+            fullWidth
+            label={t("Rooms")}
+            name="details.rooms"
+            placeholder="1,2,3..."
+        />,
+    ]);
 
 const Description: React.FC = () => {
     const { t } = useTranslation();
@@ -90,9 +93,9 @@ const Description: React.FC = () => {
     return (
         <Panel label={t("DetailsSection")}>
             <Grid container spacing={2}>
-                {FEILDS.map((f, i) => (
-                    <Grid key={i} item xs={12} sm={6}>
-                        {f}
+                {FEILDS.map((f) => (
+                    <Grid key={f.id} item xs={12} sm={6}>
+                        {f.item}
                     </Grid>
                 ))}
 
