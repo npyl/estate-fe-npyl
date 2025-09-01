@@ -5,6 +5,7 @@ import { useDeleteUserMutation } from "@/services/user";
 import ConfirmDialog from "@/ui/confirm-dialog";
 import { LoadingButton } from "@mui/lab";
 import AssigneeAutocomplete from "@/ui/Autocompletes/Assignee";
+import isFalsy from "@/utils/isFalsy";
 
 interface DeleteDialogProps {
     userId: number;
@@ -19,7 +20,7 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ userId, onClose }) => {
     const [transferId, setTransferId] = useState<number>();
 
     const onDelete = useCallback(async () => {
-        if (!Boolean(transferId)) return;
+        if (isFalsy(transferId)) return;
         await deleteUser({ userId, transferId: transferId! });
         onClose();
     }, [userId, transferId]);

@@ -1,4 +1,5 @@
 import { IPropertyReq } from "@/types/properties";
+import isFalsy from "@/utils/isFalsy";
 import { NextRequest, NextResponse } from "next/server";
 
 const baseUrl = `${process.env.BACKEND_API_URL}/property`;
@@ -27,7 +28,7 @@ export default async function handler(req: NextRequest) {
         if (!Authorization) throw "Bad token";
 
         const { id, generate, ...body } = (await req.json()) as IPropertyReq;
-        if (!Boolean(id)) throw "Bad id";
+        if (isFalsy(id)) throw "Bad id";
 
         //
         // Edit Property

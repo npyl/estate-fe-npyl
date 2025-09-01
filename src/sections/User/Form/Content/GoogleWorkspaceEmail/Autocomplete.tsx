@@ -9,7 +9,7 @@ import { SxProps, Theme } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Avatar from "@/components/Avatar";
-import { FC, forwardRef, useCallback, useMemo } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetUsersQuery } from "@/services/calendar";
 import { useAuth } from "@/sections/use-auth";
@@ -112,7 +112,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         }, [gwUsers, findPPUserWithGoogleWorkspaceEmail]);
 
         const value = useMemo(
-            () => gwUsers?.find(({ id }) => id === _value) || null!,
+            () => gwUsers?.find(({ id }) => id === _value) ?? null!,
             [_value, gwUsers]
         );
 

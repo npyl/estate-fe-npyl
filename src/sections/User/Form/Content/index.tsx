@@ -7,6 +7,7 @@ import { IUser } from "@/types/user";
 import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
 import { useAuth } from "@/sections/use-auth";
 import useToggle from "@/hooks/useToggle";
+import isFalsy from "@/utils/isFalsy";
 
 const PasswordField = () => {
     const { t } = useTranslation();
@@ -110,7 +111,7 @@ const Content: FC<ContentProps> = ({ user }) => {
                         label={t("Last Name")}
                     />
 
-                    {!Boolean(user) ? <PasswordField /> : null}
+                    {isFalsy(user) ? <PasswordField /> : null}
 
                     <RHFTextField
                         required

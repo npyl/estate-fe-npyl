@@ -2,6 +2,7 @@ import CustomersIcon from "@/assets/icons/customers";
 import { useGetCustomerByIdQuery } from "@/services/customers";
 import { FC, SVGProps } from "react";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import isFalsy from "@/utils/isFalsy";
 
 interface IconProps extends SVGProps<SVGSVGElement> {
     resourceId?: number;
@@ -9,7 +10,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 
 const ViewIcon: FC<IconProps> = ({ resourceId }) => {
     const { data } = useGetCustomerByIdQuery(resourceId!, {
-        skip: !Boolean(resourceId),
+        skip: isFalsy(resourceId),
     });
 
     const isB2B = Boolean(data?.b2b);

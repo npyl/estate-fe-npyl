@@ -6,7 +6,7 @@ const B2BMembers = dynamic(() => import("./B2BMembers"));
 
 const InformationSection = () => {
     const { customer } = useGetCustomer();
-    const { members } = customer || {};
+    const { members } = customer ?? {};
     const hasMembers = members?.length && members?.length > 0;
     return (
         <Stack spacing={1}>

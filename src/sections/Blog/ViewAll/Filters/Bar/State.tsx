@@ -35,8 +35,7 @@ const State = () => {
         setPublished,
     } = useFiltersContext();
 
-    const published =
-        _published === undefined ? NOT_SELECTED_VALUE : _published;
+    const published = _published ?? NOT_SELECTED_VALUE;
 
     const onChange = useCallback((e: SelectChangeEvent<boolean>) => {
         const v = e.target.value;

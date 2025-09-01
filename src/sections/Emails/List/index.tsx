@@ -22,10 +22,8 @@ const List = () => {
         userId: user?.id!,
     });
 
-    const { threads, nextPageToken, resultSizeEstimate } = data || {};
-    const totalItems = Boolean(resultSizeEstimate)
-        ? resultSizeEstimate!
-        : PAGE_SIZE;
+    const { threads, nextPageToken, resultSizeEstimate } = data ?? {};
+    const totalItems = resultSizeEstimate ?? PAGE_SIZE;
 
     const pagination = useGmailPagination(nextPageToken, setPageToken);
 

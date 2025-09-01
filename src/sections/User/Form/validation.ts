@@ -1,3 +1,4 @@
+import isFalsy from "@/utils/isFalsy";
 import { string, object, StringSchema } from "yup";
 
 const numberString = (label: string): StringSchema =>
@@ -16,7 +17,7 @@ export const Schema = object().shape({
 
     // INFO: Require a password ONLY when we are creating a user!
     password: string().when("id", {
-        is: (id?: number) => !Boolean(id),
+        is: (id?: number) => isFalsy(id),
         then: (schema) =>
             schema
                 .matches(

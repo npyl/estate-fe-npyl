@@ -34,7 +34,7 @@ const userByIdUrl = `${process.env.BACKEND_API_URL}/users`;
 
 const getGoogleUserKey = async (Authorization: string, ids?: number[]) => {
     const userId = Array.isArray(ids) ? ids[0] : undefined;
-    if (!userId) return "";
+    if (userId === undefined) return "";
 
     try {
         const res = await fetch(`${userByIdUrl}/${userId}`, {

@@ -22,7 +22,7 @@ const ListManagerItem: FC<ListManagerItemProps> = ({
     const { t } = useTranslation();
 
     const { data } = useGetUserQuery(managerId, { skip: managerId === -1 });
-    const { firstName, lastName } = data || {};
+    const { firstName, lastName } = data ?? {};
     const fullname =
         firstName || lastName ? `${firstName || ""} ${lastName || ""}` : "-";
 

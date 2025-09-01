@@ -5,6 +5,7 @@ import useOnRouteChange from "./useOnRouteChange";
 import useRenderer from "./useRenderer";
 import { useRouter } from "next/router";
 import { isSameTabOrg } from "../useTabState";
+import isFalsy from "@/utils/isFalsy";
 
 const SHOULD_UPDATE_DATA = false;
 
@@ -13,7 +14,9 @@ const useTabPusher = (
     setTabPath: (p: string, newP: string) => void
 ) => {
     const resourceId = useResourceId();
-    const renderer = useRenderer(Boolean(resourceId));
+
+    const hasResourceId = !isFalsy(resourceId);
+    const renderer = useRenderer(hasResourceId);
 
     const _initialPath = useRouter().asPath;
     const oldPath = useRef(_initialPath);

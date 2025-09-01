@@ -40,7 +40,7 @@ const ListOwnerItem: FC<ListOwnerItemProps> = ({
     const { t } = useTranslation();
 
     const { data } = useGetCustomerByIdQuery(ownerId, { skip: ownerId === -1 });
-    const { firstName, lastName } = data || {};
+    const { firstName, lastName } = data ?? {};
     const fullname =
         firstName || lastName ? `${firstName || ""} ${lastName || ""}` : "-";
 

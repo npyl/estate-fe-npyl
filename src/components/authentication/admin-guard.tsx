@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/sections/use-auth";
 import { useLazyIsAdminQuery } from "src/services/user";
 import AuthGuard from "./auth-guard";
+import isFalsy from "@/utils/isFalsy";
+import debugLog from "@/_private/debugLog";
 
 const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
@@ -20,7 +22,7 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
                 if (!isAuthenticated) return;
 
                 // Not logged in...
-                if (!Boolean(user?.id)) throw new Error("Bad user");
+                if (isFalsy(user?.id)) throw new Error("Bad user");
 
                 const isAdmin = await checkIsAdmin(user?.id!).unwrap();
 
@@ -29,6 +31,7 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
                 // Not an admin; throw so we can redirect
                 if (!isAdmin) throw new Error("Not an admin");
             } catch (ex) {
+                debugLog(ex);
                 router.push("/401");
             }
         };
