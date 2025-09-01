@@ -83,8 +83,8 @@ const TechnicalFeatures = () => {
     ) => (
         <Grid item xs={12} sm={6} md={4}>
             <List>
-                {fields.slice(from, to).map((field, i) => (
-                    <TechnicalFeatureItem field={field} key={i} />
+                {fields.slice(from, to).map((field) => (
+                    <TechnicalFeatureItem field={field} key={field} />
                 ))}
             </List>
         </Grid>

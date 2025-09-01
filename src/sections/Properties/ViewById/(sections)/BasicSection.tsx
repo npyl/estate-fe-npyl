@@ -134,8 +134,8 @@ const BasicSection = () => {
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={12} sm={6}>
             <List sx={{ p: 0 }}>
-                {fields.slice(from, to).map((field, i) => (
-                    <BasicDetailItem field={field} key={i} />
+                {fields.slice(from, to).map((field) => (
+                    <BasicDetailItem field={field} key={field} />
                 ))}
             </List>
         </Grid>

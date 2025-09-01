@@ -59,8 +59,6 @@ const ConstructionSection = () => {
 
     const construction = data?.construction;
 
-    if (data?.parentCategory.key === "LAND") return null;
-
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -68,8 +66,8 @@ const ConstructionSection = () => {
     ) => (
         <Grid item xs={12} sm={6} md={4}>
             <List>
-                {fields.slice(from, to).map((field, i) => (
-                    <ConstuctionItem field={field} key={i} />
+                {fields.slice(from, to).map((field) => (
+                    <ConstuctionItem field={field} key={field} />
                 ))}
             </List>
         </Grid>
@@ -187,6 +185,9 @@ const ConstructionSection = () => {
         }
         return null;
     };
+
+    if (data?.parentCategory.key === "LAND") return null;
+
     return (
         <PanelWithQuickView label="ConstructionSection">
             {propertyConstruction(data?.parentCategory.key as ParentCategory)}

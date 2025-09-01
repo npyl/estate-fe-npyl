@@ -50,8 +50,8 @@ const DistanceSection = () => {
         return (
             <Grid item xs={12} sm={6}>
                 <List>
-                    {fields.slice(from, to).map((field, i) => (
-                        <DistancesItem field={field} key={i} />
+                    {fields.slice(from, to).map((field) => (
+                        <DistancesItem field={field} key={field} />
                     ))}
                 </List>
             </Grid>

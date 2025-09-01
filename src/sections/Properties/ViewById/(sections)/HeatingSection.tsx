@@ -47,14 +47,12 @@ const HeatingSection = () => {
     const { t } = useTranslation();
 
     const heating = property?.heatingAndEnergy;
-    if (!heating) return null;
-    if (property.parentCategory.key === "Land") return null;
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={12} sm={6}>
             <List>
-                {fields.slice(from, to).map((field, i) => (
-                    <HeatingItem field={field} key={i} />
+                {fields.slice(from, to).map((field) => (
+                    <HeatingItem field={field} key={field} />
                 ))}
             </List>
         </Grid>
@@ -148,6 +146,9 @@ const HeatingSection = () => {
         }
         return null;
     };
+
+    if (!heating) return null;
+    if (property.parentCategory.key === "Land") return null;
 
     return (
         <PanelWithQuickView label="HeatingSection">

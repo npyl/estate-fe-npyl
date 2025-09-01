@@ -82,8 +82,8 @@ const DetailsSection = () => {
     ) => (
         <Grid item xs={12} sm={6} md={4}>
             <List>
-                {fields.slice(from, to).map((field, index) => (
-                    <PropertyDescriptionItem field={field} key={index} />
+                {fields.slice(from, to).map((field) => (
+                    <PropertyDescriptionItem field={field} key={field} />
                 ))}
             </List>
         </Grid>
