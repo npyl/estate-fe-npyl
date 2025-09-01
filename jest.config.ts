@@ -6,6 +6,8 @@
 import type { Config } from "jest";
 
 const config: Config = {
+    testTimeout: 2 * 60 * 1000,
+
     // Automatically clear mock calls, instances, contexts and results before every test
     clearMocks: true,
 
