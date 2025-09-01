@@ -1,5 +1,4 @@
-import type { ListProps } from "@mui/material";
-import { List, ListSubheader } from "@mui/material";
+import { List, ListProps } from "@mui/material";
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import DashboardSidebarItem from "./SidebarItem";
@@ -113,25 +112,7 @@ export const DashboardSidebarSection: FC<DashboardSidebarSectionProps> = (
     const { t } = useTranslation();
 
     return (
-        <List
-            subheader={
-                <ListSubheader
-                    disableGutters
-                    disableSticky
-                    sx={{
-                        color: "neutral.500",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        lineHeight: 2.5,
-                        ml: 4,
-                        textTransform: "uppercase",
-                    }}
-                >
-                    {/* {title} */}
-                </ListSubheader>
-            }
-            {...other}
-        >
+        <List {...other}>
             {renderNavItems({
                 items,
                 path,

@@ -67,8 +67,6 @@ export default async function handler(req: NextRequest) {
             headers: { "Content-Type": "application/json" },
         });
     } catch (ex) {
-        // console.error(ex);
-
         return new NextResponse(JSON.stringify(ex), {
             status: 500,
             headers: { "Content-Type": "application/json" },

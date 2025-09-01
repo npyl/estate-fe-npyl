@@ -1,11 +1,9 @@
-import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { IGeoLocation } from "src/types/geolocation";
 import { StyledSearchStack } from "../styles";
 import { useSearchLocationsQuery } from "src/services/location";
 import { useMemo } from "react";
-import { useRouter } from "next/router";
 import { MatchResult } from "../types";
 
 interface SearchItemProps {
@@ -14,8 +12,6 @@ interface SearchItemProps {
 }
 
 export const LocationSearchItem = ({ option, searchText }: SearchItemProps) => {
-    const router = useRouter();
-
     const {
         areaID: _areaID,
         level: _level,
@@ -224,9 +220,7 @@ export const LocationSearchItem = ({ option, searchText }: SearchItemProps) => {
 };
 
 const LocationSearchResults = () => {
-    const { data, isLoading } = useSearchLocationsQuery("Patra"); // Example level
-
-    // if (isLoading) return <div>Loading...</div>;
+    const { data } = useSearchLocationsQuery("Patra"); // Example level
 
     return (
         <div>

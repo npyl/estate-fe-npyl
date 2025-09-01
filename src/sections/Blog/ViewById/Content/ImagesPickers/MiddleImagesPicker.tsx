@@ -99,8 +99,6 @@ const MiddleImagesPicker: FC<Props> = ({ postId = -1, editorRef }) => {
         if (!editor) return;
 
         editor.commands.removeImageByKey(k);
-
-        // setImages((old) => old.filter(({ key }) => key !== k));
     }, []);
 
     return (

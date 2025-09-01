@@ -140,30 +140,16 @@ interface UpdatedBy {
     lastName: string;
     avatar?: string;
 }
-const MiscInfo: FC<MiscInfoProps> = ({
-    createdAt,
-    updatedAt,
-    reporter,
-    updatedBy,
-}) => {
-    return (
-        <Stack spacing={1}>
-            {/* {createdAt && (
-                <Localized
-                    prefix="Created"
-                    date={createdAt}
-                    reporter={reporter}
-                />
-            )} */}
-            {updatedAt && (
-                <Localized
-                    prefix="Updated by"
-                    date={updatedAt}
-                    updatedBy={updatedBy}
-                />
-            )}
-        </Stack>
-    );
-};
+const MiscInfo: FC<MiscInfoProps> = ({ updatedAt, updatedBy }) => (
+    <Stack spacing={1}>
+        {updatedAt ? (
+            <Localized
+                prefix="Updated by"
+                date={updatedAt}
+                updatedBy={updatedBy}
+            />
+        ) : null}
+    </Stack>
+);
 
 export default MiscInfo;

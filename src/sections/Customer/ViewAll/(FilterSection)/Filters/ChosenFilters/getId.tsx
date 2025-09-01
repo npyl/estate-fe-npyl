@@ -86,7 +86,7 @@ const Id: FC<IdProps> = ({ filterKey, index, data, methods }) => {
     // If we have min-max pair show chip differently
     if (hasMinMaxPair(suffix)) {
         label = pairFilterTags[`minMax${suffix}`].label;
-        // manager = pairFilterTags[`minMax${suffix}`].label;
+
         const minValue = changedProps[`min${suffix}`];
         const maxValue = changedProps[`max${suffix}`];
 
