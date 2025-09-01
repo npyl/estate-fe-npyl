@@ -8,6 +8,7 @@ import {
     useMaxBedrooms,
     useMinBedrooms,
 } from "../../FiltersContext";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 const MAX_VALUE = 5;
 
@@ -99,18 +100,16 @@ const CustomButton: FC<CustomButtonProps> = ({ value }) => {
             return "contained";
         }
 
-        const numValue = parseInt(value, 10);
+        const numValue = toNumberSafe(value);
+        if (numValue === -1) return "outlined";
 
-        if (!isNaN(numValue)) {
-            if (minBeds !== undefined && maxBeds !== undefined) {
-                return numValue >= minBeds && numValue <= maxBeds
-                    ? "contained"
-                    : "outlined";
-            } else if (minBeds !== undefined) {
-                return numValue >= minBeds ? "contained" : "outlined";
-            }
+        if (minBeds !== undefined && maxBeds !== undefined) {
+            return numValue >= minBeds && numValue <= maxBeds
+                ? "contained"
+                : "outlined";
+        } else if (minBeds !== undefined) {
+            return numValue >= minBeds ? "contained" : "outlined";
         }
-        return "outlined";
     };
 
     return (
