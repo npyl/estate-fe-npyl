@@ -1,12 +1,11 @@
 import { Dialog, DialogContent, Divider, PaperProps } from "@mui/material";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import Controls from "./Controls";
 import { TListingTab } from "./types";
 import { styled } from "@mui/material/styles";
 import Tabs from "./Tabs";
 import Content from "./Content";
-import React from "react";
-import useArrayState from "@/hooks/useArrayState";
+import useArrayState from "@/sections/Properties/Edit/Form/forms/_general/Images/SeeMore/useArrayState";
 import useRefState from "@/hooks/useRefState";
 import ListingControls from "./ListingControls";
 import DialogTitle from "./DialogTitle";
@@ -32,7 +31,7 @@ interface SeeMoreProps {
     onClose: () => void;
 }
 
-const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
+const SeeMore: FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
     const [tab, setTab] = useRefState<TListingTab>("CRM");
     const [mode, setMode, modeRef] = useRefState<"" | "multiple" | "compare">(
         ""
@@ -60,9 +59,9 @@ const SeeMore: React.FC<SeeMoreProps> = ({ open, onOpenLightbox, onClose }) => {
             return isAlreadySelected
                 ? old.filter((key) => key !== imageKey)
                 : modeRef.current === "multiple" ||
-                  (modeRef.current === "compare" && old.length < 2)
-                ? [...old, imageKey]
-                : old;
+                    (modeRef.current === "compare" && old.length < 2)
+                  ? [...old, imageKey]
+                  : old;
         });
     }, []);
 
