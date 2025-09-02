@@ -20,6 +20,7 @@ import { IKanbanCardRes2Req } from "@/types/tasks/mapper";
 import TaskTitle from "./TaskTitle";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import useCookieKey from "./useCookieKey";
+import { TASK } from "@/constants/tests";
 
 // ------------------------------------------------------------------------------------------
 
@@ -59,6 +60,7 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     return (
         <FormProvider {...methods}>
             <Dialog
+                data-testid={TASK.DIALOG_ID}
                 open
                 submit
                 onSubmit={methods.handleSubmit(handleSubmit)}

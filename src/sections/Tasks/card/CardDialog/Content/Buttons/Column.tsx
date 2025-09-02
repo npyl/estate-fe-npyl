@@ -6,6 +6,10 @@ import { KeyValue } from "@/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 
+/**
+ * @param s
+ * @returns true when s matches case-insensitively to "to-do"
+ */
 const isToDoIndex = (s: string) =>
     s.toLowerCase().replace(/\s+/g, "") === "todo";
 

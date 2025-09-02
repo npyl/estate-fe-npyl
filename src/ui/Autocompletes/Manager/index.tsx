@@ -5,6 +5,7 @@ import { FC, forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";
+import { getOptionTestId } from "./constant";
 
 // ------------------------------------------------------------------
 
@@ -39,11 +40,15 @@ interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
 const RenderOption: FC<RenderOptionProps> = (props) => {
     const { option, ...otherProps } = props;
 
-    const { avatar, firstName, lastName } = option;
+    const { id, avatar, firstName, lastName } = option;
     const fullname = `${firstName || ""} ${lastName || ""}`;
 
     return (
-        <MenuItem sx={OptionSx} {...otherProps}>
+        <MenuItem
+            data-testid={getOptionTestId(id)}
+            sx={OptionSx}
+            {...otherProps}
+        >
             <Avatar
                 src={avatar}
                 firstName={firstName}
