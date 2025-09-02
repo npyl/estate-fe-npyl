@@ -15,9 +15,6 @@ import expectUrl from "../../_util/expectUrl";
 const createProperty = async (page: Page) => {
     await gotoSafe(page, "http://127.0.0.1:3000/property/create");
 
-    // Wait for network idle to ensure all data is loaded
-    await page.waitForLoadState("networkidle");
-
     const parentCategoryTestId = getParentCategoryDataTestId(0);
     const categoryTestId = getCategoryDataTestId(0);
 

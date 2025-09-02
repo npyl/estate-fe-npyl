@@ -1,4 +1,4 @@
-import { Browser, chromium, expect, Page, test } from "@playwright/test";
+import { Browser, chromium, Page, test } from "@playwright/test";
 import gotoSafe from "../_util/gotoSafe";
 import {
     FIRSTNAME_ID,
@@ -16,6 +16,7 @@ import {
 import fillAndExpect from "../_util/fillAndExpect";
 import { CIRCLE_ID } from "../../src/components/Map/plugins/Draw";
 import { MAP_ID } from "../../src/components/Map/constants";
+import expectUrl from "../_util/expectUrl";
 
 const SEARCH_DEEPER = true;
 
@@ -97,11 +98,5 @@ test("create", async () => {
 
     const expectedUrl = `http://127.0.0.1:3000/customer/${customerId}`;
 
-    // Poll for the correct URL
-    await expect(async () => {
-        expect(page.url()).toBe(expectedUrl);
-    }).toPass({ timeout: 2 * 60 * 1000 });
-
-    // Additional verification that page is loaded
-    await expect(page).toHaveURL(expectedUrl);
+    await expectUrl(page, expectedUrl);
 });

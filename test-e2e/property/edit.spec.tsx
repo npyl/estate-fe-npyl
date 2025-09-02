@@ -2,7 +2,7 @@ import { expect, Page, test } from "@playwright/test";
 import createProperty from "./_util/create";
 import _fillAndExpect from "../_util/fillAndExpect";
 import uuidv4 from "../../src/utils/uuidv4";
-import { PROPERTY } from "../../src/constants/test";
+import { PROPERTY } from "../../src/constants/tests";
 import { IProperties } from "../../src/types/properties";
 import clickOptions from "../_util/select/clickOptions";
 import { getOptionTestId } from "../../src/components/hook-form/Select/constants";
