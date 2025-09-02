@@ -21,9 +21,11 @@ const DELAY = 1000 * 60 * 2; // 2mins (in ms)
 const mockUrl0 = "http://127.0.0.1:3000/api/__test__/uploadFile";
 const mockUrl1 = `${mockUrl0}?slow=${DELAY}`;
 
+const projectRoot = path.resolve(__dirname, "../../");
+
 const FILES = [
-    path.join(__dirname, "imgs", "img0.png"),
-    path.join(__dirname, "imgs", "img1.png"),
+    path.join(projectRoot, "test", "imgs", "img0.png"),
+    path.join(projectRoot, "test", "imgs", "img1.png"),
 ];
 
 // ---------------------------------------------------------------------------------------
