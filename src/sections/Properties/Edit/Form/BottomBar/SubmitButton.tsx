@@ -1,4 +1,4 @@
-import { PROPERTY } from "@/constants/test";
+import { PROPERTY } from "@/constants/tests";
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import { useFormContext } from "react-hook-form";

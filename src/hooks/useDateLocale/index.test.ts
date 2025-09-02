@@ -6,9 +6,7 @@ import { useTranslation } from "react-i18next";
 
 jest.mock("react-i18next");
 
-const mockUseTranslation = useTranslation as jest.MockedFunction<
-    typeof useTranslation
->;
+const mockUseTranslation = useTranslation as any;
 
 const setLanguage = (language: string) =>
     mockUseTranslation.mockImplementation(

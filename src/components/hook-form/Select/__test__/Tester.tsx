@@ -1,5 +1,5 @@
 import { useForm, FormProvider, useWatch } from "react-hook-form";
-import Select from "../../../../src/components/hook-form/Select";
+import Select from "@/components/hook-form/Select";
 import { FC, PropsWithChildren } from "react";
 import { OPTIONS, SELECT_LABEL } from "./constants";
 
