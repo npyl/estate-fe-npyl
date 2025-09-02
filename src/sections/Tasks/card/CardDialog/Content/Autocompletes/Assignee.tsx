@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Controller, useFormContext } from "react-hook-form";
 import AssigneeAutocomplete from "@/ui/Autocompletes/Assignee";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import { TASK } from "@/constants/tests";
 
 const RHFAssignee = () => {
     const { t } = useTranslation();
@@ -17,6 +18,7 @@ const RHFAssignee = () => {
                 fieldState: { error },
             }) => (
                 <AssigneeAutocomplete
+                    data-testid={TASK.ASSIGNEE_ID}
                     assignToMe
                     label={t("Assignee")}
                     // INFO: make sure we store in array format

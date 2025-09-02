@@ -1,6 +1,7 @@
 import { CALENDAR_COLOR_FALLBACK } from "@/components/Calendar/types";
 import { ICreateOrUpdateTaskReq, IKanbanCard, IKanbanCardPOST } from ".";
 import { CalendarEventReq } from "@/types/calendar";
+import { getNotSelectedOption } from "@/constants/select";
 
 type ObjectWithId = { id: number };
 
@@ -35,7 +36,7 @@ const IKanbanCardRes2Req = (
         properties: properties?.map(getId) || [],
         customers: customers?.map(getId) || [],
         userIds,
-        columnId: columnId ?? -1,
+        columnId: columnId ?? getNotSelectedOption(),
         event: event || "",
         withCalendar: Boolean(event),
         labels: [],
