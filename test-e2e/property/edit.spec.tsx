@@ -1,10 +1,11 @@
-import { Browser, chromium, Page, test } from "@playwright/test";
+import { expect, Page, test } from "@playwright/test";
 import createProperty from "./_util/create";
 import expectUrl from "./_util/expectUrl";
 import _fillAndExpect from "../_util/fillAndExpect";
 import getToken from "../_util/getToken";
 import uuidv4 from "../../src/utils/uuidv4";
 import { PROPERTY } from "../../src/constants/test";
+import { IProperties } from "../../src/types/properties";
 import { IGlobal } from "../../src/types/global";
 import clickOptions from "../_util/select/clickOptions";
 import { getOptionTestId } from "../../src/components/hook-form/Select/constants";
@@ -53,6 +54,7 @@ const selectStateOption = async (page: Page) => {
     const key = await getStateEnumFirstEntry(page);
     const SELECT_ID = getOptionTestId(key);
     await clickOptions(page, PROPERTY.STATE_ID, [SELECT_ID]);
+    return key;
 };
 
 const fillInFields = async (page: Page) => {
@@ -61,26 +63,26 @@ const fillInFields = async (page: Page) => {
     await fillAndExpect(page, PROPERTY.CODE_ID, code);
 
     // State
-    await selectStateOption(page);
+    const state = await selectStateOption(page);
+
+    return { code, state };
 };
 
-let browser: Browser;
-let page: Page;
+const submitAndInterceptRequest = async (page: Page) => {
+    const [request] = await Promise.all([
+        page.waitForRequest(
+            (req) =>
+                req.url().includes("/api/properties") && req.method() === "PUT"
+        ),
 
-// INFO: for ever test we need to bring up a non-headless browser instance (because the Map cannot load without a view)
-test.beforeAll(async () => {
-    test.setTimeout(5 * 60 * 1000);
-    browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    page = await context.newPage();
-});
+        page.getByTestId(PROPERTY.SUBMIT_ID).click(),
+    ]);
 
-test.afterAll(async () => {
-    await browser?.close();
-});
+    return request.postDataJSON() as IProperties;
+};
 
 test.describe("edit", () => {
-    test("basic", async () => {
+    test("basic", async ({ page }) => {
         test.setTimeout(5 * 60 * 1000);
 
         // Create property & await redirect to edit
@@ -88,9 +90,11 @@ test.describe("edit", () => {
         await expectUrl(page, propertyId);
 
         // Fill-in fields
-        await fillInFields(page);
+        const { code, state } = await fillInFields(page);
 
         // Debug: Check if button exists and get its properties
-        await page.getByTestId(PROPERTY.SUBMIT_ID).click();
+        const request = await submitAndInterceptRequest(page);
+        expect(request.code).toBe(code);
+        expect(request.state).toBe(state);
     });
 });

@@ -14,7 +14,7 @@ import IPage from "@/types/page";
 import { ILabel } from "@/types/label";
 import { ICustomer, ICustomerMini } from "@/types/customer";
 import { LocationDisplay } from "@/types/enums";
-import { IOpenAIDetailsPOST } from "src/types/openai";
+import { IOpenAIDetailsPOST } from "@/types/openai";
 import { IListings } from "@/types/listings";
 import { IKanbanCardShort } from "@/types/tasks";
 import { IPropertyFile } from "@/types/file";
