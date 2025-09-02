@@ -5,6 +5,7 @@ import { OPTIONS, SELECT_LABEL } from "./constants";
 
 const FIELD_NAME = "categories";
 
+const SELECT_ID = "select-id";
 const VALUE_ID = "value-id";
 
 interface TesterProps {
@@ -20,6 +21,7 @@ const Tester: FC<TesterProps> = ({ isEnum, multiple }) => {
     return (
         <>
             <Select
+                data-testid={SELECT_ID}
                 name={FIELD_NAME}
                 options={OPTIONS}
                 label={SELECT_LABEL}
@@ -52,5 +54,5 @@ const Wrapped: FC<TesterProps> = (props) => (
     </Wrapper>
 );
 
-export { VALUE_ID };
+export { VALUE_ID, SELECT_ID };
 export default Wrapped;

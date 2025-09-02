@@ -1,6 +1,6 @@
 import { expect, MountResult, test } from "@playwright/experimental-ct-react";
 import Tester from "./Tester";
-import { VALUE_ID } from "./Tester";
+import { VALUE_ID, SELECT_ID } from "./Tester";
 import {
     NOT_SELECTED_TESTID,
     getOptionTestId,
@@ -8,6 +8,7 @@ import {
 import { NOT_SELECTED_VALUE } from "../../../../src/constants/select";
 import { OPTIONS } from "./constants";
 import { Page } from "playwright-core";
+import clickOptions from "../../../_util/select/clickOptions";
 
 // -------------------------------------------------------------
 // Set          - click on an option
@@ -29,17 +30,7 @@ const clickAndExpect = async (
     OPTION_IDs: string[],
     value: string
 ) => {
-    // Close any open dropdown first
-    await page.keyboard.press("Escape");
-    await page.waitForTimeout(100); // Small delay to ensure dropdown closes
-
-    await component.locator(".MuiSelect-select").click();
-    await page.locator('[role="listbox"]').waitFor(); // wait for popover to appear
-
-    for (const OPTION_ID of OPTION_IDs) {
-        await page.getByTestId(OPTION_ID).click();
-    }
-
+    await clickOptions(page, SELECT_ID, OPTION_IDs);
     await expect(component.getByTestId(VALUE_ID)).toHaveText(value);
 };
 
