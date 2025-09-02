@@ -83,6 +83,9 @@ const ManagerAutocomplete = forwardRef<
 >(({ optionFilter, ...props }, ref) => {
     const { t } = useTranslation();
 
+    // INFO: for playwright
+    const TEST_ID = (props as any)?.["data-testid"];
+
     const { data, isLoading } = useAllUsersQuery();
     const options = useMemo(() => {
         if (!Array.isArray(data)) return [];
@@ -105,6 +108,7 @@ const ManagerAutocomplete = forwardRef<
             renderOption={getRenderOption}
             renderInput={({ InputProps, ...params }) => (
                 <TextField
+                    data-testid={TEST_ID}
                     label={t("Manager")}
                     sx={TextFieldSx}
                     InputProps={{

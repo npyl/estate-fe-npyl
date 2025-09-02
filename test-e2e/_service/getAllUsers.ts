@@ -1,10 +1,10 @@
 import { Page } from "@playwright/test";
-import { IKanbanBoard } from "../../src/types/tasks";
+import { IUser } from "../../src/types/user";
 import getToken from "../_util/getToken";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/kanban`;
+const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
-const getBoard = async (page: Page): Promise<IKanbanBoard | undefined> => {
+const getAllUsers = async (page: Page): Promise<IUser[] | undefined> => {
     try {
         const token = await getToken(page);
         if (!token) throw "Bad token";
@@ -14,7 +14,6 @@ const getBoard = async (page: Page): Promise<IKanbanBoard | undefined> => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            method: "POST",
         });
         if (!res.ok) throw await res.json();
         return await res.json();
@@ -23,4 +22,4 @@ const getBoard = async (page: Page): Promise<IKanbanBoard | undefined> => {
     }
 };
 
-export default getBoard;
+export default getAllUsers;

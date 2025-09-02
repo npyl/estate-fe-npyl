@@ -5,6 +5,7 @@ import { FC, useEffect, useMemo } from "react";
 import { KeyValue } from "@/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import { TASK } from "@/constants/tests";
 
 /**
  * @param s
@@ -56,7 +57,12 @@ const ColumnSelect = () => {
     return (
         <>
             {todoId !== -1 ? <ToDoAutoSelect id={todoId} /> : null}
-            <Select name="columnId" label={t("_Column_")} options={options} />
+            <Select
+                data-testid={TASK.COLUMN_ID}
+                name="columnId"
+                label={t("_Column_")}
+                options={options}
+            />
         </>
     );
 };
