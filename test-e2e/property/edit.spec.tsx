@@ -1,36 +1,14 @@
 import { expect, Page, test } from "@playwright/test";
 import createProperty from "./_util/create";
-import expectUrl from "./_util/expectUrl";
 import _fillAndExpect from "../_util/fillAndExpect";
-import getToken from "../_util/getToken";
 import uuidv4 from "../../src/utils/uuidv4";
 import { PROPERTY } from "../../src/constants/test";
 import { IProperties } from "../../src/types/properties";
-import { IGlobal } from "../../src/types/global";
 import clickOptions from "../_util/select/clickOptions";
 import { getOptionTestId } from "../../src/components/hook-form/Select/constants";
+import getGlobals from "../_service/getGlobals";
 
 // ----------------------------------------------------------------------------
-
-const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/global`;
-
-const getGlobals = async (page: Page): Promise<IGlobal | undefined> => {
-    try {
-        const token = await getToken(page);
-        if (!token) throw "Could not receive token";
-
-        const res = await fetch(baseUrl, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        });
-        if (!res.ok) throw await res.json();
-        return await res.json();
-    } catch (ex) {
-        console.log(ex);
-    }
-};
 
 const getStateEnumFirstEntry = async (page: Page) => {
     const globals = await getGlobals(page);
@@ -86,8 +64,7 @@ test.describe("edit", () => {
         test.setTimeout(5 * 60 * 1000);
 
         // Create property & await redirect to edit
-        const propertyId = await createProperty(page);
-        await expectUrl(page, propertyId);
+        await createProperty(page);
 
         // Fill-in fields
         const { code, state } = await fillInFields(page);

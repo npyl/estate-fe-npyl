@@ -6,6 +6,7 @@ import {
 import { SAVE_BUTTON_TESTID } from "../../../src/sections/Properties/Create/Content/SaveButton";
 import gotoSafe from "../../_util/gotoSafe";
 import { Page } from "@playwright/test";
+import expectUrl from "../../_util/expectUrl";
 
 /**
  * Create a property
@@ -40,8 +41,11 @@ const createProperty = async (page: Page) => {
         page.getByTestId(SAVE_BUTTON_TESTID).click(),
     ]);
 
-    // Get the property ID from the API response
-    return await response.json();
+    const propertyId = (await response.json()) as number;
+
+    const expectedUrl = `http://127.0.0.1:3000/property/edit/${propertyId}`;
+
+    await expectUrl(page, expectedUrl);
 };
 
 export default createProperty;
