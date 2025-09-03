@@ -14,10 +14,9 @@ import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashbo
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Stack, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/material";
-import { useMemo, useState } from "react";
+import { FC, PropsWithChildren, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     NameType,
@@ -25,83 +24,18 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import DateRangePicker from "./DateRangePicker";
 import { format } from "date-fns";
+import { TranslationType } from "@/types/translation";
+import ParentCategorySelect from "@/ui/Pickers/ParentCategory";
+import CategorySelect from "@/ui/Pickers/Category";
 
-export default function StackedAreas() {
-    const { t, i18n } = useTranslation();
+const useLegendRenderer = (
+    parentCategory: string,
+    category: string,
+    parentCategoryEnum: KeyValue[]
+) => {
+    const { t } = useTranslation();
 
-    const [category, setCategory] = useState("");
-    const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
-
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-
-    // Fetch enums and data using hooks
-    const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const parentCategoryEnum = enums?.parentCategory;
-
-    const { data: parentCategoriesGet } =
-        useGetPublicDashboardPropertyViewsQuery({
-            parentCategory,
-            category,
-            timeframe,
-            startDate: startDate
-                ? format(new Date(startDate), "yyyy-MM-dd")
-                : "",
-            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
-        });
-    // Organize sub-categories by main category
-    const subCategoriesMap: {
-        [key: string]: KeyValue[];
-    } = useMemo(
-        () => ({
-            RESIDENTIAL: enums?.residentialCategory || [],
-            COMMERCIAL: enums?.commercialCategory || [],
-            LAND: enums?.landCategory || [],
-            OTHER: enums?.otherCategory || [],
-        }),
-        [enums]
-    );
-
-    // Handlers for select changes
-    const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
-        setParentCategory(e.target.value);
-        setCategory("");
-    };
-
-    const handleCategorySelect = (event: SelectChangeEvent<string>) => {
-        const selectedKey = event.target.value;
-        if (selectedKey === "") {
-            setCategory("");
-        } else {
-            const selectedItem = subCategoriesMap[parentCategory!]?.find(
-                (item) => item.key === selectedKey
-            );
-
-            if (selectedItem) {
-                setCategory(selectedItem.key);
-            }
-        }
-    };
-
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
-        setTimeframe(e.target.value as TTimeFrame);
-
-    // Prepare chart data
-    const chartData = useMemo(
-        () =>
-            parentCategoriesGet?.map(({ date, parentCategories }) => ({
-                date,
-                All: parentCategories.All ?? 0,
-                parentCategory: parentCategories.parentCategory ?? 0,
-                category: parentCategories.category ?? 0,
-            })) || [],
-        [parentCategoriesGet]
-    );
-
-    // Render text for legends based on selections
-    const renderLegendText = (value: string) => {
+    return useCallback((value: string) => {
         if (!parentCategory && !category) {
             return t("All");
         }
@@ -114,70 +48,153 @@ export default function StackedAreas() {
         }
 
         if (value === "category" && category) {
-            const categoryItem = subCategoriesMap[parentCategory!]?.find(
-                (item) => item.key === category
-            );
-            return categoryItem ? categoryItem.value : value;
+            return t(category);
         }
 
         return value;
-    };
+    }, []);
+};
 
-    // Tooltip content formatting
-    const renderTooltipContent = ({
-        active,
-        payload,
-    }: TooltipProps<ValueType, NameType>) => {
-        if (active && payload && payload.length) {
-            return (
-                <div
-                    style={{
-                        backgroundColor: "#fff",
-                        padding: "10px",
-                        border: "1px solid #ccc",
-                        borderRadius: "7px",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-                    }}
-                >
-                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        {t("Property Views")}
-                    </p>
-                    <hr style={{ borderColor: "grey" }} />
-                    {payload.map((entry) => (
-                        <div
-                            key={entry.name}
+const renderTooltipContent =
+    (t: TranslationType, renderLegendText: (s: string) => string) =>
+    ({ active, payload }: TooltipProps<ValueType, NameType>) => {
+        if (!active || !(payload && payload.length > 0)) return null;
+
+        return (
+            <div
+                style={{
+                    backgroundColor: "#fff",
+                    padding: "10px",
+                    border: "1px solid #ccc",
+                    borderRadius: "7px",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                }}
+            >
+                <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
+                    {t("Property Views")}
+                </p>
+                <hr style={{ borderColor: "grey" }} />
+                {payload.map((entry) => (
+                    <div
+                        key={entry.name}
+                        style={{
+                            color: entry.color,
+                            display: "flex",
+                            alignItems: "center",
+                            marginTop: "5px",
+                        }}
+                    >
+                        <span
                             style={{
-                                color: entry.color,
-                                display: "flex",
-                                alignItems: "center",
-                                marginTop: "5px",
+                                display: "inline-block",
+                                backgroundColor: entry.color,
+                                width: "10px",
+                                height: "10px",
+                                borderRadius: "50%",
+                                marginRight: "5px",
                             }}
-                        >
-                            <span
-                                style={{
-                                    display: "inline-block",
-                                    backgroundColor: entry.color,
-                                    width: "10px",
-                                    height: "10px",
-                                    borderRadius: "50%",
-                                    marginRight: "5px",
-                                }}
-                            ></span>
-                            <span
-                                style={{ color: "#000" }}
-                            >{`${renderLegendText(
-                                (entry.name as string) || ""
-                            )}: ${entry.value}`}</span>
-                        </div>
-                    ))}
-                </div>
-            );
-        }
-        return null;
+                        ></span>
+                        <span style={{ color: "#000" }}>{`${renderLegendText(
+                            (entry.name as string) || ""
+                        )}: ${entry.value}`}</span>
+                    </div>
+                ))}
+            </div>
+        );
     };
 
-    // Date formatter for X-axis ticks
-    const formatDateTick = (tickItem: string, locale: string) => {
+interface CustomChartProps extends PropsWithChildren {
+    timeframe: TTimeFrame;
+    parentCategory: string;
+    category: string;
+    startDate: string;
+    endDate: string;
+}
+
+const CustomChart: FC<CustomChartProps> = ({
+    timeframe,
+    parentCategory,
+    category,
+    startDate,
+    endDate,
+    children,
+}) => {
+    const { i18n } = useTranslation();
+
+    const { data } = useGetPublicDashboardPropertyViewsQuery({
+        parentCategory,
+        category,
+        timeframe,
+        startDate: startDate ? format(new Date(startDate), "yyyy-MM-dd") : "",
+        endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
+    });
+
+    // Prepare chart data
+    const chartData = useMemo(
+        () =>
+            data?.map(({ date, parentCategories }) => ({
+                date,
+                All: parentCategories.All ?? 0,
+                parentCategory: parentCategories.parentCategory ?? 0,
+                category: parentCategories.category ?? 0,
+            })) || [],
+        [data]
+    );
+
+    const xAxisTicks = useMemo(() => {
+        if (chartData.length <= 10) {
+            return chartData.map((data) => data.date);
+        }
+        const interval = Math.floor(chartData.length / 10);
+        return chartData
+            .filter((_, index) => index % interval === 0)
+            .map((data) => data.date);
+    }, [chartData, i18n.language]);
+
+    return (
+        <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                    dataKey="date"
+                    tickFormatter={formatDateTick(timeframe, i18n.language)}
+                    tickMargin={7}
+                    ticks={xAxisTicks}
+                />
+                {children}
+            </AreaChart>
+        </ResponsiveContainer>
+    );
+};
+
+interface Props {
+    renderLegendText: (s: string) => string;
+}
+
+const CustomTooltip: FC<Props> = ({ renderLegendText }) => {
+    const { t } = useTranslation();
+    return <Tooltip content={renderTooltipContent(t, renderLegendText)} />;
+};
+
+const formatYAxis = (tickItem: number) => {
+    return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
+};
+
+const CustomLegend: FC<Props> = ({ renderLegendText }) => (
+    <Legend
+        formatter={renderLegendText}
+        iconType="circle"
+        iconSize={10}
+        verticalAlign="top"
+        align="right"
+        layout="horizontal"
+        wrapperStyle={{ paddingBottom: "20px" }}
+    />
+);
+
+// Date formatter for X-axis ticks
+const formatDateTick =
+    (timeframe: string, locale: string) => (tickItem: string) => {
         const date = new Date(tickItem);
         let formattedDate;
 
@@ -214,19 +231,29 @@ export default function StackedAreas() {
         return formattedDate;
     };
 
-    const xAxisTicks = useMemo(() => {
-        if (chartData.length <= 10) {
-            return chartData.map((data) => data.date);
-        }
-        const interval = Math.floor(chartData.length / 10);
-        return chartData
-            .filter((_, index) => index % interval === 0)
-            .map((data) => data.date);
-    }, [chartData, i18n.language]);
+const StackedAreas = () => {
+    const { t } = useTranslation();
 
-    const formatYAxis = (tickItem: number) => {
-        return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
-    };
+    const [category, setCategory] = useState("");
+    const [parentCategory, setParentCategory] = useState("");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    // Fetch enums and data using hooks
+    const data = useGlobals();
+    const enums: IGlobalProperty = data?.property as IGlobalProperty;
+    const parentCategoryEnum = enums?.parentCategory;
+
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
+        setTimeframe(e.target.value as TTimeFrame);
+
+    const renderLegendText = useLegendRenderer(
+        parentCategory,
+        category,
+        parentCategoryEnum
+    );
 
     return (
         <>
@@ -243,31 +270,17 @@ export default function StackedAreas() {
                         <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                         <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                     </Select>
-                    <Select
+
+                    <ParentCategorySelect
                         value={parentCategory}
-                        onChange={handleParentCategorySelect}
-                        displayEmpty
-                    >
-                        <MenuItem value="">{t("Parent Category")}</MenuItem>
-                        {parentCategoryEnum?.map((item) => (
-                            <MenuItem key={item.key} value={item.key}>
-                                {item.value}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    <Select
+                        onChange={setParentCategory}
+                    />
+
+                    <CategorySelect
+                        parentCategory={parentCategory}
                         value={category}
-                        onChange={handleCategorySelect}
-                        displayEmpty
-                        disabled={!parentCategory}
-                    >
-                        <MenuItem value="">{t("Category")}</MenuItem>
-                        {subCategoriesMap[parentCategory!]?.map((item) => (
-                            <MenuItem key={item.key} value={item.key}>
-                                {item.value}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                        onChange={setCategory}
+                    />
 
                     {timeframe === "CUSTOM" ? (
                         <DateRangePicker
@@ -282,88 +295,41 @@ export default function StackedAreas() {
                 </Stack>
             </Stack>
 
-            <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                        dataKey="date"
-                        tickFormatter={(tickItem) =>
-                            formatDateTick(tickItem, i18n.language)
-                        }
-                        tickMargin={7}
-                        ticks={xAxisTicks}
-                        // interval={
-                        //     timeframe === "WEEK"
-                        //         ? 0
-                        //         : timeframe === "MONTH"
-                        //         ? 2
-                        //         : 8
-                        // }
-                    />
-                    {category && parentCategory ? (
-                        <>
-                            <YAxis
-                                dataKey="parentCategory"
-                                width={20}
-                                tickFormatter={formatYAxis}
-                            />
-                            <YAxis dataKey="category" width={20} />
-                        </>
-                    ) : !category && !parentCategory ? (
-                        <YAxis
-                            dataKey="All"
-                            width={20}
-                            tickFormatter={formatYAxis}
-                        />
-                    ) : !category && parentCategory ? (
+            <CustomChart
+                category={category}
+                parentCategory={parentCategory}
+                timeframe={timeframe}
+                startDate={startDate}
+                endDate={endDate}
+            >
+                {category && parentCategory ? (
+                    <>
                         <YAxis
                             dataKey="parentCategory"
                             width={20}
                             tickFormatter={formatYAxis}
                         />
-                    ) : null}
-                    <Tooltip content={renderTooltipContent} />
-                    <Legend
-                        formatter={renderLegendText}
-                        iconType="circle"
-                        iconSize={10}
-                        verticalAlign="top"
-                        align="right"
-                        layout="horizontal"
-                        wrapperStyle={{ paddingBottom: "20px" }}
+                        <YAxis dataKey="category" width={20} />
+                    </>
+                ) : null}
+                {!category && !parentCategory ? (
+                    <YAxis
+                        dataKey="All"
+                        width={20}
+                        tickFormatter={formatYAxis}
                     />
-                    {category && parentCategory ? (
-                        <>
-                            <Area
-                                type="monotone"
-                                dataKey="parentCategory"
-                                stroke="#2E42A5"
-                                fill="#2E42A5"
-                                strokeWidth={2}
-                                dot={false}
-                                fillOpacity={0.15}
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="category"
-                                stroke="#EB0F0F"
-                                fill="#EB0F0F"
-                                strokeWidth={2}
-                                dot={false}
-                                fillOpacity={0.15}
-                            />
-                        </>
-                    ) : !category && !parentCategory ? (
-                        <Area
-                            type="monotone"
-                            dataKey="All"
-                            stroke="#2E42A5"
-                            fill="#2E42A5"
-                            strokeWidth={2}
-                            dot={false}
-                            fillOpacity={0.15}
-                        />
-                    ) : !category && parentCategory ? (
+                ) : null}
+                {!category && parentCategory ? (
+                    <YAxis
+                        dataKey="parentCategory"
+                        width={20}
+                        tickFormatter={formatYAxis}
+                    />
+                ) : null}
+                <CustomTooltip renderLegendText={renderLegendText} />
+                <CustomLegend renderLegendText={renderLegendText} />
+                {category && parentCategory ? (
+                    <>
                         <Area
                             type="monotone"
                             dataKey="parentCategory"
@@ -373,9 +339,42 @@ export default function StackedAreas() {
                             dot={false}
                             fillOpacity={0.15}
                         />
-                    ) : null}
-                </AreaChart>
-            </ResponsiveContainer>
+                        <Area
+                            type="monotone"
+                            dataKey="category"
+                            stroke="#EB0F0F"
+                            fill="#EB0F0F"
+                            strokeWidth={2}
+                            dot={false}
+                            fillOpacity={0.15}
+                        />
+                    </>
+                ) : null}
+                {!category && !parentCategory ? (
+                    <Area
+                        type="monotone"
+                        dataKey="All"
+                        stroke="#2E42A5"
+                        fill="#2E42A5"
+                        strokeWidth={2}
+                        dot={false}
+                        fillOpacity={0.15}
+                    />
+                ) : null}
+                {!category && parentCategory ? (
+                    <Area
+                        type="monotone"
+                        dataKey="parentCategory"
+                        stroke="#2E42A5"
+                        fill="#2E42A5"
+                        strokeWidth={2}
+                        dot={false}
+                        fillOpacity={0.15}
+                    />
+                ) : null}
+            </CustomChart>
         </>
     );
-}
+};
+
+export default StackedAreas;

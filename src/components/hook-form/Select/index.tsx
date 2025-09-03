@@ -5,6 +5,16 @@ import { KeyValue } from "@/types/KeyValue";
 import { RHFSelectProps } from "@/components/hook-form/RHFSelect";
 import { NOT_SELECTED_VALUE } from "@/constants/select";
 import { getOptionTestId, NOT_SELECTED_TESTID } from "./constants";
+import { TranslationType } from "@/types/translation";
+import { FC } from "react";
+
+const getOption =
+    (t: TranslationType) =>
+    ({ key, value }: KeyValue) => (
+        <MenuItem data-testid={getOptionTestId(key)} key={key} value={key}>
+            {t(value)}
+        </MenuItem>
+    );
 
 type SelectProps<T = string> = Omit<RHFSelectProps<T>, "children"> & {
     name: string;
@@ -12,7 +22,7 @@ type SelectProps<T = string> = Omit<RHFSelectProps<T>, "children"> & {
     options: KeyValue[];
 };
 
-const Select = ({ name, label, options, ...props }: SelectProps) => {
+const Select: FC<SelectProps> = ({ name, label, options, ...props }) => {
     const { t } = useTranslation();
 
     return (
@@ -23,15 +33,7 @@ const Select = ({ name, label, options, ...props }: SelectProps) => {
             >
                 {t("Not selected")}
             </MenuItem>
-            {options.map(({ key, value }, i) => (
-                <MenuItem
-                    data-testid={getOptionTestId(key)}
-                    key={key}
-                    value={key}
-                >
-                    {t(value)}
-                </MenuItem>
-            ))}
+            {options.map(getOption(t))}
         </RHFSelect>
     );
 };

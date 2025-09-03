@@ -1,3 +1,4 @@
+import { PROPERTY } from "@/constants/tests";
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import { useFormContext } from "react-hook-form";
@@ -11,6 +12,7 @@ const SubmitButton = () => {
 
     return (
         <LoadingButton
+            data-testid={PROPERTY.SUBMIT_ID}
             loading={isSubmitting}
             disabled={isSubmitting}
             variant="contained"

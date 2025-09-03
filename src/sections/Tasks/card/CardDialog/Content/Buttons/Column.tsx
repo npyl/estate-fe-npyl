@@ -1,53 +1,69 @@
-import { SelectProps } from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
-import { FC } from "react";
 import { useGetBoardQuery } from "@/services/tasks";
-import { IKanbanColumn } from "@/types/tasks";
-import MenuItem from "@mui/material/MenuItem";
-import { RHFSelect } from "@/components/hook-form";
+import Select from "@/components/hook-form/Select";
+import { FC, useEffect, useMemo } from "react";
+import { KeyValue } from "@/types/KeyValue";
+import { useFormContext } from "react-hook-form";
+import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import { TASK } from "@/constants/tests";
 
-// -----------------------------------------------------------------
+/**
+ * @param s
+ * @returns true when s matches case-insensitively to "to-do"
+ */
+const isToDoIndex = (s: string) =>
+    s.toLowerCase().replace(/\s+/g, "") === "todo";
+
+interface BoardColumnOptions {
+    options: KeyValue[];
+    todoId: number;
+}
 
 const useBoardColumns = () => {
     const { data } = useGetBoardQuery({});
-    const allColumns = data?.columns || [];
+    const all = data?.columns ?? [];
 
-    // Define the priority column names in desired order
-    const prioritizedNames = ["To do", "Long term tasks", "Completed"];
+    return useMemo(
+        () =>
+            all.reduce<BoardColumnOptions>(
+                (acc, { id, name }) => {
+                    acc.options.push({ key: id.toString(), value: name });
 
-    const sortedColumns = allColumns.slice().sort((columnA, columnB) => {
-        const indexA = prioritizedNames.indexOf(columnA.name);
-        const indexB = prioritizedNames.indexOf(columnB.name);
+                    if (isToDoIndex(name)) acc.todoId = id;
 
-        const isAInPriority = indexA !== -1;
-        const isBInPriority = indexB !== -1;
-
-        if (isAInPriority && isBInPriority) {
-            return indexA - indexB;
-        }
-
-        if (isAInPriority) return -1;
-        if (isBInPriority) return 1;
-
-        return 0; //keep default order
-    });
-
-    return sortedColumns;
+                    return acc;
+                },
+                { options: [], todoId: -1 }
+            ),
+        [all]
+    );
 };
-const getOption = ({ id, name }: IKanbanColumn) => (
-    <MenuItem key={id} value={id}>
-        {name}
-    </MenuItem>
-);
 
-const ColumnSelect: FC<SelectProps> = (props) => {
+interface Props {
+    id: number;
+}
+
+const ToDoAutoSelect: FC<Props> = ({ id }) => {
+    const { setValue } = useFormContext<ICreateOrUpdateTaskReq>();
+    useEffect(() => {
+        setValue("columnId", id, { shouldDirty: true });
+    }, [id]);
+    return null;
+};
+
+const ColumnSelect = () => {
     const { t } = useTranslation();
-    const columns = useBoardColumns();
+    const { options, todoId } = useBoardColumns();
     return (
-        <RHFSelect name="columnId" defaultValue={-1} {...props}>
-            <MenuItem value={-1}>{t("Not selected")}</MenuItem>
-            {columns?.map(getOption)}
-        </RHFSelect>
+        <>
+            {todoId !== -1 ? <ToDoAutoSelect id={todoId} /> : null}
+            <Select
+                data-testid={TASK.COLUMN_ID}
+                name="columnId"
+                label={t("_Column_")}
+                options={options}
+            />
+        </>
     );
 };
 

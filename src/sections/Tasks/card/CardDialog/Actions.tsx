@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import Reporter from "@/ui/Reporter";
 import { SpaceBetween } from "@/components/styled";
 import Stack from "@mui/material/Stack";
+import { TASK } from "@/constants/tests";
 
 interface ActionsProps {
     quickCreate: boolean;
@@ -21,26 +22,25 @@ const Actions: FC<ActionsProps> = ({ quickCreate, onClose }) => {
     const isDirty = formState.isDirty;
 
     return (
-        <Stack spacing={1} width={1}>
-            <SpaceBetween alignItems="center" width={1}>
-                <Reporter />
+        <SpaceBetween alignItems="center" width={1}>
+            <Reporter />
 
-                <Stack direction="row" alignItems="center" spacing={1}>
-                    <Button onClick={onClose}>{t("Close")}</Button>
+            <Stack direction="row" alignItems="center" spacing={1}>
+                <Button onClick={onClose}>{t("Close")}</Button>
 
-                    {isDirty || quickCreate ? (
-                        <LoadingButton
-                            loading={isSubmitting}
-                            disabled={isSubmitting}
-                            variant="contained"
-                            type="submit"
-                        >
-                            {t("Save")}
-                        </LoadingButton>
-                    ) : null}
-                </Stack>
-            </SpaceBetween>
-        </Stack>
+                {isDirty || quickCreate ? (
+                    <LoadingButton
+                        data-testid={TASK.SUBMIT_ID}
+                        loading={isSubmitting}
+                        disabled={isSubmitting}
+                        variant="contained"
+                        type="submit"
+                    >
+                        {t("Save")}
+                    </LoadingButton>
+                ) : null}
+            </Stack>
+        </SpaceBetween>
     );
 };
 

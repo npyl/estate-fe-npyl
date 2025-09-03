@@ -38,10 +38,10 @@ const useStore = (url: string) => {
 
         return { data: r };
     }, [url]);
-    const removeFile = useCallback(
-        (k: string) => setFiles((old) => old.filter(({ key }) => key !== k)),
-        []
-    );
+    const removeFile = useCallback(async (k: string) => {
+        setFiles((old) => old.filter(({ key }) => key !== k));
+        return { data: {} as any };
+    }, []);
 
     return [files, addFile, removeFile] as const;
 };

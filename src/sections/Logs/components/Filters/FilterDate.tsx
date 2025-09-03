@@ -67,7 +67,7 @@ const DateSelect = () => {
         }
     };
 
-    const isMobile = useResponsive("down", 500);
+    const isMobile = useResponsive("down", "md");
 
     return (
         <ClickAwayListener onClickAway={() => setOpen(false)}>

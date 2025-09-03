@@ -9,6 +9,14 @@ const useWidthObserver = (
     ref: ForwardedRef<HTMLDivElement>,
     onGetWidth: (width: number) => void
 ) => {
+    const onEntries: ResizeObserverCallback = useCallback(
+        (entries) => {
+            const width = entries[0].contentRect.width;
+            onGetWidth(width);
+        },
+        [onGetWidth]
+    );
+
     const onRef = useCallback(
         (node: HTMLDivElement | null) => {
             // Combine refs
@@ -18,16 +26,13 @@ const useWidthObserver = (
                 ref.current = node;
             }
 
-            if (node) {
-                const resizeObserver = new ResizeObserver((entries) => {
-                    const width = entries[0].contentRect.width;
-                    onGetWidth(width);
-                });
+            if (!node) return;
 
-                resizeObserver.observe(node);
-            }
+            const resizeObserver = new ResizeObserver(onEntries);
+
+            resizeObserver.observe(node);
         },
-        [ref, onGetWidth]
+        [ref, onEntries]
     );
 
     return { onRef };

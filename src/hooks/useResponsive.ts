@@ -1,43 +1,23 @@
-// @mui
-import { useTheme, Breakpoint } from "@mui/material/styles";
+import { useTheme, Breakpoint, Theme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-// ----------------------------------------------------------------------
+type Query = "up" | "down" | "only";
 
-type Query = "up" | "down" | "between" | "only";
+const getMethod = (theme: Theme, query: Query) => {
+    switch (query) {
+        case "up":
+            return theme.breakpoints.up;
+        case "down":
+            return theme.breakpoints.down;
+        case "only":
+            return theme.breakpoints.only;
+    }
+};
 
-type Value = Breakpoint | number;
-
-export default function useResponsive(
-    query: Query,
-    start?: Value,
-    end?: Value
-): boolean {
+const useResponsive = (query: Query, start: Breakpoint) => {
     const theme = useTheme();
+    const method = getMethod(theme, query);
+    return useMediaQuery(method(start));
+};
 
-    const mediaUp = useMediaQuery(theme.breakpoints.up(start as Value));
-
-    const mediaDown = useMediaQuery(theme.breakpoints.down(start as Value));
-
-    const mediaBetween = useMediaQuery(
-        theme.breakpoints.between(start as Value, end as Value)
-    );
-
-    const mediaOnly = useMediaQuery(
-        theme.breakpoints.only(start as Breakpoint)
-    );
-
-    if (query === "up") {
-        return mediaUp;
-    }
-
-    if (query === "down") {
-        return mediaDown;
-    }
-
-    if (query === "between") {
-        return mediaBetween;
-    }
-
-    return mediaOnly;
-}
+export default useResponsive;

@@ -8,6 +8,7 @@ import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FC, useRef } from "react";
 import { HideText } from "@/components/styled";
+import { TASK } from "@/constants/tests";
 const CardDialog = dynamic(() => import("@/sections/Tasks/card/CardDialog"));
 const Menu = dynamic(() => import("./Menu"));
 
@@ -26,6 +27,7 @@ const AddButtons: FC<AddButtonsProps> = ({ create = false }) => {
     return (
         <Stack direction="row" alignItems="center" spacing={1} mt={1}>
             <Button
+                data-testid={TASK.CREATE_ID}
                 variant="contained"
                 startIcon={<AddIcon />}
                 onClick={openDialog}

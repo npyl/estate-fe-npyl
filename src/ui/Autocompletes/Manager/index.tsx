@@ -5,6 +5,7 @@ import { FC, forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";
+import { getOptionTestId } from "./constant";
 
 // ------------------------------------------------------------------
 
@@ -39,11 +40,15 @@ interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
 const RenderOption: FC<RenderOptionProps> = (props) => {
     const { option, ...otherProps } = props;
 
-    const { avatar, firstName, lastName } = option;
+    const { id, avatar, firstName, lastName } = option;
     const fullname = `${firstName || ""} ${lastName || ""}`;
 
     return (
-        <MenuItem sx={OptionSx} {...otherProps}>
+        <MenuItem
+            data-testid={getOptionTestId(id)}
+            sx={OptionSx}
+            {...otherProps}
+        >
             <Avatar
                 src={avatar}
                 firstName={firstName}
@@ -78,6 +83,9 @@ const ManagerAutocomplete = forwardRef<
 >(({ optionFilter, ...props }, ref) => {
     const { t } = useTranslation();
 
+    // INFO: for playwright
+    const TEST_ID = (props as any)?.["data-testid"];
+
     const { data, isLoading } = useAllUsersQuery();
     const options = useMemo(() => {
         if (!Array.isArray(data)) return [];
@@ -100,6 +108,7 @@ const ManagerAutocomplete = forwardRef<
             renderOption={getRenderOption}
             renderInput={({ InputProps, ...params }) => (
                 <TextField
+                    data-testid={TEST_ID}
                     label={t("Manager")}
                     sx={TextFieldSx}
                     InputProps={{

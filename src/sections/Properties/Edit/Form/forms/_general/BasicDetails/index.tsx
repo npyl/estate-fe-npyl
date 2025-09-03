@@ -17,6 +17,7 @@ import OwnerSelect from "../../_shared/OwnerSelect";
 import RHFCode from "../RHFCode";
 import RHFKeyCode from "../RHFKeyCode";
 import RHFManagerAutocomplete from "@/ui/Autocompletes/RHFManager";
+import { PROPERTY } from "@/constants/tests";
 
 const BasicSection = () => {
     const router = useRouter();
@@ -33,7 +34,12 @@ const BasicSection = () => {
         >
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                    <RHFCode fullWidth name="code" label={t("Code") + " *"} />
+                    <RHFCode
+                        data-testid={PROPERTY.CODE_ID}
+                        fullWidth
+                        name="code"
+                        label={t("Code") + " *"}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <CategorySelect />
@@ -53,6 +59,7 @@ const BasicSection = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Select
+                        data-testid={PROPERTY.STATE_ID}
                         isEnum
                         name="state"
                         label={t("State") + " *"}

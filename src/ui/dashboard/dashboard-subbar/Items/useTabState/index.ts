@@ -14,6 +14,13 @@ import useTabStorage, { getTabsSafe } from "../useTabStorage";
 
 // -----------------------------------------------------------------------
 
+const getPathAfterClear = (p: string) => {
+    if (p.startsWith("/property")) return "/property";
+    if (p.startsWith("/customer")) return "/customer";
+    if (p.startsWith("/agreements")) return "/agreements";
+    return "/";
+};
+
 const useTabState = () => {
     const { user } = useAuth();
     const userId = user?.id!;
@@ -50,15 +57,7 @@ const useTabState = () => {
 
             // Case 1: we have no more tabs
             if (res.length === 0) {
-                const basePath = p.startsWith("/property")
-                    ? "/property"
-                    : p.startsWith("/customer")
-                      ? "/customer"
-                      : p.startsWith("/agreements")
-                        ? "/agreements"
-                        : "/";
-
-                router.push(basePath);
+                router.push(getPathAfterClear(p));
             }
             // Case 2: we have more tabs
             else {
