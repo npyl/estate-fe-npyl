@@ -1,14 +1,17 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { NormalBadge } from "@/ui/Cards/PropertyCard/styled"; // Adjust the path as necessary
+import CodeBadgeLink from "../../_shared/CodeBadgeLink";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 
 interface TourPropertyBadgesProps {
+    propertyId?: number;
     stateValue: string;
     code: string;
 }
 
 const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
+    propertyId,
     stateValue,
     code,
 }) => {
@@ -20,28 +23,12 @@ const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
                 name={stateValue}
                 color="#3730a3"
                 sx={{
-                    textWrap: "nowrap",
-
-                    width: "100%",
                     color: "#3730a3",
                 }}
             />
-            <NormalBadge
-                name={`${t("Code")}: ${code}`}
-                color="#ffcc00"
-                sx={{
-                    textWrap: "nowrap",
-                    width: "100%",
-                    color: (theme) =>
-                        theme.palette.mode === "light" ? "#854D0E" : "null",
-
-                    "&:hover": {
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === "light"
-                                ? "#d4a500"
-                                : "#b38f00",
-                    },
-                }}
+            <CodeBadgeLink
+                code={`${t("Code")}: ${code}`}
+                propertyId={propertyId}
             />
         </Stack>
     );

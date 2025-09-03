@@ -7,6 +7,7 @@ import { SpaceBetween } from "@/components/styled";
 import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
 import { getPropertyStatusColor } from "@/theme/colors";
 import { LinkProps } from "@/components/Link";
+import CodeBadge from "@/ui/Property/CodeBadge";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
@@ -192,17 +193,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
                         ) : null}
                     </Stack>
                     <SpaceBetween alignItems="center">
-                        <NormalBadge
-                            name={`${t("Code")}: ${code || ""}`}
-                            color="#ffcc00"
-                            sx={{
-                                color: (theme) =>
-                                    theme.palette.mode === "light"
-                                        ? "#854D0E"
-                                        : null,
-                            }}
-                        />
-
+                        <CodeBadge code={`${t("Code")}: ${code || ""}`} />
                         <PriceBadge price={price} />
                     </SpaceBetween>
                 </Stack>

@@ -122,6 +122,7 @@ const BottomCard: FC<BottomCardProps> = ({ type }) => {
 
                                 <Stack mt={3} gap={2} direction="row">
                                     <TourPropertyBadges
+                                        propertyId={property?.id}
                                         stateValue={t(
                                             property?.state?.value || ""
                                         )}

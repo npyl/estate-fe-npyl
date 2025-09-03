@@ -1,13 +1,15 @@
 import Link from "@/components/Link";
 import {
+    alpha,
     Box,
     BoxProps,
     SxProps,
     Theme,
     Typography,
-    alpha,
+    TypographyProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { FC } from "react";
 
 const getCss = (theme: Theme) => ({
     boxShadow:
@@ -64,27 +66,7 @@ export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
             : theme.palette.neutral?.[400],
 }));
 
-interface NormalBadgeProps extends BoxProps {
-    name: string;
-    color: string; //ADD here the Colors needed
-}
-
-export const NormalBadge = styled(
-    ({ name, color, ...props }: NormalBadgeProps) => (
-        <Box {...props}>
-            <Typography variant="body2">{name}</Typography>
-        </Box>
-    )
-)<NormalBadgeProps>(({ theme, color }) => ({
-    paddingLeft: theme.spacing(1.8),
-    paddingRight: theme.spacing(1.8),
-    paddingTop: theme.spacing(0.4),
-    paddingBottom: theme.spacing(0.4),
-    textAlign: "center",
-    borderRadius: "25px",
-    color: alpha(color, 1),
-    backgroundColor: alpha(color, 0.25),
-}));
+// --------------------------------------------------------------------------------
 
 const DividerSx: SxProps<Theme> = {
     width: "15%",
@@ -92,4 +74,44 @@ const DividerSx: SxProps<Theme> = {
         mode === "light" ? neutral?.[100] : neutral?.[800],
 };
 
-export { DividerSx };
+// --------------------------------------------------------------------------------
+
+const getSx = (color: string): SxProps => ({
+    paddingLeft: 1.8,
+    paddingRight: 1.8,
+    paddingTop: 0.4,
+    paddingBottom: 0.4,
+
+    textAlign: "center",
+
+    borderRadius: "25px",
+
+    textOverflow: "ellipsis",
+    overflowX: "hidden",
+
+    width: "fit-content", // INFO: try to show whole text
+    maxWidth: 1, // INFO: but do not grow bigger than the container
+    textWrap: "nowrap",
+
+    color: alpha(color, 1),
+    backgroundColor: alpha(color, 0.25),
+});
+
+interface NormalBadgeProps extends TypographyProps {
+    name: string;
+    color: string;
+}
+
+const NormalBadge: FC<NormalBadgeProps> = ({ name, color, sx, ...props }) => (
+    <Typography
+        variant="body2"
+        sx={{ ...(getSx(color) as any), ...sx }}
+        {...props}
+    >
+        {name}
+    </Typography>
+);
+
+export type { NormalBadgeProps };
+
+export { NormalBadge, DividerSx };
