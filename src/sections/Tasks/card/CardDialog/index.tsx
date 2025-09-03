@@ -37,7 +37,7 @@ interface DetailsProps {
 const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     const { name, uniqueCode } = task || {};
 
-    const cookieKey = useCookieKey();
+    const cookieKey = useCookieKey(quickCreate);
     const [methods, { PersistNotice, persistChanges }] =
         useFormPersist<ICreateOrUpdateTaskReq>(cookieKey, onClose, {
             dialog: true,
