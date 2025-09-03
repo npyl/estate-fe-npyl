@@ -185,6 +185,9 @@ export const darkThemeOptions: Omit<ThemeOptions, "layout"> = {
                     backgroundColor: neutral[500],
                     opacity: 1,
                 },
+                thumb: {
+                    backgroundColor: neutral[500],
+                },
             },
         },
         MuiTableCell: {
