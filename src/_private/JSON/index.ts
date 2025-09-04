@@ -1,4 +1,4 @@
-import debugLog from "./debugLog";
+import debugLog from "@/_private/debugLog";
 
 const onlyOnce = <T extends (...args: any[]) => any>(cb: T) => {
     let hasRun = false;
