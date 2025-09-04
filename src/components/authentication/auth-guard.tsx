@@ -1,42 +1,37 @@
 import type { FC, PropsWithChildren } from "react";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/sections/use-auth";
+import IsReady from "./IsReady";
+import useDialog from "@/hooks/useDialog";
 
-const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
+interface AuthGuardProps extends PropsWithChildren {}
+
+const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
     const auth = useAuth();
     const router = useRouter();
-    const [checked, setChecked] = useState(false);
+    const [isAllowed, allow] = useDialog();
 
-    useLayoutEffect(
-        () => {
-            if (!router.isReady) {
-                return;
-            }
+    useLayoutEffect(() => {
+        if (!auth.isAuthenticated) {
+            router.push({
+                pathname: "/login",
+                query: { returnUrl: router.asPath },
+            });
+        } else {
+            allow();
+        }
+    }, [auth.isAuthenticated]);
 
-            if (!auth.isAuthenticated) {
-                router
-                    .push({
-                        pathname: "/login",
-                        query: { returnUrl: router.asPath },
-                    })
-                    .catch(console.error);
-            } else {
-                setChecked(true);
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [router.isReady, auth.isAuthenticated]
-    );
-
-    if (!checked) {
-        return null;
-    }
-
-    // If got here, it means that the redirect did not occur, and that tells us that the user is
-    // authenticated / authorized.
+    if (!isAllowed) return null;
 
     return <>{children}</>;
 };
 
-export default AuthGuard;
+const Wrapped: FC<AuthGuardProps> = (props) => (
+    <IsReady>
+        <AuthGuard {...props} />
+    </IsReady>
+);
+
+export default Wrapped;

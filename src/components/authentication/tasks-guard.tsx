@@ -1,30 +1,31 @@
 import { useAuth } from "@/sections/use-auth";
 import { useRouter } from "next/router";
 import { FC, PropsWithChildren, useLayoutEffect } from "react";
-import AuthGuard from "./auth-guard";
+import useDialog from "@/hooks/useDialog";
+import AdminGuard from "./admin-guard";
 
 const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
     const { user } = useAuth();
-
-    const isAdmin = user?.isAdmin;
+    const [isAllowed, allow] = useDialog();
 
     useLayoutEffect(() => {
-        if (
-            (!user?.tasksEnabled || user?.tasksEnabled === "NONE") &&
-            !isAdmin
-        ) {
+        if (!user?.tasksEnabled || user?.tasksEnabled === "NONE") {
             router.push("/401");
+        } else {
+            allow();
         }
-    }, [user?.tasksEnabled, isAdmin]);
+    }, [user?.tasksEnabled]);
+
+    if (!isAllowed) return null;
 
     return <>{children}</>;
 };
 
 const TasksGuard: FC<PropsWithChildren> = ({ children }) => (
-    <AuthGuard>
+    <AdminGuard>
         <Guard>{children}</Guard>
-    </AuthGuard>
+    </AdminGuard>
 );
 
 export default TasksGuard;
