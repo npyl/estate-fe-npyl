@@ -3,6 +3,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { ForwardedRef, forwardRef, ReactNode, useCallback } from "react";
 import { NOT_SELECTED_VALUE } from "@/constants/select";
 import Select, { SelectProps } from "@/components/Select";
+import isFalsy from "@/utils/isFalsy";
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +27,7 @@ function RenderWithoutRef<T>(
     ref: ForwardedRef<HTMLSelectElement>
 ) {
     // INFO: normalise a null (e.g. default value for enums) to a
-    const value = _value === null ? NOT_SELECTED_VALUE : _value;
+    const value = isFalsy(_value) ? NOT_SELECTED_VALUE : _value;
 
     const onChange = useCallback(
         (e: SelectChangeEvent<T>, child: ReactNode) => {
