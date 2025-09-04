@@ -6,10 +6,11 @@ import RHFTextField from "@/components/hook-form/dynamic/RHFTextField";
 import Select from "@/components/hook-form/dynamic/Select";
 import { FormProvider, useForm } from "react-hook-form";
 import useDialog from "@/hooks/useDialog";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import TextField from "@mui/material/TextField";
 import { KeyValue } from "@/types/KeyValue";
 import plainTextToJSON from "@/components/Editor/util/plainText2JSON";
+import MenuItem from "@mui/material/MenuItem";
 
 import "@/_private/JSON";
 
@@ -106,6 +107,26 @@ const OPTIONS: KeyValue[] = [
     { key: TEST_VALUE1, value: "Test Value 1" },
 ];
 
+const getOption = ({ key, value }: KeyValue) => (
+    <MenuItem key={key} value={key}>
+        {value}
+    </MenuItem>
+);
+
+interface RHFSelectTestProps {
+    name: string;
+    options: KeyValue[];
+}
+
+const RHFSelectTest: FC<RHFSelectTestProps> = ({ name, options }) => (
+    <RHFSelect name={name} defaultValue="">
+        {getOption({ key: "", value: "" })}
+        {options.map(getOption)}
+    </RHFSelect>
+);
+
+// ----------------------------------------------------------------------------------------
+
 const SUBMIT_ID = "submit-testid";
 
 type CurrentKeys<T extends boolean = false> = T extends true
@@ -130,9 +151,9 @@ const Tester: FC<TesterProps> = ({ onSubmit }) => {
         selectName,
     } = useKeys();
 
-    const methods = useForm<CurrentKeys<typeof isDynamic>>({
-        values: getValues(isDynamic),
-    });
+    const values = useMemo(() => getValues(isDynamic), [isDynamic]);
+
+    const methods = useForm<CurrentKeys<typeof isDynamic>>({ values });
 
     return (
         <>
@@ -148,9 +169,14 @@ const Tester: FC<TesterProps> = ({ onSubmit }) => {
                         options={[]}
                     />
                     <RHFEditor name={editorName} />
-                    <RHFSelect name={rhfSelectName} />
+                    <RHFSelectTest name={rhfSelectName} options={OPTIONS} />
                     <RHFTextField name={textfieldName} />
-                    <Select name={selectName} label="" options={OPTIONS} />
+                    <Select
+                        name={selectName}
+                        label=""
+                        options={OPTIONS}
+                        defaultValue=""
+                    />
 
                     <button data-testid={SUBMIT_ID} />
                 </FormProvider>
