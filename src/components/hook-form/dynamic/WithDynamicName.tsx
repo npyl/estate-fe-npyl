@@ -1,4 +1,4 @@
-import React, { ComponentType, forwardRef, ForwardedRef } from "react";
+import { ComponentType, forwardRef } from "react";
 
 /**
  * Support a dynamic `name`
