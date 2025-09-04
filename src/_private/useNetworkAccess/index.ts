@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import useIntervalControl from "./useIntervalControl";
+import debugLog from "@/_private/debugLog";
 
 const POLLING = {
     DISABLED: 0,
@@ -22,6 +23,7 @@ const ping = async () => {
 
         return res.type === "opaque"; // INFO: this is an opaque response; check if we got any
     } catch (ex) {
+        debugLog(ex);
         return false;
     }
 };

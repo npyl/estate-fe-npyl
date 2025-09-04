@@ -8,12 +8,11 @@ const useIntervalControl = (
     const intervalRef = useRef<number>();
 
     const start = useCallback(() => {
-        if (!interval.current) return;
+        if (intervalRef.current) return;
         intervalRef.current = setInterval(cb, interval.current);
     }, [cb]);
 
     const stop = useCallback(() => {
-        if (!intervalRef.current) return;
         clearInterval(intervalRef.current);
         intervalRef.current = undefined;
     }, []);
@@ -33,6 +32,7 @@ const useIntervalControl = (
     );
 
     useLayoutEffect(() => {
+        stop();
         start();
         return () => {
             stop();
