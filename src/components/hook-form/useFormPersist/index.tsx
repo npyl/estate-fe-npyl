@@ -36,7 +36,7 @@ type TReturn<TFieldValues extends FieldValues = FieldValues, TContext = any> = [
 ];
 
 /**
- * Hook for persisting a form to some form of persistent storage (e.g. currently, localStorage)
+ * Hook for persisting a form to some kind of persistent storage e.g. (currently) localStorage
  *
  * Useful for switching between draft versions (unsaved, e.g. not yet POSTed to Backend) of forms
  * (From now on, everywhere it says 'cookie' we mean storage item)

@@ -9,11 +9,12 @@ import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import LinkOffOutlinedIcon from "@mui/icons-material/LinkOffOutlined";
 import { getPropertyStatusColor } from "@/theme/colors";
 import getParentCategoriesIcons from "@/assets/icons/parent-categories";
-import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
+import CodeBadge from "@/ui/Property/CodeBadge";
+import { formatThousands } from "@/utils/formatNumber";
 
-function RenderImage(
+const RenderImage = (
     params: GridCellParams<IPropertyResultResponse | IProperties>
-) {
+) => {
     const propertyImage = params.row?.propertyImage;
     const isActive = params.row?.active;
     const src =
@@ -60,9 +61,9 @@ function RenderImage(
             ) : null}
         </Stack>
     );
-}
+};
 
-function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
+const RenderLocation = (params: GridCellParams<IPropertyResultResponse>) => {
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
         params.row || {};
 
@@ -82,18 +83,18 @@ function RenderLocation(params: GridCellParams<IPropertyResultResponse>) {
             </Typography>
         </Stack>
     );
-}
+};
 
-function StatusColor(params: GridCellParams) {
+const StatusColor = (params: GridCellParams) => {
     const { t } = useTranslation();
 
     if (!params.value) return <></>;
     const value = params.value as KeyValue;
-    const status = (value.value as string)?.trim();
+    const status = value.value?.trim();
 
     if (!value || !status) return <></>;
 
-    const statusForColor = (value.key as string)?.trim();
+    const statusForColor = value.key?.trim();
     const color = getPropertyStatusColor(statusForColor);
 
     return (
@@ -115,30 +116,14 @@ function StatusColor(params: GridCellParams) {
             </Typography>
         </Stack>
     );
-}
-
-//format value number with dots
-const formatNumberWithPeriod = (num: any) => {
-    if (num === null || num === undefined) {
-        return "";
-    }
-    const numericValue = num.toString().replace(/[^0-9]/g, "");
-    return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
 const RenderCodeCell = (params: GridCellParams) => {
-    if (!params.value) return null;
-
+    const v = params.value as string;
+    if (!v) return null;
     return (
         <Stack width={1} height={1} justifyContent="center" alignItems="center">
-            <NormalBadge
-                name={`${params.value || ""}`}
-                color={"#ffcc00"}
-                sx={{
-                    color: (theme) =>
-                        theme.palette.mode === "light" ? "#854D0E" : "null",
-                }}
-            />
+            <CodeBadge code={v} />
         </Stack>
     );
 };
@@ -149,7 +134,7 @@ const RenderCodeCell = (params: GridCellParams) => {
 export const getColumns = (t: TranslationType): GridColDef[] => [
     {
         field: "propertyImage",
-        headerName: t("Thumbnail") as string,
+        headerName: t<string>("Thumbnail"),
         align: "center",
         headerAlign: "left",
         renderCell: RenderImage,
@@ -157,7 +142,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
     },
     {
         field: "code",
-        headerName: t("Code") as string,
+        headerName: t<string>("Code"),
         headerAlign: "center",
         align: "center",
         renderCell: RenderCodeCell,
@@ -167,7 +152,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "category",
         align: "center",
         headerAlign: "left",
-        headerName: t("Category") as string,
+        headerName: t<string>("Category"),
         renderCell: (params: GridCellParams) => {
             const parentCategory = params.row?.parentCategory;
             const category = params.row?.category;
@@ -215,9 +200,11 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "price",
         headerAlign: "left",
         align: "left",
-        headerName: t("Price") as string,
+        headerName: t<string>("Price"),
         renderCell: (params: GridCellParams) => {
-            const formattedPrice = formatNumberWithPeriod(params.value);
+            const formattedPrice = params.value
+                ? formatThousands(params.value as any)
+                : "";
             return formattedPrice ? `${formattedPrice} €` : "";
         },
 
@@ -227,7 +214,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "state",
         headerAlign: "left",
         align: "left",
-        headerName: t("State") as string,
+        headerName: t<string>("State"),
         renderCell: StatusColor,
         flex: 1,
     },
@@ -235,7 +222,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "area",
         headerAlign: "left",
         align: "left",
-        headerName: t("Area") as string,
+        headerName: t<string>("Area"),
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
@@ -245,7 +232,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "labels",
         headerAlign: "left",
         align: "left",
-        headerName: t("Labels") as string,
+        headerName: t<string>("Labels"),
         renderCell: RenderLabelsCell,
         flex: 1,
     },
@@ -253,7 +240,7 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         field: "location",
         headerAlign: "left",
         align: "left",
-        headerName: t("Location") as string,
+        headerName: t<string>("Location"),
         renderCell: RenderLocation,
         flex: 1,
     },

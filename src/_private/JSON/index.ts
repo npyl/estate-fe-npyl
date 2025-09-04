@@ -1,4 +1,4 @@
-import debugLog from "./debugLog";
+import debugLog from "@/_private/debugLog";
 
 const onlyOnce = <T extends (...args: any[]) => any>(cb: T) => {
     let hasRun = false;
@@ -27,10 +27,11 @@ JSON.parse = (...args) => {
 };
 
 JSON.parseSafe = function <T>(
-    text: string,
+    text: string | null | undefined,
     reviver?: (key: string, value: any) => any
 ) {
     try {
+        if (!text) return null;
         return orgParse(text, reviver) as T;
     } catch (ex) {
         console.log(ex);

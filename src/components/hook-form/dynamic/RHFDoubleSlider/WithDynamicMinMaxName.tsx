@@ -1,11 +1,5 @@
 import { ComponentType, forwardRef } from "react";
 
-const dynamicMinMaxName = (minName: string, maxName: string) => ({
-    minName,
-    maxName,
-    key: `${minName}_${maxName}`,
-});
-
 interface PropsWithMinMaxName {
     minName: string;
     maxName: string;
@@ -19,7 +13,9 @@ function WithDynamicMinMaxName<T extends PropsWithMinMaxName>(
             <WrappedComponent
                 ref={ref}
                 {...(props as unknown as T)}
-                {...dynamicMinMaxName(minName, maxName)}
+                minName={minName}
+                maxName={maxName}
+                key={`${minName}_${maxName}`}
             />
         )
     );

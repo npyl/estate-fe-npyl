@@ -7,16 +7,15 @@ import {
     TableCell,
     TableHead,
     TableRow,
-    Typography,
 } from "@mui/material";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { ContactNotification } from "src/types/notification";
+import { ContactNotification } from "@/types/notification";
 import BasicRow from "./basic";
 import { useGetNotificationByIdQuery } from "@/services/notification";
-import { CodeBadge } from "@/sections/Notification/_shared/CodeBadge";
-import Link from "next/link";
 import { useGetPropertyByCodeQuery } from "@/services/properties";
+import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
+import CodeBadgeLink from "../../_shared/CodeBadgeLink";
 
 interface ReviewRowProps {
     row: ContactNotification;
@@ -83,7 +82,7 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell>
-                                            <CodeBadge
+                                            <NormalBadge
                                                 name={`${t("")} ${
                                                     review?.name || ""
                                                 }`}
@@ -96,7 +95,7 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <CodeBadge
+                                            <NormalBadge
                                                 name={`${t("")} ${
                                                     review?.email || ""
                                                 }`}
@@ -109,44 +108,13 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                             />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <Link
-                                                style={{
-                                                    textDecoration: "none",
-                                                }}
-                                                href={`/property/${property?.id}`}
-                                                passHref
-                                            >
-                                                <Typography
-                                                    component="a"
-                                                    sx={{
-                                                        textDecoration: "none",
-                                                        color: "aliceblue",
-                                                        "&:hover": {
-                                                            color: "black",
-                                                        },
-                                                    }}
-                                                >
-                                                    <CodeBadge
-                                                        name={`${t("")} ${
-                                                            row.propertyCode ||
-                                                            ""
-                                                        }`}
-                                                        color={"#3366ff"}
-                                                        sx={{
-                                                            fontWeight: "bold",
-                                                            color: "aliceblue",
-                                                            width: "75%",
-                                                            "&:hover": {
-                                                                opacity: 1.1,
-                                                            },
-                                                        }}
-                                                    />
-                                                </Typography>
-                                            </Link>
+                                            <CodeBadgeLink
+                                                propertyId={property?.id}
+                                                code={row.propertyCode}
+                                            />
                                         </TableCell>
                                         <TableCell align="left">
                                             <Rating
-                                                name="property-rating"
                                                 value={
                                                     review?.presentationRating ||
                                                     0
@@ -157,7 +125,6 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                         </TableCell>
                                         <TableCell align="left">
                                             <Rating
-                                                name="property-rating"
                                                 value={
                                                     review?.propertyRating || 0
                                                 }
