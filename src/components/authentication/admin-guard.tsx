@@ -5,6 +5,8 @@ import { useAuth } from "@/sections/use-auth";
 import AuthGuard from "./auth-guard";
 import useDialog from "@/hooks/useDialog";
 
+const ADMIN_GUARD_TESTID = "admin-guard-testid";
+
 const Guard: FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
     const { user } = useAuth();
@@ -19,7 +21,13 @@ const Guard: FC<PropsWithChildren> = ({ children }) => {
 
     if (!isAllowed) return null;
 
-    return <>{children}</>;
+    return (
+        <>
+            {/* INFO: if this div is found it means admin content is authorized */}
+            <div data-testid={ADMIN_GUARD_TESTID} />
+            {children}
+        </>
+    );
 };
 
 const AdminGuard: FC<PropsWithChildren> = ({ children }) => (
@@ -28,4 +36,5 @@ const AdminGuard: FC<PropsWithChildren> = ({ children }) => (
     </AuthGuard>
 );
 
+export { ADMIN_GUARD_TESTID };
 export default AdminGuard;

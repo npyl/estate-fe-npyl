@@ -2,7 +2,7 @@ import type { FC, PropsWithChildren } from "react";
 import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/sections/use-auth";
-import IsReady from "./IsReady";
+import IsReady from "./_IsReady";
 
 interface GuestGuardProps extends PropsWithChildren {}
 
