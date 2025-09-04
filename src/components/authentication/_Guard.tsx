@@ -19,7 +19,7 @@ const getPushData = (
         : redirectHref;
 
 interface GuardProps extends PropsWithChildren {
-    allowCb: (user: IUser, isAuthenticated: boolean) => boolean;
+    allowCb: (user: IUser | null, isAuthenticated: boolean) => boolean;
 
     redirectHref?: string;
     redirectWithQuery?: boolean;
@@ -38,7 +38,6 @@ const Guard: FC<GuardProps> = ({
     const [isAllowed, allow] = useDialog();
 
     useLayoutEffect(() => {
-        if (!user) return;
         if (allowCb(user, isAuthenticated)) allow();
         else
             router.push(

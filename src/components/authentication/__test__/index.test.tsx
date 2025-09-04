@@ -108,15 +108,6 @@ const describeGuard = (name: string, fn: jest.EmptyFunction) =>
 // ----------------------------------------------------------------------------------------------
 
 describe("auth-guards", () => {
-    describe("guest", () => {
-        beforeEach(() => {
-            jest.clearAllMocks();
-        });
-
-        it("non-authenticated", () => {});
-        it("authenticated", () => {});
-    });
-
     describeGuard("auth", () => {
         it("non-authenticated", () => {
             setupMocks({ isAuthenticated: false });
