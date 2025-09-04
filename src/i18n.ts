@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            ERR_PAGE_NOT_FOUND: "Page not found",
+            ERR_INTERNAL_SERVER_ERROR: "Internal app error",
+
             BLOG_MIDDLE_IMAGES_FULL: "You can only upload 2 images",
             MainImage: "Main Image",
             MiddleImages: "Middle Images",
@@ -1406,6 +1409,9 @@ const resources = {
     },
     el: {
         translation: {
+            ERR_PAGE_NOT_FOUND: "Η σελίδα δεν βρέθηκε",
+            ERR_INTERNAL_SERVER_ERROR: "Εσωτερικό σφάλμα στην εφαρμογή",
+
             BLOG_MIDDLE_IMAGES_FULL:
                 "Μπορείτε να ανεβάσετε μέχρι 2 φωτογραφίες",
             MainImage: "Κύρια Εικόνα",
