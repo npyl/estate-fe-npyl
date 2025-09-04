@@ -1,5 +1,8 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useLayoutEffect, useState } from "react";
 import useVersioned, { getVersioned, TVersioned } from "@/hooks/useVersioned";
+
+import "@/_private/JSON";
+import { useReadInjected, useWriteInjected } from "./useInjected";
 
 type TValue = {
     an: string;
@@ -26,16 +29,15 @@ const VERSION_STORED = 1;
 /**
  * Store w/ injected value support
  */
-const useStore =
-    <T extends object>(injectedValue?: TVersioned<T>) =>
-    (_: string | null, fallbackValue: TVersioned<T>) => {
-        const [value, setState] = useState(injectedValue ?? fallbackValue);
-        const remove = useCallback(
-            () => setState(fallbackValue),
-            [fallbackValue]
-        );
-        return [value, setState, remove] as const;
-    };
+const useStore = <T extends object>(
+    _: string | null,
+    fallbackValue: TVersioned<T>
+) => {
+    const injectedValue = useReadInjected<T>();
+    const [value, setState] = useState(injectedValue ?? fallbackValue);
+    const remove = useCallback(() => setState(fallbackValue), [fallbackValue]);
+    return [value, setState, remove] as const;
+};
 
 interface TesterProps {
     injectedValue?: TVersioned<TValue>;
@@ -46,11 +48,13 @@ const Tester: FC<TesterProps> = ({
     injectedValue,
     version = VERSION_STORED,
 }) => {
+    useWriteInjected(injectedValue);
+
     const [value, set, remove] = useVersioned(
         storeKey,
         FALLBACK_VALUE,
         version,
-        useStore(injectedValue)
+        useStore
     );
     const setValue = useCallback(() => set(SPECIFIC_VALUE), []);
     return (
