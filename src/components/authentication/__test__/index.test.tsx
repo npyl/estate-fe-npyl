@@ -7,12 +7,12 @@ import { IUser } from "@/types/user";
 import AdminGuard, {
     ADMIN_GUARD_TESTID,
 } from "@/components/authentication/admin-guard";
-import "@testing-library/jest-dom";
 import { ComponentType, PropsWithChildren } from "react";
 import AgreementsGuard from "@/components/authentication/agreements-guard";
 import MessagesGuard from "../messages-guard";
 import NotificationsGuard from "../notification-guard";
 import TasksGuard from "../tasks-guard";
+import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------------------------
 
@@ -93,7 +93,7 @@ interface MockOptions {
 }
 
 const setupMocks = (options: MockOptions) => {
-    const { isAuthenticated = false, user = null } = options ?? {};
+    const { isAuthenticated = false, user = null } = options;
 
     // Mock router
     mockUseRouter.mockReturnValue({
