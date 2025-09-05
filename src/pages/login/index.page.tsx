@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import GuestGuard from "@/sections/Login/guest-guard";
+import GuestGuard from "@/sections/Login/GuestGuard";
 import LoginSection from "@/sections/Login";
 
 const Login: NextPage = () => <LoginSection />;

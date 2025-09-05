@@ -5,7 +5,7 @@ import Guard from "@/components/authentication/_Guard";
 // INFO: allow login (if not authenticated)
 const allowCb = (_: any, isAuthenticated: boolean) => !isAuthenticated;
 
-const Wrapped: FC<PropsWithChildren> = ({ children }) => (
+const GuestGuard: FC<PropsWithChildren> = ({ children }) => (
     <IsReady>
         <Guard allowCb={allowCb} redirectHref="/">
             {children}
@@ -13,4 +13,4 @@ const Wrapped: FC<PropsWithChildren> = ({ children }) => (
     </IsReady>
 );
 
-export default Wrapped;
+export default GuestGuard;
