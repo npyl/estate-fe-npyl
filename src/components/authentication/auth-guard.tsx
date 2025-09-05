@@ -8,12 +8,7 @@ interface AuthGuardProps extends PropsWithChildren {}
 
 const Wrapped: FC<AuthGuardProps> = ({ children }) => (
     <IsReady>
-        <Guard
-            allowCb={allowCb}
-            // ...
-            redirectHref="/login"
-            redirectWithQuery
-        >
+        <Guard allowCb={allowCb} redirectHref="/login">
             {children}
         </Guard>
     </IsReady>

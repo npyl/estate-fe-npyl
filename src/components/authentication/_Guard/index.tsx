@@ -6,23 +6,10 @@ import { FC, PropsWithChildren, useLayoutEffect } from "react";
 
 const ERROR_401_HREF = "/401";
 
-const getPushData = (
-    redirectWithQuery: boolean,
-    redirectHref: string,
-    returnUrl: string
-) =>
-    redirectWithQuery
-        ? {
-              pathname: redirectHref,
-              query: { returnUrl },
-          }
-        : redirectHref;
-
 interface GuardProps extends PropsWithChildren {
     allowCb: (user: IUser | null, isAuthenticated: boolean) => boolean;
 
     redirectHref?: string;
-    redirectWithQuery?: boolean;
 }
 
 const Guard: FC<GuardProps> = ({
@@ -30,7 +17,6 @@ const Guard: FC<GuardProps> = ({
     allowCb,
     // ...
     redirectHref = ERROR_401_HREF,
-    redirectWithQuery = false,
 }) => {
     const { user, isAuthenticated } = useAuth();
     const router = useRouter();
@@ -39,10 +25,7 @@ const Guard: FC<GuardProps> = ({
 
     useLayoutEffect(() => {
         if (allowCb(user, isAuthenticated)) allow();
-        else
-            router.push(
-                getPushData(redirectWithQuery, redirectHref, router.asPath)
-            );
+        else router.push(redirectHref);
     }, [allowCb, user, isAuthenticated]);
 
     if (!isAllowed) return null;
