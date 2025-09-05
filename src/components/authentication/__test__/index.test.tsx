@@ -1,8 +1,8 @@
+import { expectRouterPush, setupUseRouterMock } from "@/test/mock/useRouter";
+import { setupUseAuthMock, UseAuthMockOptions } from "@/test/mock/useAuth";
 import Tester, { AUTHORIZED_CONTENT_ID } from "./index.comp";
 import { render, screen } from "@testing-library/react";
 import AuthGuard from "@/components/authentication/auth-guard";
-import { useRouter } from "next/router";
-import { useAuth } from "@/sections/use-auth";
 import { IUser } from "@/types/user";
 import AdminGuard, {
     ADMIN_GUARD_TESTID,
@@ -13,32 +13,6 @@ import MessagesGuard from "../messages-guard";
 import NotificationsGuard from "../notification-guard";
 import TasksGuard from "../tasks-guard";
 import "@testing-library/jest-dom";
-
-// ----------------------------------------------------------------------------------------------
-
-const JSONParseSafe = (s: string) => {
-    try {
-        return JSON.parse(s);
-    } catch (ex) {
-        // ignore...
-        return null;
-    }
-};
-
-const expectPath = (calledWith: string, href: string) => {
-    const res = JSONParseSafe(calledWith);
-
-    // OK, calledWith should be equal to href
-    if (!res) return calledWith === href;
-
-    return "pathname" in res && res.pathname === href;
-};
-
-const expectRouterPush = (href: string = "/401") => {
-    expect(mockPush).toHaveBeenCalledTimes(1);
-    const calledWith = mockPush.mock.calls[0][0];
-    expectPath(calledWith, href);
-};
 
 // ----------------------------------------------------------------------------------------------
 
@@ -74,38 +48,12 @@ const ADMIN_USER: IUser = {
 
 // ----------------------------------------------------------------------------------------------
 
-jest.mock("next/router", () => ({
-    useRouter: jest.fn(),
-}));
-
-jest.mock("@/sections/use-auth", () => ({
-    useAuth: jest.fn(),
-}));
-
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
-const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
-
-const mockPush = jest.fn();
-
-interface MockOptions {
-    isAuthenticated?: boolean;
-    user?: any;
-}
-
-const setupMocks = (options: MockOptions) => {
-    const { isAuthenticated = false, user = null } = options;
-
+const setupMocks = (options: UseAuthMockOptions) => {
     // Mock router
-    mockUseRouter.mockReturnValue({
-        push: mockPush,
-        isReady: true,
-    } as any);
+    setupUseRouterMock();
 
     // Mock auth
-    mockUseAuth.mockReturnValue({
-        isAuthenticated,
-        user,
-    } as any);
+    setupUseAuthMock(options);
 };
 
 // ----------------------------------------------------------------------------------------------
