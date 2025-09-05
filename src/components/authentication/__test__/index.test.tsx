@@ -16,10 +16,36 @@ import TasksGuard from "../tasks-guard";
 
 // ----------------------------------------------------------------------------------------------
 
+const JSONParseSafe = (s: string) => {
+    try {
+        return JSON.parse(s);
+    } catch (ex) {
+        // ignore...
+        return null;
+    }
+};
+
+const expectPath = (calledWith: string, href: string) => {
+    const res = JSONParseSafe(calledWith);
+
+    // OK, calledWith should be equal to href
+    if (!res) return calledWith === href;
+
+    return "pathname" in res && res.pathname === href;
+};
+
+const expectRouterPush = (href: string = "/401") => {
+    expect(mockPush).toHaveBeenCalledTimes(1);
+    const calledWith = mockPush.mock.calls[0][0];
+    expectPath(calledWith, href);
+};
+
+// ----------------------------------------------------------------------------------------------
+
 const expectContentFound = () =>
     expect(screen.getByTestId(AUTHORIZED_CONTENT_ID)).toBeInTheDocument();
 
-const expectContentUnauthorized = () => {
+const expectContentUnauthorized = (href?: string) => {
     let unauthorized = true;
     try {
         expectContentFound();
@@ -30,6 +56,7 @@ const expectContentUnauthorized = () => {
         // ignore...
     }
     expect(unauthorized).toBe(true);
+    expectRouterPush(href);
 };
 
 // ----------------------------------------------------------------------------------------------
@@ -112,7 +139,7 @@ describe("auth-guards", () => {
         it("non-authenticated", () => {
             setupMocks({ isAuthenticated: false });
             render(<Tester GuardComponent={AuthGuard} />);
-            expectContentUnauthorized();
+            expectContentUnauthorized("/login");
         });
         it("authenticated", () => {
             setupMocks({ isAuthenticated: true });
@@ -125,12 +152,12 @@ describe("auth-guards", () => {
         it("non-authenticated, non-admin", () => {
             setupMocks({ isAuthenticated: false, user: NON_ADMIN_USER });
             render(<Tester GuardComponent={AdminGuard} />);
-            expectContentUnauthorized();
+            expectContentUnauthorized("/login");
         });
         it("non-authenticated, admin", () => {
             setupMocks({ isAuthenticated: false, user: ADMIN_USER });
             render(<Tester GuardComponent={AdminGuard} />);
-            expectContentUnauthorized();
+            expectContentUnauthorized("/login");
         });
         it("authenticated, non-admin", () => {
             setupMocks({ isAuthenticated: true, user: NON_ADMIN_USER });
