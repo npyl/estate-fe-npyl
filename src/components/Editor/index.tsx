@@ -24,6 +24,8 @@ import { primary } from "@/theme/light-theme-options";
 const MenuBar = dynamic(() => import("./MenuBar"), { ssr: false });
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
+const EDITOR_CONTENT_ID = "editor-content-testid";
+
 // ----------------------------------------------------------------------
 
 const getMenuBarSx = (editable: boolean): SxProps<Theme> => ({
@@ -192,7 +194,11 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     />
                 ) : undefined}
 
-                <EditorContent editor={editor} {...props}>
+                <EditorContent
+                    data-testid={EDITOR_CONTENT_ID}
+                    editor={editor}
+                    {...props}
+                >
                     {editable && editor && menubarRef.current ? (
                         <BubbleMenu menubar={menubarRef.current} />
                     ) : null}
@@ -238,5 +244,6 @@ const ProviderWrap = forwardRef<EditorRef, EditorProps>(
     }
 );
 
+export { EDITOR_CONTENT_ID };
 export type { EditorRef, EditorProps };
 export default ProviderWrap;
