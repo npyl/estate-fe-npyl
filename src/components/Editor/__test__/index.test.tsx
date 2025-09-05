@@ -88,8 +88,13 @@ describe("Editor", () => {
     });
 
     describe("update", () => {
-        it("onUpdate", async () => {});
+        it("onUpdate (JSON)", async () => {});
         it("onUpdate (HTML)", async () => {});
         it("onPlainTextUpdate", async () => {});
+    });
+
+    describe("mutability", () => {
+        it("editable", () => {});
+        it("non-editable", () => {});
     });
 });
