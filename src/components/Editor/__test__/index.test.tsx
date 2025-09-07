@@ -1,9 +1,16 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from "@testing-library/react";
 import Tester from "./index.comp";
 import plainTextToJSON from "../util/plainText2JSON";
 import { TESTS } from "../util/plainText2JSON/__test__/constants";
 import { EDITOR_CONTENT_ID, EditorProps } from "@/components/Editor";
 import "@testing-library/jest-dom";
+import sleep from "@/utils/sleep";
 
 // ----------------------------------------------------------------------------------
 
@@ -93,11 +100,23 @@ const expectContent = (inputContentRaw: string) => {
 
 // ----------------------------------------------------------------------------------
 
+const DELAY = 1000 * 5; // 5sec
+
+const getCallStatus = async (mockCb: jest.Mock<any, any, any>) => {
+    // Wait a reasonable amount of time for async operations
+    await act(async () => {
+        await sleep(DELAY);
+    });
+    // Simply check if it was called
+    return mockCb.mock.calls.length > 0;
+};
+
+// ----------------------------------------------------------------------------------
+
 const getUpdateRes = async (mockOnUpdate: jest.Mock<any, any, any>) => {
     // Wait for the update to be processed
-    await waitFor(() => {
-        expect(mockOnUpdate).toHaveBeenCalled();
-    });
+    const wasCalled = await getCallStatus(mockOnUpdate);
+    expect(wasCalled).toBe(true);
 
     const lastCall =
         mockOnUpdate.mock.calls[mockOnUpdate.mock.calls.length - 1];
@@ -138,7 +157,7 @@ describe("Editor", () => {
         expectContent(contentRaw);
     });
 
-    describe("update", () => {
+    describe("update & mutability", () => {
         it("onUpdate (JSON)", async () => {
             const mockOnUpdate = jest.fn();
             const contentRaw = TESTS[1].input;
@@ -172,6 +191,8 @@ describe("Editor", () => {
 
             // Get mockOnUpdate result
             const htmlContent = await getUpdateRes(mockOnUpdate);
+
+            expect(htmlContent).toContain(newContentRaw);
         });
         it("onPlainTextUpdate", async () => {
             const mockOnPlainTextUpdate = jest.fn();
@@ -188,11 +209,67 @@ describe("Editor", () => {
 
             // Get mockOnUpdate result
             const plainText = await getUpdateRes(mockOnPlainTextUpdate);
+
+            expect(plainText).toBe(newContentRaw);
         });
     });
 
-    describe("mutability", () => {
-        it("editable", () => {});
-        it("non-editable", () => {});
+    describe("immutability", () => {
+        it("onUpdate (JSON)", async () => {
+            const mockOnUpdate = jest.fn();
+            const contentRaw = TESTS[1].input;
+            const newContentRaw = "Hello World";
+
+            fillAndExpect(
+                {
+                    editable: false,
+                    contentRaw,
+                    mode: "json",
+                    onUpdate: mockOnUpdate,
+                },
+                newContentRaw
+            );
+
+            // Wait for the update to be processed
+            const wasCalled = await getCallStatus(mockOnUpdate);
+            expect(wasCalled).toBe(false);
+        });
+        it("onUpdate (HTML)", async () => {
+            const mockOnUpdate = jest.fn();
+            const contentRaw = TESTS[1].input;
+            const newContentRaw = "Hello World";
+
+            fillAndExpect(
+                {
+                    editable: false,
+                    contentRaw,
+                    mode: "html",
+                    onUpdate: mockOnUpdate,
+                },
+                newContentRaw
+            );
+
+            // Wait for the update to be processed
+            const wasCalled = await getCallStatus(mockOnUpdate);
+            expect(wasCalled).toBe(false);
+        });
+        it("onPlainTextUpdate", async () => {
+            const mockOnPlainTextUpdate = jest.fn();
+            const contentRaw = TESTS[1].input;
+            const newContentRaw = "Hello World";
+
+            fillAndExpect(
+                {
+                    editable: false,
+                    contentRaw,
+                    onPlainTextUpdate: mockOnPlainTextUpdate,
+                },
+                newContentRaw
+            );
+
+            // Wait for the update to be processed
+            const wasCalled = await getCallStatus(mockOnPlainTextUpdate);
+            expect(wasCalled).toBe(false);
+        });
     });
 });
