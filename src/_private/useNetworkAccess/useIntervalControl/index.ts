@@ -9,6 +9,7 @@ const useIntervalControl = (
 
     const start = useCallback(() => {
         if (intervalRef.current) return;
+        if (!interval.current) return;
         intervalRef.current = setInterval(cb, interval.current);
     }, [cb]);
 

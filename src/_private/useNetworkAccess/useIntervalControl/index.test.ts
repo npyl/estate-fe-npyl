@@ -115,8 +115,8 @@ describe("useIntervalControl", () => {
 
             start();
 
-            // Timer should be created even with 0 interval
-            expect(jest.getTimerCount()).toBeGreaterThan(0);
+            // Timer should NOT be created with an interval of 0
+            expect(jest.getTimerCount()).toBe(0);
         });
     });
 

@@ -1,10 +1,4 @@
-import {
-    act,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import Tester from "./index.comp";
 import plainTextToJSON from "../util/plainText2JSON";
 import { TESTS } from "../util/plainText2JSON/__test__/constants";
