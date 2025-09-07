@@ -1,30 +1,15 @@
-import { useAuth } from "@/sections/use-auth";
-import { useRouter } from "next/router";
-import { FC, PropsWithChildren, useLayoutEffect } from "react";
-import AuthGuard from "./auth-guard";
+import { FC, PropsWithChildren } from "react";
+import AdminGuard from "./admin-guard";
+import Guard from "./_Guard";
+import { IUser } from "@/types/user";
 
-const Guard: FC<PropsWithChildren> = ({ children }) => {
-    const router = useRouter();
-    const { user } = useAuth();
-
-    const isAdmin = user?.isAdmin;
-
-    useLayoutEffect(() => {
-        if (
-            (!user?.tasksEnabled || user?.tasksEnabled === "NONE") &&
-            !isAdmin
-        ) {
-            router.push("/401");
-        }
-    }, [user?.tasksEnabled, isAdmin]);
-
-    return <>{children}</>;
-};
+const allowCb = (u: IUser | null) =>
+    u?.tasksEnabled === "ALL" || u?.tasksEnabled === "OWN";
 
 const TasksGuard: FC<PropsWithChildren> = ({ children }) => (
-    <AuthGuard>
-        <Guard>{children}</Guard>
-    </AuthGuard>
+    <AdminGuard>
+        <Guard allowCb={allowCb}>{children}</Guard>
+    </AdminGuard>
 );
 
 export default TasksGuard;

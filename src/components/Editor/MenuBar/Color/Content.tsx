@@ -26,11 +26,11 @@ const getBorderColor = (text: boolean, active: boolean, color: string) => {
         if (color === "inherit") return "transparent";
         if (active) return "black";
         return color;
-    } else {
-        if (color === "transparent") return getBorderColor2;
-        if (active) return "black";
-        return color;
     }
+
+    if (color === "transparent") return getBorderColor2;
+    if (active) return "black";
+    return color;
 };
 
 interface OptionProps {

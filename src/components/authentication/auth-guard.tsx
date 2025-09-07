@@ -1,42 +1,17 @@
 import type { FC, PropsWithChildren } from "react";
-import { useLayoutEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useAuth } from "@/sections/use-auth";
+import IsReady from "./_IsReady";
+import Guard from "./_Guard";
 
-const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
-    const auth = useAuth();
-    const router = useRouter();
-    const [checked, setChecked] = useState(false);
+const allowCb = (_: any, isAuthenticated: boolean) => isAuthenticated;
 
-    useLayoutEffect(
-        () => {
-            if (!router.isReady) {
-                return;
-            }
+interface AuthGuardProps extends PropsWithChildren {}
 
-            if (!auth.isAuthenticated) {
-                router
-                    .push({
-                        pathname: "/login",
-                        query: { returnUrl: router.asPath },
-                    })
-                    .catch(console.error);
-            } else {
-                setChecked(true);
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [router.isReady, auth.isAuthenticated]
-    );
+const Wrapped: FC<AuthGuardProps> = ({ children }) => (
+    <IsReady>
+        <Guard allowCb={allowCb} redirectHref="/login">
+            {children}
+        </Guard>
+    </IsReady>
+);
 
-    if (!checked) {
-        return null;
-    }
-
-    // If got here, it means that the redirect did not occur, and that tells us that the user is
-    // authenticated / authorized.
-
-    return <>{children}</>;
-};
-
-export default AuthGuard;
+export default Wrapped;

@@ -1,26 +1,13 @@
-import { useAuth } from "@/sections/use-auth";
-import { useRouter } from "next/router";
-import { FC, PropsWithChildren, useLayoutEffect } from "react";
+import { FC, PropsWithChildren } from "react";
 import AuthGuard from "./auth-guard";
+import Guard from "./_Guard";
+import { IUser } from "@/types/user";
 
-const Guard: FC<PropsWithChildren> = ({ children }) => {
-    const router = useRouter();
-    const { user } = useAuth();
-
-    const isAdmin = user?.isAdmin;
-
-    useLayoutEffect(() => {
-        if (!user?.notificationsEnabled && !isAdmin) {
-            router.push("/401");
-        }
-    }, [user?.notificationsEnabled, isAdmin]);
-
-    return <>{children}</>;
-};
+const allowCb = (u: IUser | null) => Boolean(u?.notificationsEnabled);
 
 const NotificationsGuard: FC<PropsWithChildren> = ({ children }) => (
     <AuthGuard>
-        <Guard>{children}</Guard>
+        <Guard allowCb={allowCb}>{children}</Guard>
     </AuthGuard>
 );
 

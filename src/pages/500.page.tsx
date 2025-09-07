@@ -1,85 +1,42 @@
-import {
-    Box,
-    Button,
-    Container,
-    Link,
-    Typography,
-    useMediaQuery,
-} from "@mui/material";
+import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
+import { Box, Container, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import type { NextPage } from "next";
-import Head from "next/head";
+import { useTranslation } from "react-i18next";
+
+const ERR_INTERNAL_SERVER_ERROR = "ERR_INTERNAL_SERVER_ERROR";
 
 const ServerError: NextPage = () => {
     const theme = useTheme();
-    const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
+    const { t } = useTranslation();
 
     return (
-        <>
-            <Head>
-                <title>Error: Server Error</title>
-            </Head>
+        <Container maxWidth="lg">
+            <Typography align="center" variant="h4">
+                {t(ERR_INTERNAL_SERVER_ERROR)}
+            </Typography>
             <Box
-                component="main"
                 sx={{
-                    alignItems: "center",
-                    backgroundColor: "background.paper",
                     display: "flex",
-                    flexGrow: 1,
-                    py: "80px",
+                    justifyContent: "center",
+                    mt: 6,
                 }}
             >
-                <Container maxWidth="lg">
-                    <Typography
-                        align="center"
-                        variant={mobileDevice ? "h4" : "h1"}
-                    >
-                        500: Internal Server Error
-                    </Typography>
-                    <Typography
-                        align="center"
-                        color="textSecondary"
-                        sx={{ mt: 0.5 }}
-                        variant="subtitle2"
-                    >
-                        You either tried some shady route or you came here by
-                        mistake. Whichever it is, try using the navigation.
-                    </Typography>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mt: 6,
-                        }}
-                    >
-                        <Box
-                            alt="Under development"
-                            component="img"
-                            src={`/static/error/error500_${theme.palette.mode}.svg`}
-                            sx={{
-                                height: "auto",
-                                maxWidth: "100%",
-                                width: 400,
-                            }}
-                        />
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mt: 6,
-                        }}
-                    >
-                        <Link href="/">
-                            <Button variant="outlined">
-                                Back to Dashboard
-                            </Button>
-                        </Link>
-                    </Box>
-                </Container>
+                <Box
+                    alt="Under development"
+                    component="img"
+                    src={`/static/error/error500_${theme.palette.mode}.svg`}
+                    sx={{
+                        height: "auto",
+                        maxWidth: "100%",
+                        width: 400,
+                    }}
+                />
             </Box>
-        </>
+        </Container>
     );
 };
+
+ServerError.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default ServerError;
