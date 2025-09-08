@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/experimental-ct-react";
 import gotoSafe from "../../../../_util/gotoSafe";
 import {
+    INCREMENT_CALLBACK_KEY,
     NAVIGATE_TESTID,
     SAME_PATH_REDIRECT_TESTID,
 } from "../../../../../src/sections/__test__/useUnsavedWatcher/constants";
@@ -12,76 +13,51 @@ const baseUrl = "http://127.0.0.1:3000/__test__/useUnsavedWatcher";
 
 const DELAY = 2 * 60 * 1000;
 
-class CallTracker {
-    private callCount = 0;
-
-    increment() {
-        this.callCount++;
-    }
-
-    getCount() {
-        return this.callCount;
-    }
-
-    reset() {
-        this.callCount = 0;
-    }
-}
-
 const setupCallTracking = async (page: Page) => {
-    const tracker = new CallTracker();
+    let callCount = 0;
 
-    // Expose functions to the page context
-    await page.exposeFunction("incrementTestCallCount", () =>
-        tracker.increment()
-    );
-    await page.exposeFunction("getTestCallCount", () => tracker.getCount());
-    await page.exposeFunction("resetTestCallCount", () => tracker.reset());
+    const increment = () => callCount++;
+    const getCount = () => callCount;
 
-    // Initialize the tracking in the page
-    await page.evaluate(() => {
-        (window as any).callCount = 0;
-        (window as any).trackCall = () => {
-            (window as any).callCount = ((window as any).callCount || 0) + 1;
-            (window as any).incrementTestCallCount();
-        };
-    });
+    await page.exposeFunction(INCREMENT_CALLBACK_KEY, increment);
 
-    return tracker;
+    return { getCount };
 };
+
+// -------------------------------------------------------------------------------------------
 
 const samePathRedirect = async (page: Page) => {
     await page.getByTestId(SAME_PATH_REDIRECT_TESTID).click();
-    await page.waitForLoadState("networkidle", { timeout: DELAY });
+    await page.waitForLoadState("load", { timeout: DELAY });
 };
 
 const clickNavigate = async (page: Page) => {
     await page.getByTestId(NAVIGATE_TESTID).click();
-    await page.waitForLoadState("networkidle", { timeout: DELAY });
+    await page.waitForURL("http://127.0.0.1:3000/", { timeout: DELAY });
+    await page.waitForLoadState("load", { timeout: DELAY });
 };
 
 // -------------------------------------------------------------------------------------------
 
 test.describe("useUnsavedWatcher", () => {
-    let tracker: CallTracker;
-
     test.beforeEach(async ({ page }) => {
         await gotoSafe(page, baseUrl);
-        tracker = await setupCallTracking(page);
     });
 
     test("beforeunload (refresh)", async ({ page }) => {
-        await page.reload();
-        await page.waitForTimeout(100);
+        const tracker = await setupCallTracking(page);
+        await page.reload({ waitUntil: "load", timeout: DELAY });
         expect(tracker.getCount()).toBe(1);
     });
 
     test("onRouteChange (same path)", async ({ page }) => {
+        const tracker = await setupCallTracking(page);
         await samePathRedirect(page);
         expect(tracker.getCount()).toBe(0);
     });
 
     test("onRouteChange (different path)", async ({ page }) => {
+        const tracker = await setupCallTracking(page);
         await gotoSafe(page, "about:blank");
         expect(tracker.getCount()).toBe(1);
     });
@@ -89,6 +65,7 @@ test.describe("useUnsavedWatcher", () => {
     test("onRouteChange (different path, programmatically)", async ({
         page,
     }) => {
+        const tracker = await setupCallTracking(page);
         await clickNavigate(page);
         expect(tracker.getCount()).toBe(1);
     });

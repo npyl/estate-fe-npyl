@@ -1,7 +1,12 @@
 import { useRouter } from "next/router";
 import useUnsavedChangesWatcher from "@/components/hook-form/useFormPersist/useUnsavedWatcher";
-import { FC, useCallback } from "react";
+import { CSSProperties, FC, useCallback } from "react";
 import { NAVIGATE_TESTID, SAME_PATH_REDIRECT_TESTID } from "./constants";
+
+const STYLE: CSSProperties = {
+    width: "100px",
+    height: "100px",
+};
 
 interface Props {
     onExit?: VoidFunction;
@@ -11,7 +16,7 @@ const Tester: FC<Props> = ({ onExit: _onExit }) => {
     const router = useRouter();
 
     const onExit = useCallback(() => {
-        (window as any).incrementTestCallCount();
+        window.incrementTestCallCount();
         _onExit?.();
     }, []);
 
@@ -22,14 +27,14 @@ const Tester: FC<Props> = ({ onExit: _onExit }) => {
             <button
                 data-testid={SAME_PATH_REDIRECT_TESTID}
                 onClick={() => router.push(router.asPath)}
+                style={STYLE}
             />
 
             <button
                 data-testid={NAVIGATE_TESTID}
-                onClick={() => router.push("/different-page")}
+                style={STYLE}
+                onClick={() => router.push("/")}
             />
-
-            <div data-testid="current-path">{router.asPath}</div>
         </div>
     );
 };
