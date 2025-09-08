@@ -7,10 +7,10 @@ import Tester, {
     Values,
 } from "./index.comp";
 import { PropsWithoutDefaultValues } from "@/components/hook-form/useFormPersist";
-import { initialiseCookie, parseCookies } from "@/test/cookies";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { getVersioned } from "@/hooks/useVersioned";
+import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
@@ -36,17 +36,24 @@ const expectPayload = async (expected: string) => {
 
 // ----------------------------------------------------------------------------
 
-const initialiseStorageCookie = () =>
-    initialiseCookie(
+const initialiseStorage = () => {
+    localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify(getVersioned(1, JSON.stringify(COOKIE_VALUES)))
+        JSON.stringify(getVersioned(1, COOKIE_VALUES))
     );
+};
+
+const clearStorage = () => {
+    localStorage.clear();
+};
 
 // ----------------------------------------------------------------------------
 
 describe("useFormPersist", () => {
     beforeEach(() => {
+        setupUseTranslationMock();
         setupUseRouterMock();
+        clearStorage();
     });
 
     // describe("Basic Flows", () => {});
@@ -62,23 +69,23 @@ describe("useFormPersist", () => {
             await expectValues({});
         });
         it("+ cookie, - props.value", async () => {
-            initialiseStorageCookie();
+            initialiseStorage();
             renderTester({});
             await expectValues(COOKIE_VALUES);
         });
-        // it("- cookie, + props.value", async () => {
-        //     renderTester({
-        //         values: PROPS_VALUES,
-        //     });
-        //     await expectValues(PROPS_VALUES);
-        // });
-        // it("+ cookie, + props.value", async () => {
-        //     initialiseStorageCookie();
-        //     renderTester({
-        //         values: PROPS_VALUES,
-        //     });
-        //     await expectValues(COOKIE_VALUES);
-        // });
+        it("- cookie, + props.value", async () => {
+            renderTester({
+                values: PROPS_VALUES,
+            });
+            await expectValues(PROPS_VALUES);
+        });
+        it("+ cookie, + props.value", async () => {
+            initialiseStorage();
+            renderTester({
+                values: PROPS_VALUES,
+            });
+            await expectValues(COOKIE_VALUES);
+        });
     });
 
     // describe("onSaveSuccess", () => {

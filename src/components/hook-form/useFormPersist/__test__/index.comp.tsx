@@ -1,7 +1,8 @@
 import { FC, useCallback, useState } from "react";
 import useFormPersist, { PropsWithoutDefaultValues } from "..";
 import { FormProvider } from "react-hook-form";
-import { parseCookies } from "@/test/cookies";
+
+import "@/_private/JSON";
 
 const SUBMIT_ID = "submit-button-testid";
 const PAYLOAD_TESTID = "payload-testid";
