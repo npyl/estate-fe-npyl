@@ -4,6 +4,7 @@ import Tester, {
     PAYLOAD_TESTID,
     STORAGE_KEY,
     SUBMIT_ID,
+    TesterConfig,
     Values,
 } from "./index.comp";
 import { PropsWithoutDefaultValues } from "@/components/hook-form/useFormPersist";
@@ -21,8 +22,10 @@ const PROPS_VALUES: Values = {
 
 // ----------------------------------------------------------------------------
 
-const renderTester = (formProps: PropsWithoutDefaultValues<Values>) =>
-    render(<Tester formProps={formProps} />);
+const renderTester = (
+    formProps: PropsWithoutDefaultValues<Values>,
+    config?: TesterConfig
+) => render(<Tester formProps={formProps} config={config} />);
 
 const clickSubmit = async () => {
     const user = userEvent.setup();
@@ -88,10 +91,20 @@ describe("useFormPersist", () => {
         });
     });
 
-    // describe("onSaveSuccess", () => {
-    //     it("ret. false", () => {});
-    //     it("ret. true", () => {});
-    // });
+    describe("onSaveSuccess", () => {
+        it("ret. false", async () => {
+            const onSaveSuccess = jest.fn();
+            renderTester({}, { onSaveSuccess });
+            await clickSubmit();
+            expect(onSaveSuccess).not.toHaveBeenCalled();
+        });
+        it("ret. true", async () => {
+            const onSaveSuccess = jest.fn();
+            renderTester({}, { onSubmitRet: true, onSaveSuccess });
+            await clickSubmit();
+            expect(onSaveSuccess).toHaveBeenCalled();
+        });
+    });
 
     // it("disablePersist", () => {});
 

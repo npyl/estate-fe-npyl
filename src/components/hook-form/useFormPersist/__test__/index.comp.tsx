@@ -12,22 +12,37 @@ interface Values {
     something: string;
 }
 
-interface TesterProps {
-    formProps: PropsWithoutDefaultValues<Values>;
+/**
+ * @field onSubmitRet   What the onSubmit callback (passed to methods.handleSubmit()) should return (useFormPersist requires a boolean return value)
+ * @field onSaveSuccess
+ */
+interface TesterConfig {
+    onSubmitRet?: boolean;
+    onSaveSuccess?: VoidFunction;
 }
 
-const Tester: FC<TesterProps> = ({ formProps }) => {
+interface TesterProps {
+    formProps: PropsWithoutDefaultValues<Values>;
+    config?: TesterConfig;
+}
+
+const Tester: FC<TesterProps> = ({ formProps, config }) => {
+    const { onSubmitRet = false, onSaveSuccess = null } = config ?? {};
+
     const [methods, { PersistNotice }] = useFormPersist<Values>(
         STORAGE_KEY,
-        null,
+        onSaveSuccess,
         formProps
     );
 
     const [payload, setPayload] = useState<Values>();
-    const onSubmit = useCallback((d: Values) => {
-        setPayload(d);
-        return false;
-    }, []);
+    const onSubmit = useCallback(
+        (d: Values) => {
+            setPayload(d);
+            return onSubmitRet;
+        },
+        [onSubmitRet]
+    );
 
     return (
         <div>
@@ -42,5 +57,5 @@ const Tester: FC<TesterProps> = ({ formProps }) => {
 };
 
 export { STORAGE_KEY, SUBMIT_ID, PAYLOAD_TESTID };
-export type { Values };
+export type { Values, TesterConfig };
 export default Tester;
