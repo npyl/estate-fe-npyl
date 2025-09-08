@@ -16,6 +16,7 @@ import { getVersioned } from "@/hooks/useVersioned";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import uuidv4 from "@/utils/uuidv4";
 import "@testing-library/jest-dom";
+import { PERSIST_NOTICE_TESTID } from "../constant";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
@@ -40,6 +41,9 @@ const expectPayload = async (expected: string) => {
     const payload = screen.getByTestId(PAYLOAD_TESTID).textContent;
     expect(payload).toBe(expected);
 };
+
+const expectPersistNotice = () =>
+    expect(screen.getByTestId(PERSIST_NOTICE_TESTID)).toBeVisible();
 
 // ----------------------------------------------------------------------------
 
@@ -140,7 +144,11 @@ describe("useFormPersist", () => {
         });
     });
 
-    // it("persistNotice", () => {});
+    it("persistNotice", () => {
+        initialiseStorage();
+        renderTester({});
+        expectPersistNotice();
+    });
 
     // it("persistChanges", () => {})
 });
