@@ -1,6 +1,9 @@
 import { setupUseRouterMock } from "@/test/mock/useRouter";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Tester, {
+    DIRTY_TESTID,
+    DIRTY_YES,
+    FIELD_TESTID,
     PAYLOAD_TESTID,
     STORAGE_KEY,
     SUBMIT_ID,
@@ -9,9 +12,10 @@ import Tester, {
 } from "./index.comp";
 import { PropsWithoutDefaultValues } from "@/components/hook-form/useFormPersist";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 import { getVersioned } from "@/hooks/useVersioned";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
+import uuidv4 from "@/utils/uuidv4";
+import "@testing-library/jest-dom";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
@@ -108,7 +112,33 @@ describe("useFormPersist", () => {
 
     // it("disablePersist", () => {});
 
-    // it("isDirty", () => {});
+    describe("isDirty", () => {
+        const expectDirty = () => {
+            const dirtyContent = screen.getByTestId(DIRTY_TESTID).textContent;
+            expect(dirtyContent).toBe(DIRTY_YES);
+        };
+
+        /**
+         * Fill an input with a random value
+         */
+        const fillInput = (inputId: string) => {
+            const field = screen.getByTestId(inputId);
+            const input = field.querySelector("input");
+            if (!input) throw "Bad input";
+            fireEvent.change(input, { target: { value: uuidv4() } });
+        };
+
+        it("field change", () => {
+            renderTester({});
+            fillInput(FIELD_TESTID);
+            expectDirty();
+        });
+        it("w/ cookie", () => {
+            initialiseStorage();
+            renderTester({});
+            expectDirty();
+        });
+    });
 
     // it("persistNotice", () => {});
 

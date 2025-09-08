@@ -1,15 +1,26 @@
 import { FC, useCallback, useState } from "react";
-import useFormPersist, { PropsWithoutDefaultValues } from "..";
+import useFormPersist, {
+    PropsWithoutDefaultValues,
+} from "@/components/hook-form/useFormPersist";
 import { FormProvider } from "react-hook-form";
 
 import "@/_private/JSON";
+import RHFTextField from "@/components/hook-form/RHFTextField";
 
 const SUBMIT_ID = "submit-button-testid";
 const PAYLOAD_TESTID = "payload-testid";
+const DIRTY_TESTID = "dirty-testid";
+const FIELD_TESTID = "field-testid";
+
+const DIRTY_YES = "YES";
+const DIRTY_NO = "NO";
+
 const STORAGE_KEY = "storage-key";
 
+const DUMMY_FIELD_NAME = "something";
+
 interface Values {
-    something: string;
+    [DUMMY_FIELD_NAME]: string;
 }
 
 /**
@@ -35,6 +46,8 @@ const Tester: FC<TesterProps> = ({ formProps, config }) => {
         formProps
     );
 
+    const isDirty = methods.formState.isDirty;
+
     const [payload, setPayload] = useState<Values>();
     const onSubmit = useCallback(
         (d: Values) => {
@@ -47,15 +60,34 @@ const Tester: FC<TesterProps> = ({ formProps, config }) => {
     return (
         <div>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <FormProvider {...methods}>{PersistNotice}</FormProvider>
+                <FormProvider {...methods}>
+                    {PersistNotice}
+                    <RHFTextField
+                        name={DUMMY_FIELD_NAME}
+                        data-testid={FIELD_TESTID}
+                    />
+                </FormProvider>
                 <button type="submit" data-testid={SUBMIT_ID} />
             </form>
+
+            <div data-testid={DIRTY_TESTID}>
+                {isDirty ? DIRTY_YES : DIRTY_NO}
+            </div>
 
             <div data-testid={PAYLOAD_TESTID}>{JSON.stringify(payload)}</div>
         </div>
     );
 };
 
-export { STORAGE_KEY, SUBMIT_ID, PAYLOAD_TESTID };
+export {
+    STORAGE_KEY,
+    SUBMIT_ID,
+    PAYLOAD_TESTID,
+    DIRTY_TESTID,
+    FIELD_TESTID,
+    // ...
+    DIRTY_YES,
+    DIRTY_NO,
+};
 export type { Values, TesterConfig };
 export default Tester;
