@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 
 // Handle browser refresh/close with default prompt
-const useBeforeUnload = (cb: (e: BeforeUnloadEvent) => void) => {
+const useBeforeUnload = (cb: VoidFunction) => {
     useLayoutEffect(() => {
         window.addEventListener("beforeunload", cb);
         return () => {
