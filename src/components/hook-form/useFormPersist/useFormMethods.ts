@@ -10,7 +10,7 @@ import { PROMISE_ERROR } from "./constant";
 const useFormMethods = <
     TFieldValues extends FieldValues = FieldValues,
     TContext = any,
-    TTransformedValues = TFieldValues
+    TTransformedValues = TFieldValues,
 >(
     hasStorage: boolean,
     methods: UseFormReturn<TFieldValues, TContext, TTransformedValues>,

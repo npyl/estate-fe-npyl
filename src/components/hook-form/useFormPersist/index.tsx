@@ -96,9 +96,7 @@ function useFormPersist<
 
     // ---------------------------------------------------------------------
 
-    // INFO: make sure cookie is not faulty
-    const safeCookie = hasStorage ? cookie : values;
-    const temporaryChanges = useRef<TFieldValues | undefined>(safeCookie);
+    const temporaryChanges = useRef<TFieldValues | undefined>(values);
 
     // INFO: it is important to grab isDirty from methods0 instead of methods
     const isDirty = methods0.formState.isDirty;
@@ -160,4 +158,5 @@ function useFormPersist<
     return [methods, { PersistNotice, persistChanges }] as const;
 }
 
+export type { PropsWithoutDefaultValues };
 export default useFormPersist;

@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
+import { PERSIST_NOTICE_TESTID } from "./constant";
 
 // -----------------------------------------------------------------------------
 
@@ -94,7 +95,7 @@ const Notice = <TFieldValues extends FieldValues>({
     const color = isOriginal ? "primary" : "warning";
 
     return (
-        <Container dialog={dialog}>
+        <Container dialog={dialog} data-testid={PERSIST_NOTICE_TESTID}>
             <SoftTypography
                 width="fit-content"
                 p={1}
