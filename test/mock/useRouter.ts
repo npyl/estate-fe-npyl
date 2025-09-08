@@ -46,6 +46,11 @@ const expectRouterPush = (href: string = "") => {
 
 // ----------------------------------------------------------------------------------------
 
+const mockRouterEvents = {
+    on: jest.fn(),
+    off: jest.fn(),
+};
+
 interface IOptions {
     isReady?: boolean;
 }
@@ -54,6 +59,7 @@ const setupUseRouterMock = (options?: IOptions) =>
     mockUseRouter.mockReturnValue({
         push: mockPush,
         isReady: true,
+        events: mockRouterEvents,
         ...(options ?? {}),
     } as any);
 

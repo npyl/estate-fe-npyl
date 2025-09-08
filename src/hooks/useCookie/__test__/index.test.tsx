@@ -8,8 +8,28 @@ import Tester, {
 } from "./index.comp";
 import clickAndExpectOrg from "@/test/clickAndExpect";
 import { render, screen } from "@testing-library/react";
+import { parseCookies, initialiseCookie } from "@/test/cookies";
+import { getVersioned } from "@/hooks/useVersioned";
 import "@testing-library/jest-dom";
-import { expectCookie, clearCookies } from "./cookies";
+
+/**
+ * Check actual cookie value (stored in document.cookie for Jest)
+ * @param cookieName - The name of the cookie to check
+ * @param content - Expected content value
+ */
+const expectCookie = (cookieName: string, expected: string | undefined) => {
+    const cookies = parseCookies();
+
+    if (expected === undefined) {
+        expect(cookies[cookieName]).toBeUndefined();
+        return;
+    }
+
+    const expectedJson = JSON.stringify(getVersioned(1, expected));
+    const actualCookieValue = cookies[cookieName];
+
+    expect(actualCookieValue).toBe(expectedJson);
+};
 
 /**
  * Clicks on a button and checks both state and cookie value change
@@ -41,7 +61,7 @@ const checkInitial = () => {
 
 describe("useCookie", () => {
     beforeEach(() => {
-        clearCookies();
+        initialiseCookie();
     });
 
     // ---------------------------------------------------------------------------------------------------
