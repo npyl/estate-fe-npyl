@@ -5,6 +5,7 @@ import Tester, {
     DIRTY_YES,
     FIELD_TESTID,
     PAYLOAD_TESTID,
+    PERSIST_TESTID,
     STORAGE_KEY,
     SUBMIT_ID,
     TesterConfig,
@@ -12,11 +13,13 @@ import Tester, {
 } from "./index.comp";
 import { PropsWithoutDefaultValues } from "@/components/hook-form/useFormPersist";
 import userEvent from "@testing-library/user-event";
-import { getVersioned } from "@/hooks/useVersioned";
+import { getVersioned, TVersioned } from "@/hooks/useVersioned";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import uuidv4 from "@/utils/uuidv4";
-import "@testing-library/jest-dom";
 import { PERSIST_NOTICE_TESTID } from "../constant";
+import triggerEvent from "@/components/hook-form/useFormPersist/useUnsavedWatcher/triggerEvent";
+import "@testing-library/jest-dom";
+import sleep from "@/utils/sleep";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
@@ -47,16 +50,42 @@ const expectPersistNotice = () =>
 
 // ----------------------------------------------------------------------------
 
-const initialiseStorage = () => {
+/**
+ * Set storage item (STORAGE_KEY) with COOKIE_VALUES as content
+ */
+const setValuesToStorage = () =>
     localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(getVersioned(1, COOKIE_VALUES))
     );
+
+const clearStorage = () => localStorage.clear();
+
+/**
+ * @returns expect() object for the value of the storage item (STORAGE_KEY)
+ */
+const expectStorageValue = () => {
+    const item = localStorage.getItem(STORAGE_KEY);
+    if (!item) return null;
+    const content = JSON.parse(item) as TVersioned<Values>;
+    return expect(content.content.something);
 };
 
-const clearStorage = () => {
-    localStorage.clear();
+/**
+ * Fill an input with a random value
+ */
+const fillInput = (inputId: string) => {
+    const field = screen.getByTestId(inputId);
+    const input = field.querySelector("input");
+    if (!input) throw "Bad input";
+    const value = uuidv4();
+    fireEvent.change(input, { target: { value } });
+    return value;
 };
+
+// ----------------------------------------------------------------------------
+
+const clickPersistChanges = () => screen.getByTestId(PERSIST_TESTID).click();
 
 // ----------------------------------------------------------------------------
 
@@ -67,7 +96,39 @@ describe("useFormPersist", () => {
         clearStorage();
     });
 
-    // describe("Basic Flows", () => {});
+    describe("Basic Flows", () => {
+        it("interruption (e.g. redirect) & recovery of form", async () => {
+            // 1: load form
+            setValuesToStorage();
+            renderTester({});
+
+            // 1.1: register event listener spy
+            const addEventListenerSpy = jest.spyOn(window, "addEventListener");
+
+            // 2: fill in input
+            const value = fillInput(FIELD_TESTID);
+
+            // 3: simulate unsaved changes event
+            triggerEvent(addEventListenerSpy, "beforeunload");
+
+            await sleep(1000);
+
+            // 4: Expect storage item value
+            const expect = expectStorageValue();
+            if (!expect) throw "Bad expect";
+            expect.toBe(value);
+
+            // 5. Cleanup
+            addEventListenerSpy.mockRestore();
+        });
+
+        it("saving of changes & removal of storage item", async () => {
+            renderTester({}, { onSubmitRet: true });
+            await clickSubmit();
+            const ret = expectStorageValue();
+            expect(ret).toBe(null);
+        });
+    });
 
     describe("Value Priority", () => {
         const expectValues = async (OBJ: object) => {
@@ -80,7 +141,7 @@ describe("useFormPersist", () => {
             await expectValues({});
         });
         it("+ cookie, - props.value", async () => {
-            initialiseStorage();
+            setValuesToStorage();
             renderTester({});
             await expectValues(COOKIE_VALUES);
         });
@@ -91,7 +152,7 @@ describe("useFormPersist", () => {
             await expectValues(PROPS_VALUES);
         });
         it("+ cookie, + props.value", async () => {
-            initialiseStorage();
+            setValuesToStorage();
             renderTester({
                 values: PROPS_VALUES,
             });
@@ -114,22 +175,10 @@ describe("useFormPersist", () => {
         });
     });
 
-    // it("disablePersist", () => {});
-
     describe("isDirty", () => {
         const expectDirty = () => {
             const dirtyContent = screen.getByTestId(DIRTY_TESTID).textContent;
             expect(dirtyContent).toBe(DIRTY_YES);
-        };
-
-        /**
-         * Fill an input with a random value
-         */
-        const fillInput = (inputId: string) => {
-            const field = screen.getByTestId(inputId);
-            const input = field.querySelector("input");
-            if (!input) throw "Bad input";
-            fireEvent.change(input, { target: { value: uuidv4() } });
         };
 
         it("field change", () => {
@@ -138,17 +187,32 @@ describe("useFormPersist", () => {
             expectDirty();
         });
         it("w/ cookie", () => {
-            initialiseStorage();
+            setValuesToStorage();
             renderTester({});
             expectDirty();
         });
     });
 
     it("persistNotice", () => {
-        initialiseStorage();
+        setValuesToStorage();
         renderTester({});
         expectPersistNotice();
     });
 
-    // it("persistChanges", () => {})
+    it("persistChanges", async () => {
+        // Render form
+        setValuesToStorage();
+        renderTester({});
+
+        // Change field value
+        const value = fillInput(FIELD_TESTID);
+
+        // Force on-demand persist
+        clickPersistChanges();
+
+        // Expect storage item value
+        const expect = expectStorageValue();
+        if (!expect) throw "Bad expect";
+        expect.toBe(value);
+    });
 });
