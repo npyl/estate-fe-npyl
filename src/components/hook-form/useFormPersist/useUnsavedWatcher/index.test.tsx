@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react";
 import { useRouter } from "next/router";
 import useUnsavedChangesWatcher from "@/components/hook-form/useFormPersist/useUnsavedWatcher";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
+import triggerEvent from "./triggerEvent";
 
 // ---------------------------------------------------------------------------------
 
@@ -23,17 +24,6 @@ const mockRouter = {
 
 const renderUnsavedWatcher = (mockOnExit: jest.Mock<any, any, any>) =>
     renderHook(() => useUnsavedChangesWatcher(mockOnExit));
-
-// ---------------------------------------------------------------------------------
-
-const triggerEvent = (
-    mockCb: jest.SpyInstance,
-    event: string,
-    ...args: any[]
-) => {
-    const onEventCb = mockCb.mock.calls.find((call) => call[0] === event)[1];
-    return onEventCb(...args);
-};
 
 // ---------------------------------------------------------------------------------
 
