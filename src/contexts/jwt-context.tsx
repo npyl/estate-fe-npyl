@@ -1,14 +1,19 @@
 import type { FC, ReactNode } from "react";
 import { createContext, useCallback, useEffect, useReducer } from "react";
-import { useLoginMutation } from "../services/auth";
-import { IUser } from "src/types/user";
+import { useLoginMutation } from "@/services/auth";
+import { IUser } from "@/types/user";
 import {
     useGenerateChatTokenMutation,
     useLazyGetProfileQuery,
-} from "src/services/user";
+} from "@/services/user";
 import { useLogoutMutation } from "@/services/logout";
 import debugLog from "@/_private/debugLog";
 import { clearAllApiCaches } from "@/store";
+import {
+    getAccessToken,
+    removeAccessToken,
+    setAccessToken,
+} from "./accessToken";
 
 interface State {
     platform: "JWT";
@@ -114,7 +119,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const initialize = useCallback(async (): Promise<void> => {
         try {
-            if (globalThis?.localStorage?.getItem("accessToken")) {
+            if (getAccessToken()) {
                 const user = await getProfile().unwrap();
                 if (!user) {
                     throw "Failed to get profile!";
@@ -132,7 +137,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             }
         } catch (error) {
             // INFO: prevent infinite loop where user refreshes upon getProfile with unsuccessfully existing token
-            globalThis?.localStorage?.removeItem("accessToken");
+            removeAccessToken();
 
             dispatch({
                 type: ActionType.INITIALIZE,
@@ -153,14 +158,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             password,
         }).unwrap();
 
-        localStorage.setItem("accessToken", loginRes.token);
+        setAccessToken(loginRes.token);
 
         clearAllApiCaches();
 
         const user = await getProfile().unwrap();
-        if (!user) {
-            throw "Failed getting profile!";
-        }
+        if (!user) throw "Failed getting profile!";
 
         // INFO: chat token
         try {
@@ -185,7 +188,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const logout = useCallback(async () => {
         await logoutCb();
-        localStorage.removeItem("accessToken");
+        removeAccessToken();
         dispatch({ type: ActionType.LOGOUT });
     }, []);
 

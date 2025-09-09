@@ -1,4 +1,5 @@
 import { errorToast } from "@/components/Toaster";
+import { getAccessToken } from "@/contexts/accessToken";
 import useDialog from "@/hooks/useDialog";
 import { useCallback } from "react";
 
@@ -32,9 +33,7 @@ const useDownloadImages = () => {
                     {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer  ${localStorage.getItem(
-                                "accessToken"
-                            )}`,
+                            Authorization: `Bearer  ${getAccessToken()}`,
                         },
                     }
                 );
@@ -67,9 +66,7 @@ const useDownloadDocuments = () => {
                 {
                     method: "GET",
                     headers: {
-                        Authorization: `Bearer  ${localStorage.getItem(
-                            "accessToken"
-                        )}`,
+                        Authorization: `Bearer  ${getAccessToken()}`,
                     },
                 }
             );
@@ -112,9 +109,7 @@ const useExportPDF = () => {
                     `${baseUrl}/export/${propertyId}?${queryParams}`,
                     {
                         headers: {
-                            Authorization: `Bearer  ${localStorage.getItem(
-                                "accessToken"
-                            )}`,
+                            Authorization: `Bearer  ${getAccessToken()}`,
                             "Accept-Language": `${lang}`,
                             Accept: "application/pdf",
                         },

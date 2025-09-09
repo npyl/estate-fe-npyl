@@ -3,6 +3,7 @@ import { getLocalCredentials } from "../../_util/getCredentials";
 import login from "./service/login";
 import { Page } from "@playwright/test";
 import { AUTH_FILE } from "./_constant";
+import { setAccessToken } from "../../../src/contexts/accessToken";
 
 const localhost = "http://127.0.0.1:3000";
 
@@ -18,7 +19,7 @@ const authenticate = async (page: Page) => {
 
     // Set the accessToken in localStorage
     await page.addInitScript((token) => {
-        localStorage.setItem("accessToken", token);
+        setAccessToken(token);
     }, accessToken);
 
     // Reload the page to ensure the token is set

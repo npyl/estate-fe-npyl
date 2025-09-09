@@ -1,4 +1,5 @@
 import { errorToast } from "@/components/Toaster";
+import { removeAccessToken } from "@/contexts/accessToken";
 import {
     Middleware,
     MiddlewareAPI,
@@ -17,7 +18,7 @@ export const rtkQueryErrorLogger: Middleware =
                 action.payload.status === 401 ||
                 action.payload.status === 403
             ) {
-                localStorage.removeItem("accessToken");
+                removeAccessToken();
                 window.location.replace("/login");
                 errorToast("_END_OF_SESSION_");
             } else {

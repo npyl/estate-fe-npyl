@@ -13,6 +13,7 @@ import {
     optimisticCreateAssign,
     optimisticDelete,
 } from "./optimistic";
+import { getAccessToken } from "@/contexts/accessToken";
 
 export const labels = createApi({
     reducerPath: "labels",
@@ -20,12 +21,7 @@ export const labels = createApi({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/labels`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
+            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
             return headers;
         },
     }),

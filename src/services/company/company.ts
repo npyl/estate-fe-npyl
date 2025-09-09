@@ -2,8 +2,8 @@ import { IPropertyFileRes } from "@/types/file";
 import {
     IIntegrationCredentials,
     IIntegrationCredentialsPOST,
+    IntegrationSite,
 } from "@/types/integrations";
-import { IntegrationSite } from "@/types/integrations";
 import { IUserMini } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
@@ -13,6 +13,7 @@ import {
     IPublicSiteReq,
     IPublicSitesRes,
 } from "@/types/company";
+import { getAccessToken } from "@/contexts/accessToken";
 
 interface IUploadCompanyImage {
     contentType: string;
@@ -37,10 +38,7 @@ export const company = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/company`,
         prepareHeaders: (headers) => {
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
-            );
+            headers.set("Authorization", `Bearer ${getAccessToken()}`);
             return headers;
         },
     }),

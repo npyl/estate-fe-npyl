@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { GetImagesOrderReq, UpdateImagesOrderReq } from "./types";
 import { ImagesOrderRes } from "@/types/integrations";
+import { getAccessToken } from "@/contexts/accessToken";
 
 // TODO: optimistic
 
@@ -9,10 +10,7 @@ export const integrations = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `/api/integrations`,
         prepareHeaders: (headers) => {
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
-            );
+            headers.set("Authorization", `Bearer ${getAccessToken()}`);
             return headers;
         },
     }),
