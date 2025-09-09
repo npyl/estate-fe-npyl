@@ -4,27 +4,26 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Link from "@/components/Link";
 import { useTranslation } from "react-i18next";
-import { errorToast } from "@/components/Toaster";
 import { useAuth } from "@/sections/use-auth";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import LanguageButton from "./LanguageButton";
 import DayNightButton from "./DayNightButton";
 import dynamic from "next/dynamic";
 const AdminLabel = dynamic(() => import("@/sections/User/AdminLabel"));
 
-const Content = () => {
+interface Props {
+    onClose: VoidFunction;
+}
+
+const Content: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
     const { user, logout } = useAuth();
     const isAdmin = user?.isAdmin;
 
-    const handleLogout = useCallback(async () => {
-        try {
-            await logout();
-        } catch (err) {
-            console.error(err);
-            errorToast("Unable to logout");
-        }
+    const handleLogout = useCallback(() => {
+        logout();
+        onClose();
     }, []);
 
     return (
