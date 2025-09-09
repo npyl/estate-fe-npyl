@@ -102,7 +102,7 @@ export const AuthContext = createContext<AuthContextValue>({
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const [loginCb, { isSuccess }] = useLoginMutation();
+    const [loginCb] = useLoginMutation();
     const [logoutCb] = useLogoutMutation();
     const [getProfile] = useLazyGetProfileQuery();
 
@@ -110,9 +110,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     useEffect(() => {
         initialize();
-    }, [isSuccess]);
+    }, []);
 
-    const initialize = async (): Promise<void> => {
+    const initialize = useCallback(async (): Promise<void> => {
         try {
             if (globalThis?.localStorage?.getItem("accessToken")) {
                 const user = await getProfile().unwrap();
@@ -142,7 +142,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                 },
             });
         }
-    };
+    }, []);
 
     const signin = async (
         username: string,
