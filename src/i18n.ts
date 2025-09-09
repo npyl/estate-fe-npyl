@@ -4,6 +4,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            DELETE_RECORD: "Do you really want to delete this?",
+            DELETE_RECORDS: "Do you really want to delete these?",
+            CANNOT_BE_UNDONE: "This process cannot be undone",
+
             ERR_PAGE_NOT_FOUND: "Page not found",
             ERR_INTERNAL_SERVER_ERROR: "Internal app error",
 
@@ -1409,6 +1413,10 @@ const resources = {
     },
     el: {
         translation: {
+            DELETE_RECORD: "Επιθυμείτε να γίνει διαγραφή?",
+            DELETE_RECORDS: "Επιθυμείτε να γίνει διαγραφή?",
+            CANNOT_BE_UNDONE: "Η διαγραφή δεν θα μπορεί να αναιρεθεί",
+
             ERR_PAGE_NOT_FOUND: "Η σελίδα δεν βρέθηκε",
             ERR_INTERNAL_SERVER_ERROR: "Εσωτερικό σφάλμα στην εφαρμογή",
 
