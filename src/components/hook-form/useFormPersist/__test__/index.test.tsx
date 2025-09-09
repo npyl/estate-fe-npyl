@@ -5,6 +5,7 @@ import Tester, {
     DIRTY_YES,
     FIELD_TESTID,
     PAYLOAD_TESTID,
+    PERSIST_TESTID,
     STORAGE_KEY,
     SUBMIT_ID,
     TesterConfig,
@@ -12,11 +13,11 @@ import Tester, {
 } from "./index.comp";
 import { PropsWithoutDefaultValues } from "@/components/hook-form/useFormPersist";
 import userEvent from "@testing-library/user-event";
-import { getVersioned } from "@/hooks/useVersioned";
+import { getVersioned, TVersioned } from "@/hooks/useVersioned";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import uuidv4 from "@/utils/uuidv4";
-import "@testing-library/jest-dom";
 import { PERSIST_NOTICE_TESTID } from "../constant";
+import "@testing-library/jest-dom";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
@@ -58,6 +59,29 @@ const clearStorage = () => {
     localStorage.clear();
 };
 
+const expectStorageValue = () => {
+    const item = localStorage.getItem(STORAGE_KEY);
+    if (!item) throw "Bad item";
+    const content = JSON.parse(item) as TVersioned<Values>;
+    return expect(content.content.something);
+};
+
+/**
+ * Fill an input with a random value
+ */
+const fillInput = (inputId: string) => {
+    const field = screen.getByTestId(inputId);
+    const input = field.querySelector("input");
+    if (!input) throw "Bad input";
+    const value = uuidv4();
+    fireEvent.change(input, { target: { value } });
+    return value;
+};
+
+// ----------------------------------------------------------------------------
+
+const clickPersistChanges = () => screen.getByTestId(PERSIST_TESTID).click();
+
 // ----------------------------------------------------------------------------
 
 describe("useFormPersist", () => {
@@ -67,7 +91,7 @@ describe("useFormPersist", () => {
         clearStorage();
     });
 
-    // describe("Basic Flows", () => {});
+    describe("Basic Flows", () => {});
 
     describe("Value Priority", () => {
         const expectValues = async (OBJ: object) => {
@@ -114,22 +138,10 @@ describe("useFormPersist", () => {
         });
     });
 
-    // it("disablePersist", () => {});
-
     describe("isDirty", () => {
         const expectDirty = () => {
             const dirtyContent = screen.getByTestId(DIRTY_TESTID).textContent;
             expect(dirtyContent).toBe(DIRTY_YES);
-        };
-
-        /**
-         * Fill an input with a random value
-         */
-        const fillInput = (inputId: string) => {
-            const field = screen.getByTestId(inputId);
-            const input = field.querySelector("input");
-            if (!input) throw "Bad input";
-            fireEvent.change(input, { target: { value: uuidv4() } });
         };
 
         it("field change", () => {
@@ -150,5 +162,11 @@ describe("useFormPersist", () => {
         expectPersistNotice();
     });
 
-    // it("persistChanges", () => {})
+    it("persistChanges", async () => {
+        initialiseStorage();
+        renderTester({});
+        const value = fillInput(FIELD_TESTID);
+        clickPersistChanges();
+        expectStorageValue().toBe(value);
+    });
 });
