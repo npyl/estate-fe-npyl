@@ -30,7 +30,7 @@ const Content: FC<Props> = ({ onClose }) => {
         <>
             <Divider sx={{ my: 1 }} />
 
-            <Link href="/profile">
+            <Link href="/profile" onClick={onClose}>
                 <MenuItem>
                     <UserCircleIcon fontSize="small" />
                     <Typography variant="body1" width={1} fontWeight={500}>
@@ -39,7 +39,7 @@ const Content: FC<Props> = ({ onClose }) => {
                     {isAdmin ? <AdminLabel /> : null}
                 </MenuItem>
             </Link>
-            <Link href="/settings">
+            <Link href="/settings" onClick={onClose}>
                 <MenuItem>
                     <SettingsIcon fontSize="small" />
                     <Typography variant="body1" fontWeight={500}>
