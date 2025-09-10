@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { forwardRef } from "react";
 import { SearchInputProps } from "@/components/Search/SearchInput";
 import ModeSelect from "./ModeSelect";
+import stopPropagation from "@/utils/stopPropagation";
 
 const SearchInputSx: SxProps<Theme> = {
     input: {
@@ -21,7 +22,12 @@ const SearchInputSx: SxProps<Theme> = {
 interface InputProps
     extends Omit<
         SearchInputProps,
-        "ref" | "placeholder" | "startAdornment" | "endAdornment"
+        | "ref"
+        | "placeholder"
+        | "startAdornment"
+        | "endAdornment"
+        | "onWheel"
+        | "onTouchMove"
     > {
     searchCategory: string;
     onSearchCategoryChange: (s: string) => void;
@@ -51,6 +57,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         />
                     </Stack>
                 }
+                onWheel={stopPropagation}
+                onTouchMove={stopPropagation}
                 {...props}
             />
         );

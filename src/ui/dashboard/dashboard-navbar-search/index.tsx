@@ -1,4 +1,4 @@
-import { ClickAwayListener, SxProps, Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
@@ -69,39 +69,35 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
     const handleClearSearch = () => setSearchText("");
 
     return (
-        <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-            <div>
-                <Input
-                    ref={inputRef}
-                    value={searchText}
-                    onChange={handleInputChange}
-                    onFocus={handleFocus}
-                    onKeyDown={handleKeyDown}
-                    // ...
-                    onClear={handleClearSearch}
+        <>
+            <Input
+                ref={inputRef}
+                value={searchText}
+                onChange={handleInputChange}
+                onFocus={handleFocus}
+                onKeyDown={handleKeyDown}
+                // ...
+                onClear={handleClearSearch}
+                searchCategory={searchCategory}
+                onSearchCategoryChange={handleChangeCategory}
+                // ...
+                sx={sx}
+            />
+
+            {open && isEmpty ? (
+                <HistoryList ref={historyRef} onSelect={handleSelectHistory} />
+            ) : null}
+
+            {anchorEl !== null && debouncedSearch && !isEmpty ? (
+                <SearchList
+                    open
+                    anchorEl={anchorEl}
+                    searchString={debouncedSearch}
                     searchCategory={searchCategory}
-                    onSearchCategoryChange={handleChangeCategory}
-                    // ...
-                    sx={sx}
+                    onClose={handleClearSearch}
                 />
-
-                {open && isEmpty ? (
-                    <HistoryList
-                        ref={historyRef}
-                        onSelect={handleSelectHistory}
-                    />
-                ) : null}
-
-                {anchorEl !== null && debouncedSearch && !isEmpty ? (
-                    <SearchList
-                        open
-                        anchorEl={anchorEl}
-                        searchString={debouncedSearch}
-                        searchCategory={searchCategory}
-                    />
-                ) : null}
-            </div>
-        </ClickAwayListener>
+            ) : null}
+        </>
     );
 };
 

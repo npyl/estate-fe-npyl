@@ -1,14 +1,11 @@
 import {
     Box,
     Grid,
-    Paper,
-    PopperProps,
     Stack,
     Theme,
     Typography,
     useMediaQuery,
 } from "@mui/material";
-import { StyledPopper } from "../styles";
 import { FC, useEffect, useMemo, useRef } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
@@ -21,8 +18,8 @@ import { SearchCategory } from "../types";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AgreementItems from "./AgreementItems";
-import useScreenWidth from "./useScreenWidth";
 import useSearchHistory from "../HistoryList/useSearchHistory";
+import Popover, { PopoverProps } from "../Popover";
 
 const PAGE_SIZE = 20;
 
@@ -233,105 +230,68 @@ const CustomersSearchList: FC<CustomerSearchListProps> = ({
     );
 };
 
-interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
+interface SearchListProps extends Omit<PopoverProps, "direction" | "results"> {
     searchString: string;
     searchCategory: SearchCategory;
 }
 
-const SearchList = ({
+const SearchList: FC<SearchListProps> = ({
     searchString,
     searchCategory,
-    open,
-    anchorEl,
-}: SearchListProps) => {
+    ...props
+}) => {
     const { addSearchHistoryItem } = useSearchHistory();
 
-    const isMobile = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down("sm")
-    );
-
-    const screenWidth = useScreenWidth();
-
-    const paperWidth = useMemo(() => {
-        if (screenWidth > 1400 && screenWidth <= 1600) return "185%";
-        if (screenWidth > 1600 && screenWidth <= 2100) return "155%";
-        if (screenWidth > 2100) return "160%";
-        return "100%";
-    }, [screenWidth]);
-
     return (
-        <StyledPopper
-            open={open}
-            anchorEl={anchorEl}
-            searchCategory={searchCategory}
-        >
-            <Paper
-                sx={{
-                    maxHeight: "91vh",
-                    width: isMobile
-                        ? "140%"
-                        : searchCategory === "properties"
-                          ? "100%"
-                          : searchCategory === "customers"
-                            ? "100%"
-                            : paperWidth,
-                    overflowX: "hidden",
-                    overflowY: isMobile ? "auto" : "hidden",
-                }}
-            >
-                <Grid container>
-                    {searchCategory === "properties" && (
-                        <PropertiesSubList
-                            searchString={searchString}
-                            onItemClick={addSearchHistoryItem}
-                            sortBy="code"
-                        />
-                    )}
+        <Popover {...props}>
+            <Grid container>
+                {searchCategory === "properties" && (
+                    <PropertiesSubList
+                        searchString={searchString}
+                        onItemClick={addSearchHistoryItem}
+                        sortBy="code"
+                    />
+                )}
 
-                    {searchCategory === "all" && (
-                        <Stack
-                            direction={isMobile ? "column" : "row"}
-                            width="100%"
+                {searchCategory === "all" && (
+                    <Stack direction={{ xs: "column", md: "row" }} width="100%">
+                        <Grid item xs={12} md={7}>
+                            <PropertiesSubList
+                                searchString={searchString}
+                                onItemClick={addSearchHistoryItem}
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            md={5}
+                            sx={{
+                                marginY: "10px",
+                                borderLeft: "1px solid grey",
+                            }}
                         >
-                            <Grid item xs={12} md={7}>
-                                <PropertiesSubList
-                                    searchString={searchString}
-                                    onItemClick={addSearchHistoryItem}
-                                />
-                            </Grid>
-                            <Grid
-                                item
-                                xs={12}
-                                md={5}
-                                sx={{
-                                    marginY: "10px",
-                                    borderLeft: "1px solid grey",
-                                }}
-                            >
-                                <CustomersSearchList
-                                    searchCategory={searchCategory}
-                                    searchString={searchString}
-                                    onItemClick={addSearchHistoryItem}
-                                />
-                            </Grid>
-                        </Stack>
-                    )}
+                            <CustomersSearchList
+                                searchCategory={searchCategory}
+                                searchString={searchString}
+                                onItemClick={addSearchHistoryItem}
+                            />
+                        </Grid>
+                    </Stack>
+                )}
 
-                    {searchCategory === "customers" ||
-                    searchCategory === "b2b" ? (
-                        <CustomersSearchList
-                            searchCategory={searchCategory}
-                            searchString={searchString}
-                            onItemClick={addSearchHistoryItem}
-                        />
-                    ) : null}
-                </Grid>
-
-                {searchCategory === "all" || searchCategory === "agreements" ? (
-                    <AgreementItems search={searchString} />
+                {searchCategory === "customers" || searchCategory === "b2b" ? (
+                    <CustomersSearchList
+                        searchCategory={searchCategory}
+                        searchString={searchString}
+                        onItemClick={addSearchHistoryItem}
+                    />
                 ) : null}
-            </Paper>
-        </StyledPopper>
+            </Grid>
+
+            {searchCategory === "all" || searchCategory === "agreements" ? (
+                <AgreementItems search={searchString} />
+            ) : null}
+        </Popover>
     );
 };
 
