@@ -1,14 +1,13 @@
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { drawingToPoints, drawShape } from "../../util";
 import { TShape } from "@/types/shape";
 import { useMapContext } from "../../Main/context";
 import setShapeEvents from "../../util/draw/setShapeEvents";
+import { DrawShape } from "../../types";
 
 // ---------------------------------------------------------------------------
 
-const getShapeKey = (s: TShape) => {
-    return JSON.stringify(s);
-};
+const getShapeKey = (s: TShape) => JSON.stringify(s);
 
 // ---------------------------------------------------------------------------
 
@@ -21,8 +20,19 @@ interface ShapeProps {
     onShapeChange?: (oldShape: TShape, newShape: TShape) => void;
 }
 
-const Shape: FC<ShapeProps> = ({ s, onShapeChange }) => {
+const Shape: FC<ShapeProps> = ({ s, onShapeChange: _onShapeChange }) => {
     const { mapRef } = useMapContext();
+
+    const isChangeable = Boolean(_onShapeChange);
+
+    const onShapeChange = useCallback(
+        (res: DrawShape) => () => {
+            const newS = drawingToPoints(res);
+            if (!newS) return;
+            _onShapeChange?.(s, newS);
+        },
+        [_onShapeChange, s]
+    );
 
     /**
      * Renders shapes that are passed as prop
@@ -30,29 +40,19 @@ const Shape: FC<ShapeProps> = ({ s, onShapeChange }) => {
     useEffect(() => {
         if (!mapRef.current) return;
 
-        const isChangeable = Boolean(onShapeChange);
-
         const res = drawShape(s, mapRef.current, isChangeable);
         if (!res) return;
 
         // Support shape drag/change
         let listeners: google.maps.MapsEventListener[] = [];
 
-        if (isChangeable) {
-            const cb = () => {
-                const newS = drawingToPoints(res);
-                if (!newS) return;
-                onShapeChange?.(s, newS);
-            };
-
-            listeners = setShapeEvents(res, cb);
-        }
+        if (isChangeable) listeners = setShapeEvents(res, onShapeChange(res));
 
         return () => {
             listeners.forEach(removeListener);
             res?.setMap(null);
         };
-    }, []);
+    }, [s, isChangeable, onShapeChange]);
 
     return null;
 };
