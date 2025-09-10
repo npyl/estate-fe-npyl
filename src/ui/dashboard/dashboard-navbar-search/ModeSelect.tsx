@@ -13,8 +13,13 @@ import HomeIcon from "@mui/icons-material/Home";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import { TranslationType } from "@/types/translation";
+
+// ---------------------------------------------------------------------------
 
 const Empty = () => null;
+
+// ---------------------------------------------------------------------------
 
 const MenuItemSx: SxProps<Theme> = {
     display: "flex",
@@ -32,7 +37,29 @@ const MenuItemSx: SxProps<Theme> = {
     "&.Mui-selected": {
         borderRadius: "8px",
     },
+
+    ".MuiSvgIcon-root": {
+        color: "text.secondary",
+        fontSize: "large",
+    },
 };
+
+interface IOption {
+    key: string;
+    label: string;
+    Icon: any;
+}
+
+const getOption =
+    (t: TranslationType) =>
+    ({ key, label, Icon }: IOption) => (
+        <MenuItem key={key} value={key} sx={MenuItemSx}>
+            <Icon />
+            {t(label)}
+        </MenuItem>
+    );
+
+// ---------------------------------------------------------------------------
 
 const SelectSx: SxProps<Theme> = {
     borderLeft: "1px solid",
@@ -53,6 +80,14 @@ const SelectSx: SxProps<Theme> = {
     },
 };
 
+const OPTIONS: IOption[] = [
+    { key: "all", label: "All", Icon: SelectAllOutlinedIcon },
+    { key: "properties", label: "Properties", Icon: HomeIcon },
+    { key: "customers", label: "Customers", Icon: CustomersIcon },
+    { key: "b2b", label: "B2B", Icon: CorporateFareIcon },
+    { key: "agreements", label: "Agreements", Icon: HandshakeIcon },
+];
+
 const ModeSelect: FC<SelectProps> = (props) => {
     const { t } = useTranslation();
     return (
@@ -63,51 +98,7 @@ const ModeSelect: FC<SelectProps> = (props) => {
                 IconComponent={Empty}
                 {...props}
             >
-                <MenuItem value="all" sx={MenuItemSx}>
-                    <SelectAllOutlinedIcon
-                        sx={{
-                            color: "text.secondary",
-                            fontSize: "large",
-                        }}
-                    />
-                    {t("All")}
-                </MenuItem>
-                <MenuItem value="properties" sx={MenuItemSx}>
-                    <HomeIcon
-                        sx={{
-                            color: "text.secondary",
-                            fontSize: "large",
-                        }}
-                    />
-                    {t("Properties")}
-                </MenuItem>
-                <MenuItem value="customers" sx={MenuItemSx}>
-                    <CustomersIcon
-                        sx={{
-                            color: "text.secondary",
-                            fontSize: "large",
-                        }}
-                    />
-                    {t("Customers")}
-                </MenuItem>
-                <MenuItem value="b2b" sx={MenuItemSx}>
-                    <CorporateFareIcon
-                        sx={{
-                            color: "text.secondary",
-                            fontSize: "large",
-                        }}
-                    />
-                    {t("B2B")}
-                </MenuItem>
-                <MenuItem value="agreements" sx={MenuItemSx}>
-                    <HandshakeIcon
-                        sx={{
-                            color: "text.secondary",
-                            fontSize: "large",
-                        }}
-                    />
-                    {t("Agreements")}
-                </MenuItem>
+                {OPTIONS.map(getOption(t))}
             </Select>
         </InputAdornment>
     );
