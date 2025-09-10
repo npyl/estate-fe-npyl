@@ -2,13 +2,14 @@ import {
     InputAdornment,
     MenuItem,
     Select,
+    SelectChangeEvent,
     SelectProps,
     SxProps,
     Theme,
 } from "@mui/material";
 import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 import { useTranslation } from "react-i18next";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
@@ -88,14 +89,23 @@ const OPTIONS: IOption[] = [
     { key: "agreements", label: "Agreements", Icon: HandshakeIcon },
 ];
 
-const ModeSelect: FC<SelectProps> = (props) => {
+interface ModeSelectProps extends Omit<SelectProps<string>, "onChange"> {
+    onChange: (s: string) => void;
+}
+
+const ModeSelect: FC<ModeSelectProps> = ({ onChange: _onChange, ...props }) => {
     const { t } = useTranslation();
+    const onChange = useCallback(
+        (e: SelectChangeEvent) => _onChange?.(e.target.value),
+        [_onChange]
+    );
     return (
         <InputAdornment position="end">
             <Select
                 sx={SelectSx}
                 MenuProps={{ disableScrollLock: true }}
                 IconComponent={Empty}
+                onChange={onChange}
                 {...props}
             >
                 {OPTIONS.map(getOption(t))}

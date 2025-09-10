@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { StyledPopper } from "../styles";
 import { FC, useEffect, useMemo, useRef } from "react";
-import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { ScrollBox } from "src/components/ScrollBox";
@@ -22,7 +21,7 @@ import { SearchCategory } from "../types";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AgreementItems from "./AgreementItems";
-import useScreenWidth from "../hook";
+import useScreenWidth from "./useScreenWidth";
 import { addSearchHistory, getSearchHistory } from "../HistoryList/history";
 
 const PAGE_SIZE = 20;
@@ -237,7 +236,6 @@ const CustomersSearchList: FC<CustomerSearchListProps> = ({
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchString: string;
     searchCategory: SearchCategory;
-    onClickOutside: () => void;
     updateSearchHistory: (history: { term: string; date: string }[]) => void;
 }
 
@@ -245,18 +243,12 @@ const SearchList = ({
     searchString,
     searchCategory,
     open,
-    onClickOutside,
     anchorEl,
     updateSearchHistory,
 }: SearchListProps) => {
     const isMobile = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down("sm")
     );
-    const ref = useRef<HTMLDivElement>(null);
-
-    useClickOutside(ref, () => {
-        onClickOutside && onClickOutside();
-    });
 
     const handleItemClick = (value: string) => {
         addSearchHistory(value);
@@ -273,88 +265,85 @@ const SearchList = ({
     }, [screenWidth]);
 
     return (
-        <div ref={ref}>
-            <StyledPopper
-                open={open}
-                anchorEl={anchorEl}
-                searchCategory={searchCategory}
-                placement={
-                    isMobile
-                        ? "bottom-start"
-                        : searchCategory === "all"
-                          ? "top"
-                          : "bottom-start"
-                }
+        <StyledPopper
+            open={open}
+            anchorEl={anchorEl}
+            searchCategory={searchCategory}
+            placement={
+                isMobile
+                    ? "bottom-start"
+                    : searchCategory === "all"
+                      ? "top"
+                      : "bottom-start"
+            }
+        >
+            <Paper
+                sx={{
+                    maxHeight: "91vh",
+                    width: isMobile
+                        ? "140%"
+                        : searchCategory === "properties"
+                          ? "100%"
+                          : searchCategory === "customers"
+                            ? "100%"
+                            : paperWidth,
+                    overflowX: "hidden",
+                    overflowY: isMobile ? "auto" : "hidden",
+                }}
             >
-                <Paper
-                    sx={{
-                        maxHeight: "91vh",
-                        width: isMobile
-                            ? "140%"
-                            : searchCategory === "properties"
-                              ? "100%"
-                              : searchCategory === "customers"
-                                ? "100%"
-                                : paperWidth,
-                        overflowX: "hidden",
-                        overflowY: isMobile ? "auto" : "hidden",
-                    }}
-                >
-                    <Grid container>
-                        {searchCategory === "properties" && (
-                            <PropertiesSubList
-                                searchString={searchString}
-                                onItemClick={handleItemClick}
-                                sortBy="code"
-                            />
-                        )}
+                <Grid container>
+                    {searchCategory === "properties" && (
+                        <PropertiesSubList
+                            searchString={searchString}
+                            onItemClick={handleItemClick}
+                            sortBy="code"
+                        />
+                    )}
 
-                        {searchCategory === "all" && (
-                            <Stack
-                                direction={isMobile ? "column" : "row"}
-                                width="100%"
+                    {searchCategory === "all" && (
+                        <Stack
+                            direction={isMobile ? "column" : "row"}
+                            width="100%"
+                        >
+                            <Grid item xs={12} md={7}>
+                                <PropertiesSubList
+                                    searchString={searchString}
+                                    onItemClick={handleItemClick}
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                md={5}
+                                sx={{
+                                    marginY: "10px",
+                                    borderLeft: "1px solid grey",
+                                }}
                             >
-                                <Grid item xs={12} md={7}>
-                                    <PropertiesSubList
-                                        searchString={searchString}
-                                        onItemClick={handleItemClick}
-                                    />
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={5}
-                                    sx={{
-                                        marginY: "10px",
-                                        borderLeft: "1px solid grey",
-                                    }}
-                                >
-                                    <CustomersSearchList
-                                        searchCategory={searchCategory}
-                                        searchString={searchString}
-                                        onItemClick={handleItemClick}
-                                    />
-                                </Grid>
-                            </Stack>
-                        )}
+                                <CustomersSearchList
+                                    searchCategory={searchCategory}
+                                    searchString={searchString}
+                                    onItemClick={handleItemClick}
+                                />
+                            </Grid>
+                        </Stack>
+                    )}
 
-                        {searchCategory === "customers" ||
-                        searchCategory === "b2b" ? (
-                            <CustomersSearchList
-                                searchCategory={searchCategory}
-                                searchString={searchString}
-                                onItemClick={handleItemClick}
-                            />
-                        ) : null}
-                    </Grid>
-
-                    {searchCategory === "all" ||
-                    searchCategory === "agreements" ? (
-                        <AgreementItems search={searchString} />
+                    {searchCategory === "customers" ||
+                    searchCategory === "b2b" ? (
+                        <CustomersSearchList
+                            searchCategory={searchCategory}
+                            searchString={searchString}
+                            onItemClick={handleItemClick}
+                        />
                     ) : null}
-                </Paper>
-            </StyledPopper>
-        </div>
+                </Grid>
+
+                {searchCategory === "all" || searchCategory === "agreements" ? (
+                    <AgreementItems search={searchString} />
+                ) : null}
+            </Paper>
+        </StyledPopper>
     );
 };
 
