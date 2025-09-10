@@ -9,7 +9,7 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { StyledPopper } from "../styles";
-import { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { ScrollBox } from "src/components/ScrollBox";
@@ -244,15 +244,10 @@ const SearchList = ({
     open,
     anchorEl,
 }: SearchListProps) => {
-    const [_, setSearchHistory] = useSearchHistory();
+    const { addSearchHistoryItem } = useSearchHistory();
 
     const isMobile = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down("sm")
-    );
-
-    const handleItemClick = useCallback(
-        (value: string) => setSearchHistory((old) => [...old, value]),
-        []
     );
 
     const screenWidth = useScreenWidth();
@@ -288,7 +283,7 @@ const SearchList = ({
                     {searchCategory === "properties" && (
                         <PropertiesSubList
                             searchString={searchString}
-                            onItemClick={handleItemClick}
+                            onItemClick={addSearchHistoryItem}
                             sortBy="code"
                         />
                     )}
@@ -301,7 +296,7 @@ const SearchList = ({
                             <Grid item xs={12} md={7}>
                                 <PropertiesSubList
                                     searchString={searchString}
-                                    onItemClick={handleItemClick}
+                                    onItemClick={addSearchHistoryItem}
                                 />
                             </Grid>
                             <Grid
@@ -316,7 +311,7 @@ const SearchList = ({
                                 <CustomersSearchList
                                     searchCategory={searchCategory}
                                     searchString={searchString}
-                                    onItemClick={handleItemClick}
+                                    onItemClick={addSearchHistoryItem}
                                 />
                             </Grid>
                         </Stack>
@@ -327,7 +322,7 @@ const SearchList = ({
                         <CustomersSearchList
                             searchCategory={searchCategory}
                             searchString={searchString}
-                            onItemClick={handleItemClick}
+                            onItemClick={addSearchHistoryItem}
                         />
                     ) : null}
                 </Grid>

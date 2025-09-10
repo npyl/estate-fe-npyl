@@ -44,7 +44,7 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
 
     const handleKeyDown = useCallback((event: any) => {
         if (event.key !== "Enter") return;
-        historyRef.current?.push(searchText); // Add the search term to the history
+        historyRef.current?.addSearchHistoryItem(searchText); // Add the search term to the history
     }, []);
 
     const handleFocus = () => {

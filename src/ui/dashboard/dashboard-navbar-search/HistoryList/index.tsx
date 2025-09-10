@@ -43,7 +43,7 @@ interface HistoryItemProps extends THistoryItem {
 const HistoryItem: FC<HistoryItemProps> = ({ term, date, onSelect }) => {
     const { t } = useTranslation();
 
-    const [_, setSearchHistory] = useSearchHistory();
+    const { setSearchHistory } = useSearchHistory();
 
     const handleDeleteHistoryItem = useCallback(
         (searchTerm: string, event: any) => {
@@ -137,19 +137,13 @@ interface HistoryListProps {
 }
 
 interface HistoryListRef {
-    push: (s: string) => void;
+    addSearchHistoryItem: (s: string) => void;
 }
 
 const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
     ({ onSelect }, ref) => {
-        const [searchHistory, setSearchHistory] = useSearchHistory();
-        const push = useCallback(
-            (s: string) => setSearchHistory((old) => [...old, s]),
-            [setSearchHistory]
-        );
-
-        useImperativeHandle(ref, () => ({ push }), []);
-
+        const { searchHistory, addSearchHistoryItem } = useSearchHistory();
+        useImperativeHandle(ref, () => ({ addSearchHistoryItem }), []);
         return <List sx={ListSx}>{searchHistory.map(getItem(onSelect))}</List>;
     }
 );
