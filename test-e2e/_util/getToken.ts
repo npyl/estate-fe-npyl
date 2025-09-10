@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
-import { getAccessToken } from "../../src/contexts/accessToken";
+import { tokenKey } from "../../src/constants";
 
-const getToken = (page: Page) => page.evaluate(() => getAccessToken());
+const getToken = (page: Page) =>
+    page.evaluate((key) => localStorage.getItem(key), tokenKey);
 
 export default getToken;
