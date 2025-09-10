@@ -9,7 +9,7 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { StyledPopper } from "../styles";
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { ScrollBox } from "src/components/ScrollBox";
@@ -22,7 +22,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AgreementItems from "./AgreementItems";
 import useScreenWidth from "./useScreenWidth";
-import { addSearchHistory, getSearchHistory } from "../HistoryList/history";
+import useSearchHistory from "../HistoryList/useSearchHistory";
 
 const PAGE_SIZE = 20;
 
@@ -236,7 +236,6 @@ const CustomersSearchList: FC<CustomerSearchListProps> = ({
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     searchString: string;
     searchCategory: SearchCategory;
-    updateSearchHistory: (history: { term: string; date: string }[]) => void;
 }
 
 const SearchList = ({
@@ -244,16 +243,17 @@ const SearchList = ({
     searchCategory,
     open,
     anchorEl,
-    updateSearchHistory,
 }: SearchListProps) => {
+    const [_, setSearchHistory] = useSearchHistory();
+
     const isMobile = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down("sm")
     );
 
-    const handleItemClick = (value: string) => {
-        addSearchHistory(value);
-        updateSearchHistory(getSearchHistory());
-    };
+    const handleItemClick = useCallback(
+        (value: string) => setSearchHistory((old) => [...old, value]),
+        []
+    );
 
     const screenWidth = useScreenWidth();
 
@@ -269,13 +269,6 @@ const SearchList = ({
             open={open}
             anchorEl={anchorEl}
             searchCategory={searchCategory}
-            placement={
-                isMobile
-                    ? "bottom-start"
-                    : searchCategory === "all"
-                      ? "top"
-                      : "bottom-start"
-            }
         >
             <Paper
                 sx={{

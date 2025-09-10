@@ -3,7 +3,6 @@ import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
 import dynamic from "next/dynamic";
-import { addSearchHistory } from "./HistoryList/history";
 import { HistoryListRef } from "./HistoryList";
 import Input from "./Input";
 const HistoryList = dynamic(() => import("./HistoryList"));
@@ -43,11 +42,10 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
         setSearchCategory(event.target.value as SearchCategory);
     };
 
-    const handleKeyDown = (event: any) => {
-        if (event.key === "Enter") {
-            addSearchHistory(searchText); // Add the search term to the history
-        }
-    };
+    const handleKeyDown = useCallback((event: any) => {
+        if (event.key !== "Enter") return;
+        historyRef.current?.push(searchText); // Add the search term to the history
+    }, []);
 
     const handleFocus = () => {
         if (inputRef.current) {
@@ -65,12 +63,6 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
         setSearchText(searchTerm);
         setAnchorEl(inputRef.current);
     }, []);
-
-    const handleUpdateSearchHistory = useCallback(
-        (h: { term: string; date: string }[]) =>
-            historyRef.current?.setSearchHistory(h),
-        []
-    );
 
     const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
@@ -106,7 +98,6 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
                         anchorEl={anchorEl}
                         searchString={debouncedSearch}
                         searchCategory={searchCategory}
-                        updateSearchHistory={handleUpdateSearchHistory}
                     />
                 ) : null}
             </div>
