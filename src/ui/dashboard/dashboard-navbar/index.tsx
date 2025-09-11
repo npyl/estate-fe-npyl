@@ -59,36 +59,20 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     justifyContent: "space-between",
                 }}
             >
-                <Stack
-                    sx={{
-                        display: {
-                            xs: "none",
-                            md: "inherit",
-                        },
-                    }}
-                    direction="row"
+                <Link
+                    href="/"
+                    display="flex"
+                    flexDirection="row"
                     alignItems="center"
+                    noWrap
                 >
-                    <Link
-                        href="/"
-                        display="flex"
-                        flexDirection="row"
-                        alignItems="center"
-                    >
-                        {/* <Logo /> */}
-
-                        <Typography
-                            color={"#3366FF"}
-                            variant="h6"
-                            fontWeight={"bold"}
-                        >
-                            property-pro
-                        </Typography>
-                        <Typography variant="h6" color="#0380fc">
-                            .gr
-                        </Typography>
-                    </Link>
-                </Stack>
+                    <Typography color="#3366FF" variant="h6" fontWeight="bold">
+                        property-pro
+                    </Typography>
+                    <Typography variant="h6" color="#0380fc">
+                        .gr
+                    </Typography>
+                </Link>
 
                 <Stack
                     direction="row"
