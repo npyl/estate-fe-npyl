@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { forwardRef } from "react";
 import { SearchInputProps } from "@/components/Search/SearchInput";
 import ModeSelect from "./ModeSelect";
-import stopPropagation from "@/utils/stopPropagation";
 import { SearchCategory } from "../types";
 
 const SearchInputSx: SxProps<Theme> = {
@@ -58,8 +57,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         />
                     </Stack>
                 }
-                onWheel={stopPropagation}
-                onTouchMove={stopPropagation}
                 {...props}
             />
         );
