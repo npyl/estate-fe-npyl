@@ -1,8 +1,8 @@
 import AgreementCard from "@/sections/agreements/AgreementCard";
-import { usePagination } from "@/components/Pagination";
+import Pagination from "@/components/Pagination/client";
 import { useSearchAgreementsQuery } from "@/services/agreements";
-import Grid from "@mui/material/Grid";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
+import { usePagination } from "@/components/Pagination";
 
 const PAGE_SIZE = 5;
 
@@ -13,7 +13,7 @@ interface Props {
 const AgreementItems: React.FC<Props> = ({ search }) => {
     const pagination = usePagination();
 
-    const { data } = useSearchAgreementsQuery({
+    const { data, isLoading } = useSearchAgreementsQuery({
         search,
         page: pagination.page,
         pageSize: PAGE_SIZE,
@@ -24,11 +24,28 @@ const AgreementItems: React.FC<Props> = ({ search }) => {
         [data?.content]
     );
 
-    return agreements.map((a) => (
-        <Grid key={a.id}>
-            <AgreementCard a={a} />
-        </Grid>
-    ));
+    const handlePageChange = (event: any, page: number) => {
+        event.stopPropagation();
+        pagination.onChange(event, page);
+
+        if (!scrollRef.current) return;
+        scrollRef.current.scrollTop = 0;
+    };
+
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    return (
+        <Pagination
+            {...pagination}
+            isLoading={isLoading}
+            pageSize={PAGE_SIZE}
+            onChange={handlePageChange}
+        >
+            {agreements.map((a) => (
+                <AgreementCard key={a.id} a={a} />
+            ))}
+        </Pagination>
+    );
 };
 
 export default AgreementItems;
