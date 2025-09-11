@@ -1,4 +1,4 @@
-import { Box, Theme, Typography, useMediaQuery } from "@mui/material";
+import { Box, Stack, StackProps, Typography } from "@mui/material";
 import { FC, useMemo } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { useTranslation } from "react-i18next";
@@ -6,23 +6,17 @@ import { useSearchCustomerQuery } from "@/services/customers";
 import { SearchCategory } from "../../../types";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
-interface CustomersSubListProps {
+interface ContentProps {
     searchCategory: SearchCategory;
     searchString: string;
     onItemClick: (value: string) => void;
 }
 
-const CustomersSubList: FC<CustomersSubListProps> = ({
+const Content: FC<ContentProps> = ({
+    onItemClick,
     searchCategory,
     searchString,
-    onItemClick,
 }) => {
-    const { t } = useTranslation();
-
-    const isMobile = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down("sm")
-    );
-
     const b2b = searchCategory === "b2b" || searchCategory === "all";
 
     // non-b2b Customers
@@ -45,8 +39,32 @@ const CustomersSubList: FC<CustomersSubListProps> = ({
         [data0, b2bOnly]
     );
 
-    return isMobile ? (
-        <>
+    return (
+        <Box width="100%" sx={{ overflowX: "hidden", overflowY: "auto" }}>
+            {all.map((option) => (
+                <CustomerSearchItem
+                    key={option.id}
+                    option={option}
+                    searchText={searchString}
+                    onClick={onItemClick}
+                />
+            ))}
+        </Box>
+    );
+};
+
+interface CustomersSubListProps extends ContentProps, StackProps {}
+
+const CustomersSubList: FC<CustomersSubListProps> = ({
+    searchString,
+    searchCategory,
+    onItemClick,
+    ...props
+}) => {
+    const { t } = useTranslation();
+
+    return (
+        <Stack {...props}>
             <Typography
                 variant="h6"
                 display="flex"
@@ -65,48 +83,13 @@ const CustomersSubList: FC<CustomersSubListProps> = ({
                 />
                 {t("Customers")}
             </Typography>
-            <Box width="100%" sx={{ overflowX: "hidden" }}>
-                {all.map((option) => (
-                    <CustomerSearchItem
-                        key={option.id}
-                        option={option}
-                        searchText={searchString}
-                        onClick={onItemClick}
-                    />
-                ))}
-            </Box>
-        </>
-    ) : (
-        <>
-            <Typography
-                variant="h6"
-                display="flex"
-                justifyContent="center"
-                gap={1}
-                alignItems="center"
-                sx={{
-                    borderBottom: "1px solid lightgrey",
-                }}
-            >
-                <PersonOutlineOutlinedIcon
-                    sx={{
-                        width: "22px",
-                        height: "22px",
-                    }}
-                />
-                {t("Customers")}
-            </Typography>
-            <Box width="100%" sx={{ overflowX: "hidden" }}>
-                {all.map((option) => (
-                    <CustomerSearchItem
-                        key={option.id}
-                        option={option}
-                        searchText={searchString}
-                        onClick={onItemClick}
-                    />
-                ))}
-            </Box>
-        </>
+
+            <Content
+                searchString={searchString}
+                searchCategory={searchCategory}
+                onItemClick={onItemClick}
+            />
+        </Stack>
     );
 };
 

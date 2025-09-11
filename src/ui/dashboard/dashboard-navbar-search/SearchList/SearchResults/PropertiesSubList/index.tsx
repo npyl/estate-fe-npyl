@@ -1,5 +1,5 @@
-import { Grid, Typography } from "@mui/material";
-import { useEffect, useMemo, useRef } from "react";
+import { Stack, StackProps, Typography } from "@mui/material";
+import { FC, useMemo, useRef } from "react";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { useTranslation } from "react-i18next";
 import Pagination, { usePagination } from "@/components/Pagination";
@@ -8,19 +8,17 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 const PAGE_SIZE = 20;
 
-interface PropertiesSubListProps {
+interface ContentProps {
     searchString: string;
     sortBy?: string;
     onItemClick: (value: string) => void;
 }
 
-const PropertiesSubList = ({
-    searchString,
-    sortBy = "code", //used for property search only
+const Content: FC<ContentProps> = ({
     onItemClick,
-}: PropertiesSubListProps) => {
-    const { t } = useTranslation();
-
+    searchString,
+    sortBy = "code",
+}) => {
     const pagination = usePagination();
 
     const { data, isLoading } = useSearchPropertyQuery(
@@ -43,65 +41,76 @@ const PropertiesSubList = ({
     const handlePageChange = (event: any, page: number) => {
         event.stopPropagation();
         pagination.onChange(event, page);
+
+        if (!scrollRef.current) return;
+        scrollRef.current.scrollTop = 0;
     };
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = 0;
-        }
-    }, [pagination.page]);
+    if (properties.length === 0) return null;
 
     return (
-        <Grid
-            item
-            xs={12}
+        <Pagination
+            {...pagination}
+            isLoading={isLoading}
+            pageSize={PAGE_SIZE}
+            totalItems={data?.totalElements ?? 0}
+            onChange={handlePageChange}
             sx={{
-                marginY: "10px",
+                overflowY: "auto",
             }}
         >
-            {properties.length === 0 ? null : (
-                <>
-                    <Typography
-                        variant="h6"
-                        display="flex"
-                        justifyContent="center"
-                        gap={1}
-                        alignItems="center"
-                        width="100%"
-                        sx={{
-                            borderBottom: "1px solid lightgrey",
-                        }}
-                    >
-                        <HomeOutlinedIcon
-                            sx={{
-                                width: "22px",
-                                height: "22px",
-                            }}
-                        />
-                        {t("Properties")}
-                    </Typography>
+            {properties.map((option) => (
+                <PropertySearchItem
+                    key={option.id}
+                    option={option}
+                    searchText={searchString}
+                    onClick={onItemClick}
+                />
+            ))}
+        </Pagination>
+    );
+};
 
-                    <Pagination
-                        {...pagination}
-                        isLoading={isLoading}
-                        pageSize={PAGE_SIZE}
-                        totalItems={data?.totalElements ?? 0}
-                        onChange={handlePageChange}
-                    >
-                        {properties.map((option) => (
-                            <PropertySearchItem
-                                key={option.id}
-                                option={option}
-                                searchText={searchString}
-                                onClick={onItemClick}
-                            />
-                        ))}
-                    </Pagination>
-                </>
-            )}
-        </Grid>
+interface PropertiesSubListProps extends ContentProps, StackProps {}
+
+const PropertiesSubList: FC<PropertiesSubListProps> = ({
+    searchString,
+    sortBy,
+    onItemClick,
+    ...props
+}) => {
+    const { t } = useTranslation();
+
+    return (
+        <Stack {...props}>
+            <Typography
+                variant="h6"
+                display="flex"
+                justifyContent="center"
+                gap={1}
+                alignItems="center"
+                width="100%"
+                sx={{
+                    borderBottom: "1px solid lightgrey",
+                }}
+            >
+                <HomeOutlinedIcon
+                    sx={{
+                        width: "22px",
+                        height: "22px",
+                    }}
+                />
+                {t("Properties")}
+            </Typography>
+
+            <Content
+                searchString={searchString}
+                sortBy={sortBy}
+                onItemClick={onItemClick}
+            />
+        </Stack>
     );
 };
 

@@ -1,10 +1,10 @@
-import { Grid } from "@mui/material";
 import AgreementItems from "./AgreementItems";
 import PropertiesSubList from "./PropertiesSubList";
 import useSearchHistory from "../SearchHistory/useSearchHistory";
 import CustomersSubList from "./CustomersSubList";
-import { FC } from "react";
 import { SearchCategory } from "../../types";
+import Stack from "@mui/material/Stack";
+import { FC } from "react";
 
 interface Props {
     searchCategory: SearchCategory;
@@ -25,42 +25,32 @@ const SearchResults: FC<Props> = ({ searchCategory, searchString }) => {
     const agreements =
         searchCategory === "agreements" || searchCategory === "all";
 
+    const width = { xs: 1, sm: properties && customers ? "50%" : 1 };
+
     return (
-        <Grid container>
-            {properties ? (
-                <Grid item xs={12} md={7}>
+        <Stack>
+            <Stack direction={{ xs: "column", sm: "row" }}>
+                {properties ? (
                     <PropertiesSubList
+                        width={width}
                         searchString={searchString}
                         onItemClick={addSearchHistoryItem}
                         sortBy="code"
                     />
-                </Grid>
-            ) : null}
+                ) : null}
 
-            {customers ? (
-                <Grid
-                    item
-                    xs={12}
-                    md={5}
-                    sx={{
-                        marginY: "10px",
-                        borderLeft: "1px solid grey",
-                    }}
-                >
+                {customers ? (
                     <CustomersSubList
+                        width={width}
                         searchCategory={searchCategory}
                         searchString={searchString}
                         onItemClick={addSearchHistoryItem}
                     />
-                </Grid>
-            ) : null}
+                ) : null}
+            </Stack>
 
-            {agreements ? (
-                <Grid item xs={12}>
-                    <AgreementItems search={searchString} />
-                </Grid>
-            ) : null}
-        </Grid>
+            {agreements ? <AgreementItems search={searchString} /> : null}
+        </Stack>
     );
 };
 
