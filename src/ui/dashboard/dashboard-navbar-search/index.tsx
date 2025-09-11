@@ -7,12 +7,6 @@ import Input from "./Input";
 
 // ------------------------------------------------------------------------------
 
-// TODO:
-// const handleKeyDown = useCallback((event: any) => {
-//     if (event.key !== "Enter") return;
-//     historyListRef.current?.addSearchHistoryItem(searchText); // Add the search term to the history
-// }, []);
-
 interface Props {
     sx?: SxProps<Theme>;
 }
@@ -32,15 +26,6 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
     const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
 
     const handleFocus = useCallback(() => {
-        const el = inputRef.current;
-        if (!el) return;
-        searchListRef.current?.open(el);
-    }, []);
-
-    // search history functions
-    const handleSelectHistory = useCallback((searchTerm: string) => {
-        setSearchText(searchTerm);
-
         const el = inputRef.current;
         if (!el) return;
         searchListRef.current?.open(el);
@@ -75,6 +60,7 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
                 ref={searchListRef}
                 searchString={debouncedSearch}
                 searchCategory={searchCategory}
+                onSelectHistoryItem={setSearchText}
                 onClose={handleClearSearch}
             />
         </>

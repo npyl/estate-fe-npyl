@@ -24,15 +24,11 @@ const AgreementItems: React.FC<Props> = ({ search }) => {
         [data?.content]
     );
 
-    return (
-        <>
-            {agreements.map((a) => (
-                <Grid key={a.id}>
-                    <AgreementCard a={a} />
-                </Grid>
-            ))}
-        </>
-    );
+    return agreements.map((a) => (
+        <Grid key={a.id}>
+            <AgreementCard a={a} />
+        </Grid>
+    ));
 };
 
 export default AgreementItems;

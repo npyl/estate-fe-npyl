@@ -2,7 +2,8 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { SearchCategory } from "../types";
 import Popover, { PopoverProps } from "../Popover";
 import SearchHistory from "./SearchHistory";
-import SearchResults from "./SearchResults";
+import dynamic from "next/dynamic";
+const SearchResults = dynamic(() => import("./SearchResults"));
 
 interface SearchListRef {
     open: (anchorEl: HTMLElement) => void;
@@ -16,13 +17,15 @@ interface SearchListProps
     > {
     searchString: string;
     searchCategory: SearchCategory;
+    onSelectHistoryItem: (s: string) => void;
 }
 
 const SearchList = forwardRef<SearchListRef, SearchListProps>(
-    ({ searchString, searchCategory, ...props }, ref) => {
+    ({ searchString, searchCategory, onSelectHistoryItem, ...props }, ref) => {
         const isHistoryMode = !searchString;
 
         const [anchorEl, setAnchorEl] = useState<HTMLElement>();
+        const isOpen = Boolean(anchorEl);
         const close = useCallback(() => setAnchorEl(undefined), []);
 
         useImperativeHandle(ref, () => ({ open: setAnchorEl, close }), []);
@@ -31,7 +34,7 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
 
         return (
             <Popover
-                open={Boolean(anchorEl)}
+                open={isOpen}
                 anchorEl={anchorEl}
                 historyMode={isHistoryMode}
                 {...props}
@@ -43,7 +46,9 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
                     />
                 ) : null}
 
-                {!searchString ? <SearchHistory onSelect={() => {}} /> : null}
+                {!searchString ? (
+                    <SearchHistory onSelect={onSelectHistoryItem} />
+                ) : null}
             </Popover>
         );
     }
