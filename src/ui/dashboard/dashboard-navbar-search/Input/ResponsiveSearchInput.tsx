@@ -1,20 +1,21 @@
 import { styled, SxProps, Theme } from "@mui/material";
 import SearchInput, { SearchInputProps } from "@/components/Search/SearchInput";
 
-const MobileSx: SxProps<Theme> = {
+const getMobileSx = (theme: Theme): SxProps<Theme> => ({
     transition: "all 1s ease-in-in",
 
     "&:focus-within": {
         position: "absolute",
-        top: 8,
-        zIndex: ({ zIndex }) => zIndex.modal,
-        width: "calc(100vw - 115px)",
-        boxShadow: 20,
+        top: theme.spacing(1),
+        left: theme.spacing(1),
+        zIndex: theme.zIndex.modal,
+        width: "calc(100vw - 16px)",
+        boxShadow: theme.shadows[20],
     },
-};
+});
 
 const ResponsiveSearchInput = styled(SearchInput)(({ theme }) => ({
-    [theme.breakpoints.down("sm")]: MobileSx,
+    [theme.breakpoints.down("sm")]: getMobileSx(theme),
 }));
 
 export type { SearchInputProps as ResponsiveSearchInputProps };
