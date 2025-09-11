@@ -89,9 +89,12 @@ const PropertiesSubList: FC<PropertiesSubListProps> = ({
                 gap={1}
                 alignItems="center"
                 width="100%"
-                sx={{
-                    borderBottom: "1px solid lightgrey",
-                }}
+                p={1}
+                // ...
+                position="sticky"
+                top={0}
+                bgcolor="background.default"
+                zIndex={1}
             >
                 <HomeOutlinedIcon
                     sx={{

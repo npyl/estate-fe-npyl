@@ -7,6 +7,7 @@ import { SearchCategory } from "../../../types";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import Pagination from "@/components/Pagination/client";
 import { usePagination } from "@/components/Pagination";
+import { getBorderColor2 } from "@/theme/borderColor";
 
 const PAGE_SIZE = 5;
 
@@ -94,9 +95,12 @@ const CustomersSubList: FC<CustomersSubListProps> = ({
                 justifyContent="center"
                 gap={1}
                 alignItems="center"
-                sx={{
-                    borderBottom: "1px solid lightgrey",
-                }}
+                p={1}
+                // ...
+                position="sticky"
+                top={0}
+                bgcolor="background.default"
+                zIndex={1}
             >
                 <PersonOutlineOutlinedIcon
                     sx={{
