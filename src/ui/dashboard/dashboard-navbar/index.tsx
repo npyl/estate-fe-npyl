@@ -55,7 +55,6 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     height: 64,
                     left: 0,
                     px: 2,
-                    pl: 4,
                     justifyContent: "space-between",
                 }}
             >
@@ -65,6 +64,14 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     flexDirection="row"
                     alignItems="center"
                     noWrap
+                    sx={{
+                        pl: 2,
+
+                        display: {
+                            xs: "none",
+                            md: "inherit",
+                        },
+                    }}
                 >
                     <Typography color="#3366FF" variant="h6" fontWeight="bold">
                         property-pro
