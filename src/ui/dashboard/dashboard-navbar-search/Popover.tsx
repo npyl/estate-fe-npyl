@@ -1,27 +1,54 @@
-import useAvailableHeight from "@/hooks/useAvailableHeight";
-import MuiPopover, {
-    PopoverProps as MuiPopoverProps,
-} from "@mui/material/Popover";
-import { FC, useRef } from "react";
+import Paper from "@mui/material/Paper";
+import MuiPopper, { PopperProps as MuiPopperProps } from "@mui/material/Popper";
+import { FC, ReactNode } from "react";
+import stopPropagation from "@/utils/stopPropagation";
+import { Fade } from "@mui/material";
+import { getBorderColor2 } from "@/theme/borderColor";
 
-interface PopoverProps extends Omit<MuiPopoverProps, "slotProps"> {}
+interface PopoverProps extends Omit<MuiPopperProps, "anchorEl" | "children"> {
+    anchorEl: HTMLElement;
+    children: ReactNode;
+    historyMode: boolean;
+    onClose: VoidFunction;
+}
 
-const Popover: FC<PopoverProps> = (props) => {
-    const paperRef = useRef<HTMLDivElement>(null);
-    useAvailableHeight(paperRef);
+const Popover: FC<PopoverProps> = ({
+    historyMode,
+    onClose,
+    children,
+    ...props
+}) => {
+    const width = historyMode
+        ? (props.anchorEl?.getBoundingClientRect().width ?? "90vw")
+        : "90vw";
 
     return (
-        <MuiPopover
-            slotProps={{
-                paper: {
-                    ref: paperRef,
-                    sx: {
-                        width: "500px",
-                    },
-                },
+        <MuiPopper
+            transition
+            sx={{
+                zIndex: ({ zIndex }) => zIndex.appBar + 1,
             }}
+            onClick={stopPropagation}
             {...props}
-        />
+        >
+            {({ TransitionProps }) => (
+                <Fade appear {...TransitionProps} timeout={100}>
+                    <Paper
+                        sx={{
+                            width,
+                            minHeight: "100px",
+                            height: historyMode ? "fit-content" : "90vh",
+                            border: "1px solid",
+                            borderColor: getBorderColor2,
+                            borderRadius: "25px",
+                            boxShadow: 15,
+                        }}
+                    >
+                        {children}
+                    </Paper>
+                </Fade>
+            )}
+        </MuiPopper>
     );
 };
 

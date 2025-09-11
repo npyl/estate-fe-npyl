@@ -7,6 +7,7 @@ import { forwardRef } from "react";
 import { SearchInputProps } from "@/components/Search/SearchInput";
 import ModeSelect from "./ModeSelect";
 import stopPropagation from "@/utils/stopPropagation";
+import { SearchCategory } from "../types";
 
 const SearchInputSx: SxProps<Theme> = {
     input: {
@@ -30,7 +31,7 @@ interface InputProps
         | "onTouchMove"
     > {
     searchCategory: string;
-    onSearchCategoryChange: (s: string) => void;
+    onSearchCategoryChange: (s: SearchCategory) => void;
     onClear: VoidFunction;
 }
 

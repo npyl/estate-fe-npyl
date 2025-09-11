@@ -1,30 +1,18 @@
 import {
     IconButton,
-    List,
     ListItem,
     ListItemButton,
     ListItemText,
     Stack,
-    SxProps,
-    Theme,
     Typography,
 } from "@mui/material";
-import { FC, forwardRef, useCallback, useImperativeHandle } from "react";
+import { FC, useCallback } from "react";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { format, isToday, isYesterday, isThisWeek, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { THistoryItem } from "./types";
 import useSearchHistory from "./useSearchHistory";
-
-const ListSx: SxProps<Theme> = {
-    position: "absolute",
-    backgroundColor: "background.paper",
-    boxShadow: 15,
-    width: { xs: "65vw", sm: "40vw" },
-    zIndex: ({ zIndex }) => zIndex.modal,
-    top: "60px",
-};
 
 const formatHistoryDate = (dateString: string) => {
     const date = parseISO(dateString);
@@ -132,21 +120,4 @@ const getItem = (onSelect: (s: string) => void) => (props: THistoryItem) => (
     <HistoryItem key={props.date} {...props} onSelect={onSelect} />
 );
 
-interface HistoryListProps {
-    onSelect: (s: string) => void;
-}
-
-interface HistoryListRef {
-    addSearchHistoryItem: (s: string) => void;
-}
-
-const HistoryList = forwardRef<HistoryListRef, HistoryListProps>(
-    ({ onSelect }, ref) => {
-        const { searchHistory, addSearchHistoryItem } = useSearchHistory();
-        useImperativeHandle(ref, () => ({ addSearchHistoryItem }), []);
-        return <List sx={ListSx}>{searchHistory.map(getItem(onSelect))}</List>;
-    }
-);
-
-export type { HistoryListRef };
-export default HistoryList;
+export default getItem;

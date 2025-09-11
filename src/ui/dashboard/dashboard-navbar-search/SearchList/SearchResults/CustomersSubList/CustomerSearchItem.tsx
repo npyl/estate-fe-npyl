@@ -9,7 +9,7 @@ import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Link from "next/link";
 import { TypeLabels } from "@/components/TypeLabels";
-import { StyledSearchStack } from "../styles";
+import { StyledSearchStack } from "../../../styles";
 
 interface SearchItemProps {
     searchText: string;

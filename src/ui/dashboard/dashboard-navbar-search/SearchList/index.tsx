@@ -1,298 +1,53 @@
-import {
-    Box,
-    Grid,
-    Stack,
-    Theme,
-    Typography,
-    useMediaQuery,
-} from "@mui/material";
-import { FC, useEffect, useMemo, useRef } from "react";
-import { CustomerSearchItem } from "./CustomerSearchItem";
-import { PropertySearchItem } from "./PropertySearchItem";
-import { ScrollBox } from "src/components/ScrollBox";
-import { useTranslation } from "react-i18next";
-import Pagination, { usePagination } from "@/components/Pagination";
-import { useSearchPropertyQuery } from "@/services/properties";
-import { useSearchCustomerQuery } from "@/services/customers";
+import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { SearchCategory } from "../types";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import AgreementItems from "./AgreementItems";
-import useSearchHistory from "../HistoryList/useSearchHistory";
 import Popover, { PopoverProps } from "../Popover";
+import SearchHistory from "./SearchHistory";
+import SearchResults from "./SearchResults";
 
-const PAGE_SIZE = 20;
-
-interface PropertiesSubListProps {
-    searchString: string;
-    sortBy?: string;
-    onItemClick: (value: string) => void;
+interface SearchListRef {
+    open: (anchorEl: HTMLElement) => void;
+    close: VoidFunction;
 }
 
-const PropertiesSubList = ({
-    searchString,
-    sortBy = "code", //used for property search only
-    onItemClick,
-}: PropertiesSubListProps) => {
-    const { t } = useTranslation();
+interface SearchListProps
+    extends Omit<
+        PopoverProps,
+        "open" | "anchorEl" | "children" | "historyMode"
+    > {
+    searchString: string;
+    searchCategory: SearchCategory;
+}
 
-    const pagination = usePagination();
+const SearchList = forwardRef<SearchListRef, SearchListProps>(
+    ({ searchString, searchCategory, ...props }, ref) => {
+        const isHistoryMode = !searchString;
 
-    const { data, isLoading } = useSearchPropertyQuery(
-        {
-            searchString,
-            page: pagination.page,
-            pageSize: PAGE_SIZE,
-            sortBy,
-        },
-        {
-            skip: searchString === "",
-        }
-    );
+        const [anchorEl, setAnchorEl] = useState<HTMLElement>();
+        const close = useCallback(() => setAnchorEl(undefined), []);
 
-    const properties = useMemo(
-        () => (Array.isArray(data?.content) ? data.content : []),
-        [data?.content]
-    );
+        useImperativeHandle(ref, () => ({ open: setAnchorEl, close }), []);
 
-    const handlePageChange = (event: any, page: number) => {
-        event.stopPropagation();
-        pagination.onChange(event, page);
-    };
+        if (!anchorEl) return null;
 
-    const scrollRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = 0;
-        }
-    }, [pagination.page]);
-
-    return (
-        <ScrollBox ref={scrollRef} scrollbarWidth="15px">
-            <Grid
-                item
-                xs={12}
-                sx={{
-                    marginY: "10px",
-                }}
+        return (
+            <Popover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                historyMode={isHistoryMode}
+                {...props}
             >
-                {properties.length === 0 ? null : (
-                    <>
-                        <Typography
-                            variant="h6"
-                            display="flex"
-                            justifyContent="center"
-                            gap={1}
-                            alignItems="center"
-                            width="100%"
-                            sx={{
-                                borderBottom: "1px solid lightgrey",
-                            }}
-                        >
-                            <HomeOutlinedIcon
-                                sx={{
-                                    width: "22px",
-                                    height: "22px",
-                                }}
-                            />
-                            {t("Properties")}
-                        </Typography>
-
-                        <Pagination
-                            {...pagination}
-                            isLoading={isLoading}
-                            pageSize={PAGE_SIZE}
-                            totalItems={data?.totalElements ?? 0}
-                            onChange={handlePageChange}
-                        >
-                            {properties.map((option) => (
-                                <PropertySearchItem
-                                    key={option.id}
-                                    option={option}
-                                    searchText={searchString}
-                                    onClick={onItemClick}
-                                />
-                            ))}
-                        </Pagination>
-                    </>
-                )}
-            </Grid>
-        </ScrollBox>
-    );
-};
-
-interface CustomerSearchListProps {
-    searchCategory: SearchCategory;
-    searchString: string;
-    onItemClick: (value: string) => void;
-}
-
-const CustomersSearchList: FC<CustomerSearchListProps> = ({
-    searchCategory,
-    searchString,
-    onItemClick,
-}) => {
-    const { t } = useTranslation();
-
-    const isMobile = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down("sm")
-    );
-
-    const b2b = searchCategory === "b2b" || searchCategory === "all";
-
-    // non-b2b Customers
-    const { data: data0 } = useSearchCustomerQuery(
-        { searchString, b2b: false },
-        {
-            skip: searchString === "" || searchCategory === "b2b",
-        }
-    );
-    // b2b-only Customers
-    const { data: b2bOnly } = useSearchCustomerQuery(
-        { searchString, b2b: true },
-        {
-            skip: searchString === "" || !b2b,
-        }
-    );
-
-    const all = useMemo(
-        () => [...(data0 ?? []), ...(b2bOnly ?? [])],
-        [data0, b2bOnly]
-    );
-
-    return (
-        <>
-            {isMobile ? (
-                <>
-                    <Typography
-                        variant="h6"
-                        display="flex"
-                        justifyContent="center"
-                        gap={1}
-                        alignItems="center"
-                        sx={{
-                            borderBottom: "1px solid lightgrey",
-                        }}
-                    >
-                        <PersonOutlineOutlinedIcon
-                            sx={{
-                                width: "22px",
-                                height: "22px",
-                            }}
-                        />
-                        {t("Customers")}
-                    </Typography>
-                    <Box width="100%" sx={{ overflowX: "hidden" }}>
-                        {all.map((option) => (
-                            <CustomerSearchItem
-                                key={option.id}
-                                option={option}
-                                searchText={searchString}
-                                onClick={onItemClick}
-                            />
-                        ))}
-                    </Box>
-                </>
-            ) : (
-                <ScrollBox scrollbarWidth="15px">
-                    <Typography
-                        variant="h6"
-                        display="flex"
-                        justifyContent="center"
-                        gap={1}
-                        alignItems="center"
-                        sx={{
-                            borderBottom: "1px solid lightgrey",
-                        }}
-                    >
-                        <PersonOutlineOutlinedIcon
-                            sx={{
-                                width: "22px",
-                                height: "22px",
-                            }}
-                        />
-                        {t("Customers")}
-                    </Typography>
-                    <Box width="100%" sx={{ overflowX: "hidden" }}>
-                        {all.map((option) => (
-                            <CustomerSearchItem
-                                key={option.id}
-                                option={option}
-                                searchText={searchString}
-                                onClick={onItemClick}
-                            />
-                        ))}
-                    </Box>
-                </ScrollBox>
-            )}
-        </>
-    );
-};
-
-interface SearchListProps extends Omit<PopoverProps, "direction" | "results"> {
-    searchString: string;
-    searchCategory: SearchCategory;
-}
-
-const SearchList: FC<SearchListProps> = ({
-    searchString,
-    searchCategory,
-    ...props
-}) => {
-    const { addSearchHistoryItem } = useSearchHistory();
-
-    return (
-        <Popover {...props}>
-            <Grid container>
-                {searchCategory === "properties" && (
-                    <PropertiesSubList
+                {searchString ? (
+                    <SearchResults
                         searchString={searchString}
-                        onItemClick={addSearchHistoryItem}
-                        sortBy="code"
-                    />
-                )}
-
-                {searchCategory === "all" && (
-                    <Stack direction={{ xs: "column", md: "row" }} width="100%">
-                        <Grid item xs={12} md={7}>
-                            <PropertiesSubList
-                                searchString={searchString}
-                                onItemClick={addSearchHistoryItem}
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            md={5}
-                            sx={{
-                                marginY: "10px",
-                                borderLeft: "1px solid grey",
-                            }}
-                        >
-                            <CustomersSearchList
-                                searchCategory={searchCategory}
-                                searchString={searchString}
-                                onItemClick={addSearchHistoryItem}
-                            />
-                        </Grid>
-                    </Stack>
-                )}
-
-                {searchCategory === "customers" || searchCategory === "b2b" ? (
-                    <CustomersSearchList
                         searchCategory={searchCategory}
-                        searchString={searchString}
-                        onItemClick={addSearchHistoryItem}
                     />
                 ) : null}
-            </Grid>
 
-            {searchCategory === "all" || searchCategory === "agreements" ? (
-                <AgreementItems search={searchString} />
-            ) : null}
-        </Popover>
-    );
-};
+                {!searchString ? <SearchHistory onSelect={() => {}} /> : null}
+            </Popover>
+        );
+    }
+);
 
+export type { SearchListRef };
 export default SearchList;

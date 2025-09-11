@@ -15,6 +15,7 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import CustomersIcon from "@/assets/icons/customers";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import { TranslationType } from "@/types/translation";
+import { SearchCategory } from "../types";
 
 // ---------------------------------------------------------------------------
 
@@ -90,13 +91,13 @@ const OPTIONS: IOption[] = [
 ];
 
 interface ModeSelectProps extends Omit<SelectProps<string>, "onChange"> {
-    onChange: (s: string) => void;
+    onChange: (s: SearchCategory) => void;
 }
 
 const ModeSelect: FC<ModeSelectProps> = ({ onChange: _onChange, ...props }) => {
     const { t } = useTranslation();
     const onChange = useCallback(
-        (e: SelectChangeEvent) => _onChange?.(e.target.value),
+        (e: SelectChangeEvent) => _onChange?.(e.target.value as SearchCategory),
         [_onChange]
     );
     return (
