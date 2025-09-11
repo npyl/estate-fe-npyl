@@ -1,10 +1,14 @@
-import { Box, Stack, StackProps, Typography } from "@mui/material";
-import { FC, useMemo } from "react";
+import { Stack, StackProps, Typography } from "@mui/material";
+import { FC, useMemo, useRef } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { useTranslation } from "react-i18next";
 import { useSearchCustomerQuery } from "@/services/customers";
 import { SearchCategory } from "../../../types";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import Pagination from "@/components/Pagination/client";
+import { usePagination } from "@/components/Pagination";
+
+const PAGE_SIZE = 5;
 
 interface ContentProps {
     searchCategory: SearchCategory;
@@ -17,30 +21,49 @@ const Content: FC<ContentProps> = ({
     searchCategory,
     searchString,
 }) => {
+    const pagination = usePagination();
+
     const b2b = searchCategory === "b2b" || searchCategory === "all";
 
     // non-b2b Customers
-    const { data: data0 } = useSearchCustomerQuery(
+    const { data: data0, isLoading: isLoading0 } = useSearchCustomerQuery(
         { searchString, b2b: false },
         {
             skip: searchString === "" || searchCategory === "b2b",
         }
     );
     // b2b-only Customers
-    const { data: b2bOnly } = useSearchCustomerQuery(
+    const { data: b2bOnly, isLoading: isLoading1 } = useSearchCustomerQuery(
         { searchString, b2b: true },
         {
             skip: searchString === "" || !b2b,
         }
     );
 
+    const isLoading = isLoading0 || isLoading1;
+
     const all = useMemo(
         () => [...(data0 ?? []), ...(b2bOnly ?? [])],
         [data0, b2bOnly]
     );
 
+    const handlePageChange = (event: any, page: number) => {
+        event.stopPropagation();
+        pagination.onChange(event, page);
+
+        if (!scrollRef.current) return;
+        scrollRef.current.scrollTop = 0;
+    };
+
+    const scrollRef = useRef<HTMLDivElement>(null);
+
     return (
-        <Box width="100%" sx={{ overflowX: "hidden", overflowY: "auto" }}>
+        <Pagination
+            {...pagination}
+            isLoading={isLoading}
+            pageSize={PAGE_SIZE}
+            onChange={handlePageChange}
+        >
             {all.map((option) => (
                 <CustomerSearchItem
                     key={option.id}
@@ -49,7 +72,7 @@ const Content: FC<ContentProps> = ({
                     onClick={onItemClick}
                 />
             ))}
-        </Box>
+        </Pagination>
     );
 };
 

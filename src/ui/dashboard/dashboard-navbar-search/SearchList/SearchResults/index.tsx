@@ -28,7 +28,7 @@ const SearchResults: FC<Props> = ({ searchCategory, searchString }) => {
     const width = { xs: 1, sm: properties && customers ? "50%" : 1 };
 
     return (
-        <Stack>
+        <Stack spacing={1}>
             <Stack direction={{ xs: "column", sm: "row" }}>
                 {properties ? (
                     <PropertiesSubList

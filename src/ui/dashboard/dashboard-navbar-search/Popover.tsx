@@ -2,10 +2,25 @@ import Paper from "@mui/material/Paper";
 import MuiPopper, { PopperProps as MuiPopperProps } from "@mui/material/Popper";
 import { FC, ReactNode } from "react";
 import stopPropagation from "@/utils/stopPropagation";
-import { Fade } from "@mui/material";
+import { Fade, SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
 
-interface PopoverProps extends Omit<MuiPopperProps, "anchorEl" | "children"> {
+const getPaperSx = (
+    historyMode: boolean,
+    width: number | string
+): SxProps<Theme> => ({
+    width,
+    minHeight: "100px",
+    height: historyMode ? "fit-content" : "90vh",
+    border: "1px solid",
+    borderColor: getBorderColor2,
+    borderRadius: "25px",
+    boxShadow: 15,
+    overflowY: "auto",
+});
+
+interface PopoverProps
+    extends Omit<MuiPopperProps, "sx" | "anchorEl" | "children"> {
     anchorEl: HTMLElement;
     children: ReactNode;
     historyMode: boolean;
@@ -33,17 +48,7 @@ const Popover: FC<PopoverProps> = ({
         >
             {({ TransitionProps }) => (
                 <Fade appear {...TransitionProps} timeout={100}>
-                    <Paper
-                        sx={{
-                            width,
-                            minHeight: "100px",
-                            height: historyMode ? "fit-content" : "90vh",
-                            border: "1px solid",
-                            borderColor: getBorderColor2,
-                            borderRadius: "25px",
-                            boxShadow: 15,
-                        }}
-                    >
+                    <Paper sx={getPaperSx(historyMode, width)}>
                         {children}
                     </Paper>
                 </Fade>

@@ -6,7 +6,7 @@ import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 5;
 
 interface ContentProps {
     searchString: string;
@@ -57,9 +57,6 @@ const Content: FC<ContentProps> = ({
             pageSize={PAGE_SIZE}
             totalItems={data?.totalElements ?? 0}
             onChange={handlePageChange}
-            sx={{
-                overflowY: "auto",
-            }}
         >
             {properties.map((option) => (
                 <PropertySearchItem
