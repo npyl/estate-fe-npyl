@@ -1,13 +1,13 @@
-import { Stack, StackProps, Typography } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import { FC, useMemo, useRef } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { useTranslation } from "react-i18next";
 import { useSearchCustomerQuery } from "@/services/customers";
 import { SearchCategory } from "../../../types";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import Pagination from "@/components/Pagination/client";
 import { usePagination } from "@/components/Pagination";
-import { getBorderColor2 } from "@/theme/borderColor";
+import CustomerIcon from "@/assets/icons/customers";
+import Head from "../Head";
 
 const PAGE_SIZE = 5;
 
@@ -89,27 +89,10 @@ const CustomersSubList: FC<CustomersSubListProps> = ({
 
     return (
         <Stack {...props}>
-            <Typography
-                variant="h6"
-                display="flex"
-                justifyContent="center"
-                gap={1}
-                alignItems="center"
-                p={1}
-                // ...
-                position="sticky"
-                top={0}
-                bgcolor="background.default"
-                zIndex={1}
-            >
-                <PersonOutlineOutlinedIcon
-                    sx={{
-                        width: "22px",
-                        height: "22px",
-                    }}
-                />
+            <Head>
+                <CustomerIcon />
                 {t("Customers")}
-            </Typography>
+            </Head>
 
             <Content
                 searchString={searchString}

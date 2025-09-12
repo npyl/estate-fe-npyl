@@ -11,7 +11,7 @@ import SelectAllOutlinedIcon from "@mui/icons-material/SelectAllOutlined";
 import { useTranslation } from "react-i18next";
 import { FC, useCallback } from "react";
 import HomeIcon from "@mui/icons-material/Home";
-import HandshakeIcon from "@mui/icons-material/Handshake";
+import AgreementIcon from "@/assets/icons/agreement";
 import CustomersIcon from "@/assets/icons/customers";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import { TranslationType } from "@/types/translation";
@@ -87,7 +87,7 @@ const OPTIONS: IOption[] = [
     { key: "properties", label: "Properties", Icon: HomeIcon },
     { key: "customers", label: "Customers", Icon: CustomersIcon },
     { key: "b2b", label: "B2B", Icon: CorporateFareIcon },
-    { key: "agreements", label: "Agreements", Icon: HandshakeIcon },
+    { key: "agreements", label: "Agreements", Icon: AgreementIcon },
 ];
 
 interface ModeSelectProps extends Omit<SelectProps<string>, "onChange"> {

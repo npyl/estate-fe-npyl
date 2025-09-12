@@ -1,10 +1,11 @@
-import { Stack, StackProps, Typography } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import { FC, useMemo, useRef } from "react";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { useTranslation } from "react-i18next";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import HomeIcon from "@/assets/icons/home";
+import Head from "../Head";
 
 const PAGE_SIZE = 5;
 
@@ -82,28 +83,10 @@ const PropertiesSubList: FC<PropertiesSubListProps> = ({
 
     return (
         <Stack {...props}>
-            <Typography
-                variant="h6"
-                display="flex"
-                justifyContent="center"
-                gap={1}
-                alignItems="center"
-                width="100%"
-                p={1}
-                // ...
-                position="sticky"
-                top={0}
-                bgcolor="background.default"
-                zIndex={1}
-            >
-                <HomeOutlinedIcon
-                    sx={{
-                        width: "22px",
-                        height: "22px",
-                    }}
-                />
+            <Head>
+                <HomeIcon />
                 {t("Properties")}
-            </Typography>
+            </Head>
 
             <Content
                 searchString={searchString}

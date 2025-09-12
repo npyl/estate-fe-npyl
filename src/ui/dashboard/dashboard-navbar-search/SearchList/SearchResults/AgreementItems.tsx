@@ -3,6 +3,9 @@ import Pagination from "@/components/Pagination/client";
 import { useSearchAgreementsQuery } from "@/services/agreements";
 import React, { useMemo, useRef } from "react";
 import { usePagination } from "@/components/Pagination";
+import { useTranslation } from "react-i18next";
+import AgreementIcon from "@/assets/icons/agreement";
+import Head from "./Head";
 
 const PAGE_SIZE = 5;
 
@@ -10,7 +13,7 @@ interface Props {
     search: string;
 }
 
-const AgreementItems: React.FC<Props> = ({ search }) => {
+const Content: React.FC<Props> = ({ search }) => {
     const pagination = usePagination();
 
     const { data, isLoading } = useSearchAgreementsQuery({
@@ -47,5 +50,22 @@ const AgreementItems: React.FC<Props> = ({ search }) => {
         </Pagination>
     );
 };
+
+const Header = () => {
+    const { t } = useTranslation();
+    return (
+        <Head>
+            <AgreementIcon />
+            {t("Agreements")}
+        </Head>
+    );
+};
+
+const AgreementItems: React.FC<Props> = (props) => (
+    <>
+        <Header />
+        <Content {...props} />
+    </>
+);
 
 export default AgreementItems;

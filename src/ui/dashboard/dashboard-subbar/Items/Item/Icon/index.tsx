@@ -1,6 +1,6 @@
 import { TTabRenderer } from "@/types/tabs";
 import { ComponentType, FC } from "react";
-import HandshakeIcon from "@mui/icons-material/Handshake";
+import AgreementIcon from "@/assets/icons/agreement";
 import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@/assets/icons/home";
 import HomeCreateIcon from "@/assets/icons/home-create";
@@ -25,7 +25,7 @@ const ICONS: TIcons = {
     PROPERTY_CREATE: HomeCreateIcon,
     PROPERTY_VIEW: HomeIcon,
     // ...
-    AGREEMENT: HandshakeIcon,
+    AGREEMENT: AgreementIcon,
     TASK: ConfirmationNumberIcon,
     PROFILE: PersonIcon,
     USER: PersonIcon,
