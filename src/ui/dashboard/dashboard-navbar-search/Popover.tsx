@@ -40,9 +40,7 @@ const Popover: FC<PopoverProps> = ({
     return (
         <MuiPopper
             transition
-            sx={{
-                zIndex: ({ zIndex }) => zIndex.appBar + 1,
-            }}
+            sx={{ zIndex: ({ zIndex }) => zIndex.appBar + 1 }}
             onClick={stopPropagation}
             {...props}
         >
