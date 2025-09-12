@@ -1,6 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
-import { useRouter } from "next/router";
 import { ICustomerResultResponse } from "src/types/customer";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -23,29 +22,26 @@ interface ItemProps {
     value: string;
 }
 
-const Item = ({ highlight, label, value }: ItemProps) => {
-    return (
-        <Stack direction={"row"} gap={1}>
-            {label && <Typography variant="body2">{`${label}: `} </Typography>}
-            <Box
-                component="span"
-                sx={{
-                    typography: "body2",
-                    fontWeight: highlight ? "bold" : "normal",
-                }}
-            >
-                {value}
-            </Box>
-        </Stack>
-    );
-};
+const Item = ({ highlight, label, value }: ItemProps) => (
+    <Stack direction={"row"} gap={1}>
+        {label && <Typography variant="body2">{`${label}: `} </Typography>}
+        <Box
+            component="span"
+            sx={{
+                typography: "body2",
+                fontWeight: highlight ? "bold" : "normal",
+            }}
+        >
+            {value}
+        </Box>
+    </Stack>
+);
 
 export const CustomerSearchItem = ({
     option,
     searchText,
     onClick,
 }: SearchItemProps) => {
-    const router = useRouter();
     const firstName = useMemo(
         () => ({
             highlight: true,
@@ -82,21 +78,14 @@ export const CustomerSearchItem = ({
         [option.city, searchText]
     );
 
-    const handleClick = () => {
-        onClick(`${option.firstName} ${option.lastName}`);
-        const baseUrl = option.b2b ? "/b2b" : "/customer";
-        router.push(`${baseUrl}/${option.id}`);
-    };
+    const handleClick = () => onClick(`${option.firstName} ${option.lastName}`);
+
+    const baseUrl = option.b2b ? "/b2b" : "/customer";
+    const href = `${baseUrl}/${option.id}`;
 
     return (
         <StyledSearchStack
-            justifyContent={"flex-start"}
-            paddingY={1}
-            paddingX={2}
-            gap={2}
-            flex={1}
-            direction={"row"}
-            alignItems={"center"}
+            href={href}
             onClick={handleClick}
             sx={{ height: "195px", width: "auto", overflowX: "hidden" }}
         >

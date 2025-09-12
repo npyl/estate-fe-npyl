@@ -11,7 +11,6 @@ import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../../../styles";
 import { useMemo } from "react";
 import PreviewImage from "@/components/image/PreviewImage";
-import { useRouter } from "next/router";
 import { MatchResult } from "../../../types";
 import { useTranslation } from "react-i18next";
 import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
@@ -30,7 +29,6 @@ export const PropertySearchItem = ({
 }: SearchItemProps) => {
     const { i18n, t } = useTranslation();
 
-    const router = useRouter();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -90,22 +88,17 @@ export const PropertySearchItem = ({
         return result;
     }, [rest, searchText]);
 
-    const handleClick = () => {
-        onClick(`${option.code}`);
-        router.push(`/property/${option.id}`);
-    };
+    const handleClick = () => onClick(`${option.code}`);
+
+    const href = `/property/${option.id}`;
 
     return (
         <StyledSearchStack
-            justifyContent={"flex-start"}
-            paddingY={1}
-            paddingX={1}
-            spacing={0}
-            flex={1}
-            direction={"row"}
-            alignItems={"center"}
+            href={href}
             onClick={handleClick}
             sx={{
+                flexDirection: "row",
+                gap: 1,
                 overflowX: "hidden",
                 overflowY: "hidden",
                 minHeight: isMobile ? "400px" : "195px",

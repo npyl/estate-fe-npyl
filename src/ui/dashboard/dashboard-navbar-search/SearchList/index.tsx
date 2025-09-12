@@ -43,6 +43,7 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
                     <SearchResults
                         searchString={searchString}
                         searchCategory={searchCategory}
+                        onClose={close}
                     />
                 ) : null}
 

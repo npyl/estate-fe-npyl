@@ -4,14 +4,19 @@ import useSearchHistory from "../SearchHistory/useSearchHistory";
 import CustomersSubList from "./CustomersSubList";
 import { SearchCategory } from "../../types";
 import Stack from "@mui/material/Stack";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 
 interface Props {
     searchCategory: SearchCategory;
     searchString: string;
+    onClose: VoidFunction;
 }
 
-const SearchResults: FC<Props> = ({ searchCategory, searchString }) => {
+const SearchResults: FC<Props> = ({
+    searchCategory,
+    searchString,
+    onClose,
+}) => {
     const { addSearchHistoryItem } = useSearchHistory();
 
     const properties =
@@ -27,6 +32,11 @@ const SearchResults: FC<Props> = ({ searchCategory, searchString }) => {
 
     const width = { xs: 1, sm: properties && customers ? "50%" : 1 };
 
+    const onItemClick = useCallback((value: string) => {
+        addSearchHistoryItem(value);
+        onClose();
+    }, []);
+
     return (
         <Stack spacing={1}>
             <Stack direction={{ xs: "column", sm: "row" }}>
@@ -34,7 +44,7 @@ const SearchResults: FC<Props> = ({ searchCategory, searchString }) => {
                     <PropertiesSubList
                         width={width}
                         searchString={searchString}
-                        onItemClick={addSearchHistoryItem}
+                        onItemClick={onItemClick}
                         sortBy="code"
                     />
                 ) : null}
@@ -44,7 +54,7 @@ const SearchResults: FC<Props> = ({ searchCategory, searchString }) => {
                         width={width}
                         searchCategory={searchCategory}
                         searchString={searchString}
-                        onItemClick={addSearchHistoryItem}
+                        onItemClick={onItemClick}
                     />
                 ) : null}
             </Stack>

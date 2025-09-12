@@ -1,8 +1,8 @@
 import { getBorderColor2 } from "@/theme/borderColor";
-import NextLink from "next/link";
 import { styled } from "@mui/material/styles";
+import Link from "@/components/Link";
 
-const Card = styled(NextLink)(({ theme }) => ({
+const Card = styled(Link)(({ theme }) => ({
     cursor: "pointer",
     border: "1px solid",
     borderColor: getBorderColor2(theme),

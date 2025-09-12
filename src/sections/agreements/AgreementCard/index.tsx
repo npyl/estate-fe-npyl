@@ -2,7 +2,6 @@ import { IAgreementShort } from "@/types/agreements";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import MuiLink from "@mui/material/Link";
 import Card from "./Card";
 import PropertyDetails from "./PropertyDetails";
 import CardImage from "./Image";
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const AgreementCard: React.FC<Props> = ({ a, onEdit }) => (
-    <MuiLink component={Card} href={`/agreements/${a.id}`}>
+    <Card href={`/agreements/${a.id}`}>
         <CardImage variant={a.variant.key} />
 
         <Stack
@@ -54,7 +53,7 @@ const AgreementCard: React.FC<Props> = ({ a, onEdit }) => (
                 <Controls agreementId={a.id} onEdit={() => onEdit(a.id)} />
             ) : null}
         </Stack>
-    </MuiLink>
+    </Card>
 );
 
 export default AgreementCard;
