@@ -47,7 +47,7 @@ interface Props {
 const ToDoAutoSelect: FC<Props> = ({ id }) => {
     const { setValue } = useFormContext<ICreateOrUpdateTaskReq>();
     useEffect(() => {
-        setValue("columnId", id, { shouldDirty: true });
+        setValue("columnId", id);
     }, [id]);
     return null;
 };
