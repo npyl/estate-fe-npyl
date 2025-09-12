@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
 import { useGetDashboardQuery } from "@/services/dashboard";
 import { IUserDetails } from "@/types/dashboard";
-import { Box, Grid, SxProps, Theme } from "@mui/material";
+import { Box, Grid, GridProps, SxProps, Theme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -116,6 +116,14 @@ const User: FC<UserProps> = ({ u }) => {
 
 // -----------------------------------------------------------------------------------
 
+const HideBelowMd: GridProps = {
+    display: { xs: "none", md: "block" },
+};
+
+const ResponsiveGrid: FC<GridProps> = (props) => (
+    <Grid {...HideBelowMd} {...props} />
+);
+
 const UserRowSx: SxProps<Theme> = {
     border: "1px solid",
     borderColor: "divider",
@@ -185,13 +193,15 @@ const UserRow: FC<UserRowProps> = ({
 
     return (
         <Grid container alignItems="center" px={1} sx={UserRowSx}>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
                 <User u={u} />
             </Grid>
-            <Grid item xs={1}>
+
+            {/* ----- */}
+            <ResponsiveGrid item xs={1}>
                 <TasksCount count={u?.activeTasks} assignee={u?.id} />
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <Typography
                     textAlign="center"
                     sx={{
@@ -201,8 +211,8 @@ const UserRow: FC<UserRowProps> = ({
                 >
                     {propertiesCount}
                 </Typography>
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <Typography
                     textAlign="center"
                     sx={{
@@ -212,8 +222,8 @@ const UserRow: FC<UserRowProps> = ({
                 >
                     {activeProperties ?? "-"}
                 </Typography>
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <Typography
                     textAlign="center"
                     sx={{
@@ -223,8 +233,8 @@ const UserRow: FC<UserRowProps> = ({
                 >
                     {inactiveProperties ?? "-"}
                 </Typography>
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <Typography
                     textAlign="center"
                     sx={{
@@ -234,9 +244,8 @@ const UserRow: FC<UserRowProps> = ({
                 >
                     {customers ?? "-"}
                 </Typography>
-            </Grid>
-
-            <Grid item xs={1.2}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1.2}>
                 <Typography
                     textAlign="center"
                     sx={{
@@ -246,8 +255,10 @@ const UserRow: FC<UserRowProps> = ({
                 >
                     {notifications ?? "-"}
                 </Typography>
-            </Grid>
-            <Grid item xs={2.8}>
+            </ResponsiveGrid>
+            {/* ----- */}
+
+            <Grid item xs={6} md={2.8}>
                 <PropertiesProgress count={propertiesCount} assignee={u?.id} />
             </Grid>
         </Grid>
@@ -306,51 +317,55 @@ const Head: FC<HeadProps> = ({
     const { t } = useTranslation();
     return (
         <Grid container alignItems="center" spacing={1} p={1} py={2}>
-            <Grid item xs={3}>
+            <Grid item xs={6} md={3}>
                 <CustomTypography
                     label={t("Users")}
                     textAlign="left"
                     variant="h6"
                 />
             </Grid>
-            <Grid item xs={1}>
+
+            {/* ----- */}
+            <ResponsiveGrid item xs={1}>
                 <CustomTypography
                     label={t("Tasks")}
                     count={totalTasks}
                     textAlign="left"
                 />
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <CustomTypography
                     label={t("Properties")}
                     count={totalProperties}
                 />
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <CustomTypography
                     label={t("Active")}
                     count={totalActiveProperties}
                 />
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <CustomTypography
                     label={t("Inactive")}
                     count={totalInactiveProperties}
                 />
-            </Grid>
-            <Grid item xs={1}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1}>
                 <CustomTypography
                     label={t("Customers")}
                     count={totalCustomers}
                 />
-            </Grid>
-            <Grid item xs={1.2}>
+            </ResponsiveGrid>
+            <ResponsiveGrid item xs={1.2}>
                 <CustomTypography
                     label={t("Notifications")}
                     count={totalNotifications}
                 />
-            </Grid>
-            <Grid item xs={2.8}>
+            </ResponsiveGrid>
+            {/* ----- */}
+
+            <Grid item xs={6} md={2.8}>
                 <CustomTypography label={t("Attribution")} textAlign="left" />
             </Grid>
         </Grid>
