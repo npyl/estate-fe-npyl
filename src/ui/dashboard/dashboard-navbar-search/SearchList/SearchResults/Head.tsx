@@ -48,7 +48,7 @@ const Head = forwardRef<HeadRef, HeadProps>(
                 bottom={0}
                 bgcolor="background.default"
                 color="text.secondary"
-                zIndex={1}
+                zIndex={2}
                 boxShadow={1}
                 // ...
                 sx={{ ...HeadSx, ...(sx as any) }}

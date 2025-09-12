@@ -1,11 +1,11 @@
 import { Stack, StackProps } from "@mui/material";
 import { FC, useEffect, useMemo, useRef } from "react";
-import { PropertySearchItem } from "./PropertySearchItem";
 import { useTranslation } from "react-i18next";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import HomeIcon from "@/assets/icons/home";
-import Head, { useHeadControl } from "../Head";
+import Head, { useHeadControl } from "./Head";
+import { PropertyCardH } from "@/ui/Cards/PropertyCard";
 
 const PAGE_SIZE = 5;
 
@@ -67,13 +67,13 @@ const Content: FC<ContentProps> = ({
             pageSize={PAGE_SIZE}
             totalItems={totalItems}
             onChange={handlePageChange}
+            ContainerProps={{ spacing: 1, p: 1 }}
         >
-            {properties.map((option) => (
-                <PropertySearchItem
-                    key={option.id}
-                    option={option}
-                    searchText={searchString}
-                    onClick={onItemClick}
+            {properties.map((p) => (
+                <PropertyCardH
+                    key={p.id}
+                    item={p}
+                    onClick={() => onItemClick(p.code)}
                 />
             ))}
         </Pagination>

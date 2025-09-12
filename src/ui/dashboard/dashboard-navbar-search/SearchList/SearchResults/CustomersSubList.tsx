@@ -1,13 +1,13 @@
 import { Stack, StackProps } from "@mui/material";
 import { FC, useEffect, useMemo, useRef } from "react";
-import { CustomerSearchItem } from "./CustomerSearchItem";
 import { useTranslation } from "react-i18next";
 import { useSearchCustomerQuery } from "@/services/customers";
-import { SearchCategory } from "../../../types";
+import { SearchCategory } from "../../types";
 import Pagination from "@/components/Pagination/client";
 import { usePagination } from "@/components/Pagination";
 import CustomerIcon from "@/assets/icons/customers";
-import Head, { useHeadControl } from "../Head";
+import CustomerCard from "@/ui/Cards/CustomerCard";
+import Head, { useHeadControl } from "./Head";
 
 const PAGE_SIZE = 5;
 
@@ -72,13 +72,14 @@ const Content: FC<ContentProps> = ({
             isLoading={isLoading}
             pageSize={PAGE_SIZE}
             onChange={handlePageChange}
+            Container={Stack}
+            ContainerProps={{ spacing: 1, p: 1 }}
         >
-            {all.map((option) => (
-                <CustomerSearchItem
-                    key={option.id}
-                    option={option}
-                    searchText={searchString}
-                    onClick={onItemClick}
+            {all.map((c) => (
+                <CustomerCard
+                    key={c.id}
+                    c={c}
+                    onClick={() => onItemClick(`${c.firstName} ${c.lastName}`)}
                 />
             ))}
         </Pagination>
