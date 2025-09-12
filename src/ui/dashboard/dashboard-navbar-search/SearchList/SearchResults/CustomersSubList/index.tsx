@@ -1,5 +1,5 @@
 import { Stack, StackProps } from "@mui/material";
-import { FC, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { useTranslation } from "react-i18next";
 import { useSearchCustomerQuery } from "@/services/customers";
@@ -7,20 +7,25 @@ import { SearchCategory } from "../../../types";
 import Pagination from "@/components/Pagination/client";
 import { usePagination } from "@/components/Pagination";
 import CustomerIcon from "@/assets/icons/customers";
-import Head from "../Head";
+import Head, { useHeadControl } from "../Head";
 
 const PAGE_SIZE = 5;
 
-interface ContentProps {
+interface Props {
     searchCategory: SearchCategory;
     searchString: string;
     onItemClick: (value: string) => void;
+}
+
+interface ContentProps extends Props {
+    onCountChange: (c: number) => void;
 }
 
 const Content: FC<ContentProps> = ({
     onItemClick,
     searchCategory,
     searchString,
+    onCountChange,
 }) => {
     const pagination = usePagination();
 
@@ -47,6 +52,9 @@ const Content: FC<ContentProps> = ({
         () => [...(data0 ?? []), ...(b2bOnly ?? [])],
         [data0, b2bOnly]
     );
+    useEffect(() => {
+        onCountChange(all.length);
+    }, [all.length, onCountChange]);
 
     const handlePageChange = (event: any, page: number) => {
         event.stopPropagation();
@@ -77,7 +85,7 @@ const Content: FC<ContentProps> = ({
     );
 };
 
-interface CustomersSubListProps extends ContentProps, StackProps {}
+interface CustomersSubListProps extends Props, StackProps {}
 
 const CustomersSubList: FC<CustomersSubListProps> = ({
     searchString,
@@ -87,10 +95,11 @@ const CustomersSubList: FC<CustomersSubListProps> = ({
 }) => {
     const { t } = useTranslation();
 
+    const { headRef, onCountChange } = useHeadControl();
+
     return (
         <Stack {...props}>
-            <Head>
-                <CustomerIcon />
+            <Head ref={headRef} Icon={CustomerIcon}>
                 {t("Customers")}
             </Head>
 
@@ -98,6 +107,7 @@ const CustomersSubList: FC<CustomersSubListProps> = ({
                 searchString={searchString}
                 searchCategory={searchCategory}
                 onItemClick={onItemClick}
+                onCountChange={onCountChange}
             />
         </Stack>
     );

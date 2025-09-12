@@ -1,24 +1,29 @@
 import { Stack, StackProps } from "@mui/material";
-import { FC, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { useTranslation } from "react-i18next";
 import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import HomeIcon from "@/assets/icons/home";
-import Head from "../Head";
+import Head, { useHeadControl } from "../Head";
 
 const PAGE_SIZE = 5;
 
-interface ContentProps {
+interface Props {
     searchString: string;
     sortBy?: string;
     onItemClick: (value: string) => void;
+}
+
+interface ContentProps extends Props {
+    onCountChange: (c: number) => void;
 }
 
 const Content: FC<ContentProps> = ({
     onItemClick,
     searchString,
     sortBy = "code",
+    onCountChange,
 }) => {
     const pagination = usePagination();
 
@@ -34,10 +39,14 @@ const Content: FC<ContentProps> = ({
         }
     );
 
+    const totalItems = data?.totalElements ?? 0;
     const properties = useMemo(
         () => (Array.isArray(data?.content) ? data.content : []),
         [data?.content]
     );
+    useEffect(() => {
+        onCountChange(totalItems);
+    }, [totalItems, onCountChange]);
 
     const handlePageChange = (event: any, page: number) => {
         event.stopPropagation();
@@ -56,7 +65,7 @@ const Content: FC<ContentProps> = ({
             {...pagination}
             isLoading={isLoading}
             pageSize={PAGE_SIZE}
-            totalItems={data?.totalElements ?? 0}
+            totalItems={totalItems}
             onChange={handlePageChange}
         >
             {properties.map((option) => (
@@ -71,7 +80,7 @@ const Content: FC<ContentProps> = ({
     );
 };
 
-interface PropertiesSubListProps extends ContentProps, StackProps {}
+interface PropertiesSubListProps extends Props, StackProps {}
 
 const PropertiesSubList: FC<PropertiesSubListProps> = ({
     searchString,
@@ -81,10 +90,11 @@ const PropertiesSubList: FC<PropertiesSubListProps> = ({
 }) => {
     const { t } = useTranslation();
 
+    const { headRef, onCountChange } = useHeadControl();
+
     return (
         <Stack {...props}>
-            <Head>
-                <HomeIcon />
+            <Head ref={headRef} Icon={HomeIcon}>
                 {t("Properties")}
             </Head>
 
@@ -92,6 +102,7 @@ const PropertiesSubList: FC<PropertiesSubListProps> = ({
                 searchString={searchString}
                 sortBy={sortBy}
                 onItemClick={onItemClick}
+                onCountChange={onCountChange}
             />
         </Stack>
     );

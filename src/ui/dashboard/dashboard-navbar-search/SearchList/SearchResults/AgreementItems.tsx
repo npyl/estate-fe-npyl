@@ -1,11 +1,10 @@
 import AgreementCard from "@/sections/agreements/AgreementCard";
-import Pagination from "@/components/Pagination/client";
 import { useSearchAgreementsQuery } from "@/services/agreements";
-import React, { useMemo, useRef } from "react";
-import { usePagination } from "@/components/Pagination";
+import { FC, useEffect, useMemo, useRef } from "react";
+import Pagination, { usePagination } from "@/components/Pagination";
 import { useTranslation } from "react-i18next";
 import AgreementIcon from "@/assets/icons/agreement";
-import Head from "./Head";
+import Head, { useHeadControl } from "./Head";
 
 const PAGE_SIZE = 5;
 
@@ -13,7 +12,11 @@ interface Props {
     search: string;
 }
 
-const Content: React.FC<Props> = ({ search }) => {
+interface ContentProps extends Props {
+    onCountChange: (c: number) => void;
+}
+
+const Content: FC<ContentProps> = ({ search, onCountChange }) => {
     const pagination = usePagination();
 
     const { data, isLoading } = useSearchAgreementsQuery({
@@ -22,10 +25,14 @@ const Content: React.FC<Props> = ({ search }) => {
         pageSize: PAGE_SIZE,
     });
 
+    const totalItems = data?.totalElements ?? 0;
     const agreements = useMemo(
         () => (Array.isArray(data?.content) ? data.content : []),
         [data?.content]
     );
+    useEffect(() => {
+        onCountChange(totalItems);
+    }, [totalItems, onCountChange]);
 
     const handlePageChange = (event: any, page: number) => {
         event.stopPropagation();
@@ -40,9 +47,14 @@ const Content: React.FC<Props> = ({ search }) => {
     return (
         <Pagination
             {...pagination}
+            totalItems={totalItems}
             isLoading={isLoading}
             pageSize={PAGE_SIZE}
             onChange={handlePageChange}
+            ContainerProps={{
+                p: 1,
+                px: 2,
+            }}
         >
             {agreements.map((a) => (
                 <AgreementCard key={a.id} a={a} />
@@ -51,21 +63,20 @@ const Content: React.FC<Props> = ({ search }) => {
     );
 };
 
-const Header = () => {
+const AgreementItems: FC<Props> = (props) => {
     const { t } = useTranslation();
+
+    const { headRef, onCountChange } = useHeadControl();
+
     return (
-        <Head>
-            <AgreementIcon />
-            {t("Agreements")}
-        </Head>
+        <>
+            <Head ref={headRef} Icon={AgreementIcon}>
+                {t("Agreements")}
+            </Head>
+
+            <Content {...props} onCountChange={onCountChange} />
+        </>
     );
 };
-
-const AgreementItems: React.FC<Props> = (props) => (
-    <>
-        <Header />
-        <Content {...props} />
-    </>
-);
 
 export default AgreementItems;
