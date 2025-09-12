@@ -29,7 +29,12 @@ const ParentCategorySelect: FC<Props> = ({ value, onChange: _onChange }) => {
     );
 
     return (
-        <Select label={t("Parent Category")} value={value} onChange={onChange}>
+        <Select
+            label={t("Parent Category")}
+            value={value}
+            onChange={onChange}
+            sx={{ width: { xs: 1, md: "180px" } }}
+        >
             {parentCategoryEnum?.map(getOption)}
         </Select>
     );

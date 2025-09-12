@@ -55,8 +55,8 @@ const CategorySelect: FC<CategorySelectProps> = ({
             label={t("Category")}
             value={value}
             onChange={onChange}
-            displayEmpty
             disabled={!parentCategory}
+            sx={{ width: { md: "150px" } }}
             {...props}
         >
             {OPTIONS.map(getOption)}

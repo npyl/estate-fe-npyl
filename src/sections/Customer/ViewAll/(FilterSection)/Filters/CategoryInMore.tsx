@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useGlobals } from "@/sections/useGlobals";
-import { Checkbox, Grid, Typography } from "@mui/material";
+import { Checkbox, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";
 import { KeyValue } from "src/types/KeyValue";
@@ -65,7 +66,7 @@ const FilterCategoryInMore = () => {
             <Grid container spacing={0}>
                 {Object.entries(subCategoriesMap).map(
                     ([parentKey, categoryList]) => (
-                        <Grid item xs={12} sm={6} md={4} key={parentKey}>
+                        <Grid key={parentKey} xs={12} sm={6} md={4}>
                             <GroupTitle color="text.secondary">
                                 {t(
                                     {
