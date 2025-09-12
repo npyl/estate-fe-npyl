@@ -6,7 +6,7 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import { FC, useCallback } from "react";
+import { FC, MouseEvent, useCallback } from "react";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { format, isToday, isYesterday, isThisWeek, parseISO } from "date-fns";
@@ -28,19 +28,17 @@ interface HistoryItemProps extends THistoryItem {
     onSelect: (s: string) => void;
 }
 
-const HistoryItem: FC<HistoryItemProps> = ({ term, date, onSelect }) => {
+const HistoryItem: FC<HistoryItemProps> = ({ id, term, date, onSelect }) => {
     const { t } = useTranslation();
 
-    const { setSearchHistory } = useSearchHistory();
+    const { removeSearchHistoryItem } = useSearchHistory();
 
     const handleDeleteHistoryItem = useCallback(
-        (searchTerm: string, event: any) => {
+        (event: MouseEvent) => {
             event.stopPropagation();
-            setSearchHistory((old) =>
-                old.filter(({ term }) => term !== searchTerm)
-            );
+            removeSearchHistoryItem(id);
         },
-        [setSearchHistory]
+        [id, removeSearchHistoryItem]
     );
 
     return (
@@ -95,7 +93,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ term, date, onSelect }) => {
                         <IconButton
                             edge="end"
                             aria-label="delete"
-                            onClick={(e) => handleDeleteHistoryItem(term, e)}
+                            onClick={handleDeleteHistoryItem}
                             sx={{
                                 borderRadius: "100%",
                                 paddingInline: "3px",

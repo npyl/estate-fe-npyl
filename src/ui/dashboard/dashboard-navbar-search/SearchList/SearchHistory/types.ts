@@ -1,3 +1,3 @@
-type THistoryItem = { term: string; date: string };
+type THistoryItem = { id: string; term: string; date: string };
 
 export type { THistoryItem };

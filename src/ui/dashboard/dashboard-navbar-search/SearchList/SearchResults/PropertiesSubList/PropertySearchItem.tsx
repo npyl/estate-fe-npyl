@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "@/components/image";
 import { IPropertyResultResponse } from "src/types/properties";
-import { StyledSearchStack } from "../../../styles";
+import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import PreviewImage from "@/components/image/PreviewImage";
 import { MatchResult } from "../../../types";
