@@ -1,37 +1,18 @@
 import Avatar from "@/components/Avatar";
 import { useGetDashboardQuery } from "@/services/dashboard";
 import { IUserDetails } from "@/types/dashboard";
-import { Box, Grid, GridProps, SxProps, Theme } from "@mui/material";
+import { Box, Grid, SxProps, Theme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import Link from "@/components/Link";
-import CustomTypography from "./CustomTypography";
-
-interface TasksCountProps {
-    count: number;
-    assignee: number;
-}
-
-const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => (
-    <Link href={`/tasks?assignee=${assignee}`} passHref>
-        <Typography
-            borderRadius="16px"
-            sx={{
-                cursor: "pointer",
-                width: "90px",
-                textWrap: "nowrap",
-                textAlign: "center",
-                "&:hover": { opacity: 0.8 },
-            }}
-        >
-            {count}
-        </Typography>
-    </Link>
-);
+import CustomTypography from "./Counts/CustomTypography";
+import CountsPopover from "./CountsPopover";
+import { UserRowProps } from "./types";
+import Counts from "./Counts";
+import ResponsiveGrid from "./ResponsiveGrid";
 
 interface PropertiesProgressProps {
     count: number;
@@ -85,6 +66,7 @@ const PropertiesProgress: FC<PropertiesProgressProps> = ({
         </Stack>
     );
 };
+
 interface UserProps {
     u: IUserDetails;
 }
@@ -116,14 +98,6 @@ const User: FC<UserProps> = ({ u }) => {
 
 // -----------------------------------------------------------------------------------
 
-const HideBelowMd: GridProps = {
-    display: { xs: "none", md: "block" },
-};
-
-const ResponsiveGrid: FC<GridProps> = (props) => (
-    <Grid {...HideBelowMd} {...props} />
-);
-
 const UserRowSx: SxProps<Theme> = {
     border: "1px solid",
     borderColor: "divider",
@@ -139,126 +113,25 @@ const UserRowSx: SxProps<Theme> = {
     py: 0.5,
 };
 
-interface UserRowProps {
-    u: IUserDetails;
-    propertiesCount: number;
-    activeProperties?: number;
-    inactiveProperties?: number;
-    customers: number;
-    notifications: number;
-}
-
-const UserRow: FC<UserRowProps> = ({
-    u,
-    propertiesCount,
-    activeProperties,
-    inactiveProperties,
-    customers,
-    notifications,
-}) => {
-    const router = useRouter();
-    const handleRedirectProperties = () => {
-        router.push({
-            pathname: "/property",
-            query: { assignee: u.id },
-        });
-    };
-
-    const handleRedirectActiveProperties = () => {
-        router.push({
-            pathname: "/property",
-            query: { assignee: u.id, active: true },
-        });
-    };
-
-    const handleRedirectInactiveProperties = () => {
-        router.push({
-            pathname: "/property",
-            query: { assignee: u.id, active: false },
-        });
-    };
-    const handleRedirectCustomers = () => {
-        router.push({
-            pathname: "/customer",
-            query: { managerId: u.id },
-        });
-    };
-
-    const handleRedirectNotifications = () => {
-        router.push({
-            pathname: "/notification",
-            query: { user: u.id },
-        });
-    };
+const UserRow: FC<UserRowProps> = (props) => {
+    const { u, propertiesCount } = props;
 
     return (
         <Grid container alignItems="center" px={1} sx={UserRowSx}>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={4} md={3}>
                 <User u={u} />
             </Grid>
 
             {/* ----- */}
-            <ResponsiveGrid item xs={1}>
-                <TasksCount count={u?.activeTasks} assignee={u?.id} />
-            </ResponsiveGrid>
-            <ResponsiveGrid item xs={1}>
-                <Typography
-                    textAlign="center"
-                    sx={{
-                        "&:hover": { opacity: 0.8, cursor: "pointer" },
-                    }}
-                    onClick={handleRedirectProperties}
-                >
-                    {propertiesCount}
-                </Typography>
-            </ResponsiveGrid>
-            <ResponsiveGrid item xs={1}>
-                <Typography
-                    textAlign="center"
-                    sx={{
-                        "&:hover": { opacity: 0.8, cursor: "pointer" },
-                    }}
-                    onClick={handleRedirectActiveProperties}
-                >
-                    {activeProperties ?? "-"}
-                </Typography>
-            </ResponsiveGrid>
-            <ResponsiveGrid item xs={1}>
-                <Typography
-                    textAlign="center"
-                    sx={{
-                        "&:hover": { opacity: 0.8, cursor: "pointer" },
-                    }}
-                    onClick={handleRedirectInactiveProperties}
-                >
-                    {inactiveProperties ?? "-"}
-                </Typography>
-            </ResponsiveGrid>
-            <ResponsiveGrid item xs={1}>
-                <Typography
-                    textAlign="center"
-                    sx={{
-                        "&:hover": { opacity: 0.8, cursor: "pointer" },
-                    }}
-                    onClick={handleRedirectCustomers}
-                >
-                    {customers ?? "-"}
-                </Typography>
-            </ResponsiveGrid>
-            <ResponsiveGrid item xs={1.2}>
-                <Typography
-                    textAlign="center"
-                    sx={{
-                        "&:hover": { opacity: 0.8, cursor: "pointer" },
-                    }}
-                    onClick={handleRedirectNotifications}
-                >
-                    {notifications ?? "-"}
-                </Typography>
-            </ResponsiveGrid>
+            <Counts {...props} />
+
+            <CountsPopover>
+                <Counts {...props} />
+            </CountsPopover>
+
             {/* ----- */}
 
-            <Grid item xs={6} md={2.8}>
+            <Grid item xs={4} md={2.8}>
                 <PropertiesProgress count={propertiesCount} assignee={u?.id} />
             </Grid>
         </Grid>
@@ -297,6 +170,17 @@ const getUserRow = ({
 
 // -----------------------------------------------------------------------------------
 
+const CountsPopoverHead = () => {
+    const { t } = useTranslation();
+    return (
+        <CustomTypography
+            width={1 / 3}
+            label={t("Statistics")}
+            display={{ xs: "block", md: "none" }}
+        />
+    );
+};
+
 interface HeadProps {
     totalTasks: number;
     totalProperties: number;
@@ -317,7 +201,7 @@ const Head: FC<HeadProps> = ({
     const { t } = useTranslation();
     return (
         <Grid container alignItems="center" spacing={1} p={1} py={2}>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={4} md={3}>
                 <CustomTypography
                     label={t("Users")}
                     textAlign="left"
@@ -365,8 +249,10 @@ const Head: FC<HeadProps> = ({
             </ResponsiveGrid>
             {/* ----- */}
 
-            <Grid item xs={6} md={2.8}>
-                <CustomTypography label={t("Attribution")} textAlign="left" />
+            <CountsPopoverHead />
+
+            <Grid item xs={4} md={2.8}>
+                <CustomTypography label={t("Attribution")} textAlign="right" />
             </Grid>
         </Grid>
     );
