@@ -7,7 +7,7 @@ import useReduced from "./useReduced";
 import { useMemo } from "react";
 
 const Head = ({ label, count, xs, textAlign }: Datum) => (
-    <ResponsiveGrid item xs={xs}>
+    <ResponsiveGrid xs={xs}>
         <CustomTypography label={label} count={count} textAlign={textAlign} />
     </ResponsiveGrid>
 );

@@ -42,7 +42,7 @@ const Item: FC<ItemProps> = ({ d, popover, children }) => {
 
             {isFalsy(children) ? (
                 <Typography
-                    textAlign="center"
+                    textAlign="left"
                     sx={{ "&:hover": { opacity: 0.8, cursor: "pointer" } }}
                 >
                     {count}
