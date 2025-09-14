@@ -7,7 +7,19 @@ interface Props extends PropsWithChildren {
 }
 
 const Popover: FC<Props> = ({ anchorEl, onClose, children }) => (
-    <MuiPopover open anchorEl={anchorEl} onClose={onClose}>
+    <MuiPopover
+        open
+        anchorEl={anchorEl}
+        anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+        }}
+        transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+        }}
+        onClose={onClose}
+    >
         {children}
     </MuiPopover>
 );
