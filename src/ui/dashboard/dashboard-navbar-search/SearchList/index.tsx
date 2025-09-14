@@ -36,6 +36,7 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
             <Popover
                 open={isOpen}
                 anchorEl={anchorEl}
+                searchCategory={searchCategory}
                 historyMode={isHistoryMode}
                 {...props}
             >

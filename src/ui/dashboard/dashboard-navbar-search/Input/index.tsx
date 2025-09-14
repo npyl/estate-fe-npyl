@@ -7,6 +7,7 @@ import { forwardRef } from "react";
 import { SearchInputProps } from "@/components/Search/SearchInput";
 import ModeSelect from "./ModeSelect";
 import { SearchCategory } from "../types";
+import { INPUT_WIDTH_LG } from "./constants";
 
 const SearchInputSx: SxProps<Theme> = {
     input: {
@@ -16,7 +17,7 @@ const SearchInputSx: SxProps<Theme> = {
         textIndent: "0px", // adjust this as needed
     },
     p: { xs: 0.5, sm: 1 },
-    width: { xs: "100%", lg: "40vw" },
+    width: { xs: "100%", lg: INPUT_WIDTH_LG },
 };
 
 interface InputProps

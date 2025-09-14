@@ -4,6 +4,8 @@ import { FC, ReactNode } from "react";
 import stopPropagation from "@/utils/stopPropagation";
 import { Fade, SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
+import { SearchCategory } from "./types";
+import { INPUT_WIDTH_LG } from "./Input/constants";
 
 const getPaperSx = (
     historyMode: boolean,
@@ -23,19 +25,22 @@ interface PopoverProps
     extends Omit<MuiPopperProps, "sx" | "anchorEl" | "children"> {
     anchorEl: HTMLElement;
     children: ReactNode;
+    searchCategory: SearchCategory;
     historyMode: boolean;
     onClose: VoidFunction;
 }
 
 const Popover: FC<PopoverProps> = ({
+    searchCategory,
     historyMode,
     onClose,
     children,
     ...props
 }) => {
-    const width = historyMode
-        ? (props.anchorEl?.getBoundingClientRect().width ?? "90vw")
-        : "90vw";
+    // INFO: when in history mode or in single search mode we can show a smaller paper; otherwise show a large
+    const shouldInheritWidth = historyMode || searchCategory !== "all";
+
+    const width = shouldInheritWidth ? INPUT_WIDTH_LG : "70vw";
 
     return (
         <MuiPopper
