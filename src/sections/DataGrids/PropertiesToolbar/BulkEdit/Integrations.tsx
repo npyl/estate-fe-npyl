@@ -1,8 +1,6 @@
-import InputLabel from "@mui/material/InputLabel";
-import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@/components/Select";
 import { useCallback } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
@@ -48,17 +46,15 @@ const Integrations = () => {
     };
 
     return (
-        <Stack>
-            <InputLabel>{t("Integrations")}</InputLabel>
-            <Select
-                multiple
-                value={value}
-                renderValue={renderValue as any}
-                onChange={handleChange}
-            >
-                {data?.map(getOption(value))}
-            </Select>
-        </Stack>
+        <Select
+            multiple
+            label={t("Integrations")}
+            value={value}
+            renderValue={renderValue as any}
+            onChange={handleChange}
+        >
+            {data?.map(getOption(value))}
+        </Select>
     );
 };
 

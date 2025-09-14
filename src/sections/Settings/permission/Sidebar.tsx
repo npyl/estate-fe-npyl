@@ -10,7 +10,7 @@ import {
     RadioGroup,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
+import Select from "@/components/Select";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
@@ -63,49 +63,34 @@ const Sidebar = () => {
     return (
         <>
             <Stack gap={2}>
-                <FormControl>
-                    <Stack direction={"column"}>
-                        <Box display="flex" alignItems={"center"}>
-                            <Typography
-                                sx={{ display: "flex" }}
-                                color={"neutral.400"}
-                                variant={"body2"}
-                            >
-                                {t("Source User")}:
-                            </Typography>
-                        </Box>
-
-                        <Select
-                            value={selectedUser !== -1 ? selectedUser : ""}
-                            onChange={(e) => {
-                                selectedPreset !== -1 && setSelectedPreset(-1);
-                                setSelectedUser(+e.target.value);
+                <Select
+                    label={t("Source User")}
+                    value={selectedUser !== -1 ? selectedUser : ""}
+                    onChange={(e) => {
+                        selectedPreset !== -1 && setSelectedPreset(-1);
+                        setSelectedUser(+e.target.value);
+                    }}
+                    renderValue={(selected) => (
+                        <Typography
+                            sx={{
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
                             }}
-                            renderValue={(selected) => (
-                                <Typography
-                                    sx={{
-                                        whiteSpace: "nowrap",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                    }}
-                                >
-                                    {
-                                        users?.find((e) => e.id === selected)
-                                            ?.username
-                                    }
-                                </Typography>
-                            )}
                         >
-                            {users &&
-                                users.length > 0 &&
-                                users.map((user: any) => (
-                                    <MenuItem key={user.id} value={user.id}>
-                                        <Typography>{user.username}</Typography>
-                                    </MenuItem>
-                                ))}
-                        </Select>
-                    </Stack>
-                </FormControl>
+                            {users?.find((e) => e.id === selected)?.username}
+                        </Typography>
+                    )}
+                >
+                    {users &&
+                        users.length > 0 &&
+                        users.map((user: any) => (
+                            <MenuItem key={user.id} value={user.id}>
+                                <Typography>{user.username}</Typography>
+                            </MenuItem>
+                        ))}
+                </Select>
+
                 <Divider />
                 <FormControl>
                     <FormLabel>
