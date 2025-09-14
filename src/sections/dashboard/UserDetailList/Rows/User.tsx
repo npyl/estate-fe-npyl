@@ -11,7 +11,7 @@ const User: FC<UserProps> = ({ u }) => {
     const fullname = `${u?.firstName || ""} ${u?.lastName || ""}`;
 
     return (
-        <Stack direction="row" spacing={1} alignItems="center" width="20%">
+        <Stack direction="row" spacing={1} alignItems="center">
             <Avatar
                 src={u?.avatar}
                 firstName={u?.firstName}
@@ -19,15 +19,15 @@ const User: FC<UserProps> = ({ u }) => {
                 sx={{ width: 34, height: 34 }}
             />
 
-            <Stack>
-                <Typography
-                    fontWeight="bold"
-                    variant="body2"
-                    sx={{ textWrap: "nowrap" }}
-                >
-                    {fullname}
-                </Typography>
-            </Stack>
+            <Typography
+                fontWeight="bold"
+                variant="body2"
+                width="fit-content"
+                noWrap
+                textOverflow="ellipsis"
+            >
+                {fullname}
+            </Typography>
         </Stack>
     );
 };

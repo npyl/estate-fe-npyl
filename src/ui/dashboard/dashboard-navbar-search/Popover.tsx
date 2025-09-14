@@ -3,7 +3,6 @@ import { FC, ReactNode } from "react";
 import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SearchCategory } from "./types";
-import { INPUT_WIDTH_LG } from "./Input/constants";
 
 const getPaperSx = (
     historyMode: boolean,
@@ -20,7 +19,7 @@ const getPaperSx = (
     transform,
 
     // dimentions
-    width: { xs: "90vw", sm: width },
+    width: { xs: "calc(100% - 16px)", sm: "90vw", md: width },
     minHeight: "100px",
     height: historyMode ? "fit-content" : "90vh",
 
@@ -50,7 +49,9 @@ const Popover: FC<PopoverProps> = ({
     // INFO: when in history mode or in single search mode we can show a smaller paper; otherwise show a large
     const shouldInheritWidth = historyMode || searchCategory !== "all";
 
-    const width = shouldInheritWidth ? INPUT_WIDTH_LG : "70vw";
+    const width = shouldInheritWidth
+        ? anchorEl.getBoundingClientRect().width
+        : "70vw";
 
     const top =
         anchorEl.getBoundingClientRect().top +
