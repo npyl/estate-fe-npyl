@@ -11,46 +11,35 @@ const UserDetailList = () => {
 
     const users = data?.propertiesPerUserList ?? [];
 
-    const totalTasks = useMemo(() => {
-        return (
-            data?.propertiesPerUserList?.reduce(
-                (sum, user) => sum + (user.userDetails.activeTasks || 0),
-                0
-            ) ?? 0
-        );
-    }, [data?.propertiesPerUserList]);
-
     const totalActiveProperties = data?.totalActiveProperties ?? 0;
     const totalProperties = data?.totalProperties ?? 0;
     const totalInactiveProperties = data?.totalInactiveProperties ?? 0;
 
-    const totalCustomers = useMemo(() => {
-        return (
+    const all = useMemo(
+        () =>
             data?.propertiesPerUserList?.reduce(
-                (sum, user) => sum + (user.customers || 0),
-                0
-            ) ?? 0
-        );
-    }, [data?.propertiesPerUserList]);
-
-    const totalNotifications = useMemo(() => {
-        return (
-            data?.propertiesPerUserList?.reduce(
-                (sum, user) => sum + (user.notifications || 0),
-                0
-            ) ?? 0
-        );
-    }, [data?.propertiesPerUserList]);
+                (sum, user) => ({
+                    activeTasks:
+                        sum.activeTasks + (user.userDetails.activeTasks ?? 0),
+                    customers: sum.customers + (user.customers || 0),
+                    notifications:
+                        sum.notifications + (user.notifications || 0),
+                }),
+                { activeTasks: 0, customers: 0, notifications: 0 }
+            ),
+        [data?.propertiesPerUserList]
+    );
 
     return (
         <Paper variant="outlined">
             <Head
-                totalTasks={totalTasks}
+                totalTasks={all?.activeTasks ?? 0}
+                totalCustomers={all?.customers ?? 0}
+                totalNotifications={all?.notifications ?? 0}
+                // ...
                 totalProperties={totalProperties}
                 totalActiveProperties={totalActiveProperties}
                 totalInactiveProperties={totalInactiveProperties}
-                totalCustomers={totalCustomers}
-                totalNotifications={totalNotifications}
             />
             {users?.map(getUserRow)}
         </Paper>
