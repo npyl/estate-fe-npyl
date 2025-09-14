@@ -40,8 +40,8 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
     }, []);
 
     return (
-        <>
-            <ClickAwayListener onClickAway={onClose}>
+        <ClickAwayListener onClickAway={onClose}>
+            <div>
                 <Input
                     ref={inputRef}
                     value={searchText}
@@ -54,16 +54,16 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
                     // ...
                     sx={sx}
                 />
-            </ClickAwayListener>
 
-            <SearchList
-                ref={searchListRef}
-                searchString={debouncedSearch}
-                searchCategory={searchCategory}
-                onSelectHistoryItem={setSearchText}
-                onClose={handleClearSearch}
-            />
-        </>
+                <SearchList
+                    ref={searchListRef}
+                    searchString={debouncedSearch}
+                    searchCategory={searchCategory}
+                    onSelectHistoryItem={setSearchText}
+                    onClose={handleClearSearch}
+                />
+            </div>
+        </ClickAwayListener>
     );
 };
 
