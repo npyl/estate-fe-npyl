@@ -1,10 +1,12 @@
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import ResponsiveGrid from "../../ResponsiveGrid";
 import TasksCount from "./TasksCount";
 import { PropertiesPerUserList } from "@/types/dashboard";
 import { GridProps } from "@mui/material";
 import Link from "@/components/Link";
+import { useTranslation } from "react-i18next";
+import getDATA, { DataProps, Datum } from "../../getDATA";
 
 // ----------------------------------------------------------------------------------------
 
@@ -25,6 +27,12 @@ const Item: FC<ItemProps> = ({ children, ...props }) => (
 
 // ----------------------------------------------------------------------------------------
 
+const getItemForDatum = ({ label, count, xs, textAlign, href = "" }: Datum) => (
+    <Item key={label} href={href} xs={xs} textAlign={textAlign}>
+        {count}
+    </Item>
+);
+
 interface CountsProps extends PropertiesPerUserList {}
 
 const Counts: FC<CountsProps> = ({
@@ -34,31 +42,33 @@ const Counts: FC<CountsProps> = ({
     inactiveProperties,
     customers,
     notifications,
-}) => (
-    <>
-        <ResponsiveGrid item xs={1}>
-            <TasksCount
-                count={userDetails.activeTasks}
-                assignee={userDetails.id}
-            />
-        </ResponsiveGrid>
-        <Item xs={1} href={`/property?assignee=${userDetails.id}`}>
-            {properties ?? "-"}
-        </Item>
-        <Item xs={1} href={`/property?assignee=${userDetails.id}&active=true`}>
-            {activeProperties ?? "-"}
-        </Item>
-        <Item xs={1} href={`/property?assignee=${userDetails.id}&active=false`}>
-            {inactiveProperties ?? "-"}
-        </Item>
-        <Item xs={1} href={`/customer?managerId=${userDetails.id}`}>
-            {customers ?? "-"}
-        </Item>
-        <Item xs={1.2} href={`/notification?user=${userDetails.id}`}>
-            {notifications ?? "-"}
-        </Item>
-    </>
-);
+}) => {
+    const { t } = useTranslation();
+    const p: DataProps = {
+        totalActiveProperties: activeProperties,
+        totalInactiveProperties: inactiveProperties,
+        totalCustomers: customers,
+        totalNotifications: notifications,
+        totalProperties: properties,
+        totalTasks: userDetails.activeTasks,
+    };
+
+    // INFO: start from index=1 because we render a custom view here.
+    const DATA = useMemo(() => getDATA(t, p).slice(1), [t]);
+
+    return (
+        <>
+            <ResponsiveGrid item xs={1}>
+                <TasksCount
+                    count={userDetails.activeTasks}
+                    assignee={userDetails.id}
+                />
+            </ResponsiveGrid>
+
+            {DATA.map(getItemForDatum)}
+        </>
+    );
+};
 
 export type { CountsProps };
 export default Counts;

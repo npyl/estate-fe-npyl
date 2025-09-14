@@ -7,13 +7,16 @@ const HideBelowMd: GridProps = {
     // Show on all screens when inside popover
     sx: {
         ".MuiPopover-root &": {
-            display: "block !important",
+            display: "block",
         },
     },
 };
 
-const ResponsiveGrid: FC<GridProps> = (props) => (
+interface ResponsiveGridProps extends GridProps {}
+
+const ResponsiveGrid: FC<ResponsiveGridProps> = (props) => (
     <Grid {...HideBelowMd} {...props} />
 );
 
+export type { ResponsiveGridProps };
 export default ResponsiveGrid;

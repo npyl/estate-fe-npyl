@@ -36,7 +36,6 @@ const PropertiesProgress: FC<PropertiesProgressProps> = ({
                 width="100%"
                 height="8px"
                 bgcolor="divider"
-                position="relative"
                 borderRadius="4px"
                 onClick={handleRedirectProperties}
             >
@@ -44,10 +43,6 @@ const PropertiesProgress: FC<PropertiesProgressProps> = ({
                     width={`${percentage}%`}
                     height="100%"
                     bgcolor="warning.main"
-                    position="absolute"
-                    zIndex={100}
-                    top={0}
-                    left={0}
                     borderRadius="4px"
                 />
             </Box>

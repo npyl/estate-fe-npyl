@@ -4,6 +4,7 @@ import { FC } from "react";
 import { ResponsiveCounts } from "@/sections/dashboard/UserDetailList/Content";
 import PropertiesProgress from "./PropertiesProgress";
 import User from "./User";
+import { useGetDashboardQuery } from "@/services/dashboard";
 
 const UserRowSx: SxProps<Theme> = {
     border: "1px solid",
@@ -29,7 +30,7 @@ const UserRow: FC<UserRowProps> = ({ ul }) => {
 
     return (
         <Grid container alignItems="center" px={1} sx={UserRowSx}>
-            <Grid item xs={4} md={3}>
+            <Grid item xs={4} md={3.2}>
                 <User u={userDetails} />
             </Grid>
 
@@ -51,4 +52,10 @@ const getUserRow = (ul: PropertiesPerUserList) => (
     <UserRow key={ul.userDetails.id} ul={ul} />
 );
 
-export default getUserRow;
+const Rows = () => {
+    const { data } = useGetDashboardQuery();
+    const users = data?.propertiesPerUserList ?? [];
+    return users?.map(getUserRow);
+};
+
+export default Rows;
