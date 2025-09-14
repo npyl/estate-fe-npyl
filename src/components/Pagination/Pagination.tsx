@@ -1,7 +1,13 @@
 // Pagination component for server-side pagination
 // WARN: MUI pagination starts from index 1; datagrids start from 0 (=> Let's say that outside of this component we use 0)
 
-import { forwardRef, useCallback, useEffect } from "react";
+import {
+    ChangeEvent,
+    forwardRef,
+    MouseEvent,
+    useCallback,
+    useEffect,
+} from "react";
 import { PaginationProps } from "./types";
 const StyledPagination = dynamic(() => import("./styled"));
 const TablePagination = dynamic(() => import("./TablePagination"));
@@ -36,11 +42,12 @@ const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
         }, [isLoading, page, totalPages]);
 
         const handlePageChange = useCallback(
-            (_: any, p: number) => onChange?.(_, p - 1), // INFO: normalise index
+            (e: ChangeEvent<unknown>, p: number) => onChange?.(e, p - 1), // INFO: normalise index
             []
         );
         const handleTablePageChange = useCallback(
-            (_: any, p: number) => onChange?.(_, p), // INFO: this does not need normalisation
+            (e: MouseEvent<HTMLButtonElement> | null, p: number) =>
+                onChange?.(e, p), // INFO: this does not need normalisation,
             []
         );
 
