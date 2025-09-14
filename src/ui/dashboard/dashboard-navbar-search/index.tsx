@@ -60,7 +60,6 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
                     searchString={debouncedSearch}
                     searchCategory={searchCategory}
                     onSelectHistoryItem={setSearchText}
-                    onClose={handleClearSearch}
                 />
             </div>
         </ClickAwayListener>

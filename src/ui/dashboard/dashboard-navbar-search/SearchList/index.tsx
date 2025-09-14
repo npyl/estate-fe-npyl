@@ -25,7 +25,6 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
         const isHistoryMode = !searchString;
 
         const [anchorEl, setAnchorEl] = useState<HTMLElement>();
-        const isOpen = Boolean(anchorEl);
         const close = useCallback(() => setAnchorEl(undefined), []);
 
         useImperativeHandle(ref, () => ({ open: setAnchorEl, close }), []);
@@ -34,7 +33,6 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
 
         return (
             <Popover
-                open={isOpen}
                 anchorEl={anchorEl}
                 searchCategory={searchCategory}
                 historyMode={isHistoryMode}

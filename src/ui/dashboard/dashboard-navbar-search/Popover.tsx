@@ -1,62 +1,69 @@
 import Paper from "@mui/material/Paper";
-import MuiPopper, { PopperProps as MuiPopperProps } from "@mui/material/Popper";
 import { FC, ReactNode } from "react";
-import stopPropagation from "@/utils/stopPropagation";
-import { Fade, SxProps, Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SearchCategory } from "./types";
 import { INPUT_WIDTH_LG } from "./Input/constants";
 
 const getPaperSx = (
     historyMode: boolean,
-    width: number | string
+    width: number | string,
+    top: number | string,
+    left: number | string,
+    transform?: string
 ): SxProps<Theme> => ({
-    width,
+    // positioning
+    position: "fixed",
+    zIndex: ({ zIndex }) => zIndex.appBar + 1,
+    top,
+    left,
+    transform,
+
+    // dimentions
+    width: { xs: "90vw", sm: width },
     minHeight: "100px",
     height: historyMode ? "fit-content" : "90vh",
+
+    // styling
     border: "1px solid",
     borderColor: getBorderColor2,
     borderRadius: "25px",
     boxShadow: 15,
+
+    // overflows
     overflowY: "auto",
 });
 
-interface PopoverProps
-    extends Omit<MuiPopperProps, "sx" | "anchorEl" | "children"> {
+interface PopoverProps {
     anchorEl: HTMLElement;
     children: ReactNode;
     searchCategory: SearchCategory;
     historyMode: boolean;
-    onClose: VoidFunction;
 }
 
 const Popover: FC<PopoverProps> = ({
     searchCategory,
     historyMode,
-    onClose,
     children,
-    ...props
+    anchorEl,
 }) => {
     // INFO: when in history mode or in single search mode we can show a smaller paper; otherwise show a large
     const shouldInheritWidth = historyMode || searchCategory !== "all";
 
     const width = shouldInheritWidth ? INPUT_WIDTH_LG : "70vw";
 
+    const top =
+        anchorEl.getBoundingClientRect().top +
+        anchorEl.getBoundingClientRect().height;
+    const left = shouldInheritWidth
+        ? anchorEl.getBoundingClientRect().left
+        : "50%";
+    const transform = shouldInheritWidth ? undefined : "translateX(-50%)";
+
     return (
-        <MuiPopper
-            transition
-            sx={{ zIndex: ({ zIndex }) => zIndex.appBar + 1 }}
-            onClick={stopPropagation}
-            {...props}
-        >
-            {({ TransitionProps }) => (
-                <Fade appear {...TransitionProps} timeout={100}>
-                    <Paper sx={getPaperSx(historyMode, width)}>
-                        {children}
-                    </Paper>
-                </Fade>
-            )}
-        </MuiPopper>
+        <Paper sx={getPaperSx(historyMode, width, top, left, transform)}>
+            {children}
+        </Paper>
     );
 };
 
