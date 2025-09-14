@@ -17,6 +17,8 @@ const CountsPopover: FC<PropsWithChildren> = ({ children }) => {
                 onClick={open}
                 size="small"
                 sx={{
+                    display: { xs: "block", md: "none" },
+
                     border: "1px solid",
                     borderColor: getBorderColor2,
                     borderRadius: "100%",
