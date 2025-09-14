@@ -13,7 +13,7 @@ interface Datum {
     label: string;
     textAlign?: any;
     xs: number;
-    count: number;
+    count?: number;
     href?: string;
 }
 

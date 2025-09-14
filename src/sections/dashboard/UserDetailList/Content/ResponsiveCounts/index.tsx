@@ -7,7 +7,7 @@ const ResponsiveCounts: FC<CountsProps> = (props) => (
         <Counts {...props} />
 
         <CountsPopover>
-            <Counts {...props} />
+            <Counts popover {...props} />
         </CountsPopover>
     </>
 );

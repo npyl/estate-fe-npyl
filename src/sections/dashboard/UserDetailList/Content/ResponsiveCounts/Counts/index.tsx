@@ -1,39 +1,68 @@
 import Typography from "@mui/material/Typography";
-import { FC, useMemo } from "react";
+import { FC, PropsWithChildren, useMemo } from "react";
 import ResponsiveGrid from "../../ResponsiveGrid";
 import TasksCount from "./TasksCount";
 import { PropertiesPerUserList } from "@/types/dashboard";
-import { Grid2Props as GridProps } from "@mui/material/Unstable_Grid2";
 import Link from "@/components/Link";
 import { useTranslation } from "react-i18next";
 import getDATA, { DataProps, Datum } from "../../getDATA";
+import { SxProps, Theme } from "@mui/material";
+import isFalsy from "@/utils/isFalsy";
 
 // ----------------------------------------------------------------------------------------
 
-interface ItemProps extends Omit<GridProps, "component"> {
-    href: string;
+const getItemSx = (popover: boolean): SxProps<Theme> => ({
+    ...(popover
+        ? {
+              display: "flex",
+              flexDirection: "row",
+              gap: 1,
+          }
+        : {}),
+});
+
+interface ItemProps extends PropsWithChildren {
+    d: Datum;
+    popover: boolean;
 }
 
-const Item: FC<ItemProps> = ({ children, ...props }) => (
-    <ResponsiveGrid component={Link} {...props}>
-        <Typography
-            textAlign="center"
-            sx={{ "&:hover": { opacity: 0.8, cursor: "pointer" } }}
+const Item: FC<ItemProps> = ({ d, popover, children }) => {
+    const { label, count, xs, textAlign, href = "" } = d ?? {};
+    return (
+        <ResponsiveGrid
+            component={Link}
+            xs={xs}
+            textAlign={textAlign}
+            {...({ href } as any)}
+            sx={getItemSx(popover)}
         >
-            {children}
-        </Typography>
-    </ResponsiveGrid>
+            {popover ? <Typography variant="h6">{label}:</Typography> : null}
+
+            {isFalsy(count) ? children : null}
+
+            {isFalsy(children) ? (
+                <Typography
+                    textAlign="center"
+                    sx={{ "&:hover": { opacity: 0.8, cursor: "pointer" } }}
+                >
+                    {count}
+                </Typography>
+            ) : null}
+        </ResponsiveGrid>
+    );
+};
+
+// ----------------------------------------------------------------------------------------
+
+const getItemForDatum = (popover: boolean) => (d: Datum) => (
+    <Item key={d.label} d={d} popover={popover} />
 );
 
 // ----------------------------------------------------------------------------------------
 
-const getItemForDatum = ({ label, count, xs, textAlign, href = "" }: Datum) => (
-    <Item key={label} href={href} xs={xs} textAlign={textAlign}>
-        {count}
-    </Item>
-);
-
-interface CountsProps extends PropertiesPerUserList {}
+interface CountsProps extends PropertiesPerUserList {
+    popover?: boolean;
+}
 
 const Counts: FC<CountsProps> = ({
     userDetails,
@@ -42,8 +71,11 @@ const Counts: FC<CountsProps> = ({
     inactiveProperties,
     customers,
     notifications,
+    // ...
+    popover = false,
 }) => {
     const { t } = useTranslation();
+
     const p: DataProps = {
         totalActiveProperties: activeProperties,
         totalInactiveProperties: inactiveProperties,
@@ -54,18 +86,21 @@ const Counts: FC<CountsProps> = ({
     };
 
     // INFO: start from index=1 because we render a custom view here.
-    const DATA = useMemo(() => getDATA(t, p).slice(1), [t]);
+    const DATA = useMemo(
+        () => getDATA(t, p, userDetails.id).slice(1),
+        [t, p, userDetails.id]
+    );
 
     return (
         <>
-            <ResponsiveGrid xs={1}>
+            <Item popover={popover} d={{ label: t("Tasks"), xs: 1 }}>
                 <TasksCount
                     count={userDetails.activeTasks}
                     assignee={userDetails.id}
                 />
-            </ResponsiveGrid>
+            </Item>
 
-            {DATA.map(getItemForDatum)}
+            {DATA.map(getItemForDatum(popover))}
         </>
     );
 };

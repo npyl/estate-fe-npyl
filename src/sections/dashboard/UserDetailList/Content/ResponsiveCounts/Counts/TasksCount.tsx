@@ -8,20 +8,20 @@ interface TasksCountProps {
 }
 
 const TasksCount: FC<TasksCountProps> = ({ count, assignee }) => (
-    <Link href={`/tasks?assignee=${assignee}`} passHref>
-        <Typography
-            borderRadius="16px"
-            sx={{
-                cursor: "pointer",
-                width: "90px",
-                textWrap: "nowrap",
-                textAlign: "center",
-                "&:hover": { opacity: 0.8 },
-            }}
-        >
-            {count}
-        </Typography>
-    </Link>
+    <Typography
+        component={Link}
+        href={`/tasks?assignee=${assignee}`}
+        borderRadius="16px"
+        sx={{
+            width: "fit-content",
+            cursor: "pointer",
+            textWrap: "nowrap",
+            textAlign: "center",
+            "&:hover": { opacity: 0.8 },
+        }}
+    >
+        {count}
+    </Typography>
 );
 
 export default TasksCount;

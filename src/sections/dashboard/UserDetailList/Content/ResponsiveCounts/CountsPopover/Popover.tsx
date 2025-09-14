@@ -19,6 +19,13 @@ const Popover: FC<Props> = ({ anchorEl, onClose, children }) => (
             horizontal: "center",
         }}
         onClose={onClose}
+        slotProps={{
+            paper: {
+                sx: {
+                    p: 1,
+                },
+            },
+        }}
     >
         {children}
     </MuiPopover>
