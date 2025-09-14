@@ -1,24 +1,27 @@
-import { IconButton } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
 import useDialog from "@/hooks/useDialog";
 import { ChevronDown } from "@/assets/icons/chevron-down";
 import { getBorderColor2 } from "@/theme/borderColor";
 import dynamic from "next/dynamic";
 import { FC, PropsWithChildren, useRef } from "react";
+import Grid from "@mui/material/Unstable_Grid2";
 const Popover = dynamic(() => import("./Popover"));
 
 const CountsPopover: FC<PropsWithChildren> = ({ children }) => {
     const anchorRef = useRef<HTMLButtonElement>(null);
     const [isOpen, open, close] = useDialog();
     return (
-        <Stack width={1 / 3} justifyContent="center" alignItems="center">
+        <Grid
+            xs={4}
+            justifyContent="center"
+            alignItems="center"
+            display={{ xs: "flex", md: "none" }}
+        >
             <IconButton
                 ref={anchorRef}
                 onClick={open}
                 size="small"
                 sx={{
-                    display: { xs: "block", md: "none" },
-
                     border: "1px solid",
                     borderColor: getBorderColor2,
                     borderRadius: "100%",
@@ -32,7 +35,7 @@ const CountsPopover: FC<PropsWithChildren> = ({ children }) => {
                     {children}
                 </Popover>
             ) : null}
-        </Stack>
+        </Grid>
     );
 };
 

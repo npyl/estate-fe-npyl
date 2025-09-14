@@ -3,7 +3,7 @@ import { FC, useMemo } from "react";
 import ResponsiveGrid from "../../ResponsiveGrid";
 import TasksCount from "./TasksCount";
 import { PropertiesPerUserList } from "@/types/dashboard";
-import { GridProps } from "@mui/material";
+import { Grid2Props as GridProps } from "@mui/material/Unstable_Grid2";
 import Link from "@/components/Link";
 import { useTranslation } from "react-i18next";
 import getDATA, { DataProps, Datum } from "../../getDATA";
@@ -15,7 +15,7 @@ interface ItemProps extends Omit<GridProps, "component"> {
 }
 
 const Item: FC<ItemProps> = ({ children, ...props }) => (
-    <ResponsiveGrid item component={Link} {...props}>
+    <ResponsiveGrid component={Link} {...props}>
         <Typography
             textAlign="center"
             sx={{ "&:hover": { opacity: 0.8, cursor: "pointer" } }}
@@ -58,7 +58,7 @@ const Counts: FC<CountsProps> = ({
 
     return (
         <>
-            <ResponsiveGrid item xs={1}>
+            <ResponsiveGrid xs={1}>
                 <TasksCount
                     count={userDetails.activeTasks}
                     assignee={userDetails.id}

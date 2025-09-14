@@ -1,4 +1,4 @@
-import { Grid, GridProps } from "@mui/material";
+import Grid, { Grid2Props as GridProps } from "@mui/material/Unstable_Grid2";
 import { FC } from "react";
 
 const HideBelowMd: GridProps = {
