@@ -58,6 +58,7 @@ const PublicSitesPicker: FC<PublicSitesPickerProps> = ({
             value={sites as any}
             renderValue={renderValue as any}
             onChange={onChange}
+            sx={{ width: "150px" }}
         >
             {data?.map(getOption(sites))}
         </Select>
