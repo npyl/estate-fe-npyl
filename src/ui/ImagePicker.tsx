@@ -5,6 +5,28 @@ import { errorToast } from "@/components/Toaster";
 import { Stack, StackProps, SxProps, Theme } from "@mui/material";
 import Image, { ImageProps } from "@/components/image";
 import Placeholder from "@/components/upload/placeholder";
+import Grid from "@mui/material/Unstable_Grid2";
+
+// ----------------------------------------------------------------------------
+
+const getImageItem = (division: number) => (s: string) => (
+    <Grid xs={division}>
+        <Image src={s} />
+    </Grid>
+);
+
+interface ImagesProps {
+    src: string[];
+}
+
+const Images: FC<ImagesProps> = ({ src }) => {
+    const division = 12 / src.length;
+    return (
+        <Grid container spacing={1}>
+            {src.map(getImageItem(division))}
+        </Grid>
+    );
+};
 
 // ----------------------------------------------------------------------------
 
@@ -15,7 +37,9 @@ const OverlayImageSx: SxProps<Theme> = {
     },
 };
 
-interface OverlayImageProps extends Omit<ImageProps, "ref" | "sx" | "onClick"> {
+interface OverlayImageProps
+    extends Omit<ImageProps, "ref" | "src" | "sx" | "onClick"> {
+    src: string[];
     ContainerProps?: Omit<StackProps, "children">;
     loading?: boolean;
     onClick: VoidFunction;
@@ -45,7 +69,7 @@ const OverlayImage: FC<OverlayImageProps> = ({
                 <Placeholder position="absolute" height={1} />
             ) : null}
 
-            {src && !loading ? <Image src={src} {...props} /> : null}
+            {src && !loading ? <Images src={src} /> : null}
         </Stack>
     );
 };
