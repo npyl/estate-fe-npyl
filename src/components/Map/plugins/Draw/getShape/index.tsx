@@ -1,9 +1,9 @@
-import { FC, useCallback, useEffect } from "react";
-import { drawingToPoints, drawShape } from "../../util";
+import { FC, useLayoutEffect } from "react";
+import { drawShape } from "../../../util";
 import { TShape } from "@/types/shape";
-import { useMapContext } from "../../Main/context";
-import setShapeEvents from "../../util/draw/setShapeEvents";
-import { DrawShape } from "../../types";
+import { useMapContext } from "../../../Main/context";
+import setShapeEvents from "../../../util/draw/setShapeEvents";
+import useShapeChange from "./useShapeChange";
 
 // ---------------------------------------------------------------------------
 
@@ -25,19 +25,12 @@ const Shape: FC<ShapeProps> = ({ s, onShapeChange: _onShapeChange }) => {
 
     const isChangeable = Boolean(_onShapeChange);
 
-    const onShapeChange = useCallback(
-        (res: DrawShape) => () => {
-            const newS = drawingToPoints(res);
-            if (!newS) return;
-            _onShapeChange?.(s, newS);
-        },
-        [_onShapeChange, s]
-    );
+    const onShapeChange = useShapeChange(s, _onShapeChange);
 
     /**
      * Renders shapes that are passed as prop
      */
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!mapRef.current) return;
 
         const res = drawShape(s, mapRef.current, isChangeable);
