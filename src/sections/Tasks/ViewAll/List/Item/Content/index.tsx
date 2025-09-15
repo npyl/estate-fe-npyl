@@ -33,16 +33,35 @@ const iconsSx: SxProps<Theme> = {
     color: "text.secondary",
 };
 
-interface ContentProps {
+interface AssigneeProps {
     c: IKanbanCardShort | IDashboardTask;
 }
+const Assignee: FC<AssigneeProps> = ({ c }) => {
+    const assignee = "assignees" in c ? c.assignees?.at(0) : undefined;
+    if (!assignee) return null;
+    return <TooltipAvatar u={assignee} />;
+};
 
-const Content: FC<ContentProps> = ({ c }) => {
+interface ReporterProps {
+    c: IKanbanCardShort | IDashboardTask;
+}
+const Reporter: FC<ReporterProps> = ({ c }) => {
+    const reporter = "reporter" in c ? c.reporter : undefined;
+    if (!reporter) return null;
+    return <TooltipAvatar u={reporter} />;
+};
+
+interface ContentProps {
+    c: IKanbanCardShort | IDashboardTask;
+    assignee: boolean;
+    reporter: boolean;
+}
+
+const Content: FC<ContentProps> = ({ c, assignee, reporter }) => {
     const { t } = useTranslation();
     const pathname = usePathname();
     const isTasksPage = pathname.includes("tasks");
 
-    const assignee = "assignees" in c && c.assignees?.[0];
     const isCompleted = "completed" in c && c.completed;
     const columnName = "columnName" in c ? c.columnName : "";
 
@@ -123,14 +142,11 @@ const Content: FC<ContentProps> = ({ c }) => {
                         ) : null}
                     </Stack>
 
-                    <Stack direction="row" alignItems="center">
+                    <Stack direction="row" alignItems="center" spacing={1}>
                         {isCompleted ? <CompletedLabel /> : null}
                         {columnName ? <ColumnLabel name={columnName} /> : null}
-                        {assignee ? (
-                            <TooltipAvatar u={assignee} />
-                        ) : (
-                            <Avatar sx={{ width: 34, height: 34 }} />
-                        )}
+                        {assignee ? <Assignee c={c} /> : null}
+                        {reporter ? <Reporter c={c} /> : null}
                     </Stack>
                 </Stack>
             </Stack>
@@ -144,4 +160,5 @@ const Content: FC<ContentProps> = ({ c }) => {
     );
 };
 
+export type { ContentProps };
 export default Content;

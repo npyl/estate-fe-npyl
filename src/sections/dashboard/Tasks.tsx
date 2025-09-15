@@ -20,7 +20,12 @@ const IDashboardTaskToCardShort = (t: IDashboardTask): IKanbanCardShort => ({
 });
 
 const getTaskRow = (t: IDashboardTask) => (
-    <Item key={t.id} c={IDashboardTaskToCardShort(t)} />
+    <Item
+        key={t.id}
+        assignee={false}
+        reporter
+        c={IDashboardTaskToCardShort(t)}
+    />
 );
 
 // ------------------------------------------------------------------------

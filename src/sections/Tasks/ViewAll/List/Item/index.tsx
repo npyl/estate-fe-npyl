@@ -4,7 +4,8 @@ import { SxProps, Theme } from "@mui/material";
 import { getTaskColor } from "@/sections/Tasks/styled";
 import { IDashboardTask } from "@/types/dashboard";
 import Link from "@/components/Link";
-import Content from "./Content";
+import Content, { ContentProps } from "./Content";
+import Optional from "@/types/Optional";
 
 const getItemSx = (priority: number): SxProps<Theme> => ({
     p: 1,
@@ -30,13 +31,11 @@ const getItemSx = (priority: number): SxProps<Theme> => ({
     },
 });
 
-interface ItemProps {
-    c: IKanbanCardShort | IDashboardTask;
-}
+interface ItemProps extends Optional<ContentProps, "assignee" | "reporter"> {}
 
-const Item: FC<ItemProps> = ({ c }) => (
+const Item: FC<ItemProps> = ({ c, assignee = true, reporter = false }) => (
     <Link sx={getItemSx(c.priority)} href={`/tasks/${c.id}`}>
-        <Content c={c} />
+        <Content c={c} assignee={assignee} reporter={reporter} />
     </Link>
 );
 
