@@ -36,7 +36,6 @@ const IMG_STYLE =
 interface Props {
     editorRef: RefObject<Editor>;
     postId?: number;
-    images: IPropertyImage[];
 }
 
 const MiddleImagesPicker: FC<Props> = ({ postId = -1, editorRef }) => {
