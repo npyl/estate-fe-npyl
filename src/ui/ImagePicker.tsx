@@ -52,36 +52,40 @@ const OverlayImage: FC<OverlayImageProps> = ({
 
 // -----------------------------------------------------------------------------------------
 
+const hasAllowedSize = (f: File) => f.size < MAX_FILE_SIZE;
+
 interface ImagePickerProps
     extends Omit<OverlayImageProps, "onClick" | "onSelect" | "onDelete"> {
     isLoading?: boolean;
-    onSelect: (f: File) => void;
+    multiple?: boolean;
+    onSelect: (f: File[]) => void;
     onDelete: VoidFunction;
 }
 
 const ImagePicker: FC<ImagePickerProps> = ({
     isLoading = false,
+    multiple = false,
     onSelect,
     onDelete,
     ...props
 }) => {
     const handleChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
+            const files = e.target.files ? Array.from(e.target.files) : [];
 
-            if (file.size > MAX_FILE_SIZE) {
-                errorToast("Please upload a file of size <3MB");
+            if (!files.every(hasAllowedSize)) {
+                errorToast("Every image should have size <3MB");
                 return;
             }
 
-            onSelect(file);
+            onSelect(files);
         },
         [onSelect]
     );
 
     return (
         <FileInput
+            multiple={multiple}
             disabled={isLoading}
             accept={ACCEPTED_FILE_TYPES}
             Opener={(openerProps) => (
