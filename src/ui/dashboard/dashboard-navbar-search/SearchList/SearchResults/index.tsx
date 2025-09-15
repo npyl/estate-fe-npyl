@@ -30,7 +30,7 @@ const SearchResults: FC<Props> = ({
     const agreements =
         searchCategory === "agreements" || searchCategory === "all";
 
-    const width = { xs: 1, sm: properties && customers ? "50%" : 1 };
+    const width = { xs: 1, md: properties && customers ? "50%" : 1 };
 
     const onItemClick = useCallback((value: string) => {
         addSearchHistoryItem(value);
@@ -39,7 +39,7 @@ const SearchResults: FC<Props> = ({
 
     return (
         <Stack spacing={1}>
-            <Stack direction={{ xs: "column", sm: "row" }}>
+            <Stack direction={{ xs: "column", md: "row" }}>
                 {properties ? (
                     <PropertiesSubList
                         width={width}
