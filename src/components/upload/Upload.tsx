@@ -1,11 +1,11 @@
 import { useDropzone } from "react-dropzone";
-// @mui
 import { Box } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
-//
 import { UploadProps } from "./types";
 import Placeholder from "./placeholder";
 import dynamic from "next/dynamic";
+import { FC } from "react";
+import { Item } from "./preview/MultiFilePreview/getItem";
 const MultiFilePreview = dynamic(() => import("./preview/MultiFilePreview"));
 const RejectionFiles = dynamic(() => import("./errors/RejectionFiles"));
 
@@ -19,7 +19,7 @@ const StyledDropZone = styled("div")(({ theme }) => ({
     padding: theme.spacing(5, 1),
     borderRadius: theme.shape.borderRadius,
     transition: theme.transitions.create("padding"),
-    backgroundColor: theme.palette.background.paper, // TODO: neutral
+    backgroundColor: theme.palette.background.paper,
     border: `1px dashed ${alpha(theme.palette.grey[500], 0.32)}`,
     "&:hover": {
         opacity: 0.72,
@@ -28,7 +28,7 @@ const StyledDropZone = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Upload({
+const Upload: FC<UploadProps> = ({
     disabled,
     multiple = false,
     error,
@@ -37,11 +37,12 @@ export default function Upload({
     compact = false,
     //
     files,
+    IconComponent = Item,
     onFileClick,
     onRemove,
     sx,
     ...other
-}: UploadProps) {
+}) => {
     const {
         getRootProps,
         getInputProps,
@@ -100,6 +101,7 @@ export default function Upload({
                     compact={compact}
                     variant={variant}
                     disabled={disabled}
+                    ItemComponent={IconComponent}
                     onFileClick={onFileClick}
                     onRemove={onRemove}
                     my={1}
@@ -109,4 +111,6 @@ export default function Upload({
             {helperText}
         </Box>
     );
-}
+};
+
+export default Upload;

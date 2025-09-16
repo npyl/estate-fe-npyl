@@ -1,21 +1,13 @@
 // @mui
-import {
-    IconButton,
-    Stack,
-    StackProps,
-    SxProps,
-    Theme,
-    Typography,
-} from "@mui/material";
-import FileThumbnail from "../../file-thumbnail";
-import { TUploadFile, UploadVariant } from "../types";
+import { IconButton, Stack, SxProps, Theme, Typography } from "@mui/material";
+import FileThumbnail from "@/components/file-thumbnail";
+import { TUploadFile, UploadVariant } from "@/components/upload/types";
 import LabelCreate from "@/sections/LabelCreate";
-import DocumentIcon from "./DocumentIcon";
+import DocumentIcon from "../DocumentIcon";
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
 import { SpaceBetween } from "@/components/styled";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-// ----------------------------------------------------------------------
+import { ComponentType, FC } from "react";
 
 const ItemSx: SxProps<Theme> = {
     px: 1,
@@ -26,8 +18,6 @@ const ItemSx: SxProps<Theme> = {
     cursor: "pointer",
 };
 
-// ----------------------------------------------------------------------
-
 interface ItemProps {
     variant: UploadVariant;
     compact: boolean;
@@ -37,14 +27,14 @@ interface ItemProps {
     onRemove?: (key: string) => void;
 }
 
-const Item = ({
+const Item: FC<ItemProps> = ({
     variant,
     file,
     disabled = false,
     compact,
     onClick,
     onRemove,
-}: ItemProps) => {
+}) => {
     const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         onRemove?.(file.key);
@@ -105,39 +95,17 @@ const Item = ({
     );
 };
 
-// ----------------------------------------------------------------------
+type FilelessItemProps = Omit<ItemProps, "file">;
 
-interface MultiFilePreviewProps extends StackProps {
-    files: TUploadFile[];
-    variant: UploadVariant;
-    compact: boolean;
-    disabled?: boolean;
-    onFileClick?: (url: string) => void;
-    onRemove?: (key: string) => void;
-}
+const getItem =
+    <T extends FilelessItemProps = FilelessItemProps>(
+        props: FilelessItemProps,
+        ItemComponent: ComponentType<T>
+    ) =>
+    (file: TUploadFile) => (
+        <ItemComponent key={file.filename} file={file} {...(props as T)} />
+    );
 
-const MultiFilePreview = ({
-    files,
-    variant,
-    disabled = false,
-    compact,
-    onFileClick,
-    onRemove,
-    ...props
-}: MultiFilePreviewProps) => (
-    <Stack {...props} spacing={1}>
-        {files.map((file, i) => (
-            <Item
-                key={`${file.filename}_${i}`}
-                compact={compact}
-                variant={variant}
-                file={file}
-                disabled={disabled}
-                onClick={onFileClick}
-                onRemove={onRemove}
-            />
-        ))}
-    </Stack>
-);
-
-export default MultiFilePreview;
+export { Item };
+export type { ItemProps, FilelessItemProps };
+export default getItem;
