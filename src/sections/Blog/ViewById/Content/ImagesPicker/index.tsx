@@ -73,10 +73,13 @@ const Render: FC<TRenderProps> = ({
 }) => {
     const { isLoading } = useInitialise(postId, _onChange);
 
-    const onChange = useCallback((f?: File[]) => {
-        // TODO: editorRef
-        _onChange(f);
-    }, []);
+    const onChange = useCallback(
+        (f?: File[]) => {
+            // TODO: editorRef
+            _onChange(f);
+        },
+        [_onChange]
+    );
 
     return <Picker files={value} onChange={onChange} />;
 };

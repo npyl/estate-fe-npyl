@@ -24,7 +24,7 @@ const ItemSx: SxProps<Theme> = {
     cursor: "pointer",
 };
 
-interface ItemProps extends Omit<StackProps, "onClick"> {
+interface ItemProps extends Omit<StackProps, "children" | "onClick"> {
     variant: UploadVariant;
     compact: boolean;
     file: TUploadFile;

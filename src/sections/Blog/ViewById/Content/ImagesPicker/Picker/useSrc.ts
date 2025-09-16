@@ -17,6 +17,6 @@ const getPropertyFile = (f: File): IPropertyFile => {
     };
 };
 
-const useSrc = (f: File[]) => useMemo(() => f.map(getPropertyFile), [f.length]);
+const useSrc = (f: File[]) => useMemo(() => f.map(getPropertyFile), [f]);
 
 export default useSrc;
