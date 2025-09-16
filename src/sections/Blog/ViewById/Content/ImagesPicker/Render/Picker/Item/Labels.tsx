@@ -32,7 +32,7 @@ const MakeThumbnailLabel = () => {
             color="warning"
             sx={LabelSx}
         >
-            {t("Make thumbnail")}
+            {t("MAKE_THUMBNAIL")}
         </SoftTypography>
     );
 };

@@ -13,19 +13,14 @@ interface ImagePickerProps {
 const ImagePicker: FC<ImagePickerProps> = ({ editorRef, postId }) => {
     const { control } = useFormContext<CreateOrUpdateBlogPostReq>();
 
-    const { addImages, removeImage } = useEditorControl(editorRef);
+    const { setImages } = useEditorControl(editorRef);
 
     return (
         <Controller
             name="images"
             control={control}
             render={(props) => (
-                <Render
-                    postId={postId}
-                    onAdd={addImages}
-                    onRemove={removeImage}
-                    {...props}
-                />
+                <Render postId={postId} onSet={setImages} {...props} />
             )}
         />
     );

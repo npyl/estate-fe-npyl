@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            MAKE_THUMBNAIL: "Make thumbnail",
             DELETE_RECORD: "Do you really want to delete this?",
             DELETE_RECORDS: "Do you really want to delete these?",
             CANNOT_BE_UNDONE: "This process cannot be undone",
@@ -1413,6 +1414,8 @@ const resources = {
     },
     el: {
         translation: {
+            MAKE_THUMBNAIL: "Κάνε την Μικρογραφία",
+
             DELETE_RECORD: "Επιθυμείτε να γίνει διαγραφή?",
             DELETE_RECORDS: "Επιθυμείτε να γίνει διαγραφή?",
             CANNOT_BE_UNDONE: "Η διαγραφή δεν θα μπορεί να αναιρεθεί",

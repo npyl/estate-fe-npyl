@@ -1,11 +1,8 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { ControllerProps } from "react-hook-form";
 import { CreateOrUpdateBlogPostReq } from "@/services/blog";
 import Picker from "./Picker";
 import useInitialise from "./useInitialise";
-import { errorToast } from "@/components/Toaster";
-
-const FULL_LITERAL = "BLOG_MIDDLE_IMAGES_FULL";
 
 //
 // INFO:
@@ -19,37 +16,24 @@ type TRender = ControllerProps<CreateOrUpdateBlogPostReq, "images">["render"];
 
 type TRenderProps = Parameters<TRender>[0] & {
     postId?: number;
-    onAdd: (f: File[]) => void;
-    onRemove: () => void;
+    onSet: (f: File[]) => void;
 };
 
 const Render: FC<TRenderProps> = ({
     postId,
-    field: { value, onChange: _onChange },
-    onAdd,
+    field: { value, onChange },
+    onSet,
 }) => {
-    const { isLoading } = useInitialise(postId, _onChange);
+    const { isLoading } = useInitialise(postId, onChange);
 
-    const handleChange = useCallback(
-        (f: File[]) => {
-            // INFO: prevent from adding more than 3 images
-            if (value.length + f.length > 3) {
-                errorToast(FULL_LITERAL);
-                return;
-            }
-
-            const all = [...value, ...f];
-
-            // INFO: update hook-form
-            _onChange(all);
-
-            // for external use
-            onAdd(f);
-        },
-        [value, _onChange]
+    return (
+        <Picker
+            loading={isLoading}
+            files={value}
+            onChange={onChange}
+            onSet={onSet}
+        />
     );
-
-    return <Picker loading={isLoading} files={value} onChange={handleChange} />;
 };
 
 export default Render;

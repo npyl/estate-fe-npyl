@@ -27,10 +27,13 @@ const getImageFromFile = (f: File): IPropertyImageSafe => {
     };
 };
 
-const useContainer = () => {
+const useContainer = (editorRef: RefObject<Editor>) => {
     const containerRef = useRef(-1);
 
-    const createContainer = useCallback((editor: Editor) => {
+    const createContainer = useCallback(() => {
+        const editor = editorRef.current;
+        if (!editor) return;
+
         // INFO: created a container only if necessary!
         if (containerRef.current !== -1) return;
 
@@ -46,35 +49,38 @@ const useContainer = () => {
         containerRef.current = latestContainer.pos;
     }, []);
 
-    return { containerRef, createContainer };
+    const addImages = useCallback((i: IPropertyImageSafe[]) => {
+        const editor = editorRef.current;
+        editor?.commands.addImageToContainer(containerRef.current, i, {
+            style: IMG_STYLE,
+        });
+    }, []);
+
+    const removeAllImages = useCallback(() => {
+        const editor = editorRef.current;
+        editor?.commands.removeAllImages(containerRef.current);
+    }, []);
+
+    return { createContainer, addImages, removeAllImages };
 };
 
 // ---------------------------------------------------------------------------------
 
 const useEditorControl = (editorRef: RefObject<Editor>) => {
-    const { containerRef, createContainer } = useContainer();
+    const { createContainer, addImages, removeAllImages } =
+        useContainer(editorRef);
 
-    const addImages = useCallback((f: File[]) => {
-        const editor = editorRef.current;
-        if (!editor) return;
+    const setImages = useCallback((f: File[]) => {
+        createContainer();
+
+        removeAllImages();
 
         const i = f.map(getImageFromFile);
-
-        createContainer(editor);
-
-        editor.commands.addImageToContainer(containerRef.current, i, {
-            style: IMG_STYLE,
-        });
+        if (i.length === 0) return;
+        addImages(i);
     }, []);
 
-    const removeImage = useCallback((k: string) => {
-        const editor = editorRef.current;
-        if (!editor) return;
-
-        editor.commands.removeImageByKey(k);
-    }, []);
-
-    return { addImages, removeImage };
+    return { setImages };
 };
 
 export default useEditorControl;
