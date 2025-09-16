@@ -71,11 +71,12 @@ export const blog = createApi({
             void,
             CreateOrUpdateBlogPostReq
         >({
-            query: ({ id, thumbnail, ...other }) => {
+            query: ({ id, ...other }) => {
                 const isUpdate = Boolean(id);
                 const url = isUpdate ? `/${id}` : ``;
                 const method = isUpdate ? "PUT" : "POST";
-                const body = objectToFormData(other, thumbnail);
+                throw "FIX THIS!";
+                const body = objectToFormData(other, {} as any);
                 return {
                     url,
                     method,

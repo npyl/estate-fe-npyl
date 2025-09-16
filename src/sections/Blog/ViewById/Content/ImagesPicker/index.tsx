@@ -1,5 +1,4 @@
-import { FC, RefObject, useCallback, useEffect, useMemo } from "react";
-import BaseImagePicker from "@/ui/ImagePicker";
+import { FC, RefObject, useCallback, useEffect } from "react";
 import { Controller, ControllerProps, useFormContext } from "react-hook-form";
 import {
     CreateOrUpdateBlogPostReq,
@@ -9,6 +8,7 @@ import { Editor } from "@tiptap/react";
 import useDialog from "@/hooks/useDialog";
 import isFalsy from "@/utils/isFalsy";
 import uuidv4 from "@/utils/uuidv4";
+import Picker from "./Picker";
 
 // -----------------------------------------------------------------------------------------
 
@@ -57,13 +57,6 @@ const useInitialise = (
 // 3. The files in the `value` field always take precedence on what is viewed!
 //
 
-// -----------------------------------------------------------------------------------------
-
-const getSrc = (f: File) => URL.createObjectURL(f);
-const useSrc = (f: File[]) => useMemo(() => f.map(getSrc), [f.length]);
-
-// -----------------------------------------------------------------------------------------
-
 const IMAGE_HEIGHT = "600px";
 
 type TRender = ControllerProps<CreateOrUpdateBlogPostReq, "images">["render"];
@@ -80,23 +73,12 @@ const Render: FC<TRenderProps> = ({
 }) => {
     const { isLoading } = useInitialise(postId, _onChange);
 
-    const src = useSrc(value);
-
     const onChange = useCallback((f?: File[]) => {
+        // TODO: editorRef
         _onChange(f);
     }, []);
 
-    return (
-        <BaseImagePicker
-            src={src}
-            isLoading={isLoading}
-            multiple
-            onSelect={onChange}
-            onDelete={onChange}
-            ContainerProps={{ height: IMAGE_HEIGHT }}
-            style={{ maxHeight: IMAGE_HEIGHT, objectFit: "contain" }}
-        />
-    );
+    return <Picker files={value} onChange={onChange} />;
 };
 
 // -----------------------------------------------------------------------------------------

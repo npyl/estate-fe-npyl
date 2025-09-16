@@ -1,5 +1,11 @@
-// @mui
-import { IconButton, Stack, SxProps, Theme, Typography } from "@mui/material";
+import {
+    IconButton,
+    Stack,
+    StackProps,
+    SxProps,
+    Theme,
+    Typography,
+} from "@mui/material";
 import FileThumbnail from "@/components/file-thumbnail";
 import { TUploadFile, UploadVariant } from "@/components/upload/types";
 import LabelCreate from "@/sections/LabelCreate";
@@ -18,7 +24,7 @@ const ItemSx: SxProps<Theme> = {
     cursor: "pointer",
 };
 
-interface ItemProps {
+interface ItemProps extends Omit<StackProps, "onClick"> {
     variant: UploadVariant;
     compact: boolean;
     file: TUploadFile;
@@ -32,8 +38,12 @@ const Item: FC<ItemProps> = ({
     file,
     disabled = false,
     compact,
+    // ...
     onClick,
     onRemove,
+    // ...
+    sx,
+    ...props
 }) => {
     const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -44,7 +54,12 @@ const Item: FC<ItemProps> = ({
     };
 
     return (
-        <SpaceBetween alignItems="center" sx={ItemSx} onClick={handleClick}>
+        <SpaceBetween
+            alignItems="center"
+            sx={{ ...ItemSx, ...(sx as any) }}
+            onClick={handleClick}
+            {...props}
+        >
             <Stack direction="row" spacing={1} alignItems="center">
                 {variant === "image" && !compact ? (
                     <FileThumbnail file={file} />
@@ -103,7 +118,7 @@ const getItem =
         ItemComponent: ComponentType<T>
     ) =>
     (file: TUploadFile) => (
-        <ItemComponent key={file.filename} file={file} {...(props as T)} />
+        <ItemComponent key={file.id} file={file} {...(props as T)} />
     );
 
 export { Item };
