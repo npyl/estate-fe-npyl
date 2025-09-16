@@ -13,7 +13,7 @@ const resources = {
             ERR_PAGE_NOT_FOUND: "Page not found",
             ERR_INTERNAL_SERVER_ERROR: "Internal app error",
 
-            BLOG_MIDDLE_IMAGES_FULL: "You can only upload 2 images",
+            BLOG_MIDDLE_IMAGES_FULL: "You can only upload up to 3 images",
             MainImage: "Main Image",
             MiddleImages: "Middle Images",
 
@@ -1427,7 +1427,7 @@ const resources = {
             ERR_INTERNAL_SERVER_ERROR: "Εσωτερικό σφάλμα στην εφαρμογή",
 
             BLOG_MIDDLE_IMAGES_FULL:
-                "Μπορείτε να ανεβάσετε μέχρι 2 φωτογραφίες",
+                "Μπορείτε να ανεβάσετε μέχρι 3 φωτογραφίες",
             MainImage: "Κύρια Εικόνα",
             MiddleImages: "Εικόνες Μέσης",
 
