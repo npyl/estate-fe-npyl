@@ -26,4 +26,5 @@ const ImagePicker: FC<ImagePickerProps> = ({ editorRef, postId }) => {
     );
 };
 
+export type { ImagePickerProps };
 export default ImagePicker;
