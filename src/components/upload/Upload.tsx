@@ -37,7 +37,7 @@ const Upload: FC<UploadProps> = ({
     compact = false,
     //
     files,
-    IconComponent = Item,
+    ItemComponent = Item,
     onFileClick,
     onRemove,
     sx,
@@ -101,7 +101,7 @@ const Upload: FC<UploadProps> = ({
                     compact={compact}
                     variant={variant}
                     disabled={disabled}
-                    ItemComponent={IconComponent}
+                    ItemComponent={ItemComponent}
                     onFileClick={onFileClick}
                     onRemove={onRemove}
                     my={1}

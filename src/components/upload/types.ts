@@ -28,7 +28,7 @@ export interface UploadProps<T extends ItemProps = ItemProps>
     compact?: boolean; // force list view
     //
     files?: TUploadFile[];
-    IconComponent?: ComponentType<T>;
+    ItemComponent?: ComponentType<T>;
     onFileClick?: (key: string) => void;
     onRemove?: (key: string) => void;
 }
