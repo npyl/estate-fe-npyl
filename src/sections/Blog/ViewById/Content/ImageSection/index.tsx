@@ -10,6 +10,11 @@ import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import { Stack, SxProps, Theme } from "@mui/material";
 
+const getToggleSx = (isExpanded: boolean): SxProps<Theme> => ({
+    transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+    transition: "transform 0.3s ease-in-out",
+});
+
 const PaperSx: SxProps<Theme> = {
     p: 1,
 };
@@ -24,7 +29,7 @@ const ImageSection: FC<ImageSectionProps> = (props) => {
         <Paper sx={PaperSx}>
             <SpaceBetween alignItems="center">
                 <Typography variant="h5">{t("Images")}</Typography>
-                <IconButton onClick={toggle}>
+                <IconButton onClick={toggle} sx={getToggleSx(isOpen)}>
                     <ExpandMoreIcon />
                 </IconButton>
             </SpaceBetween>
