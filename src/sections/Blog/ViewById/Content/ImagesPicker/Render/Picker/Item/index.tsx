@@ -26,7 +26,7 @@ const ContainerSx: SxProps<Theme> = {
 
 interface ItemProps extends Omit<BaseItemProps, "onClick" | "onChange"> {
     files: File[];
-    onChange: (files?: File[] | undefined) => void;
+    onChange: (f: File[]) => void;
 }
 
 const Item: FC<ItemProps> = ({ files, onChange, sx, ...props }) => {

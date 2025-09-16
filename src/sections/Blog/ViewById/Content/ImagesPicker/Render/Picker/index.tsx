@@ -12,7 +12,7 @@ interface PickerProps
     > {
     loading: boolean;
     files: File[];
-    onChange: (files?: File[]) => void;
+    onChange: (f: File[]) => void;
 }
 
 const Picker: FC<PickerProps> = ({ files, onChange, loading, ...props }) => {

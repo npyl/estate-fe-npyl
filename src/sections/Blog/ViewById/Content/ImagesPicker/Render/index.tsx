@@ -1,9 +1,11 @@
-import { FC, RefObject, useCallback } from "react";
+import { FC, useCallback } from "react";
 import { ControllerProps } from "react-hook-form";
 import { CreateOrUpdateBlogPostReq } from "@/services/blog";
-import { Editor } from "@tiptap/react";
 import Picker from "./Picker";
 import useInitialise from "./useInitialise";
+import { errorToast } from "@/components/Toaster";
+
+const FULL_LITERAL = "BLOG_MIDDLE_IMAGES_FULL";
 
 //
 // INFO:
@@ -13,31 +15,41 @@ import useInitialise from "./useInitialise";
 // 3. The files in the `value` field always take precedence on what is viewed!
 //
 
-const IMAGE_HEIGHT = "600px";
-
 type TRender = ControllerProps<CreateOrUpdateBlogPostReq, "images">["render"];
 
 type TRenderProps = Parameters<TRender>[0] & {
-    editorRef: RefObject<Editor>;
     postId?: number;
+    onAdd: (f: File[]) => void;
+    onRemove: () => void;
 };
 
 const Render: FC<TRenderProps> = ({
-    editorRef,
     postId,
     field: { value, onChange: _onChange },
+    onAdd,
 }) => {
     const { isLoading } = useInitialise(postId, _onChange);
 
-    const onChange = useCallback(
-        (f?: File[]) => {
-            // TODO: editorRef
-            _onChange(f);
+    const handleChange = useCallback(
+        (f: File[]) => {
+            // INFO: prevent from adding more than 3 images
+            if (value.length + f.length > 3) {
+                errorToast(FULL_LITERAL);
+                return;
+            }
+
+            const all = [...value, ...f];
+
+            // INFO: update hook-form
+            _onChange(all);
+
+            // for external use
+            onAdd(f);
         },
-        [_onChange]
+        [value, _onChange]
     );
 
-    return <Picker loading={isLoading} files={value} onChange={onChange} />;
+    return <Picker loading={isLoading} files={value} onChange={handleChange} />;
 };
 
 export default Render;
