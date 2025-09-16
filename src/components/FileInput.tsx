@@ -14,7 +14,7 @@ type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 const ACCEPTED = "image/jpeg,image/jpg,image/png";
 
 interface FileInputProps<T extends OpenerBaseProps = OpenerBaseProps>
-    extends InputProps {
+    extends Omit<InputProps, "onSelect"> {
     Opener: ComponentType<T>;
     loading?: boolean;
 }
@@ -59,4 +59,5 @@ const FileInput: FC<FileInputProps> = ({
     );
 };
 
+export type { FileInputProps };
 export default FileInput;
