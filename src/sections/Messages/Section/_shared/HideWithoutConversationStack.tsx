@@ -1,11 +1,14 @@
-import Stack, { StackProps } from "@mui/material/Stack";
 import { FC } from "react";
 import { useSelectedConversationContext } from "@/sections/Messages/Section/SelectedConversation";
+import StyledStack, { StyledStackProps } from "./StyledStack";
 
-const HideWithoutConversationStack: FC<StackProps> = ({ sx, ...props }) => {
+const HideWithoutConversationStack: FC<StyledStackProps> = ({
+    sx,
+    ...props
+}) => {
     const { conversationId } = useSelectedConversationContext();
     return (
-        <Stack
+        <StyledStack
             sx={{
                 display: {
                     xs: !conversationId ? "none" : "block",

@@ -1,11 +1,11 @@
 import { FC, useRef } from "react";
 import useAvailableHeight from "@/hooks/useAvailableHeight";
-import Paper, { PaperProps } from "@mui/material/Paper";
+import Stack, { StackProps } from "@mui/material/Stack";
 
-const FullPaper: FC<PaperProps> = (props) => {
+const FullStack: FC<StackProps> = (props) => {
     const ref = useRef<HTMLDivElement>(null);
     useAvailableHeight(ref);
-    return <Paper ref={ref} {...props} />;
+    return <Stack ref={ref} {...props} />;
 };
 
-export default FullPaper;
+export default FullStack;
