@@ -87,7 +87,8 @@ const DELAY = 2 * 60 * 1000;
 test("create", async ({ page }) => {
     await gotoSafe(page, "http://127.0.0.1:3000/tasks");
 
-    await page.getByTestId(TASK.CREATE_ID).click();
+    // INFO: click Fab
+    await page.getByTestId(TASK.CREATE_ID).first().click();
 
     await page
         .getByTestId(TASK.DIALOG_ID)
