@@ -31,7 +31,7 @@ const Tabs: FC<TabsProps> = ({ onChange: _onChange, sx, ...props }) => {
         [_onChange]
     );
     return (
-        <HorizontalScrollbar>
+        <HorizontalScrollbar height={1}>
             <MuiTabs
                 variant="fullWidth"
                 value={i}

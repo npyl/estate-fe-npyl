@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Column: "Column",
             Images: "Images",
             MAKE_THUMBNAIL: "Make thumbnail",
             DELETE_RECORD: "Do you really want to delete this?",
@@ -1415,8 +1416,8 @@ const resources = {
     },
     el: {
         translation: {
+            Column: "Στήλη",
             Images: "Εικόνες",
-
             MAKE_THUMBNAIL: "Κάνε την Μικρογραφία",
 
             DELETE_RECORD: "Επιθυμείτε να γίνει διαγραφή?",
