@@ -4,7 +4,7 @@ import { FC, useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import { useDeleteAgreementMutation } from "@/services/agreements";
 import dynamic from "next/dynamic";
-const BaseDeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
+const BaseDeleteDialog = dynamic(() => import("@/components/DialogDelete"));
 
 // ------------------------------------------------------------
 

@@ -13,43 +13,38 @@ import { ComponentType, FC, ReactNode } from "react";
 import DialogForm from "./Form";
 
 type DialogProps = {
+    submit?: boolean; // support <form> mode
+    hideTitle?: boolean;
+
     title?: ReactNode;
     content?: ReactNode;
     actions?: ReactNode;
-
-    submit?: boolean; // support <form> mode
-    hideTitle?: boolean;
 
     DialogTitleComponent?: ComponentType<DialogTitleProps>;
     DialogContentComponent?: ComponentType<DialogContentProps>;
     DialogActionsComponent?: ComponentType<DialogActionsProps>;
 
-    onClose?: () => void;
-} & Omit<MuiDialogProps, "title" | "content">;
+    onClose?: VoidFunction;
+} & Omit<MuiDialogProps, "title" | "content" | "onClose">;
 
 const Dialog: FC<DialogProps> = ({
-    open,
     submit = false,
+    hideTitle = false,
+
     title,
     actions,
     content,
-
-    hideTitle = false,
 
     DialogTitleComponent = DialogTitle,
     DialogContentComponent = DialogContent,
     DialogActionsComponent = DialogActions,
 
-    onClose,
-
     ...props
 }) => {
-    if (!open) return null;
+    if (!props.open) return null;
 
     return (
         <MuiDialog
-            open={open}
-            onClose={onClose}
             fullWidth
             maxWidth="sm"
             // INFO: make the dialog work as a <form> component

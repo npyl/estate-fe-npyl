@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import { useAuth } from "@/sections/use-auth";
 import Share from "./Share";
 import { defaultValues } from "./constants";
-const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
+const DeleteDialog = dynamic(() => import("@/components/DialogDelete"));
 const BulkEdit = dynamic(() => import("./BulkEdit"));
 const BulkArchiveButton = dynamic(() => import("./BulkArchiveButton"));
 const BulkRestoreButton = dynamic(() => import("./BulkRestoreButton"));
